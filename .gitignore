@@ -8,11 +8,15 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.pnpm-store
+.vite
 dist
 dist-ssr
 coverage
 playwright-report
 test-results
+*.tgz
+*.tsbuildinfo
 *.local
 
 # Editor directories and files

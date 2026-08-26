@@ -1,0 +1,28 @@
+{
+  "name": "@workspace/icons-lab",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "rimraf dist && vite build && node ../../scripts/write-compliance-artifacts.mjs .",
+    "typecheck": "vue-tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "peerDependencies": {
+    "vue": ">=3.5.0"
+  }
+}

@@ -1,0 +1,10 @@
+vendor
+.agents
+.codex
+node_modules
+dist
+coverage
+playwright-report
+test-results
+pnpm-lock.yaml
+docs/research

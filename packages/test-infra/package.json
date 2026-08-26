@@ -1,0 +1,16 @@
+{
+  "name": "@workspace/test-infra",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./harness.css": "./src/harness.css"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

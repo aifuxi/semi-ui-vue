@@ -1,0 +1,18 @@
+{
+  "name": "@workspace/docs-vue",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 4174 --strictPort",
+    "build": "vue-tsc --noEmit && vite build",
+    "typecheck": "vue-tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@workspace/test-infra": "workspace:*",
+    "normalize.css": "catalog:",
+    "typeface-inter": "catalog:",
+    "vue": "catalog:"
+  }
+}
