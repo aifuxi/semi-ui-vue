@@ -1,0 +1,3 @@
+[mcp_servers.semi-mcp]
+command = "npx"
+args = ["-y", "@douyinfe/semi-mcp"]
