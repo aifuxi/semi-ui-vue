@@ -50,6 +50,22 @@ describe('parity infrastructure contract', () => {
     expect(assertScenarioComparable('divider').targets).toHaveLength(8);
   });
 
+  it('records Icon and both generated asset packages as a complete parity scene', () => {
+    expect(getParityScenario('icon')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.iconPublicEntry,
+    });
+    expect(assertScenarioComparable('icon').targets).toHaveLength(11);
+    expect(getParityScenario('icon').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.iconStableEntry,
+        REFERENCE_SOURCE_PATHS.iconLabEntry,
+        REFERENCE_SOURCE_PATHS.iconStyle,
+      ]),
+    );
+  });
+
   it('normalizes scenario query parameters and builds deterministic URLs', () => {
     const options = parseParityScenarioOptions(
       '?scenario=button-types&theme=dark&direction=rtl&locale=en-US',

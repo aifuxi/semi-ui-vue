@@ -1,0 +1,31 @@
+// Generated from the pinned Semi Design v2.102.0 source. Do not edit directly.
+import { h, type VNode } from 'vue';
+import { convertIcon, type IconSvgProps } from '../components/Icon';
+
+function renderSvg(props: IconSvgProps): VNode {
+  return h(
+    'svg',
+    {
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      xmlns: 'http://www.w3.org/2000/svg',
+      width: '1em',
+      height: '1em',
+      focusable: false,
+      'aria-hidden': true,
+      ...props,
+    },
+    [
+      h(
+        'path',
+        {
+          d: 'M17.5 2A3.5 3.5 0 1 1 15 7.95l-5.13 3.11a3.5 3.5 0 0 1 .03 1.78l5.22 3.1A3.49 3.49 0 0 1 21 18.5a3.5 3.5 0 1 1-6.9-.85l-5.22-3.08A3.49 3.49 0 0 1 3 12a3.5 3.5 0 0 1 5.8-2.63l5.27-3.19A3.5 3.5 0 0 1 17.5 2Z',
+          fill: 'currentColor',
+        },
+        undefined,
+      ),
+    ],
+  );
+}
+
+export default convertIcon(renderSvg, 'share');

@@ -101,6 +101,12 @@ importers:
 
   apps/docs-vue:
     dependencies:
+      '@workspace/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@workspace/icons-lab':
+        specifier: workspace:*
+        version: link:../../packages/icons-lab
       '@workspace/test-infra':
         specifier: workspace:*
         version: link:../../packages/test-infra
@@ -177,6 +183,10 @@ importers:
         version: 1.54.9
 
   packages/ui:
+    dependencies:
+      '@workspace/icons':
+        specifier: workspace:*
+        version: link:../icons
     devDependencies:
       '@workspace/foundation-integration':
         specifier: workspace:*

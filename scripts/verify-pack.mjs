@@ -1,5 +1,14 @@
 import { execFileSync } from 'node:child_process';
-import { access, mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
+import {
+  access,
+  mkdir,
+  mkdtemp,
+  readFile,
+  readdir,
+  realpath,
+  rm,
+  writeFile,
+} from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -31,7 +40,20 @@ function runPnpm(args, cwd) {
 
 async function assertExportTargets(packageRoot, value) {
   if (typeof value === 'string') {
-    if (value.startsWith('./')) await access(path.join(packageRoot, value.slice(2)));
+    if (value.startsWith('./')) {
+      const target = value.slice(2);
+      if (target.includes('*')) {
+        const wildcardIndex = target.indexOf('*');
+        const directory = path.join(packageRoot, path.dirname(target.slice(0, wildcardIndex)));
+        const suffix = target.slice(wildcardIndex + 1);
+        const candidates = await readdir(directory);
+        if (!candidates.some((candidate) => candidate.endsWith(suffix))) {
+          throw new Error(`通配导出没有匹配产物：${value}`);
+        }
+      } else {
+        await access(path.join(packageRoot, target));
+      }
+    }
     return;
   }
 
@@ -95,7 +117,25 @@ try {
   };
   await writeFile(
     path.join(consumerRoot, 'package.json'),
-    `${JSON.stringify({ name: 'pack-consumer', private: true, type: 'module', dependencies }, null, 2)}\n`,
+    `${JSON.stringify(
+      {
+        name: 'pack-consumer',
+        private: true,
+        type: 'module',
+        dependencies,
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  await writeFile(
+    path.join(consumerRoot, 'pnpm-workspace.yaml'),
+    `packages:\n  - .\noverrides:\n${[...tarballs]
+      .map(
+        ([packageName, tarballPath]) =>
+          `  ${JSON.stringify(packageName)}: ${JSON.stringify(`file:${tarballPath}`)}`,
+      )
+      .join('\n')}\n`,
   );
 
   runPnpm(
@@ -175,6 +215,15 @@ try {
     `await Promise.all(${JSON.stringify(javascriptPackages)}.map(packageName => import(packageName)));
 	await import('@workspace/ui/button');
 	await import('@workspace/ui/divider');
+	await import('@workspace/ui/icon');
+	await import('@workspace/icons/Icon');
+	await import('@workspace/icons/icons/IconHome');
+	await import('@workspace/icons-lab/Icon');
+	await import('@workspace/icons-lab/icons/IconAvatar');
+	const stableIcons = await import('@workspace/icons');
+	const labIcons = await import('@workspace/icons-lab');
+	if (Object.keys(stableIcons).length !== 525) throw new Error('稳定版 Icon 根导出数量不完整');
+	if (Object.keys(labIcons).length !== 85) throw new Error('Lab Icon 根导出数量不完整');
 	const rootTheme = import.meta.resolve('@workspace/theme-default');
 const cssTheme = import.meta.resolve('@workspace/theme-default/index.css');
 if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 index.css');
@@ -183,6 +232,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	}
 	if (!import.meta.resolve('@workspace/theme-default/divider.css').endsWith('/dist/divider.css')) {
 	  throw new Error('Divider 逐组件样式导出未指向 dist/divider.css');
+	}
+	if (!import.meta.resolve('@workspace/theme-default/icon.css').endsWith('/dist/icon.css')) {
+	  throw new Error('Icon 逐组件样式导出未指向 dist/icon.css');
 	}
 	`,
   );
@@ -193,6 +245,12 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
     `${javascriptPackages.map((packageName) => `import '${packageName}';`).join('\n')}
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
 	import { Divider, type DividerAlign } from '@workspace/ui/divider';
+	import { Icon } from '@workspace/ui/icon';
+	import IconBase, { convertIcon, type IconSize } from '@workspace/icons/Icon';
+	import { IconAIWandLevel3, IconHome } from '@workspace/icons';
+	import IconHomeDirect from '@workspace/icons/icons/IconHome';
+	import { IconAvatar } from '@workspace/icons-lab';
+	import IconAvatarDirect from '@workspace/icons-lab/icons/IconAvatar';
 	import { h } from 'vue';
 const type: ButtonType = 'primary';
 h(Button, { type, htmlType: 'submit' });
@@ -200,6 +258,15 @@ h(Button, { type, htmlType: 'submit' });
 	h(SplitButtonGroup, { 'aria-label': 'actions' });
 	const align: DividerAlign = 'left';
 	h(Divider, { align, layout: 'horizontal', margin: 12 });
+	const iconSize: IconSize = 'large';
+	h(Icon, { size: iconSize });
+	h(IconBase, { spin: true, rotate: 45 });
+	h(IconHome, { size: 'large' });
+	h(IconHomeDirect, { 'aria-label': 'home' });
+	h(IconAIWandLevel3, { fill: ['#111', '#222', '#333', '#444'] });
+	h(IconAvatar, { size: 'extra-large' });
+	h(IconAvatarDirect);
+	convertIcon(() => h('svg'), 'IconConsumer');
 	`,
   );
   await writeFile(
@@ -246,6 +313,9 @@ h(Button, { type, htmlType: 'submit' });
   if (!themeCss.includes('.semi-divider')) {
     throw new Error('安装后的默认主题缺少 Divider 样式');
   }
+  if (!themeCss.includes('.semi-icon')) {
+    throw new Error('安装后的默认主题缺少 Icon 样式');
+  }
   const buttonThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'button.css'),
     'utf8',
@@ -259,6 +329,16 @@ h(Button, { type, htmlType: 'submit' });
   );
   if (!dividerThemeCss.includes('.semi-divider-with-text')) {
     throw new Error('安装后的 Divider 逐组件样式缺少内容分割线样式');
+  }
+  const iconThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'icon.css'),
+    'utf8',
+  );
+  if (
+    !iconThemeCss.includes('.semi-icon-extra-large') ||
+    !iconThemeCss.includes('.semi-icon-spinning')
+  ) {
+    throw new Error('安装后的 Icon 逐组件样式缺少尺寸或旋转样式');
   }
 
   process.stdout.write('真实 tarball 的安装、exports、ESM、类型、样式与 SSR import 均通过\n');

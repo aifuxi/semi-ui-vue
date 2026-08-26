@@ -1,0 +1,33 @@
+// Generated from the pinned Semi Design v2.102.0 source. Do not edit directly.
+import { h, type VNode } from 'vue';
+import { convertIcon, type IconSvgProps } from '../components/Icon';
+
+function renderSvg(props: IconSvgProps): VNode {
+  return h(
+    'svg',
+    {
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      xmlns: 'http://www.w3.org/2000/svg',
+      width: '1em',
+      height: '1em',
+      focusable: false,
+      'aria-hidden': true,
+      ...props,
+    },
+    [
+      h(
+        'path',
+        {
+          'fill-rule': 'evenodd',
+          'clip-rule': 'evenodd',
+          d: 'M9 3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V3Zm2 1v16h2V4h-2ZM2 8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V8Zm2 1v11h2V9H4Zm13 1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V11a1 1 0 0 0-1-1h-4Zm1 10v-8h2v8h-2Z',
+          fill: 'currentColor',
+        },
+        undefined,
+      ),
+    ],
+  );
+}
+
+export default convertIcon(renderSvg, 'bar_chart_v_stroked');

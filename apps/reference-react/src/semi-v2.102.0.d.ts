@@ -61,4 +61,39 @@ declare module '@semi-v2.102.0/divider' {
   export default Divider;
 }
 
+declare module '@semi-v2.102.0/icon' {
+  import type { ComponentType, HTMLAttributes, ReactNode } from 'react';
+
+  export type IconSize = 'inherit' | 'extra-small' | 'small' | 'default' | 'large' | 'extra-large';
+  export interface IconProps extends HTMLAttributes<HTMLSpanElement> {
+    fill?: string | string[];
+    prefixCls?: string;
+    rotate?: number;
+    size?: IconSize;
+    spin?: boolean;
+    svg?: ReactNode;
+    type?: string;
+  }
+  const Icon: ComponentType<IconProps>;
+  export default Icon;
+}
+
+declare module '@semi-v2.102.0/icons' {
+  import type { ComponentType } from 'react';
+  import type { IconProps } from '@semi-v2.102.0/icon';
+  type BuiltinIcon = ComponentType<Omit<IconProps, 'svg' | 'type'>>;
+  export const IconAIFilledLevel2: BuiltinIcon;
+  export const IconAIWandLevel3: BuiltinIcon;
+  export const IconEmoji: BuiltinIcon;
+  export const IconHome: BuiltinIcon;
+  export const IconLikeHeart: BuiltinIcon;
+  export const IconSpin: BuiltinIcon;
+}
+
+declare module '@semi-v2.102.0/icons-lab' {
+  import type { ComponentType } from 'react';
+  import type { IconProps } from '@semi-v2.102.0/icon';
+  export const IconAvatar: ComponentType<Omit<IconProps, 'fill' | 'svg' | 'type'>>;
+}
+
 declare module 'virtual:semi-reference-styles.css';

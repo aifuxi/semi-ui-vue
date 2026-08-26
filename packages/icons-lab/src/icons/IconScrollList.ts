@@ -1,0 +1,43 @@
+// Generated from the pinned Semi Design v2.102.0 source. Do not edit directly.
+import { h, type VNode } from 'vue';
+import { convertIcon, type IconSvgProps } from '../components/Icon';
+
+function renderSvg(props: IconSvgProps): VNode {
+  return h(
+    'svg',
+    {
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      xmlns: 'http://www.w3.org/2000/svg',
+      width: '1em',
+      height: '1em',
+      focusable: false,
+      'aria-hidden': true,
+      ...props,
+    },
+    [
+      h(
+        'rect',
+        {
+          x: 2.75,
+          y: 2.75,
+          width: 18.5,
+          height: 18.5,
+          rx: 3,
+          fill: 'white',
+          stroke: '#AAB2BF',
+          'stroke-width': 1.5,
+        },
+        undefined,
+      ),
+      h('path', { d: 'M16 2h3a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3h-3V2Z', fill: '#6A6F7F' }, undefined),
+      h('rect', { x: 3.5, y: 7, width: 12.5, height: 5, fill: '#4CC3FA' }, undefined),
+      h('path', { d: 'M3.5 17H16v3.5H5.5a2 2 0 0 1-2-2V17Z', fill: '#DDE3E8' }, undefined),
+      h('path', { d: 'm19 4 1.3 2.25h-2.6L19 4Z', fill: '#AAB2BF' }, undefined),
+      h('path', { d: 'M19 20.25 17.7 18h2.6L19 20.25Z', fill: '#AAB2BF' }, undefined),
+      h('rect', { x: 18, y: 8, width: 2, height: 6, rx: 1, fill: '#DDE3E8' }, undefined),
+    ],
+  );
+}
+
+export default convertIcon(renderSvg, 'scroll-list');

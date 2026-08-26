@@ -1,2 +1,9 @@
-// 实验图标与稳定图标分开生成和发布。
-export {};
+export { default } from './components/Icon';
+export {
+  type IconProps,
+  type IconSize,
+  type IconSvgProps,
+  type IconSvgRenderer,
+  type SemiIconComponent,
+} from './components/Icon';
+export * from './icons';

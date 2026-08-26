@@ -12,6 +12,8 @@
   "dependencies": {
     "@workspace/test-infra": "workspace:*",
     "@workspace/theme-default": "workspace:*",
+    "@workspace/icons": "workspace:*",
+    "@workspace/icons-lab": "workspace:*",
     "@workspace/ui": "workspace:*",
     "normalize.css": "catalog:",
     "typeface-inter": "catalog:",

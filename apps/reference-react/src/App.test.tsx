@@ -27,4 +27,13 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-divider-with-text-left');
     expect(html).toContain('这是居右文字');
   });
+
+  it('从固定 Icon、稳定图标和 Lab 入口渲染完整参考场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="icon" />);
+
+    expect(html).toContain('data-parity-scenario="icon"');
+    expect(html).toContain('semi-icon-extra-large');
+    expect(html).toContain('semi-icon-ai_wand_level_3');
+    expect(html).toContain('semi-icon-avatar');
+  });
 });

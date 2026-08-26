@@ -1,2 +1,13 @@
-// 图标生成管线接入前保持空导出，避免提前承诺不完整的公开 API。
-export {};
+export { default } from './components/Icon';
+export {
+  convertIcon,
+  type IconExposed,
+  type IconFill,
+  type IconProps,
+  type IconSize,
+  type IconSlots,
+  type IconSvgProps,
+  type IconSvgRenderer,
+  type SemiIconComponent,
+} from './components/Icon';
+export * from './icons';

@@ -54,5 +54,19 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/button/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'divider', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/divider/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'icon', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/icon/index.js\n');
+  }
+
+  if (packageName === 'icons') {
+    await import(pathToFileURL(path.join(distPath, 'components', 'Icon.js')).href);
+    await import(pathToFileURL(path.join(distPath, 'icons', 'IconHome.js')).href);
+    process.stdout.write('SSR import 通过：packages/icons 的 Icon 基座与代表图标\n');
+  }
+
+  if (packageName === 'icons-lab') {
+    await import(pathToFileURL(path.join(distPath, 'components', 'Icon.js')).href);
+    await import(pathToFileURL(path.join(distPath, 'icons', 'IconAvatar.js')).href);
+    process.stdout.write('SSR import 通过：packages/icons-lab 的 Icon 基座与代表图标\n');
   }
 }

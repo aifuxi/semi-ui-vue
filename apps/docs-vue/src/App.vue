@@ -8,6 +8,7 @@ import {
 import ButtonTypesScenario from './components/ButtonTypesScenario.vue';
 import ButtonContractScenario from './components/ButtonContractScenario.vue';
 import DividerScenario from './components/DividerScenario.vue';
+import IconScenario from './components/IconScenario.vue';
 import HarnessCalibration from './components/HarnessCalibration.vue';
 import UnavailableScenario from './components/UnavailableScenario.vue';
 
@@ -56,6 +57,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <ButtonTypesScenario v-else-if="scenario.id === 'button-types'" />
       <ButtonContractScenario v-else-if="scenario.id === 'button-contract'" />
       <DividerScenario v-else-if="scenario.id === 'divider'" />
+      <IconScenario v-else-if="scenario.id === 'icon'" />
       <UnavailableScenario
         v-else
         :scenario-id="scenario.id"

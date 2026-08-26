@@ -4,14 +4,18 @@ import sass from 'sass';
 
 export const virtualButtonStyleId = 'virtual:workspace-button-styles.css';
 export const virtualDividerStyleId = 'virtual:workspace-divider-styles.css';
+export const virtualIconStyleId = 'virtual:workspace-icon-styles.css';
 const resolvedVirtualButtonStyleId = `\0${virtualButtonStyleId}`;
 const resolvedVirtualDividerStyleId = `\0${virtualDividerStyleId}`;
+const resolvedVirtualIconStyleId = `\0${virtualIconStyleId}`;
 const buttonStyleEntry = fileURLToPath(new URL('./src/button.scss', import.meta.url));
 const dividerStyleEntry = fileURLToPath(new URL('./src/divider.scss', import.meta.url));
+const iconStyleEntry = fileURLToPath(new URL('./src/icon.scss', import.meta.url));
 
 const styleEntries = new Map([
   [resolvedVirtualButtonStyleId, buttonStyleEntry],
   [resolvedVirtualDividerStyleId, dividerStyleEntry],
+  [resolvedVirtualIconStyleId, iconStyleEntry],
 ]);
 
 /** Compile pinned legacy SCSS without asking Vite 8 to call a removed modern Sass API. */
@@ -22,6 +26,7 @@ export function compilePinnedComponentStyles(): Plugin {
     resolveId(source) {
       if (source === virtualButtonStyleId) return resolvedVirtualButtonStyleId;
       if (source === virtualDividerStyleId) return resolvedVirtualDividerStyleId;
+      if (source === virtualIconStyleId) return resolvedVirtualIconStyleId;
       return null;
     },
     load(id) {

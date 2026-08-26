@@ -14,6 +14,12 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   dividerPublicEntry: 'vendor/semi-design/packages/semi-ui/divider/index.tsx',
   dividerFoundationStyle: 'vendor/semi-design/packages/semi-foundation/divider/divider.scss',
   dividerDocumentation: 'vendor/semi-design/content/basic/divider/index.md',
+  iconPublicEntry: 'vendor/semi-design/packages/semi-ui/icons/index.tsx',
+  iconBaseEntry: 'vendor/semi-design/packages/semi-icons/src/components/Icon.tsx',
+  iconStableEntry: 'vendor/semi-design/packages/semi-icons/src/index.ts',
+  iconLabEntry: 'vendor/semi-design/packages/semi-icons-lab/src/index.ts',
+  iconStyle: 'vendor/semi-design/packages/semi-icons/src/styles/icons.scss',
+  iconDocumentation: 'vendor/semi-design/content/basic/icon/index.md',
 });
 
 export const PARITY_VIEWPORTS = Object.freeze({
@@ -320,6 +326,63 @@ export const PARITY_SCENARIOS = [
           'width',
         ],
       },
+    ],
+  },
+  {
+    id: 'icon',
+    title: 'Icon 图标',
+    description: '复现固定文档的基础图标、尺寸、旋转、动画、颜色、AI fill 与 Lab 图标契约。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.iconPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.iconPublicEntry,
+      REFERENCE_SOURCE_PATHS.iconBaseEntry,
+      REFERENCE_SOURCE_PATHS.iconStableEntry,
+      REFERENCE_SOURCE_PATHS.iconLabEntry,
+      REFERENCE_SOURCE_PATHS.iconStyle,
+      REFERENCE_SOURCE_PATHS.iconDocumentation,
+    ],
+    targets: [
+      ...(['extra-small', 'small', 'default', 'large', 'extra-large'] as const).map((size) => ({
+        id: `icon-size-${size}`,
+        selector: `[data-parity-target="icon-size-${size}"]`,
+        computedStyleProperties: [
+          'color',
+          'display',
+          'fontSize',
+          'fontStyle',
+          'height',
+          'lineHeight',
+          'width',
+        ],
+      })),
+      {
+        id: 'icon-rotate',
+        selector: '[data-parity-target="icon-rotate"]',
+        computedStyleProperties: ['display', 'fontSize', 'height', 'transform', 'width'],
+      },
+      {
+        id: 'icon-spin',
+        selector: '[data-parity-target="icon-spin"]',
+        computedStyleProperties: [
+          'animationDuration',
+          'animationIterationCount',
+          'animationTimingFunction',
+          'display',
+          'fontSize',
+        ],
+      },
+      {
+        id: 'icon-color',
+        selector: '[data-parity-target="icon-color"]',
+        computedStyleProperties: ['color', 'display', 'fontSize', 'height', 'width'],
+      },
+      ...(['bicolor', 'multicolor', 'lab'] as const).map((kind) => ({
+        id: `icon-${kind}`,
+        selector: `[data-parity-target="icon-${kind}"]`,
+        computedStyleProperties: ['display', 'fontSize', 'height', 'lineHeight', 'width'],
+      })),
     ],
   },
 ] as const satisfies readonly ParityScenarioDefinition[];

@@ -214,6 +214,44 @@ p {
   line-height: 20px;
 }
 
+.icon-scenario {
+  display: grid;
+  margin-top: 24px;
+  gap: 18px;
+}
+
+.icon-scenario__section {
+  display: grid;
+  padding: 18px;
+  gap: 14px;
+  border: 1px solid var(--harness-border);
+  border-radius: 8px;
+  background: var(--harness-subtle);
+}
+
+.icon-scenario__section h3 {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.icon-scenario__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: 32px;
+  gap: 18px;
+}
+
+.icon-scenario__color {
+  color: rgb(233 30 99);
+}
+
+.icon-scenario .semi-icon-spinning {
+  animation-delay: -150ms;
+  animation-play-state: paused;
+}
+
 .scenario-action-output {
   display: block;
   margin-top: 18px;

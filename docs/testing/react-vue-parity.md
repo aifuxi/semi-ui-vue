@@ -15,7 +15,7 @@ React 页面只允许从只读 `vendor/semi-design` 的固定 v2.102.0 源码构
 | `button-contract`     | ready | ready | 图标、loading、disabled、尺寸、ButtonGroup、Split 与 RTL 合同 |
 | `divider`             | ready | ready | 水平/垂直、实线/虚线、边距、内容对齐、dark/mobile/RTL         |
 
-场景契约定义在 `packages/test-infra/src/index.ts`。`assertScenarioComparable()` 只有在 React/Vue 均为 `ready` 时才返回场景，否则立即失败。Button 与 Divider 的固定源码矩阵、Vue API 与迁移表见 `docs/components/`。
+场景契约定义在 `packages/test-infra/src/index.ts`。`assertScenarioComparable()` 只有在 React/Vue 均为 `ready` 时才返回场景，否则立即失败。Button、Divider 与 Icon 的固定源码矩阵、Vue API 与迁移表见 `docs/components/`。Icon 场景覆盖尺寸、旋转、暂停后的 spin、单色、双色、四色渐变、Lab 和自定义 SVG 基座。
 
 ## 运行入口
 

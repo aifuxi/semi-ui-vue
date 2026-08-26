@@ -14,11 +14,12 @@ export default defineConfig({
         index: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
         'button/index': fileURLToPath(new URL('./src/button/index.ts', import.meta.url)),
         'divider/index': fileURLToPath(new URL('./src/divider/index.ts', import.meta.url)),
+        'icon/index': fileURLToPath(new URL('./src/icon/index.ts', import.meta.url)),
       },
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['vue'],
+      external: ['vue', '@workspace/icons'],
     },
   },
 });

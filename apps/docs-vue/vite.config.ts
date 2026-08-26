@@ -11,6 +11,16 @@ export default defineConfig({
         find: '@workspace/ui',
         replacement: fileURLToPath(new URL('../../packages/ui/src/index.ts', import.meta.url)),
       },
+      {
+        find: '@workspace/icons',
+        replacement: fileURLToPath(new URL('../../packages/icons/src/index.ts', import.meta.url)),
+      },
+      {
+        find: '@workspace/icons-lab',
+        replacement: fileURLToPath(
+          new URL('../../packages/icons-lab/src/index.ts', import.meta.url),
+        ),
+      },
     ],
     dedupe: ['vue'],
   },

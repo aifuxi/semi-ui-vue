@@ -20,6 +20,15 @@ export default defineConfig({
       '@semi-v2.102.0/divider': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiDividerStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/icon': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiIconStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/icons': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiIconsStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/icons-lab': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiIconsLabStub.tsx', import.meta.url),
+      ),
     },
     dedupe: ['vue'],
   },

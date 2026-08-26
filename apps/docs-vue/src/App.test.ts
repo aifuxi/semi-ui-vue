@@ -32,4 +32,15 @@ describe('Vue 对照工作台', () => {
     expect(wrapper.get('[data-testid="divider-vue"]').findAll('.semi-divider')).toHaveLength(8);
     expect(wrapper.get('[data-parity-target="divider-content-left"]').text()).toBe('这是居左文字');
   });
+
+  it('通过公开图标包渲染稳定、AI、Lab 与自定义 Icon 场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'icon' } });
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(wrapper.get('[data-testid="icon-vue"]').findAll('.semi-icon')).toHaveLength(12);
+    expect(wrapper.get('[data-parity-target="icon-size-small"]').classes()).toContain(
+      'semi-icon-small',
+    );
+    expect(wrapper.get('[data-parity-target="icon-lab"] svg').element.tagName).toBe('svg');
+  });
 });

@@ -12,8 +12,10 @@ const buttonPublicEntry = path.join(upstreamPackages, 'semi-ui/button/index.tsx'
 const buttonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/buttonGroup.tsx');
 const splitButtonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/splitButtonGroup.tsx');
 const dividerPublicEntry = path.join(upstreamPackages, 'semi-ui/divider/index.tsx');
+const iconPublicEntry = path.join(upstreamPackages, 'semi-ui/icons/index.tsx');
 const foundationRoot = path.join(upstreamPackages, 'semi-foundation');
 const iconsEntry = path.join(upstreamPackages, 'semi-icons/src/index.ts');
+const iconsLabEntry = path.join(upstreamPackages, 'semi-icons-lab/src/index.ts');
 const referenceStyleEntry = fileURLToPath(
   new URL('./src/semi-reference-theme.scss', import.meta.url),
 );
@@ -27,6 +29,10 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'button/iconButton.scss'),
   '@douyinfe/semi-foundation/divider/divider.scss',
   path.join(foundationRoot, 'divider/divider.scss'),
+  '@douyinfe/semi-icons/src/styles/icons.scss',
+  path.join(upstreamPackages, 'semi-icons/src/styles/icons.scss'),
+  '@douyinfe/semi-icons-lab/src/styles/icons.scss',
+  path.join(upstreamPackages, 'semi-icons-lab/src/styles/icons.scss'),
 ]);
 
 function compilePinnedReferenceStyles(): Plugin {
@@ -38,7 +44,8 @@ function compilePinnedReferenceStyles(): Plugin {
       if (capturedUpstreamStyleImports.has(source)) return emptyUpstreamStyleId;
       if (
         source === '../styles/icons.scss' &&
-        importer?.includes('/vendor/semi-design/packages/semi-icons/src/components/Icon.tsx')
+        (importer?.includes('/vendor/semi-design/packages/semi-icons/src/components/Icon.tsx') ||
+          importer?.includes('/vendor/semi-design/packages/semi-icons-lab/src/components/Icon.tsx'))
       ) {
         return emptyUpstreamStyleId;
       }
@@ -66,11 +73,15 @@ export default defineConfig({
       { find: '@semi-v2.102.0/button-group', replacement: buttonGroupEntry },
       { find: '@semi-v2.102.0/split-button-group', replacement: splitButtonGroupEntry },
       { find: '@semi-v2.102.0/divider', replacement: dividerPublicEntry },
+      { find: '@semi-v2.102.0/icon', replacement: iconPublicEntry },
+      { find: '@semi-v2.102.0/icons', replacement: iconsEntry },
+      { find: '@semi-v2.102.0/icons-lab', replacement: iconsLabEntry },
       {
         find: /^@douyinfe\/semi-foundation\/(.+)$/,
         replacement: `${foundationRoot}/$1`,
       },
       { find: '@douyinfe/semi-icons', replacement: iconsEntry },
+      { find: '@douyinfe/semi-icons-lab', replacement: iconsLabEntry },
       { find: /^classnames$/, replacement: require.resolve('classnames') },
       { find: /^lodash$/, replacement: require.resolve('lodash') },
       { find: /^prop-types$/, replacement: require.resolve('prop-types') },

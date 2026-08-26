@@ -17,6 +17,8 @@ const dividerEntryPath = path.join(
   'divider.scss',
 );
 const dividerCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'divider.css');
+const iconEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'icon.scss');
+const iconCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'icon.css');
 
 function compareNames(left, right) {
   if (left.name < right.name) return -1;
@@ -138,6 +140,31 @@ for (const selector of [
   }
 }
 
+const expectedIconImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const iconEntrySource = await readFile(iconEntryPath, 'utf8');
+const actualIconImports = [...iconEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualIconImports) !== JSON.stringify(expectedIconImports)) {
+  throw new Error('Icon 逐组件样式入口顺序未与固定源码对齐');
+}
+const iconCss = await readFile(iconCssPath, 'utf8');
+for (const selector of [
+  '.semi-icon',
+  '.semi-icon-default',
+  '.semi-icon-extra-large',
+  '.semi-icon-spinning',
+]) {
+  if (!iconCss.includes(selector)) {
+    throw new Error(`Icon 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 process.stdout.write(
-  `默认主题入口与 Button/Divider 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + dividerCss.length} 字节 CSS\n`,
+  `默认主题入口与 Button/Divider/Icon 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + dividerCss.length + iconCss.length} 字节 CSS\n`,
 );
