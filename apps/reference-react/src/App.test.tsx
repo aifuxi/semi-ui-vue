@@ -36,4 +36,13 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-icon-ai_wand_level_3');
     expect(html).toContain('semi-icon-avatar');
   });
+
+  it('从固定 Space Adapter 渲染完整参考场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="space" />);
+
+    expect(html).toContain('data-parity-scenario="space"');
+    expect(html).toContain('semi-space-medium-horizontal');
+    expect(html).toContain('semi-space-wrap');
+    expect(html).toContain('semi-space-align-baseline');
+  });
 });

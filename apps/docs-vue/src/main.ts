@@ -3,6 +3,7 @@ import 'typeface-inter';
 import 'virtual:workspace-button-styles.css';
 import 'virtual:workspace-divider-styles.css';
 import 'virtual:workspace-icon-styles.css';
+import 'virtual:workspace-space-styles.css';
 import '@workspace/test-infra/harness.css';
 
 import { createApp } from 'vue';

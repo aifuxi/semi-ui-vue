@@ -19,6 +19,8 @@ const dividerEntryPath = path.join(
 const dividerCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'divider.css');
 const iconEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'icon.scss');
 const iconCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'icon.css');
+const spaceEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'space.scss');
+const spaceCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'space.css');
 
 function compareNames(left, right) {
   if (left.name < right.name) return -1;
@@ -84,6 +86,7 @@ const requiredSelectors = [
   '.semi-button',
   '.semi-divider',
   '.semi-icon',
+  '.semi-space',
   '.semi-input-wrapper',
   '.semi-input-textarea-wrapper',
   '.semi-modal',
@@ -165,6 +168,30 @@ for (const selector of [
   }
 }
 
+const expectedSpaceImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/space/space.scss'),
+];
+const spaceEntrySource = await readFile(spaceEntryPath, 'utf8');
+const actualSpaceImports = [...spaceEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualSpaceImports) !== JSON.stringify(expectedSpaceImports)) {
+  throw new Error('Space 逐组件样式入口顺序未与固定源码对齐');
+}
+const spaceCss = await readFile(spaceCssPath, 'utf8');
+for (const selector of [
+  '.semi-space-horizontal',
+  '.semi-space-vertical',
+  '.semi-space-wrap',
+  '.semi-space-tight-horizontal',
+]) {
+  if (!spaceCss.includes(selector)) {
+    throw new Error(`Space 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 process.stdout.write(
-  `默认主题入口与 Button/Divider/Icon 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + dividerCss.length + iconCss.length} 字节 CSS\n`,
+  `默认主题入口与 Button/Divider/Icon/Space 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + dividerCss.length + iconCss.length + spaceCss.length} 字节 CSS\n`,
 );

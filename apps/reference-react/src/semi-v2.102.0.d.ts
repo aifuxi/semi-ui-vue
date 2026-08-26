@@ -61,6 +61,26 @@ declare module '@semi-v2.102.0/divider' {
   export default Divider;
 }
 
+declare module '@semi-v2.102.0/space' {
+  import type { CSSProperties, ReactNode } from 'react';
+
+  export type SpaceAlign = 'start' | 'center' | 'end' | 'baseline';
+  export type SpaceSpacing = 'loose' | 'medium' | 'tight' | number;
+  export interface SpaceProps {
+    align?: SpaceAlign;
+    children?: ReactNode;
+    className?: string;
+    spacing?: SpaceSpacing | SpaceSpacing[];
+    style?: CSSProperties;
+    vertical?: boolean;
+    wrap?: boolean;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Space: React.ComponentType<SpaceProps>;
+  export default Space;
+}
+
 declare module '@semi-v2.102.0/icon' {
   import type { ComponentType, HTMLAttributes, ReactNode } from 'react';
 

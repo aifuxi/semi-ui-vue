@@ -8,6 +8,7 @@ import { ButtonTypesScenario } from './scenarios/ButtonTypesScenario';
 import { ButtonContractScenario } from './scenarios/ButtonContractScenario';
 import { DividerScenario } from './scenarios/DividerScenario';
 import { IconScenario } from './scenarios/IconScenario';
+import { SpaceScenario } from './scenarios/SpaceScenario';
 
 const DEFAULT_OPTIONS: ParityScenarioOptions = {
   scenarioId: 'harness-calibration',
@@ -66,6 +67,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'button-contract' ? <ButtonContractScenario /> : null}
         {scenario.id === 'divider' ? <DividerScenario /> : null}
         {scenario.id === 'icon' ? <IconScenario /> : null}
+        {scenario.id === 'space' ? <SpaceScenario /> : null}
       </section>
 
       <dl className="runtime-evidence" aria-label="参考运行时证据">

@@ -216,6 +216,7 @@ try {
 	await import('@workspace/ui/button');
 	await import('@workspace/ui/divider');
 	await import('@workspace/ui/icon');
+	await import('@workspace/ui/space');
 	await import('@workspace/icons/Icon');
 	await import('@workspace/icons/icons/IconHome');
 	await import('@workspace/icons-lab/Icon');
@@ -236,6 +237,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/icon.css').endsWith('/dist/icon.css')) {
 	  throw new Error('Icon 逐组件样式导出未指向 dist/icon.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/space.css').endsWith('/dist/space.css')) {
+	  throw new Error('Space 逐组件样式导出未指向 dist/space.css');
+	}
 	`,
   );
   run(process.execPath, ['smoke.mjs'], consumerRoot);
@@ -246,6 +250,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
 	import { Divider, type DividerAlign } from '@workspace/ui/divider';
 	import { Icon } from '@workspace/ui/icon';
+	import { Space, type SpaceAlign, type SpaceSpacingValue } from '@workspace/ui/space';
 	import IconBase, { convertIcon, type IconSize } from '@workspace/icons/Icon';
 	import { IconAIWandLevel3, IconHome } from '@workspace/icons';
 	import IconHomeDirect from '@workspace/icons/icons/IconHome';
@@ -260,6 +265,9 @@ h(Button, { type, htmlType: 'submit' });
 	h(Divider, { align, layout: 'horizontal', margin: 12 });
 	const iconSize: IconSize = 'large';
 	h(Icon, { size: iconSize });
+	const spaceAlign: SpaceAlign = 'baseline';
+	const spaceSpacing: SpaceSpacingValue = [12, 'loose'];
+	h(Space, { align: spaceAlign, spacing: spaceSpacing, wrap: true });
 	h(IconBase, { spin: true, rotate: 45 });
 	h(IconHome, { size: 'large' });
 	h(IconHomeDirect, { 'aria-label': 'home' });
@@ -316,6 +324,9 @@ h(Button, { type, htmlType: 'submit' });
   if (!themeCss.includes('.semi-icon')) {
     throw new Error('安装后的默认主题缺少 Icon 样式');
   }
+  if (!themeCss.includes('.semi-space')) {
+    throw new Error('安装后的默认主题缺少 Space 样式');
+  }
   const buttonThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'button.css'),
     'utf8',
@@ -339,6 +350,16 @@ h(Button, { type, htmlType: 'submit' });
     !iconThemeCss.includes('.semi-icon-spinning')
   ) {
     throw new Error('安装后的 Icon 逐组件样式缺少尺寸或旋转样式');
+  }
+  const spaceThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'space.css'),
+    'utf8',
+  );
+  if (
+    !spaceThemeCss.includes('.semi-space-wrap') ||
+    !spaceThemeCss.includes('.semi-space-tight-horizontal')
+  ) {
+    throw new Error('安装后的 Space 逐组件样式缺少换行或预设间距样式');
   }
 
   process.stdout.write('真实 tarball 的安装、exports、ESM、类型、样式与 SSR import 均通过\n');

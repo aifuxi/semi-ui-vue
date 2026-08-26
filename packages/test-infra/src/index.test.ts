@@ -66,6 +66,22 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Space as a complete local-source parity scene', () => {
+    expect(getParityScenario('space')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.spacePublicEntry,
+    });
+    expect(assertScenarioComparable('space').targets).toHaveLength(10);
+    expect(getParityScenario('space').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.spaceUtilities,
+        REFERENCE_SOURCE_PATHS.spaceFoundationStyle,
+        REFERENCE_SOURCE_PATHS.spaceDocumentation,
+      ]),
+    );
+  });
+
   it('normalizes scenario query parameters and builds deterministic URLs', () => {
     const options = parseParityScenarioOptions(
       '?scenario=button-types&theme=dark&direction=rtl&locale=en-US',

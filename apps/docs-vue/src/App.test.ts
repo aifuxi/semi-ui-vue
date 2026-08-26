@@ -43,4 +43,17 @@ describe('Vue 对照工作台', () => {
     );
     expect(wrapper.get('[data-parity-target="icon-lab"] svg').element.tagName).toBe('svg');
   });
+
+  it('通过公共 Space 包渲染间距、换行、方向与对齐场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'space' } });
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(wrapper.get('[data-testid="space-vue"]').findAll('.semi-space')).toHaveLength(10);
+    expect(wrapper.get('[data-parity-target="space-array-wrap"]').classes()).toContain(
+      'semi-space-wrap',
+    );
+    expect(wrapper.get('[data-parity-target="space-vertical"]').classes()).toContain(
+      'semi-space-vertical',
+    );
+  });
 });

@@ -20,6 +20,10 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   iconLabEntry: 'vendor/semi-design/packages/semi-icons-lab/src/index.ts',
   iconStyle: 'vendor/semi-design/packages/semi-icons/src/styles/icons.scss',
   iconDocumentation: 'vendor/semi-design/content/basic/icon/index.md',
+  spacePublicEntry: 'vendor/semi-design/packages/semi-ui/space/index.tsx',
+  spaceUtilities: 'vendor/semi-design/packages/semi-ui/space/utils.ts',
+  spaceFoundationStyle: 'vendor/semi-design/packages/semi-foundation/space/space.scss',
+  spaceDocumentation: 'vendor/semi-design/content/basic/space/index.md',
 });
 
 export const PARITY_VIEWPORTS = Object.freeze({
@@ -382,6 +386,76 @@ export const PARITY_SCENARIOS = [
         id: `icon-${kind}`,
         selector: `[data-parity-target="icon-${kind}"]`,
         computedStyleProperties: ['display', 'fontSize', 'height', 'lineHeight', 'width'],
+      })),
+    ],
+  },
+  {
+    id: 'space',
+    title: 'Space 间距',
+    description: '复现固定文档的预设/自定义间距、方向、换行、交叉轴对齐与 RTL 契约。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.spacePublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.spacePublicEntry,
+      REFERENCE_SOURCE_PATHS.spaceUtilities,
+      REFERENCE_SOURCE_PATHS.spaceFoundationStyle,
+      REFERENCE_SOURCE_PATHS.spaceDocumentation,
+    ],
+    targets: [
+      ...(['tight', 'medium', 'loose'] as const).map((spacing) => ({
+        id: `space-${spacing}`,
+        selector: `[data-parity-target="space-${spacing}"]`,
+        computedStyleProperties: [
+          'alignItems',
+          'columnGap',
+          'display',
+          'flexDirection',
+          'flexWrap',
+          'rowGap',
+        ],
+      })),
+      {
+        id: 'space-number',
+        selector: '[data-parity-target="space-number"]',
+        computedStyleProperties: ['alignItems', 'columnGap', 'display', 'flexDirection', 'rowGap'],
+      },
+      {
+        id: 'space-array-wrap',
+        selector: '[data-parity-target="space-array-wrap"]',
+        computedStyleProperties: [
+          'alignItems',
+          'columnGap',
+          'display',
+          'flexDirection',
+          'flexWrap',
+          'rowGap',
+          'width',
+        ],
+      },
+      {
+        id: 'space-vertical',
+        selector: '[data-parity-target="space-vertical"]',
+        computedStyleProperties: [
+          'alignItems',
+          'columnGap',
+          'display',
+          'flexDirection',
+          'flexWrap',
+          'rowGap',
+        ],
+      },
+      ...(['start', 'center', 'end', 'baseline'] as const).map((align) => ({
+        id: `space-align-${align}`,
+        selector: `[data-parity-target="space-align-${align}"]`,
+        computedStyleProperties: [
+          'alignItems',
+          'columnGap',
+          'direction',
+          'display',
+          'flexDirection',
+          'rowGap',
+        ],
       })),
     ],
   },
