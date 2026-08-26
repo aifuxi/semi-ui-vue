@@ -104,6 +104,12 @@ importers:
       '@workspace/test-infra':
         specifier: workspace:*
         version: link:../../packages/test-infra
+      '@workspace/theme-default':
+        specifier: workspace:*
+        version: link:../../packages/theme-default
+      '@workspace/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       normalize.css:
         specifier: 'catalog:'
         version: 8.0.1

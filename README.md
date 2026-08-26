@@ -2,7 +2,7 @@
 
 这是一个以 Semi Design `v2.102.0` 为固定参考基线、面向 Vue 3.5+ 的像素级复刻工程。
 
-当前仓库只完成工程边界和质量门禁的搭建，尚未宣称任何组件已完成复刻。唯一参考源码位于只读 submodule `vendor/semi-design`。
+当前已完成首个 Button 垂直切片（Button、ButtonGroup、SplitButtonGroup），包含固定源码对齐矩阵、Vue API、中英文文档、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证。其余组件仍按上游 Inventory 分阶段推进。唯一参考源码位于只读 submodule `vendor/semi-design`。
 
 ## 本地环境
 
@@ -26,8 +26,8 @@ Linux CI 需要在镜像准备阶段执行 `pnpm exec playwright install --with-
 pnpm dev             # Vue 文档/对照应用
 pnpm dev:reference   # React 参考应用
 pnpm inventory:generate # 从固定 vendor 重建组件/API/文档/依赖 inventory
-pnpm check           # 格式、lint、类型、单测、构建与 SSR import
+pnpm check           # 格式、lint、类型、单测、构建、SSR 与真实包安装
 pnpm test:browser    # 单一 Chromium 进程中的 React/Vue 对照基础设施
 ```
 
-目录职责、依赖方向和新增组件流程见 `docs/architecture/workspace.md`；上游全量清单见 `docs/inventory/README.md`；真实 React/Vue 场景注册与验收流程见 `docs/testing/react-vue-parity.md`。
+目录职责、依赖方向和新增组件流程见 `docs/architecture/workspace.md`；Button 文档与对齐矩阵见 `docs/components/button/`；上游全量清单见 `docs/inventory/README.md`；真实 React/Vue 场景注册与验收流程见 `docs/testing/react-vue-parity.md`。

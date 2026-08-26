@@ -9,6 +9,8 @@ const require = createRequire(import.meta.url);
 const workspaceRoot = fileURLToPath(new URL('../..', import.meta.url));
 const upstreamPackages = path.join(workspaceRoot, 'vendor/semi-design/packages');
 const buttonPublicEntry = path.join(upstreamPackages, 'semi-ui/button/index.tsx');
+const buttonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/buttonGroup.tsx');
+const splitButtonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/splitButtonGroup.tsx');
 const foundationRoot = path.join(upstreamPackages, 'semi-foundation');
 const iconsEntry = path.join(upstreamPackages, 'semi-icons/src/index.ts');
 const referenceStyleEntry = fileURLToPath(
@@ -58,6 +60,8 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: '@semi-v2.102.0/button', replacement: buttonPublicEntry },
+      { find: '@semi-v2.102.0/button-group', replacement: buttonGroupEntry },
+      { find: '@semi-v2.102.0/split-button-group', replacement: splitButtonGroupEntry },
       {
         find: /^@douyinfe\/semi-foundation\/(.+)$/,
         replacement: `${foundationRoot}/$1`,

@@ -39,6 +39,8 @@ vendor/semi-design/      唯一、只读的 v2.102.0 参考源码
 
 React/Vue 两端通过 `packages/test-infra` 的共享场景契约接收相同 URL 参数、数据与目标定义。未完成的 Vue 场景保持 `pending`，`assertScenarioComparable` 会阻止其进入样式、几何和截图对照。详细扩展流程见 `docs/testing/react-vue-parity.md`。
 
+Button 是首个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/button/` 提供 Button、ButtonGroup、SplitButtonGroup 根/子路径 ESM 与声明，`packages/theme-default/button.css` 提供逐组件样式。Button 没有运行时 Foundation 状态机；ButtonGroup 的子 VNode 合并和 SplitButtonGroup 的客户端 Observer 分别隔离在组件边界内。对齐矩阵与 React→Vue 迁移见 `docs/components/button/`。
+
 Foundation 集成包当前也只建立了边界，还没有组件入口。后续必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。

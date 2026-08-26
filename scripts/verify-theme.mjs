@@ -7,6 +7,8 @@ const vendorPackages = path.join(workspaceRoot, 'vendor', 'semi-design', 'packag
 const foundationRoot = path.join(vendorPackages, 'semi-foundation');
 const entryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'index.scss');
 const cssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'index.css');
+const buttonEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'button.scss');
+const buttonCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'button.css');
 
 function compareNames(left, right) {
   if (left.name < right.name) return -1;
@@ -82,6 +84,28 @@ for (const selector of requiredSelectors) {
   }
 }
 
+const expectedButtonImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/button/button.scss'),
+  vendorImport('semi-foundation/button/iconButton.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const buttonEntrySource = await readFile(buttonEntryPath, 'utf8');
+const actualButtonImports = [...buttonEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualButtonImports) !== JSON.stringify(expectedButtonImports)) {
+  throw new Error('Button 逐组件样式入口顺序未与固定源码对齐');
+}
+const buttonCss = await readFile(buttonCssPath, 'utf8');
+for (const selector of ['.semi-button', '.semi-button-group', '.semi-button-split']) {
+  if (!buttonCss.includes(selector)) {
+    throw new Error(`Button 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 process.stdout.write(
-  `默认主题入口与产物通过：${expectedImports.length} 个入口，${css.length} 字节 CSS\n`,
+  `默认主题入口与 Button 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length} 字节 CSS\n`,
 );

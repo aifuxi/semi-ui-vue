@@ -7,6 +7,13 @@ export default defineConfig({
   plugins: [vue(), react()],
   resolve: {
     alias: {
+      '@workspace/ui': fileURLToPath(new URL('./packages/ui/src/index.ts', import.meta.url)),
+      '@semi-v2.102.0/button-group': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiButtonGroupStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/split-button-group': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiSplitButtonGroupStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/button': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiButtonStub.tsx', import.meta.url),
       ),

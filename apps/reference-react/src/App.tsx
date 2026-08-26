@@ -5,6 +5,7 @@ import {
   type ParityScenarioOptions,
 } from '@workspace/test-infra';
 import { ButtonTypesScenario } from './scenarios/ButtonTypesScenario';
+import { ButtonContractScenario } from './scenarios/ButtonContractScenario';
 
 const DEFAULT_OPTIONS: ParityScenarioOptions = {
   scenarioId: 'harness-calibration',
@@ -31,7 +32,7 @@ export function App(props: AppProps): React.ReactElement {
 
   return (
     <main
-      className="workspace-shell"
+      className={`workspace-shell${options.direction === 'rtl' ? ' semi-rtl' : ''}`}
       data-parity-framework="react"
       data-parity-scenario={scenario.id}
       data-reference-status={scenario.referenceStatus}
@@ -60,6 +61,7 @@ export function App(props: AppProps): React.ReactElement {
 
         {scenario.id === 'harness-calibration' ? <HarnessCalibration /> : null}
         {scenario.id === 'button-types' ? <ButtonTypesScenario /> : null}
+        {scenario.id === 'button-contract' ? <ButtonContractScenario /> : null}
       </section>
 
       <dl className="runtime-evidence" aria-label="参考运行时证据">

@@ -7,6 +7,8 @@ export const REFERENCE_BASELINE = Object.freeze({
 
 export const REFERENCE_SOURCE_PATHS = Object.freeze({
   buttonPublicEntry: 'vendor/semi-design/packages/semi-ui/button/index.tsx',
+  buttonGroupEntry: 'vendor/semi-design/packages/semi-ui/button/buttonGroup.tsx',
+  splitButtonGroupEntry: 'vendor/semi-design/packages/semi-ui/button/splitButtonGroup.tsx',
   buttonFoundationStyle: 'vendor/semi-design/packages/semi-foundation/button/button.scss',
   buttonDocumentation: 'vendor/semi-design/content/basic/button/index.md',
 });
@@ -79,7 +81,7 @@ export const PARITY_SCENARIOS = [
     title: 'Button 按钮类型',
     description: '复现固定中文文档中的首个 Button 类型场景。',
     referenceStatus: 'ready',
-    vueStatus: 'pending',
+    vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.buttonPublicEntry,
     sourceEvidence: [
       REFERENCE_SOURCE_PATHS.buttonPublicEntry,
@@ -102,6 +104,120 @@ export const PARITY_SCENARIOS = [
           'paddingLeft',
           'paddingRight',
         ],
+      },
+      ...(['secondary', 'tertiary', 'warning', 'danger'] as const).map((type) => ({
+        id: `button-${type}`,
+        selector: `[data-parity-target="button-${type}"]`,
+        computedStyleProperties: [
+          'backgroundColor',
+          'borderRadius',
+          'color',
+          'fontFamily',
+          'fontSize',
+          'fontWeight',
+          'height',
+          'lineHeight',
+          'paddingLeft',
+          'paddingRight',
+        ],
+      })),
+    ],
+  },
+  {
+    id: 'button-contract',
+    title: 'Button 状态与组合契约',
+    description: '验证 Button 的图标、加载、禁用、尺寸、组合与分裂组合。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.buttonPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.buttonPublicEntry,
+      REFERENCE_SOURCE_PATHS.buttonGroupEntry,
+      REFERENCE_SOURCE_PATHS.splitButtonGroupEntry,
+      REFERENCE_SOURCE_PATHS.buttonFoundationStyle,
+      REFERENCE_SOURCE_PATHS.buttonDocumentation,
+    ],
+    targets: [
+      {
+        id: 'button-icon-right',
+        selector: '[data-parity-target="button-icon-right"]',
+        computedStyleProperties: [
+          'backgroundColor',
+          'borderRadius',
+          'color',
+          'display',
+          'fontFamily',
+          'fontSize',
+          'height',
+          'paddingLeft',
+          'paddingRight',
+        ],
+      },
+      {
+        id: 'button-disabled',
+        selector: '[data-parity-target="button-disabled"]',
+        computedStyleProperties: ['backgroundColor', 'borderColor', 'color', 'cursor', 'height'],
+      },
+      {
+        id: 'button-loading',
+        selector: '[data-parity-target="button-loading"]',
+        computedStyleProperties: ['backgroundColor', 'color', 'cursor', 'height', 'pointerEvents'],
+      },
+      {
+        id: 'button-large',
+        selector: '[data-parity-target="button-large"]',
+        computedStyleProperties: [
+          'borderRadius',
+          'fontSize',
+          'fontWeight',
+          'height',
+          'lineHeight',
+          'paddingLeft',
+          'paddingRight',
+        ],
+      },
+      {
+        id: 'button-outline',
+        selector: '[data-parity-target="button-outline"]',
+        computedStyleProperties: [
+          'backgroundColor',
+          'borderColor',
+          'borderRadius',
+          'borderWidth',
+          'color',
+          'height',
+        ],
+      },
+      {
+        id: 'button-borderless',
+        selector: '[data-parity-target="button-borderless"]',
+        computedStyleProperties: [
+          'backgroundColor',
+          'borderColor',
+          'borderWidth',
+          'color',
+          'height',
+        ],
+      },
+      {
+        id: 'button-colorful',
+        selector: '[data-parity-target="button-colorful"]',
+        computedStyleProperties: ['backgroundImage', 'borderRadius', 'color', 'height'],
+      },
+      {
+        id: 'button-block',
+        selector: '[data-parity-target="button-block"]',
+        computedStyleProperties: ['display', 'height', 'width'],
+      },
+      {
+        id: 'button-group',
+        selector: '.semi-button-group',
+        computedStyleProperties: ['display', 'flexWrap'],
+      },
+      {
+        id: 'split-button-group',
+        selector: '.semi-button-split',
+        computedStyleProperties: ['display'],
       },
     ],
   },
@@ -126,7 +242,7 @@ export function isParityScenarioId(value: string | null): value is ParityScenari
   return PARITY_SCENARIOS.some((scenario) => scenario.id === value);
 }
 
-export function getParityScenario(scenarioId: ParityScenarioId): (typeof PARITY_SCENARIOS)[number] {
+export function getParityScenario(scenarioId: ParityScenarioId): ParityScenarioDefinition {
   const scenario = PARITY_SCENARIOS.find((candidate) => candidate.id === scenarioId);
   if (!scenario) throw new Error(`未知对照场景：${scenarioId}`);
   return scenario;
@@ -156,9 +272,7 @@ export function createParityScenarioUrl(baseUrl: string, options: ParityScenario
   return url.toString();
 }
 
-export function assertScenarioComparable(
-  scenarioId: ParityScenarioId,
-): (typeof PARITY_SCENARIOS)[number] {
+export function assertScenarioComparable(scenarioId: ParityScenarioId): ParityScenarioDefinition {
   const scenario = getParityScenario(scenarioId);
   if (scenario.referenceStatus !== 'ready' || scenario.vueStatus !== 'ready') {
     throw new Error(

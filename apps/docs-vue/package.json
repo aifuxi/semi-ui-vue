@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@workspace/test-infra": "workspace:*",
+    "@workspace/theme-default": "workspace:*",
+    "@workspace/ui": "workspace:*",
     "normalize.css": "catalog:",
     "typeface-inter": "catalog:",
     "vue": "catalog:"

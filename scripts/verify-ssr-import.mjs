@@ -48,4 +48,9 @@ for (const packageName of publicPackages) {
 
   await import(pathToFileURL(entryPath).href);
   process.stdout.write(`SSR import 通过：packages/${packageName}/dist/index.js\n`);
+
+  if (packageName === 'ui') {
+    await import(pathToFileURL(path.join(distPath, 'button', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/button/index.js\n');
+  }
 }

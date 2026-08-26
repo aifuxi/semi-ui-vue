@@ -1,2 +1,1 @@
-// 公开导出将在组件对齐矩阵通过后逐项加入。
-export {};
+export * from './button';

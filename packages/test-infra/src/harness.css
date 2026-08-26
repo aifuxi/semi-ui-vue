@@ -166,6 +166,24 @@ p {
   gap: 12px;
 }
 
+.button-contract-scenario {
+  display: grid;
+  margin-top: 24px;
+  gap: 18px;
+}
+
+.button-contract-scenario__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.button-contract-scenario__block {
+  display: inline-block;
+  width: 132px;
+}
+
 .scenario-action-output {
   display: block;
   margin-top: 18px;

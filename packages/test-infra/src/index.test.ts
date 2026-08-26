@@ -35,12 +35,10 @@ describe('parity infrastructure contract', () => {
   it('records the exact local source evidence for the first real React scene', () => {
     expect(getParityScenario('button-types')).toMatchObject({
       referenceStatus: 'ready',
-      vueStatus: 'pending',
+      vueStatus: 'ready',
       referenceSource: REFERENCE_SOURCE_PATHS.buttonPublicEntry,
     });
-    expect(() => assertScenarioComparable('button-types')).toThrow(
-      'button-types 尚不可执行 React/Vue 对照',
-    );
+    expect(assertScenarioComparable('button-types').targets).toHaveLength(5);
   });
 
   it('normalizes scenario query parameters and builds deterministic URLs', () => {

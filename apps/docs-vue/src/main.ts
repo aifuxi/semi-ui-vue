@@ -1,5 +1,6 @@
 import 'normalize.css';
 import 'typeface-inter';
+import 'virtual:workspace-button-styles.css';
 import '@workspace/test-infra/harness.css';
 
 import { createApp } from 'vue';

@@ -32,6 +32,7 @@ export default tseslint.config(
     },
     rules: {
       'vue/multi-word-component-names': 'off',
+      'vue/no-reserved-component-names': 'off',
       'vue/singleline-html-element-content-newline': 'off',
     },
   },
@@ -47,7 +48,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['apps/*/src/**/*.{js,ts,tsx,vue}'],
+    files: ['apps/*/src/**/*.{js,ts,tsx,vue}', 'packages/ui/src/**/*.{js,ts,vue}'],
     languageOptions: {
       globals: globals.browser,
     },

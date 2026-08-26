@@ -8,12 +8,13 @@ React 页面只允许从只读 `vendor/semi-design` 的固定 v2.102.0 源码构
 
 ## 当前场景
 
-| 场景                  | React | Vue     | 用途                                                               |
-| --------------------- | ----- | ------- | ------------------------------------------------------------------ |
-| `harness-calibration` | ready | ready   | 校准字体、壳层、viewport、DPR、计算样式、几何和局部截图            |
-| `button-types`        | ready | pending | 直接复现固定中文文档首个 Button 类型场景；作为首个真实上游运行证明 |
+| 场景                  | React | Vue   | 用途                                                          |
+| --------------------- | ----- | ----- | ------------------------------------------------------------- |
+| `harness-calibration` | ready | ready | 校准字体、壳层、viewport、DPR、计算样式、几何和局部截图       |
+| `button-types`        | ready | ready | 直接复现固定中文文档首个 Button 类型场景；五种类型逐节点对照  |
+| `button-contract`     | ready | ready | 图标、loading、disabled、尺寸、ButtonGroup、Split 与 RTL 合同 |
 
-场景契约定义在 `packages/test-infra/src/index.ts`。`assertScenarioComparable()` 只有在 React/Vue 均为 `ready` 时才返回场景，否则立即失败。
+场景契约定义在 `packages/test-infra/src/index.ts`。`assertScenarioComparable()` 只有在 React/Vue 均为 `ready` 时才返回场景，否则立即失败。Button 的完整固定源码矩阵、Vue API 与迁移表见 `docs/components/button/`。
 
 ## 运行入口
 
@@ -42,6 +43,8 @@ vendor/semi-design/packages/semi-ui/button/index.tsx
 Button 的运行依赖使用固定版本，并通过 alias 保证从参考应用解析。样式由 Sass 1.54.9 将主题 Token、global、Button、IconButton 和 icons SCSS 编译为虚拟 CSS 模块；上游 TSX 的对应副作用样式导入仅做去重。这样既不修改 vendor，也不要求 Vite 8 调用已移除的旧 Sass API。
 
 浏览器测试监听真实模块请求，要求 Button 公开入口的请求 URL 落在上述 vendor 路径；同时独立断言 `.semi-button-*` 公开 class、32px 默认高度、3px 圆角、字体、内边距与点击行为。
+
+Vue 文档应用从 `@workspace/ui` 源码入口消费 Button，并通过 `packages/theme-default/vite-plugin.ts` 使用 Sass 1.54.9 编译逐组件样式。插件只存在于主题构建边界，Vue 组件源码没有 `vendor/**` 引用。React/Vue 的 Button 类型与合同截图在全部样式、几何、状态和来源断言通过后生成；同场景对应图片的 SHA-256 完全一致。
 
 ## 新增组件场景
 

@@ -98,8 +98,8 @@ export async function expectComparableTarget(
       captureComputedStyle(vueTarget, target.computedStyleProperties),
       reactTarget.boundingBox(),
       vueTarget.boundingBox(),
-      reactTarget.screenshot(),
-      vueTarget.screenshot(),
+      reactTarget.screenshot({ animations: 'disabled' }),
+      vueTarget.screenshot({ animations: 'disabled' }),
     ]);
 
   expect(vueStyle).toEqual(reactStyle);

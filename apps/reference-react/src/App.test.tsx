@@ -17,6 +17,6 @@ describe('React 参考工作台', () => {
 
     expect(html).toContain('data-parity-scenario="button-types"');
     expect(html).toContain('data-reference-status="ready"');
-    expect(html).toContain('data-vue-status="pending"');
+    expect(html).toContain('data-vue-status="ready"');
   });
 });

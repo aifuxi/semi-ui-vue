@@ -11,14 +11,16 @@ describe('Vue 对照工作台', () => {
     expect(wrapper.text()).toContain('v2.102.0');
   });
 
-  it('不会把尚未实现的 Vue 组件标记为可比较', () => {
+  it('通过公共 Button 包渲染已就绪的对照场景', async () => {
     const wrapper = mount(App, { props: { scenarioId: 'button-types' } });
 
     expect(wrapper.attributes('data-parity-scenario')).toBe('button-types');
     expect(wrapper.attributes('data-reference-status')).toBe('ready');
-    expect(wrapper.attributes('data-vue-status')).toBe('pending');
-    expect(wrapper.get('[data-testid="vue-scenario-pending"]').text()).toContain(
-      'Vue 场景尚未接入',
-    );
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(wrapper.find('[data-testid="vue-scenario-pending"]').exists()).toBe(false);
+    expect(wrapper.get('[data-testid="button-types-vue"]').findAll('button')).toHaveLength(5);
+
+    await wrapper.get('[data-parity-target="button-danger"]').trigger('click');
+    expect(wrapper.get('output').text()).toContain('最近操作：危险按钮');
   });
 });

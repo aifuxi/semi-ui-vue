@@ -5,6 +5,8 @@ import {
   REFERENCE_BASELINE,
   type ParityScenarioOptions,
 } from '@workspace/test-infra';
+import ButtonTypesScenario from './components/ButtonTypesScenario.vue';
+import ButtonContractScenario from './components/ButtonContractScenario.vue';
 import HarnessCalibration from './components/HarnessCalibration.vue';
 import UnavailableScenario from './components/UnavailableScenario.vue';
 
@@ -20,7 +22,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
 
 <template>
   <main
-    class="workspace-shell"
+    :class="['workspace-shell', { 'semi-rtl': props.direction === 'rtl' }]"
     data-parity-framework="vue"
     :data-parity-scenario="scenario.id"
     :data-reference-status="scenario.referenceStatus"
@@ -50,6 +52,8 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <p class="scenario-panel__description">{{ scenario.description }}</p>
 
       <HarnessCalibration v-if="scenario.id === 'harness-calibration'" />
+      <ButtonTypesScenario v-else-if="scenario.id === 'button-types'" />
+      <ButtonContractScenario v-else-if="scenario.id === 'button-contract'" />
       <UnavailableScenario
         v-else
         :scenario-id="scenario.id"
