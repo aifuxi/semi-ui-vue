@@ -56,4 +56,19 @@ describe('Vue 对照工作台', () => {
       'semi-space-vertical',
     );
   });
+
+  it('通过公共 FloatButton 包渲染尺寸、状态、徽章与按钮组场景', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'float-button' } });
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(
+      wrapper.get('[data-testid="float-button-vue"]').findAll('.semi-floatButton'),
+    ).toHaveLength(7);
+    expect(wrapper.get('.float-button-target-colorful .semi-floatButton-body').classes()).toContain(
+      'semi-floatButton-colorful',
+    );
+    expect(wrapper.get('.float-button-target-badge .semi-badge-count').text()).toBe('99+');
+    await wrapper.get('.float-button-target-default').trigger('click');
+    expect(wrapper.get('output').text()).toContain('最近操作：default');
+  });
 });

@@ -220,6 +220,39 @@ p {
   gap: 18px;
 }
 
+.float-button-scenario {
+  display: grid;
+  margin-top: 24px;
+  gap: 18px;
+}
+
+.float-button-scenario__section {
+  display: grid;
+  min-width: 0;
+  padding: 18px;
+  gap: 14px;
+  border: 1px solid var(--harness-border);
+  border-radius: 8px;
+  background: var(--harness-subtle);
+}
+
+.float-button-scenario__section h3 {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.float-button-scenario__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
+
+.float-button-scenario .semi-floatButtonGroup {
+  justify-self: start;
+}
+
 .icon-scenario__section {
   display: grid;
   padding: 18px;

@@ -82,6 +82,22 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records FloatButton and Group as a complete local-source parity scene', () => {
+    expect(getParityScenario('float-button')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.floatButtonPublicEntry,
+    });
+    expect(assertScenarioComparable('float-button').targets).toHaveLength(8);
+    expect(getParityScenario('float-button').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.floatButtonGroupEntry,
+        REFERENCE_SOURCE_PATHS.floatButtonFoundationStyle,
+        REFERENCE_SOURCE_PATHS.floatButtonDocumentation,
+      ]),
+    );
+  });
+
   it('normalizes scenario query parameters and builds deterministic URLs', () => {
     const options = parseParityScenarioOptions(
       '?scenario=button-types&theme=dark&direction=rtl&locale=en-US',

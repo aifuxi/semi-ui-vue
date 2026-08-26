@@ -45,4 +45,14 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-space-wrap');
     expect(html).toContain('semi-space-align-baseline');
   });
+
+  it('从固定 FloatButton 与 Group Adapter 渲染完整参考场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="float-button" />);
+
+    expect(html).toContain('data-parity-scenario="float-button"');
+    expect(html).toContain('semi-floatButton-colorful');
+    expect(html).toContain('semi-floatButton-disabled');
+    expect(html).toContain('semi-floatButtonGroup-item');
+    expect(html).toContain('99+');
+  });
 });

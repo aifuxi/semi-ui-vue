@@ -19,7 +19,11 @@ function createIcon(type: string): React.ComponentType<Record<string, unknown>> 
 
 export const IconAIFilledLevel2 = createIcon('ai_filled_level_2');
 export const IconAIWandLevel3 = createIcon('ai_wand_level_3');
+export const IconBell = createIcon('bell');
+export const IconCustomerSupport = createIcon('customer_support');
 export const IconEmoji = createIcon('emoji');
 export const IconHome = createIcon('home');
+export const IconHelpCircle = createIcon('help_circle');
 export const IconLikeHeart = createIcon('like_heart');
+export const IconPlus = createIcon('plus');
 export const IconSpin = createIcon('spin');

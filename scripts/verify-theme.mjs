@@ -17,6 +17,20 @@ const dividerEntryPath = path.join(
   'divider.scss',
 );
 const dividerCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'divider.css');
+const floatButtonEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'float-button.scss',
+);
+const floatButtonCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'float-button.css',
+);
 const iconEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'icon.scss');
 const iconCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'icon.css');
 const spaceEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'space.scss');
@@ -85,6 +99,7 @@ const css = await readFile(cssPath, 'utf8');
 const requiredSelectors = [
   '.semi-button',
   '.semi-divider',
+  '.semi-floatButton',
   '.semi-icon',
   '.semi-space',
   '.semi-input-wrapper',
@@ -143,6 +158,31 @@ for (const selector of [
   }
 }
 
+const expectedFloatButtonImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/floatButton/floatButton.scss'),
+  vendorImport('semi-foundation/badge/badge.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const floatButtonEntrySource = await readFile(floatButtonEntryPath, 'utf8');
+const actualFloatButtonImports = [
+  ...floatButtonEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g),
+].map((match) => match[1]);
+if (JSON.stringify(actualFloatButtonImports) !== JSON.stringify(expectedFloatButtonImports)) {
+  throw new Error('FloatButton 逐组件样式入口顺序未与固定源码对齐');
+}
+const floatButtonCss = await readFile(floatButtonCssPath, 'utf8');
+for (const selector of [
+  '.semi-floatButton-body',
+  '.semi-floatButtonGroup-item',
+  '.semi-badge-count',
+]) {
+  if (!floatButtonCss.includes(selector)) {
+    throw new Error(`FloatButton 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 const expectedIconImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -193,5 +233,5 @@ for (const selector of [
 }
 
 process.stdout.write(
-  `默认主题入口与 Button/Divider/Icon/Space 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + dividerCss.length + iconCss.length + spaceCss.length} 字节 CSS\n`,
+  `默认主题入口与 Button/Divider/FloatButton/Icon/Space 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + dividerCss.length + floatButtonCss.length + iconCss.length + spaceCss.length} 字节 CSS\n`,
 );

@@ -26,6 +26,10 @@
       "types": "./dist/divider/index.d.ts",
       "import": "./dist/divider/index.js"
     },
+    "./float-button": {
+      "types": "./dist/float-button/index.d.ts",
+      "import": "./dist/float-button/index.js"
+    },
     "./icon": {
       "types": "./dist/icon/index.d.ts",
       "import": "./dist/icon/index.js"

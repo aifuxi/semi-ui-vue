@@ -2,7 +2,7 @@
 
 这是一个以 Semi Design `v2.102.0` 为固定参考基线、面向 Vue 3.5+ 的像素级复刻工程。
 
-当前已完成 Button（Button、ButtonGroup、SplitButtonGroup）、Divider 与 Icon 垂直切片。Icon 同时覆盖稳定版 523 个图标、Lab 84 个图标、生成漂移检查、Vue API、中英文文档、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证。其余组件仍按上游 Inventory 分阶段推进。唯一参考源码位于只读 submodule `vendor/semi-design`。
+当前已完成 Button（Button、ButtonGroup、SplitButtonGroup）、Divider、Icon、Space 与 FloatButton（含 FloatButtonGroup）垂直切片。Icon 同时覆盖稳定版 523 个图标、Lab 84 个图标与生成漂移检查；每个已完成切片均包含 Vue API、中英文文档、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证。其余组件仍按上游 Inventory 分阶段推进。唯一参考源码位于只读 submodule `vendor/semi-design`。
 
 ## 本地环境
 

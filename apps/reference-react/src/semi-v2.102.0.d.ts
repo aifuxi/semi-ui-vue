@@ -81,6 +81,64 @@ declare module '@semi-v2.102.0/space' {
   export default Space;
 }
 
+declare module '@semi-v2.102.0/float-button' {
+  import type { CSSProperties, ComponentType, MouseEvent, ReactNode } from 'react';
+
+  export type FloatButtonShape = 'square' | 'round';
+  export type FloatButtonSize = 'small' | 'default' | 'large';
+  export interface FloatButtonBadgeProps {
+    count?: ReactNode;
+    dot?: boolean;
+    type?: 'primary' | 'secondary' | 'tertiary' | 'danger' | 'warning' | 'success';
+    theme?: 'solid' | 'light' | 'inverted';
+    position?: 'leftTop' | 'leftBottom' | 'rightTop' | 'rightBottom';
+    overflowCount?: number;
+    style?: CSSProperties;
+    className?: string;
+    countClassName?: string;
+    countStyle?: CSSProperties;
+  }
+  export interface FloatButtonProps {
+    shape?: FloatButtonShape;
+    colorful?: boolean;
+    style?: CSSProperties;
+    className?: string;
+    icon?: ReactNode;
+    onClick?: (event: MouseEvent) => void;
+    href?: string;
+    target?: string;
+    disabled?: boolean;
+    size?: FloatButtonSize;
+    badge?: FloatButtonBadgeProps;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const FloatButton: ComponentType<FloatButtonProps>;
+  export default FloatButton;
+}
+
+declare module '@semi-v2.102.0/float-button-group' {
+  import type { CSSProperties, ComponentType, MouseEvent, ReactNode } from 'react';
+  import type { FloatButtonProps } from '@semi-v2.102.0/float-button';
+
+  export interface FloatButtonGroupItem extends FloatButtonProps {
+    value?: string;
+    content?: string | ReactNode;
+  }
+  export interface FloatButtonGroupProps {
+    disabled?: boolean;
+    items: FloatButtonGroupItem[];
+    className?: string;
+    style?: CSSProperties;
+    children?: ReactNode;
+    onClick?: (value: string, event: MouseEvent) => void;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const FloatButtonGroup: ComponentType<FloatButtonGroupProps>;
+  export default FloatButtonGroup;
+}
+
 declare module '@semi-v2.102.0/icon' {
   import type { ComponentType, HTMLAttributes, ReactNode } from 'react';
 
@@ -106,7 +164,11 @@ declare module '@semi-v2.102.0/icons' {
   export const IconAIWandLevel3: BuiltinIcon;
   export const IconEmoji: BuiltinIcon;
   export const IconHome: BuiltinIcon;
+  export const IconBell: BuiltinIcon;
+  export const IconCustomerSupport: BuiltinIcon;
+  export const IconHelpCircle: BuiltinIcon;
   export const IconLikeHeart: BuiltinIcon;
+  export const IconPlus: BuiltinIcon;
   export const IconSpin: BuiltinIcon;
 }
 

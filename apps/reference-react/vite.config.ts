@@ -12,6 +12,11 @@ const buttonPublicEntry = path.join(upstreamPackages, 'semi-ui/button/index.tsx'
 const buttonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/buttonGroup.tsx');
 const splitButtonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/splitButtonGroup.tsx');
 const dividerPublicEntry = path.join(upstreamPackages, 'semi-ui/divider/index.tsx');
+const floatButtonPublicEntry = path.join(upstreamPackages, 'semi-ui/floatButton/index.tsx');
+const floatButtonGroupEntry = path.join(
+  upstreamPackages,
+  'semi-ui/floatButton/floatButtonGroup.tsx',
+);
 const iconPublicEntry = path.join(upstreamPackages, 'semi-ui/icons/index.tsx');
 const spacePublicEntry = path.join(upstreamPackages, 'semi-ui/space/index.tsx');
 const foundationRoot = path.join(upstreamPackages, 'semi-foundation');
@@ -30,6 +35,10 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'button/iconButton.scss'),
   '@douyinfe/semi-foundation/divider/divider.scss',
   path.join(foundationRoot, 'divider/divider.scss'),
+  '@douyinfe/semi-foundation/floatButton/floatButton.scss',
+  path.join(foundationRoot, 'floatButton/floatButton.scss'),
+  '@douyinfe/semi-foundation/badge/badge.scss',
+  path.join(foundationRoot, 'badge/badge.scss'),
   '@douyinfe/semi-foundation/space/space.scss',
   path.join(foundationRoot, 'space/space.scss'),
   '@douyinfe/semi-icons/src/styles/icons.scss',
@@ -76,6 +85,8 @@ export default defineConfig({
       { find: '@semi-v2.102.0/button-group', replacement: buttonGroupEntry },
       { find: '@semi-v2.102.0/split-button-group', replacement: splitButtonGroupEntry },
       { find: '@semi-v2.102.0/divider', replacement: dividerPublicEntry },
+      { find: '@semi-v2.102.0/float-button', replacement: floatButtonPublicEntry },
+      { find: '@semi-v2.102.0/float-button-group', replacement: floatButtonGroupEntry },
       { find: '@semi-v2.102.0/icon', replacement: iconPublicEntry },
       { find: '@semi-v2.102.0/space', replacement: spacePublicEntry },
       { find: '@semi-v2.102.0/icons', replacement: iconsEntry },

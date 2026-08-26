@@ -20,6 +20,12 @@ export default defineConfig({
       '@semi-v2.102.0/divider': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiDividerStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/float-button': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiFloatButtonStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/float-button-group': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiFloatButtonGroupStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/icon': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiIconStub.tsx', import.meta.url),
       ),

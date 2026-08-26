@@ -215,6 +215,7 @@ try {
     `await Promise.all(${JSON.stringify(javascriptPackages)}.map(packageName => import(packageName)));
 	await import('@workspace/ui/button');
 	await import('@workspace/ui/divider');
+	await import('@workspace/ui/float-button');
 	await import('@workspace/ui/icon');
 	await import('@workspace/ui/space');
 	await import('@workspace/icons/Icon');
@@ -234,6 +235,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/divider.css').endsWith('/dist/divider.css')) {
 	  throw new Error('Divider 逐组件样式导出未指向 dist/divider.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/float-button.css').endsWith('/dist/float-button.css')) {
+	  throw new Error('FloatButton 逐组件样式导出未指向 dist/float-button.css');
+	}
 	if (!import.meta.resolve('@workspace/theme-default/icon.css').endsWith('/dist/icon.css')) {
 	  throw new Error('Icon 逐组件样式导出未指向 dist/icon.css');
 	}
@@ -249,6 +253,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
     `${javascriptPackages.map((packageName) => `import '${packageName}';`).join('\n')}
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
 	import { Divider, type DividerAlign } from '@workspace/ui/divider';
+	import { FloatButton, FloatButtonGroup, type FloatButtonShape } from '@workspace/ui/float-button';
 	import { Icon } from '@workspace/ui/icon';
 	import { Space, type SpaceAlign, type SpaceSpacingValue } from '@workspace/ui/space';
 	import IconBase, { convertIcon, type IconSize } from '@workspace/icons/Icon';
@@ -263,6 +268,9 @@ h(Button, { type, htmlType: 'submit' });
 	h(SplitButtonGroup, { 'aria-label': 'actions' });
 	const align: DividerAlign = 'left';
 	h(Divider, { align, layout: 'horizontal', margin: 12 });
+	const floatButtonShape: FloatButtonShape = 'square';
+	h(FloatButton, { badge: { count: 8 }, shape: floatButtonShape, size: 'large' });
+	h(FloatButtonGroup, { items: [{ content: 'Help', value: 'help' }] });
 	const iconSize: IconSize = 'large';
 	h(Icon, { size: iconSize });
 	const spaceAlign: SpaceAlign = 'baseline';
@@ -327,6 +335,9 @@ h(Button, { type, htmlType: 'submit' });
   if (!themeCss.includes('.semi-space')) {
     throw new Error('安装后的默认主题缺少 Space 样式');
   }
+  if (!themeCss.includes('.semi-floatButton')) {
+    throw new Error('安装后的默认主题缺少 FloatButton 样式');
+  }
   const buttonThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'button.css'),
     'utf8',
@@ -340,6 +351,23 @@ h(Button, { type, htmlType: 'submit' });
   );
   if (!dividerThemeCss.includes('.semi-divider-with-text')) {
     throw new Error('安装后的 Divider 逐组件样式缺少内容分割线样式');
+  }
+  const floatButtonThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@workspace',
+      'theme-default',
+      'dist',
+      'float-button.css',
+    ),
+    'utf8',
+  );
+  if (
+    !floatButtonThemeCss.includes('.semi-floatButtonGroup-item') ||
+    !floatButtonThemeCss.includes('.semi-badge-count')
+  ) {
+    throw new Error('安装后的 FloatButton 逐组件样式缺少 Group 或 Badge 样式');
   }
   const iconThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'icon.css'),

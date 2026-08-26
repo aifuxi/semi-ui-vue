@@ -4,20 +4,24 @@ import sass from 'sass';
 
 export const virtualButtonStyleId = 'virtual:workspace-button-styles.css';
 export const virtualDividerStyleId = 'virtual:workspace-divider-styles.css';
+export const virtualFloatButtonStyleId = 'virtual:workspace-float-button-styles.css';
 export const virtualIconStyleId = 'virtual:workspace-icon-styles.css';
 export const virtualSpaceStyleId = 'virtual:workspace-space-styles.css';
 const resolvedVirtualButtonStyleId = `\0${virtualButtonStyleId}`;
 const resolvedVirtualDividerStyleId = `\0${virtualDividerStyleId}`;
+const resolvedVirtualFloatButtonStyleId = `\0${virtualFloatButtonStyleId}`;
 const resolvedVirtualIconStyleId = `\0${virtualIconStyleId}`;
 const resolvedVirtualSpaceStyleId = `\0${virtualSpaceStyleId}`;
 const buttonStyleEntry = fileURLToPath(new URL('./src/button.scss', import.meta.url));
 const dividerStyleEntry = fileURLToPath(new URL('./src/divider.scss', import.meta.url));
+const floatButtonStyleEntry = fileURLToPath(new URL('./src/float-button.scss', import.meta.url));
 const iconStyleEntry = fileURLToPath(new URL('./src/icon.scss', import.meta.url));
 const spaceStyleEntry = fileURLToPath(new URL('./src/space.scss', import.meta.url));
 
 const styleEntries = new Map([
   [resolvedVirtualButtonStyleId, buttonStyleEntry],
   [resolvedVirtualDividerStyleId, dividerStyleEntry],
+  [resolvedVirtualFloatButtonStyleId, floatButtonStyleEntry],
   [resolvedVirtualIconStyleId, iconStyleEntry],
   [resolvedVirtualSpaceStyleId, spaceStyleEntry],
 ]);
@@ -30,6 +34,7 @@ export function compilePinnedComponentStyles(): Plugin {
     resolveId(source) {
       if (source === virtualButtonStyleId) return resolvedVirtualButtonStyleId;
       if (source === virtualDividerStyleId) return resolvedVirtualDividerStyleId;
+      if (source === virtualFloatButtonStyleId) return resolvedVirtualFloatButtonStyleId;
       if (source === virtualIconStyleId) return resolvedVirtualIconStyleId;
       if (source === virtualSpaceStyleId) return resolvedVirtualSpaceStyleId;
       return null;
