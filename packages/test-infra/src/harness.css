@@ -184,6 +184,36 @@ p {
   width: 132px;
 }
 
+.divider-scenario {
+  display: grid;
+  margin-top: 24px;
+  gap: 24px;
+}
+
+.divider-scenario__section {
+  display: grid;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--harness-border);
+  border-radius: 8px;
+  background: var(--harness-subtle);
+}
+
+.divider-scenario__section > span + span {
+  margin-top: 10px;
+}
+
+.divider-scenario__inline-row {
+  margin-top: 22px;
+  line-height: 20px;
+}
+
+.divider-scenario__mark {
+  color: rgb(0 100 250);
+  font-size: 14px;
+  line-height: 20px;
+}
+
 .scenario-action-output {
   display: block;
   margin-top: 18px;

@@ -52,5 +52,7 @@ for (const packageName of publicPackages) {
   if (packageName === 'ui') {
     await import(pathToFileURL(path.join(distPath, 'button', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/button/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'divider', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/divider/index.js\n');
   }
 }

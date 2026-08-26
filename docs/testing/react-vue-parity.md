@@ -13,8 +13,9 @@ React 页面只允许从只读 `vendor/semi-design` 的固定 v2.102.0 源码构
 | `harness-calibration` | ready | ready | 校准字体、壳层、viewport、DPR、计算样式、几何和局部截图       |
 | `button-types`        | ready | ready | 直接复现固定中文文档首个 Button 类型场景；五种类型逐节点对照  |
 | `button-contract`     | ready | ready | 图标、loading、disabled、尺寸、ButtonGroup、Split 与 RTL 合同 |
+| `divider`             | ready | ready | 水平/垂直、实线/虚线、边距、内容对齐、dark/mobile/RTL         |
 
-场景契约定义在 `packages/test-infra/src/index.ts`。`assertScenarioComparable()` 只有在 React/Vue 均为 `ready` 时才返回场景，否则立即失败。Button 的完整固定源码矩阵、Vue API 与迁移表见 `docs/components/button/`。
+场景契约定义在 `packages/test-infra/src/index.ts`。`assertScenarioComparable()` 只有在 React/Vue 均为 `ready` 时才返回场景，否则立即失败。Button 与 Divider 的固定源码矩阵、Vue API 与迁移表见 `docs/components/`。
 
 ## 运行入口
 

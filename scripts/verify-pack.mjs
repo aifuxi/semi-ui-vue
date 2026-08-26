@@ -173,27 +173,34 @@ try {
   await writeFile(
     path.join(consumerRoot, 'smoke.mjs'),
     `await Promise.all(${JSON.stringify(javascriptPackages)}.map(packageName => import(packageName)));
-await import('@workspace/ui/button');
-const rootTheme = import.meta.resolve('@workspace/theme-default');
+	await import('@workspace/ui/button');
+	await import('@workspace/ui/divider');
+	const rootTheme = import.meta.resolve('@workspace/theme-default');
 const cssTheme = import.meta.resolve('@workspace/theme-default/index.css');
 if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 index.css');
-if (!import.meta.resolve('@workspace/theme-default/button.css').endsWith('/dist/button.css')) {
-  throw new Error('Button 逐组件样式导出未指向 dist/button.css');
-}
-`,
+	if (!import.meta.resolve('@workspace/theme-default/button.css').endsWith('/dist/button.css')) {
+	  throw new Error('Button 逐组件样式导出未指向 dist/button.css');
+	}
+	if (!import.meta.resolve('@workspace/theme-default/divider.css').endsWith('/dist/divider.css')) {
+	  throw new Error('Divider 逐组件样式导出未指向 dist/divider.css');
+	}
+	`,
   );
   run(process.execPath, ['smoke.mjs'], consumerRoot);
 
   await writeFile(
     path.join(consumerRoot, 'type-smoke.ts'),
     `${javascriptPackages.map((packageName) => `import '${packageName}';`).join('\n')}
-import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
-import { h } from 'vue';
+	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
+	import { Divider, type DividerAlign } from '@workspace/ui/divider';
+	import { h } from 'vue';
 const type: ButtonType = 'primary';
 h(Button, { type, htmlType: 'submit' });
-h(ButtonGroup, { size: 'large' });
-h(SplitButtonGroup, { 'aria-label': 'actions' });
-`,
+	h(ButtonGroup, { size: 'large' });
+	h(SplitButtonGroup, { 'aria-label': 'actions' });
+	const align: DividerAlign = 'left';
+	h(Divider, { align, layout: 'horizontal', margin: 12 });
+	`,
   );
   await writeFile(
     path.join(consumerRoot, 'tsconfig.json'),
@@ -236,12 +243,22 @@ h(SplitButtonGroup, { 'aria-label': 'actions' });
   if (!themeCss.includes('.semi-button')) {
     throw new Error('安装后的默认主题缺少组件样式');
   }
+  if (!themeCss.includes('.semi-divider')) {
+    throw new Error('安装后的默认主题缺少 Divider 样式');
+  }
   const buttonThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'button.css'),
     'utf8',
   );
   if (!buttonThemeCss.includes('.semi-button-split')) {
     throw new Error('安装后的 Button 逐组件样式缺少 SplitButtonGroup 样式');
+  }
+  const dividerThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'divider.css'),
+    'utf8',
+  );
+  if (!dividerThemeCss.includes('.semi-divider-with-text')) {
+    throw new Error('安装后的 Divider 逐组件样式缺少内容分割线样式');
   }
 
   process.stdout.write('真实 tarball 的安装、exports、ESM、类型、样式与 SSR import 均通过\n');

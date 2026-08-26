@@ -23,4 +23,13 @@ describe('Vue 对照工作台', () => {
     await wrapper.get('[data-parity-target="button-danger"]').trigger('click');
     expect(wrapper.get('output').text()).toContain('最近操作：危险按钮');
   });
+
+  it('通过公共 Divider 包渲染完整对照场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'divider' } });
+
+    expect(wrapper.attributes('data-parity-scenario')).toBe('divider');
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(wrapper.get('[data-testid="divider-vue"]').findAll('.semi-divider')).toHaveLength(8);
+    expect(wrapper.get('[data-parity-target="divider-content-left"]').text()).toBe('这是居左文字');
+  });
 });

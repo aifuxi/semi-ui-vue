@@ -9,6 +9,14 @@ const entryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', '
 const cssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'index.css');
 const buttonEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'button.scss');
 const buttonCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'button.css');
+const dividerEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'divider.scss',
+);
+const dividerCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'divider.css');
 
 function compareNames(left, right) {
   if (left.name < right.name) return -1;
@@ -72,6 +80,7 @@ if (JSON.stringify(actualImports) !== JSON.stringify(expectedImports)) {
 const css = await readFile(cssPath, 'utf8');
 const requiredSelectors = [
   '.semi-button',
+  '.semi-divider',
   '.semi-icon',
   '.semi-input-wrapper',
   '.semi-input-textarea-wrapper',
@@ -106,6 +115,29 @@ for (const selector of ['.semi-button', '.semi-button-group', '.semi-button-spli
   }
 }
 
+const expectedDividerImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/divider/divider.scss'),
+];
+const dividerEntrySource = await readFile(dividerEntryPath, 'utf8');
+const actualDividerImports = [...dividerEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualDividerImports) !== JSON.stringify(expectedDividerImports)) {
+  throw new Error('Divider 逐组件样式入口顺序未与固定源码对齐');
+}
+const dividerCss = await readFile(dividerCssPath, 'utf8');
+for (const selector of [
+  '.semi-divider-horizontal',
+  '.semi-divider-vertical',
+  '.semi-divider-with-text',
+]) {
+  if (!dividerCss.includes(selector)) {
+    throw new Error(`Divider 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 process.stdout.write(
-  `默认主题入口与 Button 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length} 字节 CSS\n`,
+  `默认主题入口与 Button/Divider 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + dividerCss.length} 字节 CSS\n`,
 );

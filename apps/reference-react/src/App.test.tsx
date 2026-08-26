@@ -19,4 +19,12 @@ describe('React 参考工作台', () => {
     expect(html).toContain('data-reference-status="ready"');
     expect(html).toContain('data-vue-status="ready"');
   });
+
+  it('从固定 Divider Adapter 渲染完整参考场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="divider" />);
+
+    expect(html).toContain('data-parity-scenario="divider"');
+    expect(html).toContain('semi-divider-with-text-left');
+    expect(html).toContain('这是居右文字');
+  });
 });

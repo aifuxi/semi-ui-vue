@@ -11,6 +11,7 @@ const upstreamPackages = path.join(workspaceRoot, 'vendor/semi-design/packages')
 const buttonPublicEntry = path.join(upstreamPackages, 'semi-ui/button/index.tsx');
 const buttonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/buttonGroup.tsx');
 const splitButtonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/splitButtonGroup.tsx');
+const dividerPublicEntry = path.join(upstreamPackages, 'semi-ui/divider/index.tsx');
 const foundationRoot = path.join(upstreamPackages, 'semi-foundation');
 const iconsEntry = path.join(upstreamPackages, 'semi-icons/src/index.ts');
 const referenceStyleEntry = fileURLToPath(
@@ -24,6 +25,8 @@ const capturedUpstreamStyleImports = new Set([
   '@douyinfe/semi-foundation/button/iconButton.scss',
   path.join(foundationRoot, 'button/button.scss'),
   path.join(foundationRoot, 'button/iconButton.scss'),
+  '@douyinfe/semi-foundation/divider/divider.scss',
+  path.join(foundationRoot, 'divider/divider.scss'),
 ]);
 
 function compilePinnedReferenceStyles(): Plugin {
@@ -62,6 +65,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/button', replacement: buttonPublicEntry },
       { find: '@semi-v2.102.0/button-group', replacement: buttonGroupEntry },
       { find: '@semi-v2.102.0/split-button-group', replacement: splitButtonGroupEntry },
+      { find: '@semi-v2.102.0/divider', replacement: dividerPublicEntry },
       {
         find: /^@douyinfe\/semi-foundation\/(.+)$/,
         replacement: `${foundationRoot}/$1`,

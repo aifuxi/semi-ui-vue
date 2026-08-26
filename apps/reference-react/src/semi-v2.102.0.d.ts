@@ -47,4 +47,18 @@ declare module '@semi-v2.102.0/split-button-group' {
   export default SplitButtonGroup;
 }
 
+declare module '@semi-v2.102.0/divider' {
+  import type { ComponentType, HTMLAttributes } from 'react';
+
+  export interface DividerProps extends HTMLAttributes<HTMLDivElement> {
+    align?: 'left' | 'right' | 'center';
+    dashed?: boolean;
+    layout?: 'horizontal' | 'vertical';
+    margin?: number | string;
+  }
+
+  const Divider: ComponentType<DividerProps>;
+  export default Divider;
+}
+
 declare module 'virtual:semi-reference-styles.css';

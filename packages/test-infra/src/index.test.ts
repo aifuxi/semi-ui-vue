@@ -41,6 +41,15 @@ describe('parity infrastructure contract', () => {
     expect(assertScenarioComparable('button-types').targets).toHaveLength(5);
   });
 
+  it('records Divider as a complete local-source parity scene', () => {
+    expect(getParityScenario('divider')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.dividerPublicEntry,
+    });
+    expect(assertScenarioComparable('divider').targets).toHaveLength(8);
+  });
+
   it('normalizes scenario query parameters and builds deterministic URLs', () => {
     const options = parseParityScenarioOptions(
       '?scenario=button-types&theme=dark&direction=rtl&locale=en-US',
