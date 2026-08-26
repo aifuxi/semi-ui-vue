@@ -3,6 +3,7 @@ import 'typeface-inter';
 import 'virtual:workspace-button-styles.css';
 import 'virtual:workspace-divider-styles.css';
 import 'virtual:workspace-float-button-styles.css';
+import 'virtual:workspace-grid-styles.css';
 import 'virtual:workspace-icon-styles.css';
 import 'virtual:workspace-layout-styles.css';
 import 'virtual:workspace-space-styles.css';

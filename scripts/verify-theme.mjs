@@ -33,6 +33,8 @@ const floatButtonCssPath = path.join(
 );
 const iconEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'icon.scss');
 const iconCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'icon.css');
+const gridEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'grid.scss');
+const gridCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'grid.css');
 const layoutEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'layout.scss');
 const layoutCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'layout.css');
 const spaceEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'space.scss');
@@ -102,6 +104,8 @@ const requiredSelectors = [
   '.semi-button',
   '.semi-divider',
   '.semi-floatButton',
+  '.semi-row',
+  '.semi-col-24',
   '.semi-icon',
   '.semi-layout',
   '.semi-space',
@@ -211,6 +215,25 @@ for (const selector of [
   }
 }
 
+const expectedGridImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/grid/grid.scss'),
+];
+const gridEntrySource = await readFile(gridEntryPath, 'utf8');
+const actualGridImports = [...gridEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualGridImports) !== JSON.stringify(expectedGridImports)) {
+  throw new Error('Grid 逐组件样式入口顺序未与固定源码对齐');
+}
+const gridCss = await readFile(gridCssPath, 'utf8');
+for (const selector of ['.semi-row-flex', '.semi-col-24', '.semi-col-lg-24']) {
+  if (!gridCss.includes(selector)) {
+    throw new Error(`Grid 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 const expectedLayoutImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -260,5 +283,5 @@ for (const selector of [
 }
 
 process.stdout.write(
-  `默认主题入口与 Button/Divider/FloatButton/Icon/Layout/Space 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + dividerCss.length + floatButtonCss.length + iconCss.length + layoutCss.length + spaceCss.length} 字节 CSS\n`,
+  `默认主题入口与 Button/Divider/FloatButton/Grid/Icon/Layout/Space 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + spaceCss.length} 字节 CSS\n`,
 );

@@ -98,6 +98,23 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Grid Row and Col as a complete local-source parity scene', () => {
+    expect(getParityScenario('grid')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.gridPublicEntry,
+    });
+    expect(assertScenarioComparable('grid').targets).toHaveLength(7);
+    expect(getParityScenario('grid').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.gridRowEntry,
+        REFERENCE_SOURCE_PATHS.gridColEntry,
+        REFERENCE_SOURCE_PATHS.gridFoundationStyle,
+        REFERENCE_SOURCE_PATHS.gridDocumentation,
+      ]),
+    );
+  });
+
   it('records FloatButton and Group as a complete local-source parity scene', () => {
     expect(getParityScenario('float-button')).toMatchObject({
       referenceStatus: 'ready',

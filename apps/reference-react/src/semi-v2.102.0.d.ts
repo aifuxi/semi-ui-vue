@@ -106,6 +106,42 @@ declare module '@semi-v2.102.0/layout' {
   export default Layout;
 }
 
+declare module '@semi-v2.102.0/grid' {
+  import type { CSSProperties, HTMLAttributes, ReactNode } from 'react';
+
+  export type GridBreakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+  export type GridGutter = number | Partial<Record<GridBreakpoint, number>>;
+  export interface RowProps extends HTMLAttributes<HTMLDivElement> {
+    align?: 'top' | 'middle' | 'bottom';
+    children?: ReactNode;
+    gutter?: GridGutter | [GridGutter, GridGutter];
+    justify?: 'start' | 'end' | 'center' | 'space-around' | 'space-between';
+    prefixCls?: string;
+    style?: CSSProperties;
+    type?: 'flex';
+  }
+  export interface ColSize {
+    span?: number;
+    order?: number;
+    offset?: number;
+    push?: number;
+    pull?: number;
+  }
+  export interface ColProps extends HTMLAttributes<HTMLDivElement>, ColSize {
+    children?: ReactNode;
+    prefixCls?: string;
+    style?: CSSProperties;
+    xs?: number | ColSize;
+    sm?: number | ColSize;
+    md?: number | ColSize;
+    lg?: number | ColSize;
+    xl?: number | ColSize;
+    xxl?: number | ColSize;
+  }
+  export const Row: React.ComponentType<RowProps>;
+  export const Col: React.ComponentType<ColProps>;
+}
+
 declare module '@semi-v2.102.0/float-button' {
   import type { CSSProperties, ComponentType, MouseEvent, ReactNode } from 'react';
 

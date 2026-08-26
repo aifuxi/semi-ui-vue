@@ -9,6 +9,7 @@ import ButtonTypesScenario from './components/ButtonTypesScenario.vue';
 import ButtonContractScenario from './components/ButtonContractScenario.vue';
 import DividerScenario from './components/DividerScenario.vue';
 import FloatButtonScenario from './components/FloatButtonScenario.vue';
+import GridScenario from './components/GridScenario.vue';
 import IconScenario from './components/IconScenario.vue';
 import LayoutScenario from './components/LayoutScenario.vue';
 import SpaceScenario from './components/SpaceScenario.vue';
@@ -61,6 +62,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <ButtonContractScenario v-else-if="scenario.id === 'button-contract'" />
       <DividerScenario v-else-if="scenario.id === 'divider'" />
       <FloatButtonScenario v-else-if="scenario.id === 'float-button'" />
+      <GridScenario v-else-if="scenario.id === 'grid'" />
       <IconScenario v-else-if="scenario.id === 'icon'" />
       <LayoutScenario v-else-if="scenario.id === 'layout'" />
       <SpaceScenario v-else-if="scenario.id === 'space'" />

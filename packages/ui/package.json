@@ -30,6 +30,10 @@
       "types": "./dist/float-button/index.d.ts",
       "import": "./dist/float-button/index.js"
     },
+    "./grid": {
+      "types": "./dist/grid/index.d.ts",
+      "import": "./dist/grid/index.js"
+    },
     "./icon": {
       "types": "./dist/icon/index.d.ts",
       "import": "./dist/icon/index.js"

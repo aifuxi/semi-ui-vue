@@ -216,6 +216,7 @@ try {
 	await import('@workspace/ui/button');
 	await import('@workspace/ui/divider');
 	await import('@workspace/ui/float-button');
+	await import('@workspace/ui/grid');
 	await import('@workspace/ui/icon');
 	await import('@workspace/ui/layout');
 	await import('@workspace/ui/space');
@@ -239,6 +240,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/float-button.css').endsWith('/dist/float-button.css')) {
 	  throw new Error('FloatButton 逐组件样式导出未指向 dist/float-button.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/grid.css').endsWith('/dist/grid.css')) {
+	  throw new Error('Grid 逐组件样式导出未指向 dist/grid.css');
+	}
 	if (!import.meta.resolve('@workspace/theme-default/icon.css').endsWith('/dist/icon.css')) {
 	  throw new Error('Icon 逐组件样式导出未指向 dist/icon.css');
 	}
@@ -258,6 +262,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
 	import { Divider, type DividerAlign } from '@workspace/ui/divider';
 	import { FloatButton, FloatButtonGroup, type FloatButtonShape } from '@workspace/ui/float-button';
+	import { Col, Row, type GridGutter } from '@workspace/ui/grid';
 	import { Icon } from '@workspace/ui/icon';
 	import { Layout, LayoutContent, LayoutSider, type LayoutBreakpoint } from '@workspace/ui/layout';
 	import { Space, type SpaceAlign, type SpaceSpacingValue } from '@workspace/ui/space';
@@ -276,6 +281,8 @@ h(Button, { type, htmlType: 'submit' });
 	const floatButtonShape: FloatButtonShape = 'square';
 	h(FloatButton, { badge: { count: 8 }, shape: floatButtonShape, size: 'large' });
 	h(FloatButtonGroup, { items: [{ content: 'Help', value: 'help' }] });
+	const gridGutter: GridGutter = { xs: 8, md: 24 };
+	h(Row, { gutter: [gridGutter, 16], type: 'flex' }, () => h(Col, { span: 8, md: { span: 6, offset: 2 } }));
 	const iconSize: IconSize = 'large';
 	h(Icon, { size: iconSize });
 	const layoutBreakpoint: LayoutBreakpoint = 'md';
@@ -351,6 +358,9 @@ h(Button, { type, htmlType: 'submit' });
   if (!themeCss.includes('.semi-floatButton')) {
     throw new Error('安装后的默认主题缺少 FloatButton 样式');
   }
+  if (!themeCss.includes('.semi-row') || !themeCss.includes('.semi-col-24')) {
+    throw new Error('安装后的默认主题缺少 Grid 样式');
+  }
   const buttonThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'button.css'),
     'utf8',
@@ -381,6 +391,13 @@ h(Button, { type, htmlType: 'submit' });
     !floatButtonThemeCss.includes('.semi-badge-count')
   ) {
     throw new Error('安装后的 FloatButton 逐组件样式缺少 Group 或 Badge 样式');
+  }
+  const gridThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'grid.css'),
+    'utf8',
+  );
+  if (!gridThemeCss.includes('.semi-row-flex') || !gridThemeCss.includes('.semi-col-lg-24')) {
+    throw new Error('安装后的 Grid 逐组件样式缺少 Flex 或响应式栅格样式');
   }
   const iconThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'icon.css'),

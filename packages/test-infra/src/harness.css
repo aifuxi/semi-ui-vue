@@ -358,6 +358,56 @@ p {
   width: 138px;
 }
 
+.grid-scenario {
+  display: grid;
+  margin-top: 24px;
+  gap: 18px;
+}
+
+.grid-scenario__section {
+  display: grid;
+  min-width: 0;
+  padding: 18px;
+  gap: 12px;
+  overflow: hidden;
+  border: 1px solid var(--harness-border);
+  border-radius: 8px;
+  background: var(--harness-subtle);
+}
+
+.grid-scenario__section h3 {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.grid-scenario__row {
+  min-width: 0;
+}
+
+.grid-scenario__cell {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 36px;
+  padding: 6px 8px;
+  background: var(--harness-panel);
+  color: var(--harness-text);
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.grid-scenario__cell--secondary {
+  background: var(--harness-surface);
+}
+
+.grid-scenario__responsive-row {
+  margin-top: 12px;
+}
+
 .layout-scenario {
   display: grid;
   margin-top: 24px;

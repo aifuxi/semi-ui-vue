@@ -56,6 +56,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/divider/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'float-button', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/float-button/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'grid', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/grid/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'icon', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/icon/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'layout', 'index.js')).href);

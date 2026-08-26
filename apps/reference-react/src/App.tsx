@@ -8,6 +8,7 @@ import { ButtonTypesScenario } from './scenarios/ButtonTypesScenario';
 import { ButtonContractScenario } from './scenarios/ButtonContractScenario';
 import { DividerScenario } from './scenarios/DividerScenario';
 import { FloatButtonScenario } from './scenarios/FloatButtonScenario';
+import { GridScenario } from './scenarios/GridScenario';
 import { IconScenario } from './scenarios/IconScenario';
 import { LayoutScenario } from './scenarios/LayoutScenario';
 import { SpaceScenario } from './scenarios/SpaceScenario';
@@ -69,6 +70,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'button-contract' ? <ButtonContractScenario /> : null}
         {scenario.id === 'divider' ? <DividerScenario /> : null}
         {scenario.id === 'float-button' ? <FloatButtonScenario /> : null}
+        {scenario.id === 'grid' ? <GridScenario /> : null}
         {scenario.id === 'icon' ? <IconScenario /> : null}
         {scenario.id === 'layout' ? <LayoutScenario /> : null}
         {scenario.id === 'space' ? <SpaceScenario /> : null}

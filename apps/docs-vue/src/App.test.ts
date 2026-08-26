@@ -83,4 +83,18 @@ describe('Vue 对照工作台', () => {
     expect(wrapper.get('[data-parity-target="layout-sider"]').element.tagName).toBe('ASIDE');
     expect(wrapper.get('[data-parity-target="layout-semantic"]').element.tagName).toBe('ARTICLE');
   });
+
+  it('通过公共 Grid 包渲染基础、Gutter、Flex 与响应式栅格', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'grid' } });
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(wrapper.get('[data-testid="grid-vue"]').findAll('.semi-row')).toHaveLength(3);
+    expect(wrapper.get('[data-testid="grid-vue"]').findAll('.semi-row-flex')).toHaveLength(1);
+    expect(wrapper.get('[data-parity-target="grid-flex-row"]').classes()).toContain(
+      'semi-row-flex-space-between',
+    );
+    expect(wrapper.get('[data-parity-target="grid-responsive-col"]').classes()).toContain(
+      'semi-col-lg-push-1',
+    );
+  });
 });

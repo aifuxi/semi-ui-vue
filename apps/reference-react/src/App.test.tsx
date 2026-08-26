@@ -64,4 +64,13 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-layout-sider-children');
     expect(html).toContain('<article');
   });
+
+  it('从固定 Grid Adapter 渲染基础、Gutter、Flex 与响应式栅格', () => {
+    const html = renderToStaticMarkup(<App scenarioId="grid" />);
+
+    expect(html).toContain('data-parity-scenario="grid"');
+    expect(html).toContain('semi-row-flex-space-between');
+    expect(html).toContain('semi-col-lg-push-1');
+    expect(html).toContain('padding-left:16px');
+  });
 });
