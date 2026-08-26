@@ -1,0 +1,3 @@
+[submodule "vendor/semi-design"]
+	path = vendor/semi-design
+	url = https://github.com/DouyinFE/semi-design.git
