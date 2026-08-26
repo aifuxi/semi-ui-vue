@@ -49,6 +49,8 @@ Space 是第四个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/space/`
 
 FloatButton 是第五个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/float-button/` 同时提供 FloatButton 与 FloatButtonGroup，并在内部复现其公开 `badge` 配置所需 DOM；`packages/theme-default/float-button.css` 独立包含 FloatButton、Badge 与 Icon 样式。完整矩阵见 `docs/components/float-button/`。
 
+Layout 是第六个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/layout/` 提供 Layout、Header、Content、Footer 与响应式 Sider，使用类型化上下文让 Sider 只注册到最近的嵌套 Layout；`packages/theme-default/layout.css` 提供逐组件样式。完整矩阵见 `docs/components/layout/`。
+
 Foundation 集成包当前也只建立了边界，还没有组件入口。后续必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。

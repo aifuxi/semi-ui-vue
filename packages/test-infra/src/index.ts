@@ -25,6 +25,10 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   iconLabEntry: 'vendor/semi-design/packages/semi-icons-lab/src/index.ts',
   iconStyle: 'vendor/semi-design/packages/semi-icons/src/styles/icons.scss',
   iconDocumentation: 'vendor/semi-design/content/basic/icon/index.md',
+  layoutPublicEntry: 'vendor/semi-design/packages/semi-ui/layout/index.tsx',
+  layoutSiderEntry: 'vendor/semi-design/packages/semi-ui/layout/Sider.tsx',
+  layoutFoundationStyle: 'vendor/semi-design/packages/semi-foundation/layout/layout.scss',
+  layoutDocumentation: 'vendor/semi-design/content/basic/layout/index.md',
   spacePublicEntry: 'vendor/semi-design/packages/semi-ui/space/index.tsx',
   spaceUtilities: 'vendor/semi-design/packages/semi-ui/space/utils.ts',
   spaceFoundationStyle: 'vendor/semi-design/packages/semi-foundation/space/space.scss',
@@ -473,6 +477,62 @@ export const PARITY_SCENARIOS = [
         selector: `[data-parity-target="icon-${kind}"]`,
         computedStyleProperties: ['display', 'fontSize', 'height', 'lineHeight', 'width'],
       })),
+    ],
+  },
+  {
+    id: 'layout',
+    title: 'Layout 布局',
+    description: '复现固定文档的三行、侧边栏、嵌套、响应式断点与语义标签契约。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.layoutPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.layoutPublicEntry,
+      REFERENCE_SOURCE_PATHS.layoutSiderEntry,
+      REFERENCE_SOURCE_PATHS.layoutFoundationStyle,
+      REFERENCE_SOURCE_PATHS.layoutDocumentation,
+    ],
+    targets: [
+      {
+        id: 'layout-vertical',
+        selector: '[data-parity-target="layout-vertical"]',
+        computedStyleProperties: ['display', 'flex', 'flexDirection', 'minHeight', 'width'],
+      },
+      {
+        id: 'layout-header',
+        selector: '[data-parity-target="layout-header"]',
+        computedStyleProperties: ['boxSizing', 'flex', 'height', 'lineHeight'],
+      },
+      {
+        id: 'layout-content',
+        selector: '[data-parity-target="layout-content"]',
+        computedStyleProperties: ['boxSizing', 'flex', 'height', 'lineHeight', 'minHeight'],
+      },
+      {
+        id: 'layout-footer',
+        selector: '[data-parity-target="layout-footer"]',
+        computedStyleProperties: ['boxSizing', 'flex', 'height', 'lineHeight'],
+      },
+      {
+        id: 'layout-with-sider',
+        selector: '[data-parity-target="layout-with-sider"]',
+        computedStyleProperties: ['direction', 'display', 'flexDirection', 'width'],
+      },
+      {
+        id: 'layout-sider',
+        selector: '[data-parity-target="layout-sider"]',
+        computedStyleProperties: ['boxSizing', 'minWidth', 'position', 'width'],
+      },
+      {
+        id: 'layout-nested',
+        selector: '[data-parity-target="layout-nested"]',
+        computedStyleProperties: ['display', 'flex', 'flexDirection', 'overflowX'],
+      },
+      {
+        id: 'layout-semantic',
+        selector: '[data-parity-target="layout-semantic"]',
+        computedStyleProperties: ['direction', 'display', 'flexDirection', 'minHeight'],
+      },
     ],
   },
   {

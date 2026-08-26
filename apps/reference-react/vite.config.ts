@@ -18,6 +18,7 @@ const floatButtonGroupEntry = path.join(
   'semi-ui/floatButton/floatButtonGroup.tsx',
 );
 const iconPublicEntry = path.join(upstreamPackages, 'semi-ui/icons/index.tsx');
+const layoutPublicEntry = path.join(upstreamPackages, 'semi-ui/layout/index.tsx');
 const spacePublicEntry = path.join(upstreamPackages, 'semi-ui/space/index.tsx');
 const foundationRoot = path.join(upstreamPackages, 'semi-foundation');
 const iconsEntry = path.join(upstreamPackages, 'semi-icons/src/index.ts');
@@ -41,6 +42,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'badge/badge.scss'),
   '@douyinfe/semi-foundation/space/space.scss',
   path.join(foundationRoot, 'space/space.scss'),
+  '@douyinfe/semi-foundation/layout/layout.scss',
+  path.join(foundationRoot, 'layout/layout.scss'),
   '@douyinfe/semi-icons/src/styles/icons.scss',
   path.join(upstreamPackages, 'semi-icons/src/styles/icons.scss'),
   '@douyinfe/semi-icons-lab/src/styles/icons.scss',
@@ -88,6 +91,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/float-button', replacement: floatButtonPublicEntry },
       { find: '@semi-v2.102.0/float-button-group', replacement: floatButtonGroupEntry },
       { find: '@semi-v2.102.0/icon', replacement: iconPublicEntry },
+      { find: '@semi-v2.102.0/layout', replacement: layoutPublicEntry },
       { find: '@semi-v2.102.0/space', replacement: spacePublicEntry },
       { find: '@semi-v2.102.0/icons', replacement: iconsEntry },
       { find: '@semi-v2.102.0/icons-lab', replacement: iconsLabEntry },

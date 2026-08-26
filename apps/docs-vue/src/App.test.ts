@@ -71,4 +71,16 @@ describe('Vue 对照工作台', () => {
     await wrapper.get('.float-button-target-default').trigger('click');
     expect(wrapper.get('output').text()).toContain('最近操作：default');
   });
+
+  it('通过公共 Layout 包渲染语义区块、嵌套布局与 Sider', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'layout' } });
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(wrapper.get('[data-testid="layout-vue"]').findAll('.semi-layout')).toHaveLength(4);
+    expect(wrapper.get('[data-parity-target="layout-with-sider"]').classes()).toContain(
+      'semi-layout-has-sider',
+    );
+    expect(wrapper.get('[data-parity-target="layout-sider"]').element.tagName).toBe('ASIDE');
+    expect(wrapper.get('[data-parity-target="layout-semantic"]').element.tagName).toBe('ARTICLE');
+  });
 });

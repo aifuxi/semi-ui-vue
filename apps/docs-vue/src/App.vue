@@ -10,6 +10,7 @@ import ButtonContractScenario from './components/ButtonContractScenario.vue';
 import DividerScenario from './components/DividerScenario.vue';
 import FloatButtonScenario from './components/FloatButtonScenario.vue';
 import IconScenario from './components/IconScenario.vue';
+import LayoutScenario from './components/LayoutScenario.vue';
 import SpaceScenario from './components/SpaceScenario.vue';
 import HarnessCalibration from './components/HarnessCalibration.vue';
 import UnavailableScenario from './components/UnavailableScenario.vue';
@@ -61,6 +62,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <DividerScenario v-else-if="scenario.id === 'divider'" />
       <FloatButtonScenario v-else-if="scenario.id === 'float-button'" />
       <IconScenario v-else-if="scenario.id === 'icon'" />
+      <LayoutScenario v-else-if="scenario.id === 'layout'" />
       <SpaceScenario v-else-if="scenario.id === 'space'" />
       <UnavailableScenario
         v-else

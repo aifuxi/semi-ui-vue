@@ -29,6 +29,9 @@ export default defineConfig({
       '@semi-v2.102.0/icon': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiIconStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/layout': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiLayoutStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/icons': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiIconsStub.tsx', import.meta.url),
       ),

@@ -82,6 +82,22 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Layout and responsive Sider as a complete local-source parity scene', () => {
+    expect(getParityScenario('layout')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.layoutPublicEntry,
+    });
+    expect(assertScenarioComparable('layout').targets).toHaveLength(8);
+    expect(getParityScenario('layout').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.layoutSiderEntry,
+        REFERENCE_SOURCE_PATHS.layoutFoundationStyle,
+        REFERENCE_SOURCE_PATHS.layoutDocumentation,
+      ]),
+    );
+  });
+
   it('records FloatButton and Group as a complete local-source parity scene', () => {
     expect(getParityScenario('float-button')).toMatchObject({
       referenceStatus: 'ready',

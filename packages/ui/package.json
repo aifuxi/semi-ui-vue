@@ -34,6 +34,10 @@
       "types": "./dist/icon/index.d.ts",
       "import": "./dist/icon/index.js"
     },
+    "./layout": {
+      "types": "./dist/layout/index.d.ts",
+      "import": "./dist/layout/index.js"
+    },
     "./space": {
       "types": "./dist/space/index.d.ts",
       "import": "./dist/space/index.js"

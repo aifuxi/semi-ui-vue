@@ -55,4 +55,13 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-floatButtonGroup-item');
     expect(html).toContain('99+');
   });
+
+  it('从固定 Layout Adapter 渲染语义区块与 Sider 场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="layout" />);
+
+    expect(html).toContain('data-parity-scenario="layout"');
+    expect(html).toContain('semi-layout-has-sider');
+    expect(html).toContain('semi-layout-sider-children');
+    expect(html).toContain('<article');
+  });
 });

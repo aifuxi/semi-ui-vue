@@ -18,6 +18,7 @@ export default defineConfig({
           new URL('./src/float-button/index.ts', import.meta.url),
         ),
         'icon/index': fileURLToPath(new URL('./src/icon/index.ts', import.meta.url)),
+        'layout/index': fileURLToPath(new URL('./src/layout/index.ts', import.meta.url)),
         'space/index': fileURLToPath(new URL('./src/space/index.ts', import.meta.url)),
       },
       formats: ['es'],

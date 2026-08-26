@@ -16,8 +16,10 @@ React 页面只允许从只读 `vendor/semi-design` 的固定 v2.102.0 源码构
 | `divider`             | ready | ready | 水平/垂直、实线/虚线、边距、内容对齐、dark/mobile/RTL         |
 | `icon`                | ready | ready | 尺寸、旋转、spin、颜色、AI fill、Lab、dark/mobile             |
 | `space`               | ready | ready | 预设/自定义 gap、方向、换行、四种对齐、dark/mobile/RTL        |
+| `float-button`        | ready | ready | 尺寸、形状、Badge、Group 事件、dark/mobile/RTL                |
+| `layout`              | ready | ready | 三行/侧栏/嵌套布局、语义标签、响应断点、dark/mobile/RTL       |
 
-场景契约定义在 `packages/test-infra/src/index.ts`。`assertScenarioComparable()` 只有在 React/Vue 均为 `ready` 时才返回场景，否则立即失败。Button、Divider、Icon、Space 与 FloatButton 的固定源码矩阵、Vue API 与迁移表见 `docs/components/`。Icon 场景覆盖尺寸、旋转、暂停后的 spin、单色、双色、四色渐变、Lab 和自定义 SVG 基座；Space 场景覆盖预设/数字/数组 gap、方向、换行、交叉轴对齐和 RTL；FloatButton 场景覆盖尺寸、形状、colorful、disabled、Badge 与 Group 委托事件。
+场景契约定义在 `packages/test-infra/src/index.ts`。`assertScenarioComparable()` 只有在 React/Vue 均为 `ready` 时才返回场景，否则立即失败。所有已完成组件的固定源码矩阵、Vue API 与迁移表见 `docs/components/`。Icon 场景覆盖尺寸、旋转、暂停后的 spin、单色、双色、四色渐变、Lab 和自定义 SVG 基座；Space 场景覆盖预设/数字/数组 gap、方向、换行、交叉轴对齐和 RTL；FloatButton 场景覆盖尺寸、形状、colorful、disabled、Badge 与 Group 委托事件；Layout 场景覆盖语义标签、嵌套 Sider 注册与桌面/移动断点回调。
 
 ## 运行入口
 

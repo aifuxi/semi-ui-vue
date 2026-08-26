@@ -81,6 +81,31 @@ declare module '@semi-v2.102.0/space' {
   export default Space;
 }
 
+declare module '@semi-v2.102.0/layout' {
+  import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
+
+  export type LayoutBreakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+  export interface LayoutProps extends HTMLAttributes<HTMLElement> {
+    children?: ReactNode;
+    hasSider?: boolean;
+    prefixCls?: string;
+    style?: CSSProperties;
+    tagName?: keyof HTMLElementTagNameMap;
+  }
+  export interface LayoutSiderProps extends LayoutProps {
+    breakpoint?: LayoutBreakpoint[];
+    onBreakpoint?: (screen: LayoutBreakpoint, match: boolean) => void;
+  }
+  type LayoutComponent = ComponentType<LayoutProps> & {
+    Header: ComponentType<LayoutProps>;
+    Footer: ComponentType<LayoutProps>;
+    Content: ComponentType<LayoutProps>;
+    Sider: ComponentType<LayoutSiderProps>;
+  };
+  const Layout: LayoutComponent;
+  export default Layout;
+}
+
 declare module '@semi-v2.102.0/float-button' {
   import type { CSSProperties, ComponentType, MouseEvent, ReactNode } from 'react';
 

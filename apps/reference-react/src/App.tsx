@@ -9,6 +9,7 @@ import { ButtonContractScenario } from './scenarios/ButtonContractScenario';
 import { DividerScenario } from './scenarios/DividerScenario';
 import { FloatButtonScenario } from './scenarios/FloatButtonScenario';
 import { IconScenario } from './scenarios/IconScenario';
+import { LayoutScenario } from './scenarios/LayoutScenario';
 import { SpaceScenario } from './scenarios/SpaceScenario';
 
 const DEFAULT_OPTIONS: ParityScenarioOptions = {
@@ -69,6 +70,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'divider' ? <DividerScenario /> : null}
         {scenario.id === 'float-button' ? <FloatButtonScenario /> : null}
         {scenario.id === 'icon' ? <IconScenario /> : null}
+        {scenario.id === 'layout' ? <LayoutScenario /> : null}
         {scenario.id === 'space' ? <SpaceScenario /> : null}
       </section>
 
