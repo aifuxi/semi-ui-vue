@@ -53,7 +53,7 @@ Foundation 集成包当前也只建立了边界，还没有组件入口。后续
 
 ## 新增组件的最小流程
 
-1. 先检查固定上游的 Adapter、Foundation、主题、文档与资产。
+1. 先从 `docs/inventory/semi-v2.102.0.json` 定位公开导出、子路径、Adapter、Foundation、主题、文档、依赖与测试资产，再回到固定上游核对原始源码。
 2. 在组件文档目录建立完整对齐矩阵和 React→Vue API 映射。
 3. 在两个应用中建立同数据、同字体、同 viewport、同动画时刻的参考场景。
 4. 实现 Vue 源码、类型、样式入口、中英文文档和迁移说明。
@@ -63,6 +63,7 @@ Foundation 集成包当前也只建立了边界，还没有组件入口。后续
 ## 当前质量入口
 
 - `pnpm check:vendor`：确认 submodule 的 tag 和 SHA。
+- `pnpm check:inventory`：重建并逐字核对固定上游的组件、API、文档、依赖与资产 inventory，防止生成物漂移。
 - `pnpm check:boundaries`：阻止 Vue 运行时源码通过静态、动态、require 或样式导入绕过上游边界。
 - React 参考应用的依赖清单同样被精确锁定；真实场景接通后还必须断言模块解析结果来自本地 `vendor/semi-design`，不能安装线上 `@douyinfe/semi-ui` 替代。
 - `pnpm format:check`：检查仓库自有文件格式，跳过 `vendor/**`。

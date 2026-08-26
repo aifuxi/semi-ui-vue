@@ -16,6 +16,8 @@
     "build:public-js": "pnpm --filter @workspace/ui --filter @workspace/icons --filter @workspace/icons-lab --filter @workspace/illustrations run build",
     "clean": "pnpm -r --if-present run clean && rimraf coverage playwright-report test-results",
     "check:vendor": "node scripts/verify-vendor.mjs",
+    "inventory:generate": "node scripts/generate-upstream-inventory.mjs",
+    "check:inventory": "node scripts/generate-upstream-inventory.mjs --check",
     "check:boundaries": "node scripts/verify-source-boundaries.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -33,7 +35,7 @@
     "playwright:install": "playwright install chromium",
     "verify:ssr-dist": "node scripts/verify-ssr-import.mjs",
     "test:ssr": "pnpm build:public-js && pnpm verify:ssr-dist",
-    "check": "pnpm check:vendor && pnpm check:boundaries && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:unit && pnpm build && pnpm verify:theme-dist && pnpm verify:ssr-dist && pnpm verify:pack-dist",
+    "check": "pnpm check:vendor && pnpm check:inventory && pnpm check:boundaries && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:unit && pnpm build && pnpm verify:theme-dist && pnpm verify:ssr-dist && pnpm verify:pack-dist",
     "check:full": "pnpm check && pnpm test:browser"
   },
   "devDependencies": {
