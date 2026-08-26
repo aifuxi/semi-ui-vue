@@ -1,6 +1,13 @@
 :root {
+  --harness-text: rgb(28 31 35);
+  --harness-muted-text: rgb(65 70 76);
+  --harness-page: rgb(247 248 250);
+  --harness-panel: rgb(255 255 255);
+  --harness-subtle: rgb(247 248 250);
+  --harness-border: rgb(228 230 235);
+  --harness-code: rgb(230 232 234);
   color: rgb(28 31 35);
-  background: rgb(247 248 250);
+  background: var(--harness-page);
   font-family:
     Inter,
     -apple-system,
@@ -15,23 +22,35 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  color: var(--harness-text);
+  background: var(--harness-page);
+}
+
+body[theme-mode='dark'] {
+  --harness-text: rgb(249 249 249);
+  --harness-muted-text: rgb(197 199 202);
+  --harness-page: rgb(22 22 26);
+  --harness-panel: rgb(35 36 41);
+  --harness-subtle: rgb(53 54 60);
+  --harness-border: rgb(67 68 74);
+  --harness-code: rgb(53 54 60);
 }
 
 code {
   padding: 2px 6px;
   border-radius: 4px;
-  background: rgb(230 232 234);
+  background: var(--harness-code);
   font-family: 'SFMono-Regular', Consolas, monospace;
 }
 
 .workspace-shell {
   box-sizing: border-box;
-  width: min(720px, calc(100% - 48px));
-  margin: 96px auto;
+  width: min(920px, calc(100% - 48px));
+  margin: 64px auto;
   padding: 40px;
-  border: 1px solid rgb(228 230 235);
+  border: 1px solid var(--harness-border);
   border-radius: 12px;
-  background: white;
+  background: var(--harness-panel);
   box-shadow: 0 8px 24px rgb(0 0 0 / 6%);
 }
 
@@ -52,8 +71,57 @@ h1 {
 
 p {
   margin: 0;
-  color: rgb(65 70 76);
+  color: var(--harness-muted-text);
   line-height: 1.75;
+}
+
+.workspace-header {
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--harness-border);
+}
+
+.scenario-panel {
+  padding-top: 28px;
+}
+
+.scenario-panel__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.scenario-panel__heading h2 {
+  margin: 2px 0 0;
+  font-size: 22px;
+  line-height: 1.4;
+}
+
+.scenario-panel__id {
+  color: rgb(0 100 250);
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.scenario-panel__description {
+  margin-top: 8px;
+}
+
+.scenario-status {
+  flex: none;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgb(0 180 42 / 12%);
+  color: rgb(0 145 35);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.scenario-status[data-status='pending'] {
+  background: rgb(255 136 0 / 14%);
+  color: rgb(212 94 0);
 }
 
 .visual-calibration {
@@ -65,9 +133,9 @@ p {
   margin-top: 24px;
   padding: 8px;
   gap: 8px;
-  border: 1px solid rgb(228 230 235);
+  border: 1px solid var(--harness-border);
   border-radius: 6px;
-  background: rgb(247 248 250);
+  background: var(--harness-subtle);
   box-shadow: 0 2px 6px rgb(0 0 0 / 8%);
 }
 
@@ -85,4 +153,84 @@ p {
 
 .visual-calibration__warning {
   background: rgb(255 136 0);
+}
+
+.button-types-scenario {
+  margin-top: 24px;
+}
+
+.button-types-scenario__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.scenario-action-output {
+  display: block;
+  margin-top: 18px;
+  color: var(--harness-muted-text);
+  font-size: 13px;
+}
+
+.scenario-unavailable {
+  margin-top: 24px;
+  padding: 18px 20px;
+  border: 1px dashed var(--harness-border);
+  border-radius: 8px;
+  background: var(--harness-subtle);
+}
+
+.scenario-unavailable > p {
+  margin-top: 6px;
+}
+
+.scenario-unavailable__source {
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+
+.runtime-evidence {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 28px 0 0;
+  padding-top: 20px;
+  gap: 10px;
+  border-top: 1px solid var(--harness-border);
+  font-size: 12px;
+}
+
+.runtime-evidence > div {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.runtime-evidence dt {
+  color: var(--harness-muted-text);
+  font-weight: 600;
+}
+
+.runtime-evidence dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+}
+
+@media (max-width: 600px) {
+  .workspace-shell {
+    width: calc(100% - 24px);
+    margin: 20px auto;
+    padding: 24px;
+  }
+
+  .scenario-panel__heading {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .scenario-status {
+    align-self: flex-start;
+  }
 }

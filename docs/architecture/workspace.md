@@ -35,7 +35,9 @@ vendor/semi-design/      唯一、只读的 v2.102.0 参考源码
 - `packages/foundation-integration` 和 `packages/test-infra` 永不发布；公开包构建后不能留下对它们或 `vendor/` 的运行时引用。
 - `vendor/**` 必须始终排除在格式化、lint、类型检查、单测和项目构建扫描之外。
 
-当前 `apps/reference-react` 只完成可启动的工作台壳层；本地上游没有可直接消费的构建产物，因此真正的 React 场景接入仍需建立只读源码解析/构建适配器。在此之前，骨架 smoke 不能作为 v2.102.0 组件运行证据。
+`apps/reference-react` 已建立只读源码解析/构建适配器，并以 Button 公开入口作为首个真实运行场景。Vite 直接编译固定 submodule 的 TSX；Sass 1.54.9 通过应用内构建插件生成虚拟 CSS，避免由 Vite 8 改用新版 Sass。浏览器测试还会核对真实模块请求来自 `vendor/semi-design`，不能只依赖页面中的版本文字。
+
+React/Vue 两端通过 `packages/test-infra` 的共享场景契约接收相同 URL 参数、数据与目标定义。未完成的 Vue 场景保持 `pending`，`assertScenarioComparable` 会阻止其进入样式、几何和截图对照。详细扩展流程见 `docs/testing/react-vue-parity.md`。
 
 Foundation 集成包当前也只建立了边界，还没有组件入口。后续必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
@@ -76,5 +78,5 @@ Foundation 集成包当前也只建立了边界，还没有组件入口。后续
 - `pnpm test:pack`：构建真实 tarball，在临时消费者中离线安装并验证 exports、ESM、类型、样式和 SSR import。
 - 每个拟发布包的构建都会写入 Semi Design 完整许可证、第三方声明和 SPDX 2.3 SBOM；项目自身许可证冻结前保持 `private`。
 - SBOM 默认记录实际构建时间；可复现发布必须传入标准的 `SOURCE_DATE_EPOCH`，该值也参与文档命名空间指纹。
-- `pnpm test:browser`：单一 Chromium worker 启动 React/Vue 两个服务进行对照。
+- `pnpm test:browser`：单一 Chromium worker 启动 React/Vue 两个服务，在同一 BrowserContext 中执行来源、行为、计算样式、几何与视觉对照。
 - `pnpm check:full`：执行以上完整本地门禁。

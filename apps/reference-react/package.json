@@ -11,13 +11,18 @@
   },
   "dependencies": {
     "@workspace/test-infra": "workspace:*",
+    "classnames": "2.5.1",
+    "lodash": "4.17.21",
     "normalize.css": "catalog:",
+    "prop-types": "15.8.1",
     "react": "catalog:",
     "react-dom": "catalog:",
     "typeface-inter": "catalog:"
   },
   "devDependencies": {
+    "@types/lodash": "4.17.20",
     "@types/react": "18.0.5",
-    "@types/react-dom": "18.0.1"
+    "@types/react-dom": "18.0.1",
+    "sass": "1.54.9"
   }
 }

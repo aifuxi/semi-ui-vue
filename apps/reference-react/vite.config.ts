@@ -1,10 +1,79 @@
-import { defineConfig } from 'vite';
+import { createRequire } from 'node:module';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
+import sass from 'sass';
+
+const require = createRequire(import.meta.url);
+const workspaceRoot = fileURLToPath(new URL('../..', import.meta.url));
+const upstreamPackages = path.join(workspaceRoot, 'vendor/semi-design/packages');
+const buttonPublicEntry = path.join(upstreamPackages, 'semi-ui/button/index.tsx');
+const foundationRoot = path.join(upstreamPackages, 'semi-foundation');
+const iconsEntry = path.join(upstreamPackages, 'semi-icons/src/index.ts');
+const referenceStyleEntry = fileURLToPath(
+  new URL('./src/semi-reference-theme.scss', import.meta.url),
+);
+const virtualStyleId = 'virtual:semi-reference-styles.css';
+const resolvedVirtualStyleId = `\0${virtualStyleId}`;
+const emptyUpstreamStyleId = '\0semi-reference-upstream-style-loaded-from-entry';
+const capturedUpstreamStyleImports = new Set([
+  '@douyinfe/semi-foundation/button/button.scss',
+  '@douyinfe/semi-foundation/button/iconButton.scss',
+  path.join(foundationRoot, 'button/button.scss'),
+  path.join(foundationRoot, 'button/iconButton.scss'),
+]);
+
+function compilePinnedReferenceStyles(): Plugin {
+  return {
+    name: 'compile-pinned-semi-reference-styles',
+    enforce: 'pre',
+    resolveId(source, importer) {
+      if (source === virtualStyleId) return resolvedVirtualStyleId;
+      if (capturedUpstreamStyleImports.has(source)) return emptyUpstreamStyleId;
+      if (
+        source === '../styles/icons.scss' &&
+        importer?.includes('/vendor/semi-design/packages/semi-icons/src/components/Icon.tsx')
+      ) {
+        return emptyUpstreamStyleId;
+      }
+      return null;
+    },
+    load(id) {
+      if (id === emptyUpstreamStyleId) return '';
+      if (id !== resolvedVirtualStyleId) return null;
+
+      return sass
+        .renderSync({
+          file: referenceStyleEntry,
+          outputStyle: 'expanded',
+        })
+        .css.toString();
+    },
+  };
+}
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [compilePinnedReferenceStyles(), react()],
+  resolve: {
+    alias: [
+      { find: '@semi-v2.102.0/button', replacement: buttonPublicEntry },
+      {
+        find: /^@douyinfe\/semi-foundation\/(.+)$/,
+        replacement: `${foundationRoot}/$1`,
+      },
+      { find: '@douyinfe/semi-icons', replacement: iconsEntry },
+      { find: /^classnames$/, replacement: require.resolve('classnames') },
+      { find: /^lodash$/, replacement: require.resolve('lodash') },
+      { find: /^prop-types$/, replacement: require.resolve('prop-types') },
+    ],
+    dedupe: ['react', 'react-dom'],
+  },
   server: {
     port: 4173,
     strictPort: true,
+    fs: {
+      allow: [workspaceRoot],
+    },
   },
 });

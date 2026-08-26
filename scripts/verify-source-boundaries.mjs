@@ -46,7 +46,10 @@ const referenceApplicationPolicy = {
   manifest: 'apps/reference-react/package.json',
   dependencies: {
     '@workspace/test-infra': 'workspace:*',
+    classnames: '2.5.1',
+    lodash: '4.17.21',
     'normalize.css': 'catalog:',
+    'prop-types': '15.8.1',
     react: 'catalog:',
     'react-dom': 'catalog:',
     'typeface-inter': 'catalog:',
@@ -54,8 +57,10 @@ const referenceApplicationPolicy = {
   optionalDependencies: {},
   peerDependencies: {},
   devDependencies: {
+    '@types/lodash': '4.17.20',
     '@types/react': '18.0.5',
     '@types/react-dom': '18.0.1',
+    sass: '1.54.9',
   },
 };
 const manifestPolicies = [...publicPackagePolicies, referenceApplicationPolicy];
@@ -103,9 +108,6 @@ for (const filePath of files) {
   const source = await readFile(filePath, 'utf8');
   const relativePath = path.relative(workspaceRoot, filePath);
 
-  if (source.includes('vendor/semi-design')) {
-    throw new Error(`${relativePath} 绕过允许边界读取 vendor/semi-design`);
-  }
   if (source.includes('@douyinfe/')) {
     throw new Error(`${relativePath} 直接依赖上游 React/Foundation 包`);
   }
@@ -113,6 +115,9 @@ for (const filePath of files) {
   for (const pattern of importPatterns) {
     for (const match of source.matchAll(pattern)) {
       const specifier = match[1];
+      if (specifier?.includes('vendor/semi-design')) {
+        throw new Error(`${relativePath} 绕过允许边界读取 vendor/semi-design：${specifier}`);
+      }
       if (
         specifier?.includes('foundation-integration') &&
         specifier !== '@workspace/foundation-integration'

@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import react from '@vitejs/plugin-react';
 import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vitest/config';
@@ -5,6 +6,11 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   plugins: [vue(), react()],
   resolve: {
+    alias: {
+      '@semi-v2.102.0/button': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiButtonStub.tsx', import.meta.url),
+      ),
+    },
     dedupe: ['vue'],
   },
   test: {

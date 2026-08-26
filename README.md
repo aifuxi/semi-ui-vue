@@ -30,4 +30,4 @@ pnpm check           # 格式、lint、类型、单测、构建与 SSR import
 pnpm test:browser    # 单一 Chromium 进程中的 React/Vue 对照基础设施
 ```
 
-目录职责、依赖方向和新增组件流程见 `docs/architecture/workspace.md`；上游全量清单见 `docs/inventory/README.md`。
+目录职责、依赖方向和新增组件流程见 `docs/architecture/workspace.md`；上游全量清单见 `docs/inventory/README.md`；真实 React/Vue 场景注册与验收流程见 `docs/testing/react-vue-parity.md`。

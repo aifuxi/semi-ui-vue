@@ -1,20 +1,77 @@
 import React from 'react';
-import { REFERENCE_BASELINE } from '@workspace/test-infra';
+import {
+  getParityScenario,
+  REFERENCE_BASELINE,
+  type ParityScenarioOptions,
+} from '@workspace/test-infra';
+import { ButtonTypesScenario } from './scenarios/ButtonTypesScenario';
 
-export function App(): React.ReactElement {
+const DEFAULT_OPTIONS: ParityScenarioOptions = {
+  scenarioId: 'harness-calibration',
+  theme: 'light',
+  direction: 'ltr',
+  locale: 'zh-CN',
+};
+
+export type AppProps = Partial<ParityScenarioOptions>;
+
+function HarnessCalibration(): React.ReactElement {
   return (
-    <main className="workspace-shell">
-      <p className="workspace-shell__eyebrow">React reference target</p>
-      <h1>Semi Design React 参考工作台</h1>
-      <p>
-        当前固定参考版本为 <code>{REFERENCE_BASELINE.tag}</code>
-        。这里将直接加载本地固定源码的参考场景。
-      </p>
-      <div className="visual-calibration" data-testid="visual-calibration" aria-hidden="true">
-        <span className="visual-calibration__primary" />
-        <span className="visual-calibration__success" />
-        <span className="visual-calibration__warning" />
-      </div>
+    <div className="visual-calibration" data-testid="visual-calibration" aria-hidden="true">
+      <span className="visual-calibration__primary" />
+      <span className="visual-calibration__success" />
+      <span className="visual-calibration__warning" />
+    </div>
+  );
+}
+
+export function App(props: AppProps): React.ReactElement {
+  const options = { ...DEFAULT_OPTIONS, ...props };
+  const scenario = getParityScenario(options.scenarioId);
+
+  return (
+    <main
+      className="workspace-shell"
+      data-parity-framework="react"
+      data-parity-scenario={scenario.id}
+      data-reference-status={scenario.referenceStatus}
+      data-vue-status={scenario.vueStatus}
+      dir={options.direction}
+    >
+      <header className="workspace-header">
+        <p className="workspace-shell__eyebrow">React reference target</p>
+        <h1>Semi Design React 参考工作台</h1>
+        <p>
+          当前固定参考版本为 <code>{REFERENCE_BASELINE.tag}</code>，场景直接编译本地只读源码。
+        </p>
+      </header>
+
+      <section className="scenario-panel" aria-labelledby="scenario-title">
+        <div className="scenario-panel__heading">
+          <div>
+            <p className="scenario-panel__id">{scenario.id}</p>
+            <h2 id="scenario-title">{scenario.title}</h2>
+          </div>
+          <span className="scenario-status" data-status={scenario.referenceStatus}>
+            React {scenario.referenceStatus}
+          </span>
+        </div>
+        <p className="scenario-panel__description">{scenario.description}</p>
+
+        {scenario.id === 'harness-calibration' ? <HarnessCalibration /> : null}
+        {scenario.id === 'button-types' ? <ButtonTypesScenario /> : null}
+      </section>
+
+      <dl className="runtime-evidence" aria-label="参考运行时证据">
+        <div>
+          <dt>commit</dt>
+          <dd>{REFERENCE_BASELINE.commit}</dd>
+        </div>
+        <div>
+          <dt>source</dt>
+          <dd data-testid="reference-source">{scenario.referenceSource ?? 'shared harness'}</dd>
+        </div>
+      </dl>
     </main>
   );
 }
