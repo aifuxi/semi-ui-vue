@@ -731,6 +731,58 @@ p {
   line-height: 20px;
 }
 
+.slider-scenario {
+  display: grid;
+  margin-top: 24px;
+  gap: 20px;
+}
+
+.slider-scenario__section {
+  display: grid;
+  gap: 12px;
+}
+
+.slider-scenario__section h3 {
+  margin: 0;
+  color: var(--semi-color-text-0);
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.slider-scenario__stack {
+  display: grid;
+  width: min(100%, 560px);
+  gap: 18px;
+}
+
+.slider-scenario__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 48px;
+}
+
+.slider-scenario__marks {
+  width: min(100%, 500px);
+  min-height: 68px;
+}
+
+.slider-scenario__vertical {
+  width: 48px;
+  height: 180px;
+  padding-left: 18px;
+}
+
+.slider-scenario__status {
+  color: var(--semi-color-text-2);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+/* Freeze the Tooltip dependency at its final frame for byte-identical Slider evidence. */
+.semi-slider-handle-tooltip {
+  animation: none !important;
+}
+
 @media (max-width: 640px) {
   .tooltip-scenario {
     min-height: 680px;
@@ -748,6 +800,11 @@ p {
 
   .radio-scenario__cards {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .slider-scenario__row {
+    flex-direction: column;
+    gap: 24px;
   }
 }
 

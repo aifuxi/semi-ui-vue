@@ -59,6 +59,7 @@ export default defineConfig({
         'rating/index': fileURLToPath(new URL('./src/rating/index.ts', import.meta.url)),
         'resizable/index': fileURLToPath(new URL('./src/resizable/index.ts', import.meta.url)),
         'select/index': fileURLToPath(new URL('./src/select/index.ts', import.meta.url)),
+        'slider/index': fileURLToPath(new URL('./src/slider/index.ts', import.meta.url)),
         'space/index': fileURLToPath(new URL('./src/space/index.ts', import.meta.url)),
         'switch/index': fileURLToPath(new URL('./src/switch/index.ts', import.meta.url)),
         'tooltip/index': fileURLToPath(new URL('./src/tooltip/index.ts', import.meta.url)),

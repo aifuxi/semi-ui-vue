@@ -186,4 +186,15 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-select-multiple');
     expect(html).toContain('select-filter');
   });
+
+  it('从固定 Slider Adapter 渲染单值、范围、刻度、禁用与纵向场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="slider" />);
+
+    expect(html).toContain('data-parity-scenario="slider"');
+    expect(html).toContain('data-parity-target="slider-basic"');
+    expect(html).toContain('semi-slider-disabled');
+    expect(html).toContain('semi-slider-mark');
+    expect(html).toContain('semi-slider-vertical-wrapper');
+    expect(html.match(/role="slider"/g)).toHaveLength(7);
+  });
 });

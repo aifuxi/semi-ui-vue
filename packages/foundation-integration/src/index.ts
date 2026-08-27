@@ -17,6 +17,8 @@ export type { RatingAdapter, RatingItemAdapter } from './rating.js';
 export * from './resizable.js';
 export { SelectFoundation } from './select.js';
 export type { SelectAdapter } from './select.js';
+export { SliderFoundation } from './slider.js';
+export type { SliderAdapter, SliderLengths } from './slider.js';
 export { SwitchFoundation } from './switch.js';
 export type { SwitchAdapter } from './switch.js';
 export { TooltipFoundation } from './tooltip.js';

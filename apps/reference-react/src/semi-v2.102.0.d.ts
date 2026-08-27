@@ -183,6 +183,37 @@ declare module '@semi-v2.102.0/rating' {
   export default Rating;
 }
 
+declare module '@semi-v2.102.0/slider' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export type SliderValue = number | number[];
+  export interface SliderProps {
+    'aria-label'?: string;
+    className?: string;
+    defaultValue?: SliderValue;
+    disabled?: boolean;
+    handleDot?: { color?: string; size?: string } | Array<{ color?: string; size?: string }>;
+    included?: boolean;
+    marks?: Record<number, string>;
+    max?: number;
+    min?: number;
+    onAfterChange?: (value: SliderValue) => void;
+    onChange?: (value: SliderValue) => void;
+    range?: boolean;
+    showBoundary?: boolean;
+    step?: number;
+    style?: CSSProperties;
+    tipFormatter?: ((value: string | number | boolean | null) => ReactNode) | null;
+    tooltipVisible?: boolean;
+    value?: SliderValue;
+    vertical?: boolean;
+    verticalReverse?: boolean;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+  const Slider: ComponentType<SliderProps>;
+  export default Slider;
+}
+
 declare module '@semi-v2.102.0/input-group' {
   import type { ComponentType, CSSProperties, FocusEvent, ReactNode } from 'react';
 

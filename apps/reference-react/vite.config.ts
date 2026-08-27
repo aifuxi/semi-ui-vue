@@ -32,6 +32,7 @@ const gridPublicEntry = path.join(upstreamPackages, 'semi-ui/grid/index.tsx');
 const layoutPublicEntry = path.join(upstreamPackages, 'semi-ui/layout/index.tsx');
 const resizablePublicEntry = path.join(upstreamPackages, 'semi-ui/resizable/index.tsx');
 const selectPublicEntry = path.join(upstreamPackages, 'semi-ui/select/index.tsx');
+const sliderPublicEntry = path.join(upstreamPackages, 'semi-ui/slider/index.tsx');
 const spacePublicEntry = path.join(upstreamPackages, 'semi-ui/space/index.tsx');
 const switchPublicEntry = path.join(upstreamPackages, 'semi-ui/switch/index.tsx');
 const tooltipPublicEntry = path.join(upstreamPackages, 'semi-ui/tooltip/index.tsx');
@@ -90,6 +91,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'tag/tag.scss'),
   '@douyinfe/semi-foundation/select/select.scss',
   path.join(foundationRoot, 'select/select.scss'),
+  '@douyinfe/semi-foundation/slider/slider.scss',
+  path.join(foundationRoot, 'slider/slider.scss'),
   '@douyinfe/semi-foundation/overflowList/overflowList.scss',
   path.join(foundationRoot, 'overflowList/overflowList.scss'),
   '@douyinfe/semi-foundation/highlight/highlight.scss',
@@ -165,6 +168,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/layout', replacement: layoutPublicEntry },
       { find: '@semi-v2.102.0/resizable', replacement: resizablePublicEntry },
       { find: '@semi-v2.102.0/select', replacement: selectPublicEntry },
+      { find: '@semi-v2.102.0/slider', replacement: sliderPublicEntry },
       { find: '@semi-v2.102.0/space', replacement: spacePublicEntry },
       { find: '@semi-v2.102.0/switch', replacement: switchPublicEntry },
       { find: '@semi-v2.102.0/tooltip', replacement: tooltipPublicEntry },

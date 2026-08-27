@@ -21,6 +21,7 @@ import { RadioScenario } from './scenarios/RadioScenario';
 import { RatingScenario } from './scenarios/RatingScenario';
 import { ResizableScenario } from './scenarios/ResizableScenario';
 import { SelectScenario } from './scenarios/SelectScenario';
+import { SliderScenario } from './scenarios/SliderScenario';
 import { SpaceScenario } from './scenarios/SpaceScenario';
 import { SwitchScenario } from './scenarios/SwitchScenario';
 import { TooltipScenario } from './scenarios/TooltipScenario';
@@ -96,6 +97,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'rating' ? <RatingScenario /> : null}
         {scenario.id === 'resizable' ? <ResizableScenario /> : null}
         {scenario.id === 'select' ? <SelectScenario /> : null}
+        {scenario.id === 'slider' ? <SliderScenario direction={options.direction} /> : null}
         {scenario.id === 'space' ? <SpaceScenario /> : null}
         {scenario.id === 'switch' ? <SwitchScenario /> : null}
         {scenario.id === 'tooltip' ? <TooltipScenario /> : null}

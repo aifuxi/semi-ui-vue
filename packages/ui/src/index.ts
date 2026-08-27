@@ -14,6 +14,7 @@ export * from './rating';
 export * from './layout';
 export * from './resizable';
 export * from './select';
+export * from './slider';
 export * from './space';
 export * from './switch';
 export * from './tooltip';

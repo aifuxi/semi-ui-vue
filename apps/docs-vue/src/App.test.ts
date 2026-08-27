@@ -288,4 +288,22 @@ describe('Vue 对照工作台', () => {
 
     wrapper.unmount();
   });
+
+  it('通过公共 Slider 渲染单值、范围、刻度、禁用与纵向场景', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'slider' } });
+    const scenario = wrapper.get('[data-testid="slider-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-slider-wrapper')).toHaveLength(5);
+    expect(scenario.findAll('[role="slider"]')).toHaveLength(7);
+    expect(scenario.get('[data-parity-target="slider-disabled"]').classes()).toContain(
+      'semi-slider-disabled',
+    );
+    expect(scenario.findAll('.semi-slider-mark')).toHaveLength(5);
+    expect(scenario.find('.semi-slider-vertical-wrapper').exists()).toBe(true);
+    await scenario.get('[data-parity-target="slider-basic"] [role="slider"]').trigger('keydown', {
+      key: 'ArrowRight',
+    });
+    expect(scenario.get('output').text()).toContain('basic:31');
+  });
 });

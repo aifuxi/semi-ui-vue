@@ -22,6 +22,7 @@ import RadioScenario from './components/RadioScenario.vue';
 import RatingScenario from './components/RatingScenario.vue';
 import ResizableScenario from './components/ResizableScenario.vue';
 import SelectScenario from './components/SelectScenario.vue';
+import SliderScenario from './components/SliderScenario.vue';
 import SpaceScenario from './components/SpaceScenario.vue';
 import SwitchScenario from './components/SwitchScenario.vue';
 import TooltipScenario from './components/TooltipScenario.vue';
@@ -88,6 +89,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <RatingScenario v-else-if="scenario.id === 'rating'" />
       <ResizableScenario v-else-if="scenario.id === 'resizable'" />
       <SelectScenario v-else-if="scenario.id === 'select'" />
+      <SliderScenario v-else-if="scenario.id === 'slider'" :direction="props.direction" />
       <SpaceScenario v-else-if="scenario.id === 'space'" />
       <SwitchScenario v-else-if="scenario.id === 'switch'" />
       <TooltipScenario v-else-if="scenario.id === 'tooltip'" />

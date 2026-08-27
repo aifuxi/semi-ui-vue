@@ -136,6 +136,19 @@ describe('parity infrastructure contract', () => {
         REFERENCE_SOURCE_PATHS.ratingDocumentation,
       ]),
     );
+    expect(getParityScenario('slider')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.sliderPublicEntry,
+    });
+    expect(getParityScenario('slider').targets).toHaveLength(5);
+    expect(getParityScenario('slider').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.sliderFoundation,
+        REFERENCE_SOURCE_PATHS.sliderFoundationStyle,
+        REFERENCE_SOURCE_PATHS.sliderDocumentation,
+      ]),
+    );
   });
 
   it('records Icon and both generated asset packages as a complete parity scene', () => {

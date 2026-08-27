@@ -18,6 +18,7 @@ export const virtualRadioStyleId = 'virtual:workspace-radio-styles.css';
 export const virtualRatingStyleId = 'virtual:workspace-rating-styles.css';
 export const virtualResizableStyleId = 'virtual:workspace-resizable-styles.css';
 export const virtualSelectStyleId = 'virtual:workspace-select-styles.css';
+export const virtualSliderStyleId = 'virtual:workspace-slider-styles.css';
 export const virtualSpaceStyleId = 'virtual:workspace-space-styles.css';
 export const virtualSwitchStyleId = 'virtual:workspace-switch-styles.css';
 export const virtualTooltipStyleId = 'virtual:workspace-tooltip-styles.css';
@@ -38,6 +39,7 @@ const resolvedVirtualRadioStyleId = `\0${virtualRadioStyleId}`;
 const resolvedVirtualRatingStyleId = `\0${virtualRatingStyleId}`;
 const resolvedVirtualResizableStyleId = `\0${virtualResizableStyleId}`;
 const resolvedVirtualSelectStyleId = `\0${virtualSelectStyleId}`;
+const resolvedVirtualSliderStyleId = `\0${virtualSliderStyleId}`;
 const resolvedVirtualSpaceStyleId = `\0${virtualSpaceStyleId}`;
 const resolvedVirtualSwitchStyleId = `\0${virtualSwitchStyleId}`;
 const resolvedVirtualTooltipStyleId = `\0${virtualTooltipStyleId}`;
@@ -60,6 +62,7 @@ const radioStyleEntry = fileURLToPath(new URL('./src/radio.scss', import.meta.ur
 const ratingStyleEntry = fileURLToPath(new URL('./src/rating.scss', import.meta.url));
 const resizableStyleEntry = fileURLToPath(new URL('./src/resizable.scss', import.meta.url));
 const selectStyleEntry = fileURLToPath(new URL('./src/select.scss', import.meta.url));
+const sliderStyleEntry = fileURLToPath(new URL('./src/slider.scss', import.meta.url));
 const spaceStyleEntry = fileURLToPath(new URL('./src/space.scss', import.meta.url));
 const switchStyleEntry = fileURLToPath(new URL('./src/switch.scss', import.meta.url));
 const tooltipStyleEntry = fileURLToPath(new URL('./src/tooltip.scss', import.meta.url));
@@ -82,6 +85,7 @@ const styleEntries = new Map([
   [resolvedVirtualRatingStyleId, ratingStyleEntry],
   [resolvedVirtualResizableStyleId, resizableStyleEntry],
   [resolvedVirtualSelectStyleId, selectStyleEntry],
+  [resolvedVirtualSliderStyleId, sliderStyleEntry],
   [resolvedVirtualSpaceStyleId, spaceStyleEntry],
   [resolvedVirtualSwitchStyleId, switchStyleEntry],
   [resolvedVirtualTooltipStyleId, tooltipStyleEntry],
@@ -110,6 +114,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualRatingStyleId) return resolvedVirtualRatingStyleId;
       if (source === virtualResizableStyleId) return resolvedVirtualResizableStyleId;
       if (source === virtualSelectStyleId) return resolvedVirtualSelectStyleId;
+      if (source === virtualSliderStyleId) return resolvedVirtualSliderStyleId;
       if (source === virtualSpaceStyleId) return resolvedVirtualSpaceStyleId;
       if (source === virtualSwitchStyleId) return resolvedVirtualSwitchStyleId;
       if (source === virtualTooltipStyleId) return resolvedVirtualTooltipStyleId;

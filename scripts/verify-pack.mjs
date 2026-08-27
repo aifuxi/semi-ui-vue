@@ -252,6 +252,7 @@ try {
 	await import('@workspace/ui/layout');
 	await import('@workspace/ui/resizable');
 	await import('@workspace/ui/select');
+	await import('@workspace/ui/slider');
 	await import('@workspace/ui/space');
 	await import('@workspace/ui/switch');
 	await import('@workspace/ui/tooltip');
@@ -315,6 +316,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/select.css').endsWith('/dist/select.css')) {
 	  throw new Error('Select 逐组件样式导出未指向 dist/select.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/slider.css').endsWith('/dist/slider.css')) {
+	  throw new Error('Slider 逐组件样式导出未指向 dist/slider.css');
+	}
 	if (!import.meta.resolve('@workspace/theme-default/space.css').endsWith('/dist/space.css')) {
 	  throw new Error('Space 逐组件样式导出未指向 dist/space.css');
 	}
@@ -350,6 +354,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { Layout, LayoutContent, LayoutSider, type LayoutBreakpoint } from '@workspace/ui/layout';
 	import { Resizable, ResizeGroup, ResizeHandler, ResizeItem, type ResizeDirection, type ResizeSize } from '@workspace/ui/resizable';
 	import { Select, SelectOption, SelectOptionGroup, type SelectModelValue } from '@workspace/ui/select';
+	import { Slider, type SliderValue } from '@workspace/ui/slider';
 	import { Space, type SpaceAlign, type SpaceSpacingValue } from '@workspace/ui/space';
 	import { Switch, type SwitchSize } from '@workspace/ui/switch';
 	import { Tooltip, type TooltipPosition } from '@workspace/ui/tooltip';
@@ -418,6 +423,8 @@ h(Button, { type, htmlType: 'submit' });
 	    h(SelectOption, { value: 'douyin' }, () => '抖音'),
 	  ]),
 	]);
+	const sliderValue: SliderValue = [20, 60];
+	h(Slider, { modelValue: sliderValue, range: true, marks: { 20: 'low', 60: 'high' } });
 	const spaceAlign: SpaceAlign = 'baseline';
 	const spaceSpacing: SpaceSpacingValue = [12, 'loose'];
 	h(Space, { align: spaceAlign, spacing: spaceSpacing, wrap: true });
@@ -531,6 +538,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-select') || !themeCss.includes('.semi-select-option-list')) {
     throw new Error('安装后的默认主题缺少 Select 样式');
+  }
+  if (!themeCss.includes('.semi-slider')) {
+    throw new Error('安装后的默认主题缺少 Slider 样式');
   }
   if (!themeCss.includes('.semi-typography')) {
     throw new Error('安装后的默认主题缺少 Typography 样式');
@@ -704,6 +714,18 @@ h(Button, { type, htmlType: 'submit' });
     !ratingThemeCss.includes('.semi-icon-extra-large')
   ) {
     throw new Error('安装后的 Rating 逐组件样式缺少半星、尺寸、RTL 或 Icon 样式');
+  }
+  const sliderThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'slider.css'),
+    'utf8',
+  );
+  if (
+    !sliderThemeCss.includes('.semi-slider-handle-clicked') ||
+    !sliderThemeCss.includes('.semi-slider-vertical-wrapper') ||
+    !sliderThemeCss.includes('.semi-rtl .semi-slider') ||
+    !sliderThemeCss.includes('.semi-tooltip-wrapper')
+  ) {
+    throw new Error('安装后的 Slider 逐组件样式缺少拖拽、纵向、RTL 或 Tooltip 样式');
   }
   const layoutThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'layout.css'),

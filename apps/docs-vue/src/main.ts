@@ -16,6 +16,7 @@ import 'virtual:workspace-rating-styles.css';
 import 'virtual:workspace-layout-styles.css';
 import 'virtual:workspace-resizable-styles.css';
 import 'virtual:workspace-select-styles.css';
+import 'virtual:workspace-slider-styles.css';
 import 'virtual:workspace-space-styles.css';
 import 'virtual:workspace-switch-styles.css';
 import 'virtual:workspace-tooltip-styles.css';

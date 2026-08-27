@@ -53,6 +53,9 @@ export default defineConfig({
       '@semi-v2.102.0/rating': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiRatingStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/slider': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiSliderStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/input-group': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiInputGroupStub.tsx', import.meta.url),
       ),
