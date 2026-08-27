@@ -10,6 +10,7 @@ const workspaceRoot = fileURLToPath(new URL('../..', import.meta.url));
 const upstreamPackages = path.join(workspaceRoot, 'vendor/semi-design/packages');
 const autoCompletePublicEntry = path.join(upstreamPackages, 'semi-ui/autoComplete/index.tsx');
 const buttonPublicEntry = path.join(upstreamPackages, 'semi-ui/button/index.tsx');
+const checkboxPublicEntry = path.join(upstreamPackages, 'semi-ui/checkbox/index.tsx');
 const configProviderPublicEntry = path.join(upstreamPackages, 'semi-ui/configProvider/index.tsx');
 const buttonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/buttonGroup.tsx');
 const splitButtonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/splitButtonGroup.tsx');
@@ -44,6 +45,8 @@ const capturedUpstreamStyleImports = new Set([
   '@douyinfe/semi-foundation/button/iconButton.scss',
   path.join(foundationRoot, 'button/button.scss'),
   path.join(foundationRoot, 'button/iconButton.scss'),
+  '@douyinfe/semi-foundation/checkbox/checkbox.scss',
+  path.join(foundationRoot, 'checkbox/checkbox.scss'),
   '@douyinfe/semi-foundation/divider/divider.scss',
   path.join(foundationRoot, 'divider/divider.scss'),
   '@douyinfe/semi-foundation/floatButton/floatButton.scss',
@@ -124,6 +127,7 @@ export default defineConfig({
     alias: [
       { find: '@semi-v2.102.0/auto-complete', replacement: autoCompletePublicEntry },
       { find: '@semi-v2.102.0/button', replacement: buttonPublicEntry },
+      { find: '@semi-v2.102.0/checkbox', replacement: checkboxPublicEntry },
       { find: '@semi-v2.102.0/config-provider', replacement: configProviderPublicEntry },
       { find: '@semi-v2.102.0/button-group', replacement: buttonGroupEntry },
       { find: '@semi-v2.102.0/split-button-group', replacement: splitButtonGroupEntry },

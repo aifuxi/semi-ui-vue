@@ -237,6 +237,7 @@ try {
     path.join(consumerRoot, 'smoke.mjs'),
     `await Promise.all(${JSON.stringify(javascriptPackages)}.map(packageName => import(packageName)));
 	await import('@workspace/ui/button');
+	await import('@workspace/ui/checkbox');
 	await import('@workspace/ui/auto-complete');
 	await import('@workspace/ui/config-provider');
 	await import('@workspace/ui/divider');
@@ -263,6 +264,9 @@ const cssTheme = import.meta.resolve('@workspace/theme-default/index.css');
 if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 index.css');
 	if (!import.meta.resolve('@workspace/theme-default/button.css').endsWith('/dist/button.css')) {
 	  throw new Error('Button 逐组件样式导出未指向 dist/button.css');
+	}
+	if (!import.meta.resolve('@workspace/theme-default/checkbox.css').endsWith('/dist/checkbox.css')) {
+	  throw new Error('Checkbox 逐组件样式导出未指向 dist/checkbox.css');
 	}
 	if (!import.meta.resolve('@workspace/theme-default/auto-complete.css').endsWith('/dist/auto-complete.css')) {
 	  throw new Error('AutoComplete 逐组件样式导出未指向 dist/auto-complete.css');
@@ -312,6 +316,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
     `${javascriptPackages.map((packageName) => `import '${packageName}';`).join('\n')}
 	import { AutoComplete, AutoCompleteOption, type AutoCompleteModelValue } from '@workspace/ui/auto-complete';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
+	import { Checkbox, CheckboxGroup, type CheckboxType, type CheckboxValue } from '@workspace/ui/checkbox';
 	import { ConfigConsumer, ConfigProvider, defaultResponsiveMap, type Breakpoint } from '@workspace/ui/config-provider';
 	import { Divider, type DividerAlign } from '@workspace/ui/divider';
 	import { FloatButton, FloatButtonGroup, type FloatButtonShape } from '@workspace/ui/float-button';
@@ -332,6 +337,10 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { h } from 'vue';
 const type: ButtonType = 'primary';
 h(Button, { type, htmlType: 'submit' });
+	const checkboxType: CheckboxType = 'card';
+	const checkboxValue: CheckboxValue = 'semi';
+	h(Checkbox, { modelValue: true, type: checkboxType, value: checkboxValue }, () => 'Semi');
+	h(CheckboxGroup, { modelValue: [checkboxValue], options: ['semi', { label: 'Vue', value: 'vue' }] });
 	const autoCompleteValue: AutoCompleteModelValue = 'semi';
 	h(AutoComplete, { modelValue: autoCompleteValue, data: ['semi', { value: 'vue', label: 'Vue' }] });
 	h(AutoCompleteOption, { value: 'semi', focused: true }, () => 'Semi');
@@ -436,6 +445,9 @@ h(Button, { type, htmlType: 'submit' });
   if (!themeCss.includes('.semi-divider')) {
     throw new Error('安装后的默认主题缺少 Divider 样式');
   }
+  if (!themeCss.includes('.semi-checkbox') || !themeCss.includes('.semi-checkboxGroup')) {
+    throw new Error('安装后的默认主题缺少 Checkbox 或 CheckboxGroup 样式');
+  }
   if (
     !themeCss.includes('.semi-autocomplete') ||
     !themeCss.includes('.semi-autocomplete-option-list')
@@ -478,6 +490,18 @@ h(Button, { type, htmlType: 'submit' });
   );
   if (!buttonThemeCss.includes('.semi-button-split')) {
     throw new Error('安装后的 Button 逐组件样式缺少 SplitButtonGroup 样式');
+  }
+  const checkboxThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'checkbox.css'),
+    'utf8',
+  );
+  if (
+    !checkboxThemeCss.includes('.semi-checkbox-indeterminate') ||
+    !checkboxThemeCss.includes('.semi-checkbox-cardType_checked') ||
+    !checkboxThemeCss.includes('.semi-checkboxGroup-horizontal') ||
+    !checkboxThemeCss.includes('.semi-icon-default')
+  ) {
+    throw new Error('安装后的 Checkbox 逐组件样式缺少 Group、卡片、部分选中或 Icon 样式');
   }
   const autoCompleteThemeCss = await readFile(
     path.join(

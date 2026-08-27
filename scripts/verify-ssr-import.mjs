@@ -54,6 +54,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/auto-complete/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'button', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/button/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'checkbox', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/checkbox/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'config-provider', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/config-provider/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'divider', 'index.js')).href);

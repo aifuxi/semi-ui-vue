@@ -50,6 +50,24 @@ describe('parity infrastructure contract', () => {
     expect(assertScenarioComparable('divider').targets).toHaveLength(8);
   });
 
+  it('records Checkbox, Group, Foundation, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('checkbox')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.checkboxPublicEntry,
+    });
+    expect(assertScenarioComparable('checkbox').targets).toHaveLength(8);
+    expect(getParityScenario('checkbox').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.checkboxEntry,
+        REFERENCE_SOURCE_PATHS.checkboxGroupEntry,
+        REFERENCE_SOURCE_PATHS.checkboxFoundation,
+        REFERENCE_SOURCE_PATHS.checkboxFoundationStyle,
+        REFERENCE_SOURCE_PATHS.checkboxDocumentation,
+      ]),
+    );
+  });
+
   it('records Icon and both generated asset packages as a complete parity scene', () => {
     expect(getParityScenario('icon')).toMatchObject({
       referenceStatus: 'ready',

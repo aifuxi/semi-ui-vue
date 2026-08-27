@@ -24,6 +24,57 @@ declare module '@semi-v2.102.0/button' {
   export default Button;
 }
 
+declare module '@semi-v2.102.0/checkbox' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export type CheckboxType = 'default' | 'card' | 'pureCard';
+  export interface CheckboxEvent {
+    target: { checked: boolean; value?: unknown };
+  }
+  export interface CheckboxProps {
+    'aria-label'?: string;
+    checked?: boolean;
+    children?: ReactNode;
+    className?: string;
+    defaultChecked?: boolean;
+    disabled?: boolean;
+    extra?: ReactNode;
+    indeterminate?: boolean;
+    onChange?: (event: CheckboxEvent) => void;
+    style?: CSSProperties;
+    type?: CheckboxType;
+    value?: unknown;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+  export interface CheckboxGroupProps {
+    'aria-label'?: string;
+    children?: ReactNode;
+    defaultValue?: unknown[];
+    direction?: 'horizontal' | 'vertical';
+    disabled?: boolean;
+    onChange?: (value: unknown[]) => void;
+    options?: Array<
+      | string
+      | {
+          className?: string;
+          disabled?: boolean;
+          extra?: ReactNode;
+          label?: ReactNode;
+          style?: CSSProperties;
+          value: unknown;
+        }
+    >;
+    type?: CheckboxType;
+    value?: unknown[];
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+  type CheckboxComponent = ComponentType<CheckboxProps> & {
+    Group: ComponentType<CheckboxGroupProps>;
+  };
+  const Checkbox: CheckboxComponent;
+  export default Checkbox;
+}
+
 declare module '@semi-v2.102.0/config-provider' {
   import type { ComponentType, ReactNode } from 'react';
 

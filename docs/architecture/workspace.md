@@ -67,7 +67,9 @@ Select 是第十三个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/sel
 
 AutoComplete 是第十四个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/auto-complete/` 提供受控/非受控输入、动态候选、对象数据、自定义候选、键盘/焦点与 Portal，`packages/foundation-integration/src/auto-complete.js` 是固定 AutoComplete Foundation 的唯一运行时入口，`packages/theme-default/auto-complete.css` 包含 Input、Spin、Popover、候选项、动效和 RTL 样式。完整矩阵见 `docs/components/auto-complete/`。
 
-Foundation 集成包已建立 Resizable、Typography、Switch 与 Tooltip 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。后续仍必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
+Checkbox 是第十五个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/checkbox/` 提供 Checkbox、CheckboxGroup、原生 `v-model`、受控/非受控状态、字符串与对象 options、键盘/focus-visible、ARIA 和 RTL；`packages/foundation-integration/src/checkbox.js` 是固定 Checkbox 与 CheckboxGroup Foundation 的唯一运行时入口，`packages/theme-default/checkbox.css` 包含 Checkbox、Card、PureCard、Addon、Extra、禁用/悬浮/选中状态和 RTL 样式。完整矩阵见 `docs/components/checkbox/`。
+
+Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete 与 Checkbox 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。后续仍必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。
 

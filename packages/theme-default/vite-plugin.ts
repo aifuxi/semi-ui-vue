@@ -4,6 +4,7 @@ import sass from 'sass';
 
 export const virtualAutoCompleteStyleId = 'virtual:workspace-auto-complete-styles.css';
 export const virtualButtonStyleId = 'virtual:workspace-button-styles.css';
+export const virtualCheckboxStyleId = 'virtual:workspace-checkbox-styles.css';
 export const virtualConfigProviderStyleId = 'virtual:workspace-config-provider-styles.css';
 export const virtualDividerStyleId = 'virtual:workspace-divider-styles.css';
 export const virtualFloatButtonStyleId = 'virtual:workspace-float-button-styles.css';
@@ -18,6 +19,7 @@ export const virtualTooltipStyleId = 'virtual:workspace-tooltip-styles.css';
 export const virtualTypographyStyleId = 'virtual:workspace-typography-styles.css';
 const resolvedVirtualAutoCompleteStyleId = `\0${virtualAutoCompleteStyleId}`;
 const resolvedVirtualButtonStyleId = `\0${virtualButtonStyleId}`;
+const resolvedVirtualCheckboxStyleId = `\0${virtualCheckboxStyleId}`;
 const resolvedVirtualConfigProviderStyleId = `\0${virtualConfigProviderStyleId}`;
 const resolvedVirtualDividerStyleId = `\0${virtualDividerStyleId}`;
 const resolvedVirtualFloatButtonStyleId = `\0${virtualFloatButtonStyleId}`;
@@ -32,6 +34,7 @@ const resolvedVirtualTooltipStyleId = `\0${virtualTooltipStyleId}`;
 const resolvedVirtualTypographyStyleId = `\0${virtualTypographyStyleId}`;
 const autoCompleteStyleEntry = fileURLToPath(new URL('./src/auto-complete.scss', import.meta.url));
 const buttonStyleEntry = fileURLToPath(new URL('./src/button.scss', import.meta.url));
+const checkboxStyleEntry = fileURLToPath(new URL('./src/checkbox.scss', import.meta.url));
 const configProviderStyleEntry = fileURLToPath(
   new URL('./src/config-provider.scss', import.meta.url),
 );
@@ -50,6 +53,7 @@ const typographyStyleEntry = fileURLToPath(new URL('./src/typography.scss', impo
 const styleEntries = new Map([
   [resolvedVirtualAutoCompleteStyleId, autoCompleteStyleEntry],
   [resolvedVirtualButtonStyleId, buttonStyleEntry],
+  [resolvedVirtualCheckboxStyleId, checkboxStyleEntry],
   [resolvedVirtualConfigProviderStyleId, configProviderStyleEntry],
   [resolvedVirtualDividerStyleId, dividerStyleEntry],
   [resolvedVirtualFloatButtonStyleId, floatButtonStyleEntry],
@@ -72,6 +76,7 @@ export function compilePinnedComponentStyles(): Plugin {
     resolveId(source) {
       if (source === virtualAutoCompleteStyleId) return resolvedVirtualAutoCompleteStyleId;
       if (source === virtualButtonStyleId) return resolvedVirtualButtonStyleId;
+      if (source === virtualCheckboxStyleId) return resolvedVirtualCheckboxStyleId;
       if (source === virtualConfigProviderStyleId) return resolvedVirtualConfigProviderStyleId;
       if (source === virtualDividerStyleId) return resolvedVirtualDividerStyleId;
       if (source === virtualFloatButtonStyleId) return resolvedVirtualFloatButtonStyleId;

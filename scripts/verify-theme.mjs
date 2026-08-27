@@ -23,6 +23,20 @@ const autoCompleteCssPath = path.join(
 );
 const buttonEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'button.scss');
 const buttonCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'button.css');
+const checkboxEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'checkbox.scss',
+);
+const checkboxCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'checkbox.css',
+);
 const configProviderEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -171,6 +185,7 @@ const css = await readFile(cssPath, 'utf8');
 const requiredSelectors = [
   '.semi-autocomplete',
   '.semi-button',
+  '.semi-checkbox',
   '.semi-divider',
   '.semi-floatButton',
   '.semi-row',
@@ -212,6 +227,33 @@ const buttonCss = await readFile(buttonCssPath, 'utf8');
 for (const selector of ['.semi-button', '.semi-button-group', '.semi-button-split']) {
   if (!buttonCss.includes(selector)) {
     throw new Error(`Button 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
+const expectedCheckboxImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/checkbox/checkbox.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const checkboxEntrySource = await readFile(checkboxEntryPath, 'utf8');
+const actualCheckboxImports = [...checkboxEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualCheckboxImports) !== JSON.stringify(expectedCheckboxImports)) {
+  throw new Error('Checkbox 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const checkboxCss = await readFile(checkboxCssPath, 'utf8');
+for (const selector of [
+  '.semi-checkbox-inner-checked',
+  '.semi-checkbox-indeterminate',
+  '.semi-checkbox-cardType_checked',
+  '.semi-checkboxGroup-horizontal',
+  '.semi-rtl .semi-checkbox',
+  '.semi-icon-default',
+]) {
+  if (!checkboxCss.includes(selector)) {
+    throw new Error(`Checkbox 逐组件样式产物缺少选择器：${selector}`);
   }
 }
 
@@ -552,5 +594,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 AutoComplete/Button/ConfigProvider/Divider/FloatButton/Grid/Icon/Layout/Resizable/Select/Space/Switch/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + autoCompleteCss.length + buttonCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + resizableCss.length + selectCss.length + spaceCss.length + switchCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Layout/Resizable/Select/Space/Switch/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + resizableCss.length + selectCss.length + spaceCss.length + switchCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

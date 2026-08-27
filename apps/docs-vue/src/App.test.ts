@@ -33,6 +33,23 @@ describe('Vue 对照工作台', () => {
     expect(wrapper.get('[data-parity-target="divider-content-left"]').text()).toBe('这是居左文字');
   });
 
+  it('通过公共 Checkbox 包渲染单项、组、辅助文本与卡片场景', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'checkbox' } });
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    const scenario = wrapper.get('[data-testid="checkbox-vue"]');
+    expect(scenario.findAll('.semi-checkbox')).toHaveLength(12);
+    expect(scenario.get('[data-parity-target="checkbox-indeterminate"]').classes()).toContain(
+      'semi-checkbox-indeterminate',
+    );
+    expect(scenario.get('[data-parity-target="checkbox-group-horizontal"]').classes()).toContain(
+      'semi-checkboxGroup-horizontal',
+    );
+    expect(scenario.findAll('.semi-checkbox-cardType')).toHaveLength(4);
+    await scenario.get('[data-parity-target="checkbox-basic"]').trigger('click');
+    expect(scenario.get('output').text()).toContain('basic:true');
+  });
+
   it('通过公开图标包渲染稳定、AI、Lab 与自定义 Icon 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'icon' } });
 

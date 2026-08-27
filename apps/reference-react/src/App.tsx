@@ -7,6 +7,7 @@ import {
 import { AutoCompleteScenario } from './scenarios/AutoCompleteScenario';
 import { ButtonTypesScenario } from './scenarios/ButtonTypesScenario';
 import { ButtonContractScenario } from './scenarios/ButtonContractScenario';
+import { CheckboxScenario } from './scenarios/CheckboxScenario';
 import { ConfigProviderScenario } from './scenarios/ConfigProviderScenario';
 import { DividerScenario } from './scenarios/DividerScenario';
 import { FloatButtonScenario } from './scenarios/FloatButtonScenario';
@@ -76,6 +77,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'auto-complete' ? <AutoCompleteScenario /> : null}
         {scenario.id === 'button-types' ? <ButtonTypesScenario /> : null}
         {scenario.id === 'button-contract' ? <ButtonContractScenario /> : null}
+        {scenario.id === 'checkbox' ? <CheckboxScenario /> : null}
         {scenario.id === 'config-provider' ? <ConfigProviderScenario /> : null}
         {scenario.id === 'divider' ? <DividerScenario /> : null}
         {scenario.id === 'float-button' ? <FloatButtonScenario /> : null}

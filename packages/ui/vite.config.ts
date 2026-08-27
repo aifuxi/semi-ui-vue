@@ -39,6 +39,7 @@ export default defineConfig({
           new URL('./src/auto-complete/index.ts', import.meta.url),
         ),
         'button/index': fileURLToPath(new URL('./src/button/index.ts', import.meta.url)),
+        'checkbox/index': fileURLToPath(new URL('./src/checkbox/index.ts', import.meta.url)),
         'config-provider/index': fileURLToPath(
           new URL('./src/config-provider/index.ts', import.meta.url),
         ),

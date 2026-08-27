@@ -28,6 +28,16 @@ describe('React 参考工作台', () => {
     expect(html).toContain('这是居右文字');
   });
 
+  it('从固定 Checkbox 与 Group Adapter 渲染单项、组与卡片场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="checkbox" />);
+
+    expect(html).toContain('data-parity-scenario="checkbox"');
+    expect(html).toContain('data-parity-target="checkbox-basic"');
+    expect(html).toContain('semi-checkbox-indeterminate');
+    expect(html).toContain('semi-checkboxGroup-horizontal');
+    expect(html).toContain('semi-checkbox-cardType');
+  });
+
   it('从固定 Icon、稳定图标和 Lab 入口渲染完整参考场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="icon" />);
 
