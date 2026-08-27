@@ -38,6 +38,17 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-checkbox-cardType');
   });
 
+  it('从固定 Input、InputGroup 与 TextArea Adapter 渲染完整参考场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="input" />);
+
+    expect(html).toContain('data-parity-scenario="input"');
+    expect(html).toContain('input-target-basic');
+    expect(html).toContain('semi-input-modebtn');
+    expect(html).toContain('semi-input-group-wrapper');
+    expect(html).toContain('semi-input-textarea-counter');
+    expect(html).toContain('semi-input-textarea-lineNumber');
+  });
+
   it('从固定 Icon、稳定图标和 Lab 入口渲染完整参考场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="icon" />);
 

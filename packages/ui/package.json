@@ -50,6 +50,10 @@
       "types": "./dist/icon/index.d.ts",
       "import": "./dist/icon/index.js"
     },
+    "./input": {
+      "types": "./dist/input/index.d.ts",
+      "import": "./dist/input/index.js"
+    },
     "./layout": {
       "types": "./dist/layout/index.d.ts",
       "import": "./dist/layout/index.js"

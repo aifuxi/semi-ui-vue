@@ -24,6 +24,86 @@ declare module '@semi-v2.102.0/button' {
   export default Button;
 }
 
+declare module '@semi-v2.102.0/input' {
+  import type { ComponentType, CSSProperties, InputHTMLAttributes, ReactNode } from 'react';
+
+  export interface InputProps extends Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    'onChange' | 'prefix' | 'size'
+  > {
+    addonAfter?: ReactNode;
+    addonBefore?: ReactNode;
+    borderless?: boolean;
+    clearIcon?: ReactNode;
+    defaultValue?: string | number;
+    hideSuffix?: boolean;
+    inputStyle?: CSSProperties;
+    insetLabel?: ReactNode;
+    mode?: 'password';
+    onChange?: (value: string, event: React.ChangeEvent<HTMLInputElement>) => void;
+    onClear?: (event: React.MouseEvent<HTMLDivElement>) => void;
+    prefix?: ReactNode;
+    readonly?: boolean;
+    showClear?: boolean;
+    size?: 'small' | 'default' | 'large';
+    suffix?: ReactNode;
+    validateStatus?: 'default' | 'warning' | 'error' | 'success';
+    value?: string | number;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+  const Input: ComponentType<InputProps>;
+  export default Input;
+}
+
+declare module '@semi-v2.102.0/input-group' {
+  import type { ComponentType, CSSProperties, FocusEvent, ReactNode } from 'react';
+
+  export interface InputGroupProps {
+    children?: ReactNode;
+    className?: string;
+    disabled?: boolean;
+    label?: {
+      name?: string;
+      required?: boolean;
+      text?: ReactNode;
+    };
+    labelPosition?: 'top' | 'left';
+    onBlur?: (event: FocusEvent<HTMLSpanElement>) => void;
+    onFocus?: (event: FocusEvent<HTMLSpanElement>) => void;
+    size?: 'small' | 'default' | 'large';
+    style?: CSSProperties;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+  const InputGroup: ComponentType<InputGroupProps>;
+  export default InputGroup;
+}
+
+declare module '@semi-v2.102.0/textarea' {
+  import type { ComponentType, CSSProperties, TextareaHTMLAttributes } from 'react';
+
+  export interface TextAreaProps extends Omit<
+    TextareaHTMLAttributes<HTMLTextAreaElement>,
+    'onChange' | 'onResize'
+  > {
+    autosize?: boolean | { minRows?: number; maxRows?: number };
+    borderless?: boolean;
+    maxCount?: number;
+    onChange?: (value: string, event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    onClear?: (event: React.MouseEvent<HTMLDivElement>) => void;
+    onResize?: (data: { height: number; width?: number }) => void;
+    readonly?: boolean;
+    resize?: 'none' | 'both' | 'horizontal' | 'vertical' | 'block' | 'inline';
+    showClear?: boolean;
+    showCounter?: boolean;
+    showLineNumber?: boolean;
+    textareaStyle?: CSSProperties;
+    validateStatus?: 'default' | 'warning' | 'error' | 'success';
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+  const TextArea: ComponentType<TextAreaProps>;
+  export default TextArea;
+}
+
 declare module '@semi-v2.102.0/checkbox' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 

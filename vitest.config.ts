@@ -38,6 +38,15 @@ export default defineConfig({
       '@semi-v2.102.0/icon': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiIconStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/input': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiInputStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/input-group': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiInputGroupStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/textarea': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiTextAreaStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/grid': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiGridStub.tsx', import.meta.url),
       ),

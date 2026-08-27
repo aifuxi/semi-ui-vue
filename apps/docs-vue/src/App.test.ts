@@ -50,6 +50,20 @@ describe('Vue 对照工作台', () => {
     expect(scenario.get('output').text()).toContain('basic:true');
   });
 
+  it('通过公共 Input 包渲染输入、组合、密码与 TextArea 场景', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'input' } });
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    const scenario = wrapper.get('[data-testid="input-vue"]');
+    expect(scenario.findAll('.semi-input-wrapper')).toHaveLength(10);
+    expect(scenario.findAll('.semi-input-textarea-wrapper')).toHaveLength(2);
+    expect(scenario.get('.semi-input-modebtn').attributes('role')).toBe('button');
+    expect(scenario.get('.semi-input-group').attributes('role')).toBe('group');
+    expect(scenario.findAll('.semi-input-textarea-lineNumber-item')).toHaveLength(3);
+    await scenario.get('.input-target-basic .semi-input').setValue('Vue');
+    expect(scenario.get('output').text()).toContain('input:Vue');
+  });
+
   it('通过公开图标包渲染稳定、AI、Lab 与自定义 Icon 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'icon' } });
 

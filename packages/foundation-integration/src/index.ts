@@ -4,6 +4,8 @@ export { AutoCompleteFoundation } from './auto-complete.js';
 export type { AutoCompleteAdapter } from './auto-complete.js';
 export { CheckboxFoundation, CheckboxGroupFoundation } from './checkbox.js';
 export type { CheckboxAdapter, CheckboxGroupAdapter } from './checkbox.js';
+export { InputFoundation, TextAreaFoundation } from './input.js';
+export type { InputAdapter, TextAreaAdapter } from './input.js';
 export * from './resizable.js';
 export { SelectFoundation } from './select.js';
 export type { SelectAdapter } from './select.js';

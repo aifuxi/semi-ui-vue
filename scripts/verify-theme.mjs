@@ -75,6 +75,8 @@ const floatButtonCssPath = path.join(
 );
 const iconEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'icon.scss');
 const iconCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'icon.css');
+const inputEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'input.scss');
+const inputCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'input.css');
 const gridEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'grid.scss');
 const gridCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'grid.css');
 const layoutEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'layout.scss');
@@ -327,6 +329,38 @@ for (const selector of [
 ]) {
   if (!iconCss.includes(selector)) {
     throw new Error(`Icon 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
+const expectedInputImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/input/input.scss'),
+  vendorImport('semi-foundation/input/textarea.scss'),
+  vendorImport('semi-foundation/form/form.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const inputEntrySource = await readFile(inputEntryPath, 'utf8');
+const actualInputImports = [...inputEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualInputImports) !== JSON.stringify(expectedInputImports)) {
+  throw new Error('Input 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const inputCss = await readFile(inputCssPath, 'utf8');
+for (const selector of [
+  '.semi-input-wrapper',
+  '.semi-input-clearbtn',
+  '.semi-input-modebtn',
+  '.semi-input-textarea-counter',
+  '.semi-input-textarea-lineNumber',
+  '.semi-input-group',
+  '.semi-form-field-label',
+  '.semi-rtl .semi-input',
+  '.semi-icon-default',
+]) {
+  if (!inputCss.includes(selector)) {
+    throw new Error(`Input 逐组件样式产物缺少选择器：${selector}`);
   }
 }
 
@@ -594,5 +628,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Layout/Resizable/Select/Space/Switch/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + resizableCss.length + selectCss.length + spaceCss.length + switchCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/Layout/Resizable/Select/Space/Switch/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + layoutCss.length + resizableCss.length + selectCss.length + spaceCss.length + switchCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

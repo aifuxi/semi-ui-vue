@@ -14,6 +14,7 @@ import { FloatButtonScenario } from './scenarios/FloatButtonScenario';
 import { GridScenario } from './scenarios/GridScenario';
 import { IconScenario } from './scenarios/IconScenario';
 import { LayoutScenario } from './scenarios/LayoutScenario';
+import { InputScenario } from './scenarios/InputScenario';
 import { ResizableScenario } from './scenarios/ResizableScenario';
 import { SelectScenario } from './scenarios/SelectScenario';
 import { SpaceScenario } from './scenarios/SpaceScenario';
@@ -84,6 +85,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'grid' ? <GridScenario /> : null}
         {scenario.id === 'icon' ? <IconScenario /> : null}
         {scenario.id === 'layout' ? <LayoutScenario /> : null}
+        {scenario.id === 'input' ? <InputScenario /> : null}
         {scenario.id === 'resizable' ? <ResizableScenario /> : null}
         {scenario.id === 'select' ? <SelectScenario /> : null}
         {scenario.id === 'space' ? <SpaceScenario /> : null}

@@ -244,6 +244,7 @@ try {
 	await import('@workspace/ui/float-button');
 	await import('@workspace/ui/grid');
 	await import('@workspace/ui/icon');
+	await import('@workspace/ui/input');
 	await import('@workspace/ui/layout');
 	await import('@workspace/ui/resizable');
 	await import('@workspace/ui/select');
@@ -286,6 +287,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/icon.css').endsWith('/dist/icon.css')) {
 	  throw new Error('Icon 逐组件样式导出未指向 dist/icon.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/input.css').endsWith('/dist/input.css')) {
+	  throw new Error('Input 逐组件样式导出未指向 dist/input.css');
+	}
 	if (!import.meta.resolve('@workspace/theme-default/layout.css').endsWith('/dist/layout.css')) {
 	  throw new Error('Layout 逐组件样式导出未指向 dist/layout.css');
 	}
@@ -322,6 +326,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { FloatButton, FloatButtonGroup, type FloatButtonShape } from '@workspace/ui/float-button';
 	import { Col, Row, type GridGutter } from '@workspace/ui/grid';
 	import { Icon } from '@workspace/ui/icon';
+	import { Input, InputGroup, TextArea, type InputSize, type InputValue, type TextAreaResize } from '@workspace/ui/input';
 	import { Layout, LayoutContent, LayoutSider, type LayoutBreakpoint } from '@workspace/ui/layout';
 	import { Resizable, ResizeGroup, ResizeHandler, ResizeItem, type ResizeDirection, type ResizeSize } from '@workspace/ui/resizable';
 	import { Select, SelectOption, SelectOptionGroup, type SelectModelValue } from '@workspace/ui/select';
@@ -358,6 +363,12 @@ h(Button, { type, htmlType: 'submit' });
 	h(Row, { gutter: [gridGutter, 16], type: 'flex' }, () => h(Col, { span: 8, md: { span: 6, offset: 2 } }));
 	const iconSize: IconSize = 'large';
 	h(Icon, { size: iconSize });
+	const inputSize: InputSize = 'large';
+	const inputValue: InputValue = 'consumer';
+	h(Input, { modelValue: inputValue, size: inputSize, showClear: true, 'onUpdate:modelValue': (_value: InputValue) => undefined });
+	h(InputGroup, { label: { text: 'Name', required: true } }, () => h(Input));
+	const textareaResize: TextAreaResize = 'vertical';
+	h(TextArea, { modelValue: 'consumer', resize: textareaResize, showClear: true, maxCount: 20 });
 	const layoutBreakpoint: LayoutBreakpoint = 'md';
 	h(Layout, { hasSider: true }, () => [
 	  h(LayoutSider, { breakpoint: [layoutBreakpoint] }),
@@ -456,6 +467,13 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-icon')) {
     throw new Error('安装后的默认主题缺少 Icon 样式');
+  }
+  if (
+    !themeCss.includes('.semi-input-wrapper') ||
+    !themeCss.includes('.semi-input-textarea-wrapper') ||
+    !themeCss.includes('.semi-input-group')
+  ) {
+    throw new Error('安装后的默认主题缺少 Input、TextArea 或 InputGroup 样式');
   }
   if (!themeCss.includes('.semi-space')) {
     throw new Error('安装后的默认主题缺少 Space 样式');
@@ -576,6 +594,23 @@ h(Button, { type, htmlType: 'submit' });
     !iconThemeCss.includes('.semi-icon-spinning')
   ) {
     throw new Error('安装后的 Icon 逐组件样式缺少尺寸或旋转样式');
+  }
+  const inputThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'input.css'),
+    'utf8',
+  );
+  if (
+    !inputThemeCss.includes('.semi-input-clearbtn') ||
+    !inputThemeCss.includes('.semi-input-modebtn') ||
+    !inputThemeCss.includes('.semi-input-textarea-counter') ||
+    !inputThemeCss.includes('.semi-input-textarea-lineNumber') ||
+    !inputThemeCss.includes('.semi-input-group') ||
+    !inputThemeCss.includes('.semi-form-field-label') ||
+    !inputThemeCss.includes('.semi-icon-default')
+  ) {
+    throw new Error(
+      '安装后的 Input 逐组件样式缺少清除、密码、计数、行号、Group、Label 或 Icon 样式',
+    );
   }
   const layoutThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'layout.css'),

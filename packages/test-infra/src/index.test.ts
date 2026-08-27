@@ -68,6 +68,26 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Input, InputGroup, TextArea, both Foundations, styles and docs as complete', () => {
+    expect(getParityScenario('input')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.inputPublicEntry,
+    });
+    expect(assertScenarioComparable('input').targets).toHaveLength(10);
+    expect(getParityScenario('input').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.inputGroupEntry,
+        REFERENCE_SOURCE_PATHS.textAreaEntry,
+        REFERENCE_SOURCE_PATHS.inputFoundation,
+        REFERENCE_SOURCE_PATHS.textAreaFoundation,
+        REFERENCE_SOURCE_PATHS.inputFoundationStyle,
+        REFERENCE_SOURCE_PATHS.textAreaFoundationStyle,
+        REFERENCE_SOURCE_PATHS.inputDocumentation,
+      ]),
+    );
+  });
+
   it('records Icon and both generated asset packages as a complete parity scene', () => {
     expect(getParityScenario('icon')).toMatchObject({
       referenceStatus: 'ready',
