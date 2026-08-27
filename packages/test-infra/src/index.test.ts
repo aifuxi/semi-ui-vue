@@ -104,6 +104,26 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Radio Adapter, Group/Inner Foundation, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('radio')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.radioPublicEntry,
+    });
+    expect(assertScenarioComparable('radio').targets).toHaveLength(8);
+    expect(getParityScenario('radio').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.radioEntry,
+        REFERENCE_SOURCE_PATHS.radioGroupEntry,
+        REFERENCE_SOURCE_PATHS.radioInnerEntry,
+        REFERENCE_SOURCE_PATHS.radioFoundation,
+        REFERENCE_SOURCE_PATHS.radioGroupFoundation,
+        REFERENCE_SOURCE_PATHS.radioFoundationStyle,
+        REFERENCE_SOURCE_PATHS.radioDocumentation,
+      ]),
+    );
+  });
+
   it('records Icon and both generated asset packages as a complete parity scene', () => {
     expect(getParityScenario('icon')).toMatchObject({
       referenceStatus: 'ready',

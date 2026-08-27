@@ -55,6 +55,7 @@ export default defineConfig({
         ),
         'layout/index': fileURLToPath(new URL('./src/layout/index.ts', import.meta.url)),
         'pin-code/index': fileURLToPath(new URL('./src/pin-code/index.ts', import.meta.url)),
+        'radio/index': fileURLToPath(new URL('./src/radio/index.ts', import.meta.url)),
         'resizable/index': fileURLToPath(new URL('./src/resizable/index.ts', import.meta.url)),
         'select/index': fileURLToPath(new URL('./src/select/index.ts', import.meta.url)),
         'space/index': fileURLToPath(new URL('./src/space/index.ts', import.meta.url)),

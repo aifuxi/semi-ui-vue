@@ -105,6 +105,58 @@ declare module '@semi-v2.102.0/pin-code' {
   export default PinCode;
 }
 
+declare module '@semi-v2.102.0/radio' {
+  import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
+
+  export type RadioValue = string | number | boolean;
+  export interface RadioChangeEvent {
+    target: { checked: boolean; value?: RadioValue | undefined };
+  }
+  export interface RadioProps extends Omit<HTMLAttributes<HTMLLabelElement>, 'onChange'> {
+    addonClassName?: string;
+    addonId?: string;
+    addonStyle?: CSSProperties;
+    autoFocus?: boolean;
+    checked?: boolean;
+    defaultChecked?: boolean;
+    disabled?: boolean;
+    displayMode?: '' | 'vertical';
+    extra?: ReactNode;
+    extraId?: string;
+    mode?: '' | 'advanced';
+    name?: string;
+    onChange?: (event: RadioChangeEvent) => void;
+    preventScroll?: boolean;
+    type?: 'default' | 'button' | 'card' | 'pureCard';
+    value?: RadioValue;
+  }
+  export interface RadioOption {
+    label?: ReactNode;
+    value?: RadioValue;
+    disabled?: boolean;
+    extra?: ReactNode;
+    style?: CSSProperties;
+    className?: string;
+  }
+  export interface RadioGroupProps extends Omit<
+    HTMLAttributes<HTMLDivElement>,
+    'defaultValue' | 'onChange'
+  > {
+    buttonSize?: 'small' | 'middle' | 'large';
+    defaultValue?: RadioValue;
+    direction?: 'horizontal' | 'vertical';
+    disabled?: boolean;
+    mode?: '' | 'advanced';
+    name?: string;
+    onChange?: (event: RadioChangeEvent) => void;
+    options?: Array<string | RadioOption>;
+    type?: 'default' | 'button' | 'card' | 'pureCard';
+    value?: RadioValue;
+  }
+  const Radio: ComponentType<RadioProps> & { Group: ComponentType<RadioGroupProps> };
+  export default Radio;
+}
+
 declare module '@semi-v2.102.0/input-group' {
   import type { ComponentType, CSSProperties, FocusEvent, ReactNode } from 'react';
 

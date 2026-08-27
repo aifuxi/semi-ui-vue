@@ -66,6 +66,10 @@
       "types": "./dist/pin-code/index.d.ts",
       "import": "./dist/pin-code/index.js"
     },
+    "./radio": {
+      "types": "./dist/radio/index.d.ts",
+      "import": "./dist/radio/index.js"
+    },
     "./resizable": {
       "types": "./dist/resizable/index.d.ts",
       "import": "./dist/resizable/index.js"

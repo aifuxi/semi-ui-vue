@@ -9,6 +9,7 @@ export * from './icon';
 export * from './input';
 export * from './input-number';
 export * from './pin-code';
+export * from './radio';
 export * from './layout';
 export * from './resizable';
 export * from './select';

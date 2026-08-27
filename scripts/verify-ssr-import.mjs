@@ -72,6 +72,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/input-number/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'pin-code', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/pin-code/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'radio', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/radio/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'layout', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/layout/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'resizable', 'index.js')).href);

@@ -247,6 +247,7 @@ try {
 	await import('@workspace/ui/input');
 	await import('@workspace/ui/input-number');
 	await import('@workspace/ui/pin-code');
+	await import('@workspace/ui/radio');
 	await import('@workspace/ui/layout');
 	await import('@workspace/ui/resizable');
 	await import('@workspace/ui/select');
@@ -298,6 +299,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/pin-code.css').endsWith('/dist/pin-code.css')) {
 	  throw new Error('PinCode 逐组件样式导出未指向 dist/pin-code.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/radio.css').endsWith('/dist/radio.css')) {
+	  throw new Error('Radio 逐组件样式导出未指向 dist/radio.css');
+	}
 	if (!import.meta.resolve('@workspace/theme-default/layout.css').endsWith('/dist/layout.css')) {
 	  throw new Error('Layout 逐组件样式导出未指向 dist/layout.css');
 	}
@@ -337,6 +341,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { Input, InputGroup, TextArea, type InputSize, type InputValue, type TextAreaResize } from '@workspace/ui/input';
 	import { InputNumber, type InputNumberValue } from '@workspace/ui/input-number';
 	import { PinCode, type PinCodeFormat } from '@workspace/ui/pin-code';
+	import { Radio, RadioGroup, type RadioType, type RadioValue } from '@workspace/ui/radio';
 	import { Layout, LayoutContent, LayoutSider, type LayoutBreakpoint } from '@workspace/ui/layout';
 	import { Resizable, ResizeGroup, ResizeHandler, ResizeItem, type ResizeDirection, type ResizeSize } from '@workspace/ui/resizable';
 	import { Select, SelectOption, SelectOptionGroup, type SelectModelValue } from '@workspace/ui/select';
@@ -383,6 +388,10 @@ h(Button, { type, htmlType: 'submit' });
 	h(InputNumber, { modelValue: inputNumberValue, precision: 1, currency: 'CNY' });
 	const pinCodeFormat: PinCodeFormat = 'mixed';
 	h(PinCode, { modelValue: 'A1b2', count: 4, format: pinCodeFormat, 'onUpdate:modelValue': (_value: string) => undefined });
+	const radioType: RadioType = 'card';
+	const radioValue: RadioValue = 'semi';
+	h(Radio, { modelValue: true, type: radioType, value: radioValue }, () => 'Semi');
+	h(RadioGroup, { modelValue: radioValue, options: ['semi', { label: 'Vue', value: 'vue' }] });
 	const layoutBreakpoint: LayoutBreakpoint = 'md';
 	h(Layout, { hasSider: true }, () => [
 	  h(LayoutSider, { breakpoint: [layoutBreakpoint] }),
@@ -491,6 +500,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-pincode-wrapper')) {
     throw new Error('安装后的默认主题缺少 PinCode 样式');
+  }
+  if (!themeCss.includes('.semi-radio') || !themeCss.includes('.semi-radioGroup')) {
+    throw new Error('安装后的默认主题缺少 Radio 或 RadioGroup 样式');
   }
   if (!themeCss.includes('.semi-space')) {
     throw new Error('安装后的默认主题缺少 Space 样式');
@@ -657,6 +669,19 @@ h(Button, { type, htmlType: 'submit' });
     !pinCodeThemeCss.includes('.semi-input-wrapper-large')
   ) {
     throw new Error('安装后的 PinCode 逐组件样式缺少根、尺寸或 Input 样式');
+  }
+  const radioThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'radio.css'),
+    'utf8',
+  );
+  if (
+    !radioThemeCss.includes('.semi-radio-buttonRadioGroup-large') ||
+    !radioThemeCss.includes('.semi-radio-cardRadioGroup_checked') ||
+    !radioThemeCss.includes('.semi-radioGroup-horizontal') ||
+    !radioThemeCss.includes('.semi-rtl .semi-radio') ||
+    !radioThemeCss.includes('.semi-icon-default')
+  ) {
+    throw new Error('安装后的 Radio 逐组件样式缺少 Group、按钮、卡片、RTL 或 Icon 样式');
   }
   const layoutThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'layout.css'),

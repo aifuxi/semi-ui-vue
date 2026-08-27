@@ -68,6 +68,16 @@ describe('React 参考工作台', () => {
     expect(html).toContain('disabled');
   });
 
+  it('从固定 Radio Adapter 渲染单项、组合、按钮和卡片场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="radio" />);
+
+    expect(html).toContain('data-parity-scenario="radio"');
+    expect(html).toContain('data-parity-target="radio-basic"');
+    expect(html).toContain('semi-radioGroup-buttonRadio');
+    expect(html).toContain('semi-radio-cardRadioGroup');
+    expect(html).toContain('semi-radio-inner-pureCardRadio');
+  });
+
   it('从固定 Icon、稳定图标和 Lab 入口渲染完整参考场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="icon" />);
 

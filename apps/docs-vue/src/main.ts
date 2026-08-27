@@ -11,6 +11,7 @@ import 'virtual:workspace-icon-styles.css';
 import 'virtual:workspace-input-styles.css';
 import 'virtual:workspace-input-number-styles.css';
 import 'virtual:workspace-pin-code-styles.css';
+import 'virtual:workspace-radio-styles.css';
 import 'virtual:workspace-layout-styles.css';
 import 'virtual:workspace-resizable-styles.css';
 import 'virtual:workspace-select-styles.css';

@@ -95,6 +95,24 @@ describe('Vue 对照工作台', () => {
     expect(scenario.get('output').text()).toContain('最近变化：7');
   });
 
+  it('通过公共 Radio 包渲染单项、组合、按钮、卡片与交互状态', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'radio' } });
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    const scenario = wrapper.get('[data-testid="radio-vue"]');
+    expect(scenario.findAll('.semi-radio')).toHaveLength(14);
+    expect(scenario.get('[data-parity-target="radio-button"]').classes()).toContain(
+      'semi-radioGroup-buttonRadio',
+    );
+    expect(scenario.get('[data-parity-target="radio-card"] .semi-radio').classes()).toContain(
+      'semi-radio-cardRadioGroup',
+    );
+    const basic = scenario.get('[data-parity-target="radio-basic"] input');
+    (basic.element as HTMLInputElement).checked = true;
+    await basic.trigger('change');
+    expect(scenario.get('output').text()).toContain('最近变化：single:true');
+  });
+
   it('通过公开图标包渲染稳定、AI、Lab 与自定义 Icon 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'icon' } });
 

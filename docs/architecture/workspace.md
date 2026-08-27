@@ -71,6 +71,10 @@ Checkbox 是第十五个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/c
 
 Input 是第十六个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/input/` 提供 Input、InputGroup 与 TextArea，覆盖受控/非受控与 `v-model`、前后缀/附加项、清除、密码键盘、IME、自定义长度、Group VNode 回退、计数、autosize、native resize、行号、ARIA 与 RTL；`packages/foundation-integration/src/input.js` 是固定 Input/TextArea Foundation 的唯一运行时入口，`packages/theme-default/input.css` 包含 Input、TextArea、Group Label 与 Icon 样式。完整矩阵见 `docs/components/input/`。
 
+InputNumber 是第十七个进入 `ready` 的 Vue 垂直切片，PinCode 是第十八个；两者分别覆盖数字格式/步进与分格验证码输入，完整矩阵见 `docs/components/input-number/` 和 `docs/components/pin-code/`。
+
+Radio 是第十九个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/radio/` 提供 Radio、RadioGroup、原生 `v-model`、字符串/对象 options、普通/advanced、button/card/pureCard、焦点、ARIA 与 RTL；`packages/foundation-integration/src/radio.js` 是固定 Radio、RadioInner 与 RadioGroup Foundation 的唯一运行时入口，`packages/theme-default/radio.css` 包含 Radio 与 IconRadio 样式。完整矩阵见 `docs/components/radio/`。
+
 Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox 与 Input 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。后续仍必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。

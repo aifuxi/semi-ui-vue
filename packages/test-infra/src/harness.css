@@ -658,6 +658,44 @@ p {
   line-height: 20px;
 }
 
+.radio-scenario {
+  display: grid;
+  margin-top: 24px;
+  gap: 20px;
+}
+
+.radio-scenario__section {
+  display: grid;
+  gap: 12px;
+}
+
+.radio-scenario__section h3 {
+  margin: 0;
+  color: var(--semi-color-text-0);
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.radio-scenario__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.radio-scenario__cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 240px));
+  align-items: start;
+  gap: 20px;
+}
+
+.radio-scenario__status {
+  color: var(--semi-color-text-2);
+  font-size: 13px;
+  line-height: 20px;
+}
+
 @media (max-width: 640px) {
   .tooltip-scenario {
     min-height: 680px;
@@ -670,6 +708,10 @@ p {
   }
 
   .checkbox-scenario__cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .radio-scenario__cards {
     grid-template-columns: minmax(0, 1fr);
   }
 }

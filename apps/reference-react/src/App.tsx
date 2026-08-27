@@ -17,6 +17,7 @@ import { LayoutScenario } from './scenarios/LayoutScenario';
 import { InputScenario } from './scenarios/InputScenario';
 import { InputNumberScenario } from './scenarios/InputNumberScenario';
 import { PinCodeScenario } from './scenarios/PinCodeScenario';
+import { RadioScenario } from './scenarios/RadioScenario';
 import { ResizableScenario } from './scenarios/ResizableScenario';
 import { SelectScenario } from './scenarios/SelectScenario';
 import { SpaceScenario } from './scenarios/SpaceScenario';
@@ -90,6 +91,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'input' ? <InputScenario /> : null}
         {scenario.id === 'input-number' ? <InputNumberScenario /> : null}
         {scenario.id === 'pin-code' ? <PinCodeScenario /> : null}
+        {scenario.id === 'radio' ? <RadioScenario /> : null}
         {scenario.id === 'resizable' ? <ResizableScenario /> : null}
         {scenario.id === 'select' ? <SelectScenario /> : null}
         {scenario.id === 'space' ? <SpaceScenario /> : null}

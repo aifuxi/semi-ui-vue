@@ -14,6 +14,7 @@ export const virtualInputNumberStyleId = 'virtual:workspace-input-number-styles.
 export const virtualGridStyleId = 'virtual:workspace-grid-styles.css';
 export const virtualLayoutStyleId = 'virtual:workspace-layout-styles.css';
 export const virtualPinCodeStyleId = 'virtual:workspace-pin-code-styles.css';
+export const virtualRadioStyleId = 'virtual:workspace-radio-styles.css';
 export const virtualResizableStyleId = 'virtual:workspace-resizable-styles.css';
 export const virtualSelectStyleId = 'virtual:workspace-select-styles.css';
 export const virtualSpaceStyleId = 'virtual:workspace-space-styles.css';
@@ -32,6 +33,7 @@ const resolvedVirtualInputNumberStyleId = `\0${virtualInputNumberStyleId}`;
 const resolvedVirtualGridStyleId = `\0${virtualGridStyleId}`;
 const resolvedVirtualLayoutStyleId = `\0${virtualLayoutStyleId}`;
 const resolvedVirtualPinCodeStyleId = `\0${virtualPinCodeStyleId}`;
+const resolvedVirtualRadioStyleId = `\0${virtualRadioStyleId}`;
 const resolvedVirtualResizableStyleId = `\0${virtualResizableStyleId}`;
 const resolvedVirtualSelectStyleId = `\0${virtualSelectStyleId}`;
 const resolvedVirtualSpaceStyleId = `\0${virtualSpaceStyleId}`;
@@ -52,6 +54,7 @@ const inputNumberStyleEntry = fileURLToPath(new URL('./src/input-number.scss', i
 const gridStyleEntry = fileURLToPath(new URL('./src/grid.scss', import.meta.url));
 const layoutStyleEntry = fileURLToPath(new URL('./src/layout.scss', import.meta.url));
 const pinCodeStyleEntry = fileURLToPath(new URL('./src/pin-code.scss', import.meta.url));
+const radioStyleEntry = fileURLToPath(new URL('./src/radio.scss', import.meta.url));
 const resizableStyleEntry = fileURLToPath(new URL('./src/resizable.scss', import.meta.url));
 const selectStyleEntry = fileURLToPath(new URL('./src/select.scss', import.meta.url));
 const spaceStyleEntry = fileURLToPath(new URL('./src/space.scss', import.meta.url));
@@ -72,6 +75,7 @@ const styleEntries = new Map([
   [resolvedVirtualGridStyleId, gridStyleEntry],
   [resolvedVirtualLayoutStyleId, layoutStyleEntry],
   [resolvedVirtualPinCodeStyleId, pinCodeStyleEntry],
+  [resolvedVirtualRadioStyleId, radioStyleEntry],
   [resolvedVirtualResizableStyleId, resizableStyleEntry],
   [resolvedVirtualSelectStyleId, selectStyleEntry],
   [resolvedVirtualSpaceStyleId, spaceStyleEntry],
@@ -98,6 +102,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualGridStyleId) return resolvedVirtualGridStyleId;
       if (source === virtualLayoutStyleId) return resolvedVirtualLayoutStyleId;
       if (source === virtualPinCodeStyleId) return resolvedVirtualPinCodeStyleId;
+      if (source === virtualRadioStyleId) return resolvedVirtualRadioStyleId;
       if (source === virtualResizableStyleId) return resolvedVirtualResizableStyleId;
       if (source === virtualSelectStyleId) return resolvedVirtualSelectStyleId;
       if (source === virtualSpaceStyleId) return resolvedVirtualSpaceStyleId;
