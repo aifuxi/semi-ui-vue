@@ -9,6 +9,7 @@ import {
   onUpdated,
   provide,
   shallowRef,
+  unref,
   useAttrs,
   useSlots,
   type CSSProperties,
@@ -71,7 +72,8 @@ defineSlots<TypographyContentSlots>();
 
 const attrs = useAttrs();
 const slots = useSlots();
-const locale = inject(typographyLocaleKey, DEFAULT_TYPOGRAPHY_LOCALE);
+const injectedLocale = inject(typographyLocaleKey, DEFAULT_TYPOGRAPHY_LOCALE);
+const locale = computed(() => unref(injectedLocale));
 const inheritedSize = inject<ComputedRef<TypographySize>>(
   'semiTypographySize',
   computed(() => 'normal'),
@@ -100,9 +102,9 @@ const ellipsisOptions = computed(() => {
   return {
     rows: options.rows ?? 1,
     expandable: options.expandable ?? false,
-    expandText: options.expandText ?? (options.expandable ? locale.expand : undefined),
+    expandText: options.expandText ?? (options.expandable ? locale.value.expand : undefined),
     collapsible: options.collapsible ?? false,
-    collapseText: options.collapseText ?? (options.collapsible ? locale.collapse : undefined),
+    collapseText: options.collapseText ?? (options.collapsible ? locale.value.collapse : undefined),
     pos: options.pos ?? ('end' as const),
     suffix: options.suffix ?? '',
     showTooltip: options.showTooltip ?? false,

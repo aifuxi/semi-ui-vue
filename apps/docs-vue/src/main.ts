@@ -1,6 +1,7 @@
 import 'normalize.css';
 import 'typeface-inter';
 import 'virtual:workspace-button-styles.css';
+import 'virtual:workspace-config-provider-styles.css';
 import 'virtual:workspace-divider-styles.css';
 import 'virtual:workspace-float-button-styles.css';
 import 'virtual:workspace-grid-styles.css';

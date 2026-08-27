@@ -437,6 +437,39 @@ p {
   margin-top: 12px;
 }
 
+.config-provider-scenario {
+  margin-top: 24px;
+}
+
+.config-provider-scenario > .semi-rtl {
+  display: grid;
+  padding: 18px;
+  gap: 14px;
+  border: 1px solid var(--harness-border);
+  border-radius: 8px;
+  background: var(--harness-subtle);
+}
+
+.config-provider-scenario__card {
+  display: grid;
+  padding: 14px;
+  gap: 6px;
+  border: 1px solid var(--harness-border);
+  border-radius: 6px;
+  background: var(--harness-panel);
+  color: var(--harness-text);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.config-provider-scenario__card code,
+.config-provider-scenario__nested {
+  color: var(--harness-muted-text);
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 12px;
+  line-height: 20px;
+}
+
 .layout-scenario {
   display: grid;
   margin-top: 24px;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { IconCopy, IconTick } from '@workspace/icons';
-import { cloneVNode, computed, inject, isVNode, onBeforeUnmount, shallowRef } from 'vue';
+import { cloneVNode, computed, inject, isVNode, onBeforeUnmount, shallowRef, unref } from 'vue';
 
 import TypographyNodeRenderer from './TypographyNodeRenderer';
 import { DEFAULT_TYPOGRAPHY_LOCALE, typographyLocaleKey } from './typography-locale';
@@ -15,13 +15,14 @@ defineSlots<{
   copied?: () => unknown;
 }>();
 
-const locale = inject(typographyLocaleKey, DEFAULT_TYPOGRAPHY_LOCALE);
+const injectedLocale = inject(typographyLocaleKey, DEFAULT_TYPOGRAPHY_LOCALE);
+const locale = computed(() => unref(injectedLocale));
 const copied = shallowRef(false);
 let resetTimer: ReturnType<typeof setTimeout> | undefined;
 const classes = computed(() =>
   copied.value ? 'semi-typography-action-copied' : 'semi-typography-action-copy',
 );
-const copyTip = computed(() => props.config.copyTip ?? locale.copy);
+const copyTip = computed(() => props.config.copyTip ?? locale.value.copy);
 const customIcon = computed(() => {
   const icon = props.config.icon;
   if (!isVNode(icon)) return icon;

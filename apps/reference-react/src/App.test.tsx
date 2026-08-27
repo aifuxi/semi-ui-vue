@@ -93,4 +93,15 @@ describe('React 参考工作台', () => {
     expect(html).toContain('1.50 KiB');
     expect(html).toContain('semi-typography-action-copy');
   });
+
+  it('从固定 ConfigProvider 渲染 RTL、Consumer、Locale 与嵌套配置', () => {
+    const html = renderToStaticMarkup(<App scenarioId="config-provider" />);
+
+    expect(html).toContain('data-parity-scenario="config-provider"');
+    expect(html).toContain('class="semi-rtl"');
+    expect(html).toContain('direction: rtl');
+    expect(html).toContain('locale: en-US');
+    expect(html).toContain('nested: ltr');
+    expect(html).toContain('semi-typography-action-copy');
+  });
 });

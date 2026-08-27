@@ -6,6 +6,7 @@ import {
 } from '@workspace/test-infra';
 import { ButtonTypesScenario } from './scenarios/ButtonTypesScenario';
 import { ButtonContractScenario } from './scenarios/ButtonContractScenario';
+import { ConfigProviderScenario } from './scenarios/ConfigProviderScenario';
 import { DividerScenario } from './scenarios/DividerScenario';
 import { FloatButtonScenario } from './scenarios/FloatButtonScenario';
 import { GridScenario } from './scenarios/GridScenario';
@@ -70,6 +71,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'harness-calibration' ? <HarnessCalibration /> : null}
         {scenario.id === 'button-types' ? <ButtonTypesScenario /> : null}
         {scenario.id === 'button-contract' ? <ButtonContractScenario /> : null}
+        {scenario.id === 'config-provider' ? <ConfigProviderScenario /> : null}
         {scenario.id === 'divider' ? <DividerScenario /> : null}
         {scenario.id === 'float-button' ? <FloatButtonScenario /> : null}
         {scenario.id === 'grid' ? <GridScenario /> : null}

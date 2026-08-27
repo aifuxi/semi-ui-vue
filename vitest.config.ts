@@ -17,6 +17,9 @@ export default defineConfig({
       '@semi-v2.102.0/button': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiButtonStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/config-provider': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiConfigProviderStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/divider': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiDividerStub.tsx', import.meta.url),
       ),

@@ -9,6 +9,7 @@ const require = createRequire(import.meta.url);
 const workspaceRoot = fileURLToPath(new URL('../..', import.meta.url));
 const upstreamPackages = path.join(workspaceRoot, 'vendor/semi-design/packages');
 const buttonPublicEntry = path.join(upstreamPackages, 'semi-ui/button/index.tsx');
+const configProviderPublicEntry = path.join(upstreamPackages, 'semi-ui/configProvider/index.tsx');
 const buttonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/buttonGroup.tsx');
 const splitButtonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/splitButtonGroup.tsx');
 const dividerPublicEntry = path.join(upstreamPackages, 'semi-ui/divider/index.tsx');
@@ -100,6 +101,7 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: '@semi-v2.102.0/button', replacement: buttonPublicEntry },
+      { find: '@semi-v2.102.0/config-provider', replacement: configProviderPublicEntry },
       { find: '@semi-v2.102.0/button-group', replacement: buttonGroupEntry },
       { find: '@semi-v2.102.0/split-button-group', replacement: splitButtonGroupEntry },
       { find: '@semi-v2.102.0/divider', replacement: dividerPublicEntry },

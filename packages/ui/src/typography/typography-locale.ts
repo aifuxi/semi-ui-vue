@@ -1,4 +1,4 @@
-import type { InjectionKey } from 'vue';
+import type { InjectionKey, MaybeRef } from 'vue';
 
 import type { TypographyLocale } from './types';
 
@@ -16,4 +16,5 @@ export const EN_US_TYPOGRAPHY_LOCALE: Readonly<TypographyLocale> = Object.freeze
   collapse: 'Collapse',
 });
 
-export const typographyLocaleKey: InjectionKey<TypographyLocale> = Symbol('typographyLocale');
+export const typographyLocaleKey: InjectionKey<MaybeRef<TypographyLocale>> =
+  Symbol('typographyLocale');

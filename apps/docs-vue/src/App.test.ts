@@ -128,4 +128,20 @@ describe('Vue 对照工作台', () => {
     expect(scenario.get('[data-parity-target="typography-numeral"]').text()).toBe('1.50 KiB');
     expect(scenario.find('.semi-typography-action-copy').exists()).toBe(true);
   });
+
+  it('通过公共 ConfigProvider 渲染 RTL、Consumer、Locale 与嵌套配置', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'config-provider' } });
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    const scenario = wrapper.get('[data-testid="config-provider-vue"]');
+    expect(scenario.find(':scope > .semi-rtl').exists()).toBe(true);
+    expect(scenario.get('[data-parity-target="config-provider-direction"]').text()).toBe(
+      'direction: rtl',
+    );
+    expect(scenario.text()).toContain('locale: en-US');
+    expect(scenario.get('[data-parity-target="config-provider-nested"]').text()).toBe(
+      'nested: ltr',
+    );
+    expect(scenario.get('[role="button"]').attributes('aria-label')).toBe('Copy');
+  });
 });

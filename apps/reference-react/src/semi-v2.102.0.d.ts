@@ -24,6 +24,38 @@ declare module '@semi-v2.102.0/button' {
   export default Button;
 }
 
+declare module '@semi-v2.102.0/config-provider' {
+  import type { ComponentType, ReactNode } from 'react';
+
+  export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+  export type BreakpointScreens = Record<Breakpoint, boolean>;
+  export type ResponsiveMap = Record<Breakpoint, string>;
+  export interface ConfigContextValue {
+    direction?: 'ltr' | 'rtl';
+    timeZone?: string | number;
+    locale?: { code?: string; [key: string]: unknown };
+    responsiveObserve?: boolean;
+    responsiveMap?: ResponsiveMap;
+    screens?: BreakpointScreens;
+    onBreakpoint(callback: (screens: BreakpointScreens) => void): () => void;
+    onBreakpoint(
+      breakpoints: Breakpoint[],
+      callback: (screen: Breakpoint, match: boolean) => void,
+    ): () => void;
+  }
+  export interface ConfigProviderProps extends Partial<ConfigContextValue> {
+    children?: ReactNode;
+  }
+  type ConfigProviderComponent = ComponentType<ConfigProviderProps> & {
+    defaultResponsiveMap: ResponsiveMap;
+  };
+  const ConfigProvider: ConfigProviderComponent;
+  export const ConfigConsumer: ComponentType<{
+    children: (context: ConfigContextValue) => ReactNode;
+  }>;
+  export default ConfigProvider;
+}
+
 declare module '@semi-v2.102.0/button-group' {
   import type { ComponentType, HTMLAttributes } from 'react';
   import type { ButtonSize, ButtonTheme, ButtonType } from '@semi-v2.102.0/button';

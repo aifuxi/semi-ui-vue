@@ -151,6 +151,22 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records ConfigProvider context and responsive contracts as a complete parity scene', () => {
+    expect(getParityScenario('config-provider')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.configProviderPublicEntry,
+    });
+    expect(assertScenarioComparable('config-provider').targets).toHaveLength(5);
+    expect(getParityScenario('config-provider').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.configProviderContextEntry,
+        REFERENCE_SOURCE_PATHS.configProviderResponsiveTypes,
+        REFERENCE_SOURCE_PATHS.configProviderDocumentation,
+      ]),
+    );
+  });
+
   it('records FloatButton and Group as a complete local-source parity scene', () => {
     expect(getParityScenario('float-button')).toMatchObject({
       referenceStatus: 'ready',

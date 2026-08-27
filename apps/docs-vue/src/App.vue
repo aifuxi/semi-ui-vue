@@ -7,6 +7,7 @@ import {
 } from '@workspace/test-infra';
 import ButtonTypesScenario from './components/ButtonTypesScenario.vue';
 import ButtonContractScenario from './components/ButtonContractScenario.vue';
+import ConfigProviderScenario from './components/ConfigProviderScenario.vue';
 import DividerScenario from './components/DividerScenario.vue';
 import FloatButtonScenario from './components/FloatButtonScenario.vue';
 import GridScenario from './components/GridScenario.vue';
@@ -62,6 +63,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <HarnessCalibration v-if="scenario.id === 'harness-calibration'" />
       <ButtonTypesScenario v-else-if="scenario.id === 'button-types'" />
       <ButtonContractScenario v-else-if="scenario.id === 'button-contract'" />
+      <ConfigProviderScenario v-else-if="scenario.id === 'config-provider'" />
       <DividerScenario v-else-if="scenario.id === 'divider'" />
       <FloatButtonScenario v-else-if="scenario.id === 'float-button'" />
       <GridScenario v-else-if="scenario.id === 'grid'" />

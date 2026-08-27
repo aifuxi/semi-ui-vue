@@ -237,6 +237,7 @@ try {
     path.join(consumerRoot, 'smoke.mjs'),
     `await Promise.all(${JSON.stringify(javascriptPackages)}.map(packageName => import(packageName)));
 	await import('@workspace/ui/button');
+	await import('@workspace/ui/config-provider');
 	await import('@workspace/ui/divider');
 	await import('@workspace/ui/float-button');
 	await import('@workspace/ui/grid');
@@ -258,6 +259,9 @@ const cssTheme = import.meta.resolve('@workspace/theme-default/index.css');
 if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 index.css');
 	if (!import.meta.resolve('@workspace/theme-default/button.css').endsWith('/dist/button.css')) {
 	  throw new Error('Button 逐组件样式导出未指向 dist/button.css');
+	}
+	if (!import.meta.resolve('@workspace/theme-default/config-provider.css').endsWith('/dist/config-provider.css')) {
+	  throw new Error('ConfigProvider 逐组件样式导出未指向 dist/config-provider.css');
 	}
 	if (!import.meta.resolve('@workspace/theme-default/divider.css').endsWith('/dist/divider.css')) {
 	  throw new Error('Divider 逐组件样式导出未指向 dist/divider.css');
@@ -291,6 +295,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
     path.join(consumerRoot, 'type-smoke.ts'),
     `${javascriptPackages.map((packageName) => `import '${packageName}';`).join('\n')}
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
+	import { ConfigConsumer, ConfigProvider, defaultResponsiveMap, type Breakpoint } from '@workspace/ui/config-provider';
 	import { Divider, type DividerAlign } from '@workspace/ui/divider';
 	import { FloatButton, FloatButtonGroup, type FloatButtonShape } from '@workspace/ui/float-button';
 	import { Col, Row, type GridGutter } from '@workspace/ui/grid';
@@ -307,6 +312,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { h } from 'vue';
 const type: ButtonType = 'primary';
 h(Button, { type, htmlType: 'submit' });
+	const breakpoint: Breakpoint = 'md';
+	h(ConfigProvider, { direction: 'rtl', responsiveObserve: true, responsiveMap: defaultResponsiveMap }, () => h(ConfigConsumer));
+	void breakpoint;
 	h(ButtonGroup, { size: 'large' });
 	h(SplitButtonGroup, { 'aria-label': 'actions' });
 	const align: DividerAlign = 'left';
@@ -422,6 +430,20 @@ h(Button, { type, htmlType: 'submit' });
   );
   if (!buttonThemeCss.includes('.semi-button-split')) {
     throw new Error('安装后的 Button 逐组件样式缺少 SplitButtonGroup 样式');
+  }
+  const configProviderThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@workspace',
+      'theme-default',
+      'dist',
+      'config-provider.css',
+    ),
+    'utf8',
+  );
+  if (!configProviderThemeCss.includes('--semi-color-primary')) {
+    throw new Error('安装后的 ConfigProvider 逐组件样式缺少默认主题 Token');
   }
   const dividerThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'divider.css'),

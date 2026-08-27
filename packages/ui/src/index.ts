@@ -1,4 +1,5 @@
 export * from './button';
+export * from './config-provider';
 export * from './divider';
 export * from './float-button';
 export * from './grid';

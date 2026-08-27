@@ -18,6 +18,7 @@
     },
     "./index.css": "./dist/index.css",
     "./button.css": "./dist/button.css",
+    "./config-provider.css": "./dist/config-provider.css",
     "./divider.css": "./dist/divider.css",
     "./float-button.css": "./dist/float-button.css",
     "./grid.css": "./dist/grid.css",
@@ -29,7 +30,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "rimraf dist && sass --no-source-map --no-charset src/index.scss dist/index.css && sass --no-source-map --no-charset src/button.scss dist/button.css && sass --no-source-map --no-charset src/divider.scss dist/divider.css && sass --no-source-map --no-charset src/float-button.scss dist/float-button.css && sass --no-source-map --no-charset src/grid.scss dist/grid.css && sass --no-source-map --no-charset src/icon.scss dist/icon.css && sass --no-source-map --no-charset src/layout.scss dist/layout.css && sass --no-source-map --no-charset src/resizable.scss dist/resizable.css && sass --no-source-map --no-charset src/space.scss dist/space.css && sass --no-source-map --no-charset src/typography.scss dist/typography.css && node ../../scripts/write-compliance-artifacts.mjs .",
+    "build": "rimraf dist && sass --no-source-map --no-charset src/index.scss dist/index.css && sass --no-source-map --no-charset src/button.scss dist/button.css && sass --no-source-map --no-charset src/config-provider.scss dist/config-provider.css && sass --no-source-map --no-charset src/divider.scss dist/divider.css && sass --no-source-map --no-charset src/float-button.scss dist/float-button.css && sass --no-source-map --no-charset src/grid.scss dist/grid.css && sass --no-source-map --no-charset src/icon.scss dist/icon.css && sass --no-source-map --no-charset src/layout.scss dist/layout.css && sass --no-source-map --no-charset src/resizable.scss dist/resizable.css && sass --no-source-map --no-charset src/space.scss dist/space.css && sass --no-source-map --no-charset src/typography.scss dist/typography.css && node ../../scripts/write-compliance-artifacts.mjs .",
     "clean": "rimraf dist"
   },
   "devDependencies": {

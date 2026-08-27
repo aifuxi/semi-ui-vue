@@ -9,6 +9,20 @@ const entryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', '
 const cssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'index.css');
 const buttonEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'button.scss');
 const buttonCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'button.css');
+const configProviderEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'config-provider.scss',
+);
+const configProviderCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'config-provider.css',
+);
 const dividerEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -370,6 +384,22 @@ for (const selector of [
   }
 }
 
+const expectedConfigProviderImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+];
+const configProviderEntrySource = await readFile(configProviderEntryPath, 'utf8');
+const actualConfigProviderImports = [
+  ...configProviderEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g),
+].map((match) => match[1]);
+if (JSON.stringify(actualConfigProviderImports) !== JSON.stringify(expectedConfigProviderImports)) {
+  throw new Error('ConfigProvider 逐组件样式入口未与固定源码的无组件 SCSS 契约对齐');
+}
+const configProviderCss = await readFile(configProviderCssPath, 'utf8');
+if (!configProviderCss.includes('--semi-color-primary')) {
+  throw new Error('ConfigProvider 逐组件样式产物缺少默认主题 Token');
+}
+
 process.stdout.write(
-  `默认主题入口与 Button/Divider/FloatButton/Grid/Icon/Layout/Resizable/Space/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + resizableCss.length + spaceCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Button/ConfigProvider/Divider/FloatButton/Grid/Icon/Layout/Resizable/Space/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + resizableCss.length + spaceCss.length + typographyCss.length} 字节 CSS\n`,
 );
