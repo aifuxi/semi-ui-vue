@@ -58,6 +58,16 @@ describe('React 参考工作台', () => {
     expect(html).toContain('1.23456789012345e+14');
   });
 
+  it('从固定 PinCode Adapter 渲染三种尺寸、混合码与禁用场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="pin-code" />);
+
+    expect(html).toContain('data-parity-scenario="pin-code"');
+    expect(html).toContain('pin-code-target-small');
+    expect(html).toContain('semi-input-wrapper-large');
+    expect(html).toContain('inputMode="text"');
+    expect(html).toContain('disabled');
+  });
+
   it('从固定 Icon、稳定图标和 Lab 入口渲染完整参考场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="icon" />);
 

@@ -8,6 +8,7 @@ export * from './grid';
 export * from './icon';
 export * from './input';
 export * from './input-number';
+export * from './pin-code';
 export * from './layout';
 export * from './resizable';
 export * from './select';

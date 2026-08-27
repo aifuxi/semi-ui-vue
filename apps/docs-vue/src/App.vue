@@ -17,6 +17,7 @@ import IconScenario from './components/IconScenario.vue';
 import LayoutScenario from './components/LayoutScenario.vue';
 import InputScenario from './components/InputScenario.vue';
 import InputNumberScenario from './components/InputNumberScenario.vue';
+import PinCodeScenario from './components/PinCodeScenario.vue';
 import ResizableScenario from './components/ResizableScenario.vue';
 import SelectScenario from './components/SelectScenario.vue';
 import SpaceScenario from './components/SpaceScenario.vue';
@@ -80,6 +81,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <LayoutScenario v-else-if="scenario.id === 'layout'" />
       <InputScenario v-else-if="scenario.id === 'input'" />
       <InputNumberScenario v-else-if="scenario.id === 'input-number'" />
+      <PinCodeScenario v-else-if="scenario.id === 'pin-code'" />
       <ResizableScenario v-else-if="scenario.id === 'resizable'" />
       <SelectScenario v-else-if="scenario.id === 'select'" />
       <SpaceScenario v-else-if="scenario.id === 'space'" />

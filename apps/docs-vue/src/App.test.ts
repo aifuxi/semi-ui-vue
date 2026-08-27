@@ -79,6 +79,22 @@ describe('Vue 对照工作台', () => {
     expect(scenario.get('output').text()).toContain('最近变化：4');
   });
 
+  it('通过公共 PinCode 包渲染三种尺寸、混合码、禁用与输入状态', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'pin-code' } });
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    const scenario = wrapper.get('[data-testid="pin-code-vue"]');
+    expect(scenario.findAll('.semi-pincode-wrapper')).toHaveLength(6);
+    expect(scenario.findAll('.semi-input-wrapper-small')).toHaveLength(6);
+    expect(scenario.findAll('.semi-input-wrapper-large')).toHaveLength(6);
+    expect(scenario.findAll('input')).toHaveLength(34);
+    expect(scenario.findAll('input:disabled')).toHaveLength(6);
+    await scenario.get('.pin-code-target-empty input').setValue('7');
+    await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
+    expect(scenario.get('output').text()).toContain('最近变化：7');
+  });
+
   it('通过公开图标包渲染稳定、AI、Lab 与自定义 Icon 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'icon' } });
 

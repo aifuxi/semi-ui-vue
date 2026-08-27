@@ -23,6 +23,7 @@ const floatButtonGroupEntry = path.join(
 const iconPublicEntry = path.join(upstreamPackages, 'semi-ui/icons/index.tsx');
 const inputPublicEntry = path.join(upstreamPackages, 'semi-ui/input/index.tsx');
 const inputNumberPublicEntry = path.join(upstreamPackages, 'semi-ui/inputNumber/index.tsx');
+const pinCodePublicEntry = path.join(upstreamPackages, 'semi-ui/pincode/index.tsx');
 const inputGroupEntry = path.join(upstreamPackages, 'semi-ui/input/inputGroup.tsx');
 const textAreaEntry = path.join(upstreamPackages, 'semi-ui/input/textarea.tsx');
 const gridPublicEntry = path.join(upstreamPackages, 'semi-ui/grid/index.tsx');
@@ -73,6 +74,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'input/input.scss'),
   '@douyinfe/semi-foundation/inputNumber/inputNumber.scss',
   path.join(foundationRoot, 'inputNumber/inputNumber.scss'),
+  '@douyinfe/semi-foundation/pincode/pincode.scss',
+  path.join(foundationRoot, 'pincode/pincode.scss'),
   '@douyinfe/semi-foundation/input/textarea.scss',
   path.join(foundationRoot, 'input/textarea.scss'),
   '@douyinfe/semi-foundation/form/form.scss',
@@ -147,6 +150,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/icon', replacement: iconPublicEntry },
       { find: '@semi-v2.102.0/input', replacement: inputPublicEntry },
       { find: '@semi-v2.102.0/input-number', replacement: inputNumberPublicEntry },
+      { find: '@semi-v2.102.0/pin-code', replacement: pinCodePublicEntry },
       { find: '@semi-v2.102.0/input-group', replacement: inputGroupEntry },
       { find: '@semi-v2.102.0/textarea', replacement: textAreaEntry },
       { find: '@semi-v2.102.0/grid', replacement: gridPublicEntry },

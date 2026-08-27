@@ -88,6 +88,22 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records PinCode Adapter, Foundation, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('pin-code')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.pinCodePublicEntry,
+    });
+    expect(assertScenarioComparable('pin-code').targets).toHaveLength(6);
+    expect(getParityScenario('pin-code').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.pinCodeFoundation,
+        REFERENCE_SOURCE_PATHS.pinCodeFoundationStyle,
+        REFERENCE_SOURCE_PATHS.pinCodeDocumentation,
+      ]),
+    );
+  });
+
   it('records Icon and both generated asset packages as a complete parity scene', () => {
     expect(getParityScenario('icon')).toMatchObject({
       referenceStatus: 'ready',

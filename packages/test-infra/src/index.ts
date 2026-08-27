@@ -55,6 +55,10 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   inputNumberFoundationStyle:
     'vendor/semi-design/packages/semi-foundation/inputNumber/inputNumber.scss',
   inputNumberDocumentation: 'vendor/semi-design/content/input/inputnumber/index.md',
+  pinCodePublicEntry: 'vendor/semi-design/packages/semi-ui/pincode/index.tsx',
+  pinCodeFoundation: 'vendor/semi-design/packages/semi-foundation/pincode/foundation.ts',
+  pinCodeFoundationStyle: 'vendor/semi-design/packages/semi-foundation/pincode/pincode.scss',
+  pinCodeDocumentation: 'vendor/semi-design/content/input/pincode/index.md',
   gridPublicEntry: 'vendor/semi-design/packages/semi-ui/grid/index.tsx',
   gridRowEntry: 'vendor/semi-design/packages/semi-ui/grid/row.tsx',
   gridColEntry: 'vendor/semi-design/packages/semi-ui/grid/col.tsx',
@@ -693,6 +697,27 @@ export const PARITY_SCENARIOS = [
         selector: '.input-number-target-inner',
         computedStyleProperties: ['alignItems', 'boxSizing', 'display', 'height', 'width'],
       },
+    ],
+  },
+  {
+    id: 'pin-code',
+    title: 'PinCode 验证码输入',
+    description: '验证三种尺寸、默认自动聚焦、受控输入、字符格式、禁用、粘贴、键盘与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.pinCodePublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.pinCodePublicEntry,
+      REFERENCE_SOURCE_PATHS.pinCodeFoundation,
+      REFERENCE_SOURCE_PATHS.pinCodeFoundationStyle,
+      REFERENCE_SOURCE_PATHS.pinCodeDocumentation,
+    ],
+    targets: [
+      ...(['small', 'default', 'large', 'mixed', 'disabled', 'empty'] as const).map((state) => ({
+        id: `pin-code-${state}`,
+        selector: `.pin-code-target-${state}`,
+        computedStyleProperties: ['display', 'height', 'width'],
+      })),
     ],
   },
   {

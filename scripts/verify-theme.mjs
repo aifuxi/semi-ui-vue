@@ -95,6 +95,20 @@ const gridEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src
 const gridCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'grid.css');
 const layoutEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'layout.scss');
 const layoutCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'layout.css');
+const pinCodeEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'pin-code.scss',
+);
+const pinCodeCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'pin-code.css',
+);
 const resizableEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -215,6 +229,7 @@ const requiredSelectors = [
   '.semi-typography',
   '.semi-input-wrapper',
   '.semi-input-number',
+  '.semi-pincode-wrapper',
   '.semi-input-textarea-wrapper',
   '.semi-modal',
 ];
@@ -404,6 +419,31 @@ for (const selector of [
 ]) {
   if (!inputNumberCss.includes(selector)) {
     throw new Error(`InputNumber 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
+const expectedPinCodeImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/input/input.scss'),
+  vendorImport('semi-foundation/pincode/pincode.scss'),
+];
+const pinCodeEntrySource = await readFile(pinCodeEntryPath, 'utf8');
+const actualPinCodeImports = [...pinCodeEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualPinCodeImports) !== JSON.stringify(expectedPinCodeImports)) {
+  throw new Error('PinCode 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const pinCodeCss = await readFile(pinCodeCssPath, 'utf8');
+for (const selector of [
+  '.semi-pincode-wrapper',
+  '.semi-input-wrapper-small',
+  '.semi-input-wrapper-default',
+  '.semi-input-wrapper-large',
+]) {
+  if (!pinCodeCss.includes(selector)) {
+    throw new Error(`PinCode 逐组件样式产物缺少选择器：${selector}`);
   }
 }
 
@@ -671,5 +711,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/Layout/Resizable/Select/Space/Switch/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + layoutCss.length + resizableCss.length + selectCss.length + spaceCss.length + switchCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Layout/Resizable/Select/Space/Switch/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + layoutCss.length + resizableCss.length + selectCss.length + spaceCss.length + switchCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

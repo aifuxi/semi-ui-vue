@@ -44,6 +44,9 @@ export default defineConfig({
       '@semi-v2.102.0/input-number': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiInputNumberStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/pin-code': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiPinCodeStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/input-group': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiInputGroupStub.tsx', import.meta.url),
       ),

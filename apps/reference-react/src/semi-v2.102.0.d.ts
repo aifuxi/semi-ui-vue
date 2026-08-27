@@ -85,6 +85,26 @@ declare module '@semi-v2.102.0/input-number' {
   export default InputNumber;
 }
 
+declare module '@semi-v2.102.0/pin-code' {
+  import type { ComponentType, CSSProperties } from 'react';
+
+  export interface PinCodeProps {
+    autoFocus?: boolean;
+    className?: string;
+    count?: number;
+    defaultValue?: string;
+    disabled?: boolean;
+    format?: 'number' | 'mixed' | RegExp | ((character: string) => boolean);
+    onChange?: (value: string) => void;
+    onComplete?: (value: string) => void;
+    size?: 'small' | 'default' | 'large';
+    style?: CSSProperties;
+    value?: string;
+  }
+  const PinCode: ComponentType<PinCodeProps>;
+  export default PinCode;
+}
+
 declare module '@semi-v2.102.0/input-group' {
   import type { ComponentType, CSSProperties, FocusEvent, ReactNode } from 'react';
 
