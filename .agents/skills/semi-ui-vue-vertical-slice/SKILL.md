@@ -33,6 +33,11 @@ metadata:
 
 4. 按 `AGENTS.md` 规定的顺序读取对应 `semi-ui` Adapter/类型/DOM、Foundation/常量/SCSS、默认主题、文档测试和相关资产。
 5. 编码前创建或更新 `docs/components/<component>/alignment.md`，记录 API、默认值、状态、事件顺序、Vue 映射、DOM/class、样式、键盘焦点、ARIA、Portal、动效、暗色、RTL、国际化、SSR 与 deviation。
+6. 组件存在以下任一特征时，编码前必须读取 [Vue Adapter 对齐易错点](references/vue-adapter-parity-pitfalls.md)，并先把适用的行为门禁写入对齐矩阵和测试骨架：
+   - 默认值为 `true` 的可选 Boolean prop；
+   - 读取、克隆或装饰子 VNode；
+   - Portal、Teleport 或 `getPopupContainer`；
+   - 根据 resize、scroll 或 viewport 变化重新定位。
 
 ## 完整切片合同
 

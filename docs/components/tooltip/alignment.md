@@ -39,6 +39,17 @@
 
 默认值：`autoAdjustOverflow=true`、`arrowPointAtCenter=true`、`condition=true`、`motion=true`、`position='top'`、`prefixCls='semi-tooltip'`、`role='tooltip'`、`spacing=8`、`margin=0`、`showArrow=true`、`transformFromCenter=true`、`wrapWhenSpecial=true`、`zIndex=1060`、`closeOnEsc=false`、`guardFocus=false`、`returnFocusOnClose=false`、`disableFocusListener=false`、`disableArrowKeyDown=false`、`keepDOM=false`。
 
+## Vue Adapter 风险记录
+
+| 风险                        | 本组件结论                                                                                                                                                     | 防回归证据                                                                                                                                 |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| 默认 `true` 的 Boolean prop | Vue 归一化后的 `props` 不能单独区分缺省与显式 `false`；`Tooltip.vue` 依据原始 VNode 的 camelCase/kebab-case 键解析“显式 prop → `semiGlobal` 覆盖 → 上游默认值” | 单元测试覆盖默认箭头/触发行为和显式关闭；Chromium 验证最终 Portal DOM、箭头与 placement                                                    |
+| 子 VNode 裸 Boolean         | SFC `<Button disabled>` 的 VNode 值可能是空字符串，不能使用 `Boolean(value)`；`TooltipTriggerRenderer` 以“键存在且值不为显式 `false`”判断 disabled/loading     | 同一单测同时使用模板裸 `disabled` 与 `h(Button, { disabled: true })`，并断言 span、cursor 与 pointer-events                                |
+| 自定义 Portal 容器时序      | Vue 子组件 mount 时父模板 ref 可能尚不可用；本对照场景只承诺稳定容器，因此在 `host` ref 可用后才挂载 Tooltip，不把场景兜底到 body 误当成组件缺陷               | Vue 场景的 `v-if="host"` 与 ConfigProvider 自定义容器单测共同确认首次 Portal 父节点；没有为未承诺的动态容器引入额外 Observer               |
+| capture scroll 目标         | 上游 containment 语义允许 `Document`；Adapter 接受任意适用 `Node`，Element 读取自身滚动量，Document 读取文档滚动节点                                           | Chromium 移动矩阵以 `scrollIntoViewIfNeeded()` 触发实际页面滚动后继续比较 React/Vue 裁剪截图与像素；卸载路径清理 capture listener 和 timer |
+
+这些规则只在对应契约存在时应用；不能把对照场景的 ref 时序问题泛化成组件必须支持动态容器，也不能用新增 Observer 掩盖尚未定位的生命周期差异。
+
 ## 状态与事件顺序
 
 1. mount 时生成/采用 popup id，注册 trigger 与 resize 监听；只有 `visible=true` 才开始插入 Portal。

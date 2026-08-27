@@ -71,8 +71,10 @@ git -C vendor/semi-design describe --tags --exact-match
 - `vue >= 3.5` 是主组件包的 peer dependency；源码统一使用 TypeScript、Composition API 和 `<script setup lang="ts">`。
 - 内部默认不使用 Options API 或 JSX；只在模板无法精确表达必需 DOM/VNode 行为时，才允许范围受限的 render function。
 - 公开契约使用类型化 props/emits/slots、`v-model` 与 `InjectionKey`；props 不得由子组件修改，跨层状态必须保持 provider 实例隔离。
+- React→Vue API 适配不得用普通 truthiness 代替“prop 是否显式传入”。默认值为 `true` 的 Boolean prop 必须分别验证缺省、显式 `false`、显式 `true`；读取子 VNode prop 时还必须同时覆盖 SFC 模板裸属性与 render function 输入。
 - Foundation 实例、DOM、Observer、Map/Set 等外部或身份敏感对象不得被无意深层代理；根据契约使用 `shallowRef` / `shallowReactive` / `markRaw`。
 - 所有公开包必须 SSR-safe import；适用组件必须验证 SSR render/hydration，DOM 查询、Portal、Observer 和全局事件只能在客户端生命周期内创建并完整清理。
+- Portal、浮层和定位组件必须验证自定义容器首次挂载、Element/Document capture scroll 后重定位与卸载清理；不得在缺少上游证据时把事件目标收窄为 `Element`。
 
 ## Git
 
