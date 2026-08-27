@@ -50,6 +50,10 @@
       "types": "./dist/resizable/index.d.ts",
       "import": "./dist/resizable/index.js"
     },
+    "./select": {
+      "types": "./dist/select/index.d.ts",
+      "import": "./dist/select/index.js"
+    },
     "./space": {
       "types": "./dist/space/index.d.ts",
       "import": "./dist/space/index.js"

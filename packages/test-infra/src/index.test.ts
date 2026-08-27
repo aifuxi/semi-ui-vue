@@ -199,6 +199,23 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Select Adapter, Option, Foundation, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('select')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.selectPublicEntry,
+    });
+    expect(assertScenarioComparable('select').targets).toHaveLength(6);
+    expect(getParityScenario('select').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.selectOptionEntry,
+        REFERENCE_SOURCE_PATHS.selectFoundation,
+        REFERENCE_SOURCE_PATHS.selectFoundationStyle,
+        REFERENCE_SOURCE_PATHS.selectDocumentation,
+      ]),
+    );
+  });
+
   it('records FloatButton and Group as a complete local-source parity scene', () => {
     expect(getParityScenario('float-button')).toMatchObject({
       referenceStatus: 'ready',

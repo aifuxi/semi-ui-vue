@@ -65,6 +65,8 @@ const resizableCssPath = path.join(
   'dist',
   'resizable.css',
 );
+const selectEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'select.scss');
+const selectCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'select.css');
 const spaceEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'space.scss');
 const spaceCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'space.css');
 const switchEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'switch.scss');
@@ -161,6 +163,7 @@ const requiredSelectors = [
   '.semi-icon',
   '.semi-layout',
   '.semi-resizable-resizable',
+  '.semi-select',
   '.semi-space',
   '.semi-switch',
   '.semi-typography',
@@ -417,6 +420,42 @@ for (const selector of [
   }
 }
 
+const expectedSelectImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/_portal/portal.scss'),
+  vendorImport('semi-foundation/tooltip/tooltip.scss'),
+  vendorImport('semi-foundation/popover/popover.scss'),
+  vendorImport('semi-foundation/input/input.scss'),
+  vendorImport('semi-foundation/tag/tag.scss'),
+  vendorImport('semi-foundation/overflowList/overflowList.scss'),
+  vendorImport('semi-foundation/spin/spin.scss'),
+  vendorImport('semi-foundation/select/select.scss'),
+];
+const selectEntrySource = await readFile(selectEntryPath, 'utf8');
+const actualSelectImports = [...selectEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualSelectImports) !== JSON.stringify(expectedSelectImports)) {
+  throw new Error('Select 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const selectCss = await readFile(selectCssPath, 'utf8');
+for (const selector of [
+  '.semi-select',
+  '.semi-select-option-list',
+  '.semi-select-option-selected',
+  '.semi-input-wrapper',
+  '.semi-tag',
+  '.semi-popover-wrapper',
+  '.semi-spin-wrapper',
+  '.semi-rtl .semi-select',
+]) {
+  if (!selectCss.includes(selector)) {
+    throw new Error(`Select 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 const expectedTypographyImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -465,5 +504,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 Button/ConfigProvider/Divider/FloatButton/Grid/Icon/Layout/Resizable/Space/Switch/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + resizableCss.length + spaceCss.length + switchCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Button/ConfigProvider/Divider/FloatButton/Grid/Icon/Layout/Resizable/Select/Space/Switch/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + resizableCss.length + selectCss.length + spaceCss.length + switchCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

@@ -10,6 +10,7 @@ export const virtualIconStyleId = 'virtual:workspace-icon-styles.css';
 export const virtualGridStyleId = 'virtual:workspace-grid-styles.css';
 export const virtualLayoutStyleId = 'virtual:workspace-layout-styles.css';
 export const virtualResizableStyleId = 'virtual:workspace-resizable-styles.css';
+export const virtualSelectStyleId = 'virtual:workspace-select-styles.css';
 export const virtualSpaceStyleId = 'virtual:workspace-space-styles.css';
 export const virtualSwitchStyleId = 'virtual:workspace-switch-styles.css';
 export const virtualTooltipStyleId = 'virtual:workspace-tooltip-styles.css';
@@ -22,6 +23,7 @@ const resolvedVirtualIconStyleId = `\0${virtualIconStyleId}`;
 const resolvedVirtualGridStyleId = `\0${virtualGridStyleId}`;
 const resolvedVirtualLayoutStyleId = `\0${virtualLayoutStyleId}`;
 const resolvedVirtualResizableStyleId = `\0${virtualResizableStyleId}`;
+const resolvedVirtualSelectStyleId = `\0${virtualSelectStyleId}`;
 const resolvedVirtualSpaceStyleId = `\0${virtualSpaceStyleId}`;
 const resolvedVirtualSwitchStyleId = `\0${virtualSwitchStyleId}`;
 const resolvedVirtualTooltipStyleId = `\0${virtualTooltipStyleId}`;
@@ -36,6 +38,7 @@ const iconStyleEntry = fileURLToPath(new URL('./src/icon.scss', import.meta.url)
 const gridStyleEntry = fileURLToPath(new URL('./src/grid.scss', import.meta.url));
 const layoutStyleEntry = fileURLToPath(new URL('./src/layout.scss', import.meta.url));
 const resizableStyleEntry = fileURLToPath(new URL('./src/resizable.scss', import.meta.url));
+const selectStyleEntry = fileURLToPath(new URL('./src/select.scss', import.meta.url));
 const spaceStyleEntry = fileURLToPath(new URL('./src/space.scss', import.meta.url));
 const switchStyleEntry = fileURLToPath(new URL('./src/switch.scss', import.meta.url));
 const tooltipStyleEntry = fileURLToPath(new URL('./src/tooltip.scss', import.meta.url));
@@ -50,6 +53,7 @@ const styleEntries = new Map([
   [resolvedVirtualGridStyleId, gridStyleEntry],
   [resolvedVirtualLayoutStyleId, layoutStyleEntry],
   [resolvedVirtualResizableStyleId, resizableStyleEntry],
+  [resolvedVirtualSelectStyleId, selectStyleEntry],
   [resolvedVirtualSpaceStyleId, spaceStyleEntry],
   [resolvedVirtualSwitchStyleId, switchStyleEntry],
   [resolvedVirtualTooltipStyleId, tooltipStyleEntry],
@@ -70,6 +74,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualGridStyleId) return resolvedVirtualGridStyleId;
       if (source === virtualLayoutStyleId) return resolvedVirtualLayoutStyleId;
       if (source === virtualResizableStyleId) return resolvedVirtualResizableStyleId;
+      if (source === virtualSelectStyleId) return resolvedVirtualSelectStyleId;
       if (source === virtualSpaceStyleId) return resolvedVirtualSpaceStyleId;
       if (source === virtualSwitchStyleId) return resolvedVirtualSwitchStyleId;
       if (source === virtualTooltipStyleId) return resolvedVirtualTooltipStyleId;

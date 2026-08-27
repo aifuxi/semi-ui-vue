@@ -66,6 +66,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/layout/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'resizable', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/resizable/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'select', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/select/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'space', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/space/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'switch', 'index.js')).href);

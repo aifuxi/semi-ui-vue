@@ -14,6 +14,7 @@ import GridScenario from './components/GridScenario.vue';
 import IconScenario from './components/IconScenario.vue';
 import LayoutScenario from './components/LayoutScenario.vue';
 import ResizableScenario from './components/ResizableScenario.vue';
+import SelectScenario from './components/SelectScenario.vue';
 import SpaceScenario from './components/SpaceScenario.vue';
 import SwitchScenario from './components/SwitchScenario.vue';
 import TooltipScenario from './components/TooltipScenario.vue';
@@ -72,6 +73,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <IconScenario v-else-if="scenario.id === 'icon'" />
       <LayoutScenario v-else-if="scenario.id === 'layout'" />
       <ResizableScenario v-else-if="scenario.id === 'resizable'" />
+      <SelectScenario v-else-if="scenario.id === 'select'" />
       <SpaceScenario v-else-if="scenario.id === 'space'" />
       <SwitchScenario v-else-if="scenario.id === 'switch'" />
       <TooltipScenario v-else-if="scenario.id === 'tooltip'" />

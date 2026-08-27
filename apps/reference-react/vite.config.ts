@@ -22,6 +22,7 @@ const iconPublicEntry = path.join(upstreamPackages, 'semi-ui/icons/index.tsx');
 const gridPublicEntry = path.join(upstreamPackages, 'semi-ui/grid/index.tsx');
 const layoutPublicEntry = path.join(upstreamPackages, 'semi-ui/layout/index.tsx');
 const resizablePublicEntry = path.join(upstreamPackages, 'semi-ui/resizable/index.tsx');
+const selectPublicEntry = path.join(upstreamPackages, 'semi-ui/select/index.tsx');
 const spacePublicEntry = path.join(upstreamPackages, 'semi-ui/space/index.tsx');
 const switchPublicEntry = path.join(upstreamPackages, 'semi-ui/switch/index.tsx');
 const tooltipPublicEntry = path.join(upstreamPackages, 'semi-ui/tooltip/index.tsx');
@@ -58,6 +59,18 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'layout/layout.scss'),
   '@douyinfe/semi-foundation/resizable/resizable.scss',
   path.join(foundationRoot, 'resizable/resizable.scss'),
+  '@douyinfe/semi-foundation/input/input.scss',
+  path.join(foundationRoot, 'input/input.scss'),
+  '@douyinfe/semi-foundation/tag/tag.scss',
+  path.join(foundationRoot, 'tag/tag.scss'),
+  '@douyinfe/semi-foundation/select/select.scss',
+  path.join(foundationRoot, 'select/select.scss'),
+  '@douyinfe/semi-foundation/overflowList/overflowList.scss',
+  path.join(foundationRoot, 'overflowList/overflowList.scss'),
+  '@douyinfe/semi-foundation/highlight/highlight.scss',
+  path.join(foundationRoot, 'highlight/highlight.scss'),
+  '@douyinfe/semi-foundation/avatar/avatar.scss',
+  path.join(foundationRoot, 'avatar/avatar.scss'),
   '@douyinfe/semi-foundation/_portal/portal.scss',
   path.join(foundationRoot, '_portal/portal.scss'),
   '@douyinfe/semi-foundation/popover/popover.scss',
@@ -117,6 +130,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/grid', replacement: gridPublicEntry },
       { find: '@semi-v2.102.0/layout', replacement: layoutPublicEntry },
       { find: '@semi-v2.102.0/resizable', replacement: resizablePublicEntry },
+      { find: '@semi-v2.102.0/select', replacement: selectPublicEntry },
       { find: '@semi-v2.102.0/space', replacement: spacePublicEntry },
       { find: '@semi-v2.102.0/switch', replacement: switchPublicEntry },
       { find: '@semi-v2.102.0/tooltip', replacement: tooltipPublicEntry },
@@ -140,6 +154,14 @@ export default defineConfig({
       { find: /^classnames$/, replacement: require.resolve('classnames') },
       { find: /^lodash$/, replacement: require.resolve('lodash') },
       { find: /^prop-types$/, replacement: require.resolve('prop-types') },
+      {
+        find: /^react-window$/,
+        replacement: fileURLToPath(new URL('./src/runtime/reactWindow.tsx', import.meta.url)),
+      },
+      {
+        find: /^fast-copy$/,
+        replacement: fileURLToPath(new URL('./src/runtime/fastCopy.ts', import.meta.url)),
+      },
     ],
     dedupe: ['react', 'react-dom'],
   },

@@ -13,6 +13,7 @@ import { GridScenario } from './scenarios/GridScenario';
 import { IconScenario } from './scenarios/IconScenario';
 import { LayoutScenario } from './scenarios/LayoutScenario';
 import { ResizableScenario } from './scenarios/ResizableScenario';
+import { SelectScenario } from './scenarios/SelectScenario';
 import { SpaceScenario } from './scenarios/SpaceScenario';
 import { SwitchScenario } from './scenarios/SwitchScenario';
 import { TooltipScenario } from './scenarios/TooltipScenario';
@@ -80,6 +81,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'icon' ? <IconScenario /> : null}
         {scenario.id === 'layout' ? <LayoutScenario /> : null}
         {scenario.id === 'resizable' ? <ResizableScenario /> : null}
+        {scenario.id === 'select' ? <SelectScenario /> : null}
         {scenario.id === 'space' ? <SpaceScenario /> : null}
         {scenario.id === 'switch' ? <SwitchScenario /> : null}
         {scenario.id === 'tooltip' ? <TooltipScenario /> : null}

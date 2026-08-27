@@ -126,4 +126,14 @@ describe('React 参考工作台', () => {
     expect(html).toContain('data-popupid="tooltip-right"');
     expect(html).toContain('tooltip-disabled-wrapper');
   });
+
+  it('从固定 Select Adapter 渲染单选、多选、禁用与分组搜索场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="select" />);
+
+    expect(html).toContain('data-parity-scenario="select"');
+    expect(html).toContain('data-parity-target="select-basic"');
+    expect(html).toContain('semi-select-disabled');
+    expect(html).toContain('semi-select-multiple');
+    expect(html).toContain('select-filter');
+  });
 });

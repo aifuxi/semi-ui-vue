@@ -188,4 +188,24 @@ describe('Vue 对照工作台', () => {
 
     wrapper.unmount();
   });
+
+  it('通过公共 Select 渲染单选、多选、分组搜索与默认展开场景', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'select' }, attachTo: document.body });
+    await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    const scenario = wrapper.get('[data-testid="select-vue"]');
+    expect(scenario.findAll('.semi-select')).toHaveLength(5);
+    expect(scenario.get('[data-parity-target="select-basic"]').text()).toContain('抖音');
+    expect(scenario.get('[data-parity-target="select-disabled"]').classes()).toContain(
+      'semi-select-disabled',
+    );
+    expect(
+      scenario.get('[data-parity-target="select-multiple"]').findAll('.semi-tag'),
+    ).toHaveLength(3);
+    expect(scenario.find('.semi-select-option-list-wrapper').exists()).toBe(true);
+
+    wrapper.unmount();
+  });
 });

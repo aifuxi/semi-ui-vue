@@ -546,6 +546,36 @@ p {
   line-height: 20px;
 }
 
+.select-scenario {
+  position: relative;
+  display: grid;
+  gap: 20px;
+  min-height: 330px;
+}
+
+.select-scenario__section {
+  display: grid;
+  gap: 12px;
+}
+
+.select-scenario__section h3 {
+  margin: 0;
+  color: var(--semi-color-text-0);
+  font-size: 16px;
+}
+
+.select-scenario__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.select-scenario__status {
+  color: var(--semi-color-text-2);
+  font-size: 13px;
+}
+
 @media (max-width: 640px) {
   .tooltip-scenario {
     min-height: 680px;

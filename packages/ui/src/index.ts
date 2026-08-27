@@ -6,6 +6,7 @@ export * from './grid';
 export * from './icon';
 export * from './layout';
 export * from './resizable';
+export * from './select';
 export * from './space';
 export * from './switch';
 export * from './tooltip';

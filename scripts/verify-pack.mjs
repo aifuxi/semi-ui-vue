@@ -244,6 +244,7 @@ try {
 	await import('@workspace/ui/icon');
 	await import('@workspace/ui/layout');
 	await import('@workspace/ui/resizable');
+	await import('@workspace/ui/select');
 	await import('@workspace/ui/space');
 	await import('@workspace/ui/switch');
 	await import('@workspace/ui/tooltip');
@@ -283,6 +284,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/resizable.css').endsWith('/dist/resizable.css')) {
 	  throw new Error('Resizable 逐组件样式导出未指向 dist/resizable.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/select.css').endsWith('/dist/select.css')) {
+	  throw new Error('Select 逐组件样式导出未指向 dist/select.css');
+	}
 	if (!import.meta.resolve('@workspace/theme-default/space.css').endsWith('/dist/space.css')) {
 	  throw new Error('Space 逐组件样式导出未指向 dist/space.css');
 	}
@@ -310,6 +314,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { Icon } from '@workspace/ui/icon';
 	import { Layout, LayoutContent, LayoutSider, type LayoutBreakpoint } from '@workspace/ui/layout';
 	import { Resizable, ResizeGroup, ResizeHandler, ResizeItem, type ResizeDirection, type ResizeSize } from '@workspace/ui/resizable';
+	import { Select, SelectOption, SelectOptionGroup, type SelectModelValue } from '@workspace/ui/select';
 	import { Space, type SpaceAlign, type SpaceSpacingValue } from '@workspace/ui/space';
 	import { Switch, type SwitchSize } from '@workspace/ui/switch';
 	import { Tooltip, type TooltipPosition } from '@workspace/ui/tooltip';
@@ -348,6 +353,12 @@ h(Button, { type, htmlType: 'submit' });
 	  h(ResizeItem, { defaultSize: '35%', min: '20%' }),
 	  h(ResizeHandler),
 	  h(ResizeItem, { defaultSize: '65%' }),
+	]);
+	const selectValue: SelectModelValue = ['douyin'];
+	h(Select, { modelValue: selectValue, multiple: true, filter: true }, () => [
+	  h(SelectOptionGroup, { label: 'Apps' }, () => [
+	    h(SelectOption, { value: 'douyin' }, () => '抖音'),
+	  ]),
 	]);
 	const spaceAlign: SpaceAlign = 'baseline';
 	const spaceSpacing: SpaceSpacingValue = [12, 'loose'];
@@ -434,6 +445,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-resizable-resizable')) {
     throw new Error('安装后的默认主题缺少 Resizable 样式');
+  }
+  if (!themeCss.includes('.semi-select') || !themeCss.includes('.semi-select-option-list')) {
+    throw new Error('安装后的默认主题缺少 Select 样式');
   }
   if (!themeCss.includes('.semi-typography')) {
     throw new Error('安装后的默认主题缺少 Typography 样式');
@@ -526,6 +540,18 @@ h(Button, { type, htmlType: 'submit' });
     !resizableThemeCss.includes('.semi-icon-default')
   ) {
     throw new Error('安装后的 Resizable 逐组件样式缺少单体、Group 或默认手柄样式');
+  }
+  const selectThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'select.css'),
+    'utf8',
+  );
+  if (
+    !selectThemeCss.includes('.semi-select-option-selected') ||
+    !selectThemeCss.includes('.semi-input-wrapper') ||
+    !selectThemeCss.includes('.semi-tag') ||
+    !selectThemeCss.includes('.semi-popover-wrapper')
+  ) {
+    throw new Error('安装后的 Select 逐组件样式缺少选项、Input、Tag 或 Popover 样式');
   }
   const spaceThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'space.css'),

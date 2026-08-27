@@ -63,6 +63,8 @@ Switch 是第十一个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/swi
 
 Tooltip 是第十二个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/tooltip/` 提供五种 trigger、16 个 placement、Teleport Portal、默认/自定义箭头、受控 `v-model:visible`、延迟、outside/Escape、焦点守卫与 SSR-safe trigger；`packages/foundation-integration/src/tooltip.js` 是固定 Tooltip Foundation 的唯一运行时入口，`packages/theme-default/tooltip.css` 包含主题、Portal、箭头、动效和 RTL 样式。完整矩阵见 `docs/components/tooltip/`。
 
+Select 是第十三个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/select/` 提供单选、多选、搜索、创建、分组、虚拟列表、标签折叠、键盘/焦点与 Portal，`packages/foundation-integration/src/select.js` 是固定 Select Foundation 的唯一运行时入口，`packages/theme-default/select.css` 包含 trigger、Input、Tag、Spin、Popover、候选项和 RTL 样式。完整矩阵见 `docs/components/select/`。
+
 Foundation 集成包已建立 Resizable、Typography、Switch 与 Tooltip 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。后续仍必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。

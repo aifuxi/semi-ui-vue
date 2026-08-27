@@ -188,6 +188,45 @@ declare module '@semi-v2.102.0/tooltip' {
   export default Tooltip;
 }
 
+declare module '@semi-v2.102.0/select' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface OptionProps {
+    value?: string | number;
+    label?: ReactNode;
+    disabled?: boolean;
+    showTick?: boolean;
+    children?: ReactNode;
+  }
+  export interface OptionGroupProps {
+    label?: ReactNode;
+    children?: ReactNode;
+  }
+  export interface SelectProps {
+    children?: ReactNode;
+    defaultValue?: string | number | Array<string | number>;
+    value?: string | number | Array<string | number>;
+    multiple?: boolean;
+    maxTagCount?: number;
+    filter?: boolean;
+    defaultOpen?: boolean;
+    disabled?: boolean;
+    placeholder?: ReactNode;
+    showClear?: boolean;
+    motion?: boolean;
+    style?: CSSProperties;
+    getPopupContainer?: () => HTMLElement;
+    onChange?: (value: string | number | Array<string | number> | undefined) => void;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+  type SelectComponent = ComponentType<SelectProps> & {
+    Option: ComponentType<OptionProps>;
+    OptGroup: ComponentType<OptionGroupProps>;
+  };
+  const Select: SelectComponent;
+  export default Select;
+}
+
 declare module '@semi-v2.102.0/typography' {
   import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
 
