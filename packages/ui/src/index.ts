@@ -8,4 +8,5 @@ export * from './layout';
 export * from './resizable';
 export * from './space';
 export * from './switch';
+export * from './tooltip';
 export * from './typography';

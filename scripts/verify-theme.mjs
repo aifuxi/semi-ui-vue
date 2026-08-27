@@ -69,6 +69,14 @@ const spaceEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'sr
 const spaceCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'space.css');
 const switchEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'switch.scss');
 const switchCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'switch.css');
+const tooltipEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'tooltip.scss',
+);
+const tooltipCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'tooltip.css');
 const typographyEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -382,6 +390,33 @@ for (const selector of [
   }
 }
 
+const expectedTooltipImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/_portal/portal.scss'),
+  vendorImport('semi-foundation/tooltip/tooltip.scss'),
+];
+const tooltipEntrySource = await readFile(tooltipEntryPath, 'utf8');
+const actualTooltipImports = [...tooltipEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualTooltipImports) !== JSON.stringify(expectedTooltipImports)) {
+  throw new Error('Tooltip 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const tooltipCss = await readFile(tooltipCssPath, 'utf8');
+for (const selector of [
+  '.semi-portal-inner',
+  '.semi-tooltip-wrapper',
+  '.semi-tooltip-icon-arrow',
+  '.semi-tooltip-animation-show',
+  '.semi-portal-rtl .semi-tooltip-wrapper',
+]) {
+  if (!tooltipCss.includes(selector)) {
+    throw new Error(`Tooltip 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 const expectedTypographyImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -430,5 +465,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 Button/ConfigProvider/Divider/FloatButton/Grid/Icon/Layout/Resizable/Space/Switch/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + resizableCss.length + spaceCss.length + switchCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Button/ConfigProvider/Divider/FloatButton/Grid/Icon/Layout/Resizable/Space/Switch/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + resizableCss.length + spaceCss.length + switchCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

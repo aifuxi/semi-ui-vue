@@ -16,6 +16,7 @@ import LayoutScenario from './components/LayoutScenario.vue';
 import ResizableScenario from './components/ResizableScenario.vue';
 import SpaceScenario from './components/SpaceScenario.vue';
 import SwitchScenario from './components/SwitchScenario.vue';
+import TooltipScenario from './components/TooltipScenario.vue';
 import TypographyScenario from './components/TypographyScenario.vue';
 import HarnessCalibration from './components/HarnessCalibration.vue';
 import UnavailableScenario from './components/UnavailableScenario.vue';
@@ -73,6 +74,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <ResizableScenario v-else-if="scenario.id === 'resizable'" />
       <SpaceScenario v-else-if="scenario.id === 'space'" />
       <SwitchScenario v-else-if="scenario.id === 'switch'" />
+      <TooltipScenario v-else-if="scenario.id === 'tooltip'" />
       <TypographyScenario v-else-if="scenario.id === 'typography'" />
       <UnavailableScenario
         v-else

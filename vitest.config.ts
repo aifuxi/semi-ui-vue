@@ -53,6 +53,9 @@ export default defineConfig({
       '@semi-v2.102.0/switch': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiSwitchStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/tooltip': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiTooltipStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/typography': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiTypographyStub.tsx', import.meta.url),
       ),

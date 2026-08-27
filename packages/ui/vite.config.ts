@@ -49,6 +49,7 @@ export default defineConfig({
         'resizable/index': fileURLToPath(new URL('./src/resizable/index.ts', import.meta.url)),
         'space/index': fileURLToPath(new URL('./src/space/index.ts', import.meta.url)),
         'switch/index': fileURLToPath(new URL('./src/switch/index.ts', import.meta.url)),
+        'tooltip/index': fileURLToPath(new URL('./src/tooltip/index.ts', import.meta.url)),
         'typography/index': fileURLToPath(new URL('./src/typography/index.ts', import.meta.url)),
       },
       formats: ['es'],

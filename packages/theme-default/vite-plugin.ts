@@ -12,6 +12,7 @@ export const virtualLayoutStyleId = 'virtual:workspace-layout-styles.css';
 export const virtualResizableStyleId = 'virtual:workspace-resizable-styles.css';
 export const virtualSpaceStyleId = 'virtual:workspace-space-styles.css';
 export const virtualSwitchStyleId = 'virtual:workspace-switch-styles.css';
+export const virtualTooltipStyleId = 'virtual:workspace-tooltip-styles.css';
 export const virtualTypographyStyleId = 'virtual:workspace-typography-styles.css';
 const resolvedVirtualButtonStyleId = `\0${virtualButtonStyleId}`;
 const resolvedVirtualConfigProviderStyleId = `\0${virtualConfigProviderStyleId}`;
@@ -23,6 +24,7 @@ const resolvedVirtualLayoutStyleId = `\0${virtualLayoutStyleId}`;
 const resolvedVirtualResizableStyleId = `\0${virtualResizableStyleId}`;
 const resolvedVirtualSpaceStyleId = `\0${virtualSpaceStyleId}`;
 const resolvedVirtualSwitchStyleId = `\0${virtualSwitchStyleId}`;
+const resolvedVirtualTooltipStyleId = `\0${virtualTooltipStyleId}`;
 const resolvedVirtualTypographyStyleId = `\0${virtualTypographyStyleId}`;
 const buttonStyleEntry = fileURLToPath(new URL('./src/button.scss', import.meta.url));
 const configProviderStyleEntry = fileURLToPath(
@@ -36,6 +38,7 @@ const layoutStyleEntry = fileURLToPath(new URL('./src/layout.scss', import.meta.
 const resizableStyleEntry = fileURLToPath(new URL('./src/resizable.scss', import.meta.url));
 const spaceStyleEntry = fileURLToPath(new URL('./src/space.scss', import.meta.url));
 const switchStyleEntry = fileURLToPath(new URL('./src/switch.scss', import.meta.url));
+const tooltipStyleEntry = fileURLToPath(new URL('./src/tooltip.scss', import.meta.url));
 const typographyStyleEntry = fileURLToPath(new URL('./src/typography.scss', import.meta.url));
 
 const styleEntries = new Map([
@@ -49,6 +52,7 @@ const styleEntries = new Map([
   [resolvedVirtualResizableStyleId, resizableStyleEntry],
   [resolvedVirtualSpaceStyleId, spaceStyleEntry],
   [resolvedVirtualSwitchStyleId, switchStyleEntry],
+  [resolvedVirtualTooltipStyleId, tooltipStyleEntry],
   [resolvedVirtualTypographyStyleId, typographyStyleEntry],
 ]);
 
@@ -68,6 +72,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualResizableStyleId) return resolvedVirtualResizableStyleId;
       if (source === virtualSpaceStyleId) return resolvedVirtualSpaceStyleId;
       if (source === virtualSwitchStyleId) return resolvedVirtualSwitchStyleId;
+      if (source === virtualTooltipStyleId) return resolvedVirtualTooltipStyleId;
       if (source === virtualTypographyStyleId) return resolvedVirtualTypographyStyleId;
       return null;
     },

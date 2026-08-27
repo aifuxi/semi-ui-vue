@@ -3,4 +3,6 @@
 export * from './resizable.js';
 export { SwitchFoundation } from './switch.js';
 export type { SwitchAdapter } from './switch.js';
+export { TooltipFoundation } from './tooltip.js';
+export type { TooltipAdapter, TooltipPopupContainerRect } from './tooltip.js';
 export * from './typography.js';

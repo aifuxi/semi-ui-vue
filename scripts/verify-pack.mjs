@@ -246,6 +246,7 @@ try {
 	await import('@workspace/ui/resizable');
 	await import('@workspace/ui/space');
 	await import('@workspace/ui/switch');
+	await import('@workspace/ui/tooltip');
 	await import('@workspace/ui/typography');
 	await import('@workspace/icons/Icon');
 	await import('@workspace/icons/icons/IconHome');
@@ -288,6 +289,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/switch.css').endsWith('/dist/switch.css')) {
 	  throw new Error('Switch 逐组件样式导出未指向 dist/switch.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/tooltip.css').endsWith('/dist/tooltip.css')) {
+	  throw new Error('Tooltip 逐组件样式导出未指向 dist/tooltip.css');
+	}
 	if (!import.meta.resolve('@workspace/theme-default/typography.css').endsWith('/dist/typography.css')) {
 	  throw new Error('Typography 逐组件样式导出未指向 dist/typography.css');
 	}
@@ -308,6 +312,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { Resizable, ResizeGroup, ResizeHandler, ResizeItem, type ResizeDirection, type ResizeSize } from '@workspace/ui/resizable';
 	import { Space, type SpaceAlign, type SpaceSpacingValue } from '@workspace/ui/space';
 	import { Switch, type SwitchSize } from '@workspace/ui/switch';
+	import { Tooltip, type TooltipPosition } from '@workspace/ui/tooltip';
 	import { Typography, Text, Title, Paragraph, Numeral, type TypographyType, type TypographyNumeralRule } from '@workspace/ui/typography';
 	import IconBase, { convertIcon, type IconSize } from '@workspace/icons/Icon';
 	import { IconAIWandLevel3, IconHome } from '@workspace/icons';
@@ -349,6 +354,8 @@ h(Button, { type, htmlType: 'submit' });
 	h(Space, { align: spaceAlign, spacing: spaceSpacing, wrap: true });
 	const switchSize: SwitchSize = 'large';
 	h(Switch, { modelValue: true, size: switchSize, ariaLabel: 'consumer switch', 'onUpdate:modelValue': (_checked: boolean) => undefined });
+	const tooltipPosition: TooltipPosition = 'bottomRight';
+	h(Tooltip, { content: 'consumer tooltip', position: tooltipPosition, trigger: 'custom', visible: true }, () => h('button', 'trigger'));
 	const typographyType: TypographyType = 'secondary';
 	const numeralRule: TypographyNumeralRule = 'bytes-binary';
 	h(Typography, null, () => [
@@ -433,6 +440,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-switch')) {
     throw new Error('安装后的默认主题缺少 Switch 样式');
+  }
+  if (!themeCss.includes('.semi-tooltip-wrapper')) {
+    throw new Error('安装后的默认主题缺少 Tooltip 样式');
   }
   const buttonThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'button.css'),
@@ -537,6 +547,18 @@ h(Button, { type, htmlType: 'submit' });
     !switchThemeCss.includes('.semi-spin-wrapper')
   ) {
     throw new Error('安装后的 Switch 逐组件样式缺少原生控件、loading 或 Spin 样式');
+  }
+  const tooltipThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'tooltip.css'),
+    'utf8',
+  );
+  if (
+    !tooltipThemeCss.includes('.semi-portal-inner') ||
+    !tooltipThemeCss.includes('.semi-tooltip-wrapper') ||
+    !tooltipThemeCss.includes('.semi-tooltip-icon-arrow') ||
+    !tooltipThemeCss.includes('.semi-tooltip-animation-show')
+  ) {
+    throw new Error('安装后的 Tooltip 逐组件样式缺少 Portal、箭头或动效样式');
   }
   const typographyThemeCss = await readFile(
     path.join(

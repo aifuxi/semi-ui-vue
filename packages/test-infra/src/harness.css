@@ -499,6 +499,65 @@ p {
   line-height: 20px;
 }
 
+.tooltip-scenario {
+  position: relative;
+  display: grid;
+  min-height: 480px;
+  gap: 18px;
+}
+
+.tooltip-scenario__section {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--harness-border);
+}
+
+.tooltip-scenario__section h3 {
+  margin: 0 0 12px;
+  font-size: 14px;
+}
+
+.tooltip-scenario__placements {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(140px, 180px));
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  padding: 50px 100px;
+  column-gap: 180px;
+  row-gap: 90px;
+}
+
+.tooltip-scenario__placements > .semi-button {
+  justify-self: center;
+  width: 96px;
+}
+
+.tooltip-scenario__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: 44px;
+  gap: 18px;
+}
+
+.tooltip-scenario__status {
+  color: var(--harness-muted-text);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+@media (max-width: 640px) {
+  .tooltip-scenario {
+    min-height: 680px;
+  }
+
+  .tooltip-scenario__placements {
+    grid-template-columns: minmax(120px, 1fr);
+    padding: 40px 90px;
+    row-gap: 90px;
+  }
+}
+
 .layout-scenario {
   display: grid;
   margin-top: 24px;

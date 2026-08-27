@@ -116,4 +116,14 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-spin-wrapper');
     expect(html).toContain('role="switch"');
   });
+
+  it('从固定 Tooltip Adapter 渲染方位、ARIA 与特殊 trigger 场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="tooltip" />);
+
+    expect(html).toContain('data-parity-scenario="tooltip"');
+    expect(html).toContain('data-parity-target="tooltip-trigger-top"');
+    expect(html).toContain('aria-describedby="tooltip-top"');
+    expect(html).toContain('data-popupid="tooltip-right"');
+    expect(html).toContain('tooltip-disabled-wrapper');
+  });
 });

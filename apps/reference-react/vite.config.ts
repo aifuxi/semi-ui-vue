@@ -24,6 +24,7 @@ const layoutPublicEntry = path.join(upstreamPackages, 'semi-ui/layout/index.tsx'
 const resizablePublicEntry = path.join(upstreamPackages, 'semi-ui/resizable/index.tsx');
 const spacePublicEntry = path.join(upstreamPackages, 'semi-ui/space/index.tsx');
 const switchPublicEntry = path.join(upstreamPackages, 'semi-ui/switch/index.tsx');
+const tooltipPublicEntry = path.join(upstreamPackages, 'semi-ui/tooltip/index.tsx');
 const typographyPublicEntry = path.join(upstreamPackages, 'semi-ui/typography/index.tsx');
 const foundationRoot = path.join(upstreamPackages, 'semi-foundation');
 const iconsEntry = path.join(upstreamPackages, 'semi-icons/src/index.ts');
@@ -118,6 +119,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/resizable', replacement: resizablePublicEntry },
       { find: '@semi-v2.102.0/space', replacement: spacePublicEntry },
       { find: '@semi-v2.102.0/switch', replacement: switchPublicEntry },
+      { find: '@semi-v2.102.0/tooltip', replacement: tooltipPublicEntry },
       { find: '@semi-v2.102.0/typography', replacement: typographyPublicEntry },
       { find: '@semi-v2.102.0/icons', replacement: iconsEntry },
       { find: '@semi-v2.102.0/icons-lab', replacement: iconsLabEntry },

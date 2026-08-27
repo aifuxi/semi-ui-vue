@@ -15,6 +15,7 @@ import { LayoutScenario } from './scenarios/LayoutScenario';
 import { ResizableScenario } from './scenarios/ResizableScenario';
 import { SpaceScenario } from './scenarios/SpaceScenario';
 import { SwitchScenario } from './scenarios/SwitchScenario';
+import { TooltipScenario } from './scenarios/TooltipScenario';
 import { TypographyScenario } from './scenarios/TypographyScenario';
 
 const DEFAULT_OPTIONS: ParityScenarioOptions = {
@@ -81,6 +82,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'resizable' ? <ResizableScenario /> : null}
         {scenario.id === 'space' ? <SpaceScenario /> : null}
         {scenario.id === 'switch' ? <SwitchScenario /> : null}
+        {scenario.id === 'tooltip' ? <TooltipScenario /> : null}
         {scenario.id === 'typography' ? <TypographyScenario /> : null}
       </section>
 

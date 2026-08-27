@@ -183,6 +183,22 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Tooltip Foundation, Portal styles, and docs as a complete parity scene', () => {
+    expect(getParityScenario('tooltip')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.tooltipPublicEntry,
+    });
+    expect(assertScenarioComparable('tooltip').targets).toHaveLength(8);
+    expect(getParityScenario('tooltip').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.tooltipFoundation,
+        REFERENCE_SOURCE_PATHS.tooltipFoundationStyle,
+        REFERENCE_SOURCE_PATHS.tooltipDocumentation,
+      ]),
+    );
+  });
+
   it('records FloatButton and Group as a complete local-source parity scene', () => {
     expect(getParityScenario('float-button')).toMatchObject({
       referenceStatus: 'ready',

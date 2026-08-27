@@ -170,4 +170,22 @@ describe('Vue 对照工作台', () => {
     );
     expect(scenario.get('output').text()).toContain('controlled:true');
   });
+
+  it('通过公共 Tooltip 渲染四向 Portal、箭头与特殊 trigger 包裹', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'tooltip' } });
+    await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    const scenario = wrapper.get('[data-testid="tooltip-vue"]');
+    expect(scenario.findAll('[data-parity-target^="tooltip-trigger-"]')).toHaveLength(7);
+    expect(
+      scenario.get('[data-parity-target="tooltip-trigger-right"]').attributes('aria-describedby'),
+    ).toBe('tooltip-right');
+    expect(
+      scenario.get('[data-parity-target="tooltip-trigger-disabled"]').attributes('disabled'),
+    ).toBeDefined();
+
+    wrapper.unmount();
+  });
 });

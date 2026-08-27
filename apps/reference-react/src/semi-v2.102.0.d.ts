@@ -143,6 +143,51 @@ declare module '@semi-v2.102.0/switch' {
   export default Switch;
 }
 
+declare module '@semi-v2.102.0/tooltip' {
+  import type { ComponentType, CSSProperties, ReactElement, ReactNode } from 'react';
+
+  export type TooltipPosition =
+    | 'top'
+    | 'topLeft'
+    | 'topRight'
+    | 'left'
+    | 'leftTop'
+    | 'leftBottom'
+    | 'right'
+    | 'rightTop'
+    | 'rightBottom'
+    | 'bottom'
+    | 'bottomLeft'
+    | 'bottomRight'
+    | 'leftTopOver'
+    | 'rightTopOver'
+    | 'leftBottomOver'
+    | 'rightBottomOver';
+  export type TooltipTrigger = 'hover' | 'focus' | 'click' | 'custom' | 'contextMenu';
+  export interface TooltipProps {
+    children?: ReactElement | ReactNode;
+    className?: string;
+    clickToHide?: boolean;
+    closeOnEsc?: boolean;
+    content?: ReactNode | ((props: { initialFocusRef: unknown }) => ReactNode);
+    getPopupContainer?: () => HTMLElement;
+    motion?: boolean;
+    mouseEnterDelay?: number;
+    mouseLeaveDelay?: number;
+    onVisibleChange?: (visible: boolean) => void;
+    position?: TooltipPosition;
+    role?: string;
+    showArrow?: boolean | ReactNode;
+    style?: CSSProperties;
+    trigger?: TooltipTrigger;
+    visible?: boolean;
+    wrapperClassName?: string;
+    wrapperId?: string;
+  }
+  const Tooltip: ComponentType<TooltipProps>;
+  export default Tooltip;
+}
+
 declare module '@semi-v2.102.0/typography' {
   import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
 
