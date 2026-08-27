@@ -70,6 +70,10 @@
       "types": "./dist/radio/index.d.ts",
       "import": "./dist/radio/index.js"
     },
+    "./rating": {
+      "types": "./dist/rating/index.d.ts",
+      "import": "./dist/rating/index.js"
+    },
     "./resizable": {
       "types": "./dist/resizable/index.d.ts",
       "import": "./dist/resizable/index.js"

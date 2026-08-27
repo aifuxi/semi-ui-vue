@@ -696,6 +696,41 @@ p {
   line-height: 20px;
 }
 
+.rating-scenario {
+  display: grid;
+  margin-top: 24px;
+  gap: 20px;
+}
+
+.rating-scenario__section {
+  display: grid;
+  gap: 12px;
+}
+
+.rating-scenario__section h3 {
+  margin: 0;
+  color: var(--semi-color-text-0);
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.rating-scenario__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 22px;
+}
+
+.rating-scenario__row--center {
+  align-items: center;
+}
+
+.rating-scenario__status {
+  color: var(--semi-color-text-2);
+  font-size: 13px;
+  line-height: 20px;
+}
+
 @media (max-width: 640px) {
   .tooltip-scenario {
     min-height: 680px;

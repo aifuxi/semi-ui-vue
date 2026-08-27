@@ -111,6 +111,8 @@ const pinCodeCssPath = path.join(
 );
 const radioEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'radio.scss');
 const radioCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'radio.css');
+const ratingEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'rating.scss');
+const ratingCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'rating.css');
 const resizableEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -233,6 +235,7 @@ const requiredSelectors = [
   '.semi-input-number',
   '.semi-pincode-wrapper',
   '.semi-radioGroup',
+  '.semi-rating',
   '.semi-input-textarea-wrapper',
   '.semi-modal',
 ];
@@ -474,6 +477,33 @@ for (const selector of [
 ]) {
   if (!radioCss.includes(selector)) {
     throw new Error(`Radio 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
+const expectedRatingImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/rating/rating.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const ratingEntrySource = await readFile(ratingEntryPath, 'utf8');
+const actualRatingImports = [...ratingEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualRatingImports) !== JSON.stringify(expectedRatingImports)) {
+  throw new Error('Rating 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const ratingCss = await readFile(ratingCssPath, 'utf8');
+for (const selector of [
+  '.semi-rating-star-half',
+  '.semi-rating-star-full',
+  '.semi-rating-star-small',
+  '.semi-rating-disabled',
+  '.semi-rtl .semi-rating',
+  '.semi-icon-extra-large',
+]) {
+  if (!ratingCss.includes(selector)) {
+    throw new Error(`Rating 逐组件样式产物缺少选择器：${selector}`);
   }
 }
 
@@ -741,5 +771,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Radio/Layout/Resizable/Select/Space/Switch/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + radioCss.length + layoutCss.length + resizableCss.length + selectCss.length + spaceCss.length + switchCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Radio/Rating/Layout/Resizable/Select/Space/Switch/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + spaceCss.length + switchCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

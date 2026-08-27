@@ -122,6 +122,20 @@ describe('parity infrastructure contract', () => {
         REFERENCE_SOURCE_PATHS.radioDocumentation,
       ]),
     );
+    expect(getParityScenario('rating')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.ratingPublicEntry,
+    });
+    expect(getParityScenario('rating').targets).toHaveLength(6);
+    expect(getParityScenario('rating').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.ratingItemEntry,
+        REFERENCE_SOURCE_PATHS.ratingFoundation,
+        REFERENCE_SOURCE_PATHS.ratingFoundationStyle,
+        REFERENCE_SOURCE_PATHS.ratingDocumentation,
+      ]),
+    );
   });
 
   it('records Icon and both generated asset packages as a complete parity scene', () => {

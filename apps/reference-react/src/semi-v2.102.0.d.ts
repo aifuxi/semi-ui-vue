@@ -157,6 +157,32 @@ declare module '@semi-v2.102.0/radio' {
   export default Radio;
 }
 
+declare module '@semi-v2.102.0/rating' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface RatingProps {
+    'aria-label'?: string;
+    allowClear?: boolean;
+    allowHalf?: boolean;
+    autoFocus?: boolean;
+    character?: ReactNode;
+    className?: string;
+    count?: number;
+    defaultValue?: number;
+    disabled?: boolean;
+    onChange?: (value: number) => void;
+    onHoverChange?: (value: number | undefined) => void;
+    preventScroll?: boolean;
+    size?: 'small' | 'default' | number;
+    style?: CSSProperties;
+    tooltips?: string[];
+    value?: number;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+  const Rating: ComponentType<RatingProps>;
+  export default Rating;
+}
+
 declare module '@semi-v2.102.0/input-group' {
   import type { ComponentType, CSSProperties, FocusEvent, ReactNode } from 'react';
 
