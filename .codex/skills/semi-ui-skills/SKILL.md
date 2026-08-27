@@ -1,11 +1,17 @@
 ---
 name: semi-design-guide
-description: 使用 Semi Design 组件的完整指南，包括 MCP 工具使用流程、常见模式、最佳实践。当你需要查询 Semi Design 组件、生成组件代码或解决使用问题时，请使用此技能。
+description: 查询或使用上游 Semi Design React 组件的 MCP 指南，包括 API、常见模式和业务集成最佳实践。仅用于普通 Semi 使用问题；不用于本仓库基于只读 vendor v2.102.0 的 Vue 组件复刻、垂直切片或对齐验收。
 ---
 
 # Semi Design 使用指南
 
 此 Skill 帮助你高效使用 Semi Design 组件库完成常见开发任务。
+
+## 适用边界
+
+- 用于查询或消费上游 Semi React 组件、了解 API，以及解决普通业务集成问题。
+- 如果任务涉及本仓库的 `packages/ui`、Foundation 集成、主题、React/Vue 对照、组件完整切片，或用户说“开始/继续下一个组件”，应改用项目级 `semi-ui-vue-vertical-slice`。
+- 在 Vue 复刻任务中不得把 Semi MCP 或在线最新资料作为对齐基线；唯一基线是仓库固定的只读 `vendor/semi-design` v2.102.0。
 
 ## 文件说明
 
