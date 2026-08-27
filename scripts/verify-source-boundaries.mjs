@@ -22,7 +22,7 @@ const importPatterns = [
 const publicPackagePolicies = [
   {
     manifest: 'packages/ui/package.json',
-    dependencies: { '@workspace/icons': 'workspace:*' },
+    dependencies: { '@workspace/icons': 'workspace:*', lodash: '4.17.21' },
     optionalDependencies: {},
     peerDependencies: { vue: '>=3.5.0' },
     devDependencies: { '@workspace/foundation-integration': 'workspace:*' },

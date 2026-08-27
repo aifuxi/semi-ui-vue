@@ -97,4 +97,22 @@ describe('Vue 对照工作台', () => {
       'semi-col-lg-push-1',
     );
   });
+
+  it('通过公共 Resizable 包渲染单体、水平/垂直组合与拖拽手柄', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'resizable' } });
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(
+      wrapper.get('[data-testid="resizable-vue"]').findAll('.semi-resizable-group'),
+    ).toHaveLength(2);
+    expect(
+      wrapper.get('[data-testid="resizable-vue"]').findAll('.semi-resizable-item'),
+    ).toHaveLength(4);
+    expect(wrapper.get('.resizable-target-handler-horizontal').classes()).toContain(
+      'semi-resizable-handler-horizontal',
+    );
+    expect(wrapper.get('.resizable-target-handler-vertical').classes()).toContain(
+      'semi-resizable-handler-vertical',
+    );
+  });
 });

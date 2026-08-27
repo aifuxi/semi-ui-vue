@@ -68,6 +68,9 @@ importers:
       jsdom:
         specifier: 26.1.0
         version: 26.1.0(supports-color@7.1.0)
+      lodash:
+        specifier: 4.17.21
+        version: 4.17.21
       prettier:
         specifier: 3.9.6
         version: 3.9.6
@@ -187,6 +190,9 @@ importers:
       '@workspace/icons':
         specifier: workspace:*
         version: link:../icons
+      lodash:
+        specifier: 4.17.21
+        version: 4.17.21
     devDependencies:
       '@workspace/foundation-integration':
         specifier: workspace:*

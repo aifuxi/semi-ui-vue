@@ -6,6 +6,14 @@ import dts from 'vite-plugin-dts';
 export default defineConfig({
   plugins: [vue(), dts({ include: ['src'] })],
   resolve: {
+    alias: [
+      {
+        find: /^lodash$/,
+        replacement: fileURLToPath(
+          new URL('../foundation-integration/src/resizable-lodash.js', import.meta.url),
+        ),
+      },
+    ],
     dedupe: ['vue'],
   },
   build: {
@@ -20,6 +28,7 @@ export default defineConfig({
         'grid/index': fileURLToPath(new URL('./src/grid/index.ts', import.meta.url)),
         'icon/index': fileURLToPath(new URL('./src/icon/index.ts', import.meta.url)),
         'layout/index': fileURLToPath(new URL('./src/layout/index.ts', import.meta.url)),
+        'resizable/index': fileURLToPath(new URL('./src/resizable/index.ts', import.meta.url)),
         'space/index': fileURLToPath(new URL('./src/space/index.ts', import.meta.url)),
       },
       formats: ['es'],

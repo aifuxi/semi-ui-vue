@@ -53,7 +53,9 @@ Layout 是第六个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/layout
 
 Grid 是第七个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/grid/` 提供 Row 与 Col，使用类型化上下文传播水平/垂直 Gutter，并在客户端监听固定六断点；`packages/theme-default/grid.css` 提供 24 栅格、Flex、响应式与 RTL 样式。完整矩阵见 `docs/components/grid/`。
 
-Foundation 集成包当前也只建立了边界，还没有组件入口。后续必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
+Resizable 是第八个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/resizable/` 提供单体八方向缩放与 ResizeGroup、ResizeItem、ResizeHandler，`packages/foundation-integration/src/resizable.js` 是固定单体/组合 Foundation 的唯一运行时入口，公开构建将其内联且不泄漏 vendor 路径；`packages/theme-default/resizable.css` 提供逐组件样式与默认手柄图标。完整矩阵见 `docs/components/resizable/`。
+
+Foundation 集成包已建立 Resizable 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。后续仍必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。
 

@@ -115,6 +115,24 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Resizable single and group as a complete local-source parity scene', () => {
+    expect(getParityScenario('resizable')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.resizablePublicEntry,
+    });
+    expect(assertScenarioComparable('resizable').targets).toHaveLength(6);
+    expect(getParityScenario('resizable').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.resizableSingleEntry,
+        REFERENCE_SOURCE_PATHS.resizableGroupEntry,
+        REFERENCE_SOURCE_PATHS.resizableFoundation,
+        REFERENCE_SOURCE_PATHS.resizableFoundationStyle,
+        REFERENCE_SOURCE_PATHS.resizableDocumentation,
+      ]),
+    );
+  });
+
   it('records FloatButton and Group as a complete local-source parity scene', () => {
     expect(getParityScenario('float-button')).toMatchObject({
       referenceStatus: 'ready',

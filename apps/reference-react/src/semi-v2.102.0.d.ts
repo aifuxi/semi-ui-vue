@@ -142,6 +142,48 @@ declare module '@semi-v2.102.0/grid' {
   export const Col: React.ComponentType<ColProps>;
 }
 
+declare module '@semi-v2.102.0/resizable' {
+  import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
+
+  export type ResizeDirection =
+    'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bottomRight' | 'bottomLeft' | 'topLeft';
+  export interface ResizeSize {
+    width?: string | number;
+    height?: string | number;
+  }
+  export interface ResizableProps extends HTMLAttributes<HTMLDivElement> {
+    children?: ReactNode;
+    defaultSize?: ResizeSize;
+    size?: ResizeSize;
+    minWidth?: string | number;
+    maxWidth?: string | number;
+    minHeight?: string | number;
+    maxHeight?: string | number;
+    onChange?: (size: ResizeSize, event: Event, direction: ResizeDirection) => void;
+    onResizeEnd?: (size: ResizeSize, event: Event, direction: ResizeDirection) => void;
+  }
+  export interface ResizeGroupProps extends HTMLAttributes<HTMLDivElement> {
+    children?: ReactNode;
+    direction?: 'horizontal' | 'vertical';
+  }
+  export interface ResizeItemProps extends HTMLAttributes<HTMLDivElement> {
+    children?: ReactNode;
+    defaultSize?: string | number;
+    min?: string;
+    max?: string;
+    onChange?: (size: ResizeSize, event: Event, direction: ResizeDirection) => void;
+    onResizeEnd?: (size: ResizeSize, event: Event, direction: ResizeDirection) => void;
+  }
+  export interface ResizeHandlerProps extends HTMLAttributes<HTMLDivElement> {
+    children?: ReactNode;
+    style?: CSSProperties;
+  }
+  export const Resizable: ComponentType<ResizableProps>;
+  export const ResizeGroup: ComponentType<ResizeGroupProps>;
+  export const ResizeItem: ComponentType<ResizeItemProps>;
+  export const ResizeHandler: ComponentType<ResizeHandlerProps>;
+}
+
 declare module '@semi-v2.102.0/float-button' {
   import type { CSSProperties, ComponentType, MouseEvent, ReactNode } from 'react';
 

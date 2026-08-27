@@ -106,14 +106,23 @@ try {
       }
     }
 
+    if (
+      packageInfo.name === '@workspace/ui' &&
+      !packedFiles.has('dist/THIRD_PARTY_LICENSES/lodash.txt')
+    ) {
+      throw new Error('@workspace/ui 的 tarball 缺少 Lodash 许可证');
+    }
+
     tarballs.set(packageInfo.name, path.resolve(artifactsRoot, packResult.filename));
   }
 
+  const linkedLodash = `link:${await realpath(path.join(workspaceRoot, 'node_modules', 'lodash'))}`;
   const dependencies = {
     ...Object.fromEntries(
       [...tarballs].map(([packageName, tarballPath]) => [packageName, `file:${tarballPath}`]),
     ),
     vue: `link:${await realpath(path.join(workspaceRoot, 'node_modules', 'vue'))}`,
+    lodash: linkedLodash,
   };
   await writeFile(
     path.join(consumerRoot, 'package.json'),
@@ -130,12 +139,13 @@ try {
   );
   await writeFile(
     path.join(consumerRoot, 'pnpm-workspace.yaml'),
-    `packages:\n  - .\noverrides:\n${[...tarballs]
-      .map(
+    `packages:\n  - .\noverrides:\n${[
+      ...[...tarballs].map(
         ([packageName, tarballPath]) =>
           `  ${JSON.stringify(packageName)}: ${JSON.stringify(`file:${tarballPath}`)}`,
-      )
-      .join('\n')}\n`,
+      ),
+      `  lodash: ${JSON.stringify(linkedLodash)}`,
+    ].join('\n')}\n`,
   );
 
   runPnpm(
@@ -171,6 +181,19 @@ try {
     );
     if (installedLicense !== upstreamLicense) {
       throw new Error(`${packageInfo.name} 未原样携带上游许可证`);
+    }
+    if (packageInfo.name === '@workspace/ui') {
+      const installedLodashLicense = await readFile(
+        path.join(installedRoot, 'dist', 'THIRD_PARTY_LICENSES', 'lodash.txt'),
+        'utf8',
+      );
+      const sourceLodashLicense = await readFile(
+        path.join(workspaceRoot, 'node_modules', 'lodash', 'LICENSE'),
+        'utf8',
+      );
+      if (installedLodashLicense !== sourceLodashLicense) {
+        throw new Error('@workspace/ui 未原样携带 Lodash 许可证');
+      }
     }
 
     const sbom = JSON.parse(
@@ -219,6 +242,7 @@ try {
 	await import('@workspace/ui/grid');
 	await import('@workspace/ui/icon');
 	await import('@workspace/ui/layout');
+	await import('@workspace/ui/resizable');
 	await import('@workspace/ui/space');
 	await import('@workspace/icons/Icon');
 	await import('@workspace/icons/icons/IconHome');
@@ -249,6 +273,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/layout.css').endsWith('/dist/layout.css')) {
 	  throw new Error('Layout 逐组件样式导出未指向 dist/layout.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/resizable.css').endsWith('/dist/resizable.css')) {
+	  throw new Error('Resizable 逐组件样式导出未指向 dist/resizable.css');
+	}
 	if (!import.meta.resolve('@workspace/theme-default/space.css').endsWith('/dist/space.css')) {
 	  throw new Error('Space 逐组件样式导出未指向 dist/space.css');
 	}
@@ -265,6 +292,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { Col, Row, type GridGutter } from '@workspace/ui/grid';
 	import { Icon } from '@workspace/ui/icon';
 	import { Layout, LayoutContent, LayoutSider, type LayoutBreakpoint } from '@workspace/ui/layout';
+	import { Resizable, ResizeGroup, ResizeHandler, ResizeItem, type ResizeDirection, type ResizeSize } from '@workspace/ui/resizable';
 	import { Space, type SpaceAlign, type SpaceSpacingValue } from '@workspace/ui/space';
 	import IconBase, { convertIcon, type IconSize } from '@workspace/icons/Icon';
 	import { IconAIWandLevel3, IconHome } from '@workspace/icons';
@@ -289,6 +317,14 @@ h(Button, { type, htmlType: 'submit' });
 	h(Layout, { hasSider: true }, () => [
 	  h(LayoutSider, { breakpoint: [layoutBreakpoint] }),
 	  h(LayoutContent),
+	]);
+	const resizeDirection: ResizeDirection = 'right';
+	const resizeSize: ResizeSize = { width: 320, height: '50%' };
+	h(Resizable, { defaultSize: resizeSize, beforeResizeStart: (_event, direction) => direction === resizeDirection });
+	h(ResizeGroup, { direction: 'horizontal' }, () => [
+	  h(ResizeItem, { defaultSize: '35%', min: '20%' }),
+	  h(ResizeHandler),
+	  h(ResizeItem, { defaultSize: '65%' }),
 	]);
 	const spaceAlign: SpaceAlign = 'baseline';
 	const spaceSpacing: SpaceSpacingValue = [12, 'loose'];
@@ -361,6 +397,9 @@ h(Button, { type, htmlType: 'submit' });
   if (!themeCss.includes('.semi-row') || !themeCss.includes('.semi-col-24')) {
     throw new Error('安装后的默认主题缺少 Grid 样式');
   }
+  if (!themeCss.includes('.semi-resizable-resizable')) {
+    throw new Error('安装后的默认主题缺少 Resizable 样式');
+  }
   const buttonThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'button.css'),
     'utf8',
@@ -418,6 +457,17 @@ h(Button, { type, htmlType: 'submit' });
     !layoutThemeCss.includes('.semi-layout-sider-children')
   ) {
     throw new Error('安装后的 Layout 逐组件样式缺少 Sider 布局样式');
+  }
+  const resizableThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'resizable.css'),
+    'utf8',
+  );
+  if (
+    !resizableThemeCss.includes('.semi-resizable-resizableHandler-topRight') ||
+    !resizableThemeCss.includes('.semi-resizable-handler-horizontal') ||
+    !resizableThemeCss.includes('.semi-icon-default')
+  ) {
+    throw new Error('安装后的 Resizable 逐组件样式缺少单体、Group 或默认手柄样式');
   }
   const spaceThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'space.css'),

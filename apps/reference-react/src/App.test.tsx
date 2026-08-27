@@ -73,4 +73,14 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-col-lg-push-1');
     expect(html).toContain('padding-left:16px');
   });
+
+  it('从固定 Resizable Adapter 渲染单体、组合面板与拖拽手柄', () => {
+    const html = renderToStaticMarkup(<App scenarioId="resizable" />);
+
+    expect(html).toContain('data-parity-scenario="resizable"');
+    expect(html).toContain('semi-resizable-resizable');
+    expect(html).toContain('semi-resizable-group');
+    expect(html).toContain('semi-resizable-item');
+    expect(html).toContain('semi-resizable-handler');
+  });
 });

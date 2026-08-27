@@ -4,4 +4,5 @@ export * from './float-button';
 export * from './grid';
 export * from './icon';
 export * from './layout';
+export * from './resizable';
 export * from './space';

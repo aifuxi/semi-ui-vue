@@ -37,6 +37,20 @@ const gridEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src
 const gridCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'grid.css');
 const layoutEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'layout.scss');
 const layoutCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'layout.css');
+const resizableEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'resizable.scss',
+);
+const resizableCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'resizable.css',
+);
 const spaceEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'space.scss');
 const spaceCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'space.css');
 
@@ -108,6 +122,7 @@ const requiredSelectors = [
   '.semi-col-24',
   '.semi-icon',
   '.semi-layout',
+  '.semi-resizable-resizable',
   '.semi-space',
   '.semi-input-wrapper',
   '.semi-input-textarea-wrapper',
@@ -258,6 +273,33 @@ for (const selector of [
   }
 }
 
+const expectedResizableImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/resizable/resizable.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const resizableEntrySource = await readFile(resizableEntryPath, 'utf8');
+const actualResizableImports = [
+  ...resizableEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g),
+].map((match) => match[1]);
+if (JSON.stringify(actualResizableImports) !== JSON.stringify(expectedResizableImports)) {
+  throw new Error('Resizable 逐组件样式入口顺序未与固定源码对齐');
+}
+const resizableCss = await readFile(resizableCssPath, 'utf8');
+for (const selector of [
+  '.semi-resizable-resizableHandler-topRight',
+  '.semi-resizable-group',
+  '.semi-resizable-item',
+  '.semi-resizable-handler-horizontal',
+  '.semi-resizable-background',
+  '.semi-icon-default',
+]) {
+  if (!resizableCss.includes(selector)) {
+    throw new Error(`Resizable 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 const expectedSpaceImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -283,5 +325,5 @@ for (const selector of [
 }
 
 process.stdout.write(
-  `默认主题入口与 Button/Divider/FloatButton/Grid/Icon/Layout/Space 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + spaceCss.length} 字节 CSS\n`,
+  `默认主题入口与 Button/Divider/FloatButton/Grid/Icon/Layout/Resizable/Space 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + resizableCss.length + spaceCss.length} 字节 CSS\n`,
 );

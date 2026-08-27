@@ -51,6 +51,7 @@ const runtimeDependencies = {
 const dependencyEntries = Object.entries(runtimeDependencies).sort(([left], [right]) =>
   left.localeCompare(right),
 );
+const includesLodash = Object.hasOwn(runtimeDependencies, 'lodash');
 const creationTime = resolveCreationTime();
 const buildFingerprint = createHash('sha256')
   .update(
@@ -70,6 +71,12 @@ await copyFile(
   path.join(workspaceRoot, 'vendor', 'semi-design', 'LICENSE'),
   path.join(licenseRoot, 'Semi-Design.txt'),
 );
+if (includesLodash) {
+  await copyFile(
+    path.join(workspaceRoot, 'node_modules', 'lodash', 'LICENSE'),
+    path.join(licenseRoot, 'lodash.txt'),
+  );
+}
 
 await writeFile(
   path.join(distRoot, 'THIRD_PARTY_NOTICES.md'),
@@ -83,7 +90,11 @@ This package is derived from or interoperates with Semi Design v2.102.0.
 - Source: https://github.com/DouyinFE/semi-design
 - Reference commit: ${semiCommit}
 
-The complete upstream license and notices are included at \`THIRD_PARTY_LICENSES/Semi-Design.txt\`.
+The complete upstream license and notices are included at \`THIRD_PARTY_LICENSES/Semi-Design.txt\`.${
+    includesLodash
+      ? '\n\nThis package also uses Lodash 4.17.21 under the MIT License. Its license is included at `THIRD_PARTY_LICENSES/lodash.txt`.'
+      : ''
+  }
 `,
 );
 
@@ -132,8 +143,8 @@ const sbom = {
       versionInfo: version,
       downloadLocation: 'NOASSERTION',
       filesAnalyzed: false,
-      licenseConcluded: 'NOASSERTION',
-      licenseDeclared: 'NOASSERTION',
+      licenseConcluded: packageName === 'lodash' ? 'MIT' : 'NOASSERTION',
+      licenseDeclared: packageName === 'lodash' ? 'MIT' : 'NOASSERTION',
     })),
   ],
   relationships: [

@@ -12,6 +12,7 @@ import FloatButtonScenario from './components/FloatButtonScenario.vue';
 import GridScenario from './components/GridScenario.vue';
 import IconScenario from './components/IconScenario.vue';
 import LayoutScenario from './components/LayoutScenario.vue';
+import ResizableScenario from './components/ResizableScenario.vue';
 import SpaceScenario from './components/SpaceScenario.vue';
 import HarnessCalibration from './components/HarnessCalibration.vue';
 import UnavailableScenario from './components/UnavailableScenario.vue';
@@ -65,6 +66,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <GridScenario v-else-if="scenario.id === 'grid'" />
       <IconScenario v-else-if="scenario.id === 'icon'" />
       <LayoutScenario v-else-if="scenario.id === 'layout'" />
+      <ResizableScenario v-else-if="scenario.id === 'resizable'" />
       <SpaceScenario v-else-if="scenario.id === 'space'" />
       <UnavailableScenario
         v-else

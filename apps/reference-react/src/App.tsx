@@ -11,6 +11,7 @@ import { FloatButtonScenario } from './scenarios/FloatButtonScenario';
 import { GridScenario } from './scenarios/GridScenario';
 import { IconScenario } from './scenarios/IconScenario';
 import { LayoutScenario } from './scenarios/LayoutScenario';
+import { ResizableScenario } from './scenarios/ResizableScenario';
 import { SpaceScenario } from './scenarios/SpaceScenario';
 
 const DEFAULT_OPTIONS: ParityScenarioOptions = {
@@ -73,6 +74,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'grid' ? <GridScenario /> : null}
         {scenario.id === 'icon' ? <IconScenario /> : null}
         {scenario.id === 'layout' ? <LayoutScenario /> : null}
+        {scenario.id === 'resizable' ? <ResizableScenario /> : null}
         {scenario.id === 'space' ? <SpaceScenario /> : null}
       </section>
 
