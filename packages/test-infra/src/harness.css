@@ -546,6 +546,50 @@ p {
   line-height: 20px;
 }
 
+.auto-complete-scenario {
+  position: relative;
+  display: grid;
+  gap: 20px;
+  min-height: 340px;
+  margin-top: 24px;
+}
+
+.auto-complete-scenario__section {
+  display: grid;
+  gap: 12px;
+}
+
+.auto-complete-scenario__section h3 {
+  margin: 0;
+  color: var(--semi-color-text-0);
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.auto-complete-scenario__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.auto-complete-scenario__person {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 16px;
+}
+
+.auto-complete-scenario__person > span {
+  color: var(--semi-color-text-2);
+}
+
+.auto-complete-scenario__status {
+  color: var(--semi-color-text-2);
+  font-size: 13px;
+}
+
 .select-scenario {
   position: relative;
   display: grid;

@@ -1,3 +1,4 @@
+export * from './auto-complete';
 export * from './button';
 export * from './config-provider';
 export * from './divider';

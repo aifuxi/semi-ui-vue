@@ -4,6 +4,7 @@ import {
   REFERENCE_BASELINE,
   type ParityScenarioOptions,
 } from '@workspace/test-infra';
+import { AutoCompleteScenario } from './scenarios/AutoCompleteScenario';
 import { ButtonTypesScenario } from './scenarios/ButtonTypesScenario';
 import { ButtonContractScenario } from './scenarios/ButtonContractScenario';
 import { ConfigProviderScenario } from './scenarios/ConfigProviderScenario';
@@ -72,6 +73,7 @@ export function App(props: AppProps): React.ReactElement {
         <p className="scenario-panel__description">{scenario.description}</p>
 
         {scenario.id === 'harness-calibration' ? <HarnessCalibration /> : null}
+        {scenario.id === 'auto-complete' ? <AutoCompleteScenario /> : null}
         {scenario.id === 'button-types' ? <ButtonTypesScenario /> : null}
         {scenario.id === 'button-contract' ? <ButtonContractScenario /> : null}
         {scenario.id === 'config-provider' ? <ConfigProviderScenario /> : null}

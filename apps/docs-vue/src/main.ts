@@ -1,5 +1,6 @@
 import 'normalize.css';
 import 'typeface-inter';
+import 'virtual:workspace-auto-complete-styles.css';
 import 'virtual:workspace-button-styles.css';
 import 'virtual:workspace-config-provider-styles.css';
 import 'virtual:workspace-divider-styles.css';

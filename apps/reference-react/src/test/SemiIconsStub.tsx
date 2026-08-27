@@ -26,4 +26,5 @@ export const IconHome = createIcon('home');
 export const IconHelpCircle = createIcon('help_circle');
 export const IconLikeHeart = createIcon('like_heart');
 export const IconPlus = createIcon('plus');
+export const IconSearch = createIcon('search');
 export const IconSpin = createIcon('spin');

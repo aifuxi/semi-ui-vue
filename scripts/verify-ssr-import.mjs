@@ -50,6 +50,8 @@ for (const packageName of publicPackages) {
   process.stdout.write(`SSR import 通过：packages/${packageName}/dist/index.js\n`);
 
   if (packageName === 'ui') {
+    await import(pathToFileURL(path.join(distPath, 'auto-complete', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/auto-complete/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'button', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/button/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'config-provider', 'index.js')).href);

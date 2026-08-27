@@ -18,6 +18,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./auto-complete": {
+      "types": "./dist/auto-complete/index.d.ts",
+      "import": "./dist/auto-complete/index.js"
+    },
     "./button": {
       "types": "./dist/button/index.d.ts",
       "import": "./dist/button/index.js"

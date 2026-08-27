@@ -188,6 +188,41 @@ declare module '@semi-v2.102.0/tooltip' {
   export default Tooltip;
 }
 
+declare module '@semi-v2.102.0/auto-complete' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface AutoCompleteItem {
+    value?: string | number;
+    label?: ReactNode;
+    disabled?: boolean;
+    [key: string]: unknown;
+  }
+  export interface AutoCompleteProps {
+    data?: Array<string | number | AutoCompleteItem>;
+    defaultActiveFirstOption?: boolean;
+    defaultOpen?: boolean;
+    defaultValue?: string | number;
+    disabled?: boolean;
+    dropdownClassName?: string;
+    getPopupContainer?: () => HTMLElement;
+    motion?: boolean;
+    onChange?: (value: string | number) => void;
+    onSearch?: (value: string) => void;
+    placeholder?: string;
+    prefix?: ReactNode;
+    renderItem?: (item: string | number | AutoCompleteItem) => ReactNode;
+    renderSelectedItem?: (item: AutoCompleteItem) => string;
+    showClear?: boolean;
+    size?: 'small' | 'default' | 'large';
+    style?: CSSProperties;
+    validateStatus?: 'default' | 'warning' | 'error';
+    value?: string | number;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+  const AutoComplete: ComponentType<AutoCompleteProps>;
+  export default AutoComplete;
+}
+
 declare module '@semi-v2.102.0/select' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
@@ -471,6 +506,7 @@ declare module '@semi-v2.102.0/icons' {
   export const IconHelpCircle: BuiltinIcon;
   export const IconLikeHeart: BuiltinIcon;
   export const IconPlus: BuiltinIcon;
+  export const IconSearch: BuiltinIcon;
   export const IconSpin: BuiltinIcon;
 }
 

@@ -8,6 +8,7 @@ import sass from 'sass';
 const require = createRequire(import.meta.url);
 const workspaceRoot = fileURLToPath(new URL('../..', import.meta.url));
 const upstreamPackages = path.join(workspaceRoot, 'vendor/semi-design/packages');
+const autoCompletePublicEntry = path.join(upstreamPackages, 'semi-ui/autoComplete/index.tsx');
 const buttonPublicEntry = path.join(upstreamPackages, 'semi-ui/button/index.tsx');
 const configProviderPublicEntry = path.join(upstreamPackages, 'semi-ui/configProvider/index.tsx');
 const buttonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/buttonGroup.tsx');
@@ -37,6 +38,8 @@ const virtualStyleId = 'virtual:semi-reference-styles.css';
 const resolvedVirtualStyleId = `\0${virtualStyleId}`;
 const emptyUpstreamStyleId = '\0semi-reference-upstream-style-loaded-from-entry';
 const capturedUpstreamStyleImports = new Set([
+  '@douyinfe/semi-foundation/autoComplete/autoComplete.scss',
+  path.join(foundationRoot, 'autoComplete/autoComplete.scss'),
   '@douyinfe/semi-foundation/button/button.scss',
   '@douyinfe/semi-foundation/button/iconButton.scss',
   path.join(foundationRoot, 'button/button.scss'),
@@ -119,6 +122,7 @@ export default defineConfig({
   plugins: [compilePinnedReferenceStyles(), react()],
   resolve: {
     alias: [
+      { find: '@semi-v2.102.0/auto-complete', replacement: autoCompletePublicEntry },
       { find: '@semi-v2.102.0/button', replacement: buttonPublicEntry },
       { find: '@semi-v2.102.0/config-provider', replacement: configProviderPublicEntry },
       { find: '@semi-v2.102.0/button-group', replacement: buttonGroupEntry },

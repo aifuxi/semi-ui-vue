@@ -237,6 +237,7 @@ try {
     path.join(consumerRoot, 'smoke.mjs'),
     `await Promise.all(${JSON.stringify(javascriptPackages)}.map(packageName => import(packageName)));
 	await import('@workspace/ui/button');
+	await import('@workspace/ui/auto-complete');
 	await import('@workspace/ui/config-provider');
 	await import('@workspace/ui/divider');
 	await import('@workspace/ui/float-button');
@@ -262,6 +263,9 @@ const cssTheme = import.meta.resolve('@workspace/theme-default/index.css');
 if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 index.css');
 	if (!import.meta.resolve('@workspace/theme-default/button.css').endsWith('/dist/button.css')) {
 	  throw new Error('Button 逐组件样式导出未指向 dist/button.css');
+	}
+	if (!import.meta.resolve('@workspace/theme-default/auto-complete.css').endsWith('/dist/auto-complete.css')) {
+	  throw new Error('AutoComplete 逐组件样式导出未指向 dist/auto-complete.css');
 	}
 	if (!import.meta.resolve('@workspace/theme-default/config-provider.css').endsWith('/dist/config-provider.css')) {
 	  throw new Error('ConfigProvider 逐组件样式导出未指向 dist/config-provider.css');
@@ -306,6 +310,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
   await writeFile(
     path.join(consumerRoot, 'type-smoke.ts'),
     `${javascriptPackages.map((packageName) => `import '${packageName}';`).join('\n')}
+	import { AutoComplete, AutoCompleteOption, type AutoCompleteModelValue } from '@workspace/ui/auto-complete';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
 	import { ConfigConsumer, ConfigProvider, defaultResponsiveMap, type Breakpoint } from '@workspace/ui/config-provider';
 	import { Divider, type DividerAlign } from '@workspace/ui/divider';
@@ -327,6 +332,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { h } from 'vue';
 const type: ButtonType = 'primary';
 h(Button, { type, htmlType: 'submit' });
+	const autoCompleteValue: AutoCompleteModelValue = 'semi';
+	h(AutoComplete, { modelValue: autoCompleteValue, data: ['semi', { value: 'vue', label: 'Vue' }] });
+	h(AutoCompleteOption, { value: 'semi', focused: true }, () => 'Semi');
 	const breakpoint: Breakpoint = 'md';
 	h(ConfigProvider, { direction: 'rtl', responsiveObserve: true, responsiveMap: defaultResponsiveMap }, () => h(ConfigConsumer));
 	void breakpoint;
@@ -428,6 +436,12 @@ h(Button, { type, htmlType: 'submit' });
   if (!themeCss.includes('.semi-divider')) {
     throw new Error('安装后的默认主题缺少 Divider 样式');
   }
+  if (
+    !themeCss.includes('.semi-autocomplete') ||
+    !themeCss.includes('.semi-autocomplete-option-list')
+  ) {
+    throw new Error('安装后的默认主题缺少 AutoComplete 样式');
+  }
   if (!themeCss.includes('.semi-icon')) {
     throw new Error('安装后的默认主题缺少 Icon 样式');
   }
@@ -464,6 +478,25 @@ h(Button, { type, htmlType: 'submit' });
   );
   if (!buttonThemeCss.includes('.semi-button-split')) {
     throw new Error('安装后的 Button 逐组件样式缺少 SplitButtonGroup 样式');
+  }
+  const autoCompleteThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@workspace',
+      'theme-default',
+      'dist',
+      'auto-complete.css',
+    ),
+    'utf8',
+  );
+  if (
+    !autoCompleteThemeCss.includes('.semi-autocomplete-option-focused') ||
+    !autoCompleteThemeCss.includes('.semi-input-wrapper') ||
+    !autoCompleteThemeCss.includes('.semi-popover-wrapper') ||
+    !autoCompleteThemeCss.includes('.semi-spin-wrapper')
+  ) {
+    throw new Error('安装后的 AutoComplete 逐组件样式缺少候选项、Input、Popover 或 Spin 样式');
   }
   const configProviderThemeCss = await readFile(
     path.join(

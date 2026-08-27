@@ -2,6 +2,7 @@ import { fileURLToPath } from 'node:url';
 import type { Plugin } from 'vite';
 import sass from 'sass';
 
+export const virtualAutoCompleteStyleId = 'virtual:workspace-auto-complete-styles.css';
 export const virtualButtonStyleId = 'virtual:workspace-button-styles.css';
 export const virtualConfigProviderStyleId = 'virtual:workspace-config-provider-styles.css';
 export const virtualDividerStyleId = 'virtual:workspace-divider-styles.css';
@@ -15,6 +16,7 @@ export const virtualSpaceStyleId = 'virtual:workspace-space-styles.css';
 export const virtualSwitchStyleId = 'virtual:workspace-switch-styles.css';
 export const virtualTooltipStyleId = 'virtual:workspace-tooltip-styles.css';
 export const virtualTypographyStyleId = 'virtual:workspace-typography-styles.css';
+const resolvedVirtualAutoCompleteStyleId = `\0${virtualAutoCompleteStyleId}`;
 const resolvedVirtualButtonStyleId = `\0${virtualButtonStyleId}`;
 const resolvedVirtualConfigProviderStyleId = `\0${virtualConfigProviderStyleId}`;
 const resolvedVirtualDividerStyleId = `\0${virtualDividerStyleId}`;
@@ -28,6 +30,7 @@ const resolvedVirtualSpaceStyleId = `\0${virtualSpaceStyleId}`;
 const resolvedVirtualSwitchStyleId = `\0${virtualSwitchStyleId}`;
 const resolvedVirtualTooltipStyleId = `\0${virtualTooltipStyleId}`;
 const resolvedVirtualTypographyStyleId = `\0${virtualTypographyStyleId}`;
+const autoCompleteStyleEntry = fileURLToPath(new URL('./src/auto-complete.scss', import.meta.url));
 const buttonStyleEntry = fileURLToPath(new URL('./src/button.scss', import.meta.url));
 const configProviderStyleEntry = fileURLToPath(
   new URL('./src/config-provider.scss', import.meta.url),
@@ -45,6 +48,7 @@ const tooltipStyleEntry = fileURLToPath(new URL('./src/tooltip.scss', import.met
 const typographyStyleEntry = fileURLToPath(new URL('./src/typography.scss', import.meta.url));
 
 const styleEntries = new Map([
+  [resolvedVirtualAutoCompleteStyleId, autoCompleteStyleEntry],
   [resolvedVirtualButtonStyleId, buttonStyleEntry],
   [resolvedVirtualConfigProviderStyleId, configProviderStyleEntry],
   [resolvedVirtualDividerStyleId, dividerStyleEntry],
@@ -66,6 +70,7 @@ export function compilePinnedComponentStyles(): Plugin {
     name: 'compile-pinned-component-styles',
     enforce: 'pre',
     resolveId(source) {
+      if (source === virtualAutoCompleteStyleId) return resolvedVirtualAutoCompleteStyleId;
       if (source === virtualButtonStyleId) return resolvedVirtualButtonStyleId;
       if (source === virtualConfigProviderStyleId) return resolvedVirtualConfigProviderStyleId;
       if (source === virtualDividerStyleId) return resolvedVirtualDividerStyleId;

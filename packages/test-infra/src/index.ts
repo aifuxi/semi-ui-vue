@@ -6,6 +6,12 @@ export const REFERENCE_BASELINE = Object.freeze({
 });
 
 export const REFERENCE_SOURCE_PATHS = Object.freeze({
+  autoCompletePublicEntry: 'vendor/semi-design/packages/semi-ui/autoComplete/index.tsx',
+  autoCompleteOptionEntry: 'vendor/semi-design/packages/semi-ui/autoComplete/option.tsx',
+  autoCompleteFoundation: 'vendor/semi-design/packages/semi-foundation/autoComplete/foundation.ts',
+  autoCompleteFoundationStyle:
+    'vendor/semi-design/packages/semi-foundation/autoComplete/autoComplete.scss',
+  autoCompleteDocumentation: 'vendor/semi-design/content/input/autocomplete/index.md',
   buttonPublicEntry: 'vendor/semi-design/packages/semi-ui/button/index.tsx',
   buttonGroupEntry: 'vendor/semi-design/packages/semi-ui/button/buttonGroup.tsx',
   splitButtonGroupEntry: 'vendor/semi-design/packages/semi-ui/button/splitButtonGroup.tsx',
@@ -863,6 +869,65 @@ export const PARITY_SCENARIOS = [
           ],
         },
       ]),
+    ],
+  },
+  {
+    id: 'auto-complete',
+    title: 'AutoComplete 自动完成',
+    description: '验证输入建议、受控值、尺寸/校验、对象候选、键盘、Portal、暗色与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.autoCompletePublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.autoCompletePublicEntry,
+      REFERENCE_SOURCE_PATHS.autoCompleteOptionEntry,
+      REFERENCE_SOURCE_PATHS.autoCompleteFoundation,
+      REFERENCE_SOURCE_PATHS.autoCompleteFoundationStyle,
+      REFERENCE_SOURCE_PATHS.autoCompleteDocumentation,
+    ],
+    targets: [
+      ...(['basic', 'disabled', 'large', 'custom'] as const).map((state) => ({
+        id: `auto-complete-${state}`,
+        selector: `[data-parity-target="auto-complete-${state}"]`,
+        computedStyleProperties: [
+          'backgroundColor',
+          'borderColor',
+          'borderRadius',
+          'boxSizing',
+          'color',
+          'cursor',
+          'display',
+          'height',
+          'width',
+        ],
+      })),
+      {
+        id: 'auto-complete-option-list',
+        selector: '.auto-complete-target-options',
+        computedStyleProperties: [
+          'backgroundColor',
+          'boxSizing',
+          'maxHeight',
+          'minWidth',
+          'overflowX',
+          'overflowY',
+        ],
+      },
+      {
+        id: 'auto-complete-option-focused',
+        selector: '.auto-complete-target-options .semi-autocomplete-option-focused',
+        computedStyleProperties: [
+          'backgroundColor',
+          'color',
+          'cursor',
+          'fontSize',
+          'lineHeight',
+          'paddingBottom',
+          'paddingLeft',
+          'paddingRight',
+          'paddingTop',
+        ],
+      },
     ],
   },
   {

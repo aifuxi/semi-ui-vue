@@ -35,6 +35,9 @@ export default defineConfig({
     lib: {
       entry: {
         index: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
+        'auto-complete/index': fileURLToPath(
+          new URL('./src/auto-complete/index.ts', import.meta.url),
+        ),
         'button/index': fileURLToPath(new URL('./src/button/index.ts', import.meta.url)),
         'config-provider/index': fileURLToPath(
           new URL('./src/config-provider/index.ts', import.meta.url),
