@@ -55,6 +55,36 @@ declare module '@semi-v2.102.0/input' {
   export default Input;
 }
 
+declare module '@semi-v2.102.0/input-number' {
+  import type { ComponentType, CSSProperties, InputHTMLAttributes, ReactNode } from 'react';
+
+  export interface InputNumberProps extends Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    'defaultValue' | 'onChange' | 'prefix' | 'size' | 'step' | 'value'
+  > {
+    className?: string;
+    currency?: boolean | string;
+    defaultValue?: number | string;
+    disabled?: boolean;
+    formatter?: (value: number | string) => string;
+    hideButtons?: boolean;
+    innerButtons?: boolean;
+    localeCode?: string;
+    max?: number;
+    min?: number;
+    onChange?: (value: number | string) => void;
+    precision?: number;
+    scientificNotation?: boolean | { threshold?: number };
+    size?: 'small' | 'default' | 'large';
+    step?: number;
+    style?: CSSProperties;
+    suffix?: ReactNode;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+  const InputNumber: ComponentType<InputNumberProps>;
+  export default InputNumber;
+}
+
 declare module '@semi-v2.102.0/input-group' {
   import type { ComponentType, CSSProperties, FocusEvent, ReactNode } from 'react';
 

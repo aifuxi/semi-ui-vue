@@ -50,6 +50,11 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   inputFoundationStyle: 'vendor/semi-design/packages/semi-foundation/input/input.scss',
   textAreaFoundationStyle: 'vendor/semi-design/packages/semi-foundation/input/textarea.scss',
   inputDocumentation: 'vendor/semi-design/content/input/input/index.md',
+  inputNumberPublicEntry: 'vendor/semi-design/packages/semi-ui/inputNumber/index.tsx',
+  inputNumberFoundation: 'vendor/semi-design/packages/semi-foundation/inputNumber/foundation.ts',
+  inputNumberFoundationStyle:
+    'vendor/semi-design/packages/semi-foundation/inputNumber/inputNumber.scss',
+  inputNumberDocumentation: 'vendor/semi-design/content/input/inputnumber/index.md',
   gridPublicEntry: 'vendor/semi-design/packages/semi-ui/grid/index.tsx',
   gridRowEntry: 'vendor/semi-design/packages/semi-ui/grid/row.tsx',
   gridColEntry: 'vendor/semi-design/packages/semi-ui/grid/col.tsx',
@@ -659,6 +664,34 @@ export const PARITY_SCENARIOS = [
           'height',
           'width',
         ],
+      },
+    ],
+  },
+  {
+    id: 'input-number',
+    title: 'InputNumber 数字输入框',
+    description: '验证步进、上下界、精度、内部/隐藏按钮、禁用、货币、科学计数、键盘、ARIA 与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.inputNumberPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.inputNumberPublicEntry,
+      REFERENCE_SOURCE_PATHS.inputNumberFoundation,
+      REFERENCE_SOURCE_PATHS.inputNumberFoundationStyle,
+      REFERENCE_SOURCE_PATHS.inputNumberDocumentation,
+    ],
+    targets: [
+      ...(
+        ['basic', 'bounds', 'precision', 'disabled', 'hidden', 'currency', 'scientific'] as const
+      ).map((state) => ({
+        id: `input-number-${state}`,
+        selector: `[data-parity-target="input-number-${state}"]`,
+        computedStyleProperties: ['alignItems', 'boxSizing', 'display', 'height', 'width'],
+      })),
+      {
+        id: 'input-number-inner',
+        selector: '.input-number-target-inner',
+        computedStyleProperties: ['alignItems', 'boxSizing', 'display', 'height', 'width'],
       },
     ],
   },

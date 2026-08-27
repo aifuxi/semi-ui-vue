@@ -6,6 +6,8 @@ export { CheckboxFoundation, CheckboxGroupFoundation } from './checkbox.js';
 export type { CheckboxAdapter, CheckboxGroupAdapter } from './checkbox.js';
 export { InputFoundation, TextAreaFoundation } from './input.js';
 export type { InputAdapter, TextAreaAdapter } from './input.js';
+export { InputNumberFoundation } from './input-number.js';
+export type { InputNumberAdapter } from './input-number.js';
 export * from './resizable.js';
 export { SelectFoundation } from './select.js';
 export type { SelectAdapter } from './select.js';

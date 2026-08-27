@@ -54,6 +54,10 @@
       "types": "./dist/input/index.d.ts",
       "import": "./dist/input/index.js"
     },
+    "./input-number": {
+      "types": "./dist/input-number/index.d.ts",
+      "import": "./dist/input-number/index.js"
+    },
     "./layout": {
       "types": "./dist/layout/index.d.ts",
       "import": "./dist/layout/index.js"

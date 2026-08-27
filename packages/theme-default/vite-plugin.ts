@@ -10,6 +10,7 @@ export const virtualDividerStyleId = 'virtual:workspace-divider-styles.css';
 export const virtualFloatButtonStyleId = 'virtual:workspace-float-button-styles.css';
 export const virtualIconStyleId = 'virtual:workspace-icon-styles.css';
 export const virtualInputStyleId = 'virtual:workspace-input-styles.css';
+export const virtualInputNumberStyleId = 'virtual:workspace-input-number-styles.css';
 export const virtualGridStyleId = 'virtual:workspace-grid-styles.css';
 export const virtualLayoutStyleId = 'virtual:workspace-layout-styles.css';
 export const virtualResizableStyleId = 'virtual:workspace-resizable-styles.css';
@@ -26,6 +27,7 @@ const resolvedVirtualDividerStyleId = `\0${virtualDividerStyleId}`;
 const resolvedVirtualFloatButtonStyleId = `\0${virtualFloatButtonStyleId}`;
 const resolvedVirtualIconStyleId = `\0${virtualIconStyleId}`;
 const resolvedVirtualInputStyleId = `\0${virtualInputStyleId}`;
+const resolvedVirtualInputNumberStyleId = `\0${virtualInputNumberStyleId}`;
 const resolvedVirtualGridStyleId = `\0${virtualGridStyleId}`;
 const resolvedVirtualLayoutStyleId = `\0${virtualLayoutStyleId}`;
 const resolvedVirtualResizableStyleId = `\0${virtualResizableStyleId}`;
@@ -44,6 +46,7 @@ const dividerStyleEntry = fileURLToPath(new URL('./src/divider.scss', import.met
 const floatButtonStyleEntry = fileURLToPath(new URL('./src/float-button.scss', import.meta.url));
 const iconStyleEntry = fileURLToPath(new URL('./src/icon.scss', import.meta.url));
 const inputStyleEntry = fileURLToPath(new URL('./src/input.scss', import.meta.url));
+const inputNumberStyleEntry = fileURLToPath(new URL('./src/input-number.scss', import.meta.url));
 const gridStyleEntry = fileURLToPath(new URL('./src/grid.scss', import.meta.url));
 const layoutStyleEntry = fileURLToPath(new URL('./src/layout.scss', import.meta.url));
 const resizableStyleEntry = fileURLToPath(new URL('./src/resizable.scss', import.meta.url));
@@ -62,6 +65,7 @@ const styleEntries = new Map([
   [resolvedVirtualFloatButtonStyleId, floatButtonStyleEntry],
   [resolvedVirtualIconStyleId, iconStyleEntry],
   [resolvedVirtualInputStyleId, inputStyleEntry],
+  [resolvedVirtualInputNumberStyleId, inputNumberStyleEntry],
   [resolvedVirtualGridStyleId, gridStyleEntry],
   [resolvedVirtualLayoutStyleId, layoutStyleEntry],
   [resolvedVirtualResizableStyleId, resizableStyleEntry],
@@ -86,6 +90,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualFloatButtonStyleId) return resolvedVirtualFloatButtonStyleId;
       if (source === virtualIconStyleId) return resolvedVirtualIconStyleId;
       if (source === virtualInputStyleId) return resolvedVirtualInputStyleId;
+      if (source === virtualInputNumberStyleId) return resolvedVirtualInputNumberStyleId;
       if (source === virtualGridStyleId) return resolvedVirtualGridStyleId;
       if (source === virtualLayoutStyleId) return resolvedVirtualLayoutStyleId;
       if (source === virtualResizableStyleId) return resolvedVirtualResizableStyleId;

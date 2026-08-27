@@ -810,9 +810,54 @@ p {
   line-height: 20px;
 }
 
+.input-number-scenario {
+  display: grid;
+  margin-top: 24px;
+  gap: 18px;
+}
+
+.input-number-scenario__section {
+  display: grid;
+  min-width: 0;
+  padding: 18px;
+  gap: 14px;
+  border: 1px solid var(--harness-border);
+  border-radius: 8px;
+  background: var(--harness-subtle);
+}
+
+.input-number-scenario__section h3 {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.input-number-scenario__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.input-number-scenario__grid > label {
+  display: grid;
+  color: var(--harness-muted-text);
+  font-size: 12px;
+  gap: 6px;
+}
+
+.input-number-scenario__status {
+  color: var(--harness-muted-text);
+  font-size: 13px;
+  line-height: 20px;
+}
+
 @media (max-width: 640px) {
   .input-scenario__grid,
   .input-scenario__textareas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .input-number-scenario__grid {
     grid-template-columns: minmax(0, 1fr);
   }
 

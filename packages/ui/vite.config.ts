@@ -50,6 +50,9 @@ export default defineConfig({
         'grid/index': fileURLToPath(new URL('./src/grid/index.ts', import.meta.url)),
         'icon/index': fileURLToPath(new URL('./src/icon/index.ts', import.meta.url)),
         'input/index': fileURLToPath(new URL('./src/input/index.ts', import.meta.url)),
+        'input-number/index': fileURLToPath(
+          new URL('./src/input-number/index.ts', import.meta.url),
+        ),
         'layout/index': fileURLToPath(new URL('./src/layout/index.ts', import.meta.url)),
         'resizable/index': fileURLToPath(new URL('./src/resizable/index.ts', import.meta.url)),
         'select/index': fileURLToPath(new URL('./src/select/index.ts', import.meta.url)),

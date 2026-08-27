@@ -64,6 +64,21 @@ describe('Vue 对照工作台', () => {
     expect(scenario.get('output').text()).toContain('input:Vue');
   });
 
+  it('通过公共 InputNumber 包渲染步进、货币与科学计数场景', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'input-number' } });
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    const scenario = wrapper.get('[data-testid="input-number-vue"]');
+    await wrapper.vm.$nextTick();
+    expect(scenario.findAll('.semi-input-number')).toHaveLength(8);
+    expect(scenario.findAll('.semi-input-number-suffix-btns')).toHaveLength(6);
+    expect(
+      (scenario.get('.input-number-target-currency input').element as HTMLInputElement).value,
+    ).toBe('$1,234.50');
+    await scenario.get('.input-number-target-basic input').setValue('4');
+    expect(scenario.get('output').text()).toContain('最近变化：4');
+  });
+
   it('通过公开图标包渲染稳定、AI、Lab 与自定义 Icon 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'icon' } });
 

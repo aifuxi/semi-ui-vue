@@ -49,6 +49,15 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-input-textarea-lineNumber');
   });
 
+  it('从固定 InputNumber Adapter 渲染步进、货币与科学计数场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="input-number" />);
+
+    expect(html).toContain('data-parity-scenario="input-number"');
+    expect(html).toContain('semi-input-number-suffix-btns');
+    expect(html).toContain('input-number-target-currency');
+    expect(html).toContain('1.23456789012345e+14');
+  });
+
   it('从固定 Icon、稳定图标和 Lab 入口渲染完整参考场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="icon" />);
 

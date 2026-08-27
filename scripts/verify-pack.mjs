@@ -245,6 +245,7 @@ try {
 	await import('@workspace/ui/grid');
 	await import('@workspace/ui/icon');
 	await import('@workspace/ui/input');
+	await import('@workspace/ui/input-number');
 	await import('@workspace/ui/layout');
 	await import('@workspace/ui/resizable');
 	await import('@workspace/ui/select');
@@ -290,6 +291,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/input.css').endsWith('/dist/input.css')) {
 	  throw new Error('Input 逐组件样式导出未指向 dist/input.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/input-number.css').endsWith('/dist/input-number.css')) {
+	  throw new Error('InputNumber 逐组件样式导出未指向 dist/input-number.css');
+	}
 	if (!import.meta.resolve('@workspace/theme-default/layout.css').endsWith('/dist/layout.css')) {
 	  throw new Error('Layout 逐组件样式导出未指向 dist/layout.css');
 	}
@@ -327,6 +331,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { Col, Row, type GridGutter } from '@workspace/ui/grid';
 	import { Icon } from '@workspace/ui/icon';
 	import { Input, InputGroup, TextArea, type InputSize, type InputValue, type TextAreaResize } from '@workspace/ui/input';
+	import { InputNumber, type InputNumberValue } from '@workspace/ui/input-number';
 	import { Layout, LayoutContent, LayoutSider, type LayoutBreakpoint } from '@workspace/ui/layout';
 	import { Resizable, ResizeGroup, ResizeHandler, ResizeItem, type ResizeDirection, type ResizeSize } from '@workspace/ui/resizable';
 	import { Select, SelectOption, SelectOptionGroup, type SelectModelValue } from '@workspace/ui/select';
@@ -369,6 +374,8 @@ h(Button, { type, htmlType: 'submit' });
 	h(InputGroup, { label: { text: 'Name', required: true } }, () => h(Input));
 	const textareaResize: TextAreaResize = 'vertical';
 	h(TextArea, { modelValue: 'consumer', resize: textareaResize, showClear: true, maxCount: 20 });
+	const inputNumberValue: InputNumberValue = 12.5;
+	h(InputNumber, { modelValue: inputNumberValue, precision: 1, currency: 'CNY' });
 	const layoutBreakpoint: LayoutBreakpoint = 'md';
 	h(Layout, { hasSider: true }, () => [
 	  h(LayoutSider, { breakpoint: [layoutBreakpoint] }),
@@ -611,6 +618,24 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error(
       '安装后的 Input 逐组件样式缺少清除、密码、计数、行号、Group、Label 或 Icon 样式',
     );
+  }
+  const inputNumberThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@workspace',
+      'theme-default',
+      'dist',
+      'input-number.css',
+    ),
+    'utf8',
+  );
+  if (
+    !inputNumberThemeCss.includes('.semi-input-number-suffix-btns') ||
+    !inputNumberThemeCss.includes('.semi-input-number-button-up') ||
+    !inputNumberThemeCss.includes('.semi-rtl .semi-input-number')
+  ) {
+    throw new Error('安装后的 InputNumber 逐组件样式缺少步进器或 RTL 样式');
   }
   const layoutThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'layout.css'),
