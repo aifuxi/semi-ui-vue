@@ -144,4 +144,30 @@ describe('Vue 对照工作台', () => {
     );
     expect(scenario.get('[role="button"]').attributes('aria-label')).toBe('Copy');
   });
+
+  it('通过公共 Switch 渲染尺寸、文本、禁用、加载与受控场景', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'switch' } });
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    const scenario = wrapper.get('[data-testid="switch-vue"]');
+    expect(scenario.findAll('.semi-switch')).toHaveLength(11);
+    expect(scenario.get('[data-parity-target="switch-small"]').classes()).toContain(
+      'semi-switch-small',
+    );
+    expect(scenario.find('[data-parity-target="switch-loading"] [data-icon="spin"]').exists()).toBe(
+      true,
+    );
+    expect(
+      scenario.get('[data-parity-target="switch-disabled"] input').attributes('disabled'),
+    ).toBeDefined();
+
+    const controlled = scenario.get('[data-parity-target="switch-controlled"] input');
+    (controlled.element as HTMLInputElement).checked = true;
+    await controlled.trigger('change');
+    expect(scenario.get('[data-parity-target="switch-controlled"]').classes()).toContain(
+      'semi-switch-checked',
+    );
+    expect(scenario.get('output').text()).toContain('controlled:true');
+  });
 });

@@ -54,6 +54,10 @@
       "types": "./dist/space/index.d.ts",
       "import": "./dist/space/index.js"
     },
+    "./switch": {
+      "types": "./dist/switch/index.d.ts",
+      "import": "./dist/switch/index.js"
+    },
     "./typography": {
       "types": "./dist/typography/index.d.ts",
       "import": "./dist/typography/index.js"

@@ -470,6 +470,35 @@ p {
   line-height: 20px;
 }
 
+.switch-scenario {
+  display: grid;
+  gap: 18px;
+}
+
+.switch-scenario__section {
+  border-bottom: 1px solid var(--harness-border);
+  padding-bottom: 16px;
+}
+
+.switch-scenario__section h3 {
+  font-size: 14px;
+  margin: 0 0 12px;
+}
+
+.switch-scenario__row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  min-height: 36px;
+}
+
+.switch-scenario__status {
+  color: var(--harness-muted-text);
+  font-size: 13px;
+  line-height: 20px;
+}
+
 .layout-scenario {
   display: grid;
   margin-top: 24px;

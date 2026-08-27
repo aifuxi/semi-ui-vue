@@ -104,4 +104,16 @@ describe('React 参考工作台', () => {
     expect(html).toContain('nested: ltr');
     expect(html).toContain('semi-typography-action-copy');
   });
+
+  it('从固定 Switch Adapter 渲染尺寸、文本、禁用与加载状态', () => {
+    const html = renderToStaticMarkup(<App scenarioId="switch" />);
+
+    expect(html).toContain('data-parity-scenario="switch"');
+    expect(html).toContain('semi-switch-small');
+    expect(html).toContain('semi-switch-large');
+    expect(html).toContain('semi-switch-disabled');
+    expect(html).toContain('semi-switch-loading');
+    expect(html).toContain('semi-spin-wrapper');
+    expect(html).toContain('role="switch"');
+  });
 });

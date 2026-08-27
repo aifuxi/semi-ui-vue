@@ -59,7 +59,9 @@ Typography 是第九个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/ty
 
 ConfigProvider 是第十个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/config-provider/` 提供 ConfigProvider、ConfigConsumer、实例隔离的类型化上下文、懒注册断点观察和 semiGlobal 单例，并将 Typography locale 接入统一配置；`packages/theme-default/config-provider.css` 保留固定主题 Token/global，而上游没有 ConfigProvider 专属 Foundation SCSS。完整矩阵见 `docs/components/config-provider/`。
 
-Foundation 集成包已建立 Resizable 与 Typography 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。后续仍必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
+Switch 是第十一个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/switch/` 提供受控/非受控与原生 `v-model`、固定 checkbox/ARIA DOM、三尺寸、文本、disabled/loading 和 focus-visible；`packages/foundation-integration/src/switch.js` 是固定 Switch Foundation 的唯一运行时入口，`packages/theme-default/switch.css` 包含 Switch 与内部 loading Spin 样式。完整矩阵见 `docs/components/switch/`。
+
+Foundation 集成包已建立 Resizable、Typography 与 Switch 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。后续仍必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。
 

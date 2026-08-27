@@ -67,6 +67,8 @@ const resizableCssPath = path.join(
 );
 const spaceEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'space.scss');
 const spaceCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'space.css');
+const switchEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'switch.scss');
+const switchCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'switch.css');
 const typographyEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -152,6 +154,7 @@ const requiredSelectors = [
   '.semi-layout',
   '.semi-resizable-resizable',
   '.semi-space',
+  '.semi-switch',
   '.semi-typography',
   '.semi-input-wrapper',
   '.semi-input-textarea-wrapper',
@@ -353,6 +356,32 @@ for (const selector of [
   }
 }
 
+const expectedSwitchImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/switch/switch.scss'),
+  vendorImport('semi-foundation/spin/spin.scss'),
+];
+const switchEntrySource = await readFile(switchEntryPath, 'utf8');
+const actualSwitchImports = [...switchEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualSwitchImports) !== JSON.stringify(expectedSwitchImports)) {
+  throw new Error('Switch 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const switchCss = await readFile(switchCssPath, 'utf8');
+for (const selector of [
+  '.semi-switch-checked',
+  '.semi-switch-native-control',
+  '.semi-switch-loading-spin',
+  '.semi-spin-wrapper',
+  '.semi-rtl .semi-switch',
+]) {
+  if (!switchCss.includes(selector)) {
+    throw new Error(`Switch 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 const expectedTypographyImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -401,5 +430,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 Button/ConfigProvider/Divider/FloatButton/Grid/Icon/Layout/Resizable/Space/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + resizableCss.length + spaceCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Button/ConfigProvider/Divider/FloatButton/Grid/Icon/Layout/Resizable/Space/Switch/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + resizableCss.length + spaceCss.length + switchCss.length + typographyCss.length} 字节 CSS\n`,
 );

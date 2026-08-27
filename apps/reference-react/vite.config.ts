@@ -23,6 +23,7 @@ const gridPublicEntry = path.join(upstreamPackages, 'semi-ui/grid/index.tsx');
 const layoutPublicEntry = path.join(upstreamPackages, 'semi-ui/layout/index.tsx');
 const resizablePublicEntry = path.join(upstreamPackages, 'semi-ui/resizable/index.tsx');
 const spacePublicEntry = path.join(upstreamPackages, 'semi-ui/space/index.tsx');
+const switchPublicEntry = path.join(upstreamPackages, 'semi-ui/switch/index.tsx');
 const typographyPublicEntry = path.join(upstreamPackages, 'semi-ui/typography/index.tsx');
 const foundationRoot = path.join(upstreamPackages, 'semi-foundation');
 const iconsEntry = path.join(upstreamPackages, 'semi-icons/src/index.ts');
@@ -46,6 +47,10 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'badge/badge.scss'),
   '@douyinfe/semi-foundation/space/space.scss',
   path.join(foundationRoot, 'space/space.scss'),
+  '@douyinfe/semi-foundation/switch/switch.scss',
+  path.join(foundationRoot, 'switch/switch.scss'),
+  '@douyinfe/semi-foundation/spin/spin.scss',
+  path.join(foundationRoot, 'spin/spin.scss'),
   '@douyinfe/semi-foundation/grid/grid.scss',
   path.join(foundationRoot, 'grid/grid.scss'),
   '@douyinfe/semi-foundation/layout/layout.scss',
@@ -112,6 +117,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/layout', replacement: layoutPublicEntry },
       { find: '@semi-v2.102.0/resizable', replacement: resizablePublicEntry },
       { find: '@semi-v2.102.0/space', replacement: spacePublicEntry },
+      { find: '@semi-v2.102.0/switch', replacement: switchPublicEntry },
       { find: '@semi-v2.102.0/typography', replacement: typographyPublicEntry },
       { find: '@semi-v2.102.0/icons', replacement: iconsEntry },
       { find: '@semi-v2.102.0/icons-lab', replacement: iconsLabEntry },

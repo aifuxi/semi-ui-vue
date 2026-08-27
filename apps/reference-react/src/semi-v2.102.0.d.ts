@@ -113,6 +113,36 @@ declare module '@semi-v2.102.0/space' {
   export default Space;
 }
 
+declare module '@semi-v2.102.0/switch' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export type SwitchSize = 'large' | 'default' | 'small';
+  export interface SwitchProps {
+    'aria-label'?: string;
+    'aria-describedby'?: string;
+    'aria-errormessage'?: string;
+    'aria-invalid'?: boolean;
+    'aria-labelledby'?: string;
+    checked?: boolean;
+    checkedText?: ReactNode;
+    className?: string;
+    defaultChecked?: boolean;
+    disabled?: boolean;
+    id?: string;
+    loading?: boolean;
+    onChange?: (checked: boolean, event: React.ChangeEvent<HTMLInputElement>) => void;
+    onMouseEnter?: (event: React.MouseEvent<HTMLDivElement>) => void;
+    onMouseLeave?: (event: React.MouseEvent<HTMLDivElement>) => void;
+    size?: SwitchSize;
+    style?: CSSProperties;
+    uncheckedText?: ReactNode;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Switch: ComponentType<SwitchProps>;
+  export default Switch;
+}
+
 declare module '@semi-v2.102.0/typography' {
   import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
 

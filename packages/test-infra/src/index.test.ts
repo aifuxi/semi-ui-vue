@@ -167,6 +167,22 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Switch Foundation, styles, and docs as a complete parity scene', () => {
+    expect(getParityScenario('switch')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.switchPublicEntry,
+    });
+    expect(assertScenarioComparable('switch').targets).toHaveLength(11);
+    expect(getParityScenario('switch').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.switchFoundation,
+        REFERENCE_SOURCE_PATHS.switchFoundationStyle,
+        REFERENCE_SOURCE_PATHS.switchDocumentation,
+      ]),
+    );
+  });
+
   it('records FloatButton and Group as a complete local-source parity scene', () => {
     expect(getParityScenario('float-button')).toMatchObject({
       referenceStatus: 'ready',
