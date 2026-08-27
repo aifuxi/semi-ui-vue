@@ -83,4 +83,14 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-resizable-item');
     expect(html).toContain('semi-resizable-handler');
   });
+
+  it('从固定 Typography Adapter 渲染标题、文本、段落、数值与复制', () => {
+    const html = renderToStaticMarkup(<App scenarioId="typography" />);
+
+    expect(html).toContain('data-parity-scenario="typography"');
+    expect(html).toContain('semi-typography-h2');
+    expect(html).toContain('semi-typography-paragraph');
+    expect(html).toContain('1.50 KiB');
+    expect(html).toContain('semi-typography-action-copy');
+  });
 });

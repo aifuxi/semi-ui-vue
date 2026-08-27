@@ -8,3 +8,4 @@ declare module 'virtual:workspace-icon-styles.css';
 declare module 'virtual:workspace-layout-styles.css';
 declare module 'virtual:workspace-resizable-styles.css';
 declare module 'virtual:workspace-space-styles.css';
+declare module 'virtual:workspace-typography-styles.css';

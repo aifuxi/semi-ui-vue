@@ -4,7 +4,22 @@ import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
-  plugins: [vue(), dts({ include: ['src'] })],
+  plugins: [
+    vue(),
+    dts({ include: ['src'] }),
+    {
+      name: 'strip-private-source-region-paths',
+      renderChunk(code) {
+        return {
+          code: code.replace(
+            /\/\/#region [^\n]*vendor\/semi-design[^\n]*\n/g,
+            '//#region bundled-foundation\n',
+          ),
+          map: null,
+        };
+      },
+    },
+  ],
   resolve: {
     alias: [
       {
@@ -30,6 +45,7 @@ export default defineConfig({
         'layout/index': fileURLToPath(new URL('./src/layout/index.ts', import.meta.url)),
         'resizable/index': fileURLToPath(new URL('./src/resizable/index.ts', import.meta.url)),
         'space/index': fileURLToPath(new URL('./src/space/index.ts', import.meta.url)),
+        'typography/index': fileURLToPath(new URL('./src/typography/index.ts', import.meta.url)),
       },
       formats: ['es'],
     },

@@ -6,3 +6,4 @@ export * from './icon';
 export * from './layout';
 export * from './resizable';
 export * from './space';
+export * from './typography';

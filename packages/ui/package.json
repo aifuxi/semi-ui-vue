@@ -50,6 +50,10 @@
       "types": "./dist/space/index.d.ts",
       "import": "./dist/space/index.js"
     },
+    "./typography": {
+      "types": "./dist/typography/index.d.ts",
+      "import": "./dist/typography/index.js"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {

@@ -53,6 +53,20 @@ const resizableCssPath = path.join(
 );
 const spaceEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'space.scss');
 const spaceCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'space.css');
+const typographyEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'typography.scss',
+);
+const typographyCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'typography.css',
+);
 
 function compareNames(left, right) {
   if (left.name < right.name) return -1;
@@ -124,6 +138,7 @@ const requiredSelectors = [
   '.semi-layout',
   '.semi-resizable-resizable',
   '.semi-space',
+  '.semi-typography',
   '.semi-input-wrapper',
   '.semi-input-textarea-wrapper',
   '.semi-modal',
@@ -324,6 +339,37 @@ for (const selector of [
   }
 }
 
+const expectedTypographyImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/_portal/portal.scss'),
+  vendorImport('semi-foundation/popover/popover.scss'),
+  vendorImport('semi-foundation/tooltip/tooltip.scss'),
+  vendorImport('semi-foundation/typography/typography.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const typographyEntrySource = await readFile(typographyEntryPath, 'utf8');
+const actualTypographyImports = [
+  ...typographyEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g),
+].map((match) => match[1]);
+if (JSON.stringify(actualTypographyImports) !== JSON.stringify(expectedTypographyImports)) {
+  throw new Error('Typography 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const typographyCss = await readFile(typographyCssPath, 'utf8');
+for (const selector of [
+  '.semi-typography-h1',
+  '.semi-typography-paragraph',
+  '.semi-typography-action-copy',
+  '.semi-typography-ellipsis-multiple-line',
+  '.semi-tooltip-wrapper',
+  '.semi-popover-wrapper',
+  '.semi-icon-default',
+]) {
+  if (!typographyCss.includes(selector)) {
+    throw new Error(`Typography 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 process.stdout.write(
-  `默认主题入口与 Button/Divider/FloatButton/Grid/Icon/Layout/Resizable/Space 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + resizableCss.length + spaceCss.length} 字节 CSS\n`,
+  `默认主题入口与 Button/Divider/FloatButton/Grid/Icon/Layout/Resizable/Space/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + buttonCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + layoutCss.length + resizableCss.length + spaceCss.length + typographyCss.length} 字节 CSS\n`,
 );

@@ -10,6 +10,7 @@ export const virtualGridStyleId = 'virtual:workspace-grid-styles.css';
 export const virtualLayoutStyleId = 'virtual:workspace-layout-styles.css';
 export const virtualResizableStyleId = 'virtual:workspace-resizable-styles.css';
 export const virtualSpaceStyleId = 'virtual:workspace-space-styles.css';
+export const virtualTypographyStyleId = 'virtual:workspace-typography-styles.css';
 const resolvedVirtualButtonStyleId = `\0${virtualButtonStyleId}`;
 const resolvedVirtualDividerStyleId = `\0${virtualDividerStyleId}`;
 const resolvedVirtualFloatButtonStyleId = `\0${virtualFloatButtonStyleId}`;
@@ -18,6 +19,7 @@ const resolvedVirtualGridStyleId = `\0${virtualGridStyleId}`;
 const resolvedVirtualLayoutStyleId = `\0${virtualLayoutStyleId}`;
 const resolvedVirtualResizableStyleId = `\0${virtualResizableStyleId}`;
 const resolvedVirtualSpaceStyleId = `\0${virtualSpaceStyleId}`;
+const resolvedVirtualTypographyStyleId = `\0${virtualTypographyStyleId}`;
 const buttonStyleEntry = fileURLToPath(new URL('./src/button.scss', import.meta.url));
 const dividerStyleEntry = fileURLToPath(new URL('./src/divider.scss', import.meta.url));
 const floatButtonStyleEntry = fileURLToPath(new URL('./src/float-button.scss', import.meta.url));
@@ -26,6 +28,7 @@ const gridStyleEntry = fileURLToPath(new URL('./src/grid.scss', import.meta.url)
 const layoutStyleEntry = fileURLToPath(new URL('./src/layout.scss', import.meta.url));
 const resizableStyleEntry = fileURLToPath(new URL('./src/resizable.scss', import.meta.url));
 const spaceStyleEntry = fileURLToPath(new URL('./src/space.scss', import.meta.url));
+const typographyStyleEntry = fileURLToPath(new URL('./src/typography.scss', import.meta.url));
 
 const styleEntries = new Map([
   [resolvedVirtualButtonStyleId, buttonStyleEntry],
@@ -36,6 +39,7 @@ const styleEntries = new Map([
   [resolvedVirtualLayoutStyleId, layoutStyleEntry],
   [resolvedVirtualResizableStyleId, resizableStyleEntry],
   [resolvedVirtualSpaceStyleId, spaceStyleEntry],
+  [resolvedVirtualTypographyStyleId, typographyStyleEntry],
 ]);
 
 /** Compile pinned legacy SCSS without asking Vite 8 to call a removed modern Sass API. */
@@ -52,6 +56,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualLayoutStyleId) return resolvedVirtualLayoutStyleId;
       if (source === virtualResizableStyleId) return resolvedVirtualResizableStyleId;
       if (source === virtualSpaceStyleId) return resolvedVirtualSpaceStyleId;
+      if (source === virtualTypographyStyleId) return resolvedVirtualTypographyStyleId;
       return null;
     },
     load(id) {

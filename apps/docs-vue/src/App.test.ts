@@ -115,4 +115,17 @@ describe('Vue 对照工作台', () => {
       'semi-resizable-handler-vertical',
     );
   });
+
+  it('通过公共 Typography 包渲染标题、文本、段落、数值与复制', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'typography' } });
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    const scenario = wrapper.get('[data-testid="typography-vue"]');
+    expect(scenario.get('[data-parity-target="typography-title"]').element.tagName).toBe('H2');
+    expect(scenario.get('[data-parity-target="typography-paragraph"]').classes()).toContain(
+      'semi-typography-paragraph',
+    );
+    expect(scenario.get('[data-parity-target="typography-numeral"]').text()).toBe('1.50 KiB');
+    expect(scenario.find('.semi-typography-action-copy').exists()).toBe(true);
+  });
 });

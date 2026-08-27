@@ -66,6 +66,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/resizable/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'space', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/space/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'typography', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/typography/index.js\n');
   }
 
   if (packageName === 'icons') {

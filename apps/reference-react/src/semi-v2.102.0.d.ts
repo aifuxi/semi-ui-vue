@@ -81,6 +81,59 @@ declare module '@semi-v2.102.0/space' {
   export default Space;
 }
 
+declare module '@semi-v2.102.0/typography' {
+  import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
+
+  interface CommonProps extends HTMLAttributes<HTMLElement> {
+    component?: React.ElementType;
+    copyable?: boolean | object;
+    delete?: boolean;
+    disabled?: boolean;
+    ellipsis?:
+      | boolean
+      | {
+          collapseText?: string;
+          collapsible?: boolean;
+          expandText?: string;
+          expandable?: boolean;
+          pos?: 'end' | 'middle';
+          rows?: number;
+          showTooltip?: boolean | object;
+          suffix?: string;
+        };
+    link?: boolean | React.AnchorHTMLAttributes<HTMLAnchorElement>;
+    mark?: boolean;
+    size?: 'normal' | 'small' | 'inherit';
+    strong?: boolean;
+    style?: CSSProperties;
+    type?: 'primary' | 'secondary' | 'danger' | 'warning' | 'success' | 'tertiary' | 'quaternary';
+    underline?: boolean;
+  }
+  interface TextProps extends CommonProps {
+    code?: boolean;
+  }
+  interface TitleProps extends CommonProps {
+    heading?: 1 | 2 | 3 | 4 | 5 | 6;
+    weight?: 'light' | 'regular' | 'medium' | 'semibold' | 'bold' | 'default' | number;
+  }
+  interface ParagraphProps extends CommonProps {
+    spacing?: 'normal' | 'extended';
+  }
+  interface NumeralProps extends CommonProps {
+    children?: ReactNode;
+    precision?: number;
+    rule?: 'text' | 'numbers' | 'bytes-decimal' | 'bytes-binary' | 'percentages' | 'exponential';
+  }
+  type TypographyComponent = ComponentType<CommonProps> & {
+    Text: ComponentType<TextProps>;
+    Title: ComponentType<TitleProps>;
+    Paragraph: ComponentType<ParagraphProps>;
+    Numeral: ComponentType<NumeralProps>;
+  };
+  const Typography: TypographyComponent;
+  export default Typography;
+}
+
 declare module '@semi-v2.102.0/layout' {
   import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
 

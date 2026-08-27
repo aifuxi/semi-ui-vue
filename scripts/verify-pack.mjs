@@ -244,6 +244,7 @@ try {
 	await import('@workspace/ui/layout');
 	await import('@workspace/ui/resizable');
 	await import('@workspace/ui/space');
+	await import('@workspace/ui/typography');
 	await import('@workspace/icons/Icon');
 	await import('@workspace/icons/icons/IconHome');
 	await import('@workspace/icons-lab/Icon');
@@ -279,6 +280,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/space.css').endsWith('/dist/space.css')) {
 	  throw new Error('Space 逐组件样式导出未指向 dist/space.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/typography.css').endsWith('/dist/typography.css')) {
+	  throw new Error('Typography 逐组件样式导出未指向 dist/typography.css');
+	}
 	`,
   );
   run(process.execPath, ['smoke.mjs'], consumerRoot);
@@ -294,6 +298,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { Layout, LayoutContent, LayoutSider, type LayoutBreakpoint } from '@workspace/ui/layout';
 	import { Resizable, ResizeGroup, ResizeHandler, ResizeItem, type ResizeDirection, type ResizeSize } from '@workspace/ui/resizable';
 	import { Space, type SpaceAlign, type SpaceSpacingValue } from '@workspace/ui/space';
+	import { Typography, Text, Title, Paragraph, Numeral, type TypographyType, type TypographyNumeralRule } from '@workspace/ui/typography';
 	import IconBase, { convertIcon, type IconSize } from '@workspace/icons/Icon';
 	import { IconAIWandLevel3, IconHome } from '@workspace/icons';
 	import IconHomeDirect from '@workspace/icons/icons/IconHome';
@@ -329,6 +334,14 @@ h(Button, { type, htmlType: 'submit' });
 	const spaceAlign: SpaceAlign = 'baseline';
 	const spaceSpacing: SpaceSpacingValue = [12, 'loose'];
 	h(Space, { align: spaceAlign, spacing: spaceSpacing, wrap: true });
+	const typographyType: TypographyType = 'secondary';
+	const numeralRule: TypographyNumeralRule = 'bytes-binary';
+	h(Typography, null, () => [
+	  h(Title, { heading: 2, weight: 'semibold' }, () => 'Title'),
+	  h(Text, { type: typographyType, copyable: true }, () => 'Text'),
+	  h(Paragraph, { spacing: 'extended', ellipsis: { rows: 2 } }, () => 'Paragraph'),
+	  h(Numeral, { rule: numeralRule, precision: 2 }, () => '1536'),
+	]);
 	h(IconBase, { spin: true, rotate: 45 });
 	h(IconHome, { size: 'large' });
 	h(IconHomeDirect, { 'aria-label': 'home' });
@@ -399,6 +412,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-resizable-resizable')) {
     throw new Error('安装后的默认主题缺少 Resizable 样式');
+  }
+  if (!themeCss.includes('.semi-typography')) {
+    throw new Error('安装后的默认主题缺少 Typography 样式');
   }
   const buttonThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'button.css'),
@@ -478,6 +494,25 @@ h(Button, { type, htmlType: 'submit' });
     !spaceThemeCss.includes('.semi-space-tight-horizontal')
   ) {
     throw new Error('安装后的 Space 逐组件样式缺少换行或预设间距样式');
+  }
+  const typographyThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@workspace',
+      'theme-default',
+      'dist',
+      'typography.css',
+    ),
+    'utf8',
+  );
+  if (
+    !typographyThemeCss.includes('.semi-typography-paragraph') ||
+    !typographyThemeCss.includes('.semi-typography-action-copy') ||
+    !typographyThemeCss.includes('.semi-tooltip-wrapper') ||
+    !typographyThemeCss.includes('.semi-icon-default')
+  ) {
+    throw new Error('安装后的 Typography 逐组件样式缺少正文、复制、Tooltip 或 Icon 样式');
   }
 
   process.stdout.write('真实 tarball 的安装、exports、ESM、类型、样式与 SSR import 均通过\n');

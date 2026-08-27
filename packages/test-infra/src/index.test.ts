@@ -133,6 +133,24 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Typography and numeral Foundation as a complete local-source parity scene', () => {
+    expect(getParityScenario('typography')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.typographyPublicEntry,
+    });
+    expect(assertScenarioComparable('typography').targets).toHaveLength(10);
+    expect(getParityScenario('typography').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.typographyBaseEntry,
+        REFERENCE_SOURCE_PATHS.typographyNumeralEntry,
+        REFERENCE_SOURCE_PATHS.typographyFoundationFormatter,
+        REFERENCE_SOURCE_PATHS.typographyFoundationStyle,
+        REFERENCE_SOURCE_PATHS.typographyDocumentation,
+      ]),
+    );
+  });
+
   it('records FloatButton and Group as a complete local-source parity scene', () => {
     expect(getParityScenario('float-button')).toMatchObject({
       referenceStatus: 'ready',

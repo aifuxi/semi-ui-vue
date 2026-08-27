@@ -44,6 +44,14 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   spaceUtilities: 'vendor/semi-design/packages/semi-ui/space/utils.ts',
   spaceFoundationStyle: 'vendor/semi-design/packages/semi-foundation/space/space.scss',
   spaceDocumentation: 'vendor/semi-design/content/basic/space/index.md',
+  typographyPublicEntry: 'vendor/semi-design/packages/semi-ui/typography/index.tsx',
+  typographyBaseEntry: 'vendor/semi-design/packages/semi-ui/typography/base.tsx',
+  typographyNumeralEntry: 'vendor/semi-design/packages/semi-ui/typography/numeral.tsx',
+  typographyFoundationFormatter:
+    'vendor/semi-design/packages/semi-foundation/typography/formatNumeral.ts',
+  typographyFoundationStyle:
+    'vendor/semi-design/packages/semi-foundation/typography/typography.scss',
+  typographyDocumentation: 'vendor/semi-design/content/basic/typography/index.md',
 });
 
 export const PARITY_VIEWPORTS = Object.freeze({
@@ -698,6 +706,90 @@ export const PARITY_SCENARIOS = [
           'width',
           'zIndex',
         ],
+      },
+    ],
+  },
+  {
+    id: 'typography',
+    title: 'Typography 版式',
+    description: '复现固定文档的标题、文本类型、装饰、段落、链接、截断、数值格式化与复制契约。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.typographyPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.typographyPublicEntry,
+      REFERENCE_SOURCE_PATHS.typographyBaseEntry,
+      REFERENCE_SOURCE_PATHS.typographyNumeralEntry,
+      REFERENCE_SOURCE_PATHS.typographyFoundationFormatter,
+      REFERENCE_SOURCE_PATHS.typographyFoundationStyle,
+      REFERENCE_SOURCE_PATHS.typographyDocumentation,
+    ],
+    targets: [
+      {
+        id: 'typography-title',
+        selector: '[data-parity-target="typography-title"]',
+        computedStyleProperties: [
+          'color',
+          'fontFamily',
+          'fontSize',
+          'fontWeight',
+          'lineHeight',
+          'marginBottom',
+          'marginTop',
+        ],
+      },
+      {
+        id: 'typography-subtitle',
+        selector: '[data-parity-target="typography-subtitle"]',
+        computedStyleProperties: ['color', 'fontSize', 'fontWeight', 'lineHeight'],
+      },
+      {
+        id: 'typography-decorated',
+        selector: '[data-parity-target="typography-decorated"]',
+        computedStyleProperties: ['color', 'fontSize', 'fontWeight', 'lineHeight'],
+      },
+      {
+        id: 'typography-paragraph',
+        selector: '[data-parity-target="typography-paragraph"]',
+        computedStyleProperties: ['color', 'fontSize', 'fontWeight', 'lineHeight', 'margin'],
+      },
+      {
+        id: 'typography-link',
+        selector: '[data-parity-target="typography-link"]',
+        computedStyleProperties: ['color', 'cursor', 'fontSize', 'fontWeight', 'lineHeight'],
+      },
+      {
+        id: 'typography-disabled-link',
+        selector: '[data-parity-target="typography-disabled-link"]',
+        computedStyleProperties: ['color', 'cursor', 'fontSize', 'userSelect'],
+      },
+      {
+        id: 'typography-css-ellipsis',
+        selector: '[data-parity-target="typography-css-ellipsis"]',
+        computedStyleProperties: [
+          'color',
+          'fontSize',
+          'lineHeight',
+          'overflow',
+          'textOverflow',
+          'whiteSpace',
+          'width',
+        ],
+      },
+      {
+        id: 'typography-js-ellipsis',
+        selector: '[data-parity-target="typography-js-ellipsis"]',
+        computedStyleProperties: ['color', 'fontSize', 'lineHeight', 'margin', 'width'],
+      },
+      {
+        id: 'typography-numeral',
+        selector: '[data-parity-target="typography-numeral"]',
+        computedStyleProperties: ['color', 'fontSize', 'fontWeight', 'lineHeight'],
+      },
+      {
+        id: 'typography-copyable',
+        selector: '[data-parity-target="typography-copyable"]',
+        computedStyleProperties: ['color', 'fontSize', 'lineHeight'],
       },
     ],
   },

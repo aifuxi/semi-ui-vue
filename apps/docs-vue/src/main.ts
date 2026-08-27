@@ -8,6 +8,7 @@ import 'virtual:workspace-icon-styles.css';
 import 'virtual:workspace-layout-styles.css';
 import 'virtual:workspace-resizable-styles.css';
 import 'virtual:workspace-space-styles.css';
+import 'virtual:workspace-typography-styles.css';
 import '@workspace/test-infra/harness.css';
 
 import { createApp } from 'vue';

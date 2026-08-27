@@ -22,6 +22,7 @@ const gridPublicEntry = path.join(upstreamPackages, 'semi-ui/grid/index.tsx');
 const layoutPublicEntry = path.join(upstreamPackages, 'semi-ui/layout/index.tsx');
 const resizablePublicEntry = path.join(upstreamPackages, 'semi-ui/resizable/index.tsx');
 const spacePublicEntry = path.join(upstreamPackages, 'semi-ui/space/index.tsx');
+const typographyPublicEntry = path.join(upstreamPackages, 'semi-ui/typography/index.tsx');
 const foundationRoot = path.join(upstreamPackages, 'semi-foundation');
 const iconsEntry = path.join(upstreamPackages, 'semi-icons/src/index.ts');
 const iconsLabEntry = path.join(upstreamPackages, 'semi-icons-lab/src/index.ts');
@@ -50,6 +51,14 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'layout/layout.scss'),
   '@douyinfe/semi-foundation/resizable/resizable.scss',
   path.join(foundationRoot, 'resizable/resizable.scss'),
+  '@douyinfe/semi-foundation/_portal/portal.scss',
+  path.join(foundationRoot, '_portal/portal.scss'),
+  '@douyinfe/semi-foundation/popover/popover.scss',
+  path.join(foundationRoot, 'popover/popover.scss'),
+  '@douyinfe/semi-foundation/tooltip/tooltip.scss',
+  path.join(foundationRoot, 'tooltip/tooltip.scss'),
+  '@douyinfe/semi-foundation/typography/typography.scss',
+  path.join(foundationRoot, 'typography/typography.scss'),
   '@douyinfe/semi-icons/src/styles/icons.scss',
   path.join(upstreamPackages, 'semi-icons/src/styles/icons.scss'),
   '@douyinfe/semi-icons-lab/src/styles/icons.scss',
@@ -101,6 +110,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/layout', replacement: layoutPublicEntry },
       { find: '@semi-v2.102.0/resizable', replacement: resizablePublicEntry },
       { find: '@semi-v2.102.0/space', replacement: spacePublicEntry },
+      { find: '@semi-v2.102.0/typography', replacement: typographyPublicEntry },
       { find: '@semi-v2.102.0/icons', replacement: iconsEntry },
       { find: '@semi-v2.102.0/icons-lab', replacement: iconsLabEntry },
       {
@@ -109,6 +119,14 @@ export default defineConfig({
       },
       { find: '@douyinfe/semi-icons', replacement: iconsEntry },
       { find: '@douyinfe/semi-icons-lab', replacement: iconsLabEntry },
+      {
+        find: /^copy-text-to-clipboard$/,
+        replacement: fileURLToPath(new URL('./src/runtime/copyText.ts', import.meta.url)),
+      },
+      {
+        find: /^date-fns\/locale$/,
+        replacement: fileURLToPath(new URL('./src/runtime/dateFnsLocale.ts', import.meta.url)),
+      },
       { find: /^classnames$/, replacement: require.resolve('classnames') },
       { find: /^lodash$/, replacement: require.resolve('lodash') },
       { find: /^prop-types$/, replacement: require.resolve('prop-types') },

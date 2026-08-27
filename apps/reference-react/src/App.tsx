@@ -13,6 +13,7 @@ import { IconScenario } from './scenarios/IconScenario';
 import { LayoutScenario } from './scenarios/LayoutScenario';
 import { ResizableScenario } from './scenarios/ResizableScenario';
 import { SpaceScenario } from './scenarios/SpaceScenario';
+import { TypographyScenario } from './scenarios/TypographyScenario';
 
 const DEFAULT_OPTIONS: ParityScenarioOptions = {
   scenarioId: 'harness-calibration',
@@ -76,6 +77,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'layout' ? <LayoutScenario /> : null}
         {scenario.id === 'resizable' ? <ResizableScenario /> : null}
         {scenario.id === 'space' ? <SpaceScenario /> : null}
+        {scenario.id === 'typography' ? <TypographyScenario /> : null}
       </section>
 
       <dl className="runtime-evidence" aria-label="参考运行时证据">
