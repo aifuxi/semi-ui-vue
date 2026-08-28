@@ -18,5 +18,6 @@ export * from './slider';
 export * from './space';
 export * from './switch';
 export * from './tag-input';
+export * from './time-picker';
 export * from './tooltip';
 export * from './typography';

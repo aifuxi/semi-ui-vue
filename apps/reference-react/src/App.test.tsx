@@ -209,4 +209,16 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-tagInput-wrapper-n');
     expect(html).toContain('+2');
   });
+
+  it('从固定 TimePicker Adapter 渲染单值、范围、尺寸、禁用与十二小时制场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="time-picker" />);
+
+    expect(html).toContain('data-parity-scenario="time-picker"');
+    expect(html).toContain('data-parity-target="time-picker-basic"');
+    expect(html).toContain('semi-input-wrapper-small');
+    expect(html).toContain('semi-input-wrapper-large');
+    expect(html).toContain('semi-input-wrapper-disabled');
+    expect(html).toContain('data-type="timeRange"');
+    expect(html).toContain('data-use-12-hours="true"');
+  });
 });

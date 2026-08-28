@@ -36,9 +36,11 @@ const sliderPublicEntry = path.join(upstreamPackages, 'semi-ui/slider/index.tsx'
 const spacePublicEntry = path.join(upstreamPackages, 'semi-ui/space/index.tsx');
 const switchPublicEntry = path.join(upstreamPackages, 'semi-ui/switch/index.tsx');
 const tagInputPublicEntry = path.join(upstreamPackages, 'semi-ui/tagInput/index.tsx');
+const timePickerPublicEntry = path.join(upstreamPackages, 'semi-ui/timePicker/index.tsx');
 const tooltipPublicEntry = path.join(upstreamPackages, 'semi-ui/tooltip/index.tsx');
 const typographyPublicEntry = path.join(upstreamPackages, 'semi-ui/typography/index.tsx');
 const foundationRoot = path.join(upstreamPackages, 'semi-foundation');
+const animationEntry = path.join(upstreamPackages, 'semi-animation/index.ts');
 const iconsEntry = path.join(upstreamPackages, 'semi-icons/src/index.ts');
 const iconsLabEntry = path.join(upstreamPackages, 'semi-icons-lab/src/index.ts');
 const referenceStyleEntry = fileURLToPath(
@@ -92,6 +94,10 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'tag/tag.scss'),
   '@douyinfe/semi-foundation/tagInput/tagInput.scss',
   path.join(foundationRoot, 'tagInput/tagInput.scss'),
+  '@douyinfe/semi-foundation/timePicker/timePicker.scss',
+  path.join(foundationRoot, 'timePicker/timePicker.scss'),
+  '@douyinfe/semi-foundation/scrollList/scrollList.scss',
+  path.join(foundationRoot, 'scrollList/scrollList.scss'),
   '@douyinfe/semi-foundation/select/select.scss',
   path.join(foundationRoot, 'select/select.scss'),
   '@douyinfe/semi-foundation/slider/slider.scss',
@@ -175,6 +181,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/space', replacement: spacePublicEntry },
       { find: '@semi-v2.102.0/switch', replacement: switchPublicEntry },
       { find: '@semi-v2.102.0/tag-input', replacement: tagInputPublicEntry },
+      { find: '@semi-v2.102.0/time-picker', replacement: timePickerPublicEntry },
       { find: '@semi-v2.102.0/tooltip', replacement: tooltipPublicEntry },
       { find: '@semi-v2.102.0/typography', replacement: typographyPublicEntry },
       { find: '@semi-v2.102.0/icons', replacement: iconsEntry },
@@ -187,6 +194,7 @@ export default defineConfig({
         find: /^@douyinfe\/semi-foundation\/(.+)$/,
         replacement: `${foundationRoot}/$1`,
       },
+      { find: '@douyinfe/semi-animation', replacement: animationEntry },
       { find: '@douyinfe/semi-icons', replacement: iconsEntry },
       { find: '@douyinfe/semi-icons-lab', replacement: iconsLabEntry },
       {
@@ -197,6 +205,9 @@ export default defineConfig({
         find: /^date-fns\/locale$/,
         replacement: fileURLToPath(new URL('./src/runtime/dateFnsLocale.ts', import.meta.url)),
       },
+      { find: /^date-fns$/, replacement: require.resolve('date-fns') },
+      { find: /^date-fns-tz$/, replacement: require.resolve('date-fns-tz') },
+      { find: /^bezier-easing$/, replacement: require.resolve('bezier-easing') },
       { find: /^classnames$/, replacement: require.resolve('classnames') },
       { find: /^lodash$/, replacement: require.resolve('lodash') },
       { find: /^prop-types$/, replacement: require.resolve('prop-types') },

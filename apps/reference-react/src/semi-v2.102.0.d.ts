@@ -830,6 +830,39 @@ declare module '@semi-v2.102.0/tag-input' {
   export default TagInput;
 }
 
+declare module '@semi-v2.102.0/time-picker' {
+  import type { ComponentType, CSSProperties, FocusEvent, MouseEvent } from 'react';
+
+  export type TimePickerBaseValue = string | number | Date | undefined;
+  export interface TimePickerProps {
+    className?: string;
+    defaultOpen?: boolean;
+    defaultValue?: TimePickerBaseValue | TimePickerBaseValue[];
+    disabled?: boolean;
+    format?: string;
+    minuteStep?: number;
+    motion?: boolean;
+    onBlur?: (event: FocusEvent<HTMLInputElement> | MouseEvent) => void;
+    onChange?: (date: Date | Date[] | undefined, value: string | string[]) => void;
+    onFocus?: (event: FocusEvent<HTMLInputElement>) => void;
+    onOpenChange?: (open: boolean) => void;
+    open?: boolean;
+    placeholder?: string;
+    scrollItemProps?: { cycled?: boolean; mode?: 'normal' | 'wheel'; motion?: boolean };
+    showClear?: boolean;
+    size?: 'small' | 'default' | 'large';
+    style?: CSSProperties;
+    type?: 'time' | 'timeRange';
+    use12Hours?: boolean;
+    validateStatus?: 'default' | 'warning' | 'error';
+    value?: TimePickerBaseValue | TimePickerBaseValue[];
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const TimePicker: ComponentType<TimePickerProps>;
+  export default TimePicker;
+}
+
 declare module '@semi-v2.102.0/icons' {
   import type { ComponentType } from 'react';
   import type { IconProps } from '@semi-v2.102.0/icon';

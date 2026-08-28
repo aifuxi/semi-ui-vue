@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "@workspace/test-infra": "workspace:*",
+    "bezier-easing": "2.1.0",
     "classnames": "2.5.1",
+    "date-fns": "2.30.0",
+    "date-fns-tz": "1.3.8",
     "lodash": "4.17.21",
     "normalize.css": "catalog:",
     "prop-types": "15.8.1",

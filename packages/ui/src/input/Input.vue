@@ -109,8 +109,10 @@ function isIconContent(content: VNodeChild): boolean {
   const node = firstVNode(content);
   if (!node) return false;
   if (typeof node.type === 'object' || typeof node.type === 'function') {
-    const component = node.type as { name?: string; __name?: string };
-    return /Icon/.test(component.name ?? component.__name ?? '');
+    const component = node.type as { name?: string; __name?: string; elementType?: string };
+    return (
+      component.elementType === 'Icon' || /Icon/.test(component.name ?? component.__name ?? '')
+    );
   }
   return false;
 }

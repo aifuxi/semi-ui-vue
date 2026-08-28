@@ -820,6 +820,42 @@ p {
   transition: none !important;
 }
 
+.time-picker-scenario {
+  display: grid;
+  gap: 28px;
+}
+
+.time-picker-scenario__section {
+  display: grid;
+  gap: 14px;
+}
+
+.time-picker-scenario__section h3 {
+  margin: 0;
+  color: var(--semi-color-text-0);
+  font-size: 16px;
+}
+
+.time-picker-scenario__stack {
+  display: grid;
+  gap: 14px;
+}
+
+.time-picker-scenario__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.time-picker-scenario__status {
+  color: var(--semi-color-text-2);
+  font-size: 13px;
+}
+
+.time-picker-scenario .semi-timepicker {
+  width: 100%;
+}
+
 /* Freeze the Tooltip dependency at its final frame for byte-identical Slider evidence. */
 .semi-slider-handle-tooltip {
   animation: none !important;
@@ -850,6 +886,10 @@ p {
   }
 
   .tag-input-scenario__row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .time-picker-scenario__row {
     grid-template-columns: minmax(0, 1fr);
   }
 }

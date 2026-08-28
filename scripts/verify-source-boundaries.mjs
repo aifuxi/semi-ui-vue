@@ -22,7 +22,12 @@ const importPatterns = [
 const publicPackagePolicies = [
   {
     manifest: 'packages/ui/package.json',
-    dependencies: { '@workspace/icons': 'workspace:*', lodash: '4.17.21' },
+    dependencies: {
+      '@workspace/icons': 'workspace:*',
+      'date-fns': '2.30.0',
+      'date-fns-tz': '1.3.8',
+      lodash: '4.17.21',
+    },
     optionalDependencies: {},
     peerDependencies: { vue: '>=3.5.0' },
     devDependencies: { '@workspace/foundation-integration': 'workspace:*' },
@@ -46,7 +51,10 @@ const referenceApplicationPolicy = {
   manifest: 'apps/reference-react/package.json',
   dependencies: {
     '@workspace/test-infra': 'workspace:*',
+    'bezier-easing': '2.1.0',
     classnames: '2.5.1',
+    'date-fns': '2.30.0',
+    'date-fns-tz': '1.3.8',
     lodash: '4.17.21',
     'normalize.css': 'catalog:',
     'prop-types': '15.8.1',

@@ -23,6 +23,17 @@ export { SwitchFoundation } from './switch.js';
 export type { SwitchAdapter } from './switch.js';
 export { TagInputFoundation } from './tag-input.js';
 export type { TagInputAdapter, TagInputSortEnd } from './tag-input.js';
+export {
+  formatOption as formatTimePickerOption,
+  TimeInputFoundation,
+  TimePickerComboboxFoundation,
+  TimePickerFoundation,
+} from './time-picker.js';
+export type {
+  TimePickerAdapter,
+  TimePickerComboboxState,
+  TimePickerPanelChange,
+} from './time-picker.js';
 export { TooltipFoundation } from './tooltip.js';
 export type { TooltipAdapter, TooltipPopupContainerRect } from './tooltip.js';
 export * from './typography.js';

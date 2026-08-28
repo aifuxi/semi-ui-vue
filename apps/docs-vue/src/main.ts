@@ -20,6 +20,7 @@ import 'virtual:workspace-slider-styles.css';
 import 'virtual:workspace-space-styles.css';
 import 'virtual:workspace-switch-styles.css';
 import 'virtual:workspace-tag-input-styles.css';
+import 'virtual:workspace-time-picker-styles.css';
 import 'virtual:workspace-tooltip-styles.css';
 import 'virtual:workspace-typography-styles.css';
 import '@workspace/test-infra/harness.css';

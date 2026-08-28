@@ -77,7 +77,9 @@ Radio 是第十九个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/radi
 
 Rating、Slider 与 TagInput 分别是第二十至第二十二个进入 `ready` 的 Vue 垂直切片。TagInput 在 `packages/ui/src/tag-input/` 提供受控/非受控标签与输入、批量分隔、限制、清空、折叠 Popover、自定义标签 slot、原生拖放排序、键盘/焦点、ARIA 与 RTL；`packages/foundation-integration/src/tag-input.js` 是固定 TagInput Foundation 的唯一运行时入口，`packages/theme-default/tag-input.css` 包含 Input、Tag、Typography、Popover、Tooltip、Portal 和 Icon 样式。完整矩阵见 `docs/components/tag-input/`。
 
-Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox、Input、Rating、Slider 与 TagInput 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。后续仍必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
+TimePicker 是第二十三个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/time-picker/` 提供单值/范围、12 小时制、格式与时区、步长与禁用项、受控/非受控 value/open、自定义 panel/trigger slot、键盘/焦点、ARIA、Portal 与 RTL；`packages/foundation-integration/src/time-picker.js` 是固定 TimePicker/Input/Combobox Foundation 的唯一运行时入口，`packages/theme-default/time-picker.css` 包含 Input、Popover、Tooltip、Portal、ScrollList 与 Icon 样式。完整矩阵见 `docs/components/time-picker/`。
+
+Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox、Input、Rating、Slider、TagInput 与 TimePicker 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。后续仍必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。
 

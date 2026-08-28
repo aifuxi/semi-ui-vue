@@ -51,7 +51,16 @@ const runtimeDependencies = {
 const dependencyEntries = Object.entries(runtimeDependencies).sort(([left], [right]) =>
   left.localeCompare(right),
 );
-const includesLodash = Object.hasOwn(runtimeDependencies, 'lodash');
+const licensedDependencies = [
+  { licenseFile: 'LICENSE.md', name: 'date-fns', noticeName: 'date-fns', version: '2.30.0' },
+  {
+    licenseFile: 'LICENSE.md',
+    name: 'date-fns-tz',
+    noticeName: 'date-fns-tz',
+    version: '1.3.8',
+  },
+  { licenseFile: 'LICENSE', name: 'lodash', noticeName: 'Lodash', version: '4.17.21' },
+].filter(({ name }) => Object.hasOwn(runtimeDependencies, name));
 const creationTime = resolveCreationTime();
 const buildFingerprint = createHash('sha256')
   .update(
@@ -71,10 +80,10 @@ await copyFile(
   path.join(workspaceRoot, 'vendor', 'semi-design', 'LICENSE'),
   path.join(licenseRoot, 'Semi-Design.txt'),
 );
-if (includesLodash) {
+for (const dependency of licensedDependencies) {
   await copyFile(
-    path.join(workspaceRoot, 'node_modules', 'lodash', 'LICENSE'),
-    path.join(licenseRoot, 'lodash.txt'),
+    path.join(workspaceRoot, 'node_modules', dependency.name, dependency.licenseFile),
+    path.join(licenseRoot, `${dependency.name}.txt`),
   );
 }
 
@@ -90,11 +99,12 @@ This package is derived from or interoperates with Semi Design v2.102.0.
 - Source: https://github.com/DouyinFE/semi-design
 - Reference commit: ${semiCommit}
 
-The complete upstream license and notices are included at \`THIRD_PARTY_LICENSES/Semi-Design.txt\`.${
-    includesLodash
-      ? '\n\nThis package also uses Lodash 4.17.21 under the MIT License. Its license is included at `THIRD_PARTY_LICENSES/lodash.txt`.'
-      : ''
-  }
+The complete upstream license and notices are included at \`THIRD_PARTY_LICENSES/Semi-Design.txt\`.${licensedDependencies
+    .map(
+      ({ name, noticeName, version }) =>
+        `\n\nThis package also uses ${noticeName} ${version} under the MIT License. Its license is included at \`THIRD_PARTY_LICENSES/${name}.txt\`.`,
+    )
+    .join('')}
 `,
 );
 
@@ -143,8 +153,12 @@ const sbom = {
       versionInfo: version,
       downloadLocation: 'NOASSERTION',
       filesAnalyzed: false,
-      licenseConcluded: packageName === 'lodash' ? 'MIT' : 'NOASSERTION',
-      licenseDeclared: packageName === 'lodash' ? 'MIT' : 'NOASSERTION',
+      licenseConcluded: licensedDependencies.some(({ name }) => name === packageName)
+        ? 'MIT'
+        : 'NOASSERTION',
+      licenseDeclared: licensedDependencies.some(({ name }) => name === packageName)
+        ? 'MIT'
+        : 'NOASSERTION',
     })),
   ],
   relationships: [

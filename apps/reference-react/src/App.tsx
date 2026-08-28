@@ -25,6 +25,7 @@ import { SliderScenario } from './scenarios/SliderScenario';
 import { SpaceScenario } from './scenarios/SpaceScenario';
 import { SwitchScenario } from './scenarios/SwitchScenario';
 import { TagInputScenario } from './scenarios/TagInputScenario';
+import { TimePickerScenario } from './scenarios/TimePickerScenario';
 import { TooltipScenario } from './scenarios/TooltipScenario';
 import { TypographyScenario } from './scenarios/TypographyScenario';
 
@@ -102,6 +103,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'space' ? <SpaceScenario /> : null}
         {scenario.id === 'switch' ? <SwitchScenario /> : null}
         {scenario.id === 'tag-input' ? <TagInputScenario /> : null}
+        {scenario.id === 'time-picker' ? <TimePickerScenario /> : null}
         {scenario.id === 'tooltip' ? <TooltipScenario /> : null}
         {scenario.id === 'typography' ? <TypographyScenario /> : null}
       </section>

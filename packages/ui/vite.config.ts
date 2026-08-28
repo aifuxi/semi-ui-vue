@@ -23,6 +23,24 @@ export default defineConfig({
   resolve: {
     alias: [
       {
+        find: /^date-fns$/,
+        replacement: fileURLToPath(
+          new URL('./node_modules/date-fns/esm/index.js', import.meta.url),
+        ),
+      },
+      {
+        find: /^date-fns\/locale$/,
+        replacement: fileURLToPath(
+          new URL('./node_modules/date-fns/esm/locale/index.js', import.meta.url),
+        ),
+      },
+      {
+        find: /^date-fns-tz$/,
+        replacement: fileURLToPath(
+          new URL('./node_modules/date-fns-tz/esm/index.js', import.meta.url),
+        ),
+      },
+      {
         find: /^lodash$/,
         replacement: fileURLToPath(
           new URL('../foundation-integration/src/resizable-lodash.js', import.meta.url),
@@ -63,6 +81,7 @@ export default defineConfig({
         'space/index': fileURLToPath(new URL('./src/space/index.ts', import.meta.url)),
         'switch/index': fileURLToPath(new URL('./src/switch/index.ts', import.meta.url)),
         'tag-input/index': fileURLToPath(new URL('./src/tag-input/index.ts', import.meta.url)),
+        'time-picker/index': fileURLToPath(new URL('./src/time-picker/index.ts', import.meta.url)),
         'tooltip/index': fileURLToPath(new URL('./src/tooltip/index.ts', import.meta.url)),
         'typography/index': fileURLToPath(new URL('./src/typography/index.ts', import.meta.url)),
       },

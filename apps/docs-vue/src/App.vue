@@ -26,6 +26,7 @@ import SliderScenario from './components/SliderScenario.vue';
 import SpaceScenario from './components/SpaceScenario.vue';
 import SwitchScenario from './components/SwitchScenario.vue';
 import TagInputScenario from './components/TagInputScenario.vue';
+import TimePickerScenario from './components/TimePickerScenario.vue';
 import TooltipScenario from './components/TooltipScenario.vue';
 import TypographyScenario from './components/TypographyScenario.vue';
 import HarnessCalibration from './components/HarnessCalibration.vue';
@@ -94,6 +95,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <SpaceScenario v-else-if="scenario.id === 'space'" />
       <SwitchScenario v-else-if="scenario.id === 'switch'" />
       <TagInputScenario v-else-if="scenario.id === 'tag-input'" />
+      <TimePickerScenario v-else-if="scenario.id === 'time-picker'" />
       <TooltipScenario v-else-if="scenario.id === 'tooltip'" />
       <TypographyScenario v-else-if="scenario.id === 'typography'" />
       <UnavailableScenario

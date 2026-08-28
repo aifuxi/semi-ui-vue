@@ -329,4 +329,29 @@ describe('Vue 对照工作台', () => {
       .trigger('keydown', { key: 'Enter', keyCode: 13 });
     expect(scenario.get('output').text()).toContain('新增');
   });
+
+  it('通过公共 TimePicker 渲染单值、范围、尺寸、禁用与十二小时制场景', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'time-picker' } });
+    const scenario = wrapper.get('[data-testid="time-picker-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-timepicker')).toHaveLength(7);
+    expect(scenario.get('[data-parity-target="time-picker-small"]').classes()).toContain(
+      'semi-input-small',
+    );
+    expect(scenario.get('[data-parity-target="time-picker-large"]').classes()).toContain(
+      'semi-input-large',
+    );
+    expect(scenario.get('[data-parity-target="time-picker-disabled"]').attributes()).toHaveProperty(
+      'disabled',
+    );
+    expect(scenario.get('[data-parity-target="time-picker-range"]').element).toHaveProperty(
+      'value',
+      '09:00:00 ~ 18:00:00',
+    );
+    await scenario.get('[data-parity-target="time-picker-basic"]').setValue('11:25:19');
+    expect(scenario.get('output').text()).toContain('11:25:19');
+
+    wrapper.unmount();
+  });
 });

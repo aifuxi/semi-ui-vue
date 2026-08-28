@@ -108,21 +108,30 @@ try {
 
     if (
       packageInfo.name === '@workspace/ui' &&
-      !packedFiles.has('dist/THIRD_PARTY_LICENSES/lodash.txt')
+      ['date-fns.txt', 'date-fns-tz.txt', 'lodash.txt'].some(
+        (license) => !packedFiles.has(`dist/THIRD_PARTY_LICENSES/${license}`),
+      )
     ) {
-      throw new Error('@workspace/ui 的 tarball 缺少 Lodash 许可证');
+      throw new Error('@workspace/ui 的 tarball 缺少运行时依赖许可证');
     }
 
     tarballs.set(packageInfo.name, path.resolve(artifactsRoot, packResult.filename));
   }
 
-  const linkedLodash = `link:${await realpath(path.join(workspaceRoot, 'node_modules', 'lodash'))}`;
+  const linkedRuntimeDependencies = Object.fromEntries(
+    await Promise.all(
+      ['date-fns', 'date-fns-tz', 'lodash'].map(async (dependency) => [
+        dependency,
+        `link:${await realpath(path.join(workspaceRoot, 'node_modules', dependency))}`,
+      ]),
+    ),
+  );
   const dependencies = {
     ...Object.fromEntries(
       [...tarballs].map(([packageName, tarballPath]) => [packageName, `file:${tarballPath}`]),
     ),
     vue: `link:${await realpath(path.join(workspaceRoot, 'node_modules', 'vue'))}`,
-    lodash: linkedLodash,
+    ...linkedRuntimeDependencies,
   };
   await writeFile(
     path.join(consumerRoot, 'package.json'),
@@ -144,7 +153,9 @@ try {
         ([packageName, tarballPath]) =>
           `  ${JSON.stringify(packageName)}: ${JSON.stringify(`file:${tarballPath}`)}`,
       ),
-      `  lodash: ${JSON.stringify(linkedLodash)}`,
+      ...Object.entries(linkedRuntimeDependencies).map(
+        ([dependency, link]) => `  ${dependency}: ${JSON.stringify(link)}`,
+      ),
     ].join('\n')}\n`,
   );
 
@@ -183,16 +194,22 @@ try {
       throw new Error(`${packageInfo.name} 未原样携带上游许可证`);
     }
     if (packageInfo.name === '@workspace/ui') {
-      const installedLodashLicense = await readFile(
-        path.join(installedRoot, 'dist', 'THIRD_PARTY_LICENSES', 'lodash.txt'),
-        'utf8',
-      );
-      const sourceLodashLicense = await readFile(
-        path.join(workspaceRoot, 'node_modules', 'lodash', 'LICENSE'),
-        'utf8',
-      );
-      if (installedLodashLicense !== sourceLodashLicense) {
-        throw new Error('@workspace/ui 未原样携带 Lodash 许可证');
+      for (const [dependency, licenseFile] of [
+        ['date-fns', 'LICENSE.md'],
+        ['date-fns-tz', 'LICENSE.md'],
+        ['lodash', 'LICENSE'],
+      ]) {
+        const installedLicense = await readFile(
+          path.join(installedRoot, 'dist', 'THIRD_PARTY_LICENSES', `${dependency}.txt`),
+          'utf8',
+        );
+        const sourceLicense = await readFile(
+          path.join(workspaceRoot, 'node_modules', dependency, licenseFile),
+          'utf8',
+        );
+        if (installedLicense !== sourceLicense) {
+          throw new Error(`@workspace/ui 未原样携带 ${dependency} 许可证`);
+        }
       }
     }
 
@@ -256,6 +273,7 @@ try {
 	await import('@workspace/ui/space');
 	await import('@workspace/ui/switch');
 	await import('@workspace/ui/tag-input');
+	await import('@workspace/ui/time-picker');
 	await import('@workspace/ui/tooltip');
 	await import('@workspace/ui/typography');
 	await import('@workspace/icons/Icon');
@@ -329,6 +347,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/tag-input.css').endsWith('/dist/tag-input.css')) {
 	  throw new Error('TagInput 逐组件样式导出未指向 dist/tag-input.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/time-picker.css').endsWith('/dist/time-picker.css')) {
+	  throw new Error('TimePicker 逐组件样式导出未指向 dist/time-picker.css');
+	}
 	if (!import.meta.resolve('@workspace/theme-default/tooltip.css').endsWith('/dist/tooltip.css')) {
 	  throw new Error('Tooltip 逐组件样式导出未指向 dist/tooltip.css');
 	}
@@ -362,6 +383,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { Space, type SpaceAlign, type SpaceSpacingValue } from '@workspace/ui/space';
 	import { Switch, type SwitchSize } from '@workspace/ui/switch';
 	import { TagInput, type TagInputSize } from '@workspace/ui/tag-input';
+	import { TimePicker, type TimePickerType, type TimePickerValue } from '@workspace/ui/time-picker';
 	import { Tooltip, type TooltipPosition } from '@workspace/ui/tooltip';
 	import { Typography, Text, Title, Paragraph, Numeral, type TypographyType, type TypographyNumeralRule } from '@workspace/ui/typography';
 	import IconBase, { convertIcon, type IconSize } from '@workspace/icons/Icon';
@@ -437,6 +459,9 @@ h(Button, { type, htmlType: 'submit' });
 	h(Switch, { modelValue: true, size: switchSize, ariaLabel: 'consumer switch', 'onUpdate:modelValue': (_checked: boolean) => undefined });
 	const tagInputSize: TagInputSize = 'large';
 	h(TagInput, { modelValue: ['Semi', 'Vue'], size: tagInputSize, showClear: true, 'onUpdate:modelValue': (_value: string[]) => undefined });
+	const timePickerType: TimePickerType = 'timeRange';
+	const timePickerValue: TimePickerValue = ['09:00:00', '18:00:00'];
+	h(TimePicker, { modelValue: timePickerValue, type: timePickerType, minuteStep: 15, 'onUpdate:modelValue': (_value: Date | Date[] | undefined) => undefined });
 	const tooltipPosition: TooltipPosition = 'bottomRight';
 	h(Tooltip, { content: 'consumer tooltip', position: tooltipPosition, trigger: 'custom', visible: true }, () => h('button', 'trigger'));
 	const typographyType: TypographyType = 'secondary';
@@ -557,6 +582,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-tagInput')) {
     throw new Error('安装后的默认主题缺少 TagInput 样式');
+  }
+  if (!themeCss.includes('.semi-timepicker')) {
+    throw new Error('安装后的默认主题缺少 TimePicker 样式');
   }
   if (!themeCss.includes('.semi-tooltip-wrapper')) {
     throw new Error('安装后的默认主题缺少 Tooltip 样式');
@@ -808,6 +836,26 @@ h(Button, { type, htmlType: 'submit' });
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'tooltip.css'),
     'utf8',
   );
+  const timePickerThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@workspace',
+      'theme-default',
+      'dist',
+      'time-picker.css',
+    ),
+    'utf8',
+  );
+  if (
+    !timePickerThemeCss.includes('.semi-timepicker-panel-list-hour') ||
+    !timePickerThemeCss.includes('.semi-timepicker-range-panel') ||
+    !timePickerThemeCss.includes('.semi-scrolllist-body') ||
+    !timePickerThemeCss.includes('.semi-popover-wrapper') ||
+    !timePickerThemeCss.includes('.semi-rtl .semi-timepicker-panel')
+  ) {
+    throw new Error('安装后的 TimePicker 逐组件样式缺少面板、ScrollList、Popover 或 RTL 样式');
+  }
   if (
     !tooltipThemeCss.includes('.semi-portal-inner') ||
     !tooltipThemeCss.includes('.semi-tooltip-wrapper') ||

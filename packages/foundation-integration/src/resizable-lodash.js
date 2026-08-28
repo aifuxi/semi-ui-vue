@@ -13,5 +13,6 @@ export { default as noop } from 'lodash/noop.js';
 export { default as omit } from 'lodash/omit.js';
 export { default as pick } from 'lodash/pick.js';
 export { default as set } from 'lodash/set.js';
+export { default as split } from 'lodash/split.js';
 export { default as toNumber } from 'lodash/toNumber.js';
 export { default as toString } from 'lodash/toString.js';

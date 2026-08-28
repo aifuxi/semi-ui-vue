@@ -149,6 +149,20 @@ const tagInputCssPath = path.join(
   'dist',
   'tag-input.css',
 );
+const timePickerEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'time-picker.scss',
+);
+const timePickerCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'time-picker.css',
+);
 const tooltipEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -709,6 +723,40 @@ for (const selector of [
   }
 }
 
+const expectedTimePickerImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/_portal/portal.scss'),
+  vendorImport('semi-foundation/tooltip/tooltip.scss'),
+  vendorImport('semi-foundation/popover/popover.scss'),
+  vendorImport('semi-foundation/input/input.scss'),
+  vendorImport('semi-foundation/scrollList/scrollList.scss'),
+  vendorImport('semi-foundation/timePicker/timePicker.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const timePickerEntrySource = await readFile(timePickerEntryPath, 'utf8');
+const actualTimePickerImports = [
+  ...timePickerEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g),
+].map((match) => match[1]);
+if (JSON.stringify(actualTimePickerImports) !== JSON.stringify(expectedTimePickerImports)) {
+  throw new Error('TimePicker 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const timePickerCss = await readFile(timePickerCssPath, 'utf8');
+for (const selector of [
+  '.semi-timepicker',
+  '.semi-timepicker-panel-list-hour',
+  '.semi-timepicker-range-panel',
+  '.semi-scrolllist-body',
+  '.semi-popover-wrapper',
+  '.semi-portal-inner',
+  '.semi-rtl .semi-timepicker-panel',
+]) {
+  if (!timePickerCss.includes(selector)) {
+    throw new Error(`TimePicker 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 const expectedTooltipImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -853,5 +901,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Radio/Rating/Layout/Resizable/Select/Slider/Space/Switch/TagInput/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + switchCss.length + tagInputCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Radio/Rating/Layout/Resizable/Select/Slider/Space/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );
