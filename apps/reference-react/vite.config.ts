@@ -35,6 +35,7 @@ const selectPublicEntry = path.join(upstreamPackages, 'semi-ui/select/index.tsx'
 const sliderPublicEntry = path.join(upstreamPackages, 'semi-ui/slider/index.tsx');
 const spacePublicEntry = path.join(upstreamPackages, 'semi-ui/space/index.tsx');
 const switchPublicEntry = path.join(upstreamPackages, 'semi-ui/switch/index.tsx');
+const tagInputPublicEntry = path.join(upstreamPackages, 'semi-ui/tagInput/index.tsx');
 const tooltipPublicEntry = path.join(upstreamPackages, 'semi-ui/tooltip/index.tsx');
 const typographyPublicEntry = path.join(upstreamPackages, 'semi-ui/typography/index.tsx');
 const foundationRoot = path.join(upstreamPackages, 'semi-foundation');
@@ -89,6 +90,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'form/form.scss'),
   '@douyinfe/semi-foundation/tag/tag.scss',
   path.join(foundationRoot, 'tag/tag.scss'),
+  '@douyinfe/semi-foundation/tagInput/tagInput.scss',
+  path.join(foundationRoot, 'tagInput/tagInput.scss'),
   '@douyinfe/semi-foundation/select/select.scss',
   path.join(foundationRoot, 'select/select.scss'),
   '@douyinfe/semi-foundation/slider/slider.scss',
@@ -171,10 +174,15 @@ export default defineConfig({
       { find: '@semi-v2.102.0/slider', replacement: sliderPublicEntry },
       { find: '@semi-v2.102.0/space', replacement: spacePublicEntry },
       { find: '@semi-v2.102.0/switch', replacement: switchPublicEntry },
+      { find: '@semi-v2.102.0/tag-input', replacement: tagInputPublicEntry },
       { find: '@semi-v2.102.0/tooltip', replacement: tooltipPublicEntry },
       { find: '@semi-v2.102.0/typography', replacement: typographyPublicEntry },
       { find: '@semi-v2.102.0/icons', replacement: iconsEntry },
       { find: '@semi-v2.102.0/icons-lab', replacement: iconsLabEntry },
+      {
+        find: '../_sortable',
+        replacement: fileURLToPath(new URL('./src/runtime/SemiSortable.tsx', import.meta.url)),
+      },
       {
         find: /^@douyinfe\/semi-foundation\/(.+)$/,
         replacement: `${foundationRoot}/$1`,

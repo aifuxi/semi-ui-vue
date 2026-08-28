@@ -306,4 +306,27 @@ describe('Vue 对照工作台', () => {
     });
     expect(scenario.get('output').text()).toContain('basic:31');
   });
+
+  it('通过公共 TagInput 渲染标签、尺寸、校验、折叠与前后缀场景', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'tag-input' } });
+    const scenario = wrapper.get('[data-testid="tag-input-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-tagInput')).toHaveLength(7);
+    expect(scenario.get('[data-parity-target="tag-input-small"]').classes()).toContain(
+      'semi-tagInput-small',
+    );
+    expect(scenario.get('[data-parity-target="tag-input-disabled"]').classes()).toContain(
+      'semi-tagInput-disabled',
+    );
+    expect(scenario.get('[data-parity-target="tag-input-warning"]').classes()).toContain(
+      'semi-tagInput-warning',
+    );
+    expect(scenario.get('[data-parity-target="tag-input-collapsed"]').text()).toContain('+2');
+    await scenario.get('[data-parity-target="tag-input-basic"] input').setValue('新增');
+    await scenario
+      .get('[data-parity-target="tag-input-basic"] input')
+      .trigger('keydown', { key: 'Enter', keyCode: 13 });
+    expect(scenario.get('output').text()).toContain('新增');
+  });
 });

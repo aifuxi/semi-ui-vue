@@ -75,7 +75,9 @@ InputNumber 是第十七个进入 `ready` 的 Vue 垂直切片，PinCode 是第�
 
 Radio 是第十九个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/radio/` 提供 Radio、RadioGroup、原生 `v-model`、字符串/对象 options、普通/advanced、button/card/pureCard、焦点、ARIA 与 RTL；`packages/foundation-integration/src/radio.js` 是固定 Radio、RadioInner 与 RadioGroup Foundation 的唯一运行时入口，`packages/theme-default/radio.css` 包含 Radio 与 IconRadio 样式。完整矩阵见 `docs/components/radio/`。
 
-Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox 与 Input 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。后续仍必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
+Rating、Slider 与 TagInput 分别是第二十至第二十二个进入 `ready` 的 Vue 垂直切片。TagInput 在 `packages/ui/src/tag-input/` 提供受控/非受控标签与输入、批量分隔、限制、清空、折叠 Popover、自定义标签 slot、原生拖放排序、键盘/焦点、ARIA 与 RTL；`packages/foundation-integration/src/tag-input.js` 是固定 TagInput Foundation 的唯一运行时入口，`packages/theme-default/tag-input.css` 包含 Input、Tag、Typography、Popover、Tooltip、Portal 和 Icon 样式。完整矩阵见 `docs/components/tag-input/`。
+
+Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox、Input、Rating、Slider 与 TagInput 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。后续仍必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。
 

@@ -21,6 +21,7 @@ export const virtualSelectStyleId = 'virtual:workspace-select-styles.css';
 export const virtualSliderStyleId = 'virtual:workspace-slider-styles.css';
 export const virtualSpaceStyleId = 'virtual:workspace-space-styles.css';
 export const virtualSwitchStyleId = 'virtual:workspace-switch-styles.css';
+export const virtualTagInputStyleId = 'virtual:workspace-tag-input-styles.css';
 export const virtualTooltipStyleId = 'virtual:workspace-tooltip-styles.css';
 export const virtualTypographyStyleId = 'virtual:workspace-typography-styles.css';
 const resolvedVirtualAutoCompleteStyleId = `\0${virtualAutoCompleteStyleId}`;
@@ -42,6 +43,7 @@ const resolvedVirtualSelectStyleId = `\0${virtualSelectStyleId}`;
 const resolvedVirtualSliderStyleId = `\0${virtualSliderStyleId}`;
 const resolvedVirtualSpaceStyleId = `\0${virtualSpaceStyleId}`;
 const resolvedVirtualSwitchStyleId = `\0${virtualSwitchStyleId}`;
+const resolvedVirtualTagInputStyleId = `\0${virtualTagInputStyleId}`;
 const resolvedVirtualTooltipStyleId = `\0${virtualTooltipStyleId}`;
 const resolvedVirtualTypographyStyleId = `\0${virtualTypographyStyleId}`;
 const autoCompleteStyleEntry = fileURLToPath(new URL('./src/auto-complete.scss', import.meta.url));
@@ -65,6 +67,7 @@ const selectStyleEntry = fileURLToPath(new URL('./src/select.scss', import.meta.
 const sliderStyleEntry = fileURLToPath(new URL('./src/slider.scss', import.meta.url));
 const spaceStyleEntry = fileURLToPath(new URL('./src/space.scss', import.meta.url));
 const switchStyleEntry = fileURLToPath(new URL('./src/switch.scss', import.meta.url));
+const tagInputStyleEntry = fileURLToPath(new URL('./src/tag-input.scss', import.meta.url));
 const tooltipStyleEntry = fileURLToPath(new URL('./src/tooltip.scss', import.meta.url));
 const typographyStyleEntry = fileURLToPath(new URL('./src/typography.scss', import.meta.url));
 
@@ -88,6 +91,7 @@ const styleEntries = new Map([
   [resolvedVirtualSliderStyleId, sliderStyleEntry],
   [resolvedVirtualSpaceStyleId, spaceStyleEntry],
   [resolvedVirtualSwitchStyleId, switchStyleEntry],
+  [resolvedVirtualTagInputStyleId, tagInputStyleEntry],
   [resolvedVirtualTooltipStyleId, tooltipStyleEntry],
   [resolvedVirtualTypographyStyleId, typographyStyleEntry],
 ]);
@@ -117,6 +121,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualSliderStyleId) return resolvedVirtualSliderStyleId;
       if (source === virtualSpaceStyleId) return resolvedVirtualSpaceStyleId;
       if (source === virtualSwitchStyleId) return resolvedVirtualSwitchStyleId;
+      if (source === virtualTagInputStyleId) return resolvedVirtualTagInputStyleId;
       if (source === virtualTooltipStyleId) return resolvedVirtualTooltipStyleId;
       if (source === virtualTypographyStyleId) return resolvedVirtualTypographyStyleId;
       return null;

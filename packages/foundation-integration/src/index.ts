@@ -21,6 +21,8 @@ export { SliderFoundation } from './slider.js';
 export type { SliderAdapter, SliderLengths } from './slider.js';
 export { SwitchFoundation } from './switch.js';
 export type { SwitchAdapter } from './switch.js';
+export { TagInputFoundation } from './tag-input.js';
+export type { TagInputAdapter, TagInputSortEnd } from './tag-input.js';
 export { TooltipFoundation } from './tooltip.js';
 export type { TooltipAdapter, TooltipPopupContainerRect } from './tooltip.js';
 export * from './typography.js';

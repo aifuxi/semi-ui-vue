@@ -778,6 +778,48 @@ p {
   line-height: 20px;
 }
 
+.tag-input-scenario {
+  display: grid;
+  margin-top: 24px;
+  gap: 20px;
+}
+
+.tag-input-scenario__section {
+  display: grid;
+  gap: 12px;
+}
+
+.tag-input-scenario__section h3 {
+  margin: 0;
+  color: var(--semi-color-text-0);
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.tag-input-scenario__stack {
+  display: grid;
+  width: min(100%, 640px);
+  gap: 12px;
+}
+
+.tag-input-scenario__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.tag-input-scenario__status {
+  color: var(--semi-color-text-2);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+/* Freeze overlay-related transitions for deterministic TagInput evidence. */
+.tag-input-scenario .semi-tagInput,
+.tag-input-scenario .semi-tag {
+  transition: none !important;
+}
+
 /* Freeze the Tooltip dependency at its final frame for byte-identical Slider evidence. */
 .semi-slider-handle-tooltip {
   animation: none !important;
@@ -805,6 +847,10 @@ p {
   .slider-scenario__row {
     flex-direction: column;
     gap: 24px;
+  }
+
+  .tag-input-scenario__row {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

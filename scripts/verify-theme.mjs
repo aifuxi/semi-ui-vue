@@ -135,6 +135,20 @@ const spaceEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'sr
 const spaceCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'space.css');
 const switchEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'switch.scss');
 const switchCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'switch.css');
+const tagInputEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'tag-input.scss',
+);
+const tagInputCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'tag-input.css',
+);
 const tooltipEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -232,6 +246,7 @@ const requiredSelectors = [
   '.semi-select',
   '.semi-space',
   '.semi-switch',
+  '.semi-tagInput',
   '.semi-typography',
   '.semi-input-wrapper',
   '.semi-input-number',
@@ -658,6 +673,42 @@ for (const selector of [
   }
 }
 
+const expectedTagInputImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/_portal/portal.scss'),
+  vendorImport('semi-foundation/tooltip/tooltip.scss'),
+  vendorImport('semi-foundation/popover/popover.scss'),
+  vendorImport('semi-foundation/input/input.scss'),
+  vendorImport('semi-foundation/tag/tag.scss'),
+  vendorImport('semi-foundation/typography/typography.scss'),
+  vendorImport('semi-foundation/tagInput/tagInput.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const tagInputEntrySource = await readFile(tagInputEntryPath, 'utf8');
+const actualTagInputImports = [...tagInputEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualTagInputImports) !== JSON.stringify(expectedTagInputImports)) {
+  throw new Error('TagInput 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const tagInputCss = await readFile(tagInputCssPath, 'utf8');
+for (const selector of [
+  '.semi-tagInput-wrapper-input',
+  '.semi-tagInput-wrapper-n',
+  '.semi-tagInput-disabled',
+  '.semi-tagInput-warning',
+  '.semi-rtl .semi-tagInput',
+  '.semi-tag-close',
+  '.semi-popover-wrapper',
+  '.semi-portal-inner',
+]) {
+  if (!tagInputCss.includes(selector)) {
+    throw new Error(`TagInput 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 const expectedTooltipImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -802,5 +853,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Radio/Rating/Layout/Resizable/Select/Slider/Space/Switch/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + switchCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Radio/Rating/Layout/Resizable/Select/Slider/Space/Switch/TagInput/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + switchCss.length + tagInputCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

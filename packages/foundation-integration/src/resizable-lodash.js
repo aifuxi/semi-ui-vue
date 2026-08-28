@@ -1,6 +1,7 @@
 // Limit the pinned Foundation integrations' Lodash surface to the functions they use.
 export { default as debounce } from 'lodash/debounce.js';
 export { default as get } from 'lodash/get.js';
+export { default as isArray } from 'lodash/isArray.js';
 export { default as isEmpty } from 'lodash/isEmpty.js';
 export { default as isEqual } from 'lodash/isEqual.js';
 export { default as isFunction } from 'lodash/isFunction.js';

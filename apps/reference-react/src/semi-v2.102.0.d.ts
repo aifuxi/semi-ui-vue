@@ -783,6 +783,53 @@ declare module '@semi-v2.102.0/icon' {
   export default Icon;
 }
 
+declare module '@semi-v2.102.0/tag-input' {
+  import type { ComponentType, CSSProperties, FocusEvent, KeyboardEvent, ReactNode } from 'react';
+
+  export interface TagInputProps {
+    'aria-label'?: string;
+    addOnBlur?: boolean;
+    allowDuplicates?: boolean;
+    autoFocus?: boolean;
+    className?: string;
+    clearIcon?: ReactNode;
+    defaultValue?: string[];
+    disabled?: boolean;
+    draggable?: boolean;
+    expandRestTagsOnClick?: boolean;
+    inputValue?: string;
+    insetLabel?: ReactNode;
+    insetLabelId?: string;
+    max?: number;
+    maxLength?: number;
+    maxTagCount?: number;
+    onAdd?: (value: string[]) => void;
+    onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
+    onChange?: (value: string[]) => void;
+    onExceed?: (value: string[]) => void;
+    onFocus?: (event: FocusEvent<HTMLInputElement>) => void;
+    onInputChange?: (value: string, event: Event) => void;
+    onInputExceed?: (value: string) => void;
+    onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void;
+    onRemove?: (value: string, index: number) => void;
+    placeholder?: string;
+    prefix?: ReactNode;
+    separator?: string | string[] | null;
+    showClear?: boolean;
+    showContentTooltip?: boolean | Record<string, unknown>;
+    showRestTagsPopover?: boolean;
+    size?: 'small' | 'default' | 'large';
+    style?: CSSProperties;
+    suffix?: ReactNode;
+    validateStatus?: 'default' | 'warning' | 'error';
+    value?: string[];
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const TagInput: ComponentType<TagInputProps>;
+  export default TagInput;
+}
+
 declare module '@semi-v2.102.0/icons' {
   import type { ComponentType } from 'react';
   import type { IconProps } from '@semi-v2.102.0/icon';

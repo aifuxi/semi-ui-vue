@@ -197,4 +197,16 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-slider-vertical-wrapper');
     expect(html.match(/role="slider"/g)).toHaveLength(7);
   });
+
+  it('从固定 TagInput Adapter 渲染标签、尺寸、校验、折叠与前后缀场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="tag-input" />);
+
+    expect(html).toContain('data-parity-scenario="tag-input"');
+    expect(html).toContain('data-parity-target="tag-input-basic"');
+    expect(html).toContain('semi-tagInput-small');
+    expect(html).toContain('semi-tagInput-disabled');
+    expect(html).toContain('semi-tagInput-warning');
+    expect(html).toContain('semi-tagInput-wrapper-n');
+    expect(html).toContain('+2');
+  });
 });
