@@ -8,6 +8,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@workspace/ui': fileURLToPath(new URL('./packages/ui/src/index.ts', import.meta.url)),
+      '@semi-v2.102.0/anchor': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiAnchorStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/auto-complete': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiAutoCompleteStub.tsx', import.meta.url),
       ),

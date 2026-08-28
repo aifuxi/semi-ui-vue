@@ -1,3 +1,44 @@
+declare module '@semi-v2.102.0/anchor' {
+  import type { ComponentType, CSSProperties, KeyboardEvent, MouseEvent, ReactNode } from 'react';
+
+  export interface AnchorLinkProps {
+    children?: ReactNode;
+    className?: string;
+    disabled?: boolean;
+    href?: string;
+    style?: CSSProperties;
+    title?: ReactNode;
+  }
+
+  export interface AnchorProps {
+    'aria-label'?: string;
+    autoCollapse?: boolean;
+    children?: ReactNode;
+    className?: string;
+    defaultAnchor?: string;
+    getContainer?: () => HTMLElement | Window;
+    maxHeight?: string | number;
+    maxWidth?: string | number;
+    offsetTop?: number;
+    onChange?: (currentLink: string, previousLink: string) => void;
+    onClick?: (
+      event: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>,
+      currentLink: string,
+    ) => void;
+    position?: string;
+    railTheme?: 'primary' | 'tertiary' | 'muted';
+    scrollMotion?: boolean;
+    showTooltip?: boolean | Record<string, unknown>;
+    size?: 'small' | 'default';
+    style?: CSSProperties;
+    targetOffset?: number;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Anchor: ComponentType<AnchorProps> & { Link: ComponentType<AnchorLinkProps> };
+  export default Anchor;
+}
+
 declare module '@semi-v2.102.0/button' {
   import type { ButtonHTMLAttributes, ComponentType, ReactNode } from 'react';
 

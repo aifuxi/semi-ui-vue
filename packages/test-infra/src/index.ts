@@ -6,6 +6,12 @@ export const REFERENCE_BASELINE = Object.freeze({
 });
 
 export const REFERENCE_SOURCE_PATHS = Object.freeze({
+  anchorPublicEntry: 'vendor/semi-design/packages/semi-ui/anchor/index.tsx',
+  anchorLinkEntry: 'vendor/semi-design/packages/semi-ui/anchor/link.tsx',
+  anchorFoundation: 'vendor/semi-design/packages/semi-foundation/anchor/foundation.ts',
+  anchorLinkFoundation: 'vendor/semi-design/packages/semi-foundation/anchor/linkFoundation.ts',
+  anchorFoundationStyle: 'vendor/semi-design/packages/semi-foundation/anchor/anchor.scss',
+  anchorDocumentation: 'vendor/semi-design/content/navigation/anchor/index.md',
   autoCompletePublicEntry: 'vendor/semi-design/packages/semi-ui/autoComplete/index.tsx',
   autoCompleteOptionEntry: 'vendor/semi-design/packages/semi-ui/autoComplete/option.tsx',
   autoCompleteFoundation: 'vendor/semi-design/packages/semi-foundation/autoComplete/foundation.ts',
@@ -168,6 +174,59 @@ export interface ParityScenarioDefinition {
 }
 
 export const PARITY_SCENARIOS = [
+  {
+    id: 'anchor',
+    title: 'Anchor 锚点',
+    description: '验证尺寸/滑轨、嵌套链接、点击与滚动激活、禁用、暗色、移动端与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.anchorPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.anchorPublicEntry,
+      REFERENCE_SOURCE_PATHS.anchorLinkEntry,
+      REFERENCE_SOURCE_PATHS.anchorFoundation,
+      REFERENCE_SOURCE_PATHS.anchorLinkFoundation,
+      REFERENCE_SOURCE_PATHS.anchorFoundationStyle,
+      REFERENCE_SOURCE_PATHS.anchorDocumentation,
+    ],
+    targets: [
+      {
+        id: 'anchor-default',
+        selector: '[data-parity-target="anchor-default"]',
+        computedStyleProperties: [
+          'boxSizing',
+          'fontFamily',
+          'fontSize',
+          'maxHeight',
+          'maxWidth',
+          'overflowX',
+          'overflowY',
+          'position',
+        ],
+      },
+      ...(['overview', 'usage', 'api', 'disabled'] as const).map((state) => ({
+        id: `anchor-link-${state}`,
+        selector: `.anchor-target-${state} > .semi-anchor-link-title`,
+        computedStyleProperties: [
+          'backgroundColor',
+          'borderRadius',
+          'color',
+          'cursor',
+          'fontSize',
+          'lineHeight',
+          'paddingBottom',
+          'paddingLeft',
+          'paddingRight',
+          'paddingTop',
+        ],
+      })),
+      {
+        id: 'anchor-small',
+        selector: '.anchor-target-small',
+        computedStyleProperties: ['fontFamily', 'fontSize', 'lineHeight', 'maxHeight', 'maxWidth'],
+      },
+    ],
+  },
   {
     id: 'harness-calibration',
     title: '工作台视觉校准',

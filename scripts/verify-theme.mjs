@@ -7,6 +7,8 @@ const vendorPackages = path.join(workspaceRoot, 'vendor', 'semi-design', 'packag
 const foundationRoot = path.join(vendorPackages, 'semi-foundation');
 const entryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'index.scss');
 const cssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'index.css');
+const anchorEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'anchor.scss');
+const anchorCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'anchor.css');
 const autoCompleteEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -247,6 +249,7 @@ if (JSON.stringify(actualImports) !== JSON.stringify(expectedImports)) {
 
 const css = await readFile(cssPath, 'utf8');
 const requiredSelectors = [
+  '.semi-anchor',
   '.semi-autocomplete',
   '.semi-button',
   '.semi-checkbox',
@@ -274,6 +277,37 @@ const requiredSelectors = [
 for (const selector of requiredSelectors) {
   if (!css.includes(selector)) {
     throw new Error(`默认主题产物缺少代表性组件选择器：${selector}`);
+  }
+}
+
+const expectedAnchorImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/_portal/portal.scss'),
+  vendorImport('semi-foundation/popover/popover.scss'),
+  vendorImport('semi-foundation/tooltip/tooltip.scss'),
+  vendorImport('semi-foundation/typography/typography.scss'),
+  vendorImport('semi-foundation/anchor/anchor.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const anchorEntrySource = await readFile(anchorEntryPath, 'utf8');
+const actualAnchorImports = [...anchorEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualAnchorImports) !== JSON.stringify(expectedAnchorImports)) {
+  throw new Error('Anchor 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const anchorCss = await readFile(anchorCssPath, 'utf8');
+for (const selector of [
+  '.semi-anchor-link-title-active',
+  '.semi-anchor-link-title-disabled',
+  '.semi-anchor-link-tooltip',
+  '.semi-rtl .semi-anchor',
+  '.semi-typography-ellipsis',
+  '.semi-tooltip-wrapper',
+]) {
+  if (!anchorCss.includes(selector)) {
+    throw new Error(`Anchor 逐组件样式产物缺少选择器：${selector}`);
   }
 }
 

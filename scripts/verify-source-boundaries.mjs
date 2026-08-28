@@ -27,6 +27,7 @@ const publicPackagePolicies = [
       'date-fns': '2.30.0',
       'date-fns-tz': '1.3.8',
       lodash: '4.17.21',
+      'scroll-into-view-if-needed': '2.2.31',
     },
     optionalDependencies: {},
     peerDependencies: { vue: '>=3.5.0' },

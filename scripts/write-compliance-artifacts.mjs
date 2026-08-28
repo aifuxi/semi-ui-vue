@@ -60,6 +60,12 @@ const licensedDependencies = [
     version: '1.3.8',
   },
   { licenseFile: 'LICENSE', name: 'lodash', noticeName: 'Lodash', version: '4.17.21' },
+  {
+    licenseFile: 'LICENSE',
+    name: 'scroll-into-view-if-needed',
+    noticeName: 'scroll-into-view-if-needed',
+    version: '2.2.31',
+  },
 ].filter(({ name }) => Object.hasOwn(runtimeDependencies, name));
 const creationTime = resolveCreationTime();
 const buildFingerprint = createHash('sha256')

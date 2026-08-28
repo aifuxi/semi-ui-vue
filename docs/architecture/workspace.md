@@ -79,7 +79,9 @@ Rating、Slider 与 TagInput 分别是第二十至第二十二个进入 `ready` 
 
 TimePicker 是第二十三个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/time-picker/` 提供单值/范围、12 小时制、格式与时区、步长与禁用项、受控/非受控 value/open、自定义 panel/trigger slot、键盘/焦点、ARIA、Portal 与 RTL；`packages/foundation-integration/src/time-picker.js` 是固定 TimePicker/Input/Combobox Foundation 的唯一运行时入口，`packages/theme-default/time-picker.css` 包含 Input、Popover、Tooltip、Portal、ScrollList 与 Icon 样式。完整矩阵见 `docs/components/time-picker/`。
 
-Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox、Input、Rating、Slider、TagInput 与 TimePicker 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。后续仍必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
+Anchor 是第二十四个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/anchor/` 提供嵌套锚点、滚动激活、点击定位、自动折叠、Tooltip、键盘/焦点、ARIA 与 RTL；`packages/foundation-integration/src/anchor.js` 是固定 Anchor/Link Foundation 的唯一运行时入口，`packages/theme-default/anchor.css` 包含 Anchor、Typography、Tooltip、Popover 与 Portal 样式。完整矩阵见 `docs/components/anchor/`。
+
+Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox、Input、Rating、Slider、TagInput、TimePicker 与 Anchor 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。Anchor 精确锁定并内联上游使用的 `scroll-into-view-if-needed@2.2.31`，同时纳入许可与 SBOM 验证。后续仍必须逐组件处理 `semi-animation`、`semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。
 

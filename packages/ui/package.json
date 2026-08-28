@@ -18,6 +18,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./anchor": {
+      "types": "./dist/anchor/index.d.ts",
+      "import": "./dist/anchor/index.js"
+    },
     "./auto-complete": {
       "types": "./dist/auto-complete/index.d.ts",
       "import": "./dist/auto-complete/index.js"
@@ -124,7 +128,8 @@
     "@workspace/icons": "workspace:*",
     "date-fns": "2.30.0",
     "date-fns-tz": "1.3.8",
-    "lodash": "4.17.21"
+    "lodash": "4.17.21",
+    "scroll-into-view-if-needed": "2.2.31"
   },
   "peerDependencies": {
     "vue": ">=3.5.0"

@@ -354,4 +354,21 @@ describe('Vue 对照工作台', () => {
 
     wrapper.unmount();
   });
+
+  it('通过公共 Anchor 渲染尺寸、嵌套、禁用并响应点击', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'anchor' } });
+    const scenario = wrapper.get('[data-testid="anchor-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-anchor')).toHaveLength(2);
+    expect(scenario.findAll('.semi-anchor-link-title')).toHaveLength(6);
+    expect(scenario.get('.anchor-target-disabled > .semi-anchor-link-title').classes()).toContain(
+      'semi-anchor-link-title-disabled',
+    );
+    expect(scenario.get('.anchor-target-small').classes()).toContain('semi-anchor-size-small');
+    await scenario.get('.anchor-target-api > .semi-anchor-link-title').trigger('click');
+    expect(scenario.get('output').text()).toBe('点击：#anchor-api');
+
+    wrapper.unmount();
+  });
 });

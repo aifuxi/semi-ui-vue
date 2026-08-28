@@ -221,4 +221,15 @@ describe('React 参考工作台', () => {
     expect(html).toContain('data-type="timeRange"');
     expect(html).toContain('data-use-12-hours="true"');
   });
+
+  it('从固定 Anchor Adapter 渲染尺寸、嵌套、禁用与滚动容器场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="anchor" />);
+
+    expect(html).toContain('data-parity-scenario="anchor"');
+    expect(html).toContain('data-testid="anchor-reference"');
+    expect(html).toContain('data-parity-target="anchor-default"');
+    expect(html).toContain('anchor-target-api');
+    expect(html).toContain('semi-anchor-link-title-disabled');
+    expect(html).toContain('anchor-target-small');
+  });
 });

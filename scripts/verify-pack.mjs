@@ -108,7 +108,7 @@ try {
 
     if (
       packageInfo.name === '@workspace/ui' &&
-      ['date-fns.txt', 'date-fns-tz.txt', 'lodash.txt'].some(
+      ['date-fns.txt', 'date-fns-tz.txt', 'lodash.txt', 'scroll-into-view-if-needed.txt'].some(
         (license) => !packedFiles.has(`dist/THIRD_PARTY_LICENSES/${license}`),
       )
     ) {
@@ -120,10 +120,12 @@ try {
 
   const linkedRuntimeDependencies = Object.fromEntries(
     await Promise.all(
-      ['date-fns', 'date-fns-tz', 'lodash'].map(async (dependency) => [
-        dependency,
-        `link:${await realpath(path.join(workspaceRoot, 'node_modules', dependency))}`,
-      ]),
+      ['date-fns', 'date-fns-tz', 'lodash', 'scroll-into-view-if-needed'].map(
+        async (dependency) => [
+          dependency,
+          `link:${await realpath(path.join(workspaceRoot, 'node_modules', dependency))}`,
+        ],
+      ),
     ),
   );
   const dependencies = {
@@ -198,6 +200,7 @@ try {
         ['date-fns', 'LICENSE.md'],
         ['date-fns-tz', 'LICENSE.md'],
         ['lodash', 'LICENSE'],
+        ['scroll-into-view-if-needed', 'LICENSE'],
       ]) {
         const installedLicense = await readFile(
           path.join(installedRoot, 'dist', 'THIRD_PARTY_LICENSES', `${dependency}.txt`),
@@ -253,6 +256,7 @@ try {
   await writeFile(
     path.join(consumerRoot, 'smoke.mjs'),
     `await Promise.all(${JSON.stringify(javascriptPackages)}.map(packageName => import(packageName)));
+	await import('@workspace/ui/anchor');
 	await import('@workspace/ui/button');
 	await import('@workspace/ui/checkbox');
 	await import('@workspace/ui/auto-complete');
@@ -287,6 +291,9 @@ try {
 	const rootTheme = import.meta.resolve('@workspace/theme-default');
 const cssTheme = import.meta.resolve('@workspace/theme-default/index.css');
 if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 index.css');
+	if (!import.meta.resolve('@workspace/theme-default/anchor.css').endsWith('/dist/anchor.css')) {
+	  throw new Error('Anchor 逐组件样式导出未指向 dist/anchor.css');
+	}
 	if (!import.meta.resolve('@workspace/theme-default/button.css').endsWith('/dist/button.css')) {
 	  throw new Error('Button 逐组件样式导出未指向 dist/button.css');
 	}
@@ -364,6 +371,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
     path.join(consumerRoot, 'type-smoke.ts'),
     `${javascriptPackages.map((packageName) => `import '${packageName}';`).join('\n')}
 	import { AutoComplete, AutoCompleteOption, type AutoCompleteModelValue } from '@workspace/ui/auto-complete';
+	import { Anchor, AnchorLink, type AnchorPosition } from '@workspace/ui/anchor';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
 	import { Checkbox, CheckboxGroup, type CheckboxType, type CheckboxValue } from '@workspace/ui/checkbox';
 	import { ConfigConsumer, ConfigProvider, defaultResponsiveMap, type Breakpoint } from '@workspace/ui/config-provider';
@@ -394,6 +402,8 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { h } from 'vue';
 const type: ButtonType = 'primary';
 h(Button, { type, htmlType: 'submit' });
+	const anchorPosition: AnchorPosition = 'right';
+	h(Anchor, { position: anchorPosition, showTooltip: true }, () => h(AnchorLink, { href: '#consumer', title: 'Consumer' }));
 	const checkboxType: CheckboxType = 'card';
 	const checkboxValue: CheckboxValue = 'semi';
 	h(Checkbox, { modelValue: true, type: checkboxType, value: checkboxValue }, () => 'Semi');
@@ -519,6 +529,9 @@ h(Button, { type, htmlType: 'submit' });
     'index.css',
   );
   const themeCss = await readFile(installedTheme, 'utf8');
+  if (!themeCss.includes('.semi-anchor')) {
+    throw new Error('安装后的默认主题缺少 Anchor 样式');
+  }
   if (!themeCss.includes('.semi-button')) {
     throw new Error('安装后的默认主题缺少组件样式');
   }
@@ -593,6 +606,18 @@ h(Button, { type, htmlType: 'submit' });
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'button.css'),
     'utf8',
   );
+  const anchorThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'anchor.css'),
+    'utf8',
+  );
+  if (
+    !anchorThemeCss.includes('.semi-anchor-link-title-active') ||
+    !anchorThemeCss.includes('.semi-anchor-link-tooltip') ||
+    !anchorThemeCss.includes('.semi-rtl .semi-anchor') ||
+    !anchorThemeCss.includes('.semi-tooltip-wrapper')
+  ) {
+    throw new Error('安装后的 Anchor 逐组件样式缺少 active、Tooltip 或 RTL 样式');
+  }
   if (!buttonThemeCss.includes('.semi-button-split')) {
     throw new Error('安装后的 Button 逐组件样式缺少 SplitButtonGroup 样式');
   }

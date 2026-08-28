@@ -53,6 +53,7 @@ export default defineConfig({
     lib: {
       entry: {
         index: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
+        'anchor/index': fileURLToPath(new URL('./src/anchor/index.ts', import.meta.url)),
         'auto-complete/index': fileURLToPath(
           new URL('./src/auto-complete/index.ts', import.meta.url),
         ),
