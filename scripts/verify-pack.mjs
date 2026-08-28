@@ -267,6 +267,7 @@ try {
 		await import('@workspace/ui/calendar');
 		await import('@workspace/ui/card');
 		await import('@workspace/ui/carousel');
+		await import('@workspace/ui/collapsible');
 	await import('@workspace/ui/back-top');
 	await import('@workspace/ui/breadcrumb');
 	await import('@workspace/ui/button');
@@ -324,6 +325,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/carousel.css').endsWith('/dist/carousel.css')) {
 		  throw new Error('Carousel 逐组件样式导出未指向 dist/carousel.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/collapsible.css').endsWith('/dist/collapsible.css')) {
+		  throw new Error('Collapsible 逐组件样式导出未指向 dist/collapsible.css');
 		}
 	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
@@ -426,6 +430,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Calendar, type CalendarEvent, type CalendarMode } from '@workspace/ui/calendar';
 		import { Card, CardGroup, CardMeta, type CardShadows } from '@workspace/ui/card';
 		import { Carousel, type CarouselMethods, type CarouselTheme } from '@workspace/ui/carousel';
+		import { Collapsible, type CollapsibleProps } from '@workspace/ui/collapsible';
 	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
 	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
@@ -482,6 +487,8 @@ h(Button, { type, htmlType: 'submit' });
 		const carouselMethods: CarouselMethods = { play() {}, stop() {}, goTo() {}, prev() {}, next() {} };
 		h(Carousel, { autoPlay: false, theme: carouselTheme, showArrow: true }, () => [h('div', 'One'), h('div', 'Two')]);
 		carouselMethods.goTo(1);
+		const collapsibleProps: CollapsibleProps = { collapseHeight: 24, motion: true };
+		h(Collapsible, collapsibleProps, () => h('div', 'Collapsible content'));
 	const backTopTarget: () => BackTopTarget = () => window;
 	h(BackTop, { target: backTopTarget, visibilityHeight: 120, duration: 300 }, () => 'TOP');
 	const breadcrumbMoreType: BreadcrumbMoreType = 'popover';
@@ -642,6 +649,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-carousel') || !themeCss.includes('.semi-carousel-indicator')) {
     throw new Error('安装后的默认主题缺少 Carousel 样式');
+  }
+  if (!themeCss.includes('.semi-collapsible-transition')) {
+    throw new Error('安装后的默认主题缺少 Collapsible 样式');
   }
   if (!themeCss.includes('.semi-backtop')) {
     throw new Error('安装后的默认主题缺少 BackTop 样式');
@@ -1081,6 +1091,24 @@ h(Button, { type, htmlType: 'submit' });
     !carouselThemeCss.includes('.semi-icon')
   ) {
     throw new Error('安装后的 Carousel 逐组件样式缺少动效、指示器、箭头、RTL 或 Icon 样式');
+  }
+  const collapsibleThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@workspace',
+      'theme-default',
+      'dist',
+      'collapsible.css',
+    ),
+    'utf8',
+  );
+  if (
+    !collapsibleThemeCss.includes('.semi-collapsible-transition') ||
+    !collapsibleThemeCss.includes('transition: height') ||
+    !collapsibleThemeCss.includes('opacity')
+  ) {
+    throw new Error('安装后的 Collapsible 逐组件样式缺少高度或透明度过渡');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

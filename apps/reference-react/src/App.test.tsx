@@ -290,6 +290,18 @@ describe('React 参考工作台', () => {
     expect(html).toContain('单项无控件');
   });
 
+  it('从固定 Collapsible Adapter 渲染开合、摘要、自适应与懒渲染场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="collapsible" />);
+
+    expect(html).toContain('data-parity-scenario="collapsible"');
+    expect(html).toContain('data-testid="collapsible-reference"');
+    expect(html).toContain('data-parity-target="collapsible-basic"');
+    expect(html).toContain('data-parity-target="collapsible-preview"');
+    expect(html).toContain('data-parity-target="collapsible-adaptive"');
+    expect(html).toContain('semi-collapsible-wrapper');
+    expect(html).not.toContain('data-lazy-content');
+  });
+
   it('从固定 BackTop Adapter 渲染 Element target、默认与自定义场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="back-top" />);
 

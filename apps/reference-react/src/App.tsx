@@ -10,6 +10,7 @@ import { BadgeScenario } from './scenarios/BadgeScenario';
 import { CalendarScenario } from './scenarios/CalendarScenario';
 import { CardScenario } from './scenarios/CardScenario';
 import { CarouselScenario } from './scenarios/CarouselScenario';
+import { CollapsibleScenario } from './scenarios/CollapsibleScenario';
 import { BackTopScenario } from './scenarios/BackTopScenario';
 import { BreadcrumbScenario } from './scenarios/BreadcrumbScenario';
 import { AutoCompleteScenario } from './scenarios/AutoCompleteScenario';
@@ -102,6 +103,7 @@ export function App(props: AppProps): React.ReactElement {
         ) : null}
         {scenario.id === 'card' ? <CardScenario /> : null}
         {scenario.id === 'carousel' ? <CarouselScenario /> : null}
+        {scenario.id === 'collapsible' ? <CollapsibleScenario /> : null}
         {scenario.id === 'back-top' ? <BackTopScenario direction={options.direction} /> : null}
         {scenario.id === 'breadcrumb' ? <BreadcrumbScenario direction={options.direction} /> : null}
         {scenario.id === 'auto-complete' ? <AutoCompleteScenario /> : null}

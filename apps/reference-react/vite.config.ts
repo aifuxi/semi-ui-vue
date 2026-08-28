@@ -15,6 +15,7 @@ const badgePublicEntry = path.join(upstreamPackages, 'semi-ui/badge/index.tsx');
 const calendarPublicEntry = path.join(upstreamPackages, 'semi-ui/calendar/index.tsx');
 const cardPublicEntry = path.join(upstreamPackages, 'semi-ui/card/index.tsx');
 const carouselPublicEntry = path.join(upstreamPackages, 'semi-ui/carousel/index.tsx');
+const collapsiblePublicEntry = path.join(upstreamPackages, 'semi-ui/collapsible/index.tsx');
 const cardGroupEntry = path.join(upstreamPackages, 'semi-ui/card/cardGroup.tsx');
 const backTopPublicEntry = path.join(upstreamPackages, 'semi-ui/backtop/index.tsx');
 const breadcrumbPublicEntry = path.join(upstreamPackages, 'semi-ui/breadcrumb/index.tsx');
@@ -203,6 +204,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/calendar', replacement: calendarPublicEntry },
       { find: '@semi-v2.102.0/card', replacement: cardPublicEntry },
       { find: '@semi-v2.102.0/carousel', replacement: carouselPublicEntry },
+      { find: '@semi-v2.102.0/collapsible', replacement: collapsiblePublicEntry },
       { find: '@semi-v2.102.0/card-group', replacement: cardGroupEntry },
       { find: '@semi-v2.102.0/back-top', replacement: backTopPublicEntry },
       { find: '@semi-v2.102.0/breadcrumb', replacement: breadcrumbPublicEntry },

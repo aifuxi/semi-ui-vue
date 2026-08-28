@@ -4,6 +4,29 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 Collapsible 渲染开合、摘要、自适应与懒渲染场景', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'collapsible' } });
+    const scenario = wrapper.get('[data-testid="collapsible-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-collapsible-wrapper')).toHaveLength(4);
+    expect(scenario.get('[data-parity-target="collapsible-preview"]').text()).toContain(
+      '第三行仍保留在 DOM 中',
+    );
+    expect(scenario.find('[data-lazy-content]').exists()).toBe(false);
+    await scenario.get('[data-action="toggle-lazy"]').trigger('click');
+    expect(scenario.get('[data-lazy-content]').text()).toBe('已创建并保留的内容');
+    await scenario.get('[data-action="toggle-lazy"]').trigger('click');
+    expect(scenario.find('[data-lazy-content]').exists()).toBe(true);
+
+    await scenario.get('[data-action="toggle-basic"]').trigger('click');
+    const basic = scenario.get('[data-parity-target="collapsible-basic"]');
+    expect(basic.classes()).toContain('semi-collapsible-transition');
+    await basic.trigger('transitionend');
+    expect(scenario.get('output').text()).toBe('基础面板：动效结束');
+    expect(basic.text()).not.toContain('从设计到交付');
+  });
+
   it('通过公共 Carousel 渲染多动效、指示器、箭头、单项并闭环 change', async () => {
     const wrapper = mount(App, { props: { scenarioId: 'carousel' } });
     const scenario = wrapper.get('[data-testid="carousel-vue"]');

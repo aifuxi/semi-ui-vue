@@ -1297,6 +1297,31 @@ declare module '@semi-v2.102.0/carousel' {
   export default Carousel;
 }
 
+declare module '@semi-v2.102.0/collapsible' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface CollapsibleProps {
+    children?: ReactNode;
+    className?: string;
+    collapseHeight?: number;
+    collapseHeightAdaptive?: boolean;
+    duration?: number;
+    fade?: boolean;
+    id?: string;
+    isOpen?: boolean;
+    keepDOM?: boolean;
+    lazyRender?: boolean;
+    motion?: boolean;
+    onMotionEnd?: () => void;
+    reCalcKey?: number | string;
+    style?: CSSProperties;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Collapsible: ComponentType<CollapsibleProps>;
+  export default Collapsible;
+}
+
 declare module '@semi-v2.102.0/calendar' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

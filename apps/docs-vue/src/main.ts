@@ -6,6 +6,7 @@ import 'virtual:workspace-badge-styles.css';
 import 'virtual:workspace-calendar-styles.css';
 import 'virtual:workspace-card-styles.css';
 import 'virtual:workspace-carousel-styles.css';
+import 'virtual:workspace-collapsible-styles.css';
 import 'virtual:workspace-back-top-styles.css';
 import 'virtual:workspace-breadcrumb-styles.css';
 import 'virtual:workspace-auto-complete-styles.css';

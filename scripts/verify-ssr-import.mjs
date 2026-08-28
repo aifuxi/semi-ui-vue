@@ -62,6 +62,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/card/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'carousel', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/carousel/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'collapsible', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/collapsible/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'back-top', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/back-top/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'breadcrumb', 'index.js')).href);

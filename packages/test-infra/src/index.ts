@@ -40,6 +40,11 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   carouselFoundation: 'vendor/semi-design/packages/semi-foundation/carousel/foundation.ts',
   carouselFoundationStyle: 'vendor/semi-design/packages/semi-foundation/carousel/carousel.scss',
   carouselDocumentation: 'vendor/semi-design/content/show/carousel/index.md',
+  collapsiblePublicEntry: 'vendor/semi-design/packages/semi-ui/collapsible/index.tsx',
+  collapsibleFoundation: 'vendor/semi-design/packages/semi-foundation/collapsible/foundation.ts',
+  collapsibleFoundationStyle:
+    'vendor/semi-design/packages/semi-foundation/collapsible/collapsible.scss',
+  collapsibleDocumentation: 'vendor/semi-design/content/show/collapsible/index.md',
   backTopPublicEntry: 'vendor/semi-design/packages/semi-ui/backtop/index.tsx',
   backTopFoundation: 'vendor/semi-design/packages/semi-foundation/backtop/foundation.ts',
   backTopFoundationStyle: 'vendor/semi-design/packages/semi-foundation/backtop/backtop.scss',
@@ -326,6 +331,51 @@ export const PARITY_SCENARIOS = [
           'marginRight',
           'width',
         ],
+      },
+    ],
+  },
+  {
+    id: 'collapsible',
+    title: 'Collapsible 折叠',
+    description:
+      '验证开合、过渡终态、DOM 保留/懒渲染、淡入淡出、自适应折叠高度、动态重测、暗色、移动端与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.collapsiblePublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.collapsiblePublicEntry,
+      REFERENCE_SOURCE_PATHS.collapsibleFoundation,
+      REFERENCE_SOURCE_PATHS.collapsibleFoundationStyle,
+      REFERENCE_SOURCE_PATHS.collapsibleDocumentation,
+    ],
+    targets: [
+      {
+        id: 'collapsible-basic',
+        selector: '[data-parity-target="collapsible-basic"]',
+        computedStyleProperties: [
+          'height',
+          'opacity',
+          'overflow',
+          'transitionDuration',
+          'transitionProperty',
+          'transitionTimingFunction',
+          'width',
+        ],
+      },
+      {
+        id: 'collapsible-content',
+        selector: '[data-parity-target="collapsible-basic"] > [x-semi-prop="children"]',
+        computedStyleProperties: ['height', 'overflow', 'width'],
+      },
+      {
+        id: 'collapsible-preview',
+        selector: '[data-parity-target="collapsible-preview"]',
+        computedStyleProperties: ['height', 'opacity', 'overflow', 'width'],
+      },
+      {
+        id: 'collapsible-adaptive',
+        selector: '[data-parity-target="collapsible-adaptive"]',
+        computedStyleProperties: ['height', 'opacity', 'overflow', 'width'],
       },
     ],
   },

@@ -43,6 +43,20 @@ const carouselCssPath = path.join(
   'dist',
   'carousel.css',
 );
+const collapsibleEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'collapsible.scss',
+);
+const collapsibleCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'collapsible.css',
+);
 const backTopEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -339,6 +353,7 @@ const requiredSelectors = [
   '.semi-checkbox',
   '.semi-card',
   '.semi-carousel',
+  '.semi-collapsible-transition',
   '.semi-divider',
   '.semi-floatButton',
   '.semi-row',
@@ -1135,6 +1150,28 @@ for (const selector of [
   }
 }
 
+const expectedCollapsibleImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/collapsible/collapsible.scss'),
+];
+const collapsibleEntrySource = await readFile(collapsibleEntryPath, 'utf8');
+const actualCollapsibleImports = [
+  ...collapsibleEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g),
+].map((match) => match[1]);
+if (JSON.stringify(actualCollapsibleImports) !== JSON.stringify(expectedCollapsibleImports)) {
+  throw new Error('Collapsible 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const collapsibleCss = await readFile(collapsibleCssPath, 'utf8');
+if (
+  !collapsibleCss.includes('.semi-collapsible-transition') ||
+  !collapsibleCss.includes('transition: height') ||
+  !collapsibleCss.includes('opacity')
+) {
+  throw new Error('Collapsible 逐组件样式产物缺少高度或透明度过渡');
+}
+
 const expectedSwitchImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -1375,5 +1412,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 Anchor/Avatar/Badge/Calendar/Card/Carousel/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + calendarCss.length + cardCss.length + carouselCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/Avatar/Badge/Calendar/Card/Carousel/Collapsible/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + calendarCss.length + cardCss.length + carouselCss.length + collapsibleCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

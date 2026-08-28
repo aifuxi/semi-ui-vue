@@ -42,6 +42,10 @@
       "types": "./dist/carousel/index.d.ts",
       "import": "./dist/carousel/index.js"
     },
+    "./collapsible": {
+      "types": "./dist/collapsible/index.d.ts",
+      "import": "./dist/collapsible/index.js"
+    },
     "./back-top": {
       "types": "./dist/back-top/index.d.ts",
       "import": "./dist/back-top/index.js"
