@@ -11,6 +11,24 @@ import {
 } from './index';
 
 describe('parity infrastructure contract', () => {
+  it('records Carousel Adapter, Arrow, Indicator, Foundation, styles and docs', () => {
+    expect(getParityScenario('carousel')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.carouselPublicEntry,
+    });
+    expect(assertScenarioComparable('carousel').targets).toHaveLength(8);
+    expect(getParityScenario('carousel').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.carouselArrowEntry,
+        REFERENCE_SOURCE_PATHS.carouselIndicatorEntry,
+        REFERENCE_SOURCE_PATHS.carouselFoundation,
+        REFERENCE_SOURCE_PATHS.carouselFoundationStyle,
+        REFERENCE_SOURCE_PATHS.carouselDocumentation,
+      ]),
+    );
+  });
+
   it('records Card, Group, Meta, styles and docs as a complete parity scene', () => {
     expect(getParityScenario('card')).toMatchObject({
       referenceStatus: 'ready',

@@ -4,6 +4,29 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 Carousel 渲染多动效、指示器、箭头、单项并闭环 change', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'carousel' } });
+    const scenario = wrapper.get('[data-testid="carousel-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-carousel')).toHaveLength(4);
+    expect(scenario.find('.semi-carousel-content-fade').exists()).toBe(true);
+    expect(scenario.find('.semi-carousel-indicator-columnar').exists()).toBe(true);
+    expect(scenario.find('.semi-carousel-arrow-hover').exists()).toBe(true);
+    expect(
+      scenario.find('[data-parity-target="carousel-single"] .semi-carousel-arrow').exists(),
+    ).toBe(false);
+    await scenario
+      .get('[data-parity-target="carousel-basic"] .semi-carousel-arrow-next')
+      .trigger('click');
+    expect(scenario.get('output').text()).toBe('当前：开发');
+    expect(
+      scenario
+        .get('[data-parity-target="carousel-basic"] .semi-carousel-content-item-active')
+        .text(),
+    ).toContain('开发');
+  });
+
   it('通过公共 Card、Meta 与 CardGroup 渲染完整场景并派发操作', async () => {
     const wrapper = mount(App, { props: { scenarioId: 'card' } });
     const scenario = wrapper.get('[data-testid="card-vue"]');

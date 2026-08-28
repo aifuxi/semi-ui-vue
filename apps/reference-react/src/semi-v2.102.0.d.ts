@@ -1263,6 +1263,40 @@ declare module '@semi-v2.102.0/tree' {
 
 declare module 'virtual:semi-reference-styles.css';
 
+declare module '@semi-v2.102.0/carousel' {
+  import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
+
+  export interface ArrowButton {
+    children?: ReactNode;
+    props?: HTMLAttributes<HTMLDivElement>;
+  }
+  export interface CarouselProps {
+    'aria-label'?: string;
+    activeIndex?: number;
+    animation?: 'slide' | 'fade';
+    arrowProps?: { leftArrow?: ArrowButton; rightArrow?: ArrowButton };
+    autoPlay?: boolean | { interval?: number; hoverToPause?: boolean };
+    arrowType?: 'always' | 'hover';
+    children?: ReactNode;
+    className?: string;
+    defaultActiveIndex?: number;
+    indicatorPosition?: 'left' | 'center' | 'right';
+    indicatorSize?: 'small' | 'medium';
+    indicatorType?: 'columnar' | 'line' | 'dot';
+    onChange?: (activeIndex: number, preIndex: number) => void;
+    showArrow?: boolean;
+    showIndicator?: boolean;
+    slideDirection?: 'left' | 'right';
+    speed?: number;
+    style?: CSSProperties;
+    theme?: 'dark' | 'primary' | 'light';
+    trigger?: 'click' | 'hover';
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+  const Carousel: ComponentType<CarouselProps>;
+  export default Carousel;
+}
+
 declare module '@semi-v2.102.0/calendar' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

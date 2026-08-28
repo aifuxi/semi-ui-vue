@@ -266,6 +266,7 @@ try {
 		await import('@workspace/ui/badge');
 		await import('@workspace/ui/calendar');
 		await import('@workspace/ui/card');
+		await import('@workspace/ui/carousel');
 	await import('@workspace/ui/back-top');
 	await import('@workspace/ui/breadcrumb');
 	await import('@workspace/ui/button');
@@ -320,6 +321,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/card.css').endsWith('/dist/card.css')) {
 		  throw new Error('Card 逐组件样式导出未指向 dist/card.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/carousel.css').endsWith('/dist/carousel.css')) {
+		  throw new Error('Carousel 逐组件样式导出未指向 dist/carousel.css');
 		}
 	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
@@ -421,6 +425,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Badge, type BadgePosition, type BadgeType } from '@workspace/ui/badge';
 		import { Calendar, type CalendarEvent, type CalendarMode } from '@workspace/ui/calendar';
 		import { Card, CardGroup, CardMeta, type CardShadows } from '@workspace/ui/card';
+		import { Carousel, type CarouselMethods, type CarouselTheme } from '@workspace/ui/carousel';
 	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
 	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
@@ -473,6 +478,10 @@ h(Button, { type, htmlType: 'submit' });
 		h(Card, { title: 'Consumer', shadows: cardShadows, actions: [h('button', 'Action')] }, () => h(CardMeta, { title: 'Meta' }));
 		h(Card.Meta, { description: 'Compound Meta' });
 		h(CardGroup, { type: 'grid', spacing: [8, 12] }, () => h(Card, { bordered: false }));
+		const carouselTheme: CarouselTheme = 'dark';
+		const carouselMethods: CarouselMethods = { play() {}, stop() {}, goTo() {}, prev() {}, next() {} };
+		h(Carousel, { autoPlay: false, theme: carouselTheme, showArrow: true }, () => [h('div', 'One'), h('div', 'Two')]);
+		carouselMethods.goTo(1);
 	const backTopTarget: () => BackTopTarget = () => window;
 	h(BackTop, { target: backTopTarget, visibilityHeight: 120, duration: 300 }, () => 'TOP');
 	const breadcrumbMoreType: BreadcrumbMoreType = 'popover';
@@ -630,6 +639,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-card') || !themeCss.includes('.semi-card-group-grid')) {
     throw new Error('安装后的默认主题缺少 Card 或 CardGroup 样式');
+  }
+  if (!themeCss.includes('.semi-carousel') || !themeCss.includes('.semi-carousel-indicator')) {
+    throw new Error('安装后的默认主题缺少 Carousel 样式');
   }
   if (!themeCss.includes('.semi-backtop')) {
     throw new Error('安装后的默认主题缺少 BackTop 样式');
@@ -1056,6 +1068,19 @@ h(Button, { type, htmlType: 'submit' });
     !cardThemeCss.includes('.semi-rtl .semi-card')
   ) {
     throw new Error('安装后的 Card 逐组件样式缺少 actions、Meta、Group、loading 或 RTL 样式');
+  }
+  const carouselThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'carousel.css'),
+    'utf8',
+  );
+  if (
+    !carouselThemeCss.includes('.semi-carousel-content-slide') ||
+    !carouselThemeCss.includes('.semi-carousel-indicator-columnar') ||
+    !carouselThemeCss.includes('.semi-carousel-arrow-prev') ||
+    !carouselThemeCss.includes('.semi-rtl .semi-carousel') ||
+    !carouselThemeCss.includes('.semi-icon')
+  ) {
+    throw new Error('安装后的 Carousel 逐组件样式缺少动效、指示器、箭头、RTL 或 Icon 样式');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

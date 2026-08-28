@@ -29,6 +29,8 @@ export type {
   ParsedCalendarEvent,
   WeekStartsOn as CalendarWeekStartsOn,
 } from './calendar.js';
+export { CarouselFoundation } from './carousel.js';
+export type { CarouselAdapter } from './carousel.js';
 export { AutoCompleteFoundation } from './auto-complete.js';
 export type { AutoCompleteAdapter } from './auto-complete.js';
 export { CheckboxFoundation, CheckboxGroupFoundation } from './checkbox.js';

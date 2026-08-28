@@ -9,6 +9,7 @@ import { AvatarScenario } from './scenarios/AvatarScenario';
 import { BadgeScenario } from './scenarios/BadgeScenario';
 import { CalendarScenario } from './scenarios/CalendarScenario';
 import { CardScenario } from './scenarios/CardScenario';
+import { CarouselScenario } from './scenarios/CarouselScenario';
 import { BackTopScenario } from './scenarios/BackTopScenario';
 import { BreadcrumbScenario } from './scenarios/BreadcrumbScenario';
 import { AutoCompleteScenario } from './scenarios/AutoCompleteScenario';
@@ -100,6 +101,7 @@ export function App(props: AppProps): React.ReactElement {
           <CalendarScenario direction={options.direction} locale={options.locale} />
         ) : null}
         {scenario.id === 'card' ? <CardScenario /> : null}
+        {scenario.id === 'carousel' ? <CarouselScenario /> : null}
         {scenario.id === 'back-top' ? <BackTopScenario direction={options.direction} /> : null}
         {scenario.id === 'breadcrumb' ? <BreadcrumbScenario direction={options.direction} /> : null}
         {scenario.id === 'auto-complete' ? <AutoCompleteScenario /> : null}

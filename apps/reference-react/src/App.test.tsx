@@ -278,6 +278,18 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-card-group-grid');
   });
 
+  it('从固定 Carousel Adapter 渲染 slide、fade、指示器、箭头与单项场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="carousel" />);
+
+    expect(html).toContain('data-parity-scenario="carousel"');
+    expect(html).toContain('data-testid="carousel-reference"');
+    expect(html).toContain('semi-carousel-content-slide');
+    expect(html).toContain('semi-carousel-content-fade');
+    expect(html).toContain('semi-carousel-indicator-columnar');
+    expect(html).toContain('semi-carousel-arrow-hover');
+    expect(html).toContain('单项无控件');
+  });
+
   it('从固定 BackTop Adapter 渲染 Element target、默认与自定义场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="back-top" />);
 

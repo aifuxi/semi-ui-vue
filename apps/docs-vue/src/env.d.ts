@@ -5,6 +5,7 @@ declare module 'virtual:workspace-avatar-styles.css';
 declare module 'virtual:workspace-badge-styles.css';
 declare module 'virtual:workspace-calendar-styles.css';
 declare module 'virtual:workspace-card-styles.css';
+declare module 'virtual:workspace-carousel-styles.css';
 declare module 'virtual:workspace-back-top-styles.css';
 declare module 'virtual:workspace-breadcrumb-styles.css';
 declare module 'virtual:workspace-button-styles.css';
