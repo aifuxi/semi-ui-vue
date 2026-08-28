@@ -46,6 +46,10 @@
       "types": "./dist/collapsible/index.d.ts",
       "import": "./dist/collapsible/index.js"
     },
+    "./cropper": {
+      "types": "./dist/cropper/index.d.ts",
+      "import": "./dist/cropper/index.js"
+    },
     "./descriptions": {
       "types": "./dist/descriptions/index.d.ts",
       "import": "./dist/descriptions/index.js"

@@ -33,6 +33,13 @@ export { CarouselFoundation } from './carousel.js';
 export type { CarouselAdapter } from './carousel.js';
 export { CollapsibleFoundation } from './collapsible.js';
 export type { CollapsibleAdapter } from './collapsible.js';
+export { CropperFoundation, cropperCssClasses, cropperStrings } from './cropper.js';
+export type {
+  CropperAdapter,
+  CropperBoxState,
+  CropperImageDataState,
+  CropperPoint,
+} from './cropper.js';
 export { DescriptionsFoundation } from './descriptions.js';
 export type { DescriptionsAdapter } from './descriptions.js';
 export { DropdownFoundation, DropdownMenuFoundation } from './dropdown.js';

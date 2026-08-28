@@ -268,6 +268,7 @@ try {
 		await import('@workspace/ui/card');
 		await import('@workspace/ui/carousel');
 		await import('@workspace/ui/collapsible');
+		await import('@workspace/ui/cropper');
 		await import('@workspace/ui/descriptions');
 		await import('@workspace/ui/dropdown');
 		await import('@workspace/ui/empty');
@@ -337,6 +338,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/collapsible.css').endsWith('/dist/collapsible.css')) {
 		  throw new Error('Collapsible 逐组件样式导出未指向 dist/collapsible.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/cropper.css').endsWith('/dist/cropper.css')) {
+		  throw new Error('Cropper 逐组件样式导出未指向 dist/cropper.css');
 		}
 		if (!import.meta.resolve('@workspace/theme-default/descriptions.css').endsWith('/dist/descriptions.css')) {
 		  throw new Error('Descriptions 逐组件样式导出未指向 dist/descriptions.css');
@@ -455,6 +459,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Card, CardGroup, CardMeta, type CardShadows } from '@workspace/ui/card';
 		import { Carousel, type CarouselMethods, type CarouselTheme } from '@workspace/ui/carousel';
 		import { Collapsible, type CollapsibleProps } from '@workspace/ui/collapsible';
+		import { Cropper, type CropperMethods, type CropperShape } from '@workspace/ui/cropper';
 		import { Descriptions, DescriptionsItem, type DescriptionsDataItem, type DescriptionsLayout } from '@workspace/ui/descriptions';
 		import { Dropdown, DropdownItem, DropdownMenu, type DropdownItemType, type DropdownMenuItem } from '@workspace/ui/dropdown';
 		import { Empty, type EmptyLayout, type EmptySvgNode } from '@workspace/ui/empty';
@@ -521,6 +526,10 @@ h(Button, { type, htmlType: 'submit' });
 		carouselMethods.goTo(1);
 		const collapsibleProps: CollapsibleProps = { collapseHeight: 24, motion: true };
 		h(Collapsible, collapsibleProps, () => h('div', 'Collapsible content'));
+		const cropperShape: CropperShape = 'roundRect';
+		const cropperMethods: CropperMethods | undefined = undefined;
+		h(Cropper, { src: '/crop.png', shape: cropperShape, showResizeBox: false });
+		void cropperMethods;
 		const descriptionsLayout: DescriptionsLayout = 'horizontal';
 		const descriptionsData: DescriptionsDataItem[] = [{ key: 'User', value: 'Semi', span: 2 }];
 		h(Descriptions, { column: 3, data: descriptionsData, layout: descriptionsLayout });
@@ -707,6 +716,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-collapsible-transition')) {
     throw new Error('安装后的默认主题缺少 Collapsible 样式');
+  }
+  if (!themeCss.includes('.semi-cropper-box-corner')) {
+    throw new Error('安装后的默认主题缺少 Cropper 样式');
   }
   if (!themeCss.includes('.semi-descriptions-horizontal')) {
     throw new Error('安装后的默认主题缺少 Descriptions 样式');
@@ -1245,6 +1257,17 @@ h(Button, { type, htmlType: 'submit' });
     !imageThemeCss.includes('.semi-rtl .semi-image-preview')
   ) {
     throw new Error('安装后的 Image 逐组件样式缺少预览、加载、菜单或 RTL 依赖');
+  }
+  const cropperThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'cropper.css'),
+    'utf8',
+  );
+  if (
+    !cropperThemeCss.includes('.semi-cropper-mask') ||
+    !cropperThemeCss.includes('.semi-cropper-box-corner') ||
+    !cropperThemeCss.includes('.semi-cropper-view-box-round')
+  ) {
+    throw new Error('安装后的 Cropper 逐组件样式缺少遮罩、调整块或圆形裁切样式');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

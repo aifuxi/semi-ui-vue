@@ -1595,3 +1595,36 @@ declare module '@semi-v2.102.0/card-group' {
   const CardGroup: ComponentType<CardGroupProps>;
   export default CardGroup;
 }
+declare module '@semi-v2.102.0/cropper' {
+  import type { ComponentType, CSSProperties, ImgHTMLAttributes, RefAttributes } from 'react';
+
+  export interface CropperMethods {
+    getCropperCanvas(): HTMLCanvasElement;
+  }
+
+  export interface CropperProps extends RefAttributes<CropperMethods> {
+    aspectRatio?: number;
+    className?: string;
+    cropperBoxClassName?: string;
+    cropperBoxCls?: string;
+    cropperBoxStyle?: CSSProperties;
+    defaultAspectRatio?: number;
+    fill?: string;
+    imgProps?: ImgHTMLAttributes<HTMLImageElement>;
+    maxZoom?: number;
+    minZoom?: number;
+    onZoomChange?: (zoom: number) => void;
+    preview?: () => HTMLElement;
+    rotate?: number;
+    shape?: 'rect' | 'round' | 'roundRect';
+    showResizeBox?: boolean;
+    src?: string;
+    style?: CSSProperties;
+    zoom?: number;
+    zoomStep?: number;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Cropper: ComponentType<CropperProps>;
+  export default Cropper;
+}

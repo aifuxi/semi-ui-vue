@@ -65,6 +65,21 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
 
+  it('通过公共 Cropper 渲染矩形与圆形场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'cropper', direction: 'rtl' } });
+    const scenario = wrapper.get('[data-testid="cropper-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-cropper')).toHaveLength(2);
+    expect(
+      scenario.get('[data-parity-target="cropper-basic"] > .semi-cropper').classes(),
+    ).toContain('semi-cropper');
+    expect(
+      scenario.get('[data-parity-target="cropper-round"] .semi-cropper-view-box').classes(),
+    ).toContain('semi-cropper-view-box-round');
+    wrapper.unmount();
+  });
+
   it('通过公共 Illustrations 包渲染全部 light/dark 插画', () => {
     const wrapper = mount(App, { props: { scenarioId: 'illustrations' } });
     const scenario = wrapper.get('[data-testid="illustrations-vue"]');

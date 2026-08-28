@@ -19,6 +19,7 @@ export default defineConfig({
         'src/calendar/CalendarDayColumn.vue',
         'src/calendar/calendar-context.ts',
         'src/calendar/use-calendar-foundation.ts',
+        'src/cropper/use-cropper-foundation.ts',
       ],
     }),
     {
@@ -76,6 +77,7 @@ export default defineConfig({
         'card/index': fileURLToPath(new URL('./src/card/index.ts', import.meta.url)),
         'carousel/index': fileURLToPath(new URL('./src/carousel/index.ts', import.meta.url)),
         'collapsible/index': fileURLToPath(new URL('./src/collapsible/index.ts', import.meta.url)),
+        'cropper/index': fileURLToPath(new URL('./src/cropper/index.ts', import.meta.url)),
         'descriptions/index': fileURLToPath(
           new URL('./src/descriptions/index.ts', import.meta.url),
         ),

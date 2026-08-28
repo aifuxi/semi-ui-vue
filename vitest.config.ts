@@ -41,6 +41,9 @@ export default defineConfig({
       '@semi-v2.102.0/collapsible': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiCollapsibleStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/cropper': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiCropperStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/descriptions': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiDescriptionsStub.tsx', import.meta.url),
       ),

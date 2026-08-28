@@ -355,6 +355,16 @@ describe('React 参考工作台', () => {
     expect(html).toContain('蓝色山景');
   });
 
+  it('从固定 Cropper Adapter 渲染矩形与圆形场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="cropper" direction="rtl" />);
+
+    expect(html).toContain('data-parity-scenario="cropper"');
+    expect(html).toContain('data-testid="cropper-reference"');
+    expect(html).toContain('data-parity-target="cropper-basic"');
+    expect(html).toContain('data-parity-target="cropper-round"');
+    expect(html).toContain('semi-cropper-view-box-round');
+  });
+
   it('从固定 BackTop Adapter 渲染 Element target、默认与自定义场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="back-top" />);
 

@@ -9,6 +9,7 @@ export const virtualCalendarStyleId = 'virtual:workspace-calendar-styles.css';
 export const virtualCardStyleId = 'virtual:workspace-card-styles.css';
 export const virtualCarouselStyleId = 'virtual:workspace-carousel-styles.css';
 export const virtualCollapsibleStyleId = 'virtual:workspace-collapsible-styles.css';
+export const virtualCropperStyleId = 'virtual:workspace-cropper-styles.css';
 export const virtualDescriptionsStyleId = 'virtual:workspace-descriptions-styles.css';
 export const virtualDropdownStyleId = 'virtual:workspace-dropdown-styles.css';
 export const virtualEmptyStyleId = 'virtual:workspace-empty-styles.css';
@@ -50,6 +51,7 @@ const resolvedVirtualCalendarStyleId = `\0${virtualCalendarStyleId}`;
 const resolvedVirtualCardStyleId = `\0${virtualCardStyleId}`;
 const resolvedVirtualCarouselStyleId = `\0${virtualCarouselStyleId}`;
 const resolvedVirtualCollapsibleStyleId = `\0${virtualCollapsibleStyleId}`;
+const resolvedVirtualCropperStyleId = `\0${virtualCropperStyleId}`;
 const resolvedVirtualDescriptionsStyleId = `\0${virtualDescriptionsStyleId}`;
 const resolvedVirtualDropdownStyleId = `\0${virtualDropdownStyleId}`;
 const resolvedVirtualEmptyStyleId = `\0${virtualEmptyStyleId}`;
@@ -91,6 +93,7 @@ const calendarStyleEntry = fileURLToPath(new URL('./src/calendar.scss', import.m
 const cardStyleEntry = fileURLToPath(new URL('./src/card.scss', import.meta.url));
 const carouselStyleEntry = fileURLToPath(new URL('./src/carousel.scss', import.meta.url));
 const collapsibleStyleEntry = fileURLToPath(new URL('./src/collapsible.scss', import.meta.url));
+const cropperStyleEntry = fileURLToPath(new URL('./src/cropper.scss', import.meta.url));
 const descriptionsStyleEntry = fileURLToPath(new URL('./src/descriptions.scss', import.meta.url));
 const dropdownStyleEntry = fileURLToPath(new URL('./src/dropdown.scss', import.meta.url));
 const emptyStyleEntry = fileURLToPath(new URL('./src/empty.scss', import.meta.url));
@@ -136,6 +139,7 @@ const styleEntries = new Map([
   [resolvedVirtualCardStyleId, cardStyleEntry],
   [resolvedVirtualCarouselStyleId, carouselStyleEntry],
   [resolvedVirtualCollapsibleStyleId, collapsibleStyleEntry],
+  [resolvedVirtualCropperStyleId, cropperStyleEntry],
   [resolvedVirtualDescriptionsStyleId, descriptionsStyleEntry],
   [resolvedVirtualDropdownStyleId, dropdownStyleEntry],
   [resolvedVirtualEmptyStyleId, emptyStyleEntry],
@@ -185,6 +189,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualCardStyleId) return resolvedVirtualCardStyleId;
       if (source === virtualCarouselStyleId) return resolvedVirtualCarouselStyleId;
       if (source === virtualCollapsibleStyleId) return resolvedVirtualCollapsibleStyleId;
+      if (source === virtualCropperStyleId) return resolvedVirtualCropperStyleId;
       if (source === virtualDescriptionsStyleId) return resolvedVirtualDescriptionsStyleId;
       if (source === virtualDropdownStyleId) return resolvedVirtualDropdownStyleId;
       if (source === virtualEmptyStyleId) return resolvedVirtualEmptyStyleId;
