@@ -17,6 +17,10 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   avatarFoundation: 'vendor/semi-design/packages/semi-foundation/avatar/foundation.ts',
   avatarFoundationStyle: 'vendor/semi-design/packages/semi-foundation/avatar/avatar.scss',
   avatarDocumentation: 'vendor/semi-design/content/show/avatar/index.md',
+  badgePublicEntry: 'vendor/semi-design/packages/semi-ui/badge/index.tsx',
+  badgeFoundationConstants: 'vendor/semi-design/packages/semi-foundation/badge/constants.ts',
+  badgeFoundationStyle: 'vendor/semi-design/packages/semi-foundation/badge/badge.scss',
+  badgeDocumentation: 'vendor/semi-design/content/show/badge/index.md',
   backTopPublicEntry: 'vendor/semi-design/packages/semi-ui/backtop/index.tsx',
   backTopFoundation: 'vendor/semi-design/packages/semi-foundation/backtop/foundation.ts',
   backTopFoundationStyle: 'vendor/semi-design/packages/semi-foundation/backtop/backtop.scss',
@@ -210,6 +214,78 @@ export interface ParityScenarioDefinition {
 }
 
 export const PARITY_SCENARIOS = [
+  {
+    id: 'badge',
+    title: 'Badge 徽章',
+    description:
+      '验证计数、圆点、溢出、主题、类型、四角位置、自定义内容、独立使用、暗色、移动端与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.badgePublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.badgePublicEntry,
+      REFERENCE_SOURCE_PATHS.badgeFoundationConstants,
+      REFERENCE_SOURCE_PATHS.badgeFoundationStyle,
+      REFERENCE_SOURCE_PATHS.badgeDocumentation,
+    ],
+    targets: [
+      {
+        id: 'badge-count',
+        selector: '[data-parity-target="badge-root"] > .semi-badge-count',
+        computedStyleProperties: [
+          'backgroundColor',
+          'borderColor',
+          'borderRadius',
+          'borderWidth',
+          'boxSizing',
+          'color',
+          'fontSize',
+          'fontWeight',
+          'height',
+          'lineHeight',
+          'minWidth',
+          'paddingLeft',
+          'paddingRight',
+          'position',
+          'transform',
+        ],
+      },
+      {
+        id: 'badge-dot',
+        selector: '[data-parity-target="badge-dot"] > .semi-badge-dot',
+        computedStyleProperties: [
+          'backgroundColor',
+          'borderColor',
+          'borderRadius',
+          'borderWidth',
+          'height',
+          'position',
+          'transform',
+          'width',
+        ],
+      },
+      {
+        id: 'badge-overflow',
+        selector: '[data-parity-target="badge-overflow"] > .semi-badge-count',
+        computedStyleProperties: ['height', 'minWidth', 'paddingLeft', 'paddingRight', 'width'],
+      },
+      {
+        id: 'badge-light',
+        selector: '[data-parity-target="badge-light"] > .semi-badge-count',
+        computedStyleProperties: ['backgroundColor', 'borderColor', 'color'],
+      },
+      {
+        id: 'badge-custom',
+        selector: '[data-parity-target="badge-custom"] > .semi-badge-custom',
+        computedStyleProperties: ['display', 'height', 'position', 'transform', 'width'],
+      },
+      {
+        id: 'badge-standalone',
+        selector: '[data-parity-target="badge-standalone"] > .semi-badge-count',
+        computedStyleProperties: ['display', 'height', 'position', 'transform', 'width'],
+      },
+    ],
+  },
   {
     id: 'avatar',
     title: 'Avatar 头像',

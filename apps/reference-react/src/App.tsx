@@ -6,6 +6,7 @@ import {
 } from '@workspace/test-infra';
 import { AnchorScenario } from './scenarios/AnchorScenario';
 import { AvatarScenario } from './scenarios/AvatarScenario';
+import { BadgeScenario } from './scenarios/BadgeScenario';
 import { BackTopScenario } from './scenarios/BackTopScenario';
 import { BreadcrumbScenario } from './scenarios/BreadcrumbScenario';
 import { AutoCompleteScenario } from './scenarios/AutoCompleteScenario';
@@ -92,6 +93,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'harness-calibration' ? <HarnessCalibration /> : null}
         {scenario.id === 'anchor' ? <AnchorScenario direction={options.direction} /> : null}
         {scenario.id === 'avatar' ? <AvatarScenario /> : null}
+        {scenario.id === 'badge' ? <BadgeScenario direction={options.direction} /> : null}
         {scenario.id === 'back-top' ? <BackTopScenario direction={options.direction} /> : null}
         {scenario.id === 'breadcrumb' ? <BreadcrumbScenario direction={options.direction} /> : null}
         {scenario.id === 'auto-complete' ? <AutoCompleteScenario /> : null}

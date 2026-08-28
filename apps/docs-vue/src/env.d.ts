@@ -2,6 +2,7 @@
 
 declare module 'virtual:workspace-anchor-styles.css';
 declare module 'virtual:workspace-avatar-styles.css';
+declare module 'virtual:workspace-badge-styles.css';
 declare module 'virtual:workspace-back-top-styles.css';
 declare module 'virtual:workspace-breadcrumb-styles.css';
 declare module 'virtual:workspace-button-styles.css';

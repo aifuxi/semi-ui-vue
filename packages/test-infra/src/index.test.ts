@@ -11,6 +11,22 @@ import {
 } from './index';
 
 describe('parity infrastructure contract', () => {
+  it('records Badge Adapter, constants, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('badge')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.badgePublicEntry,
+    });
+    expect(assertScenarioComparable('badge').targets).toHaveLength(6);
+    expect(getParityScenario('badge').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.badgeFoundationConstants,
+        REFERENCE_SOURCE_PATHS.badgeFoundationStyle,
+        REFERENCE_SOURCE_PATHS.badgeDocumentation,
+      ]),
+    );
+  });
+
   it('records Avatar Adapter, Group, Foundation, styles and docs as a complete parity scene', () => {
     expect(getParityScenario('avatar')).toMatchObject({
       referenceStatus: 'ready',

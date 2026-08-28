@@ -1,5 +1,6 @@
 export * from './anchor';
 export * from './avatar';
+export * from './badge';
 export * from './back-top';
 export * from './breadcrumb';
 export * from './auto-complete';

@@ -121,6 +121,33 @@ declare module '@semi-v2.102.0/avatar-group' {
   export default AvatarGroup;
 }
 
+declare module '@semi-v2.102.0/badge' {
+  import type { ComponentType, CSSProperties, HTMLAttributes, MouseEvent, ReactNode } from 'react';
+
+  export type BadgeType = 'primary' | 'secondary' | 'tertiary' | 'danger' | 'warning' | 'success';
+  export type BadgeTheme = 'solid' | 'light' | 'inverted';
+  export type BadgePosition = 'leftTop' | 'leftBottom' | 'rightTop' | 'rightBottom';
+
+  export interface BadgeProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'style'> {
+    children?: ReactNode;
+    count?: ReactNode;
+    countClassName?: string;
+    countStyle?: CSSProperties;
+    dot?: boolean;
+    overflowCount?: number;
+    position?: BadgePosition;
+    style?: CSSProperties;
+    theme?: BadgeTheme;
+    type?: BadgeType;
+    onClick?: (event: MouseEvent<HTMLSpanElement>) => unknown;
+    onMouseEnter?: (event: MouseEvent<HTMLSpanElement>) => unknown;
+    onMouseLeave?: (event: MouseEvent<HTMLSpanElement>) => unknown;
+  }
+
+  const Badge: ComponentType<BadgeProps>;
+  export default Badge;
+}
+
 declare module '@semi-v2.102.0/breadcrumb' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

@@ -244,6 +244,18 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-avatar-bottom_slot');
   });
 
+  it('从固定 Badge Adapter 渲染计数、圆点、溢出与自定义场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="badge" />);
+
+    expect(html).toContain('data-parity-scenario="badge"');
+    expect(html).toContain('data-testid="badge-reference"');
+    expect(html).toContain('semi-badge-count');
+    expect(html).toContain('semi-badge-dot');
+    expect(html).toContain('99+');
+    expect(html).toContain('semi-badge-custom');
+    expect(html).toContain('semi-badge-block');
+  });
+
   it('从固定 BackTop Adapter 渲染 Element target、默认与自定义场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="back-top" />);
 

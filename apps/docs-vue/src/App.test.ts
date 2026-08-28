@@ -4,6 +4,26 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 Badge 渲染计数、圆点、溢出、自定义与事件场景', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'badge', direction: 'rtl' } });
+    const scenario = wrapper.get('[data-testid="badge-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-badge')).toHaveLength(15);
+    expect(scenario.get('[data-parity-target="badge-overflow"] .semi-badge-count').text()).toBe(
+      '99+',
+    );
+    expect(scenario.find('.semi-badge-dot').exists()).toBe(true);
+    expect(scenario.find('.semi-badge-custom').exists()).toBe(true);
+    expect(scenario.find('.semi-badge-block').exists()).toBe(true);
+    expect(scenario.get('[data-parity-target="badge-root"] .semi-badge-count').classes()).toContain(
+      'semi-badge-leftTop',
+    );
+    await scenario.get('[data-parity-target="badge-root"]').trigger('click');
+    expect(scenario.get('output').text()).toBe('徽章已点击');
+    wrapper.unmount();
+  });
+
   it('可以通过 Vitest 编译并挂载 Vue SFC', () => {
     const wrapper = mount(App);
 

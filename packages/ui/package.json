@@ -26,6 +26,10 @@
       "types": "./dist/avatar/index.d.ts",
       "import": "./dist/avatar/index.js"
     },
+    "./badge": {
+      "types": "./dist/badge/index.d.ts",
+      "import": "./dist/badge/index.js"
+    },
     "./back-top": {
       "types": "./dist/back-top/index.d.ts",
       "import": "./dist/back-top/index.js"
