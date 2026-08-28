@@ -22,6 +22,10 @@
       "types": "./dist/anchor/index.d.ts",
       "import": "./dist/anchor/index.js"
     },
+    "./avatar": {
+      "types": "./dist/avatar/index.d.ts",
+      "import": "./dist/avatar/index.js"
+    },
     "./back-top": {
       "types": "./dist/back-top/index.d.ts",
       "import": "./dist/back-top/index.js"

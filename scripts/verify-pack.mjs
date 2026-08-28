@@ -261,7 +261,8 @@ try {
   await writeFile(
     path.join(consumerRoot, 'smoke.mjs'),
     `await Promise.all(${JSON.stringify(javascriptPackages)}.map(packageName => import(packageName)));
-	await import('@workspace/ui/anchor');
+		await import('@workspace/ui/anchor');
+		await import('@workspace/ui/avatar');
 	await import('@workspace/ui/back-top');
 	await import('@workspace/ui/breadcrumb');
 	await import('@workspace/ui/button');
@@ -302,9 +303,12 @@ try {
 	const rootTheme = import.meta.resolve('@workspace/theme-default');
 const cssTheme = import.meta.resolve('@workspace/theme-default/index.css');
 if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 index.css');
-	if (!import.meta.resolve('@workspace/theme-default/anchor.css').endsWith('/dist/anchor.css')) {
-	  throw new Error('Anchor 逐组件样式导出未指向 dist/anchor.css');
-	}
+		if (!import.meta.resolve('@workspace/theme-default/anchor.css').endsWith('/dist/anchor.css')) {
+		  throw new Error('Anchor 逐组件样式导出未指向 dist/anchor.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/avatar.css').endsWith('/dist/avatar.css')) {
+		  throw new Error('Avatar 逐组件样式导出未指向 dist/avatar.css');
+		}
 	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
 	}
@@ -400,7 +404,8 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
     path.join(consumerRoot, 'type-smoke.ts'),
     `${javascriptPackages.map((packageName) => `import '${packageName}';`).join('\n')}
 	import { AutoComplete, AutoCompleteOption, type AutoCompleteModelValue } from '@workspace/ui/auto-complete';
-	import { Anchor, AnchorLink, type AnchorPosition } from '@workspace/ui/anchor';
+		import { Anchor, AnchorLink, type AnchorPosition } from '@workspace/ui/anchor';
+		import { Avatar, AvatarGroup, type AvatarColor, type AvatarSize } from '@workspace/ui/avatar';
 	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
 	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
@@ -436,8 +441,13 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { h } from 'vue';
 const type: ButtonType = 'primary';
 h(Button, { type, htmlType: 'submit' });
-	const anchorPosition: AnchorPosition = 'right';
-	h(Anchor, { position: anchorPosition, showTooltip: true }, () => h(AnchorLink, { href: '#consumer', title: 'Consumer' }));
+		const anchorPosition: AnchorPosition = 'right';
+		h(Anchor, { position: anchorPosition, showTooltip: true }, () => h(AnchorLink, { href: '#consumer', title: 'Consumer' }));
+		const avatarColor: AvatarColor = 'light-blue';
+		const avatarSize: AvatarSize = 'large';
+		h(Avatar, { border: true, color: avatarColor, size: avatarSize }, () => 'A');
+		h(AvatarGroup, { maxCount: 2, size: avatarSize }, () => [h(Avatar, null, () => 'A')]);
+		h(Avatar.Group, { shape: 'square' }, () => [h(Avatar, null, () => 'B')]);
 	const backTopTarget: () => BackTopTarget = () => window;
 	h(BackTop, { target: backTopTarget, visibilityHeight: 120, duration: 300 }, () => 'TOP');
 	const breadcrumbMoreType: BreadcrumbMoreType = 'popover';
@@ -583,6 +593,9 @@ h(Button, { type, htmlType: 'submit' });
   const themeCss = await readFile(installedTheme, 'utf8');
   if (!themeCss.includes('.semi-anchor')) {
     throw new Error('安装后的默认主题缺少 Anchor 样式');
+  }
+  if (!themeCss.includes('.semi-avatar') || !themeCss.includes('.semi-avatar-group')) {
+    throw new Error('安装后的默认主题缺少 Avatar 或 AvatarGroup 样式');
   }
   if (!themeCss.includes('.semi-backtop')) {
     throw new Error('安装后的默认主题缺少 BackTop 样式');
@@ -959,6 +972,18 @@ h(Button, { type, htmlType: 'submit' });
     !treeThemeCss.includes('.semi-rtl .semi-tree')
   ) {
     throw new Error('安装后的 Tree 逐组件样式缺少节点、连接线、依赖或 RTL 样式');
+  }
+  const avatarThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'avatar.css'),
+    'utf8',
+  );
+  if (
+    !avatarThemeCss.includes('.semi-avatar-group') ||
+    !avatarThemeCss.includes('.semi-avatar-additionalBorder') ||
+    !avatarThemeCss.includes('.semi-avatar-top_slot') ||
+    !avatarThemeCss.includes('.semi-rtl .semi-avatar')
+  ) {
+    throw new Error('安装后的 Avatar 逐组件样式缺少 Group、装饰、边框或 RTL 样式');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

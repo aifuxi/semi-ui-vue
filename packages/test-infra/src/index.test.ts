@@ -11,6 +11,23 @@ import {
 } from './index';
 
 describe('parity infrastructure contract', () => {
+  it('records Avatar Adapter, Group, Foundation, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('avatar')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.avatarPublicEntry,
+    });
+    expect(getParityScenario('avatar').targets).toHaveLength(6);
+    expect(getParityScenario('avatar').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.avatarGroupEntry,
+        REFERENCE_SOURCE_PATHS.avatarFoundation,
+        REFERENCE_SOURCE_PATHS.avatarFoundationStyle,
+        REFERENCE_SOURCE_PATHS.avatarDocumentation,
+      ]),
+    );
+  });
+
   it('pins the only accepted upstream baseline', () => {
     expect(REFERENCE_BASELINE).toEqual({
       name: 'Semi Design',

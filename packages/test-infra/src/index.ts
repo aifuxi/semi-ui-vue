@@ -12,6 +12,11 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   anchorLinkFoundation: 'vendor/semi-design/packages/semi-foundation/anchor/linkFoundation.ts',
   anchorFoundationStyle: 'vendor/semi-design/packages/semi-foundation/anchor/anchor.scss',
   anchorDocumentation: 'vendor/semi-design/content/navigation/anchor/index.md',
+  avatarPublicEntry: 'vendor/semi-design/packages/semi-ui/avatar/index.tsx',
+  avatarGroupEntry: 'vendor/semi-design/packages/semi-ui/avatar/avatarGroup.tsx',
+  avatarFoundation: 'vendor/semi-design/packages/semi-foundation/avatar/foundation.ts',
+  avatarFoundationStyle: 'vendor/semi-design/packages/semi-foundation/avatar/avatar.scss',
+  avatarDocumentation: 'vendor/semi-design/content/show/avatar/index.md',
   backTopPublicEntry: 'vendor/semi-design/packages/semi-ui/backtop/index.tsx',
   backTopFoundation: 'vendor/semi-design/packages/semi-foundation/backtop/foundation.ts',
   backTopFoundationStyle: 'vendor/semi-design/packages/semi-foundation/backtop/backtop.scss',
@@ -205,6 +210,74 @@ export interface ParityScenarioDefinition {
 }
 
 export const PARITY_SCENARIOS = [
+  {
+    id: 'avatar',
+    title: 'Avatar 头像',
+    description: '验证七种尺寸、颜色、形状、图片、hover、头像组、装饰、暗色、移动端与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.avatarPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.avatarPublicEntry,
+      REFERENCE_SOURCE_PATHS.avatarGroupEntry,
+      REFERENCE_SOURCE_PATHS.avatarFoundation,
+      REFERENCE_SOURCE_PATHS.avatarFoundationStyle,
+      REFERENCE_SOURCE_PATHS.avatarDocumentation,
+    ],
+    targets: [
+      {
+        id: 'avatar-default',
+        selector: '[data-parity-target="avatar-default"]',
+        computedStyleProperties: [
+          'alignItems',
+          'backgroundColor',
+          'borderRadius',
+          'color',
+          'display',
+          'fontFamily',
+          'height',
+          'justifyContent',
+          'overflow',
+          'width',
+        ],
+      },
+      {
+        id: 'avatar-square',
+        selector: '[data-parity-target="avatar-square"]',
+        computedStyleProperties: ['backgroundColor', 'borderRadius', 'color', 'height', 'width'],
+      },
+      {
+        id: 'avatar-image',
+        selector: '[data-parity-target="avatar-image"]',
+        computedStyleProperties: ['borderRadius', 'height', 'overflow', 'width'],
+      },
+      {
+        id: 'avatar-group',
+        selector: '[data-parity-target="avatar-group"] > .semi-avatar-group',
+        computedStyleProperties: ['display', 'height', 'width'],
+      },
+      {
+        id: 'avatar-more',
+        selector: '[data-parity-target="avatar-group"] .semi-avatar-item-more',
+        computedStyleProperties: [
+          'backgroundColor',
+          'borderColor',
+          'borderRadius',
+          'borderWidth',
+          'height',
+          'marginLeft',
+          'marginRight',
+          'width',
+          'zIndex',
+        ],
+      },
+      {
+        id: 'avatar-decoration',
+        selector: '[data-parity-target="avatar-decoration"]',
+        computedStyleProperties: ['display', 'height', 'position', 'width'],
+      },
+    ],
+  },
   {
     id: 'anchor',
     title: 'Anchor 锚点',

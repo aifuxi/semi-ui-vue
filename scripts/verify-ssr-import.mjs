@@ -52,6 +52,8 @@ for (const packageName of publicPackages) {
   if (packageName === 'ui') {
     await import(pathToFileURL(path.join(distPath, 'anchor', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/anchor/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'avatar', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/avatar/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'back-top', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/back-top/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'breadcrumb', 'index.js')).href);

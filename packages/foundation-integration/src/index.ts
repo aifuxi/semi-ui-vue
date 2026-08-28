@@ -2,6 +2,8 @@
 // 具体组件适配会在对应对齐矩阵建立后加入，并由公开包构建阶段内联。
 export { AnchorFoundation, AnchorLinkFoundation } from './anchor.js';
 export type { AnchorAdapter, AnchorLinkAdapter } from './anchor.js';
+export { AvatarFoundation } from './avatar.js';
+export type { AvatarAdapter } from './avatar.js';
 export { BackTopFoundation } from './back-top.js';
 export type { BackTopAdapter } from './back-top.js';
 export { BreadcrumbFoundation, BreadcrumbItemFoundation } from './breadcrumb.js';

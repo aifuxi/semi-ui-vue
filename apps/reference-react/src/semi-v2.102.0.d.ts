@@ -57,6 +57,70 @@ declare module '@semi-v2.102.0/back-top' {
   export default BackTop;
 }
 
+declare module '@semi-v2.102.0/avatar' {
+  import type {
+    ComponentType,
+    CSSProperties,
+    ImgHTMLAttributes,
+    MouseEvent,
+    ReactNode,
+  } from 'react';
+
+  export interface AvatarProps {
+    alt?: string;
+    border?: boolean | { color?: string; motion?: boolean };
+    bottomSlot?: {
+      shape?: 'circle' | 'square';
+      text?: ReactNode;
+      bgColor?: string;
+      textColor?: string;
+      className?: string;
+      style?: CSSProperties;
+    };
+    children?: ReactNode;
+    className?: string;
+    color?: string;
+    contentMotion?: boolean;
+    gap?: number;
+    hoverMask?: ReactNode;
+    imgAttr?: ImgHTMLAttributes<HTMLImageElement>;
+    onClick?: (event: MouseEvent<HTMLElement>) => void;
+    shape?: 'circle' | 'square';
+    size?: string;
+    src?: string;
+    srcSet?: string;
+    style?: CSSProperties;
+    topSlot?: {
+      text?: ReactNode;
+      gradientStart?: string;
+      gradientEnd?: string;
+      textColor?: string;
+      className?: string;
+      style?: CSSProperties;
+    };
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Avatar: ComponentType<AvatarProps>;
+  export default Avatar;
+}
+
+declare module '@semi-v2.102.0/avatar-group' {
+  import type { ComponentType, ReactNode } from 'react';
+
+  export interface AvatarGroupProps {
+    children?: ReactNode;
+    maxCount?: number;
+    overlapFrom?: 'start' | 'end';
+    shape?: 'circle' | 'square';
+    size?: string;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const AvatarGroup: ComponentType<AvatarGroupProps>;
+  export default AvatarGroup;
+}
+
 declare module '@semi-v2.102.0/breadcrumb' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

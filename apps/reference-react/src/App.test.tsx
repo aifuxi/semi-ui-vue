@@ -233,6 +233,17 @@ describe('React 参考工作台', () => {
     expect(html).toContain('anchor-target-small');
   });
 
+  it('渲染 Avatar 尺寸、图片、Group 与装饰参考场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="avatar" />);
+
+    expect(html).toContain('data-parity-scenario="avatar"');
+    expect(html).toContain('data-testid="avatar-reference"');
+    expect(html).toContain('semi-avatar-extra-extra-small');
+    expect(html).toContain('semi-avatar-item-more');
+    expect(html).toContain('semi-avatar-top_slot-content');
+    expect(html).toContain('semi-avatar-bottom_slot');
+  });
+
   it('从固定 BackTop Adapter 渲染 Element target、默认与自定义场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="back-top" />);
 

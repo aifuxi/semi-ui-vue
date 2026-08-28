@@ -9,6 +9,8 @@ const entryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', '
 const cssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'index.css');
 const anchorEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'anchor.scss');
 const anchorCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'anchor.css');
+const avatarEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'avatar.scss');
+const avatarCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'avatar.css');
 const backTopEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -949,6 +951,33 @@ for (const selector of [
   }
 }
 
+const expectedAvatarImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/avatar/avatar.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const avatarEntrySource = await readFile(avatarEntryPath, 'utf8');
+const actualAvatarImports = [...avatarEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualAvatarImports) !== JSON.stringify(expectedAvatarImports)) {
+  throw new Error('Avatar 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const avatarCss = await readFile(avatarCssPath, 'utf8');
+for (const selector of [
+  '.semi-avatar-group',
+  '.semi-avatar-additionalBorder',
+  '.semi-avatar-top_slot',
+  '.semi-avatar-bottom_slot',
+  '.semi-rtl .semi-avatar',
+]) {
+  if (!avatarCss.includes(selector)) {
+    throw new Error(`Avatar 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 const expectedSwitchImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -1189,5 +1218,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 Anchor/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/Avatar/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

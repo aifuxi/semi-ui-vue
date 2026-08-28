@@ -6,6 +6,7 @@ import {
   type ParityScenarioOptions,
 } from '@workspace/test-infra';
 import AnchorScenario from './components/AnchorScenario.vue';
+import AvatarScenario from './components/AvatarScenario.vue';
 import BackTopScenario from './components/BackTopScenario.vue';
 import BreadcrumbScenario from './components/BreadcrumbScenario.vue';
 import AutoCompleteScenario from './components/AutoCompleteScenario.vue';
@@ -82,6 +83,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
 
       <HarnessCalibration v-if="scenario.id === 'harness-calibration'" />
       <AnchorScenario v-else-if="scenario.id === 'anchor'" :direction="props.direction" />
+      <AvatarScenario v-else-if="scenario.id === 'avatar'" />
       <BackTopScenario v-else-if="scenario.id === 'back-top'" :direction="props.direction" />
       <BreadcrumbScenario v-else-if="scenario.id === 'breadcrumb'" :direction="props.direction" />
       <AutoCompleteScenario v-else-if="scenario.id === 'auto-complete'" />

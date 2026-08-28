@@ -9,6 +9,8 @@ const require = createRequire(import.meta.url);
 const workspaceRoot = fileURLToPath(new URL('../..', import.meta.url));
 const upstreamPackages = path.join(workspaceRoot, 'vendor/semi-design/packages');
 const anchorPublicEntry = path.join(upstreamPackages, 'semi-ui/anchor/index.tsx');
+const avatarPublicEntry = path.join(upstreamPackages, 'semi-ui/avatar/index.tsx');
+const avatarGroupEntry = path.join(upstreamPackages, 'semi-ui/avatar/avatarGroup.tsx');
 const backTopPublicEntry = path.join(upstreamPackages, 'semi-ui/backtop/index.tsx');
 const breadcrumbPublicEntry = path.join(upstreamPackages, 'semi-ui/breadcrumb/index.tsx');
 const autoCompletePublicEntry = path.join(upstreamPackages, 'semi-ui/autoComplete/index.tsx');
@@ -182,6 +184,8 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: '@semi-v2.102.0/anchor', replacement: anchorPublicEntry },
+      { find: '@semi-v2.102.0/avatar', replacement: avatarPublicEntry },
+      { find: '@semi-v2.102.0/avatar-group', replacement: avatarGroupEntry },
       { find: '@semi-v2.102.0/back-top', replacement: backTopPublicEntry },
       { find: '@semi-v2.102.0/breadcrumb', replacement: breadcrumbPublicEntry },
       { find: '@semi-v2.102.0/auto-complete', replacement: autoCompletePublicEntry },

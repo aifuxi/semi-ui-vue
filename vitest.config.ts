@@ -17,6 +17,12 @@ export default defineConfig({
       '@semi-v2.102.0/anchor': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiAnchorStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/avatar': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiAvatarStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/avatar-group': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiAvatarGroupStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/back-top': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiBackTopStub.tsx', import.meta.url),
       ),
