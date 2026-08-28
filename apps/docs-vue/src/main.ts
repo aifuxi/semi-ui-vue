@@ -9,6 +9,7 @@ import 'virtual:workspace-carousel-styles.css';
 import 'virtual:workspace-collapsible-styles.css';
 import 'virtual:workspace-descriptions-styles.css';
 import 'virtual:workspace-dropdown-styles.css';
+import 'virtual:workspace-empty-styles.css';
 import 'virtual:workspace-back-top-styles.css';
 import 'virtual:workspace-breadcrumb-styles.css';
 import 'virtual:workspace-auto-complete-styles.css';

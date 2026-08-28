@@ -20,6 +20,25 @@ describe('Vue 对照工作台', () => {
     expect(scenario.text()).not.toContain('不可见');
     wrapper.unmount();
   });
+  it('通过公共 Empty 渲染图片、无图片、水平与 SVG 场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'empty', direction: 'rtl' } });
+    const scenario = wrapper.get('[data-testid="empty-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-empty')).toHaveLength(5);
+    expect(scenario.get('[data-parity-target="empty-vertical"] h4').text()).toBe('暂无数据');
+    expect(scenario.get('[data-parity-target="empty-no-image"] h6').text()).toBe('未找到匹配结果');
+    expect(scenario.get('[data-parity-target="empty-horizontal"]').classes()).toContain(
+      'semi-empty-horizontal',
+    );
+    expect(scenario.get('[data-parity-target="empty-symbol"] use').attributes('href')).toBe(
+      '#empty-parity-symbol',
+    );
+    expect(scenario.get('[data-parity-target="empty-string-image"] img').attributes('alt')).toBe(
+      '添加一个项目',
+    );
+    wrapper.unmount();
+  });
 
   it('通过公共 Collapsible 渲染开合、摘要、自适应与懒渲染场景', async () => {
     const wrapper = mount(App, { props: { scenarioId: 'collapsible' } });

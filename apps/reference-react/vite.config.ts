@@ -18,6 +18,7 @@ const carouselPublicEntry = path.join(upstreamPackages, 'semi-ui/carousel/index.
 const collapsiblePublicEntry = path.join(upstreamPackages, 'semi-ui/collapsible/index.tsx');
 const descriptionsPublicEntry = path.join(upstreamPackages, 'semi-ui/descriptions/index.tsx');
 const dropdownPublicEntry = path.join(upstreamPackages, 'semi-ui/dropdown/index.tsx');
+const emptyPublicEntry = path.join(upstreamPackages, 'semi-ui/empty/index.tsx');
 const cardGroupEntry = path.join(upstreamPackages, 'semi-ui/card/cardGroup.tsx');
 const backTopPublicEntry = path.join(upstreamPackages, 'semi-ui/backtop/index.tsx');
 const breadcrumbPublicEntry = path.join(upstreamPackages, 'semi-ui/breadcrumb/index.tsx');
@@ -109,6 +110,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'descriptions/descriptions.scss'),
   '@douyinfe/semi-foundation/dropdown/dropdown.scss',
   path.join(foundationRoot, 'dropdown/dropdown.scss'),
+  '@douyinfe/semi-foundation/empty/empty.scss',
+  path.join(foundationRoot, 'empty/empty.scss'),
   '@douyinfe/semi-foundation/switch/switch.scss',
   path.join(foundationRoot, 'switch/switch.scss'),
   '@douyinfe/semi-foundation/spin/spin.scss',
@@ -211,6 +214,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/collapsible', replacement: collapsiblePublicEntry },
       { find: '@semi-v2.102.0/descriptions', replacement: descriptionsPublicEntry },
       { find: '@semi-v2.102.0/dropdown', replacement: dropdownPublicEntry },
+      { find: '@semi-v2.102.0/empty', replacement: emptyPublicEntry },
       { find: '@semi-v2.102.0/card-group', replacement: cardGroupEntry },
       { find: '@semi-v2.102.0/back-top', replacement: backTopPublicEntry },
       { find: '@semi-v2.102.0/breadcrumb', replacement: breadcrumbPublicEntry },

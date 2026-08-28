@@ -29,6 +29,21 @@ describe('parity infrastructure contract', () => {
       ]),
     );
   });
+  it('records Empty Adapter, constants, styles and docs', () => {
+    expect(getParityScenario('empty')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.emptyPublicEntry,
+    });
+    expect(assertScenarioComparable('empty').targets).toHaveLength(8);
+    expect(getParityScenario('empty').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.emptyFoundationConstants,
+        REFERENCE_SOURCE_PATHS.emptyFoundationStyle,
+        REFERENCE_SOURCE_PATHS.emptyDocumentation,
+      ]),
+    );
+  });
 
   it('records Descriptions Adapter, Item, Foundation, styles and docs', () => {
     expect(getParityScenario('descriptions')).toMatchObject({

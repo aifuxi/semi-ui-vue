@@ -11,6 +11,7 @@ export const virtualCarouselStyleId = 'virtual:workspace-carousel-styles.css';
 export const virtualCollapsibleStyleId = 'virtual:workspace-collapsible-styles.css';
 export const virtualDescriptionsStyleId = 'virtual:workspace-descriptions-styles.css';
 export const virtualDropdownStyleId = 'virtual:workspace-dropdown-styles.css';
+export const virtualEmptyStyleId = 'virtual:workspace-empty-styles.css';
 export const virtualBackTopStyleId = 'virtual:workspace-back-top-styles.css';
 export const virtualBreadcrumbStyleId = 'virtual:workspace-breadcrumb-styles.css';
 export const virtualPaginationStyleId = 'virtual:workspace-pagination-styles.css';
@@ -49,6 +50,7 @@ const resolvedVirtualCarouselStyleId = `\0${virtualCarouselStyleId}`;
 const resolvedVirtualCollapsibleStyleId = `\0${virtualCollapsibleStyleId}`;
 const resolvedVirtualDescriptionsStyleId = `\0${virtualDescriptionsStyleId}`;
 const resolvedVirtualDropdownStyleId = `\0${virtualDropdownStyleId}`;
+const resolvedVirtualEmptyStyleId = `\0${virtualEmptyStyleId}`;
 const resolvedVirtualBackTopStyleId = `\0${virtualBackTopStyleId}`;
 const resolvedVirtualBreadcrumbStyleId = `\0${virtualBreadcrumbStyleId}`;
 const resolvedVirtualPaginationStyleId = `\0${virtualPaginationStyleId}`;
@@ -87,6 +89,7 @@ const carouselStyleEntry = fileURLToPath(new URL('./src/carousel.scss', import.m
 const collapsibleStyleEntry = fileURLToPath(new URL('./src/collapsible.scss', import.meta.url));
 const descriptionsStyleEntry = fileURLToPath(new URL('./src/descriptions.scss', import.meta.url));
 const dropdownStyleEntry = fileURLToPath(new URL('./src/dropdown.scss', import.meta.url));
+const emptyStyleEntry = fileURLToPath(new URL('./src/empty.scss', import.meta.url));
 const backTopStyleEntry = fileURLToPath(new URL('./src/back-top.scss', import.meta.url));
 const breadcrumbStyleEntry = fileURLToPath(new URL('./src/breadcrumb.scss', import.meta.url));
 const paginationStyleEntry = fileURLToPath(new URL('./src/pagination.scss', import.meta.url));
@@ -129,6 +132,7 @@ const styleEntries = new Map([
   [resolvedVirtualCollapsibleStyleId, collapsibleStyleEntry],
   [resolvedVirtualDescriptionsStyleId, descriptionsStyleEntry],
   [resolvedVirtualDropdownStyleId, dropdownStyleEntry],
+  [resolvedVirtualEmptyStyleId, emptyStyleEntry],
   [resolvedVirtualBackTopStyleId, backTopStyleEntry],
   [resolvedVirtualBreadcrumbStyleId, breadcrumbStyleEntry],
   [resolvedVirtualPaginationStyleId, paginationStyleEntry],
@@ -175,6 +179,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualCollapsibleStyleId) return resolvedVirtualCollapsibleStyleId;
       if (source === virtualDescriptionsStyleId) return resolvedVirtualDescriptionsStyleId;
       if (source === virtualDropdownStyleId) return resolvedVirtualDropdownStyleId;
+      if (source === virtualEmptyStyleId) return resolvedVirtualEmptyStyleId;
       if (source === virtualBackTopStyleId) return resolvedVirtualBackTopStyleId;
       if (source === virtualBreadcrumbStyleId) return resolvedVirtualBreadcrumbStyleId;
       if (source === virtualPaginationStyleId) return resolvedVirtualPaginationStyleId;

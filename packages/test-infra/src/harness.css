@@ -1976,6 +1976,91 @@ p {
   min-width: 156px;
 }
 
+.empty-scenario {
+  position: relative;
+  display: grid;
+  gap: 16px;
+}
+
+.empty-scenario__symbols {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.empty-scenario__primary,
+.empty-scenario__cell {
+  border: 1px solid var(--harness-border);
+  border-radius: 10px;
+  background: var(--harness-subtle);
+}
+
+.empty-scenario__primary {
+  padding: 18px 24px 24px;
+}
+
+.empty-scenario__row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 16px;
+}
+
+.empty-scenario__row--compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.empty-scenario__cell {
+  min-width: 0;
+  padding: 16px 18px 20px;
+}
+
+.empty-scenario__label {
+  display: block;
+  margin-bottom: 14px;
+  color: var(--semi-color-text-2);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+}
+
+.empty-scenario__illustration {
+  display: block;
+}
+
+.empty-scenario__action,
+.empty-scenario__link {
+  border: 0;
+  border-radius: var(--semi-border-radius-small);
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.empty-scenario__action {
+  height: 32px;
+  padding: 6px 18px;
+  background: var(--semi-color-primary);
+  color: var(--semi-color-white);
+  cursor: pointer;
+}
+
+.empty-scenario__link {
+  color: var(--semi-color-link);
+  text-decoration: none;
+}
+
+.empty-scenario [data-parity-target='empty-horizontal'] {
+  align-items: center;
+}
+
+.empty-scenario [data-parity-target='empty-symbol'] .semi-empty-image > svg,
+.empty-scenario [data-parity-target='empty-string-image'] .semi-empty-image > img {
+  display: block;
+  width: 72px;
+  height: 72px;
+}
+
 .scenario-unavailable {
   margin-top: 24px;
   padding: 18px 20px;
@@ -2050,6 +2135,19 @@ p {
 
   .card-scenario__group > .semi-card {
     width: 100%;
+  }
+
+  .empty-scenario__row,
+  .empty-scenario__row--compact {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .empty-scenario__primary {
+    padding: 16px 14px 20px;
+  }
+
+  .empty-scenario__cell {
+    padding: 14px;
   }
 
   .workspace-shell {

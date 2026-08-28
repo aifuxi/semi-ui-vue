@@ -1397,6 +1397,31 @@ declare module '@semi-v2.102.0/dropdown' {
   };
   export default Dropdown;
 }
+declare module '@semi-v2.102.0/empty' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface EmptySvgNode {
+    id?: string;
+    viewBox?: string;
+    url?: string;
+  }
+
+  export interface EmptyProps {
+    children?: ReactNode;
+    className?: string;
+    darkModeImage?: ReactNode | EmptySvgNode;
+    description?: ReactNode;
+    image?: ReactNode | EmptySvgNode;
+    imageStyle?: CSSProperties;
+    layout?: 'vertical' | 'horizontal';
+    style?: CSSProperties;
+    title?: ReactNode;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Empty: ComponentType<EmptyProps>;
+  export default Empty;
+}
 
 declare module '@semi-v2.102.0/calendar' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';

@@ -313,6 +313,16 @@ describe('React 参考工作台', () => {
     expect(html).toContain('colSpan="3"');
     expect(html).not.toContain('不可见');
   });
+  it('从固定 Empty Adapter 渲染图片、无图片、水平与 SVG 场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="empty" direction="rtl" />);
+
+    expect(html).toContain('data-parity-scenario="empty"');
+    expect(html).toContain('data-testid="empty-reference"');
+    expect(html.match(/class="semi-empty /g)).toHaveLength(5);
+    expect(html).toContain('semi-empty-horizontal');
+    expect(html).toContain('未找到匹配结果');
+    expect(html).toContain('添加一个项目');
+  });
 
   it('从固定 BackTop Adapter 渲染 Element target、默认与自定义场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="back-top" />);
