@@ -50,6 +50,10 @@
       "types": "./dist/descriptions/index.d.ts",
       "import": "./dist/descriptions/index.js"
     },
+    "./dropdown": {
+      "types": "./dist/dropdown/index.d.ts",
+      "import": "./dist/dropdown/index.js"
+    },
     "./back-top": {
       "types": "./dist/back-top/index.d.ts",
       "import": "./dist/back-top/index.js"

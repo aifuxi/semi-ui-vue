@@ -11,6 +11,25 @@ import {
 } from './index';
 
 describe('parity infrastructure contract', () => {
+  it('records Dropdown Adapter, child entries, Foundations, styles and docs', () => {
+    expect(getParityScenario('dropdown')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.dropdownPublicEntry,
+    });
+    expect(assertScenarioComparable('dropdown').targets).toHaveLength(6);
+    expect(getParityScenario('dropdown').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.dropdownItemEntry,
+        REFERENCE_SOURCE_PATHS.dropdownMenuEntry,
+        REFERENCE_SOURCE_PATHS.dropdownFoundation,
+        REFERENCE_SOURCE_PATHS.dropdownMenuFoundation,
+        REFERENCE_SOURCE_PATHS.dropdownFoundationStyle,
+        REFERENCE_SOURCE_PATHS.dropdownDocumentation,
+      ]),
+    );
+  });
+
   it('records Descriptions Adapter, Item, Foundation, styles and docs', () => {
     expect(getParityScenario('descriptions')).toMatchObject({
       referenceStatus: 'ready',

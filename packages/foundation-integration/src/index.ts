@@ -35,6 +35,8 @@ export { CollapsibleFoundation } from './collapsible.js';
 export type { CollapsibleAdapter } from './collapsible.js';
 export { DescriptionsFoundation } from './descriptions.js';
 export type { DescriptionsAdapter } from './descriptions.js';
+export { DropdownFoundation, DropdownMenuFoundation } from './dropdown.js';
+export type { DropdownAdapter, DropdownMenuAdapter } from './dropdown.js';
 export { AutoCompleteFoundation } from './auto-complete.js';
 export type { AutoCompleteAdapter } from './auto-complete.js';
 export { CheckboxFoundation, CheckboxGroupFoundation } from './checkbox.js';

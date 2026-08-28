@@ -1363,6 +1363,41 @@ declare module '@semi-v2.102.0/descriptions' {
   export default Descriptions;
 }
 
+declare module '@semi-v2.102.0/dropdown' {
+  import type { ComponentType, CSSProperties, MouseEventHandler, ReactNode } from 'react';
+
+  export interface DropdownItemProps {
+    active?: boolean;
+    children?: ReactNode;
+    className?: string;
+    disabled?: boolean;
+    onClick?: MouseEventHandler<HTMLLIElement>;
+    style?: CSSProperties;
+    type?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+  }
+
+  export interface DropdownProps {
+    children?: ReactNode;
+    className?: string;
+    contentClassName?: string;
+    getPopupContainer?: () => HTMLElement;
+    motion?: boolean;
+    position?: string;
+    render?: ReactNode;
+    showTick?: boolean;
+    trigger?: 'hover' | 'focus' | 'click' | 'custom' | 'contextMenu';
+    visible?: boolean;
+  }
+
+  const Dropdown: ComponentType<DropdownProps> & {
+    Divider: ComponentType<{ className?: string; style?: CSSProperties }>;
+    Item: ComponentType<DropdownItemProps>;
+    Menu: ComponentType<{ children?: ReactNode; className?: string; style?: CSSProperties }>;
+    Title: ComponentType<{ children?: ReactNode; className?: string; style?: CSSProperties }>;
+  };
+  export default Dropdown;
+}
+
 declare module '@semi-v2.102.0/calendar' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

@@ -79,6 +79,7 @@ export default defineConfig({
         'descriptions/index': fileURLToPath(
           new URL('./src/descriptions/index.ts', import.meta.url),
         ),
+        'dropdown/index': fileURLToPath(new URL('./src/dropdown/index.ts', import.meta.url)),
         'back-top/index': fileURLToPath(new URL('./src/back-top/index.ts', import.meta.url)),
         'breadcrumb/index': fileURLToPath(new URL('./src/breadcrumb/index.ts', import.meta.url)),
         'auto-complete/index': fileURLToPath(

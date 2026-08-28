@@ -13,6 +13,7 @@ import CardScenario from './components/CardScenario.vue';
 import CarouselScenario from './components/CarouselScenario.vue';
 import CollapsibleScenario from './components/CollapsibleScenario.vue';
 import DescriptionsScenario from './components/DescriptionsScenario.vue';
+import DropdownScenario from './components/DropdownScenario.vue';
 import BackTopScenario from './components/BackTopScenario.vue';
 import BreadcrumbScenario from './components/BreadcrumbScenario.vue';
 import AutoCompleteScenario from './components/AutoCompleteScenario.vue';
@@ -100,6 +101,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <CarouselScenario v-else-if="scenario.id === 'carousel'" />
       <CollapsibleScenario v-else-if="scenario.id === 'collapsible'" />
       <DescriptionsScenario v-else-if="scenario.id === 'descriptions'" />
+      <DropdownScenario v-else-if="scenario.id === 'dropdown'" />
       <BackTopScenario v-else-if="scenario.id === 'back-top'" :direction="props.direction" />
       <BreadcrumbScenario v-else-if="scenario.id === 'breadcrumb'" :direction="props.direction" />
       <AutoCompleteScenario v-else-if="scenario.id === 'auto-complete'" />
