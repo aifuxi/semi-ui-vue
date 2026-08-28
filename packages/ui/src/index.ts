@@ -1,5 +1,6 @@
 export * from './anchor';
 export * from './back-top';
+export * from './breadcrumb';
 export * from './auto-complete';
 export * from './button';
 export * from './checkbox';

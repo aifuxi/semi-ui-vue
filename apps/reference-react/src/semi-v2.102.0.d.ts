@@ -57,6 +57,58 @@ declare module '@semi-v2.102.0/back-top' {
   export default BackTop;
 }
 
+declare module '@semi-v2.102.0/breadcrumb' {
+  import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
+
+  export interface RouteProps {
+    href?: string;
+    icon?: ReactNode;
+    name?: ReactNode;
+    path?: string;
+    [key: string]: unknown;
+  }
+
+  export type BreadcrumbItemInfo = RouteProps;
+
+  export interface BreadcrumbItemProps {
+    active?: boolean;
+    children?: ReactNode;
+    className?: string;
+    href?: string | null;
+    icon?: ReactNode;
+    noLink?: boolean;
+    onClick?: (item: BreadcrumbItemInfo, event: MouseEvent<HTMLElement>) => void;
+    route?: RouteProps;
+    separator?: ReactNode;
+    shouldRenderSeparator?: boolean;
+    style?: CSSProperties;
+  }
+
+  export interface BreadcrumbProps {
+    'aria-label'?: string;
+    activeIndex?: number;
+    autoCollapse?: boolean;
+    children?: ReactNode;
+    className?: string;
+    compact?: boolean;
+    maxItemCount?: number;
+    moreType?: 'default' | 'popover';
+    onClick?: (item: BreadcrumbItemInfo, event: MouseEvent<HTMLElement>) => void;
+    renderItem?: (route: RouteProps) => ReactNode;
+    renderMore?: (items: ReactNode[]) => ReactNode;
+    routes?: Array<RouteProps | string>;
+    separator?: ReactNode;
+    showTooltip?: boolean | Record<string, unknown>;
+    style?: CSSProperties;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Breadcrumb: ComponentType<BreadcrumbProps> & {
+    Item: ComponentType<BreadcrumbItemProps>;
+  };
+  export default Breadcrumb;
+}
+
 declare module '@semi-v2.102.0/button' {
   import type { ButtonHTMLAttributes, ComponentType, ReactNode } from 'react';
 
@@ -932,6 +984,7 @@ declare module '@semi-v2.102.0/icons' {
   export const IconHome: BuiltinIcon;
   export const IconBell: BuiltinIcon;
   export const IconCustomerSupport: BuiltinIcon;
+  export const IconChevronRight: BuiltinIcon;
   export const IconHelpCircle: BuiltinIcon;
   export const IconLikeHeart: BuiltinIcon;
   export const IconPlus: BuiltinIcon;

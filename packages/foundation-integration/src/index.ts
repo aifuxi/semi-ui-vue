@@ -4,6 +4,8 @@ export { AnchorFoundation, AnchorLinkFoundation } from './anchor.js';
 export type { AnchorAdapter, AnchorLinkAdapter } from './anchor.js';
 export { BackTopFoundation } from './back-top.js';
 export type { BackTopAdapter } from './back-top.js';
+export { BreadcrumbFoundation, BreadcrumbItemFoundation } from './breadcrumb.js';
+export type { BreadcrumbAdapter, BreadcrumbItemAdapter } from './breadcrumb.js';
 export { AutoCompleteFoundation } from './auto-complete.js';
 export type { AutoCompleteAdapter } from './auto-complete.js';
 export { CheckboxFoundation, CheckboxGroupFoundation } from './checkbox.js';

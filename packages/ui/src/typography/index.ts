@@ -53,6 +53,7 @@ export type {
   TypographySize,
   TypographySlots,
   TypographySpacing,
+  TypographyTooltipOptions,
   TypographyTruncate,
   TypographyType,
   TypographyWeight,

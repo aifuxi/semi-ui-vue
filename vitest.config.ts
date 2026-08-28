@@ -20,6 +20,9 @@ export default defineConfig({
       '@semi-v2.102.0/back-top': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiBackTopStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/breadcrumb': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiBreadcrumbStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/auto-complete': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiAutoCompleteStub.tsx', import.meta.url),
       ),

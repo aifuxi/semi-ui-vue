@@ -17,6 +17,14 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   backTopFoundationStyle: 'vendor/semi-design/packages/semi-foundation/backtop/backtop.scss',
   backTopAnimation: 'vendor/semi-design/packages/semi-animation/src/Animation.ts',
   backTopDocumentation: 'vendor/semi-design/content/navigation/backtop/index.md',
+  breadcrumbPublicEntry: 'vendor/semi-design/packages/semi-ui/breadcrumb/index.tsx',
+  breadcrumbItemEntry: 'vendor/semi-design/packages/semi-ui/breadcrumb/item.tsx',
+  breadcrumbFoundation: 'vendor/semi-design/packages/semi-foundation/breadcrumb/foundation.ts',
+  breadcrumbItemFoundation:
+    'vendor/semi-design/packages/semi-foundation/breadcrumb/itemFoundation.ts',
+  breadcrumbFoundationStyle:
+    'vendor/semi-design/packages/semi-foundation/breadcrumb/breadcrumb.scss',
+  breadcrumbDocumentation: 'vendor/semi-design/content/navigation/breadcrumb/index.md',
   autoCompletePublicEntry: 'vendor/semi-design/packages/semi-ui/autoComplete/index.tsx',
   autoCompleteOptionEntry: 'vendor/semi-design/packages/semi-ui/autoComplete/option.tsx',
   autoCompleteFoundation: 'vendor/semi-design/packages/semi-foundation/autoComplete/foundation.ts',
@@ -279,6 +287,53 @@ export const PARITY_SCENARIOS = [
           'right',
           'width',
         ],
+      },
+    ],
+  },
+  {
+    id: 'breadcrumb',
+    title: 'Breadcrumb 面包屑',
+    description: '验证 routes/Item、图标、链接、折叠/Popover、受控激活、暗色、移动端与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.breadcrumbPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.breadcrumbPublicEntry,
+      REFERENCE_SOURCE_PATHS.breadcrumbItemEntry,
+      REFERENCE_SOURCE_PATHS.breadcrumbFoundation,
+      REFERENCE_SOURCE_PATHS.breadcrumbItemFoundation,
+      REFERENCE_SOURCE_PATHS.breadcrumbFoundationStyle,
+      REFERENCE_SOURCE_PATHS.breadcrumbDocumentation,
+    ],
+    targets: [
+      {
+        id: 'breadcrumb-basic',
+        selector: '[data-parity-target="breadcrumb-basic"]',
+        computedStyleProperties: ['display', 'flexWrap', 'fontFamily', 'fontSize', 'lineHeight'],
+      },
+      {
+        id: 'breadcrumb-basic-first-item',
+        selector:
+          '[data-parity-target="breadcrumb-basic"] .semi-breadcrumb-item-wrap:first-child > .semi-breadcrumb-item',
+        computedStyleProperties: [
+          'alignItems',
+          'color',
+          'columnGap',
+          'display',
+          'fontSize',
+          'fontWeight',
+          'marginRight',
+        ],
+      },
+      {
+        id: 'breadcrumb-collapsed',
+        selector: '[data-parity-target="breadcrumb-collapsed"]',
+        computedStyleProperties: ['display', 'flexWrap', 'fontSize', 'lineHeight'],
+      },
+      {
+        id: 'breadcrumb-loose',
+        selector: '[data-parity-target="breadcrumb-loose"]',
+        computedStyleProperties: ['display', 'flexWrap', 'fontSize', 'lineHeight'],
       },
     ],
   },

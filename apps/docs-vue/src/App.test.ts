@@ -404,4 +404,22 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
     vi.unstubAllGlobals();
   });
+
+  it('通过公共 Breadcrumb 渲染图标、链接、折叠与受控激活场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'breadcrumb' } });
+    const scenario = wrapper.get('[data-testid="breadcrumb-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-breadcrumb-wrapper')).toHaveLength(3);
+    expect(scenario.find('.semi-icon-home').exists()).toBe(true);
+    expect(scenario.find('.semi-breadcrumb-collapse').exists()).toBe(true);
+    expect(scenario.get('[data-parity-target="breadcrumb-loose"]').classes()).toContain(
+      'semi-breadcrumb-wrapper-loose',
+    );
+    expect(
+      scenario.get('[data-parity-target="breadcrumb-loose"] [aria-current="page"]').text(),
+    ).toContain('当前页面');
+
+    wrapper.unmount();
+  });
 });

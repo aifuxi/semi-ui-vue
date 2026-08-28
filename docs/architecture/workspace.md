@@ -83,7 +83,9 @@ Anchor 是第二十四个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/
 
 BackTop 是第二十五个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/back-top/` 提供 Window/Element 滚动阈值、Foundation 回顶动画、节流点击、默认 IconButton 与自定义 slot；`packages/foundation-integration/src/back-top.js` 是固定 BackTop Foundation 的唯一运行时入口，`packages/theme-default/back-top.css` 包含 BackTop、Button/IconButton、Icon 与 RTL 样式。完整矩阵见 `docs/components/back-top/`。
 
-Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox、Input、Rating、Slider、TagInput、TimePicker、Anchor 与 BackTop 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。Anchor 精确锁定并内联 `scroll-into-view-if-needed@2.2.31`；BackTop 首次接通固定 `semi-animation` 并精确锁定 `bezier-easing@2.1.0`。两项第三方依赖均纳入许可与 SBOM 验证。后续仍必须逐组件处理 `semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
+Breadcrumb 是第二十六个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/breadcrumb/` 提供 routes/Item、活跃项、折叠与内置 Popover，保留链接、图标、Tooltip 省略、事件顺序、键盘、ARIA 和 RTL；`packages/foundation-integration/src/breadcrumb.js` 是固定 Breadcrumb/BreadcrumbItem Foundation 的唯一运行时入口，`packages/theme-default/breadcrumb.css` 包含 Breadcrumb、Typography、Tooltip、Popover、Portal 与 Icon 样式。完整矩阵见 `docs/components/breadcrumb/`。
+
+Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox、Input、Rating、Slider、TagInput、TimePicker、Anchor、BackTop 与 Breadcrumb 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。Anchor 精确锁定并内联 `scroll-into-view-if-needed@2.2.31`；BackTop 首次接通固定 `semi-animation` 并精确锁定 `bezier-easing@2.1.0`。两项第三方依赖均纳入许可与 SBOM 验证。后续仍必须逐组件处理 `semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。
 

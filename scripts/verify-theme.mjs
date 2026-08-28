@@ -23,6 +23,20 @@ const backTopCssPath = path.join(
   'dist',
   'back-top.css',
 );
+const breadcrumbEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'breadcrumb.scss',
+);
+const breadcrumbCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'breadcrumb.css',
+);
 const autoCompleteEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -265,6 +279,7 @@ const css = await readFile(cssPath, 'utf8');
 const requiredSelectors = [
   '.semi-anchor',
   '.semi-backtop',
+  '.semi-breadcrumb',
   '.semi-autocomplete',
   '.semi-button',
   '.semi-checkbox',
@@ -351,6 +366,39 @@ for (const selector of [
 ]) {
   if (!backTopCss.includes(selector)) {
     throw new Error(`BackTop 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
+const expectedBreadcrumbImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/_portal/portal.scss'),
+  vendorImport('semi-foundation/tooltip/tooltip.scss'),
+  vendorImport('semi-foundation/popover/popover.scss'),
+  vendorImport('semi-foundation/typography/typography.scss'),
+  vendorImport('semi-foundation/breadcrumb/breadcrumb.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const breadcrumbEntrySource = await readFile(breadcrumbEntryPath, 'utf8');
+const actualBreadcrumbImports = [
+  ...breadcrumbEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g),
+].map((match) => match[1]);
+if (JSON.stringify(actualBreadcrumbImports) !== JSON.stringify(expectedBreadcrumbImports)) {
+  throw new Error('Breadcrumb 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const breadcrumbCss = await readFile(breadcrumbCssPath, 'utf8');
+for (const selector of [
+  '.semi-breadcrumb-wrapper-compact',
+  '.semi-breadcrumb-item-active',
+  '.semi-breadcrumb-collapse',
+  '.semi-rtl .semi-breadcrumb-wrapper',
+  '.semi-typography-ellipsis',
+  '.semi-popover-wrapper',
+  '.semi-icon-default',
+]) {
+  if (!breadcrumbCss.includes(selector)) {
+    throw new Error(`Breadcrumb 逐组件样式产物缺少选择器：${selector}`);
   }
 }
 
@@ -978,5 +1026,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 Anchor/BackTop/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Radio/Rating/Layout/Resizable/Select/Slider/Space/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + backTopCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Radio/Rating/Layout/Resizable/Select/Slider/Space/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

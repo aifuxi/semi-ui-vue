@@ -242,4 +242,14 @@ describe('React 参考工作台', () => {
     expect(html).toContain('data-parity-target="back-top-custom"');
     expect(html).toContain('TOP');
   });
+
+  it('从固定 Breadcrumb Adapter 渲染图标、链接与受控激活场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="breadcrumb" />);
+
+    expect(html).toContain('data-parity-scenario="breadcrumb"');
+    expect(html).toContain('data-testid="breadcrumb-reference"');
+    expect(html).toContain('data-parity-target="breadcrumb-basic"');
+    expect(html).toContain('semi-breadcrumb-wrapper-loose');
+    expect(html).toContain('aria-current="page"');
+  });
 });

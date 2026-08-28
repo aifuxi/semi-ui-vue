@@ -263,6 +263,7 @@ try {
     `await Promise.all(${JSON.stringify(javascriptPackages)}.map(packageName => import(packageName)));
 	await import('@workspace/ui/anchor');
 	await import('@workspace/ui/back-top');
+	await import('@workspace/ui/breadcrumb');
 	await import('@workspace/ui/button');
 	await import('@workspace/ui/checkbox');
 	await import('@workspace/ui/auto-complete');
@@ -302,6 +303,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	}
 	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
+	}
+	if (!import.meta.resolve('@workspace/theme-default/breadcrumb.css').endsWith('/dist/breadcrumb.css')) {
+	  throw new Error('Breadcrumb 逐组件样式导出未指向 dist/breadcrumb.css');
 	}
 	if (!import.meta.resolve('@workspace/theme-default/button.css').endsWith('/dist/button.css')) {
 	  throw new Error('Button 逐组件样式导出未指向 dist/button.css');
@@ -382,6 +386,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { AutoComplete, AutoCompleteOption, type AutoCompleteModelValue } from '@workspace/ui/auto-complete';
 	import { Anchor, AnchorLink, type AnchorPosition } from '@workspace/ui/anchor';
 	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
+	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
 	import { Checkbox, CheckboxGroup, type CheckboxType, type CheckboxValue } from '@workspace/ui/checkbox';
 	import { ConfigConsumer, ConfigProvider, defaultResponsiveMap, type Breakpoint } from '@workspace/ui/config-provider';
@@ -416,6 +421,8 @@ h(Button, { type, htmlType: 'submit' });
 	h(Anchor, { position: anchorPosition, showTooltip: true }, () => h(AnchorLink, { href: '#consumer', title: 'Consumer' }));
 	const backTopTarget: () => BackTopTarget = () => window;
 	h(BackTop, { target: backTopTarget, visibilityHeight: 120, duration: 300 }, () => 'TOP');
+	const breadcrumbMoreType: BreadcrumbMoreType = 'popover';
+	h(Breadcrumb, { moreType: breadcrumbMoreType, routes: ['Home', 'Docs', 'Detail'] }, () => h(BreadcrumbItem, { href: '#consumer' }, () => 'Consumer'));
 	const checkboxType: CheckboxType = 'card';
 	const checkboxValue: CheckboxValue = 'semi';
 	h(Checkbox, { modelValue: true, type: checkboxType, value: checkboxValue }, () => 'Semi');
@@ -547,6 +554,9 @@ h(Button, { type, htmlType: 'submit' });
   if (!themeCss.includes('.semi-backtop')) {
     throw new Error('安装后的默认主题缺少 BackTop 样式');
   }
+  if (!themeCss.includes('.semi-breadcrumb')) {
+    throw new Error('安装后的默认主题缺少 Breadcrumb 样式');
+  }
   if (!themeCss.includes('.semi-button')) {
     throw new Error('安装后的默认主题缺少组件样式');
   }
@@ -629,6 +639,17 @@ h(Button, { type, htmlType: 'submit' });
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'back-top.css'),
     'utf8',
   );
+  const breadcrumbThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@workspace',
+      'theme-default',
+      'dist',
+      'breadcrumb.css',
+    ),
+    'utf8',
+  );
   if (
     !anchorThemeCss.includes('.semi-anchor-link-title-active') ||
     !anchorThemeCss.includes('.semi-anchor-link-tooltip') ||
@@ -643,6 +664,14 @@ h(Button, { type, htmlType: 'submit' });
     !backTopThemeCss.includes('.semi-button-with-icon-only')
   ) {
     throw new Error('安装后的 BackTop 逐组件样式缺少默认按钮或 RTL 样式');
+  }
+  if (
+    !breadcrumbThemeCss.includes('.semi-breadcrumb-collapse') ||
+    !breadcrumbThemeCss.includes('.semi-breadcrumb-item-active') ||
+    !breadcrumbThemeCss.includes('.semi-popover-wrapper') ||
+    !breadcrumbThemeCss.includes('.semi-rtl .semi-breadcrumb-wrapper')
+  ) {
+    throw new Error('安装后的 Breadcrumb 逐组件样式缺少折叠、Popover、active 或 RTL 样式');
   }
   if (!buttonThemeCss.includes('.semi-button-split')) {
     throw new Error('安装后的 Button 逐组件样式缺少 SplitButtonGroup 样式');

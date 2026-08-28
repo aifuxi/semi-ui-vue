@@ -26,6 +26,10 @@
       "types": "./dist/back-top/index.d.ts",
       "import": "./dist/back-top/index.js"
     },
+    "./breadcrumb": {
+      "types": "./dist/breadcrumb/index.d.ts",
+      "import": "./dist/breadcrumb/index.js"
+    },
     "./auto-complete": {
       "types": "./dist/auto-complete/index.d.ts",
       "import": "./dist/auto-complete/index.js"
