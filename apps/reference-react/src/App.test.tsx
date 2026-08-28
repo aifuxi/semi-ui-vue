@@ -334,6 +334,17 @@ describe('React 参考工作台', () => {
     expect(html).toContain('添加一个项目');
   });
 
+  it('从固定 Highlight Adapter 渲染默认、样式、正则与重叠场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="highlight" direction="rtl" />);
+
+    expect(html).toContain('data-parity-scenario="highlight"');
+    expect(html).toContain('data-testid="highlight-reference"');
+    expect(html).toContain('class="semi-highlight-tag"');
+    expect(html).toContain('highlight-scenario__custom');
+    expect(html).toContain('highlight-scenario__strong');
+    expect(html).toContain('Design   System');
+  });
+
   it('从固定 BackTop Adapter 渲染 Element target、默认与自定义场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="back-top" />);
 

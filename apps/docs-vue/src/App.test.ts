@@ -40,6 +40,20 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
 
+  it('通过公共 Highlight 渲染默认、样式、正则与重叠场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'highlight', direction: 'rtl' } });
+    const scenario = wrapper.get('[data-testid="highlight-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.get('[data-parity-target="highlight-basic"]').findAll('mark')).toHaveLength(2);
+    expect(scenario.get('.highlight-scenario__custom').text()).toBe('Semi');
+    expect(scenario.get('[data-parity-target="highlight-regex"]').findAll('mark')).toHaveLength(2);
+    expect(scenario.get('[data-parity-target="highlight-overlap"]').findAll('strong')).toHaveLength(
+      2,
+    );
+    wrapper.unmount();
+  });
+
   it('通过公共 Illustrations 包渲染全部 light/dark 插画', () => {
     const wrapper = mount(App, { props: { scenarioId: 'illustrations' } });
     const scenario = wrapper.get('[data-testid="illustrations-vue"]');

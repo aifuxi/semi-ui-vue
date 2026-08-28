@@ -1423,6 +1423,29 @@ declare module '@semi-v2.102.0/empty' {
   export default Empty;
 }
 
+declare module '@semi-v2.102.0/highlight' {
+  import type { ComponentType, CSSProperties } from 'react';
+
+  export interface HighlightSearchWord {
+    text: string;
+    className?: string;
+    style?: CSSProperties;
+  }
+
+  export interface HighlightProps {
+    autoEscape?: boolean;
+    caseSensitive?: boolean;
+    component?: string;
+    highlightClassName?: string;
+    highlightStyle?: CSSProperties;
+    searchWords?: Array<string | HighlightSearchWord | undefined>;
+    sourceString?: string;
+  }
+
+  const Highlight: ComponentType<HighlightProps>;
+  export default Highlight;
+}
+
 declare module '@semi-v2.102.0/illustrations' {
   import type { ComponentType, SVGProps } from 'react';
 

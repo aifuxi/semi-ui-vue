@@ -58,6 +58,10 @@
       "types": "./dist/empty/index.d.ts",
       "import": "./dist/empty/index.js"
     },
+    "./highlight": {
+      "types": "./dist/highlight/index.d.ts",
+      "import": "./dist/highlight/index.js"
+    },
     "./back-top": {
       "types": "./dist/back-top/index.d.ts",
       "import": "./dist/back-top/index.js"

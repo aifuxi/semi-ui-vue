@@ -8,6 +8,7 @@ export * from './collapsible';
 export * from './descriptions';
 export * from './dropdown';
 export * from './empty';
+export * from './highlight';
 export * from './back-top';
 export * from './breadcrumb';
 export * from './auto-complete';

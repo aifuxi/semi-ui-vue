@@ -10,6 +10,7 @@ declare module 'virtual:workspace-collapsible-styles.css';
 declare module 'virtual:workspace-descriptions-styles.css';
 declare module 'virtual:workspace-dropdown-styles.css';
 declare module 'virtual:workspace-empty-styles.css';
+declare module 'virtual:workspace-highlight-styles.css';
 declare module 'virtual:workspace-back-top-styles.css';
 declare module 'virtual:workspace-breadcrumb-styles.css';
 declare module 'virtual:workspace-button-styles.css';
