@@ -177,6 +177,8 @@ const sliderEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 's
 const sliderCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'slider.css');
 const spaceEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'space.scss');
 const spaceCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'space.css');
+const stepsEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'steps.scss');
+const stepsCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'steps.css');
 const switchEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'switch.scss');
 const switchCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'switch.css');
 const tagInputEntryPath = path.join(
@@ -306,6 +308,7 @@ const requiredSelectors = [
   '.semi-resizable-resizable',
   '.semi-select',
   '.semi-space',
+  '.semi-steps',
   '.semi-switch',
   '.semi-tagInput',
   '.semi-typography',
@@ -840,6 +843,36 @@ for (const selector of [
   }
 }
 
+const expectedStepsImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/grid/grid.scss'),
+  vendorImport('semi-foundation/steps/steps.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const stepsEntrySource = await readFile(stepsEntryPath, 'utf8');
+const actualStepsImports = [...stepsEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualStepsImports) !== JSON.stringify(expectedStepsImports)) {
+  throw new Error('Steps 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const stepsCss = await readFile(stepsCssPath, 'utf8');
+for (const selector of [
+  '.semi-steps-item-process',
+  '.semi-steps-basic',
+  '.semi-steps-nav',
+  '.semi-steps-vertical',
+  '.semi-row-flex',
+  '.semi-rtl .semi-steps',
+  '.semi-icon-default',
+]) {
+  if (!stepsCss.includes(selector)) {
+    throw new Error(`Steps 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 const expectedSwitchImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -1080,5 +1113,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 Anchor/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

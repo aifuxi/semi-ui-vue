@@ -283,6 +283,7 @@ try {
 	await import('@workspace/ui/select');
 	await import('@workspace/ui/slider');
 	await import('@workspace/ui/space');
+	await import('@workspace/ui/steps');
 	await import('@workspace/ui/switch');
 	await import('@workspace/ui/tag-input');
 	await import('@workspace/ui/time-picker');
@@ -365,6 +366,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/space.css').endsWith('/dist/space.css')) {
 	  throw new Error('Space 逐组件样式导出未指向 dist/space.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/steps.css').endsWith('/dist/steps.css')) {
+	  throw new Error('Steps 逐组件样式导出未指向 dist/steps.css');
+	}
 	if (!import.meta.resolve('@workspace/theme-default/switch.css').endsWith('/dist/switch.css')) {
 	  throw new Error('Switch 逐组件样式导出未指向 dist/switch.css');
 	}
@@ -408,6 +412,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { Select, SelectOption, SelectOptionGroup, type SelectModelValue } from '@workspace/ui/select';
 	import { Slider, type SliderValue } from '@workspace/ui/slider';
 	import { Space, type SpaceAlign, type SpaceSpacingValue } from '@workspace/ui/space';
+	import { Step, Steps, type StepsStatus, type StepsType } from '@workspace/ui/steps';
 	import { Switch, type SwitchSize } from '@workspace/ui/switch';
 	import { TagInput, type TagInputSize } from '@workspace/ui/tag-input';
 	import { TimePicker, type TimePickerType, type TimePickerValue } from '@workspace/ui/time-picker';
@@ -488,6 +493,10 @@ h(Button, { type, htmlType: 'submit' });
 	const spaceAlign: SpaceAlign = 'baseline';
 	const spaceSpacing: SpaceSpacingValue = [12, 'loose'];
 	h(Space, { align: spaceAlign, spacing: spaceSpacing, wrap: true });
+	const stepsType: StepsType = 'basic';
+	const stepsStatus: StepsStatus = 'warning';
+	h(Steps, { current: 1, type: stepsType }, () => [h(Step, { title: 'First' }), h(Step, { status: stepsStatus, title: 'Second' })]);
+	h(Steps.Step, { title: 'Compound Step' });
 	const switchSize: SwitchSize = 'large';
 	h(Switch, { modelValue: true, size: switchSize, ariaLabel: 'consumer switch', 'onUpdate:modelValue': (_checked: boolean) => undefined });
 	const tagInputSize: TagInputSize = 'large';
@@ -891,6 +900,19 @@ h(Button, { type, htmlType: 'submit' });
     !spaceThemeCss.includes('.semi-space-tight-horizontal')
   ) {
     throw new Error('安装后的 Space 逐组件样式缺少换行或预设间距样式');
+  }
+  const stepsThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'steps.css'),
+    'utf8',
+  );
+  if (
+    !stepsThemeCss.includes('.semi-steps-item-process') ||
+    !stepsThemeCss.includes('.semi-steps-basic') ||
+    !stepsThemeCss.includes('.semi-steps-nav') ||
+    !stepsThemeCss.includes('.semi-rtl .semi-steps') ||
+    !stepsThemeCss.includes('.semi-icon-default')
+  ) {
+    throw new Error('安装后的 Steps 逐组件样式缺少状态、类型、RTL 或 Icon 样式');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

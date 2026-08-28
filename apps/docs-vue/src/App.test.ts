@@ -443,4 +443,25 @@ describe('Vue 对照工作台', () => {
     expect(scenario.get('.semi-page-total').text()).toBe('Total pages: 20');
     wrapper.unmount();
   });
+
+  it('通过公共 Steps 渲染 fill/basic/vertical/nav 并闭环 change', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'steps' } });
+    const scenario = wrapper.get('[data-testid="steps-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-steps')).toHaveLength(1);
+    expect(scenario.findAll('.semi-steps-basic')).toHaveLength(2);
+    expect(scenario.findAll('.semi-steps-nav')).toHaveLength(1);
+    expect(scenario.get('[data-parity-target="steps-basic"]').classes()).toContain(
+      'semi-steps-small',
+    );
+    expect(scenario.get('[data-parity-target="steps-vertical"]').classes()).toContain(
+      'semi-steps-vertical',
+    );
+    await scenario
+      .get('[data-parity-target="steps-basic"] .semi-steps-item:first-child')
+      .trigger('click');
+    expect(scenario.get('output').text()).toBe('Basic：0');
+    wrapper.unmount();
+  });
 });

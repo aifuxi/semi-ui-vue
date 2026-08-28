@@ -20,6 +20,7 @@ export * from './resizable';
 export * from './select';
 export * from './slider';
 export * from './space';
+export * from './steps';
 export * from './switch';
 export * from './tag-input';
 export * from './time-picker';

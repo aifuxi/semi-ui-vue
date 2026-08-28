@@ -263,4 +263,15 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-page-quickjump');
     expect(html).toContain('semi-page-small');
   });
+
+  it('从固定 Steps Adapter 渲染 fill/basic/vertical/nav 场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="steps" />);
+
+    expect(html).toContain('data-parity-scenario="steps"');
+    expect(html).toContain('data-testid="steps-reference"');
+    expect(html).toContain('data-parity-target="steps-fill"');
+    expect(html).toContain('semi-steps-basic');
+    expect(html).toContain('semi-steps-vertical');
+    expect(html).toContain('semi-steps-nav');
+  });
 });

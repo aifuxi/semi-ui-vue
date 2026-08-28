@@ -92,6 +92,7 @@ export default defineConfig({
         'select/index': fileURLToPath(new URL('./src/select/index.ts', import.meta.url)),
         'slider/index': fileURLToPath(new URL('./src/slider/index.ts', import.meta.url)),
         'space/index': fileURLToPath(new URL('./src/space/index.ts', import.meta.url)),
+        'steps/index': fileURLToPath(new URL('./src/steps/index.ts', import.meta.url)),
         'switch/index': fileURLToPath(new URL('./src/switch/index.ts', import.meta.url)),
         'tag-input/index': fileURLToPath(new URL('./src/tag-input/index.ts', import.meta.url)),
         'time-picker/index': fileURLToPath(new URL('./src/time-picker/index.ts', import.meta.url)),

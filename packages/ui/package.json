@@ -106,6 +106,10 @@
       "types": "./dist/space/index.d.ts",
       "import": "./dist/space/index.js"
     },
+    "./steps": {
+      "types": "./dist/steps/index.d.ts",
+      "import": "./dist/steps/index.js"
+    },
     "./switch": {
       "types": "./dist/switch/index.d.ts",
       "import": "./dist/switch/index.js"

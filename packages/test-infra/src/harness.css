@@ -928,6 +928,28 @@ p {
   line-height: 20px;
 }
 
+.steps-scenario {
+  display: grid;
+  gap: 22px;
+}
+
+.steps-scenario__section {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.steps-scenario__label,
+.steps-scenario__status {
+  color: var(--semi-color-text-2);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.steps-scenario__vertical {
+  min-height: 238px;
+}
+
 .back-top-scenario__scroll {
   overflow: auto;
   height: 220px;

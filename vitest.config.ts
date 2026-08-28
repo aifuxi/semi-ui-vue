@@ -101,6 +101,9 @@ export default defineConfig({
       '@semi-v2.102.0/space': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiSpaceStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/steps': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiStepsStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/switch': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiSwitchStub.tsx', import.meta.url),
       ),

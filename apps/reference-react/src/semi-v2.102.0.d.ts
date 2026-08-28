@@ -1032,4 +1032,47 @@ declare module '@semi-v2.102.0/icons-lab' {
   export const IconAvatar: ComponentType<Omit<IconProps, 'fill' | 'svg' | 'type'>>;
 }
 
+declare module '@semi-v2.102.0/steps' {
+  import type { ComponentType, CSSProperties, KeyboardEvent, MouseEvent, ReactNode } from 'react';
+
+  export type StepsType = 'fill' | 'basic' | 'nav';
+  export type StepsDirection = 'horizontal' | 'vertical';
+  export type StepsStatus = 'wait' | 'process' | 'finish' | 'error' | 'warning';
+  export type StepsSize = 'default' | 'small';
+
+  export interface StepProps {
+    'aria-label'?: string;
+    className?: string;
+    description?: ReactNode;
+    icon?: ReactNode;
+    onClick?: (event: MouseEvent<HTMLDivElement>) => void;
+    onKeyDown?: (event: KeyboardEvent<HTMLDivElement>) => void;
+    role?: string;
+    status?: StepsStatus;
+    style?: CSSProperties;
+    title?: ReactNode;
+  }
+
+  export interface StepsProps {
+    'aria-label'?: string;
+    children?: ReactNode;
+    className?: string;
+    current?: number;
+    direction?: StepsDirection;
+    hasLine?: boolean;
+    initial?: number;
+    onChange?: (current: number) => void;
+    prefixCls?: string;
+    size?: StepsSize;
+    status?: StepsStatus;
+    style?: CSSProperties;
+    type?: StepsType;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  type StepsComponent = ComponentType<StepsProps> & { Step: ComponentType<StepProps> };
+  const Steps: StepsComponent;
+  export default Steps;
+}
+
 declare module 'virtual:semi-reference-styles.css';
