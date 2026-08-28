@@ -58,6 +58,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/badge/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'calendar', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/calendar/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'card', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/card/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'back-top', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/back-top/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'breadcrumb', 'index.js')).href);

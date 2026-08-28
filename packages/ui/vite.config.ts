@@ -73,6 +73,7 @@ export default defineConfig({
         'avatar/index': fileURLToPath(new URL('./src/avatar/index.ts', import.meta.url)),
         'badge/index': fileURLToPath(new URL('./src/badge/index.ts', import.meta.url)),
         'calendar/index': fileURLToPath(new URL('./src/calendar/index.ts', import.meta.url)),
+        'card/index': fileURLToPath(new URL('./src/card/index.ts', import.meta.url)),
         'back-top/index': fileURLToPath(new URL('./src/back-top/index.ts', import.meta.url)),
         'breadcrumb/index': fileURLToPath(new URL('./src/breadcrumb/index.ts', import.meta.url)),
         'auto-complete/index': fileURLToPath(

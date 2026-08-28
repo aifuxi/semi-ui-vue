@@ -1,0 +1,11 @@
+// Standalone Card entry: fixed tokens plus Card, Space, Typography, Tooltip and private loading styles.
+@import '../../../vendor/semi-design/packages/semi-theme-default/scss/index.scss';
+@import '../../../vendor/semi-design/packages/semi-theme-default/scss/global.scss';
+@import '../../../vendor/semi-design/packages/semi-theme-default/scss/animation.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/_portal/portal.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/card/card.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/skeleton/skeleton.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/space/space.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/popover/popover.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/tooltip/tooltip.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/typography/typography.scss';

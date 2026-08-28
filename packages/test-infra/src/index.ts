@@ -29,6 +29,11 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   calendarFoundationStyle: 'vendor/semi-design/packages/semi-foundation/calendar/calendar.scss',
   calendarDocumentation: 'vendor/semi-design/content/show/calendar/index.md',
   calendarDocumentationEn: 'vendor/semi-design/content/show/calendar/index-en-US.md',
+  cardPublicEntry: 'vendor/semi-design/packages/semi-ui/card/index.tsx',
+  cardGroupEntry: 'vendor/semi-design/packages/semi-ui/card/cardGroup.tsx',
+  cardMetaEntry: 'vendor/semi-design/packages/semi-ui/card/meta.tsx',
+  cardFoundationStyle: 'vendor/semi-design/packages/semi-foundation/card/card.scss',
+  cardDocumentation: 'vendor/semi-design/content/show/card/index.md',
   backTopPublicEntry: 'vendor/semi-design/packages/semi-ui/backtop/index.tsx',
   backTopFoundation: 'vendor/semi-design/packages/semi-foundation/backtop/foundation.ts',
   backTopFoundationStyle: 'vendor/semi-design/packages/semi-foundation/backtop/backtop.scss',
@@ -222,6 +227,78 @@ export interface ParityScenarioDefinition {
 }
 
 export const PARITY_SCENARIOS = [
+  {
+    id: 'card',
+    title: 'Card 卡片',
+    description:
+      '验证标题、额外内容、封面、Meta、操作组、页脚、边框、阴影、loading、CardGroup、暗色、移动端与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.cardPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.cardPublicEntry,
+      REFERENCE_SOURCE_PATHS.cardGroupEntry,
+      REFERENCE_SOURCE_PATHS.cardMetaEntry,
+      REFERENCE_SOURCE_PATHS.cardFoundationStyle,
+      REFERENCE_SOURCE_PATHS.cardDocumentation,
+    ],
+    targets: [
+      {
+        id: 'card-basic',
+        selector: '[data-parity-target="card-basic"]',
+        computedStyleProperties: [
+          'backgroundColor',
+          'borderColor',
+          'borderRadius',
+          'borderWidth',
+          'boxSizing',
+          'fontSize',
+          'lineHeight',
+          'overflow',
+          'width',
+        ],
+      },
+      {
+        id: 'card-header',
+        selector: '[data-parity-target="card-basic"] > .semi-card-header',
+        computedStyleProperties: [
+          'borderBottomColor',
+          'borderBottomWidth',
+          'paddingBottom',
+          'paddingLeft',
+          'paddingRight',
+          'paddingTop',
+        ],
+      },
+      {
+        id: 'card-cover',
+        selector: '[data-parity-target="card-complete"] > .semi-card-cover',
+        computedStyleProperties: ['display', 'height', 'width'],
+      },
+      {
+        id: 'card-actions',
+        selector: '[data-parity-target="card-complete"] .semi-card-body-actions',
+        computedStyleProperties: ['borderTopColor', 'borderTopWidth', 'marginTop', 'paddingTop'],
+      },
+      {
+        id: 'card-loading',
+        selector: '[data-parity-target="card-loading"] .semi-skeleton-title',
+        computedStyleProperties: ['backgroundColor', 'borderRadius', 'height', 'width'],
+      },
+      {
+        id: 'card-group',
+        selector: '[data-parity-target="card-group"]',
+        computedStyleProperties: [
+          'columnGap',
+          'display',
+          'flexDirection',
+          'flexWrap',
+          'rowGap',
+          'width',
+        ],
+      },
+    ],
+  },
   {
     id: 'calendar',
     title: 'Calendar 日历',

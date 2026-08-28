@@ -13,6 +13,8 @@ const avatarPublicEntry = path.join(upstreamPackages, 'semi-ui/avatar/index.tsx'
 const avatarGroupEntry = path.join(upstreamPackages, 'semi-ui/avatar/avatarGroup.tsx');
 const badgePublicEntry = path.join(upstreamPackages, 'semi-ui/badge/index.tsx');
 const calendarPublicEntry = path.join(upstreamPackages, 'semi-ui/calendar/index.tsx');
+const cardPublicEntry = path.join(upstreamPackages, 'semi-ui/card/index.tsx');
+const cardGroupEntry = path.join(upstreamPackages, 'semi-ui/card/cardGroup.tsx');
 const backTopPublicEntry = path.join(upstreamPackages, 'semi-ui/backtop/index.tsx');
 const breadcrumbPublicEntry = path.join(upstreamPackages, 'semi-ui/breadcrumb/index.tsx');
 const autoCompletePublicEntry = path.join(upstreamPackages, 'semi-ui/autoComplete/index.tsx');
@@ -83,6 +85,10 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'badge/badge.scss'),
   '@douyinfe/semi-foundation/calendar/calendar.scss',
   path.join(foundationRoot, 'calendar/calendar.scss'),
+  '@douyinfe/semi-foundation/card/card.scss',
+  path.join(foundationRoot, 'card/card.scss'),
+  '@douyinfe/semi-foundation/skeleton/skeleton.scss',
+  path.join(foundationRoot, 'skeleton/skeleton.scss'),
   '@douyinfe/semi-foundation/space/space.scss',
   path.join(foundationRoot, 'space/space.scss'),
   '@douyinfe/semi-foundation/steps/steps.scss',
@@ -192,6 +198,8 @@ export default defineConfig({
       { find: '@semi-v2.102.0/avatar-group', replacement: avatarGroupEntry },
       { find: '@semi-v2.102.0/badge', replacement: badgePublicEntry },
       { find: '@semi-v2.102.0/calendar', replacement: calendarPublicEntry },
+      { find: '@semi-v2.102.0/card', replacement: cardPublicEntry },
+      { find: '@semi-v2.102.0/card-group', replacement: cardGroupEntry },
       { find: '@semi-v2.102.0/back-top', replacement: backTopPublicEntry },
       { find: '@semi-v2.102.0/breadcrumb', replacement: breadcrumbPublicEntry },
       { find: '@semi-v2.102.0/auto-complete', replacement: autoCompletePublicEntry },

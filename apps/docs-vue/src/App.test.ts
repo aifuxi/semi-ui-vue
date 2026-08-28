@@ -4,6 +4,21 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 Card、Meta 与 CardGroup 渲染完整场景并派发操作', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'card' } });
+    const scenario = wrapper.get('[data-testid="card-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-card')).toHaveLength(8);
+    expect(scenario.get('.semi-card-meta-wrapper-description').text()).toBe('全面、易用、优质');
+    expect(scenario.findAll('.semi-card-body-actions-item')).toHaveLength(2);
+    expect(scenario.find('.semi-skeleton-active').exists()).toBe(true);
+    expect(scenario.get('.semi-card-group-grid').findAll('.semi-card')).toHaveLength(3);
+    await scenario.findAll('.semi-card-body-actions-item button')[1]!.trigger('click');
+    expect(scenario.get('output').text()).toBe('开始使用');
+    wrapper.unmount();
+  });
+
   it('通过公共 Calendar 渲染周视图、事件并支持模式切换', async () => {
     const wrapper = mount(App, {
       props: { scenarioId: 'calendar', locale: 'en-US', direction: 'ltr' },

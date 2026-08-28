@@ -34,6 +34,10 @@
       "types": "./dist/calendar/index.d.ts",
       "import": "./dist/calendar/index.js"
     },
+    "./card": {
+      "types": "./dist/card/index.d.ts",
+      "import": "./dist/card/index.js"
+    },
     "./back-top": {
       "types": "./dist/back-top/index.d.ts",
       "import": "./dist/back-top/index.js"

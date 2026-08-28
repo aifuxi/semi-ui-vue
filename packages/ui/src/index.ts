@@ -2,6 +2,7 @@ export * from './anchor';
 export * from './avatar';
 export * from './badge';
 export * from './calendar';
+export * from './card';
 export * from './back-top';
 export * from './breadcrumb';
 export * from './auto-complete';

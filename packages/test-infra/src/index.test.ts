@@ -11,6 +11,23 @@ import {
 } from './index';
 
 describe('parity infrastructure contract', () => {
+  it('records Card, Group, Meta, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('card')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.cardPublicEntry,
+    });
+    expect(assertScenarioComparable('card').targets).toHaveLength(6);
+    expect(getParityScenario('card').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.cardGroupEntry,
+        REFERENCE_SOURCE_PATHS.cardMetaEntry,
+        REFERENCE_SOURCE_PATHS.cardFoundationStyle,
+        REFERENCE_SOURCE_PATHS.cardDocumentation,
+      ]),
+    );
+  });
+
   it('records Calendar Adapter, Foundation, event layout, styles and bilingual docs', () => {
     expect(getParityScenario('calendar')).toMatchObject({
       referenceStatus: 'ready',

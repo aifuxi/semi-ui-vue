@@ -267,6 +267,17 @@ describe('React 参考工作台', () => {
     expect(html).toContain('09:00 Review');
   });
 
+  it('从固定 Card、Meta 与 CardGroup Adapter 渲染完整场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="card" />);
+
+    expect(html).toContain('data-parity-scenario="card"');
+    expect(html).toContain('data-testid="card-reference"');
+    expect(html).toContain('semi-card-meta-wrapper-description');
+    expect(html).toContain('semi-card-body-actions-item');
+    expect(html).toContain('semi-skeleton-active');
+    expect(html).toContain('semi-card-group-grid');
+  });
+
   it('从固定 BackTop Adapter 渲染 Element target、默认与自定义场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="back-top" />);
 

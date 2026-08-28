@@ -29,6 +29,12 @@ export default defineConfig({
       '@semi-v2.102.0/calendar': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiCalendarStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/card': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiCardStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/card-group': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiCardGroupStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/back-top': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiBackTopStub.tsx', import.meta.url),
       ),

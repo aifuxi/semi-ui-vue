@@ -1297,3 +1297,56 @@ declare module '@semi-v2.102.0/calendar' {
   const Calendar: ComponentType<CalendarProps>;
   export default Calendar;
 }
+
+declare module '@semi-v2.102.0/card' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface CardMetaProps {
+    avatar?: ReactNode;
+    className?: string;
+    description?: ReactNode;
+    style?: CSSProperties;
+    title?: ReactNode;
+  }
+
+  export interface CardProps {
+    'aria-label'?: string;
+    actions?: ReactNode[];
+    bodyStyle?: CSSProperties;
+    bordered?: boolean;
+    children?: ReactNode;
+    className?: string;
+    cover?: ReactNode;
+    footer?: ReactNode;
+    footerLine?: boolean;
+    footerStyle?: CSSProperties;
+    header?: ReactNode;
+    headerExtraContent?: ReactNode;
+    headerLine?: boolean;
+    headerStyle?: CSSProperties;
+    loading?: boolean;
+    shadows?: 'hover' | 'always';
+    style?: CSSProperties;
+    title?: ReactNode;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Card: ComponentType<CardProps> & { Meta: ComponentType<CardMetaProps> };
+  export default Card;
+}
+
+declare module '@semi-v2.102.0/card-group' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface CardGroupProps {
+    children?: ReactNode;
+    className?: string;
+    spacing?: number | number[];
+    style?: CSSProperties;
+    type?: 'grid';
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const CardGroup: ComponentType<CardGroupProps>;
+  export default CardGroup;
+}
