@@ -232,4 +232,14 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-anchor-link-title-disabled');
     expect(html).toContain('anchor-target-small');
   });
+
+  it('从固定 BackTop Adapter 渲染 Element target、默认与自定义场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="back-top" />);
+
+    expect(html).toContain('data-parity-scenario="back-top"');
+    expect(html).toContain('data-testid="back-top-reference"');
+    expect(html).toContain('data-parity-target="back-top-default"');
+    expect(html).toContain('data-parity-target="back-top-custom"');
+    expect(html).toContain('TOP');
+  });
 });

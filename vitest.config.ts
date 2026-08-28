@@ -8,8 +8,17 @@ export default defineConfig({
   resolve: {
     alias: {
       '@workspace/ui': fileURLToPath(new URL('./packages/ui/src/index.ts', import.meta.url)),
+      '@douyinfe/semi-animation': fileURLToPath(
+        new URL('./vendor/semi-design/packages/semi-animation/index.ts', import.meta.url),
+      ),
+      'bezier-easing': fileURLToPath(
+        new URL('./packages/ui/node_modules/bezier-easing/src/index.js', import.meta.url),
+      ),
       '@semi-v2.102.0/anchor': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiAnchorStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/back-top': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiBackTopStub.tsx', import.meta.url),
       ),
       '@semi-v2.102.0/auto-complete': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiAutoCompleteStub.tsx', import.meta.url),

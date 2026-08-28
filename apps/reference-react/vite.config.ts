@@ -9,6 +9,7 @@ const require = createRequire(import.meta.url);
 const workspaceRoot = fileURLToPath(new URL('../..', import.meta.url));
 const upstreamPackages = path.join(workspaceRoot, 'vendor/semi-design/packages');
 const anchorPublicEntry = path.join(upstreamPackages, 'semi-ui/anchor/index.tsx');
+const backTopPublicEntry = path.join(upstreamPackages, 'semi-ui/backtop/index.tsx');
 const autoCompletePublicEntry = path.join(upstreamPackages, 'semi-ui/autoComplete/index.tsx');
 const buttonPublicEntry = path.join(upstreamPackages, 'semi-ui/button/index.tsx');
 const checkboxPublicEntry = path.join(upstreamPackages, 'semi-ui/checkbox/index.tsx');
@@ -53,6 +54,8 @@ const emptyUpstreamStyleId = '\0semi-reference-upstream-style-loaded-from-entry'
 const capturedUpstreamStyleImports = new Set([
   '@douyinfe/semi-foundation/anchor/anchor.scss',
   path.join(foundationRoot, 'anchor/anchor.scss'),
+  '@douyinfe/semi-foundation/backtop/backtop.scss',
+  path.join(foundationRoot, 'backtop/backtop.scss'),
   '@douyinfe/semi-foundation/autoComplete/autoComplete.scss',
   path.join(foundationRoot, 'autoComplete/autoComplete.scss'),
   '@douyinfe/semi-foundation/button/button.scss',
@@ -160,6 +163,7 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: '@semi-v2.102.0/anchor', replacement: anchorPublicEntry },
+      { find: '@semi-v2.102.0/back-top', replacement: backTopPublicEntry },
       { find: '@semi-v2.102.0/auto-complete', replacement: autoCompletePublicEntry },
       { find: '@semi-v2.102.0/button', replacement: buttonPublicEntry },
       { find: '@semi-v2.102.0/checkbox', replacement: checkboxPublicEntry },

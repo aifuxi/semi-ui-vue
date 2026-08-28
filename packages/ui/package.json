@@ -22,6 +22,10 @@
       "types": "./dist/anchor/index.d.ts",
       "import": "./dist/anchor/index.js"
     },
+    "./back-top": {
+      "types": "./dist/back-top/index.d.ts",
+      "import": "./dist/back-top/index.js"
+    },
     "./auto-complete": {
       "types": "./dist/auto-complete/index.d.ts",
       "import": "./dist/auto-complete/index.js"
@@ -122,10 +126,12 @@
     "clean": "rimraf dist"
   },
   "devDependencies": {
+    "@types/lodash": "4.17.20",
     "@workspace/foundation-integration": "workspace:*"
   },
   "dependencies": {
     "@workspace/icons": "workspace:*",
+    "bezier-easing": "2.1.0",
     "date-fns": "2.30.0",
     "date-fns-tz": "1.3.8",
     "lodash": "4.17.21",

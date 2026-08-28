@@ -39,6 +39,24 @@ declare module '@semi-v2.102.0/anchor' {
   export default Anchor;
 }
 
+declare module '@semi-v2.102.0/back-top' {
+  import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
+
+  export interface BackTopProps {
+    children?: ReactNode;
+    className?: string;
+    duration?: number;
+    onClick?: (event: MouseEvent<HTMLDivElement>) => void;
+    style?: CSSProperties;
+    target?: () => Window | HTMLElement | null;
+    visibilityHeight?: number;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const BackTop: ComponentType<BackTopProps>;
+  export default BackTop;
+}
+
 declare module '@semi-v2.102.0/button' {
   import type { ButtonHTMLAttributes, ComponentType, ReactNode } from 'react';
 

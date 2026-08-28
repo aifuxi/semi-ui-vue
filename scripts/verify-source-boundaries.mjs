@@ -24,6 +24,7 @@ const publicPackagePolicies = [
     manifest: 'packages/ui/package.json',
     dependencies: {
       '@workspace/icons': 'workspace:*',
+      'bezier-easing': '2.1.0',
       'date-fns': '2.30.0',
       'date-fns-tz': '1.3.8',
       lodash: '4.17.21',
@@ -31,7 +32,10 @@ const publicPackagePolicies = [
     },
     optionalDependencies: {},
     peerDependencies: { vue: '>=3.5.0' },
-    devDependencies: { '@workspace/foundation-integration': 'workspace:*' },
+    devDependencies: {
+      '@types/lodash': '4.17.20',
+      '@workspace/foundation-integration': 'workspace:*',
+    },
   },
   {
     manifest: 'packages/theme-default/package.json',

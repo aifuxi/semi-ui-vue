@@ -12,6 +12,18 @@ export default defineConfig({
         replacement: fileURLToPath(new URL('../../packages/ui/src/index.ts', import.meta.url)),
       },
       {
+        find: '@douyinfe/semi-animation',
+        replacement: fileURLToPath(
+          new URL('../../vendor/semi-design/packages/semi-animation/index.ts', import.meta.url),
+        ),
+      },
+      {
+        find: 'bezier-easing',
+        replacement: fileURLToPath(
+          new URL('../../packages/ui/node_modules/bezier-easing/src/index.js', import.meta.url),
+        ),
+      },
+      {
         find: '@workspace/icons',
         replacement: fileURLToPath(new URL('../../packages/icons/src/index.ts', import.meta.url)),
       },

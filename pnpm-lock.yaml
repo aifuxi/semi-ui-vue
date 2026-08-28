@@ -53,6 +53,9 @@ importers:
       '@vue/test-utils':
         specifier: 2.4.11
         version: 2.4.11(@vue/compiler-dom@3.5.41)(@vue/server-renderer@3.5.41)(vue@3.5.41(typescript@5.9.3))
+      bezier-easing:
+        specifier: 2.1.0
+        version: 2.1.0
       date-fns:
         specifier: 2.30.0
         version: 2.30.0
@@ -215,6 +218,9 @@ importers:
       '@workspace/icons':
         specifier: workspace:*
         version: link:../icons
+      bezier-easing:
+        specifier: 2.1.0
+        version: 2.1.0
       date-fns:
         specifier: 2.30.0
         version: 2.30.0
@@ -228,6 +234,9 @@ importers:
         specifier: 2.2.31
         version: 2.2.31
     devDependencies:
+      '@types/lodash':
+        specifier: 4.17.20
+        version: 4.17.20
       '@workspace/foundation-integration':
         specifier: workspace:*
         version: link:../foundation-integration

@@ -52,6 +52,12 @@ const dependencyEntries = Object.entries(runtimeDependencies).sort(([left], [rig
   left.localeCompare(right),
 );
 const licensedDependencies = [
+  {
+    licenseFile: 'LICENSE',
+    name: 'bezier-easing',
+    noticeName: 'bezier-easing',
+    version: '2.1.0',
+  },
   { licenseFile: 'LICENSE.md', name: 'date-fns', noticeName: 'date-fns', version: '2.30.0' },
   {
     licenseFile: 'LICENSE.md',

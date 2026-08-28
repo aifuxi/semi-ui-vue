@@ -6,6 +6,7 @@ import {
   type ParityScenarioOptions,
 } from '@workspace/test-infra';
 import AnchorScenario from './components/AnchorScenario.vue';
+import BackTopScenario from './components/BackTopScenario.vue';
 import AutoCompleteScenario from './components/AutoCompleteScenario.vue';
 import ButtonTypesScenario from './components/ButtonTypesScenario.vue';
 import ButtonContractScenario from './components/ButtonContractScenario.vue';
@@ -76,6 +77,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
 
       <HarnessCalibration v-if="scenario.id === 'harness-calibration'" />
       <AnchorScenario v-else-if="scenario.id === 'anchor'" :direction="props.direction" />
+      <BackTopScenario v-else-if="scenario.id === 'back-top'" :direction="props.direction" />
       <AutoCompleteScenario v-else-if="scenario.id === 'auto-complete'" />
       <ButtonTypesScenario v-else-if="scenario.id === 'button-types'" />
       <ButtonContractScenario v-else-if="scenario.id === 'button-contract'" />

@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import App from './App.vue';
 
@@ -370,5 +370,38 @@ describe('Vue 对照工作台', () => {
     expect(scenario.get('output').text()).toBe('点击：#anchor-api');
 
     wrapper.unmount();
+  });
+
+  it('通过公共 BackTop 响应 Element 滚动阈值、默认/自定义内容与回顶点击', async () => {
+    let now = 0;
+    vi.spyOn(Date, 'now').mockImplementation(() => {
+      now += 16;
+      return now;
+    });
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      callback(now);
+      return 1;
+    });
+    vi.stubGlobal('cancelAnimationFrame', vi.fn());
+    const wrapper = mount(App, { props: { scenarioId: 'back-top' } });
+    const scenario = wrapper.get('[data-testid="back-top-vue"]');
+    const scrollTarget = scenario.get('.back-top-scenario__scroll');
+
+    await wrapper.vm.$nextTick();
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.find('[data-parity-target="back-top-default"]').exists()).toBe(false);
+    expect(scenario.get('[data-parity-target="back-top-custom"]').text()).toBe('TOP');
+
+    (scrollTarget.element as HTMLElement).scrollTop = 120;
+    await scrollTarget.trigger('scroll');
+    await wrapper.vm.$nextTick();
+    const defaultBackTop = scenario.get('[data-parity-target="back-top-default"]');
+    expect(defaultBackTop.get('button').classes()).toContain('semi-button-with-icon-only');
+    await defaultBackTop.trigger('click');
+    expect((scrollTarget.element as HTMLElement).scrollTop).toBe(0);
+    expect(scenario.get('output').text()).toBe('点击：默认回顶');
+
+    wrapper.unmount();
+    vi.unstubAllGlobals();
   });
 });

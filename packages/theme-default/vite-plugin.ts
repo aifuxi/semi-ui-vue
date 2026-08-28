@@ -3,6 +3,7 @@ import type { Plugin } from 'vite';
 import sass from 'sass';
 
 export const virtualAnchorStyleId = 'virtual:workspace-anchor-styles.css';
+export const virtualBackTopStyleId = 'virtual:workspace-back-top-styles.css';
 export const virtualAutoCompleteStyleId = 'virtual:workspace-auto-complete-styles.css';
 export const virtualButtonStyleId = 'virtual:workspace-button-styles.css';
 export const virtualCheckboxStyleId = 'virtual:workspace-checkbox-styles.css';
@@ -27,6 +28,7 @@ export const virtualTimePickerStyleId = 'virtual:workspace-time-picker-styles.cs
 export const virtualTooltipStyleId = 'virtual:workspace-tooltip-styles.css';
 export const virtualTypographyStyleId = 'virtual:workspace-typography-styles.css';
 const resolvedVirtualAnchorStyleId = `\0${virtualAnchorStyleId}`;
+const resolvedVirtualBackTopStyleId = `\0${virtualBackTopStyleId}`;
 const resolvedVirtualAutoCompleteStyleId = `\0${virtualAutoCompleteStyleId}`;
 const resolvedVirtualButtonStyleId = `\0${virtualButtonStyleId}`;
 const resolvedVirtualCheckboxStyleId = `\0${virtualCheckboxStyleId}`;
@@ -51,6 +53,7 @@ const resolvedVirtualTimePickerStyleId = `\0${virtualTimePickerStyleId}`;
 const resolvedVirtualTooltipStyleId = `\0${virtualTooltipStyleId}`;
 const resolvedVirtualTypographyStyleId = `\0${virtualTypographyStyleId}`;
 const anchorStyleEntry = fileURLToPath(new URL('./src/anchor.scss', import.meta.url));
+const backTopStyleEntry = fileURLToPath(new URL('./src/back-top.scss', import.meta.url));
 const autoCompleteStyleEntry = fileURLToPath(new URL('./src/auto-complete.scss', import.meta.url));
 const buttonStyleEntry = fileURLToPath(new URL('./src/button.scss', import.meta.url));
 const checkboxStyleEntry = fileURLToPath(new URL('./src/checkbox.scss', import.meta.url));
@@ -79,6 +82,7 @@ const typographyStyleEntry = fileURLToPath(new URL('./src/typography.scss', impo
 
 const styleEntries = new Map([
   [resolvedVirtualAnchorStyleId, anchorStyleEntry],
+  [resolvedVirtualBackTopStyleId, backTopStyleEntry],
   [resolvedVirtualAutoCompleteStyleId, autoCompleteStyleEntry],
   [resolvedVirtualButtonStyleId, buttonStyleEntry],
   [resolvedVirtualCheckboxStyleId, checkboxStyleEntry],
@@ -111,6 +115,7 @@ export function compilePinnedComponentStyles(): Plugin {
     enforce: 'pre',
     resolveId(source) {
       if (source === virtualAnchorStyleId) return resolvedVirtualAnchorStyleId;
+      if (source === virtualBackTopStyleId) return resolvedVirtualBackTopStyleId;
       if (source === virtualAutoCompleteStyleId) return resolvedVirtualAutoCompleteStyleId;
       if (source === virtualButtonStyleId) return resolvedVirtualButtonStyleId;
       if (source === virtualCheckboxStyleId) return resolvedVirtualCheckboxStyleId;

@@ -3,6 +3,13 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
 
+const animationEntry = fileURLToPath(
+  new URL('../../vendor/semi-design/packages/semi-animation/index.ts', import.meta.url),
+);
+const bezierEasingEntry = fileURLToPath(
+  new URL('./node_modules/bezier-easing/src/index.js', import.meta.url),
+);
+
 export default defineConfig({
   plugins: [
     vue(),
@@ -22,6 +29,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: [
+      { find: '@douyinfe/semi-animation', replacement: animationEntry },
+      { find: 'bezier-easing', replacement: bezierEasingEntry },
       {
         find: /^date-fns$/,
         replacement: fileURLToPath(
@@ -54,6 +63,7 @@ export default defineConfig({
       entry: {
         index: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
         'anchor/index': fileURLToPath(new URL('./src/anchor/index.ts', import.meta.url)),
+        'back-top/index': fileURLToPath(new URL('./src/back-top/index.ts', import.meta.url)),
         'auto-complete/index': fileURLToPath(
           new URL('./src/auto-complete/index.ts', import.meta.url),
         ),

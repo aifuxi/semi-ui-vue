@@ -9,6 +9,20 @@ const entryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', '
 const cssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'index.css');
 const anchorEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'anchor.scss');
 const anchorCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'anchor.css');
+const backTopEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'back-top.scss',
+);
+const backTopCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'back-top.css',
+);
 const autoCompleteEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -250,6 +264,7 @@ if (JSON.stringify(actualImports) !== JSON.stringify(expectedImports)) {
 const css = await readFile(cssPath, 'utf8');
 const requiredSelectors = [
   '.semi-anchor',
+  '.semi-backtop',
   '.semi-autocomplete',
   '.semi-button',
   '.semi-checkbox',
@@ -308,6 +323,34 @@ for (const selector of [
 ]) {
   if (!anchorCss.includes(selector)) {
     throw new Error(`Anchor 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
+const expectedBackTopImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/button/button.scss'),
+  vendorImport('semi-foundation/button/iconButton.scss'),
+  vendorImport('semi-foundation/backtop/backtop.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const backTopEntrySource = await readFile(backTopEntryPath, 'utf8');
+const actualBackTopImports = [...backTopEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualBackTopImports) !== JSON.stringify(expectedBackTopImports)) {
+  throw new Error('BackTop 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const backTopCss = await readFile(backTopCssPath, 'utf8');
+for (const selector of [
+  '.semi-backtop',
+  '.semi-rtl .semi-backtop',
+  '.semi-button-with-icon-only',
+  '.semi-icon-default',
+]) {
+  if (!backTopCss.includes(selector)) {
+    throw new Error(`BackTop 逐组件样式产物缺少选择器：${selector}`);
   }
 }
 
@@ -935,5 +978,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Radio/Rating/Layout/Resizable/Select/Slider/Space/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/BackTop/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Radio/Rating/Layout/Resizable/Select/Slider/Space/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + backTopCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

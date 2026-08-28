@@ -108,9 +108,13 @@ try {
 
     if (
       packageInfo.name === '@workspace/ui' &&
-      ['date-fns.txt', 'date-fns-tz.txt', 'lodash.txt', 'scroll-into-view-if-needed.txt'].some(
-        (license) => !packedFiles.has(`dist/THIRD_PARTY_LICENSES/${license}`),
-      )
+      [
+        'bezier-easing.txt',
+        'date-fns.txt',
+        'date-fns-tz.txt',
+        'lodash.txt',
+        'scroll-into-view-if-needed.txt',
+      ].some((license) => !packedFiles.has(`dist/THIRD_PARTY_LICENSES/${license}`))
     ) {
       throw new Error('@workspace/ui 的 tarball 缺少运行时依赖许可证');
     }
@@ -120,7 +124,7 @@ try {
 
   const linkedRuntimeDependencies = Object.fromEntries(
     await Promise.all(
-      ['date-fns', 'date-fns-tz', 'lodash', 'scroll-into-view-if-needed'].map(
+      ['bezier-easing', 'date-fns', 'date-fns-tz', 'lodash', 'scroll-into-view-if-needed'].map(
         async (dependency) => [
           dependency,
           `link:${await realpath(path.join(workspaceRoot, 'node_modules', dependency))}`,
@@ -197,6 +201,7 @@ try {
     }
     if (packageInfo.name === '@workspace/ui') {
       for (const [dependency, licenseFile] of [
+        ['bezier-easing', 'LICENSE'],
         ['date-fns', 'LICENSE.md'],
         ['date-fns-tz', 'LICENSE.md'],
         ['lodash', 'LICENSE'],
@@ -257,6 +262,7 @@ try {
     path.join(consumerRoot, 'smoke.mjs'),
     `await Promise.all(${JSON.stringify(javascriptPackages)}.map(packageName => import(packageName)));
 	await import('@workspace/ui/anchor');
+	await import('@workspace/ui/back-top');
 	await import('@workspace/ui/button');
 	await import('@workspace/ui/checkbox');
 	await import('@workspace/ui/auto-complete');
@@ -293,6 +299,9 @@ const cssTheme = import.meta.resolve('@workspace/theme-default/index.css');
 if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 index.css');
 	if (!import.meta.resolve('@workspace/theme-default/anchor.css').endsWith('/dist/anchor.css')) {
 	  throw new Error('Anchor 逐组件样式导出未指向 dist/anchor.css');
+	}
+	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
+	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
 	}
 	if (!import.meta.resolve('@workspace/theme-default/button.css').endsWith('/dist/button.css')) {
 	  throw new Error('Button 逐组件样式导出未指向 dist/button.css');
@@ -372,6 +381,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
     `${javascriptPackages.map((packageName) => `import '${packageName}';`).join('\n')}
 	import { AutoComplete, AutoCompleteOption, type AutoCompleteModelValue } from '@workspace/ui/auto-complete';
 	import { Anchor, AnchorLink, type AnchorPosition } from '@workspace/ui/anchor';
+	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
 	import { Checkbox, CheckboxGroup, type CheckboxType, type CheckboxValue } from '@workspace/ui/checkbox';
 	import { ConfigConsumer, ConfigProvider, defaultResponsiveMap, type Breakpoint } from '@workspace/ui/config-provider';
@@ -404,6 +414,8 @@ const type: ButtonType = 'primary';
 h(Button, { type, htmlType: 'submit' });
 	const anchorPosition: AnchorPosition = 'right';
 	h(Anchor, { position: anchorPosition, showTooltip: true }, () => h(AnchorLink, { href: '#consumer', title: 'Consumer' }));
+	const backTopTarget: () => BackTopTarget = () => window;
+	h(BackTop, { target: backTopTarget, visibilityHeight: 120, duration: 300 }, () => 'TOP');
 	const checkboxType: CheckboxType = 'card';
 	const checkboxValue: CheckboxValue = 'semi';
 	h(Checkbox, { modelValue: true, type: checkboxType, value: checkboxValue }, () => 'Semi');
@@ -532,6 +544,9 @@ h(Button, { type, htmlType: 'submit' });
   if (!themeCss.includes('.semi-anchor')) {
     throw new Error('安装后的默认主题缺少 Anchor 样式');
   }
+  if (!themeCss.includes('.semi-backtop')) {
+    throw new Error('安装后的默认主题缺少 BackTop 样式');
+  }
   if (!themeCss.includes('.semi-button')) {
     throw new Error('安装后的默认主题缺少组件样式');
   }
@@ -610,6 +625,10 @@ h(Button, { type, htmlType: 'submit' });
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'anchor.css'),
     'utf8',
   );
+  const backTopThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'back-top.css'),
+    'utf8',
+  );
   if (
     !anchorThemeCss.includes('.semi-anchor-link-title-active') ||
     !anchorThemeCss.includes('.semi-anchor-link-tooltip') ||
@@ -617,6 +636,13 @@ h(Button, { type, htmlType: 'submit' });
     !anchorThemeCss.includes('.semi-tooltip-wrapper')
   ) {
     throw new Error('安装后的 Anchor 逐组件样式缺少 active、Tooltip 或 RTL 样式');
+  }
+  if (
+    !backTopThemeCss.includes('.semi-backtop') ||
+    !backTopThemeCss.includes('.semi-rtl .semi-backtop') ||
+    !backTopThemeCss.includes('.semi-button-with-icon-only')
+  ) {
+    throw new Error('安装后的 BackTop 逐组件样式缺少默认按钮或 RTL 样式');
   }
   if (!buttonThemeCss.includes('.semi-button-split')) {
     throw new Error('安装后的 Button 逐组件样式缺少 SplitButtonGroup 样式');

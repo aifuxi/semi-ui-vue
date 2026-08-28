@@ -866,6 +866,49 @@ p {
   gap: 16px;
 }
 
+.back-top-scenario {
+  display: grid;
+  gap: 16px;
+}
+
+.back-top-scenario__scroll {
+  overflow: auto;
+  height: 220px;
+  border: 1px solid var(--harness-border);
+  border-radius: 8px;
+  background: var(--harness-subtle);
+}
+
+.back-top-scenario__content {
+  display: flex;
+  box-sizing: border-box;
+  min-height: 620px;
+  padding: 24px;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--semi-color-text-0);
+}
+
+.back-top-scenario__content span,
+.back-top-scenario__status {
+  color: var(--semi-color-text-2);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.back-top-scenario__custom {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background: var(--semi-color-primary);
+  color: var(--semi-color-white);
+  font-size: 12px;
+  font-weight: 600;
+}
+
 .anchor-scenario__canvas {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 220px;
