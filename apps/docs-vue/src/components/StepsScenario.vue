@@ -13,7 +13,7 @@ const status = shallowRef('等待操作');
         aria-label="Fill progress"
         :current="1"
         data-parity-target="steps-fill"
-        @change="(index) => (status = `Fill：${index}`)"
+        @change="(index: number) => (status = `Fill：${index}`)"
       >
         <Step title="Finished" description="This is a description" />
         <Step title="In Progress" description="This is a description" />
@@ -27,7 +27,7 @@ const status = shallowRef('等待操作');
         data-parity-target="steps-basic"
         size="small"
         type="basic"
-        @change="(index) => (status = `Basic：${index}`)"
+        @change="(index: number) => (status = `Basic：${index}`)"
       >
         <Step title="Finished" description="This is a description" />
         <Step title="In Progress" description="This is a description" />
@@ -55,7 +55,7 @@ const status = shallowRef('等待操作');
         :current="1"
         data-parity-target="steps-nav"
         type="nav"
-        @change="(index) => (status = `Nav：${index}`)"
+        @change="(index: number) => (status = `Nav：${index}`)"
       >
         <Step title="Register account" />
         <Step title="Product usage" />

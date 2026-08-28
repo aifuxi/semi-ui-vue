@@ -29,6 +29,8 @@ export { SliderFoundation } from './slider.js';
 export type { SliderAdapter, SliderLengths } from './slider.js';
 export { SwitchFoundation } from './switch.js';
 export type { SwitchAdapter } from './switch.js';
+export { TabsFoundation } from './tabs.js';
+export type { TabsAdapter } from './tabs.js';
 export { TagInputFoundation } from './tag-input.js';
 export type { TagInputAdapter, TagInputSortEnd } from './tag-input.js';
 export {

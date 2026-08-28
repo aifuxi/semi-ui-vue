@@ -274,4 +274,16 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-steps-vertical');
     expect(html).toContain('semi-steps-nav');
   });
+
+  it('从固定 Tabs Adapter 渲染四类型、竖向、More 与折叠场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="tabs" />);
+
+    expect(html).toContain('data-parity-scenario="tabs"');
+    expect(html).toContain('data-testid="tabs-reference"');
+    expect(html).toContain('data-parity-target="tabs-line"');
+    expect(html).toContain('semi-tabs-bar-card');
+    expect(html).toContain('semi-tabs-bar-button');
+    expect(html).toContain('semi-tabs-bar-slash');
+    expect(html).toContain('semi-tabs-left');
+  });
 });

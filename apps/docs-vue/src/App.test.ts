@@ -464,4 +464,23 @@ describe('Vue 对照工作台', () => {
     expect(scenario.get('output').text()).toBe('Basic：0');
     wrapper.unmount();
   });
+
+  it('通过公共 Tabs 渲染四类型、竖向、More、折叠并闭环 change', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'tabs' } });
+    const scenario = wrapper.get('[data-testid="tabs-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-tabs')).toHaveLength(7);
+    expect(scenario.find('.semi-tabs-bar-card').exists()).toBe(true);
+    expect(scenario.find('.semi-tabs-bar-button').exists()).toBe(true);
+    expect(scenario.find('.semi-tabs-bar-slash').exists()).toBe(true);
+    expect(scenario.get('[data-parity-target="tabs-left"]').classes()).toContain('semi-tabs-left');
+    expect(scenario.find('.semi-tabs-bar-more-trigger').exists()).toBe(true);
+    expect(scenario.find('.semi-tabs-bar-collapse').exists()).toBe(true);
+    await scenario
+      .get('[data-parity-target="tabs-line"] [role="tab"]:nth-child(3)')
+      .trigger('click');
+    expect(scenario.get('output').text()).toBe('Line：line3');
+    wrapper.unmount();
+  });
 });

@@ -284,6 +284,7 @@ try {
 	await import('@workspace/ui/slider');
 	await import('@workspace/ui/space');
 	await import('@workspace/ui/steps');
+	await import('@workspace/ui/tabs');
 	await import('@workspace/ui/switch');
 	await import('@workspace/ui/tag-input');
 	await import('@workspace/ui/time-picker');
@@ -369,6 +370,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/steps.css').endsWith('/dist/steps.css')) {
 	  throw new Error('Steps 逐组件样式导出未指向 dist/steps.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/tabs.css').endsWith('/dist/tabs.css')) {
+	  throw new Error('Tabs 逐组件样式导出未指向 dist/tabs.css');
+	}
 	if (!import.meta.resolve('@workspace/theme-default/switch.css').endsWith('/dist/switch.css')) {
 	  throw new Error('Switch 逐组件样式导出未指向 dist/switch.css');
 	}
@@ -413,6 +417,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { Slider, type SliderValue } from '@workspace/ui/slider';
 	import { Space, type SpaceAlign, type SpaceSpacingValue } from '@workspace/ui/space';
 	import { Step, Steps, type StepsStatus, type StepsType } from '@workspace/ui/steps';
+	import { TabItem, TabPane, Tabs, type TabPosition, type TabType } from '@workspace/ui/tabs';
 	import { Switch, type SwitchSize } from '@workspace/ui/switch';
 	import { TagInput, type TagInputSize } from '@workspace/ui/tag-input';
 	import { TimePicker, type TimePickerType, type TimePickerValue } from '@workspace/ui/time-picker';
@@ -497,6 +502,13 @@ h(Button, { type, htmlType: 'submit' });
 	const stepsStatus: StepsStatus = 'warning';
 	h(Steps, { current: 1, type: stepsType }, () => [h(Step, { title: 'First' }), h(Step, { status: stepsStatus, title: 'Second' })]);
 	h(Steps.Step, { title: 'Compound Step' });
+	const tabType: TabType = 'card';
+	const tabPosition: TabPosition = 'top';
+	h(Tabs, { defaultActiveKey: 'first', type: tabType, tabPosition }, () => [
+	  h(TabPane, { itemKey: 'first', tab: 'First' }, () => 'First pane'),
+	  h(TabPane, { itemKey: 'second', tab: 'Second' }, () => 'Second pane'),
+	]);
+	h(TabItem, { itemKey: 'consumer', tab: 'Consumer', type: tabType });
 	const switchSize: SwitchSize = 'large';
 	h(Switch, { modelValue: true, size: switchSize, ariaLabel: 'consumer switch', 'onUpdate:modelValue': (_checked: boolean) => undefined });
 	const tagInputSize: TagInputSize = 'large';
@@ -913,6 +925,19 @@ h(Button, { type, htmlType: 'submit' });
     !stepsThemeCss.includes('.semi-icon-default')
   ) {
     throw new Error('安装后的 Steps 逐组件样式缺少状态、类型、RTL 或 Icon 样式');
+  }
+  const tabsThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'tabs.css'),
+    'utf8',
+  );
+  if (
+    !tabsThemeCss.includes('.semi-tabs-bar-card') ||
+    !tabsThemeCss.includes('.semi-tabs-bar-overflow-list') ||
+    !tabsThemeCss.includes('.semi-dropdown-menu') ||
+    !tabsThemeCss.includes('.semi-rtl .semi-tabs') ||
+    !tabsThemeCss.includes('.semi-icon-default')
+  ) {
+    throw new Error('安装后的 Tabs 逐组件样式缺少类型、折叠、Dropdown、RTL 或 Icon 样式');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

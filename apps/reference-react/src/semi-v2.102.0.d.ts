@@ -1075,4 +1075,68 @@ declare module '@semi-v2.102.0/steps' {
   export default Steps;
 }
 
+declare module '@semi-v2.102.0/tabs' {
+  import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
+
+  export type TabType = 'line' | 'card' | 'button' | 'slash';
+  export type TabSize = 'small' | 'medium' | 'large';
+  export type TabPosition = 'top' | 'left';
+
+  export interface PlainTab {
+    disabled?: boolean;
+    icon?: ReactNode;
+    itemKey: string;
+    tab?: ReactNode;
+    closable?: boolean;
+  }
+
+  export interface TabPaneProps extends PlainTab {
+    children?: ReactNode;
+    className?: string;
+    style?: CSSProperties;
+    tabIndex?: number;
+  }
+
+  export interface TabsProps {
+    activeKey?: string;
+    children?: ReactNode;
+    className?: string;
+    collapsible?: boolean | 'auto';
+    contentStyle?: CSSProperties;
+    defaultActiveKey?: string;
+    keepDOM?: boolean;
+    lazyRender?: boolean;
+    more?: number | { count: number; render?: () => ReactNode };
+    onChange?: (activeKey: string) => void;
+    onTabClick?: (activeKey: string, event: MouseEvent<Element>) => void;
+    onTabClose?: (tabKey: string) => void;
+    showRestInDropdown?: boolean;
+    size?: TabSize;
+    style?: CSSProperties;
+    tabBarClassName?: string;
+    tabBarExtraContent?: ReactNode;
+    tabBarStyle?: CSSProperties;
+    tabList?: PlainTab[];
+    tabPaneMotion?: boolean;
+    tabPosition?: TabPosition;
+    type?: TabType;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  export interface TabItemProps extends PlainTab {
+    selected?: boolean;
+    size?: TabSize;
+    tabPosition?: TabPosition;
+    type?: TabType;
+  }
+
+  type TabsComponent = ComponentType<TabsProps> & {
+    TabPane: ComponentType<TabPaneProps>;
+    TabItem: ComponentType<TabItemProps>;
+  };
+  const Tabs: TabsComponent;
+  export const TabPane: ComponentType<TabPaneProps>;
+  export default Tabs;
+}
+
 declare module 'virtual:semi-reference-styles.css';

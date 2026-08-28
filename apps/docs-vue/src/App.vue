@@ -29,6 +29,7 @@ import SelectScenario from './components/SelectScenario.vue';
 import SliderScenario from './components/SliderScenario.vue';
 import SpaceScenario from './components/SpaceScenario.vue';
 import StepsScenario from './components/StepsScenario.vue';
+import TabsScenario from './components/TabsScenario.vue';
 import SwitchScenario from './components/SwitchScenario.vue';
 import TagInputScenario from './components/TagInputScenario.vue';
 import TimePickerScenario from './components/TimePickerScenario.vue';
@@ -107,6 +108,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <SliderScenario v-else-if="scenario.id === 'slider'" :direction="props.direction" />
       <SpaceScenario v-else-if="scenario.id === 'space'" />
       <StepsScenario v-else-if="scenario.id === 'steps'" />
+      <TabsScenario v-else-if="scenario.id === 'tabs'" />
       <SwitchScenario v-else-if="scenario.id === 'switch'" />
       <TagInputScenario v-else-if="scenario.id === 'tag-input'" />
       <TimePickerScenario v-else-if="scenario.id === 'time-picker'" />

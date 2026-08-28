@@ -110,6 +110,10 @@
       "types": "./dist/steps/index.d.ts",
       "import": "./dist/steps/index.js"
     },
+    "./tabs": {
+      "types": "./dist/tabs/index.d.ts",
+      "import": "./dist/tabs/index.js"
+    },
     "./switch": {
       "types": "./dist/switch/index.d.ts",
       "import": "./dist/switch/index.js"

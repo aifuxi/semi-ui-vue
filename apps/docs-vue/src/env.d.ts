@@ -17,4 +17,5 @@ declare module 'virtual:workspace-layout-styles.css';
 declare module 'virtual:workspace-resizable-styles.css';
 declare module 'virtual:workspace-space-styles.css';
 declare module 'virtual:workspace-steps-styles.css';
+declare module 'virtual:workspace-tabs-styles.css';
 declare module 'virtual:workspace-typography-styles.css';

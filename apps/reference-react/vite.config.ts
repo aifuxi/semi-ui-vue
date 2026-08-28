@@ -39,6 +39,7 @@ const selectPublicEntry = path.join(upstreamPackages, 'semi-ui/select/index.tsx'
 const sliderPublicEntry = path.join(upstreamPackages, 'semi-ui/slider/index.tsx');
 const spacePublicEntry = path.join(upstreamPackages, 'semi-ui/space/index.tsx');
 const stepsPublicEntry = path.join(upstreamPackages, 'semi-ui/steps/index.tsx');
+const tabsPublicEntry = path.join(upstreamPackages, 'semi-ui/tabs/index.tsx');
 const switchPublicEntry = path.join(upstreamPackages, 'semi-ui/switch/index.tsx');
 const tagInputPublicEntry = path.join(upstreamPackages, 'semi-ui/tagInput/index.tsx');
 const timePickerPublicEntry = path.join(upstreamPackages, 'semi-ui/timePicker/index.tsx');
@@ -79,6 +80,10 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'space/space.scss'),
   '@douyinfe/semi-foundation/steps/steps.scss',
   path.join(foundationRoot, 'steps/steps.scss'),
+  '@douyinfe/semi-foundation/tabs/tabs.scss',
+  path.join(foundationRoot, 'tabs/tabs.scss'),
+  '@douyinfe/semi-foundation/dropdown/dropdown.scss',
+  path.join(foundationRoot, 'dropdown/dropdown.scss'),
   '@douyinfe/semi-foundation/switch/switch.scss',
   path.join(foundationRoot, 'switch/switch.scss'),
   '@douyinfe/semi-foundation/spin/spin.scss',
@@ -199,6 +204,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/slider', replacement: sliderPublicEntry },
       { find: '@semi-v2.102.0/space', replacement: spacePublicEntry },
       { find: '@semi-v2.102.0/steps', replacement: stepsPublicEntry },
+      { find: '@semi-v2.102.0/tabs', replacement: tabsPublicEntry },
       { find: '@semi-v2.102.0/switch', replacement: switchPublicEntry },
       { find: '@semi-v2.102.0/tag-input', replacement: tagInputPublicEntry },
       { find: '@semi-v2.102.0/time-picker', replacement: timePickerPublicEntry },
