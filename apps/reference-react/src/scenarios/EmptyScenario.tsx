@@ -1,45 +1,14 @@
 import React from 'react';
 import Empty from '@semi-v2.102.0/empty';
+import {
+  IllustrationNoContent,
+  IllustrationNoContentDark,
+  IllustrationSuccess,
+  IllustrationSuccessDark,
+} from '@semi-v2.102.0/illustrations';
 
 const STRING_IMAGE =
   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72"%3E%3Crect x="8" y="8" width="56" height="56" rx="14" fill="%23e8f3ff"/%3E%3Cpath d="M23 36h26M36 23v26" stroke="%230066ff" stroke-width="4" stroke-linecap="round"/%3E%3C/svg%3E';
-
-interface IllustrationProps {
-  dark?: boolean;
-  size: number;
-}
-
-function EmptyIllustration({ dark = false, size }: IllustrationProps): React.ReactElement {
-  return (
-    <svg
-      className="empty-scenario__illustration"
-      width={size}
-      height={size}
-      viewBox="0 0 120 120"
-      aria-hidden="true"
-      focusable="false"
-      data-variant={dark ? 'dark' : 'light'}
-    >
-      <rect x="10" y="14" width="100" height="92" rx="18" fill={dark ? '#242934' : '#f2f3f5'} />
-      <rect x="27" y="31" width="66" height="55" rx="10" fill={dark ? '#373e4d' : '#ffffff'} />
-      <circle cx="47" cy="51" r="8" fill={dark ? '#5e6d89' : '#c8d0dc'} />
-      <path
-        d="M35 76L52 61L63 70L76 56L86 76"
-        fill="none"
-        stroke={dark ? '#9aa9c3' : '#8f9bad'}
-        strokeWidth="6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M42 96H78"
-        stroke={dark ? '#6b7890' : '#c8d0dc'}
-        strokeWidth="6"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
 
 export function EmptyScenario(): React.ReactElement {
   return (
@@ -61,8 +30,20 @@ export function EmptyScenario(): React.ReactElement {
       <section className="empty-scenario__primary">
         <span className="empty-scenario__label">完整空状态</span>
         <Empty
-          image={<EmptyIllustration size={120} />}
-          darkModeImage={<EmptyIllustration dark size={120} />}
+          image={
+            <IllustrationNoContent
+              className="empty-scenario__illustration"
+              style={{ width: 150, height: 150 }}
+              data-variant="light"
+            />
+          }
+          darkModeImage={
+            <IllustrationNoContentDark
+              className="empty-scenario__illustration"
+              style={{ width: 150, height: 150 }}
+              data-variant="dark"
+            />
+          }
           title="暂无数据"
           description="创建第一条记录后，内容会显示在这里。"
           data-parity-target="empty-vertical"
@@ -86,8 +67,20 @@ export function EmptyScenario(): React.ReactElement {
           <span className="empty-scenario__label">水平布局</span>
           <Empty
             layout="horizontal"
-            image={<EmptyIllustration size={88} />}
-            darkModeImage={<EmptyIllustration dark size={88} />}
+            image={
+              <IllustrationSuccess
+                className="empty-scenario__illustration"
+                style={{ width: 150, height: 150 }}
+                data-variant="light"
+              />
+            }
+            darkModeImage={
+              <IllustrationSuccessDark
+                className="empty-scenario__illustration"
+                style={{ width: 150, height: 150 }}
+                data-variant="dark"
+              />
+            }
             title="操作已完成"
             description="你可以继续配置权限和通知规则。"
             data-parity-target="empty-horizontal"

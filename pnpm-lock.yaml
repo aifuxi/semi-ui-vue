@@ -122,6 +122,9 @@ importers:
       '@workspace/icons-lab':
         specifier: workspace:*
         version: link:../../packages/icons-lab
+      '@workspace/illustrations':
+        specifier: workspace:*
+        version: link:../../packages/illustrations
       '@workspace/test-infra':
         specifier: workspace:*
         version: link:../../packages/test-infra

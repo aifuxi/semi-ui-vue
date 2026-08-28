@@ -29,7 +29,7 @@ vendor/semi-design/      唯一、只读的 v2.102.0 参考源码
 - `apps/reference-react` 是唯一允许为参考运行读取本地固定上游的应用，后续负责提供真实 React 参考场景。
 - `apps/docs-vue` 消费 Vue 侧包并承载文档和可复现演示。
 - `packages/ui` 只通过 `packages/foundation-integration` 适配 Foundation 逻辑；不能在组件目录中散落导入 Foundation 源码。
-- `packages/theme-default` 直接从只读上游 SCSS 编译样式；`packages/icons*` 与 `packages/illustrations` 后续各自拥有资产生成脚本。
+- `packages/theme-default` 直接从只读上游 SCSS 编译样式；`packages/icons*` 与 `packages/illustrations` 各自通过生成脚本从固定上游 TSX AST 生成 Vue 资产，并由漂移检查锁定公开面。
 - `packages/theme-default/src/index.scss` 只作为仓库内构建入口；发布文件只包含编译后的 CSS，消费者不依赖 submodule。
 - 两个对照应用共用 `packages/test-infra/src/harness.css`，避免参考壳层的字体和布局环境发生漂移。
 - `packages/foundation-integration` 和 `packages/test-infra` 永不发布；公开包构建后不能留下对它们或 `vendor/` 的运行时引用。
@@ -44,6 +44,8 @@ Button 是首个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/button/` 
 Divider 是第二个进入 `ready` 的垂直切片：`packages/ui/src/divider/` 提供根/`divider` 子路径 ESM 与声明，`packages/theme-default/divider.css` 提供逐组件样式。它没有运行时 Foundation 状态机；纯文本与自定义 VNode 的 slot DOM 分支隔离在内容 renderer 中。完整矩阵见 `docs/components/divider/`。
 
 Icon 是第三个进入 `ready` 的横向基础设施切片：`packages/icons` 提供 Icon 基座、`convertIcon` 与稳定版 523 个图标，`packages/icons-lab` 独立提供 Lab 84 个图标，`packages/ui/src/icon/` 只转发稳定版基座。两套图标均从固定 submodule 的 TSX AST 生成 Vue `h()` 源码并由 `check:icons` 阻止漂移；`packages/theme-default/icon.css` 提供逐组件样式。完整矩阵与 React→Vue 迁移见 `docs/components/icon/`。
+
+Illustrations 是进入 `ready` 的横向资产切片：`packages/illustrations` 提供 `convertIllustration`、固定 v2.102.0 的全部 16 个 light/dark Vue 插画，以及根入口、工厂入口和逐插画 ESM/声明子路径。源码由 `scripts/generate-illustrations.mjs` 从只读上游 TSX AST 生成，`check:illustrations` 阻止公开导出、SVG 属性和生成文件漂移；桌面/移动、light/dark 的 React/Vue 逐插画与全画廊 PNG 已直接字节一致。完整矩阵与 React→Vue 迁移见 `docs/assets/illustrations/`。
 
 Space 是第四个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/space/` 提供根/`space` 子路径 ESM 与声明，`packages/theme-default/space.css` 提供逐组件样式。组件保持固定 Adapter 的 flex DOM、预设/数字/数组 gap、vertical、wrap 和 RTL 契约，不需要 Foundation 运行时实例。完整矩阵见 `docs/components/space/`。
 

@@ -20,16 +20,19 @@ import Empty, { type EmptyProps } from '@workspace/ui/empty';
 ```vue
 <script setup lang="ts">
 import { Empty } from '@workspace/ui';
+import { IllustrationConstruction, IllustrationConstructionDark } from '@workspace/illustrations';
 import '@workspace/theme-default/empty.css';
 </script>
 
 <template>
-  <Empty
-    image="/images/empty-light.svg"
-    dark-mode-image="/images/empty-dark.svg"
-    title="Under construction"
-    description="This feature is not available yet."
-  />
+  <Empty title="Under construction" description="This feature is not available yet.">
+    <template #image>
+      <IllustrationConstruction :style="{ width: '150px', height: '150px' }" />
+    </template>
+    <template #darkModeImage>
+      <IllustrationConstructionDark :style="{ width: '150px', height: '150px' }" />
+    </template>
+  </Empty>
 </template>
 ```
 
@@ -42,20 +45,16 @@ When `darkModeImage` exists, Empty observes the `theme-mode` attribute on `docum
 ```vue
 <script setup lang="ts">
 import { Button, Empty } from '@workspace/ui';
+import { IllustrationNoContent, IllustrationNoContentDark } from '@workspace/illustrations';
 </script>
 
 <template>
   <Empty title="No dashboards" description="Create your first dashboard to analyze data.">
     <template #image>
-      <svg width="150" height="150" viewBox="0 0 150 150" aria-hidden="true">
-        <rect x="20" y="28" width="110" height="94" rx="12" fill="var(--semi-color-fill-0)" />
-        <path
-          d="M45 93L68 70L84 84L105 58"
-          fill="none"
-          stroke="var(--semi-color-primary)"
-          stroke-width="6"
-        />
-      </svg>
+      <IllustrationNoContent :style="{ width: '150px', height: '150px' }" />
+    </template>
+    <template #darkModeImage>
+      <IllustrationNoContentDark :style="{ width: '150px', height: '150px' }" />
     </template>
     <Button type="primary" theme="solid">Create dashboard</Button>
   </Empty>

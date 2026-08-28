@@ -8,7 +8,7 @@
 - 常量、样式与 RTL：`vendor/semi-design/packages/semi-foundation/empty/constants.ts`、`variables.scss`、`empty.scss`、`rtl.scss`。
 - 默认主题与 Token：`vendor/semi-design/packages/semi-theme-default/scss/index.scss`、`global.scss`。
 - 文档与行为证据：`vendor/semi-design/content/show/empty/index.md`、`index-en-US.md`、`vendor/semi-design/packages/semi-ui/empty/__test__/empty.test.js`。
-- Empty 只复用已进入 `ready` 的 Typography、Button、ConfigProvider 与默认主题；`image`/`darkModeImage` 接受调用方提供的图片、SVG 或任意 VNode，不依赖尚未发布插画资产。它没有 Foundation JavaScript 状态机、Portal、定位或后续组件依赖，可独立形成完整切片。
+- Empty 复用已进入 `ready` 的 Typography、Button、ConfigProvider、默认主题与 Illustrations；`image`/`darkModeImage` 接受调用方提供的图片、SVG 或任意 VNode，官方基础、暗色和水平布局场景使用 `@workspace/illustrations` 的真实 150×150 插画。它没有 Foundation JavaScript 状态机、Portal、定位或后续组件依赖。
 
 ## Vue 组件边界
 
@@ -36,7 +36,7 @@
 | `style`             | 无         | Vue `StyleValue` prop；Vue 原生 style 由 attrs 合并   | 落在根节点                                                                                              |
 | `data-*`            | 无         | Vue attrs                                             | 固定 React `getDataAttr` 只选择 data attrs；Vue 同时保留原生 `aria-*` 和 DOM 监听器，不制造额外组件事件 |
 
-`title`、`description` 与 footer 使用固定 React truthy 语义：`null`、`undefined`、`false`、空字符串、空 slot、注释节点和空文本不生成对应 wrapper；数值 `0` 也不生成 wrapper。图片 wrapper 与 content wrapper始终存在。
+`title`、`description` 与 footer 使用固定 React truthy 语义：`null`、`undefined`、`false`、空字符串、注释节点和空文本不生成对应 wrapper；数值 `0` 也不生成 wrapper。数组本身是 truthy，即使为空也生成对应 wrapper；这项边界由单元测试锁定。图片 wrapper 与 content wrapper 始终存在。
 图片分支先按类型判断：空字符串仍是字符串，因此会生成 `src=""` 的 `img`，并使标题使用 `heading=4`；这与 title/description/footer 的 truthy 分支不同。
 
 ## DOM、class 与事件顺序
@@ -95,7 +95,7 @@
 
 - 单元：默认/水平布局、class/style/data/aria attrs、字符串/VNode/SVG 描述图片、imageStyle、标题 heading 分支、description/footer truthy 分支、命名 slot 优先级、字符串 alt、初始 dark、运行时 light/dark 切换、无暗色图不观察、卸载清理。
 - SSR：根/`empty` 子路径 import 安全；默认 DOM；light image；无 observer/DOM 副作用；包含标题、描述和 footer 时结构稳定。
-- React/Vue 参考场景：图片 + 标题 + 描述 + footer、无图片、水平布局、字符串图片和 SVG 描述对象；桌面 `1440×900`、移动 `390×844`，light/dark 与 RTL。
+- React/Vue 参考场景：真实 NoContent/Success light/dark 插画 + 标题 + 描述 + footer、无图片、水平布局、字符串图片和 SVG 描述对象；桌面 `1440×900`、移动 `390×844`，light/dark 与 RTL。
 - computed style：根、图片、内容、标题、描述、footer、水平 content 的 display、direction、font、颜色、间距和尺寸逐节点精确比较。
 - geometry：所有 parity target 的 bounding rect 各轴差值不超过 `0.5 CSS px`。
 - 截图：`threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`；React/Vue 裁剪截图另做像素缓冲区比较，只有比较结果为 0 才报告字节像素一致。
@@ -108,7 +108,7 @@
 ## 验收状态
 
 - 当前状态：`ready`；没有 accepted deviation。
-- 行为门禁：Empty 单元与 SSR 共 2 个文件、9 个测试通过；仓库单元门禁 70 个文件、519 个测试通过。
-- 视觉门禁：Empty 的固定来源、DOM/暗色切换/样式/几何、四组 light/dark 桌面与移动截图、RTL 共 7 个 Chromium 用例通过；5 组 React/Vue 裁剪截图逐缓冲区一致。仓库浏览器门禁 273 个用例通过。
+- 行为门禁：Empty 单元与 SSR 覆盖数组 truthy、图片分支、内容 wrapper、attrs、Observer 与 SSR；仓库单元门禁 71 个文件、527 个测试通过。
+- 视觉门禁：Empty 的固定 Adapter 与 Illustrations 来源、真实 NoContent/Success 插画、DOM/暗色切换/样式/几何、四组 light/dark 桌面与移动截图、RTL 共 7 个 Chromium 用例通过；5 组 React/Vue 裁剪截图逐缓冲区一致。
 - 发布门禁：根入口与 `empty` 子路径的 ESM、类型声明、SSR import、根主题与 `empty.css`、真实 tarball 安装、exports、许可证、第三方声明和 SBOM 验证通过。
-- 总门禁：`pnpm check:full` 通过。
+- 总门禁：`pnpm check` 通过；插画与 Empty 专项 Chromium 共 12 个用例通过。

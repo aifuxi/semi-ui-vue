@@ -14,6 +14,7 @@ import { CollapsibleScenario } from './scenarios/CollapsibleScenario';
 import { DescriptionsScenario } from './scenarios/DescriptionsScenario';
 import { DropdownScenario } from './scenarios/DropdownScenario';
 import { EmptyScenario } from './scenarios/EmptyScenario';
+import { IllustrationsScenario } from './scenarios/IllustrationsScenario';
 import { BackTopScenario } from './scenarios/BackTopScenario';
 import { BreadcrumbScenario } from './scenarios/BreadcrumbScenario';
 import { AutoCompleteScenario } from './scenarios/AutoCompleteScenario';
@@ -110,6 +111,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'descriptions' ? <DescriptionsScenario /> : null}
         {scenario.id === 'dropdown' ? <DropdownScenario /> : null}
         {scenario.id === 'empty' ? <EmptyScenario /> : null}
+        {scenario.id === 'illustrations' ? <IllustrationsScenario /> : null}
         {scenario.id === 'back-top' ? <BackTopScenario direction={options.direction} /> : null}
         {scenario.id === 'breadcrumb' ? <BreadcrumbScenario direction={options.direction} /> : null}
         {scenario.id === 'auto-complete' ? <AutoCompleteScenario /> : null}

@@ -87,6 +87,16 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-icon-avatar');
   });
 
+  it('从固定 Illustrations 入口渲染全部 light/dark 插画', () => {
+    const html = renderToStaticMarkup(<App scenarioId="illustrations" />);
+
+    expect(html).toContain('data-parity-scenario="illustrations"');
+    expect(html.match(/data-illustration=/g)).toHaveLength(16);
+    expect(html).toContain('data-illustration="NoContent"');
+    expect(html).toContain('data-illustration="NoContentDark"');
+    expect(html).toContain('viewBox="0 0 200 200"');
+  });
+
   it('从固定 Space Adapter 渲染完整参考场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="space" />);
 

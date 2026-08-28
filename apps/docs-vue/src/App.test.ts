@@ -40,6 +40,22 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
 
+  it('通过公共 Illustrations 包渲染全部 light/dark 插画', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'illustrations' } });
+    const scenario = wrapper.get('[data-testid="illustrations-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('svg')).toHaveLength(16);
+    expect(scenario.findAll('[data-illustration]')).toHaveLength(16);
+    expect(scenario.get('[data-illustration="NoContent"]').attributes('viewBox')).toBe(
+      '0 0 200 200',
+    );
+    expect(scenario.get('[data-illustration="NoContentDark"]').attributes('aria-hidden')).toBe(
+      'true',
+    );
+    wrapper.unmount();
+  });
+
   it('通过公共 Collapsible 渲染开合、摘要、自适应与懒渲染场景', async () => {
     const wrapper = mount(App, { props: { scenarioId: 'collapsible' } });
     const scenario = wrapper.get('[data-testid="collapsible-vue"]');

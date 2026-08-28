@@ -1423,6 +1423,29 @@ declare module '@semi-v2.102.0/empty' {
   export default Empty;
 }
 
+declare module '@semi-v2.102.0/illustrations' {
+  import type { ComponentType, SVGProps } from 'react';
+
+  type IllustrationComponent = ComponentType<SVGProps<SVGSVGElement>>;
+
+  export const IllustrationConstruction: IllustrationComponent;
+  export const IllustrationConstructionDark: IllustrationComponent;
+  export const IllustrationFailure: IllustrationComponent;
+  export const IllustrationFailureDark: IllustrationComponent;
+  export const IllustrationIdle: IllustrationComponent;
+  export const IllustrationIdleDark: IllustrationComponent;
+  export const IllustrationNoAccess: IllustrationComponent;
+  export const IllustrationNoAccessDark: IllustrationComponent;
+  export const IllustrationNoContent: IllustrationComponent;
+  export const IllustrationNoContentDark: IllustrationComponent;
+  export const IllustrationNoResult: IllustrationComponent;
+  export const IllustrationNoResultDark: IllustrationComponent;
+  export const IllustrationNotFound: IllustrationComponent;
+  export const IllustrationNotFoundDark: IllustrationComponent;
+  export const IllustrationSuccess: IllustrationComponent;
+  export const IllustrationSuccessDark: IllustrationComponent;
+}
+
 declare module '@semi-v2.102.0/calendar' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import {
+  IllustrationNoContent,
+  IllustrationNoContentDark,
+  IllustrationSuccess,
+  IllustrationSuccessDark,
+} from '@workspace/illustrations';
 import { Empty } from '@workspace/ui';
 
 const stringImage =
@@ -29,52 +35,18 @@ const stringImage =
         data-parity-target="empty-vertical"
       >
         <template #image>
-          <svg
+          <IllustrationNoContent
             class="empty-scenario__illustration"
-            width="120"
-            height="120"
-            viewBox="0 0 120 120"
-            aria-hidden="true"
-            focusable="false"
+            :style="{ width: '150px', height: '150px' }"
             data-variant="light"
-          >
-            <rect x="10" y="14" width="100" height="92" rx="18" fill="#f2f3f5" />
-            <rect x="27" y="31" width="66" height="55" rx="10" fill="#ffffff" />
-            <circle cx="47" cy="51" r="8" fill="#c8d0dc" />
-            <path
-              d="M35 76L52 61L63 70L76 56L86 76"
-              fill="none"
-              stroke="#8f9bad"
-              stroke-width="6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path d="M42 96H78" stroke="#c8d0dc" stroke-width="6" stroke-linecap="round" />
-          </svg>
+          />
         </template>
         <template #darkModeImage>
-          <svg
+          <IllustrationNoContentDark
             class="empty-scenario__illustration"
-            width="120"
-            height="120"
-            viewBox="0 0 120 120"
-            aria-hidden="true"
-            focusable="false"
+            :style="{ width: '150px', height: '150px' }"
             data-variant="dark"
-          >
-            <rect x="10" y="14" width="100" height="92" rx="18" fill="#242934" />
-            <rect x="27" y="31" width="66" height="55" rx="10" fill="#373e4d" />
-            <circle cx="47" cy="51" r="8" fill="#5e6d89" />
-            <path
-              d="M35 76L52 61L63 70L76 56L86 76"
-              fill="none"
-              stroke="#9aa9c3"
-              stroke-width="6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path d="M42 96H78" stroke="#6b7890" stroke-width="6" stroke-linecap="round" />
-          </svg>
+          />
         </template>
         <button class="empty-scenario__action" type="button">创建记录</button>
       </Empty>
@@ -98,52 +70,18 @@ const stringImage =
           data-parity-target="empty-horizontal"
         >
           <template #image>
-            <svg
+            <IllustrationSuccess
               class="empty-scenario__illustration"
-              width="88"
-              height="88"
-              viewBox="0 0 120 120"
-              aria-hidden="true"
-              focusable="false"
+              :style="{ width: '150px', height: '150px' }"
               data-variant="light"
-            >
-              <rect x="10" y="14" width="100" height="92" rx="18" fill="#f2f3f5" />
-              <rect x="27" y="31" width="66" height="55" rx="10" fill="#ffffff" />
-              <circle cx="47" cy="51" r="8" fill="#c8d0dc" />
-              <path
-                d="M35 76L52 61L63 70L76 56L86 76"
-                fill="none"
-                stroke="#8f9bad"
-                stroke-width="6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path d="M42 96H78" stroke="#c8d0dc" stroke-width="6" stroke-linecap="round" />
-            </svg>
+            />
           </template>
           <template #darkModeImage>
-            <svg
+            <IllustrationSuccessDark
               class="empty-scenario__illustration"
-              width="88"
-              height="88"
-              viewBox="0 0 120 120"
-              aria-hidden="true"
-              focusable="false"
+              :style="{ width: '150px', height: '150px' }"
               data-variant="dark"
-            >
-              <rect x="10" y="14" width="100" height="92" rx="18" fill="#242934" />
-              <rect x="27" y="31" width="66" height="55" rx="10" fill="#373e4d" />
-              <circle cx="47" cy="51" r="8" fill="#5e6d89" />
-              <path
-                d="M35 76L52 61L63 70L76 56L86 76"
-                fill="none"
-                stroke="#9aa9c3"
-                stroke-width="6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path d="M42 96H78" stroke="#6b7890" stroke-width="6" stroke-linecap="round" />
-            </svg>
+            />
           </template>
           <a class="empty-scenario__link" href="#details">查看详情</a>
         </Empty>

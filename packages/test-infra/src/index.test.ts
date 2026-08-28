@@ -41,6 +41,21 @@ describe('parity infrastructure contract', () => {
         REFERENCE_SOURCE_PATHS.emptyFoundationConstants,
         REFERENCE_SOURCE_PATHS.emptyFoundationStyle,
         REFERENCE_SOURCE_PATHS.emptyDocumentation,
+        REFERENCE_SOURCE_PATHS.illustrationsPublicEntry,
+      ]),
+    );
+  });
+  it('records all pinned illustration sources as a complete parity scene', () => {
+    expect(getParityScenario('illustrations')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.illustrationsPublicEntry,
+    });
+    expect(assertScenarioComparable('illustrations').targets).toHaveLength(16);
+    expect(getParityScenario('illustrations').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.illustrationsSourceDirectory,
+        REFERENCE_SOURCE_PATHS.illustrationsSvgDirectory,
       ]),
     );
   });

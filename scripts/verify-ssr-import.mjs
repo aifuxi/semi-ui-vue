@@ -141,4 +141,12 @@ for (const packageName of publicPackages) {
     await import(pathToFileURL(path.join(distPath, 'icons', 'IconAvatar.js')).href);
     process.stdout.write('SSR import 通过：packages/icons-lab 的 Icon 基座与代表图标\n');
   }
+
+  if (packageName === 'illustrations') {
+    await import(pathToFileURL(path.join(distPath, 'components', 'Illustration.js')).href);
+    await import(
+      pathToFileURL(path.join(distPath, 'illustrations', 'IllustrationNoContent.js')).href
+    );
+    process.stdout.write('SSR import 通过：packages/illustrations 的工厂与代表插画\n');
+  }
 }

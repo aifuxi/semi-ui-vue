@@ -30,7 +30,9 @@ let observedBody: HTMLElement | null = null;
 let themeObserver: MutationObserver | null = null;
 
 function hasTruthyContent(content: VNodeChild | EmptySvgNode): boolean {
-  if (Array.isArray(content)) return content.some((item) => hasTruthyContent(item));
+  // React's render branches test the ReactNode value itself. Arrays, including
+  // empty arrays, are objects and therefore select the wrapper/image branch.
+  if (Array.isArray(content)) return true;
   if (
     content === null ||
     content === undefined ||

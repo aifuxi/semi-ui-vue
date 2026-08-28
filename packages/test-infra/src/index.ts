@@ -62,6 +62,9 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   emptyFoundationConstants: 'vendor/semi-design/packages/semi-foundation/empty/constants.ts',
   emptyFoundationStyle: 'vendor/semi-design/packages/semi-foundation/empty/empty.scss',
   emptyDocumentation: 'vendor/semi-design/content/show/empty/index.md',
+  illustrationsPublicEntry: 'vendor/semi-design/packages/semi-illustrations/src/index.ts',
+  illustrationsSourceDirectory: 'vendor/semi-design/packages/semi-illustrations/src/illustrations',
+  illustrationsSvgDirectory: 'vendor/semi-design/packages/semi-illustrations/src/svgs',
   backTopPublicEntry: 'vendor/semi-design/packages/semi-ui/backtop/index.tsx',
   backTopFoundation: 'vendor/semi-design/packages/semi-foundation/backtop/foundation.ts',
   backTopFoundationStyle: 'vendor/semi-design/packages/semi-foundation/backtop/backtop.scss',
@@ -253,6 +256,25 @@ export interface ParityScenarioDefinition {
   readonly sourceEvidence: readonly string[];
   readonly targets: readonly ScenarioTarget[];
 }
+
+const ILLUSTRATION_PARITY_NAMES = [
+  'Construction',
+  'ConstructionDark',
+  'Failure',
+  'FailureDark',
+  'Idle',
+  'IdleDark',
+  'NoAccess',
+  'NoAccessDark',
+  'NoContent',
+  'NoContentDark',
+  'NoResult',
+  'NoResultDark',
+  'NotFound',
+  'NotFoundDark',
+  'Success',
+  'SuccessDark',
+] as const;
 
 export const PARITY_SCENARIOS = [
   {
@@ -523,7 +545,7 @@ export const PARITY_SCENARIOS = [
     id: 'empty',
     title: 'Empty 空状态',
     description:
-      '验证图片/暗色图片、标题、描述、footer、无图片、水平布局、SVG 描述对象、字符串图片、暗色、移动端与 RTL。',
+      '验证真实 NoContent/Success light/dark 插画、标题、描述、footer、无图片、水平布局、SVG 描述对象、字符串图片、暗色、移动端与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.emptyPublicEntry,
@@ -532,6 +554,7 @@ export const PARITY_SCENARIOS = [
       REFERENCE_SOURCE_PATHS.emptyFoundationConstants,
       REFERENCE_SOURCE_PATHS.emptyFoundationStyle,
       REFERENCE_SOURCE_PATHS.emptyDocumentation,
+      REFERENCE_SOURCE_PATHS.illustrationsPublicEntry,
     ],
     targets: [
       {
@@ -575,6 +598,25 @@ export const PARITY_SCENARIOS = [
         computedStyleProperties: ['display', 'height', 'width'],
       },
     ],
+  },
+  {
+    id: 'illustrations',
+    title: 'Illustrations 插画',
+    description:
+      '验证固定 v2.102.0 的全部 16 个 light/dark 插画、200×200 SVG、attrs、桌面/移动与主题 Token。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.illustrationsPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.illustrationsPublicEntry,
+      REFERENCE_SOURCE_PATHS.illustrationsSourceDirectory,
+      REFERENCE_SOURCE_PATHS.illustrationsSvgDirectory,
+    ],
+    targets: ILLUSTRATION_PARITY_NAMES.map((name) => ({
+      id: `illustration-${name}`,
+      selector: `[data-illustration="${name}"]`,
+      computedStyleProperties: ['display', 'height', 'width'],
+    })),
   },
   {
     id: 'card',

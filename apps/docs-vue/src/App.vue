@@ -15,6 +15,7 @@ import CollapsibleScenario from './components/CollapsibleScenario.vue';
 import DescriptionsScenario from './components/DescriptionsScenario.vue';
 import DropdownScenario from './components/DropdownScenario.vue';
 import EmptyScenario from './components/EmptyScenario.vue';
+import IllustrationsScenario from './components/IllustrationsScenario.vue';
 import BackTopScenario from './components/BackTopScenario.vue';
 import BreadcrumbScenario from './components/BreadcrumbScenario.vue';
 import AutoCompleteScenario from './components/AutoCompleteScenario.vue';
@@ -104,6 +105,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <DescriptionsScenario v-else-if="scenario.id === 'descriptions'" />
       <DropdownScenario v-else-if="scenario.id === 'dropdown'" />
       <EmptyScenario v-else-if="scenario.id === 'empty'" />
+      <IllustrationsScenario v-else-if="scenario.id === 'illustrations'" />
       <BackTopScenario v-else-if="scenario.id === 'back-top'" :direction="props.direction" />
       <BreadcrumbScenario v-else-if="scenario.id === 'breadcrumb'" :direction="props.direction" />
       <AutoCompleteScenario v-else-if="scenario.id === 'auto-complete'" />

@@ -304,10 +304,14 @@ try {
 	await import('@workspace/icons/icons/IconHome');
 	await import('@workspace/icons-lab/Icon');
 	await import('@workspace/icons-lab/icons/IconAvatar');
+	await import('@workspace/illustrations/Illustration');
+	await import('@workspace/illustrations/illustrations/IllustrationNoContent');
 	const stableIcons = await import('@workspace/icons');
 	const labIcons = await import('@workspace/icons-lab');
+	const illustrations = await import('@workspace/illustrations');
 	if (Object.keys(stableIcons).length !== 525) throw new Error('稳定版 Icon 根导出数量不完整');
 	if (Object.keys(labIcons).length !== 85) throw new Error('Lab Icon 根导出数量不完整');
+	if (Object.keys(illustrations).length !== 17) throw new Error('Illustrations 根导出数量不完整');
 	const rootTheme = import.meta.resolve('@workspace/theme-default');
 const cssTheme = import.meta.resolve('@workspace/theme-default/index.css');
 if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 index.css');
@@ -478,6 +482,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import IconHomeDirect from '@workspace/icons/icons/IconHome';
 	import { IconAvatar } from '@workspace/icons-lab';
 	import IconAvatarDirect from '@workspace/icons-lab/icons/IconAvatar';
+	import { IllustrationNoContent, type IllustrationProps } from '@workspace/illustrations';
+	import { convertIllustration } from '@workspace/illustrations/Illustration';
+	import IllustrationNoContentDirect from '@workspace/illustrations/illustrations/IllustrationNoContent';
 	import { h } from 'vue';
 const type: ButtonType = 'primary';
 h(Button, { type, htmlType: 'submit' });
@@ -620,6 +627,10 @@ h(Button, { type, htmlType: 'submit' });
 	h(IconAvatar, { size: 'extra-large' });
 	h(IconAvatarDirect);
 	convertIcon(() => h('svg'), 'IconConsumer');
+	const illustrationProps: IllustrationProps = { 'aria-label': 'empty', width: 150 };
+	h(IllustrationNoContent, illustrationProps);
+	h(IllustrationNoContentDirect, { class: 'consumer-illustration' });
+	convertIllustration((props) => h('svg', props), 'IllustrationConsumer');
 	`,
   );
   await writeFile(

@@ -94,6 +94,28 @@ describe('Empty', () => {
     expect(empty.get('.semi-empty-image img').attributes()).toMatchObject({ alt: '', src: '' });
   });
 
+  it('按固定 React truthy 分支保留数组内容 wrapper', () => {
+    const wrapper = mount(
+      defineComponent({
+        render: () =>
+          h(
+            Empty,
+            {
+              image: [] as never,
+              title: [] as never,
+              description: [] as never,
+            },
+            { default: () => [] },
+          ),
+      }),
+    );
+
+    expect(wrapper.get('.semi-empty-image').find('img, svg').exists()).toBe(false);
+    expect(wrapper.find('h4.semi-empty-title').exists()).toBe(true);
+    expect(wrapper.find('.semi-empty-description').exists()).toBe(true);
+    expect(wrapper.find('.semi-empty-footer').exists()).toBe(true);
+  });
+
   it('合并兼容 class、Vue attrs/style 并保留根节点原生事件', async () => {
     const click = vi.fn();
     const wrapper = mount(Empty, {

@@ -8,6 +8,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@workspace/ui': fileURLToPath(new URL('./packages/ui/src/index.ts', import.meta.url)),
+      '@workspace/illustrations': fileURLToPath(
+        new URL('./packages/illustrations/src/index.ts', import.meta.url),
+      ),
       '@douyinfe/semi-animation': fileURLToPath(
         new URL('./vendor/semi-design/packages/semi-animation/index.ts', import.meta.url),
       ),
@@ -46,6 +49,9 @@ export default defineConfig({
       ),
       '@semi-v2.102.0/empty': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiEmptyStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/illustrations': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiIllustrationsStub.tsx', import.meta.url),
       ),
       '@semi-v2.102.0/card-group': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiCardGroupStub.tsx', import.meta.url),
