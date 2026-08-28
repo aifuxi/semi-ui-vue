@@ -1322,6 +1322,47 @@ declare module '@semi-v2.102.0/collapsible' {
   export default Collapsible;
 }
 
+declare module '@semi-v2.102.0/descriptions' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface DescriptionsDataItem {
+    key?: ReactNode;
+    value?: ReactNode | (() => ReactNode);
+    hidden?: boolean;
+    span?: number;
+    keyStyle?: CSSProperties;
+  }
+
+  export interface DescriptionsItemProps {
+    children?: ReactNode | (() => ReactNode);
+    className?: string;
+    hidden?: boolean;
+    itemKey?: ReactNode;
+    keyStyle?: CSSProperties;
+    span?: number;
+    style?: CSSProperties;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  export interface DescriptionsProps {
+    align?: 'center' | 'justify' | 'left' | 'plain';
+    children?: ReactNode;
+    className?: string;
+    column?: number;
+    data?: DescriptionsDataItem[];
+    layout?: 'horizontal' | 'vertical';
+    row?: boolean;
+    size?: 'small' | 'medium' | 'large';
+    style?: CSSProperties;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Descriptions: ComponentType<DescriptionsProps> & {
+    Item: ComponentType<DescriptionsItemProps>;
+  };
+  export default Descriptions;
+}
+
 declare module '@semi-v2.102.0/calendar' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

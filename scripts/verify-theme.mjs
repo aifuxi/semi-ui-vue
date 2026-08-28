@@ -57,6 +57,20 @@ const collapsibleCssPath = path.join(
   'dist',
   'collapsible.css',
 );
+const descriptionsEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'descriptions.scss',
+);
+const descriptionsCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'descriptions.css',
+);
 const backTopEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -354,6 +368,7 @@ const requiredSelectors = [
   '.semi-card',
   '.semi-carousel',
   '.semi-collapsible-transition',
+  '.semi-descriptions-horizontal',
   '.semi-divider',
   '.semi-floatButton',
   '.semi-row',
@@ -1172,6 +1187,28 @@ if (
   throw new Error('Collapsible 逐组件样式产物缺少高度或透明度过渡');
 }
 
+const expectedDescriptionsImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/descriptions/descriptions.scss'),
+];
+const descriptionsEntrySource = await readFile(descriptionsEntryPath, 'utf8');
+const actualDescriptionsImports = [
+  ...descriptionsEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g),
+].map((match) => match[1]);
+if (JSON.stringify(actualDescriptionsImports) !== JSON.stringify(expectedDescriptionsImports)) {
+  throw new Error('Descriptions 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const descriptionsCss = await readFile(descriptionsCssPath, 'utf8');
+if (
+  !descriptionsCss.includes('.semi-descriptions-horizontal') ||
+  !descriptionsCss.includes('.semi-descriptions-double-large') ||
+  !descriptionsCss.includes('.semi-rtl .semi-descriptions')
+) {
+  throw new Error('Descriptions 逐组件样式产物缺少横向、双行或 RTL 样式');
+}
+
 const expectedSwitchImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -1412,5 +1449,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 Anchor/Avatar/Badge/Calendar/Card/Carousel/Collapsible/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + calendarCss.length + cardCss.length + carouselCss.length + collapsibleCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/Avatar/Badge/Calendar/Card/Carousel/Collapsible/Descriptions/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + calendarCss.length + cardCss.length + carouselCss.length + collapsibleCss.length + descriptionsCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

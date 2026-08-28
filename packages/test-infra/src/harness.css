@@ -1901,6 +1901,38 @@ p {
   background: linear-gradient(225deg, var(--semi-color-fill-0), transparent 72%);
 }
 
+.descriptions-scenario {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.descriptions-scenario__section {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--harness-border);
+  border-radius: 10px;
+  background: var(--harness-subtle);
+}
+
+.descriptions-scenario__section--wide,
+.descriptions-scenario__section--double {
+  grid-column: 1 / -1;
+}
+
+.descriptions-scenario__section h3 {
+  margin: 0 0 14px;
+  color: var(--semi-color-text-0);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.descriptions-scenario__sizes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
 .scenario-unavailable {
   margin-top: 24px;
   padding: 18px 20px;
@@ -1946,6 +1978,11 @@ p {
 }
 
 @media (max-width: 600px) {
+  .descriptions-scenario,
+  .descriptions-scenario__sizes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .collapsible-scenario__grid {
     grid-template-columns: 1fr;
   }

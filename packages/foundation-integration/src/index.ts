@@ -33,6 +33,8 @@ export { CarouselFoundation } from './carousel.js';
 export type { CarouselAdapter } from './carousel.js';
 export { CollapsibleFoundation } from './collapsible.js';
 export type { CollapsibleAdapter } from './collapsible.js';
+export { DescriptionsFoundation } from './descriptions.js';
+export type { DescriptionsAdapter } from './descriptions.js';
 export { AutoCompleteFoundation } from './auto-complete.js';
 export type { AutoCompleteAdapter } from './auto-complete.js';
 export { CheckboxFoundation, CheckboxGroupFoundation } from './checkbox.js';

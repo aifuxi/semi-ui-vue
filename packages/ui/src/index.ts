@@ -5,6 +5,7 @@ export * from './calendar';
 export * from './card';
 export * from './carousel';
 export * from './collapsible';
+export * from './descriptions';
 export * from './back-top';
 export * from './breadcrumb';
 export * from './auto-complete';

@@ -4,6 +4,23 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 Descriptions 渲染 data、Item、双行与横向场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'descriptions', direction: 'rtl' } });
+    const scenario = wrapper.get('[data-testid="descriptions-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-descriptions')).toHaveLength(7);
+    expect(scenario.find('.semi-descriptions-double-large').exists()).toBe(true);
+    expect(scenario.get('[data-parity-target="descriptions-horizontal"]').classes()).toContain(
+      'semi-descriptions-horizontal',
+    );
+    expect(
+      scenario.get('[data-parity-target="descriptions-horizontal"]').findAll('tr'),
+    ).toHaveLength(2);
+    expect(scenario.text()).not.toContain('不可见');
+    wrapper.unmount();
+  });
+
   it('通过公共 Collapsible 渲染开合、摘要、自适应与懒渲染场景', async () => {
     const wrapper = mount(App, { props: { scenarioId: 'collapsible' } });
     const scenario = wrapper.get('[data-testid="collapsible-vue"]');

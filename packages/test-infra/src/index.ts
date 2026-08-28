@@ -45,6 +45,12 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   collapsibleFoundationStyle:
     'vendor/semi-design/packages/semi-foundation/collapsible/collapsible.scss',
   collapsibleDocumentation: 'vendor/semi-design/content/show/collapsible/index.md',
+  descriptionsPublicEntry: 'vendor/semi-design/packages/semi-ui/descriptions/index.tsx',
+  descriptionsItemEntry: 'vendor/semi-design/packages/semi-ui/descriptions/item.tsx',
+  descriptionsFoundation: 'vendor/semi-design/packages/semi-foundation/descriptions/foundation.ts',
+  descriptionsFoundationStyle:
+    'vendor/semi-design/packages/semi-foundation/descriptions/descriptions.scss',
+  descriptionsDocumentation: 'vendor/semi-design/content/show/descriptions/index.md',
   backTopPublicEntry: 'vendor/semi-design/packages/semi-ui/backtop/index.tsx',
   backTopFoundation: 'vendor/semi-design/packages/semi-foundation/backtop/foundation.ts',
   backTopFoundationStyle: 'vendor/semi-design/packages/semi-foundation/backtop/backtop.scss',
@@ -376,6 +382,58 @@ export const PARITY_SCENARIOS = [
         id: 'collapsible-adaptive',
         selector: '[data-parity-target="collapsible-adaptive"]',
         computedStyleProperties: ['height', 'opacity', 'overflow', 'width'],
+      },
+    ],
+  },
+  {
+    id: 'descriptions',
+    title: 'Descriptions 描述列表',
+    description:
+      '验证 data/Item、四种对齐、双行尺寸、横向 column/span/hidden、VNode 内容、暗色、移动端与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.descriptionsPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.descriptionsPublicEntry,
+      REFERENCE_SOURCE_PATHS.descriptionsItemEntry,
+      REFERENCE_SOURCE_PATHS.descriptionsFoundation,
+      REFERENCE_SOURCE_PATHS.descriptionsFoundationStyle,
+      REFERENCE_SOURCE_PATHS.descriptionsDocumentation,
+    ],
+    targets: [
+      {
+        id: 'descriptions-default',
+        selector: '[data-parity-target="descriptions-default"]',
+        computedStyleProperties: ['color', 'fontSize', 'lineHeight', 'width'],
+      },
+      {
+        id: 'descriptions-default-key',
+        selector:
+          '[data-parity-target="descriptions-default"] tbody > tr:first-child .semi-descriptions-key',
+        computedStyleProperties: ['color', 'fontSize', 'fontWeight', 'lineHeight', 'whiteSpace'],
+      },
+      {
+        id: 'descriptions-plain-value',
+        selector:
+          '[data-parity-target="descriptions-plain"] tbody > tr:first-child .semi-descriptions-value',
+        computedStyleProperties: ['color', 'display', 'fontSize', 'lineHeight', 'paddingLeft'],
+      },
+      {
+        id: 'descriptions-double-large-value',
+        selector:
+          '[data-parity-target="descriptions-double"] .semi-descriptions-double-large tbody > tr:first-child .semi-descriptions-value',
+        computedStyleProperties: ['color', 'fontSize', 'fontWeight', 'lineHeight'],
+      },
+      {
+        id: 'descriptions-horizontal',
+        selector: '[data-parity-target="descriptions-horizontal"]',
+        computedStyleProperties: ['direction', 'lineHeight', 'width'],
+      },
+      {
+        id: 'descriptions-horizontal-cell',
+        selector:
+          '[data-parity-target="descriptions-horizontal"] tbody > tr:first-child .semi-descriptions-item-td:first-of-type',
+        computedStyleProperties: ['paddingBottom', 'textAlign', 'verticalAlign', 'width'],
       },
     ],
   },

@@ -302,6 +302,18 @@ describe('React 参考工作台', () => {
     expect(html).not.toContain('data-lazy-content');
   });
 
+  it('从固定 Descriptions Adapter 渲染 data、Item、双行与横向场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="descriptions" />);
+
+    expect(html).toContain('data-parity-scenario="descriptions"');
+    expect(html).toContain('data-testid="descriptions-reference"');
+    expect(html).toContain('data-parity-target="descriptions-default"');
+    expect(html).toContain('semi-descriptions-double-large');
+    expect(html).toContain('semi-descriptions-horizontal');
+    expect(html).toContain('colSpan="3"');
+    expect(html).not.toContain('不可见');
+  });
+
   it('从固定 BackTop Adapter 渲染 Element target、默认与自定义场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="back-top" />);
 

@@ -11,6 +11,23 @@ import {
 } from './index';
 
 describe('parity infrastructure contract', () => {
+  it('records Descriptions Adapter, Item, Foundation, styles and docs', () => {
+    expect(getParityScenario('descriptions')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.descriptionsPublicEntry,
+    });
+    expect(assertScenarioComparable('descriptions').targets).toHaveLength(6);
+    expect(getParityScenario('descriptions').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.descriptionsItemEntry,
+        REFERENCE_SOURCE_PATHS.descriptionsFoundation,
+        REFERENCE_SOURCE_PATHS.descriptionsFoundationStyle,
+        REFERENCE_SOURCE_PATHS.descriptionsDocumentation,
+      ]),
+    );
+  });
+
   it('records Collapsible Adapter, Foundation, styles and docs', () => {
     expect(getParityScenario('collapsible')).toMatchObject({
       referenceStatus: 'ready',
