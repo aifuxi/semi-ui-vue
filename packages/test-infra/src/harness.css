@@ -898,6 +898,36 @@ p {
   line-height: 20px;
 }
 
+.pagination-scenario {
+  display: grid;
+  gap: 16px;
+}
+
+.pagination-scenario__section {
+  display: grid;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--harness-border);
+  border-radius: 8px;
+  background: var(--harness-subtle);
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.pagination-scenario__row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.pagination-scenario__label,
+.pagination-scenario__status {
+  color: var(--semi-color-text-2);
+  font-size: 13px;
+  line-height: 20px;
+}
+
 .back-top-scenario__scroll {
   overflow: auto;
   height: 220px;

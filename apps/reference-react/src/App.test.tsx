@@ -252,4 +252,15 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-breadcrumb-wrapper-loose');
     expect(html).toContain('aria-current="page"');
   });
+
+  it('从固定 Pagination Adapter 渲染截断、容量、快速跳页、small 与禁用场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="pagination" locale="en-US" />);
+
+    expect(html).toContain('data-parity-scenario="pagination"');
+    expect(html).toContain('data-testid="pagination-reference"');
+    expect(html).toContain('data-parity-target="pagination-basic"');
+    expect(html).toContain('semi-page-switch');
+    expect(html).toContain('semi-page-quickjump');
+    expect(html).toContain('semi-page-small');
+  });
 });

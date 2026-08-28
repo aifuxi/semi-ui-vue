@@ -109,6 +109,40 @@ declare module '@semi-v2.102.0/breadcrumb' {
   export default Breadcrumb;
 }
 
+declare module '@semi-v2.102.0/pagination' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface PaginationProps {
+    children?: ReactNode;
+    className?: string;
+    currentPage?: number;
+    defaultCurrentPage?: number;
+    disabled?: boolean;
+    hideOnSinglePage?: boolean;
+    hoverShowPageSelect?: boolean;
+    nextText?: ReactNode;
+    onChange?: (currentPage: number, pageSize: number) => void;
+    onPageChange?: (currentPage: number) => void;
+    onPageSizeChange?: (pageSize: number) => void;
+    pageSize?: number;
+    pageSizeOpts?: number[];
+    popoverPosition?: string;
+    popoverZIndex?: number;
+    preventPageChangeOnPageSizeChange?: boolean;
+    prevText?: ReactNode;
+    showQuickJumper?: boolean;
+    showSizeChanger?: boolean;
+    showTotal?: boolean;
+    size?: 'small' | 'default';
+    style?: CSSProperties;
+    total?: number;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Pagination: ComponentType<PaginationProps>;
+  export default Pagination;
+}
+
 declare module '@semi-v2.102.0/button' {
   import type { ButtonHTMLAttributes, ComponentType, ReactNode } from 'react';
 

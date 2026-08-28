@@ -20,6 +20,7 @@ import { LayoutScenario } from './scenarios/LayoutScenario';
 import { InputScenario } from './scenarios/InputScenario';
 import { InputNumberScenario } from './scenarios/InputNumberScenario';
 import { PinCodeScenario } from './scenarios/PinCodeScenario';
+import { PaginationScenario } from './scenarios/PaginationScenario';
 import { RadioScenario } from './scenarios/RadioScenario';
 import { RatingScenario } from './scenarios/RatingScenario';
 import { ResizableScenario } from './scenarios/ResizableScenario';
@@ -101,6 +102,9 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'input' ? <InputScenario /> : null}
         {scenario.id === 'input-number' ? <InputNumberScenario /> : null}
         {scenario.id === 'pin-code' ? <PinCodeScenario /> : null}
+        {scenario.id === 'pagination' ? (
+          <PaginationScenario direction={options.direction} locale={options.locale} />
+        ) : null}
         {scenario.id === 'radio' ? <RadioScenario /> : null}
         {scenario.id === 'rating' ? <RatingScenario /> : null}
         {scenario.id === 'resizable' ? <ResizableScenario /> : null}

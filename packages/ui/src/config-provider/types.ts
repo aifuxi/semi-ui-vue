@@ -1,6 +1,7 @@
 import type { VNodeChild } from 'vue';
 
 import type { TypographyLocale } from '../typography';
+import type { PaginationLocale } from '../pagination';
 
 export const CONFIG_BREAKPOINTS = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as const;
 
@@ -29,6 +30,7 @@ export interface SemiLocale {
   code?: string;
   currency?: string;
   Typography?: TypographyLocale;
+  Pagination?: PaginationLocale;
   [componentName: string]: unknown;
 }
 

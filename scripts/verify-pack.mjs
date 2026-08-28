@@ -275,6 +275,7 @@ try {
 	await import('@workspace/ui/input');
 	await import('@workspace/ui/input-number');
 	await import('@workspace/ui/pin-code');
+	await import('@workspace/ui/pagination');
 	await import('@workspace/ui/radio');
 	await import('@workspace/ui/rating');
 	await import('@workspace/ui/layout');
@@ -339,6 +340,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	}
 	if (!import.meta.resolve('@workspace/theme-default/pin-code.css').endsWith('/dist/pin-code.css')) {
 	  throw new Error('PinCode 逐组件样式导出未指向 dist/pin-code.css');
+	}
+	if (!import.meta.resolve('@workspace/theme-default/pagination.css').endsWith('/dist/pagination.css')) {
+	  throw new Error('Pagination 逐组件样式导出未指向 dist/pagination.css');
 	}
 	if (!import.meta.resolve('@workspace/theme-default/radio.css').endsWith('/dist/radio.css')) {
 	  throw new Error('Radio 逐组件样式导出未指向 dist/radio.css');

@@ -6,6 +6,7 @@ interface FixedSizeListProps {
     data: Record<string, unknown>;
     style: React.CSSProperties;
   }>;
+  className?: string;
   height: number;
   itemCount: number;
   itemData: Record<string, unknown>;
@@ -16,12 +17,15 @@ interface FixedSizeListProps {
 
 export const FixedSizeList = forwardRef<{ scrollToItem(): void }, FixedSizeListProps>(
   function FixedSizeList(
-    { children: Row, height, itemCount, itemData, itemSize, style, width },
+    { children: Row, className, height, itemCount, itemData, itemSize, style, width },
     ref,
   ) {
     useImperativeHandle(ref, () => ({ scrollToItem: () => undefined }), []);
     return (
-      <div style={{ ...style, height, width, overflow: 'auto', position: 'relative' }}>
+      <div
+        className={className}
+        style={{ ...style, height, width, overflow: 'auto', position: 'relative' }}
+      >
         <div style={{ height: itemCount * itemSize, position: 'relative' }}>
           {Array.from({ length: itemCount }, (_, index) => (
             <Row

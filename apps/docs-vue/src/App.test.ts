@@ -422,4 +422,25 @@ describe('Vue 对照工作台', () => {
 
     wrapper.unmount();
   });
+
+  it('通过公共 Pagination 渲染截断、容量、快速跳页、small 与禁用场景', () => {
+    const wrapper = mount(App, {
+      props: { scenarioId: 'pagination', direction: 'rtl', locale: 'en-US' },
+    });
+    const scenario = wrapper.get('[data-testid="pagination-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-page')).toHaveLength(4);
+    expect(
+      scenario.get('[data-parity-target="pagination-basic"] [aria-current="page"]').text(),
+    ).toBe('4');
+    expect(scenario.find('.semi-page-switch').exists()).toBe(true);
+    expect(scenario.find('.semi-page-quickjump').exists()).toBe(true);
+    expect(scenario.find('.semi-page-small').exists()).toBe(true);
+    expect(scenario.get('[data-parity-target="pagination-disabled"]').classes()).toContain(
+      'semi-page-disabled',
+    );
+    expect(scenario.get('.semi-page-total').text()).toBe('Total pages: 20');
+    wrapper.unmount();
+  });
 });

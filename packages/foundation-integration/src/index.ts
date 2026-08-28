@@ -16,6 +16,8 @@ export { InputNumberFoundation } from './input-number.js';
 export type { InputNumberAdapter } from './input-number.js';
 export { PinCodeFoundation } from './pin-code.js';
 export type { PinCodeAdapter } from './pin-code.js';
+export { PaginationFoundation } from './pagination.js';
+export type { PaginationAdapter, PaginationPage, PaginationPageListState } from './pagination.js';
 export { RadioFoundation, RadioGroupFoundation, RadioInnerFoundation } from './radio.js';
 export type { RadioAdapter, RadioGroupAdapter, RadioInnerAdapter } from './radio.js';
 export { RatingFoundation, RatingItemFoundation } from './rating.js';

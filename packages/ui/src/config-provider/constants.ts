@@ -1,4 +1,5 @@
 import { DEFAULT_TYPOGRAPHY_LOCALE } from '../typography';
+import type { PaginationLocale } from '../pagination';
 
 import type { BreakpointScreens, ResponsiveMap, SemiLocale } from './types';
 
@@ -24,4 +25,10 @@ export const DEFAULT_CONFIG_LOCALE: Readonly<SemiLocale> = Object.freeze({
   code: 'zh-CN',
   currency: 'CNY',
   Typography: DEFAULT_TYPOGRAPHY_LOCALE,
+  Pagination: Object.freeze({
+    pageSize: '每页条数：${pageSize}',
+    total: '总页数：${total}',
+    jumpTo: '跳至',
+    page: '页',
+  }) satisfies PaginationLocale,
 });

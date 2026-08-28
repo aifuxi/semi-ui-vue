@@ -21,6 +21,7 @@ import LayoutScenario from './components/LayoutScenario.vue';
 import InputScenario from './components/InputScenario.vue';
 import InputNumberScenario from './components/InputNumberScenario.vue';
 import PinCodeScenario from './components/PinCodeScenario.vue';
+import PaginationScenario from './components/PaginationScenario.vue';
 import RadioScenario from './components/RadioScenario.vue';
 import RatingScenario from './components/RatingScenario.vue';
 import ResizableScenario from './components/ResizableScenario.vue';
@@ -93,6 +94,11 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <InputScenario v-else-if="scenario.id === 'input'" />
       <InputNumberScenario v-else-if="scenario.id === 'input-number'" />
       <PinCodeScenario v-else-if="scenario.id === 'pin-code'" />
+      <PaginationScenario
+        v-else-if="scenario.id === 'pagination'"
+        :direction="props.direction"
+        :locale="props.locale"
+      />
       <RadioScenario v-else-if="scenario.id === 'radio'" />
       <RatingScenario v-else-if="scenario.id === 'rating'" />
       <ResizableScenario v-else-if="scenario.id === 'resizable'" />

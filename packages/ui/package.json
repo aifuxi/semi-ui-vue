@@ -78,6 +78,10 @@
       "types": "./dist/pin-code/index.d.ts",
       "import": "./dist/pin-code/index.js"
     },
+    "./pagination": {
+      "types": "./dist/pagination/index.d.ts",
+      "import": "./dist/pagination/index.js"
+    },
     "./radio": {
       "types": "./dist/radio/index.d.ts",
       "import": "./dist/radio/index.js"

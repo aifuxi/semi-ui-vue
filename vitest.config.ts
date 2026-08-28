@@ -62,6 +62,9 @@ export default defineConfig({
       '@semi-v2.102.0/pin-code': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiPinCodeStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/pagination': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiPaginationStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/radio': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiRadioStub.tsx', import.meta.url),
       ),

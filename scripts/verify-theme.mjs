@@ -139,6 +139,20 @@ const pinCodeCssPath = path.join(
   'dist',
   'pin-code.css',
 );
+const paginationEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'pagination.scss',
+);
+const paginationCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'pagination.css',
+);
 const radioEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'radio.scss');
 const radioCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'radio.css');
 const ratingEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'rating.scss');
@@ -298,6 +312,7 @@ const requiredSelectors = [
   '.semi-input-wrapper',
   '.semi-input-number',
   '.semi-pincode-wrapper',
+  '.semi-page',
   '.semi-radioGroup',
   '.semi-rating',
   '.semi-input-textarea-wrapper',
@@ -399,6 +414,45 @@ for (const selector of [
 ]) {
   if (!breadcrumbCss.includes(selector)) {
     throw new Error(`Breadcrumb 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
+const expectedPaginationImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/_portal/portal.scss'),
+  vendorImport('semi-foundation/tooltip/tooltip.scss'),
+  vendorImport('semi-foundation/popover/popover.scss'),
+  vendorImport('semi-foundation/input/input.scss'),
+  vendorImport('semi-foundation/inputNumber/inputNumber.scss'),
+  vendorImport('semi-foundation/tag/tag.scss'),
+  vendorImport('semi-foundation/overflowList/overflowList.scss'),
+  vendorImport('semi-foundation/spin/spin.scss'),
+  vendorImport('semi-foundation/select/select.scss'),
+  vendorImport('semi-foundation/pagination/pagination.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const paginationEntrySource = await readFile(paginationEntryPath, 'utf8');
+const actualPaginationImports = [
+  ...paginationEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g),
+].map((match) => match[1]);
+if (JSON.stringify(actualPaginationImports) !== JSON.stringify(expectedPaginationImports)) {
+  throw new Error('Pagination 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const paginationCss = await readFile(paginationCssPath, 'utf8');
+for (const selector of [
+  '.semi-page-item-active',
+  '.semi-page-quickjump',
+  '.semi-page-rest-list',
+  '.semi-rtl .semi-page',
+  '.semi-select-selection',
+  '.semi-input-number',
+  '.semi-popover-wrapper',
+  '.semi-icon-default',
+]) {
+  if (!paginationCss.includes(selector)) {
+    throw new Error(`Pagination 逐组件样式产物缺少选择器：${selector}`);
   }
 }
 
@@ -1026,5 +1080,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 Anchor/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Radio/Rating/Layout/Resizable/Select/Slider/Space/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

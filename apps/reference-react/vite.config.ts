@@ -27,6 +27,7 @@ const iconPublicEntry = path.join(upstreamPackages, 'semi-ui/icons/index.tsx');
 const inputPublicEntry = path.join(upstreamPackages, 'semi-ui/input/index.tsx');
 const inputNumberPublicEntry = path.join(upstreamPackages, 'semi-ui/inputNumber/index.tsx');
 const pinCodePublicEntry = path.join(upstreamPackages, 'semi-ui/pincode/index.tsx');
+const paginationPublicEntry = path.join(upstreamPackages, 'semi-ui/pagination/index.tsx');
 const radioPublicEntry = path.join(upstreamPackages, 'semi-ui/radio/index.tsx');
 const ratingPublicEntry = path.join(upstreamPackages, 'semi-ui/rating/index.tsx');
 const inputGroupEntry = path.join(upstreamPackages, 'semi-ui/input/inputGroup.tsx');
@@ -91,6 +92,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'inputNumber/inputNumber.scss'),
   '@douyinfe/semi-foundation/pincode/pincode.scss',
   path.join(foundationRoot, 'pincode/pincode.scss'),
+  '@douyinfe/semi-foundation/pagination/pagination.scss',
+  path.join(foundationRoot, 'pagination/pagination.scss'),
   '@douyinfe/semi-foundation/radio/radio.scss',
   path.join(foundationRoot, 'radio/radio.scss'),
   '@douyinfe/semi-foundation/rating/rating.scss',
@@ -181,6 +184,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/input', replacement: inputPublicEntry },
       { find: '@semi-v2.102.0/input-number', replacement: inputNumberPublicEntry },
       { find: '@semi-v2.102.0/pin-code', replacement: pinCodePublicEntry },
+      { find: '@semi-v2.102.0/pagination', replacement: paginationPublicEntry },
       { find: '@semi-v2.102.0/radio', replacement: radioPublicEntry },
       { find: '@semi-v2.102.0/rating', replacement: ratingPublicEntry },
       { find: '@semi-v2.102.0/input-group', replacement: inputGroupEntry },

@@ -12,6 +12,7 @@ export * from './icon';
 export * from './input';
 export * from './input-number';
 export * from './pin-code';
+export * from './pagination';
 export * from './radio';
 export * from './rating';
 export * from './layout';
