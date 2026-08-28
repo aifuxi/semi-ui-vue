@@ -44,6 +44,22 @@ export type {
   HighlightFoundationSearchWord,
   HighlightFoundationSearchWords,
 } from './highlight.js';
+export {
+  crossMergeImageSources,
+  getPreloadImageSources,
+  ImageFoundation,
+  ImagePreviewFooterFoundation,
+  ImagePreviewFoundation,
+  ImagePreviewImageFoundation,
+  ImagePreviewInnerFoundation,
+  isImagePreviewTarget,
+} from './image.js';
+export type {
+  ImageFoundationAdapter,
+  ImagePreviewImageAdapter,
+  ImagePreviewInnerAdapter,
+  ImageRatioType,
+} from './image.js';
 export { AutoCompleteFoundation } from './auto-complete.js';
 export type { AutoCompleteAdapter } from './auto-complete.js';
 export { CheckboxFoundation, CheckboxGroupFoundation } from './checkbox.js';

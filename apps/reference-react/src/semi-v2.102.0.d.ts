@@ -1446,6 +1446,45 @@ declare module '@semi-v2.102.0/highlight' {
   export default Highlight;
 }
 
+declare module '@semi-v2.102.0/image' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface ImagePreviewOptions {
+    previewTitle?: ReactNode;
+    src?: string;
+    visible?: boolean;
+    onVisibleChange?: (visible: boolean) => void;
+  }
+
+  export interface ImageProps {
+    alt?: string;
+    className?: string;
+    crossOrigin?: 'anonymous' | 'use-credentials';
+    fallback?: ReactNode;
+    height?: string | number;
+    preview?: boolean | ImagePreviewOptions;
+    src?: string;
+    style?: CSSProperties;
+    width?: string | number;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  export interface PreviewProps {
+    children?: ReactNode;
+    className?: string;
+    currentIndex?: number;
+    defaultCurrentIndex?: number;
+    defaultVisible?: boolean;
+    lazyLoad?: boolean;
+    src?: string | string[];
+    visible?: boolean;
+  }
+
+  const Image: ComponentType<ImageProps>;
+  export const Preview: ComponentType<PreviewProps>;
+  export default Image;
+}
+
 declare module '@semi-v2.102.0/illustrations' {
   import type { ComponentType, SVGProps } from 'react';
 

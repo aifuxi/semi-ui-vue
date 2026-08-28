@@ -54,6 +54,17 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
 
+  it('通过公共 Image 渲染单图与分组预览场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'image', direction: 'rtl' } });
+    const scenario = wrapper.get('[data-testid="image-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-image')).toHaveLength(3);
+    expect(scenario.get('[data-parity-target="image-basic"]').attributes('alt')).toBe('蓝色山景');
+    expect(scenario.get('.semi-image-preview-group').findAll('.semi-image')).toHaveLength(2);
+    wrapper.unmount();
+  });
+
   it('通过公共 Illustrations 包渲染全部 light/dark 插画', () => {
     const wrapper = mount(App, { props: { scenarioId: 'illustrations' } });
     const scenario = wrapper.get('[data-testid="illustrations-vue"]');

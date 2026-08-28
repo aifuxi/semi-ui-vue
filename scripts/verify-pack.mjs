@@ -272,6 +272,7 @@ try {
 		await import('@workspace/ui/dropdown');
 		await import('@workspace/ui/empty');
 		await import('@workspace/ui/highlight');
+		await import('@workspace/ui/image');
 	await import('@workspace/ui/back-top');
 	await import('@workspace/ui/breadcrumb');
 	await import('@workspace/ui/button');
@@ -348,6 +349,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/highlight.css').endsWith('/dist/highlight.css')) {
 		  throw new Error('Highlight 逐组件样式导出未指向 dist/highlight.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/image.css').endsWith('/dist/image.css')) {
+		  throw new Error('Image 逐组件样式导出未指向 dist/image.css');
 		}
 	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
@@ -455,6 +459,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Dropdown, DropdownItem, DropdownMenu, type DropdownItemType, type DropdownMenuItem } from '@workspace/ui/dropdown';
 		import { Empty, type EmptyLayout, type EmptySvgNode } from '@workspace/ui/empty';
 		import { Highlight, type HighlightSearchWords } from '@workspace/ui/highlight';
+		import { Image, ImagePreview, type ImagePreviewProps, type ImageRatioType } from '@workspace/ui/image';
 	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
 	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
@@ -531,6 +536,10 @@ h(Button, { type, htmlType: 'submit' });
 		h(Empty, { image: emptyImage, layout: emptyLayout, title: 'No content' }, () => h('button', 'Create'));
 		const highlightWords: HighlightSearchWords = ['Semi', { text: 'Vue', className: 'consumer-keyword', style: { borderRadius: '4px' } }];
 		h(Highlight, { sourceString: 'Semi Vue', searchWords: highlightWords, autoEscape: false });
+		const imageRatio: ImageRatioType = 'adaptation';
+		const imagePreviewProps: ImagePreviewProps = { src: ['/one.png'], visible: false };
+		h(Image, { src: '/one.png', width: 80, height: 60, preview: { previewTitle: imageRatio } });
+		h(ImagePreview, imagePreviewProps);
 	const backTopTarget: () => BackTopTarget = () => window;
 	h(BackTop, { target: backTopTarget, visibilityHeight: 120, duration: 300 }, () => 'TOP');
 	const breadcrumbMoreType: BreadcrumbMoreType = 'popover';
@@ -710,6 +719,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-highlight-tag')) {
     throw new Error('安装后的默认主题缺少 Highlight 样式');
+  }
+  if (!themeCss.includes('.semi-image-preview')) {
+    throw new Error('安装后的默认主题缺少 Image 样式');
   }
   if (!themeCss.includes('.semi-backtop')) {
     throw new Error('安装后的默认主题缺少 BackTop 样式');
@@ -1219,6 +1231,20 @@ h(Button, { type, htmlType: 'submit' });
     !highlightThemeCss.includes('var(--semi-color-highlight-bg)')
   ) {
     throw new Error('安装后的 Highlight 逐组件样式缺少标签或颜色 Token');
+  }
+  const imageThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'image.css'),
+    'utf8',
+  );
+  if (
+    !imageThemeCss.includes('.semi-image-preview') ||
+    !imageThemeCss.includes('.semi-skeleton-image') ||
+    !imageThemeCss.includes('.semi-spin-wrapper') ||
+    !imageThemeCss.includes('.semi-slider') ||
+    !imageThemeCss.includes('.semi-tooltip-wrapper') ||
+    !imageThemeCss.includes('.semi-rtl .semi-image-preview')
+  ) {
+    throw new Error('安装后的 Image 逐组件样式缺少预览、加载、菜单或 RTL 依赖');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

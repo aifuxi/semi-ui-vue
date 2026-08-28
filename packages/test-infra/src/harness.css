@@ -2095,6 +2095,39 @@ p {
   line-height: 30px;
 }
 
+.image-scenario {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid var(--harness-border);
+  border-radius: 8px;
+}
+
+.image-scenario__cell {
+  min-width: 0;
+  padding: 20px;
+}
+
+.image-scenario__cell + .image-scenario__cell {
+  border-left: 1px solid var(--harness-border);
+}
+
+.image-scenario__label {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--semi-color-text-2);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+}
+
+.image-scenario__image {
+  overflow: hidden;
+  margin-right: 12px;
+  border-radius: 12px;
+  vertical-align: top;
+}
+
 .illustrations-scenario {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2214,6 +2247,15 @@ p {
 
   .highlight-scenario {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .image-scenario {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .image-scenario__cell + .image-scenario__cell {
+    border-top: 1px solid var(--harness-border);
+    border-left: 0;
   }
 
   .highlight-scenario__item,

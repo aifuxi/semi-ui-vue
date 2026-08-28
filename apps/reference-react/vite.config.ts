@@ -20,6 +20,7 @@ const descriptionsPublicEntry = path.join(upstreamPackages, 'semi-ui/description
 const dropdownPublicEntry = path.join(upstreamPackages, 'semi-ui/dropdown/index.tsx');
 const emptyPublicEntry = path.join(upstreamPackages, 'semi-ui/empty/index.tsx');
 const highlightPublicEntry = path.join(upstreamPackages, 'semi-ui/highlight/index.tsx');
+const imagePublicEntry = path.join(upstreamPackages, 'semi-ui/image/index.tsx');
 const illustrationsPublicEntry = path.join(upstreamPackages, 'semi-illustrations/src/index.ts');
 const cardGroupEntry = path.join(upstreamPackages, 'semi-ui/card/cardGroup.tsx');
 const backTopPublicEntry = path.join(upstreamPackages, 'semi-ui/backtop/index.tsx');
@@ -156,6 +157,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'overflowList/overflowList.scss'),
   '@douyinfe/semi-foundation/highlight/highlight.scss',
   path.join(foundationRoot, 'highlight/highlight.scss'),
+  '@douyinfe/semi-foundation/image/image.scss',
+  path.join(foundationRoot, 'image/image.scss'),
   '@douyinfe/semi-foundation/avatar/avatar.scss',
   path.join(foundationRoot, 'avatar/avatar.scss'),
   '@douyinfe/semi-foundation/_portal/portal.scss',
@@ -218,6 +221,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/dropdown', replacement: dropdownPublicEntry },
       { find: '@semi-v2.102.0/empty', replacement: emptyPublicEntry },
       { find: '@semi-v2.102.0/highlight', replacement: highlightPublicEntry },
+      { find: '@semi-v2.102.0/image', replacement: imagePublicEntry },
       { find: '@semi-v2.102.0/illustrations', replacement: illustrationsPublicEntry },
       { find: '@semi-v2.102.0/card-group', replacement: cardGroupEntry },
       { find: '@semi-v2.102.0/back-top', replacement: backTopPublicEntry },

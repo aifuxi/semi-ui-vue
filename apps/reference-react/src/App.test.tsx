@@ -345,6 +345,16 @@ describe('React 参考工作台', () => {
     expect(html).toContain('Design   System');
   });
 
+  it('从固定 Image Adapter 渲染单图与分组预览场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="image" direction="rtl" />);
+
+    expect(html).toContain('data-parity-scenario="image"');
+    expect(html).toContain('data-testid="image-reference"');
+    expect(html).toContain('data-parity-target="image-basic"');
+    expect(html).toContain('semi-image-preview-group');
+    expect(html).toContain('蓝色山景');
+  });
+
   it('从固定 BackTop Adapter 渲染 Element target、默认与自定义场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="back-top" />);
 

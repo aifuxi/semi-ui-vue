@@ -53,6 +53,9 @@ export default defineConfig({
       '@semi-v2.102.0/highlight': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiHighlightStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/image': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiImageStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/illustrations': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiIllustrationsStub.tsx', import.meta.url),
       ),
