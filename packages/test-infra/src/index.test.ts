@@ -11,6 +11,26 @@ import {
 } from './index';
 
 describe('parity infrastructure contract', () => {
+  it('records Calendar Adapter, Foundation, event layout, styles and bilingual docs', () => {
+    expect(getParityScenario('calendar')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.calendarPublicEntry,
+    });
+    expect(assertScenarioComparable('calendar').targets).toHaveLength(6);
+    expect(getParityScenario('calendar').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.calendarWeekEntry,
+        REFERENCE_SOURCE_PATHS.calendarMonthEntry,
+        REFERENCE_SOURCE_PATHS.calendarFoundation,
+        REFERENCE_SOURCE_PATHS.calendarEventUtil,
+        REFERENCE_SOURCE_PATHS.calendarFoundationStyle,
+        REFERENCE_SOURCE_PATHS.calendarDocumentation,
+        REFERENCE_SOURCE_PATHS.calendarDocumentationEn,
+      ]),
+    );
+  });
+
   it('records Badge Adapter, constants, styles and docs as a complete parity scene', () => {
     expect(getParityScenario('badge')).toMatchObject({
       referenceStatus: 'ready',

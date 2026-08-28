@@ -13,7 +13,14 @@ const bezierEasingEntry = fileURLToPath(
 export default defineConfig({
   plugins: [
     vue(),
-    dts({ include: ['src'] }),
+    dts({
+      include: ['src'],
+      exclude: [
+        'src/calendar/CalendarDayColumn.vue',
+        'src/calendar/calendar-context.ts',
+        'src/calendar/use-calendar-foundation.ts',
+      ],
+    }),
     {
       name: 'strip-private-source-region-paths',
       renderChunk(code) {
@@ -65,6 +72,7 @@ export default defineConfig({
         'anchor/index': fileURLToPath(new URL('./src/anchor/index.ts', import.meta.url)),
         'avatar/index': fileURLToPath(new URL('./src/avatar/index.ts', import.meta.url)),
         'badge/index': fileURLToPath(new URL('./src/badge/index.ts', import.meta.url)),
+        'calendar/index': fileURLToPath(new URL('./src/calendar/index.ts', import.meta.url)),
         'back-top/index': fileURLToPath(new URL('./src/back-top/index.ts', import.meta.url)),
         'breadcrumb/index': fileURLToPath(new URL('./src/breadcrumb/index.ts', import.meta.url)),
         'auto-complete/index': fileURLToPath(

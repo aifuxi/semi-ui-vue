@@ -4,6 +4,23 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 Calendar 渲染周视图、事件并支持模式切换', async () => {
+    const wrapper = mount(App, {
+      props: { scenarioId: 'calendar', locale: 'en-US', direction: 'ltr' },
+    });
+    const scenario = wrapper.get('[data-testid="calendar-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.get('.semi-calendar-week').attributes('data-parity-target')).toBe(
+      'calendar-root',
+    );
+    expect(scenario.findAll('.semi-calendar-event-day')).toHaveLength(2);
+    expect(scenario.get('.semi-calendar-all-day-tag').text()).toBe('All Day');
+    await scenario.get('button[data-mode="day"]').trigger('click');
+    expect(scenario.find('.semi-calendar-day').exists()).toBe(true);
+    wrapper.unmount();
+  });
+
   it('通过公共 Badge 渲染计数、圆点、溢出、自定义与事件场景', async () => {
     const wrapper = mount(App, { props: { scenarioId: 'badge', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="badge-vue"]');

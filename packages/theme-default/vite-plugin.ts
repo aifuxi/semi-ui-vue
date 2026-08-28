@@ -5,6 +5,7 @@ import sass from 'sass';
 export const virtualAnchorStyleId = 'virtual:workspace-anchor-styles.css';
 export const virtualAvatarStyleId = 'virtual:workspace-avatar-styles.css';
 export const virtualBadgeStyleId = 'virtual:workspace-badge-styles.css';
+export const virtualCalendarStyleId = 'virtual:workspace-calendar-styles.css';
 export const virtualBackTopStyleId = 'virtual:workspace-back-top-styles.css';
 export const virtualBreadcrumbStyleId = 'virtual:workspace-breadcrumb-styles.css';
 export const virtualPaginationStyleId = 'virtual:workspace-pagination-styles.css';
@@ -37,6 +38,7 @@ export const virtualTypographyStyleId = 'virtual:workspace-typography-styles.css
 const resolvedVirtualAnchorStyleId = `\0${virtualAnchorStyleId}`;
 const resolvedVirtualAvatarStyleId = `\0${virtualAvatarStyleId}`;
 const resolvedVirtualBadgeStyleId = `\0${virtualBadgeStyleId}`;
+const resolvedVirtualCalendarStyleId = `\0${virtualCalendarStyleId}`;
 const resolvedVirtualBackTopStyleId = `\0${virtualBackTopStyleId}`;
 const resolvedVirtualBreadcrumbStyleId = `\0${virtualBreadcrumbStyleId}`;
 const resolvedVirtualPaginationStyleId = `\0${virtualPaginationStyleId}`;
@@ -69,6 +71,7 @@ const resolvedVirtualTypographyStyleId = `\0${virtualTypographyStyleId}`;
 const anchorStyleEntry = fileURLToPath(new URL('./src/anchor.scss', import.meta.url));
 const avatarStyleEntry = fileURLToPath(new URL('./src/avatar.scss', import.meta.url));
 const badgeStyleEntry = fileURLToPath(new URL('./src/badge.scss', import.meta.url));
+const calendarStyleEntry = fileURLToPath(new URL('./src/calendar.scss', import.meta.url));
 const backTopStyleEntry = fileURLToPath(new URL('./src/back-top.scss', import.meta.url));
 const breadcrumbStyleEntry = fileURLToPath(new URL('./src/breadcrumb.scss', import.meta.url));
 const paginationStyleEntry = fileURLToPath(new URL('./src/pagination.scss', import.meta.url));
@@ -105,6 +108,7 @@ const styleEntries = new Map([
   [resolvedVirtualAnchorStyleId, anchorStyleEntry],
   [resolvedVirtualAvatarStyleId, avatarStyleEntry],
   [resolvedVirtualBadgeStyleId, badgeStyleEntry],
+  [resolvedVirtualCalendarStyleId, calendarStyleEntry],
   [resolvedVirtualBackTopStyleId, backTopStyleEntry],
   [resolvedVirtualBreadcrumbStyleId, breadcrumbStyleEntry],
   [resolvedVirtualPaginationStyleId, paginationStyleEntry],
@@ -145,6 +149,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualAnchorStyleId) return resolvedVirtualAnchorStyleId;
       if (source === virtualAvatarStyleId) return resolvedVirtualAvatarStyleId;
       if (source === virtualBadgeStyleId) return resolvedVirtualBadgeStyleId;
+      if (source === virtualCalendarStyleId) return resolvedVirtualCalendarStyleId;
       if (source === virtualBackTopStyleId) return resolvedVirtualBackTopStyleId;
       if (source === virtualBreadcrumbStyleId) return resolvedVirtualBreadcrumbStyleId;
       if (source === virtualPaginationStyleId) return resolvedVirtualPaginationStyleId;

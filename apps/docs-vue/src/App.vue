@@ -8,6 +8,7 @@ import {
 import AnchorScenario from './components/AnchorScenario.vue';
 import AvatarScenario from './components/AvatarScenario.vue';
 import BadgeScenario from './components/BadgeScenario.vue';
+import CalendarScenario from './components/CalendarScenario.vue';
 import BackTopScenario from './components/BackTopScenario.vue';
 import BreadcrumbScenario from './components/BreadcrumbScenario.vue';
 import AutoCompleteScenario from './components/AutoCompleteScenario.vue';
@@ -86,6 +87,11 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <AnchorScenario v-else-if="scenario.id === 'anchor'" :direction="props.direction" />
       <AvatarScenario v-else-if="scenario.id === 'avatar'" />
       <BadgeScenario v-else-if="scenario.id === 'badge'" :direction="props.direction" />
+      <CalendarScenario
+        v-else-if="scenario.id === 'calendar'"
+        :direction="props.direction"
+        :locale="props.locale"
+      />
       <BackTopScenario v-else-if="scenario.id === 'back-top'" :direction="props.direction" />
       <BreadcrumbScenario v-else-if="scenario.id === 'breadcrumb'" :direction="props.direction" />
       <AutoCompleteScenario v-else-if="scenario.id === 'auto-complete'" />

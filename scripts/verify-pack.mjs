@@ -264,6 +264,7 @@ try {
 		await import('@workspace/ui/anchor');
 		await import('@workspace/ui/avatar');
 		await import('@workspace/ui/badge');
+		await import('@workspace/ui/calendar');
 	await import('@workspace/ui/back-top');
 	await import('@workspace/ui/breadcrumb');
 	await import('@workspace/ui/button');
@@ -312,6 +313,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/badge.css').endsWith('/dist/badge.css')) {
 		  throw new Error('Badge 逐组件样式导出未指向 dist/badge.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/calendar.css').endsWith('/dist/calendar.css')) {
+		  throw new Error('Calendar 逐组件样式导出未指向 dist/calendar.css');
 		}
 	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
@@ -411,6 +415,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Anchor, AnchorLink, type AnchorPosition } from '@workspace/ui/anchor';
 		import { Avatar, AvatarGroup, type AvatarColor, type AvatarSize } from '@workspace/ui/avatar';
 		import { Badge, type BadgePosition, type BadgeType } from '@workspace/ui/badge';
+		import { Calendar, type CalendarEvent, type CalendarMode } from '@workspace/ui/calendar';
 	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
 	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
@@ -456,6 +461,9 @@ h(Button, { type, htmlType: 'submit' });
 		const badgePosition: BadgePosition = 'rightTop';
 		const badgeType: BadgeType = 'danger';
 		h(Badge, { count: 120, overflowCount: 99, position: badgePosition, type: badgeType }, () => h(Avatar, null, () => 'B'));
+		const calendarMode: CalendarMode = 'week';
+		const calendarEvents: CalendarEvent[] = [{ key: 'consumer', start: new Date(2023, 3, 10, 9), content: 'Consumer event' }];
+		h(Calendar, { mode: calendarMode, displayValue: new Date(2023, 3, 10), events: calendarEvents, showCurrTime: false });
 	const backTopTarget: () => BackTopTarget = () => window;
 	h(BackTop, { target: backTopTarget, visibilityHeight: 120, duration: 300 }, () => 'TOP');
 	const breadcrumbMoreType: BreadcrumbMoreType = 'popover';
@@ -607,6 +615,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-badge-count') || !themeCss.includes('.semi-badge-dot')) {
     throw new Error('安装后的默认主题缺少 Badge 样式');
+  }
+  if (!themeCss.includes('.semi-calendar-week') || !themeCss.includes('.semi-calendar-month')) {
+    throw new Error('安装后的默认主题缺少 Calendar 样式');
   }
   if (!themeCss.includes('.semi-backtop')) {
     throw new Error('安装后的默认主题缺少 BackTop 样式');
@@ -1007,6 +1018,19 @@ h(Button, { type, htmlType: 'submit' });
     !badgeThemeCss.includes('.semi-rtl .semi-badge')
   ) {
     throw new Error('安装后的 Badge 逐组件样式缺少计数、自定义、类型或 RTL 样式');
+  }
+  const calendarThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'calendar.css'),
+    'utf8',
+  );
+  if (
+    !calendarThemeCss.includes('.semi-calendar-day') ||
+    !calendarThemeCss.includes('.semi-calendar-week') ||
+    !calendarThemeCss.includes('.semi-calendar-month-event-card') ||
+    !calendarThemeCss.includes('.semi-popover') ||
+    !calendarThemeCss.includes('.semi-rtl .semi-calendar')
+  ) {
+    throw new Error('安装后的 Calendar 逐组件样式缺少日周月、浮层或 RTL 样式');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

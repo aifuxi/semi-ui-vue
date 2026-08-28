@@ -8,6 +8,27 @@ export { BackTopFoundation } from './back-top.js';
 export type { BackTopAdapter } from './back-top.js';
 export { BreadcrumbFoundation, BreadcrumbItemFoundation } from './breadcrumb.js';
 export type { BreadcrumbAdapter, BreadcrumbItemAdapter } from './breadcrumb.js';
+export {
+  calcRangeData as calcCalendarRangeData,
+  calcRowHeight as calcCalendarRowHeight,
+  calcWeekData as calcCalendarWeekData,
+  checkWeekend as checkCalendarWeekend,
+  CalendarFoundation,
+  getCurrDate as getCalendarCurrentDate,
+  getPos as getCalendarPosition,
+  round as roundCalendarPosition,
+} from './calendar.js';
+export type {
+  CalendarAdapter,
+  CalendarDateObject,
+  CalendarMonthData,
+  CalendarParsedEvents,
+  CalendarParsedEventsType,
+  FoundationCalendarEvent,
+  MonthlyCalendarEvents,
+  ParsedCalendarEvent,
+  WeekStartsOn as CalendarWeekStartsOn,
+} from './calendar.js';
 export { AutoCompleteFoundation } from './auto-complete.js';
 export type { AutoCompleteAdapter } from './auto-complete.js';
 export { CheckboxFoundation, CheckboxGroupFoundation } from './checkbox.js';

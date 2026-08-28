@@ -13,6 +13,20 @@ const avatarEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 's
 const avatarCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'avatar.css');
 const badgeEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'badge.scss');
 const badgeCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'badge.css');
+const calendarEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'calendar.scss',
+);
+const calendarCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'calendar.css',
+);
 const backTopEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -1008,6 +1022,39 @@ for (const selector of [
   }
 }
 
+const expectedCalendarImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/_portal/portal.scss'),
+  vendorImport('semi-foundation/button/button.scss'),
+  vendorImport('semi-foundation/popover/popover.scss'),
+  vendorImport('semi-foundation/calendar/calendar.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+  vendorImport('semi-foundation/button/iconButton.scss'),
+];
+const calendarEntrySource = await readFile(calendarEntryPath, 'utf8');
+const actualCalendarImports = [...calendarEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualCalendarImports) !== JSON.stringify(expectedCalendarImports)) {
+  throw new Error('Calendar 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const calendarCss = await readFile(calendarCssPath, 'utf8');
+for (const selector of [
+  '.semi-calendar-day',
+  '.semi-calendar-week',
+  '.semi-calendar-month',
+  '.semi-calendar-event-day',
+  '.semi-calendar-month-event-card',
+  '.semi-popover',
+  '.semi-rtl .semi-calendar',
+]) {
+  if (!calendarCss.includes(selector)) {
+    throw new Error(`Calendar 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 const expectedSwitchImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -1248,5 +1295,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 Anchor/Avatar/Badge/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/Avatar/Badge/Calendar/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + calendarCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

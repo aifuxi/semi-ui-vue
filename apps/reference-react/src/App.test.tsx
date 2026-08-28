@@ -256,6 +256,17 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-badge-block');
   });
 
+  it('从固定 Calendar Adapter 渲染周视图与事件场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="calendar" />);
+
+    expect(html).toContain('data-parity-scenario="calendar"');
+    expect(html).toContain('data-testid="calendar-reference"');
+    expect(html).toContain('semi-calendar-week');
+    expect(html).toContain('semi-calendar-week-header');
+    expect(html).toContain('semi-calendar-event-day');
+    expect(html).toContain('09:00 Review');
+  });
+
   it('从固定 BackTop Adapter 渲染 Element target、默认与自定义场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="back-top" />);
 

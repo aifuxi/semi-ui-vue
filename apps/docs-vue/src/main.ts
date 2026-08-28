@@ -3,6 +3,7 @@ import 'typeface-inter';
 import 'virtual:workspace-anchor-styles.css';
 import 'virtual:workspace-avatar-styles.css';
 import 'virtual:workspace-badge-styles.css';
+import 'virtual:workspace-calendar-styles.css';
 import 'virtual:workspace-back-top-styles.css';
 import 'virtual:workspace-breadcrumb-styles.css';
 import 'virtual:workspace-auto-complete-styles.css';

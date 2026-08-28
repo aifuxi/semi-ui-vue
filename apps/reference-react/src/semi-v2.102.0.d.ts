@@ -1262,3 +1262,38 @@ declare module '@semi-v2.102.0/tree' {
 }
 
 declare module 'virtual:semi-reference-styles.css';
+
+declare module '@semi-v2.102.0/calendar' {
+  import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
+
+  export type CalendarMode = 'day' | 'week' | 'month' | 'range';
+  export interface EventObject {
+    key: string;
+    allDay?: boolean;
+    start?: Date;
+    end?: Date;
+    children?: ReactNode;
+  }
+  export interface CalendarProps {
+    className?: string;
+    displayValue?: Date;
+    events?: EventObject[];
+    header?: ReactNode;
+    height?: number | string;
+    markWeekend?: boolean;
+    minEventHeight?: number;
+    mode?: CalendarMode;
+    onClick?: (event: MouseEvent, date: Date) => void;
+    onClose?: (event: MouseEvent | null) => void;
+    onMoreClick?: (event: MouseEvent, date: Date, remaining: number) => void;
+    range?: Date[];
+    scrollTop?: number;
+    showCurrTime?: boolean;
+    style?: CSSProperties;
+    weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+    width?: number | string;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+  const Calendar: ComponentType<CalendarProps>;
+  export default Calendar;
+}
