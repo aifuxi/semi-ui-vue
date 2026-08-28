@@ -46,4 +46,18 @@ export type {
 } from './time-picker.js';
 export { TooltipFoundation } from './tooltip.js';
 export type { TooltipAdapter, TooltipPopupContainerRect } from './tooltip.js';
+export {
+  calcCheckedKeys as calcTreeCheckedKeys,
+  calcDisabledKeys as calcTreeDisabledKeys,
+  calcExpandedKeys as calcTreeExpandedKeys,
+  calcExpandedKeysForValues as calcTreeExpandedKeysForValues,
+  convertDataToEntities as convertTreeDataToEntities,
+  convertJsonToData as convertTreeJsonToData,
+  filterTreeData,
+  findKeysForValues as findTreeKeysForValues,
+  flattenTreeData,
+  normalizeValue as normalizeTreeValue,
+  TreeFoundation,
+} from './tree.js';
+export type { TreeAdapter } from './tree.js';
 export * from './typography.js';

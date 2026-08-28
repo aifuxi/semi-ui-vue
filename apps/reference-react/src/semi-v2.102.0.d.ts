@@ -1139,4 +1139,35 @@ declare module '@semi-v2.102.0/tabs' {
   export default Tabs;
 }
 
+declare module '@semi-v2.102.0/tree' {
+  import type { ComponentType, ReactNode } from 'react';
+
+  export interface TreeNodeData {
+    key: string;
+    value?: string | number;
+    label?: ReactNode;
+    disabled?: boolean;
+    isLeaf?: boolean;
+    children?: TreeNodeData[];
+  }
+
+  export interface TreeProps {
+    children?: ReactNode;
+    className?: string;
+    defaultExpandAll?: boolean;
+    defaultExpandedKeys?: string[];
+    defaultValue?: unknown;
+    directory?: boolean;
+    filterTreeNode?: boolean;
+    multiple?: boolean;
+    onChange?: (value?: unknown) => void;
+    showLine?: boolean;
+    treeData?: TreeNodeData[];
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Tree: ComponentType<TreeProps>;
+  export default Tree;
+}
+
 declare module 'virtual:semi-reference-styles.css';

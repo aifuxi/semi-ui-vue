@@ -29,6 +29,7 @@ import { SliderScenario } from './scenarios/SliderScenario';
 import { SpaceScenario } from './scenarios/SpaceScenario';
 import { StepsScenario } from './scenarios/StepsScenario';
 import { TabsScenario } from './scenarios/TabsScenario';
+import { TreeScenario } from './scenarios/TreeScenario';
 import { SwitchScenario } from './scenarios/SwitchScenario';
 import { TagInputScenario } from './scenarios/TagInputScenario';
 import { TimePickerScenario } from './scenarios/TimePickerScenario';
@@ -115,6 +116,9 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'space' ? <SpaceScenario /> : null}
         {scenario.id === 'steps' ? <StepsScenario /> : null}
         {scenario.id === 'tabs' ? <TabsScenario /> : null}
+        {scenario.id === 'tree' ? (
+          <TreeScenario direction={options.direction} locale={options.locale} />
+        ) : null}
         {scenario.id === 'switch' ? <SwitchScenario /> : null}
         {scenario.id === 'tag-input' ? <TagInputScenario /> : null}
         {scenario.id === 'time-picker' ? <TimePickerScenario /> : null}

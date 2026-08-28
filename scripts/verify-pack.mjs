@@ -285,6 +285,7 @@ try {
 	await import('@workspace/ui/space');
 	await import('@workspace/ui/steps');
 	await import('@workspace/ui/tabs');
+	await import('@workspace/ui/tree');
 	await import('@workspace/ui/switch');
 	await import('@workspace/ui/tag-input');
 	await import('@workspace/ui/time-picker');
@@ -373,6 +374,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/tabs.css').endsWith('/dist/tabs.css')) {
 	  throw new Error('Tabs 逐组件样式导出未指向 dist/tabs.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/tree.css').endsWith('/dist/tree.css')) {
+	  throw new Error('Tree 逐组件样式导出未指向 dist/tree.css');
+	}
 	if (!import.meta.resolve('@workspace/theme-default/switch.css').endsWith('/dist/switch.css')) {
 	  throw new Error('Switch 逐组件样式导出未指向 dist/switch.css');
 	}
@@ -418,6 +422,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { Space, type SpaceAlign, type SpaceSpacingValue } from '@workspace/ui/space';
 	import { Step, Steps, type StepsStatus, type StepsType } from '@workspace/ui/steps';
 	import { TabItem, TabPane, Tabs, type TabPosition, type TabType } from '@workspace/ui/tabs';
+	import { Tree, type TreeNodeData, type TreeValue } from '@workspace/ui/tree';
 	import { Switch, type SwitchSize } from '@workspace/ui/switch';
 	import { TagInput, type TagInputSize } from '@workspace/ui/tag-input';
 	import { TimePicker, type TimePickerType, type TimePickerValue } from '@workspace/ui/time-picker';
@@ -509,6 +514,9 @@ h(Button, { type, htmlType: 'submit' });
 	  h(TabPane, { itemKey: 'second', tab: 'Second' }, () => 'Second pane'),
 	]);
 	h(TabItem, { itemKey: 'consumer', tab: 'Consumer', type: tabType });
+	const treeData: TreeNodeData[] = [{ key: 'root', label: 'Root', value: 'root', children: [{ key: 'leaf', label: 'Leaf', value: 'leaf' }] }];
+	const treeValue: TreeValue = 'leaf';
+	h(Tree, { defaultExpandAll: true, modelValue: treeValue, treeData, 'onUpdate:modelValue': (_value: TreeValue | undefined) => undefined });
 	const switchSize: SwitchSize = 'large';
 	h(Switch, { modelValue: true, size: switchSize, ariaLabel: 'consumer switch', 'onUpdate:modelValue': (_checked: boolean) => undefined });
 	const tagInputSize: TagInputSize = 'large';
@@ -938,6 +946,19 @@ h(Button, { type, htmlType: 'submit' });
     !tabsThemeCss.includes('.semi-icon-default')
   ) {
     throw new Error('安装后的 Tabs 逐组件样式缺少类型、折叠、Dropdown、RTL 或 Icon 样式');
+  }
+  const treeThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'tree.css'),
+    'utf8',
+  );
+  if (
+    !treeThemeCss.includes('.semi-tree-option-selected') ||
+    !treeThemeCss.includes('.semi-tree-option-indent-show-line') ||
+    !treeThemeCss.includes('.semi-checkbox') ||
+    !treeThemeCss.includes('.semi-input-wrapper') ||
+    !treeThemeCss.includes('.semi-rtl .semi-tree')
+  ) {
+    throw new Error('安装后的 Tree 逐组件样式缺少节点、连接线、依赖或 RTL 样式');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

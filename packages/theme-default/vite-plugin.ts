@@ -26,6 +26,7 @@ export const virtualSliderStyleId = 'virtual:workspace-slider-styles.css';
 export const virtualSpaceStyleId = 'virtual:workspace-space-styles.css';
 export const virtualStepsStyleId = 'virtual:workspace-steps-styles.css';
 export const virtualTabsStyleId = 'virtual:workspace-tabs-styles.css';
+export const virtualTreeStyleId = 'virtual:workspace-tree-styles.css';
 export const virtualSwitchStyleId = 'virtual:workspace-switch-styles.css';
 export const virtualTagInputStyleId = 'virtual:workspace-tag-input-styles.css';
 export const virtualTimePickerStyleId = 'virtual:workspace-time-picker-styles.css';
@@ -55,6 +56,7 @@ const resolvedVirtualSliderStyleId = `\0${virtualSliderStyleId}`;
 const resolvedVirtualSpaceStyleId = `\0${virtualSpaceStyleId}`;
 const resolvedVirtualStepsStyleId = `\0${virtualStepsStyleId}`;
 const resolvedVirtualTabsStyleId = `\0${virtualTabsStyleId}`;
+const resolvedVirtualTreeStyleId = `\0${virtualTreeStyleId}`;
 const resolvedVirtualSwitchStyleId = `\0${virtualSwitchStyleId}`;
 const resolvedVirtualTagInputStyleId = `\0${virtualTagInputStyleId}`;
 const resolvedVirtualTimePickerStyleId = `\0${virtualTimePickerStyleId}`;
@@ -86,6 +88,7 @@ const sliderStyleEntry = fileURLToPath(new URL('./src/slider.scss', import.meta.
 const spaceStyleEntry = fileURLToPath(new URL('./src/space.scss', import.meta.url));
 const stepsStyleEntry = fileURLToPath(new URL('./src/steps.scss', import.meta.url));
 const tabsStyleEntry = fileURLToPath(new URL('./src/tabs.scss', import.meta.url));
+const treeStyleEntry = fileURLToPath(new URL('./src/tree.scss', import.meta.url));
 const switchStyleEntry = fileURLToPath(new URL('./src/switch.scss', import.meta.url));
 const tagInputStyleEntry = fileURLToPath(new URL('./src/tag-input.scss', import.meta.url));
 const timePickerStyleEntry = fileURLToPath(new URL('./src/time-picker.scss', import.meta.url));
@@ -117,6 +120,7 @@ const styleEntries = new Map([
   [resolvedVirtualSpaceStyleId, spaceStyleEntry],
   [resolvedVirtualStepsStyleId, stepsStyleEntry],
   [resolvedVirtualTabsStyleId, tabsStyleEntry],
+  [resolvedVirtualTreeStyleId, treeStyleEntry],
   [resolvedVirtualSwitchStyleId, switchStyleEntry],
   [resolvedVirtualTagInputStyleId, tagInputStyleEntry],
   [resolvedVirtualTimePickerStyleId, timePickerStyleEntry],
@@ -154,6 +158,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualSpaceStyleId) return resolvedVirtualSpaceStyleId;
       if (source === virtualStepsStyleId) return resolvedVirtualStepsStyleId;
       if (source === virtualTabsStyleId) return resolvedVirtualTabsStyleId;
+      if (source === virtualTreeStyleId) return resolvedVirtualTreeStyleId;
       if (source === virtualSwitchStyleId) return resolvedVirtualSwitchStyleId;
       if (source === virtualTagInputStyleId) return resolvedVirtualTagInputStyleId;
       if (source === virtualTimePickerStyleId) return resolvedVirtualTimePickerStyleId;

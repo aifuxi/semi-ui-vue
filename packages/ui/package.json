@@ -114,6 +114,10 @@
       "types": "./dist/tabs/index.d.ts",
       "import": "./dist/tabs/index.js"
     },
+    "./tree": {
+      "types": "./dist/tree/index.d.ts",
+      "import": "./dist/tree/index.js"
+    },
     "./switch": {
       "types": "./dist/switch/index.d.ts",
       "import": "./dist/switch/index.js"

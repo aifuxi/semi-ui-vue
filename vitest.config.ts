@@ -107,6 +107,9 @@ export default defineConfig({
       '@semi-v2.102.0/tabs': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiTabsStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/tree': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiTreeStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/switch': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiSwitchStub.tsx', import.meta.url),
       ),
