@@ -62,6 +62,9 @@ export default defineConfig({
       '@semi-v2.102.0/list': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiListStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/modal': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiModalStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/illustrations': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiIllustrationsStub.tsx', import.meta.url),
       ),

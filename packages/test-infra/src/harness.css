@@ -124,6 +124,15 @@ p {
   color: rgb(212 94 0);
 }
 
+.modal-scenario {
+  min-height: 48px;
+  margin-top: 24px;
+}
+
+.modal-scenario__content {
+  color: var(--semi-color-text-0);
+}
+
 .visual-calibration {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

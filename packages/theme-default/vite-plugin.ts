@@ -16,6 +16,7 @@ export const virtualEmptyStyleId = 'virtual:workspace-empty-styles.css';
 export const virtualHighlightStyleId = 'virtual:workspace-highlight-styles.css';
 export const virtualImageStyleId = 'virtual:workspace-image-styles.css';
 export const virtualListStyleId = 'virtual:workspace-list-styles.css';
+export const virtualModalStyleId = 'virtual:workspace-modal-styles.css';
 export const virtualBackTopStyleId = 'virtual:workspace-back-top-styles.css';
 export const virtualBreadcrumbStyleId = 'virtual:workspace-breadcrumb-styles.css';
 export const virtualPaginationStyleId = 'virtual:workspace-pagination-styles.css';
@@ -59,6 +60,7 @@ const resolvedVirtualEmptyStyleId = `\0${virtualEmptyStyleId}`;
 const resolvedVirtualHighlightStyleId = `\0${virtualHighlightStyleId}`;
 const resolvedVirtualImageStyleId = `\0${virtualImageStyleId}`;
 const resolvedVirtualListStyleId = `\0${virtualListStyleId}`;
+const resolvedVirtualModalStyleId = `\0${virtualModalStyleId}`;
 const resolvedVirtualBackTopStyleId = `\0${virtualBackTopStyleId}`;
 const resolvedVirtualBreadcrumbStyleId = `\0${virtualBreadcrumbStyleId}`;
 const resolvedVirtualPaginationStyleId = `\0${virtualPaginationStyleId}`;
@@ -102,6 +104,7 @@ const emptyStyleEntry = fileURLToPath(new URL('./src/empty.scss', import.meta.ur
 const highlightStyleEntry = fileURLToPath(new URL('./src/highlight.scss', import.meta.url));
 const imageStyleEntry = fileURLToPath(new URL('./src/image.scss', import.meta.url));
 const listStyleEntry = fileURLToPath(new URL('./src/list.scss', import.meta.url));
+const modalStyleEntry = fileURLToPath(new URL('./src/modal.scss', import.meta.url));
 const backTopStyleEntry = fileURLToPath(new URL('./src/back-top.scss', import.meta.url));
 const breadcrumbStyleEntry = fileURLToPath(new URL('./src/breadcrumb.scss', import.meta.url));
 const paginationStyleEntry = fileURLToPath(new URL('./src/pagination.scss', import.meta.url));
@@ -149,6 +152,7 @@ const styleEntries = new Map([
   [resolvedVirtualHighlightStyleId, highlightStyleEntry],
   [resolvedVirtualImageStyleId, imageStyleEntry],
   [resolvedVirtualListStyleId, listStyleEntry],
+  [resolvedVirtualModalStyleId, modalStyleEntry],
   [resolvedVirtualBackTopStyleId, backTopStyleEntry],
   [resolvedVirtualBreadcrumbStyleId, breadcrumbStyleEntry],
   [resolvedVirtualPaginationStyleId, paginationStyleEntry],
@@ -200,6 +204,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualHighlightStyleId) return resolvedVirtualHighlightStyleId;
       if (source === virtualImageStyleId) return resolvedVirtualImageStyleId;
       if (source === virtualListStyleId) return resolvedVirtualListStyleId;
+      if (source === virtualModalStyleId) return resolvedVirtualModalStyleId;
       if (source === virtualBackTopStyleId) return resolvedVirtualBackTopStyleId;
       if (source === virtualBreadcrumbStyleId) return resolvedVirtualBreadcrumbStyleId;
       if (source === virtualPaginationStyleId) return resolvedVirtualPaginationStyleId;

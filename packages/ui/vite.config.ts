@@ -107,6 +107,7 @@ export default defineConfig({
         ),
         'layout/index': fileURLToPath(new URL('./src/layout/index.ts', import.meta.url)),
         'list/index': fileURLToPath(new URL('./src/list/index.ts', import.meta.url)),
+        'modal/index': fileURLToPath(new URL('./src/modal/index.ts', import.meta.url)),
         'pin-code/index': fileURLToPath(new URL('./src/pin-code/index.ts', import.meta.url)),
         'pagination/index': fileURLToPath(new URL('./src/pagination/index.ts', import.meta.url)),
         'radio/index': fileURLToPath(new URL('./src/radio/index.ts', import.meta.url)),

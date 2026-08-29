@@ -126,6 +126,10 @@
       "types": "./dist/list/index.d.ts",
       "import": "./dist/list/index.js"
     },
+    "./modal": {
+      "types": "./dist/modal/index.d.ts",
+      "import": "./dist/modal/index.js"
+    },
     "./pin-code": {
       "types": "./dist/pin-code/index.d.ts",
       "import": "./dist/pin-code/index.js"

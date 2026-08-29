@@ -51,6 +51,15 @@ export type {
   HighlightFoundationSearchWord,
   HighlightFoundationSearchWords,
 } from './highlight.js';
+export { ModalContentFoundation, ModalFocusTrapHandle, ModalFoundation } from './modal.js';
+export type {
+  FoundationModalContentProps,
+  FoundationModalContentState,
+  FoundationModalProps,
+  FoundationModalState,
+  ModalAdapter,
+  ModalContentAdapter,
+} from './modal.js';
 export {
   crossMergeImageSources,
   getPreloadImageSources,

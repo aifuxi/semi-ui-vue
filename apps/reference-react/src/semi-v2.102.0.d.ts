@@ -1693,3 +1693,36 @@ declare module '@semi-v2.102.0/list' {
   const List: ListComponent;
   export default List;
 }
+
+declare module '@semi-v2.102.0/modal' {
+  import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
+
+  export interface ModalProps {
+    cancelText?: string;
+    centered?: boolean;
+    children?: ReactNode;
+    className?: string;
+    closable?: boolean;
+    closeOnEsc?: boolean;
+    direction?: 'ltr' | 'rtl';
+    footer?: ReactNode;
+    fullScreen?: boolean;
+    hasCancel?: boolean;
+    keepDOM?: boolean;
+    mask?: boolean;
+    maskClosable?: boolean;
+    motion?: boolean;
+    okText?: string;
+    onCancel?: (event: MouseEvent) => void | Promise<unknown>;
+    onOk?: (event: MouseEvent) => void | Promise<unknown>;
+    size?: 'small' | 'medium' | 'large' | 'full-width';
+    style?: CSSProperties;
+    title?: ReactNode;
+    visible?: boolean;
+    width?: string | number;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Modal: ComponentType<ModalProps>;
+  export default Modal;
+}

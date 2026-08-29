@@ -4,6 +4,20 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 Modal 渲染 Portal、标题、正文与默认 footer', async () => {
+    const wrapper = mount(App, {
+      attachTo: document.body,
+      props: { scenarioId: 'modal', direction: 'rtl' },
+    });
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(document.body.querySelector('[data-parity-target="modal-basic"]')).not.toBeNull();
+    expect(document.body.querySelector('.semi-modal-title')?.textContent).toBe('发布变更');
+    expect(document.body.querySelector('.semi-modal-body')?.textContent).toContain('3 项变更');
+    expect(document.body.querySelectorAll('.semi-modal-footer button')).toHaveLength(2);
+    expect(document.body.querySelector('.semi-modal-rtl')).not.toBeNull();
+    wrapper.unmount();
+  });
   it('通过公共 Descriptions 渲染 data、Item、双行与横向场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'descriptions', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="descriptions-vue"]');

@@ -20,6 +20,14 @@ describe('React 参考工作台', () => {
     expect(html).toContain('data-vue-status="ready"');
   });
 
+  it('登记固定 Modal Adapter 的可比较参考场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="modal" direction="rtl" />);
+
+    expect(html).toContain('data-parity-scenario="modal"');
+    expect(html).toContain('data-reference-status="ready"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/modal/index.tsx');
+  });
+
   it('从固定 Divider Adapter 渲染完整参考场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="divider" />);
 

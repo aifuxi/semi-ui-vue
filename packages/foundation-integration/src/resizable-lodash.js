@@ -21,3 +21,4 @@ export { default as throttle } from 'lodash/throttle.js';
 export { default as toNumber } from 'lodash/toNumber.js';
 export { default as toString } from 'lodash/toString.js';
 export { default as uniq } from 'lodash/uniq.js';
+export { default as without } from 'lodash/without.js';

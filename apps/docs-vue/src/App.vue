@@ -19,6 +19,7 @@ import EmptyScenario from './components/EmptyScenario.vue';
 import HighlightScenario from './components/HighlightScenario.vue';
 import ImageScenario from './components/ImageScenario.vue';
 import ListScenario from './components/ListScenario.vue';
+import ModalScenario from './components/ModalScenario.vue';
 import IllustrationsScenario from './components/IllustrationsScenario.vue';
 import BackTopScenario from './components/BackTopScenario.vue';
 import BreadcrumbScenario from './components/BreadcrumbScenario.vue';
@@ -113,6 +114,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <HighlightScenario v-else-if="scenario.id === 'highlight'" />
       <ImageScenario v-else-if="scenario.id === 'image'" />
       <ListScenario v-else-if="scenario.id === 'list'" />
+      <ModalScenario v-else-if="scenario.id === 'modal'" :direction="props.direction" />
       <IllustrationsScenario v-else-if="scenario.id === 'illustrations'" />
       <BackTopScenario v-else-if="scenario.id === 'back-top'" :direction="props.direction" />
       <BreadcrumbScenario v-else-if="scenario.id === 'breadcrumb'" :direction="props.direction" />

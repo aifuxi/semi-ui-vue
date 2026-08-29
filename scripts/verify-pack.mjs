@@ -275,6 +275,7 @@ try {
 		await import('@workspace/ui/highlight');
 		await import('@workspace/ui/image');
 		await import('@workspace/ui/list');
+		await import('@workspace/ui/modal');
 	await import('@workspace/ui/back-top');
 	await import('@workspace/ui/breadcrumb');
 	await import('@workspace/ui/button');
@@ -360,6 +361,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/list.css').endsWith('/dist/list.css')) {
 		  throw new Error('List 逐组件样式导出未指向 dist/list.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/modal.css').endsWith('/dist/modal.css')) {
+		  throw new Error('Modal 逐组件样式导出未指向 dist/modal.css');
 		}
 	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
@@ -470,6 +474,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Highlight, type HighlightSearchWords } from '@workspace/ui/highlight';
 		import { Image, ImagePreview, type ImagePreviewProps, type ImageRatioType } from '@workspace/ui/image';
 		import { List, ListItem, type ListGrid, type ListSize } from '@workspace/ui/list';
+		import { Modal, type ModalHandle, type ModalSize } from '@workspace/ui/modal';
 	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
 	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
@@ -559,6 +564,10 @@ h(Button, { type, htmlType: 'submit' });
 		h(List, { dataSource: ['A'], grid: listGrid, size: listSize });
 		h(List.Item, null, () => 'Compound item');
 		h(ListItem, null, () => 'Named item');
+		const modalSize: ModalSize = 'small';
+		h(Modal, { visible: false, size: modalSize, title: 'Consumer modal' }, () => 'Body');
+		const modalHandle: ModalHandle | undefined = undefined;
+		void modalHandle;
 	const backTopTarget: () => BackTopTarget = () => window;
 	h(BackTop, { target: backTopTarget, visibilityHeight: 120, duration: 300 }, () => 'TOP');
 	const breadcrumbMoreType: BreadcrumbMoreType = 'popover';
@@ -747,6 +756,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-list-item')) {
     throw new Error('安装后的默认主题缺少 List 样式');
+  }
+  if (!themeCss.includes('.semi-modal-content')) {
+    throw new Error('安装后的默认主题缺少 Modal 样式');
   }
   if (!themeCss.includes('.semi-backtop')) {
     throw new Error('安装后的默认主题缺少 BackTop 样式');
@@ -1293,6 +1305,19 @@ h(Button, { type, htmlType: 'submit' });
     !listThemeCss.includes('.semi-rtl .semi-list')
   ) {
     throw new Error('安装后的 List 逐组件样式缺少 Item、Grid、loading 或 RTL 依赖');
+  }
+  const modalThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'modal.css'),
+    'utf8',
+  );
+  if (
+    !modalThemeCss.includes('.semi-modal-content') ||
+    !modalThemeCss.includes('.semi-modal-mask') ||
+    !modalThemeCss.includes('.semi-modal-confirm') ||
+    !modalThemeCss.includes('.semi-portal') ||
+    !modalThemeCss.includes('.semi-modal-rtl')
+  ) {
+    throw new Error('安装后的 Modal 逐组件样式缺少内容、遮罩、confirm、Portal 或 RTL 依赖');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),
