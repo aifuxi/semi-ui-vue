@@ -2083,3 +2083,44 @@ declare module '@semi-v2.102.0/split-tag-group' {
   const SplitTagGroup: ComponentType<SplitTagGroupProps>;
   export default SplitTagGroup;
 }
+
+declare module '@semi-v2.102.0/popconfirm' {
+  import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
+
+  interface PopconfirmProps {
+    cancelText?: string;
+    cancelType?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+    children?: ReactNode;
+    className?: string;
+    content?: ReactNode;
+    getPopupContainer?: () => HTMLElement;
+    motion?: boolean;
+    okText?: string;
+    okType?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+    position?:
+      | 'top'
+      | 'topLeft'
+      | 'topRight'
+      | 'bottom'
+      | 'bottomLeft'
+      | 'bottomRight'
+      | 'left'
+      | 'leftTop'
+      | 'leftBottom'
+      | 'right'
+      | 'rightTop'
+      | 'rightBottom';
+    showArrow?: boolean;
+    showCloseIcon?: boolean;
+    style?: CSSProperties;
+    title?: ReactNode;
+    trigger?: 'hover' | 'focus' | 'click' | 'custom';
+    visible?: boolean;
+    onCancel?: (event: MouseEvent) => void | Promise<unknown>;
+    onConfirm?: (event: MouseEvent) => void | Promise<unknown>;
+    onVisibleChange?: (visible: boolean) => void;
+  }
+
+  const Popconfirm: ComponentType<PopconfirmProps>;
+  export default Popconfirm;
+}

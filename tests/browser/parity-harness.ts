@@ -43,10 +43,15 @@ function observeRuntimeErrors(page: Page): string[] {
 export async function openParityPages(
   context: BrowserContext,
   options: ParityScenarioOptions,
+  viewport?: { width: number; height: number },
 ): Promise<ParityPagePair> {
   const [reactPage, vuePage] = await Promise.all([context.newPage(), context.newPage()]);
   const reactErrors = observeRuntimeErrors(reactPage);
   const vueErrors = observeRuntimeErrors(vuePage);
+
+  if (viewport) {
+    await Promise.all([reactPage.setViewportSize(viewport), vuePage.setViewportSize(viewport)]);
+  }
 
   await Promise.all([
     reactPage.goto(createParityScenarioUrl(PARITY_APPLICATIONS.react.baseUrl, options)),

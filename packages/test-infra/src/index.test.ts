@@ -703,6 +703,23 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Popconfirm Adapter, Foundation, constants, styles and docs', () => {
+    expect(getParityScenario('popconfirm')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.popconfirmPublicEntry,
+    });
+    expect(assertScenarioComparable('popconfirm').targets).toHaveLength(6);
+    expect(getParityScenario('popconfirm').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.popconfirmFoundation,
+        REFERENCE_SOURCE_PATHS.popconfirmFoundationConstants,
+        REFERENCE_SOURCE_PATHS.popconfirmFoundationStyle,
+        REFERENCE_SOURCE_PATHS.popconfirmDocumentation,
+      ]),
+    );
+  });
+
   it('normalizes scenario query parameters and builds deterministic URLs', () => {
     const options = parseParityScenarioOptions(
       '?scenario=button-types&theme=dark&direction=rtl&locale=en-US',

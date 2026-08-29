@@ -280,6 +280,7 @@ try {
 		await import('@workspace/ui/modal');
 		await import('@workspace/ui/overflow-list');
 		await import('@workspace/ui/popover');
+		await import('@workspace/ui/popconfirm');
 		await import('@workspace/ui/scroll-list');
 		await import('@workspace/ui/side-sheet');
 		await import('@workspace/ui/table');
@@ -343,6 +344,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/notification.css').endsWith('/dist/notification.css')) {
 		  throw new Error('Notification 逐组件样式导出未指向 dist/notification.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/popconfirm.css').endsWith('/dist/popconfirm.css')) {
+		  throw new Error('Popconfirm 逐组件样式导出未指向 dist/popconfirm.css');
 		}
 		if (!import.meta.resolve('@workspace/theme-default/calendar.css').endsWith('/dist/calendar.css')) {
 		  throw new Error('Calendar 逐组件样式导出未指向 dist/calendar.css');
@@ -501,6 +505,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Badge, type BadgePosition, type BadgeType } from '@workspace/ui/badge';
 		import { Banner, type BannerType } from '@workspace/ui/banner';
 		import { Notification, type NotificationPosition } from '@workspace/ui/notification';
+		import { Popconfirm, type PopconfirmProps } from '@workspace/ui/popconfirm';
 		import { Calendar, type CalendarEvent, type CalendarMode } from '@workspace/ui/calendar';
 		import { Card, CardGroup, CardMeta, type CardShadows } from '@workspace/ui/card';
 		import { Carousel, type CarouselMethods, type CarouselTheme } from '@workspace/ui/carousel';
@@ -573,6 +578,8 @@ h(Button, { type, htmlType: 'submit' });
 		const notificationPosition: NotificationPosition = 'topRight';
 		const notificationId: string = Notification.info({ content: 'Consumer notification', duration: 0, position: notificationPosition });
 		Notification.close(notificationId);
+		const popconfirmProps: PopconfirmProps = { content: 'Consumer confirmation', title: 'Continue?' };
+		h(Popconfirm, { ...popconfirmProps, onConfirm: () => Promise.resolve() }, () => h('button', 'Continue'));
 		const calendarMode: CalendarMode = 'week';
 		const calendarEvents: CalendarEvent[] = [{ key: 'consumer', start: new Date(2023, 3, 10, 9), content: 'Consumer event' }];
 		h(Calendar, { mode: calendarMode, displayValue: new Date(2023, 3, 10), events: calendarEvents, showCurrTime: false });
@@ -1273,6 +1280,26 @@ h(Button, { type, htmlType: 'submit' });
     !notificationThemeCss.includes('.semi-notification-notice-rtl')
   ) {
     throw new Error('安装后的 Notification 逐组件样式缺少 wrapper、类型、关闭按钮或 RTL 样式');
+  }
+  const popconfirmThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@workspace',
+      'theme-default',
+      'dist',
+      'popconfirm.css',
+    ),
+    'utf8',
+  );
+  if (
+    !popconfirmThemeCss.includes('.semi-popconfirm-inner') ||
+    !popconfirmThemeCss.includes('.semi-popconfirm-header-title') ||
+    !popconfirmThemeCss.includes('.semi-popconfirm-footer') ||
+    !popconfirmThemeCss.includes('.semi-popconfirm-popover') ||
+    !popconfirmThemeCss.includes('.semi-popconfirm-rtl')
+  ) {
+    throw new Error('安装后的 Popconfirm 逐组件样式缺少卡片、按钮、Popover 或 RTL 样式');
   }
   const calendarThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'calendar.css'),

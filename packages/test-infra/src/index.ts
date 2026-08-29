@@ -146,6 +146,14 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   notificationFoundationStyle:
     'vendor/semi-design/packages/semi-foundation/notification/notification.scss',
   notificationDocumentation: 'vendor/semi-design/content/feedback/notification/index.md',
+  popconfirmPublicEntry: 'vendor/semi-design/packages/semi-ui/popconfirm/index.tsx',
+  popconfirmFoundation:
+    'vendor/semi-design/packages/semi-foundation/popconfirm/popconfirmFoundation.ts',
+  popconfirmFoundationConstants:
+    'vendor/semi-design/packages/semi-foundation/popconfirm/constants.ts',
+  popconfirmFoundationStyle:
+    'vendor/semi-design/packages/semi-foundation/popconfirm/popconfirm.scss',
+  popconfirmDocumentation: 'vendor/semi-design/content/feedback/popconfirm/index.md',
   illustrationsPublicEntry: 'vendor/semi-design/packages/semi-illustrations/src/index.ts',
   illustrationsSourceDirectory: 'vendor/semi-design/packages/semi-illustrations/src/illustrations',
   illustrationsSvgDirectory: 'vendor/semi-design/packages/semi-illustrations/src/svgs',
@@ -1457,6 +1465,59 @@ export const PARITY_SCENARIOS = [
           'borderStyle',
           'borderWidth',
         ],
+      },
+    ],
+  },
+  {
+    id: 'popconfirm',
+    title: 'Popconfirm 气泡确认框',
+    description: '验证默认/危险操作、按钮、箭头、Portal、焦点、暗色、移动端与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.popconfirmPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.popconfirmPublicEntry,
+      REFERENCE_SOURCE_PATHS.popconfirmFoundation,
+      REFERENCE_SOURCE_PATHS.popconfirmFoundationConstants,
+      REFERENCE_SOURCE_PATHS.popconfirmFoundationStyle,
+      REFERENCE_SOURCE_PATHS.popconfirmDocumentation,
+    ],
+    targets: [
+      {
+        id: 'popconfirm-default',
+        selector: '.popconfirm-scenario__default',
+        computedStyleProperties: ['boxSizing', 'direction', 'maxWidth', 'width'],
+      },
+      {
+        id: 'popconfirm-default-inner',
+        selector: '.popconfirm-scenario__default .semi-popconfirm-inner',
+        computedStyleProperties: [
+          'display',
+          'paddingBottom',
+          'paddingLeft',
+          'paddingRight',
+          'paddingTop',
+        ],
+      },
+      {
+        id: 'popconfirm-default-title',
+        selector: '.popconfirm-scenario__default .semi-popconfirm-header-title',
+        computedStyleProperties: ['color', 'fontSize', 'fontWeight', 'lineHeight', 'marginBottom'],
+      },
+      {
+        id: 'popconfirm-default-body',
+        selector: '.popconfirm-scenario__default .semi-popconfirm-body',
+        computedStyleProperties: ['color', 'marginLeft', 'marginRight'],
+      },
+      {
+        id: 'popconfirm-default-footer',
+        selector: '.popconfirm-scenario__default .semi-popconfirm-footer',
+        computedStyleProperties: ['display', 'justifyContent', 'marginTop'],
+      },
+      {
+        id: 'popconfirm-danger-popover',
+        selector: '.semi-popconfirm-popover:has(.popconfirm-scenario__danger)',
+        computedStyleProperties: ['borderRadius', 'boxShadow'],
       },
     ],
   },

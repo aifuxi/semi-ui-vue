@@ -68,6 +68,26 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
 
+  it('通过公共 Popconfirm 渲染两种确认卡、按钮、箭头、RTL 与首次自定义容器', async () => {
+    const wrapper = mount(App, {
+      attachTo: document.body,
+      props: { scenarioId: 'popconfirm', direction: 'rtl' },
+    });
+    for (let index = 0; index < 5; index += 1) await wrapper.vm.$nextTick();
+
+    const scenario = wrapper.get('[data-testid="popconfirm-vue"]');
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('[data-parity-target^="popconfirm-trigger-"]')).toHaveLength(2);
+    expect(scenario.findAll(':scope > .semi-portal')).toHaveLength(2);
+    expect(scenario.findAll('.semi-popconfirm')).toHaveLength(2);
+    expect(scenario.findAll('.semi-popconfirm-rtl')).toHaveLength(2);
+    expect(scenario.findAll('.semi-popover-icon-arrow')).toHaveLength(1);
+    expect(scenario.find('.popconfirm-scenario__danger .semi-popconfirm-btn-close').exists()).toBe(
+      false,
+    );
+    wrapper.unmount();
+  });
+
   it('通过公共 OverflowList 渲染 collapse 与 scroll 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'overflow-list', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="overflow-list-vue"]');

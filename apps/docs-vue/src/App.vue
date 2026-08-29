@@ -29,6 +29,7 @@ import TagScenario from './components/TagScenario.vue';
 import TimelineScenario from './components/TimelineScenario.vue';
 import BannerScenario from './components/BannerScenario.vue';
 import NotificationScenario from './components/NotificationScenario.vue';
+import PopconfirmScenario from './components/PopconfirmScenario.vue';
 import IllustrationsScenario from './components/IllustrationsScenario.vue';
 import BackTopScenario from './components/BackTopScenario.vue';
 import BreadcrumbScenario from './components/BreadcrumbScenario.vue';
@@ -136,6 +137,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
         v-else-if="scenario.id === 'notification'"
         :direction="props.direction"
       />
+      <PopconfirmScenario v-else-if="scenario.id === 'popconfirm'" :direction="props.direction" />
       <IllustrationsScenario v-else-if="scenario.id === 'illustrations'" />
       <BackTopScenario v-else-if="scenario.id === 'back-top'" :direction="props.direction" />
       <BreadcrumbScenario v-else-if="scenario.id === 'breadcrumb'" :direction="props.direction" />

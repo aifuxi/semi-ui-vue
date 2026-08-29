@@ -75,6 +75,13 @@ export type { OverflowListAdapter } from './overflow-list.js';
 export { popoverCssClasses, popoverNumbers, popoverStrings } from './popover.js';
 export type { PopoverArrowBoundingConstants } from './popover.js';
 export {
+  PopconfirmFoundation,
+  popconfirmCssClasses,
+  popconfirmNumbers,
+  popconfirmStrings,
+} from './popconfirm.js';
+export type { PopconfirmAdapter } from './popconfirm.js';
+export {
   crossMergeImageSources,
   getPreloadImageSources,
   ImageFoundation,

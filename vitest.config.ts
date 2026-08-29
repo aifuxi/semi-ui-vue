@@ -80,6 +80,9 @@ export default defineConfig({
       '@semi-v2.102.0/popover': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiPopoverStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/popconfirm': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiPopconfirmStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/scroll-list': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiScrollListStub.tsx', import.meta.url),
       ),

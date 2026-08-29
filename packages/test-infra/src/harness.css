@@ -2674,3 +2674,20 @@ p {
     align-self: flex-start;
   }
 }
+.popconfirm-scenario {
+  min-height: 220px;
+  position: relative;
+}
+
+.popconfirm-scenario__triggers {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 92px 0;
+}
+
+@media (max-width: 600px) {
+  .popconfirm-scenario__triggers {
+    padding-left: 72px;
+    padding-right: 72px;
+  }
+}

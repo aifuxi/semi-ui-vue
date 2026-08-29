@@ -28,6 +28,7 @@ const listPublicEntry = path.join(upstreamPackages, 'semi-ui/list/index.tsx');
 const modalPublicEntry = path.join(upstreamPackages, 'semi-ui/modal/index.tsx');
 const overflowListPublicEntry = path.join(upstreamPackages, 'semi-ui/overflowList/index.tsx');
 const popoverPublicEntry = path.join(upstreamPackages, 'semi-ui/popover/index.tsx');
+const popconfirmPublicEntry = path.join(upstreamPackages, 'semi-ui/popconfirm/index.tsx');
 const scrollListPublicEntry = path.join(upstreamPackages, 'semi-ui/scrollList/index.tsx');
 const scrollItemPublicEntry = path.join(upstreamPackages, 'semi-ui/scrollList/scrollItem.tsx');
 const sideSheetPublicEntry = path.join(upstreamPackages, 'semi-ui/sideSheet/index.tsx');
@@ -110,6 +111,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'banner/banner.scss'),
   '@douyinfe/semi-foundation/notification/notification.scss',
   path.join(foundationRoot, 'notification/notification.scss'),
+  '@douyinfe/semi-foundation/popconfirm/popconfirm.scss',
+  path.join(foundationRoot, 'popconfirm/popconfirm.scss'),
   '@douyinfe/semi-foundation/calendar/calendar.scss',
   path.join(foundationRoot, 'calendar/calendar.scss'),
   '@douyinfe/semi-foundation/card/card.scss',
@@ -260,6 +263,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/modal', replacement: modalPublicEntry },
       { find: '@semi-v2.102.0/overflow-list', replacement: overflowListPublicEntry },
       { find: '@semi-v2.102.0/popover', replacement: popoverPublicEntry },
+      { find: '@semi-v2.102.0/popconfirm', replacement: popconfirmPublicEntry },
       { find: '@semi-v2.102.0/scroll-list', replacement: scrollListPublicEntry },
       { find: '@semi-v2.102.0/scroll-item', replacement: scrollItemPublicEntry },
       { find: '@semi-v2.102.0/side-sheet', replacement: sideSheetPublicEntry },
