@@ -135,6 +135,24 @@ describe('Vue 对照工作台', () => {
     expect(scenario.text()).not.toContain('不可见');
     wrapper.unmount();
   });
+  it('通过公共 Skeleton 渲染 loading 三态与全部占位项', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'skeleton', direction: 'rtl' } });
+    const scenario = wrapper.get('[data-testid="skeleton-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-skeleton')).toHaveLength(2);
+    expect(scenario.get('[data-parity-target="skeleton-root"]').classes()).toContain(
+      'semi-skeleton-active',
+    );
+    expect(scenario.find('.semi-skeleton-avatar-medium').exists()).toBe(true);
+    expect(scenario.find('.semi-skeleton-avatar-square').exists()).toBe(true);
+    expect(scenario.find('.semi-skeleton-button').exists()).toBe(true);
+    expect(scenario.find('.semi-skeleton-image').exists()).toBe(true);
+    expect(scenario.text()).toContain('Content ready');
+    expect(scenario.text()).not.toContain('Profile loaded');
+    expect(scenario.text()).not.toContain('Image loaded');
+    wrapper.unmount();
+  });
   it('通过公共 Empty 渲染图片、无图片、水平与 SVG 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'empty', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="empty-vue"]');

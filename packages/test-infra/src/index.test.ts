@@ -737,6 +737,23 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Skeleton Adapter, item entry, constants, styles and docs', () => {
+    expect(getParityScenario('skeleton')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.skeletonPublicEntry,
+    });
+    expect(assertScenarioComparable('skeleton').targets).toHaveLength(8);
+    expect(getParityScenario('skeleton').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.skeletonItemEntry,
+        REFERENCE_SOURCE_PATHS.skeletonFoundationConstants,
+        REFERENCE_SOURCE_PATHS.skeletonFoundationStyle,
+        REFERENCE_SOURCE_PATHS.skeletonDocumentation,
+      ]),
+    );
+  });
+
   it('normalizes scenario query parameters and builds deterministic URLs', () => {
     const options = parseParityScenarioOptions(
       '?scenario=button-types&theme=dark&direction=rtl&locale=en-US',

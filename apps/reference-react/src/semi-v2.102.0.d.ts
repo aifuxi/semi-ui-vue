@@ -223,6 +223,54 @@ declare module '@semi-v2.102.0/progress' {
   export default Progress;
 }
 
+declare module '@semi-v2.102.0/skeleton' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface SkeletonProps {
+    active?: boolean;
+    children?: ReactNode;
+    className?: string;
+    loading?: boolean;
+    placeholder?: ReactNode;
+    style?: CSSProperties;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  export interface SkeletonItemProps {
+    className?: string;
+    prefixCls?: string;
+    style?: CSSProperties;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  export interface SkeletonAvatarProps extends SkeletonItemProps {
+    shape?: 'circle' | 'square';
+    size?:
+      | 'extra-extra-small'
+      | 'extra-small'
+      | 'small'
+      | 'default'
+      | 'medium'
+      | 'large'
+      | 'extra-large';
+  }
+
+  export interface SkeletonParagraphProps extends SkeletonItemProps {
+    rows?: number;
+  }
+
+  type SkeletonComponent = ComponentType<SkeletonProps> & {
+    Avatar: ComponentType<SkeletonAvatarProps>;
+    Button: ComponentType<SkeletonItemProps>;
+    Image: ComponentType<SkeletonItemProps>;
+    Paragraph: ComponentType<SkeletonParagraphProps>;
+    Title: ComponentType<SkeletonItemProps>;
+  };
+
+  const Skeleton: SkeletonComponent;
+  export default Skeleton;
+}
+
 declare module '@semi-v2.102.0/back-top' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

@@ -375,6 +375,20 @@ describe('React 参考工作台', () => {
     expect(html).toContain('colSpan="3"');
     expect(html).not.toContain('不可见');
   });
+  it('从固定 Skeleton Adapter 渲染 loading 三态与全部占位项', () => {
+    const html = renderToStaticMarkup(<App scenarioId="skeleton" />);
+
+    expect(html).toContain('data-parity-scenario="skeleton"');
+    expect(html).toContain('data-testid="skeleton-reference"');
+    expect(html).toContain('semi-skeleton-active');
+    expect(html).toContain('semi-skeleton-avatar-medium');
+    expect(html).toContain('semi-skeleton-avatar-square');
+    expect(html).toContain('semi-skeleton-button');
+    expect(html).toContain('semi-skeleton-image');
+    expect(html).toContain('Content ready');
+    expect(html).not.toContain('Profile loaded');
+    expect(html).not.toContain('Image loaded');
+  });
   it('从固定 Empty Adapter 渲染图片、无图片、水平与 SVG 场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="empty" direction="rtl" />);
 

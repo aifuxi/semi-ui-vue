@@ -154,6 +154,10 @@
       "types": "./dist/progress/index.d.ts",
       "import": "./dist/progress/index.js"
     },
+    "./skeleton": {
+      "types": "./dist/skeleton/index.d.ts",
+      "import": "./dist/skeleton/index.js"
+    },
     "./scroll-list": {
       "types": "./dist/scroll-list/index.d.ts",
       "import": "./dist/scroll-list/index.js"

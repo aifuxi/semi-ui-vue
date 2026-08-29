@@ -282,6 +282,7 @@ try {
 		await import('@workspace/ui/popover');
 		await import('@workspace/ui/popconfirm');
 		await import('@workspace/ui/progress');
+		await import('@workspace/ui/skeleton');
 		await import('@workspace/ui/scroll-list');
 		await import('@workspace/ui/side-sheet');
 		await import('@workspace/ui/table');
@@ -351,6 +352,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/progress.css').endsWith('/dist/progress.css')) {
 		  throw new Error('Progress 逐组件样式导出未指向 dist/progress.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/skeleton.css').endsWith('/dist/skeleton.css')) {
+		  throw new Error('Skeleton 逐组件样式导出未指向 dist/skeleton.css');
 		}
 		if (!import.meta.resolve('@workspace/theme-default/calendar.css').endsWith('/dist/calendar.css')) {
 		  throw new Error('Calendar 逐组件样式导出未指向 dist/calendar.css');
@@ -511,6 +515,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Notification, type NotificationPosition } from '@workspace/ui/notification';
 		import { Popconfirm, type PopconfirmProps } from '@workspace/ui/popconfirm';
 		import { Progress, type ProgressProps, type ProgressStrokePoint } from '@workspace/ui/progress';
+		import { Skeleton, type SkeletonAvatarSize, type SkeletonProps } from '@workspace/ui/skeleton';
 		import { Calendar, type CalendarEvent, type CalendarMode } from '@workspace/ui/calendar';
 		import { Card, CardGroup, CardMeta, type CardShadows } from '@workspace/ui/card';
 		import { Carousel, type CarouselMethods, type CarouselTheme } from '@workspace/ui/carousel';
@@ -588,6 +593,10 @@ h(Button, { type, htmlType: 'submit' });
 		const progressStroke: ProgressStrokePoint[] = [{ percent: 100, color: '#0064fa' }];
 		const progressProps: ProgressProps = { percent: 60, stroke: progressStroke, strokeGradient: true };
 		h(Progress, progressProps, { format: ({ percent }: { percent: number }) => String(percent) + '%' });
+		const skeletonSize: SkeletonAvatarSize = 'large';
+		const skeletonProps: SkeletonProps = { active: true, loading: true };
+		h(Skeleton, skeletonProps, { placeholder: () => h(Skeleton.Avatar, { size: skeletonSize }) });
+		h(Skeleton.Paragraph, { rows: 2 });
 		const calendarMode: CalendarMode = 'week';
 		const calendarEvents: CalendarEvent[] = [{ key: 'consumer', start: new Date(2023, 3, 10, 9), content: 'Consumer event' }];
 		h(Calendar, { mode: calendarMode, displayValue: new Date(2023, 3, 10), events: calendarEvents, showCurrTime: false });
@@ -830,6 +839,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-progress-track-inner')) {
     throw new Error('安装后的默认主题缺少 Progress 样式');
+  }
+  if (!themeCss.includes('.semi-skeleton-active')) {
+    throw new Error('安装后的默认主题缺少 Skeleton 样式');
   }
   if (!themeCss.includes('.semi-cropper-box-corner')) {
     throw new Error('安装后的默认主题缺少 Cropper 样式');
@@ -1322,6 +1334,18 @@ h(Button, { type, htmlType: 'submit' });
     !progressThemeCss.includes('.semi-rtl .semi-progress')
   ) {
     throw new Error('安装后的 Progress 逐组件样式缺少线形、环形或 RTL 样式');
+  }
+  const skeletonThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'skeleton.css'),
+    'utf8',
+  );
+  if (
+    !skeletonThemeCss.includes('.semi-skeleton-avatar-medium') ||
+    !skeletonThemeCss.includes('.semi-skeleton-paragraph') ||
+    !skeletonThemeCss.includes('.semi-skeleton-active') ||
+    !skeletonThemeCss.includes('.semi-rtl .semi-skeleton')
+  ) {
+    throw new Error('安装后的 Skeleton 逐组件样式缺少占位项、动画或 RTL 样式');
   }
   const calendarThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'calendar.css'),

@@ -92,6 +92,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/popconfirm/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'progress', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/progress/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'skeleton', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/skeleton/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'scroll-list', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/scroll-list/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'side-sheet', 'index.js')).href);
