@@ -2,7 +2,19 @@
 
 这是一个以 Semi Design `v2.102.0` 为固定参考基线、面向 Vue 3.5+ 的像素级复刻工程。
 
-当前已完成 Button（Button、ButtonGroup、SplitButtonGroup）、Divider、Icon、Space、FloatButton（含 FloatButtonGroup）、Layout（含 Header、Content、Footer、Sider）、Grid（Row、Col）、Resizable（Resizable、ResizeGroup、ResizeItem、ResizeHandler）、Typography（Title、Text、Paragraph、Numeral）与 ConfigProvider（含 ConfigConsumer、响应式断点和 semiGlobal）垂直切片。Icon 同时覆盖稳定版 523 个图标、Lab 84 个图标与生成漂移检查；每个已完成切片均包含 Vue API、中英文文档、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证。其余组件仍按上游 Inventory 分阶段推进。唯一参考源码位于只读 submodule `vendor/semi-design`。
+## 复刻进度
+
+当前已完成 **57 / 85** 个上游公开根模块的完整垂直切片（约 **67.1%**）：
+
+- 基础与布局：Button、Divider、Icon、Space、FloatButton、Layout、Grid、Resizable、Typography、ConfigProvider。
+- 输入类：Switch、Tooltip、Select、AutoComplete、Checkbox、Input、InputNumber、PinCode、Radio、Rating、Slider、TagInput、TimePicker。
+- 导航类：Anchor、BackTop、Breadcrumb、Pagination、Steps、Tabs、Tree。
+- 数据展示与容器：Avatar、Badge、Calendar、Card、Carousel、Collapsible、Descriptions、Dropdown、Empty、Highlight、Image、Cropper、List、Modal、OverflowList、Popover、ScrollList、SideSheet、Table、Tag、Timeline。
+- 反馈类：Banner、Notification、Popconfirm、Progress、Skeleton、Spin。
+
+最新完成组件为 Spin；按固定上游顺序，下一项是 Toast。每个已完成切片均包含 Vue API、Foundation/主题、中英文文档、React/Vue 场景、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证。Icon 还覆盖稳定图标、Lab 图标与生成漂移检查，插画包覆盖全部公开插画。
+
+进度分母与剩余范围以 `docs/inventory/semi-v2.102.0.json` 的 `rootModuleCount` 为准；每完成一个 `ready` 垂直切片，必须在同一次提交中同步更新本节的数量、完成列表和下一项。唯一参考源码位于只读 submodule `vendor/semi-design`。
 
 ## 本地环境
 
