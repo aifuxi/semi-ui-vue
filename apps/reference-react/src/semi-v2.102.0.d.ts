@@ -1911,3 +1911,65 @@ declare module '@semi-v2.102.0/table' {
   const Table: TableComponent;
   export default Table;
 }
+
+declare module '@semi-v2.102.0/tag' {
+  import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
+  export interface TagProps {
+    children?: ReactNode;
+    className?: string;
+    closable?: boolean;
+    color?:
+      | 'grey'
+      | 'red'
+      | 'pink'
+      | 'purple'
+      | 'violet'
+      | 'indigo'
+      | 'blue'
+      | 'light-blue'
+      | 'cyan'
+      | 'teal'
+      | 'green'
+      | 'light-green'
+      | 'lime'
+      | 'yellow'
+      | 'amber'
+      | 'orange'
+      | 'white';
+    shape?: 'square' | 'circle';
+    size?: 'default' | 'small' | 'large';
+    style?: CSSProperties;
+    tagKey?: string | number;
+    type?: 'light' | 'solid' | 'ghost';
+    visible?: boolean;
+    onClose?: (content: ReactNode, event: MouseEvent<HTMLElement>, tagKey: string | number) => void;
+  }
+  const Tag: ComponentType<TagProps>;
+  export default Tag;
+}
+
+declare module '@semi-v2.102.0/tag-group' {
+  import type { ComponentType } from 'react';
+  import type { TagProps } from '@semi-v2.102.0/tag';
+  interface TagGroupProps {
+    maxTagCount?: number;
+    restCount?: number;
+    showPopover?: boolean;
+    tagList: TagProps[];
+  }
+  const TagGroup: ComponentType<TagGroupProps>;
+  export default TagGroup;
+}
+
+declare module '@semi-v2.102.0/split-tag-group' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+  interface SplitTagGroupProps {
+    'aria-label'?: string;
+    children?: ReactNode;
+    className?: string;
+    style?: CSSProperties;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+  const SplitTagGroup: ComponentType<SplitTagGroupProps>;
+  export default SplitTagGroup;
+}

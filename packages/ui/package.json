@@ -150,6 +150,10 @@
       "types": "./dist/table/index.d.ts",
       "import": "./dist/table/index.js"
     },
+    "./tag": {
+      "types": "./dist/tag/index.d.ts",
+      "import": "./dist/tag/index.js"
+    },
     "./pin-code": {
       "types": "./dist/pin-code/index.d.ts",
       "import": "./dist/pin-code/index.js"

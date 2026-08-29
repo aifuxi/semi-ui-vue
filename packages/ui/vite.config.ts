@@ -119,6 +119,7 @@ export default defineConfig({
         'scroll-list/index': fileURLToPath(new URL('./src/scroll-list/index.ts', import.meta.url)),
         'side-sheet/index': fileURLToPath(new URL('./src/side-sheet/index.ts', import.meta.url)),
         'table/index': fileURLToPath(new URL('./src/table/index.ts', import.meta.url)),
+        'tag/index': fileURLToPath(new URL('./src/tag/index.ts', import.meta.url)),
         'pin-code/index': fileURLToPath(new URL('./src/pin-code/index.ts', import.meta.url)),
         'pagination/index': fileURLToPath(new URL('./src/pagination/index.ts', import.meta.url)),
         'radio/index': fileURLToPath(new URL('./src/radio/index.ts', import.meta.url)),

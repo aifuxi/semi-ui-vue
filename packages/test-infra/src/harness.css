@@ -191,6 +191,18 @@ p {
   font-weight: 600;
 }
 
+.tag-scenario {
+  display: grid;
+  gap: 18px;
+  width: 520px;
+}
+
+.tag-scenario__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .visual-calibration {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

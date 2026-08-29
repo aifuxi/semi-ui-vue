@@ -86,6 +86,15 @@ export default defineConfig({
       '@semi-v2.102.0/table': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiTableStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/tag': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiTagStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/tag-group': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiTagGroupStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/split-tag-group': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiSplitTagGroupStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/illustrations': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiIllustrationsStub.tsx', import.meta.url),
       ),

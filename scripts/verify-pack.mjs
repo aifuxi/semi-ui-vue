@@ -281,6 +281,7 @@ try {
 		await import('@workspace/ui/scroll-list');
 		await import('@workspace/ui/side-sheet');
 		await import('@workspace/ui/table');
+		await import('@workspace/ui/tag');
 	await import('@workspace/ui/back-top');
 	await import('@workspace/ui/breadcrumb');
 	await import('@workspace/ui/button');
@@ -384,6 +385,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/table.css').endsWith('/dist/table.css')) {
 		  throw new Error('Table 逐组件样式导出未指向 dist/table.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/tag.css').endsWith('/dist/tag.css')) {
+		  throw new Error('Tag 逐组件样式导出未指向 dist/tag.css');
 		}
 	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
@@ -500,6 +504,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { ScrollItem, ScrollList, type ScrollItemData, type ScrollItemMode } from '@workspace/ui/scroll-list';
 		import { SideSheet, type SideSheetPlacement, type SideSheetSize } from '@workspace/ui/side-sheet';
 		import { Table, TableColumn, type TableColumnProps, type TableRowSelection } from '@workspace/ui/table';
+		import { SplitTagGroup, Tag, TagGroup, type TagColor, type TagData } from '@workspace/ui/tag';
 	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
 	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
@@ -601,6 +606,11 @@ h(Button, { type, htmlType: 'submit' });
 		h(Table, { columns: tableColumns, dataSource: [{ key: 'consumer', name: 'Semi Vue' }], pagination: false, rowSelection: tableSelection });
 		h(Table.Column, { dataIndex: 'name', title: 'Compound column' });
 		h(TableColumn, { dataIndex: 'name', title: 'Named column' });
+		const tagColor: TagColor = 'blue';
+		const tagData: TagData[] = [{ tagKey: 'consumer', content: 'Consumer', color: tagColor }];
+		h(Tag, { color: tagColor, closable: true }, () => 'Consumer tag');
+		h(TagGroup, { maxTagCount: 1, tagList: tagData });
+		h(SplitTagGroup, null, () => [h(Tag, null, () => 'One'), h(Tag, null, () => 'Two')]);
 		const overflowItems: OverflowItem[] = [{ key: 'consumer' }];
 		const overflowMode: OverflowListRenderMode = 'collapse';
 		h(OverflowList, { items: overflowItems, renderMode: overflowMode });
@@ -1449,6 +1459,18 @@ h(Button, { type, htmlType: 'submit' });
     !tableThemeCss.includes('.semi-table-wrapper-rtl .semi-table')
   ) {
     throw new Error('安装后的 Table 逐组件样式缺少根、选择、固定列、分页或 RTL 样式');
+  }
+  const tagThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'tag.css'),
+    'utf8',
+  );
+  if (
+    !tagThemeCss.includes('.semi-tag-blue-solid') ||
+    !tagThemeCss.includes('.semi-tag-group') ||
+    !tagThemeCss.includes('.semi-tag-split') ||
+    !tagThemeCss.includes('.semi-rtl .semi-tag')
+  ) {
+    throw new Error('安装后的 Tag 逐组件样式缺少颜色、Group、Split 或 RTL 样式');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

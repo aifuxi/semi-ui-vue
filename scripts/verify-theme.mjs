@@ -159,6 +159,8 @@ const sideSheetCssPath = path.join(
 );
 const tableEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'table.scss');
 const tableCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'table.css');
+const tagEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'tag.scss');
+const tagCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'tag.css');
 const cropperEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -528,6 +530,36 @@ for (const selector of [
   if (!anchorCss.includes(selector)) {
     throw new Error(`Anchor 逐组件样式产物缺少选择器：${selector}`);
   }
+}
+
+const expectedTagImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/_portal/portal.scss'),
+  vendorImport('semi-foundation/avatar/avatar.scss'),
+  vendorImport('semi-foundation/tooltip/tooltip.scss'),
+  vendorImport('semi-foundation/popover/popover.scss'),
+  vendorImport('semi-foundation/tag/tag.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const tagEntrySource = await readFile(tagEntryPath, 'utf8');
+const actualTagImports = [...tagEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualTagImports) !== JSON.stringify(expectedTagImports)) {
+  throw new Error('Tag 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const tagCss = await readFile(tagCssPath, 'utf8');
+for (const selector of [
+  '.semi-tag-blue-solid',
+  '.semi-tag-close',
+  '.semi-tag-group',
+  '.semi-tag-rest-group-popover',
+  '.semi-tag-split',
+  '.semi-rtl .semi-tag',
+]) {
+  if (!tagCss.includes(selector)) throw new Error(`Tag 逐组件样式产物缺少选择器：${selector}`);
 }
 
 const expectedScrollListImports = [
@@ -1890,5 +1922,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 Anchor/Avatar/Badge/Calendar/Card/Carousel/Collapsible/Cropper/Descriptions/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + calendarCss.length + cardCss.length + carouselCss.length + collapsibleCss.length + cropperCss.length + descriptionsCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/Avatar/Badge/Calendar/Card/Carousel/Collapsible/Cropper/Descriptions/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/Tag/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + calendarCss.length + cardCss.length + carouselCss.length + collapsibleCss.length + cropperCss.length + descriptionsCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + tagCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

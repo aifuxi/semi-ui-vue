@@ -90,6 +90,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/side-sheet/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'table', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/table/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'tag', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/tag/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'back-top', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/back-top/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'breadcrumb', 'index.js')).href);
