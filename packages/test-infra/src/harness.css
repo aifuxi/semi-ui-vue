@@ -2553,6 +2553,27 @@ p {
   margin: 0;
 }
 
+.toast-scenario {
+  min-height: 260px;
+  color: var(--semi-color-text-2);
+}
+
+.toast-scenario::before {
+  position: fixed;
+  z-index: 1009;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 160px;
+  background: var(--semi-color-bg-0);
+  content: '';
+  pointer-events: none;
+}
+
+.toast-scenario > p {
+  margin: 0;
+}
+
 @media (max-width: 600px) {
   .banner-scenario__actions {
     flex-wrap: wrap;

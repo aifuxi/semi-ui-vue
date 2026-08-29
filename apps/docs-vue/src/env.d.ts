@@ -23,6 +23,7 @@ declare module 'virtual:workspace-popconfirm-styles.css';
 declare module 'virtual:workspace-progress-styles.css';
 declare module 'virtual:workspace-skeleton-styles.css';
 declare module 'virtual:workspace-spin-styles.css';
+declare module 'virtual:workspace-toast-styles.css';
 declare module 'virtual:workspace-scroll-list-styles.css';
 declare module 'virtual:workspace-side-sheet-styles.css';
 declare module 'virtual:workspace-table-styles.css';

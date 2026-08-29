@@ -772,6 +772,26 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Toast Adapter, hook, Foundations, constants, styles and docs', () => {
+    expect(getParityScenario('toast')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.toastPublicEntry,
+    });
+    expect(assertScenarioComparable('toast').targets).toHaveLength(5);
+    expect(getParityScenario('toast').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.toastEntry,
+        REFERENCE_SOURCE_PATHS.toastHookEntry,
+        REFERENCE_SOURCE_PATHS.toastFoundation,
+        REFERENCE_SOURCE_PATHS.toastListFoundation,
+        REFERENCE_SOURCE_PATHS.toastFoundationConstants,
+        REFERENCE_SOURCE_PATHS.toastFoundationStyle,
+        REFERENCE_SOURCE_PATHS.toastDocumentation,
+      ]),
+    );
+  });
+
   it('normalizes scenario query parameters and builds deterministic URLs', () => {
     const options = parseParityScenarioOptions(
       '?scenario=button-types&theme=dark&direction=rtl&locale=en-US',

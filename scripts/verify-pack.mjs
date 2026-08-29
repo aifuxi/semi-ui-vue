@@ -284,6 +284,7 @@ try {
 		await import('@workspace/ui/progress');
 		await import('@workspace/ui/skeleton');
 		await import('@workspace/ui/spin');
+		await import('@workspace/ui/toast');
 		await import('@workspace/ui/scroll-list');
 		await import('@workspace/ui/side-sheet');
 		await import('@workspace/ui/table');
@@ -359,6 +360,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/spin.css').endsWith('/dist/spin.css')) {
 		  throw new Error('Spin 逐组件样式导出未指向 dist/spin.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/toast.css').endsWith('/dist/toast.css')) {
+		  throw new Error('Toast 逐组件样式导出未指向 dist/toast.css');
 		}
 		if (!import.meta.resolve('@workspace/theme-default/calendar.css').endsWith('/dist/calendar.css')) {
 		  throw new Error('Calendar 逐组件样式导出未指向 dist/calendar.css');
@@ -521,6 +525,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Progress, type ProgressProps, type ProgressStrokePoint } from '@workspace/ui/progress';
 		import { Skeleton, type SkeletonAvatarSize, type SkeletonProps } from '@workspace/ui/skeleton';
 		import { Spin, type SpinProps, type SpinSize } from '@workspace/ui/spin';
+		import { Toast, ToastFactory, useToast, type ToastTheme } from '@workspace/ui/toast';
 		import { Calendar, type CalendarEvent, type CalendarMode } from '@workspace/ui/calendar';
 		import { Card, CardGroup, CardMeta, type CardShadows } from '@workspace/ui/card';
 		import { Carousel, type CarouselMethods, type CarouselTheme } from '@workspace/ui/carousel';
@@ -605,6 +610,13 @@ h(Button, { type, htmlType: 'submit' });
 		const spinSize: SpinSize = 'large';
 		const spinProps: SpinProps = { delay: 100, size: spinSize, spinning: true };
 		h(Spin, spinProps, { indicator: () => h('span', 'Loading'), tip: () => 'Please wait' });
+		const toastTheme: ToastTheme = 'light';
+		const toastId: string = Toast.info({ content: 'Consumer toast', duration: 0, theme: toastTheme });
+		Toast.close(toastId);
+		ToastFactory.create({ top: 12 });
+		const [toastApi, ToastHolder] = useToast();
+		h(ToastHolder);
+		toastApi.open({ content: 'Holder toast', duration: 0 });
 		const calendarMode: CalendarMode = 'week';
 		const calendarEvents: CalendarEvent[] = [{ key: 'consumer', start: new Date(2023, 3, 10, 9), content: 'Consumer event' }];
 		h(Calendar, { mode: calendarMode, displayValue: new Date(2023, 3, 10), events: calendarEvents, showCurrTime: false });
@@ -1314,6 +1326,18 @@ h(Button, { type, htmlType: 'submit' });
     !notificationThemeCss.includes('.semi-notification-notice-rtl')
   ) {
     throw new Error('安装后的 Notification 逐组件样式缺少 wrapper、类型、关闭按钮或 RTL 样式');
+  }
+  const toastThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'toast.css'),
+    'utf8',
+  );
+  if (
+    !toastThemeCss.includes('.semi-toast-wrapper') ||
+    !toastThemeCss.includes('.semi-toast-content') ||
+    !toastThemeCss.includes('.semi-toast-close-button') ||
+    !toastThemeCss.includes('.semi-toast-rtl')
+  ) {
+    throw new Error('安装后的 Toast 逐组件样式缺少 wrapper、内容、关闭按钮或 RTL 样式');
   }
   const popconfirmThemeCss = await readFile(
     path.join(

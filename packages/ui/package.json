@@ -162,6 +162,10 @@
       "types": "./dist/spin/index.d.ts",
       "import": "./dist/spin/index.js"
     },
+    "./toast": {
+      "types": "./dist/toast/index.d.ts",
+      "import": "./dist/toast/index.js"
+    },
     "./scroll-list": {
       "types": "./dist/scroll-list/index.d.ts",
       "import": "./dist/scroll-list/index.js"

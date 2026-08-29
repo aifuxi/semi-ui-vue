@@ -25,6 +25,7 @@ export const virtualPopconfirmStyleId = 'virtual:workspace-popconfirm-styles.css
 export const virtualProgressStyleId = 'virtual:workspace-progress-styles.css';
 export const virtualSkeletonStyleId = 'virtual:workspace-skeleton-styles.css';
 export const virtualSpinStyleId = 'virtual:workspace-spin-styles.css';
+export const virtualToastStyleId = 'virtual:workspace-toast-styles.css';
 export const virtualScrollListStyleId = 'virtual:workspace-scroll-list-styles.css';
 export const virtualSideSheetStyleId = 'virtual:workspace-side-sheet-styles.css';
 export const virtualTableStyleId = 'virtual:workspace-table-styles.css';
@@ -82,6 +83,7 @@ const resolvedVirtualPopconfirmStyleId = `\0${virtualPopconfirmStyleId}`;
 const resolvedVirtualProgressStyleId = `\0${virtualProgressStyleId}`;
 const resolvedVirtualSkeletonStyleId = `\0${virtualSkeletonStyleId}`;
 const resolvedVirtualSpinStyleId = `\0${virtualSpinStyleId}`;
+const resolvedVirtualToastStyleId = `\0${virtualToastStyleId}`;
 const resolvedVirtualScrollListStyleId = `\0${virtualScrollListStyleId}`;
 const resolvedVirtualSideSheetStyleId = `\0${virtualSideSheetStyleId}`;
 const resolvedVirtualTableStyleId = `\0${virtualTableStyleId}`;
@@ -139,6 +141,7 @@ const popconfirmStyleEntry = fileURLToPath(new URL('./src/popconfirm.scss', impo
 const progressStyleEntry = fileURLToPath(new URL('./src/progress.scss', import.meta.url));
 const skeletonStyleEntry = fileURLToPath(new URL('./src/skeleton.scss', import.meta.url));
 const spinStyleEntry = fileURLToPath(new URL('./src/spin.scss', import.meta.url));
+const toastStyleEntry = fileURLToPath(new URL('./src/toast.scss', import.meta.url));
 const scrollListStyleEntry = fileURLToPath(new URL('./src/scroll-list.scss', import.meta.url));
 const sideSheetStyleEntry = fileURLToPath(new URL('./src/side-sheet.scss', import.meta.url));
 const tableStyleEntry = fileURLToPath(new URL('./src/table.scss', import.meta.url));
@@ -200,6 +203,7 @@ const styleEntries = new Map([
   [resolvedVirtualProgressStyleId, progressStyleEntry],
   [resolvedVirtualSkeletonStyleId, skeletonStyleEntry],
   [resolvedVirtualSpinStyleId, spinStyleEntry],
+  [resolvedVirtualToastStyleId, toastStyleEntry],
   [resolvedVirtualScrollListStyleId, scrollListStyleEntry],
   [resolvedVirtualSideSheetStyleId, sideSheetStyleEntry],
   [resolvedVirtualTableStyleId, tableStyleEntry],
@@ -265,6 +269,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualProgressStyleId) return resolvedVirtualProgressStyleId;
       if (source === virtualSkeletonStyleId) return resolvedVirtualSkeletonStyleId;
       if (source === virtualSpinStyleId) return resolvedVirtualSpinStyleId;
+      if (source === virtualToastStyleId) return resolvedVirtualToastStyleId;
       if (source === virtualScrollListStyleId) return resolvedVirtualScrollListStyleId;
       if (source === virtualSideSheetStyleId) return resolvedVirtualSideSheetStyleId;
       if (source === virtualTableStyleId) return resolvedVirtualTableStyleId;

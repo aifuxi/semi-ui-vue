@@ -33,6 +33,7 @@ import PopconfirmScenario from './components/PopconfirmScenario.vue';
 import ProgressScenario from './components/ProgressScenario.vue';
 import SkeletonScenario from './components/SkeletonScenario.vue';
 import SpinScenario from './components/SpinScenario.vue';
+import ToastScenario from './components/ToastScenario.vue';
 import IllustrationsScenario from './components/IllustrationsScenario.vue';
 import BackTopScenario from './components/BackTopScenario.vue';
 import BreadcrumbScenario from './components/BreadcrumbScenario.vue';
@@ -144,6 +145,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <ProgressScenario v-else-if="scenario.id === 'progress'" />
       <SkeletonScenario v-else-if="scenario.id === 'skeleton'" />
       <SpinScenario v-else-if="scenario.id === 'spin'" />
+      <ToastScenario v-else-if="scenario.id === 'toast'" :direction="props.direction" />
       <IllustrationsScenario v-else-if="scenario.id === 'illustrations'" />
       <BackTopScenario v-else-if="scenario.id === 'back-top'" :direction="props.direction" />
       <BreadcrumbScenario v-else-if="scenario.id === 'breadcrumb'" :direction="props.direction" />

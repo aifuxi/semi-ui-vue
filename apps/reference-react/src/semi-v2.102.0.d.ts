@@ -294,6 +294,38 @@ declare module '@semi-v2.102.0/spin' {
   export default Spin;
 }
 
+declare module '@semi-v2.102.0/toast' {
+  import type React from 'react';
+
+  export interface ToastOptions {
+    className?: string;
+    content?: React.ReactNode;
+    direction?: 'ltr' | 'rtl';
+    duration?: number;
+    id?: string | number;
+    motion?: boolean;
+    onClose?: () => void;
+    showClose?: boolean;
+    stack?: boolean;
+    textMaxWidth?: string | number;
+    theme?: 'normal' | 'light';
+  }
+
+  export interface ToastStatic {
+    close(id: string | number): string;
+    config(options: Record<string, unknown>): void;
+    destroyAll(): void;
+    error(options: ToastOptions | string): string;
+    getWrapperId(): string | null;
+    info(options: ToastOptions | string): string;
+    success(options: ToastOptions | string): string;
+    warning(options: ToastOptions | string): string;
+  }
+
+  const Toast: ToastStatic;
+  export default Toast;
+}
+
 declare module '@semi-v2.102.0/back-top' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

@@ -32,6 +32,7 @@ import { PopconfirmScenario } from './scenarios/PopconfirmScenario';
 import { ProgressScenario } from './scenarios/ProgressScenario';
 import { SkeletonScenario } from './scenarios/SkeletonScenario';
 import { SpinScenario } from './scenarios/SpinScenario';
+import { ToastScenario } from './scenarios/ToastScenario';
 import { IllustrationsScenario } from './scenarios/IllustrationsScenario';
 import { BackTopScenario } from './scenarios/BackTopScenario';
 import { BreadcrumbScenario } from './scenarios/BreadcrumbScenario';
@@ -149,6 +150,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'progress' ? <ProgressScenario /> : null}
         {scenario.id === 'skeleton' ? <SkeletonScenario /> : null}
         {scenario.id === 'spin' ? <SpinScenario /> : null}
+        {scenario.id === 'toast' ? <ToastScenario direction={options.direction} /> : null}
         {scenario.id === 'illustrations' ? <IllustrationsScenario /> : null}
         {scenario.id === 'back-top' ? <BackTopScenario direction={options.direction} /> : null}
         {scenario.id === 'breadcrumb' ? <BreadcrumbScenario direction={options.direction} /> : null}
