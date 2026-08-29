@@ -12,6 +12,7 @@ const anchorPublicEntry = path.join(upstreamPackages, 'semi-ui/anchor/index.tsx'
 const avatarPublicEntry = path.join(upstreamPackages, 'semi-ui/avatar/index.tsx');
 const avatarGroupEntry = path.join(upstreamPackages, 'semi-ui/avatar/avatarGroup.tsx');
 const badgePublicEntry = path.join(upstreamPackages, 'semi-ui/badge/index.tsx');
+const bannerPublicEntry = path.join(upstreamPackages, 'semi-ui/banner/index.tsx');
 const calendarPublicEntry = path.join(upstreamPackages, 'semi-ui/calendar/index.tsx');
 const cardPublicEntry = path.join(upstreamPackages, 'semi-ui/card/index.tsx');
 const carouselPublicEntry = path.join(upstreamPackages, 'semi-ui/carousel/index.tsx');
@@ -104,6 +105,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'floatButton/floatButton.scss'),
   '@douyinfe/semi-foundation/badge/badge.scss',
   path.join(foundationRoot, 'badge/badge.scss'),
+  '@douyinfe/semi-foundation/banner/banner.scss',
+  path.join(foundationRoot, 'banner/banner.scss'),
   '@douyinfe/semi-foundation/calendar/calendar.scss',
   path.join(foundationRoot, 'calendar/calendar.scss'),
   '@douyinfe/semi-foundation/card/card.scss',
@@ -238,6 +241,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/avatar', replacement: avatarPublicEntry },
       { find: '@semi-v2.102.0/avatar-group', replacement: avatarGroupEntry },
       { find: '@semi-v2.102.0/badge', replacement: badgePublicEntry },
+      { find: '@semi-v2.102.0/banner', replacement: bannerPublicEntry },
       { find: '@semi-v2.102.0/calendar', replacement: calendarPublicEntry },
       { find: '@semi-v2.102.0/card', replacement: cardPublicEntry },
       { find: '@semi-v2.102.0/carousel', replacement: carouselPublicEntry },

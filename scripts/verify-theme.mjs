@@ -13,6 +13,8 @@ const avatarEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 's
 const avatarCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'avatar.css');
 const badgeEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'badge.scss');
 const badgeCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'badge.css');
+const bannerEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'banner.scss');
+const bannerCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'banner.css');
 const calendarEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -1363,6 +1365,35 @@ for (const selector of [
   }
 }
 
+const expectedBannerImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/button/button.scss'),
+  vendorImport('semi-foundation/typography/typography.scss'),
+  vendorImport('semi-foundation/banner/banner.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+  vendorImport('semi-foundation/button/iconButton.scss'),
+];
+const bannerEntrySource = await readFile(bannerEntryPath, 'utf8');
+const actualBannerImports = [...bannerEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualBannerImports) !== JSON.stringify(expectedBannerImports)) {
+  throw new Error('Banner 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const bannerCss = await readFile(bannerCssPath, 'utf8');
+for (const selector of [
+  '.semi-banner-info',
+  '.semi-banner-in-container',
+  '.semi-banner-close',
+  '.semi-banner-title + .semi-banner-description',
+  '.semi-rtl .semi-banner',
+]) {
+  if (!bannerCss.includes(selector)) {
+    throw new Error(`Banner 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 const expectedCalendarImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -1960,5 +1991,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 Anchor/Avatar/Badge/Calendar/Card/Carousel/Collapsible/Cropper/Descriptions/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/Tag/Timeline/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + calendarCss.length + cardCss.length + carouselCss.length + collapsibleCss.length + cropperCss.length + descriptionsCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + tagCss.length + timelineCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/Avatar/Badge/Banner/Calendar/Card/Carousel/Collapsible/Cropper/Descriptions/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/Tag/Timeline/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + bannerCss.length + calendarCss.length + cardCss.length + carouselCss.length + collapsibleCss.length + cropperCss.length + descriptionsCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + tagCss.length + timelineCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

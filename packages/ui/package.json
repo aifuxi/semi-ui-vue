@@ -30,6 +30,10 @@
       "types": "./dist/badge/index.d.ts",
       "import": "./dist/badge/index.js"
     },
+    "./banner": {
+      "types": "./dist/banner/index.d.ts",
+      "import": "./dist/banner/index.js"
+    },
     "./calendar": {
       "types": "./dist/calendar/index.d.ts",
       "import": "./dist/calendar/index.js"

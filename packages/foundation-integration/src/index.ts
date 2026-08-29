@@ -4,6 +4,8 @@ export { AnchorFoundation, AnchorLinkFoundation } from './anchor.js';
 export type { AnchorAdapter, AnchorLinkAdapter } from './anchor.js';
 export { AvatarFoundation } from './avatar.js';
 export type { AvatarAdapter } from './avatar.js';
+export { BannerFoundation } from './banner.js';
+export type { BannerAdapter } from './banner.js';
 export { BackTopFoundation } from './back-top.js';
 export type { BackTopAdapter } from './back-top.js';
 export { BreadcrumbFoundation, BreadcrumbItemFoundation } from './breadcrumb.js';

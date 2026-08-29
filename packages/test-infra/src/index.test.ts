@@ -667,6 +667,23 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Banner Adapter, Foundation, constants, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('banner')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.bannerPublicEntry,
+    });
+    expect(assertScenarioComparable('banner').targets).toHaveLength(6);
+    expect(getParityScenario('banner').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.bannerFoundation,
+        REFERENCE_SOURCE_PATHS.bannerFoundationConstants,
+        REFERENCE_SOURCE_PATHS.bannerFoundationStyle,
+        REFERENCE_SOURCE_PATHS.bannerDocumentation,
+      ]),
+    );
+  });
+
   it('normalizes scenario query parameters and builds deterministic URLs', () => {
     const options = parseParityScenarioOptions(
       '?scenario=button-types&theme=dark&direction=rtl&locale=en-US',

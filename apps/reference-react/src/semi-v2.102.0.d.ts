@@ -302,6 +302,30 @@ declare module '@semi-v2.102.0/badge' {
   export default Badge;
 }
 
+declare module '@semi-v2.102.0/banner' {
+  import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
+
+  export type BannerType = 'info' | 'success' | 'danger' | 'warning';
+
+  export interface BannerProps {
+    bordered?: boolean;
+    children?: ReactNode;
+    className?: string;
+    closeIcon?: ReactNode;
+    description?: ReactNode;
+    fullMode?: boolean;
+    icon?: ReactNode;
+    onClose?: (event: MouseEvent<HTMLButtonElement>) => void;
+    style?: CSSProperties;
+    title?: ReactNode;
+    type?: BannerType;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Banner: ComponentType<BannerProps>;
+  export default Banner;
+}
+
 declare module '@semi-v2.102.0/breadcrumb' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

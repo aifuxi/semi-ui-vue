@@ -3,6 +3,7 @@ import 'typeface-inter';
 import 'virtual:workspace-anchor-styles.css';
 import 'virtual:workspace-avatar-styles.css';
 import 'virtual:workspace-badge-styles.css';
+import 'virtual:workspace-banner-styles.css';
 import 'virtual:workspace-calendar-styles.css';
 import 'virtual:workspace-card-styles.css';
 import 'virtual:workspace-carousel-styles.css';

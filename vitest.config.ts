@@ -32,6 +32,9 @@ export default defineConfig({
       '@semi-v2.102.0/badge': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiBadgeStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/banner': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiBannerStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/calendar': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiCalendarStub.tsx', import.meta.url),
       ),

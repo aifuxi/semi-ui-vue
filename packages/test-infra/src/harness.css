@@ -2509,7 +2509,46 @@ p {
   font-size: 13px;
 }
 
+.banner-scenario {
+  display: grid;
+  gap: 18px;
+}
+
+.banner-scenario__types {
+  display: grid;
+  gap: 12px;
+}
+
+.banner-scenario > .semi-banner-in-container {
+  width: min(640px, 100%);
+  box-sizing: border-box;
+}
+
+.banner-scenario__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.banner-scenario__actions button {
+  padding: 4px 10px;
+  border: 1px solid var(--harness-border);
+  border-radius: 4px;
+  background: var(--harness-panel);
+  color: var(--harness-text);
+  font: inherit;
+}
+
+.banner-scenario__status {
+  margin: 0;
+  color: var(--harness-muted-text);
+  font-size: 13px;
+}
+
 @media (max-width: 600px) {
+  .banner-scenario__actions {
+    flex-wrap: wrap;
+  }
+
   .timeline-scenario {
     grid-template-columns: minmax(0, 1fr);
   }

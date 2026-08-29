@@ -3,6 +3,7 @@
 declare module 'virtual:workspace-anchor-styles.css';
 declare module 'virtual:workspace-avatar-styles.css';
 declare module 'virtual:workspace-badge-styles.css';
+declare module 'virtual:workspace-banner-styles.css';
 declare module 'virtual:workspace-calendar-styles.css';
 declare module 'virtual:workspace-card-styles.css';
 declare module 'virtual:workspace-carousel-styles.css';

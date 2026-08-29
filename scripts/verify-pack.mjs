@@ -264,6 +264,7 @@ try {
 		await import('@workspace/ui/anchor');
 		await import('@workspace/ui/avatar');
 		await import('@workspace/ui/badge');
+		await import('@workspace/ui/banner');
 		await import('@workspace/ui/calendar');
 		await import('@workspace/ui/card');
 		await import('@workspace/ui/carousel');
@@ -335,6 +336,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/badge.css').endsWith('/dist/badge.css')) {
 		  throw new Error('Badge 逐组件样式导出未指向 dist/badge.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/banner.css').endsWith('/dist/banner.css')) {
+		  throw new Error('Banner 逐组件样式导出未指向 dist/banner.css');
 		}
 		if (!import.meta.resolve('@workspace/theme-default/calendar.css').endsWith('/dist/calendar.css')) {
 		  throw new Error('Calendar 逐组件样式导出未指向 dist/calendar.css');
@@ -491,6 +495,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Anchor, AnchorLink, type AnchorPosition } from '@workspace/ui/anchor';
 		import { Avatar, AvatarGroup, type AvatarColor, type AvatarSize } from '@workspace/ui/avatar';
 		import { Badge, type BadgePosition, type BadgeType } from '@workspace/ui/badge';
+		import { Banner, type BannerType } from '@workspace/ui/banner';
 		import { Calendar, type CalendarEvent, type CalendarMode } from '@workspace/ui/calendar';
 		import { Card, CardGroup, CardMeta, type CardShadows } from '@workspace/ui/card';
 		import { Carousel, type CarouselMethods, type CarouselTheme } from '@workspace/ui/carousel';
@@ -558,6 +563,8 @@ h(Button, { type, htmlType: 'submit' });
 		const badgePosition: BadgePosition = 'rightTop';
 		const badgeType: BadgeType = 'danger';
 		h(Badge, { count: 120, overflowCount: 99, position: badgePosition, type: badgeType }, () => h(Avatar, null, () => 'B'));
+		const bannerType: BannerType = 'warning';
+		h(Banner, { description: 'Consumer notice', fullMode: false, type: bannerType, onClose: () => undefined }, () => h('button', 'Action'));
 		const calendarMode: CalendarMode = 'week';
 		const calendarEvents: CalendarEvent[] = [{ key: 'consumer', start: new Date(2023, 3, 10, 9), content: 'Consumer event' }];
 		h(Calendar, { mode: calendarMode, displayValue: new Date(2023, 3, 10), events: calendarEvents, showCurrTime: false });
@@ -1227,6 +1234,18 @@ h(Button, { type, htmlType: 'submit' });
     !badgeThemeCss.includes('.semi-rtl .semi-badge')
   ) {
     throw new Error('安装后的 Badge 逐组件样式缺少计数、自定义、类型或 RTL 样式');
+  }
+  const bannerThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'banner.css'),
+    'utf8',
+  );
+  if (
+    !bannerThemeCss.includes('.semi-banner-info') ||
+    !bannerThemeCss.includes('.semi-banner-in-container') ||
+    !bannerThemeCss.includes('.semi-banner-close') ||
+    !bannerThemeCss.includes('.semi-rtl .semi-banner')
+  ) {
+    throw new Error('安装后的 Banner 逐组件样式缺少类型、容器、关闭按钮或 RTL 样式');
   }
   const calendarThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'calendar.css'),

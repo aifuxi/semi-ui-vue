@@ -77,6 +77,7 @@ export default defineConfig({
         'anchor/index': fileURLToPath(new URL('./src/anchor/index.ts', import.meta.url)),
         'avatar/index': fileURLToPath(new URL('./src/avatar/index.ts', import.meta.url)),
         'badge/index': fileURLToPath(new URL('./src/badge/index.ts', import.meta.url)),
+        'banner/index': fileURLToPath(new URL('./src/banner/index.ts', import.meta.url)),
         'calendar/index': fileURLToPath(new URL('./src/calendar/index.ts', import.meta.url)),
         'card/index': fileURLToPath(new URL('./src/card/index.ts', import.meta.url)),
         'carousel/index': fileURLToPath(new URL('./src/carousel/index.ts', import.meta.url)),
