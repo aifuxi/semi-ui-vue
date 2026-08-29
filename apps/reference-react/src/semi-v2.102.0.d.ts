@@ -193,6 +193,36 @@ declare module '@semi-v2.102.0/side-sheet' {
   export default SideSheet;
 }
 
+declare module '@semi-v2.102.0/progress' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface ProgressProps {
+    'aria-label'?: string;
+    'aria-labelledby'?: string;
+    'aria-valuetext'?: string;
+    className?: string;
+    direction?: 'horizontal' | 'vertical';
+    format?: (percent: number) => ReactNode;
+    id?: string;
+    motion?: boolean | object | ((props: Record<string, unknown>) => object);
+    orbitStroke?: string;
+    percent?: number;
+    showInfo?: boolean;
+    size?: 'default' | 'small' | 'large';
+    stroke?: string | Array<{ percent: number; color: string }>;
+    strokeGradient?: boolean;
+    strokeLinecap?: 'round' | 'square';
+    strokeWidth?: number;
+    style?: CSSProperties;
+    type?: 'line' | 'circle';
+    width?: number;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Progress: ComponentType<ProgressProps>;
+  export default Progress;
+}
+
 declare module '@semi-v2.102.0/back-top' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

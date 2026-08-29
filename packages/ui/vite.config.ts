@@ -121,6 +121,7 @@ export default defineConfig({
         ),
         'popover/index': fileURLToPath(new URL('./src/popover/index.ts', import.meta.url)),
         'popconfirm/index': fileURLToPath(new URL('./src/popconfirm/index.ts', import.meta.url)),
+        'progress/index': fileURLToPath(new URL('./src/progress/index.ts', import.meta.url)),
         'scroll-list/index': fileURLToPath(new URL('./src/scroll-list/index.ts', import.meta.url)),
         'side-sheet/index': fileURLToPath(new URL('./src/side-sheet/index.ts', import.meta.url)),
         'table/index': fileURLToPath(new URL('./src/table/index.ts', import.meta.url)),

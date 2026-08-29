@@ -29,6 +29,7 @@ import { TimelineScenario } from './scenarios/TimelineScenario';
 import { BannerScenario } from './scenarios/BannerScenario';
 import { NotificationScenario } from './scenarios/NotificationScenario';
 import { PopconfirmScenario } from './scenarios/PopconfirmScenario';
+import { ProgressScenario } from './scenarios/ProgressScenario';
 import { IllustrationsScenario } from './scenarios/IllustrationsScenario';
 import { BackTopScenario } from './scenarios/BackTopScenario';
 import { BreadcrumbScenario } from './scenarios/BreadcrumbScenario';
@@ -143,6 +144,7 @@ export function App(props: AppProps): React.ReactElement {
           <NotificationScenario direction={options.direction} />
         ) : null}
         {scenario.id === 'popconfirm' ? <PopconfirmScenario direction={options.direction} /> : null}
+        {scenario.id === 'progress' ? <ProgressScenario /> : null}
         {scenario.id === 'illustrations' ? <IllustrationsScenario /> : null}
         {scenario.id === 'back-top' ? <BackTopScenario direction={options.direction} /> : null}
         {scenario.id === 'breadcrumb' ? <BreadcrumbScenario direction={options.direction} /> : null}

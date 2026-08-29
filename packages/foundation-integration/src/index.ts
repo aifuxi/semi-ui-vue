@@ -81,6 +81,8 @@ export {
   popconfirmStrings,
 } from './popconfirm.js';
 export type { PopconfirmAdapter } from './popconfirm.js';
+export { generateProgressColor, ProgressAnimation } from './progress.js';
+export type { ProgressStrokePoint } from './progress.js';
 export {
   crossMergeImageSources,
   getPreloadImageSources,

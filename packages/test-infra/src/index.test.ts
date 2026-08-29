@@ -720,6 +720,23 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Progress Adapter, colour generator, constants, styles and docs', () => {
+    expect(getParityScenario('progress')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.progressPublicEntry,
+    });
+    expect(assertScenarioComparable('progress').targets).toHaveLength(8);
+    expect(getParityScenario('progress').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.progressFoundationConstants,
+        REFERENCE_SOURCE_PATHS.progressFoundationGenerates,
+        REFERENCE_SOURCE_PATHS.progressFoundationStyle,
+        REFERENCE_SOURCE_PATHS.progressDocumentation,
+      ]),
+    );
+  });
+
   it('normalizes scenario query parameters and builds deterministic URLs', () => {
     const options = parseParityScenarioOptions(
       '?scenario=button-types&theme=dark&direction=rtl&locale=en-US',

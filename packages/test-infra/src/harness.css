@@ -2685,9 +2685,50 @@ p {
   padding: 8px 92px 0;
 }
 
+.progress-scenario {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 84px;
+  gap: 28px;
+  align-items: center;
+  min-height: 210px;
+}
+
+.progress-scenario__motion-control {
+  display: none;
+}
+
+.progress-scenario__line-stack {
+  display: grid;
+  gap: 22px;
+  min-width: 0;
+}
+
+.progress-scenario__vertical {
+  display: flex;
+  justify-content: center;
+  height: 112px;
+}
+
+.progress-scenario__circles {
+  display: flex;
+  grid-column: 1 / -1;
+  gap: 28px;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 600px) {
   .popconfirm-scenario__triggers {
     padding-left: 72px;
     padding-right: 72px;
+  }
+
+  .progress-scenario {
+    grid-template-columns: minmax(0, 1fr) 64px;
+    gap: 18px;
+  }
+
+  .progress-scenario__circles {
+    gap: 18px;
   }
 }

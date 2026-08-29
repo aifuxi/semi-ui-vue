@@ -35,6 +35,7 @@ export * from './notification';
 export * from './overflow-list';
 export * from './popover';
 export * from './popconfirm';
+export * from './progress';
 export * from './resizable';
 export * from './scroll-list';
 export * from './side-sheet';
