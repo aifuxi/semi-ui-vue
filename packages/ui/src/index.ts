@@ -60,6 +60,7 @@ export type {
 export * from './resizable';
 export * from './scroll-list';
 export * from './side-sheet';
+export * from './spin';
 export * from './table';
 export * from './tag';
 export * from './timeline';

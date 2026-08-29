@@ -123,6 +123,7 @@ export default defineConfig({
         'popconfirm/index': fileURLToPath(new URL('./src/popconfirm/index.ts', import.meta.url)),
         'progress/index': fileURLToPath(new URL('./src/progress/index.ts', import.meta.url)),
         'skeleton/index': fileURLToPath(new URL('./src/skeleton/index.ts', import.meta.url)),
+        'spin/index': fileURLToPath(new URL('./src/spin/index.ts', import.meta.url)),
         'scroll-list/index': fileURLToPath(new URL('./src/scroll-list/index.ts', import.meta.url)),
         'side-sheet/index': fileURLToPath(new URL('./src/side-sheet/index.ts', import.meta.url)),
         'table/index': fileURLToPath(new URL('./src/table/index.ts', import.meta.url)),

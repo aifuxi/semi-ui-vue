@@ -271,6 +271,29 @@ declare module '@semi-v2.102.0/skeleton' {
   export default Skeleton;
 }
 
+declare module '@semi-v2.102.0/spin' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export type SpinSize = 'small' | 'middle' | 'large';
+
+  export interface SpinProps {
+    childStyle?: CSSProperties;
+    children?: ReactNode;
+    className?: string;
+    delay?: number;
+    indicator?: ReactNode;
+    size?: SpinSize;
+    spinning?: boolean;
+    style?: CSSProperties;
+    tip?: ReactNode;
+    wrapperClassName?: string;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Spin: ComponentType<SpinProps>;
+  export default Spin;
+}
+
 declare module '@semi-v2.102.0/back-top' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

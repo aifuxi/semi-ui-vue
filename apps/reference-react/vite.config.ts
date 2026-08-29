@@ -31,6 +31,7 @@ const popoverPublicEntry = path.join(upstreamPackages, 'semi-ui/popover/index.ts
 const popconfirmPublicEntry = path.join(upstreamPackages, 'semi-ui/popconfirm/index.tsx');
 const progressPublicEntry = path.join(upstreamPackages, 'semi-ui/progress/index.tsx');
 const skeletonPublicEntry = path.join(upstreamPackages, 'semi-ui/skeleton/index.tsx');
+const spinPublicEntry = path.join(upstreamPackages, 'semi-ui/spin/index.tsx');
 const scrollListPublicEntry = path.join(upstreamPackages, 'semi-ui/scrollList/index.tsx');
 const scrollItemPublicEntry = path.join(upstreamPackages, 'semi-ui/scrollList/scrollItem.tsx');
 const sideSheetPublicEntry = path.join(upstreamPackages, 'semi-ui/sideSheet/index.tsx');
@@ -270,6 +271,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/popconfirm', replacement: popconfirmPublicEntry },
       { find: '@semi-v2.102.0/progress', replacement: progressPublicEntry },
       { find: '@semi-v2.102.0/skeleton', replacement: skeletonPublicEntry },
+      { find: '@semi-v2.102.0/spin', replacement: spinPublicEntry },
       { find: '@semi-v2.102.0/scroll-list', replacement: scrollListPublicEntry },
       { find: '@semi-v2.102.0/scroll-item', replacement: scrollItemPublicEntry },
       { find: '@semi-v2.102.0/side-sheet', replacement: sideSheetPublicEntry },

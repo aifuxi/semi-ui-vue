@@ -158,6 +158,10 @@
       "types": "./dist/skeleton/index.d.ts",
       "import": "./dist/skeleton/index.js"
     },
+    "./spin": {
+      "types": "./dist/spin/index.d.ts",
+      "import": "./dist/spin/index.js"
+    },
     "./scroll-list": {
       "types": "./dist/scroll-list/index.d.ts",
       "import": "./dist/scroll-list/index.js"

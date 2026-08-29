@@ -2755,6 +2755,53 @@ p {
   line-height: 20px;
 }
 
+.spin-scenario {
+  display: grid;
+  gap: 28px;
+  min-height: 240px;
+}
+
+.spin-scenario__sizes {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  min-height: 44px;
+}
+
+.spin-scenario__custom-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--semi-color-warning);
+  font-size: 24px;
+  line-height: 24px;
+}
+
+.spin-scenario__content {
+  display: grid;
+  gap: 6px;
+  min-height: 76px;
+  padding: 14px 16px;
+  border: 1px solid var(--semi-color-border);
+  border-radius: 6px;
+  color: var(--semi-color-text-0);
+  background: var(--semi-color-bg-1);
+}
+
+.spin-scenario__content span,
+.spin-scenario__tip,
+.spin-scenario__ready {
+  color: var(--semi-color-text-2);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.spin-scenario__ready {
+  margin: 0;
+}
+
 @media (max-width: 600px) {
   .popconfirm-scenario__triggers {
     padding-left: 72px;
@@ -2781,5 +2828,14 @@ p {
 
   .skeleton-scenario__paragraph {
     flex-basis: 100%;
+  }
+
+  .spin-scenario {
+    gap: 22px;
+  }
+
+  .spin-scenario__sizes {
+    flex-wrap: wrap;
+    gap: 24px;
   }
 }

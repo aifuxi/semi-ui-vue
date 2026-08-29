@@ -754,6 +754,24 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Spin Adapter, icon, Foundation, constants, styles and docs', () => {
+    expect(getParityScenario('spin')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.spinPublicEntry,
+    });
+    expect(assertScenarioComparable('spin').targets).toHaveLength(7);
+    expect(getParityScenario('spin').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.spinIconEntry,
+        REFERENCE_SOURCE_PATHS.spinFoundation,
+        REFERENCE_SOURCE_PATHS.spinFoundationConstants,
+        REFERENCE_SOURCE_PATHS.spinFoundationStyle,
+        REFERENCE_SOURCE_PATHS.spinDocumentation,
+      ]),
+    );
+  });
+
   it('normalizes scenario query parameters and builds deterministic URLs', () => {
     const options = parseParityScenarioOptions(
       '?scenario=button-types&theme=dark&direction=rtl&locale=en-US',

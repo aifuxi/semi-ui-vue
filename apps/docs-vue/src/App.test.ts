@@ -153,6 +153,24 @@ describe('Vue 对照工作台', () => {
     expect(scenario.text()).not.toContain('Image loaded');
     wrapper.unmount();
   });
+  it('通过公共 Spin 渲染三尺寸、自定义指示器与包装/hidden 状态', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'spin', direction: 'rtl' } });
+    const scenario = wrapper.get('[data-testid="spin-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.find('.semi-spin-small').exists()).toBe(true);
+    expect(scenario.find('.semi-spin-middle').exists()).toBe(true);
+    expect(scenario.find('.semi-spin-large').exists()).toBe(true);
+    expect(scenario.get('[data-parity-target="spin-custom"] .semi-spin-animate').text()).toBe('↻');
+    expect(scenario.get('[data-parity-target="spin-block"]').classes()).toContain(
+      'semi-spin-block',
+    );
+    expect(scenario.get('[data-parity-target="spin-hidden"]').classes()).toContain(
+      'semi-spin-hidden',
+    );
+    expect(scenario.text()).toContain('Content ready');
+    wrapper.unmount();
+  });
   it('通过公共 Empty 渲染图片、无图片、水平与 SVG 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'empty', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="empty-vue"]');

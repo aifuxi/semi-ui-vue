@@ -89,6 +89,9 @@ export default defineConfig({
       '@semi-v2.102.0/skeleton': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiSkeletonStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/spin': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiSpinStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/scroll-list': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiScrollListStub.tsx', import.meta.url),
       ),

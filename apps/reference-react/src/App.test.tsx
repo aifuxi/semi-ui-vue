@@ -389,6 +389,19 @@ describe('React 参考工作台', () => {
     expect(html).not.toContain('Profile loaded');
     expect(html).not.toContain('Image loaded');
   });
+  it('从固定 Spin Adapter 渲染三尺寸、自定义指示器与包装/hidden 状态', () => {
+    const html = renderToStaticMarkup(<App scenarioId="spin" />);
+
+    expect(html).toContain('data-parity-scenario="spin"');
+    expect(html).toContain('data-testid="spin-reference"');
+    expect(html).toContain('semi-spin-small');
+    expect(html).toContain('semi-spin-middle');
+    expect(html).toContain('semi-spin-large');
+    expect(html).toContain('semi-spin-animate');
+    expect(html).toContain('semi-spin-block');
+    expect(html).toContain('semi-spin-hidden');
+    expect(html).toContain('Content ready');
+  });
   it('从固定 Empty Adapter 渲染图片、无图片、水平与 SVG 场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="empty" direction="rtl" />);
 
