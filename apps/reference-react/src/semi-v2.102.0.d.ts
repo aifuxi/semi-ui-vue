@@ -106,6 +106,56 @@ declare module '@semi-v2.102.0/popover' {
   export default Popover;
 }
 
+declare module '@semi-v2.102.0/scroll-list' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface ScrollItemData {
+    disabled?: boolean;
+    text?: string;
+    transform?: (value: unknown, text: string) => ReactNode;
+    value: unknown;
+    [key: string]: unknown;
+  }
+
+  export interface ScrollItemSelectData extends ScrollItemData {
+    index: number;
+    type?: number | string;
+  }
+
+  export interface ScrollItemProps {
+    'aria-label'?: string;
+    cycled?: boolean;
+    list?: ScrollItemData[];
+    mode?: 'normal' | 'wheel';
+    motion?: boolean | Record<string, unknown> | ((props: Record<string, unknown>) => object);
+    onSelect?: (data: ScrollItemSelectData) => void;
+    selectedIndex?: number;
+    style?: CSSProperties;
+    transform?: (value: unknown, text: string) => ReactNode;
+    type?: number | string;
+  }
+
+  export interface ScrollListProps {
+    bodyHeight?: number | string;
+    children?: ReactNode;
+    className?: string;
+    footer?: ReactNode;
+    header?: ReactNode;
+    style?: CSSProperties;
+  }
+
+  const ScrollList: ComponentType<ScrollListProps>;
+  export default ScrollList;
+}
+
+declare module '@semi-v2.102.0/scroll-item' {
+  import type { ComponentType } from 'react';
+  import type { ScrollItemProps } from '@semi-v2.102.0/scroll-list';
+
+  const ScrollItem: ComponentType<ScrollItemProps>;
+  export default ScrollItem;
+}
+
 declare module '@semi-v2.102.0/back-top' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

@@ -2365,6 +2365,25 @@ p {
   width: 220px;
 }
 
+.scroll-list-scenario {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 24px;
+  gap: 20px;
+}
+
+.scroll-list-scenario > section {
+  min-width: 0;
+  height: 244px;
+}
+
+.scroll-list-scenario .semi-scrolllist-footer {
+  color: var(--harness-muted-text);
+  font-size: 12px;
+  line-height: 20px;
+  text-align: center;
+}
+
 .scenario-unavailable > p {
   margin-top: 6px;
 }
@@ -2402,6 +2421,9 @@ p {
 }
 
 @media (max-width: 600px) {
+  .scroll-list-scenario {
+    grid-template-columns: minmax(0, 1fr);
+  }
   .popover-scenario {
     min-height: 420px;
     padding: 132px 28px 80px;

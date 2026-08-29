@@ -101,6 +101,12 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   popoverFoundationConstants: 'vendor/semi-design/packages/semi-foundation/popover/constants.ts',
   popoverFoundationStyle: 'vendor/semi-design/packages/semi-foundation/popover/popover.scss',
   popoverDocumentation: 'vendor/semi-design/content/show/popover/index.md',
+  scrollListPublicEntry: 'vendor/semi-design/packages/semi-ui/scrollList/index.tsx',
+  scrollListItemEntry: 'vendor/semi-design/packages/semi-ui/scrollList/scrollItem.tsx',
+  scrollListFoundation: 'vendor/semi-design/packages/semi-foundation/scrollList/itemFoundation.ts',
+  scrollListFoundationStyle:
+    'vendor/semi-design/packages/semi-foundation/scrollList/scrollList.scss',
+  scrollListDocumentation: 'vendor/semi-design/content/show/scrolllist/index.md',
   illustrationsPublicEntry: 'vendor/semi-design/packages/semi-illustrations/src/index.ts',
   illustrationsSourceDirectory: 'vendor/semi-design/packages/semi-illustrations/src/illustrations',
   illustrationsSvgDirectory: 'vendor/semi-design/packages/semi-illustrations/src/svgs',
@@ -977,6 +983,73 @@ export const PARITY_SCENARIOS = [
           ],
         },
       ]),
+    ],
+  },
+  {
+    id: 'scroll-list',
+    title: 'ScrollList 滚动列表',
+    description: '验证 normal/wheel、循环列、禁用、变换、滚动选择、暗色、移动端与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.scrollListPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.scrollListPublicEntry,
+      REFERENCE_SOURCE_PATHS.scrollListItemEntry,
+      REFERENCE_SOURCE_PATHS.scrollListFoundation,
+      REFERENCE_SOURCE_PATHS.scrollListFoundationStyle,
+      REFERENCE_SOURCE_PATHS.scrollListDocumentation,
+    ],
+    targets: [
+      {
+        id: 'scroll-list-normal-root',
+        selector: '[data-parity-target="scroll-list-normal"] > .semi-scrolllist',
+        computedStyleProperties: [
+          'backgroundColor',
+          'borderRadius',
+          'boxShadow',
+          'display',
+          'height',
+          'width',
+        ],
+      },
+      {
+        id: 'scroll-list-normal-selected',
+        selector:
+          '[data-parity-target="scroll-list-normal"] .semi-scrolllist-item-sel:first-of-type',
+        computedStyleProperties: ['backgroundColor', 'color', 'display', 'height'],
+      },
+      {
+        id: 'scroll-list-wheel-outer',
+        selector:
+          '[data-parity-target="scroll-list-wheel"] .semi-scrolllist-item-wheel:first-child .semi-scrolllist-list-outer',
+        computedStyleProperties: [
+          'height',
+          'overflowX',
+          'overflowY',
+          'paddingLeft',
+          'paddingRight',
+          'width',
+        ],
+      },
+      {
+        id: 'scroll-list-wheel-selector',
+        selector:
+          '[data-parity-target="scroll-list-wheel"] .semi-scrolllist-item-wheel:first-child .semi-scrolllist-selector',
+        computedStyleProperties: [
+          'borderBottomWidth',
+          'borderTopWidth',
+          'height',
+          'top',
+          'transform',
+          'width',
+        ],
+      },
+      {
+        id: 'scroll-list-disabled',
+        selector:
+          '[data-parity-target="scroll-list-wheel"] .semi-scrolllist-item-wheel:last-child .semi-scrolllist-item-disabled',
+        computedStyleProperties: ['color', 'cursor', 'height'],
+      },
     ],
   },
   {

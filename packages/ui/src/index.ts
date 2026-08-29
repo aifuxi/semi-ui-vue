@@ -33,6 +33,7 @@ export * from './modal';
 export * from './overflow-list';
 export * from './popover';
 export * from './resizable';
+export * from './scroll-list';
 export * from './select';
 export * from './slider';
 export * from './space';

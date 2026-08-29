@@ -278,6 +278,7 @@ try {
 		await import('@workspace/ui/modal');
 		await import('@workspace/ui/overflow-list');
 		await import('@workspace/ui/popover');
+		await import('@workspace/ui/scroll-list');
 	await import('@workspace/ui/back-top');
 	await import('@workspace/ui/breadcrumb');
 	await import('@workspace/ui/button');
@@ -372,6 +373,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/popover.css').endsWith('/dist/popover.css')) {
 		  throw new Error('Popover 逐组件样式导出未指向 dist/popover.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/scroll-list.css').endsWith('/dist/scroll-list.css')) {
+		  throw new Error('ScrollList 逐组件样式导出未指向 dist/scroll-list.css');
 		}
 	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
@@ -485,6 +489,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Modal, type ModalHandle, type ModalSize } from '@workspace/ui/modal';
 		import { OverflowList, type OverflowItem, type OverflowListRenderMode } from '@workspace/ui/overflow-list';
 		import { Popover, type PopoverPosition } from '@workspace/ui/popover';
+		import { ScrollItem, ScrollList, type ScrollItemData, type ScrollItemMode } from '@workspace/ui/scroll-list';
 	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
 	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
@@ -671,6 +676,10 @@ h(Button, { type, htmlType: 'submit' });
 	h(Tooltip, { content: 'consumer tooltip', position: tooltipPosition, trigger: 'custom', visible: true }, () => h('button', 'trigger'));
 	const popoverPosition: PopoverPosition = 'right';
 	h(Popover, { content: 'consumer popover', position: popoverPosition, showArrow: true, trigger: 'custom', visible: true }, () => h('button', 'trigger'));
+	const scrollItemMode: ScrollItemMode = 'wheel';
+	const scrollItemData: ScrollItemData[] = [{ value: 'AM' }, { value: 'PM', disabled: true }];
+	h(ScrollList, { bodyHeight: 180, header: 'Consumer list' }, () => h(ScrollItem, { ariaLabel: 'Period', list: scrollItemData, mode: scrollItemMode, motion: false, selectedIndex: 0 }));
+	h(ScrollList.Item, { list: scrollItemData, mode: 'normal' });
 	const typographyType: TypographyType = 'secondary';
 	const numeralRule: TypographyNumeralRule = 'bytes-binary';
 	h(Typography, null, () => [
@@ -1370,6 +1379,25 @@ h(Button, { type, htmlType: 'submit' });
     !popoverThemeCss.includes('.semi-popover.semi-popover-rtl')
   ) {
     throw new Error('安装后的 Popover 逐组件样式缺少 Portal、卡片、箭头、动效或 RTL 样式');
+  }
+  const scrollListThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@workspace',
+      'theme-default',
+      'dist',
+      'scroll-list.css',
+    ),
+    'utf8',
+  );
+  if (
+    !scrollListThemeCss.includes('.semi-scrolllist-body') ||
+    !scrollListThemeCss.includes('.semi-scrolllist-item-wheel') ||
+    !scrollListThemeCss.includes('.semi-scrolllist-selector') ||
+    !scrollListThemeCss.includes('.semi-rtl .semi-scrolllist')
+  ) {
+    throw new Error('安装后的 ScrollList 逐组件样式缺少 body、wheel、selector 或 RTL 样式');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

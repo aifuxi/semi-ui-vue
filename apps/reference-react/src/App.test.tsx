@@ -46,6 +46,15 @@ describe('React 参考工作台', () => {
     expect(html).toContain('data-parity-target="popover-trigger-right"');
   });
 
+  it('从固定 ScrollList Adapter 渲染 normal、wheel 与循环列场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="scroll-list" direction="rtl" />);
+
+    expect(html).toContain('data-parity-scenario="scroll-list"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/scrollList/index.tsx');
+    expect(html).toContain('data-parity-target="scroll-list-normal"');
+    expect(html).toContain('semi-scrolllist-item-wheel');
+  });
+
   it('从固定 Divider Adapter 渲染完整参考场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="divider" />);
 

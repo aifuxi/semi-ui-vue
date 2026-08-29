@@ -74,6 +74,12 @@ export default defineConfig({
       '@semi-v2.102.0/popover': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiPopoverStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/scroll-list': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiScrollListStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/scroll-item': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiScrollItemStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/illustrations': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiIllustrationsStub.tsx', import.meta.url),
       ),

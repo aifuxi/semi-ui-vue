@@ -116,6 +116,7 @@ export default defineConfig({
           new URL('./src/overflow-list/index.ts', import.meta.url),
         ),
         'popover/index': fileURLToPath(new URL('./src/popover/index.ts', import.meta.url)),
+        'scroll-list/index': fileURLToPath(new URL('./src/scroll-list/index.ts', import.meta.url)),
         'pin-code/index': fileURLToPath(new URL('./src/pin-code/index.ts', import.meta.url)),
         'pagination/index': fileURLToPath(new URL('./src/pagination/index.ts', import.meta.url)),
         'radio/index': fileURLToPath(new URL('./src/radio/index.ts', import.meta.url)),

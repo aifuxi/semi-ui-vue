@@ -138,6 +138,10 @@
       "types": "./dist/popover/index.d.ts",
       "import": "./dist/popover/index.js"
     },
+    "./scroll-list": {
+      "types": "./dist/scroll-list/index.d.ts",
+      "import": "./dist/scroll-list/index.js"
+    },
     "./pin-code": {
       "types": "./dist/pin-code/index.d.ts",
       "import": "./dist/pin-code/index.js"

@@ -96,6 +96,20 @@ export { RadioFoundation, RadioGroupFoundation, RadioInnerFoundation } from './r
 export type { RadioAdapter, RadioGroupAdapter, RadioInnerAdapter } from './radio.js';
 export { RatingFoundation, RatingItemFoundation } from './rating.js';
 export type { RatingAdapter, RatingItemAdapter } from './rating.js';
+export {
+  animatedScrollTo,
+  ScrollItemFoundation,
+  scrollListCssClasses,
+  scrollListNumbers,
+  scrollListStrings,
+} from './scroll-list.js';
+export type {
+  FoundationScrollItem,
+  ScrollAnimation,
+  ScrollItemAdapter,
+  ScrollItemNearestNodeInfo,
+  ScrollItemTargetNodeInfo,
+} from './scroll-list.js';
 export * from './resizable.js';
 export { SelectFoundation } from './select.js';
 export type { SelectAdapter } from './select.js';
