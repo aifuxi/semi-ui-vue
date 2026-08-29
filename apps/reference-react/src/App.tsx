@@ -25,6 +25,7 @@ import { ScrollListScenario } from './scenarios/ScrollListScenario';
 import { SideSheetScenario } from './scenarios/SideSheetScenario';
 import { TableScenario } from './scenarios/TableScenario';
 import { TagScenario } from './scenarios/TagScenario';
+import { TimelineScenario } from './scenarios/TimelineScenario';
 import { IllustrationsScenario } from './scenarios/IllustrationsScenario';
 import { BackTopScenario } from './scenarios/BackTopScenario';
 import { BreadcrumbScenario } from './scenarios/BreadcrumbScenario';
@@ -133,6 +134,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'side-sheet' ? <SideSheetScenario direction={options.direction} /> : null}
         {scenario.id === 'table' ? <TableScenario direction={options.direction} /> : null}
         {scenario.id === 'tag' ? <TagScenario /> : null}
+        {scenario.id === 'timeline' ? <TimelineScenario /> : null}
         {scenario.id === 'illustrations' ? <IllustrationsScenario /> : null}
         {scenario.id === 'back-top' ? <BackTopScenario direction={options.direction} /> : null}
         {scenario.id === 'breadcrumb' ? <BreadcrumbScenario direction={options.direction} /> : null}

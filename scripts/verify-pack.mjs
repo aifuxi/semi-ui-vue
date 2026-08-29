@@ -282,6 +282,7 @@ try {
 		await import('@workspace/ui/side-sheet');
 		await import('@workspace/ui/table');
 		await import('@workspace/ui/tag');
+		await import('@workspace/ui/timeline');
 	await import('@workspace/ui/back-top');
 	await import('@workspace/ui/breadcrumb');
 	await import('@workspace/ui/button');
@@ -388,6 +389,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/tag.css').endsWith('/dist/tag.css')) {
 		  throw new Error('Tag 逐组件样式导出未指向 dist/tag.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/timeline.css').endsWith('/dist/timeline.css')) {
+		  throw new Error('Timeline 逐组件样式导出未指向 dist/timeline.css');
 		}
 	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
@@ -505,6 +509,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { SideSheet, type SideSheetPlacement, type SideSheetSize } from '@workspace/ui/side-sheet';
 		import { Table, TableColumn, type TableColumnProps, type TableRowSelection } from '@workspace/ui/table';
 		import { SplitTagGroup, Tag, TagGroup, type TagColor, type TagData } from '@workspace/ui/tag';
+		import { Timeline, TimelineItem, type TimelineData, type TimelineMode } from '@workspace/ui/timeline';
 	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
 	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
@@ -611,6 +616,11 @@ h(Button, { type, htmlType: 'submit' });
 		h(Tag, { color: tagColor, closable: true }, () => 'Consumer tag');
 		h(TagGroup, { maxTagCount: 1, tagList: tagData });
 		h(SplitTagGroup, null, () => [h(Tag, null, () => 'One'), h(Tag, null, () => 'Two')]);
+		const timelineMode: TimelineMode = 'center';
+		const timelineData: TimelineData[] = [{ content: 'Consumer event', time: '10:00', type: 'success' }];
+		h(Timeline, { dataSource: timelineData, mode: timelineMode });
+		h(Timeline.Item, { position: 'right' }, () => 'Compound item');
+		h(TimelineItem, { type: 'ongoing' }, () => 'Named item');
 		const overflowItems: OverflowItem[] = [{ key: 'consumer' }];
 		const overflowMode: OverflowListRenderMode = 'collapse';
 		h(OverflowList, { items: overflowItems, renderMode: overflowMode });
@@ -1471,6 +1481,17 @@ h(Button, { type, htmlType: 'submit' });
     !tagThemeCss.includes('.semi-rtl .semi-tag')
   ) {
     throw new Error('安装后的 Tag 逐组件样式缺少颜色、Group、Split 或 RTL 样式');
+  }
+  const timelineThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'timeline.css'),
+    'utf8',
+  );
+  if (
+    !timelineThemeCss.includes('.semi-timeline-item-head-success') ||
+    !timelineThemeCss.includes('.semi-timeline-center') ||
+    !timelineThemeCss.includes('.semi-rtl .semi-timeline')
+  ) {
+    throw new Error('安装后的 Timeline 逐组件样式缺少节点、center 或 RTL 样式');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

@@ -21,6 +21,7 @@ declare module 'virtual:workspace-scroll-list-styles.css';
 declare module 'virtual:workspace-side-sheet-styles.css';
 declare module 'virtual:workspace-table-styles.css';
 declare module 'virtual:workspace-tag-styles.css';
+declare module 'virtual:workspace-timeline-styles.css';
 declare module 'virtual:workspace-back-top-styles.css';
 declare module 'virtual:workspace-breadcrumb-styles.css';
 declare module 'virtual:workspace-button-styles.css';

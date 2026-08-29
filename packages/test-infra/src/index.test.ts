@@ -650,6 +650,23 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Timeline Item, constants, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('timeline')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.timelinePublicEntry,
+    });
+    expect(assertScenarioComparable('timeline').targets).toHaveLength(6);
+    expect(getParityScenario('timeline').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.timelineItemEntry,
+        REFERENCE_SOURCE_PATHS.timelineFoundationConstants,
+        REFERENCE_SOURCE_PATHS.timelineFoundationStyle,
+        REFERENCE_SOURCE_PATHS.timelineDocumentation,
+      ]),
+    );
+  });
+
   it('normalizes scenario query parameters and builds deterministic URLs', () => {
     const options = parseParityScenarioOptions(
       '?scenario=button-types&theme=dark&direction=rtl&locale=en-US',

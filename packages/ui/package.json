@@ -154,6 +154,10 @@
       "types": "./dist/tag/index.d.ts",
       "import": "./dist/tag/index.js"
     },
+    "./timeline": {
+      "types": "./dist/timeline/index.d.ts",
+      "import": "./dist/timeline/index.js"
+    },
     "./pin-code": {
       "types": "./dist/pin-code/index.d.ts",
       "import": "./dist/pin-code/index.js"

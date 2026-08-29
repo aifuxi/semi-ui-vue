@@ -26,6 +26,7 @@ import ScrollListScenario from './components/ScrollListScenario.vue';
 import SideSheetScenario from './components/SideSheetScenario.vue';
 import TableScenario from './components/TableScenario.vue';
 import TagScenario from './components/TagScenario.vue';
+import TimelineScenario from './components/TimelineScenario.vue';
 import IllustrationsScenario from './components/IllustrationsScenario.vue';
 import BackTopScenario from './components/BackTopScenario.vue';
 import BreadcrumbScenario from './components/BreadcrumbScenario.vue';
@@ -127,6 +128,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <SideSheetScenario v-else-if="scenario.id === 'side-sheet'" :direction="props.direction" />
       <TableScenario v-else-if="scenario.id === 'table'" :direction="props.direction" />
       <TagScenario v-else-if="scenario.id === 'tag'" />
+      <TimelineScenario v-else-if="scenario.id === 'timeline'" />
       <IllustrationsScenario v-else-if="scenario.id === 'illustrations'" />
       <BackTopScenario v-else-if="scenario.id === 'back-top'" :direction="props.direction" />
       <BreadcrumbScenario v-else-if="scenario.id === 'breadcrumb'" :direction="props.direction" />

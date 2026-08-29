@@ -23,6 +23,7 @@ export const virtualScrollListStyleId = 'virtual:workspace-scroll-list-styles.cs
 export const virtualSideSheetStyleId = 'virtual:workspace-side-sheet-styles.css';
 export const virtualTableStyleId = 'virtual:workspace-table-styles.css';
 export const virtualTagStyleId = 'virtual:workspace-tag-styles.css';
+export const virtualTimelineStyleId = 'virtual:workspace-timeline-styles.css';
 export const virtualBackTopStyleId = 'virtual:workspace-back-top-styles.css';
 export const virtualBreadcrumbStyleId = 'virtual:workspace-breadcrumb-styles.css';
 export const virtualPaginationStyleId = 'virtual:workspace-pagination-styles.css';
@@ -73,6 +74,7 @@ const resolvedVirtualScrollListStyleId = `\0${virtualScrollListStyleId}`;
 const resolvedVirtualSideSheetStyleId = `\0${virtualSideSheetStyleId}`;
 const resolvedVirtualTableStyleId = `\0${virtualTableStyleId}`;
 const resolvedVirtualTagStyleId = `\0${virtualTagStyleId}`;
+const resolvedVirtualTimelineStyleId = `\0${virtualTimelineStyleId}`;
 const resolvedVirtualBackTopStyleId = `\0${virtualBackTopStyleId}`;
 const resolvedVirtualBreadcrumbStyleId = `\0${virtualBreadcrumbStyleId}`;
 const resolvedVirtualPaginationStyleId = `\0${virtualPaginationStyleId}`;
@@ -123,6 +125,7 @@ const scrollListStyleEntry = fileURLToPath(new URL('./src/scroll-list.scss', imp
 const sideSheetStyleEntry = fileURLToPath(new URL('./src/side-sheet.scss', import.meta.url));
 const tableStyleEntry = fileURLToPath(new URL('./src/table.scss', import.meta.url));
 const tagStyleEntry = fileURLToPath(new URL('./src/tag.scss', import.meta.url));
+const timelineStyleEntry = fileURLToPath(new URL('./src/timeline.scss', import.meta.url));
 const backTopStyleEntry = fileURLToPath(new URL('./src/back-top.scss', import.meta.url));
 const breadcrumbStyleEntry = fileURLToPath(new URL('./src/breadcrumb.scss', import.meta.url));
 const paginationStyleEntry = fileURLToPath(new URL('./src/pagination.scss', import.meta.url));
@@ -177,6 +180,7 @@ const styleEntries = new Map([
   [resolvedVirtualSideSheetStyleId, sideSheetStyleEntry],
   [resolvedVirtualTableStyleId, tableStyleEntry],
   [resolvedVirtualTagStyleId, tagStyleEntry],
+  [resolvedVirtualTimelineStyleId, timelineStyleEntry],
   [resolvedVirtualBackTopStyleId, backTopStyleEntry],
   [resolvedVirtualBreadcrumbStyleId, breadcrumbStyleEntry],
   [resolvedVirtualPaginationStyleId, paginationStyleEntry],
@@ -235,6 +239,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualSideSheetStyleId) return resolvedVirtualSideSheetStyleId;
       if (source === virtualTableStyleId) return resolvedVirtualTableStyleId;
       if (source === virtualTagStyleId) return resolvedVirtualTagStyleId;
+      if (source === virtualTimelineStyleId) return resolvedVirtualTimelineStyleId;
       if (source === virtualBackTopStyleId) return resolvedVirtualBackTopStyleId;
       if (source === virtualBreadcrumbStyleId) return resolvedVirtualBreadcrumbStyleId;
       if (source === virtualPaginationStyleId) return resolvedVirtualPaginationStyleId;

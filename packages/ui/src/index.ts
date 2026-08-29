@@ -37,6 +37,7 @@ export * from './scroll-list';
 export * from './side-sheet';
 export * from './table';
 export * from './tag';
+export * from './timeline';
 export * from './select';
 export * from './slider';
 export * from './space';

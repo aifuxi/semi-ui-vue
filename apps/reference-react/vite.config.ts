@@ -33,6 +33,7 @@ const tablePublicEntry = path.join(upstreamPackages, 'semi-ui/table/index.tsx');
 const tagPublicEntry = path.join(upstreamPackages, 'semi-ui/tag/index.tsx');
 const tagGroupEntry = path.join(upstreamPackages, 'semi-ui/tag/group.tsx');
 const splitTagGroupEntry = path.join(upstreamPackages, 'semi-ui/tag/splitTagGroup.tsx');
+const timelinePublicEntry = path.join(upstreamPackages, 'semi-ui/timeline/index.tsx');
 const illustrationsPublicEntry = path.join(upstreamPackages, 'semi-illustrations/src/index.ts');
 const cardGroupEntry = path.join(upstreamPackages, 'semi-ui/card/cardGroup.tsx');
 const backTopPublicEntry = path.join(upstreamPackages, 'semi-ui/backtop/index.tsx');
@@ -157,6 +158,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'form/form.scss'),
   '@douyinfe/semi-foundation/tag/tag.scss',
   path.join(foundationRoot, 'tag/tag.scss'),
+  '@douyinfe/semi-foundation/timeline/timeline.scss',
+  path.join(foundationRoot, 'timeline/timeline.scss'),
   '@douyinfe/semi-foundation/tagInput/tagInput.scss',
   path.join(foundationRoot, 'tagInput/tagInput.scss'),
   '@douyinfe/semi-foundation/timePicker/timePicker.scss',
@@ -256,6 +259,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/tag', replacement: tagPublicEntry },
       { find: '@semi-v2.102.0/tag-group', replacement: tagGroupEntry },
       { find: '@semi-v2.102.0/split-tag-group', replacement: splitTagGroupEntry },
+      { find: '@semi-v2.102.0/timeline', replacement: timelinePublicEntry },
       { find: '@semi-v2.102.0/illustrations', replacement: illustrationsPublicEntry },
       { find: '@semi-v2.102.0/card-group', replacement: cardGroupEntry },
       { find: '@semi-v2.102.0/back-top', replacement: backTopPublicEntry },

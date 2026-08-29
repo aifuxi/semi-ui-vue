@@ -1948,6 +1948,45 @@ declare module '@semi-v2.102.0/tag' {
   export default Tag;
 }
 
+declare module '@semi-v2.102.0/timeline' {
+  import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
+
+  export interface TimelineItemProps {
+    children?: ReactNode;
+    className?: string;
+    color?: string;
+    dot?: ReactNode;
+    extra?: ReactNode;
+    position?: 'left' | 'right';
+    style?: CSSProperties;
+    time?: ReactNode;
+    type?: 'default' | 'ongoing' | 'success' | 'warning' | 'error';
+    onClick?: (event: MouseEvent<HTMLLIElement>) => void;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  export interface TimelineData extends TimelineItemProps {
+    content: ReactNode;
+  }
+
+  export interface TimelineProps {
+    'aria-label'?: string;
+    children?: ReactNode;
+    className?: string;
+    dataSource?: TimelineData[];
+    mode?: 'left' | 'right' | 'center' | 'alternate';
+    style?: CSSProperties;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  type TimelineComponent = ComponentType<TimelineProps> & {
+    Item: ComponentType<TimelineItemProps>;
+  };
+
+  const Timeline: TimelineComponent;
+  export default Timeline;
+}
+
 declare module '@semi-v2.102.0/tag-group' {
   import type { ComponentType } from 'react';
   import type { TagProps } from '@semi-v2.102.0/tag';

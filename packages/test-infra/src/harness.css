@@ -2490,7 +2490,33 @@ p {
   font-family: 'SFMono-Regular', Consolas, monospace;
 }
 
+.timeline-scenario {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  align-items: start;
+}
+
+.timeline-scenario__column {
+  width: 100%;
+  min-width: 0;
+}
+
+.timeline-scenario__status {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--harness-muted-text);
+  font-size: 13px;
+}
+
 @media (max-width: 600px) {
+  .timeline-scenario {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .timeline-scenario__status {
+    grid-column: auto;
+  }
   .scroll-list-scenario {
     grid-template-columns: minmax(0, 1fr);
   }

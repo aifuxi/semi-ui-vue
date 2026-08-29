@@ -99,6 +99,8 @@ SideSheet 是第四十七个进入 `ready` 的 Vue 垂直切片：`packages/ui/s
 
 Table 是第四十八个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/table/` 提供 columns/`Table.Column`、排序过滤、分页、选择、展开树与分组、横纵滚动、固定列、resize、虚拟列表和可替换 DOM 组件，根/`table` 子路径同时发布 ESM 与声明；`packages/foundation-integration/src/table.js` 只暴露固定 Table 常量，`packages/theme-default/table.css` 编译 Table 及公开依赖样式。完整矩阵见 `docs/components/table/`。
 
+Tag 是第四十九个、Timeline 是第五十个进入 `ready` 的 Vue 垂直切片。Timeline 在 `packages/ui/src/timeline/` 提供 Timeline、TimelineItem、四类布局、dataSource/slot、五类节点、自定义 dot/extra/time、点击、ARIA、SSR 与 RTL；固定源码没有 JavaScript Foundation，`packages/theme-default/timeline.css` 编译 Timeline 固定样式。完整矩阵见 `docs/components/tag/` 与 `docs/components/timeline/`。
+
 Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox、Input、Rating、Slider、TagInput、TimePicker、Anchor、BackTop、Breadcrumb、Pagination、Tabs 与 Table 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。Anchor 精确锁定并内联 `scroll-into-view-if-needed@2.2.31`；BackTop 首次接通固定 `semi-animation` 并精确锁定 `bezier-easing@2.1.0`。两项第三方依赖均纳入许可与 SBOM 验证。后续仍必须逐组件处理 `semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。
