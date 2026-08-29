@@ -184,4 +184,20 @@ export {
   TreeFoundation,
 } from './tree.js';
 export type { TreeAdapter } from './tree.js';
+export {
+  generateTransferDataByType,
+  generateTransferGroupedData,
+  generateTransferSelectedItems,
+  generateTransferTreeData,
+  TransferFoundation,
+  transferCssClasses,
+  transferNumbers,
+  transferStrings,
+} from './transfer.js';
+export type {
+  TransferAdapter,
+  TransferBasicDataItem,
+  TransferDataItemMap,
+  TransferSortEnd,
+} from './transfer.js';
 export * from './typography.js';

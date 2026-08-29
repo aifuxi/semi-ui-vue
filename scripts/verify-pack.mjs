@@ -284,6 +284,7 @@ try {
 		await import('@workspace/ui/progress');
 		await import('@workspace/ui/skeleton');
 		await import('@workspace/ui/spin');
+		await import('@workspace/ui/transfer');
 		await import('@workspace/ui/toast');
 		await import('@workspace/ui/scroll-list');
 		await import('@workspace/ui/side-sheet');
@@ -360,6 +361,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/spin.css').endsWith('/dist/spin.css')) {
 		  throw new Error('Spin 逐组件样式导出未指向 dist/spin.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/transfer.css').endsWith('/dist/transfer.css')) {
+		  throw new Error('Transfer 逐组件样式导出未指向 dist/transfer.css');
 		}
 		if (!import.meta.resolve('@workspace/theme-default/toast.css').endsWith('/dist/toast.css')) {
 		  throw new Error('Toast 逐组件样式导出未指向 dist/toast.css');
@@ -525,6 +529,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Progress, type ProgressProps, type ProgressStrokePoint } from '@workspace/ui/progress';
 		import { Skeleton, type SkeletonAvatarSize, type SkeletonProps } from '@workspace/ui/skeleton';
 		import { Spin, type SpinProps, type SpinSize } from '@workspace/ui/spin';
+		import { Transfer, type TransferDataItem, type TransferProps, type TransferSourceItemProps, type TransferType } from '@workspace/ui/transfer';
 		import { Toast, ToastFactory, useToast, type ToastTheme } from '@workspace/ui/toast';
 		import { Calendar, type CalendarEvent, type CalendarMode } from '@workspace/ui/calendar';
 		import { Card, CardGroup, CardMeta, type CardShadows } from '@workspace/ui/card';
@@ -610,6 +615,10 @@ h(Button, { type, htmlType: 'submit' });
 		const spinSize: SpinSize = 'large';
 		const spinProps: SpinProps = { delay: 100, size: spinSize, spinning: true };
 		h(Spin, spinProps, { indicator: () => h('span', 'Loading'), tip: () => 'Please wait' });
+		const transferType: TransferType = 'list';
+		const transferData: TransferDataItem[] = [{ key: 'consumer', label: 'Consumer' }];
+		const transferProps: TransferProps = { dataSource: transferData, defaultValue: ['consumer'], type: transferType };
+		h(Transfer, transferProps, { sourceItem: ({ label }: TransferSourceItemProps) => h('span', String(label ?? '')) });
 		const toastTheme: ToastTheme = 'light';
 		const toastId: string = Toast.info({ content: 'Consumer toast', duration: 0, theme: toastTheme });
 		Toast.close(toastId);
@@ -865,6 +874,12 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-spin-wrapper') || !themeCss.includes('.semi-spin-hidden')) {
     throw new Error('安装后的默认主题缺少 Spin 样式');
+  }
+  if (
+    !themeCss.includes('.semi-transfer-left') ||
+    !themeCss.includes('.semi-transfer-right-item')
+  ) {
+    throw new Error('安装后的默认主题缺少 Transfer 样式');
   }
   if (!themeCss.includes('.semi-cropper-box-corner')) {
     throw new Error('安装后的默认主题缺少 Cropper 样式');
@@ -1393,6 +1408,18 @@ h(Button, { type, htmlType: 'submit' });
     !spinThemeCss.includes('.semi-rtl .semi-spin')
   ) {
     throw new Error('安装后的 Spin 逐组件样式缺少默认、自定义、hidden 或 RTL 样式');
+  }
+  const transferThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'transfer.css'),
+    'utf8',
+  );
+  if (
+    !transferThemeCss.includes('.semi-transfer-left') ||
+    !transferThemeCss.includes('.semi-transfer-filter') ||
+    !transferThemeCss.includes('.semi-transfer-right-item') ||
+    !transferThemeCss.includes('.semi-rtl .semi-transfer')
+  ) {
+    throw new Error('安装后的 Transfer 逐组件样式缺少双面板、搜索、条目或 RTL 样式');
   }
   const calendarThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'calendar.css'),

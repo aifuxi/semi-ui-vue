@@ -171,6 +171,16 @@ describe('Vue 对照工作台', () => {
     expect(scenario.text()).toContain('Content ready');
     wrapper.unmount();
   });
+  it('通过公共 Transfer 渲染候选、已选与 RTL 场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'transfer', direction: 'rtl' } });
+    const scenario = wrapper.get('[data-testid="transfer-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(wrapper.classes()).toContain('semi-rtl');
+    expect(scenario.findAll('.semi-transfer-left-list .semi-transfer-item')).toHaveLength(6);
+    expect(scenario.findAll('.semi-transfer-right-item')).toHaveLength(2);
+    wrapper.unmount();
+  });
   it('通过公共 Empty 渲染图片、无图片、水平与 SVG 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'empty', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="empty-vue"]');

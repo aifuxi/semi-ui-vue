@@ -145,6 +145,7 @@ export default defineConfig({
         'tag-input/index': fileURLToPath(new URL('./src/tag-input/index.ts', import.meta.url)),
         'time-picker/index': fileURLToPath(new URL('./src/time-picker/index.ts', import.meta.url)),
         'tooltip/index': fileURLToPath(new URL('./src/tooltip/index.ts', import.meta.url)),
+        'transfer/index': fileURLToPath(new URL('./src/transfer/index.ts', import.meta.url)),
         'typography/index': fileURLToPath(new URL('./src/typography/index.ts', import.meta.url)),
       },
       formats: ['es'],

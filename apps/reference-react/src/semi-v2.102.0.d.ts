@@ -294,6 +294,29 @@ declare module '@semi-v2.102.0/spin' {
   export default Spin;
 }
 
+declare module '@semi-v2.102.0/transfer' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface TransferDataItem {
+    key: string | number;
+    label?: ReactNode;
+    value?: string | number;
+    disabled?: boolean;
+  }
+  export interface TransferProps {
+    className?: string;
+    style?: CSSProperties;
+    disabled?: boolean;
+    dataSource?: TransferDataItem[];
+    filter?: boolean | ((input: string, item: TransferDataItem) => boolean);
+    defaultValue?: Array<string | number>;
+    value?: Array<string | number>;
+    onChange?: (values: Array<string | number>, items: TransferDataItem[]) => void;
+  }
+  const Transfer: ComponentType<TransferProps>;
+  export default Transfer;
+}
+
 declare module '@semi-v2.102.0/toast' {
   import type React from 'react';
 

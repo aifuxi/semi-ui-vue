@@ -770,6 +770,22 @@ describe('parity infrastructure contract', () => {
         REFERENCE_SOURCE_PATHS.spinDocumentation,
       ]),
     );
+
+    expect(getParityScenario('transfer')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.transferPublicEntry,
+    });
+    expect(assertScenarioComparable('transfer').targets).toHaveLength(7);
+    expect(getParityScenario('transfer').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.transferFoundation,
+        REFERENCE_SOURCE_PATHS.transferFoundationUtils,
+        REFERENCE_SOURCE_PATHS.transferFoundationConstants,
+        REFERENCE_SOURCE_PATHS.transferFoundationStyle,
+        REFERENCE_SOURCE_PATHS.transferDocumentation,
+      ]),
+    );
   });
 
   it('records Toast Adapter, hook, Foundations, constants, styles and docs', () => {

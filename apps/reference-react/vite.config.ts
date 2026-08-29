@@ -32,6 +32,8 @@ const popconfirmPublicEntry = path.join(upstreamPackages, 'semi-ui/popconfirm/in
 const progressPublicEntry = path.join(upstreamPackages, 'semi-ui/progress/index.tsx');
 const skeletonPublicEntry = path.join(upstreamPackages, 'semi-ui/skeleton/index.tsx');
 const spinPublicEntry = path.join(upstreamPackages, 'semi-ui/spin/index.tsx');
+const transferPublicEntry = path.join(upstreamPackages, 'semi-ui/transfer/index.tsx');
+const transferSortableEntry = path.join(upstreamPackages, 'semi-ui/_sortable/index.tsx');
 const toastPublicEntry = path.join(upstreamPackages, 'semi-ui/toast/index.tsx');
 const scrollListPublicEntry = path.join(upstreamPackages, 'semi-ui/scrollList/index.tsx');
 const scrollItemPublicEntry = path.join(upstreamPackages, 'semi-ui/scrollList/scrollItem.tsx');
@@ -149,6 +151,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'switch/switch.scss'),
   '@douyinfe/semi-foundation/spin/spin.scss',
   path.join(foundationRoot, 'spin/spin.scss'),
+  '@douyinfe/semi-foundation/transfer/transfer.scss',
+  path.join(foundationRoot, 'transfer/transfer.scss'),
   '@douyinfe/semi-foundation/toast/toast.scss',
   path.join(foundationRoot, 'toast/toast.scss'),
   '@douyinfe/semi-foundation/grid/grid.scss',
@@ -275,6 +279,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/progress', replacement: progressPublicEntry },
       { find: '@semi-v2.102.0/skeleton', replacement: skeletonPublicEntry },
       { find: '@semi-v2.102.0/spin', replacement: spinPublicEntry },
+      { find: '@semi-v2.102.0/transfer', replacement: transferPublicEntry },
       { find: '@semi-v2.102.0/toast', replacement: toastPublicEntry },
       { find: '@semi-v2.102.0/scroll-list', replacement: scrollListPublicEntry },
       { find: '@semi-v2.102.0/scroll-item', replacement: scrollItemPublicEntry },
@@ -333,6 +338,22 @@ export default defineConfig({
       { find: '@douyinfe/semi-animation', replacement: animationEntry },
       { find: '@douyinfe/semi-icons', replacement: iconsEntry },
       { find: '@douyinfe/semi-icons-lab', replacement: iconsLabEntry },
+      {
+        find: transferSortableEntry,
+        replacement: fileURLToPath(new URL('./src/runtime/transferSortable.tsx', import.meta.url)),
+      },
+      {
+        find: /^@dnd-kit\/sortable$/,
+        replacement: fileURLToPath(new URL('./src/runtime/transferSortable.tsx', import.meta.url)),
+      },
+      {
+        find: /^@dnd-kit\/core$/,
+        replacement: fileURLToPath(new URL('./src/runtime/transferSortable.tsx', import.meta.url)),
+      },
+      {
+        find: /^@dnd-kit\/utilities$/,
+        replacement: fileURLToPath(new URL('./src/runtime/transferSortable.tsx', import.meta.url)),
+      },
       {
         find: /^copy-text-to-clipboard$/,
         replacement: fileURLToPath(new URL('./src/runtime/copyText.ts', import.meta.url)),

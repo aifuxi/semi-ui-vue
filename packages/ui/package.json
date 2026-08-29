@@ -230,6 +230,10 @@
       "types": "./dist/tree/index.d.ts",
       "import": "./dist/tree/index.js"
     },
+    "./transfer": {
+      "types": "./dist/transfer/index.d.ts",
+      "import": "./dist/transfer/index.js"
+    },
     "./switch": {
       "types": "./dist/switch/index.d.ts",
       "import": "./dist/switch/index.js"

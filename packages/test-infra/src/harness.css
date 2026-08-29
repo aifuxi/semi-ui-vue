@@ -2782,6 +2782,11 @@ p {
   min-height: 240px;
 }
 
+.transfer-scenario {
+  width: 568px;
+  max-width: 100%;
+}
+
 .spin-scenario__sizes {
   display: flex;
   gap: 32px;

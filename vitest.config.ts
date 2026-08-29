@@ -92,6 +92,9 @@ export default defineConfig({
       '@semi-v2.102.0/spin': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiSpinStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/transfer': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiTransferStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/toast': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiToastStub.tsx', import.meta.url),
       ),

@@ -402,6 +402,14 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-spin-hidden');
     expect(html).toContain('Content ready');
   });
+  it('从固定 Transfer Adapter 渲染候选与已选面板', () => {
+    const html = renderToStaticMarkup(<App scenarioId="transfer" />);
+
+    expect(html).toContain('data-parity-scenario="transfer"');
+    expect(html).toContain('data-testid="transfer-reference"');
+    expect(html).toContain('semi-transfer-left');
+    expect(html).toContain('semi-transfer-right-item');
+  });
   it('从固定 Empty Adapter 渲染图片、无图片、水平与 SVG 场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="empty" direction="rtl" />);
 

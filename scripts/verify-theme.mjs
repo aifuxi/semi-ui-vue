@@ -73,6 +73,20 @@ const skeletonCssPath = path.join(
 );
 const spinEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'spin.scss');
 const spinCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'spin.css');
+const transferEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'transfer.scss',
+);
+const transferCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'transfer.css',
+);
 const toastEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'toast.scss');
 const toastCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'toast.css');
 const calendarEntryPath = path.join(
@@ -1598,6 +1612,43 @@ for (const selector of [
   }
 }
 
+const expectedTransferImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/button/button.scss'),
+  vendorImport('semi-foundation/button/iconButton.scss'),
+  vendorImport('semi-foundation/checkbox/checkbox.scss'),
+  vendorImport('semi-foundation/collapsible/collapsible.scss'),
+  vendorImport('semi-foundation/highlight/highlight.scss'),
+  vendorImport('semi-foundation/input/input.scss'),
+  vendorImport('semi-foundation/spin/spin.scss'),
+  vendorImport('semi-foundation/tree/tree.scss'),
+  vendorImport('semi-foundation/pagination/pagination.scss'),
+  vendorImport('semi-foundation/transfer/transfer.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const transferEntrySource = await readFile(transferEntryPath, 'utf8');
+const actualTransferImports = [...transferEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualTransferImports) !== JSON.stringify(expectedTransferImports)) {
+  throw new Error('Transfer 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const transferCss = await readFile(transferCssPath, 'utf8');
+for (const selector of [
+  '.semi-transfer-left',
+  '.semi-transfer-filter',
+  '.semi-transfer-right-item',
+  '.semi-transfer-item-disabled',
+  '.semi-transfer-right-item-drag-handler',
+  '.semi-rtl .semi-transfer',
+]) {
+  if (!transferCss.includes(selector)) {
+    throw new Error(`Transfer 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
 const expectedToastImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -2225,5 +2276,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 Anchor/Avatar/Badge/Banner/Notification/Popconfirm/Progress/Skeleton/Spin/Toast/Calendar/Card/Carousel/Collapsible/Cropper/Descriptions/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/Tag/Timeline/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + bannerCss.length + notificationCss.length + popconfirmCss.length + progressCss.length + skeletonCss.length + spinCss.length + toastCss.length + calendarCss.length + cardCss.length + carouselCss.length + collapsibleCss.length + cropperCss.length + descriptionsCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + tagCss.length + timelineCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/Avatar/Badge/Banner/Notification/Popconfirm/Progress/Skeleton/Spin/Transfer/Toast/Calendar/Card/Carousel/Collapsible/Cropper/Descriptions/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/Tag/Timeline/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + bannerCss.length + notificationCss.length + popconfirmCss.length + progressCss.length + skeletonCss.length + spinCss.length + transferCss.length + toastCss.length + calendarCss.length + cardCss.length + carouselCss.length + collapsibleCss.length + cropperCss.length + descriptionsCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + tagCss.length + timelineCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );
