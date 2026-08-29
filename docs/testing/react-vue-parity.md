@@ -41,6 +41,7 @@ React 页面只允许从只读 `vendor/semi-design` 的固定 v2.102.0 源码构
 | `pagination`          | ready | ready | 基础/完整/小尺寸/禁用、跳转、键盘、dark/mobile/RTL             |
 | `steps`               | ready | ready | fill/basic/nav/vertical、状态、键盘、dark/mobile/RTL           |
 | `tabs`                | ready | ready | 四类型、横/竖、More/折叠、键盘、dark/mobile/RTL                |
+| `side-sheet`          | ready | ready | 稳定 Portal、mask、header/body/footer、dark/mobile/RTL         |
 
 场景契约定义在 `packages/test-infra/src/index.ts`。`assertScenarioComparable()` 只有在 React/Vue 均为 `ready` 时才返回场景，否则立即失败。所有已完成组件的固定源码矩阵、Vue API 与迁移表见 `docs/components/`。Icon 场景覆盖尺寸、旋转、暂停后的 spin、单色、双色、四色渐变、Lab 和自定义 SVG 基座；Space 场景覆盖预设/数字/数组 gap、方向、换行、交叉轴对齐和 RTL；FloatButton 场景覆盖尺寸、形状、colorful、disabled、Badge 与 Group 委托事件；Layout 场景覆盖语义标签、嵌套 Sider 注册与桌面/移动断点回调；Grid 场景覆盖 24 栅格、水平/垂直/响应式 Gutter、Flex 对齐与排序、响应式 Col 和 RTL；Resizable 场景覆盖单体八方向手柄、受约束拖拽、水平/垂直 Group、默认 IconHandle、相邻 Item 回调与桌面/移动明暗主题；Typography 场景覆盖标题层级、七类文本颜色、装饰顺序、段落、链接、复制和数值格式化；ConfigProvider 场景覆盖 RTL、Locale、Consumer、嵌套配置和桌面/移动断点；Switch、Tooltip、Select、AutoComplete、Checkbox、Input、TagInput 与 TimePicker 分别覆盖其公开输入、状态、键盘/焦点、ARIA、Portal 和适用主题矩阵。Tabs 场景覆盖四种 type、top/left、disabled/closable、More、可收起 OverflowList、点击/键盘、Dropdown Portal、桌面/移动明暗主题和 RTL，成对局部截图要求字节完全一致。
 

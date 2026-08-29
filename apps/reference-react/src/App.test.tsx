@@ -55,6 +55,14 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-scrolllist-item-wheel');
   });
 
+  it('登记固定 SideSheet Adapter 的容器内参考场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="side-sheet" direction="rtl" />);
+
+    expect(html).toContain('data-parity-scenario="side-sheet"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/sideSheet/index.tsx');
+    expect(html).toContain('data-testid="side-sheet-reference"');
+  });
+
   it('从固定 Divider Adapter 渲染完整参考场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="divider" />);
 

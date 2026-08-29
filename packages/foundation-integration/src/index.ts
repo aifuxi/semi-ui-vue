@@ -110,6 +110,12 @@ export type {
   ScrollItemNearestNodeInfo,
   ScrollItemTargetNodeInfo,
 } from './scroll-list.js';
+export { SideSheetFoundation, sideSheetCssClasses, sideSheetStrings } from './side-sheet.js';
+export type {
+  FoundationSideSheetProps,
+  FoundationSideSheetState,
+  SideSheetAdapter,
+} from './side-sheet.js';
 export * from './resizable.js';
 export { SelectFoundation } from './select.js';
 export type { SelectAdapter } from './select.js';

@@ -20,6 +20,7 @@ export const virtualModalStyleId = 'virtual:workspace-modal-styles.css';
 export const virtualOverflowListStyleId = 'virtual:workspace-overflow-list-styles.css';
 export const virtualPopoverStyleId = 'virtual:workspace-popover-styles.css';
 export const virtualScrollListStyleId = 'virtual:workspace-scroll-list-styles.css';
+export const virtualSideSheetStyleId = 'virtual:workspace-side-sheet-styles.css';
 export const virtualBackTopStyleId = 'virtual:workspace-back-top-styles.css';
 export const virtualBreadcrumbStyleId = 'virtual:workspace-breadcrumb-styles.css';
 export const virtualPaginationStyleId = 'virtual:workspace-pagination-styles.css';
@@ -67,6 +68,7 @@ const resolvedVirtualModalStyleId = `\0${virtualModalStyleId}`;
 const resolvedVirtualOverflowListStyleId = `\0${virtualOverflowListStyleId}`;
 const resolvedVirtualPopoverStyleId = `\0${virtualPopoverStyleId}`;
 const resolvedVirtualScrollListStyleId = `\0${virtualScrollListStyleId}`;
+const resolvedVirtualSideSheetStyleId = `\0${virtualSideSheetStyleId}`;
 const resolvedVirtualBackTopStyleId = `\0${virtualBackTopStyleId}`;
 const resolvedVirtualBreadcrumbStyleId = `\0${virtualBreadcrumbStyleId}`;
 const resolvedVirtualPaginationStyleId = `\0${virtualPaginationStyleId}`;
@@ -114,6 +116,7 @@ const modalStyleEntry = fileURLToPath(new URL('./src/modal.scss', import.meta.ur
 const overflowListStyleEntry = fileURLToPath(new URL('./src/overflow-list.scss', import.meta.url));
 const popoverStyleEntry = fileURLToPath(new URL('./src/popover.scss', import.meta.url));
 const scrollListStyleEntry = fileURLToPath(new URL('./src/scroll-list.scss', import.meta.url));
+const sideSheetStyleEntry = fileURLToPath(new URL('./src/side-sheet.scss', import.meta.url));
 const backTopStyleEntry = fileURLToPath(new URL('./src/back-top.scss', import.meta.url));
 const breadcrumbStyleEntry = fileURLToPath(new URL('./src/breadcrumb.scss', import.meta.url));
 const paginationStyleEntry = fileURLToPath(new URL('./src/pagination.scss', import.meta.url));
@@ -165,6 +168,7 @@ const styleEntries = new Map([
   [resolvedVirtualOverflowListStyleId, overflowListStyleEntry],
   [resolvedVirtualPopoverStyleId, popoverStyleEntry],
   [resolvedVirtualScrollListStyleId, scrollListStyleEntry],
+  [resolvedVirtualSideSheetStyleId, sideSheetStyleEntry],
   [resolvedVirtualBackTopStyleId, backTopStyleEntry],
   [resolvedVirtualBreadcrumbStyleId, breadcrumbStyleEntry],
   [resolvedVirtualPaginationStyleId, paginationStyleEntry],
@@ -220,6 +224,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualOverflowListStyleId) return resolvedVirtualOverflowListStyleId;
       if (source === virtualPopoverStyleId) return resolvedVirtualPopoverStyleId;
       if (source === virtualScrollListStyleId) return resolvedVirtualScrollListStyleId;
+      if (source === virtualSideSheetStyleId) return resolvedVirtualSideSheetStyleId;
       if (source === virtualBackTopStyleId) return resolvedVirtualBackTopStyleId;
       if (source === virtualBreadcrumbStyleId) return resolvedVirtualBreadcrumbStyleId;
       if (source === virtualPaginationStyleId) return resolvedVirtualPaginationStyleId;

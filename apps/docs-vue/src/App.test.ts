@@ -4,6 +4,25 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 SideSheet 渲染稳定容器、dialog、标题、正文与 footer', async () => {
+    const wrapper = mount(App, {
+      attachTo: document.body,
+      props: { scenarioId: 'side-sheet', direction: 'rtl' },
+    });
+    await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
+
+    const stage = wrapper.get('[data-testid="side-sheet-vue"]');
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(stage.find(':scope > .semi-portal').exists()).toBe(true);
+    expect(stage.get('[role="dialog"]').classes()).toContain('semi-sidesheet-inner');
+    expect(stage.get('.semi-sidesheet-title').text()).toBe('资源详情');
+    expect(stage.get('.semi-sidesheet-body').text()).toContain('3 项配置');
+    expect(stage.get('.semi-sidesheet-footer').text()).toBe('保存变更');
+    expect(stage.get('.semi-sidesheet').classes()).toContain('semi-sidesheet-rtl');
+    wrapper.unmount();
+  });
+
   it('通过公共 ScrollList 渲染 normal、wheel、循环与 disabled 场景', async () => {
     const wrapper = mount(App, { props: { scenarioId: 'scroll-list', direction: 'rtl' } });
     await wrapper.vm.$nextTick();

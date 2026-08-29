@@ -279,6 +279,7 @@ try {
 		await import('@workspace/ui/overflow-list');
 		await import('@workspace/ui/popover');
 		await import('@workspace/ui/scroll-list');
+		await import('@workspace/ui/side-sheet');
 	await import('@workspace/ui/back-top');
 	await import('@workspace/ui/breadcrumb');
 	await import('@workspace/ui/button');
@@ -376,6 +377,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/scroll-list.css').endsWith('/dist/scroll-list.css')) {
 		  throw new Error('ScrollList 逐组件样式导出未指向 dist/scroll-list.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/side-sheet.css').endsWith('/dist/side-sheet.css')) {
+		  throw new Error('SideSheet 逐组件样式导出未指向 dist/side-sheet.css');
 		}
 	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
@@ -490,6 +494,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { OverflowList, type OverflowItem, type OverflowListRenderMode } from '@workspace/ui/overflow-list';
 		import { Popover, type PopoverPosition } from '@workspace/ui/popover';
 		import { ScrollItem, ScrollList, type ScrollItemData, type ScrollItemMode } from '@workspace/ui/scroll-list';
+		import { SideSheet, type SideSheetPlacement, type SideSheetSize } from '@workspace/ui/side-sheet';
 	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
 	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
@@ -583,6 +588,9 @@ h(Button, { type, htmlType: 'submit' });
 		h(Modal, { visible: false, size: modalSize, title: 'Consumer modal' }, () => 'Body');
 		const modalHandle: ModalHandle | undefined = undefined;
 		void modalHandle;
+		const sideSheetPlacement: SideSheetPlacement = 'right';
+		const sideSheetSize: SideSheetSize = 'small';
+		h(SideSheet, { visible: false, placement: sideSheetPlacement, size: sideSheetSize }, () => 'Body');
 		const overflowItems: OverflowItem[] = [{ key: 'consumer' }];
 		const overflowMode: OverflowListRenderMode = 'collapse';
 		h(OverflowList, { items: overflowItems, renderMode: overflowMode });
@@ -1398,6 +1406,26 @@ h(Button, { type, htmlType: 'submit' });
     !scrollListThemeCss.includes('.semi-rtl .semi-scrolllist')
   ) {
     throw new Error('安装后的 ScrollList 逐组件样式缺少 body、wheel、selector 或 RTL 样式');
+  }
+  const sideSheetThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@workspace',
+      'theme-default',
+      'dist',
+      'side-sheet.css',
+    ),
+    'utf8',
+  );
+  if (
+    !sideSheetThemeCss.includes('.semi-sidesheet-inner') ||
+    !sideSheetThemeCss.includes('.semi-sidesheet-mask') ||
+    !sideSheetThemeCss.includes('.semi-sidesheet-animation-content_show_right') ||
+    !sideSheetThemeCss.includes('.semi-sidesheet-rtl') ||
+    !sideSheetThemeCss.includes('.semi-portal')
+  ) {
+    throw new Error('安装后的 SideSheet 逐组件样式缺少 panel、mask、动效、RTL 或 Portal 样式');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

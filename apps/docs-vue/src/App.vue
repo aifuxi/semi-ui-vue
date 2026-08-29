@@ -23,6 +23,7 @@ import ModalScenario from './components/ModalScenario.vue';
 import OverflowListScenario from './components/OverflowListScenario.vue';
 import PopoverScenario from './components/PopoverScenario.vue';
 import ScrollListScenario from './components/ScrollListScenario.vue';
+import SideSheetScenario from './components/SideSheetScenario.vue';
 import IllustrationsScenario from './components/IllustrationsScenario.vue';
 import BackTopScenario from './components/BackTopScenario.vue';
 import BreadcrumbScenario from './components/BreadcrumbScenario.vue';
@@ -121,6 +122,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <OverflowListScenario v-else-if="scenario.id === 'overflow-list'" />
       <PopoverScenario v-else-if="scenario.id === 'popover'" :direction="props.direction" />
       <ScrollListScenario v-else-if="scenario.id === 'scroll-list'" />
+      <SideSheetScenario v-else-if="scenario.id === 'side-sheet'" :direction="props.direction" />
       <IllustrationsScenario v-else-if="scenario.id === 'illustrations'" />
       <BackTopScenario v-else-if="scenario.id === 'back-top'" :direction="props.direction" />
       <BreadcrumbScenario v-else-if="scenario.id === 'breadcrumb'" :direction="props.direction" />

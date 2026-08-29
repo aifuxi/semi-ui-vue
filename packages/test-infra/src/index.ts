@@ -107,6 +107,12 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   scrollListFoundationStyle:
     'vendor/semi-design/packages/semi-foundation/scrollList/scrollList.scss',
   scrollListDocumentation: 'vendor/semi-design/content/show/scrolllist/index.md',
+  sideSheetPublicEntry: 'vendor/semi-design/packages/semi-ui/sideSheet/index.tsx',
+  sideSheetContentEntry: 'vendor/semi-design/packages/semi-ui/sideSheet/SideSheetContent.tsx',
+  sideSheetFoundation:
+    'vendor/semi-design/packages/semi-foundation/sideSheet/sideSheetFoundation.ts',
+  sideSheetFoundationStyle: 'vendor/semi-design/packages/semi-foundation/sideSheet/sideSheet.scss',
+  sideSheetDocumentation: 'vendor/semi-design/content/show/sidesheet/index.md',
   illustrationsPublicEntry: 'vendor/semi-design/packages/semi-illustrations/src/index.ts',
   illustrationsSourceDirectory: 'vendor/semi-design/packages/semi-illustrations/src/illustrations',
   illustrationsSvgDirectory: 'vendor/semi-design/packages/semi-illustrations/src/svgs',
@@ -1049,6 +1055,60 @@ export const PARITY_SCENARIOS = [
         selector:
           '[data-parity-target="scroll-list-wheel"] .semi-scrolllist-item-wheel:last-child .semi-scrolllist-item-disabled',
         computedStyleProperties: ['color', 'cursor', 'height'],
+      },
+    ],
+  },
+  {
+    id: 'side-sheet',
+    title: 'SideSheet 滑动侧边栏',
+    description: '验证稳定容器 Portal、mask/header/body/footer、关闭、暗色、移动端与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.sideSheetPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.sideSheetPublicEntry,
+      REFERENCE_SOURCE_PATHS.sideSheetContentEntry,
+      REFERENCE_SOURCE_PATHS.sideSheetFoundation,
+      REFERENCE_SOURCE_PATHS.sideSheetFoundationStyle,
+      REFERENCE_SOURCE_PATHS.sideSheetDocumentation,
+    ],
+    targets: [
+      {
+        id: 'side-sheet-root',
+        selector: '[data-parity-target="side-sheet-basic"]',
+        computedStyleProperties: ['height', 'left', 'position', 'top', 'width'],
+      },
+      {
+        id: 'side-sheet-inner',
+        selector: '[data-parity-target="side-sheet-basic"] .semi-sidesheet-inner',
+        computedStyleProperties: [
+          'backgroundColor',
+          'height',
+          'overflowX',
+          'overflowY',
+          'position',
+          'width',
+        ],
+      },
+      {
+        id: 'side-sheet-header',
+        selector: '[data-parity-target="side-sheet-basic"] .semi-sidesheet-header',
+        computedStyleProperties: ['alignItems', 'display', 'paddingBottom', 'paddingLeft'],
+      },
+      {
+        id: 'side-sheet-title',
+        selector: '[data-parity-target="side-sheet-basic"] .semi-sidesheet-title',
+        computedStyleProperties: ['color', 'fontSize', 'fontWeight', 'lineHeight', 'textAlign'],
+      },
+      {
+        id: 'side-sheet-body',
+        selector: '[data-parity-target="side-sheet-basic"] .semi-sidesheet-body',
+        computedStyleProperties: ['flex', 'overflowY', 'paddingLeft', 'paddingRight'],
+      },
+      {
+        id: 'side-sheet-footer',
+        selector: '[data-parity-target="side-sheet-basic"] .semi-sidesheet-footer',
+        computedStyleProperties: ['paddingBottom', 'paddingLeft', 'paddingRight', 'paddingTop'],
       },
     ],
   },

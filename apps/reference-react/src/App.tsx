@@ -22,6 +22,7 @@ import { ModalScenario } from './scenarios/ModalScenario';
 import { OverflowListScenario } from './scenarios/OverflowListScenario';
 import { PopoverScenario } from './scenarios/PopoverScenario';
 import { ScrollListScenario } from './scenarios/ScrollListScenario';
+import { SideSheetScenario } from './scenarios/SideSheetScenario';
 import { IllustrationsScenario } from './scenarios/IllustrationsScenario';
 import { BackTopScenario } from './scenarios/BackTopScenario';
 import { BreadcrumbScenario } from './scenarios/BreadcrumbScenario';
@@ -127,6 +128,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'overflow-list' ? <OverflowListScenario /> : null}
         {scenario.id === 'popover' ? <PopoverScenario direction={options.direction} /> : null}
         {scenario.id === 'scroll-list' ? <ScrollListScenario /> : null}
+        {scenario.id === 'side-sheet' ? <SideSheetScenario direction={options.direction} /> : null}
         {scenario.id === 'illustrations' ? <IllustrationsScenario /> : null}
         {scenario.id === 'back-top' ? <BackTopScenario direction={options.direction} /> : null}
         {scenario.id === 'breadcrumb' ? <BreadcrumbScenario direction={options.direction} /> : null}

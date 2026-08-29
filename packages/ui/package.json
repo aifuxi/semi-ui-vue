@@ -142,6 +142,10 @@
       "types": "./dist/scroll-list/index.d.ts",
       "import": "./dist/scroll-list/index.js"
     },
+    "./side-sheet": {
+      "types": "./dist/side-sheet/index.d.ts",
+      "import": "./dist/side-sheet/index.js"
+    },
     "./pin-code": {
       "types": "./dist/pin-code/index.d.ts",
       "import": "./dist/pin-code/index.js"

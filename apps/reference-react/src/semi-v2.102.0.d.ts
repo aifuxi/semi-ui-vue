@@ -156,6 +156,43 @@ declare module '@semi-v2.102.0/scroll-item' {
   export default ScrollItem;
 }
 
+declare module '@semi-v2.102.0/side-sheet' {
+  import type { ComponentType, CSSProperties, KeyboardEvent, MouseEvent, ReactNode } from 'react';
+
+  export interface SideSheetProps {
+    'aria-label'?: string;
+    afterVisibleChange?: (visible: boolean) => void;
+    bodyStyle?: CSSProperties;
+    children?: ReactNode;
+    className?: string;
+    closable?: boolean;
+    closeIcon?: ReactNode;
+    closeOnEsc?: boolean;
+    disableScroll?: boolean;
+    footer?: ReactNode;
+    getPopupContainer?: () => HTMLElement;
+    headerStyle?: CSSProperties;
+    height?: number | string;
+    keepDOM?: boolean;
+    mask?: boolean;
+    maskClosable?: boolean;
+    maskStyle?: CSSProperties;
+    motion?: boolean;
+    onCancel?: (event: MouseEvent | KeyboardEvent) => void;
+    placement?: 'top' | 'right' | 'bottom' | 'left';
+    size?: 'small' | 'medium' | 'large';
+    style?: CSSProperties;
+    title?: ReactNode;
+    visible?: boolean;
+    width?: number | string;
+    zIndex?: number;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const SideSheet: ComponentType<SideSheetProps>;
+  export default SideSheet;
+}
+
 declare module '@semi-v2.102.0/back-top' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 
