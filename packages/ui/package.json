@@ -122,6 +122,10 @@
       "types": "./dist/layout/index.d.ts",
       "import": "./dist/layout/index.js"
     },
+    "./list": {
+      "types": "./dist/list/index.d.ts",
+      "import": "./dist/list/index.js"
+    },
     "./pin-code": {
       "types": "./dist/pin-code/index.d.ts",
       "import": "./dist/pin-code/index.js"

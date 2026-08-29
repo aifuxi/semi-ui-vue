@@ -17,6 +17,7 @@ import { DropdownScenario } from './scenarios/DropdownScenario';
 import { EmptyScenario } from './scenarios/EmptyScenario';
 import { HighlightScenario } from './scenarios/HighlightScenario';
 import { ImageScenario } from './scenarios/ImageScenario';
+import { ListScenario } from './scenarios/ListScenario';
 import { IllustrationsScenario } from './scenarios/IllustrationsScenario';
 import { BackTopScenario } from './scenarios/BackTopScenario';
 import { BreadcrumbScenario } from './scenarios/BreadcrumbScenario';
@@ -117,6 +118,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'empty' ? <EmptyScenario /> : null}
         {scenario.id === 'highlight' ? <HighlightScenario /> : null}
         {scenario.id === 'image' ? <ImageScenario /> : null}
+        {scenario.id === 'list' ? <ListScenario /> : null}
         {scenario.id === 'illustrations' ? <IllustrationsScenario /> : null}
         {scenario.id === 'back-top' ? <BackTopScenario direction={options.direction} /> : null}
         {scenario.id === 'breadcrumb' ? <BreadcrumbScenario direction={options.direction} /> : null}

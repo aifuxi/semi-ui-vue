@@ -28,6 +28,7 @@ export * from './pagination';
 export * from './radio';
 export * from './rating';
 export * from './layout';
+export * from './list';
 export * from './resizable';
 export * from './select';
 export * from './slider';

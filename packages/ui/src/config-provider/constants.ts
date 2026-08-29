@@ -1,6 +1,7 @@
 import { DEFAULT_TYPOGRAPHY_LOCALE } from '../typography';
 import type { PaginationLocale } from '../pagination';
 import type { ImageLocale } from '../image';
+import type { ListLocale } from '../list/types';
 
 import type { BreakpointScreens, ResponsiveMap, SemiLocale } from './types';
 
@@ -45,4 +46,7 @@ export const DEFAULT_CONFIG_LOCALE: Readonly<SemiLocale> = Object.freeze({
     adaptiveTip: '适应页面',
     originTip: '原始尺寸',
   }) satisfies ImageLocale,
+  List: Object.freeze({
+    emptyText: '暂无数据',
+  }) satisfies ListLocale,
 });

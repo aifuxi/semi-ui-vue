@@ -1628,3 +1628,68 @@ declare module '@semi-v2.102.0/cropper' {
   const Cropper: ComponentType<CropperProps>;
   export default Cropper;
 }
+
+declare module '@semi-v2.102.0/list' {
+  import type {
+    ComponentType,
+    CSSProperties,
+    MouseEventHandler,
+    ReactElement,
+    ReactNode,
+  } from 'react';
+
+  export interface ListGrid {
+    align?: 'top' | 'middle' | 'bottom';
+    gutter?: number;
+    justify?: 'start' | 'end' | 'center' | 'space-around' | 'space-between';
+    span?: number;
+    xs?: number | { span?: number };
+    sm?: number | { span?: number };
+    md?: number | { span?: number };
+    lg?: number | { span?: number };
+    xl?: number | { span?: number };
+    xxl?: number | { span?: number };
+  }
+
+  export interface ListItemProps {
+    align?: 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch';
+    children?: ReactNode;
+    className?: string;
+    extra?: ReactNode;
+    header?: ReactNode;
+    main?: ReactNode;
+    onClick?: MouseEventHandler<HTMLLIElement>;
+    onMouseEnter?: MouseEventHandler<HTMLLIElement>;
+    onMouseLeave?: MouseEventHandler<HTMLLIElement>;
+    onRightClick?: MouseEventHandler<HTMLLIElement>;
+    style?: CSSProperties;
+  }
+
+  export interface ListProps<T = unknown> {
+    bordered?: boolean;
+    children?: ReactNode;
+    className?: string;
+    dataSource?: T[];
+    emptyContent?: ReactNode;
+    footer?: ReactNode;
+    grid?: ListGrid;
+    header?: ReactNode;
+    layout?: 'vertical' | 'horizontal';
+    loading?: boolean;
+    loadMore?: ReactNode;
+    onClick?: MouseEventHandler<HTMLLIElement>;
+    onRightClick?: MouseEventHandler<HTMLLIElement>;
+    renderItem?: (item: T, index: number) => ReactNode;
+    size?: 'small' | 'default' | 'large';
+    split?: boolean;
+    style?: CSSProperties;
+  }
+
+  interface ListComponent {
+    <T>(props: ListProps<T>): ReactElement | null;
+    Item: ComponentType<ListItemProps>;
+  }
+
+  const List: ListComponent;
+  export default List;
+}

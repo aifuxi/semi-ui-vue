@@ -3,6 +3,7 @@ import type { VNodeChild } from 'vue';
 import type { TypographyLocale } from '../typography';
 import type { PaginationLocale } from '../pagination';
 import type { ImageLocale } from '../image';
+import type { ListLocale } from '../list/types';
 
 export const CONFIG_BREAKPOINTS = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as const;
 
@@ -33,6 +34,7 @@ export interface SemiLocale {
   Typography?: TypographyLocale;
   Pagination?: PaginationLocale;
   Image?: ImageLocale;
+  List?: ListLocale;
   [componentName: string]: unknown;
 }
 

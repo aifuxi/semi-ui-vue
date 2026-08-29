@@ -365,6 +365,18 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-cropper-view-box-round');
   });
 
+  it('从固定 List Adapter 渲染数据源、Item 分区、horizontal 与 Grid 场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="list" direction="rtl" />);
+
+    expect(html).toContain('data-parity-scenario="list"');
+    expect(html).toContain('data-testid="list-reference"');
+    expect(html).toContain('data-parity-target="list-basic"');
+    expect(html).toContain('semi-list-bordered');
+    expect(html).toContain('semi-list-flex');
+    expect(html).toContain('semi-col-12');
+    expect(html).toContain('Alice');
+  });
+
   it('从固定 BackTop Adapter 渲染 Element target、默认与自定义场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="back-top" />);
 

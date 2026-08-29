@@ -274,6 +274,7 @@ try {
 		await import('@workspace/ui/empty');
 		await import('@workspace/ui/highlight');
 		await import('@workspace/ui/image');
+		await import('@workspace/ui/list');
 	await import('@workspace/ui/back-top');
 	await import('@workspace/ui/breadcrumb');
 	await import('@workspace/ui/button');
@@ -356,6 +357,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/image.css').endsWith('/dist/image.css')) {
 		  throw new Error('Image 逐组件样式导出未指向 dist/image.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/list.css').endsWith('/dist/list.css')) {
+		  throw new Error('List 逐组件样式导出未指向 dist/list.css');
 		}
 	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
@@ -465,6 +469,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Empty, type EmptyLayout, type EmptySvgNode } from '@workspace/ui/empty';
 		import { Highlight, type HighlightSearchWords } from '@workspace/ui/highlight';
 		import { Image, ImagePreview, type ImagePreviewProps, type ImageRatioType } from '@workspace/ui/image';
+		import { List, ListItem, type ListGrid, type ListSize } from '@workspace/ui/list';
 	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
 	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
@@ -549,6 +554,11 @@ h(Button, { type, htmlType: 'submit' });
 		const imagePreviewProps: ImagePreviewProps = { src: ['/one.png'], visible: false };
 		h(Image, { src: '/one.png', width: 80, height: 60, preview: { previewTitle: imageRatio } });
 		h(ImagePreview, imagePreviewProps);
+		const listGrid: ListGrid = { gutter: 12, span: 12 };
+		const listSize: ListSize = 'small';
+		h(List, { dataSource: ['A'], grid: listGrid, size: listSize });
+		h(List.Item, null, () => 'Compound item');
+		h(ListItem, null, () => 'Named item');
 	const backTopTarget: () => BackTopTarget = () => window;
 	h(BackTop, { target: backTopTarget, visibilityHeight: 120, duration: 300 }, () => 'TOP');
 	const breadcrumbMoreType: BreadcrumbMoreType = 'popover';
@@ -734,6 +744,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-image-preview')) {
     throw new Error('安装后的默认主题缺少 Image 样式');
+  }
+  if (!themeCss.includes('.semi-list-item')) {
+    throw new Error('安装后的默认主题缺少 List 样式');
   }
   if (!themeCss.includes('.semi-backtop')) {
     throw new Error('安装后的默认主题缺少 BackTop 样式');
@@ -1268,6 +1281,18 @@ h(Button, { type, htmlType: 'submit' });
     !cropperThemeCss.includes('.semi-cropper-view-box-round')
   ) {
     throw new Error('安装后的 Cropper 逐组件样式缺少遮罩、调整块或圆形裁切样式');
+  }
+  const listThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'list.css'),
+    'utf8',
+  );
+  if (
+    !listThemeCss.includes('.semi-list-item-body') ||
+    !listThemeCss.includes('.semi-row-flex') ||
+    !listThemeCss.includes('.semi-spin-wrapper') ||
+    !listThemeCss.includes('.semi-rtl .semi-list')
+  ) {
+    throw new Error('安装后的 List 逐组件样式缺少 Item、Grid、loading 或 RTL 依赖');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

@@ -80,6 +80,23 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
 
+  it('通过公共 List 渲染数据源、Item 分区、horizontal 与 Grid 场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'list', direction: 'rtl' } });
+    const scenario = wrapper.get('[data-testid="list-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('[data-parity-target="list-basic"] .semi-list-item')).toHaveLength(2);
+    expect(scenario.get('[data-parity-target="list-basic"] .semi-list').classes()).toContain(
+      'semi-list-bordered',
+    );
+    expect(scenario.get('[data-parity-target="list-horizontal"] .semi-list').classes()).toContain(
+      'semi-list-flex',
+    );
+    expect(scenario.findAll('[data-parity-target="list-grid"] .semi-col-12')).toHaveLength(2);
+    expect(scenario.get('.semi-list-item-body-main').text()).toContain('Alice');
+    wrapper.unmount();
+  });
+
   it('通过公共 Illustrations 包渲染全部 light/dark 插画', () => {
     const wrapper = mount(App, { props: { scenarioId: 'illustrations' } });
     const scenario = wrapper.get('[data-testid="illustrations-vue"]');

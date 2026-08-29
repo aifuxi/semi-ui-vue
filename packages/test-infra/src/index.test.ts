@@ -78,6 +78,21 @@ describe('parity infrastructure contract', () => {
         REFERENCE_SOURCE_PATHS.cropperDocumentation,
       ]),
     );
+    expect(getParityScenario('list')).toMatchObject({
+      id: 'list',
+      referenceStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.listPublicEntry,
+      vueStatus: 'ready',
+    });
+    expect(assertScenarioComparable('list').targets).toHaveLength(5);
+    expect(getParityScenario('list').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.listItemEntry,
+        REFERENCE_SOURCE_PATHS.listFoundationConstants,
+        REFERENCE_SOURCE_PATHS.listFoundationStyle,
+        REFERENCE_SOURCE_PATHS.listDocumentation,
+      ]),
+    );
   });
   it('records all pinned illustration sources as a complete parity scene', () => {
     expect(getParityScenario('illustrations')).toMatchObject({

@@ -76,6 +76,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/highlight/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'image', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/image/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'list', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/list/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'back-top', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/back-top/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'breadcrumb', 'index.js')).href);

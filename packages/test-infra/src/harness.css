@@ -1442,7 +1442,62 @@ p {
   font-size: 13px;
 }
 
+.list-scenario {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.list-scenario > section {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--harness-border);
+  border-radius: 8px;
+  background: var(--harness-surface);
+}
+
+.list-scenario > section:first-child {
+  grid-row: span 2;
+}
+
+.list-scenario__main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.list-scenario__main span {
+  color: var(--semi-color-text-2);
+  font-size: 12px;
+}
+
+.list-scenario__pill {
+  display: block;
+  width: 28px;
+  height: 12px;
+  border-radius: 6px;
+}
+
+.list-scenario__pill--a {
+  background: var(--semi-color-primary);
+}
+
+.list-scenario__pill--b {
+  background: var(--semi-color-success);
+}
+
+.list-scenario__pill--c {
+  background: var(--semi-color-warning);
+}
+
 @media (max-width: 600px) {
+  .list-scenario {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .list-scenario > section:first-child {
+    grid-row: auto;
+  }
   .tree-scenario {
     grid-template-columns: minmax(0, 1fr);
   }
