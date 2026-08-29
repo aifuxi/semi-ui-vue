@@ -180,6 +180,17 @@ p {
   font-weight: 600;
 }
 
+.table-scenario {
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.table-scenario__status {
+  color: var(--semi-color-success);
+  font-weight: 600;
+}
+
 .visual-calibration {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

@@ -5,6 +5,7 @@ import type { PaginationLocale } from '../pagination';
 import type { ImageLocale } from '../image';
 import type { ListLocale } from '../list/types';
 import type { ModalLocale } from '../modal/types';
+import type { TableLocale } from '../table/types';
 
 export const CONFIG_BREAKPOINTS = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as const;
 
@@ -37,6 +38,7 @@ export interface SemiLocale {
   Image?: ImageLocale;
   List?: ListLocale;
   Modal?: ModalLocale;
+  Table?: TableLocale;
   [componentName: string]: unknown;
 }
 

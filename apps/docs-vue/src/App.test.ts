@@ -4,6 +4,19 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 Table 渲染表头、选择列、选中行与横向滚动场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'table', direction: 'rtl' } });
+    const scenario = wrapper.get('[data-testid="table-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-table-row-head')).toHaveLength(4);
+    expect(scenario.findAll('.semi-table-tbody .semi-table-row')).toHaveLength(3);
+    expect(scenario.find('.semi-table-row-selected').text()).toContain('API Gateway');
+    expect(scenario.find('.semi-table-column-selection').exists()).toBe(true);
+    expect(scenario.find('.semi-table-wrapper-rtl').exists()).toBe(true);
+    wrapper.unmount();
+  });
+
   it('通过公共 SideSheet 渲染稳定容器、dialog、标题、正文与 footer', async () => {
     const wrapper = mount(App, {
       attachTo: document.body,

@@ -3,6 +3,7 @@ import type { PaginationLocale } from '../pagination';
 import type { ImageLocale } from '../image';
 import type { ListLocale } from '../list/types';
 import type { ModalLocale } from '../modal/types';
+import type { TableLocale } from '../table/types';
 
 import type { BreakpointScreens, ResponsiveMap, SemiLocale } from './types';
 
@@ -54,4 +55,13 @@ export const DEFAULT_CONFIG_LOCALE: Readonly<SemiLocale> = Object.freeze({
     confirm: '确定',
     cancel: '取消',
   }) satisfies ModalLocale,
+  Table: Object.freeze({
+    ascend: '点击升序',
+    cancelSort: '取消排序',
+    confirmFilter: '确定',
+    descend: '点击降序',
+    emptyText: '暂无数据',
+    pageText: '显示第 ${currentStart} 条-第 ${currentEnd} 条，共 ${total} 条',
+    resetFilter: '重置',
+  }) satisfies TableLocale,
 });

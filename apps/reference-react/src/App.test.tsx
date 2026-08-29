@@ -63,6 +63,15 @@ describe('React 参考工作台', () => {
     expect(html).toContain('data-testid="side-sheet-reference"');
   });
 
+  it('从固定 Table Adapter 渲染表头、选择列与选中行场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="table" direction="rtl" />);
+
+    expect(html).toContain('data-parity-scenario="table"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/table/index.tsx');
+    expect(html).toContain('data-testid="table-reference"');
+    expect(html).toContain('semi-table-row-selected');
+  });
+
   it('从固定 Divider Adapter 渲染完整参考场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="divider" />);
 

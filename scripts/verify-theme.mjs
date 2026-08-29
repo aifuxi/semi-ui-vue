@@ -157,6 +157,8 @@ const sideSheetCssPath = path.join(
   'dist',
   'side-sheet.css',
 );
+const tableEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'table.scss');
+const tableCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'table.css');
 const cropperEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -582,6 +584,47 @@ for (const selector of [
 ]) {
   if (!sideSheetCss.includes(selector)) {
     throw new Error(`SideSheet 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
+const expectedTableImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/_portal/portal.scss'),
+  vendorImport('semi-foundation/button/button.scss'),
+  vendorImport('semi-foundation/checkbox/checkbox.scss'),
+  vendorImport('semi-foundation/dropdown/dropdown.scss'),
+  vendorImport('semi-foundation/input/input.scss'),
+  vendorImport('semi-foundation/inputNumber/inputNumber.scss'),
+  vendorImport('semi-foundation/pagination/pagination.scss'),
+  vendorImport('semi-foundation/radio/radio.scss'),
+  vendorImport('semi-foundation/select/select.scss'),
+  vendorImport('semi-foundation/spin/spin.scss'),
+  vendorImport('semi-foundation/table/table.scss'),
+  vendorImport('semi-foundation/tooltip/tooltip.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+  vendorImport('semi-foundation/button/iconButton.scss'),
+  vendorImport('semi-foundation/input/textarea.scss'),
+];
+const tableEntrySource = await readFile(tableEntryPath, 'utf8');
+const actualTableImports = [...tableEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualTableImports) !== JSON.stringify(expectedTableImports)) {
+  throw new Error('Table 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const tableCss = await readFile(tableCssPath, 'utf8');
+for (const selector of [
+  '.semi-table-wrapper',
+  '.semi-table-selection-wrap',
+  '.semi-table-cell-fixed-left',
+  '.semi-table-scroll-position-left',
+  '.semi-table-pagination-outer',
+  '.semi-table-wrapper-rtl .semi-table',
+]) {
+  if (!tableCss.includes(selector)) {
+    throw new Error(`Table 逐组件样式产物缺少选择器：${selector}`);
   }
 }
 
@@ -1847,5 +1890,5 @@ if (!configProviderCss.includes('--semi-color-primary')) {
 }
 
 process.stdout.write(
-  `默认主题入口与 Anchor/Avatar/Badge/Calendar/Card/Carousel/Collapsible/Cropper/Descriptions/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + calendarCss.length + cardCss.length + carouselCss.length + collapsibleCss.length + cropperCss.length + descriptionsCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/Avatar/Badge/Calendar/Card/Carousel/Collapsible/Cropper/Descriptions/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + calendarCss.length + cardCss.length + carouselCss.length + collapsibleCss.length + cropperCss.length + descriptionsCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

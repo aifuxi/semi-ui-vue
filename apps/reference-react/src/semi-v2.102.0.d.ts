@@ -1880,3 +1880,34 @@ declare module '@semi-v2.102.0/modal' {
   const Modal: ComponentType<ModalProps>;
   export default Modal;
 }
+
+declare module '@semi-v2.102.0/table' {
+  import type { ComponentType, ReactNode } from 'react';
+
+  export interface TableColumnProps<RecordType = Record<string, unknown>> {
+    dataIndex?: string;
+    key?: string | number;
+    render?: (value: unknown, record: RecordType, index: number) => ReactNode;
+    title?: ReactNode;
+    width?: string | number;
+  }
+
+  export interface TableProps<RecordType = Record<string, unknown>> {
+    bordered?: boolean;
+    columns?: TableColumnProps<RecordType>[];
+    dataSource?: RecordType[];
+    direction?: 'ltr' | 'rtl';
+    pagination?: boolean | Record<string, unknown>;
+    rowSelection?: { selectedRowKeys?: (string | number)[]; width?: string | number };
+    scroll?: { x?: string | number; y?: string | number };
+    size?: 'small' | 'default' | 'middle';
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  type TableComponent = ComponentType<TableProps> & {
+    Column: ComponentType<TableColumnProps>;
+  };
+
+  const Table: TableComponent;
+  export default Table;
+}

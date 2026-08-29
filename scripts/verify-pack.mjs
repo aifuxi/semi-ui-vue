@@ -280,6 +280,7 @@ try {
 		await import('@workspace/ui/popover');
 		await import('@workspace/ui/scroll-list');
 		await import('@workspace/ui/side-sheet');
+		await import('@workspace/ui/table');
 	await import('@workspace/ui/back-top');
 	await import('@workspace/ui/breadcrumb');
 	await import('@workspace/ui/button');
@@ -380,6 +381,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/side-sheet.css').endsWith('/dist/side-sheet.css')) {
 		  throw new Error('SideSheet 逐组件样式导出未指向 dist/side-sheet.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/table.css').endsWith('/dist/table.css')) {
+		  throw new Error('Table 逐组件样式导出未指向 dist/table.css');
 		}
 	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
@@ -495,6 +499,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Popover, type PopoverPosition } from '@workspace/ui/popover';
 		import { ScrollItem, ScrollList, type ScrollItemData, type ScrollItemMode } from '@workspace/ui/scroll-list';
 		import { SideSheet, type SideSheetPlacement, type SideSheetSize } from '@workspace/ui/side-sheet';
+		import { Table, TableColumn, type TableColumnProps, type TableRowSelection } from '@workspace/ui/table';
 	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
 	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
@@ -591,6 +596,11 @@ h(Button, { type, htmlType: 'submit' });
 		const sideSheetPlacement: SideSheetPlacement = 'right';
 		const sideSheetSize: SideSheetSize = 'small';
 		h(SideSheet, { visible: false, placement: sideSheetPlacement, size: sideSheetSize }, () => 'Body');
+		const tableColumns: TableColumnProps[] = [{ dataIndex: 'name', title: 'Name', width: 160 }];
+		const tableSelection: TableRowSelection<Record<string, unknown>> = { selectedRowKeys: ['consumer'] };
+		h(Table, { columns: tableColumns, dataSource: [{ key: 'consumer', name: 'Semi Vue' }], pagination: false, rowSelection: tableSelection });
+		h(Table.Column, { dataIndex: 'name', title: 'Compound column' });
+		h(TableColumn, { dataIndex: 'name', title: 'Named column' });
 		const overflowItems: OverflowItem[] = [{ key: 'consumer' }];
 		const overflowMode: OverflowListRenderMode = 'collapse';
 		h(OverflowList, { items: overflowItems, renderMode: overflowMode });
@@ -1426,6 +1436,19 @@ h(Button, { type, htmlType: 'submit' });
     !sideSheetThemeCss.includes('.semi-portal')
   ) {
     throw new Error('安装后的 SideSheet 逐组件样式缺少 panel、mask、动效、RTL 或 Portal 样式');
+  }
+  const tableThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'table.css'),
+    'utf8',
+  );
+  if (
+    !tableThemeCss.includes('.semi-table-wrapper') ||
+    !tableThemeCss.includes('.semi-table-selection-wrap') ||
+    !tableThemeCss.includes('.semi-table-cell-fixed-left') ||
+    !tableThemeCss.includes('.semi-table-pagination-outer') ||
+    !tableThemeCss.includes('.semi-table-wrapper-rtl .semi-table')
+  ) {
+    throw new Error('安装后的 Table 逐组件样式缺少根、选择、固定列、分页或 RTL 样式');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

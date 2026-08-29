@@ -29,6 +29,7 @@ const popoverPublicEntry = path.join(upstreamPackages, 'semi-ui/popover/index.ts
 const scrollListPublicEntry = path.join(upstreamPackages, 'semi-ui/scrollList/index.tsx');
 const scrollItemPublicEntry = path.join(upstreamPackages, 'semi-ui/scrollList/scrollItem.tsx');
 const sideSheetPublicEntry = path.join(upstreamPackages, 'semi-ui/sideSheet/index.tsx');
+const tablePublicEntry = path.join(upstreamPackages, 'semi-ui/table/index.tsx');
 const illustrationsPublicEntry = path.join(upstreamPackages, 'semi-illustrations/src/index.ts');
 const cardGroupEntry = path.join(upstreamPackages, 'semi-ui/card/cardGroup.tsx');
 const backTopPublicEntry = path.join(upstreamPackages, 'semi-ui/backtop/index.tsx');
@@ -161,6 +162,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'scrollList/scrollList.scss'),
   '@douyinfe/semi-foundation/sideSheet/sideSheet.scss',
   path.join(foundationRoot, 'sideSheet/sideSheet.scss'),
+  '@douyinfe/semi-foundation/table/table.scss',
+  path.join(foundationRoot, 'table/table.scss'),
   '@douyinfe/semi-foundation/select/select.scss',
   path.join(foundationRoot, 'select/select.scss'),
   '@douyinfe/semi-foundation/slider/slider.scss',
@@ -246,6 +249,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/scroll-list', replacement: scrollListPublicEntry },
       { find: '@semi-v2.102.0/scroll-item', replacement: scrollItemPublicEntry },
       { find: '@semi-v2.102.0/side-sheet', replacement: sideSheetPublicEntry },
+      { find: '@semi-v2.102.0/table', replacement: tablePublicEntry },
       { find: '@semi-v2.102.0/illustrations', replacement: illustrationsPublicEntry },
       { find: '@semi-v2.102.0/card-group', replacement: cardGroupEntry },
       { find: '@semi-v2.102.0/back-top', replacement: backTopPublicEntry },
@@ -310,8 +314,16 @@ export default defineConfig({
       { find: /^lodash$/, replacement: require.resolve('lodash') },
       { find: /^prop-types$/, replacement: require.resolve('prop-types') },
       {
+        find: /^memoize-one$/,
+        replacement: fileURLToPath(new URL('./src/runtime/memoizeOne.ts', import.meta.url)),
+      },
+      {
         find: /^react-window$/,
         replacement: fileURLToPath(new URL('./src/runtime/reactWindow.tsx', import.meta.url)),
+      },
+      {
+        find: /^react-resizable$/,
+        replacement: fileURLToPath(new URL('./src/runtime/reactResizable.tsx', import.meta.url)),
       },
       {
         find: /^fast-copy$/,

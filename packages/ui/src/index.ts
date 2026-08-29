@@ -35,6 +35,7 @@ export * from './popover';
 export * from './resizable';
 export * from './scroll-list';
 export * from './side-sheet';
+export * from './table';
 export * from './select';
 export * from './slider';
 export * from './space';

@@ -19,6 +19,7 @@ import 'virtual:workspace-overflow-list-styles.css';
 import 'virtual:workspace-popover-styles.css';
 import 'virtual:workspace-scroll-list-styles.css';
 import 'virtual:workspace-side-sheet-styles.css';
+import 'virtual:workspace-table-styles.css';
 import 'virtual:workspace-back-top-styles.css';
 import 'virtual:workspace-breadcrumb-styles.css';
 import 'virtual:workspace-auto-complete-styles.css';

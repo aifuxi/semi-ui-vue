@@ -46,3 +46,8 @@ export const FixedSizeList = forwardRef<{ scrollToItem(): void }, FixedSizeListP
     );
   },
 );
+
+// The pinned Table Adapter imports VariableSizeList even when virtualization is
+// disabled. The parity scene does not virtualize, so the deterministic fixed
+// implementation is sufficient while preserving the upstream module shape.
+export const VariableSizeList = FixedSizeList;

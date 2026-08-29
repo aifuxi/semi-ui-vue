@@ -614,6 +614,24 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Table Adapter, body, Foundation, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('table')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.tablePublicEntry,
+    });
+    expect(assertScenarioComparable('table').targets).toHaveLength(4);
+    expect(getParityScenario('table').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.tableAdapterEntry,
+        REFERENCE_SOURCE_PATHS.tableBodyEntry,
+        REFERENCE_SOURCE_PATHS.tableFoundation,
+        REFERENCE_SOURCE_PATHS.tableFoundationStyle,
+        REFERENCE_SOURCE_PATHS.tableDocumentation,
+      ]),
+    );
+  });
+
   it('normalizes scenario query parameters and builds deterministic URLs', () => {
     const options = parseParityScenarioOptions(
       '?scenario=button-types&theme=dark&direction=rtl&locale=en-US',

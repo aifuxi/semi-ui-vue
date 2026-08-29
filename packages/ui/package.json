@@ -146,6 +146,10 @@
       "types": "./dist/side-sheet/index.d.ts",
       "import": "./dist/side-sheet/index.js"
     },
+    "./table": {
+      "types": "./dist/table/index.d.ts",
+      "import": "./dist/table/index.js"
+    },
     "./pin-code": {
       "types": "./dist/pin-code/index.d.ts",
       "import": "./dist/pin-code/index.js"

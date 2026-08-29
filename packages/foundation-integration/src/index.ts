@@ -116,6 +116,7 @@ export type {
   FoundationSideSheetState,
   SideSheetAdapter,
 } from './side-sheet.js';
+export { tableCssClasses, tableNumbers, tableStrings } from './table.js';
 export * from './resizable.js';
 export { SelectFoundation } from './select.js';
 export type { SelectAdapter } from './select.js';

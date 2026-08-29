@@ -83,6 +83,9 @@ export default defineConfig({
       '@semi-v2.102.0/side-sheet': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiSideSheetStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/table': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiTableStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/illustrations': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiIllustrationsStub.tsx', import.meta.url),
       ),

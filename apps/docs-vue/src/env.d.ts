@@ -19,6 +19,7 @@ declare module 'virtual:workspace-overflow-list-styles.css';
 declare module 'virtual:workspace-popover-styles.css';
 declare module 'virtual:workspace-scroll-list-styles.css';
 declare module 'virtual:workspace-side-sheet-styles.css';
+declare module 'virtual:workspace-table-styles.css';
 declare module 'virtual:workspace-back-top-styles.css';
 declare module 'virtual:workspace-breadcrumb-styles.css';
 declare module 'virtual:workspace-button-styles.css';
