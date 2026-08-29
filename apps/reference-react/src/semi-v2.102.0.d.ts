@@ -39,6 +39,52 @@ declare module '@semi-v2.102.0/anchor' {
   export default Anchor;
 }
 
+declare module '@semi-v2.102.0/overflow-list' {
+  import type { CSSProperties, ReactElement, ReactNode } from 'react';
+
+  export interface OverflowItem {
+    key?: string | number;
+    [key: string]: unknown;
+  }
+
+  interface OverflowListCommonProps<Item extends OverflowItem = OverflowItem> {
+    className?: string;
+    collapseFrom?: 'start' | 'end';
+    items?: Item[];
+    minVisibleItems?: number;
+    onIntersect?: (entries: Record<string, IntersectionObserverEntry>) => void;
+    onOverflow?: (items: Item[]) => void;
+    onVisibleStateChange?: (state: Map<string, boolean>) => void;
+    style?: CSSProperties;
+    threshold?: number;
+    visibleItemRenderer?: (item: Item, index: number) => ReactElement;
+    wrapperClassName?: string;
+    wrapperStyle?: CSSProperties;
+  }
+
+  export interface OverflowListCollapseProps<
+    Item extends OverflowItem = OverflowItem,
+  > extends OverflowListCommonProps<Item> {
+    overflowRenderer?: (items: Item[]) => ReactNode;
+    renderMode?: 'collapse';
+  }
+
+  export interface OverflowListScrollProps<
+    Item extends OverflowItem = OverflowItem,
+  > extends OverflowListCommonProps<Item> {
+    overflowRenderer?: (items: [Item[], Item[]]) => ReactNode;
+    renderMode: 'scroll';
+  }
+
+  export type OverflowListProps<Item extends OverflowItem = OverflowItem> =
+    OverflowListCollapseProps<Item> | OverflowListScrollProps<Item>;
+
+  const OverflowList: <Item extends OverflowItem>(
+    props: OverflowListProps<Item>,
+  ) => ReactElement | null;
+  export default OverflowList;
+}
+
 declare module '@semi-v2.102.0/back-top' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

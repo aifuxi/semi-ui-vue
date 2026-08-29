@@ -17,6 +17,7 @@ export const virtualHighlightStyleId = 'virtual:workspace-highlight-styles.css';
 export const virtualImageStyleId = 'virtual:workspace-image-styles.css';
 export const virtualListStyleId = 'virtual:workspace-list-styles.css';
 export const virtualModalStyleId = 'virtual:workspace-modal-styles.css';
+export const virtualOverflowListStyleId = 'virtual:workspace-overflow-list-styles.css';
 export const virtualBackTopStyleId = 'virtual:workspace-back-top-styles.css';
 export const virtualBreadcrumbStyleId = 'virtual:workspace-breadcrumb-styles.css';
 export const virtualPaginationStyleId = 'virtual:workspace-pagination-styles.css';
@@ -61,6 +62,7 @@ const resolvedVirtualHighlightStyleId = `\0${virtualHighlightStyleId}`;
 const resolvedVirtualImageStyleId = `\0${virtualImageStyleId}`;
 const resolvedVirtualListStyleId = `\0${virtualListStyleId}`;
 const resolvedVirtualModalStyleId = `\0${virtualModalStyleId}`;
+const resolvedVirtualOverflowListStyleId = `\0${virtualOverflowListStyleId}`;
 const resolvedVirtualBackTopStyleId = `\0${virtualBackTopStyleId}`;
 const resolvedVirtualBreadcrumbStyleId = `\0${virtualBreadcrumbStyleId}`;
 const resolvedVirtualPaginationStyleId = `\0${virtualPaginationStyleId}`;
@@ -105,6 +107,7 @@ const highlightStyleEntry = fileURLToPath(new URL('./src/highlight.scss', import
 const imageStyleEntry = fileURLToPath(new URL('./src/image.scss', import.meta.url));
 const listStyleEntry = fileURLToPath(new URL('./src/list.scss', import.meta.url));
 const modalStyleEntry = fileURLToPath(new URL('./src/modal.scss', import.meta.url));
+const overflowListStyleEntry = fileURLToPath(new URL('./src/overflow-list.scss', import.meta.url));
 const backTopStyleEntry = fileURLToPath(new URL('./src/back-top.scss', import.meta.url));
 const breadcrumbStyleEntry = fileURLToPath(new URL('./src/breadcrumb.scss', import.meta.url));
 const paginationStyleEntry = fileURLToPath(new URL('./src/pagination.scss', import.meta.url));
@@ -153,6 +156,7 @@ const styleEntries = new Map([
   [resolvedVirtualImageStyleId, imageStyleEntry],
   [resolvedVirtualListStyleId, listStyleEntry],
   [resolvedVirtualModalStyleId, modalStyleEntry],
+  [resolvedVirtualOverflowListStyleId, overflowListStyleEntry],
   [resolvedVirtualBackTopStyleId, backTopStyleEntry],
   [resolvedVirtualBreadcrumbStyleId, breadcrumbStyleEntry],
   [resolvedVirtualPaginationStyleId, paginationStyleEntry],
@@ -205,6 +209,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualImageStyleId) return resolvedVirtualImageStyleId;
       if (source === virtualListStyleId) return resolvedVirtualListStyleId;
       if (source === virtualModalStyleId) return resolvedVirtualModalStyleId;
+      if (source === virtualOverflowListStyleId) return resolvedVirtualOverflowListStyleId;
       if (source === virtualBackTopStyleId) return resolvedVirtualBackTopStyleId;
       if (source === virtualBreadcrumbStyleId) return resolvedVirtualBreadcrumbStyleId;
       if (source === virtualPaginationStyleId) return resolvedVirtualPaginationStyleId;

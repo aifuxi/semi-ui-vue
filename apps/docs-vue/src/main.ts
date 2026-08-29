@@ -15,6 +15,7 @@ import 'virtual:workspace-highlight-styles.css';
 import 'virtual:workspace-image-styles.css';
 import 'virtual:workspace-list-styles.css';
 import 'virtual:workspace-modal-styles.css';
+import 'virtual:workspace-overflow-list-styles.css';
 import 'virtual:workspace-back-top-styles.css';
 import 'virtual:workspace-breadcrumb-styles.css';
 import 'virtual:workspace-auto-complete-styles.css';

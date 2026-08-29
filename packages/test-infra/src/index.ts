@@ -89,6 +89,13 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
     'vendor/semi-design/packages/semi-foundation/modal/modalContentFoundation.ts',
   modalFoundationStyle: 'vendor/semi-design/packages/semi-foundation/modal/modal.scss',
   modalDocumentation: 'vendor/semi-design/content/show/modal/index.md',
+  overflowListPublicEntry: 'vendor/semi-design/packages/semi-ui/overflowList/index.tsx',
+  overflowListIntersectionObserver:
+    'vendor/semi-design/packages/semi-ui/overflowList/intersectionObserver.tsx',
+  overflowListFoundation: 'vendor/semi-design/packages/semi-foundation/overflowList/foundation.ts',
+  overflowListFoundationStyle:
+    'vendor/semi-design/packages/semi-foundation/overflowList/overflowList.scss',
+  overflowListDocumentation: 'vendor/semi-design/content/show/overflowlist/index.md',
   illustrationsPublicEntry: 'vendor/semi-design/packages/semi-illustrations/src/index.ts',
   illustrationsSourceDirectory: 'vendor/semi-design/packages/semi-illustrations/src/illustrations',
   illustrationsSvgDirectory: 'vendor/semi-design/packages/semi-illustrations/src/svgs',
@@ -878,6 +885,48 @@ export const PARITY_SCENARIOS = [
         id: 'modal-ok-button',
         selector: '[data-parity-target="modal-basic"] .semi-modal-footer .semi-button:last-child',
         computedStyleProperties: ['backgroundColor', 'borderRadius', 'height', 'paddingLeft'],
+      },
+    ],
+  },
+  {
+    id: 'overflow-list',
+    title: 'OverflowList 折叠列表',
+    description: '验证首尾折叠、最小可见数、scroll observer、响应式宽度、暗色与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.overflowListPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.overflowListPublicEntry,
+      REFERENCE_SOURCE_PATHS.overflowListIntersectionObserver,
+      REFERENCE_SOURCE_PATHS.overflowListFoundation,
+      REFERENCE_SOURCE_PATHS.overflowListFoundationStyle,
+      REFERENCE_SOURCE_PATHS.overflowListDocumentation,
+    ],
+    targets: [
+      {
+        id: 'overflow-list-end-root',
+        selector: '[data-parity-target="overflow-list-end"] > .semi-overflow-list',
+        computedStyleProperties: ['display', 'flexWrap', 'maxWidth', 'minWidth', 'visibility'],
+      },
+      {
+        id: 'overflow-list-end-item',
+        selector: '[data-parity-target="overflow-list-end"] .semi-overflow-list-item:first-of-type',
+        computedStyleProperties: ['display', 'height', 'width'],
+      },
+      {
+        id: 'overflow-list-end-overflow',
+        selector: '[data-parity-target="overflow-list-end"] .semi-overflow-list-overflow',
+        computedStyleProperties: ['display', 'height', 'width'],
+      },
+      {
+        id: 'overflow-list-start-root',
+        selector: '[data-parity-target="overflow-list-start"] > .semi-overflow-list',
+        computedStyleProperties: ['direction', 'display', 'maxWidth', 'visibility'],
+      },
+      {
+        id: 'overflow-list-scroll-wrapper',
+        selector: '[data-parity-target="overflow-list-scroll"] .semi-overflow-list-scroll-wrapper',
+        computedStyleProperties: ['display', 'flex', 'flexWrap', 'overflowX'],
       },
     ],
   },

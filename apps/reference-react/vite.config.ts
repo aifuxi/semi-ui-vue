@@ -24,6 +24,7 @@ const highlightPublicEntry = path.join(upstreamPackages, 'semi-ui/highlight/inde
 const imagePublicEntry = path.join(upstreamPackages, 'semi-ui/image/index.tsx');
 const listPublicEntry = path.join(upstreamPackages, 'semi-ui/list/index.tsx');
 const modalPublicEntry = path.join(upstreamPackages, 'semi-ui/modal/index.tsx');
+const overflowListPublicEntry = path.join(upstreamPackages, 'semi-ui/overflowList/index.tsx');
 const illustrationsPublicEntry = path.join(upstreamPackages, 'semi-illustrations/src/index.ts');
 const cardGroupEntry = path.join(upstreamPackages, 'semi-ui/card/cardGroup.tsx');
 const backTopPublicEntry = path.join(upstreamPackages, 'semi-ui/backtop/index.tsx');
@@ -234,6 +235,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/image', replacement: imagePublicEntry },
       { find: '@semi-v2.102.0/list', replacement: listPublicEntry },
       { find: '@semi-v2.102.0/modal', replacement: modalPublicEntry },
+      { find: '@semi-v2.102.0/overflow-list', replacement: overflowListPublicEntry },
       { find: '@semi-v2.102.0/illustrations', replacement: illustrationsPublicEntry },
       { find: '@semi-v2.102.0/card-group', replacement: cardGroupEntry },
       { find: '@semi-v2.102.0/back-top', replacement: backTopPublicEntry },

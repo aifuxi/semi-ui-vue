@@ -9,6 +9,9 @@ const animationEntry = fileURLToPath(
 const bezierEasingEntry = fileURLToPath(
   new URL('./node_modules/bezier-easing/src/index.js', import.meta.url),
 );
+const fastCopyEntry = fileURLToPath(
+  new URL('../foundation-integration/src/fast-copy.js', import.meta.url),
+);
 
 export default defineConfig({
   plugins: [
@@ -39,6 +42,7 @@ export default defineConfig({
     alias: [
       { find: '@douyinfe/semi-animation', replacement: animationEntry },
       { find: 'bezier-easing', replacement: bezierEasingEntry },
+      { find: /^fast-copy$/, replacement: fastCopyEntry },
       {
         find: /^date-fns$/,
         replacement: fileURLToPath(
@@ -108,6 +112,9 @@ export default defineConfig({
         'layout/index': fileURLToPath(new URL('./src/layout/index.ts', import.meta.url)),
         'list/index': fileURLToPath(new URL('./src/list/index.ts', import.meta.url)),
         'modal/index': fileURLToPath(new URL('./src/modal/index.ts', import.meta.url)),
+        'overflow-list/index': fileURLToPath(
+          new URL('./src/overflow-list/index.ts', import.meta.url),
+        ),
         'pin-code/index': fileURLToPath(new URL('./src/pin-code/index.ts', import.meta.url)),
         'pagination/index': fileURLToPath(new URL('./src/pagination/index.ts', import.meta.url)),
         'radio/index': fileURLToPath(new URL('./src/radio/index.ts', import.meta.url)),

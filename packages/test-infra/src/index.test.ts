@@ -110,6 +110,21 @@ describe('parity infrastructure contract', () => {
         REFERENCE_SOURCE_PATHS.modalDocumentation,
       ]),
     );
+    expect(getParityScenario('overflow-list')).toMatchObject({
+      id: 'overflow-list',
+      referenceStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.overflowListPublicEntry,
+      vueStatus: 'ready',
+    });
+    expect(assertScenarioComparable('overflow-list').targets).toHaveLength(5);
+    expect(getParityScenario('overflow-list').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.overflowListIntersectionObserver,
+        REFERENCE_SOURCE_PATHS.overflowListFoundation,
+        REFERENCE_SOURCE_PATHS.overflowListFoundationStyle,
+        REFERENCE_SOURCE_PATHS.overflowListDocumentation,
+      ]),
+    );
   });
   it('records all pinned illustration sources as a complete parity scene', () => {
     expect(getParityScenario('illustrations')).toMatchObject({

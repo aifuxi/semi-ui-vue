@@ -276,6 +276,7 @@ try {
 		await import('@workspace/ui/image');
 		await import('@workspace/ui/list');
 		await import('@workspace/ui/modal');
+		await import('@workspace/ui/overflow-list');
 	await import('@workspace/ui/back-top');
 	await import('@workspace/ui/breadcrumb');
 	await import('@workspace/ui/button');
@@ -364,6 +365,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/modal.css').endsWith('/dist/modal.css')) {
 		  throw new Error('Modal 逐组件样式导出未指向 dist/modal.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/overflow-list.css').endsWith('/dist/overflow-list.css')) {
+		  throw new Error('OverflowList 逐组件样式导出未指向 dist/overflow-list.css');
 		}
 	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
@@ -475,6 +479,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Image, ImagePreview, type ImagePreviewProps, type ImageRatioType } from '@workspace/ui/image';
 		import { List, ListItem, type ListGrid, type ListSize } from '@workspace/ui/list';
 		import { Modal, type ModalHandle, type ModalSize } from '@workspace/ui/modal';
+		import { OverflowList, type OverflowItem, type OverflowListRenderMode } from '@workspace/ui/overflow-list';
 	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
 	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
@@ -568,6 +573,9 @@ h(Button, { type, htmlType: 'submit' });
 		h(Modal, { visible: false, size: modalSize, title: 'Consumer modal' }, () => 'Body');
 		const modalHandle: ModalHandle | undefined = undefined;
 		void modalHandle;
+		const overflowItems: OverflowItem[] = [{ key: 'consumer' }];
+		const overflowMode: OverflowListRenderMode = 'collapse';
+		h(OverflowList, { items: overflowItems, renderMode: overflowMode });
 	const backTopTarget: () => BackTopTarget = () => window;
 	h(BackTop, { target: backTopTarget, visibilityHeight: 120, duration: 300 }, () => 'TOP');
 	const breadcrumbMoreType: BreadcrumbMoreType = 'popover';
@@ -759,6 +767,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-modal-content')) {
     throw new Error('安装后的默认主题缺少 Modal 样式');
+  }
+  if (!themeCss.includes('.semi-overflow-list-scroll-wrapper')) {
+    throw new Error('安装后的默认主题缺少 OverflowList 样式');
   }
   if (!themeCss.includes('.semi-backtop')) {
     throw new Error('安装后的默认主题缺少 BackTop 样式');
@@ -1318,6 +1329,24 @@ h(Button, { type, htmlType: 'submit' });
     !modalThemeCss.includes('.semi-modal-rtl')
   ) {
     throw new Error('安装后的 Modal 逐组件样式缺少内容、遮罩、confirm、Portal 或 RTL 依赖');
+  }
+  const overflowListThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@workspace',
+      'theme-default',
+      'dist',
+      'overflow-list.css',
+    ),
+    'utf8',
+  );
+  if (
+    !overflowListThemeCss.includes('.semi-overflow-list') ||
+    !overflowListThemeCss.includes('.semi-overflow-list-scroll-wrapper') ||
+    !overflowListThemeCss.includes('.semi-rtl .semi-overflow-list')
+  ) {
+    throw new Error('OverflowList 逐组件主题 CSS 未包含预期选择器');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

@@ -19,6 +19,7 @@ import { HighlightScenario } from './scenarios/HighlightScenario';
 import { ImageScenario } from './scenarios/ImageScenario';
 import { ListScenario } from './scenarios/ListScenario';
 import { ModalScenario } from './scenarios/ModalScenario';
+import { OverflowListScenario } from './scenarios/OverflowListScenario';
 import { IllustrationsScenario } from './scenarios/IllustrationsScenario';
 import { BackTopScenario } from './scenarios/BackTopScenario';
 import { BreadcrumbScenario } from './scenarios/BreadcrumbScenario';
@@ -121,6 +122,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'image' ? <ImageScenario /> : null}
         {scenario.id === 'list' ? <ListScenario /> : null}
         {scenario.id === 'modal' ? <ModalScenario direction={options.direction} /> : null}
+        {scenario.id === 'overflow-list' ? <OverflowListScenario /> : null}
         {scenario.id === 'illustrations' ? <IllustrationsScenario /> : null}
         {scenario.id === 'back-top' ? <BackTopScenario direction={options.direction} /> : null}
         {scenario.id === 'breadcrumb' ? <BreadcrumbScenario direction={options.direction} /> : null}

@@ -60,6 +60,8 @@ export type {
   ModalAdapter,
   ModalContentAdapter,
 } from './modal.js';
+export { OverflowListFoundation } from './overflow-list.js';
+export type { OverflowListAdapter } from './overflow-list.js';
 export {
   crossMergeImageSources,
   getPreloadImageSources,

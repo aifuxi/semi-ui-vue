@@ -17,6 +17,9 @@ export default defineConfig({
       'bezier-easing': fileURLToPath(
         new URL('./packages/ui/node_modules/bezier-easing/src/index.js', import.meta.url),
       ),
+      'fast-copy': fileURLToPath(
+        new URL('./packages/foundation-integration/src/fast-copy.js', import.meta.url),
+      ),
       '@semi-v2.102.0/anchor': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiAnchorStub.tsx', import.meta.url),
       ),
@@ -64,6 +67,9 @@ export default defineConfig({
       ),
       '@semi-v2.102.0/modal': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiModalStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/overflow-list': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiOverflowListStub.tsx', import.meta.url),
       ),
       '@semi-v2.102.0/illustrations': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiIllustrationsStub.tsx', import.meta.url),

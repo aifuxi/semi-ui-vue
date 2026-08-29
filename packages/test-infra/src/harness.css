@@ -2251,6 +2251,63 @@ p {
   background: var(--harness-subtle);
 }
 
+.overflow-list-scenario {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  padding: 8px 0;
+}
+
+.overflow-list-scenario > section {
+  box-sizing: border-box;
+  width: 260px;
+  padding: 12px;
+  border: 1px solid var(--harness-border);
+  border-radius: 8px;
+  background: var(--harness-panel);
+}
+
+.overflow-list-scenario > [data-parity-target='overflow-list-start'] {
+  width: 188px;
+}
+
+.overflow-list-scenario__item,
+.overflow-list-scenario__scroll-item {
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 30px;
+  flex: 0 0 72px;
+  border-radius: 6px;
+  background: rgb(0 100 250 / 10%);
+  color: var(--harness-text);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.overflow-list-scenario__overflow,
+.overflow-list-scenario__edge {
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 30px;
+  flex: 0 0 44px;
+  border: 1px solid var(--harness-border);
+  border-radius: 15px;
+  color: var(--harness-muted-text);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.overflow-list-scenario__scroll-item {
+  width: 80px;
+  flex-basis: 80px;
+}
+
 .scenario-unavailable > p {
   margin-top: 6px;
 }

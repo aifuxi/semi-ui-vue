@@ -24,6 +24,12 @@ export default defineConfig({
         ),
       },
       {
+        find: /^fast-copy$/,
+        replacement: fileURLToPath(
+          new URL('../../packages/foundation-integration/src/fast-copy.js', import.meta.url),
+        ),
+      },
+      {
         find: '@workspace/icons',
         replacement: fileURLToPath(new URL('../../packages/icons/src/index.ts', import.meta.url)),
       },

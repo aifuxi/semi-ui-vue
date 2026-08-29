@@ -4,6 +4,23 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 OverflowList 渲染 collapse 与 scroll 场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'overflow-list', direction: 'rtl' } });
+    const scenario = wrapper.get('[data-testid="overflow-list-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-overflow-list')).toHaveLength(3);
+    expect(
+      scenario.findAll('[data-parity-target="overflow-list-end"] .semi-overflow-list-item'),
+    ).toHaveLength(5);
+    expect(
+      scenario.findAll('[data-parity-target="overflow-list-scroll"] [data-scrollkey]'),
+    ).toHaveLength(5);
+    expect(scenario.get('.semi-overflow-list-scroll-wrapper').classes()).toContain(
+      'semi-overflow-list-scroll-wrapper',
+    );
+    wrapper.unmount();
+  });
   it('通过公共 Modal 渲染 Portal、标题、正文与默认 footer', async () => {
     const wrapper = mount(App, {
       attachTo: document.body,
