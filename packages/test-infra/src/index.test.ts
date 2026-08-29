@@ -684,6 +684,25 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Notification Adapter, Notice, both Foundations, styles and docs', () => {
+    expect(getParityScenario('notification')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.notificationPublicEntry,
+    });
+    expect(assertScenarioComparable('notification').targets).toHaveLength(6);
+    expect(getParityScenario('notification').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.notificationNoticeEntry,
+        REFERENCE_SOURCE_PATHS.notificationFoundation,
+        REFERENCE_SOURCE_PATHS.notificationListFoundation,
+        REFERENCE_SOURCE_PATHS.notificationFoundationConstants,
+        REFERENCE_SOURCE_PATHS.notificationFoundationStyle,
+        REFERENCE_SOURCE_PATHS.notificationDocumentation,
+      ]),
+    );
+  });
+
   it('normalizes scenario query parameters and builds deterministic URLs', () => {
     const options = parseParityScenarioOptions(
       '?scenario=button-types&theme=dark&direction=rtl&locale=en-US',

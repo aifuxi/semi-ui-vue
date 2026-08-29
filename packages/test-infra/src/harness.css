@@ -2544,6 +2544,15 @@ p {
   font-size: 13px;
 }
 
+.notification-scenario {
+  min-height: 420px;
+  color: var(--semi-color-text-2);
+}
+
+.notification-scenario > p {
+  margin: 0;
+}
+
 @media (max-width: 600px) {
   .banner-scenario__actions {
     flex-wrap: wrap;

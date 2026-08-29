@@ -31,6 +31,7 @@ export * from './rating';
 export * from './layout';
 export * from './list';
 export * from './modal';
+export * from './notification';
 export * from './overflow-list';
 export * from './popover';
 export * from './resizable';

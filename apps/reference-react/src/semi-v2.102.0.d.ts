@@ -326,6 +326,53 @@ declare module '@semi-v2.102.0/banner' {
   export default Banner;
 }
 
+declare module '@semi-v2.102.0/notification' {
+  import type { CSSProperties, ReactNode } from 'react';
+
+  export type NotificationId = string;
+  export type NotificationPosition =
+    'top' | 'topLeft' | 'topRight' | 'bottom' | 'bottomLeft' | 'bottomRight';
+  export type NotificationType = 'warning' | 'success' | 'info' | 'error' | 'default';
+
+  export interface NotificationOptions {
+    className?: string;
+    content?: ReactNode;
+    direction?: 'ltr' | 'rtl';
+    duration?: number;
+    getPopupContainer?: () => HTMLElement;
+    icon?: ReactNode;
+    id?: NotificationId;
+    onClick?: (event: unknown) => void;
+    onClose?: () => void;
+    onCloseClick?: (id: NotificationId) => void;
+    position?: NotificationPosition;
+    showClose?: boolean;
+    style?: CSSProperties;
+    theme?: 'normal' | 'light';
+    title?: ReactNode;
+    type?: NotificationType;
+    zIndex?: number;
+  }
+
+  export interface NotificationMethods {
+    close: (id: NotificationId) => NotificationId;
+    error: (options: NotificationOptions) => NotificationId;
+    info: (options: NotificationOptions) => NotificationId;
+    open: (options: NotificationOptions) => NotificationId;
+    success: (options: NotificationOptions) => NotificationId;
+    warning: (options: NotificationOptions) => NotificationId;
+  }
+
+  export interface NotificationStatic extends NotificationMethods {
+    config: (options: Record<string, unknown>) => void;
+    destroyAll: () => void;
+    useNotification: () => readonly [NotificationMethods, ReactNode];
+  }
+
+  const Notification: NotificationStatic;
+  export default Notification;
+}
+
 declare module '@semi-v2.102.0/breadcrumb' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

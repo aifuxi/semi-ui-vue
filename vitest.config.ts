@@ -35,6 +35,9 @@ export default defineConfig({
       '@semi-v2.102.0/banner': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiBannerStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/notification': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiNotificationStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/calendar': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiCalendarStub.tsx', import.meta.url),
       ),

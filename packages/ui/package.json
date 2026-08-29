@@ -134,6 +134,10 @@
       "types": "./dist/modal/index.d.ts",
       "import": "./dist/modal/index.js"
     },
+    "./notification": {
+      "types": "./dist/notification/index.d.ts",
+      "import": "./dist/notification/index.js"
+    },
     "./overflow-list": {
       "types": "./dist/overflow-list/index.d.ts",
       "import": "./dist/overflow-list/index.js"

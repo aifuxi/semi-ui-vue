@@ -103,6 +103,8 @@ Tag 是第四十九个、Timeline 是第五十个进入 `ready` 的 Vue 垂直�
 
 Banner 是第五十一个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/banner/` 提供四种状态、full/container/bordered 布局、缺省/自定义/隐藏图标与关闭按钮、额外操作、关闭事件顺序、ARIA、SSR 与 RTL；`packages/foundation-integration/src/banner.js` 是固定 Banner Foundation 的唯一运行时入口，`packages/theme-default/banner.css` 编译 Banner、Button、Typography 与 Icon 样式。完整矩阵见 `docs/components/banner/`。
 
+Notification 是第五十二个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/notification/` 提供静态 service、局部 context holder、六个 placement、timer/更新/关闭顺序、ARIA、SSR-safe import 与 RTL；`packages/foundation-integration/src/notification.js` 隔离固定单条/列表 Foundation，`packages/theme-default/notification.css` 编译 Notification、Button/IconButton 与 Icon 样式。完整矩阵见 `docs/components/notification/`。
+
 Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox、Input、Rating、Slider、TagInput、TimePicker、Anchor、BackTop、Breadcrumb、Pagination、Tabs、Table 与 Banner 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。Anchor 精确锁定并内联 `scroll-into-view-if-needed@2.2.31`；BackTop 首次接通固定 `semi-animation` 并精确锁定 `bezier-easing@2.1.0`。两项第三方依赖均纳入许可与 SBOM 验证。后续仍必须逐组件处理 `semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。

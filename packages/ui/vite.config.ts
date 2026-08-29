@@ -113,6 +113,9 @@ export default defineConfig({
         'layout/index': fileURLToPath(new URL('./src/layout/index.ts', import.meta.url)),
         'list/index': fileURLToPath(new URL('./src/list/index.ts', import.meta.url)),
         'modal/index': fileURLToPath(new URL('./src/modal/index.ts', import.meta.url)),
+        'notification/index': fileURLToPath(
+          new URL('./src/notification/index.ts', import.meta.url),
+        ),
         'overflow-list/index': fileURLToPath(
           new URL('./src/overflow-list/index.ts', import.meta.url),
         ),

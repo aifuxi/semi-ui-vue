@@ -62,6 +62,14 @@ export type {
   ModalAdapter,
   ModalContentAdapter,
 } from './modal.js';
+export {
+  NotificationFoundation,
+  NotificationListFoundation,
+  notificationCssClasses,
+  notificationNumbers,
+  notificationStrings,
+} from './notification.js';
+export type { NotificationAdapter, NotificationListAdapter } from './notification.js';
 export { OverflowListFoundation } from './overflow-list.js';
 export type { OverflowListAdapter } from './overflow-list.js';
 export { popoverCssClasses, popoverNumbers, popoverStrings } from './popover.js';

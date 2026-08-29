@@ -27,6 +27,7 @@ import { TableScenario } from './scenarios/TableScenario';
 import { TagScenario } from './scenarios/TagScenario';
 import { TimelineScenario } from './scenarios/TimelineScenario';
 import { BannerScenario } from './scenarios/BannerScenario';
+import { NotificationScenario } from './scenarios/NotificationScenario';
 import { IllustrationsScenario } from './scenarios/IllustrationsScenario';
 import { BackTopScenario } from './scenarios/BackTopScenario';
 import { BreadcrumbScenario } from './scenarios/BreadcrumbScenario';
@@ -137,6 +138,9 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'tag' ? <TagScenario /> : null}
         {scenario.id === 'timeline' ? <TimelineScenario /> : null}
         {scenario.id === 'banner' ? <BannerScenario /> : null}
+        {scenario.id === 'notification' ? (
+          <NotificationScenario direction={options.direction} />
+        ) : null}
         {scenario.id === 'illustrations' ? <IllustrationsScenario /> : null}
         {scenario.id === 'back-top' ? <BackTopScenario direction={options.direction} /> : null}
         {scenario.id === 'breadcrumb' ? <BreadcrumbScenario direction={options.direction} /> : null}
