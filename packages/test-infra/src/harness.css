@@ -2308,6 +2308,63 @@ p {
   flex-basis: 80px;
 }
 
+.popover-scenario {
+  position: relative;
+  box-sizing: border-box;
+  min-height: 360px;
+  padding: 132px 84px 84px;
+  overflow: hidden;
+  border: 1px solid var(--harness-border);
+  border-radius: 8px;
+  background: var(--harness-panel);
+}
+
+.popover-scenario__triggers {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: 72px 132px;
+}
+
+.popover-scenario__card {
+  display: flex;
+  width: 150px;
+  padding: 12px;
+  flex-direction: column;
+  gap: 4px;
+  color: inherit;
+}
+
+.popover-scenario__card strong {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.popover-scenario__card span {
+  font-size: 12px;
+  line-height: 16px;
+  opacity: 0.8;
+}
+
+.popover-scenario__inside-action {
+  height: 24px;
+  margin-top: 4px;
+  border: 1px solid currentcolor;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.popover-scenario__scroll-host {
+  width: 92px;
+  overflow-x: auto;
+}
+
+.popover-scenario__scroll-content {
+  box-sizing: border-box;
+  width: 220px;
+}
+
 .scenario-unavailable > p {
   margin-top: 6px;
 }
@@ -2345,6 +2402,15 @@ p {
 }
 
 @media (max-width: 600px) {
+  .popover-scenario {
+    min-height: 420px;
+    padding: 132px 28px 80px;
+  }
+
+  .popover-scenario__triggers {
+    grid-template-columns: max-content;
+    gap: 58px;
+  }
   .illustrations-scenario {
     grid-template-columns: minmax(0, 1fr);
   }

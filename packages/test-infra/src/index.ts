@@ -96,6 +96,11 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   overflowListFoundationStyle:
     'vendor/semi-design/packages/semi-foundation/overflowList/overflowList.scss',
   overflowListDocumentation: 'vendor/semi-design/content/show/overflowlist/index.md',
+  popoverPublicEntry: 'vendor/semi-design/packages/semi-ui/popover/index.tsx',
+  popoverArrowEntry: 'vendor/semi-design/packages/semi-ui/popover/Arrow.tsx',
+  popoverFoundationConstants: 'vendor/semi-design/packages/semi-foundation/popover/constants.ts',
+  popoverFoundationStyle: 'vendor/semi-design/packages/semi-foundation/popover/popover.scss',
+  popoverDocumentation: 'vendor/semi-design/content/show/popover/index.md',
   illustrationsPublicEntry: 'vendor/semi-design/packages/semi-illustrations/src/index.ts',
   illustrationsSourceDirectory: 'vendor/semi-design/packages/semi-illustrations/src/illustrations',
   illustrationsSvgDirectory: 'vendor/semi-design/packages/semi-illustrations/src/svgs',
@@ -928,6 +933,50 @@ export const PARITY_SCENARIOS = [
         selector: '[data-parity-target="overflow-list-scroll"] .semi-overflow-list-scroll-wrapper',
         computedStyleProperties: ['display', 'flex', 'flexWrap', 'overflowX'],
       },
+    ],
+  },
+  {
+    id: 'popover',
+    title: 'Popover 气泡卡片',
+    description: '验证内容卡片、Portal、箭头、角色、click/hover、暗色、移动端与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.popoverPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.popoverPublicEntry,
+      REFERENCE_SOURCE_PATHS.popoverArrowEntry,
+      REFERENCE_SOURCE_PATHS.popoverFoundationConstants,
+      REFERENCE_SOURCE_PATHS.popoverFoundationStyle,
+      REFERENCE_SOURCE_PATHS.popoverDocumentation,
+    ],
+    targets: [
+      ...(['bottom', 'right'] as const).flatMap((position) => [
+        {
+          id: `popover-trigger-${position}`,
+          selector: `[data-parity-target="popover-trigger-${position}"]`,
+          computedStyleProperties: [
+            'backgroundColor',
+            'borderRadius',
+            'color',
+            'height',
+            'paddingLeft',
+            'paddingRight',
+          ],
+        },
+        {
+          id: `popover-popup-${position}`,
+          selector: `.popover-target-${position}`,
+          computedStyleProperties: [
+            'backgroundColor',
+            'borderRadius',
+            'boxShadow',
+            'color',
+            'fontSize',
+            'lineHeight',
+            'zIndex',
+          ],
+        },
+      ]),
     ],
   },
   {

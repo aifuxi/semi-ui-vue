@@ -37,6 +37,15 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-overflow-list-scroll-wrapper');
   });
 
+  it('登记固定 Popover Adapter 的可比较参考场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="popover" direction="rtl" />);
+
+    expect(html).toContain('data-parity-scenario="popover"');
+    expect(html).toContain('data-reference-status="ready"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/popover/index.tsx');
+    expect(html).toContain('data-parity-target="popover-trigger-right"');
+  });
+
   it('从固定 Divider Adapter 渲染完整参考场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="divider" />);
 

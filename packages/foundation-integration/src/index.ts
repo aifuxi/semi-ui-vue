@@ -62,6 +62,8 @@ export type {
 } from './modal.js';
 export { OverflowListFoundation } from './overflow-list.js';
 export type { OverflowListAdapter } from './overflow-list.js';
+export { popoverCssClasses, popoverNumbers, popoverStrings } from './popover.js';
+export type { PopoverArrowBoundingConstants } from './popover.js';
 export {
   crossMergeImageSources,
   getPreloadImageSources,

@@ -85,6 +85,27 @@ declare module '@semi-v2.102.0/overflow-list' {
   export default OverflowList;
 }
 
+declare module '@semi-v2.102.0/popover' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface PopoverProps {
+    arrowStyle?: CSSProperties & { borderOpacity?: string | number };
+    children?: ReactNode;
+    className?: string;
+    content?: ReactNode;
+    getPopupContainer?: () => HTMLElement;
+    motion?: boolean;
+    position?: string;
+    showArrow?: boolean;
+    style?: CSSProperties;
+    trigger?: 'hover' | 'focus' | 'click' | 'custom' | 'contextMenu';
+    visible?: boolean;
+  }
+
+  const Popover: ComponentType<PopoverProps>;
+  export default Popover;
+}
+
 declare module '@semi-v2.102.0/back-top' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

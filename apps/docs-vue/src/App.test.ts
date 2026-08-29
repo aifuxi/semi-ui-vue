@@ -4,6 +4,24 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 Popover 渲染卡片、箭头、角色与首次自定义容器', async () => {
+    const wrapper = mount(App, {
+      attachTo: document.body,
+      props: { scenarioId: 'popover', direction: 'rtl' },
+    });
+    await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
+
+    const scenario = wrapper.get('[data-testid="popover-vue"]');
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('[data-parity-target^="popover-trigger-"]')).toHaveLength(4);
+    expect(scenario.findAll(':scope > .semi-portal')).toHaveLength(2);
+    expect(scenario.findAll('.semi-popover')).toHaveLength(2);
+    expect(scenario.find('.semi-popover-icon-arrow').exists()).toBe(true);
+    expect(scenario.find('.semi-popover-rtl').exists()).toBe(true);
+    wrapper.unmount();
+  });
+
   it('通过公共 OverflowList 渲染 collapse 与 scroll 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'overflow-list', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="overflow-list-vue"]');

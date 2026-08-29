@@ -277,6 +277,7 @@ try {
 		await import('@workspace/ui/list');
 		await import('@workspace/ui/modal');
 		await import('@workspace/ui/overflow-list');
+		await import('@workspace/ui/popover');
 	await import('@workspace/ui/back-top');
 	await import('@workspace/ui/breadcrumb');
 	await import('@workspace/ui/button');
@@ -368,6 +369,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/overflow-list.css').endsWith('/dist/overflow-list.css')) {
 		  throw new Error('OverflowList 逐组件样式导出未指向 dist/overflow-list.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/popover.css').endsWith('/dist/popover.css')) {
+		  throw new Error('Popover 逐组件样式导出未指向 dist/popover.css');
 		}
 	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
@@ -480,6 +484,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { List, ListItem, type ListGrid, type ListSize } from '@workspace/ui/list';
 		import { Modal, type ModalHandle, type ModalSize } from '@workspace/ui/modal';
 		import { OverflowList, type OverflowItem, type OverflowListRenderMode } from '@workspace/ui/overflow-list';
+		import { Popover, type PopoverPosition } from '@workspace/ui/popover';
 	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
 	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
@@ -664,6 +669,8 @@ h(Button, { type, htmlType: 'submit' });
 	h(TimePicker, { modelValue: timePickerValue, type: timePickerType, minuteStep: 15, 'onUpdate:modelValue': (_value: Date | Date[] | undefined) => undefined });
 	const tooltipPosition: TooltipPosition = 'bottomRight';
 	h(Tooltip, { content: 'consumer tooltip', position: tooltipPosition, trigger: 'custom', visible: true }, () => h('button', 'trigger'));
+	const popoverPosition: PopoverPosition = 'right';
+	h(Popover, { content: 'consumer popover', position: popoverPosition, showArrow: true, trigger: 'custom', visible: true }, () => h('button', 'trigger'));
 	const typographyType: TypographyType = 'secondary';
 	const numeralRule: TypographyNumeralRule = 'bytes-binary';
 	h(Typography, null, () => [
@@ -770,6 +777,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-overflow-list-scroll-wrapper')) {
     throw new Error('安装后的默认主题缺少 OverflowList 样式');
+  }
+  if (!themeCss.includes('.semi-popover-wrapper')) {
+    throw new Error('安装后的默认主题缺少 Popover 样式');
   }
   if (!themeCss.includes('.semi-backtop')) {
     throw new Error('安装后的默认主题缺少 BackTop 样式');
@@ -1347,6 +1357,19 @@ h(Button, { type, htmlType: 'submit' });
     !overflowListThemeCss.includes('.semi-rtl .semi-overflow-list')
   ) {
     throw new Error('OverflowList 逐组件主题 CSS 未包含预期选择器');
+  }
+  const popoverThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'popover.css'),
+    'utf8',
+  );
+  if (
+    !popoverThemeCss.includes('.semi-portal-inner') ||
+    !popoverThemeCss.includes('.semi-popover-wrapper') ||
+    !popoverThemeCss.includes('.semi-popover-icon-arrow') ||
+    !popoverThemeCss.includes('.semi-popover-animation-show') ||
+    !popoverThemeCss.includes('.semi-popover.semi-popover-rtl')
+  ) {
+    throw new Error('安装后的 Popover 逐组件样式缺少 Portal、卡片、箭头、动效或 RTL 样式');
   }
   const switchThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),

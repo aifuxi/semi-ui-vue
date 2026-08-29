@@ -71,6 +71,9 @@ export default defineConfig({
       '@semi-v2.102.0/overflow-list': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiOverflowListStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/popover': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiPopoverStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/illustrations': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiIllustrationsStub.tsx', import.meta.url),
       ),

@@ -82,6 +82,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/modal/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'overflow-list', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/overflow-list/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'popover', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/popover/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'back-top', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/back-top/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'breadcrumb', 'index.js')).href);
