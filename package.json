@@ -25,7 +25,7 @@
     "check:boundaries": "node scripts/verify-source-boundaries.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint": "eslint . --max-warnings=0",
+    "lint": "eslint . --concurrency auto --max-warnings=0",
     "typecheck": "pnpm typecheck:root && pnpm -r --if-present run typecheck",
     "typecheck:root": "tsc -p tsconfig.tools.json --noEmit",
     "test": "pnpm test:unit",
