@@ -13,6 +13,7 @@ import {
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
+  waitForStableRendering,
 } from '../parity-harness';
 
 test('Pagination 参考场景来自本地 v2.102.0 并保留截断、容量、快速跳页与 small DOM', async ({
@@ -119,6 +120,26 @@ test('Pagination React/Vue 页码、快速跳页、容量 Select、Popover、样
   await Promise.all([
     expect(pair.react.page.getByRole('status')).toHaveText('变更：4/20'),
     expect(pair.vue.page.getByRole('status')).toHaveText('变更：4/20'),
+  ]);
+
+  // Playwright may scroll either page while waiting for a transitioning Select option
+  // to become actionable. Popover bounding boxes are viewport-relative, so compare them
+  // only after restoring the paired pages to the same stable scroll position.
+  await Promise.all([
+    pair.react.page.evaluate(() => window.scrollTo(0, 0)),
+    pair.vue.page.evaluate(() => window.scrollTo(0, 0)),
+  ]);
+  await Promise.all([
+    waitForStableRendering(pair.react.page),
+    waitForStableRendering(pair.vue.page),
+  ]);
+  const scrollPositions = await Promise.all([
+    pair.react.page.evaluate(() => ({ x: window.scrollX, y: window.scrollY })),
+    pair.vue.page.evaluate(() => ({ x: window.scrollX, y: window.scrollY })),
+  ]);
+  expect(scrollPositions).toEqual([
+    { x: 0, y: 0 },
+    { x: 0, y: 0 },
   ]);
 
   const more = (page: typeof pair.react.page) =>
