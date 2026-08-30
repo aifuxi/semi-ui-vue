@@ -1,6 +1,6 @@
 {
   "name": "@aifuxi/semi-ui-vue",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "An independent Vue 3 implementation aligned with Semi Design v2.102.0.",
   "license": "MIT",
   "author": "aifuxi",

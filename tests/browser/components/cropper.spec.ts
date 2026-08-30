@@ -7,6 +7,7 @@ import {
 } from '../../../packages/test-infra/src';
 import {
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -34,6 +35,12 @@ async function waitForCropperScenario(page: import('@playwright/test').Page): Pr
   await expect(
     page.locator('[data-parity-target="cropper-round"] .semi-cropper-box-corner'),
   ).toHaveCount(4);
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+      }),
+  );
 }
 
 test('Cropper 参考场景来自本地 v2.102.0 公开源码', async ({ page }) => {
@@ -137,7 +144,12 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         reactTarget.screenshot({ animations: 'disabled' }),
         vueTarget.screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+      await expectScreenshotPixelsToMatch(
+        pair.react.page,
+        vueScreenshot,
+        reactScreenshot,
+        `Cropper React/Vue ${viewportName}/${theme}`,
+      );
       expect(pair.react.runtimeErrors).toEqual([]);
       expect(pair.vue.runtimeErrors).toEqual([]);
     });
@@ -162,7 +174,12 @@ test('Cropper React/Vue RTL 几何与像素一致', async ({ context }) => {
     pair.react.page.getByTestId('cropper-reference').screenshot({ animations: 'disabled' }),
     pair.vue.page.getByTestId('cropper-vue').screenshot({ animations: 'disabled' }),
   ]);
-  expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+  await expectScreenshotPixelsToMatch(
+    pair.react.page,
+    vueScreenshot,
+    reactScreenshot,
+    'Cropper React/Vue RTL',
+  );
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
