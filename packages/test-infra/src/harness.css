@@ -2905,11 +2905,23 @@ p {
   align-items: flex-start;
 }
 
+.date-picker-scenario {
+  display: flex;
+  align-items: flex-start;
+  min-height: 390px;
+  padding: 20px;
+}
+
 @media (max-width: 520px) {
   .color-picker-scenario {
     flex-direction: column;
     gap: 20px;
     min-height: 560px;
+    padding: 12px;
+  }
+
+  .date-picker-scenario {
+    min-height: 390px;
     padding: 12px;
   }
 }

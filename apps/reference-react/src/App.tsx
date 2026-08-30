@@ -13,6 +13,7 @@ import { CarouselScenario } from './scenarios/CarouselScenario';
 import { CascaderScenario } from './scenarios/CascaderScenario';
 import { CollapsibleScenario } from './scenarios/CollapsibleScenario';
 import { ColorPickerScenario } from './scenarios/ColorPickerScenario';
+import { DatePickerScenario } from './scenarios/DatePickerScenario';
 import { CropperScenario } from './scenarios/CropperScenario';
 import { DescriptionsScenario } from './scenarios/DescriptionsScenario';
 import { DropdownScenario } from './scenarios/DropdownScenario';
@@ -137,6 +138,9 @@ export function App(props: AppProps): React.ReactElement {
         ) : null}
         {scenario.id === 'collapsible' ? <CollapsibleScenario /> : null}
         {scenario.id === 'color-picker' ? <ColorPickerScenario /> : null}
+        {scenario.id === 'date-picker' ? (
+          <DatePickerScenario direction={options.direction} />
+        ) : null}
         {scenario.id === 'cropper' ? <CropperScenario /> : null}
         {scenario.id === 'descriptions' ? <DescriptionsScenario /> : null}
         {scenario.id === 'dropdown' ? <DropdownScenario /> : null}

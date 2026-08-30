@@ -58,6 +58,10 @@
       "types": "./dist/color-picker/index.d.ts",
       "import": "./dist/color-picker/index.js"
     },
+    "./date-picker": {
+      "types": "./dist/date-picker/index.d.ts",
+      "import": "./dist/date-picker/index.js"
+    },
     "./cropper": {
       "types": "./dist/cropper/index.d.ts",
       "import": "./dist/cropper/index.js"

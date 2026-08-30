@@ -446,6 +446,15 @@ describe('React 参考工作台', () => {
     expect(html).toContain('data-parity-target="color-picker-inline"');
     expect(html).toContain('semi-colorPicker');
   });
+  it('登记固定 DatePicker Adapter 的可比较参考场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="date-picker" direction="rtl" />);
+
+    expect(html).toContain('data-parity-scenario="date-picker"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/datePicker/index.tsx');
+    expect(html).toContain('data-testid="date-picker-reference"');
+    expect(html).toContain('data-parity-target="date-picker-trigger"');
+    expect(html).toContain('semi-datepicker');
+  });
   it('从固定 Empty Adapter 渲染图片、无图片、水平与 SVG 场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="empty" direction="rtl" />);
 

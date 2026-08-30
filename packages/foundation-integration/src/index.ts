@@ -203,6 +203,25 @@ export type {
   ScrollItemTargetNodeInfo,
 } from './scroll-list.js';
 export { SideSheetFoundation, sideSheetCssClasses, sideSheetStrings } from './side-sheet.js';
+export {
+  DatePickerFoundation,
+  datePickerCssClasses,
+  datePickerNumbers,
+  datePickerStrings,
+  getDatePickerDayOfWeek,
+  getDatePickerDefaultFormat,
+  getDatePickerMonthTable,
+} from './date-picker.js';
+export type {
+  DatePickerAdapter,
+  DatePickerBaseValue,
+  DatePickerFoundationValue,
+  DatePickerMonthDay,
+  DatePickerMonthTable,
+  DatePickerRangeFocus,
+  FoundationDatePickerProps,
+  FoundationDatePickerState,
+} from './date-picker.js';
 export type {
   FoundationSideSheetProps,
   FoundationSideSheetState,

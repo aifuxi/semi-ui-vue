@@ -271,6 +271,7 @@ try {
 		await import('@workspace/ui/carousel');
 		await import('@workspace/ui/cascader');
 		await import('@workspace/ui/color-picker');
+		await import('@workspace/ui/date-picker');
 		await import('@workspace/ui/collapsible');
 		await import('@workspace/ui/cropper');
 		await import('@workspace/ui/descriptions');
@@ -393,6 +394,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/color-picker.css').endsWith('/dist/color-picker.css')) {
 		  throw new Error('ColorPicker 逐组件样式导出未指向 dist/color-picker.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/date-picker.css').endsWith('/dist/date-picker.css')) {
+		  throw new Error('DatePicker 逐组件样式导出未指向 dist/date-picker.css');
 		}
 		if (!import.meta.resolve('@workspace/theme-default/collapsible.css').endsWith('/dist/collapsible.css')) {
 		  throw new Error('Collapsible 逐组件样式导出未指向 dist/collapsible.css');
@@ -558,6 +562,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Carousel, type CarouselMethods, type CarouselTheme } from '@workspace/ui/carousel';
 		import { Cascader, type CascaderData, type CascaderProps, type CascaderValue } from '@workspace/ui/cascader';
 		import { ColorPicker, colorStringToValue, type ColorPickerFormat, type ColorPickerProps, type ColorValue } from '@workspace/ui/color-picker';
+		import { DatePicker, type DatePickerProps, type DatePickerType, type DatePickerValue } from '@workspace/ui/date-picker';
 		import { Collapsible, type CollapsibleProps } from '@workspace/ui/collapsible';
 		import { Cropper, type CropperMethods, type CropperShape } from '@workspace/ui/cropper';
 		import { Descriptions, DescriptionsItem, type DescriptionsDataItem, type DescriptionsLayout } from '@workspace/ui/descriptions';
@@ -679,6 +684,10 @@ h(Button, { type, htmlType: 'submit' });
 		const colorPickerProps: ColorPickerProps = { alpha: true, defaultFormat: colorPickerFormat, defaultValue: colorPickerValue, eyeDropper: false };
 		h(ColorPicker, colorPickerProps, { top: () => 'Top', bottom: () => 'Bottom' });
 		ColorPicker.colorStringToValue('rgba(57,197,187,0.8)');
+		const datePickerType: DatePickerType = 'dateRange';
+		const datePickerValue: DatePickerValue = [new Date(2024, 4, 10), new Date(2024, 4, 12)];
+		const datePickerProps: DatePickerProps = { defaultValue: datePickerValue, motion: false, type: datePickerType };
+		h(DatePicker, datePickerProps, { prefix: () => 'Date', rangeSeparator: () => 'to' });
 		const collapsibleProps: CollapsibleProps = { collapseHeight: 24, motion: true };
 		h(Collapsible, collapsibleProps, () => h('div', 'Collapsible content'));
 		const cropperShape: CropperShape = 'roundRect';
@@ -945,6 +954,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-colorPicker') || !themeCss.includes('.semi-colorPicker-popover')) {
     throw new Error('安装后的默认主题缺少 ColorPicker 样式');
+  }
+  if (!themeCss.includes('.semi-datepicker') || !themeCss.includes('.semi-datepicker-month')) {
+    throw new Error('安装后的默认主题缺少 DatePicker 样式');
   }
   if (!themeCss.includes('.semi-cropper-box-corner')) {
     throw new Error('安装后的默认主题缺少 Cropper 样式');
@@ -1402,6 +1414,25 @@ h(Button, { type, htmlType: 'submit' });
     !colorPickerThemeCss.includes('.semi-colorPicker-popover')
   ) {
     throw new Error('安装后的 ColorPicker 逐组件样式缺少选色区、滑条、数据区或浮层样式');
+  }
+  const datePickerThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@workspace',
+      'theme-default',
+      'dist',
+      'date-picker.css',
+    ),
+    'utf8',
+  );
+  if (
+    !datePickerThemeCss.includes('.semi-datepicker-navigation') ||
+    !datePickerThemeCss.includes('.semi-datepicker-month') ||
+    !datePickerThemeCss.includes('.semi-datepicker-day-selected') ||
+    !datePickerThemeCss.includes('.semi-datepicker-footer')
+  ) {
+    throw new Error('安装后的 DatePicker 逐组件样式缺少导航、月份、选中态或页脚样式');
   }
   const avatarThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'avatar.css'),

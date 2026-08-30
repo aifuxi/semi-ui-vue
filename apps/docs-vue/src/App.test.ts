@@ -252,6 +252,25 @@ describe('Vue 对照工作台', () => {
     ).not.toBeNull();
     wrapper.unmount();
   });
+  it('通过公共 DatePicker 渲染固定日期、月历与选中态', async () => {
+    const wrapper = mount(App, {
+      attachTo: document.body,
+      props: { scenarioId: 'date-picker', direction: 'rtl', locale: 'zh-CN' },
+    });
+    for (let index = 0; index < 4; index += 1) await wrapper.vm.$nextTick();
+
+    const scenario = wrapper.get('[data-testid="date-picker-vue"]');
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(wrapper.classes()).toContain('semi-rtl');
+    expect(scenario.get('input').element).toHaveProperty('value', '2024-05-10');
+    expect(
+      document.body.querySelector('.date-picker-target-popup .semi-datepicker-month'),
+    ).not.toBeNull();
+    expect(
+      document.body.querySelector('.date-picker-target-popup .semi-datepicker-day-selected'),
+    ).not.toBeNull();
+    wrapper.unmount();
+  });
   it('通过公共 Empty 渲染图片、无图片、水平与 SVG 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'empty', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="empty-vue"]');

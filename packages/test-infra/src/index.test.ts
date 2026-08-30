@@ -670,6 +670,24 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records DatePicker Adapter, Month, Foundation, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('date-picker')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.datePickerPublicEntry,
+    });
+    expect(assertScenarioComparable('date-picker').targets).toHaveLength(6);
+    expect(getParityScenario('date-picker').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.datePickerAdapterEntry,
+        REFERENCE_SOURCE_PATHS.datePickerMonthEntry,
+        REFERENCE_SOURCE_PATHS.datePickerFoundation,
+        REFERENCE_SOURCE_PATHS.datePickerFoundationStyle,
+        REFERENCE_SOURCE_PATHS.datePickerDocumentation,
+      ]),
+    );
+  });
+
   it('records Select Adapter, Option, Foundation, styles and docs as a complete parity scene', () => {
     expect(getParityScenario('select')).toMatchObject({
       referenceStatus: 'ready',

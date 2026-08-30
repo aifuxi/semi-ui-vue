@@ -2365,6 +2365,29 @@ declare module '@semi-v2.102.0/color-picker' {
   export default ColorPicker;
 }
 
+declare module '@semi-v2.102.0/date-picker' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface DatePickerProps {
+    className?: string;
+    defaultPickerValue?: Date | Date[];
+    defaultValue?: Date | Date[];
+    dropdownClassName?: string;
+    dropdownStyle?: CSSProperties;
+    motion?: boolean;
+    onChange?: (date: Date | Date[] | undefined, dateString: string | string[] | undefined) => void;
+    onOpenChange?: (open: boolean) => void;
+    open?: boolean;
+    position?: 'bottomLeft' | 'bottomRight';
+    prefix?: ReactNode;
+    style?: CSSProperties;
+    type?: 'date' | 'dateRange' | 'dateTime' | 'dateTimeRange' | 'month' | 'monthRange' | 'year';
+  }
+
+  const DatePicker: ComponentType<DatePickerProps>;
+  export default DatePicker;
+}
+
 declare module '@semi-v2.102.0/cascader' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 

@@ -53,6 +53,9 @@ export default defineConfig({
       '@semi-v2.102.0/color-picker': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiColorPickerStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/date-picker': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiDatePickerStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/cropper': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiCropperStub.tsx', import.meta.url),
       ),

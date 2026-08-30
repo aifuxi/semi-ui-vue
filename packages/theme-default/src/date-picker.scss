@@ -1,0 +1,29 @@
+// Standalone DatePicker entry: trigger, Portal/Popover, controls, date/time panels and icons.
+@import '../../../vendor/semi-design/packages/semi-theme-default/scss/index.scss';
+@import '../../../vendor/semi-design/packages/semi-theme-default/scss/global.scss';
+@import '../../../vendor/semi-design/packages/semi-theme-default/scss/animation.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/_portal/portal.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/tooltip/tooltip.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/popover/popover.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/input/input.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/button/button.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/button/iconButton.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/scrollList/scrollList.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/timePicker/timePicker.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/datePicker/datePicker.scss';
+@import '../../../vendor/semi-design/packages/semi-icons/src/styles/icons.scss';
+
+// Vue Button exposes its content span as a styled public node. In DatePicker navigation,
+// the pinned parent color is authoritative for both text and icon descendants.
+.semi-datepicker .semi-datepicker-navigation .semi-button {
+  color: $color-datepicker_navIcon-text-default;
+}
+
+.semi-datepicker .semi-datepicker-navigation-month .semi-button {
+  color: $color-datepicker_nav_monthIcon-text-default;
+}
+
+.semi-datepicker .semi-datepicker-navigation .semi-button-content,
+.semi-datepicker .semi-datepicker-navigation .semi-button .semi-icon {
+  color: inherit;
+}

@@ -86,6 +86,7 @@ export default defineConfig({
         'color-picker/index': fileURLToPath(
           new URL('./src/color-picker/index.ts', import.meta.url),
         ),
+        'date-picker/index': fileURLToPath(new URL('./src/date-picker/index.ts', import.meta.url)),
         'cropper/index': fileURLToPath(new URL('./src/cropper/index.ts', import.meta.url)),
         'descriptions/index': fileURLToPath(
           new URL('./src/descriptions/index.ts', import.meta.url),
