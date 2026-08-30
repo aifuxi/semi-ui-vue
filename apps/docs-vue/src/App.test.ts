@@ -4,6 +4,24 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 IconButton 渲染图标、文字、加载与禁用场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'icon-button' } });
+    const scenario = wrapper.get('[data-testid="icon-button-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('button')).toHaveLength(7);
+    expect(scenario.get('[data-parity-target="icon-button-default"]').classes()).toContain(
+      'semi-button-with-icon-only',
+    );
+    expect(scenario.get('[data-parity-target="icon-button-disabled"]').attributes()).toHaveProperty(
+      'disabled',
+    );
+    expect(scenario.get('[data-parity-target="icon-button-loading"]').classes()).toContain(
+      'semi-button-loading',
+    );
+    wrapper.unmount();
+  });
+
   it('通过公共 Table 渲染表头、选择列、选中行与横向滚动场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'table', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="table-vue"]');

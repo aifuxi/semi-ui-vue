@@ -11,6 +11,23 @@ import {
 } from './index';
 
 describe('parity infrastructure contract', () => {
+  it('records IconButton Adapter, Button base, fixed styles and docs', () => {
+    expect(getParityScenario('icon-button')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.iconButtonPublicEntry,
+    });
+    expect(assertScenarioComparable('icon-button').targets).toHaveLength(7);
+    expect(getParityScenario('icon-button').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.buttonPublicEntry,
+        REFERENCE_SOURCE_PATHS.buttonFoundationStyle,
+        REFERENCE_SOURCE_PATHS.iconButtonFoundationStyle,
+        REFERENCE_SOURCE_PATHS.buttonDocumentation,
+      ]),
+    );
+  });
+
   it('records Collapse Adapter, Panel, Foundation, styles and docs', () => {
     expect(getParityScenario('collapse')).toMatchObject({
       referenceStatus: 'ready',

@@ -179,6 +179,9 @@ export default defineConfig({
       '@semi-v2.102.0/button': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiButtonStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/icon-button': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiIconButtonStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/checkbox': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiCheckboxStub.tsx', import.meta.url),
       ),

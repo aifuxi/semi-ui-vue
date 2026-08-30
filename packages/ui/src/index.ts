@@ -27,6 +27,7 @@ export * from './float-button';
 export * from './form';
 export * from './grid';
 export * from './icon';
+export * from './icon-button';
 export * from './input';
 export * from './input-number';
 export * from './pin-code';

@@ -321,6 +321,19 @@ p {
   width: 132px;
 }
 
+.icon-button-scenario {
+  display: grid;
+  margin-top: 24px;
+  gap: 18px;
+}
+
+.icon-button-scenario__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
+
 .divider-scenario {
   display: grid;
   margin-top: 24px;

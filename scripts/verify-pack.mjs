@@ -349,6 +349,7 @@ try {
 	await import('@aifuxi/semi-ui-vue/back-top');
 	await import('@aifuxi/semi-ui-vue/breadcrumb');
 	await import('@aifuxi/semi-ui-vue/button');
+	await import('@aifuxi/semi-ui-vue/icon-button');
 	await import('@aifuxi/semi-ui-vue/checkbox');
 	await import('@aifuxi/semi-ui-vue/auto-complete');
 	await import('@aifuxi/semi-ui-vue/config-provider');
@@ -511,6 +512,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@aifuxi/semi-theme-default/button.css').endsWith('/dist/button.css')) {
 	  throw new Error('Button 逐组件样式导出未指向 dist/button.css');
 	}
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/icon-button.css').endsWith('/dist/icon-button.css')) {
+	  throw new Error('IconButton 逐组件样式导出未指向 dist/icon-button.css');
+	}
 	if (!import.meta.resolve('@aifuxi/semi-theme-default/checkbox.css').endsWith('/dist/checkbox.css')) {
 	  throw new Error('Checkbox 逐组件样式导出未指向 dist/checkbox.css');
 	}
@@ -640,6 +644,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { BackTop, type BackTopTarget } from '@aifuxi/semi-ui-vue/back-top';
 	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@aifuxi/semi-ui-vue/breadcrumb';
 	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@aifuxi/semi-ui-vue/button';
+	import { IconButton, type HorizontalPaddingType, type IconButtonProps } from '@aifuxi/semi-ui-vue/icon-button';
 	import { Checkbox, CheckboxGroup, type CheckboxType, type CheckboxValue } from '@aifuxi/semi-ui-vue/checkbox';
 	import { ConfigConsumer, ConfigProvider, defaultResponsiveMap, type Breakpoint } from '@aifuxi/semi-ui-vue/config-provider';
 	import { Divider, type DividerAlign } from '@aifuxi/semi-ui-vue/divider';
@@ -676,6 +681,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { h } from 'vue';
 const type: ButtonType = 'primary';
 h(Button, { type, htmlType: 'submit' });
+	const horizontalPadding: HorizontalPaddingType = 'left';
+	const iconButtonProps: IconButtonProps = { noHorizontalPadding: [horizontalPadding], type };
+	h(IconButton, iconButtonProps, { icon: () => h('svg', { 'aria-hidden': 'true' }) });
 		const anchorPosition: AnchorPosition = 'right';
 		h(Anchor, { position: anchorPosition, showTooltip: true }, () => h(AnchorLink, { href: '#consumer', title: 'Consumer' }));
 		const avatarColor: AvatarColor = 'light-blue';

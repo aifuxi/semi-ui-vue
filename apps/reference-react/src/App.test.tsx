@@ -20,6 +20,16 @@ describe('React 参考工作台', () => {
     expect(html).toContain('data-vue-status="ready"');
   });
 
+  it('从固定 IconButton Adapter 渲染图标、加载与禁用场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="icon-button" />);
+
+    expect(html).toContain('data-parity-scenario="icon-button"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/iconButton/index.tsx');
+    expect(html).toContain('data-testid="icon-button-reference"');
+    expect(html).toContain('semi-button-with-icon-only');
+    expect(html).toContain('semi-button-loading');
+  });
+
   it('登记固定 Modal Adapter 的可比较参考场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="modal" direction="rtl" />);
 

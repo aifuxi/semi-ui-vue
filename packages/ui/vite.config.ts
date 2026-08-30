@@ -120,6 +120,7 @@ export default defineConfig({
         'form/index': fileURLToPath(new URL('./src/form/index.ts', import.meta.url)),
         'grid/index': fileURLToPath(new URL('./src/grid/index.ts', import.meta.url)),
         'icon/index': fileURLToPath(new URL('./src/icon/index.ts', import.meta.url)),
+        'icon-button/index': fileURLToPath(new URL('./src/icon-button/index.ts', import.meta.url)),
         'input/index': fileURLToPath(new URL('./src/input/index.ts', import.meta.url)),
         'input-number/index': fileURLToPath(
           new URL('./src/input-number/index.ts', import.meta.url),

@@ -663,6 +663,17 @@ declare module '@semi-v2.102.0/button' {
   export default Button;
 }
 
+declare module '@semi-v2.102.0/icon-button' {
+  import type { ComponentType } from 'react';
+  import type { ButtonProps } from '@semi-v2.102.0/button';
+
+  export type HorizontalPaddingType = 'left' | 'right';
+  export type IconButtonProps = ButtonProps;
+
+  const IconButton: ComponentType<IconButtonProps>;
+  export default IconButton;
+}
+
 declare module '@semi-v2.102.0/input' {
   import type { ComponentType, CSSProperties, InputHTMLAttributes, ReactNode } from 'react';
 

@@ -37,9 +37,8 @@ const usesIconLayout = computed(
 const isIconOnly = computed(() => usesIconLayout.value && !hasDefaultContent.value);
 const usesAiLoadingIcon = computed(
   () =>
-    props.colorful &&
-    (['light', 'outline', 'borderless'].includes(props.theme) ||
-      (props.theme === 'solid' && props.type === 'tertiary')),
+    (props.colorful && ['light', 'outline', 'borderless'].includes(props.theme)) ||
+    (props.theme === 'solid' && props.type === 'tertiary'),
 );
 
 const buttonClasses = computed(() => [

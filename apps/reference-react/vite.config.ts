@@ -56,6 +56,7 @@ const backTopPublicEntry = path.join(upstreamPackages, 'semi-ui/backtop/index.ts
 const breadcrumbPublicEntry = path.join(upstreamPackages, 'semi-ui/breadcrumb/index.tsx');
 const autoCompletePublicEntry = path.join(upstreamPackages, 'semi-ui/autoComplete/index.tsx');
 const buttonPublicEntry = path.join(upstreamPackages, 'semi-ui/button/index.tsx');
+const iconButtonPublicEntry = path.join(upstreamPackages, 'semi-ui/iconButton/index.tsx');
 const checkboxPublicEntry = path.join(upstreamPackages, 'semi-ui/checkbox/index.tsx');
 const configProviderPublicEntry = path.join(upstreamPackages, 'semi-ui/configProvider/index.tsx');
 const buttonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/buttonGroup.tsx');
@@ -323,6 +324,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/breadcrumb', replacement: breadcrumbPublicEntry },
       { find: '@semi-v2.102.0/auto-complete', replacement: autoCompletePublicEntry },
       { find: '@semi-v2.102.0/button', replacement: buttonPublicEntry },
+      { find: '@semi-v2.102.0/icon-button', replacement: iconButtonPublicEntry },
       { find: '@semi-v2.102.0/checkbox', replacement: checkboxPublicEntry },
       { find: '@semi-v2.102.0/config-provider', replacement: configProviderPublicEntry },
       { find: '@semi-v2.102.0/button-group', replacement: buttonGroupEntry },

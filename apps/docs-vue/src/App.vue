@@ -45,6 +45,7 @@ import BreadcrumbScenario from './components/BreadcrumbScenario.vue';
 import AutoCompleteScenario from './components/AutoCompleteScenario.vue';
 import ButtonTypesScenario from './components/ButtonTypesScenario.vue';
 import ButtonContractScenario from './components/ButtonContractScenario.vue';
+import IconButtonScenario from './components/IconButtonScenario.vue';
 import CheckboxScenario from './components/CheckboxScenario.vue';
 import ConfigProviderScenario from './components/ConfigProviderScenario.vue';
 import DividerScenario from './components/DividerScenario.vue';
@@ -170,6 +171,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <AutoCompleteScenario v-else-if="scenario.id === 'auto-complete'" />
       <ButtonTypesScenario v-else-if="scenario.id === 'button-types'" />
       <ButtonContractScenario v-else-if="scenario.id === 'button-contract'" />
+      <IconButtonScenario v-else-if="scenario.id === 'icon-button'" />
       <CheckboxScenario v-else-if="scenario.id === 'checkbox'" />
       <ConfigProviderScenario v-else-if="scenario.id === 'config-provider'" />
       <DividerScenario v-else-if="scenario.id === 'divider'" />
