@@ -4,15 +4,15 @@
 
 ## 复刻进度
 
-当前已完成 **63 / 85** 个上游公开根模块的完整垂直切片（约 **74.1%**）：
+当前已完成 **64 / 85** 个上游公开根模块的完整垂直切片（约 **75.3%**）：
 
 - 基础与布局：Button、Divider、Icon、Space、FloatButton、Layout、Grid、Resizable、Typography、ConfigProvider。
-- 输入类：Switch、Tooltip、Select、AutoComplete、Cascader、Checkbox、Input、InputNumber、PinCode、Radio、Rating、Slider、TagInput、TimePicker、Transfer、TreeSelect、Upload。
+- 输入类：Switch、Tooltip、Select、AutoComplete、Cascader、ColorPicker、Checkbox、Input、InputNumber、PinCode、Radio、Rating、Slider、TagInput、TimePicker、Transfer、TreeSelect、Upload。
 - 导航类：Anchor、BackTop、Breadcrumb、Navigation、Pagination、Steps、Tabs、Tree。
 - 数据展示与容器：Avatar、Badge、Calendar、Card、Carousel、Collapsible、Descriptions、Dropdown、Empty、Highlight、Image、Cropper、List、Modal、OverflowList、Popover、ScrollList、SideSheet、Table、Tag、Timeline。
 - 反馈类：Banner、Notification、Popconfirm、Progress、Skeleton、Spin、Toast。
 
-最新完成组件为 Cascader；下一项是依赖 Popover、Input、InputNumber、Select、Button 等已就绪能力的 ColorPicker。每个已完成切片均包含 Vue API、Foundation/主题、中英文文档、React/Vue 场景、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证。Icon 还覆盖稳定图标、Lab 图标与生成漂移检查，插画包覆盖全部公开插画。
+最新完成组件为 ColorPicker；下一项是依赖 Calendar、TimePicker、Popover、Input 等已就绪能力的 DatePicker。每个已完成切片均包含 Vue API、Foundation/主题、中英文文档、React/Vue 场景、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证。Icon 还覆盖稳定图标、Lab 图标与生成漂移检查，插画包覆盖全部公开插画。
 
 进度分母与剩余范围以 `docs/inventory/semi-v2.102.0.json` 的 `rootModuleCount` 为准；每完成一个 `ready` 垂直切片，必须在同一次提交中同步更新本节的数量、完成列表和下一项。唯一参考源码位于只读 submodule `vendor/semi-design`。
 

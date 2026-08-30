@@ -7,6 +7,7 @@ export * from './card';
 export * from './carousel';
 export * from './cascader';
 export * from './collapsible';
+export * from './color-picker';
 export * from './cropper';
 export * from './descriptions';
 export * from './dropdown';

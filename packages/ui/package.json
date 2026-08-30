@@ -54,6 +54,10 @@
       "types": "./dist/collapsible/index.d.ts",
       "import": "./dist/collapsible/index.js"
     },
+    "./color-picker": {
+      "types": "./dist/color-picker/index.d.ts",
+      "import": "./dist/color-picker/index.js"
+    },
     "./cropper": {
       "types": "./dist/cropper/index.d.ts",
       "import": "./dist/cropper/index.js"

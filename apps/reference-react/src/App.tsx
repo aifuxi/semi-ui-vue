@@ -12,6 +12,7 @@ import { CardScenario } from './scenarios/CardScenario';
 import { CarouselScenario } from './scenarios/CarouselScenario';
 import { CascaderScenario } from './scenarios/CascaderScenario';
 import { CollapsibleScenario } from './scenarios/CollapsibleScenario';
+import { ColorPickerScenario } from './scenarios/ColorPickerScenario';
 import { CropperScenario } from './scenarios/CropperScenario';
 import { DescriptionsScenario } from './scenarios/DescriptionsScenario';
 import { DropdownScenario } from './scenarios/DropdownScenario';
@@ -135,6 +136,7 @@ export function App(props: AppProps): React.ReactElement {
           <CascaderScenario direction={options.direction} locale={options.locale} />
         ) : null}
         {scenario.id === 'collapsible' ? <CollapsibleScenario /> : null}
+        {scenario.id === 'color-picker' ? <ColorPickerScenario /> : null}
         {scenario.id === 'cropper' ? <CropperScenario /> : null}
         {scenario.id === 'descriptions' ? <DescriptionsScenario /> : null}
         {scenario.id === 'dropdown' ? <DropdownScenario /> : null}

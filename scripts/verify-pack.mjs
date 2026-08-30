@@ -270,6 +270,7 @@ try {
 		await import('@workspace/ui/card');
 		await import('@workspace/ui/carousel');
 		await import('@workspace/ui/cascader');
+		await import('@workspace/ui/color-picker');
 		await import('@workspace/ui/collapsible');
 		await import('@workspace/ui/cropper');
 		await import('@workspace/ui/descriptions');
@@ -389,6 +390,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/cascader.css').endsWith('/dist/cascader.css')) {
 		  throw new Error('Cascader 逐组件样式导出未指向 dist/cascader.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/color-picker.css').endsWith('/dist/color-picker.css')) {
+		  throw new Error('ColorPicker 逐组件样式导出未指向 dist/color-picker.css');
 		}
 		if (!import.meta.resolve('@workspace/theme-default/collapsible.css').endsWith('/dist/collapsible.css')) {
 		  throw new Error('Collapsible 逐组件样式导出未指向 dist/collapsible.css');
@@ -553,6 +557,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Card, CardGroup, CardMeta, type CardShadows } from '@workspace/ui/card';
 		import { Carousel, type CarouselMethods, type CarouselTheme } from '@workspace/ui/carousel';
 		import { Cascader, type CascaderData, type CascaderProps, type CascaderValue } from '@workspace/ui/cascader';
+		import { ColorPicker, colorStringToValue, type ColorPickerFormat, type ColorPickerProps, type ColorValue } from '@workspace/ui/color-picker';
 		import { Collapsible, type CollapsibleProps } from '@workspace/ui/collapsible';
 		import { Cropper, type CropperMethods, type CropperShape } from '@workspace/ui/cropper';
 		import { Descriptions, DescriptionsItem, type DescriptionsDataItem, type DescriptionsLayout } from '@workspace/ui/descriptions';
@@ -669,6 +674,11 @@ h(Button, { type, htmlType: 'submit' });
 		const cascaderValue: CascaderValue = ['consumer'];
 		const cascaderProps: CascaderProps = { treeData: cascaderData, defaultValue: cascaderValue, filterTreeNode: true };
 		h(Cascader, cascaderProps, { empty: () => 'No data' });
+		const colorPickerFormat: ColorPickerFormat = 'hex';
+		const colorPickerValue: ColorValue = colorStringToValue('#39c5bbcc');
+		const colorPickerProps: ColorPickerProps = { alpha: true, defaultFormat: colorPickerFormat, defaultValue: colorPickerValue, eyeDropper: false };
+		h(ColorPicker, colorPickerProps, { top: () => 'Top', bottom: () => 'Bottom' });
+		ColorPicker.colorStringToValue('rgba(57,197,187,0.8)');
 		const collapsibleProps: CollapsibleProps = { collapseHeight: 24, motion: true };
 		h(Collapsible, collapsibleProps, () => h('div', 'Collapsible content'));
 		const cropperShape: CropperShape = 'roundRect';
@@ -932,6 +942,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-cascader') || !themeCss.includes('.semi-cascader-popover')) {
     throw new Error('安装后的默认主题缺少 Cascader 样式');
+  }
+  if (!themeCss.includes('.semi-colorPicker') || !themeCss.includes('.semi-colorPicker-popover')) {
+    throw new Error('安装后的默认主题缺少 ColorPicker 样式');
   }
   if (!themeCss.includes('.semi-cropper-box-corner')) {
     throw new Error('安装后的默认主题缺少 Cropper 样式');
@@ -1369,6 +1382,26 @@ h(Button, { type, htmlType: 'submit' });
     !cascaderThemeCss.includes('.semi-rtl .semi-cascader')
   ) {
     throw new Error('安装后的 Cascader 逐组件样式缺少触发器、浮层、选项或 RTL 样式');
+  }
+  const colorPickerThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@workspace',
+      'theme-default',
+      'dist',
+      'color-picker.css',
+    ),
+    'utf8',
+  );
+  if (
+    !colorPickerThemeCss.includes('.semi-colorPicker-colorChooseArea') ||
+    !colorPickerThemeCss.includes('.semi-colorPicker-colorSlider') ||
+    !colorPickerThemeCss.includes('.semi-colorPicker-alphaSlider') ||
+    !colorPickerThemeCss.includes('.semi-colorPicker-dataPart') ||
+    !colorPickerThemeCss.includes('.semi-colorPicker-popover')
+  ) {
+    throw new Error('安装后的 ColorPicker 逐组件样式缺少选色区、滑条、数据区或浮层样式');
   }
   const avatarThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'avatar.css'),

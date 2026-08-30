@@ -437,6 +437,15 @@ describe('React 参考工作台', () => {
     expect(html).toContain('data-parity-target="cascader-root"');
     expect(html).toContain('semi-cascader');
   });
+  it('登记固定 ColorPicker Adapter 的可比较参考场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="color-picker" direction="rtl" />);
+
+    expect(html).toContain('data-parity-scenario="color-picker"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/colorPicker/index.tsx');
+    expect(html).toContain('data-testid="color-picker-reference"');
+    expect(html).toContain('data-parity-target="color-picker-inline"');
+    expect(html).toContain('semi-colorPicker');
+  });
   it('从固定 Empty Adapter 渲染图片、无图片、水平与 SVG 场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="empty" direction="rtl" />);
 

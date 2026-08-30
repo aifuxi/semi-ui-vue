@@ -2891,3 +2891,25 @@ p {
     gap: 24px;
   }
 }
+.color-picker-scenario {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  min-height: 430px;
+  padding: 20px;
+}
+
+.color-picker-scenario__inline,
+.color-picker-scenario__popover-trigger {
+  display: flex;
+  align-items: flex-start;
+}
+
+@media (max-width: 520px) {
+  .color-picker-scenario {
+    flex-direction: column;
+    gap: 20px;
+    min-height: 560px;
+    padding: 12px;
+  }
+}

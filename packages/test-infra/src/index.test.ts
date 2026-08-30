@@ -653,6 +653,23 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records ColorPicker Adapter, DataPart, Foundation, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('color-picker')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.colorPickerPublicEntry,
+    });
+    expect(assertScenarioComparable('color-picker').targets).toHaveLength(7);
+    expect(getParityScenario('color-picker').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.colorPickerDataPartEntry,
+        REFERENCE_SOURCE_PATHS.colorPickerFoundation,
+        REFERENCE_SOURCE_PATHS.colorPickerFoundationStyle,
+        REFERENCE_SOURCE_PATHS.colorPickerDocumentation,
+      ]),
+    );
+  });
+
   it('records Select Adapter, Option, Foundation, styles and docs as a complete parity scene', () => {
     expect(getParityScenario('select')).toMatchObject({
       referenceStatus: 'ready',

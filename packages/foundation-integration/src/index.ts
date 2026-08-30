@@ -48,6 +48,49 @@ export {
 export type { CascaderAdapter, CascaderKeyMaps } from './cascader.js';
 export { CollapsibleFoundation } from './collapsible.js';
 export type { CollapsibleAdapter } from './collapsible.js';
+export {
+  colorPickerCssClasses,
+  ColorPickerFoundation,
+  hexToHsva,
+  hexToRgba,
+  hslaStringToHsva,
+  hslaToHsl,
+  hslaToHsva,
+  hsvaStringToHsva,
+  hsvaToHex,
+  hsvaToHslString,
+  hsvaToHsla,
+  hsvaToHslaString,
+  hsvaToHsv,
+  hsvaToHsvaString,
+  hsvaToHsvString,
+  hsvaToRgbString,
+  hsvaToRgba,
+  hsvaToRgbaString,
+  parseHue,
+  rgbaStringToHsva,
+  rgbaStringToRgba,
+  rgbaToHex,
+  rgbaToHsva,
+  rgbaToRgb,
+  rgbStringToHsva,
+  rgbStringToRgba,
+  roundColorPickerValue,
+  roundHsva,
+  splitColorPickerInput,
+} from './color-picker.js';
+export type {
+  ColorPickerAdapter,
+  ColorPickerFoundationProps,
+  ColorPickerFoundationState,
+  FoundationColorValue,
+  FoundationHslColor,
+  FoundationHslaColor,
+  FoundationHsvColor,
+  FoundationHsvaColor,
+  FoundationRgbColor,
+  FoundationRgbaColor,
+} from './color-picker.js';
 export { CropperFoundation, cropperCssClasses, cropperStrings } from './cropper.js';
 export type {
   CropperAdapter,

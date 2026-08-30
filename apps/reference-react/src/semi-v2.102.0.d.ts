@@ -2332,6 +2332,39 @@ declare module '@semi-v2.102.0/tree-select' {
   export default TreeSelect;
 }
 
+declare module '@semi-v2.102.0/color-picker' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface ColorValue {
+    hsva: { h: number; s: number; v: number; a: number };
+    rgba: { r: number; g: number; b: number; a: number };
+    hex: string;
+  }
+
+  export interface ColorPickerProps {
+    alpha?: boolean;
+    bottomSlot?: ReactNode;
+    className?: string;
+    defaultFormat?: 'hex' | 'rgba' | 'hsva';
+    defaultValue?: ColorValue;
+    eyeDropper?: boolean;
+    height?: number;
+    onChange?: (value: ColorValue) => void;
+    popoverProps?: Record<string, unknown>;
+    style?: CSSProperties;
+    topSlot?: ReactNode;
+    usePopover?: boolean;
+    value?: ColorValue;
+    width?: number;
+    children?: ReactNode;
+  }
+
+  const ColorPicker: ComponentType<ColorPickerProps> & {
+    colorStringToValue(raw: string): ColorValue;
+  };
+  export default ColorPicker;
+}
+
 declare module '@semi-v2.102.0/cascader' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 

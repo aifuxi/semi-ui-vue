@@ -235,6 +235,23 @@ describe('Vue 对照工作台', () => {
     );
     wrapper.unmount();
   });
+  it('通过公共 ColorPicker 渲染内联选择器、透明度条与 Popover', async () => {
+    const wrapper = mount(App, {
+      attachTo: document.body,
+      props: { scenarioId: 'color-picker', direction: 'rtl', locale: 'en-US' },
+    });
+    for (let index = 0; index < 4; index += 1) await wrapper.vm.$nextTick();
+
+    const scenario = wrapper.get('[data-testid="color-picker-vue"]');
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(wrapper.classes()).toContain('semi-rtl');
+    expect(scenario.findAll('.semi-colorPicker-colorChooseArea')).toHaveLength(1);
+    expect(scenario.findAll('.semi-colorPicker-alphaSlider')).toHaveLength(1);
+    expect(
+      document.body.querySelector('.color-picker-target-popover .semi-colorPicker'),
+    ).not.toBeNull();
+    wrapper.unmount();
+  });
   it('通过公共 Empty 渲染图片、无图片、水平与 SVG 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'empty', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="empty-vue"]');

@@ -12,6 +12,7 @@ export const virtualCardStyleId = 'virtual:workspace-card-styles.css';
 export const virtualCarouselStyleId = 'virtual:workspace-carousel-styles.css';
 export const virtualCascaderStyleId = 'virtual:workspace-cascader-styles.css';
 export const virtualCollapsibleStyleId = 'virtual:workspace-collapsible-styles.css';
+export const virtualColorPickerStyleId = 'virtual:workspace-color-picker-styles.css';
 export const virtualCropperStyleId = 'virtual:workspace-cropper-styles.css';
 export const virtualDescriptionsStyleId = 'virtual:workspace-descriptions-styles.css';
 export const virtualDropdownStyleId = 'virtual:workspace-dropdown-styles.css';
@@ -75,6 +76,7 @@ const resolvedVirtualCardStyleId = `\0${virtualCardStyleId}`;
 const resolvedVirtualCarouselStyleId = `\0${virtualCarouselStyleId}`;
 const resolvedVirtualCascaderStyleId = `\0${virtualCascaderStyleId}`;
 const resolvedVirtualCollapsibleStyleId = `\0${virtualCollapsibleStyleId}`;
+const resolvedVirtualColorPickerStyleId = `\0${virtualColorPickerStyleId}`;
 const resolvedVirtualCropperStyleId = `\0${virtualCropperStyleId}`;
 const resolvedVirtualDescriptionsStyleId = `\0${virtualDescriptionsStyleId}`;
 const resolvedVirtualDropdownStyleId = `\0${virtualDropdownStyleId}`;
@@ -138,6 +140,7 @@ const cardStyleEntry = fileURLToPath(new URL('./src/card.scss', import.meta.url)
 const carouselStyleEntry = fileURLToPath(new URL('./src/carousel.scss', import.meta.url));
 const cascaderStyleEntry = fileURLToPath(new URL('./src/cascader.scss', import.meta.url));
 const collapsibleStyleEntry = fileURLToPath(new URL('./src/collapsible.scss', import.meta.url));
+const colorPickerStyleEntry = fileURLToPath(new URL('./src/color-picker.scss', import.meta.url));
 const cropperStyleEntry = fileURLToPath(new URL('./src/cropper.scss', import.meta.url));
 const descriptionsStyleEntry = fileURLToPath(new URL('./src/descriptions.scss', import.meta.url));
 const dropdownStyleEntry = fileURLToPath(new URL('./src/dropdown.scss', import.meta.url));
@@ -205,6 +208,7 @@ const styleEntries = new Map([
   [resolvedVirtualCarouselStyleId, carouselStyleEntry],
   [resolvedVirtualCascaderStyleId, cascaderStyleEntry],
   [resolvedVirtualCollapsibleStyleId, collapsibleStyleEntry],
+  [resolvedVirtualColorPickerStyleId, colorPickerStyleEntry],
   [resolvedVirtualCropperStyleId, cropperStyleEntry],
   [resolvedVirtualDescriptionsStyleId, descriptionsStyleEntry],
   [resolvedVirtualDropdownStyleId, dropdownStyleEntry],
@@ -276,6 +280,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualCarouselStyleId) return resolvedVirtualCarouselStyleId;
       if (source === virtualCascaderStyleId) return resolvedVirtualCascaderStyleId;
       if (source === virtualCollapsibleStyleId) return resolvedVirtualCollapsibleStyleId;
+      if (source === virtualColorPickerStyleId) return resolvedVirtualColorPickerStyleId;
       if (source === virtualCropperStyleId) return resolvedVirtualCropperStyleId;
       if (source === virtualDescriptionsStyleId) return resolvedVirtualDescriptionsStyleId;
       if (source === virtualDropdownStyleId) return resolvedVirtualDropdownStyleId;

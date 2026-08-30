@@ -10,6 +10,7 @@ declare module 'virtual:workspace-card-styles.css';
 declare module 'virtual:workspace-carousel-styles.css';
 declare module 'virtual:workspace-cascader-styles.css';
 declare module 'virtual:workspace-collapsible-styles.css';
+declare module 'virtual:workspace-color-picker-styles.css';
 declare module 'virtual:workspace-cropper-styles.css';
 declare module 'virtual:workspace-descriptions-styles.css';
 declare module 'virtual:workspace-dropdown-styles.css';
