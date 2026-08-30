@@ -88,6 +88,7 @@ export default defineConfig({
         'card/index': fileURLToPath(new URL('./src/card/index.ts', import.meta.url)),
         'carousel/index': fileURLToPath(new URL('./src/carousel/index.ts', import.meta.url)),
         'cascader/index': fileURLToPath(new URL('./src/cascader/index.ts', import.meta.url)),
+        'collapse/index': fileURLToPath(new URL('./src/collapse/index.ts', import.meta.url)),
         'collapsible/index': fileURLToPath(new URL('./src/collapsible/index.ts', import.meta.url)),
         'color-picker/index': fileURLToPath(
           new URL('./src/color-picker/index.ts', import.meta.url),

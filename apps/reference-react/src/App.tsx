@@ -11,6 +11,7 @@ import { CalendarScenario } from './scenarios/CalendarScenario';
 import { CardScenario } from './scenarios/CardScenario';
 import { CarouselScenario } from './scenarios/CarouselScenario';
 import { CascaderScenario } from './scenarios/CascaderScenario';
+import { CollapseScenario } from './scenarios/CollapseScenario';
 import { CollapsibleScenario } from './scenarios/CollapsibleScenario';
 import { ColorPickerScenario } from './scenarios/ColorPickerScenario';
 import { DatePickerScenario } from './scenarios/DatePickerScenario';
@@ -137,6 +138,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'cascader' ? (
           <CascaderScenario direction={options.direction} locale={options.locale} />
         ) : null}
+        {scenario.id === 'collapse' ? <CollapseScenario /> : null}
         {scenario.id === 'collapsible' ? <CollapsibleScenario /> : null}
         {scenario.id === 'color-picker' ? <ColorPickerScenario /> : null}
         {scenario.id === 'date-picker' ? (

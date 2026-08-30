@@ -406,6 +406,34 @@ describe('Vue 对照工作台', () => {
     expect(basic.text()).not.toContain('从设计到交付');
   });
 
+  it('通过公共 Collapse 渲染多面板、手风琴、图标热区、懒渲染与 v-model', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'collapse' } });
+    const scenario = wrapper.get('[data-testid="collapse-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-collapse')).toHaveLength(4);
+    expect(scenario.find('[data-lazy-content]').exists()).toBe(false);
+    const basicHeaders = scenario
+      .get('[data-parity-target="collapse-basic"]')
+      .findAll('.semi-collapse-header');
+    await basicHeaders[1]!.trigger('click');
+    expect(scenario.get('[data-lazy-content]').text()).toContain('类型、单元、SSR');
+    await basicHeaders[1]!.trigger('click');
+    expect(scenario.find('[data-lazy-content]').exists()).toBe(true);
+
+    const disabled = scenario
+      .get('[data-parity-target="collapse-accordion"]')
+      .findAll('.semi-collapse-header')[2]!;
+    await disabled.trigger('click');
+    expect(disabled.attributes('aria-expanded')).toBe('false');
+
+    const controlled = scenario
+      .get('[data-parity-target="collapse-controlled"]')
+      .findAll('.semi-collapse-header');
+    await controlled[1]!.trigger('click');
+    expect(controlled[1]!.attributes('aria-expanded')).toBe('true');
+  });
+
   it('通过公共 Carousel 渲染多动效、指示器、箭头、单项并闭环 change', async () => {
     const wrapper = mount(App, { props: { scenarioId: 'carousel' } });
     const scenario = wrapper.get('[data-testid="carousel-vue"]');

@@ -50,6 +50,9 @@ export default defineConfig({
       '@semi-v2.102.0/carousel': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiCarouselStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/collapse': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiCollapseStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/collapsible': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiCollapsibleStub.tsx', import.meta.url),
       ),

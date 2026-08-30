@@ -1725,6 +1725,49 @@ declare module '@semi-v2.102.0/collapsible' {
   export default Collapsible;
 }
 
+declare module '@semi-v2.102.0/collapse' {
+  import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
+
+  export type CollapseActiveKey = string | string[];
+
+  export interface CollapsePanelProps {
+    children?: ReactNode;
+    className?: string;
+    disabled?: boolean;
+    extra?: ReactNode;
+    header?: ReactNode;
+    itemKey: string;
+    onMotionEnd?: () => void;
+    reCalcKey?: number | string;
+    showArrow?: boolean;
+    style?: CSSProperties;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  export interface CollapseProps {
+    activeKey?: CollapseActiveKey;
+    accordion?: boolean;
+    children?: ReactNode;
+    className?: string;
+    clickHeaderToExpand?: boolean;
+    collapseIcon?: ReactNode;
+    defaultActiveKey?: CollapseActiveKey;
+    expandIcon?: ReactNode;
+    expandIconPosition?: 'left' | 'right';
+    keepDOM?: boolean;
+    lazyRender?: boolean;
+    motion?: boolean;
+    onChange?: (activeKey: CollapseActiveKey, event: MouseEvent) => void;
+    style?: CSSProperties;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Collapse: ComponentType<CollapseProps> & {
+    Panel: ComponentType<CollapsePanelProps>;
+  };
+  export default Collapse;
+}
+
 declare module '@semi-v2.102.0/descriptions' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 

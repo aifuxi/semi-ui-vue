@@ -48,6 +48,13 @@ export {
 export type { CascaderAdapter, CascaderKeyMaps } from './cascader.js';
 export { CollapsibleFoundation } from './collapsible.js';
 export type { CollapsibleAdapter } from './collapsible.js';
+export { CollapseFoundation, createCollapsePanelId } from './collapse.js';
+export type {
+  CollapseAdapter,
+  CollapseFoundationActiveKey,
+  CollapseFoundationProps,
+  CollapseFoundationState,
+} from './collapse.js';
 export {
   colorPickerCssClasses,
   ColorPickerFoundation,

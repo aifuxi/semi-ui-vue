@@ -9,6 +9,7 @@ declare module 'virtual:workspace-calendar-styles.css';
 declare module 'virtual:workspace-card-styles.css';
 declare module 'virtual:workspace-carousel-styles.css';
 declare module 'virtual:workspace-cascader-styles.css';
+declare module 'virtual:workspace-collapse-styles.css';
 declare module 'virtual:workspace-collapsible-styles.css';
 declare module 'virtual:workspace-color-picker-styles.css';
 declare module 'virtual:workspace-date-picker-styles.css';

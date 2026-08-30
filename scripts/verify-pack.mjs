@@ -280,6 +280,7 @@ try {
 		await import('@workspace/ui/color-picker');
 		await import('@workspace/ui/date-picker');
 		await import('@workspace/ui/form');
+		await import('@workspace/ui/collapse');
 		await import('@workspace/ui/collapsible');
 		await import('@workspace/ui/cropper');
 		await import('@workspace/ui/descriptions');
@@ -408,6 +409,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/form.css').endsWith('/dist/form.css')) {
 		  throw new Error('Form 逐组件样式导出未指向 dist/form.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/collapse.css').endsWith('/dist/collapse.css')) {
+		  throw new Error('Collapse 逐组件样式导出未指向 dist/collapse.css');
 		}
 		if (!import.meta.resolve('@workspace/theme-default/collapsible.css').endsWith('/dist/collapsible.css')) {
 		  throw new Error('Collapsible 逐组件样式导出未指向 dist/collapsible.css');
@@ -575,6 +579,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { ColorPicker, colorStringToValue, type ColorPickerFormat, type ColorPickerProps, type ColorValue } from '@workspace/ui/color-picker';
 		import { DatePicker, type DatePickerProps, type DatePickerType, type DatePickerValue } from '@workspace/ui/date-picker';
 		import { ArrayField, Form, useFieldApi, useForm, type ArrayFieldSlotProps, type FormApi, type FormInputProps, type FormState } from '@workspace/ui/form';
+		import { Collapse, CollapsePanel, type CollapseActiveKey, type CollapseIconPosition, type CollapseProps } from '@workspace/ui/collapse';
 		import { Collapsible, type CollapsibleProps } from '@workspace/ui/collapsible';
 		import { Cropper, type CropperMethods, type CropperShape } from '@workspace/ui/cropper';
 		import { Descriptions, DescriptionsItem, type DescriptionsDataItem, type DescriptionsLayout } from '@workspace/ui/descriptions';
@@ -710,6 +715,11 @@ h(Button, { type, htmlType: 'submit' });
 		void useFieldApi;
 		void checkedFormApi;
 		void typedFormState;
+		const collapseActiveKey: CollapseActiveKey = ['overview'];
+		const collapseIconPosition: CollapseIconPosition = 'left';
+		const collapseProps: CollapseProps = { activeKey: collapseActiveKey, expandIconPosition: collapseIconPosition, motion: false };
+		h(Collapse, collapseProps, { default: () => h(CollapsePanel, { itemKey: 'overview', header: 'Overview' }, () => 'Content') });
+		h(Collapse.Panel, { itemKey: 'compound', header: 'Compound' }, () => 'Content');
 		const collapsibleProps: CollapsibleProps = { collapseHeight: 24, motion: true };
 		h(Collapsible, collapsibleProps, () => h('div', 'Collapsible content'));
 		const cropperShape: CropperShape = 'roundRect';
@@ -940,6 +950,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-collapsible-transition')) {
     throw new Error('安装后的默认主题缺少 Collapsible 样式');
+  }
+  if (!themeCss.includes('.semi-collapse-item') || !themeCss.includes('.semi-collapse-header')) {
+    throw new Error('安装后的默认主题缺少 Collapse 样式');
   }
   if (!themeCss.includes('.semi-progress-track-inner')) {
     throw new Error('安装后的默认主题缺少 Progress 样式');
@@ -1694,6 +1707,19 @@ h(Button, { type, htmlType: 'submit' });
     !collapsibleThemeCss.includes('opacity')
   ) {
     throw new Error('安装后的 Collapsible 逐组件样式缺少高度或透明度过渡');
+  }
+  const collapseThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'collapse.css'),
+    'utf8',
+  );
+  if (
+    !collapseThemeCss.includes('.semi-collapse-item') ||
+    !collapseThemeCss.includes('.semi-collapse-header-disabled') ||
+    !collapseThemeCss.includes('.semi-collapse-header-iconLeft') ||
+    !collapseThemeCss.includes('.semi-collapsible-transition') ||
+    !collapseThemeCss.includes('.semi-rtl .semi-collapse')
+  ) {
+    throw new Error('安装后的 Collapse 逐组件样式缺少状态、依赖或 RTL 样式');
   }
   const descriptionsThemeCss = await readFile(
     path.join(

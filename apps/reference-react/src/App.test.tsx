@@ -364,6 +364,19 @@ describe('React 参考工作台', () => {
     expect(html).not.toContain('data-lazy-content');
   });
 
+  it('从固定 Collapse Adapter 渲染多面板、手风琴、左图标与受控场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="collapse" />);
+
+    expect(html).toContain('data-parity-scenario="collapse"');
+    expect(html).toContain('data-testid="collapse-reference"');
+    expect(html).toContain('data-parity-target="collapse-basic"');
+    expect(html).toContain('data-parity-target="collapse-accordion"');
+    expect(html).toContain('data-parity-target="collapse-left"');
+    expect(html).toContain('data-parity-target="collapse-controlled"');
+    expect(html).toContain('semi-collapse-header-disabled');
+    expect(html).toContain('semi-collapse-header-iconLeft');
+  });
+
   it('从固定 Descriptions Adapter 渲染 data、Item、双行与横向场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="descriptions" />);
 

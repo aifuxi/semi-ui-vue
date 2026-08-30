@@ -40,6 +40,11 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   carouselFoundation: 'vendor/semi-design/packages/semi-foundation/carousel/foundation.ts',
   carouselFoundationStyle: 'vendor/semi-design/packages/semi-foundation/carousel/carousel.scss',
   carouselDocumentation: 'vendor/semi-design/content/show/carousel/index.md',
+  collapsePublicEntry: 'vendor/semi-design/packages/semi-ui/collapse/index.tsx',
+  collapsePanelEntry: 'vendor/semi-design/packages/semi-ui/collapse/item.tsx',
+  collapseFoundation: 'vendor/semi-design/packages/semi-foundation/collapse/foundation.ts',
+  collapseFoundationStyle: 'vendor/semi-design/packages/semi-foundation/collapse/collapse.scss',
+  collapseDocumentation: 'vendor/semi-design/content/show/collapse/index.md',
   collapsiblePublicEntry: 'vendor/semi-design/packages/semi-ui/collapsible/index.tsx',
   collapsibleFoundation: 'vendor/semi-design/packages/semi-foundation/collapsible/foundation.ts',
   collapsibleFoundationStyle:
@@ -542,6 +547,96 @@ export const PARITY_SCENARIOS = [
           'marginRight',
           'width',
         ],
+      },
+    ],
+  },
+  {
+    id: 'collapse',
+    title: 'Collapse 折叠面板',
+    description:
+      '验证多面板/手风琴、受控状态、禁用与图标热区、VNode header、keepDOM/lazyRender、暗色、移动端与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.collapsePublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.collapsePublicEntry,
+      REFERENCE_SOURCE_PATHS.collapsePanelEntry,
+      REFERENCE_SOURCE_PATHS.collapseFoundation,
+      REFERENCE_SOURCE_PATHS.collapseFoundationStyle,
+      REFERENCE_SOURCE_PATHS.collapseDocumentation,
+      REFERENCE_SOURCE_PATHS.collapsiblePublicEntry,
+    ],
+    targets: [
+      {
+        id: 'collapse-basic',
+        selector: '[data-parity-target="collapse-basic"]',
+        computedStyleProperties: ['direction', 'fontSize', 'lineHeight', 'width'],
+      },
+      {
+        id: 'collapse-basic-header',
+        selector:
+          '[data-parity-target="collapse-basic"] > .semi-collapse-item:first-child > .semi-collapse-header',
+        computedStyleProperties: [
+          'alignItems',
+          'borderRadius',
+          'color',
+          'cursor',
+          'display',
+          'fontSize',
+          'fontWeight',
+          'justifyContent',
+          'marginBottom',
+          'marginLeft',
+          'marginRight',
+          'marginTop',
+          'paddingBottom',
+          'paddingLeft',
+          'paddingRight',
+          'paddingTop',
+        ],
+      },
+      {
+        id: 'collapse-basic-icon',
+        selector:
+          '[data-parity-target="collapse-basic"] > .semi-collapse-item:first-child > .semi-collapse-header .semi-collapse-header-icon',
+        computedStyleProperties: ['color', 'height', 'width'],
+      },
+      {
+        id: 'collapse-basic-content',
+        selector:
+          '[data-parity-target="collapse-basic"] > .semi-collapse-item:first-child .semi-collapse-content',
+        computedStyleProperties: [
+          'color',
+          'fontSize',
+          'lineHeight',
+          'paddingBottom',
+          'paddingLeft',
+          'paddingRight',
+          'paddingTop',
+        ],
+      },
+      {
+        id: 'collapse-accordion',
+        selector: '[data-parity-target="collapse-accordion"]',
+        computedStyleProperties: ['direction', 'fontSize', 'lineHeight', 'width'],
+      },
+      {
+        id: 'collapse-left-header',
+        selector:
+          '[data-parity-target="collapse-left"] > .semi-collapse-item:first-child > .semi-collapse-header',
+        computedStyleProperties: [
+          'alignItems',
+          'color',
+          'display',
+          'justifyContent',
+          'paddingLeft',
+          'paddingRight',
+        ],
+      },
+      {
+        id: 'collapse-controlled',
+        selector: '[data-parity-target="collapse-controlled"]',
+        computedStyleProperties: ['direction', 'fontSize', 'lineHeight', 'width'],
       },
     ],
   },
