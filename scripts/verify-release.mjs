@@ -10,7 +10,7 @@ import {
 } from './release-packages.mjs';
 
 const workspaceRoot = fileURLToPath(new URL('..', import.meta.url));
-const expectedVersion = '0.1.0-alpha.0';
+let expectedVersion;
 const forbiddenArtifactPatterns = [
   ['workspace 占位包名', /@workspace\//],
   ['vendor 源码路径', /vendor\/semi-design/],
@@ -50,6 +50,7 @@ for (const packageInfo of publicPackages) {
   const manifest = await readJson(manifestPath);
   const expectedTag = distTagForVersion(manifest.version);
 
+  expectedVersion ??= manifest.version;
   versions.add(manifest.version);
   assert(manifest.name === packageInfo.name, `${manifestPath} 的公开包名不正确`);
   assert(manifest.version === expectedVersion, `${manifest.name} 必须使用 ${expectedVersion}`);

@@ -59,7 +59,7 @@ npm trusted publisher 只能绑定已经存在的包。因此 `0.1.0-alpha.0` �
    pnpm release:publish
    ```
 
-`release:preflight` 会验证 npm CLI、登录用户、干净工作区、精确 git 标签，并确认五个同名版本尚不存在；对首次引导版本还会要求五个包名全部未被占用。`release:publish` 是不可逆的外部操作，会依次调用官方 `npm publish --access=public --tag=next`。
+`release:preflight` 会验证 npm CLI、登录用户、干净工作区、精确 git 标签，并确认五个同名版本尚不存在；对首次引导版本还会要求五个包名全部未被占用。`release:publish` 是不可逆的外部操作：它先用固定版本的 pnpm 为五个包生成 tarball，确保 `workspace:*` 被改写为精确版本，再依次对这些 tarball 调用官方 `npm publish --access=public --tag=next`。禁止直接对 workspace 包目录执行 `npm publish`。
 
 若顺序发布中途失败，不要修改或覆盖已经发布的版本；先核对 npm 上的实际状态，再为未发布包处理失败原因。npm 已存在的版本号不可复用。
 
@@ -87,4 +87,4 @@ pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
 npm audit signatures
 ```
 
-同时核对五个 npm 页面：公开可见、版本一致、预发布只更新 `next`、`latest` 未被占用、repository 指向 `aifuxi/semi-ui-vue`，并显示正确的 MIT License、README、provenance 与依赖关系。
+同时核对五个 npm 页面：公开可见、版本一致、预发布只更新 `next`、`latest` 未被占用、repository 指向 `aifuxi/semi-ui-vue`，并显示正确的 MIT License、README、provenance 与依赖关系。注册表中的 UI manifest 必须把 `@aifuxi/semi-icons-vue` 固定为同版本号，不得出现 `workspace:`。

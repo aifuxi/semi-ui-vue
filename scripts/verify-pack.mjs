@@ -17,6 +17,21 @@ import { publicPackages as packages } from './release-packages.mjs';
 const workspaceRoot = fileURLToPath(new URL('..', import.meta.url));
 const pnpmExecPath = process.env.npm_execpath;
 
+const sourceVersions = new Set(
+  await Promise.all(
+    packages.map(async ({ directory }) => {
+      const manifest = JSON.parse(
+        await readFile(path.join(workspaceRoot, 'packages', directory, 'package.json'), 'utf8'),
+      );
+      return manifest.version;
+    }),
+  ),
+);
+if (sourceVersions.size !== 1) {
+  throw new Error('五个公开包的源码版本不一致');
+}
+const [expectedVersion] = sourceVersions;
+
 function run(command, args, cwd) {
   return execFileSync(command, args, {
     cwd,
@@ -189,7 +204,7 @@ try {
 
     if (
       manifest.name !== packageInfo.name ||
-      manifest.version !== '0.1.0-alpha.0' ||
+      manifest.version !== expectedVersion ||
       Object.hasOwn(manifest, 'private') ||
       manifest.license !== 'MIT' ||
       JSON.stringify(manifest).includes('@workspace/') ||

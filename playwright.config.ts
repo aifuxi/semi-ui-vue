@@ -9,6 +9,9 @@ export default defineConfig({
   failOnFlakyTests: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
   reporter: [['list'], ['html', { open: 'never' }]],
+  // Hosted macOS image updates change rasterization. Release CI still performs the
+  // independent React/Vue byte comparisons in each parity test.
+  ignoreSnapshots: process.env.PARITY_IGNORE_HOST_BASELINES === '1',
   expect: {
     toHaveScreenshot: {
       animations: 'disabled',

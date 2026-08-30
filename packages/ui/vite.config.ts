@@ -17,6 +17,8 @@ export default defineConfig({
   plugins: [
     vue(),
     dts({
+      entryRoot: 'src',
+      aliasesExclude: ['@aifuxi/semi-icons-vue'],
       include: ['src'],
       exclude: [
         'src/**/*.test.ts',

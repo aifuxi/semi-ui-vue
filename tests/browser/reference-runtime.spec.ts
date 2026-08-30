@@ -3782,6 +3782,22 @@ test('BackTop React/Vue Element 阈值、回顶事件、样式与几何一致', 
     expect(pair.react.page.getByRole('status')).toHaveText('点击：默认回顶'),
     expect(pair.vue.page.getByRole('status')).toHaveText('点击：默认回顶'),
   ]);
+  await Promise.all([
+    expect
+      .poll(() =>
+        pair.react.page
+          .locator('.back-top-scenario__scroll')
+          .evaluate((element) => element.scrollTop),
+      )
+      .toBe(0),
+    expect
+      .poll(() =>
+        pair.vue.page
+          .locator('.back-top-scenario__scroll')
+          .evaluate((element) => element.scrollTop),
+      )
+      .toBe(0),
+  ]);
   const [reactScrollTop, vueScrollTop] = await Promise.all([
     pair.react.page.locator('.back-top-scenario__scroll').evaluate((element) => element.scrollTop),
     pair.vue.page.locator('.back-top-scenario__scroll').evaluate((element) => element.scrollTop),
