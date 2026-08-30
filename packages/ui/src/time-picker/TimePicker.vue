@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconClock } from '@workspace/icons';
+import { IconClock } from '@aifuxi/semi-icons-vue';
 import { enUS, zhCN } from 'date-fns/locale';
 import {
   computed,

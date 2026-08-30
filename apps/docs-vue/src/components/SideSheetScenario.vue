@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, useTemplateRef } from 'vue';
-import { ConfigProvider, SideSheet } from '@workspace/ui';
-import type { ConfigDirection } from '@workspace/ui';
+import { ConfigProvider, SideSheet } from '@aifuxi/semi-ui-vue';
+import type { ConfigDirection } from '@aifuxi/semi-ui-vue';
 
 defineProps<{ direction: ConfigDirection }>();
 const container = useTemplateRef<HTMLDivElement>('container');

@@ -89,7 +89,7 @@ Teleport target
 - React/Vue 共享场景：`preview=false` 单图、两张带标题的 group、默认操作区与稳定内联 SVG；所有图片不依赖外网。loading/error/fallback、受控状态、自定义内容和 custom container 由单元/SSR 覆盖。
 - Chromium：桌面 `1440×900` 与移动 `390×844` 的 light/dark、LTR/RTL；open/close、prev/next、wheel 缩放、原始尺寸、旋转、Esc、body lock/cleanup；关键颜色/显示/行高 computed style 精确相等，全部 bounding rect 轴差 `<=0.5px`。
 - 截图：`threshold<=0.1`、`maxDiffPixelRatio<=0.001`。关闭场景的桌面/移动 light/dark 与 RTL 裁剪图、打开后的预览大图分别直接比较独立 React/Vue PNG buffer 且字节相等；打开态整层和 footer 保留各自独立基线，footer 文本固有排版宽度差 `0.015625 CSS px`，按统一几何门槛验收，不宣称该裁剪 PNG 字节相等。
-- 发布：根与 `@workspace/ui/image` ESM/声明、默认 `Image` 和具名 `ImagePreview`、`@workspace/theme-default/image.css`、tree-shaking、SSR-safe import、真实 tarball 安装、许可证/第三方声明/SBOM；声明与运行时不得泄漏 `vendor/**` 或私有 Foundation 类型。固定上游没有 `Image.Preview` 静态成员，本项目不虚构该入口。
+- 发布：根与 `@aifuxi/semi-ui-vue/image` ESM/声明、默认 `Image` 和具名 `ImagePreview`、`@aifuxi/semi-theme-default/image.css`、tree-shaking、SSR-safe import、真实 tarball 安装、许可证/第三方声明/SBOM；声明与运行时不得泄漏 `vendor/**` 或私有 Foundation 类型。固定上游没有 `Image.Preview` 静态成员，本项目不虚构该入口。
 
 ## Deviation
 

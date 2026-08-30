@@ -58,7 +58,7 @@
 - SSR：默认、plain、horizontal/data、Item slot、class/style/data attrs、无 browser global import/render/hydration。
 - React/Vue 场景：vertical center/plain、double-row sizes、horizontal span/hidden、VNode key 与函数 value；比较对应单元格 computed style 和 geometry。
 - 视觉：桌面 `1440x900`、移动 `390x844`、light/dark 与 RTL；关键 computed style 精确相等，bounding rect 各轴误差 `<= 0.5px`，截图 `threshold <= 0.1` / `maxDiffPixelRatio <= 0.001`，并独立比较成对 PNG 字节。
-- 根与 `@workspace/ui/descriptions` 子路径导出组件、Item 和公开类型；`@workspace/theme-default/descriptions.css` 编译固定样式。真实 tarball 验证 ESM、声明、样式入口、tree-shaking、SSR-safe import、许可证和 SPDX SBOM。
+- 根与 `@aifuxi/semi-ui-vue/descriptions` 子路径导出组件、Item 和公开类型；`@aifuxi/semi-theme-default/descriptions.css` 编译固定样式。真实 tarball 验证 ESM、声明、样式入口、tree-shaking、SSR-safe import、许可证和 SPDX SBOM。
 
 ## Deviation
 

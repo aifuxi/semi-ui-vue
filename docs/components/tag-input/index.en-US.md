@@ -7,8 +7,8 @@ TagInput turns typed content into removable and sortable tags while preserving t
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { TagInput } from '@workspace/ui';
-import '@workspace/theme-default/tag-input.css';
+import { TagInput } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/tag-input.css';
 
 const tags = ref(['Semi', 'Vue']);
 </script>

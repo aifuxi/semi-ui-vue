@@ -3,7 +3,7 @@ import {
   TimePicker,
   type TimePickerChangeValue,
   type TimePickerFormattedValue,
-} from '@workspace/ui';
+} from '@aifuxi/semi-ui-vue';
 import { shallowRef } from 'vue';
 
 const status = shallowRef('none');

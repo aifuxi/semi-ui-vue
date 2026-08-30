@@ -6,7 +6,7 @@ Dropdown 通过触发器展示操作菜单。本实现只以本地 Semi Design v
 
 ```vue
 <script setup lang="ts">
-import { Dropdown } from '@workspace/ui';
+import { Dropdown } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>

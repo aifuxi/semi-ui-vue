@@ -6,8 +6,8 @@
 
 ```vue
 <script setup lang="ts">
-import { Collapse, CollapsePanel } from '@workspace/ui/collapse';
-import '@workspace/theme-default/collapse.css';
+import { Collapse, CollapsePanel } from '@aifuxi/semi-ui-vue/collapse';
+import '@aifuxi/semi-theme-default/collapse.css';
 </script>
 
 <template>
@@ -25,7 +25,7 @@ import '@workspace/theme-default/collapse.css';
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Collapse, CollapsePanel } from '@workspace/ui/collapse';
+import { Collapse, CollapsePanel } from '@aifuxi/semi-ui-vue/collapse';
 
 const activeKeys = ref<string[]>(['one']);
 </script>

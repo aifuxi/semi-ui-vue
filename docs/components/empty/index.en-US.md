@@ -5,23 +5,26 @@ Empty communicates that a region has no content by combining an image, title, de
 ## Import
 
 ```ts
-import { Empty } from '@workspace/ui';
-import '@workspace/theme-default/empty.css';
+import { Empty } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/empty.css';
 ```
 
 The subpath is also public:
 
 ```ts
-import Empty, { type EmptyProps } from '@workspace/ui/empty';
+import Empty, { type EmptyProps } from '@aifuxi/semi-ui-vue/empty';
 ```
 
 ## Basic usage
 
 ```vue
 <script setup lang="ts">
-import { Empty } from '@workspace/ui';
-import { IllustrationConstruction, IllustrationConstructionDark } from '@workspace/illustrations';
-import '@workspace/theme-default/empty.css';
+import { Empty } from '@aifuxi/semi-ui-vue';
+import {
+  IllustrationConstruction,
+  IllustrationConstructionDark,
+} from '@aifuxi/semi-illustrations-vue';
+import '@aifuxi/semi-theme-default/empty.css';
 </script>
 
 <template>
@@ -44,8 +47,8 @@ When `darkModeImage` exists, Empty observes the `theme-mode` attribute on `docum
 
 ```vue
 <script setup lang="ts">
-import { Button, Empty } from '@workspace/ui';
-import { IllustrationNoContent, IllustrationNoContentDark } from '@workspace/illustrations';
+import { Button, Empty } from '@aifuxi/semi-ui-vue';
+import { IllustrationNoContent, IllustrationNoContentDark } from '@aifuxi/semi-illustrations-vue';
 </script>
 
 <template>
@@ -128,6 +131,6 @@ The root preserves native Vue `class`, `style`, `data-*`, `aria-*`, `role`, and 
 - An SVG descriptor receives `aria-hidden="true"`. Callers own ARIA inside custom VNodes.
 - Empty creates no focusable node besides controls supplied in the footer.
 - `.semi-rtl` and `.semi-portal-rtl` ancestors activate the pinned RTL SCSS.
-- Root and `@workspace/ui/empty` subpath imports are DOM-free. The observer is created only after mount and is fully cleaned up.
+- Root and `@aifuxi/semi-ui-vue/empty` subpath imports are DOM-free. The observer is created only after mount and is fully cleaned up.
 
 See the [alignment matrix](./alignment.md) for source evidence, DOM, computed-style and visual scenarios, and deviations. See [React → Vue](./react-to-vue.md) for migration details.

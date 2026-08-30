@@ -5,8 +5,8 @@ Popover renders an interactive card next to its trigger. It reuses Tooltip's pos
 ## Import
 
 ```ts
-import { Popover } from '@workspace/ui';
-import '@workspace/theme-default/popover.css';
+import { Popover } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/popover.css';
 ```
 
 ## Basic usage

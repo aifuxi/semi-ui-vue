@@ -4,7 +4,10 @@
     "baseUrl": "../..",
     "allowImportingTsExtensions": true,
     "paths": {
-      "@workspace/ui": ["packages/ui/src/index.ts"]
+      "@aifuxi/semi-icons-lab-vue": ["packages/icons-lab/src/index.ts"],
+      "@aifuxi/semi-icons-vue": ["packages/icons/src/index.ts"],
+      "@aifuxi/semi-illustrations-vue": ["packages/illustrations/src/index.ts"],
+      "@aifuxi/semi-ui-vue": ["packages/ui/src/index.ts"]
     },
     "types": ["vite/client"]
   },

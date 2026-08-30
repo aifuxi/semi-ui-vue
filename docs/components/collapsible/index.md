@@ -7,8 +7,8 @@
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Collapsible } from '@workspace/ui/collapsible';
-import '@workspace/theme-default/collapsible.css';
+import { Collapsible } from '@aifuxi/semi-ui-vue/collapsible';
+import '@aifuxi/semi-theme-default/collapsible.css';
 
 const open = shallowRef(false);
 </script>

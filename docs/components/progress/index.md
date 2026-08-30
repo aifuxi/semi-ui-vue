@@ -6,7 +6,7 @@ Progress 用于展示操作或任务的当前完成度。本实现以本地 Semi
 
 ```vue
 <script setup lang="ts">
-import { Progress } from '@workspace/ui';
+import { Progress } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>

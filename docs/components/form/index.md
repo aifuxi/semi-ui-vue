@@ -6,7 +6,7 @@
 
 ```vue
 <script setup lang="ts">
-import { Form, type FormApi } from '@workspace/ui/form';
+import { Form, type FormApi } from '@aifuxi/semi-ui-vue/form';
 
 let formApi: FormApi;
 </script>
@@ -28,7 +28,7 @@ let formApi: FormApi;
 
 ```vue
 <script setup lang="ts">
-import { ArrayField, Form, useForm } from '@workspace/ui/form';
+import { ArrayField, Form, useForm } from '@aifuxi/semi-ui-vue/form';
 
 const [formApi, formState, values] = useForm<{ people: Array<{ name: string }> }>();
 </script>

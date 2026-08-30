@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Avatar, AvatarGroup } from '@workspace/ui';
+import { Avatar, AvatarGroup } from '@aifuxi/semi-ui-vue';
 
 const status = shallowRef('等待操作');
 const avatarImage =

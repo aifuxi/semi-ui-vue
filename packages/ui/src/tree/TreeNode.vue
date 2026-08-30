@@ -9,7 +9,7 @@ import {
   shallowRef,
   type VNodeChild,
 } from 'vue';
-import { IconFile, IconFolder, IconFolderOpen, IconTreeTriangleDown } from '@workspace/icons';
+import { IconFile, IconFolder, IconFolderOpen, IconTreeTriangleDown } from '@aifuxi/semi-icons-vue';
 
 import { Checkbox } from '../checkbox';
 import TreeNodeRenderer from './TreeNodeRenderer';

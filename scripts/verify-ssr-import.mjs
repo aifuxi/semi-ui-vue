@@ -6,8 +6,7 @@ const workspaceRoot = fileURLToPath(new URL('..', import.meta.url));
 const publicPackages = ['ui', 'icons', 'icons-lab', 'illustrations'];
 const forbiddenPatterns = [
   ['vendor 源码路径', /vendor\/semi-design/],
-  ['私有 Foundation 包', /@workspace\/foundation-integration/],
-  ['私有测试包', /@workspace\/test-infra/],
+  ['workspace 占位包名', /@workspace\//],
   [
     'React 运行时导入',
     /(?:from\s+['"]react(?:\/[^'"]*)?['"]|import\s*(?:\(\s*)?['"]react(?:\/[^'"]*)?['"])/,

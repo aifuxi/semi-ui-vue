@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick, onMounted } from 'vue';
-import { IconHome } from '@workspace/icons';
+import { IconHome } from '@aifuxi/semi-icons-vue';
 
 import { ConfigProvider, semiGlobal } from '../config-provider';
 

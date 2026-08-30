@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Anchor, AnchorLink, ConfigProvider } from '@workspace/ui';
+import { Anchor, AnchorLink, ConfigProvider } from '@aifuxi/semi-ui-vue';
 import type { ParityDirection } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection }>();

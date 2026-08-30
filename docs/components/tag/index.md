@@ -5,8 +5,8 @@
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { SplitTagGroup, Tag, TagGroup } from '@workspace/ui/tag';
-import '@workspace/theme-default/tag.css';
+import { SplitTagGroup, Tag, TagGroup } from '@aifuxi/semi-ui-vue/tag';
+import '@aifuxi/semi-theme-default/tag.css';
 
 const visible = shallowRef(true);
 const tags = [

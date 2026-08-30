@@ -64,7 +64,7 @@
 - 组件不创建 Portal/Teleport，不注册 window scroll/resize；因此 Vue Adapter 的 Portal/capture-scroll 门禁不适用。
 - locale 优先级：ConfigProvider `locale.Transfer` > locale code 对应 zh-CN/en-US 默认值；所有 57 locale 的完整性由既有 ConfigProvider/inventory 门禁承担，本切片验证 zh-CN/en-US 可渲染与切换。
 - RTL 从 ConfigProvider direction 注入 `.semi-rtl` 包裹语义，并验证左右边框、padding 与 header 按钮 margin 翻转。
-- 根入口与 `@workspace/ui/transfer` 子路径 import SSR-safe；SSR 可输出 list/group/tree/loading/disabled/locale/RTL 静态 DOM，不访问 browser global。虚拟列表服务端从首行开始渲染可见窗口。
+- 根入口与 `@aifuxi/semi-ui-vue/transfer` 子路径 import SSR-safe；SSR 可输出 list/group/tree/loading/disabled/locale/RTL 静态 DOM，不访问 browser global。虚拟列表服务端从首行开始渲染可见窗口。
 
 ## 编码前行为门禁
 

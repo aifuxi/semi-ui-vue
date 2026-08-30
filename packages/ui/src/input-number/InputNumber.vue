@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconChevronDown, IconChevronUp } from '@workspace/icons';
+import { IconChevronDown, IconChevronUp } from '@aifuxi/semi-icons-vue';
 import { InputNumberFoundation, type InputNumberAdapter } from '@workspace/foundation-integration';
 import {
   computed,

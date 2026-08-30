@@ -6,8 +6,8 @@ Breadcrumb shows the current page within a hierarchy and provides navigation bac
 
 ```vue
 <script setup lang="ts">
-import { Breadcrumb, BreadcrumbItem } from '@workspace/ui';
-import '@workspace/theme-default/breadcrumb.css';
+import { Breadcrumb, BreadcrumbItem } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/breadcrumb.css';
 </script>
 
 <template>

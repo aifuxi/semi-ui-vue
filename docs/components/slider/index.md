@@ -7,8 +7,8 @@ Slider 对齐 Semi Design v2.102.0 的单值/范围、刻度、Tooltip、受控�
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Slider } from '@workspace/ui/slider';
-import '@workspace/theme-default/slider.css';
+import { Slider } from '@aifuxi/semi-ui-vue/slider';
+import '@aifuxi/semi-theme-default/slider.css';
 
 const value = shallowRef(30);
 </script>
@@ -23,7 +23,7 @@ const value = shallowRef(30);
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Slider } from '@workspace/ui/slider';
+import { Slider } from '@aifuxi/semi-ui-vue/slider';
 
 const range = shallowRef<number[]>([20, 60]);
 const marks = { 0: '0', 20: '20°C', 50: '50°C', 100: '100°C' };

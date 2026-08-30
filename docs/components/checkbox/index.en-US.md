@@ -6,7 +6,7 @@ Checkbox selects between two opposite states; CheckboxGroup manages a set of mul
 
 ```vue
 <script setup lang="ts">
-import { Checkbox, type CheckboxChangeEvent } from '@workspace/ui';
+import { Checkbox, type CheckboxChangeEvent } from '@aifuxi/semi-ui-vue';
 
 function changed(event: CheckboxChangeEvent) {
   console.log(event.target.checked);

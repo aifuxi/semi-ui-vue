@@ -12,16 +12,10 @@ import {
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { publicPackages as packages } from './release-packages.mjs';
 
 const workspaceRoot = fileURLToPath(new URL('..', import.meta.url));
 const pnpmExecPath = process.env.npm_execpath;
-const packages = [
-  { directory: 'ui', name: '@workspace/ui', type: 'javascript' },
-  { directory: 'theme-default', name: '@workspace/theme-default', type: 'style' },
-  { directory: 'icons', name: '@workspace/icons', type: 'javascript' },
-  { directory: 'icons-lab', name: '@workspace/icons-lab', type: 'javascript' },
-  { directory: 'illustrations', name: '@workspace/illustrations', type: 'javascript' },
-];
 
 function run(command, args, cwd) {
   return execFileSync(command, args, {
@@ -96,6 +90,11 @@ try {
     }
 
     const packedFiles = new Set(packResult.files.map(({ path: filePath }) => filePath));
+    for (const publicMetadataPath of ['package.json', 'README.md', 'LICENSE']) {
+      if (!packedFiles.has(publicMetadataPath)) {
+        throw new Error(`${packageInfo.name} 的 tarball 缺少 ${publicMetadataPath}`);
+      }
+    }
     for (const compliancePath of [
       'dist/SBOM.spdx.json',
       'dist/THIRD_PARTY_LICENSES/Semi-Design.txt',
@@ -107,7 +106,7 @@ try {
     }
 
     if (
-      packageInfo.name === '@workspace/ui' &&
+      packageInfo.name === '@aifuxi/semi-ui-vue' &&
       [
         'async-validator.txt',
         'bezier-easing.txt',
@@ -117,7 +116,7 @@ try {
         'scroll-into-view-if-needed.txt',
       ].some((license) => !packedFiles.has(`dist/THIRD_PARTY_LICENSES/${license}`))
     ) {
-      throw new Error('@workspace/ui 的 tarball 缺少运行时依赖许可证');
+      throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少运行时依赖许可证');
     }
 
     tarballs.set(packageInfo.name, path.resolve(artifactsRoot, packResult.filename));
@@ -188,6 +187,23 @@ try {
     const manifest = JSON.parse(await readFile(path.join(installedRoot, 'package.json'), 'utf8'));
     await assertExportTargets(installedRoot, manifest.exports);
 
+    if (
+      manifest.name !== packageInfo.name ||
+      manifest.version !== '0.1.0-alpha.0' ||
+      Object.hasOwn(manifest, 'private') ||
+      manifest.license !== 'MIT' ||
+      JSON.stringify(manifest).includes('@workspace/') ||
+      JSON.stringify(manifest).includes('workspace:')
+    ) {
+      throw new Error(`${packageInfo.name} 的已安装 manifest 仍不是最终公开发布契约`);
+    }
+    if (
+      packageInfo.name === '@aifuxi/semi-ui-vue' &&
+      manifest.dependencies?.['@aifuxi/semi-icons-vue'] !== manifest.version
+    ) {
+      throw new Error('@aifuxi/semi-ui-vue 未精确依赖同版本公开图标包');
+    }
+
     if (packageInfo.type === 'javascript' && manifest.peerDependencies?.vue !== '>=3.5.0') {
       throw new Error(`${packageInfo.name} 未声明预期的 Vue peer dependency`);
     }
@@ -202,10 +218,15 @@ try {
       path.join(installedRoot, 'dist', 'THIRD_PARTY_LICENSES', 'Semi-Design.txt'),
       'utf8',
     );
+    const projectLicense = await readFile(path.join(workspaceRoot, 'LICENSE'), 'utf8');
+    const installedProjectLicense = await readFile(path.join(installedRoot, 'LICENSE'), 'utf8');
+    if (installedProjectLicense !== projectLicense) {
+      throw new Error(`${packageInfo.name} 未携带项目 MIT License`);
+    }
     if (installedLicense !== upstreamLicense) {
       throw new Error(`${packageInfo.name} 未原样携带上游许可证`);
     }
-    if (packageInfo.name === '@workspace/ui') {
+    if (packageInfo.name === '@aifuxi/semi-ui-vue') {
       for (const [dependency, licenseFile] of [
         ['async-validator', 'LICENSE.md'],
         ['bezier-easing', 'LICENSE'],
@@ -223,7 +244,7 @@ try {
           'utf8',
         );
         if (installedLicense !== sourceLicense) {
-          throw new Error(`@workspace/ui 未原样携带 ${dependency} 许可证`);
+          throw new Error(`@aifuxi/semi-ui-vue 未原样携带 ${dependency} 许可证`);
         }
       }
     }
@@ -241,6 +262,20 @@ try {
       }),
     ].sort();
     const actualSbomPackageNames = (sbom.packages ?? []).map(({ name }) => name).sort();
+    const expectedSbomVersions = {
+      [manifest.name]: manifest.version,
+      ...manifest.dependencies,
+      ...manifest.optionalDependencies,
+      ...manifest.peerDependencies,
+    };
+    const hasExpectedSbomVersions = Object.entries(expectedSbomVersions).every(([name, version]) =>
+      (sbom.packages ?? []).some(
+        ({ name: packageName, versionInfo }) => packageName === name && versionInfo === version,
+      ),
+    );
+    const documentedPackage = (sbom.packages ?? []).find(
+      ({ SPDXID }) => SPDXID === 'SPDXRef-Package-Workspace',
+    );
     const sbomCreationTime = sbom.creationInfo?.created;
     const hasValidCreationTime =
       typeof sbomCreationTime === 'string' &&
@@ -249,8 +284,14 @@ try {
     if (
       sbom.spdxVersion !== 'SPDX-2.3' ||
       sbom.dataLicense !== 'CC0-1.0' ||
+      !sbom.documentNamespace?.startsWith('https://github.com/aifuxi/semi-ui-vue/spdx/') ||
       !hasValidCreationTime ||
       !sbom.documentDescribes?.includes('SPDXRef-Package-Workspace') ||
+      documentedPackage?.name !== manifest.name ||
+      documentedPackage?.versionInfo !== manifest.version ||
+      documentedPackage?.licenseDeclared !== 'MIT' ||
+      documentedPackage?.licenseConcluded !== 'MIT' ||
+      !hasExpectedSbomVersions ||
       JSON.stringify(actualSbomPackageNames) !== JSON.stringify(expectedSbomPackageNames) ||
       !sbom.relationships?.some(
         ({ relationshipType, relatedSpdxElement }) =>
@@ -268,287 +309,287 @@ try {
   await writeFile(
     path.join(consumerRoot, 'smoke.mjs'),
     `await Promise.all(${JSON.stringify(javascriptPackages)}.map(packageName => import(packageName)));
-		await import('@workspace/ui/anchor');
-		await import('@workspace/ui/avatar');
-		await import('@workspace/ui/badge');
-		await import('@workspace/ui/banner');
-		await import('@workspace/ui/notification');
-		await import('@workspace/ui/calendar');
-		await import('@workspace/ui/card');
-		await import('@workspace/ui/carousel');
-		await import('@workspace/ui/cascader');
-		await import('@workspace/ui/color-picker');
-		await import('@workspace/ui/date-picker');
-		await import('@workspace/ui/form');
-		await import('@workspace/ui/collapse');
-		await import('@workspace/ui/collapsible');
-		await import('@workspace/ui/cropper');
-		await import('@workspace/ui/descriptions');
-		await import('@workspace/ui/dropdown');
-		await import('@workspace/ui/empty');
-		await import('@workspace/ui/highlight');
-		await import('@workspace/ui/image');
-		await import('@workspace/ui/list');
-		await import('@workspace/ui/modal');
-		await import('@workspace/ui/overflow-list');
-		await import('@workspace/ui/popover');
-		await import('@workspace/ui/popconfirm');
-		await import('@workspace/ui/progress');
-		await import('@workspace/ui/skeleton');
-		await import('@workspace/ui/spin');
-		await import('@workspace/ui/transfer');
-		await import('@workspace/ui/upload');
-		await import('@workspace/ui/navigation');
-		await import('@workspace/ui/toast');
-		await import('@workspace/ui/scroll-list');
-		await import('@workspace/ui/side-sheet');
-		await import('@workspace/ui/table');
-		await import('@workspace/ui/tag');
-		await import('@workspace/ui/timeline');
-	await import('@workspace/ui/back-top');
-	await import('@workspace/ui/breadcrumb');
-	await import('@workspace/ui/button');
-	await import('@workspace/ui/checkbox');
-	await import('@workspace/ui/auto-complete');
-	await import('@workspace/ui/config-provider');
-	await import('@workspace/ui/divider');
-	await import('@workspace/ui/float-button');
-	await import('@workspace/ui/grid');
-	await import('@workspace/ui/icon');
-	await import('@workspace/ui/input');
-	await import('@workspace/ui/input-number');
-	await import('@workspace/ui/pin-code');
-	await import('@workspace/ui/pagination');
-	await import('@workspace/ui/radio');
-	await import('@workspace/ui/rating');
-	await import('@workspace/ui/layout');
-	await import('@workspace/ui/resizable');
-	await import('@workspace/ui/select');
-	await import('@workspace/ui/slider');
-	await import('@workspace/ui/space');
-	await import('@workspace/ui/steps');
-	await import('@workspace/ui/tabs');
-	await import('@workspace/ui/tree');
-	await import('@workspace/ui/tree-select');
-	await import('@workspace/ui/switch');
-	await import('@workspace/ui/tag-input');
-	await import('@workspace/ui/time-picker');
-	await import('@workspace/ui/tooltip');
-	await import('@workspace/ui/typography');
-	await import('@workspace/icons/Icon');
-	await import('@workspace/icons/icons/IconHome');
-	await import('@workspace/icons-lab/Icon');
-	await import('@workspace/icons-lab/icons/IconAvatar');
-	await import('@workspace/illustrations/Illustration');
-	await import('@workspace/illustrations/illustrations/IllustrationNoContent');
-	const stableIcons = await import('@workspace/icons');
-	const labIcons = await import('@workspace/icons-lab');
-	const illustrations = await import('@workspace/illustrations');
+		await import('@aifuxi/semi-ui-vue/anchor');
+		await import('@aifuxi/semi-ui-vue/avatar');
+		await import('@aifuxi/semi-ui-vue/badge');
+		await import('@aifuxi/semi-ui-vue/banner');
+		await import('@aifuxi/semi-ui-vue/notification');
+		await import('@aifuxi/semi-ui-vue/calendar');
+		await import('@aifuxi/semi-ui-vue/card');
+		await import('@aifuxi/semi-ui-vue/carousel');
+		await import('@aifuxi/semi-ui-vue/cascader');
+		await import('@aifuxi/semi-ui-vue/color-picker');
+		await import('@aifuxi/semi-ui-vue/date-picker');
+		await import('@aifuxi/semi-ui-vue/form');
+		await import('@aifuxi/semi-ui-vue/collapse');
+		await import('@aifuxi/semi-ui-vue/collapsible');
+		await import('@aifuxi/semi-ui-vue/cropper');
+		await import('@aifuxi/semi-ui-vue/descriptions');
+		await import('@aifuxi/semi-ui-vue/dropdown');
+		await import('@aifuxi/semi-ui-vue/empty');
+		await import('@aifuxi/semi-ui-vue/highlight');
+		await import('@aifuxi/semi-ui-vue/image');
+		await import('@aifuxi/semi-ui-vue/list');
+		await import('@aifuxi/semi-ui-vue/modal');
+		await import('@aifuxi/semi-ui-vue/overflow-list');
+		await import('@aifuxi/semi-ui-vue/popover');
+		await import('@aifuxi/semi-ui-vue/popconfirm');
+		await import('@aifuxi/semi-ui-vue/progress');
+		await import('@aifuxi/semi-ui-vue/skeleton');
+		await import('@aifuxi/semi-ui-vue/spin');
+		await import('@aifuxi/semi-ui-vue/transfer');
+		await import('@aifuxi/semi-ui-vue/upload');
+		await import('@aifuxi/semi-ui-vue/navigation');
+		await import('@aifuxi/semi-ui-vue/toast');
+		await import('@aifuxi/semi-ui-vue/scroll-list');
+		await import('@aifuxi/semi-ui-vue/side-sheet');
+		await import('@aifuxi/semi-ui-vue/table');
+		await import('@aifuxi/semi-ui-vue/tag');
+		await import('@aifuxi/semi-ui-vue/timeline');
+	await import('@aifuxi/semi-ui-vue/back-top');
+	await import('@aifuxi/semi-ui-vue/breadcrumb');
+	await import('@aifuxi/semi-ui-vue/button');
+	await import('@aifuxi/semi-ui-vue/checkbox');
+	await import('@aifuxi/semi-ui-vue/auto-complete');
+	await import('@aifuxi/semi-ui-vue/config-provider');
+	await import('@aifuxi/semi-ui-vue/divider');
+	await import('@aifuxi/semi-ui-vue/float-button');
+	await import('@aifuxi/semi-ui-vue/grid');
+	await import('@aifuxi/semi-ui-vue/icon');
+	await import('@aifuxi/semi-ui-vue/input');
+	await import('@aifuxi/semi-ui-vue/input-number');
+	await import('@aifuxi/semi-ui-vue/pin-code');
+	await import('@aifuxi/semi-ui-vue/pagination');
+	await import('@aifuxi/semi-ui-vue/radio');
+	await import('@aifuxi/semi-ui-vue/rating');
+	await import('@aifuxi/semi-ui-vue/layout');
+	await import('@aifuxi/semi-ui-vue/resizable');
+	await import('@aifuxi/semi-ui-vue/select');
+	await import('@aifuxi/semi-ui-vue/slider');
+	await import('@aifuxi/semi-ui-vue/space');
+	await import('@aifuxi/semi-ui-vue/steps');
+	await import('@aifuxi/semi-ui-vue/tabs');
+	await import('@aifuxi/semi-ui-vue/tree');
+	await import('@aifuxi/semi-ui-vue/tree-select');
+	await import('@aifuxi/semi-ui-vue/switch');
+	await import('@aifuxi/semi-ui-vue/tag-input');
+	await import('@aifuxi/semi-ui-vue/time-picker');
+	await import('@aifuxi/semi-ui-vue/tooltip');
+	await import('@aifuxi/semi-ui-vue/typography');
+	await import('@aifuxi/semi-icons-vue/Icon');
+	await import('@aifuxi/semi-icons-vue/icons/IconHome');
+	await import('@aifuxi/semi-icons-lab-vue/Icon');
+	await import('@aifuxi/semi-icons-lab-vue/icons/IconAvatar');
+	await import('@aifuxi/semi-illustrations-vue/Illustration');
+	await import('@aifuxi/semi-illustrations-vue/illustrations/IllustrationNoContent');
+	const stableIcons = await import('@aifuxi/semi-icons-vue');
+	const labIcons = await import('@aifuxi/semi-icons-lab-vue');
+	const illustrations = await import('@aifuxi/semi-illustrations-vue');
 	if (Object.keys(stableIcons).length !== 525) throw new Error('稳定版 Icon 根导出数量不完整');
 	if (Object.keys(labIcons).length !== 85) throw new Error('Lab Icon 根导出数量不完整');
 	if (Object.keys(illustrations).length !== 17) throw new Error('Illustrations 根导出数量不完整');
-	const rootTheme = import.meta.resolve('@workspace/theme-default');
-const cssTheme = import.meta.resolve('@workspace/theme-default/index.css');
+	const rootTheme = import.meta.resolve('@aifuxi/semi-theme-default');
+const cssTheme = import.meta.resolve('@aifuxi/semi-theme-default/index.css');
 if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 index.css');
-		if (!import.meta.resolve('@workspace/theme-default/anchor.css').endsWith('/dist/anchor.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/anchor.css').endsWith('/dist/anchor.css')) {
 		  throw new Error('Anchor 逐组件样式导出未指向 dist/anchor.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/avatar.css').endsWith('/dist/avatar.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/avatar.css').endsWith('/dist/avatar.css')) {
 		  throw new Error('Avatar 逐组件样式导出未指向 dist/avatar.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/badge.css').endsWith('/dist/badge.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/badge.css').endsWith('/dist/badge.css')) {
 		  throw new Error('Badge 逐组件样式导出未指向 dist/badge.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/banner.css').endsWith('/dist/banner.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/banner.css').endsWith('/dist/banner.css')) {
 		  throw new Error('Banner 逐组件样式导出未指向 dist/banner.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/notification.css').endsWith('/dist/notification.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/notification.css').endsWith('/dist/notification.css')) {
 		  throw new Error('Notification 逐组件样式导出未指向 dist/notification.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/popconfirm.css').endsWith('/dist/popconfirm.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/popconfirm.css').endsWith('/dist/popconfirm.css')) {
 		  throw new Error('Popconfirm 逐组件样式导出未指向 dist/popconfirm.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/progress.css').endsWith('/dist/progress.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/progress.css').endsWith('/dist/progress.css')) {
 		  throw new Error('Progress 逐组件样式导出未指向 dist/progress.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/skeleton.css').endsWith('/dist/skeleton.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/skeleton.css').endsWith('/dist/skeleton.css')) {
 		  throw new Error('Skeleton 逐组件样式导出未指向 dist/skeleton.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/spin.css').endsWith('/dist/spin.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/spin.css').endsWith('/dist/spin.css')) {
 		  throw new Error('Spin 逐组件样式导出未指向 dist/spin.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/transfer.css').endsWith('/dist/transfer.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/transfer.css').endsWith('/dist/transfer.css')) {
 		  throw new Error('Transfer 逐组件样式导出未指向 dist/transfer.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/upload.css').endsWith('/dist/upload.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/upload.css').endsWith('/dist/upload.css')) {
 		  throw new Error('Upload 逐组件样式导出未指向 dist/upload.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/navigation.css').endsWith('/dist/navigation.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/navigation.css').endsWith('/dist/navigation.css')) {
 		  throw new Error('Navigation 逐组件样式导出未指向 dist/navigation.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/toast.css').endsWith('/dist/toast.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/toast.css').endsWith('/dist/toast.css')) {
 		  throw new Error('Toast 逐组件样式导出未指向 dist/toast.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/calendar.css').endsWith('/dist/calendar.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/calendar.css').endsWith('/dist/calendar.css')) {
 		  throw new Error('Calendar 逐组件样式导出未指向 dist/calendar.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/card.css').endsWith('/dist/card.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/card.css').endsWith('/dist/card.css')) {
 		  throw new Error('Card 逐组件样式导出未指向 dist/card.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/carousel.css').endsWith('/dist/carousel.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/carousel.css').endsWith('/dist/carousel.css')) {
 		  throw new Error('Carousel 逐组件样式导出未指向 dist/carousel.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/cascader.css').endsWith('/dist/cascader.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/cascader.css').endsWith('/dist/cascader.css')) {
 		  throw new Error('Cascader 逐组件样式导出未指向 dist/cascader.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/color-picker.css').endsWith('/dist/color-picker.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/color-picker.css').endsWith('/dist/color-picker.css')) {
 		  throw new Error('ColorPicker 逐组件样式导出未指向 dist/color-picker.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/date-picker.css').endsWith('/dist/date-picker.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/date-picker.css').endsWith('/dist/date-picker.css')) {
 		  throw new Error('DatePicker 逐组件样式导出未指向 dist/date-picker.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/form.css').endsWith('/dist/form.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/form.css').endsWith('/dist/form.css')) {
 		  throw new Error('Form 逐组件样式导出未指向 dist/form.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/collapse.css').endsWith('/dist/collapse.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/collapse.css').endsWith('/dist/collapse.css')) {
 		  throw new Error('Collapse 逐组件样式导出未指向 dist/collapse.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/collapsible.css').endsWith('/dist/collapsible.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/collapsible.css').endsWith('/dist/collapsible.css')) {
 		  throw new Error('Collapsible 逐组件样式导出未指向 dist/collapsible.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/cropper.css').endsWith('/dist/cropper.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/cropper.css').endsWith('/dist/cropper.css')) {
 		  throw new Error('Cropper 逐组件样式导出未指向 dist/cropper.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/descriptions.css').endsWith('/dist/descriptions.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/descriptions.css').endsWith('/dist/descriptions.css')) {
 		  throw new Error('Descriptions 逐组件样式导出未指向 dist/descriptions.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/dropdown.css').endsWith('/dist/dropdown.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/dropdown.css').endsWith('/dist/dropdown.css')) {
 		  throw new Error('Dropdown 逐组件样式导出未指向 dist/dropdown.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/empty.css').endsWith('/dist/empty.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/empty.css').endsWith('/dist/empty.css')) {
 		  throw new Error('Empty 逐组件样式导出未指向 dist/empty.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/highlight.css').endsWith('/dist/highlight.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/highlight.css').endsWith('/dist/highlight.css')) {
 		  throw new Error('Highlight 逐组件样式导出未指向 dist/highlight.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/image.css').endsWith('/dist/image.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/image.css').endsWith('/dist/image.css')) {
 		  throw new Error('Image 逐组件样式导出未指向 dist/image.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/list.css').endsWith('/dist/list.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/list.css').endsWith('/dist/list.css')) {
 		  throw new Error('List 逐组件样式导出未指向 dist/list.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/modal.css').endsWith('/dist/modal.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/modal.css').endsWith('/dist/modal.css')) {
 		  throw new Error('Modal 逐组件样式导出未指向 dist/modal.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/overflow-list.css').endsWith('/dist/overflow-list.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/overflow-list.css').endsWith('/dist/overflow-list.css')) {
 		  throw new Error('OverflowList 逐组件样式导出未指向 dist/overflow-list.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/popover.css').endsWith('/dist/popover.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/popover.css').endsWith('/dist/popover.css')) {
 		  throw new Error('Popover 逐组件样式导出未指向 dist/popover.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/scroll-list.css').endsWith('/dist/scroll-list.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/scroll-list.css').endsWith('/dist/scroll-list.css')) {
 		  throw new Error('ScrollList 逐组件样式导出未指向 dist/scroll-list.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/side-sheet.css').endsWith('/dist/side-sheet.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/side-sheet.css').endsWith('/dist/side-sheet.css')) {
 		  throw new Error('SideSheet 逐组件样式导出未指向 dist/side-sheet.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/table.css').endsWith('/dist/table.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/table.css').endsWith('/dist/table.css')) {
 		  throw new Error('Table 逐组件样式导出未指向 dist/table.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/tag.css').endsWith('/dist/tag.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/tag.css').endsWith('/dist/tag.css')) {
 		  throw new Error('Tag 逐组件样式导出未指向 dist/tag.css');
 		}
-		if (!import.meta.resolve('@workspace/theme-default/timeline.css').endsWith('/dist/timeline.css')) {
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/timeline.css').endsWith('/dist/timeline.css')) {
 		  throw new Error('Timeline 逐组件样式导出未指向 dist/timeline.css');
 		}
-	if (!import.meta.resolve('@workspace/theme-default/back-top.css').endsWith('/dist/back-top.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/back-top.css').endsWith('/dist/back-top.css')) {
 	  throw new Error('BackTop 逐组件样式导出未指向 dist/back-top.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/breadcrumb.css').endsWith('/dist/breadcrumb.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/breadcrumb.css').endsWith('/dist/breadcrumb.css')) {
 	  throw new Error('Breadcrumb 逐组件样式导出未指向 dist/breadcrumb.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/button.css').endsWith('/dist/button.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/button.css').endsWith('/dist/button.css')) {
 	  throw new Error('Button 逐组件样式导出未指向 dist/button.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/checkbox.css').endsWith('/dist/checkbox.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/checkbox.css').endsWith('/dist/checkbox.css')) {
 	  throw new Error('Checkbox 逐组件样式导出未指向 dist/checkbox.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/auto-complete.css').endsWith('/dist/auto-complete.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/auto-complete.css').endsWith('/dist/auto-complete.css')) {
 	  throw new Error('AutoComplete 逐组件样式导出未指向 dist/auto-complete.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/config-provider.css').endsWith('/dist/config-provider.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/config-provider.css').endsWith('/dist/config-provider.css')) {
 	  throw new Error('ConfigProvider 逐组件样式导出未指向 dist/config-provider.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/divider.css').endsWith('/dist/divider.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/divider.css').endsWith('/dist/divider.css')) {
 	  throw new Error('Divider 逐组件样式导出未指向 dist/divider.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/float-button.css').endsWith('/dist/float-button.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/float-button.css').endsWith('/dist/float-button.css')) {
 	  throw new Error('FloatButton 逐组件样式导出未指向 dist/float-button.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/grid.css').endsWith('/dist/grid.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/grid.css').endsWith('/dist/grid.css')) {
 	  throw new Error('Grid 逐组件样式导出未指向 dist/grid.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/icon.css').endsWith('/dist/icon.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/icon.css').endsWith('/dist/icon.css')) {
 	  throw new Error('Icon 逐组件样式导出未指向 dist/icon.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/input.css').endsWith('/dist/input.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/input.css').endsWith('/dist/input.css')) {
 	  throw new Error('Input 逐组件样式导出未指向 dist/input.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/input-number.css').endsWith('/dist/input-number.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/input-number.css').endsWith('/dist/input-number.css')) {
 	  throw new Error('InputNumber 逐组件样式导出未指向 dist/input-number.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/pin-code.css').endsWith('/dist/pin-code.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/pin-code.css').endsWith('/dist/pin-code.css')) {
 	  throw new Error('PinCode 逐组件样式导出未指向 dist/pin-code.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/pagination.css').endsWith('/dist/pagination.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/pagination.css').endsWith('/dist/pagination.css')) {
 	  throw new Error('Pagination 逐组件样式导出未指向 dist/pagination.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/radio.css').endsWith('/dist/radio.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/radio.css').endsWith('/dist/radio.css')) {
 	  throw new Error('Radio 逐组件样式导出未指向 dist/radio.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/rating.css').endsWith('/dist/rating.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/rating.css').endsWith('/dist/rating.css')) {
 	  throw new Error('Rating 逐组件样式导出未指向 dist/rating.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/layout.css').endsWith('/dist/layout.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/layout.css').endsWith('/dist/layout.css')) {
 	  throw new Error('Layout 逐组件样式导出未指向 dist/layout.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/resizable.css').endsWith('/dist/resizable.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/resizable.css').endsWith('/dist/resizable.css')) {
 	  throw new Error('Resizable 逐组件样式导出未指向 dist/resizable.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/select.css').endsWith('/dist/select.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/select.css').endsWith('/dist/select.css')) {
 	  throw new Error('Select 逐组件样式导出未指向 dist/select.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/slider.css').endsWith('/dist/slider.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/slider.css').endsWith('/dist/slider.css')) {
 	  throw new Error('Slider 逐组件样式导出未指向 dist/slider.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/space.css').endsWith('/dist/space.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/space.css').endsWith('/dist/space.css')) {
 	  throw new Error('Space 逐组件样式导出未指向 dist/space.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/steps.css').endsWith('/dist/steps.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/steps.css').endsWith('/dist/steps.css')) {
 	  throw new Error('Steps 逐组件样式导出未指向 dist/steps.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/tabs.css').endsWith('/dist/tabs.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/tabs.css').endsWith('/dist/tabs.css')) {
 	  throw new Error('Tabs 逐组件样式导出未指向 dist/tabs.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/tree.css').endsWith('/dist/tree.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/tree.css').endsWith('/dist/tree.css')) {
 	  throw new Error('Tree 逐组件样式导出未指向 dist/tree.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/tree-select.css').endsWith('/dist/tree-select.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/tree-select.css').endsWith('/dist/tree-select.css')) {
 	  throw new Error('TreeSelect 逐组件样式导出未指向 dist/tree-select.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/switch.css').endsWith('/dist/switch.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/switch.css').endsWith('/dist/switch.css')) {
 	  throw new Error('Switch 逐组件样式导出未指向 dist/switch.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/tag-input.css').endsWith('/dist/tag-input.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/tag-input.css').endsWith('/dist/tag-input.css')) {
 	  throw new Error('TagInput 逐组件样式导出未指向 dist/tag-input.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/time-picker.css').endsWith('/dist/time-picker.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/time-picker.css').endsWith('/dist/time-picker.css')) {
 	  throw new Error('TimePicker 逐组件样式导出未指向 dist/time-picker.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/tooltip.css').endsWith('/dist/tooltip.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/tooltip.css').endsWith('/dist/tooltip.css')) {
 	  throw new Error('Tooltip 逐组件样式导出未指向 dist/tooltip.css');
 	}
-	if (!import.meta.resolve('@workspace/theme-default/typography.css').endsWith('/dist/typography.css')) {
+	if (!import.meta.resolve('@aifuxi/semi-theme-default/typography.css').endsWith('/dist/typography.css')) {
 	  throw new Error('Typography 逐组件样式导出未指向 dist/typography.css');
 	}
 	`,
@@ -558,80 +599,80 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
   await writeFile(
     path.join(consumerRoot, 'type-smoke.ts'),
     `${javascriptPackages.map((packageName) => `import '${packageName}';`).join('\n')}
-	import { AutoComplete, AutoCompleteOption, type AutoCompleteModelValue } from '@workspace/ui/auto-complete';
-		import { Anchor, AnchorLink, type AnchorPosition } from '@workspace/ui/anchor';
-		import { Avatar, AvatarGroup, type AvatarColor, type AvatarSize } from '@workspace/ui/avatar';
-		import { Badge, type BadgePosition, type BadgeType } from '@workspace/ui/badge';
-		import { Banner, type BannerType } from '@workspace/ui/banner';
-		import { Notification, type NotificationPosition } from '@workspace/ui/notification';
-		import { Popconfirm, type PopconfirmProps } from '@workspace/ui/popconfirm';
-		import { Progress, type ProgressProps, type ProgressStrokePoint } from '@workspace/ui/progress';
-		import { Skeleton, type SkeletonAvatarSize, type SkeletonProps } from '@workspace/ui/skeleton';
-		import { Spin, type SpinProps, type SpinSize } from '@workspace/ui/spin';
-		import { Transfer, type TransferDataItem, type TransferProps, type TransferSourceItemProps, type TransferType } from '@workspace/ui/transfer';
-		import { Upload, type UploadFileItem, type UploadListType, type UploadProps } from '@workspace/ui/upload';
-		import { Nav, NavItem, SubNav, type NavigationItems, type NavigationMode } from '@workspace/ui/navigation';
-		import { Toast, ToastFactory, useToast, type ToastTheme } from '@workspace/ui/toast';
-		import { Calendar, type CalendarEvent, type CalendarMode } from '@workspace/ui/calendar';
-		import { Card, CardGroup, CardMeta, type CardShadows } from '@workspace/ui/card';
-		import { Carousel, type CarouselMethods, type CarouselTheme } from '@workspace/ui/carousel';
-		import { Cascader, type CascaderData, type CascaderProps, type CascaderValue } from '@workspace/ui/cascader';
-		import { ColorPicker, colorStringToValue, type ColorPickerFormat, type ColorPickerProps, type ColorValue } from '@workspace/ui/color-picker';
-		import { DatePicker, type DatePickerProps, type DatePickerType, type DatePickerValue } from '@workspace/ui/date-picker';
-		import { ArrayField, Form, useFieldApi, useForm, type ArrayFieldSlotProps, type FormApi, type FormInputProps, type FormState } from '@workspace/ui/form';
-		import { Collapse, CollapsePanel, type CollapseActiveKey, type CollapseIconPosition, type CollapseProps } from '@workspace/ui/collapse';
-		import { Collapsible, type CollapsibleProps } from '@workspace/ui/collapsible';
-		import { Cropper, type CropperMethods, type CropperShape } from '@workspace/ui/cropper';
-		import { Descriptions, DescriptionsItem, type DescriptionsDataItem, type DescriptionsLayout } from '@workspace/ui/descriptions';
-		import { Dropdown, DropdownItem, DropdownMenu, type DropdownItemType, type DropdownMenuItem } from '@workspace/ui/dropdown';
-		import { Empty, type EmptyLayout, type EmptySvgNode } from '@workspace/ui/empty';
-		import { Highlight, type HighlightSearchWords } from '@workspace/ui/highlight';
-		import { Image, ImagePreview, type ImagePreviewProps, type ImageRatioType } from '@workspace/ui/image';
-		import { List, ListItem, type ListGrid, type ListSize } from '@workspace/ui/list';
-		import { Modal, type ModalHandle, type ModalSize } from '@workspace/ui/modal';
-		import { OverflowList, type OverflowItem, type OverflowListRenderMode } from '@workspace/ui/overflow-list';
-		import { Popover, type PopoverPosition } from '@workspace/ui/popover';
-		import { ScrollItem, ScrollList, type ScrollItemData, type ScrollItemMode } from '@workspace/ui/scroll-list';
-		import { SideSheet, type SideSheetPlacement, type SideSheetSize } from '@workspace/ui/side-sheet';
-		import { Table, TableColumn, type TableColumnProps, type TableRowSelection } from '@workspace/ui/table';
-		import { SplitTagGroup, Tag, TagGroup, type TagColor, type TagData } from '@workspace/ui/tag';
-		import { Timeline, TimelineItem, type TimelineData, type TimelineMode } from '@workspace/ui/timeline';
-	import { BackTop, type BackTopTarget } from '@workspace/ui/back-top';
-	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@workspace/ui/breadcrumb';
-	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@workspace/ui/button';
-	import { Checkbox, CheckboxGroup, type CheckboxType, type CheckboxValue } from '@workspace/ui/checkbox';
-	import { ConfigConsumer, ConfigProvider, defaultResponsiveMap, type Breakpoint } from '@workspace/ui/config-provider';
-	import { Divider, type DividerAlign } from '@workspace/ui/divider';
-	import { FloatButton, FloatButtonGroup, type FloatButtonShape } from '@workspace/ui/float-button';
-	import { Col, Row, type GridGutter } from '@workspace/ui/grid';
-	import { Icon } from '@workspace/ui/icon';
-	import { Input, InputGroup, TextArea, type InputSize, type InputValue, type TextAreaResize } from '@workspace/ui/input';
-	import { InputNumber, type InputNumberValue } from '@workspace/ui/input-number';
-	import { PinCode, type PinCodeFormat } from '@workspace/ui/pin-code';
-	import { Radio, RadioGroup, type RadioType, type RadioValue } from '@workspace/ui/radio';
-	import { Rating, type RatingSize } from '@workspace/ui/rating';
-	import { Layout, LayoutContent, LayoutSider, type LayoutBreakpoint } from '@workspace/ui/layout';
-	import { Resizable, ResizeGroup, ResizeHandler, ResizeItem, type ResizeDirection, type ResizeSize } from '@workspace/ui/resizable';
-	import { Select, SelectOption, SelectOptionGroup, type SelectModelValue } from '@workspace/ui/select';
-	import { Slider, type SliderValue } from '@workspace/ui/slider';
-	import { Space, type SpaceAlign, type SpaceSpacingValue } from '@workspace/ui/space';
-	import { Step, Steps, type StepsStatus, type StepsType } from '@workspace/ui/steps';
-	import { TabItem, TabPane, Tabs, type TabPosition, type TabType } from '@workspace/ui/tabs';
-	import { Tree, type TreeNodeData, type TreeValue } from '@workspace/ui/tree';
-	import { TreeSelect, type TreeSelectProps, type TreeSelectSelectedItemProps } from '@workspace/ui/tree-select';
-	import { Switch, type SwitchSize } from '@workspace/ui/switch';
-	import { TagInput, type TagInputSize } from '@workspace/ui/tag-input';
-	import { TimePicker, type TimePickerType, type TimePickerValue } from '@workspace/ui/time-picker';
-	import { Tooltip, type TooltipPosition } from '@workspace/ui/tooltip';
-	import { Typography, Text, Title, Paragraph, Numeral, type TypographyType, type TypographyNumeralRule } from '@workspace/ui/typography';
-	import IconBase, { convertIcon, type IconSize } from '@workspace/icons/Icon';
-	import { IconAIWandLevel3, IconHome } from '@workspace/icons';
-	import IconHomeDirect from '@workspace/icons/icons/IconHome';
-	import { IconAvatar } from '@workspace/icons-lab';
-	import IconAvatarDirect from '@workspace/icons-lab/icons/IconAvatar';
-	import { IllustrationNoContent, type IllustrationProps } from '@workspace/illustrations';
-	import { convertIllustration } from '@workspace/illustrations/Illustration';
-	import IllustrationNoContentDirect from '@workspace/illustrations/illustrations/IllustrationNoContent';
+	import { AutoComplete, AutoCompleteOption, type AutoCompleteModelValue } from '@aifuxi/semi-ui-vue/auto-complete';
+		import { Anchor, AnchorLink, type AnchorPosition } from '@aifuxi/semi-ui-vue/anchor';
+		import { Avatar, AvatarGroup, type AvatarColor, type AvatarSize } from '@aifuxi/semi-ui-vue/avatar';
+		import { Badge, type BadgePosition, type BadgeType } from '@aifuxi/semi-ui-vue/badge';
+		import { Banner, type BannerType } from '@aifuxi/semi-ui-vue/banner';
+		import { Notification, type NotificationPosition } from '@aifuxi/semi-ui-vue/notification';
+		import { Popconfirm, type PopconfirmProps } from '@aifuxi/semi-ui-vue/popconfirm';
+		import { Progress, type ProgressProps, type ProgressStrokePoint } from '@aifuxi/semi-ui-vue/progress';
+		import { Skeleton, type SkeletonAvatarSize, type SkeletonProps } from '@aifuxi/semi-ui-vue/skeleton';
+		import { Spin, type SpinProps, type SpinSize } from '@aifuxi/semi-ui-vue/spin';
+		import { Transfer, type TransferDataItem, type TransferProps, type TransferSourceItemProps, type TransferType } from '@aifuxi/semi-ui-vue/transfer';
+		import { Upload, type UploadFileItem, type UploadListType, type UploadProps } from '@aifuxi/semi-ui-vue/upload';
+		import { Nav, NavItem, SubNav, type NavigationItems, type NavigationMode } from '@aifuxi/semi-ui-vue/navigation';
+		import { Toast, ToastFactory, useToast, type ToastTheme } from '@aifuxi/semi-ui-vue/toast';
+		import { Calendar, type CalendarEvent, type CalendarMode } from '@aifuxi/semi-ui-vue/calendar';
+		import { Card, CardGroup, CardMeta, type CardShadows } from '@aifuxi/semi-ui-vue/card';
+		import { Carousel, type CarouselMethods, type CarouselTheme } from '@aifuxi/semi-ui-vue/carousel';
+		import { Cascader, type CascaderData, type CascaderProps, type CascaderValue } from '@aifuxi/semi-ui-vue/cascader';
+		import { ColorPicker, colorStringToValue, type ColorPickerFormat, type ColorPickerProps, type ColorValue } from '@aifuxi/semi-ui-vue/color-picker';
+		import { DatePicker, type DatePickerProps, type DatePickerType, type DatePickerValue } from '@aifuxi/semi-ui-vue/date-picker';
+		import { ArrayField, Form, useFieldApi, useForm, type ArrayFieldSlotProps, type FormApi, type FormInputProps, type FormState } from '@aifuxi/semi-ui-vue/form';
+		import { Collapse, CollapsePanel, type CollapseActiveKey, type CollapseIconPosition, type CollapseProps } from '@aifuxi/semi-ui-vue/collapse';
+		import { Collapsible, type CollapsibleProps } from '@aifuxi/semi-ui-vue/collapsible';
+		import { Cropper, type CropperMethods, type CropperShape } from '@aifuxi/semi-ui-vue/cropper';
+		import { Descriptions, DescriptionsItem, type DescriptionsDataItem, type DescriptionsLayout } from '@aifuxi/semi-ui-vue/descriptions';
+		import { Dropdown, DropdownItem, DropdownMenu, type DropdownItemType, type DropdownMenuItem } from '@aifuxi/semi-ui-vue/dropdown';
+		import { Empty, type EmptyLayout, type EmptySvgNode } from '@aifuxi/semi-ui-vue/empty';
+		import { Highlight, type HighlightSearchWords } from '@aifuxi/semi-ui-vue/highlight';
+		import { Image, ImagePreview, type ImagePreviewProps, type ImageRatioType } from '@aifuxi/semi-ui-vue/image';
+		import { List, ListItem, type ListGrid, type ListSize } from '@aifuxi/semi-ui-vue/list';
+		import { Modal, type ModalHandle, type ModalSize } from '@aifuxi/semi-ui-vue/modal';
+		import { OverflowList, type OverflowItem, type OverflowListRenderMode } from '@aifuxi/semi-ui-vue/overflow-list';
+		import { Popover, type PopoverPosition } from '@aifuxi/semi-ui-vue/popover';
+		import { ScrollItem, ScrollList, type ScrollItemData, type ScrollItemMode } from '@aifuxi/semi-ui-vue/scroll-list';
+		import { SideSheet, type SideSheetPlacement, type SideSheetSize } from '@aifuxi/semi-ui-vue/side-sheet';
+		import { Table, TableColumn, type TableColumnProps, type TableRowSelection } from '@aifuxi/semi-ui-vue/table';
+		import { SplitTagGroup, Tag, TagGroup, type TagColor, type TagData } from '@aifuxi/semi-ui-vue/tag';
+		import { Timeline, TimelineItem, type TimelineData, type TimelineMode } from '@aifuxi/semi-ui-vue/timeline';
+	import { BackTop, type BackTopTarget } from '@aifuxi/semi-ui-vue/back-top';
+	import { Breadcrumb, BreadcrumbItem, type BreadcrumbMoreType } from '@aifuxi/semi-ui-vue/breadcrumb';
+	import { Button, ButtonGroup, SplitButtonGroup, type ButtonType } from '@aifuxi/semi-ui-vue/button';
+	import { Checkbox, CheckboxGroup, type CheckboxType, type CheckboxValue } from '@aifuxi/semi-ui-vue/checkbox';
+	import { ConfigConsumer, ConfigProvider, defaultResponsiveMap, type Breakpoint } from '@aifuxi/semi-ui-vue/config-provider';
+	import { Divider, type DividerAlign } from '@aifuxi/semi-ui-vue/divider';
+	import { FloatButton, FloatButtonGroup, type FloatButtonShape } from '@aifuxi/semi-ui-vue/float-button';
+	import { Col, Row, type GridGutter } from '@aifuxi/semi-ui-vue/grid';
+	import { Icon } from '@aifuxi/semi-ui-vue/icon';
+	import { Input, InputGroup, TextArea, type InputSize, type InputValue, type TextAreaResize } from '@aifuxi/semi-ui-vue/input';
+	import { InputNumber, type InputNumberValue } from '@aifuxi/semi-ui-vue/input-number';
+	import { PinCode, type PinCodeFormat } from '@aifuxi/semi-ui-vue/pin-code';
+	import { Radio, RadioGroup, type RadioType, type RadioValue } from '@aifuxi/semi-ui-vue/radio';
+	import { Rating, type RatingSize } from '@aifuxi/semi-ui-vue/rating';
+	import { Layout, LayoutContent, LayoutSider, type LayoutBreakpoint } from '@aifuxi/semi-ui-vue/layout';
+	import { Resizable, ResizeGroup, ResizeHandler, ResizeItem, type ResizeDirection, type ResizeSize } from '@aifuxi/semi-ui-vue/resizable';
+	import { Select, SelectOption, SelectOptionGroup, type SelectModelValue } from '@aifuxi/semi-ui-vue/select';
+	import { Slider, type SliderValue } from '@aifuxi/semi-ui-vue/slider';
+	import { Space, type SpaceAlign, type SpaceSpacingValue } from '@aifuxi/semi-ui-vue/space';
+	import { Step, Steps, type StepsStatus, type StepsType } from '@aifuxi/semi-ui-vue/steps';
+	import { TabItem, TabPane, Tabs, type TabPosition, type TabType } from '@aifuxi/semi-ui-vue/tabs';
+	import { Tree, type TreeNodeData, type TreeValue } from '@aifuxi/semi-ui-vue/tree';
+	import { TreeSelect, type TreeSelectProps, type TreeSelectSelectedItemProps } from '@aifuxi/semi-ui-vue/tree-select';
+	import { Switch, type SwitchSize } from '@aifuxi/semi-ui-vue/switch';
+	import { TagInput, type TagInputSize } from '@aifuxi/semi-ui-vue/tag-input';
+	import { TimePicker, type TimePickerType, type TimePickerValue } from '@aifuxi/semi-ui-vue/time-picker';
+	import { Tooltip, type TooltipPosition } from '@aifuxi/semi-ui-vue/tooltip';
+	import { Typography, Text, Title, Paragraph, Numeral, type TypographyType, type TypographyNumeralRule } from '@aifuxi/semi-ui-vue/typography';
+	import IconBase, { convertIcon, type IconSize } from '@aifuxi/semi-icons-vue/Icon';
+	import { IconAIWandLevel3, IconHome } from '@aifuxi/semi-icons-vue';
+	import IconHomeDirect from '@aifuxi/semi-icons-vue/icons/IconHome';
+	import { IconAvatar } from '@aifuxi/semi-icons-lab-vue';
+	import IconAvatarDirect from '@aifuxi/semi-icons-lab-vue/icons/IconAvatar';
+	import { IllustrationNoContent, type IllustrationProps } from '@aifuxi/semi-illustrations-vue';
+	import { convertIllustration } from '@aifuxi/semi-illustrations-vue/Illustration';
+	import IllustrationNoContentDirect from '@aifuxi/semi-illustrations-vue/illustrations/IllustrationNoContent';
 	import { h } from 'vue';
 const type: ButtonType = 'primary';
 h(Button, { type, htmlType: 'submit' });
@@ -924,8 +965,8 @@ h(Button, { type, htmlType: 'submit' });
   const installedTheme = path.join(
     consumerRoot,
     'node_modules',
-    '@workspace',
-    'theme-default',
+    '@aifuxi',
+    'semi-theme-default',
     'dist',
     'index.css',
   );
@@ -1103,23 +1144,30 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的默认主题缺少 Tooltip 样式');
   }
   const buttonThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'button.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'button.css'),
     'utf8',
   );
   const anchorThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'anchor.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'anchor.css'),
     'utf8',
   );
   const backTopThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'back-top.css'),
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'back-top.css',
+    ),
     'utf8',
   );
   const breadcrumbThemeCss = await readFile(
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'breadcrumb.css',
     ),
@@ -1152,7 +1200,14 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Button 逐组件样式缺少 SplitButtonGroup 样式');
   }
   const checkboxThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'checkbox.css'),
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'checkbox.css',
+    ),
     'utf8',
   );
   if (
@@ -1167,8 +1222,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'auto-complete.css',
     ),
@@ -1186,8 +1241,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'config-provider.css',
     ),
@@ -1197,7 +1252,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 ConfigProvider 逐组件样式缺少默认主题 Token');
   }
   const dividerThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'divider.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'divider.css'),
     'utf8',
   );
   if (!dividerThemeCss.includes('.semi-divider-with-text')) {
@@ -1207,8 +1262,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'float-button.css',
     ),
@@ -1221,14 +1276,14 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 FloatButton 逐组件样式缺少 Group 或 Badge 样式');
   }
   const gridThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'grid.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'grid.css'),
     'utf8',
   );
   if (!gridThemeCss.includes('.semi-row-flex') || !gridThemeCss.includes('.semi-col-lg-24')) {
     throw new Error('安装后的 Grid 逐组件样式缺少 Flex 或响应式栅格样式');
   }
   const iconThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'icon.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'icon.css'),
     'utf8',
   );
   if (
@@ -1238,7 +1293,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Icon 逐组件样式缺少尺寸或旋转样式');
   }
   const inputThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'input.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'input.css'),
     'utf8',
   );
   if (
@@ -1258,8 +1313,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'input-number.css',
     ),
@@ -1273,7 +1328,14 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 InputNumber 逐组件样式缺少步进器或 RTL 样式');
   }
   const pinCodeThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'pin-code.css'),
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'pin-code.css',
+    ),
     'utf8',
   );
   if (
@@ -1284,7 +1346,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 PinCode 逐组件样式缺少根、尺寸或 Input 样式');
   }
   const radioThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'radio.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'radio.css'),
     'utf8',
   );
   if (
@@ -1297,7 +1359,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Radio 逐组件样式缺少 Group、按钮、卡片、RTL 或 Icon 样式');
   }
   const ratingThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'rating.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'rating.css'),
     'utf8',
   );
   if (
@@ -1309,7 +1371,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Rating 逐组件样式缺少半星、尺寸、RTL 或 Icon 样式');
   }
   const sliderThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'slider.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'slider.css'),
     'utf8',
   );
   if (
@@ -1321,7 +1383,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Slider 逐组件样式缺少拖拽、纵向、RTL 或 Tooltip 样式');
   }
   const layoutThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'layout.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'layout.css'),
     'utf8',
   );
   if (
@@ -1331,7 +1393,14 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Layout 逐组件样式缺少 Sider 布局样式');
   }
   const resizableThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'resizable.css'),
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'resizable.css',
+    ),
     'utf8',
   );
   if (
@@ -1342,7 +1411,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Resizable 逐组件样式缺少单体、Group 或默认手柄样式');
   }
   const selectThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'select.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'select.css'),
     'utf8',
   );
   if (
@@ -1354,7 +1423,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Select 逐组件样式缺少选项、Input、Tag 或 Popover 样式');
   }
   const spaceThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'space.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'space.css'),
     'utf8',
   );
   if (
@@ -1364,7 +1433,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Space 逐组件样式缺少换行或预设间距样式');
   }
   const stepsThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'steps.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'steps.css'),
     'utf8',
   );
   if (
@@ -1377,7 +1446,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Steps 逐组件样式缺少状态、类型、RTL 或 Icon 样式');
   }
   const tabsThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'tabs.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'tabs.css'),
     'utf8',
   );
   if (
@@ -1390,7 +1459,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Tabs 逐组件样式缺少类型、折叠、Dropdown、RTL 或 Icon 样式');
   }
   const treeThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'tree.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'tree.css'),
     'utf8',
   );
   if (
@@ -1406,8 +1475,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'tree-select.css',
     ),
@@ -1422,7 +1491,14 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 TreeSelect 逐组件样式缺少触发器、浮层、搜索或 RTL 样式');
   }
   const cascaderThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'cascader.css'),
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'cascader.css',
+    ),
     'utf8',
   );
   if (
@@ -1437,8 +1513,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'color-picker.css',
     ),
@@ -1457,8 +1533,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'date-picker.css',
     ),
@@ -1473,7 +1549,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 DatePicker 逐组件样式缺少导航、月份、选中态或页脚样式');
   }
   const formThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'form.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'form.css'),
     'utf8',
   );
   if (
@@ -1485,7 +1561,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Form 逐组件样式缺少布局、错误或 RTL 样式');
   }
   const avatarThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'avatar.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'avatar.css'),
     'utf8',
   );
   if (
@@ -1497,7 +1573,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Avatar 逐组件样式缺少 Group、装饰、边框或 RTL 样式');
   }
   const badgeThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'badge.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'badge.css'),
     'utf8',
   );
   if (
@@ -1509,7 +1585,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Badge 逐组件样式缺少计数、自定义、类型或 RTL 样式');
   }
   const bannerThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'banner.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'banner.css'),
     'utf8',
   );
   if (
@@ -1524,8 +1600,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'notification.css',
     ),
@@ -1540,7 +1616,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Notification 逐组件样式缺少 wrapper、类型、关闭按钮或 RTL 样式');
   }
   const toastThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'toast.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'toast.css'),
     'utf8',
   );
   if (
@@ -1555,8 +1631,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'popconfirm.css',
     ),
@@ -1572,7 +1648,14 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Popconfirm 逐组件样式缺少卡片、按钮、Popover 或 RTL 样式');
   }
   const progressThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'progress.css'),
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'progress.css',
+    ),
     'utf8',
   );
   if (
@@ -1583,7 +1666,14 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Progress 逐组件样式缺少线形、环形或 RTL 样式');
   }
   const skeletonThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'skeleton.css'),
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'skeleton.css',
+    ),
     'utf8',
   );
   if (
@@ -1595,7 +1685,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Skeleton 逐组件样式缺少占位项、动画或 RTL 样式');
   }
   const spinThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'spin.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'spin.css'),
     'utf8',
   );
   if (
@@ -1607,7 +1697,14 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Spin 逐组件样式缺少默认、自定义、hidden 或 RTL 样式');
   }
   const transferThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'transfer.css'),
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'transfer.css',
+    ),
     'utf8',
   );
   if (
@@ -1619,7 +1716,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Transfer 逐组件样式缺少双面板、搜索、条目或 RTL 样式');
   }
   const uploadThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'upload.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'upload.css'),
     'utf8',
   );
   if (
@@ -1635,8 +1732,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'navigation.css',
     ),
@@ -1652,7 +1749,14 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Navigation 逐组件样式缺少状态、依赖或 RTL 样式');
   }
   const calendarThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'calendar.css'),
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'calendar.css',
+    ),
     'utf8',
   );
   if (
@@ -1665,7 +1769,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Calendar 逐组件样式缺少日周月、浮层或 RTL 样式');
   }
   const cardThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'card.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'card.css'),
     'utf8',
   );
   if (
@@ -1678,7 +1782,14 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Card 逐组件样式缺少 actions、Meta、Group、loading 或 RTL 样式');
   }
   const carouselThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'carousel.css'),
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'carousel.css',
+    ),
     'utf8',
   );
   if (
@@ -1694,8 +1805,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'collapsible.css',
     ),
@@ -1709,7 +1820,14 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Collapsible 逐组件样式缺少高度或透明度过渡');
   }
   const collapseThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'collapse.css'),
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'collapse.css',
+    ),
     'utf8',
   );
   if (
@@ -1725,8 +1843,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'descriptions.css',
     ),
@@ -1740,7 +1858,14 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Descriptions 逐组件样式缺少横向、双行或 RTL 样式');
   }
   const dropdownThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'dropdown.css'),
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'dropdown.css',
+    ),
     'utf8',
   );
   if (
@@ -1752,7 +1877,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Dropdown 逐组件样式缺少 Portal、Item 或 RTL 样式');
   }
   const emptyThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'empty.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'empty.css'),
     'utf8',
   );
   if (
@@ -1763,7 +1888,14 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Empty 逐组件样式缺少布局、Typography 或 RTL 样式');
   }
   const highlightThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'highlight.css'),
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'highlight.css',
+    ),
     'utf8',
   );
   if (
@@ -1774,7 +1906,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Highlight 逐组件样式缺少标签或颜色 Token');
   }
   const imageThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'image.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'image.css'),
     'utf8',
   );
   if (
@@ -1788,7 +1920,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Image 逐组件样式缺少预览、加载、菜单或 RTL 依赖');
   }
   const cropperThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'cropper.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'cropper.css'),
     'utf8',
   );
   if (
@@ -1799,7 +1931,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Cropper 逐组件样式缺少遮罩、调整块或圆形裁切样式');
   }
   const listThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'list.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'list.css'),
     'utf8',
   );
   if (
@@ -1811,7 +1943,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 List 逐组件样式缺少 Item、Grid、loading 或 RTL 依赖');
   }
   const modalThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'modal.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'modal.css'),
     'utf8',
   );
   if (
@@ -1827,8 +1959,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'overflow-list.css',
     ),
@@ -1842,7 +1974,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('OverflowList 逐组件主题 CSS 未包含预期选择器');
   }
   const popoverThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'popover.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'popover.css'),
     'utf8',
   );
   if (
@@ -1858,8 +1990,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'scroll-list.css',
     ),
@@ -1877,8 +2009,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'side-sheet.css',
     ),
@@ -1894,7 +2026,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 SideSheet 逐组件样式缺少 panel、mask、动效、RTL 或 Portal 样式');
   }
   const tableThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'table.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'table.css'),
     'utf8',
   );
   if (
@@ -1907,7 +2039,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Table 逐组件样式缺少根、选择、固定列、分页或 RTL 样式');
   }
   const tagThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'tag.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'tag.css'),
     'utf8',
   );
   if (
@@ -1919,7 +2051,14 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Tag 逐组件样式缺少颜色、Group、Split 或 RTL 样式');
   }
   const timelineThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'timeline.css'),
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'timeline.css',
+    ),
     'utf8',
   );
   if (
@@ -1930,7 +2069,7 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Timeline 逐组件样式缺少节点、center 或 RTL 样式');
   }
   const switchThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'switch.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'switch.css'),
     'utf8',
   );
   if (
@@ -1941,7 +2080,14 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Switch 逐组件样式缺少原生控件、loading 或 Spin 样式');
   }
   const tagInputThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'tag-input.css'),
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'tag-input.css',
+    ),
     'utf8',
   );
   if (
@@ -1954,15 +2100,15 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 TagInput 逐组件样式缺少 Input、Tag、Popover 或 RTL 样式');
   }
   const tooltipThemeCss = await readFile(
-    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'tooltip.css'),
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'tooltip.css'),
     'utf8',
   );
   const timePickerThemeCss = await readFile(
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'time-picker.css',
     ),
@@ -1989,8 +2135,8 @@ h(Button, { type, htmlType: 'submit' });
     path.join(
       consumerRoot,
       'node_modules',
-      '@workspace',
-      'theme-default',
+      '@aifuxi',
+      'semi-theme-default',
       'dist',
       'typography.css',
     ),

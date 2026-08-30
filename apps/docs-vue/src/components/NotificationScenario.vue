@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Notification, type ConfigDirection } from '@workspace/ui';
+import { Notification, type ConfigDirection } from '@aifuxi/semi-ui-vue';
 import { onBeforeUnmount, onMounted } from 'vue';
 
 const props = withDefaults(defineProps<{ direction?: ConfigDirection }>(), {

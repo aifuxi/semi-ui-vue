@@ -5,7 +5,7 @@ import {
   popconfirmNumbers,
   type PopconfirmAdapter,
 } from '@workspace/foundation-integration';
-import { IconAlertTriangle, IconClose } from '@workspace/icons';
+import { IconAlertTriangle, IconClose } from '@aifuxi/semi-icons-vue';
 import {
   computed,
   getCurrentInstance,

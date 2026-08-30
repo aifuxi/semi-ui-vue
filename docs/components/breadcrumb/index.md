@@ -6,8 +6,8 @@ Breadcrumb 用于展示当前页面在层级结构中的位置，并允许返回
 
 ```vue
 <script setup lang="ts">
-import { Breadcrumb, BreadcrumbItem } from '@workspace/ui';
-import '@workspace/theme-default/breadcrumb.css';
+import { Breadcrumb, BreadcrumbItem } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/breadcrumb.css';
 </script>
 
 <template>

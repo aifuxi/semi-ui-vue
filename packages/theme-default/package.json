@@ -1,7 +1,30 @@
 {
-  "name": "@workspace/theme-default",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@aifuxi/semi-theme-default",
+  "version": "0.1.0-alpha.0",
+  "description": "Compiled Semi Design v2.102.0 default theme CSS for @aifuxi/semi-ui-vue.",
+  "license": "MIT",
+  "author": "aifuxi",
+  "keywords": [
+    "semi-design",
+    "vue",
+    "theme",
+    "css",
+    "design-system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aifuxi/semi-ui-vue.git",
+    "directory": "packages/theme-default"
+  },
+  "homepage": "https://github.com/aifuxi/semi-ui-vue#readme",
+  "bugs": {
+    "url": "https://github.com/aifuxi/semi-ui-vue/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  },
   "type": "module",
   "sideEffects": [
     "**/*.css",
@@ -9,6 +32,8 @@
   ],
   "style": "./dist/index.css",
   "files": [
+    "LICENSE",
+    "README.md",
     "dist"
   ],
   "exports": {

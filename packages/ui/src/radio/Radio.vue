@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RadioFoundation, RadioInnerFoundation } from '@workspace/foundation-integration';
-import { IconRadio } from '@workspace/icons';
+import { IconRadio } from '@aifuxi/semi-icons-vue';
 import {
   computed,
   getCurrentInstance,

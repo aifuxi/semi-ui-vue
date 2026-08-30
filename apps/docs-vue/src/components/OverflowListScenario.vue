@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { OverflowList } from '@workspace/ui';
+import { OverflowList } from '@aifuxi/semi-ui-vue';
 
 const items = [
   { key: 'alarm', label: 'Alarm' },

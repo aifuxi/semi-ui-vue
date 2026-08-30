@@ -6,8 +6,8 @@ Banner 用于展示全页或容器级状态与通知。本实现以本地 Semi D
 
 ```vue
 <script setup lang="ts">
-import { Banner } from '@workspace/ui';
-import '@workspace/theme-default/banner.css';
+import { Banner } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/banner.css';
 </script>
 
 <template>

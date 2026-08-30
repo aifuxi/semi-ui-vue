@@ -7,8 +7,8 @@ Tree 用层级列表展示可展开、选择、搜索和拖拽的数据。本实
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Tree, type TreeNodeData, type TreeValue } from '@workspace/ui';
-import '@workspace/theme-default/tree.css';
+import { Tree, type TreeNodeData, type TreeValue } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/tree.css';
 
 const value = shallowRef<TreeValue>('shanghai');
 const treeData: TreeNodeData[] = [

@@ -5,16 +5,16 @@ Button triggers an action or submits a native form. The implementation targets S
 ## Import
 
 ```ts
-import { Button, ButtonGroup, SplitButtonGroup } from '@workspace/ui';
-import '@workspace/theme-default/button.css';
+import { Button, ButtonGroup, SplitButtonGroup } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/button.css';
 ```
 
 ## Button types
 
 ```vue
 <script setup lang="ts">
-import { Button } from '@workspace/ui';
-import '@workspace/theme-default/button.css';
+import { Button } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/button.css';
 </script>
 
 <template>

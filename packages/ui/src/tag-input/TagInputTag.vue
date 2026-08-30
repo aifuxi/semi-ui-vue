@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconClose, IconHandle } from '@workspace/icons';
+import { IconClose, IconHandle } from '@aifuxi/semi-icons-vue';
 import { computed, nextTick, onMounted, shallowRef, useTemplateRef, watch } from 'vue';
 
 import Tooltip from '../tooltip/Tooltip.vue';

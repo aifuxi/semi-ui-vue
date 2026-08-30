@@ -6,7 +6,7 @@ import {
   type FoundationDatePickerProps,
   type FoundationDatePickerState,
 } from '@workspace/foundation-integration';
-import { IconCalendar, IconCalendarClock, IconClear } from '@workspace/icons';
+import { IconCalendar, IconCalendarClock, IconClear } from '@aifuxi/semi-icons-vue';
 import { enUS, zhCN } from 'date-fns/locale';
 import {
   computed,

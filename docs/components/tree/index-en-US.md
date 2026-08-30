@@ -7,8 +7,8 @@ Tree presents hierarchical, expandable and selectable data. This Vue slice is pi
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Tree, type TreeNodeData, type TreeValue } from '@workspace/ui';
-import '@workspace/theme-default/tree.css';
+import { Tree, type TreeNodeData, type TreeValue } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/tree.css';
 
 const value = shallowRef<TreeValue>('docs');
 const treeData: TreeNodeData[] = [

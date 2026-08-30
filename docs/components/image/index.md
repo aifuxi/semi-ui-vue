@@ -4,8 +4,8 @@ Vue 3 对齐 Semi Design v2.102.0 的图片展示与预览组件。默认导出 
 
 ```vue
 <script setup lang="ts">
-import { Image, ImagePreview } from '@workspace/ui';
-import '@workspace/theme-default/image.css';
+import { Image, ImagePreview } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/image.css';
 </script>
 
 <template>

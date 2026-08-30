@@ -7,8 +7,8 @@ SideSheet slides from a page edge and hosts a secondary workflow without leaving
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Button, SideSheet } from '@workspace/ui';
-import '@workspace/theme-default/side-sheet.css';
+import { Button, SideSheet } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/side-sheet.css';
 
 const visible = ref(false);
 </script>

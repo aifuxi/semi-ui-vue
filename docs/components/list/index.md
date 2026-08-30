@@ -6,7 +6,7 @@ List 用于连续展示同类数据。本实现只以本地 Semi Design v2.102.0
 
 ```vue
 <script setup lang="ts">
-import { List, ListItem } from '@workspace/ui';
+import { List, ListItem } from '@aifuxi/semi-ui-vue';
 
 const users = ['Alice', 'Bob'];
 </script>

@@ -6,7 +6,7 @@ Descriptions 用稳定的键值结构展示对象详情。本实现只以本地 
 
 ```vue
 <script setup lang="ts">
-import { Descriptions } from '@workspace/ui';
+import { Descriptions } from '@aifuxi/semi-ui-vue';
 
 const data = [
   { key: '用户名', value: 'Semi' },

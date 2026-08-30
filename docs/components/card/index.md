@@ -6,8 +6,8 @@ Card 是承载标题、封面、正文、操作和页脚的容器。本实现对
 
 ```vue
 <script setup lang="ts">
-import { Card, Text } from '@workspace/ui';
-import '@workspace/theme-default/card.css';
+import { Card, Text } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/card.css';
 </script>
 
 <template>

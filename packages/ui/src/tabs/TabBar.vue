@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconChevronDown, IconChevronLeft, IconChevronRight } from '@workspace/icons';
+import { IconChevronDown, IconChevronLeft, IconChevronRight } from '@aifuxi/semi-icons-vue';
 import {
   computed,
   h,

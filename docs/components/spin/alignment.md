@@ -63,7 +63,7 @@ Spin 没有 emits、`v-model`、公开命令式 ref、Portal 或非受控状态�
 - 单元：spinning 三态、全局默认优先级、delay 初始/切换/卸载、尺寸、默认 SVG、indicator/tip slot 与 prop、children block/hidden、class/style/childStyle/data attrs 边界。
 - SSR：默认/hidden/block、自定义 VNode 内容、fallback gradient、无私有路径。
 - Chromium：真实 vendor source 请求，DOM/data/ARIA、三尺寸、包装/hidden、默认与自定义动画、desktop/mobile light/dark、RTL，以及独立 React/Vue PNG 直接比较。
-- 发包：根导出、`@workspace/ui/spin` 子路径、公开类型、`@workspace/theme-default/spin.css`、tree-shaking、SSR-safe import、许可证/SBOM 与隔离 tarball 消费。
+- 发包：根导出、`@aifuxi/semi-ui-vue/spin` 子路径、公开类型、`@aifuxi/semi-theme-default/spin.css`、tree-shaking、SSR-safe import、许可证/SBOM 与隔离 tarball 消费。
 
 ## Deviation
 

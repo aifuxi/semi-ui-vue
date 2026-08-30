@@ -43,11 +43,25 @@ function dependencySpdxId(packageName) {
   return `SPDXRef-Package-${packageName.replace(/[^A-Za-z0-9.-]/g, '-')}`;
 }
 
-const runtimeDependencies = {
+function publishedDependencyVersion(version) {
+  if (version === 'workspace:*') return manifest.version;
+  if (version === 'workspace:^') return `^${manifest.version}`;
+  if (version === 'workspace:~') return `~${manifest.version}`;
+  if (version.startsWith('workspace:')) return version.slice('workspace:'.length);
+  return version;
+}
+
+const sourceRuntimeDependencies = {
   ...sortRecord(manifest.dependencies),
   ...sortRecord(manifest.optionalDependencies),
   ...sortRecord(manifest.peerDependencies),
 };
+const runtimeDependencies = Object.fromEntries(
+  Object.entries(sourceRuntimeDependencies).map(([name, version]) => [
+    name,
+    publishedDependencyVersion(version),
+  ]),
+);
 const dependencyEntries = Object.entries(runtimeDependencies).sort(([left], [right]) =>
   left.localeCompare(right),
 );
@@ -109,7 +123,7 @@ await writeFile(
   path.join(distRoot, 'THIRD_PARTY_NOTICES.md'),
   `# Third-Party Notices
 
-This package is derived from or interoperates with Semi Design v2.102.0.
+This package is part of an independent Vue implementation derived from or interoperating with Semi Design v2.102.0. It is not an official Semi Design Vue package and does not imply authorization, partnership, or endorsement by DouyinFE.
 
 - Project: Semi Design
 - Copyright: Copyright (c) 2021 DouyinFE
@@ -131,7 +145,7 @@ const sbom = {
   dataLicense: 'CC0-1.0',
   SPDXID: 'SPDXRef-DOCUMENT',
   name: `${manifest.name}-${manifest.version}`,
-  documentNamespace: `https://semi-ui-vue.invalid/spdx/${encodeURIComponent(manifest.name)}/${manifest.version}/${semiCommit}/${buildFingerprint}`,
+  documentNamespace: `https://github.com/aifuxi/semi-ui-vue/spdx/${encodeURIComponent(manifest.name)}/${manifest.version}/${semiCommit}/${buildFingerprint}`,
   documentDescribes: ['SPDXRef-Package-Workspace'],
   creationInfo: {
     created: creationTime,
@@ -142,10 +156,11 @@ const sbom = {
       SPDXID: 'SPDXRef-Package-Workspace',
       name: manifest.name,
       versionInfo: manifest.version,
-      downloadLocation: 'NOASSERTION',
+      supplier: 'Person: aifuxi',
+      downloadLocation: 'https://github.com/aifuxi/semi-ui-vue',
       filesAnalyzed: false,
-      licenseConcluded: 'NOASSERTION',
-      licenseDeclared: 'NOASSERTION',
+      licenseConcluded: 'MIT',
+      licenseDeclared: 'MIT',
       primaryPackagePurpose: 'LIBRARY',
     },
     {

@@ -7,7 +7,7 @@ Cascader selects a path from hierarchical data. The pinned local Semi Design v2.
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Cascader, type CascaderData, type CascaderValue } from '@workspace/ui';
+import { Cascader, type CascaderData, type CascaderValue } from '@aifuxi/semi-ui-vue';
 
 const value = ref<CascaderValue>(['asia', 'china', 'shanghai']);
 const treeData: CascaderData[] = [
@@ -68,4 +68,4 @@ Events: `change`, `select`, `search`, `load`, `listScroll`, `exceed`, `clear`, `
 
 ## Accessibility, theme, and SSR
 
-The trigger uses `role=combobox`, the popup uses `role=listbox`, and columns/options preserve the upstream menu/menuitem and ARIA relationships. Light/dark, mobile, RTL, and zh-CN/en-US scenarios are covered by fixed-Chromium comparisons. Root and `@workspace/ui/cascader` imports are SSR-safe.
+The trigger uses `role=combobox`, the popup uses `role=listbox`, and columns/options preserve the upstream menu/menuitem and ARIA relationships. Light/dark, mobile, RTL, and zh-CN/en-US scenarios are covered by fixed-Chromium comparisons. Root and `@aifuxi/semi-ui-vue/cascader` imports are SSR-safe.

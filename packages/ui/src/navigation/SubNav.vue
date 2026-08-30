@@ -3,7 +3,7 @@ import {
   NavigationSubNavFoundation,
   type NavigationSubNavAdapter,
 } from '@workspace/foundation-integration';
-import { IconChevronDown, IconChevronRight } from '@workspace/icons';
+import { IconChevronDown, IconChevronRight } from '@aifuxi/semi-icons-vue';
 import {
   computed,
   h,

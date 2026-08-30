@@ -6,8 +6,8 @@
 
 ```vue
 <script setup lang="ts">
-import { Avatar, Badge } from '@workspace/ui';
-import '@workspace/theme-default/badge.css';
+import { Avatar, Badge } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/badge.css';
 </script>
 
 <template>

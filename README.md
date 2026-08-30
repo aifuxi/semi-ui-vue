@@ -2,6 +2,24 @@
 
 这是一个以 Semi Design `v2.102.0` 为固定参考基线、面向 Vue 3.5+ 的像素级复刻工程。
 
+> 本项目是独立的 Vue 实现，不是 Semi Design 官方 Vue 版本，也不代表 DouyinFE 的授权、合作或品牌身份。当前发布线为 `0.1.0-alpha` 预览版，未完成组件和 API 在 `1.0.0` 前仍可能调整。
+
+## npm 预览包
+
+五个公开包统一使用 `next` dist-tag：
+
+- `@aifuxi/semi-ui-vue`：Vue 主组件包。
+- `@aifuxi/semi-theme-default`：根主题和逐组件编译 CSS。
+- `@aifuxi/semi-icons-vue`：稳定图标。
+- `@aifuxi/semi-icons-lab-vue`：实验图标。
+- `@aifuxi/semi-illustrations-vue`：light/dark 插画。
+
+```bash
+pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
+```
+
+发布准备、首次人工引导和后续 GitHub OIDC 可信发布流程见 `docs/releasing.md`。
+
 ## 复刻进度
 
 当前已完成 **67 / 85** 个上游公开根模块的完整垂直切片（约 **78.8%**）：

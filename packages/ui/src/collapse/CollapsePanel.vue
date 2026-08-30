@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createCollapsePanelId } from '@workspace/foundation-integration';
-import { IconChevronDown, IconChevronUp } from '@workspace/icons';
+import { IconChevronDown, IconChevronUp } from '@aifuxi/semi-icons-vue';
 import {
   computed,
   h,

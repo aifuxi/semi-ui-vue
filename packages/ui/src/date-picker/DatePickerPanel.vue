@@ -6,7 +6,7 @@ import {
   IconClock,
   IconDoubleChevronLeft,
   IconDoubleChevronRight,
-} from '@workspace/icons';
+} from '@aifuxi/semi-icons-vue';
 import {
   addMonths,
   addYears,

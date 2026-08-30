@@ -5,8 +5,8 @@ Avatar 用图片、图标或字符展示用户/实体身份；`AvatarGroup` 用�
 ## 引入
 
 ```ts
-import { Avatar, AvatarGroup } from '@workspace/ui';
-import '@workspace/theme-default/avatar.css';
+import { Avatar, AvatarGroup } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/avatar.css';
 ```
 
 ## 尺寸
@@ -15,7 +15,7 @@ import '@workspace/theme-default/avatar.css';
 
 ```vue
 <script setup lang="ts">
-import { Avatar } from '@workspace/ui';
+import { Avatar } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>

@@ -5,8 +5,8 @@ Avatar displays an identity with an image, icon, or text. `AvatarGroup` overlaps
 ## Import
 
 ```ts
-import { Avatar, AvatarGroup } from '@workspace/ui';
-import '@workspace/theme-default/avatar.css';
+import { Avatar, AvatarGroup } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/avatar.css';
 ```
 
 ## Sizes

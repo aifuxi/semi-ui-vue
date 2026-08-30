@@ -7,8 +7,8 @@ TimePicker 用于输入或从滚动面板选择单个时间、时间范围，并
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { TimePicker } from '@workspace/ui';
-import '@workspace/theme-default/time-picker.css';
+import { TimePicker } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/time-picker.css';
 
 const value = ref<Date>();
 </script>

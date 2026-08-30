@@ -57,7 +57,7 @@ Badge 没有可复用状态或副作用，不新增 composable；固定源码也
 
 - 固定 Adapter 不增加 role 或 aria；Vue 保留该 DOM，同时把用户提供的 `aria-*`/`data-*`/title 等 attrs 转发到根，语义由基底内容或调用方提供。
 - SSR import/render 不访问 DOM 或浏览器全局；ConfigProvider 注入在 SSR 中可直接解析。
-- 根与 `@workspace/ui/badge` 子路径导出 Badge 和全部公开类型；真实 tarball 验证 ESM、声明、根/`badge.css`、tree-shaking、SSR-safe import、许可证与 SPDX SBOM。
+- 根与 `@aifuxi/semi-ui-vue/badge` 子路径导出 Badge 和全部公开类型；真实 tarball 验证 ESM、声明、根/`badge.css`、tree-shaking、SSR-safe import、许可证与 SPDX SBOM。
 - Badge 无 JavaScript Foundation；样式仍只从固定 submodule 编译，公开运行时和声明不得泄漏 `vendor/**` 或私有 workspace 路径。
 
 ## React → Vue deviation

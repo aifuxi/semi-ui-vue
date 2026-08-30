@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Image, ImagePreview } from '@workspace/ui';
+import { Image, ImagePreview } from '@aifuxi/semi-ui-vue';
 
 const blueImage =
   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="160" height="100" viewBox="0 0 160 100"%3E%3Crect width="160" height="100" rx="12" fill="%230066ff"/%3E%3Ccircle cx="122" cy="28" r="13" fill="%23fff" fill-opacity=".82"/%3E%3Cpath d="M16 84l38-40 25 25 18-17 47 32z" fill="%23d9f0ff"/%3E%3C/svg%3E';

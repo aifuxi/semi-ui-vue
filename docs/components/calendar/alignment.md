@@ -91,8 +91,8 @@
 
 ## 发布与验证门禁
 
-- 根与 `@workspace/ui/calendar` 子路径导出 Calendar、`CalendarProps`、`CalendarMode`、`CalendarEvent`、`CalendarLocale`、`CalendarSlots`、`CalendarEmits` 和 `WeekStartsOn`。
-- `@workspace/theme-default/calendar.css` 与根 CSS 均包含 Calendar；真实 tarball 验证根/子路径 ESM、声明、样式、tree-shaking、SSR-safe import、许可证与 SPDX SBOM。
+- 根与 `@aifuxi/semi-ui-vue/calendar` 子路径导出 Calendar、`CalendarProps`、`CalendarMode`、`CalendarEvent`、`CalendarLocale`、`CalendarSlots`、`CalendarEmits` 和 `WeekStartsOn`。
+- `@aifuxi/semi-theme-default/calendar.css` 与根 CSS 均包含 Calendar；真实 tarball 验证根/子路径 ESM、声明、样式、tree-shaking、SSR-safe import、许可证与 SPDX SBOM。
 - 单元测试覆盖四 mode、默认值显式性、事件解析/重算、点击日期、周起始日、custom slots、Locale、Month 折叠卡片、custom container、显式 close、ResizeObserver 与清理。
 - Chromium 行为覆盖日/周/月/范围、点击/卡片/Portal、ARIA、zh-CN/en-US、RTL；视觉覆盖桌面与移动、light/dark 及 RTL，关键 computed style 精确相等、几何误差 `<= 0.5px`、截图阈值 `<= 0.1` / `0.001`。
 

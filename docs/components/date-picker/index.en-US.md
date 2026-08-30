@@ -7,8 +7,8 @@ DatePicker aligns date, date-time, range, month, and year selection with Semi De
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { DatePicker } from '@workspace/ui';
-import '@workspace/theme-default/date-picker.css';
+import { DatePicker } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/date-picker.css';
 
 const date = ref<Date>();
 </script>

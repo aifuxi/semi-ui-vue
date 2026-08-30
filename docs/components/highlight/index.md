@@ -5,22 +5,22 @@ Highlight 把源文本中匹配的关键词替换为可定制的行内高亮标�
 ## 引入
 
 ```ts
-import { Highlight } from '@workspace/ui';
-import '@workspace/theme-default/highlight.css';
+import { Highlight } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/highlight.css';
 ```
 
 也可使用子路径：
 
 ```ts
-import Highlight, { type HighlightProps } from '@workspace/ui/highlight';
+import Highlight, { type HighlightProps } from '@aifuxi/semi-ui-vue/highlight';
 ```
 
 ## 基本用法
 
 ```vue
 <script setup lang="ts">
-import { Highlight } from '@workspace/ui';
-import '@workspace/theme-default/highlight.css';
+import { Highlight } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/highlight.css';
 </script>
 
 <template>
@@ -112,6 +112,6 @@ import '@workspace/theme-default/highlight.css';
 - `mark` 提供原生高亮语义；改用其它标签时由调用方确认语义是否适合。
 - light/dark 颜色由 `--semi-color-highlight` 与 `--semi-color-highlight-bg` 驱动。
 - 文本方向继承父级；组件没有独立 RTL 布局。
-- 根入口和 `@workspace/ui/highlight` 均可在无 DOM 环境导入和服务端渲染；源文本通过 Vue 文本节点转义，不使用 `v-html`。
+- 根入口和 `@aifuxi/semi-ui-vue/highlight` 均可在无 DOM 环境导入和服务端渲染；源文本通过 Vue 文本节点转义，不使用 `v-html`。
 
 完整源码证据、匹配算法、computed style、视觉矩阵和 deviation 结论见 [对齐矩阵](./alignment.md)，React 迁移见 [React → Vue](./react-to-vue.md)。

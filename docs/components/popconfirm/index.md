@@ -6,8 +6,8 @@
 
 ```vue
 <script setup lang="ts">
-import { Button, Popconfirm } from '@workspace/ui';
-import '@workspace/theme-default/popconfirm.css';
+import { Button, Popconfirm } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/popconfirm.css';
 
 function confirm(): void {
   console.log('confirmed');

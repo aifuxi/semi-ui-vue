@@ -5,8 +5,8 @@ Typography provides headings, text, paragraphs, links, copy actions, ellipsis, a
 ## Import
 
 ```ts
-import { Typography, Title, Text, Paragraph, Numeral } from '@workspace/ui';
-import '@workspace/theme-default/typography.css';
+import { Typography, Title, Text, Paragraph, Numeral } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/typography.css';
 ```
 
 The compound members are also available through `Typography.Title`, `.Text`, `.Paragraph`, and `.Numeral`.

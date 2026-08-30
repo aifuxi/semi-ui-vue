@@ -6,7 +6,7 @@ Timeline presents events, statuses, and supporting information in chronological 
 
 ```vue
 <script setup lang="ts">
-import { Timeline, TimelineItem } from '@workspace/ui';
+import { Timeline, TimelineItem } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>
@@ -24,7 +24,7 @@ A non-empty `dataSource` takes precedence over the default slot. In `center` and
 
 ```vue
 <script setup lang="ts">
-import { Timeline, type TimelineData } from '@workspace/ui';
+import { Timeline, type TimelineData } from '@aifuxi/semi-ui-vue';
 
 const data: TimelineData[] = [
   { content: 'Requirements approved', time: '09:00', type: 'success' },

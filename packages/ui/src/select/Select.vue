@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { IconChevronDown, IconClear, IconClose, IconSearch, IconTick } from '@workspace/icons';
+import {
+  IconChevronDown,
+  IconClear,
+  IconClose,
+  IconSearch,
+  IconTick,
+} from '@aifuxi/semi-icons-vue';
 import {
   Fragment,
   Text,

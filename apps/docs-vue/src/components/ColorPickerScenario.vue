@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ColorPicker, colorStringToValue } from '@workspace/ui';
+import { ColorPicker, colorStringToValue } from '@aifuxi/semi-ui-vue';
 
 const initialColor = colorStringToValue('#7856ffcc');
 </script>

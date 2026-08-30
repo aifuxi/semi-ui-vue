@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconCheckboxIndeterminate, IconCheckboxTick } from '@workspace/icons';
+import { IconCheckboxIndeterminate, IconCheckboxTick } from '@aifuxi/semi-icons-vue';
 import { CheckboxFoundation, type CheckboxAdapter } from '@workspace/foundation-integration';
 import {
   computed,

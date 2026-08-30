@@ -7,7 +7,7 @@ AutoComplete adds candidate suggestions to an input while still allowing free-fo
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { AutoComplete } from '@workspace/ui';
+import { AutoComplete } from '@aifuxi/semi-ui-vue';
 
 const value = ref('');
 const data = ref<string[]>([]);

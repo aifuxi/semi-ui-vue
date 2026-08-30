@@ -5,16 +5,16 @@
 ## 引入
 
 ```ts
-import { Button, ButtonGroup, SplitButtonGroup } from '@workspace/ui';
-import '@workspace/theme-default/button.css';
+import { Button, ButtonGroup, SplitButtonGroup } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/button.css';
 ```
 
 ## 按钮类型
 
 ```vue
 <script setup lang="ts">
-import { Button } from '@workspace/ui';
-import '@workspace/theme-default/button.css';
+import { Button } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/button.css';
 </script>
 
 <template>

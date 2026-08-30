@@ -7,7 +7,7 @@ Skeleton 在内容加载期间显示结构占位。本实现以本地 Semi Desig
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Skeleton } from '@workspace/ui';
+import { Skeleton } from '@aifuxi/semi-ui-vue';
 
 const loading = shallowRef(true);
 </script>

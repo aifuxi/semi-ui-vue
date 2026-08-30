@@ -8,7 +8,7 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: '@workspace/ui',
+        find: '@aifuxi/semi-ui-vue',
         replacement: fileURLToPath(new URL('../../packages/ui/src/index.ts', import.meta.url)),
       },
       {
@@ -39,13 +39,19 @@ export default defineConfig({
         ),
       },
       {
-        find: '@workspace/icons',
+        find: '@aifuxi/semi-icons-vue',
         replacement: fileURLToPath(new URL('../../packages/icons/src/index.ts', import.meta.url)),
       },
       {
-        find: '@workspace/icons-lab',
+        find: '@aifuxi/semi-icons-lab-vue',
         replacement: fileURLToPath(
           new URL('../../packages/icons-lab/src/index.ts', import.meta.url),
+        ),
+      },
+      {
+        find: '@aifuxi/semi-illustrations-vue',
+        replacement: fileURLToPath(
+          new URL('../../packages/illustrations/src/index.ts', import.meta.url),
         ),
       },
     ],

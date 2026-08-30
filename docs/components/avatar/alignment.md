@@ -74,7 +74,7 @@ Group 读取子 VNode 时以“键是否存在 + 值不为显式 `false`”解�
 
 - 文字/图片 Avatar 提供图片语义和 alt；可点击时 aria-label 使用固定 `clickable Avatar: ` 前缀，Group 使用 `role=list`，头像使用 `role=listitem`。
 - SSR import/render 不读取 `window`、`document`、`Image` 或布局；客户端挂载后再测量、预加载和判断 `:focus-visible`。销毁时清理预加载回调和待执行测量。
-- 根与 `@workspace/ui/avatar` 子路径导出 Avatar、AvatarGroup 和全部公开类型；真实 tarball 验证 ESM、声明、根/`avatar.css`、tree-shaking、SSR-safe import、许可证与 SPDX SBOM。
+- 根与 `@aifuxi/semi-ui-vue/avatar` 子路径导出 Avatar、AvatarGroup 和全部公开类型；真实 tarball 验证 ESM、声明、根/`avatar.css`、tree-shaking、SSR-safe import、许可证与 SPDX SBOM。
 - Foundation 只从 `packages/foundation-integration` 私有边界进入，公开运行时和声明不得泄漏 `vendor/**`、React 或私有 workspace 路径。
 
 ## React → Vue deviation
@@ -96,4 +96,4 @@ Group 读取子 VNode 时以“键是否存在 + 值不为显式 `false`”解�
 - 状态：`ready`（2026-08-28）。
 - 完整 `pnpm check:full` 通过：54 个 Vitest 文件、418 个单元/SSR 测试，以及 217 个 Chromium 行为与视觉测试全部通过。
 - Avatar 定向 Chromium 场景 7/7 通过；desktop/mobile 的 light/dark 与 RTL 共 5 组成对截图均通过严格阈值，且 React/Vue PNG 逐组字节一致。
-- 默认主题、`avatar.css` 逐组件入口、`@workspace/ui/avatar` SSR import、真实 tarball 的 ESM/声明/样式/类型/合规门禁均通过；公开产物未泄漏 `vendor/**` 或私有 workspace 路径。
+- 默认主题、`avatar.css` 逐组件入口、`@aifuxi/semi-ui-vue/avatar` SSR import、真实 tarball 的 ESM/声明/样式/类型/合规门禁均通过；公开产物未泄漏 `vendor/**` 或私有 workspace 路径。

@@ -6,7 +6,7 @@ InputNumber 对齐 Semi Design v2.102.0，复用 Input 的 DOM 与交互，并�
 
 ```vue
 <script setup lang="ts">
-import { InputNumber } from '@workspace/ui';
+import { InputNumber } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>
@@ -19,7 +19,7 @@ import { InputNumber } from '@workspace/ui';
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { InputNumber } from '@workspace/ui';
+import { InputNumber } from '@aifuxi/semi-ui-vue';
 
 const value = shallowRef<number | string>(12);
 </script>

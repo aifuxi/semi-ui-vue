@@ -5,8 +5,8 @@ OverflowList is a layout behavior component. It keeps as many items as the measu
 ## Import
 
 ```ts
-import { OverflowList } from '@workspace/ui';
-import '@workspace/theme-default/overflow-list.css';
+import { OverflowList } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/overflow-list.css';
 ```
 
 ## Collapse mode

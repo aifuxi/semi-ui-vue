@@ -7,7 +7,7 @@ Transfer 用于在候选集合与已选集合之间移动条目。本实现以�
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Transfer } from '@workspace/ui';
+import { Transfer } from '@aifuxi/semi-ui-vue';
 
 const selected = shallowRef<Array<string | number>>(['design']);
 const data = [

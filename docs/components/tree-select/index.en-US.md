@@ -7,7 +7,7 @@ TreeSelect selects one or more nodes from hierarchical data. The pinned local Se
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { TreeSelect, type TreeNodeData } from '@workspace/ui';
+import { TreeSelect, type TreeNodeData } from '@aifuxi/semi-ui-vue';
 
 const value = ref('shanghai');
 const treeData: TreeNodeData[] = [
@@ -75,4 +75,4 @@ Events: `change`, `select`, `search`, `expand`, `load`, `clear`, `focus`, `blur`
 
 ## Accessibility, theme, and SSR
 
-The trigger uses `role=combobox`; the list and nodes reuse Tree's `role=tree/treeitem`, keyboard, and focus behavior. Light/dark, RTL, and search/empty messages follow the theme and ConfigProvider locale. Root and `@workspace/ui/tree-select` imports are SSR-safe.
+The trigger uses `role=combobox`; the list and nodes reuse Tree's `role=tree/treeitem`, keyboard, and focus behavior. Light/dark, RTL, and search/empty messages follow the theme and ConfigProvider locale. Root and `@aifuxi/semi-ui-vue/tree-select` imports are SSR-safe.

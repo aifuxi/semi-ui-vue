@@ -5,7 +5,7 @@ import {
   Text,
   type ConfigContextValue,
   type SemiLocale,
-} from '@workspace/ui';
+} from '@aifuxi/semi-ui-vue';
 import ConfigProviderSummary from './ConfigProviderSummary.vue';
 
 const englishLocale: SemiLocale = {

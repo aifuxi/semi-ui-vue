@@ -6,8 +6,8 @@ Rating 对齐 Semi Design v2.102.0 的整星/半星评分、清空、禁用、�
 
 ```vue
 <script setup lang="ts">
-import { Rating } from '@workspace/ui/rating';
-import '@workspace/theme-default/rating.css';
+import { Rating } from '@aifuxi/semi-ui-vue/rating';
+import '@aifuxi/semi-theme-default/rating.css';
 import { shallowRef } from 'vue';
 
 const value = shallowRef(3.5);

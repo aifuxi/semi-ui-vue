@@ -6,7 +6,7 @@
 
 ```vue
 <script setup lang="ts">
-import { Nav } from '@workspace/ui/navigation';
+import { Nav } from '@aifuxi/semi-ui-vue/navigation';
 
 const items = [
   { itemKey: 'home', text: '首页' },
@@ -65,6 +65,6 @@ const items = [
 
 ## 可访问性、主题与 SSR
 
-根列表输出 `role="menu"` 和 `aria-orientation`，条目使用 `role="menuitem"`、`aria-disabled`/`aria-expanded`，Enter 与点击等价。默认主题入口为 `@workspace/theme-default/navigation.css`，覆盖 light/dark、RTL、Dropdown Portal 与 Collapsible。组件可 SSR import/render/hydrate；Portal 和监听仅在客户端生命周期创建并清理。
+根列表输出 `role="menu"` 和 `aria-orientation`，条目使用 `role="menuitem"`、`aria-disabled`/`aria-expanded`，Enter 与点击等价。默认主题入口为 `@aifuxi/semi-theme-default/navigation.css`，覆盖 light/dark、RTL、Dropdown Portal 与 Collapsible。组件可 SSR import/render/hydrate；Portal 和监听仅在客户端生命周期创建并清理。
 
 完整证据见 [alignment.md](./alignment.md) 与 [React 到 Vue 迁移](./react-to-vue.md)。

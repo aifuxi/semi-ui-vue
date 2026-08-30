@@ -5,8 +5,8 @@ Steps 将具有先后关系的任务拆成可见阶段。本实现以本地固�
 ## 引入
 
 ```ts
-import { Step, Steps } from '@workspace/ui';
-import '@workspace/theme-default/steps.css';
+import { Step, Steps } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/steps.css';
 ```
 
 ## Fill 与 Basic
@@ -14,7 +14,7 @@ import '@workspace/theme-default/steps.css';
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Step, Steps } from '@workspace/ui';
+import { Step, Steps } from '@aifuxi/semi-ui-vue';
 
 const current = shallowRef(1);
 </script>

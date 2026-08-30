@@ -6,8 +6,8 @@ Carousel 用于循环展示一组同尺寸内容。本实现以本地只读 Semi
 
 ```vue
 <script setup lang="ts">
-import { Carousel } from '@workspace/ui';
-import '@workspace/theme-default/carousel.css';
+import { Carousel } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/carousel.css';
 </script>
 
 <template>
@@ -24,7 +24,7 @@ import '@workspace/theme-default/carousel.css';
 ```vue
 <script setup lang="ts">
 import { shallowRef, useTemplateRef } from 'vue';
-import { Carousel, type CarouselMethods } from '@workspace/ui';
+import { Carousel, type CarouselMethods } from '@aifuxi/semi-ui-vue';
 
 const activeIndex = shallowRef(0);
 const carousel = useTemplateRef<CarouselMethods>('carousel');

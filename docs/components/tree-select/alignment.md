@@ -77,7 +77,7 @@
 - Chromium：桌面 1440x900 light/dark、移动 390x844 light/dark、桌面 RTL；同 BrowserContext 对照 React/Vue。
 - 行为：打开/关闭、单选、多选、搜索、清除、键盘、ARIA、自定义容器、滚动重定位和卸载清理。
 - 截图：阈值不超过项目上限，并对 React/Vue 独立 PNG 做直接字节比较后才可声明完全一致。
-- 发布：根导出、`@workspace/ui/tree-select`、`@workspace/theme-default/tree-select.css`、类型、SSR import、tree-shaking、许可/SBOM、真实 tarball consumer。
+- 发布：根导出、`@aifuxi/semi-ui-vue/tree-select`、`@aifuxi/semi-theme-default/tree-select.css`、类型、SSR import、tree-shaking、许可/SBOM、真实 tarball consumer。
 
 ## Deviation
 

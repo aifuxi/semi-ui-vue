@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { InputNumber } from '@workspace/ui';
+import { InputNumber } from '@aifuxi/semi-ui-vue';
 import { shallowRef } from 'vue';
 
 const lastValue = shallowRef('none');

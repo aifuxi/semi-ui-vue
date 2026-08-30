@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { TabPane, Tabs } from '@workspace/ui';
+import { TabPane, Tabs } from '@aifuxi/semi-ui-vue';
 
 const status = shallowRef('等待操作');
 const labels = ['文档', '快速起步', '帮助'];

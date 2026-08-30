@@ -7,8 +7,8 @@ SideSheet 从页面边缘滑出，用于承载不会离开当前上下文的二�
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Button, SideSheet } from '@workspace/ui';
-import '@workspace/theme-default/side-sheet.css';
+import { Button, SideSheet } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/side-sheet.css';
 
 const visible = ref(false);
 </script>
@@ -32,7 +32,7 @@ const visible = ref(false);
 ```vue
 <script setup lang="ts">
 import { ref, useTemplateRef } from 'vue';
-import { SideSheet } from '@workspace/ui';
+import { SideSheet } from '@aifuxi/semi-ui-vue';
 
 const host = useTemplateRef<HTMLElement>('host');
 const visible = ref(true);

@@ -6,9 +6,9 @@ import {
   IconHome,
   IconLikeHeart,
   IconSpin,
-} from '@workspace/icons';
-import { IconAvatar } from '@workspace/icons-lab';
-import { Icon } from '@workspace/ui';
+} from '@aifuxi/semi-icons-vue';
+import { IconAvatar } from '@aifuxi/semi-icons-lab-vue';
+import { Icon } from '@aifuxi/semi-ui-vue';
 
 const sizes = ['extra-small', 'small', 'default', 'large', 'extra-large'] as const;
 </script>

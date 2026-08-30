@@ -1,12 +1,37 @@
 {
-  "name": "@workspace/icons",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@aifuxi/semi-icons-vue",
+  "version": "0.1.0-alpha.0",
+  "description": "Stable Semi Design v2.102.0 icons generated as Vue 3 components.",
+  "license": "MIT",
+  "author": "aifuxi",
+  "keywords": [
+    "semi-design",
+    "vue",
+    "icons",
+    "svg",
+    "components"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aifuxi/semi-ui-vue.git",
+    "directory": "packages/icons"
+  },
+  "homepage": "https://github.com/aifuxi/semi-ui-vue#readme",
+  "bugs": {
+    "url": "https://github.com/aifuxi/semi-ui-vue/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
+    "LICENSE",
+    "README.md",
     "dist"
   ],
   "sideEffects": false,

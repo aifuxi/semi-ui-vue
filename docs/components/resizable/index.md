@@ -5,9 +5,9 @@
 ## 引入
 
 ```ts
-import { Resizable, ResizeGroup, ResizeHandler, ResizeItem } from '@workspace/ui';
-// 或从 '@workspace/ui/resizable' 引入
-import '@workspace/theme-default/resizable.css';
+import { Resizable, ResizeGroup, ResizeHandler, ResizeItem } from '@aifuxi/semi-ui-vue';
+// 或从 '@aifuxi/semi-ui-vue/resizable' 引入
+import '@aifuxi/semi-theme-default/resizable.css';
 ```
 
 ## 单体伸缩框
@@ -15,7 +15,7 @@ import '@workspace/theme-default/resizable.css';
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { ResizeSize } from '@workspace/ui';
+import type { ResizeSize } from '@aifuxi/semi-ui-vue';
 
 const size = ref<ResizeSize>({ width: 320, height: 180 });
 </script>

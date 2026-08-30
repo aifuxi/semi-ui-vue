@@ -9,7 +9,7 @@ import {
   IconRealSizeStroked,
   IconRotate,
   IconWindowAdaptionStroked,
-} from '@workspace/icons';
+} from '@aifuxi/semi-icons-vue';
 import throttle from 'lodash/throttle.js';
 import {
   computed,

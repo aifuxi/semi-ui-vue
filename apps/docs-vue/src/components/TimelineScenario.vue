@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Timeline, TimelineItem, type TimelineData } from '@workspace/ui';
+import { Timeline, TimelineItem, type TimelineData } from '@aifuxi/semi-ui-vue';
 
 const lastAction = shallowRef('暂无操作');
 const centerData: TimelineData[] = [

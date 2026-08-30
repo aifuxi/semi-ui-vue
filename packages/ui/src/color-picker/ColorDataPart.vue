@@ -4,7 +4,7 @@ import {
   roundColorPickerValue,
   splitColorPickerInput,
 } from '@workspace/foundation-integration';
-import { IconEyedropper } from '@workspace/icons';
+import { IconEyedropper } from '@aifuxi/semi-icons-vue';
 import { computed, onMounted, shallowRef, watch } from 'vue';
 
 import { Button } from '../button';

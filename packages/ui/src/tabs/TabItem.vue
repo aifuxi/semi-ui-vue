@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconClose } from '@workspace/icons';
+import { IconClose } from '@aifuxi/semi-icons-vue';
 import { computed, useAttrs, useSlots } from 'vue';
 
 import TabsNodeRenderer from './TabsNodeRenderer';

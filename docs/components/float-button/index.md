@@ -5,8 +5,8 @@
 ## 引入
 
 ```ts
-import { FloatButton, FloatButtonGroup } from '@workspace/ui';
-import '@workspace/theme-default/float-button.css';
+import { FloatButton, FloatButtonGroup } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/float-button.css';
 ```
 
 ## 基本用法

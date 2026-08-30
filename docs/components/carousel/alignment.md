@@ -79,7 +79,7 @@
 - SSR 覆盖默认/显式 Boolean、基础/单项、命名箭头 slots、ARIA/data attrs 与动画 style，确认 import/render 不创建 timer 或触碰 DOM。
 - React/Vue 场景覆盖基础 slide、fade、line/columnar、hover 箭头、自定义箭头、单项、受控切换、RTL 与可访问属性。
 - 视觉覆盖桌面 `1440×900`、移动 `390×844`、light/dark 与 RTL；关键 computed style 精确相等，bounding rect 各轴误差 `<= 0.5px`，截图阈值 `<= 0.1` / `0.001`，并独立比较成对 PNG 字节。
-- 根与 `@workspace/ui/carousel` 子路径导出组件和公开类型；`@workspace/theme-default/carousel.css` 包含固定 Token、Icon 与 Carousel 样式。
+- 根与 `@aifuxi/semi-ui-vue/carousel` 子路径导出组件和公开类型；`@aifuxi/semi-theme-default/carousel.css` 包含固定 Token、Icon 与 Carousel 样式。
 - 真实 tarball 验证根/子路径 ESM、声明、逐组件 CSS、tree-shaking、SSR-safe import、许可证与 SPDX SBOM；公开声明不得泄漏 Foundation/vendor 私有类型。
 
 ## Deviation

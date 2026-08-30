@@ -4,7 +4,7 @@ import {
   IconAlertTriangle,
   IconChevronRight,
   IconTickCircle,
-} from '@workspace/icons';
+} from '@aifuxi/semi-icons-vue';
 import {
   computed,
   getCurrentInstance,

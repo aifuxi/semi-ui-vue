@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconCopy, IconTick } from '@workspace/icons';
+import { IconCopy, IconTick } from '@aifuxi/semi-icons-vue';
 import { cloneVNode, computed, inject, isVNode, onBeforeUnmount, shallowRef, unref } from 'vue';
 
 import TypographyNodeRenderer from './TypographyNodeRenderer';

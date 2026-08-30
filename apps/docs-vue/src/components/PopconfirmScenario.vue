@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { shallowRef, useTemplateRef } from 'vue';
 
-import { Button, ConfigProvider, Popconfirm } from '@workspace/ui';
+import { Button, ConfigProvider, Popconfirm } from '@aifuxi/semi-ui-vue';
 import type { ParityDirection } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection }>();

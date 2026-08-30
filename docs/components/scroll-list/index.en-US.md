@@ -7,7 +7,7 @@ ScrollList renders one or more selectable columns in a constrained height. This 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { ScrollItem, ScrollList, type ScrollItemSelectData } from '@workspace/ui';
+import { ScrollItem, ScrollList, type ScrollItemSelectData } from '@aifuxi/semi-ui-vue';
 
 const selectedIndex = ref(1);
 const hours = Array.from({ length: 12 }, (_, index) => ({

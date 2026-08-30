@@ -7,7 +7,7 @@ Transfer moves items between a source collection and a selected collection. The 
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Transfer } from '@workspace/ui';
+import { Transfer } from '@aifuxi/semi-ui-vue';
 
 const selected = shallowRef<Array<string | number>>(['design']);
 const data = [

@@ -6,8 +6,8 @@ Tooltip presents supplemental information on hover, focus, click, or context men
 
 ```vue
 <script setup lang="ts">
-import { Tooltip, Button } from '@workspace/ui';
-import '@workspace/theme-default/tooltip.css';
+import { Tooltip, Button } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/tooltip.css';
 </script>
 
 <template>

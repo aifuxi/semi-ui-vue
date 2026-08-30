@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconAlertCircle, IconAlertTriangle } from '@workspace/icons';
+import { IconAlertCircle, IconAlertTriangle } from '@aifuxi/semi-icons-vue';
 import { computed, isVNode } from 'vue';
 
 import FormNodeRenderer from './FormNodeRenderer';

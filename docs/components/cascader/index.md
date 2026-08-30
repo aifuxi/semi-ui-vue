@@ -7,7 +7,7 @@ Cascader 用于从具有父子关系的数据中逐级选择路径。本实现�
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Cascader, type CascaderData, type CascaderValue } from '@workspace/ui';
+import { Cascader, type CascaderData, type CascaderValue } from '@aifuxi/semi-ui-vue';
 
 const value = ref<CascaderValue>(['asia', 'china', 'shanghai']);
 const treeData: CascaderData[] = [
@@ -77,4 +77,4 @@ const treeData: CascaderData[] = [
 
 ## 无障碍、主题与 SSR
 
-触发器使用 `role=combobox`，弹层使用 `role=listbox`，列和选项保留上游 menu/menuitem、ARIA 关系与键盘语义。light/dark、移动端、RTL 与 zh-CN/en-US 场景均由固定 Chromium 对照验证；根入口及 `@workspace/ui/cascader` 子路径支持 SSR-safe import。
+触发器使用 `role=combobox`，弹层使用 `role=listbox`，列和选项保留上游 menu/menuitem、ARIA 关系与键盘语义。light/dark、移动端、RTL 与 zh-CN/en-US 场景均由固定 Chromium 对照验证；根入口及 `@aifuxi/semi-ui-vue/cascader` 子路径支持 SSR-safe import。

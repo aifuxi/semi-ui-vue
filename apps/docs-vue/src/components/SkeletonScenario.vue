@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Skeleton } from '@workspace/ui';
+import { Skeleton } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>

@@ -5,8 +5,8 @@
 ## 引入
 
 ```ts
-import { Divider } from '@workspace/ui';
-import '@workspace/theme-default/divider.css';
+import { Divider } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/divider.css';
 ```
 
 ## 基本用法

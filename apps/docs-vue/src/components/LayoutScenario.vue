@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { computed, shallowReactive } from 'vue';
-import { Layout, LayoutContent, LayoutFooter, LayoutHeader, LayoutSider } from '@workspace/ui';
-import type { LayoutBreakpoint } from '@workspace/ui';
+import {
+  Layout,
+  LayoutContent,
+  LayoutFooter,
+  LayoutHeader,
+  LayoutSider,
+} from '@aifuxi/semi-ui-vue';
+import type { LayoutBreakpoint } from '@aifuxi/semi-ui-vue';
 
 const headerFooterStyle = {
   height: 42,

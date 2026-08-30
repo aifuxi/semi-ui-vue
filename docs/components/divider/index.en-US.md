@@ -5,8 +5,8 @@ Divider logically organizes content and page regions. The implementation targets
 ## Import
 
 ```ts
-import { Divider } from '@workspace/ui';
-import '@workspace/theme-default/divider.css';
+import { Divider } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/divider.css';
 ```
 
 ## Basic usage

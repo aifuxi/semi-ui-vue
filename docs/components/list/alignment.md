@@ -67,7 +67,7 @@
 - 固定 Adapter 使用语义 `ul/li`，不添加 listbox、button、tabindex 或键盘状态机；Grid 模式因上游 Row/Col 包裹保留 `div > div > li` 结构。
 - Spin SVG `aria-hidden=true`；loading 根通过固定 class/DOM 表达，不新增上游不存在的 live region。
 - import/SSR render/hydration 不访问 DOM；无 Observer、Portal、全局监听或卸载资源。
-- 根导出、`@workspace/ui/list` 子路径、`@workspace/theme-default/list.css`、SSR-safe import、真实 tarball 类型/样式/tree-shaking/许可/SBOM均需验证；公开声明不得泄漏 vendor 或私有包路径。
+- 根导出、`@aifuxi/semi-ui-vue/list` 子路径、`@aifuxi/semi-theme-default/list.css`、SSR-safe import、真实 tarball 类型/样式/tree-shaking/许可/SBOM均需验证；公开声明不得泄漏 vendor 或私有包路径。
 
 ## 视觉与行为验收矩阵
 

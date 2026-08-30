@@ -6,7 +6,7 @@ import {
   type StyleValue,
   type VNodeChild,
 } from 'vue';
-import { IconClose } from '@workspace/icons';
+import { IconClose } from '@aifuxi/semi-icons-vue';
 
 import { Button } from '../button';
 import { Title } from '../typography';

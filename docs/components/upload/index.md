@@ -6,8 +6,8 @@ Vue 3.5 对齐 Semi Design v2.102.0 的文件选择、拖放、粘贴、上传�
 
 ```vue
 <script setup lang="ts">
-import { Button, Upload } from '@workspace/ui';
-import '@workspace/theme-default/upload.css';
+import { Button, Upload } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/upload.css';
 </script>
 
 <template>
@@ -22,7 +22,7 @@ import '@workspace/theme-default/upload.css';
 ```vue
 <script setup lang="ts">
 import { shallowRef, useTemplateRef } from 'vue';
-import { Upload, type UploadExposed, type UploadFileItem } from '@workspace/ui';
+import { Upload, type UploadExposed, type UploadFileItem } from '@aifuxi/semi-ui-vue';
 
 const files = shallowRef<UploadFileItem[]>([]);
 const upload = useTemplateRef<UploadExposed>('upload');

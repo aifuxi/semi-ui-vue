@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /* eslint-disable vue/require-default-prop -- internal header renderer preserves absent callbacks and configuration. */
-import { IconCaretdown, IconCaretup, IconFilter } from '@workspace/icons';
+import { IconCaretdown, IconCaretup, IconFilter } from '@aifuxi/semi-icons-vue';
 import { Button } from '../button';
 import { Checkbox, type CheckboxChangeEvent } from '../checkbox';
 import { Dropdown } from '../dropdown';

@@ -7,8 +7,8 @@ ColorPicker matches Semi Design v2.102.0 for the saturation/value area, hue and 
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { ColorPicker, colorStringToValue, type ColorValue } from '@workspace/ui';
-import '@workspace/theme-default/color-picker.css';
+import { ColorPicker, colorStringToValue, type ColorValue } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/color-picker.css';
 
 const color = shallowRef<ColorValue>(colorStringToValue('#39c5bb'));
 </script>

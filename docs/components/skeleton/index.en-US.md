@@ -7,7 +7,7 @@ Skeleton shows structural placeholders while content is loading. The pinned loca
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Skeleton } from '@workspace/ui';
+import { Skeleton } from '@aifuxi/semi-ui-vue';
 
 const loading = shallowRef(true);
 </script>

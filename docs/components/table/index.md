@@ -6,8 +6,8 @@ Table 用列描述渲染结构化数据，支持排序、筛选、选择、树�
 
 ```vue
 <script setup lang="ts">
-import { Table, type TableColumnProps } from '@workspace/ui';
-import '@workspace/theme-default/table.css';
+import { Table, type TableColumnProps } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/table.css';
 
 const columns: TableColumnProps[] = [
   { title: '名称', dataIndex: 'name', key: 'name' },

@@ -6,7 +6,7 @@ Dropdown presents an action menu from a trigger. The local Semi Design v2.102.0 
 
 ```vue
 <script setup lang="ts">
-import { Dropdown } from '@workspace/ui';
+import { Dropdown } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>

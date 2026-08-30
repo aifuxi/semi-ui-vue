@@ -6,8 +6,8 @@ Table renders structured data from column definitions and supports sorting, filt
 
 ```vue
 <script setup lang="ts">
-import { Table, type TableColumnProps } from '@workspace/ui';
-import '@workspace/theme-default/table.css';
+import { Table, type TableColumnProps } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/table.css';
 
 const columns: TableColumnProps[] = [
   { title: 'Service', dataIndex: 'name', key: 'name' },

@@ -5,8 +5,14 @@ Layout divides a page into top-level structural regions. The implementation targ
 ## Import
 
 ```ts
-import { Layout, LayoutHeader, LayoutContent, LayoutFooter, LayoutSider } from '@workspace/ui';
-import '@workspace/theme-default/layout.css';
+import {
+  Layout,
+  LayoutHeader,
+  LayoutContent,
+  LayoutFooter,
+  LayoutSider,
+} from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/layout.css';
 ```
 
 ## Three-row layout
@@ -42,7 +48,7 @@ A direct or nested Sider adds `semi-layout-has-sider` to its nearest Layout. Pas
 
 ```vue
 <script setup lang="ts">
-import type { LayoutBreakpoint } from '@workspace/ui';
+import type { LayoutBreakpoint } from '@aifuxi/semi-ui-vue';
 
 function handleBreakpoint(screen: LayoutBreakpoint, match: boolean) {
   console.log(screen, match);

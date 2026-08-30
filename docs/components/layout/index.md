@@ -5,8 +5,14 @@
 ## 引入
 
 ```ts
-import { Layout, LayoutHeader, LayoutContent, LayoutFooter, LayoutSider } from '@workspace/ui';
-import '@workspace/theme-default/layout.css';
+import {
+  Layout,
+  LayoutHeader,
+  LayoutContent,
+  LayoutFooter,
+  LayoutSider,
+} from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/layout.css';
 ```
 
 ## 三行布局
@@ -42,7 +48,7 @@ import '@workspace/theme-default/layout.css';
 
 ```vue
 <script setup lang="ts">
-import type { LayoutBreakpoint } from '@workspace/ui';
+import type { LayoutBreakpoint } from '@aifuxi/semi-ui-vue';
 
 function handleBreakpoint(screen: LayoutBreakpoint, match: boolean) {
   console.log(screen, match);

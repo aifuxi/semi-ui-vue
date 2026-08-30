@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form } from '@workspace/ui';
+import { Form } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>

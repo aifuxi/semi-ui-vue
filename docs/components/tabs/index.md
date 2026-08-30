@@ -6,8 +6,8 @@
 
 ```vue
 <script setup lang="ts">
-import { TabPane, Tabs } from '@workspace/ui';
-import '@workspace/theme-default/tabs.css';
+import { TabPane, Tabs } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/tabs.css';
 </script>
 
 <template>

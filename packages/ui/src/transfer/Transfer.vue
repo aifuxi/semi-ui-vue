@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconClose, IconHandle, IconSearch } from '@workspace/icons';
+import { IconClose, IconHandle, IconSearch } from '@aifuxi/semi-icons-vue';
 import {
   generateTransferDataByType,
   generateTransferSelectedItems,

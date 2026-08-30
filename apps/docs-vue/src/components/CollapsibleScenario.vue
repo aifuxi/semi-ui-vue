@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Collapsible } from '@workspace/ui';
+import { Collapsible } from '@aifuxi/semi-ui-vue';
 
 const basicOpen = shallowRef(true);
 const lazyOpen = shallowRef(false);

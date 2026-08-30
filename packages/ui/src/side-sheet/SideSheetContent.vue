@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, type HTMLAttributes, type StyleValue, type VNodeChild } from 'vue';
-import { IconClose } from '@workspace/icons';
+import { IconClose } from '@aifuxi/semi-icons-vue';
 
 import { Button } from '../button';
 import SideSheetNodeRenderer from './SideSheetNodeRenderer';

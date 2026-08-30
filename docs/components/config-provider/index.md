@@ -6,9 +6,9 @@ ConfigProvider 为组件子树提供方向、语言、时区、弹层容器与�
 
 ```vue
 <script setup lang="ts">
-import { ConfigConsumer, ConfigProvider, Text, type SemiLocale } from '@workspace/ui';
-import '@workspace/theme-default/config-provider.css';
-import '@workspace/theme-default/typography.css';
+import { ConfigConsumer, ConfigProvider, Text, type SemiLocale } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/config-provider.css';
+import '@aifuxi/semi-theme-default/typography.css';
 
 const locale: SemiLocale = {
   code: 'en-US',

@@ -19,7 +19,7 @@ import {
   type VNodeChild,
 } from 'vue';
 import { BreadcrumbFoundation, type BreadcrumbAdapter } from '@workspace/foundation-integration';
-import { IconMore } from '@workspace/icons';
+import { IconMore } from '@aifuxi/semi-icons-vue';
 
 import BreadcrumbItem from './BreadcrumbItem.vue';
 import BreadcrumbPopover from './BreadcrumbPopover.vue';

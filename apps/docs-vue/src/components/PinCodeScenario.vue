@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PinCode } from '@workspace/ui';
+import { PinCode } from '@aifuxi/semi-ui-vue';
 import { shallowRef } from 'vue';
 
 const lastValue = shallowRef('none');

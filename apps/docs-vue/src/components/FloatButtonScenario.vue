@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { h, shallowRef, type CSSProperties } from 'vue';
-import { IconBell, IconCustomerSupport, IconHelpCircle, IconPlus } from '@workspace/icons';
+import { IconBell, IconCustomerSupport, IconHelpCircle, IconPlus } from '@aifuxi/semi-icons-vue';
 import {
   FloatButton,
   FloatButtonGroup,
   type FloatButtonGroupItem,
   type FloatButtonSize,
-} from '@workspace/ui';
+} from '@aifuxi/semi-ui-vue';
 
 const sizes: readonly FloatButtonSize[] = ['small', 'default', 'large'];
 const inlineStyle: CSSProperties = {

@@ -8,7 +8,7 @@ Input、InputGroup 与 TextArea 对齐 Semi Design v2.102.0，保留 `.semi-inpu
 
 ```vue
 <script setup lang="ts">
-import { Input } from '@workspace/ui';
+import { Input } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>
@@ -21,7 +21,7 @@ import { Input } from '@workspace/ui';
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Input } from '@workspace/ui';
+import { Input } from '@aifuxi/semi-ui-vue';
 
 const value = ref('semi.design');
 </script>
@@ -61,7 +61,7 @@ Group 的 `size`、`disabled` 只作为直接子项的回退值；子项显式 `
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { TextArea } from '@workspace/ui';
+import { TextArea } from '@aifuxi/semi-ui-vue';
 
 const value = ref('第一行\n第二行');
 </script>

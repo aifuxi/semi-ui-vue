@@ -65,7 +65,7 @@ Slider 是固定 `vendor/semi-design/content/order.js` 中 Rating 之后、Switc
 - 每个 handle 可聚焦并有完整 slider ARIA；disabled 仍保留 role 但从 Tab 顺序移除。range wrapper 生成可读的 `Range: min to max` label。
 - Tooltip 复用已经 ready 的 Tooltip Portal；场景使用首次显示前已稳定存在的容器语义。Slider 本身不承诺动态 popup container，也不新增定位 Observer。
 - 视觉矩阵覆盖 desktop/mobile、light/dark；方向敏感场景增加 RTL，垂直与 verticalReverse 作为行为/几何场景。Slider 无 Locale 文案依赖，zh-CN/en-US 共用数值数据。
-- SSR 输出 rail/track/marks/handles/ARIA，不访问 DOM、不注册全局监听且不插入 Portal；根入口与 `@workspace/ui/slider` 必须 SSR-safe import。
+- SSR 输出 rail/track/marks/handles/ARIA，不访问 DOM、不注册全局监听且不插入 Portal；根入口与 `@aifuxi/semi-ui-vue/slider` 必须 SSR-safe import。
 
 ## 测试与完成门禁
 

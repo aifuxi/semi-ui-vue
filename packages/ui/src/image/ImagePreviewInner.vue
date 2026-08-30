@@ -3,7 +3,7 @@ import {
   ImagePreviewInnerFoundation,
   type ImagePreviewInnerAdapter,
 } from '@workspace/foundation-integration';
-import { IconArrowLeft, IconArrowRight } from '@workspace/icons';
+import { IconArrowLeft, IconArrowRight } from '@aifuxi/semi-icons-vue';
 import {
   computed,
   inject,

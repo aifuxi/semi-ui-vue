@@ -16,7 +16,7 @@ import {
   IllustrationNotFoundDark,
   IllustrationSuccess,
   IllustrationSuccessDark,
-} from '@workspace/illustrations';
+} from '@aifuxi/semi-illustrations-vue';
 
 const illustrationPairs = [
   { name: 'Construction', light: IllustrationConstruction, dark: IllustrationConstructionDark },

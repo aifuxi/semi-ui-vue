@@ -6,7 +6,7 @@ Radio 用于在互斥选项中选择一项。本实现对齐本地 Semi Design `
 
 ```vue
 <script setup lang="ts">
-import { Radio, RadioGroup } from '@workspace/ui/radio';
+import { Radio, RadioGroup } from '@aifuxi/semi-ui-vue/radio';
 import { shallowRef } from 'vue';
 
 const value = shallowRef('design');
@@ -68,7 +68,7 @@ Button 类型支持 `small`、`middle`、`large`。与固定源码一致，butto
 
 ```vue
 <script setup lang="ts">
-import { Radio } from '@workspace/ui/radio';
+import { Radio } from '@aifuxi/semi-ui-vue/radio';
 import { shallowRef } from 'vue';
 
 const checked = shallowRef(true);

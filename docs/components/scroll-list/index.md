@@ -7,7 +7,7 @@ ScrollList 用于在有限高度内展示一列或多列可滚动选项。本实
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { ScrollItem, ScrollList, type ScrollItemSelectData } from '@workspace/ui';
+import { ScrollItem, ScrollList, type ScrollItemSelectData } from '@aifuxi/semi-ui-vue';
 
 const selectedIndex = ref(1);
 const hours = Array.from({ length: 12 }, (_, index) => ({

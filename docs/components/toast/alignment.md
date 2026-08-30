@@ -97,4 +97,4 @@
 - 单元与 SSR 覆盖静态 API、Factory 隔离、holder 上下文、默认值优先级、同 id 更新、timer/hover、关闭回调、Portal、stack、RTL、自定义图标和 SSR-safe import。
 - Chromium 定向验收覆盖桌面 `1440×900` 与移动 `390×844`、DPR 1、light/dark、RTL、关闭交互、ARIA、关键 computed style 和 bounding rect。
 - 18 张 Toast 裁剪基线均由 React/Vue 独立截图生成并通过严格阈值，未使用截图 mask；每个场景还会在同一稳定时刻独立抓取 React/Vue buffer，并以 `Buffer.equals` 验证直接字节相同。
-- 根入口、`@workspace/ui/toast` 子路径、`@workspace/theme-default/toast.css`、声明文件、SSR import 和隔离 tarball 消费均验证通过。
+- 根入口、`@aifuxi/semi-ui-vue/toast` 子路径、`@aifuxi/semi-theme-default/toast.css`、声明文件、SSR import 和隔离 tarball 消费均验证通过。

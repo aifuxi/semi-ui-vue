@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconChevronLeft, IconChevronRight } from '@workspace/icons';
+import { IconChevronLeft, IconChevronRight } from '@aifuxi/semi-icons-vue';
 import { computed, useSlots, type VNodeChild } from 'vue';
 
 import CarouselNodeRenderer from './CarouselNodeRenderer';

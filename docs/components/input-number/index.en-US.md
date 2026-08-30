@@ -6,7 +6,7 @@ InputNumber targets Semi Design v2.102.0. It reuses Input DOM and behavior while
 
 ```vue
 <script setup lang="ts">
-import { InputNumber } from '@workspace/ui';
+import { InputNumber } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>
@@ -19,7 +19,7 @@ Use `v-model` for controlled input. `value` wins when both `value` and `modelVal
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { InputNumber } from '@workspace/ui';
+import { InputNumber } from '@aifuxi/semi-ui-vue';
 
 const value = shallowRef<number | string>(12);
 </script>

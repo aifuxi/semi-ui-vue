@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ImageFoundation, type ImageFoundationAdapter } from '@workspace/foundation-integration';
-import { IconEyeOpened, IconUploadError } from '@workspace/icons';
+import { IconEyeOpened, IconUploadError } from '@aifuxi/semi-icons-vue';
 import {
   computed,
   inject,

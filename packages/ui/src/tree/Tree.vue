@@ -18,7 +18,7 @@ import {
   type VNode,
   type VNodeChild,
 } from 'vue';
-import { IconSearch } from '@workspace/icons';
+import { IconSearch } from '@aifuxi/semi-icons-vue';
 import {
   calcTreeCheckedKeys,
   calcTreeDisabledKeys,

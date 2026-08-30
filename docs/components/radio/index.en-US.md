@@ -6,7 +6,7 @@ Radio selects one value from mutually exclusive choices. This Vue implementation
 
 ```vue
 <script setup lang="ts">
-import { Radio, RadioGroup } from '@workspace/ui/radio';
+import { Radio, RadioGroup } from '@aifuxi/semi-ui-vue/radio';
 import { shallowRef } from 'vue';
 
 const value = shallowRef('design');
@@ -68,7 +68,7 @@ Button groups support `small`, `middle`, and `large`. Matching the pinned source
 
 ```vue
 <script setup lang="ts">
-import { Radio } from '@workspace/ui/radio';
+import { Radio } from '@aifuxi/semi-ui-vue/radio';
 import { shallowRef } from 'vue';
 
 const checked = shallowRef(true);

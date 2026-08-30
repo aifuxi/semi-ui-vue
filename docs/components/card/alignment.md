@@ -84,8 +84,8 @@ Card 是纯组合容器，没有 Foundation 状态机、Portal、Observer 或全
 - SSR 覆盖 Card/Meta/Group、命名 slots、loading、ARIA、默认/显式 Boolean、grid 与原生 attrs；import 不触碰 DOM。
 - React/Vue 场景覆盖基础卡、完整卡、loading、actions、Meta、CardGroup 普通/grid、border/shadow、hover、RTL 与可访问属性。
 - 视觉覆盖桌面 `1440×900`、移动 `390×844`、light/dark 与 RTL；关键 computed style 精确相等，bounding rect 各轴误差 `<= 0.5px`，截图阈值 `<= 0.1` / `0.001`。
-- 根与 `@workspace/ui/card` 子路径导出 Card、CardGroup、CardMeta 及公开类型；`Card.Meta` 复合入口可用。
-- `@workspace/theme-default/card.css` 同时包含 Card、Space、Typography、Tooltip 与内置 Skeleton 实际样式依赖；根 CSS 继续包含全部固定样式。
+- 根与 `@aifuxi/semi-ui-vue/card` 子路径导出 Card、CardGroup、CardMeta 及公开类型；`Card.Meta` 复合入口可用。
+- `@aifuxi/semi-theme-default/card.css` 同时包含 Card、Space、Typography、Tooltip 与内置 Skeleton 实际样式依赖；根 CSS 继续包含全部固定样式。
 - 真实 tarball 验证根/子路径 ESM、声明、逐组件 CSS、tree-shaking、SSR-safe import、许可证与 SPDX SBOM。
 
 ## Deviation

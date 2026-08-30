@@ -69,7 +69,7 @@
 
 ## 发布与 deviation
 
-- 根与 `@workspace/ui/modal` 子路径导出 Modal、静态方法、useModal 和全部公开 Vue 类型；`@workspace/theme-default/modal.css` 编译固定样式。
+- 根与 `@aifuxi/semi-ui-vue/modal` 子路径导出 Modal、静态方法、useModal 和全部公开 Vue 类型；`@aifuxi/semi-theme-default/modal.css` 编译固定样式。
 - 真实 tarball 验证 ESM、声明、根/子路径、根 CSS/`modal.css`、tree-shaking、SSR-safe import、许可证与 SPDX SBOM；公开 `.d.ts` 不得出现 `vendor/**` 或私有 workspace Foundation 类型。
 - React `children` 映射默认 slot，ReactNode props 同时提供 Vue 命名 slot；React `useModal` 的 ReactNode holder 映射为 Vue 动态组件 holder，能力与上下文语义保留。
 - 暂无 accepted deviation；任何浏览器或静态 API 差异必须在完成状态前补录证据与影响。

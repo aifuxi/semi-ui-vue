@@ -5,23 +5,26 @@ Empty 用图片、标题、描述和操作区表达当前区域没有可展示�
 ## 引入
 
 ```ts
-import { Empty } from '@workspace/ui';
-import '@workspace/theme-default/empty.css';
+import { Empty } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/empty.css';
 ```
 
 也可使用子路径：
 
 ```ts
-import Empty, { type EmptyProps } from '@workspace/ui/empty';
+import Empty, { type EmptyProps } from '@aifuxi/semi-ui-vue/empty';
 ```
 
 ## 基本用法
 
 ```vue
 <script setup lang="ts">
-import { Empty } from '@workspace/ui';
-import { IllustrationConstruction, IllustrationConstructionDark } from '@workspace/illustrations';
-import '@workspace/theme-default/empty.css';
+import { Empty } from '@aifuxi/semi-ui-vue';
+import {
+  IllustrationConstruction,
+  IllustrationConstructionDark,
+} from '@aifuxi/semi-illustrations-vue';
+import '@aifuxi/semi-theme-default/empty.css';
 </script>
 
 <template>
@@ -44,8 +47,8 @@ import '@workspace/theme-default/empty.css';
 
 ```vue
 <script setup lang="ts">
-import { Button, Empty } from '@workspace/ui';
-import { IllustrationNoContent, IllustrationNoContentDark } from '@workspace/illustrations';
+import { Button, Empty } from '@aifuxi/semi-ui-vue';
+import { IllustrationNoContent, IllustrationNoContentDark } from '@aifuxi/semi-illustrations-vue';
 </script>
 
 <template>
@@ -128,6 +131,6 @@ import { IllustrationNoContent, IllustrationNoContentDark } from '@workspace/ill
 - SVG 描述对象输出 `aria-hidden="true"`；自定义 VNode 的 ARIA 由调用方负责。
 - 图片之外不创建可聚焦节点；操作区按钮保持自身原生键盘行为。
 - `.semi-rtl` 与 `.semi-portal-rtl` 祖先会应用固定 RTL SCSS。
-- 根入口和 `@workspace/ui/empty` 子路径均可在无 DOM 环境导入；Observer 只在 mounted 后创建并完整清理。
+- 根入口和 `@aifuxi/semi-ui-vue/empty` 子路径均可在无 DOM 环境导入；Observer 只在 mounted 后创建并完整清理。
 
 完整源码证据、DOM、computed style、视觉场景和 deviation 结论见 [对齐矩阵](./alignment.md)，React 迁移见 [React → Vue](./react-to-vue.md)。

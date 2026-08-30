@@ -5,8 +5,8 @@ Notification 用于主动向用户展示较完整的异步结果或状态提醒�
 ## 基础用法
 
 ```ts
-import { Notification } from '@workspace/ui';
-import '@workspace/theme-default/notification.css';
+import { Notification } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/notification.css';
 
 const id = Notification.info({
   title: '任务已完成',
@@ -54,7 +54,7 @@ Notification.config({ position: 'top', top: 24, duration: 5, zIndex: 1200 });
 
 ```vue
 <script setup lang="ts">
-import { Notification } from '@workspace/ui';
+import { Notification } from '@aifuxi/semi-ui-vue';
 
 const [notification, NotificationHolder] = Notification.useNotification();
 

@@ -5,9 +5,9 @@ Resize a single region from its edges/corners, or resize adjacent panels through
 ## Import
 
 ```ts
-import { Resizable, ResizeGroup, ResizeHandler, ResizeItem } from '@workspace/ui';
-// or import them from '@workspace/ui/resizable';
-import '@workspace/theme-default/resizable.css';
+import { Resizable, ResizeGroup, ResizeHandler, ResizeItem } from '@aifuxi/semi-ui-vue';
+// or import them from '@aifuxi/semi-ui-vue/resizable';
+import '@aifuxi/semi-theme-default/resizable.css';
 ```
 
 ## Single resizable region
@@ -15,7 +15,7 @@ import '@workspace/theme-default/resizable.css';
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { ResizeSize } from '@workspace/ui';
+import type { ResizeSize } from '@aifuxi/semi-ui-vue';
 
 const size = ref<ResizeSize>({ width: 320, height: 180 });
 </script>

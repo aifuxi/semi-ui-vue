@@ -6,7 +6,7 @@ Spin informs users that content is loading for an uncertain amount of time. The 
 
 ```vue
 <script setup lang="ts">
-import { Spin } from '@workspace/ui';
+import { Spin } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>
@@ -34,7 +34,7 @@ import { Spin } from '@workspace/ui';
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Spin } from '@workspace/ui';
+import { Spin } from '@aifuxi/semi-ui-vue';
 
 const loading = shallowRef(false);
 </script>

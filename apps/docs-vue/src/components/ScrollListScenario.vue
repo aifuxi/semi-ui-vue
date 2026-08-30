@@ -6,7 +6,7 @@ import {
   ScrollList,
   type ScrollItemData,
   type ScrollItemSelectData,
-} from '@workspace/ui';
+} from '@aifuxi/semi-ui-vue';
 
 const periods: ScrollItemData[] = [
   { value: 'AM', transform: () => 'Morning' },

@@ -11,11 +11,11 @@
   },
   "dependencies": {
     "@workspace/test-infra": "workspace:*",
-    "@workspace/theme-default": "workspace:*",
-    "@workspace/icons": "workspace:*",
-    "@workspace/icons-lab": "workspace:*",
-    "@workspace/illustrations": "workspace:*",
-    "@workspace/ui": "workspace:*",
+    "@aifuxi/semi-theme-default": "workspace:*",
+    "@aifuxi/semi-icons-vue": "workspace:*",
+    "@aifuxi/semi-icons-lab-vue": "workspace:*",
+    "@aifuxi/semi-illustrations-vue": "workspace:*",
+    "@aifuxi/semi-ui-vue": "workspace:*",
     "normalize.css": "catalog:",
     "typeface-inter": "catalog:",
     "vue": "catalog:"

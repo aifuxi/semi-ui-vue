@@ -6,8 +6,8 @@ Banner presents page-level or container-level status and notices. This implement
 
 ```vue
 <script setup lang="ts">
-import { Banner } from '@workspace/ui';
-import '@workspace/theme-default/banner.css';
+import { Banner } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/banner.css';
 </script>
 
 <template>

@@ -6,7 +6,7 @@ Descriptions presents object details as stable key/value structures. The pinned 
 
 ```vue
 <script setup lang="ts">
-import { Descriptions } from '@workspace/ui';
+import { Descriptions } from '@aifuxi/semi-ui-vue';
 
 const data = [
   { key: 'User', value: 'Semi' },

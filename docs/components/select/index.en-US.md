@@ -6,7 +6,7 @@ Select chooses one or more values from an option collection. This implementation
 
 ```vue
 <script setup lang="ts">
-import { Select, SelectOption } from '@workspace/ui';
+import { Select, SelectOption } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>

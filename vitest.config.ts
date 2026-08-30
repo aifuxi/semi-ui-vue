@@ -7,8 +7,14 @@ export default defineConfig({
   plugins: [vue(), react()],
   resolve: {
     alias: {
-      '@workspace/ui': fileURLToPath(new URL('./packages/ui/src/index.ts', import.meta.url)),
-      '@workspace/illustrations': fileURLToPath(
+      '@aifuxi/semi-ui-vue': fileURLToPath(new URL('./packages/ui/src/index.ts', import.meta.url)),
+      '@aifuxi/semi-icons-vue': fileURLToPath(
+        new URL('./packages/icons/src/index.ts', import.meta.url),
+      ),
+      '@aifuxi/semi-icons-lab-vue': fileURLToPath(
+        new URL('./packages/icons-lab/src/index.ts', import.meta.url),
+      ),
+      '@aifuxi/semi-illustrations-vue': fileURLToPath(
         new URL('./packages/illustrations/src/index.ts', import.meta.url),
       ),
       '@douyinfe/semi-animation': fileURLToPath(

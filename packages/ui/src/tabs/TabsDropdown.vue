@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconTick } from '@workspace/icons';
+import { IconTick } from '@aifuxi/semi-icons-vue';
 import { computed, shallowRef } from 'vue';
 
 import Tooltip from '../tooltip/Tooltip.vue';

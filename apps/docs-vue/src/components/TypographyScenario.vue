@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Numeral, Paragraph, Text, Title } from '@workspace/ui';
+import { Numeral, Paragraph, Text, Title } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>

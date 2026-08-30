@@ -6,7 +6,7 @@ Calendar 以日、周、月或自定义连续日期范围展示事件。本实�
 
 ```vue
 <script setup lang="ts">
-import { Calendar, type CalendarEvent } from '@workspace/ui';
+import { Calendar, type CalendarEvent } from '@aifuxi/semi-ui-vue';
 
 const displayValue = new Date(2023, 3, 10, 8, 32);
 const events: CalendarEvent[] = [

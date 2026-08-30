@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, defineComponent, h, nextTick } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { IconHome } from '@workspace/icons';
+import { IconHome } from '@aifuxi/semi-icons-vue';
 
 import { ConfigProvider } from '../config-provider';
 import { Text } from '../typography';

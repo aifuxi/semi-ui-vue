@@ -6,8 +6,8 @@ Anchor provides section navigation for long pages and tracks the current section
 
 ```vue
 <script setup lang="ts">
-import { Anchor, AnchorLink } from '@workspace/ui';
-import '@workspace/theme-default/anchor.css';
+import { Anchor, AnchorLink } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/anchor.css';
 </script>
 
 <template>

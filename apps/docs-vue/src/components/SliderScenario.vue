@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { ConfigProvider, Slider, type SliderValue } from '@workspace/ui';
+import { ConfigProvider, Slider, type SliderValue } from '@aifuxi/semi-ui-vue';
 
 defineProps<{ direction: 'ltr' | 'rtl' }>();
 

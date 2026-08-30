@@ -5,8 +5,8 @@ Popover 在触发元素旁渲染可交互卡片。它复用 Tooltip 的定位和
 ## 引入
 
 ```ts
-import { Popover } from '@workspace/ui';
-import '@workspace/theme-default/popover.css';
+import { Popover } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/popover.css';
 ```
 
 ## 基本使用

@@ -5,8 +5,8 @@ Pagination 用于在大量数据页之间导航。本实现只以本地 Semi Des
 ## 引入
 
 ```ts
-import { Pagination } from '@workspace/ui';
-import '@workspace/theme-default/pagination.css';
+import { Pagination } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/pagination.css';
 ```
 
 ## 基础用法
@@ -14,7 +14,7 @@ import '@workspace/theme-default/pagination.css';
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Pagination } from '@workspace/ui';
+import { Pagination } from '@aifuxi/semi-ui-vue';
 
 const page = shallowRef(1);
 </script>

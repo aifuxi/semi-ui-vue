@@ -6,7 +6,7 @@ Timeline 按时间顺序展示事件、状态和补充信息。本实现以 Semi
 
 ```vue
 <script setup lang="ts">
-import { Timeline, TimelineItem } from '@workspace/ui';
+import { Timeline, TimelineItem } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>
@@ -24,7 +24,7 @@ import { Timeline, TimelineItem } from '@workspace/ui';
 
 ```vue
 <script setup lang="ts">
-import { Timeline, type TimelineData } from '@workspace/ui';
+import { Timeline, type TimelineData } from '@aifuxi/semi-ui-vue';
 
 const data: TimelineData[] = [
   { content: '需求确认', time: '09:00', type: 'success' },

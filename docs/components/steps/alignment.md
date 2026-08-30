@@ -80,12 +80,12 @@
 
 - 无 Portal/Teleport、Observer、全局监听或 popup container。
 - 无组件内 Locale 文案或日期格式化；国际化维度不适用。
-- SSR 必须能从根入口与 `@workspace/ui/steps` 子路径安全 import，并稳定渲染 fill/basic/nav；不得访问 DOM。
+- SSR 必须能从根入口与 `@aifuxi/semi-ui-vue/steps` 子路径安全 import，并稳定渲染 fill/basic/nav；不得访问 DOM。
 
 ## 发布与合规
 
-- 根导出与 `@workspace/ui/steps` 子路径同时导出 `Steps`、`Step` 及公开类型。
-- `@workspace/theme-default/steps.css` 必须指向 `dist/steps.css`；真实 tarball 消费者验证运行时导入、类型、根/逐组件样式与 SSR import。
+- 根导出与 `@aifuxi/semi-ui-vue/steps` 子路径同时导出 `Steps`、`Step` 及公开类型。
+- `@aifuxi/semi-theme-default/steps.css` 必须指向 `dist/steps.css`；真实 tarball 消费者验证运行时导入、类型、根/逐组件样式与 SSR import。
 - 构建产物不得泄漏 `vendor/**`、私有 Foundation 或 React 运行时；实际使用上游 SCSS，许可/SBOM 走现有生成门禁。
 
 ## Deviation

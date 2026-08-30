@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconHandle } from '@workspace/icons';
+import { IconHandle } from '@aifuxi/semi-icons-vue';
 import { computed, inject, onBeforeUnmount, onMounted, useAttrs, useTemplateRef } from 'vue';
 
 import { resizeGroupContextKey } from './resizable-context';

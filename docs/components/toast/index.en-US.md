@@ -5,8 +5,8 @@ Toast provides brief and timely feedback after an operation. The Vue port follow
 ## Basic usage
 
 ```ts
-import { Toast } from '@workspace/ui';
-import '@workspace/theme-default/toast.css';
+import { Toast } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/toast.css';
 
 Toast.success('Saved');
 
@@ -44,7 +44,7 @@ Call `useToast` inside `<script setup>` and render the returned holder where it 
 
 ```vue
 <script setup lang="ts">
-import { useToast } from '@workspace/ui';
+import { useToast } from '@aifuxi/semi-ui-vue';
 
 const [toast, ToastHolder] = useToast();
 const submit = () => toast.open({ content: 'Processing', duration: 0 });
@@ -63,7 +63,7 @@ The holder API also exposes `open(options)` for the `default` type.
 Use `ToastFactory.create` for a different container or defaults. Each instance owns an isolated wrapper, configuration, and destroy boundary.
 
 ```ts
-import { ToastFactory } from '@workspace/ui';
+import { ToastFactory } from '@aifuxi/semi-ui-vue';
 
 const LocalToast = ToastFactory.create({
   getPopupContainer: () => document.querySelector('#toast-host') as HTMLElement,
@@ -100,4 +100,4 @@ Methods: `Toast.info`, `success`, `warning`, `error`, `close`, `destroyAll`, `co
 
 Each Toast has `role="alert"` and a `{type} type` aria-label. The close control reuses Button's native keyboard and focus behavior; Toast does not capture Escape or move focus.
 
-Both the root entry and `@workspace/ui/toast` are SSR-safe to import. Imperative methods are browser-only, while an empty holder can render on the server.
+Both the root entry and `@aifuxi/semi-ui-vue/toast` are SSR-safe to import. Imperative methods are browser-only, while an empty holder can render on the server.

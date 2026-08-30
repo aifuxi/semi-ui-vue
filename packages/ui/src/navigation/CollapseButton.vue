@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconSidebar } from '@workspace/icons';
+import { IconSidebar } from '@aifuxi/semi-icons-vue';
 import { computed } from 'vue';
 
 import Button from '../button/Button.vue';

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Collapse, CollapsePanel, type CollapseActiveKey } from '@workspace/ui';
+import { Collapse, CollapsePanel, type CollapseActiveKey } from '@aifuxi/semi-ui-vue';
 
 const controlledKeys = shallowRef<string[]>(['controlled-1']);
 const status = shallowRef('基础面板：overview');

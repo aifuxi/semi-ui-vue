@@ -6,7 +6,7 @@ Checkbox 用于在两个相反状态之间选择；CheckboxGroup 用于管理一
 
 ```vue
 <script setup lang="ts">
-import { Checkbox, type CheckboxChangeEvent } from '@workspace/ui';
+import { Checkbox, type CheckboxChangeEvent } from '@aifuxi/semi-ui-vue';
 
 function changed(event: CheckboxChangeEvent) {
   console.log(event.target.checked);

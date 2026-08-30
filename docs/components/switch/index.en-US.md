@@ -7,8 +7,8 @@ Switch toggles between two mutually exclusive states. This implementation uses t
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Switch } from '@workspace/ui';
-import '@workspace/theme-default/switch.css';
+import { Switch } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/switch.css';
 
 const enabled = shallowRef(false);
 </script>

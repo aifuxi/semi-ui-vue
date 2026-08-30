@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /* eslint-disable vue/require-default-prop, vue/no-required-prop-with-default -- internal renderer preserves absent callback and VNode semantics. */
-import { IconChevronRight } from '@workspace/icons';
+import { IconChevronRight } from '@aifuxi/semi-icons-vue';
 import { Checkbox, type CheckboxChangeEvent } from '../checkbox';
 import { Radio, type RadioChangeEvent } from '../radio';
 import { computed, h, shallowRef, type Component, type StyleValue, type VNodeChild } from 'vue';

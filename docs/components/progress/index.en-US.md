@@ -6,7 +6,7 @@ Progress displays the current completion of an operation or task. The pinned loc
 
 ```vue
 <script setup lang="ts">
-import { Progress } from '@workspace/ui';
+import { Progress } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>

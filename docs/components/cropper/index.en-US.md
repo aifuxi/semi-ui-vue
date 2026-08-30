@@ -5,8 +5,8 @@ A Vue 3 image cropper aligned with Semi Design `v2.102.0`. It supports moving th
 ```vue
 <script setup lang="ts">
 import { shallowRef, useTemplateRef } from 'vue';
-import { Cropper, type CropperMethods } from '@workspace/ui/cropper';
-import '@workspace/theme-default/cropper.css';
+import { Cropper, type CropperMethods } from '@aifuxi/semi-ui-vue/cropper';
+import '@aifuxi/semi-theme-default/cropper.css';
 
 const zoom = shallowRef(1);
 const cropper = useTemplateRef<CropperMethods>('cropper');

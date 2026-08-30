@@ -5,8 +5,8 @@ Notification actively presents asynchronous results or status messages. The Vue 
 ## Basic usage
 
 ```ts
-import { Notification } from '@workspace/ui';
-import '@workspace/theme-default/notification.css';
+import { Notification } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/notification.css';
 
 const id = Notification.info({
   title: 'Task completed',
@@ -53,7 +53,7 @@ Precedence is per-call options, `semiGlobal.config.overrideDefaultProps.Notifica
 
 ```vue
 <script setup lang="ts">
-import { Notification } from '@workspace/ui';
+import { Notification } from '@aifuxi/semi-ui-vue';
 
 const [notification, NotificationHolder] = Notification.useNotification();
 const show = () => notification.success({ title: 'Saved', content: 'Settings are active.' });

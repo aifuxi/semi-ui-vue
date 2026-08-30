@@ -7,8 +7,8 @@ TagInput 将输入内容转换为可删除、可排序的标签，并与 Semi De
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { TagInput } from '@workspace/ui';
-import '@workspace/theme-default/tag-input.css';
+import { TagInput } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/tag-input.css';
 
 const tags = ref(['Semi', 'Vue']);
 </script>

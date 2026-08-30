@@ -6,7 +6,7 @@ PinCode provides segmented input for verification and invitation codes. This Vue
 
 ```vue
 <script setup lang="ts">
-import { PinCode } from '@workspace/ui/pin-code';
+import { PinCode } from '@aifuxi/semi-ui-vue/pin-code';
 </script>
 
 <template>
@@ -25,7 +25,7 @@ import { PinCode } from '@workspace/ui/pin-code';
 
 ```vue
 <script setup lang="ts">
-import { PinCode } from '@workspace/ui/pin-code';
+import { PinCode } from '@aifuxi/semi-ui-vue/pin-code';
 import { shallowRef } from 'vue';
 
 const code = shallowRef('69af41');
@@ -42,7 +42,7 @@ Both `value` and `modelValue` establish a controlled contract; `value` wins when
 
 ```vue
 <script setup lang="ts">
-import { PinCode, type PinCodeExposed } from '@workspace/ui/pin-code';
+import { PinCode, type PinCodeExposed } from '@aifuxi/semi-ui-vue/pin-code';
 import { useTemplateRef } from 'vue';
 
 const pinCode = useTemplateRef<PinCodeExposed>('pinCode');

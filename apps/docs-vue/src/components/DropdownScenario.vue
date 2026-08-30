@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, shallowRef, useTemplateRef } from 'vue';
-import { Dropdown } from '@workspace/ui';
+import { Dropdown } from '@aifuxi/semi-ui-vue';
 
 const ready = shallowRef(false);
 const status = shallowRef('等待操作');

@@ -6,7 +6,7 @@ import {
   IconClose,
   IconInfoCircle,
   IconTickCircle,
-} from '@workspace/icons';
+} from '@aifuxi/semi-icons-vue';
 import {
   computed,
   inject,

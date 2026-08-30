@@ -5,9 +5,9 @@
 ## 引入
 
 ```ts
-import { Col, Row } from '@workspace/ui';
-// 或 import { Col, Row } from '@workspace/ui/grid';
-import '@workspace/theme-default/grid.css';
+import { Col, Row } from '@aifuxi/semi-ui-vue';
+// 或 import { Col, Row } from '@aifuxi/semi-ui-vue/grid';
+import '@aifuxi/semi-theme-default/grid.css';
 ```
 
 ## 基础使用

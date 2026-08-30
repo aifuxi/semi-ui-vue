@@ -6,8 +6,8 @@ Card is a container for a title, cover, body, actions, and footer. This Vue impl
 
 ```vue
 <script setup lang="ts">
-import { Card, Text } from '@workspace/ui';
-import '@workspace/theme-default/card.css';
+import { Card, Text } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/card.css';
 </script>
 
 <template>

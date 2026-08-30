@@ -6,7 +6,7 @@ List displays a sequence of related data. This implementation uses the pinned lo
 
 ```vue
 <script setup lang="ts">
-import { List, ListItem } from '@workspace/ui';
+import { List, ListItem } from '@aifuxi/semi-ui-vue';
 
 const users = ['Alice', 'Bob'];
 </script>

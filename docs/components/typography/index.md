@@ -5,8 +5,8 @@
 ## 引入
 
 ```ts
-import { Typography, Title, Text, Paragraph, Numeral } from '@workspace/ui';
-import '@workspace/theme-default/typography.css';
+import { Typography, Title, Text, Paragraph, Numeral } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/typography.css';
 ```
 
 也可以使用聚合成员：

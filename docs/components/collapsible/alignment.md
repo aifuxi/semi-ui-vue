@@ -55,7 +55,7 @@
 - SSR 覆盖默认关闭、打开、keepDOM/lazyRender、非零折叠高度、class/style/data/id，以及无 browser global 的 import/render/hydration。
 - React/Vue 场景覆盖基础开合、keepDOM、lazyRender、fade、自适应高度和动态重算；行为先进入相同过渡终态，再比较 computed style 与几何。
 - 视觉覆盖桌面 `1440x900`、移动 `390x844`、light/dark 与 RTL；关键 computed style 精确相等，bounding rect 各轴误差 `<= 0.5px`，截图使用 `threshold <= 0.1` / `maxDiffPixelRatio <= 0.001`，并独立比较成对 PNG 字节。
-- 根与 `@workspace/ui/collapsible` 子路径导出组件和公开类型；`@workspace/theme-default/collapsible.css` 包含固定过渡样式。真实 tarball 验证 ESM、声明、样式入口、tree-shaking、SSR-safe import、许可证和 SPDX SBOM。
+- 根与 `@aifuxi/semi-ui-vue/collapsible` 子路径导出组件和公开类型；`@aifuxi/semi-theme-default/collapsible.css` 包含固定过渡样式。真实 tarball 验证 ESM、声明、样式入口、tree-shaking、SSR-safe import、许可证和 SPDX SBOM。
 
 ## Deviation
 

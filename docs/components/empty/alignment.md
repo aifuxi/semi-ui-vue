@@ -8,7 +8,7 @@
 - 常量、样式与 RTL：`vendor/semi-design/packages/semi-foundation/empty/constants.ts`、`variables.scss`、`empty.scss`、`rtl.scss`。
 - 默认主题与 Token：`vendor/semi-design/packages/semi-theme-default/scss/index.scss`、`global.scss`。
 - 文档与行为证据：`vendor/semi-design/content/show/empty/index.md`、`index-en-US.md`、`vendor/semi-design/packages/semi-ui/empty/__test__/empty.test.js`。
-- Empty 复用已进入 `ready` 的 Typography、Button、ConfigProvider、默认主题与 Illustrations；`image`/`darkModeImage` 接受调用方提供的图片、SVG 或任意 VNode，官方基础、暗色和水平布局场景使用 `@workspace/illustrations` 的真实 150×150 插画。它没有 Foundation JavaScript 状态机、Portal、定位或后续组件依赖。
+- Empty 复用已进入 `ready` 的 Typography、Button、ConfigProvider、默认主题与 Illustrations；`image`/`darkModeImage` 接受调用方提供的图片、SVG 或任意 VNode，官方基础、暗色和水平布局场景使用 `@aifuxi/semi-illustrations-vue` 的真实 150×150 插画。它没有 Foundation JavaScript 状态机、Portal、定位或后续组件依赖。
 
 ## Vue 组件边界
 

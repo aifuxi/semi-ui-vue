@@ -7,7 +7,7 @@ Modal 用于在当前页面之上承载需要用户确认或补充信息的任�
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Button, Modal } from '@workspace/ui';
+import { Button, Modal } from '@aifuxi/semi-ui-vue';
 
 const visible = ref(false);
 </script>
@@ -27,7 +27,7 @@ const visible = ref(false);
 `onOk` / `onCancel` 返回 Promise 时，默认 footer 会在 Promise pending 期间显示 loading；命令式 confirm 只在 resolve 后关闭，reject 时保持打开。
 
 ```ts
-import { Modal } from '@workspace/ui';
+import { Modal } from '@aifuxi/semi-ui-vue';
 
 const handle = Modal.confirm({
   title: '删除项目',

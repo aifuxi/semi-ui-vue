@@ -81,7 +81,7 @@
 - 单元：默认值、class/style 合并、end/start/minVisibleItems、items 更新、item resize、scroll DOM/key、observer options、事件顺序与卸载清理。
 - SSR：无 observer 环境 import/render；hydrate 后无警告并能开始测量。
 - Chromium：桌面/移动 light/dark、RTL；对照根/item/overflow/wrapper computed style 与 bounding rect，截图阈值遵循仓库上限。
-- 真实包：根与 `@workspace/ui/overflow-list` 导入、声明、CSS 子入口、SSR-safe import、license/SBOM 与私有路径扫描。
+- 真实包：根与 `@aifuxi/semi-ui-vue/overflow-list` 导入、声明、CSS 子入口、SSR-safe import、license/SBOM 与私有路径扫描。
 
 ## Deviation
 

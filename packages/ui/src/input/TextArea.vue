@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconClear } from '@workspace/icons';
+import { IconClear } from '@aifuxi/semi-icons-vue';
 import { TextAreaFoundation, type TextAreaAdapter } from '@workspace/foundation-integration';
 import {
   computed,

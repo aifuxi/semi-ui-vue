@@ -52,7 +52,7 @@
 
 ## 主题、RTL、国际化与 SSR
 
-- `@workspace/theme-default/collapse.css` 同时编译固定 Collapse 与 Collapsible SCSS；light/dark 由 `--semi-color-*` Token 驱动。
+- `@aifuxi/semi-theme-default/collapse.css` 同时编译固定 Collapse 与 Collapsible SCSS；light/dark 由 `--semi-color-*` Token 驱动。
 - RTL 由 `.semi-rtl` / `.semi-portal-rtl` 驱动 direction 与 header-right padding 翻转；图标 position 的 DOM 顺序不被适配层擅自交换。
 - Collapse 没有 Locale 文案；zh-CN/en-US 场景内容由调用方提供，结构与事件保持一致。
 - 模块求值和 SSR render 不访问 DOM、window、ResizeObserver 或 crypto；服务端保持固定结构，hydration 后才创建 Collapsible observer，并无警告。
@@ -63,7 +63,7 @@
 - SSR：默认关闭、defaultActiveKey、compound slot、class/style/data attrs、无 browser global import/render/hydration。
 - React/Vue 场景：基础多开、accordion/disabled、左图标与 extra、自定义图标、受控切换、keepDOM/lazyRender；比较 header/content/icon 的 computed style 与几何。
 - 视觉：桌面 `1440x900`、移动 `390x844`、light/dark 与 RTL；关键 computed style 精确相等，bounding rect 各轴误差 `<= 0.5px`，截图 `threshold <= 0.1` / `maxDiffPixelRatio <= 0.001`，并独立比较 React/Vue 成对 PNG 字节。
-- 根与 `@workspace/ui/collapse` 子路径导出 Collapse、CollapsePanel 和公开类型；真实 tarball 验证 ESM、声明、样式、tree-shaking、SSR-safe import、许可证和 SPDX SBOM。
+- 根与 `@aifuxi/semi-ui-vue/collapse` 子路径导出 Collapse、CollapsePanel 和公开类型；真实 tarball 验证 ESM、声明、样式、tree-shaking、SSR-safe import、许可证和 SPDX SBOM。
 
 ## Deviation
 
@@ -77,4 +77,4 @@
 - 固定 vendor 已核验为 `v2.102.0` / `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`，工作区开始时干净。
 - Collapse 定向单元/SSR/入口回归为 5 files / 177 tests；仓库单元门禁为 126 files / 902 tests，类型、lint、format、源码边界和全 workspace build 均通过。
 - Collapse Chromium 对照为 7 / 7，工作台 smoke 为 2 / 2；桌面/移动 light/dark 与 RTL 的 React/Vue 对应截图独立生成且直接字节相等，无 mask、无 accepted visual deviation。
-- 根入口、`@workspace/ui/collapse`、`@workspace/theme-default/collapse.css`、SSR-safe import、许可证/SBOM 与真实 tarball consumer 已通过。
+- 根入口、`@aifuxi/semi-ui-vue/collapse`、`@aifuxi/semi-theme-default/collapse.css`、SSR-safe import、许可证/SBOM 与真实 tarball consumer 已通过。

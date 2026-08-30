@@ -6,7 +6,7 @@ Calendar displays events in day, week, month, or an explicit continuous range. T
 
 ```vue
 <script setup lang="ts">
-import { Calendar, type CalendarEvent } from '@workspace/ui';
+import { Calendar, type CalendarEvent } from '@aifuxi/semi-ui-vue';
 
 const displayValue = new Date(2023, 3, 10, 8, 32);
 const events: CalendarEvent[] = [

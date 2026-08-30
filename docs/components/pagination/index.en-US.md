@@ -5,8 +5,8 @@ Pagination navigates large data sets page by page. The pinned local Semi Design 
 ## Import
 
 ```ts
-import { Pagination } from '@workspace/ui';
-import '@workspace/theme-default/pagination.css';
+import { Pagination } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/pagination.css';
 ```
 
 ## Basic usage
@@ -14,7 +14,7 @@ import '@workspace/theme-default/pagination.css';
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Pagination } from '@workspace/ui';
+import { Pagination } from '@aifuxi/semi-ui-vue';
 
 const page = shallowRef(1);
 </script>

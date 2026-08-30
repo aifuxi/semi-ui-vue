@@ -5,8 +5,8 @@ OverflowList 是纯布局行为组件：它根据真实可用宽度保留尽可�
 ## 引入
 
 ```ts
-import { OverflowList } from '@workspace/ui';
-import '@workspace/theme-default/overflow-list.css';
+import { OverflowList } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/overflow-list.css';
 ```
 
 ## 折叠模式

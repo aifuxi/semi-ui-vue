@@ -76,7 +76,7 @@
 - 单元：单值/范围/多选、禁用、输入解析、清除、预设、受控/非受控、事件顺序、ref、三态 Boolean、插槽与 ARIA。
 - SSR：根/子路径安全 import、默认与范围 trigger 渲染、无浏览器全局访问。
 - Chromium：同一 BrowserContext 下 React/Vue 的请求来源、运行时错误、computed style、bounding rect 与局部截图；desktop `1440x900`、mobile `390x844`、light/dark、RTL，并覆盖打开面板、选择、键盘、自定义容器和滚动重定位。
-- 发布：根导出、`@workspace/ui/date-picker`、`@workspace/theme-default/date-picker.css`、声明、SSR import、tree-shaking、真实 tarball consumer、License/SBOM。
+- 发布：根导出、`@aifuxi/semi-ui-vue/date-picker`、`@aifuxi/semi-theme-default/date-picker.css`、声明、SSR import、tree-shaking、真实 tarball consumer、License/SBOM。
 
 ## Deviation
 

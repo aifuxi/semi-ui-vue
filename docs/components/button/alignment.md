@@ -62,7 +62,7 @@ Button 不存在受控/非受控双态；props 只读，组件不修改调用方
 
 ## 样式、主题、方向与动效
 
-- 默认主题根入口仍为 `@workspace/theme-default/index.css`；逐组件入口为 `@workspace/theme-default/button.css`。
+- 默认主题根入口仍为 `@aifuxi/semi-theme-default/index.css`；逐组件入口为 `@aifuxi/semi-theme-default/button.css`。
 - Button 入口按 theme index → global → animation → button → iconButton → icons 的顺序编译固定 SCSS。
 - light/dark 都由 `body[theme-mode]` 中相同 `--semi-*` Token 驱动。
 - LTR/RTL 保留 `.semi-rtl` / `.semi-portal-rtl` 上游选择器。当前对照工作台同时设置原生 `dir`；RTL 专项证据检查原生方向、键盘和左右图标间距。
@@ -75,7 +75,7 @@ Button 不存在受控/非受控双态；props 只读，组件不修改调用方
 - disabled 同时输出原生 `disabled` 与 `aria-disabled=true`。
 - ButtonGroup/SplitButtonGroup 输出 `role=group` 并透传 `aria-label`。
 - Button 和 ButtonGroup 可直接 SSR render；SplitButtonGroup 只在 mounted 创建 Observer，因此 import 与 SSR render 安全。
-- `@workspace/ui` 根与 `@workspace/ui/button` 均导出 ESM/声明；真实 tarball 验证两种导入、类型、SSR 和 `button.css`。
+- `@aifuxi/semi-ui-vue` 根与 `@aifuxi/semi-ui-vue/button` 均导出 ESM/声明；真实 tarball 验证两种导入、类型、SSR 和 `button.css`。
 
 ## 验收矩阵
 

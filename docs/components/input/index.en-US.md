@@ -8,7 +8,7 @@ The first visible example from the pinned English documentation becomes:
 
 ```vue
 <script setup lang="ts">
-import { Input } from '@workspace/ui';
+import { Input } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>
@@ -21,7 +21,7 @@ Use `v-model` for controlled input. If `value` and `modelValue` are both present
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Input } from '@workspace/ui';
+import { Input } from '@aifuxi/semi-ui-vue';
 
 const value = ref('semi.design');
 </script>
@@ -61,7 +61,7 @@ Group `size` and `disabled` values are fallbacks for direct children. An explici
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { TextArea } from '@workspace/ui';
+import { TextArea } from '@aifuxi/semi-ui-vue';
 
 const value = ref('First line\nSecond line');
 </script>

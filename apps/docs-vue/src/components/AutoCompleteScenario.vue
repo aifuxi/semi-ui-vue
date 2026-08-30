@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { IconSearch } from '@workspace/icons';
-import { AutoComplete, type AutoCompleteDataItem, type AutoCompleteItem } from '@workspace/ui';
+import { IconSearch } from '@aifuxi/semi-icons-vue';
+import {
+  AutoComplete,
+  type AutoCompleteDataItem,
+  type AutoCompleteItem,
+} from '@aifuxi/semi-ui-vue';
 import { onMounted, shallowRef } from 'vue';
 
 const domains = ['gmail.com', '163.com', 'qq.com'];

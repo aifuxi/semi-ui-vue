@@ -72,7 +72,7 @@ Progress 没有受控/非受控状态、emits 或 `v-model`。`percent` 是单�
 - 单元：默认 line、vertical/large、circle 尺寸/几何、percent 上下界、showInfo/format slot、stroke 字符串与数组/渐变、ARIA/data attrs、motion 三态/销毁与 NaN 更新。
 - SSR：line/circle/format VNode 可渲染，产物不含私有路径且不访问浏览器全局。
 - Chromium：真实 vendor source 请求、DOM/ARIA、computed style、几何、颜色数组、桌面/移动 light/dark、RTL；成对 PNG 独立生成后直接比较字节。
-- 发包：根导出与 `@workspace/ui/progress` 子路径、公开类型、`@workspace/theme-default/progress.css`、SSR-safe import、tree-shaking、合规/SBOM 与隔离 tarball 消费。
+- 发包：根导出与 `@aifuxi/semi-ui-vue/progress` 子路径、公开类型、`@aifuxi/semi-theme-default/progress.css`、SSR-safe import、tree-shaking、合规/SBOM 与隔离 tarball 消费。
 - 最终证据：`pnpm check` 通过（102 个测试文件、733 条单元/SSR 测试，并覆盖 lint、typecheck、build、主题、SSR dist 与真实 tarball）；`pnpm test:browser` 389/389 通过，其中 Progress 7 项覆盖源码、行为、桌面/移动 light/dark 与 RTL。
 - 五组 Progress React/Vue 截图分别从两个运行时独立读取 PNG bytes，并以 Buffer 直接比较；desktop light/dark、mobile light/dark、desktop RTL 均逐字节相等。关键 computed style 精确相等，bounding rect 各轴差值均在 `0.5 CSS px` 以内。
 

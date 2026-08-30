@@ -10,7 +10,7 @@ import { IllustrationNoContent } from '@douyinfe/semi-illustrations';
 ```vue
 <script setup lang="ts">
 // Vue
-import { IllustrationNoContent } from '@workspace/illustrations';
+import { IllustrationNoContent } from '@aifuxi/semi-illustrations-vue';
 </script>
 ```
 

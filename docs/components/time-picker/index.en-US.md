@@ -7,8 +7,8 @@ TimePicker accepts typed values or scroll-panel selections for a single time or 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { TimePicker } from '@workspace/ui';
-import '@workspace/theme-default/time-picker.css';
+import { TimePicker } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/time-picker.css';
 
 const value = ref<Date>();
 </script>

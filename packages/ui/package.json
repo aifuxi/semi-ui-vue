@@ -1,12 +1,37 @@
 {
-  "name": "@workspace/ui",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@aifuxi/semi-ui-vue",
+  "version": "0.1.0-alpha.0",
+  "description": "An independent Vue 3 implementation aligned with Semi Design v2.102.0.",
+  "license": "MIT",
+  "author": "aifuxi",
+  "keywords": [
+    "semi-design",
+    "vue",
+    "vue3",
+    "components",
+    "design-system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aifuxi/semi-ui-vue.git",
+    "directory": "packages/ui"
+  },
+  "homepage": "https://github.com/aifuxi/semi-ui-vue#readme",
+  "bugs": {
+    "url": "https://github.com/aifuxi/semi-ui-vue/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
+    "LICENSE",
+    "README.md",
     "dist"
   ],
   "sideEffects": [
@@ -294,11 +319,10 @@
     "clean": "rimraf dist"
   },
   "devDependencies": {
-    "@types/lodash": "4.17.20",
-    "@workspace/foundation-integration": "workspace:*"
+    "@types/lodash": "4.17.20"
   },
   "dependencies": {
-    "@workspace/icons": "workspace:*",
+    "@aifuxi/semi-icons-vue": "workspace:*",
     "async-validator": "3.5.2",
     "bezier-easing": "2.1.0",
     "date-fns": "2.30.0",

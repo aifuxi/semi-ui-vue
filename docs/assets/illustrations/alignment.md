@@ -37,8 +37,8 @@ Vue 使用原生 fallthrough attrs；不复刻 React 专属 `React.SVGProps` 类
 ## 公开导出
 
 - 根入口导出全部 16 个上游原名，以及 `convertIllustration` 和相关类型。
-- `@workspace/illustrations/Illustration` 导出共享工厂。
-- `@workspace/illustrations/illustrations/IllustrationNoContent` 等逐插画子路径支持 tree-shaking。
+- `@aifuxi/semi-illustrations-vue/Illustration` 导出共享工厂。
+- `@aifuxi/semi-illustrations-vue/illustrations/IllustrationNoContent` 等逐插画子路径支持 tree-shaking。
 - 包只含 ESM 与 TypeScript 声明；peer dependency 仅为 `vue >= 3.5.0`。
 
 ## 状态、主题、RTL、国际化与 SSR

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, shallowRef } from 'vue';
-import { Button, Tooltip, type TooltipPosition } from '@workspace/ui';
+import { Button, Tooltip, type TooltipPosition } from '@aifuxi/semi-ui-vue';
 
 const host = ref<HTMLElement | null>(null);
 const clickVisible = shallowRef(false);

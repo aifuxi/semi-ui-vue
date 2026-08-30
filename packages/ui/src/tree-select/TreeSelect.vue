@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconChevronDown, IconClear, IconSearch } from '@workspace/icons';
+import { IconChevronDown, IconClear, IconSearch } from '@aifuxi/semi-icons-vue';
 import {
   calcTreeCheckedKeys,
   calcTreeDisabledKeys,

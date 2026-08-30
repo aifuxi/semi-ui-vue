@@ -6,7 +6,7 @@ import {
   IconHelpCircle,
   IconInfoCircle,
   IconTickCircle,
-} from '@workspace/icons';
+} from '@aifuxi/semi-icons-vue';
 
 import ModalBase from './Modal.vue';
 import ModalNodeRenderer from './ModalNodeRenderer';

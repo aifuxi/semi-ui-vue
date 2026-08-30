@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconClear, IconEyeClosedSolid, IconEyeOpened } from '@workspace/icons';
+import { IconClear, IconEyeClosedSolid, IconEyeOpened } from '@aifuxi/semi-icons-vue';
 import { InputFoundation, type InputAdapter } from '@workspace/foundation-integration';
 import {
   computed,

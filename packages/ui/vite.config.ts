@@ -19,6 +19,7 @@ export default defineConfig({
     dts({
       include: ['src'],
       exclude: [
+        'src/**/*.test.ts',
         'src/calendar/CalendarDayColumn.vue',
         'src/calendar/calendar-context.ts',
         'src/calendar/use-calendar-foundation.ts',
@@ -167,7 +168,7 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['vue', '@workspace/icons'],
+      external: ['vue', '@aifuxi/semi-icons-vue'],
     },
   },
 });

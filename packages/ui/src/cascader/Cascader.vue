@@ -11,7 +11,7 @@ import {
   normalizeTreeKeyList,
   type CascaderAdapter,
 } from '@workspace/foundation-integration';
-import { IconChevronDown, IconClear } from '@workspace/icons';
+import { IconChevronDown, IconClear } from '@aifuxi/semi-icons-vue';
 import {
   computed,
   getCurrentInstance,

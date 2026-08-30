@@ -7,8 +7,8 @@ Switch 用于在两个互斥状态之间切换。本实现以本地 Semi Design 
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Switch } from '@workspace/ui';
-import '@workspace/theme-default/switch.css';
+import { Switch } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/switch.css';
 
 const enabled = shallowRef(false);
 </script>

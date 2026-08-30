@@ -4,7 +4,13 @@ import {
   UploadFileCardFoundation,
   type UploadFileCardAdapter,
 } from '@workspace/foundation-integration';
-import { IconAlertCircle, IconClear, IconClose, IconFile, IconRefresh } from '@workspace/icons';
+import {
+  IconAlertCircle,
+  IconClear,
+  IconClose,
+  IconFile,
+  IconRefresh,
+} from '@aifuxi/semi-icons-vue';
 import { computed, markRaw, shallowReactive, type CSSProperties } from 'vue';
 
 import Button from '../button/Button.vue';

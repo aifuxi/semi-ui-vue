@@ -7,7 +7,7 @@ import {
   type CalendarEvent,
   type CalendarMode,
   type SemiLocale,
-} from '@workspace/ui';
+} from '@aifuxi/semi-ui-vue';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>();

@@ -7,7 +7,7 @@ TreeSelect 用于从多层级树数据中选择一个或多个节点。本实现
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { TreeSelect, type TreeNodeData } from '@workspace/ui';
+import { TreeSelect, type TreeNodeData } from '@aifuxi/semi-ui-vue';
 
 const value = ref('shanghai');
 const treeData: TreeNodeData[] = [
@@ -83,4 +83,4 @@ const treeData: TreeNodeData[] = [
 
 ## 无障碍、主题与 SSR
 
-触发器使用 `role=combobox`，树列表和节点复用 Tree 的 `role=tree/treeitem`、键盘与焦点行为。light/dark、RTL 及搜索/空态文案来自主题和 ConfigProvider Locale。根入口与 `@workspace/ui/tree-select` 子路径均支持 SSR-safe import。
+触发器使用 `role=combobox`，树列表和节点复用 Tree 的 `role=tree/treeitem`、键盘与焦点行为。light/dark、RTL 及搜索/空态文案来自主题和 ConfigProvider Locale。根入口与 `@aifuxi/semi-ui-vue/tree-select` 子路径均支持 SSR-safe import。

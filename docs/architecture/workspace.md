@@ -11,18 +11,18 @@ apps/
   reference-react/       承载固定 v2.102.0 React 参考场景的工作台
   docs-vue/              Vue 文档、演示与对照场景
 packages/
-  ui/                    Vue 主组件包（拟公开发布）
+  ui/                    Vue 主组件包（@aifuxi/semi-ui-vue）
   foundation-integration/唯一的 Foundation 运行时集成边界（私有）
-  theme-default/         上游 SCSS 编译边界与根 CSS 入口（拟公开发布）
-  icons/                 稳定图标（拟公开发布）
-  icons-lab/             实验图标（拟公开发布）
-  illustrations/         插画（拟公开发布）
+  theme-default/         上游 SCSS 编译边界与根 CSS 入口（@aifuxi/semi-theme-default）
+  icons/                 稳定图标（@aifuxi/semi-icons-vue）
+  icons-lab/             实验图标（@aifuxi/semi-icons-lab-vue）
+  illustrations/         插画（@aifuxi/semi-illustrations-vue）
   test-infra/            对照矩阵、阈值和共享测试工具（私有）
 tests/browser/           只运行 Playwright 固定 Chromium 的跨应用测试
 vendor/semi-design/      唯一、只读的 v2.102.0 参考源码
 ```
 
-`@workspace/*` 是内部占位名称，全部包暂时标记为 `private`，不构成最终品牌或 npm scope 承诺。
+`@workspace/*` 只保留给文档/参考应用、Foundation 集成层和测试基础设施等永不发布的内部包。五个公开包统一使用 `@aifuxi/*` 最终身份和同步版本；公开产物不得残留 workspace 占位名。
 
 ## 依赖方向
 
@@ -144,7 +144,7 @@ Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select
 - `pnpm test:theme`：从只读上游重建完整根 CSS，并核对 v2.102.0 的组件导入顺序与代表性选择器。
 - `pnpm test:ssr`：先重建拟公开 JavaScript 包，再在无 DOM 的 Node 环境导入并扫描私有边界泄漏。
 - `pnpm test:pack`：构建真实 tarball，在临时消费者中离线安装并验证 exports、ESM、类型、样式和 SSR import。
-- 每个拟发布包的构建都会写入 Semi Design 完整许可证、第三方声明和 SPDX 2.3 SBOM；项目自身许可证冻结前保持 `private`。
+- 每个公开包的构建都会写入 Semi Design 完整许可证、第三方声明和 SPDX 2.3 SBOM；项目自身使用 MIT License，并在包根携带 LICENSE。
 - SBOM 默认记录实际构建时间；可复现发布必须传入标准的 `SOURCE_DATE_EPOCH`，该值也参与文档命名空间指纹。
 - `pnpm test:browser`：单一 Chromium worker 启动 React/Vue 两个服务，在同一 BrowserContext 中执行来源、行为、计算样式、几何与视觉对照。
 - `pnpm check:full`：执行以上完整本地门禁。

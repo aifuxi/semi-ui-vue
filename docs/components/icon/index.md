@@ -6,8 +6,8 @@
 
 ```vue
 <script setup lang="ts">
-import { IconHome } from '@workspace/icons';
-import '@workspace/theme-default/icon.css';
+import { IconHome } from '@aifuxi/semi-icons-vue';
+import '@aifuxi/semi-theme-default/icon.css';
 </script>
 
 <template>
@@ -19,7 +19,7 @@ import '@workspace/theme-default/icon.css';
 
 ```vue
 <script setup lang="ts">
-import { IconEmoji, IconHome, IconSpin } from '@workspace/icons';
+import { IconEmoji, IconHome, IconSpin } from '@aifuxi/semi-icons-vue';
 </script>
 
 <template>
@@ -37,7 +37,7 @@ import { IconEmoji, IconHome, IconSpin } from '@workspace/icons';
 
 ```vue
 <script setup lang="ts">
-import { IconAIFilledLevel2, IconAIWandLevel3, IconLikeHeart } from '@workspace/icons';
+import { IconAIFilledLevel2, IconAIWandLevel3, IconLikeHeart } from '@aifuxi/semi-icons-vue';
 </script>
 
 <template>
@@ -51,7 +51,7 @@ import { IconAIFilledLevel2, IconAIWandLevel3, IconLikeHeart } from '@workspace/
 
 ```vue
 <script setup lang="ts">
-import { IconAvatar, IconCard } from '@workspace/icons-lab';
+import { IconAvatar, IconCard } from '@aifuxi/semi-icons-lab-vue';
 </script>
 
 <template>
@@ -66,7 +66,7 @@ Lab 图标使用固定颜色，不支持通过 `fill` 改色。
 
 ```vue
 <script setup lang="ts">
-import Icon from '@workspace/icons';
+import Icon from '@aifuxi/semi-icons-vue';
 </script>
 
 <template>

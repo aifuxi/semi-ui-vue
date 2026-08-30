@@ -6,7 +6,7 @@ Select 用于从候选项集合中选择一个或多个值。本实现对齐 Sem
 
 ```vue
 <script setup lang="ts">
-import { Select, SelectOption } from '@workspace/ui';
+import { Select, SelectOption } from '@aifuxi/semi-ui-vue';
 </script>
 
 <template>

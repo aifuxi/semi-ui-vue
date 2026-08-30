@@ -5,22 +5,22 @@ Highlight wraps matching ranges in configurable inline tags while preserving unm
 ## Import
 
 ```ts
-import { Highlight } from '@workspace/ui';
-import '@workspace/theme-default/highlight.css';
+import { Highlight } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/highlight.css';
 ```
 
 The subpath is also available:
 
 ```ts
-import Highlight, { type HighlightProps } from '@workspace/ui/highlight';
+import Highlight, { type HighlightProps } from '@aifuxi/semi-ui-vue/highlight';
 ```
 
 ## Basic usage
 
 ```vue
 <script setup lang="ts">
-import { Highlight } from '@workspace/ui';
-import '@workspace/theme-default/highlight.css';
+import { Highlight } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/highlight.css';
 </script>
 
 <template>
@@ -112,6 +112,6 @@ Object-level classes are appended after the shared class. Object-level styles ar
 - The default `mark` tag provides native highlight semantics. Callers selecting another tag should confirm that its semantics fit their content.
 - Light and dark colors are driven by `--semi-color-highlight` and `--semi-color-highlight-bg`.
 - Text direction is inherited; there is no component-specific RTL layout.
-- Root and `@workspace/ui/highlight` imports are DOM-free and SSR-safe. Source text is escaped as Vue text nodes; `v-html` is not used.
+- Root and `@aifuxi/semi-ui-vue/highlight` imports are DOM-free and SSR-safe. Source text is escaped as Vue text nodes; `v-html` is not used.
 
 See the [alignment matrix](./alignment.md) for source evidence, matching rules, computed styles, visual coverage, and deviations. See [React → Vue](./react-to-vue.md) for migration details.

@@ -6,8 +6,8 @@ BackTop 在页面或指定滚动容器超过阈值后显示回顶入口。本实
 
 ```vue
 <script setup lang="ts">
-import { BackTop } from '@workspace/ui';
-import '@workspace/theme-default/back-top.css';
+import { BackTop } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/back-top.css';
 </script>
 
 <template>
@@ -25,7 +25,7 @@ import '@workspace/theme-default/back-top.css';
 ```vue
 <script setup lang="ts">
 import { useTemplateRef } from 'vue';
-import { BackTop } from '@workspace/ui';
+import { BackTop } from '@aifuxi/semi-ui-vue';
 
 const panel = useTemplateRef<HTMLElement>('panel');
 const getTarget = () => panel.value;

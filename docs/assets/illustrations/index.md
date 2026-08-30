@@ -1,12 +1,12 @@
 # Illustrations 插画
 
-`@workspace/illustrations` 将固定 Semi Design v2.102.0 的全部 16 个公开插画转换为 Vue 3 组件，保留原始多色 SVG、主题 Token、mask、clipPath 和 200×200 默认画布。
+`@aifuxi/semi-illustrations-vue` 将固定 Semi Design v2.102.0 的全部 16 个公开插画转换为 Vue 3 组件，保留原始多色 SVG、主题 Token、mask、clipPath 和 200×200 默认画布。
 
 ## 引入
 
 ```vue
 <script setup lang="ts">
-import { IllustrationNoContent, IllustrationNoContentDark } from '@workspace/illustrations';
+import { IllustrationNoContent, IllustrationNoContentDark } from '@aifuxi/semi-illustrations-vue';
 </script>
 
 <template>
@@ -18,7 +18,7 @@ import { IllustrationNoContent, IllustrationNoContentDark } from '@workspace/ill
 也可以使用逐插画子路径：
 
 ```ts
-import IllustrationNoContent from '@workspace/illustrations/illustrations/IllustrationNoContent';
+import IllustrationNoContent from '@aifuxi/semi-illustrations-vue/illustrations/IllustrationNoContent';
 ```
 
 ## 公开插画

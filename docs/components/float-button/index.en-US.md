@@ -5,8 +5,8 @@ FloatButton hosts frequent page-level actions. It targets Semi Design v2.102.0 a
 ## Import
 
 ```ts
-import { FloatButton, FloatButtonGroup } from '@workspace/ui';
-import '@workspace/theme-default/float-button.css';
+import { FloatButton, FloatButtonGroup } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/float-button.css';
 ```
 
 ## Basic usage

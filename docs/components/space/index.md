@@ -5,8 +5,8 @@
 ## 引入
 
 ```ts
-import { Space } from '@workspace/ui';
-import '@workspace/theme-default/space.css';
+import { Space } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/space.css';
 ```
 
 ## 基本用法

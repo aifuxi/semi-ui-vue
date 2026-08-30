@@ -5,8 +5,8 @@ Steps decomposes an ordered task into visible stages. The pinned local Semi Desi
 ## Import
 
 ```ts
-import { Step, Steps } from '@workspace/ui';
-import '@workspace/theme-default/steps.css';
+import { Step, Steps } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/steps.css';
 ```
 
 ## Fill and Basic
@@ -14,7 +14,7 @@ import '@workspace/theme-default/steps.css';
 ```vue
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Step, Steps } from '@workspace/ui';
+import { Step, Steps } from '@aifuxi/semi-ui-vue';
 
 const current = shallowRef(1);
 </script>

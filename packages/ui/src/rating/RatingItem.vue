@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RatingItemFoundation } from '@workspace/foundation-integration';
-import { IconStar } from '@workspace/icons';
+import { IconStar } from '@aifuxi/semi-icons-vue';
 import {
   computed,
   markRaw,

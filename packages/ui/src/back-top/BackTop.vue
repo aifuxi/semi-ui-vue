@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BackTopFoundation, type BackTopAdapter } from '@workspace/foundation-integration';
-import { IconChevronUp } from '@workspace/icons';
+import { IconChevronUp } from '@aifuxi/semi-icons-vue';
 import throttle from 'lodash/throttle.js';
 import {
   computed,

@@ -5,8 +5,8 @@ Toast 用于在操作后给出短暂、及时的结果反馈。Vue 版本以 Sem
 ## 基本用法
 
 ```ts
-import { Toast } from '@workspace/ui';
-import '@workspace/theme-default/toast.css';
+import { Toast } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/toast.css';
 
 Toast.success('保存成功');
 
@@ -46,7 +46,7 @@ Toast.warning({ content: '第二条', stack: true });
 
 ```vue
 <script setup lang="ts">
-import { useToast } from '@workspace/ui';
+import { useToast } from '@aifuxi/semi-ui-vue';
 
 const [toast, ToastHolder] = useToast();
 
@@ -68,7 +68,7 @@ holder API 额外提供 `open(options)`，用于显示 `default` 类型 Toast。
 需要不同容器或默认配置时使用 `ToastFactory.create`。每个实例拥有独立 wrapper、默认值和销毁边界。
 
 ```ts
-import { ToastFactory } from '@workspace/ui';
+import { ToastFactory } from '@aifuxi/semi-ui-vue';
 
 const LocalToast = ToastFactory.create({
   getPopupContainer: () => document.querySelector('#toast-host') as HTMLElement,
@@ -117,4 +117,4 @@ LocalToast.destroyAll();
 
 每条 Toast 使用 `role="alert"` 与 `{type} type` 的 `aria-label`。关闭按钮复用 Button 的原生键盘和焦点能力；组件不捕获 Escape，也不改变当前焦点。
 
-根入口和 `@workspace/ui/toast` 均可在 SSR 中安全导入。命令式方法只能在浏览器调用；holder 在服务端可安全渲染空列表。
+根入口和 `@aifuxi/semi-ui-vue/toast` 均可在 SSR 中安全导入。命令式方法只能在浏览器调用；holder 在服务端可安全渲染空列表。

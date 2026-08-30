@@ -37,7 +37,7 @@
 | React `ref<HTMLSpanElement>`     | -         | 组件 ref 暴露只读 `element` computed ref                                    | Vue 原生映射 |
 | `convertIcon(Svg, type)`         | -         | 同名生成器，接收返回 SVG VNode 的 renderer                                  | 保留用途     |
 
-`@workspace/icons` 根运行时导出与固定稳定包一致：default Icon、`convertIcon` 和 523 个命名图标；`@workspace/icons-lab` 根导出 default Icon 和 84 个命名图标。主 UI 包根入口与 `@workspace/ui/icon` 都转发稳定 Icon 基类。
+`@aifuxi/semi-icons-vue` 根运行时导出与固定稳定包一致：default Icon、`convertIcon` 和 523 个命名图标；`@aifuxi/semi-icons-lab-vue` 根导出 default Icon 和 84 个命名图标。主 UI 包根入口与 `@aifuxi/semi-ui-vue/icon` 都转发稳定 Icon 基类。
 
 ## DOM、class 与样式
 

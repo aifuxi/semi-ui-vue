@@ -7,8 +7,8 @@ DatePicker 对齐 Semi Design v2.102.0 的日期、日期时间、范围、月�
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { DatePicker } from '@workspace/ui';
-import '@workspace/theme-default/date-picker.css';
+import { DatePicker } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/date-picker.css';
 
 const date = ref<Date>();
 </script>

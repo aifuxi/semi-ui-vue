@@ -6,8 +6,8 @@ Tooltip 在悬停、聚焦、点击或右键时展示补充信息。本实现以
 
 ```vue
 <script setup lang="ts">
-import { Tooltip, Button } from '@workspace/ui';
-import '@workspace/theme-default/tooltip.css';
+import { Tooltip, Button } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/tooltip.css';
 </script>
 
 <template>

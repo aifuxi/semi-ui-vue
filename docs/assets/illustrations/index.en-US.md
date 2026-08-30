@@ -1,12 +1,12 @@
 # Illustrations
 
-`@workspace/illustrations` converts all 16 public illustrations from pinned Semi Design v2.102.0 into Vue 3 components while preserving multicolor SVG markup, theme tokens, masks, clip paths, and the default 200×200 canvas.
+`@aifuxi/semi-illustrations-vue` converts all 16 public illustrations from pinned Semi Design v2.102.0 into Vue 3 components while preserving multicolor SVG markup, theme tokens, masks, clip paths, and the default 200×200 canvas.
 
 ## Import
 
 ```vue
 <script setup lang="ts">
-import { IllustrationNoContent, IllustrationNoContentDark } from '@workspace/illustrations';
+import { IllustrationNoContent, IllustrationNoContentDark } from '@aifuxi/semi-illustrations-vue';
 </script>
 
 <template>
@@ -18,7 +18,7 @@ import { IllustrationNoContent, IllustrationNoContentDark } from '@workspace/ill
 Each illustration also has a tree-shakeable subpath:
 
 ```ts
-import IllustrationNoContent from '@workspace/illustrations/illustrations/IllustrationNoContent';
+import IllustrationNoContent from '@aifuxi/semi-illustrations-vue/illustrations/IllustrationNoContent';
 ```
 
 The public pairs are Construction, Failure, Idle, NoAccess, NoContent, NoResult, NotFound, and Success, each with a `Dark` variant.

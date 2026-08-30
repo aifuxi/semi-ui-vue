@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Banner, type BannerType } from '@workspace/ui';
+import { Banner, type BannerType } from '@aifuxi/semi-ui-vue';
 import { shallowRef } from 'vue';
 
 const notices: Array<{ type: BannerType; description: string }> = [

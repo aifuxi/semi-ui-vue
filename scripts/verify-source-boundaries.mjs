@@ -23,7 +23,7 @@ const publicPackagePolicies = [
   {
     manifest: 'packages/ui/package.json',
     dependencies: {
-      '@workspace/icons': 'workspace:*',
+      '@aifuxi/semi-icons-vue': 'workspace:*',
       'async-validator': '3.5.2',
       'bezier-easing': '2.1.0',
       'date-fns': '2.30.0',
@@ -35,7 +35,6 @@ const publicPackagePolicies = [
     peerDependencies: { vue: '>=3.5.0' },
     devDependencies: {
       '@types/lodash': '4.17.20',
-      '@workspace/foundation-integration': 'workspace:*',
     },
   },
   {

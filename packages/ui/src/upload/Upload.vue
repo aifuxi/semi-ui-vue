@@ -5,7 +5,7 @@ import {
   type UploadFoundationError,
   type UploadFoundationFileItem,
 } from '@workspace/foundation-integration';
-import { IconPlus, IconUpload } from '@workspace/icons';
+import { IconPlus, IconUpload } from '@aifuxi/semi-icons-vue';
 import {
   computed,
   getCurrentInstance,

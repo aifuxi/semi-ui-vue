@@ -75,7 +75,7 @@
 - 单元：初值优先级、受控字段、事件顺序、嵌套路径、allowEmpty、同步/异步/rules 校验、trigger、silent、submit/fail/reset、keepState、ArrayField、hooks、HOC 映射、Label/Error/ARIA、裸 Boolean template/render host。
 - SSR：根/子路径安全 import、默认/水平/必填/错误结构，无浏览器全局访问。
 - Chromium：同一 BrowserContext 下 React/Vue 的请求来源、错误、computed style、bounding rect 与局部截图；desktop `1440x900`、mobile `390x844`、light/dark、RTL，并覆盖输入、错误和 submit 行为。
-- 发布：根导出、`@workspace/ui/form`、`@workspace/theme-default/form.css`、声明、tree-shaking、SSR import、真实 tarball consumer、async-validator License/SBOM。
+- 发布：根导出、`@aifuxi/semi-ui-vue/form`、`@aifuxi/semi-theme-default/form.css`、声明、tree-shaking、SSR import、真实 tarball consumer、async-validator License/SBOM。
 
 ## Deviation
 

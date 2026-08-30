@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Nav, type NavigationItems } from '@workspace/ui';
+import { Nav, type NavigationItems } from '@aifuxi/semi-ui-vue';
 
 const items: NavigationItems = [
   { itemKey: 'home', text: '首页' },

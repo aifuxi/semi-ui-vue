@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconTick } from '@workspace/icons';
+import { IconTick } from '@aifuxi/semi-icons-vue';
 import { computed, inject } from 'vue';
 
 import { dropdownContextKey } from './dropdown-context';

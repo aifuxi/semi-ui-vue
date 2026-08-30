@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { ConfigProvider, TreeSelect, type SemiLocale, type TreeNodeData } from '@workspace/ui';
+import {
+  ConfigProvider,
+  TreeSelect,
+  type SemiLocale,
+  type TreeNodeData,
+} from '@aifuxi/semi-ui-vue';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>();

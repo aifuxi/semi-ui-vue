@@ -5,8 +5,8 @@ Space applies consistent gaps between sibling content. The implementation target
 ## Import
 
 ```ts
-import { Space } from '@workspace/ui';
-import '@workspace/theme-default/space.css';
+import { Space } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/space.css';
 ```
 
 ## Basic usage

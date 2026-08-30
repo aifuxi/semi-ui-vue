@@ -7,7 +7,7 @@ Modal presents a task above the current page when the user must confirm or provi
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Button, Modal } from '@workspace/ui';
+import { Button, Modal } from '@aifuxi/semi-ui-vue';
 
 const visible = ref(false);
 </script>
@@ -27,7 +27,7 @@ The `#title`, `#header`, `#body`, default, `#footer`, `#icon`, and `#closeIcon` 
 When `onOk` or `onCancel` returns a Promise, the default footer exposes its pending state. Imperative confirm dialogs close after resolution and stay open after rejection.
 
 ```ts
-import { Modal } from '@workspace/ui';
+import { Modal } from '@aifuxi/semi-ui-vue';
 
 const handle = Modal.confirm({
   title: 'Delete project',

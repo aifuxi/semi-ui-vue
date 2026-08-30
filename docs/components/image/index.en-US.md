@@ -4,8 +4,8 @@ Vue 3 image display and preview components aligned with Semi Design v2.102.0. `I
 
 ```vue
 <script setup lang="ts">
-import { Image, ImagePreview } from '@workspace/ui';
-import '@workspace/theme-default/image.css';
+import { Image, ImagePreview } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/image.css';
 </script>
 
 <template>
