@@ -9,6 +9,7 @@ import {
 import {
   captureComputedStyle,
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -86,8 +87,18 @@ test('Breadcrumb React/Vue 事件、Enter 展开、Popover、样式与几何一�
     expect(reactPopover).toContainText('设计系统'),
     expect(vuePopover).toContainText('设计系统'),
   ]);
-  await expect(reactPopover).toHaveScreenshot('breadcrumb-popover-parity-light.png');
-  await expect(vuePopover).toHaveScreenshot('breadcrumb-popover-parity-light.png');
+  await expect(reactPopover).toHaveScreenshot('breadcrumb-popover-reference-light.png');
+  await expect(vuePopover).toHaveScreenshot('breadcrumb-popover-vue-light.png');
+  const [reactPopoverScreenshot, vuePopoverScreenshot] = await Promise.all([
+    reactPopover.screenshot({ animations: 'disabled' }),
+    vuePopover.screenshot({ animations: 'disabled' }),
+  ]);
+  await expectScreenshotPixelsToMatch(
+    pair.react.page,
+    vuePopoverScreenshot,
+    reactPopoverScreenshot,
+    'Breadcrumb Popover React/Vue',
+  );
   const [reactPopoverStyle, vuePopoverStyle, reactPopoverBox, vuePopoverBox] = await Promise.all([
     captureComputedStyle(reactPopover, [
       'backgroundColor',
@@ -113,9 +124,11 @@ test('Breadcrumb React/Vue 事件、Enter 展开、Popover、样式与几何一�
   expect(vuePopoverStyle).toEqual(reactPopoverStyle);
   if (!reactPopoverBox || !vuePopoverBox) throw new Error('Breadcrumb Popover 不可测量');
   for (const axis of ['x', 'y', 'width', 'height'] as const) {
-    expect(Math.abs(vuePopoverBox[axis] - reactPopoverBox[axis])).toBeLessThanOrEqual(
-      VISUAL_THRESHOLDS.boundingRectToleranceCssPx,
-    );
+    const delta = Math.abs(vuePopoverBox[axis] - reactPopoverBox[axis]);
+    expect(
+      delta,
+      `Breadcrumb Popover ${axis} 几何不一致：React=${reactPopoverBox[axis]}，Vue=${vuePopoverBox[axis]}，delta=${delta}`,
+    ).toBeLessThanOrEqual(VISUAL_THRESHOLDS.boundingRectToleranceCssPx);
   }
 
   await Promise.all([reactMore.focus(), vueMore.focus()]);

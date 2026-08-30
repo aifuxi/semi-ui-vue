@@ -9,6 +9,7 @@ import {
 import {
   captureComputedStyle,
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -116,9 +117,13 @@ test('Image React/Vue 缩略图与分组预览行为一致', async ({ context })
     pair.react.page.locator('.semi-image-preview-footer').screenshot({ animations: 'disabled' }),
     pair.vue.page.locator('.semi-image-preview-footer').screenshot({ animations: 'disabled' }),
   ]);
+  await expectScreenshotPixelsToMatch(
+    pair.react.page,
+    vueFooter,
+    reactFooter,
+    'Image Preview Footer React/Vue',
+  );
   expect(vueImage.equals(reactImage)).toBe(true);
-  expect(reactFooter.length).toBeGreaterThan(0);
-  expect(vueFooter.length).toBeGreaterThan(0);
   for (const selector of [
     '.semi-image-preview-footer',
     '.semi-image-preview-footer-page',

@@ -9,6 +9,7 @@ import {
 import {
   captureComputedStyle,
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -168,6 +169,16 @@ test('Pagination React/Vue 页码、快速跳页、容量 Select、Popover、样
   );
   await expect(vuePopover.locator('.semi-page-rest-list')).toHaveScreenshot(
     'pagination-rest-list-vue.png',
+  );
+  const [reactPopoverScreenshot, vuePopoverScreenshot] = await Promise.all([
+    reactPopover.screenshot({ animations: 'disabled' }),
+    vuePopover.screenshot({ animations: 'disabled' }),
+  ]);
+  await expectScreenshotPixelsToMatch(
+    pair.react.page,
+    vuePopoverScreenshot,
+    reactPopoverScreenshot,
+    'Pagination Popover React/Vue',
   );
   for (const index of [0, 1]) {
     const reactPageItem = reactPopover.locator('.semi-page-rest-item').nth(index);

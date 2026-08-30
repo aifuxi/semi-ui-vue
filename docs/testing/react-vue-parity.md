@@ -100,6 +100,8 @@ pnpm test:browser tests/browser/components/button.spec.ts
 
 截图基线统一位于 `tests/browser/snapshots/`，不再依赖 spec 文件名，因此测试拆分或移动不会导致整批基线失效。
 
+React 与 Vue 必须使用独立的快照名，不得共用同一个预期 PNG。发布 CI 设置 `PARITY_IGNORE_HOST_BASELINES=1` 时，Playwright 会直接跳过 `toHaveScreenshot()`；因此不得依赖该断言等待动画、稳定布局或证明 React/Vue 一致。涉及动画或 Portal 的局部对照必须额外独立截取两端图片，显式使用 `animations: 'disabled'`，再按项目视觉阈值比较像素。不允许用非空 Buffer、共享快照或宽松的几何容差代替这个证据。
+
 更新截图只能在独立源码/行为/计算样式断言通过并人工检查实际图片后执行：
 
 ```bash

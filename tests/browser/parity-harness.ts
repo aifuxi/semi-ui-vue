@@ -31,6 +31,16 @@ export interface ParityPagePair {
   readonly vue: ParityPage;
 }
 
+interface ScreenshotPixelComparison {
+  readonly actualHeight: number;
+  readonly actualWidth: number;
+  readonly diffPixelCount: number;
+  readonly diffPixelRatio: number;
+  readonly expectedHeight: number;
+  readonly expectedWidth: number;
+  readonly maxChannelDelta: number;
+}
+
 function observeRuntimeErrors(page: Page): string[] {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
@@ -82,6 +92,96 @@ export async function captureComputedStyle(
       requestedProperties.map((property) => [property, styleRecord[property] ?? '']),
     );
   }, properties);
+}
+
+export async function expectScreenshotPixelsToMatch(
+  page: Page,
+  actual: Buffer,
+  expected: Buffer,
+  label: string,
+): Promise<void> {
+  const comparison = await page.evaluate<
+    ScreenshotPixelComparison,
+    { actualUrl: string; expectedUrl: string; threshold: number }
+  >(
+    async ({ actualUrl, expectedUrl, threshold }) => {
+      const readPixels = async (url: string) => {
+        const image = new Image();
+        const loaded = new Promise<void>((resolve, reject) => {
+          image.onload = () => resolve();
+          image.onerror = () => reject(new Error('Screenshot PNG 解码失败'));
+        });
+        image.src = url;
+        await loaded;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+        const context = canvas.getContext('2d', { willReadFrequently: true });
+        if (!context) throw new Error('Screenshot Canvas 不可用');
+        context.drawImage(image, 0, 0);
+        return {
+          data: context.getImageData(0, 0, canvas.width, canvas.height).data,
+          height: canvas.height,
+          width: canvas.width,
+        };
+      };
+
+      const [actualImage, expectedImage] = await Promise.all([
+        readPixels(actualUrl),
+        readPixels(expectedUrl),
+      ]);
+      const comparableLength = Math.min(actualImage.data.length, expectedImage.data.length);
+      let diffPixelCount = 0;
+      let maxChannelDelta = 0;
+      for (let index = 0; index < comparableLength; index += 4) {
+        let pixelDelta = 0;
+        for (let channel = 0; channel < 4; channel += 1) {
+          pixelDelta = Math.max(
+            pixelDelta,
+            Math.abs(actualImage.data[index + channel]! - expectedImage.data[index + channel]!) /
+              255,
+          );
+        }
+        maxChannelDelta = Math.max(maxChannelDelta, pixelDelta);
+        if (pixelDelta > threshold) diffPixelCount += 1;
+      }
+
+      const pixelCount = Math.max(
+        actualImage.width * actualImage.height,
+        expectedImage.width * expectedImage.height,
+      );
+      if (
+        actualImage.width !== expectedImage.width ||
+        actualImage.height !== expectedImage.height
+      ) {
+        diffPixelCount = pixelCount;
+      }
+      return {
+        actualHeight: actualImage.height,
+        actualWidth: actualImage.width,
+        diffPixelCount,
+        diffPixelRatio: pixelCount === 0 ? 0 : diffPixelCount / pixelCount,
+        expectedHeight: expectedImage.height,
+        expectedWidth: expectedImage.width,
+        maxChannelDelta,
+      };
+    },
+    {
+      actualUrl: `data:image/png;base64,${actual.toString('base64')}`,
+      expectedUrl: `data:image/png;base64,${expected.toString('base64')}`,
+      threshold: VISUAL_THRESHOLDS.screenshotThreshold,
+    },
+  );
+
+  expect([comparison.actualWidth, comparison.actualHeight], `${label} 尺寸不一致`).toEqual([
+    comparison.expectedWidth,
+    comparison.expectedHeight,
+  ]);
+  expect(
+    comparison.diffPixelRatio,
+    `${label} 像素差异超限：diff=${comparison.diffPixelCount}，ratio=${comparison.diffPixelRatio}，maxChannelDelta=${comparison.maxChannelDelta}`,
+  ).toBeLessThanOrEqual(VISUAL_THRESHOLDS.maxDiffPixelRatio);
 }
 
 export async function expectComparableTarget(
