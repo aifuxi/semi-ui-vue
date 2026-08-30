@@ -3,6 +3,7 @@ import type { PaginationLocale } from '../pagination';
 import type { ImageLocale } from '../image';
 import type { ListLocale } from '../list/types';
 import type { ModalLocale } from '../modal/types';
+import type { NavigationLocale } from '../navigation/types';
 import type { PopconfirmLocale } from '../popconfirm/types';
 import type { TableLocale } from '../table/types';
 import type { UploadLocale } from '../upload/types';
@@ -57,6 +58,10 @@ export const DEFAULT_CONFIG_LOCALE: Readonly<SemiLocale> = Object.freeze({
     confirm: '确定',
     cancel: '取消',
   }) satisfies ModalLocale,
+  Navigation: Object.freeze({
+    collapseText: '收起侧边栏',
+    expandText: '展开侧边栏',
+  }) satisfies NavigationLocale,
   Popconfirm: Object.freeze({
     confirm: '确定',
     cancel: '取消',

@@ -5,6 +5,7 @@ import type { PaginationLocale } from '../pagination';
 import type { ImageLocale } from '../image';
 import type { ListLocale } from '../list/types';
 import type { ModalLocale } from '../modal/types';
+import type { NavigationLocale } from '../navigation/types';
 import type { PopconfirmLocale } from '../popconfirm/types';
 import type { TableLocale } from '../table/types';
 import type { UploadLocaleConfig } from '../upload/types';
@@ -40,6 +41,7 @@ export interface SemiLocale {
   Image?: ImageLocale;
   List?: ListLocale;
   Modal?: ModalLocale;
+  Navigation?: NavigationLocale;
   Popconfirm?: PopconfirmLocale;
   Table?: TableLocale;
   Upload?: UploadLocaleConfig;

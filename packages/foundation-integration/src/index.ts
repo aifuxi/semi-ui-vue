@@ -111,6 +111,23 @@ export { PinCodeFoundation } from './pin-code.js';
 export type { PinCodeAdapter } from './pin-code.js';
 export { PaginationFoundation } from './pagination.js';
 export type { PaginationAdapter, PaginationPage, PaginationPageListState } from './pagination.js';
+export {
+  FoundationNavigationItem,
+  NavigationFoundation,
+  NavigationItemFoundation,
+  NavigationSubNavFoundation,
+  navigationCssClasses,
+  navigationNumbers,
+  navigationStrings,
+} from './navigation.js';
+export type {
+  NavigationAdapter,
+  NavigationItemAdapter,
+  NavigationItemFoundationProps,
+  NavigationItemKey,
+  NavigationSelectedData,
+  NavigationSubNavAdapter,
+} from './navigation.js';
 export { RadioFoundation, RadioGroupFoundation, RadioInnerFoundation } from './radio.js';
 export type { RadioAdapter, RadioGroupAdapter, RadioInnerAdapter } from './radio.js';
 export { RatingFoundation, RatingItemFoundation } from './rating.js';

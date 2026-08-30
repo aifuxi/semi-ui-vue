@@ -158,6 +158,26 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Navigation Adapter, children Foundations, styles and docs', () => {
+    expect(getParityScenario('navigation')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.navigationPublicEntry,
+    });
+    expect(assertScenarioComparable('navigation').targets).toHaveLength(5);
+    expect(getParityScenario('navigation').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.navigationItemEntry,
+        REFERENCE_SOURCE_PATHS.navigationSubNavEntry,
+        REFERENCE_SOURCE_PATHS.navigationFoundation,
+        REFERENCE_SOURCE_PATHS.navigationItemFoundation,
+        REFERENCE_SOURCE_PATHS.navigationSubNavFoundation,
+        REFERENCE_SOURCE_PATHS.navigationFoundationStyle,
+        REFERENCE_SOURCE_PATHS.navigationDocumentation,
+      ]),
+    );
+  });
+
   it('records Descriptions Adapter, Item, Foundation, styles and docs', () => {
     expect(getParityScenario('descriptions')).toMatchObject({
       referenceStatus: 'ready',

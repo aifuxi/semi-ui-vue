@@ -148,6 +148,7 @@ export default defineConfig({
         'tooltip/index': fileURLToPath(new URL('./src/tooltip/index.ts', import.meta.url)),
         'transfer/index': fileURLToPath(new URL('./src/transfer/index.ts', import.meta.url)),
         'upload/index': fileURLToPath(new URL('./src/upload/index.ts', import.meta.url)),
+        'navigation/index': fileURLToPath(new URL('./src/navigation/index.ts', import.meta.url)),
         'typography/index': fileURLToPath(new URL('./src/typography/index.ts', import.meta.url)),
       },
       formats: ['es'],

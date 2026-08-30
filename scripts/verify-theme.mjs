@@ -89,6 +89,20 @@ const transferCssPath = path.join(
 );
 const uploadEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'upload.scss');
 const uploadCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'upload.css');
+const navigationEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'navigation.scss',
+);
+const navigationCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'navigation.css',
+);
 const toastEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'toast.scss');
 const toastCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'toast.css');
 const calendarEntryPath = path.join(
@@ -2365,6 +2379,34 @@ if (JSON.stringify(actualConfigProviderImports) !== JSON.stringify(expectedConfi
 const configProviderCss = await readFile(configProviderCssPath, 'utf8');
 if (!configProviderCss.includes('--semi-color-primary')) {
   throw new Error('ConfigProvider 逐组件样式产物缺少默认主题 Token');
+}
+
+const navigationEntrySource = await readFile(navigationEntryPath, 'utf8');
+for (const dependency of [
+  'semi-foundation/_portal/portal.scss',
+  'semi-foundation/button/button.scss',
+  'semi-foundation/collapsible/collapsible.scss',
+  'semi-foundation/dropdown/dropdown.scss',
+  'semi-foundation/navigation/navigation.scss',
+  'semi-foundation/tooltip/tooltip.scss',
+  'semi-icons/src/styles/icons.scss',
+]) {
+  if (!navigationEntrySource.includes(dependency)) {
+    throw new Error(`Navigation 逐组件样式入口缺少固定依赖：${dependency}`);
+  }
+}
+const navigationCss = await readFile(navigationCssPath, 'utf8');
+for (const selector of [
+  '.semi-navigation-item-selected',
+  '.semi-navigation-sub-title',
+  '.semi-navigation-collapse-btn',
+  '.semi-dropdown-wrapper',
+  '.semi-tooltip-wrapper',
+  '.semi-rtl .semi-navigation',
+]) {
+  if (!navigationCss.includes(selector)) {
+    throw new Error(`Navigation 逐组件样式产物缺少选择器：${selector}`);
+  }
 }
 
 process.stdout.write(

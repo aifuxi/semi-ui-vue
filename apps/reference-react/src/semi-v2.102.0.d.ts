@@ -2331,3 +2331,27 @@ declare module '@semi-v2.102.0/tree-select' {
   const TreeSelect: ComponentType<TreeSelectProps>;
   export default TreeSelect;
 }
+
+declare module '@semi-v2.102.0/navigation' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  interface NavigationItem {
+    disabled?: boolean;
+    itemKey: string | number;
+    items?: NavigationItem[];
+    text?: ReactNode;
+  }
+
+  interface NavigationProps {
+    [key: `data-${string}`]: string | number | boolean | undefined;
+    bodyStyle?: CSSProperties;
+    defaultOpenKeys?: Array<string | number>;
+    defaultSelectedKeys?: Array<string | number>;
+    footer?: { collapseButton?: boolean };
+    header?: { text?: ReactNode };
+    items?: NavigationItem[];
+  }
+
+  const Navigation: ComponentType<NavigationProps>;
+  export default Navigation;
+}

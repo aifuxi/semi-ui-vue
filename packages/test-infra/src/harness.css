@@ -2802,6 +2802,11 @@ p {
   line-height: 1;
 }
 
+.navigation-scenario {
+  width: 240px;
+  min-height: 320px;
+}
+
 .tree-select-scenario {
   width: 300px;
   max-width: 100%;
