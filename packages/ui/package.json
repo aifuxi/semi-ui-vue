@@ -46,6 +46,10 @@
       "types": "./dist/carousel/index.d.ts",
       "import": "./dist/carousel/index.js"
     },
+    "./cascader": {
+      "types": "./dist/cascader/index.d.ts",
+      "import": "./dist/cascader/index.js"
+    },
     "./collapsible": {
       "types": "./dist/collapsible/index.d.ts",
       "import": "./dist/collapsible/index.js"

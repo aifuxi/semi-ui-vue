@@ -33,6 +33,19 @@ export type {
 } from './calendar.js';
 export { CarouselFoundation } from './carousel.js';
 export type { CarouselAdapter } from './carousel.js';
+export {
+  calcCascaderMergeType,
+  cascaderCssClasses,
+  CascaderFoundation,
+  cascaderNumbers,
+  cascaderStrings,
+  convertCascaderDataToEntities,
+  getCascaderKeyByPosition,
+  getCascaderKeyByValuePath,
+  getCascaderKeysByValuePath,
+  getCascaderValueOrKey,
+} from './cascader.js';
+export type { CascaderAdapter, CascaderKeyMaps } from './cascader.js';
 export { CollapsibleFoundation } from './collapsible.js';
 export type { CollapsibleAdapter } from './collapsible.js';
 export { CropperFoundation, cropperCssClasses, cropperStrings } from './cropper.js';

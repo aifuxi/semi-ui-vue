@@ -269,6 +269,7 @@ try {
 		await import('@workspace/ui/calendar');
 		await import('@workspace/ui/card');
 		await import('@workspace/ui/carousel');
+		await import('@workspace/ui/cascader');
 		await import('@workspace/ui/collapsible');
 		await import('@workspace/ui/cropper');
 		await import('@workspace/ui/descriptions');
@@ -385,6 +386,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/carousel.css').endsWith('/dist/carousel.css')) {
 		  throw new Error('Carousel 逐组件样式导出未指向 dist/carousel.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/cascader.css').endsWith('/dist/cascader.css')) {
+		  throw new Error('Cascader 逐组件样式导出未指向 dist/cascader.css');
 		}
 		if (!import.meta.resolve('@workspace/theme-default/collapsible.css').endsWith('/dist/collapsible.css')) {
 		  throw new Error('Collapsible 逐组件样式导出未指向 dist/collapsible.css');
@@ -548,6 +552,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Calendar, type CalendarEvent, type CalendarMode } from '@workspace/ui/calendar';
 		import { Card, CardGroup, CardMeta, type CardShadows } from '@workspace/ui/card';
 		import { Carousel, type CarouselMethods, type CarouselTheme } from '@workspace/ui/carousel';
+		import { Cascader, type CascaderData, type CascaderProps, type CascaderValue } from '@workspace/ui/cascader';
 		import { Collapsible, type CollapsibleProps } from '@workspace/ui/collapsible';
 		import { Cropper, type CropperMethods, type CropperShape } from '@workspace/ui/cropper';
 		import { Descriptions, DescriptionsItem, type DescriptionsDataItem, type DescriptionsLayout } from '@workspace/ui/descriptions';
@@ -660,6 +665,10 @@ h(Button, { type, htmlType: 'submit' });
 		const carouselMethods: CarouselMethods = { play() {}, stop() {}, goTo() {}, prev() {}, next() {} };
 		h(Carousel, { autoPlay: false, theme: carouselTheme, showArrow: true }, () => [h('div', 'One'), h('div', 'Two')]);
 		carouselMethods.goTo(1);
+		const cascaderData: CascaderData[] = [{ label: 'Consumer', value: 'consumer' }];
+		const cascaderValue: CascaderValue = ['consumer'];
+		const cascaderProps: CascaderProps = { treeData: cascaderData, defaultValue: cascaderValue, filterTreeNode: true };
+		h(Cascader, cascaderProps, { empty: () => 'No data' });
 		const collapsibleProps: CollapsibleProps = { collapseHeight: 24, motion: true };
 		h(Collapsible, collapsibleProps, () => h('div', 'Collapsible content'));
 		const cropperShape: CropperShape = 'roundRect';
@@ -920,6 +929,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-tree-select') || !themeCss.includes('.semi-tree-select-popover')) {
     throw new Error('安装后的默认主题缺少 TreeSelect 样式');
+  }
+  if (!themeCss.includes('.semi-cascader') || !themeCss.includes('.semi-cascader-popover')) {
+    throw new Error('安装后的默认主题缺少 Cascader 样式');
   }
   if (!themeCss.includes('.semi-cropper-box-corner')) {
     throw new Error('安装后的默认主题缺少 Cropper 样式');
@@ -1345,6 +1357,18 @@ h(Button, { type, htmlType: 'submit' });
     !treeSelectThemeCss.includes('.semi-rtl .semi-tree-select')
   ) {
     throw new Error('安装后的 TreeSelect 逐组件样式缺少触发器、浮层、搜索或 RTL 样式');
+  }
+  const cascaderThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'cascader.css'),
+    'utf8',
+  );
+  if (
+    !cascaderThemeCss.includes('.semi-cascader-selection') ||
+    !cascaderThemeCss.includes('.semi-cascader-popover') ||
+    !cascaderThemeCss.includes('.semi-cascader-option-list') ||
+    !cascaderThemeCss.includes('.semi-rtl .semi-cascader')
+  ) {
+    throw new Error('安装后的 Cascader 逐组件样式缺少触发器、浮层、选项或 RTL 样式');
   }
   const avatarThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'avatar.css'),

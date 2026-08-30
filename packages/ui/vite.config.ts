@@ -81,6 +81,7 @@ export default defineConfig({
         'calendar/index': fileURLToPath(new URL('./src/calendar/index.ts', import.meta.url)),
         'card/index': fileURLToPath(new URL('./src/card/index.ts', import.meta.url)),
         'carousel/index': fileURLToPath(new URL('./src/carousel/index.ts', import.meta.url)),
+        'cascader/index': fileURLToPath(new URL('./src/cascader/index.ts', import.meta.url)),
         'collapsible/index': fileURLToPath(new URL('./src/collapsible/index.ts', import.meta.url)),
         'cropper/index': fileURLToPath(new URL('./src/cropper/index.ts', import.meta.url)),
         'descriptions/index': fileURLToPath(

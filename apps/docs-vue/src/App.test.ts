@@ -214,6 +214,27 @@ describe('Vue 对照工作台', () => {
     );
     wrapper.unmount();
   });
+  it('通过公共 Cascader 渲染触发器、搜索级联浮层、选中路径与 RTL', async () => {
+    const wrapper = mount(App, {
+      attachTo: document.body,
+      props: { scenarioId: 'cascader', direction: 'rtl', locale: 'en-US' },
+    });
+    for (let index = 0; index < 4; index += 1) await wrapper.vm.$nextTick();
+
+    const scenario = wrapper.get('[data-testid="cascader-vue"]');
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(wrapper.classes()).toContain('semi-rtl');
+    expect(scenario.get('[data-parity-target="cascader-root"]').attributes('role')).toBe(
+      'combobox',
+    );
+    expect(scenario.text()).toContain('亚洲 / 中国 / 北京');
+    expect(document.body.querySelector('.semi-cascader-popover')).not.toBeNull();
+    expect(document.body.querySelectorAll('.semi-cascader-option-list')).toHaveLength(3);
+    expect(document.body.querySelector('.semi-cascader-option-select')?.textContent).toContain(
+      '北京',
+    );
+    wrapper.unmount();
+  });
   it('通过公共 Empty 渲染图片、无图片、水平与 SVG 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'empty', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="empty-vue"]');

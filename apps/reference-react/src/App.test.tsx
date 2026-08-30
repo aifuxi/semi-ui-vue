@@ -428,6 +428,15 @@ describe('React 参考工作台', () => {
     expect(html).toContain('data-parity-target="tree-select-root"');
     expect(html).toContain('semi-tree-select');
   });
+  it('登记固定 Cascader Adapter 的可比较参考场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="cascader" direction="rtl" />);
+
+    expect(html).toContain('data-parity-scenario="cascader"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/cascader/index.tsx');
+    expect(html).toContain('data-testid="cascader-reference"');
+    expect(html).toContain('data-parity-target="cascader-root"');
+    expect(html).toContain('semi-cascader');
+  });
   it('从固定 Empty Adapter 渲染图片、无图片、水平与 SVG 场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="empty" direction="rtl" />);
 

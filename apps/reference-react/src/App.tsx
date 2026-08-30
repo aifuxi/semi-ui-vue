@@ -10,6 +10,7 @@ import { BadgeScenario } from './scenarios/BadgeScenario';
 import { CalendarScenario } from './scenarios/CalendarScenario';
 import { CardScenario } from './scenarios/CardScenario';
 import { CarouselScenario } from './scenarios/CarouselScenario';
+import { CascaderScenario } from './scenarios/CascaderScenario';
 import { CollapsibleScenario } from './scenarios/CollapsibleScenario';
 import { CropperScenario } from './scenarios/CropperScenario';
 import { DescriptionsScenario } from './scenarios/DescriptionsScenario';
@@ -130,6 +131,9 @@ export function App(props: AppProps): React.ReactElement {
         ) : null}
         {scenario.id === 'card' ? <CardScenario /> : null}
         {scenario.id === 'carousel' ? <CarouselScenario /> : null}
+        {scenario.id === 'cascader' ? (
+          <CascaderScenario direction={options.direction} locale={options.locale} />
+        ) : null}
         {scenario.id === 'collapsible' ? <CollapsibleScenario /> : null}
         {scenario.id === 'cropper' ? <CropperScenario /> : null}
         {scenario.id === 'descriptions' ? <DescriptionsScenario /> : null}

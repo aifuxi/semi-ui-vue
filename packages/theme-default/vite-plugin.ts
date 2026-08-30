@@ -10,6 +10,7 @@ export const virtualNotificationStyleId = 'virtual:workspace-notification-styles
 export const virtualCalendarStyleId = 'virtual:workspace-calendar-styles.css';
 export const virtualCardStyleId = 'virtual:workspace-card-styles.css';
 export const virtualCarouselStyleId = 'virtual:workspace-carousel-styles.css';
+export const virtualCascaderStyleId = 'virtual:workspace-cascader-styles.css';
 export const virtualCollapsibleStyleId = 'virtual:workspace-collapsible-styles.css';
 export const virtualCropperStyleId = 'virtual:workspace-cropper-styles.css';
 export const virtualDescriptionsStyleId = 'virtual:workspace-descriptions-styles.css';
@@ -72,6 +73,7 @@ const resolvedVirtualNotificationStyleId = `\0${virtualNotificationStyleId}`;
 const resolvedVirtualCalendarStyleId = `\0${virtualCalendarStyleId}`;
 const resolvedVirtualCardStyleId = `\0${virtualCardStyleId}`;
 const resolvedVirtualCarouselStyleId = `\0${virtualCarouselStyleId}`;
+const resolvedVirtualCascaderStyleId = `\0${virtualCascaderStyleId}`;
 const resolvedVirtualCollapsibleStyleId = `\0${virtualCollapsibleStyleId}`;
 const resolvedVirtualCropperStyleId = `\0${virtualCropperStyleId}`;
 const resolvedVirtualDescriptionsStyleId = `\0${virtualDescriptionsStyleId}`;
@@ -134,6 +136,7 @@ const notificationStyleEntry = fileURLToPath(new URL('./src/notification.scss', 
 const calendarStyleEntry = fileURLToPath(new URL('./src/calendar.scss', import.meta.url));
 const cardStyleEntry = fileURLToPath(new URL('./src/card.scss', import.meta.url));
 const carouselStyleEntry = fileURLToPath(new URL('./src/carousel.scss', import.meta.url));
+const cascaderStyleEntry = fileURLToPath(new URL('./src/cascader.scss', import.meta.url));
 const collapsibleStyleEntry = fileURLToPath(new URL('./src/collapsible.scss', import.meta.url));
 const cropperStyleEntry = fileURLToPath(new URL('./src/cropper.scss', import.meta.url));
 const descriptionsStyleEntry = fileURLToPath(new URL('./src/descriptions.scss', import.meta.url));
@@ -200,6 +203,7 @@ const styleEntries = new Map([
   [resolvedVirtualCalendarStyleId, calendarStyleEntry],
   [resolvedVirtualCardStyleId, cardStyleEntry],
   [resolvedVirtualCarouselStyleId, carouselStyleEntry],
+  [resolvedVirtualCascaderStyleId, cascaderStyleEntry],
   [resolvedVirtualCollapsibleStyleId, collapsibleStyleEntry],
   [resolvedVirtualCropperStyleId, cropperStyleEntry],
   [resolvedVirtualDescriptionsStyleId, descriptionsStyleEntry],
@@ -270,6 +274,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualCalendarStyleId) return resolvedVirtualCalendarStyleId;
       if (source === virtualCardStyleId) return resolvedVirtualCardStyleId;
       if (source === virtualCarouselStyleId) return resolvedVirtualCarouselStyleId;
+      if (source === virtualCascaderStyleId) return resolvedVirtualCascaderStyleId;
       if (source === virtualCollapsibleStyleId) return resolvedVirtualCollapsibleStyleId;
       if (source === virtualCropperStyleId) return resolvedVirtualCropperStyleId;
       if (source === virtualDescriptionsStyleId) return resolvedVirtualDescriptionsStyleId;

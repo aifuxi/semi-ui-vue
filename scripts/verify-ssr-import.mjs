@@ -104,6 +104,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/navigation/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'tree-select', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/tree-select/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'cascader', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/cascader/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'toast', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/toast/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'scroll-list', 'index.js')).href);

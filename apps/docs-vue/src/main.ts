@@ -8,6 +8,7 @@ import 'virtual:workspace-notification-styles.css';
 import 'virtual:workspace-calendar-styles.css';
 import 'virtual:workspace-card-styles.css';
 import 'virtual:workspace-carousel-styles.css';
+import 'virtual:workspace-cascader-styles.css';
 import 'virtual:workspace-collapsible-styles.css';
 import 'virtual:workspace-cropper-styles.css';
 import 'virtual:workspace-descriptions-styles.css';

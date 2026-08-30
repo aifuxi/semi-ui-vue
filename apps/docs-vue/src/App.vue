@@ -11,6 +11,7 @@ import BadgeScenario from './components/BadgeScenario.vue';
 import CalendarScenario from './components/CalendarScenario.vue';
 import CardScenario from './components/CardScenario.vue';
 import CarouselScenario from './components/CarouselScenario.vue';
+import CascaderScenario from './components/CascaderScenario.vue';
 import CollapsibleScenario from './components/CollapsibleScenario.vue';
 import CropperScenario from './components/CropperScenario.vue';
 import DescriptionsScenario from './components/DescriptionsScenario.vue';
@@ -124,6 +125,11 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       />
       <CardScenario v-else-if="scenario.id === 'card'" />
       <CarouselScenario v-else-if="scenario.id === 'carousel'" />
+      <CascaderScenario
+        v-else-if="scenario.id === 'cascader'"
+        :direction="props.direction"
+        :locale="props.locale"
+      />
       <CollapsibleScenario v-else-if="scenario.id === 'collapsible'" />
       <CropperScenario v-else-if="scenario.id === 'cropper'" />
       <DescriptionsScenario v-else-if="scenario.id === 'descriptions'" />

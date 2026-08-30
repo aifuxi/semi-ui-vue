@@ -104,6 +104,9 @@ export default defineConfig({
       '@semi-v2.102.0/tree-select': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiTreeSelectStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/cascader': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiCascaderStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/toast': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiToastStub.tsx', import.meta.url),
       ),

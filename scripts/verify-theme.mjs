@@ -463,6 +463,20 @@ const treeSelectCssPath = path.join(
   'dist',
   'tree-select.css',
 );
+const cascaderEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'cascader.scss',
+);
+const cascaderCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'cascader.css',
+);
 const switchEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'switch.scss');
 const switchCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'switch.css');
 const tagInputEntryPath = path.join(
@@ -585,6 +599,7 @@ const requiredSelectors = [
   '.semi-checkbox',
   '.semi-card',
   '.semi-carousel',
+  '.semi-cascader',
   '.semi-collapsible-transition',
   '.semi-descriptions-horizontal',
   '.semi-dropdown-wrapper',
@@ -1453,6 +1468,43 @@ for (const selector of [
 ]) {
   if (!treeSelectCss.includes(selector)) {
     throw new Error(`TreeSelect 逐组件样式产物缺少选择器：${selector}`);
+  }
+}
+
+const expectedCascaderImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+  vendorImport('semi-foundation/_portal/portal.scss'),
+  vendorImport('semi-foundation/tooltip/tooltip.scss'),
+  vendorImport('semi-foundation/popover/popover.scss'),
+  vendorImport('semi-foundation/input/input.scss'),
+  vendorImport('semi-foundation/tag/tag.scss'),
+  vendorImport('semi-foundation/overflowList/overflowList.scss'),
+  vendorImport('semi-foundation/tagInput/tagInput.scss'),
+  vendorImport('semi-foundation/checkbox/checkbox.scss'),
+  vendorImport('semi-foundation/spin/spin.scss'),
+  vendorImport('semi-foundation/cascader/cascader.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const cascaderEntrySource = await readFile(cascaderEntryPath, 'utf8');
+const actualCascaderImports = [...cascaderEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualCascaderImports) !== JSON.stringify(expectedCascaderImports)) {
+  throw new Error('Cascader 逐组件样式入口顺序未与固定源码依赖对齐');
+}
+const cascaderCss = await readFile(cascaderCssPath, 'utf8');
+for (const selector of [
+  '.semi-cascader',
+  '.semi-cascader-selection',
+  '.semi-cascader-popover',
+  '.semi-cascader-option-list',
+  '.semi-cascader-option-select',
+  '.semi-rtl .semi-cascader',
+]) {
+  if (!cascaderCss.includes(selector)) {
+    throw new Error(`Cascader 逐组件样式产物缺少选择器：${selector}`);
   }
 }
 
@@ -2410,5 +2462,5 @@ for (const selector of [
 }
 
 process.stdout.write(
-  `默认主题入口与 Anchor/Avatar/Badge/Banner/Notification/Popconfirm/Progress/Skeleton/Spin/Transfer/Upload/Toast/Calendar/Card/Carousel/Collapsible/Cropper/Descriptions/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/Tag/Timeline/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/TreeSelect/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + bannerCss.length + notificationCss.length + popconfirmCss.length + progressCss.length + skeletonCss.length + spinCss.length + transferCss.length + uploadCss.length + toastCss.length + calendarCss.length + cardCss.length + carouselCss.length + collapsibleCss.length + cropperCss.length + descriptionsCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + tagCss.length + timelineCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + treeSelectCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/Avatar/Badge/Banner/Notification/Popconfirm/Progress/Skeleton/Spin/Transfer/Upload/Toast/Calendar/Card/Carousel/Cascader/Collapsible/Cropper/Descriptions/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/Tag/Timeline/BackTop/Breadcrumb/AutoComplete/Button/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/TreeSelect/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + bannerCss.length + notificationCss.length + popconfirmCss.length + progressCss.length + skeletonCss.length + spinCss.length + transferCss.length + uploadCss.length + toastCss.length + calendarCss.length + cardCss.length + carouselCss.length + cascaderCss.length + collapsibleCss.length + cropperCss.length + descriptionsCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + tagCss.length + timelineCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + treeSelectCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

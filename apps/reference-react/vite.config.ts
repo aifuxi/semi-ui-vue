@@ -17,6 +17,7 @@ const notificationPublicEntry = path.join(upstreamPackages, 'semi-ui/notificatio
 const calendarPublicEntry = path.join(upstreamPackages, 'semi-ui/calendar/index.tsx');
 const cardPublicEntry = path.join(upstreamPackages, 'semi-ui/card/index.tsx');
 const carouselPublicEntry = path.join(upstreamPackages, 'semi-ui/carousel/index.tsx');
+const cascaderPublicEntry = path.join(upstreamPackages, 'semi-ui/cascader/index.tsx');
 const collapsiblePublicEntry = path.join(upstreamPackages, 'semi-ui/collapsible/index.tsx');
 const cropperPublicEntry = path.join(upstreamPackages, 'semi-ui/cropper/index.tsx');
 const descriptionsPublicEntry = path.join(upstreamPackages, 'semi-ui/descriptions/index.tsx');
@@ -130,6 +131,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'card/card.scss'),
   '@douyinfe/semi-foundation/carousel/carousel.scss',
   path.join(foundationRoot, 'carousel/carousel.scss'),
+  '@douyinfe/semi-foundation/cascader/cascader.scss',
+  path.join(foundationRoot, 'cascader/cascader.scss'),
   '@douyinfe/semi-foundation/skeleton/skeleton.scss',
   path.join(foundationRoot, 'skeleton/skeleton.scss'),
   '@douyinfe/semi-foundation/space/space.scss',
@@ -332,6 +335,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/tabs', replacement: tabsPublicEntry },
       { find: '@semi-v2.102.0/tree', replacement: treePublicEntry },
       { find: '@semi-v2.102.0/tree-select', replacement: treeSelectPublicEntry },
+      { find: '@semi-v2.102.0/cascader', replacement: cascaderPublicEntry },
       { find: '@semi-v2.102.0/switch', replacement: switchPublicEntry },
       { find: '@semi-v2.102.0/tag-input', replacement: tagInputPublicEntry },
       { find: '@semi-v2.102.0/time-picker', replacement: timePickerPublicEntry },

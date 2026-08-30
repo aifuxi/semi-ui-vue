@@ -1,4 +1,5 @@
 // Limit the pinned Foundation integrations' Lodash surface to the functions they use.
+export { default as assign } from 'lodash/assign.js';
 export { default as debounce } from 'lodash/debounce.js';
 export { default as difference } from 'lodash/difference.js';
 export { default as find } from 'lodash/find.js';
@@ -13,6 +14,7 @@ export { default as isNumber } from 'lodash/isNumber.js';
 export { default as isObject } from 'lodash/isObject.js';
 export { default as isString } from 'lodash/isString.js';
 export { default as isUndefined } from 'lodash/isUndefined.js';
+export { default as includes } from 'lodash/includes.js';
 export { default as max } from 'lodash/max.js';
 export { default as noop } from 'lodash/noop.js';
 export { default as omit } from 'lodash/omit.js';

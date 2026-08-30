@@ -2332,6 +2332,35 @@ declare module '@semi-v2.102.0/tree-select' {
   export default TreeSelect;
 }
 
+declare module '@semi-v2.102.0/cascader' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface CascaderData {
+    children?: CascaderData[];
+    disabled?: boolean;
+    isLeaf?: boolean;
+    label?: ReactNode;
+    value?: string | number;
+  }
+
+  export interface CascaderProps {
+    [key: `aria-${string}`]: string | number | boolean | undefined;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+    defaultOpen?: boolean;
+    defaultValue?: string | number | Array<string | number> | Array<Array<string | number>>;
+    filterTreeNode?:
+      boolean | ((inputValue: string, treeNodeString: string, data?: CascaderData) => boolean);
+    motion?: boolean;
+    placeholder?: string;
+    showClear?: boolean;
+    style?: CSSProperties;
+    treeData?: CascaderData[];
+  }
+
+  const Cascader: ComponentType<CascaderProps>;
+  export default Cascader;
+}
+
 declare module '@semi-v2.102.0/navigation' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 

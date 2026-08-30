@@ -635,6 +635,24 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Cascader Adapter, item, Foundation, constants, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('cascader')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.cascaderPublicEntry,
+    });
+    expect(assertScenarioComparable('cascader').targets).toHaveLength(6);
+    expect(getParityScenario('cascader').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.cascaderItemEntry,
+        REFERENCE_SOURCE_PATHS.cascaderFoundation,
+        REFERENCE_SOURCE_PATHS.cascaderFoundationConstants,
+        REFERENCE_SOURCE_PATHS.cascaderFoundationStyle,
+        REFERENCE_SOURCE_PATHS.cascaderDocumentation,
+      ]),
+    );
+  });
+
   it('records Select Adapter, Option, Foundation, styles and docs as a complete parity scene', () => {
     expect(getParityScenario('select')).toMatchObject({
       referenceStatus: 'ready',
