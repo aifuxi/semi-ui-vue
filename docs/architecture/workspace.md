@@ -148,5 +148,5 @@ Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select
 - `pnpm test:pack`：构建真实 tarball，在临时消费者中离线安装并验证 exports、ESM、类型、样式和 SSR import。
 - 每个公开包的构建都会写入 Semi Design 完整许可证、第三方声明和 SPDX 2.3 SBOM；项目自身使用 MIT License，并在包根携带 LICENSE。
 - SBOM 默认记录实际构建时间；可复现发布必须传入标准的 `SOURCE_DATE_EPOCH`，该值也参与文档命名空间指纹。
-- `pnpm test:browser`：单一 Chromium worker 启动 React/Vue 两个服务，在同一 BrowserContext 中执行来源、行为、计算样式、几何与视觉对照。
+- `pnpm test:browser`：启动 React/Vue 两个服务，按组件 spec 受控并发；每个测试仍在同一 BrowserContext 中执行 React/Vue 来源、行为、计算样式、几何与视觉对照。默认本地 4 个 worker、CI 2 个，可通过 `PARITY_WORKERS` 覆盖。
 - `pnpm check:full`：执行以上完整本地门禁。

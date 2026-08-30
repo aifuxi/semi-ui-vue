@@ -92,6 +92,14 @@ pnpm check
 pnpm test:browser
 ```
 
+浏览器测试按组件放在 `tests/browser/components/*.spec.ts`，组件内部保持串行，组件之间由 Playwright worker 并发执行。默认本地使用 4 个 worker、CI 使用 2 个；资源受限或排查时可通过 `PARITY_WORKERS=1` 退回串行。开发单个垂直切片时可直接定向运行，例如：
+
+```bash
+pnpm test:browser tests/browser/components/button.spec.ts
+```
+
+截图基线统一位于 `tests/browser/snapshots/`，不再依赖 spec 文件名，因此测试拆分或移动不会导致整批基线失效。
+
 更新截图只能在独立源码/行为/计算样式断言通过并人工检查实际图片后执行：
 
 ```bash

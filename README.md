@@ -57,7 +57,7 @@ pnpm dev             # Vue 文档/对照应用
 pnpm dev:reference   # React 参考应用
 pnpm inventory:generate # 从固定 vendor 重建组件/API/文档/依赖 inventory
 pnpm check           # 格式、lint、类型、单测、构建、SSR 与真实包安装
-pnpm test:browser    # 单一 Chromium 进程中的 React/Vue 对照基础设施
+pnpm test:browser    # 受控并发的 Chromium React/Vue 对照基础设施
 ```
 
 目录职责、依赖方向和新增组件流程见 `docs/architecture/workspace.md`；组件文档与对齐矩阵见 `docs/components/`；上游全量清单见 `docs/inventory/README.md`；真实 React/Vue 场景注册与验收流程见 `docs/testing/react-vue-parity.md`。
