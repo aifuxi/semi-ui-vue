@@ -2912,6 +2912,28 @@ p {
   padding: 20px;
 }
 
+.form-scenario {
+  width: 360px;
+  min-height: 260px;
+  padding: 20px;
+}
+
+.form-scenario__form {
+  width: 320px;
+}
+
+.form-scenario__submit {
+  min-width: 72px;
+  height: 32px;
+  padding: 0 16px;
+  color: rgb(255, 255, 255);
+  font: inherit;
+  background: var(--semi-color-primary);
+  border: 0;
+  border-radius: var(--semi-border-radius-small);
+  cursor: pointer;
+}
+
 @media (max-width: 520px) {
   .color-picker-scenario {
     flex-direction: column;
@@ -2923,5 +2945,15 @@ p {
   .date-picker-scenario {
     min-height: 390px;
     padding: 12px;
+  }
+
+  .form-scenario {
+    width: 100%;
+    min-height: 260px;
+    padding: 12px;
+  }
+
+  .form-scenario__form {
+    width: 100%;
   }
 }

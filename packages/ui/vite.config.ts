@@ -44,6 +44,12 @@ export default defineConfig({
       { find: 'bezier-easing', replacement: bezierEasingEntry },
       { find: /^fast-copy$/, replacement: fastCopyEntry },
       {
+        find: /^async-validator$/,
+        replacement: fileURLToPath(
+          new URL('./node_modules/async-validator/dist-web/index.js', import.meta.url),
+        ),
+      },
+      {
         find: /^date-fns$/,
         replacement: fileURLToPath(
           new URL('./node_modules/date-fns/esm/index.js', import.meta.url),
@@ -109,6 +115,7 @@ export default defineConfig({
         'float-button/index': fileURLToPath(
           new URL('./src/float-button/index.ts', import.meta.url),
         ),
+        'form/index': fileURLToPath(new URL('./src/form/index.ts', import.meta.url)),
         'grid/index': fileURLToPath(new URL('./src/grid/index.ts', import.meta.url)),
         'icon/index': fileURLToPath(new URL('./src/icon/index.ts', import.meta.url)),
         'input/index': fileURLToPath(new URL('./src/input/index.ts', import.meta.url)),

@@ -53,6 +53,12 @@ const dependencyEntries = Object.entries(runtimeDependencies).sort(([left], [rig
 );
 const licensedDependencies = [
   {
+    licenseFile: 'LICENSE.md',
+    name: 'async-validator',
+    noticeName: 'async-validator',
+    version: '3.5.2',
+  },
+  {
     licenseFile: 'LICENSE',
     name: 'bezier-easing',
     noticeName: 'bezier-easing',

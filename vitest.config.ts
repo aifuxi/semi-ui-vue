@@ -17,6 +17,9 @@ export default defineConfig({
       'bezier-easing': fileURLToPath(
         new URL('./packages/ui/node_modules/bezier-easing/src/index.js', import.meta.url),
       ),
+      'async-validator': fileURLToPath(
+        new URL('./packages/ui/node_modules/async-validator/dist-web/index.js', import.meta.url),
+      ),
       'fast-copy': fileURLToPath(
         new URL('./packages/foundation-integration/src/fast-copy.js', import.meta.url),
       ),
@@ -55,6 +58,9 @@ export default defineConfig({
       ),
       '@semi-v2.102.0/date-picker': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiDatePickerStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/form': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiFormStub.tsx', import.meta.url),
       ),
       '@semi-v2.102.0/cropper': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiCropperStub.tsx', import.meta.url),

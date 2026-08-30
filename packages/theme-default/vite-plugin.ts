@@ -14,6 +14,7 @@ export const virtualCascaderStyleId = 'virtual:workspace-cascader-styles.css';
 export const virtualCollapsibleStyleId = 'virtual:workspace-collapsible-styles.css';
 export const virtualColorPickerStyleId = 'virtual:workspace-color-picker-styles.css';
 export const virtualDatePickerStyleId = 'virtual:workspace-date-picker-styles.css';
+export const virtualFormStyleId = 'virtual:workspace-form-styles.css';
 export const virtualCropperStyleId = 'virtual:workspace-cropper-styles.css';
 export const virtualDescriptionsStyleId = 'virtual:workspace-descriptions-styles.css';
 export const virtualDropdownStyleId = 'virtual:workspace-dropdown-styles.css';
@@ -79,6 +80,7 @@ const resolvedVirtualCascaderStyleId = `\0${virtualCascaderStyleId}`;
 const resolvedVirtualCollapsibleStyleId = `\0${virtualCollapsibleStyleId}`;
 const resolvedVirtualColorPickerStyleId = `\0${virtualColorPickerStyleId}`;
 const resolvedVirtualDatePickerStyleId = `\0${virtualDatePickerStyleId}`;
+const resolvedVirtualFormStyleId = `\0${virtualFormStyleId}`;
 const resolvedVirtualCropperStyleId = `\0${virtualCropperStyleId}`;
 const resolvedVirtualDescriptionsStyleId = `\0${virtualDescriptionsStyleId}`;
 const resolvedVirtualDropdownStyleId = `\0${virtualDropdownStyleId}`;
@@ -144,6 +146,7 @@ const cascaderStyleEntry = fileURLToPath(new URL('./src/cascader.scss', import.m
 const collapsibleStyleEntry = fileURLToPath(new URL('./src/collapsible.scss', import.meta.url));
 const colorPickerStyleEntry = fileURLToPath(new URL('./src/color-picker.scss', import.meta.url));
 const datePickerStyleEntry = fileURLToPath(new URL('./src/date-picker.scss', import.meta.url));
+const formStyleEntry = fileURLToPath(new URL('./src/form.scss', import.meta.url));
 const cropperStyleEntry = fileURLToPath(new URL('./src/cropper.scss', import.meta.url));
 const descriptionsStyleEntry = fileURLToPath(new URL('./src/descriptions.scss', import.meta.url));
 const dropdownStyleEntry = fileURLToPath(new URL('./src/dropdown.scss', import.meta.url));
@@ -213,6 +216,7 @@ const styleEntries = new Map([
   [resolvedVirtualCollapsibleStyleId, collapsibleStyleEntry],
   [resolvedVirtualColorPickerStyleId, colorPickerStyleEntry],
   [resolvedVirtualDatePickerStyleId, datePickerStyleEntry],
+  [resolvedVirtualFormStyleId, formStyleEntry],
   [resolvedVirtualCropperStyleId, cropperStyleEntry],
   [resolvedVirtualDescriptionsStyleId, descriptionsStyleEntry],
   [resolvedVirtualDropdownStyleId, dropdownStyleEntry],
@@ -286,6 +290,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualCollapsibleStyleId) return resolvedVirtualCollapsibleStyleId;
       if (source === virtualColorPickerStyleId) return resolvedVirtualColorPickerStyleId;
       if (source === virtualDatePickerStyleId) return resolvedVirtualDatePickerStyleId;
+      if (source === virtualFormStyleId) return resolvedVirtualFormStyleId;
       if (source === virtualCropperStyleId) return resolvedVirtualCropperStyleId;
       if (source === virtualDescriptionsStyleId) return resolvedVirtualDescriptionsStyleId;
       if (source === virtualDropdownStyleId) return resolvedVirtualDropdownStyleId;

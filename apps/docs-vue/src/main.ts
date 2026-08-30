@@ -12,6 +12,7 @@ import 'virtual:workspace-cascader-styles.css';
 import 'virtual:workspace-collapsible-styles.css';
 import 'virtual:workspace-color-picker-styles.css';
 import 'virtual:workspace-date-picker-styles.css';
+import 'virtual:workspace-form-styles.css';
 import 'virtual:workspace-cropper-styles.css';
 import 'virtual:workspace-descriptions-styles.css';
 import 'virtual:workspace-dropdown-styles.css';

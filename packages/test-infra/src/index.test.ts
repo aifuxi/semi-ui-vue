@@ -688,6 +688,25 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Form fields, array state, Foundation, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('form')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.formPublicEntry,
+    });
+    expect(assertScenarioComparable('form').targets).toHaveLength(5);
+    expect(getParityScenario('form').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.formBaseEntry,
+        REFERENCE_SOURCE_PATHS.formFieldEntry,
+        REFERENCE_SOURCE_PATHS.formArrayFieldEntry,
+        REFERENCE_SOURCE_PATHS.formFoundation,
+        REFERENCE_SOURCE_PATHS.formFoundationStyle,
+        REFERENCE_SOURCE_PATHS.formDocumentation,
+      ]),
+    );
+  });
+
   it('records Select Adapter, Option, Foundation, styles and docs as a complete parity scene', () => {
     expect(getParityScenario('select')).toMatchObject({
       referenceStatus: 'ready',

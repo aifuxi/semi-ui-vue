@@ -23,6 +23,7 @@ export * from './checkbox';
 export * from './config-provider';
 export * from './divider';
 export * from './float-button';
+export * from './form';
 export * from './grid';
 export * from './icon';
 export * from './input';

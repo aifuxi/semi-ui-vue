@@ -24,6 +24,7 @@ const publicPackagePolicies = [
     manifest: 'packages/ui/package.json',
     dependencies: {
       '@workspace/icons': 'workspace:*',
+      'async-validator': '3.5.2',
       'bezier-easing': '2.1.0',
       'date-fns': '2.30.0',
       'date-fns-tz': '1.3.8',
@@ -56,6 +57,7 @@ const referenceApplicationPolicy = {
   manifest: 'apps/reference-react/package.json',
   dependencies: {
     '@workspace/test-infra': 'workspace:*',
+    'async-validator': '3.5.2',
     'bezier-easing': '2.1.0',
     classnames: '2.5.1',
     'date-fns': '2.30.0',

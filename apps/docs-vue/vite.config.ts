@@ -30,6 +30,15 @@ export default defineConfig({
         ),
       },
       {
+        find: /^async-validator$/,
+        replacement: fileURLToPath(
+          new URL(
+            '../../packages/ui/node_modules/async-validator/dist-web/index.js',
+            import.meta.url,
+          ),
+        ),
+      },
+      {
         find: '@workspace/icons',
         replacement: fileURLToPath(new URL('../../packages/icons/src/index.ts', import.meta.url)),
       },

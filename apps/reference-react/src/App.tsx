@@ -14,6 +14,7 @@ import { CascaderScenario } from './scenarios/CascaderScenario';
 import { CollapsibleScenario } from './scenarios/CollapsibleScenario';
 import { ColorPickerScenario } from './scenarios/ColorPickerScenario';
 import { DatePickerScenario } from './scenarios/DatePickerScenario';
+import { FormScenario } from './scenarios/FormScenario';
 import { CropperScenario } from './scenarios/CropperScenario';
 import { DescriptionsScenario } from './scenarios/DescriptionsScenario';
 import { DropdownScenario } from './scenarios/DropdownScenario';
@@ -141,6 +142,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'date-picker' ? (
           <DatePickerScenario direction={options.direction} />
         ) : null}
+        {scenario.id === 'form' ? <FormScenario /> : null}
         {scenario.id === 'cropper' ? <CropperScenario /> : null}
         {scenario.id === 'descriptions' ? <DescriptionsScenario /> : null}
         {scenario.id === 'dropdown' ? <DropdownScenario /> : null}

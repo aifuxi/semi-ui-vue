@@ -53,6 +53,9 @@ importers:
       '@vue/test-utils':
         specifier: 2.4.11
         version: 2.4.11(@vue/compiler-dom@3.5.41)(@vue/server-renderer@3.5.41)(vue@3.5.41(typescript@5.9.3))
+      async-validator:
+        specifier: 3.5.2
+        version: 3.5.2
       bezier-easing:
         specifier: 2.1.0
         version: 2.1.0
@@ -149,6 +152,9 @@ importers:
       '@workspace/test-infra':
         specifier: workspace:*
         version: link:../../packages/test-infra
+      async-validator:
+        specifier: 3.5.2
+        version: 3.5.2
       bezier-easing:
         specifier: 2.1.0
         version: 2.1.0
@@ -221,6 +227,9 @@ importers:
       '@workspace/icons':
         specifier: workspace:*
         version: link:../icons
+      async-validator:
+        specifier: 3.5.2
+        version: 3.5.2
       bezier-easing:
         specifier: 2.1.0
         version: 2.1.0
@@ -767,6 +776,9 @@ packages:
 
   ast-v8-to-istanbul@1.0.5:
     resolution: {integrity: sha512-UPAgKJFSEGMWSDr3LX4tqnAb4f7KGT8O40Tyx8wbYmmZ/yn58lNCm8h3svs3eXgiGd5AXxz8NDOvXWvicq+rJA==}
+
+  async-validator@3.5.2:
+    resolution: {integrity: sha512-8eLCg00W9pIRZSB781UUX/H6Oskmm8xloZfr09lz5bikRpBVDlJ3hRVuxxP1SxcwsEYfJ4IU8Q19Y8/893r3rQ==}
 
   balanced-match@1.0.0:
     resolution: {integrity: sha512-9Y0g0Q8rmSt+H33DfKv7FOc3v+iRI+o1lbzt8jGcIosYW37IIW/2XVYq5NPdmaD5NQ59Nk26Kl/vZbwW9Fr8vg==}
@@ -2386,6 +2398,8 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.31
       estree-walker: 3.0.3
       js-tokens: 10.0.0
+
+  async-validator@3.5.2: {}
 
   balanced-match@1.0.0: {}
 

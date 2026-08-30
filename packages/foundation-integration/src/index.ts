@@ -222,6 +222,22 @@ export type {
   FoundationDatePickerProps,
   FoundationDatePickerState,
 } from './date-picker.js';
+export {
+  formCssClasses,
+  FormFoundation,
+  formStrings,
+  isValidFormError,
+  resolveFormBoolean,
+  resolveFormTrigger,
+} from './form.js';
+export type {
+  FormFoundationAdapter,
+  FoundationCallOptions,
+  FoundationFieldApi,
+  FoundationFieldState,
+  FoundationFormState,
+  FoundationFormUpdater,
+} from './form.js';
 export type {
   FoundationSideSheetProps,
   FoundationSideSheetState,

@@ -271,6 +271,25 @@ describe('Vue 对照工作台', () => {
     ).not.toBeNull();
     wrapper.unmount();
   });
+  it('通过公共 Form 渲染标签、字段、帮助文案与必填状态', async () => {
+    const wrapper = mount(App, {
+      attachTo: document.body,
+      props: { scenarioId: 'form', direction: 'rtl', locale: 'zh-CN' },
+    });
+    await wrapper.vm.$nextTick();
+
+    const scenario = wrapper.get('[data-testid="form-vue"]');
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(wrapper.classes()).toContain('semi-rtl');
+    expect(scenario.findAll('.semi-form-field')).toHaveLength(2);
+    expect(scenario.get('[x-field-id="name"] label').text()).toContain('名称');
+    expect(scenario.get('[x-field-id="description"] input').element).toHaveProperty(
+      'value',
+      'Semi Vue',
+    );
+    expect(scenario.get('.semi-form-field-help-text').text()).toBe('用于识别当前方案');
+    wrapper.unmount();
+  });
   it('通过公共 Empty 渲染图片、无图片、水平与 SVG 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'empty', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="empty-vue"]');

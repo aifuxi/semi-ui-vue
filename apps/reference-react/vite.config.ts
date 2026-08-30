@@ -21,6 +21,7 @@ const cascaderPublicEntry = path.join(upstreamPackages, 'semi-ui/cascader/index.
 const collapsiblePublicEntry = path.join(upstreamPackages, 'semi-ui/collapsible/index.tsx');
 const colorPickerPublicEntry = path.join(upstreamPackages, 'semi-ui/colorPicker/index.tsx');
 const datePickerPublicEntry = path.join(upstreamPackages, 'semi-ui/datePicker/index.tsx');
+const formPublicEntry = path.join(upstreamPackages, 'semi-ui/form/index.tsx');
 const cropperPublicEntry = path.join(upstreamPackages, 'semi-ui/cropper/index.tsx');
 const descriptionsPublicEntry = path.join(upstreamPackages, 'semi-ui/descriptions/index.tsx');
 const dropdownPublicEntry = path.join(upstreamPackages, 'semi-ui/dropdown/index.tsx');
@@ -285,6 +286,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/collapsible', replacement: collapsiblePublicEntry },
       { find: '@semi-v2.102.0/color-picker', replacement: colorPickerPublicEntry },
       { find: '@semi-v2.102.0/date-picker', replacement: datePickerPublicEntry },
+      { find: '@semi-v2.102.0/form', replacement: formPublicEntry },
       { find: '@semi-v2.102.0/cropper', replacement: cropperPublicEntry },
       { find: '@semi-v2.102.0/descriptions', replacement: descriptionsPublicEntry },
       { find: '@semi-v2.102.0/dropdown', replacement: dropdownPublicEntry },
@@ -389,6 +391,13 @@ export default defineConfig({
       { find: /^date-fns$/, replacement: require.resolve('date-fns') },
       { find: /^date-fns-tz$/, replacement: require.resolve('date-fns-tz') },
       { find: /^bezier-easing$/, replacement: require.resolve('bezier-easing') },
+      {
+        find: /^async-validator$/,
+        replacement: path.join(
+          workspaceRoot,
+          'packages/ui/node_modules/async-validator/dist-web/index.js',
+        ),
+      },
       { find: /^classnames$/, replacement: require.resolve('classnames') },
       { find: /^lodash$/, replacement: require.resolve('lodash') },
       { find: /^prop-types$/, replacement: require.resolve('prop-types') },

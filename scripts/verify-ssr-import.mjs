@@ -110,6 +110,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/color-picker/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'date-picker', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/date-picker/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'form', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/form/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'toast', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/toast/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'scroll-list', 'index.js')).href);

@@ -455,6 +455,15 @@ describe('React 参考工作台', () => {
     expect(html).toContain('data-parity-target="date-picker-trigger"');
     expect(html).toContain('semi-datepicker');
   });
+  it('登记固定 Form Adapter 的可比较参考场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="form" direction="rtl" />);
+
+    expect(html).toContain('data-parity-scenario="form"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/form/index.tsx');
+    expect(html).toContain('data-testid="form-reference"');
+    expect(html).toContain('x-field-id="name"');
+    expect(html).toContain('semi-form-field-label-required');
+  });
   it('从固定 Empty Adapter 渲染图片、无图片、水平与 SVG 场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="empty" direction="rtl" />);
 

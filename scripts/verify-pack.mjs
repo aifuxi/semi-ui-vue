@@ -109,6 +109,7 @@ try {
     if (
       packageInfo.name === '@workspace/ui' &&
       [
+        'async-validator.txt',
         'bezier-easing.txt',
         'date-fns.txt',
         'date-fns-tz.txt',
@@ -124,12 +125,17 @@ try {
 
   const linkedRuntimeDependencies = Object.fromEntries(
     await Promise.all(
-      ['bezier-easing', 'date-fns', 'date-fns-tz', 'lodash', 'scroll-into-view-if-needed'].map(
-        async (dependency) => [
-          dependency,
-          `link:${await realpath(path.join(workspaceRoot, 'node_modules', dependency))}`,
-        ],
-      ),
+      [
+        'async-validator',
+        'bezier-easing',
+        'date-fns',
+        'date-fns-tz',
+        'lodash',
+        'scroll-into-view-if-needed',
+      ].map(async (dependency) => [
+        dependency,
+        `link:${await realpath(path.join(workspaceRoot, 'node_modules', dependency))}`,
+      ]),
     ),
   );
   const dependencies = {
@@ -201,6 +207,7 @@ try {
     }
     if (packageInfo.name === '@workspace/ui') {
       for (const [dependency, licenseFile] of [
+        ['async-validator', 'LICENSE.md'],
         ['bezier-easing', 'LICENSE'],
         ['date-fns', 'LICENSE.md'],
         ['date-fns-tz', 'LICENSE.md'],
@@ -272,6 +279,7 @@ try {
 		await import('@workspace/ui/cascader');
 		await import('@workspace/ui/color-picker');
 		await import('@workspace/ui/date-picker');
+		await import('@workspace/ui/form');
 		await import('@workspace/ui/collapsible');
 		await import('@workspace/ui/cropper');
 		await import('@workspace/ui/descriptions');
@@ -397,6 +405,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@workspace/theme-default/date-picker.css').endsWith('/dist/date-picker.css')) {
 		  throw new Error('DatePicker 逐组件样式导出未指向 dist/date-picker.css');
+		}
+		if (!import.meta.resolve('@workspace/theme-default/form.css').endsWith('/dist/form.css')) {
+		  throw new Error('Form 逐组件样式导出未指向 dist/form.css');
 		}
 		if (!import.meta.resolve('@workspace/theme-default/collapsible.css').endsWith('/dist/collapsible.css')) {
 		  throw new Error('Collapsible 逐组件样式导出未指向 dist/collapsible.css');
@@ -563,6 +574,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Cascader, type CascaderData, type CascaderProps, type CascaderValue } from '@workspace/ui/cascader';
 		import { ColorPicker, colorStringToValue, type ColorPickerFormat, type ColorPickerProps, type ColorValue } from '@workspace/ui/color-picker';
 		import { DatePicker, type DatePickerProps, type DatePickerType, type DatePickerValue } from '@workspace/ui/date-picker';
+		import { ArrayField, Form, useFieldApi, useForm, type ArrayFieldSlotProps, type FormApi, type FormInputProps, type FormState } from '@workspace/ui/form';
 		import { Collapsible, type CollapsibleProps } from '@workspace/ui/collapsible';
 		import { Cropper, type CropperMethods, type CropperShape } from '@workspace/ui/cropper';
 		import { Descriptions, DescriptionsItem, type DescriptionsDataItem, type DescriptionsLayout } from '@workspace/ui/descriptions';
@@ -688,6 +700,16 @@ h(Button, { type, htmlType: 'submit' });
 		const datePickerValue: DatePickerValue = [new Date(2024, 4, 10), new Date(2024, 4, 12)];
 		const datePickerProps: DatePickerProps = { defaultValue: datePickerValue, motion: false, type: datePickerType };
 		h(DatePicker, datePickerProps, { prefix: () => 'Date', rangeSeparator: () => 'to' });
+		const formInputProps: FormInputProps = { field: 'name', label: 'Name', rules: [{ required: true }] };
+		const [formApi] = useForm();
+		const [typedFormApi, typedFormStateRef] = useForm<{ name: string }>();
+		const checkedFormApi: FormApi<{ name: string }> = typedFormApi;
+		const typedFormState: FormState<{ name: string }> = typedFormStateRef.value;
+		h(Form, { initValues: { name: 'Semi' }, form: formApi }, { default: () => h(Form.Input, formInputProps) });
+		h(ArrayField, { field: 'people', initValue: [] }, { default: ({ arrayFields }: ArrayFieldSlotProps) => arrayFields.length });
+		void useFieldApi;
+		void checkedFormApi;
+		void typedFormState;
 		const collapsibleProps: CollapsibleProps = { collapseHeight: 24, motion: true };
 		h(Collapsible, collapsibleProps, () => h('div', 'Collapsible content'));
 		const cropperShape: CropperShape = 'roundRect';
@@ -957,6 +979,9 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-datepicker') || !themeCss.includes('.semi-datepicker-month')) {
     throw new Error('安装后的默认主题缺少 DatePicker 样式');
+  }
+  if (!themeCss.includes('.semi-form-field') || !themeCss.includes('.semi-form-horizontal')) {
+    throw new Error('安装后的默认主题缺少 Form 样式');
   }
   if (!themeCss.includes('.semi-cropper-box-corner')) {
     throw new Error('安装后的默认主题缺少 Cropper 样式');
@@ -1433,6 +1458,18 @@ h(Button, { type, htmlType: 'submit' });
     !datePickerThemeCss.includes('.semi-datepicker-footer')
   ) {
     throw new Error('安装后的 DatePicker 逐组件样式缺少导航、月份、选中态或页脚样式');
+  }
+  const formThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'form.css'),
+    'utf8',
+  );
+  if (
+    !formThemeCss.includes('.semi-form-vertical') ||
+    !formThemeCss.includes('.semi-form-horizontal') ||
+    !formThemeCss.includes('.semi-form-field-error-message') ||
+    !formThemeCss.includes('.semi-rtl .semi-form')
+  ) {
+    throw new Error('安装后的 Form 逐组件样式缺少布局、错误或 RTL 样式');
   }
   const avatarThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'avatar.css'),

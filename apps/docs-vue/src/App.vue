@@ -15,6 +15,7 @@ import CascaderScenario from './components/CascaderScenario.vue';
 import CollapsibleScenario from './components/CollapsibleScenario.vue';
 import ColorPickerScenario from './components/ColorPickerScenario.vue';
 import DatePickerScenario from './components/DatePickerScenario.vue';
+import FormScenario from './components/FormScenario.vue';
 import CropperScenario from './components/CropperScenario.vue';
 import DescriptionsScenario from './components/DescriptionsScenario.vue';
 import DropdownScenario from './components/DropdownScenario.vue';
@@ -135,6 +136,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <CollapsibleScenario v-else-if="scenario.id === 'collapsible'" />
       <ColorPickerScenario v-else-if="scenario.id === 'color-picker'" />
       <DatePickerScenario v-else-if="scenario.id === 'date-picker'" :direction="props.direction" />
+      <FormScenario v-else-if="scenario.id === 'form'" />
       <CropperScenario v-else-if="scenario.id === 'cropper'" />
       <DescriptionsScenario v-else-if="scenario.id === 'descriptions'" />
       <DropdownScenario v-else-if="scenario.id === 'dropdown'" />

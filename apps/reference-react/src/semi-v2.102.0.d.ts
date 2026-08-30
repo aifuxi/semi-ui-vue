@@ -2388,6 +2388,34 @@ declare module '@semi-v2.102.0/date-picker' {
   export default DatePicker;
 }
 
+declare module '@semi-v2.102.0/form' {
+  import type { ComponentType, ReactNode } from 'react';
+
+  interface RuleItem {
+    message?: string;
+    required?: boolean;
+  }
+
+  interface FormFieldProps {
+    [key: `data-${string}`]: string | number | boolean | undefined;
+    field: string;
+    helpText?: ReactNode;
+    initValue?: unknown;
+    label?: ReactNode;
+    placeholder?: string;
+    rules?: RuleItem[];
+  }
+
+  interface FormProps {
+    children?: ReactNode;
+    className?: string;
+  }
+
+  export const Form: ComponentType<FormProps> & {
+    Input: ComponentType<FormFieldProps>;
+  };
+}
+
 declare module '@semi-v2.102.0/cascader' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
