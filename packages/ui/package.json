@@ -230,6 +230,10 @@
       "types": "./dist/tree/index.d.ts",
       "import": "./dist/tree/index.js"
     },
+    "./tree-select": {
+      "types": "./dist/tree-select/index.d.ts",
+      "import": "./dist/tree-select/index.js"
+    },
     "./transfer": {
       "types": "./dist/transfer/index.d.ts",
       "import": "./dist/transfer/index.js"

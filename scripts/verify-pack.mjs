@@ -315,6 +315,7 @@ try {
 	await import('@workspace/ui/steps');
 	await import('@workspace/ui/tabs');
 	await import('@workspace/ui/tree');
+	await import('@workspace/ui/tree-select');
 	await import('@workspace/ui/switch');
 	await import('@workspace/ui/tag-input');
 	await import('@workspace/ui/time-picker');
@@ -497,6 +498,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	if (!import.meta.resolve('@workspace/theme-default/tree.css').endsWith('/dist/tree.css')) {
 	  throw new Error('Tree 逐组件样式导出未指向 dist/tree.css');
 	}
+	if (!import.meta.resolve('@workspace/theme-default/tree-select.css').endsWith('/dist/tree-select.css')) {
+	  throw new Error('TreeSelect 逐组件样式导出未指向 dist/tree-select.css');
+	}
 	if (!import.meta.resolve('@workspace/theme-default/switch.css').endsWith('/dist/switch.css')) {
 	  throw new Error('Switch 逐组件样式导出未指向 dist/switch.css');
 	}
@@ -572,6 +576,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { Step, Steps, type StepsStatus, type StepsType } from '@workspace/ui/steps';
 	import { TabItem, TabPane, Tabs, type TabPosition, type TabType } from '@workspace/ui/tabs';
 	import { Tree, type TreeNodeData, type TreeValue } from '@workspace/ui/tree';
+	import { TreeSelect, type TreeSelectProps, type TreeSelectSelectedItemProps } from '@workspace/ui/tree-select';
 	import { Switch, type SwitchSize } from '@workspace/ui/switch';
 	import { TagInput, type TagInputSize } from '@workspace/ui/tag-input';
 	import { TimePicker, type TimePickerType, type TimePickerValue } from '@workspace/ui/time-picker';
@@ -771,6 +776,8 @@ h(Button, { type, htmlType: 'submit' });
 	const treeData: TreeNodeData[] = [{ key: 'root', label: 'Root', value: 'root', children: [{ key: 'leaf', label: 'Leaf', value: 'leaf' }] }];
 	const treeValue: TreeValue = 'leaf';
 	h(Tree, { defaultExpandAll: true, modelValue: treeValue, treeData, 'onUpdate:modelValue': (_value: TreeValue | undefined) => undefined });
+	const treeSelectProps: TreeSelectProps = { treeData, defaultValue: 'leaf', filterTreeNode: true };
+	h(TreeSelect, treeSelectProps, { selectedItem: ({ node }: TreeSelectSelectedItemProps) => h('span', String(node.label ?? '')) });
 	const switchSize: SwitchSize = 'large';
 	h(Switch, { modelValue: true, size: switchSize, ariaLabel: 'consumer switch', 'onUpdate:modelValue': (_checked: boolean) => undefined });
 	const tagInputSize: TagInputSize = 'large';
@@ -880,6 +887,9 @@ h(Button, { type, htmlType: 'submit' });
     !themeCss.includes('.semi-transfer-right-item')
   ) {
     throw new Error('安装后的默认主题缺少 Transfer 样式');
+  }
+  if (!themeCss.includes('.semi-tree-select') || !themeCss.includes('.semi-tree-select-popover')) {
+    throw new Error('安装后的默认主题缺少 TreeSelect 样式');
   }
   if (!themeCss.includes('.semi-cropper-box-corner')) {
     throw new Error('安装后的默认主题缺少 Cropper 样式');
@@ -1286,6 +1296,25 @@ h(Button, { type, htmlType: 'submit' });
     !treeThemeCss.includes('.semi-rtl .semi-tree')
   ) {
     throw new Error('安装后的 Tree 逐组件样式缺少节点、连接线、依赖或 RTL 样式');
+  }
+  const treeSelectThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@workspace',
+      'theme-default',
+      'dist',
+      'tree-select.css',
+    ),
+    'utf8',
+  );
+  if (
+    !treeSelectThemeCss.includes('.semi-tree-select-selection') ||
+    !treeSelectThemeCss.includes('.semi-tree-select-popover') ||
+    !treeSelectThemeCss.includes('.semi-tree-search-wrapper') ||
+    !treeSelectThemeCss.includes('.semi-rtl .semi-tree-select')
+  ) {
+    throw new Error('安装后的 TreeSelect 逐组件样式缺少触发器、浮层、搜索或 RTL 样式');
   }
   const avatarThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@workspace', 'theme-default', 'dist', 'avatar.css'),

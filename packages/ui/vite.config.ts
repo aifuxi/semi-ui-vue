@@ -141,6 +141,7 @@ export default defineConfig({
         'steps/index': fileURLToPath(new URL('./src/steps/index.ts', import.meta.url)),
         'tabs/index': fileURLToPath(new URL('./src/tabs/index.ts', import.meta.url)),
         'tree/index': fileURLToPath(new URL('./src/tree/index.ts', import.meta.url)),
+        'tree-select/index': fileURLToPath(new URL('./src/tree-select/index.ts', import.meta.url)),
         'switch/index': fileURLToPath(new URL('./src/switch/index.ts', import.meta.url)),
         'tag-input/index': fileURLToPath(new URL('./src/tag-input/index.ts', import.meta.url)),
         'time-picker/index': fileURLToPath(new URL('./src/time-picker/index.ts', import.meta.url)),

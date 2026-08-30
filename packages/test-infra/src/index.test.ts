@@ -581,6 +581,23 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records TreeSelect Adapter, Foundation, constants, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('tree-select')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.treeSelectPublicEntry,
+    });
+    expect(assertScenarioComparable('tree-select').targets).toHaveLength(6);
+    expect(getParityScenario('tree-select').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.treeSelectFoundation,
+        REFERENCE_SOURCE_PATHS.treeSelectFoundationConstants,
+        REFERENCE_SOURCE_PATHS.treeSelectFoundationStyle,
+        REFERENCE_SOURCE_PATHS.treeSelectDocumentation,
+      ]),
+    );
+  });
+
   it('records Select Adapter, Option, Foundation, styles and docs as a complete parity scene', () => {
     expect(getParityScenario('select')).toMatchObject({
       referenceStatus: 'ready',

@@ -47,5 +47,6 @@ declare module 'virtual:workspace-space-styles.css';
 declare module 'virtual:workspace-steps-styles.css';
 declare module 'virtual:workspace-tabs-styles.css';
 declare module 'virtual:workspace-tree-styles.css';
+declare module 'virtual:workspace-tree-select-styles.css';
 declare module 'virtual:workspace-transfer-styles.css';
 declare module 'virtual:workspace-typography-styles.css';

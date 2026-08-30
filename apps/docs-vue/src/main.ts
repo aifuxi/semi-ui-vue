@@ -53,6 +53,7 @@ import 'virtual:workspace-space-styles.css';
 import 'virtual:workspace-steps-styles.css';
 import 'virtual:workspace-tabs-styles.css';
 import 'virtual:workspace-tree-styles.css';
+import 'virtual:workspace-tree-select-styles.css';
 import 'virtual:workspace-switch-styles.css';
 import 'virtual:workspace-tag-input-styles.css';
 import 'virtual:workspace-time-picker-styles.css';

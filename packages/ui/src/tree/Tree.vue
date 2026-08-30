@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import {
   computed,
+  defineComponent,
+  Fragment,
   getCurrentInstance,
   h,
   inject,
@@ -53,7 +55,22 @@ import type {
 } from './types';
 
 defineOptions({ name: 'Tree', inheritAttrs: false });
-const props = withDefaults(defineProps<TreeProps>(), {
+interface TreeInternalProps extends TreeProps {
+  /** Private composition seam used by TreeSelect to preserve the pinned Adapter DOM. */
+  treeSelectEmbedded?: boolean;
+}
+const TreeRoot = defineComponent({
+  name: 'TreeRoot',
+  inheritAttrs: false,
+  props: { embedded: Boolean },
+  setup(rootProps, { attrs: rootAttrs, slots: rootSlots }) {
+    return () =>
+      rootProps.embedded
+        ? h(Fragment, null, rootSlots.default?.())
+        : h('div', rootAttrs, rootSlots.default?.());
+  },
+});
+const props = withDefaults(defineProps<TreeInternalProps>(), {
   autoExpandParent: false,
   autoExpandWhenDragEnter: true,
   autoMergeValue: true,
@@ -681,11 +698,16 @@ onBeforeUnmount(() => foundation.destroy());
 </script>
 
 <template>
-  <div
+  <TreeRoot
+    :embedded="props.treeSelectEmbedded"
     v-bind="dataAttrs"
-    :aria-label="ariaLabel ?? (attrs['aria-label'] as string | undefined)"
-    :class="rootClasses"
-    :style="[props.style, attrs.style]"
+    :aria-label="
+      props.treeSelectEmbedded
+        ? undefined
+        : (ariaLabel ?? (attrs['aria-label'] as string | undefined))
+    "
+    :class="props.treeSelectEmbedded ? undefined : rootClasses"
+    :style="props.treeSelectEmbedded ? undefined : [props.style, attrs.style]"
   >
     <div
       v-if="props.filterTreeNode && !searchHidden"
@@ -770,5 +792,5 @@ onBeforeUnmount(() => foundation.destroy());
         </div>
       </div>
     </div>
-  </div>
+  </TreeRoot>
 </template>

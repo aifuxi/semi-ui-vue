@@ -10,5 +10,6 @@ export {
   filterTreeData,
   findKeysForValues,
   flattenTreeData,
+  normalizeKeyList,
   normalizeValue,
 } from '../../../vendor/semi-design/packages/semi-foundation/tree/treeUtil';

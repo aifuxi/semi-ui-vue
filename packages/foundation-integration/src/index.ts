@@ -180,10 +180,13 @@ export {
   filterTreeData,
   findKeysForValues as findTreeKeysForValues,
   flattenTreeData,
+  normalizeKeyList as normalizeTreeKeyList,
   normalizeValue as normalizeTreeValue,
   TreeFoundation,
 } from './tree.js';
 export type { TreeAdapter } from './tree.js';
+export { TreeSelectFoundation, treeSelectCssClasses, treeSelectStrings } from './tree-select.js';
+export type { TreeSelectAdapter } from './tree-select.js';
 export {
   generateTransferDataByType,
   generateTransferGroupedData,

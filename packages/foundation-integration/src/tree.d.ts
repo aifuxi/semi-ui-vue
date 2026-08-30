@@ -105,6 +105,12 @@ export function normalizeValue(
   withObject: boolean,
   keyMaps?: Record<string, string | undefined>,
 ): unknown;
+export function normalizeKeyList<Node extends Record<string, unknown>>(
+  keys: string[],
+  entities: Record<string, TreeEntity<Node>>,
+  leafOnly?: boolean,
+  includeHalfChecked?: boolean,
+): string[];
 export function calcExpandedKeys<Node extends Record<string, unknown>>(
   keys: string[],
   entities: Record<string, TreeEntity<Node>>,

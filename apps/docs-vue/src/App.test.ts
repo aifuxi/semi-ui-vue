@@ -181,6 +181,28 @@ describe('Vue 对照工作台', () => {
     expect(scenario.findAll('.semi-transfer-right-item')).toHaveLength(2);
     wrapper.unmount();
   });
+  it('通过公共 TreeSelect 渲染受控触发器、搜索浮层、选中节点与 RTL', async () => {
+    const wrapper = mount(App, {
+      attachTo: document.body,
+      props: { scenarioId: 'tree-select', direction: 'rtl', locale: 'en-US' },
+    });
+    for (let index = 0; index < 4; index += 1) await wrapper.vm.$nextTick();
+
+    const scenario = wrapper.get('[data-testid="tree-select-vue"]');
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(wrapper.classes()).toContain('semi-rtl');
+    expect(scenario.get('[data-parity-target="tree-select-root"]').attributes('role')).toBe(
+      'combobox',
+    );
+    expect(document.body.querySelector('.semi-tree-select-popover')).not.toBeNull();
+    expect(
+      document.body.querySelector('.semi-tree-search-wrapper input')?.getAttribute('placeholder'),
+    ).toBe('Search');
+    expect(document.body.querySelector('.semi-tree-option-selected')?.textContent).toContain(
+      '中国',
+    );
+    wrapper.unmount();
+  });
   it('通过公共 Empty 渲染图片、无图片、水平与 SVG 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'empty', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="empty-vue"]');

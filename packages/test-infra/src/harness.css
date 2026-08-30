@@ -2787,6 +2787,12 @@ p {
   max-width: 100%;
 }
 
+.tree-select-scenario {
+  width: 300px;
+  max-width: 100%;
+  min-height: 40px;
+}
+
 .spin-scenario__sizes {
   display: flex;
   gap: 32px;

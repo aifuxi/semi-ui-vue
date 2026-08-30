@@ -60,6 +60,7 @@ import SpaceScenario from './components/SpaceScenario.vue';
 import StepsScenario from './components/StepsScenario.vue';
 import TabsScenario from './components/TabsScenario.vue';
 import TreeScenario from './components/TreeScenario.vue';
+import TreeSelectScenario from './components/TreeSelectScenario.vue';
 import SwitchScenario from './components/SwitchScenario.vue';
 import TagInputScenario from './components/TagInputScenario.vue';
 import TimePickerScenario from './components/TimePickerScenario.vue';
@@ -178,6 +179,11 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <TabsScenario v-else-if="scenario.id === 'tabs'" />
       <TreeScenario
         v-else-if="scenario.id === 'tree'"
+        :direction="props.direction"
+        :locale="props.locale"
+      />
+      <TreeSelectScenario
+        v-else-if="scenario.id === 'tree-select'"
         :direction="props.direction"
         :locale="props.locale"
       />

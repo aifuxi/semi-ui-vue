@@ -2280,3 +2280,32 @@ declare module '@semi-v2.102.0/popconfirm' {
   const Popconfirm: ComponentType<PopconfirmProps>;
   export default Popconfirm;
 }
+declare module '@semi-v2.102.0/tree-select' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface TreeSelectNodeData {
+    children?: TreeSelectNodeData[];
+    disabled?: boolean;
+    key?: string;
+    label?: ReactNode;
+    value?: string | number;
+  }
+
+  export interface TreeSelectProps {
+    [key: `data-${string}`]: string | number | boolean | undefined;
+    defaultExpandAll?: boolean;
+    defaultOpen?: boolean;
+    defaultValue?: string | number | object | Array<string | number | object>;
+    filterTreeNode?:
+      boolean | ((input: string, label: string, node?: TreeSelectNodeData) => boolean);
+    motion?: boolean;
+    motionExpand?: boolean;
+    placeholder?: string;
+    showClear?: boolean;
+    style?: CSSProperties;
+    treeData?: TreeSelectNodeData[];
+  }
+
+  const TreeSelect: ComponentType<TreeSelectProps>;
+  export default TreeSelect;
+}
