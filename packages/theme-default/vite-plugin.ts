@@ -61,6 +61,7 @@ export const virtualTagInputStyleId = 'virtual:workspace-tag-input-styles.css';
 export const virtualTimePickerStyleId = 'virtual:workspace-time-picker-styles.css';
 export const virtualTooltipStyleId = 'virtual:workspace-tooltip-styles.css';
 export const virtualTransferStyleId = 'virtual:workspace-transfer-styles.css';
+export const virtualUploadStyleId = 'virtual:workspace-upload-styles.css';
 export const virtualTypographyStyleId = 'virtual:workspace-typography-styles.css';
 const resolvedVirtualAnchorStyleId = `\0${virtualAnchorStyleId}`;
 const resolvedVirtualAvatarStyleId = `\0${virtualAvatarStyleId}`;
@@ -121,6 +122,7 @@ const resolvedVirtualTagInputStyleId = `\0${virtualTagInputStyleId}`;
 const resolvedVirtualTimePickerStyleId = `\0${virtualTimePickerStyleId}`;
 const resolvedVirtualTooltipStyleId = `\0${virtualTooltipStyleId}`;
 const resolvedVirtualTransferStyleId = `\0${virtualTransferStyleId}`;
+const resolvedVirtualUploadStyleId = `\0${virtualUploadStyleId}`;
 const resolvedVirtualTypographyStyleId = `\0${virtualTypographyStyleId}`;
 const anchorStyleEntry = fileURLToPath(new URL('./src/anchor.scss', import.meta.url));
 const avatarStyleEntry = fileURLToPath(new URL('./src/avatar.scss', import.meta.url));
@@ -183,6 +185,7 @@ const tagInputStyleEntry = fileURLToPath(new URL('./src/tag-input.scss', import.
 const timePickerStyleEntry = fileURLToPath(new URL('./src/time-picker.scss', import.meta.url));
 const tooltipStyleEntry = fileURLToPath(new URL('./src/tooltip.scss', import.meta.url));
 const transferStyleEntry = fileURLToPath(new URL('./src/transfer.scss', import.meta.url));
+const uploadStyleEntry = fileURLToPath(new URL('./src/upload.scss', import.meta.url));
 const typographyStyleEntry = fileURLToPath(new URL('./src/typography.scss', import.meta.url));
 
 const styleEntries = new Map([
@@ -245,6 +248,7 @@ const styleEntries = new Map([
   [resolvedVirtualTimePickerStyleId, timePickerStyleEntry],
   [resolvedVirtualTooltipStyleId, tooltipStyleEntry],
   [resolvedVirtualTransferStyleId, transferStyleEntry],
+  [resolvedVirtualUploadStyleId, uploadStyleEntry],
   [resolvedVirtualTypographyStyleId, typographyStyleEntry],
 ]);
 
@@ -313,6 +317,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualTimePickerStyleId) return resolvedVirtualTimePickerStyleId;
       if (source === virtualTooltipStyleId) return resolvedVirtualTooltipStyleId;
       if (source === virtualTransferStyleId) return resolvedVirtualTransferStyleId;
+      if (source === virtualUploadStyleId) return resolvedVirtualUploadStyleId;
       if (source === virtualTypographyStyleId) return resolvedVirtualTypographyStyleId;
       return null;
     },

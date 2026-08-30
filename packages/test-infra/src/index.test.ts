@@ -141,6 +141,23 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Upload Adapter, FileCard, Foundation, styles and docs', () => {
+    expect(getParityScenario('upload')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.uploadPublicEntry,
+    });
+    expect(assertScenarioComparable('upload').targets).toHaveLength(7);
+    expect(getParityScenario('upload').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.uploadFileCardEntry,
+        REFERENCE_SOURCE_PATHS.uploadFoundation,
+        REFERENCE_SOURCE_PATHS.uploadFoundationStyle,
+        REFERENCE_SOURCE_PATHS.uploadDocumentation,
+      ]),
+    );
+  });
+
   it('records Descriptions Adapter, Item, Foundation, styles and docs', () => {
     expect(getParityScenario('descriptions')).toMatchObject({
       referenceStatus: 'ready',

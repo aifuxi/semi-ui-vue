@@ -59,6 +59,7 @@ import 'virtual:workspace-tag-input-styles.css';
 import 'virtual:workspace-time-picker-styles.css';
 import 'virtual:workspace-tooltip-styles.css';
 import 'virtual:workspace-transfer-styles.css';
+import 'virtual:workspace-upload-styles.css';
 import 'virtual:workspace-typography-styles.css';
 import '@workspace/test-infra/harness.css';
 

@@ -181,6 +181,17 @@ describe('Vue 对照工作台', () => {
     expect(scenario.findAll('.semi-transfer-right-item')).toHaveLength(2);
     wrapper.unmount();
   });
+  it('通过公共 Upload 渲染普通/图片文件列表与 RTL 场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'upload', direction: 'rtl' } });
+    const scenario = wrapper.get('[data-testid="upload-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(wrapper.classes()).toContain('semi-rtl');
+    expect(scenario.findAll('.semi-upload-file-card')).toHaveLength(2);
+    expect(scenario.findAll('.semi-upload-picture-file-card')).toHaveLength(1);
+    expect(scenario.find('.semi-upload-picture-add').exists()).toBe(true);
+    wrapper.unmount();
+  });
   it('通过公共 TreeSelect 渲染受控触发器、搜索浮层、选中节点与 RTL', async () => {
     const wrapper = mount(App, {
       attachTo: document.body,

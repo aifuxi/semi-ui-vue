@@ -7,6 +7,7 @@ import type { ListLocale } from '../list/types';
 import type { ModalLocale } from '../modal/types';
 import type { PopconfirmLocale } from '../popconfirm/types';
 import type { TableLocale } from '../table/types';
+import type { UploadLocaleConfig } from '../upload/types';
 
 export const CONFIG_BREAKPOINTS = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as const;
 
@@ -41,6 +42,7 @@ export interface SemiLocale {
   Modal?: ModalLocale;
   Popconfirm?: PopconfirmLocale;
   Table?: TableLocale;
+  Upload?: UploadLocaleConfig;
   [componentName: string]: unknown;
 }
 

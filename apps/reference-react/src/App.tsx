@@ -65,6 +65,7 @@ import { TagInputScenario } from './scenarios/TagInputScenario';
 import { TimePickerScenario } from './scenarios/TimePickerScenario';
 import { TooltipScenario } from './scenarios/TooltipScenario';
 import { TransferScenario } from './scenarios/TransferScenario';
+import { UploadScenario } from './scenarios/UploadScenario';
 import { TypographyScenario } from './scenarios/TypographyScenario';
 
 const DEFAULT_OPTIONS: ParityScenarioOptions = {
@@ -191,6 +192,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'time-picker' ? <TimePickerScenario /> : null}
         {scenario.id === 'tooltip' ? <TooltipScenario /> : null}
         {scenario.id === 'transfer' ? <TransferScenario /> : null}
+        {scenario.id === 'upload' ? <UploadScenario /> : null}
         {scenario.id === 'typography' ? <TypographyScenario /> : null}
       </section>
 

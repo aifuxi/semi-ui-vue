@@ -147,6 +147,7 @@ export default defineConfig({
         'time-picker/index': fileURLToPath(new URL('./src/time-picker/index.ts', import.meta.url)),
         'tooltip/index': fileURLToPath(new URL('./src/tooltip/index.ts', import.meta.url)),
         'transfer/index': fileURLToPath(new URL('./src/transfer/index.ts', import.meta.url)),
+        'upload/index': fileURLToPath(new URL('./src/upload/index.ts', import.meta.url)),
         'typography/index': fileURLToPath(new URL('./src/typography/index.ts', import.meta.url)),
       },
       formats: ['es'],

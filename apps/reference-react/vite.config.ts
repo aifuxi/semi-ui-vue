@@ -33,6 +33,7 @@ const progressPublicEntry = path.join(upstreamPackages, 'semi-ui/progress/index.
 const skeletonPublicEntry = path.join(upstreamPackages, 'semi-ui/skeleton/index.tsx');
 const spinPublicEntry = path.join(upstreamPackages, 'semi-ui/spin/index.tsx');
 const transferPublicEntry = path.join(upstreamPackages, 'semi-ui/transfer/index.tsx');
+const uploadPublicEntry = path.join(upstreamPackages, 'semi-ui/upload/index.tsx');
 const transferSortableEntry = path.join(upstreamPackages, 'semi-ui/_sortable/index.tsx');
 const toastPublicEntry = path.join(upstreamPackages, 'semi-ui/toast/index.tsx');
 const scrollListPublicEntry = path.join(upstreamPackages, 'semi-ui/scrollList/index.tsx');
@@ -156,6 +157,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'spin/spin.scss'),
   '@douyinfe/semi-foundation/transfer/transfer.scss',
   path.join(foundationRoot, 'transfer/transfer.scss'),
+  '@douyinfe/semi-foundation/upload/upload.scss',
+  path.join(foundationRoot, 'upload/upload.scss'),
   '@douyinfe/semi-foundation/toast/toast.scss',
   path.join(foundationRoot, 'toast/toast.scss'),
   '@douyinfe/semi-foundation/grid/grid.scss',
@@ -283,6 +286,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/skeleton', replacement: skeletonPublicEntry },
       { find: '@semi-v2.102.0/spin', replacement: spinPublicEntry },
       { find: '@semi-v2.102.0/transfer', replacement: transferPublicEntry },
+      { find: '@semi-v2.102.0/upload', replacement: uploadPublicEntry },
       { find: '@semi-v2.102.0/toast', replacement: toastPublicEntry },
       { find: '@semi-v2.102.0/scroll-list', replacement: scrollListPublicEntry },
       { find: '@semi-v2.102.0/scroll-item', replacement: scrollItemPublicEntry },

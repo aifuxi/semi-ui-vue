@@ -75,6 +75,7 @@ export * from './tag-input';
 export * from './time-picker';
 export * from './tooltip';
 export * from './transfer';
+export * from './upload';
 export * from './tree';
 export * from './tree-select';
 export * from './typography';

@@ -238,6 +238,10 @@
       "types": "./dist/transfer/index.d.ts",
       "import": "./dist/transfer/index.js"
     },
+    "./upload": {
+      "types": "./dist/upload/index.d.ts",
+      "import": "./dist/upload/index.js"
+    },
     "./switch": {
       "types": "./dist/switch/index.d.ts",
       "import": "./dist/switch/index.js"

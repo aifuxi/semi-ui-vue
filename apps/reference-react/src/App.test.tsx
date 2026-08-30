@@ -410,6 +410,15 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-transfer-left');
     expect(html).toContain('semi-transfer-right-item');
   });
+  it('从固定 Upload Adapter 渲染普通与图片文件列表', () => {
+    const html = renderToStaticMarkup(<App scenarioId="upload" />);
+
+    expect(html).toContain('data-parity-scenario="upload"');
+    expect(html).toContain('data-testid="upload-reference"');
+    expect(html).toContain('semi-upload-file-card');
+    expect(html).toContain('semi-upload-picture-file-card');
+    expect(html).toContain('semi-upload-picture-add');
+  });
   it('登记固定 TreeSelect Adapter 的可比较参考场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="tree-select" direction="rtl" />);
 

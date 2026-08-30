@@ -317,6 +317,28 @@ declare module '@semi-v2.102.0/transfer' {
   export default Transfer;
 }
 
+declare module '@semi-v2.102.0/upload' {
+  import type { ComponentType, HTMLAttributes, ReactNode } from 'react';
+  interface FileItem {
+    uid: string;
+    name: string;
+    size: string;
+    status: string;
+    preview?: boolean;
+    url?: string;
+  }
+  interface UploadProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
+    action: string;
+    children?: ReactNode;
+    defaultFileList?: FileItem[];
+    listType?: 'list' | 'picture' | 'none';
+    prompt?: ReactNode;
+    showPicInfo?: boolean;
+  }
+  const Upload: ComponentType<UploadProps>;
+  export default Upload;
+}
+
 declare module '@semi-v2.102.0/toast' {
   import type React from 'react';
 

@@ -203,4 +203,22 @@ export type {
   TransferDataItemMap,
   TransferSortEnd,
 } from './transfer.js';
+export {
+  getUploadFileSize,
+  mapUploadFileTree,
+  UploadFileCardFoundation,
+  UploadFoundation,
+  uploadCssClasses,
+  uploadNumbers,
+  uploadStrings,
+} from './upload.js';
+export type {
+  UploadAdapter,
+  UploadAfterResult,
+  UploadBeforeResult,
+  UploadFileCardAdapter,
+  UploadFileStatus,
+  UploadFoundationError,
+  UploadFoundationFileItem,
+} from './upload.js';
 export * from './typography.js';

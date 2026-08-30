@@ -95,6 +95,9 @@ export default defineConfig({
       '@semi-v2.102.0/transfer': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiTransferStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/upload': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiUploadStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/tree-select': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiTreeSelectStub.tsx', import.meta.url),
       ),

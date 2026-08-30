@@ -5,6 +5,7 @@ import type { ListLocale } from '../list/types';
 import type { ModalLocale } from '../modal/types';
 import type { PopconfirmLocale } from '../popconfirm/types';
 import type { TableLocale } from '../table/types';
+import type { UploadLocale } from '../upload/types';
 
 import type { BreakpointScreens, ResponsiveMap, SemiLocale } from './types';
 
@@ -69,4 +70,18 @@ export const DEFAULT_CONFIG_LOCALE: Readonly<SemiLocale> = Object.freeze({
     pageText: '显示第 ${currentStart} 条-第 ${currentEnd} 条，共 ${total} 条',
     resetFilter: '重置',
   }) satisfies TableLocale,
+  Upload: Object.freeze({
+    mainText: '点击上传文件或拖拽文件到这里',
+    illegalTips: '不支持此类型文件',
+    legalTips: '松手开始上传',
+    retry: '重试',
+    replace: '替换文件',
+    clear: '清空',
+    selectedFiles: '已选择文件',
+    illegalSize: '文件尺寸不合法',
+    fail: '上传失败',
+    cropTitle: '裁切图片',
+    cropOk: '确定',
+    cropCancel: '取消',
+  }) satisfies UploadLocale,
 });

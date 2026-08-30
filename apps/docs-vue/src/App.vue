@@ -66,6 +66,7 @@ import TagInputScenario from './components/TagInputScenario.vue';
 import TimePickerScenario from './components/TimePickerScenario.vue';
 import TooltipScenario from './components/TooltipScenario.vue';
 import TransferScenario from './components/TransferScenario.vue';
+import UploadScenario from './components/UploadScenario.vue';
 import TypographyScenario from './components/TypographyScenario.vue';
 import HarnessCalibration from './components/HarnessCalibration.vue';
 import UnavailableScenario from './components/UnavailableScenario.vue';
@@ -192,6 +193,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <TimePickerScenario v-else-if="scenario.id === 'time-picker'" />
       <TooltipScenario v-else-if="scenario.id === 'tooltip'" />
       <TransferScenario v-else-if="scenario.id === 'transfer'" />
+      <UploadScenario v-else-if="scenario.id === 'upload'" />
       <TypographyScenario v-else-if="scenario.id === 'typography'" />
       <UnavailableScenario
         v-else
