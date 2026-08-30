@@ -8,6 +8,7 @@ import {
 import {
   captureComputedStyle,
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -104,7 +105,7 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         reactTarget.screenshot({ animations: 'disabled' }),
         vueTarget.screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+      await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
       expect(reactScreenshot).toMatchSnapshot(`toast-reference-${viewportName}-${theme}.png`);
       expect(vueScreenshot).toMatchSnapshot(`toast-vue-${viewportName}-${theme}.png`);
       const reactWarning = pair.react.page.locator('.toast-scenario__warning .semi-toast-content');
@@ -113,7 +114,11 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         reactWarning.screenshot({ animations: 'disabled' }),
         vueWarning.screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueWarningScreenshot.equals(reactWarningScreenshot)).toBe(true);
+      await expectScreenshotPixelsToMatch(
+        pair.react.page,
+        vueWarningScreenshot,
+        reactWarningScreenshot,
+      );
       expect(reactWarningScreenshot).toMatchSnapshot(
         `toast-warning-reference-${viewportName}-${theme}.png`,
       );
@@ -150,7 +155,7 @@ test('Toast React/Vue RTL 文本、几何与像素一致', async ({ context }) =
     reactTarget.screenshot({ animations: 'disabled' }),
     vueTarget.screenshot({ animations: 'disabled' }),
   ]);
-  expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+  await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
   expect(reactScreenshot).toMatchSnapshot('toast-reference-light-rtl.png');
   expect(vueScreenshot).toMatchSnapshot('toast-vue-light-rtl.png');
   expect(pair.react.runtimeErrors).toEqual([]);

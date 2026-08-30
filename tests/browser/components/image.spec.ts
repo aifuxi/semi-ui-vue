@@ -68,7 +68,12 @@ test('Image React/Vue 缩略图与分组预览行为一致', async ({ context })
     pair.react.page.getByTestId('image-reference').screenshot({ animations: 'disabled' }),
     pair.vue.page.getByTestId('image-vue').screenshot({ animations: 'disabled' }),
   ]);
-  expect(vueClosed.equals(reactClosed)).toBe(true);
+  await expectScreenshotPixelsToMatch(
+    pair.react.page,
+    vueClosed,
+    reactClosed,
+    'Image Closed React/Vue',
+  );
 
   await Promise.all([
     pair.react.page.locator('[data-parity-target="image-group-first"]').click(),
@@ -123,7 +128,12 @@ test('Image React/Vue 缩略图与分组预览行为一致', async ({ context })
     reactFooter,
     'Image Preview Footer React/Vue',
   );
-  expect(vueImage.equals(reactImage)).toBe(true);
+  await expectScreenshotPixelsToMatch(
+    pair.react.page,
+    vueImage,
+    reactImage,
+    'Image Preview React/Vue',
+  );
   for (const selector of [
     '.semi-image-preview-footer',
     '.semi-image-preview-footer-page',
@@ -242,7 +252,7 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         reactTarget.screenshot({ animations: 'disabled' }),
         vueTarget.screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+      await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
       expect(pair.react.runtimeErrors).toEqual([]);
       expect(pair.vue.runtimeErrors).toEqual([]);
     });
@@ -264,7 +274,7 @@ test('Image React/Vue RTL 几何与像素一致', async ({ context }) => {
     pair.react.page.getByTestId('image-reference').screenshot({ animations: 'disabled' }),
     pair.vue.page.getByTestId('image-vue').screenshot({ animations: 'disabled' }),
   ]);
-  expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+  await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);
 });

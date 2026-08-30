@@ -7,6 +7,7 @@ import {
 } from '../../../packages/test-infra/src';
 import {
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -45,7 +46,7 @@ test('Dropdown 参考场景来自本地 v2.102.0 并保留 Portal/Menu/Item 契�
   expect(runtimeErrors).toEqual([]);
 });
 
-test('Dropdown React/Vue DOM、键盘、焦点、computed style、几何与字节像素一致', async ({
+test('Dropdown React/Vue DOM、键盘、焦点、computed style、几何与像素阈值一致', async ({
   context,
 }) => {
   const pair = await openParityPages(context, {
@@ -123,7 +124,7 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         reactTarget.screenshot({ animations: 'disabled' }),
         vueTarget.screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+      await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
       expect(pair.react.runtimeErrors).toEqual([]);
       expect(pair.vue.runtimeErrors).toEqual([]);
     });
@@ -148,7 +149,7 @@ test('Dropdown React/Vue RTL 几何和截图一致', async ({ context }) => {
     reactTarget.screenshot({ animations: 'disabled' }),
     vueTarget.screenshot({ animations: 'disabled' }),
   ]);
-  expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+  await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);
 });

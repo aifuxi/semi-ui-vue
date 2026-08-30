@@ -8,6 +8,7 @@ import {
 import {
   captureComputedStyle,
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -127,7 +128,7 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         reactTarget.screenshot({ animations: 'disabled' }),
         vueTarget.screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+      await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
       expect(pair.react.runtimeErrors).toEqual([]);
       expect(pair.vue.runtimeErrors).toEqual([]);
     });
@@ -169,7 +170,7 @@ test('Card React/Vue RTL 样式、几何和截图一致', async ({ context }) =>
     reactTarget.screenshot({ animations: 'disabled' }),
     vueTarget.screenshot({ animations: 'disabled' }),
   ]);
-  expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+  await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);
 });

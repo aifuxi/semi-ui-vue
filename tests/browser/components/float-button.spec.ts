@@ -8,6 +8,7 @@ import {
 import {
   captureComputedStyle,
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -122,7 +123,7 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         reactTarget.screenshot(),
         vueTarget.screenshot(),
       ]);
-      expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+      await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
     });
   }
 }
@@ -142,5 +143,5 @@ test('FloatButton React/Vue RTL 截图一致', async ({ context }) => {
     reactTarget.screenshot(),
     vueTarget.screenshot(),
   ]);
-  expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+  await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
 });

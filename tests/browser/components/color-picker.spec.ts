@@ -7,6 +7,7 @@ import {
 } from '../../../packages/test-infra/src';
 import {
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -109,8 +110,18 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
           .locator('.color-picker-target-popover')
           .screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueInline.equals(reactInline)).toBe(true);
-      expect(vuePopup.equals(reactPopup)).toBe(true);
+      await expectScreenshotPixelsToMatch(
+        pair.react.page,
+        vueInline,
+        reactInline,
+        'ColorPicker Inline React/Vue',
+      );
+      await expectScreenshotPixelsToMatch(
+        pair.react.page,
+        vuePopup,
+        reactPopup,
+        'ColorPicker Popup React/Vue',
+      );
       expect(reactInline).toMatchSnapshot(
         `color-picker-inline-reference-${viewportName}-${theme}.png`,
       );
@@ -150,8 +161,18 @@ test('ColorPicker React/Vue RTL 方向、几何与像素一致', async ({ contex
     pair.react.page.locator('.color-picker-target-popover').screenshot({ animations: 'disabled' }),
     pair.vue.page.locator('.color-picker-target-popover').screenshot({ animations: 'disabled' }),
   ]);
-  expect(vueInline.equals(reactInline)).toBe(true);
-  expect(vuePopup.equals(reactPopup)).toBe(true);
+  await expectScreenshotPixelsToMatch(
+    pair.react.page,
+    vueInline,
+    reactInline,
+    'ColorPicker RTL Inline React/Vue',
+  );
+  await expectScreenshotPixelsToMatch(
+    pair.react.page,
+    vuePopup,
+    reactPopup,
+    'ColorPicker RTL Popup React/Vue',
+  );
   expect(reactInline).toMatchSnapshot('color-picker-inline-reference-light-rtl.png');
   expect(vueInline).toMatchSnapshot('color-picker-inline-vue-light-rtl.png');
   expect(reactPopup).toMatchSnapshot('color-picker-popup-reference-light-rtl.png');

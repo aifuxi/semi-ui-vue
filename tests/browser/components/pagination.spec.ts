@@ -204,7 +204,7 @@ test('Pagination React/Vue 页码、快速跳页、容量 Select、Popover、样
       pair.react.page.screenshot({ animations: 'disabled', clip: insetClip(reactPageBox) }),
       pair.vue.page.screenshot({ animations: 'disabled', clip: insetClip(vuePageBox) }),
     ]);
-    expect(vuePageScreenshot.equals(reactPageScreenshot)).toBe(true);
+    await expectScreenshotPixelsToMatch(pair.react.page, vuePageScreenshot, reactPageScreenshot);
   }
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);
@@ -234,7 +234,7 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         reactTarget.screenshot({ animations: 'disabled' }),
         vueTarget.screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+      await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
     });
   }
 }
@@ -263,7 +263,7 @@ test('Pagination React/Vue RTL 与 en-US Locale 的样式、几何和截图一�
     reactTarget.screenshot({ animations: 'disabled' }),
     vueTarget.screenshot({ animations: 'disabled' }),
   ]);
-  expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+  await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);
 });

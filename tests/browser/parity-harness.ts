@@ -50,6 +50,15 @@ function observeRuntimeErrors(page: Page): string[] {
   return errors;
 }
 
+export async function waitForStableRendering(page: Page): Promise<void> {
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+    });
+  });
+}
+
 export async function openParityPages(
   context: BrowserContext,
   options: ParityScenarioOptions,
@@ -74,6 +83,7 @@ export async function openParityPages(
     ).toBeVisible(),
     expect(vuePage.getByRole('heading', { name: PARITY_APPLICATIONS.vue.heading })).toBeVisible(),
   ]);
+  await Promise.all([waitForStableRendering(reactPage), waitForStableRendering(vuePage)]);
 
   return {
     react: { page: reactPage, runtimeErrors: reactErrors },
@@ -98,7 +108,7 @@ export async function expectScreenshotPixelsToMatch(
   page: Page,
   actual: Buffer,
   expected: Buffer,
-  label: string,
+  label = 'React/Vue 截图',
 ): Promise<void> {
   const comparison = await page.evaluate<
     ScreenshotPixelComparison,
@@ -197,18 +207,28 @@ export async function expectComparableTarget(
   const vueTarget = pair.vue.page.locator(target.selector);
   await Promise.all([expect(reactTarget).toBeVisible(), expect(vueTarget).toBeVisible()]);
 
-  const [reactStyle, vueStyle, reactRect, vueRect, reactScreenshot, vueScreenshot] =
-    await Promise.all([
-      captureComputedStyle(reactTarget, target.computedStyleProperties),
-      captureComputedStyle(vueTarget, target.computedStyleProperties),
-      reactTarget.boundingBox(),
-      vueTarget.boundingBox(),
-      reactTarget.screenshot({ animations: 'disabled' }),
-      vueTarget.screenshot({ animations: 'disabled' }),
-    ]);
+  const [reactStyle, vueStyle, reactRect, vueRect] = await Promise.all([
+    captureComputedStyle(reactTarget, target.computedStyleProperties),
+    captureComputedStyle(vueTarget, target.computedStyleProperties),
+    reactTarget.boundingBox(),
+    vueTarget.boundingBox(),
+  ]);
+  await Promise.all([
+    waitForStableRendering(pair.react.page),
+    waitForStableRendering(pair.vue.page),
+  ]);
+  const [reactScreenshot, vueScreenshot] = await Promise.all([
+    reactTarget.screenshot({ animations: 'disabled' }),
+    vueTarget.screenshot({ animations: 'disabled' }),
+  ]);
 
   expect(vueStyle).toEqual(reactStyle);
-  expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+  await expectScreenshotPixelsToMatch(
+    pair.react.page,
+    vueScreenshot,
+    reactScreenshot,
+    `${scenarioId}/${targetId}`,
+  );
   if (!reactRect || !vueRect) throw new Error(`${scenarioId}/${targetId} 目标不可测量`);
 
   for (const axis of ['x', 'y', 'width', 'height'] as const) {

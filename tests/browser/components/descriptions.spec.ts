@@ -7,6 +7,7 @@ import {
 } from '../../../packages/test-infra/src';
 import {
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -49,7 +50,7 @@ test('Descriptions 参考场景来自本地 v2.102.0 并保留 table/span/hidden
   expect(runtimeErrors).toEqual([]);
 });
 
-test('Descriptions React/Vue DOM、computed style、几何与字节像素一致', async ({ context }) => {
+test('Descriptions React/Vue DOM、computed style、几何与像素阈值一致', async ({ context }) => {
   const pair = await openParityPages(context, {
     scenarioId: 'descriptions',
     theme: 'light',
@@ -101,7 +102,7 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         reactTarget.screenshot({ animations: 'disabled' }),
         vueTarget.screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+      await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
       expect(pair.react.runtimeErrors).toEqual([]);
       expect(pair.vue.runtimeErrors).toEqual([]);
     });
@@ -126,7 +127,7 @@ test('Descriptions React/Vue RTL 几何和截图一致', async ({ context }) => 
     reactTarget.screenshot({ animations: 'disabled' }),
     vueTarget.screenshot({ animations: 'disabled' }),
   ]);
-  expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+  await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);
 });

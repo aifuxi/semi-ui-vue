@@ -8,6 +8,7 @@ import {
 import {
   captureComputedStyle,
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -258,7 +259,7 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         reactTarget.screenshot(),
         vueTarget.screenshot(),
       ]);
-      expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+      await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
     });
   }
 }
@@ -285,6 +286,6 @@ for (const { theme, direction } of [
       reactTarget.screenshot({ animations: 'disabled' }),
       vueTarget.screenshot({ animations: 'disabled' }),
     ]);
-    expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+    await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
   });
 }

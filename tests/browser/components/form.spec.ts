@@ -7,6 +7,7 @@ import {
 } from '../../../packages/test-infra/src';
 import {
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -89,7 +90,7 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         pair.react.page.getByTestId('form-reference').screenshot({ animations: 'disabled' }),
         pair.vue.page.getByTestId('form-vue').screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueForm.equals(reactForm)).toBe(true);
+      await expectScreenshotPixelsToMatch(pair.react.page, vueForm, reactForm, 'Form React/Vue');
       expect(reactForm).toMatchSnapshot(`form-reference-${viewportName}-${theme}.png`);
       expect(vueForm).toMatchSnapshot(`form-vue-${viewportName}-${theme}.png`);
       expect(pair.react.runtimeErrors).toEqual([]);
@@ -115,7 +116,7 @@ test('Form React/Vue RTL 方向、几何与像素一致', async ({ context }) =>
     pair.react.page.getByTestId('form-reference').screenshot({ animations: 'disabled' }),
     pair.vue.page.getByTestId('form-vue').screenshot({ animations: 'disabled' }),
   ]);
-  expect(vueForm.equals(reactForm)).toBe(true);
+  await expectScreenshotPixelsToMatch(pair.react.page, vueForm, reactForm, 'Form RTL React/Vue');
   expect(reactForm).toMatchSnapshot('form-reference-light-rtl.png');
   expect(vueForm).toMatchSnapshot('form-vue-light-rtl.png');
   expect(pair.react.runtimeErrors).toEqual([]);

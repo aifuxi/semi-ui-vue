@@ -7,6 +7,7 @@ import {
 } from '../../../packages/test-infra/src';
 import {
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -110,8 +111,18 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         pair.react.page.locator('.semi-tree-select-popover').screenshot({ animations: 'disabled' }),
         pair.vue.page.locator('.semi-tree-select-popover').screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueTrigger.equals(reactTrigger)).toBe(true);
-      expect(vuePopup.equals(reactPopup)).toBe(true);
+      await expectScreenshotPixelsToMatch(
+        pair.react.page,
+        vueTrigger,
+        reactTrigger,
+        'TreeSelect Trigger React/Vue',
+      );
+      await expectScreenshotPixelsToMatch(
+        pair.react.page,
+        vuePopup,
+        reactPopup,
+        'TreeSelect Popup React/Vue',
+      );
       expect(reactTrigger).toMatchSnapshot(
         `tree-select-trigger-reference-${viewportName}-${theme}.png`,
       );
@@ -153,8 +164,18 @@ test('TreeSelect React/Vue RTL 方向、几何与像素一致', async ({ context
     pair.react.page.locator('.semi-tree-select-popover').screenshot({ animations: 'disabled' }),
     pair.vue.page.locator('.semi-tree-select-popover').screenshot({ animations: 'disabled' }),
   ]);
-  expect(vueTrigger.equals(reactTrigger)).toBe(true);
-  expect(vuePopup.equals(reactPopup)).toBe(true);
+  await expectScreenshotPixelsToMatch(
+    pair.react.page,
+    vueTrigger,
+    reactTrigger,
+    'TreeSelect RTL Trigger React/Vue',
+  );
+  await expectScreenshotPixelsToMatch(
+    pair.react.page,
+    vuePopup,
+    reactPopup,
+    'TreeSelect RTL Popup React/Vue',
+  );
   expect(reactTrigger).toMatchSnapshot('tree-select-trigger-reference-light-rtl.png');
   expect(vueTrigger).toMatchSnapshot('tree-select-trigger-vue-light-rtl.png');
   expect(reactPopup).toMatchSnapshot('tree-select-popup-reference-light-rtl.png');

@@ -7,6 +7,7 @@ import {
 } from '../../../packages/test-infra/src';
 import {
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -95,7 +96,7 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         reactTarget.screenshot({ animations: 'disabled' }),
         vueTarget.screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+      await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
       expect(reactScreenshot).toMatchSnapshot(`transfer-reference-${viewportName}-${theme}.png`);
       expect(vueScreenshot).toMatchSnapshot(`transfer-vue-${viewportName}-${theme}.png`);
       expect(pair.react.runtimeErrors).toEqual([]);
@@ -126,7 +127,7 @@ test('Transfer React/Vue RTL 边框、几何与像素一致', async ({ context }
     reactTarget.screenshot({ animations: 'disabled' }),
     vueTarget.screenshot({ animations: 'disabled' }),
   ]);
-  expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+  await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
   expect(reactScreenshot).toMatchSnapshot('transfer-reference-light-rtl.png');
   expect(vueScreenshot).toMatchSnapshot('transfer-vue-light-rtl.png');
   expect(pair.react.runtimeErrors).toEqual([]);

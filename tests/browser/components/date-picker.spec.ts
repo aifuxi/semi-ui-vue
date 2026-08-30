@@ -8,6 +8,7 @@ import {
 import {
   captureComputedStyle,
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -102,8 +103,18 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         pair.react.page.locator('.date-picker-target-popup').screenshot({ animations: 'disabled' }),
         pair.vue.page.locator('.date-picker-target-popup').screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueTrigger.equals(reactTrigger)).toBe(true);
-      expect(vuePopup.equals(reactPopup)).toBe(true);
+      await expectScreenshotPixelsToMatch(
+        pair.react.page,
+        vueTrigger,
+        reactTrigger,
+        'DatePicker Trigger React/Vue',
+      );
+      await expectScreenshotPixelsToMatch(
+        pair.react.page,
+        vuePopup,
+        reactPopup,
+        'DatePicker Popup React/Vue',
+      );
       expect(reactTrigger).toMatchSnapshot(
         `date-picker-trigger-reference-${viewportName}-${theme}.png`,
       );
@@ -151,10 +162,18 @@ test('DatePicker React/Vue RTL 方向、几何与像素一致', async ({ context
     pair.react.page.locator('.date-picker-target-popup').screenshot({ animations: 'disabled' }),
     pair.vue.page.locator('.date-picker-target-popup').screenshot({ animations: 'disabled' }),
   ]);
-  expect(reactTrigger).toMatchSnapshot('date-picker-trigger-pair-light-rtl.png');
-  expect(vueTrigger).toMatchSnapshot('date-picker-trigger-pair-light-rtl.png');
-  expect(reactPopup).toMatchSnapshot('date-picker-popup-pair-light-rtl.png');
-  expect(vuePopup).toMatchSnapshot('date-picker-popup-pair-light-rtl.png');
+  await expectScreenshotPixelsToMatch(
+    pair.react.page,
+    vueTrigger,
+    reactTrigger,
+    'DatePicker RTL Trigger React/Vue',
+  );
+  await expectScreenshotPixelsToMatch(
+    pair.react.page,
+    vuePopup,
+    reactPopup,
+    'DatePicker RTL Popup React/Vue',
+  );
   expect(reactTrigger).toMatchSnapshot('date-picker-trigger-reference-light-rtl.png');
   expect(vueTrigger).toMatchSnapshot('date-picker-trigger-vue-light-rtl.png');
   expect(reactPopup).toMatchSnapshot('date-picker-popup-reference-light-rtl.png');

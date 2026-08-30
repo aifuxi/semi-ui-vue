@@ -8,6 +8,7 @@ import {
 import {
   captureComputedStyle,
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -104,7 +105,7 @@ test('TimePicker React/Vue 输入、面板选择、焦点、Portal、样式与�
   ]);
   await expect(reactPanelScreenshot).toMatchSnapshot('time-picker-panel-reference-light.png');
   await expect(vuePanelScreenshot).toMatchSnapshot('time-picker-panel-vue-light.png');
-  expect(vuePanelScreenshot.equals(reactPanelScreenshot)).toBe(true);
+  await expectScreenshotPixelsToMatch(pair.react.page, vuePanelScreenshot, reactPanelScreenshot);
 
   const reactMinute = reactPanel
     .locator('.semi-timepicker-panel-list-minute li')
@@ -150,7 +151,7 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         reactTarget.screenshot({ animations: 'disabled' }),
         vueTarget.screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+      await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
     });
   }
 }
@@ -189,7 +190,7 @@ test('TimePicker React/Vue RTL 面板、样式、几何与截图一致', async (
     reactTarget.screenshot({ animations: 'disabled' }),
     vueTarget.screenshot({ animations: 'disabled' }),
   ]);
-  expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+  await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);
 });

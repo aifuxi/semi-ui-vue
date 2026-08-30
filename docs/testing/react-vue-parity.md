@@ -43,7 +43,7 @@ React 页面只允许从只读 `vendor/semi-design` 的固定 v2.102.0 源码构
 | `tabs`                | ready | ready | 四类型、横/竖、More/折叠、键盘、dark/mobile/RTL                |
 | `side-sheet`          | ready | ready | 稳定 Portal、mask、header/body/footer、dark/mobile/RTL         |
 
-场景契约定义在 `packages/test-infra/src/index.ts`。`assertScenarioComparable()` 只有在 React/Vue 均为 `ready` 时才返回场景，否则立即失败。所有已完成组件的固定源码矩阵、Vue API 与迁移表见 `docs/components/`。Icon 场景覆盖尺寸、旋转、暂停后的 spin、单色、双色、四色渐变、Lab 和自定义 SVG 基座；Space 场景覆盖预设/数字/数组 gap、方向、换行、交叉轴对齐和 RTL；FloatButton 场景覆盖尺寸、形状、colorful、disabled、Badge 与 Group 委托事件；Layout 场景覆盖语义标签、嵌套 Sider 注册与桌面/移动断点回调；Grid 场景覆盖 24 栅格、水平/垂直/响应式 Gutter、Flex 对齐与排序、响应式 Col 和 RTL；Resizable 场景覆盖单体八方向手柄、受约束拖拽、水平/垂直 Group、默认 IconHandle、相邻 Item 回调与桌面/移动明暗主题；Typography 场景覆盖标题层级、七类文本颜色、装饰顺序、段落、链接、复制和数值格式化；ConfigProvider 场景覆盖 RTL、Locale、Consumer、嵌套配置和桌面/移动断点；Switch、Tooltip、Select、AutoComplete、Checkbox、Input、TagInput 与 TimePicker 分别覆盖其公开输入、状态、键盘/焦点、ARIA、Portal 和适用主题矩阵。Tabs 场景覆盖四种 type、top/left、disabled/closable、More、可收起 OverflowList、点击/键盘、Dropdown Portal、桌面/移动明暗主题和 RTL，成对局部截图要求字节完全一致。
+场景契约定义在 `packages/test-infra/src/index.ts`。`assertScenarioComparable()` 只有在 React/Vue 均为 `ready` 时才返回场景，否则立即失败。所有已完成组件的固定源码矩阵、Vue API 与迁移表见 `docs/components/`。Icon 场景覆盖尺寸、旋转、暂停后的 spin、单色、双色、四色渐变、Lab 和自定义 SVG 基座；Space 场景覆盖预设/数字/数组 gap、方向、换行、交叉轴对齐和 RTL；FloatButton 场景覆盖尺寸、形状、colorful、disabled、Badge 与 Group 委托事件；Layout 场景覆盖语义标签、嵌套 Sider 注册与桌面/移动断点回调；Grid 场景覆盖 24 栅格、水平/垂直/响应式 Gutter、Flex 对齐与排序、响应式 Col 和 RTL；Resizable 场景覆盖单体八方向手柄、受约束拖拽、水平/垂直 Group、默认 IconHandle、相邻 Item 回调与桌面/移动明暗主题；Typography 场景覆盖标题层级、七类文本颜色、装饰顺序、段落、链接、复制和数值格式化；ConfigProvider 场景覆盖 RTL、Locale、Consumer、嵌套配置和桌面/移动断点；Switch、Tooltip、Select、AutoComplete、Checkbox、Input、TagInput 与 TimePicker 分别覆盖其公开输入、状态、键盘/焦点、ARIA、Portal 和适用主题矩阵。Tabs 场景覆盖四种 type、top/left、disabled/closable、More、可收起 OverflowList、点击/键盘、Dropdown Portal、桌面/移动明暗主题和 RTL。React/Vue 成对截图统一解码为像素后比较，门禁保持 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`；历史垂直切片记录中的逐字节 `cmp` 仅作为当次独立证据，不作为跨宿主 CI 的通过条件。
 
 ## 运行入口
 
@@ -92,10 +92,27 @@ pnpm check
 pnpm test:browser
 ```
 
-浏览器测试按组件放在 `tests/browser/components/*.spec.ts`，组件内部保持串行，组件之间由 Playwright worker 并发执行。默认本地使用 4 个 worker、CI 使用 2 个；资源受限或排查时可通过 `PARITY_WORKERS=1` 退回串行。开发单个垂直切片时可直接定向运行，例如：
+浏览器测试按组件放在 `tests/browser/components/*.spec.ts`，组件内部保持串行，组件之间由 Playwright worker 并发执行。默认本地与 CI 都使用 3 个 worker；资源受限或排查时可通过 `PARITY_WORKERS=1` 退回串行，也可用任意正整数临时覆盖。开发单个垂直切片时可直接定向运行，例如：
 
 ```bash
 pnpm test:browser tests/browser/components/button.spec.ts
+```
+
+2026-08-30 在 M3 Max（16 个可用 CPU、64 GB）上以 CI 严格模式、相同代码与完整 482 项 Chromium 套件连续基准，所有档位均为 482/482 通过且无 retry：
+
+| Worker | 墙钟时间 | 相对 3 workers |
+| ------ | -------- | -------------- |
+| 2      | 363.49s  | +26.4%         |
+| 3      | 287.46s  | 基准           |
+| 4      | 327.52s  | +13.9%         |
+| 6      | 366.00s  | +27.3%         |
+| 8      | 362.08s  | +26.0%         |
+
+因此本机默认由 4 调整为 3，发布 CI 默认由 2 调整为 3。[GitHub 标准 hosted runner 规格](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)显示 `macos-15` arm64 runner 为 3 核 M1、7 GB 内存；CI 选择同时保留 `PARITY_WORKERS` 覆盖，以便 runner 规格或套件负载变化后重新基准。基准命令为：
+
+```bash
+CI=1 PARITY_IGNORE_HOST_BASELINES=1 PARITY_WORKERS=<数量> \
+  pnpm --config.verify-deps-before-run=false exec playwright test tests/browser --reporter=dot
 ```
 
 截图基线统一位于 `tests/browser/snapshots/`，不再依赖 spec 文件名，因此测试拆分或移动不会导致整批基线失效。

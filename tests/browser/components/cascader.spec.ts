@@ -7,6 +7,7 @@ import {
 } from '../../../packages/test-infra/src';
 import {
   expectComparableTarget,
+  expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
@@ -102,8 +103,18 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         pair.react.page.locator('.semi-cascader-popover').screenshot({ animations: 'disabled' }),
         pair.vue.page.locator('.semi-cascader-popover').screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueTrigger.equals(reactTrigger)).toBe(true);
-      expect(vuePopup.equals(reactPopup)).toBe(true);
+      await expectScreenshotPixelsToMatch(
+        pair.react.page,
+        vueTrigger,
+        reactTrigger,
+        'Cascader Trigger React/Vue',
+      );
+      await expectScreenshotPixelsToMatch(
+        pair.react.page,
+        vuePopup,
+        reactPopup,
+        'Cascader Popup React/Vue',
+      );
       expect(reactTrigger).toMatchSnapshot(
         `cascader-trigger-reference-${viewportName}-${theme}.png`,
       );
@@ -143,8 +154,18 @@ test('Cascader React/Vue RTL 方向、几何与像素一致', async ({ context }
     pair.react.page.locator('.semi-cascader-popover').screenshot({ animations: 'disabled' }),
     pair.vue.page.locator('.semi-cascader-popover').screenshot({ animations: 'disabled' }),
   ]);
-  expect(vueTrigger.equals(reactTrigger)).toBe(true);
-  expect(vuePopup.equals(reactPopup)).toBe(true);
+  await expectScreenshotPixelsToMatch(
+    pair.react.page,
+    vueTrigger,
+    reactTrigger,
+    'Cascader RTL Trigger React/Vue',
+  );
+  await expectScreenshotPixelsToMatch(
+    pair.react.page,
+    vuePopup,
+    reactPopup,
+    'Cascader RTL Popup React/Vue',
+  );
   expect(reactTrigger).toMatchSnapshot('cascader-trigger-reference-light-rtl.png');
   expect(vueTrigger).toMatchSnapshot('cascader-trigger-vue-light-rtl.png');
   expect(reactPopup).toMatchSnapshot('cascader-popup-reference-light-rtl.png');

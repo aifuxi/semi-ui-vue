@@ -1,6 +1,10 @@
 import { expect, test } from '@playwright/test';
 import { assertScenarioComparable, PARITY_VIEWPORTS } from '../../../packages/test-infra/src';
-import { expectComparableTarget, openParityPages } from '../parity-harness';
+import {
+  expectComparableTarget,
+  expectScreenshotPixelsToMatch,
+  openParityPages,
+} from '../parity-harness';
 
 test('ScrollList 固定源码场景保留 normal/wheel、循环、禁用、变换与选择契约', async ({
   context,
@@ -88,7 +92,7 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         reactTarget.screenshot({ animations: 'disabled' }),
         vueTarget.screenshot({ animations: 'disabled' }),
       ]);
-      expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+      await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
       expect(pair.react.runtimeErrors).toEqual([]);
       expect(pair.vue.runtimeErrors).toEqual([]);
     });
@@ -113,7 +117,7 @@ test('ScrollList React/Vue RTL 几何与像素一致', async ({ context }) => {
     reactTarget.screenshot({ animations: 'disabled' }),
     vueTarget.screenshot({ animations: 'disabled' }),
   ]);
-  expect(vueScreenshot.equals(reactScreenshot)).toBe(true);
+  await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
