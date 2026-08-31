@@ -111,6 +111,10 @@
       "types": "./dist/drag-move/index.d.ts",
       "import": "./dist/drag-move/index.js"
     },
+    "./hot-keys": {
+      "types": "./dist/hot-keys/index.d.ts",
+      "import": "./dist/hot-keys/index.js"
+    },
     "./empty": {
       "types": "./dist/empty/index.d.ts",
       "import": "./dist/empty/index.js"

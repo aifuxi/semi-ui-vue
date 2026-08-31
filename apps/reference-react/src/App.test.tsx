@@ -5,6 +5,17 @@ import { describe, expect, it } from 'vitest';
 import { App } from './App';
 
 describe('React 参考工作台', () => {
+  it('登记固定 HotKeys Adapter 的组合、显示和局部目标场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="hot-keys" />);
+
+    expect(html).toContain('data-parity-scenario="hot-keys"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/hotKeys/index.tsx');
+    expect(html).toContain('data-testid="hot-keys-reference"');
+    expect(html).toContain('data-parity-target="hot-keys-basic"');
+    expect(html).toContain('data-parity-target="hot-keys-local"');
+    expect(html.match(/hot-keys-scenario__card/g)).toHaveLength(4);
+  });
+
   it('登记固定 DragMove Adapter 的约束、handler、relative 与 input 场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="drag-move" />);
 

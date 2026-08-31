@@ -21,6 +21,7 @@ import { CropperScenario } from './scenarios/CropperScenario';
 import { DescriptionsScenario } from './scenarios/DescriptionsScenario';
 import { DropdownScenario } from './scenarios/DropdownScenario';
 import { DragMoveScenario } from './scenarios/DragMoveScenario';
+import { HotKeysScenario } from './scenarios/HotKeysScenario';
 import { EmptyScenario } from './scenarios/EmptyScenario';
 import { HighlightScenario } from './scenarios/HighlightScenario';
 import { ImageScenario } from './scenarios/ImageScenario';
@@ -153,6 +154,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'descriptions' ? <DescriptionsScenario /> : null}
         {scenario.id === 'dropdown' ? <DropdownScenario /> : null}
         {scenario.id === 'drag-move' ? <DragMoveScenario /> : null}
+        {scenario.id === 'hot-keys' ? <HotKeysScenario /> : null}
         {scenario.id === 'empty' ? <EmptyScenario /> : null}
         {scenario.id === 'highlight' ? <HighlightScenario /> : null}
         {scenario.id === 'image' ? <ImageScenario /> : null}

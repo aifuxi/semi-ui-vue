@@ -42,6 +42,22 @@ describe('parity infrastructure contract', () => {
     ]);
   });
 
+  it('records HotKeys Adapter, Foundation, key table, styles and docs', () => {
+    expect(getParityScenario('hot-keys')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.hotKeysPublicEntry,
+    });
+    expect(assertScenarioComparable('hot-keys').targets).toHaveLength(5);
+    expect(getParityScenario('hot-keys').sourceEvidence).toEqual([
+      REFERENCE_SOURCE_PATHS.hotKeysPublicEntry,
+      REFERENCE_SOURCE_PATHS.hotKeysFoundation,
+      REFERENCE_SOURCE_PATHS.hotKeysConstants,
+      REFERENCE_SOURCE_PATHS.hotKeysFoundationStyle,
+      REFERENCE_SOURCE_PATHS.hotKeysDocumentation,
+    ]);
+  });
+
   it('records IconButton Adapter, Button base, fixed styles and docs', () => {
     expect(getParityScenario('icon-button')).toMatchObject({
       referenceStatus: 'ready',

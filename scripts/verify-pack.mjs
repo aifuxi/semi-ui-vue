@@ -349,6 +349,7 @@ try {
 		await import('@aifuxi/semi-ui-vue/descriptions');
 		await import('@aifuxi/semi-ui-vue/dropdown');
 		await import('@aifuxi/semi-ui-vue/drag-move');
+		await import('@aifuxi/semi-ui-vue/hot-keys');
 		await import('@aifuxi/semi-ui-vue/empty');
 		await import('@aifuxi/semi-ui-vue/highlight');
 		await import('@aifuxi/semi-ui-vue/image');
@@ -495,6 +496,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/drag-move.css').endsWith('/dist/drag-move.css')) {
 		  throw new Error('DragMove 逐组件样式导出未指向 dist/drag-move.css');
+		}
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/hot-keys.css').endsWith('/dist/hot-keys.css')) {
+		  throw new Error('HotKeys 逐组件样式导出未指向 dist/hot-keys.css');
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/empty.css').endsWith('/dist/empty.css')) {
 		  throw new Error('Empty 逐组件样式导出未指向 dist/empty.css');
@@ -660,6 +664,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Descriptions, DescriptionsItem, type DescriptionsDataItem, type DescriptionsLayout } from '@aifuxi/semi-ui-vue/descriptions';
 		import { Dropdown, DropdownItem, DropdownMenu, type DropdownItemType, type DropdownMenuItem } from '@aifuxi/semi-ui-vue/dropdown';
 		import { DragMove, type DragMoveConstrainer, type DragMoveProps } from '@aifuxi/semi-ui-vue/drag-move';
+		import { HotKeys, type HotKeysKey, type HotKeysProps } from '@aifuxi/semi-ui-vue/hot-keys';
 		import { Empty, type EmptyLayout, type EmptySvgNode } from '@aifuxi/semi-ui-vue/empty';
 		import { Highlight, type HighlightSearchWords } from '@aifuxi/semi-ui-vue/highlight';
 		import { Image, ImagePreview, type ImagePreviewProps, type ImageRatioType } from '@aifuxi/semi-ui-vue/image';
@@ -821,6 +826,9 @@ h(Button, { type, htmlType: 'submit' });
 		const dragMoveConstrainer: DragMoveConstrainer = 'parent';
 		const dragMoveProps: DragMoveProps = { allowInputDrag: false, constrainer: dragMoveConstrainer, positionStrategy: 'relative' };
 		h(DragMove, dragMoveProps, () => h('div', 'Drag me'));
+		const hotKeysKey: HotKeysKey = HotKeys.Keys.K;
+		const hotKeysProps: HotKeysProps = { hotKeys: [HotKeys.Keys.Control, hotKeysKey], preventDefault: true };
+		h(HotKeys, hotKeysProps);
 		const emptyLayout: EmptyLayout = 'horizontal';
 		const emptyImage: EmptySvgNode = { id: 'consumer-empty' };
 		h(Empty, { image: emptyImage, layout: emptyLayout, title: 'No content' }, () => h('button', 'Create'));
@@ -1960,6 +1968,24 @@ h(Button, { type, htmlType: 'submit' });
     !dragMoveThemeCss.includes('[theme-mode=dark]')
   ) {
     throw new Error('安装后的 DragMove 逐组件样式缺少默认主题 Token 或暗色模式');
+  }
+  const hotKeysThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'hot-keys.css',
+    ),
+    'utf8',
+  );
+  if (
+    !hotKeysThemeCss.includes('.semi-hotKeys-content') ||
+    !hotKeysThemeCss.includes('.semi-hotKeys-split') ||
+    !hotKeysThemeCss.includes('[theme-mode=dark]')
+  ) {
+    throw new Error('安装后的 HotKeys 逐组件样式缺少键帽、分隔符或暗色主题');
   }
   const emptyThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'empty.css'),

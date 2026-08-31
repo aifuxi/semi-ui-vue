@@ -28,6 +28,7 @@ const cropperPublicEntry = path.join(upstreamPackages, 'semi-ui/cropper/index.ts
 const descriptionsPublicEntry = path.join(upstreamPackages, 'semi-ui/descriptions/index.tsx');
 const dropdownPublicEntry = path.join(upstreamPackages, 'semi-ui/dropdown/index.tsx');
 const dragMovePublicEntry = path.join(upstreamPackages, 'semi-ui/dragMove/index.ts');
+const hotKeysPublicEntry = path.join(upstreamPackages, 'semi-ui/hotKeys/index.tsx');
 const emptyPublicEntry = path.join(upstreamPackages, 'semi-ui/empty/index.tsx');
 const highlightPublicEntry = path.join(upstreamPackages, 'semi-ui/highlight/index.tsx');
 const imagePublicEntry = path.join(upstreamPackages, 'semi-ui/image/index.tsx');
@@ -120,6 +121,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'checkbox/checkbox.scss'),
   '@douyinfe/semi-foundation/codeHighlight/codeHighlight.scss',
   path.join(foundationRoot, 'codeHighlight/codeHighlight.scss'),
+  '@douyinfe/semi-foundation/hotKeys/hotKeys.scss',
+  path.join(foundationRoot, 'hotKeys/hotKeys.scss'),
   '@douyinfe/semi-foundation/divider/divider.scss',
   path.join(foundationRoot, 'divider/divider.scss'),
   '@douyinfe/semi-foundation/floatButton/floatButton.scss',
@@ -301,6 +304,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/descriptions', replacement: descriptionsPublicEntry },
       { find: '@semi-v2.102.0/dropdown', replacement: dropdownPublicEntry },
       { find: '@semi-v2.102.0/drag-move', replacement: dragMovePublicEntry },
+      { find: '@semi-v2.102.0/hot-keys', replacement: hotKeysPublicEntry },
       { find: '@semi-v2.102.0/empty', replacement: emptyPublicEntry },
       { find: '@semi-v2.102.0/highlight', replacement: highlightPublicEntry },
       { find: '@semi-v2.102.0/image', replacement: imagePublicEntry },

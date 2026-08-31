@@ -2563,3 +2563,35 @@ declare module '@semi-v2.102.0/drag-move' {
   const DragMove: ComponentType<DragMoveProps>;
   export default DragMove;
 }
+
+declare module '@semi-v2.102.0/hot-keys' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface HotKeysProps {
+    [key: `data-${string}`]: string | number | boolean | undefined;
+    className?: string;
+    content?: string[];
+    getListenerTarget?: () => HTMLElement;
+    hotKeys?: string[];
+    mergeMetaCtrl?: boolean;
+    onClick?: () => void;
+    onHotKey?: (event: KeyboardEvent) => void;
+    preventDefault?: boolean;
+    render?: (() => ReactNode) | ReactNode;
+    style?: CSSProperties;
+  }
+
+  interface HotKeysKeyConstants extends Readonly<Record<string, string>> {
+    Alt: string;
+    ArrowDown: string;
+    Control: string;
+    Enter: string;
+    K: string;
+    Meta: string;
+    R: string;
+    Shift: string;
+  }
+
+  const HotKeys: ComponentType<HotKeysProps> & { Keys: HotKeysKeyConstants };
+  export default HotKeys;
+}

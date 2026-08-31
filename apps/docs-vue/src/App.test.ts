@@ -4,6 +4,23 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 HotKeys 渲染组合、显示、slot 与局部目标场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'hot-keys' } });
+    const scenario = wrapper.get('[data-testid="hot-keys-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.hot-keys-scenario__card')).toHaveLength(4);
+    expect(scenario.findAll('[data-parity-target]')).toHaveLength(4);
+    expect(
+      scenario
+        .get('[data-parity-target="hot-keys-basic"]')
+        .findAll('.semi-hotKeys-content')
+        .map((node) => node.text()),
+    ).toEqual(['control', 'shift', 'k']);
+    expect(scenario.get('[data-parity-target="hot-keys-custom"]').text()).toBe('Run command');
+    wrapper.unmount();
+  });
+
   it('通过公共 DragMove 渲染约束、handler、relative 与 input 场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'drag-move' } });
     const scenario = wrapper.get('[data-testid="drag-move-vue"]');
