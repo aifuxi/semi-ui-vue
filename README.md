@@ -22,16 +22,16 @@ pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
 
 ## 复刻进度
 
-当前已完成 **78 / 85** 个上游公开根模块的完整垂直切片（约 **91.8%**）：
+当前已完成 **79 / 85** 个上游公开根模块的完整垂直切片（约 **92.9%**）：
 
 - 基础与布局：Button、IconButton、Divider、Icon、Space、FloatButton、Layout、Grid、Resizable、Typography、ConfigProvider、Locale、DragMove、HotKeys、Lottie。
-- 输入类：Switch、Tooltip、Select、AutoComplete、Cascader、ColorPicker、DatePicker、Form、Checkbox、Input、InputNumber、PinCode、Radio、Rating、Slider、TagInput、TimePicker、Transfer、TreeSelect、Upload。
+- 输入类：Switch、Tooltip、Select、AutoComplete、AIChatInput、Cascader、ColorPicker、DatePicker、Form、Checkbox、Input、InputNumber、PinCode、Radio、Rating、Slider、TagInput、TimePicker、Transfer、TreeSelect、Upload。
 - 导航类：Anchor、BackTop、Breadcrumb、Navigation、Pagination、Steps、Tabs、Tree。
 - 数据展示与容器：Avatar、Badge、Calendar、Card、Carousel、Collapse、Collapsible、CodeHighlight、Descriptions、Dropdown、Empty、Highlight、Image、Cropper、JsonViewer、List、Modal、OverflowList、Popover、ScrollList、SideSheet、Table、Tag、Timeline。
 - 反馈与引导类：Banner、Feedback、Notification、Popconfirm、Progress、Skeleton、Spin、Toast、UserGuide。
 - 媒体类：AudioPlayer、VideoPlayer。
 
-最新完成组件为 JsonViewer：固定 `semi-json-viewer-core` 通过私有 Vite 适配边界编译，解析/校验 Worker 内联进组件产物，SSR 导入、卸载清理、许可证/SBOM 与真实 tarball 消费均已闭合。下一项为 AIChatInput，先审计 Tiptap/ProseMirror 富文本依赖、编辑器 SSR 与发布边界；同样依赖该富文本链和 JsonViewer 的 Sidebar，以及 Chat、MarkdownRender、AIChatDialogue 继续按依赖闭合度排队。每个已完成切片均包含 Vue API、Foundation/主题、中英文文档、React/Vue 场景、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证。Locale 还覆盖固定基线的全部 57 个语言源，Icon 覆盖稳定图标、Lab 图标与生成漂移检查，插画包覆盖全部公开插画。
+最新完成组件为 AIChatInput：Tiptap `3.10.7` 富文本链、固定 Foundation、`.semi-aiChatInput-*` class、技能/建议/模板、引用/附件、SSR、许可证/SBOM 与真实 tarball 消费均已闭合。下一项为 Sidebar；它依赖已完成的 AIChatInput 与 JsonViewer，之后 Chat、MarkdownRender、AIChatDialogue 继续按依赖闭合度排队。每个已完成切片均包含 Vue API、Foundation/主题、中英文文档、React/Vue 场景、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证。Locale 还覆盖固定基线的全部 57 个语言源，Icon 覆盖稳定图标、Lab 图标与生成漂移检查，插画包覆盖全部公开插画。
 
 进度分母与剩余范围以 `docs/inventory/semi-v2.102.0.json` 的 `rootModuleCount` 为准；每完成一个 `ready` 垂直切片，必须在同一次提交中同步更新本节的数量、完成列表和下一项。唯一参考源码位于只读 submodule `vendor/semi-design`。
 

@@ -2784,6 +2784,30 @@ declare module '@semi-v2.102.0/json-viewer' {
   export default JsonViewer;
 }
 
+declare module '@semi-v2.102.0/ai-chat-input' {
+  import type { ComponentType, ReactNode } from 'react';
+
+  export interface AIChatInputReference {
+    id: string;
+    type: string;
+    [key: string]: unknown;
+  }
+
+  export interface AIChatInputProps {
+    defaultContent?: string | Record<string, unknown>;
+    placeholder?: string;
+    references?: AIChatInputReference[];
+    skills?: Array<{ value?: string; label?: string; hasTemplate?: boolean }>;
+    skillHotKey?: string;
+    suggestions?: Array<string | string[] | { content: string }>;
+    uploadProps?: Record<string, unknown>;
+    children?: ReactNode;
+  }
+
+  const AIChatInput: ComponentType<AIChatInputProps>;
+  export default AIChatInput;
+}
+
 declare module '@semi-v2.102.0/user-guide' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 

@@ -15,6 +15,15 @@ describe('React 参考工作台', () => {
     expect(html.match(/user-guide-scenario__target/g)).toHaveLength(6);
   });
 
+  it('登记固定 AIChatInput 富文本、引用与附件场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="ai-chat-input" />);
+
+    expect(html).toContain('data-parity-scenario="ai-chat-input"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/aiChatInput/index.tsx');
+    expect(html).toContain('data-testid="ai-chat-input-reference"');
+    expect(html).toContain('semi-aiChatInput');
+  });
+
   it('登记固定 AudioPlayer 的播放列表、工具栏和精简场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="audio-player" theme="light" />);
 

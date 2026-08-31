@@ -36,6 +36,7 @@ const audioPlayerPublicEntry = path.join(upstreamPackages, 'semi-ui/audioPlayer/
 const videoPlayerPublicEntry = path.join(upstreamPackages, 'semi-ui/videoPlayer/index.tsx');
 const userGuidePublicEntry = path.join(upstreamPackages, 'semi-ui/userGuide/index.tsx');
 const jsonViewerPublicEntry = path.join(upstreamPackages, 'semi-ui/jsonViewer/index.tsx');
+const aiChatInputPublicEntry = path.join(upstreamPackages, 'semi-ui/aiChatInput/index.tsx');
 const localeProviderEntry = path.join(upstreamPackages, 'semi-ui/locale/localeProvider.tsx');
 const localeConsumerEntry = path.join(upstreamPackages, 'semi-ui/locale/localeConsumer.tsx');
 const localeEnGBEntry = path.join(upstreamPackages, 'semi-ui/locale/source/en_GB.ts');
@@ -118,6 +119,7 @@ const virtualStyleId = 'virtual:semi-reference-styles.css';
 const resolvedVirtualStyleId = `\0${virtualStyleId}`;
 const emptyUpstreamStyleId = '\0semi-reference-upstream-style-loaded-from-entry';
 const feedbackDependenciesId = '\0semi-reference-feedback-dependencies';
+const aiChatInputDependenciesId = '\0semi-reference-ai-chat-input-dependencies';
 const capturedUpstreamStyleImports = new Set([
   '@douyinfe/semi-foundation/anchor/anchor.scss',
   path.join(foundationRoot, 'anchor/anchor.scss'),
@@ -145,6 +147,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'userGuide/userGuide.scss'),
   '@douyinfe/semi-foundation/jsonViewer/jsonViewer.scss',
   path.join(foundationRoot, 'jsonViewer/jsonViewer.scss'),
+  '@douyinfe/semi-foundation/aiChatInput/aiChatInput.scss',
+  path.join(foundationRoot, 'aiChatInput/aiChatInput.scss'),
   '@douyinfe/semi-foundation/divider/divider.scss',
   path.join(foundationRoot, 'divider/divider.scss'),
   '@douyinfe/semi-foundation/floatButton/floatButton.scss',
@@ -284,6 +288,9 @@ function compilePinnedReferenceStyles(): Plugin {
       if (source === '../index' && importer === feedbackPublicEntry) {
         return feedbackDependenciesId;
       }
+      if (/^(?:\.\.\/)+index$/.test(source) && importer?.includes('/semi-ui/aiChatInput/')) {
+        return aiChatInputDependenciesId;
+      }
       if (capturedUpstreamStyleImports.has(source)) return emptyUpstreamStyleId;
       if (
         source === '../styles/icons.scss' &&
@@ -304,6 +311,18 @@ function compilePinnedReferenceStyles(): Plugin {
           `export { default as Button } from ${JSON.stringify(buttonPublicEntry)};`,
           `export { default as Modal } from ${JSON.stringify(modalPublicEntry)};`,
           `export { default as SideSheet } from ${JSON.stringify(sideSheetPublicEntry)};`,
+        ].join('\n');
+      }
+      if (id === aiChatInputDependenciesId) {
+        return [
+          `export { default as Popover } from ${JSON.stringify(popoverPublicEntry)};`,
+          `export { default as Tooltip } from ${JSON.stringify(tooltipPublicEntry)};`,
+          `export { default as Upload } from ${JSON.stringify(uploadPublicEntry)};`,
+          `export { default as Progress } from ${JSON.stringify(progressPublicEntry)};`,
+          `export { default as Button } from ${JSON.stringify(buttonPublicEntry)};`,
+          `export { default as Select } from ${JSON.stringify(selectPublicEntry)};`,
+          `export { default as RadioGroup } from ${JSON.stringify(radioGroupEntry)};`,
+          `export { default as Dropdown } from ${JSON.stringify(dropdownPublicEntry)};`,
         ].join('\n');
       }
       if (id !== resolvedVirtualStyleId) return null;
@@ -348,6 +367,23 @@ export default defineConfig({
       { find: '@semi-v2.102.0/video-player', replacement: videoPlayerPublicEntry },
       { find: '@semi-v2.102.0/user-guide', replacement: userGuidePublicEntry },
       { find: '@semi-v2.102.0/json-viewer', replacement: jsonViewerPublicEntry },
+      { find: '@semi-v2.102.0/ai-chat-input', replacement: aiChatInputPublicEntry },
+      {
+        find: '@tiptap',
+        replacement: fileURLToPath(new URL('./node_modules/@tiptap', import.meta.url)),
+      },
+      {
+        find: 'prosemirror-state',
+        replacement: fileURLToPath(
+          new URL('./node_modules/prosemirror-state/dist/index.js', import.meta.url),
+        ),
+      },
+      {
+        find: 'prosemirror-model',
+        replacement: fileURLToPath(
+          new URL('./node_modules/prosemirror-model/dist/index.js', import.meta.url),
+        ),
+      },
       { find: '@semi-v2.102.0/locale-provider', replacement: localeProviderEntry },
       { find: '@semi-v2.102.0/locale-consumer', replacement: localeConsumerEntry },
       { find: '@semi-v2.102.0/locale-en-gb', replacement: localeEnGBEntry },

@@ -2,6 +2,23 @@
 // 具体组件适配会在对应对齐矩阵建立后加入，并由公开包构建阶段内联。
 export { AnchorFoundation, AnchorLinkFoundation } from './anchor.js';
 export type { AnchorAdapter, AnchorLinkAdapter } from './anchor.js';
+export {
+  AIChatInputFoundation,
+  aiChatInputCssClasses,
+  aiChatInputNumbers,
+  aiChatInputStrings,
+  getAttachmentType as getAIChatInputAttachmentType,
+  getContentType as getAIChatInputContentType,
+  getCustomSlotAttribute as getAIChatInputCustomSlotAttribute,
+  getSkillSlotString as getAIChatInputSkillSlotString,
+  isImageType as isAIChatInputImageType,
+  transformJSONResult as transformAIChatInputJSONResult,
+} from './ai-chat-input.js';
+export type {
+  AIChatInputAdapter,
+  AIChatInputFoundationProps,
+  AIChatInputFoundationState,
+} from './ai-chat-input.js';
 export { AudioPlayerFoundation, audioPlayerCssClasses } from './audio-player.js';
 export type {
   AudioPlayerAdapter,

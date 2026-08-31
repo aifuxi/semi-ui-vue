@@ -93,6 +93,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/user-guide/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'json-viewer', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/json-viewer/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'ai-chat-input', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/ai-chat-input/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'locale', 'index.js')).href);
     const localeSourceRoot = path.join(distPath, 'locale', 'source');
     const localeSourceFiles = (await readdir(localeSourceRoot))

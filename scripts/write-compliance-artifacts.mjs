@@ -43,6 +43,10 @@ function dependencySpdxId(packageName) {
   return `SPDXRef-Package-${packageName.replace(/[^A-Za-z0-9.-]/g, '-')}`;
 }
 
+function dependencyLicenseArtifact(packageName) {
+  return `${packageName.replace(/^@/, '').replaceAll('/', '--')}.txt`;
+}
+
 function publishedDependencyVersion(version) {
   if (version === 'workspace:*') return manifest.version;
   if (version === 'workspace:^') return `^${manifest.version}`;
@@ -67,6 +71,22 @@ const dependencyEntries = Object.entries(runtimeDependencies).sort(([left], [rig
   left.localeCompare(right),
 );
 const licensedDependencies = [
+  ...[
+    '@tiptap/core',
+    '@tiptap/extension-document',
+    '@tiptap/extension-hard-break',
+    '@tiptap/extension-paragraph',
+    '@tiptap/extension-text',
+    '@tiptap/extensions',
+    '@tiptap/pm',
+    '@tiptap/vue-3',
+  ].map((name) => ({
+    licenseFile: 'LICENSE.md',
+    licenseRoot: path.join(workspaceRoot, 'packages', 'ui', 'node_modules'),
+    name,
+    noticeName: name,
+    version: '3.10.7',
+  })),
   {
     licenseFile: 'LICENSE.md',
     name: 'async-validator',
@@ -135,7 +155,7 @@ for (const dependency of licensedDependencies) {
       dependency.name,
       dependency.licenseFile,
     ),
-    path.join(licenseRoot, `${dependency.name}.txt`),
+    path.join(licenseRoot, dependencyLicenseArtifact(dependency.name)),
   );
 }
 
@@ -154,7 +174,7 @@ This package is part of an independent Vue implementation derived from or intero
 The complete upstream license and notices are included at \`THIRD_PARTY_LICENSES/Semi-Design.txt\`.${licensedDependencies
     .map(
       ({ name, noticeName, version }) =>
-        `\n\nThis package also uses ${noticeName} ${version} under the MIT License. Its license is included at \`THIRD_PARTY_LICENSES/${name}.txt\`.`,
+        `\n\nThis package also uses ${noticeName} ${version} under the MIT License. Its license is included at \`THIRD_PARTY_LICENSES/${dependencyLicenseArtifact(name)}\`.`,
     )
     .join('')}
 `,

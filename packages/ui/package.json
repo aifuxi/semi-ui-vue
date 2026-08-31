@@ -47,6 +47,10 @@
       "types": "./dist/anchor/index.d.ts",
       "import": "./dist/anchor/index.js"
     },
+    "./ai-chat-input": {
+      "types": "./dist/ai-chat-input/index.d.ts",
+      "import": "./dist/ai-chat-input/index.js"
+    },
     "./audio-player": {
       "types": "./dist/audio-player/index.d.ts",
       "import": "./dist/audio-player/index.js"
@@ -371,6 +375,14 @@
   },
   "dependencies": {
     "@aifuxi/semi-icons-vue": "workspace:*",
+    "@tiptap/core": "3.10.7",
+    "@tiptap/extension-document": "3.10.7",
+    "@tiptap/extension-hard-break": "3.10.7",
+    "@tiptap/extension-paragraph": "3.10.7",
+    "@tiptap/extension-text": "3.10.7",
+    "@tiptap/extensions": "3.10.7",
+    "@tiptap/pm": "3.10.7",
+    "@tiptap/vue-3": "3.10.7",
     "async-validator": "3.5.2",
     "bezier-easing": "2.1.0",
     "classnames": "2.5.1",

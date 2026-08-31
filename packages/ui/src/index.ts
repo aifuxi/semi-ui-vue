@@ -96,3 +96,4 @@ export * from './tree';
 export * from './tree-select';
 export * from './typography';
 export * from './video-player';
+export * from './ai-chat-input';

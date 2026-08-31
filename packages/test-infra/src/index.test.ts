@@ -139,6 +139,22 @@ describe('parity infrastructure contract', () => {
     ]);
   });
 
+  it('records AIChatInput Adapter, Tiptap editor, Foundation, styles and docs', () => {
+    expect(getParityScenario('ai-chat-input')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.aiChatInputPublicEntry,
+    });
+    expect(assertScenarioComparable('ai-chat-input').targets).toHaveLength(4);
+    expect(getParityScenario('ai-chat-input').sourceEvidence).toEqual([
+      REFERENCE_SOURCE_PATHS.aiChatInputPublicEntry,
+      REFERENCE_SOURCE_PATHS.aiChatInputEditorEntry,
+      REFERENCE_SOURCE_PATHS.aiChatInputFoundation,
+      REFERENCE_SOURCE_PATHS.aiChatInputFoundationStyle,
+      REFERENCE_SOURCE_PATHS.aiChatInputDocumentation,
+    ]);
+  });
+
   it('records IconButton Adapter, Button base, fixed styles and docs', () => {
     expect(getParityScenario('icon-button')).toMatchObject({
       referenceStatus: 'ready',

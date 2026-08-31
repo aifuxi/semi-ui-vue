@@ -115,6 +115,9 @@ export default defineConfig({
       '@semi-v2.102.0/json-viewer': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiJsonViewerStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/ai-chat-input': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiAIChatInputStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/locale-provider': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiLocaleProviderStub.ts', import.meta.url),
       ),

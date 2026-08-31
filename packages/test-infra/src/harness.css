@@ -3647,6 +3647,27 @@ p {
   font-weight: 600;
 }
 
+.ai-chat-input-scenario {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+}
+
+.ai-chat-input-scenario__card {
+  min-width: 0;
+  padding: 18px;
+  overflow: visible;
+  border: 1px solid var(--semi-color-border);
+  border-radius: 12px;
+  background: var(--semi-color-bg-1);
+}
+
+@media (max-width: 720px) {
+  .ai-chat-input-scenario__card {
+    padding: 10px;
+  }
+}
+
 @media (max-width: 720px) {
   .json-viewer-scenario__card {
     padding: 10px;

@@ -142,6 +142,14 @@ try {
         'jsonc-parser.txt',
         'prismjs.txt',
         'scroll-into-view-if-needed.txt',
+        'tiptap--core.txt',
+        'tiptap--extension-document.txt',
+        'tiptap--extension-hard-break.txt',
+        'tiptap--extension-paragraph.txt',
+        'tiptap--extension-text.txt',
+        'tiptap--extensions.txt',
+        'tiptap--pm.txt',
+        'tiptap--vue-3.txt',
       ].some((license) => !packedFiles.has(`dist/THIRD_PARTY_LICENSES/${license}`))
     ) {
       throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少运行时依赖许可证');
@@ -149,6 +157,9 @@ try {
     if (packageInfo.name === '@aifuxi/semi-ui-vue') {
       if (!packedFiles.has('dist/json-viewer/index.js')) {
         throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少 JsonViewer 子路径产物');
+      }
+      if (!packedFiles.has('dist/ai-chat-input/index.js')) {
+        throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少 AIChatInput 子路径产物');
       }
       const externalWorker = [...packedFiles].find((filePath) =>
         /dist\/.*json[-.]?viewer.*worker.*\.js$/i.test(filePath),
@@ -173,9 +184,23 @@ try {
         'lottie-web',
         'prismjs',
         'scroll-into-view-if-needed',
+        '@tiptap/core',
+        '@tiptap/extension-document',
+        '@tiptap/extension-hard-break',
+        '@tiptap/extension-paragraph',
+        '@tiptap/extension-text',
+        '@tiptap/extensions',
+        '@tiptap/pm',
+        '@tiptap/vue-3',
       ].map(async (dependency) => [
         dependency,
-        `link:${await realpath(path.join(workspaceRoot, 'node_modules', dependency))}`,
+        `link:${await realpath(
+          path.join(
+            workspaceRoot,
+            dependency.startsWith('@tiptap/') ? 'packages/ui/node_modules' : 'node_modules',
+            dependency,
+          ),
+        )}`,
       ]),
     ),
   );
@@ -207,7 +232,7 @@ try {
           `  ${JSON.stringify(packageName)}: ${JSON.stringify(`file:${tarballPath}`)}`,
       ),
       ...Object.entries(linkedRuntimeDependencies).map(
-        ([dependency, link]) => `  ${dependency}: ${JSON.stringify(link)}`,
+        ([dependency, link]) => `  ${JSON.stringify(dependency)}: ${JSON.stringify(link)}`,
       ),
     ].join('\n')}\n`,
   );
@@ -582,6 +607,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/json-viewer.css').endsWith('/dist/json-viewer.css')) {
 		  throw new Error('JsonViewer 逐组件样式导出未指向 dist/json-viewer.css');
 		}
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/ai-chat-input.css').endsWith('/dist/ai-chat-input.css')) {
+		  throw new Error('AIChatInput 逐组件样式导出未指向 dist/ai-chat-input.css');
+		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/locale.css').endsWith('/dist/locale.css')) {
 		  throw new Error('Locale 逐组件样式导出未指向 dist/locale.css');
 		}
@@ -756,6 +784,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { VideoPlayer, formatVideoTime, type VideoPlayerMarker, type VideoPlayerProps, type VideoPlayerTheme } from '@aifuxi/semi-ui-vue/video-player';
 		import { UserGuide, type UserGuideMode, type UserGuideProps, type UserGuideStepItem } from '@aifuxi/semi-ui-vue/user-guide';
 		import { JsonViewer, type JsonViewerOptions, type JsonViewerProps, type JsonViewerSearchControls } from '@aifuxi/semi-ui-vue/json-viewer';
+		import { AIChatInput, type AIChatInputProps, type Attachment, type MessageContent } from '@aifuxi/semi-ui-vue/ai-chat-input';
 		import { LocaleConsumer, LocaleProvider, type LocaleConsumerSlotProps, type LocaleProviderProps } from '@aifuxi/semi-ui-vue/locale';
 		import enGB from '@aifuxi/semi-ui-vue/locale/source/en_GB';
 		import { Empty, type EmptyLayout, type EmptySvgNode } from '@aifuxi/semi-ui-vue/empty';
@@ -952,6 +981,11 @@ h(Button, { type, htmlType: 'submit' });
 		const jsonViewerSearchControls: JsonViewerSearchControls | undefined = undefined;
 		h(JsonViewer, { ...jsonViewerProps, 'onUpdate:value': value => void value });
 		void jsonViewerSearchControls;
+		const aiAttachment: Attachment = { uid: 'consumer-file', name: 'consumer.txt', size: 8, status: 'success' };
+		const aiChatInputProps: AIChatInputProps = { defaultContent: '<p>Consumer</p>', uploadProps: { action: '', defaultFileList: [aiAttachment] } };
+		const aiMessage: MessageContent = { attachments: [aiAttachment], inputContents: [{ type: 'text', text: 'Consumer' }] };
+		h(AIChatInput, aiChatInputProps);
+		void aiMessage;
 		const localeProviderProps: LocaleProviderProps = { locale: enGB };
 		const localeSlot: LocaleConsumerSlotProps<{ begin: string }> | undefined = undefined;
 		h(LocaleProvider, localeProviderProps, () => h(LocaleConsumer, { componentName: 'TimePicker' }));
@@ -2230,6 +2264,28 @@ h(Button, { type, htmlType: 'submit' });
   ]) {
     if (!jsonViewerThemeCss.includes(selector)) {
       throw new Error(`安装后的 JsonViewer 逐组件样式缺少选择器：${selector}`);
+    }
+  }
+  const aiChatInputThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'ai-chat-input.css',
+    ),
+    'utf8',
+  );
+  for (const selector of [
+    '.semi-aiChatInput',
+    '.semi-aiChatInput-editor-content',
+    '.semi-aiChatInput-footer-action-send',
+    '.semi-aiChatInput-suggestion-item-active',
+    '[theme-mode=dark]',
+  ]) {
+    if (!aiChatInputThemeCss.includes(selector)) {
+      throw new Error(`安装后的 AIChatInput 逐组件样式缺少选择器：${selector}`);
     }
   }
   const localeThemeCss = await readFile(

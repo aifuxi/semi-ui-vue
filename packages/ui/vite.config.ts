@@ -98,6 +98,9 @@ export default defineConfig({
     lib: {
       entry: {
         index: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
+        'ai-chat-input/index': fileURLToPath(
+          new URL('./src/ai-chat-input/index.ts', import.meta.url),
+        ),
         'anchor/index': fileURLToPath(new URL('./src/anchor/index.ts', import.meta.url)),
         'audio-player/index': fileURLToPath(
           new URL('./src/audio-player/index.ts', import.meta.url),

@@ -28,6 +28,7 @@ import { AudioPlayerScenario } from './scenarios/AudioPlayerScenario';
 import { VideoPlayerScenario } from './scenarios/VideoPlayerScenario';
 import { UserGuideScenario } from './scenarios/UserGuideScenario';
 import { JsonViewerScenario } from './scenarios/JsonViewerScenario';
+import { AIChatInputScenario } from './scenarios/AIChatInputScenario';
 import { EmptyScenario } from './scenarios/EmptyScenario';
 import { HighlightScenario } from './scenarios/HighlightScenario';
 import { ImageScenario } from './scenarios/ImageScenario';
@@ -181,6 +182,9 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'user-guide' ? <UserGuideScenario direction={options.direction} /> : null}
         {scenario.id === 'json-viewer' ? (
           <JsonViewerScenario direction={options.direction} locale={options.locale} />
+        ) : null}
+        {scenario.id === 'ai-chat-input' ? (
+          <AIChatInputScenario direction={options.direction} locale={options.locale} />
         ) : null}
         {scenario.id === 'empty' ? <EmptyScenario /> : null}
         {scenario.id === 'highlight' ? <HighlightScenario /> : null}
