@@ -59,6 +59,9 @@ export default defineConfig({
       '@semi-v2.102.0/collapse': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiCollapseStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/code-highlight': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiCodeHighlightStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/collapsible': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiCollapsibleStub.tsx', import.meta.url),
       ),

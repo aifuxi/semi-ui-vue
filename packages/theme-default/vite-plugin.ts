@@ -12,6 +12,7 @@ export const virtualCardStyleId = 'virtual:workspace-card-styles.css';
 export const virtualCarouselStyleId = 'virtual:workspace-carousel-styles.css';
 export const virtualCascaderStyleId = 'virtual:workspace-cascader-styles.css';
 export const virtualCollapseStyleId = 'virtual:workspace-collapse-styles.css';
+export const virtualCodeHighlightStyleId = 'virtual:workspace-code-highlight-styles.css';
 export const virtualCollapsibleStyleId = 'virtual:workspace-collapsible-styles.css';
 export const virtualColorPickerStyleId = 'virtual:workspace-color-picker-styles.css';
 export const virtualDatePickerStyleId = 'virtual:workspace-date-picker-styles.css';
@@ -79,6 +80,7 @@ const resolvedVirtualCardStyleId = `\0${virtualCardStyleId}`;
 const resolvedVirtualCarouselStyleId = `\0${virtualCarouselStyleId}`;
 const resolvedVirtualCascaderStyleId = `\0${virtualCascaderStyleId}`;
 const resolvedVirtualCollapseStyleId = `\0${virtualCollapseStyleId}`;
+const resolvedVirtualCodeHighlightStyleId = `\0${virtualCodeHighlightStyleId}`;
 const resolvedVirtualCollapsibleStyleId = `\0${virtualCollapsibleStyleId}`;
 const resolvedVirtualColorPickerStyleId = `\0${virtualColorPickerStyleId}`;
 const resolvedVirtualDatePickerStyleId = `\0${virtualDatePickerStyleId}`;
@@ -146,6 +148,9 @@ const cardStyleEntry = fileURLToPath(new URL('./src/card.scss', import.meta.url)
 const carouselStyleEntry = fileURLToPath(new URL('./src/carousel.scss', import.meta.url));
 const cascaderStyleEntry = fileURLToPath(new URL('./src/cascader.scss', import.meta.url));
 const collapseStyleEntry = fileURLToPath(new URL('./src/collapse.scss', import.meta.url));
+const codeHighlightStyleEntry = fileURLToPath(
+  new URL('./src/code-highlight.scss', import.meta.url),
+);
 const collapsibleStyleEntry = fileURLToPath(new URL('./src/collapsible.scss', import.meta.url));
 const colorPickerStyleEntry = fileURLToPath(new URL('./src/color-picker.scss', import.meta.url));
 const datePickerStyleEntry = fileURLToPath(new URL('./src/date-picker.scss', import.meta.url));
@@ -217,6 +222,7 @@ const styleEntries = new Map([
   [resolvedVirtualCarouselStyleId, carouselStyleEntry],
   [resolvedVirtualCascaderStyleId, cascaderStyleEntry],
   [resolvedVirtualCollapseStyleId, collapseStyleEntry],
+  [resolvedVirtualCodeHighlightStyleId, codeHighlightStyleEntry],
   [resolvedVirtualCollapsibleStyleId, collapsibleStyleEntry],
   [resolvedVirtualColorPickerStyleId, colorPickerStyleEntry],
   [resolvedVirtualDatePickerStyleId, datePickerStyleEntry],
@@ -292,6 +298,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualCarouselStyleId) return resolvedVirtualCarouselStyleId;
       if (source === virtualCascaderStyleId) return resolvedVirtualCascaderStyleId;
       if (source === virtualCollapseStyleId) return resolvedVirtualCollapseStyleId;
+      if (source === virtualCodeHighlightStyleId) return resolvedVirtualCodeHighlightStyleId;
       if (source === virtualCollapsibleStyleId) return resolvedVirtualCollapsibleStyleId;
       if (source === virtualColorPickerStyleId) return resolvedVirtualColorPickerStyleId;
       if (source === virtualDatePickerStyleId) return resolvedVirtualDatePickerStyleId;

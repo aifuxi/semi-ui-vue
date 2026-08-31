@@ -43,6 +43,8 @@ Button 是首个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/button/` 
 
 IconButton 是第六十八个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/icon-button/` 通过范围受限的 Composition API render function 将 Vue `icon` slot 直接交给 Button，保留固定 Adapter 的 icon-only、图标位置、分方向去内边距、loading/disabled 与 colorful fill 契约；固定源码没有独立 JavaScript Foundation，`packages/theme-default/icon-button.css` 编译 Button/IconButton 与 Icon 样式。完整矩阵见 `docs/components/icon-button/`。
 
+CodeHighlight 是第六十九个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/code-highlight/` 保留固定 `pre > code` DOM、缺省为真的行号/主题配置、Prism token 与固定的 code-only 更新语义；`packages/foundation-integration/src/code-highlight.js` 隔离固定 CodeHighlight Foundation，`packages/theme-default/code-highlight.css` 编译默认 Token、global 与 CodeHighlight 样式。`prismjs@1.29.0` 与 `classnames@2.5.1` 作为精确锁定的运行时依赖纳入许可、SBOM、SSR 和真实 tarball 验证。完整矩阵见 `docs/components/code-highlight/`。
+
 Divider 是第二个进入 `ready` 的垂直切片：`packages/ui/src/divider/` 提供根/`divider` 子路径 ESM 与声明，`packages/theme-default/divider.css` 提供逐组件样式。它没有运行时 Foundation 状态机；纯文本与自定义 VNode 的 slot DOM 分支隔离在内容 renderer 中。完整矩阵见 `docs/components/divider/`。
 
 Icon 是第三个进入 `ready` 的横向基础设施切片：`packages/icons` 提供 Icon 基座、`convertIcon` 与稳定版 523 个图标，`packages/icons-lab` 独立提供 Lab 84 个图标，`packages/ui/src/icon/` 只转发稳定版基座。两套图标均从固定 submodule 的 TSX AST 生成 Vue `h()` 源码并由 `check:icons` 阻止漂移；`packages/theme-default/icon.css` 提供逐组件样式。完整矩阵与 React→Vue 迁移见 `docs/components/icon/`。

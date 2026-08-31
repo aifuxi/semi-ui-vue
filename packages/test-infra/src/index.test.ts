@@ -11,6 +11,23 @@ import {
 } from './index';
 
 describe('parity infrastructure contract', () => {
+  it('records CodeHighlight Adapter, Foundation, constants, styles and docs', () => {
+    expect(getParityScenario('code-highlight')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.codeHighlightPublicEntry,
+    });
+    expect(assertScenarioComparable('code-highlight').targets).toHaveLength(5);
+    expect(getParityScenario('code-highlight').sourceEvidence).toEqual(
+      expect.arrayContaining([
+        REFERENCE_SOURCE_PATHS.codeHighlightFoundation,
+        REFERENCE_SOURCE_PATHS.codeHighlightFoundationConstants,
+        REFERENCE_SOURCE_PATHS.codeHighlightFoundationStyle,
+        REFERENCE_SOURCE_PATHS.codeHighlightDocumentation,
+      ]),
+    );
+  });
+
   it('records IconButton Adapter, Button base, fixed styles and docs', () => {
     expect(getParityScenario('icon-button')).toMatchObject({
       referenceStatus: 'ready',

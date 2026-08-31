@@ -125,9 +125,11 @@ try {
       [
         'async-validator.txt',
         'bezier-easing.txt',
+        'classnames.txt',
         'date-fns.txt',
         'date-fns-tz.txt',
         'lodash.txt',
+        'prismjs.txt',
         'scroll-into-view-if-needed.txt',
       ].some((license) => !packedFiles.has(`dist/THIRD_PARTY_LICENSES/${license}`))
     ) {
@@ -142,9 +144,11 @@ try {
       [
         'async-validator',
         'bezier-easing',
+        'classnames',
         'date-fns',
         'date-fns-tz',
         'lodash',
+        'prismjs',
         'scroll-into-view-if-needed',
       ].map(async (dependency) => [
         dependency,
@@ -245,9 +249,11 @@ try {
       for (const [dependency, licenseFile] of [
         ['async-validator', 'LICENSE.md'],
         ['bezier-easing', 'LICENSE'],
+        ['classnames', 'LICENSE'],
         ['date-fns', 'LICENSE.md'],
         ['date-fns-tz', 'LICENSE.md'],
         ['lodash', 'LICENSE'],
+        ['prismjs', 'LICENSE'],
         ['scroll-into-view-if-needed', 'LICENSE'],
       ]) {
         const installedLicense = await readFile(
@@ -337,6 +343,7 @@ try {
 		await import('@aifuxi/semi-ui-vue/date-picker');
 		await import('@aifuxi/semi-ui-vue/form');
 		await import('@aifuxi/semi-ui-vue/collapse');
+		await import('@aifuxi/semi-ui-vue/code-highlight');
 		await import('@aifuxi/semi-ui-vue/collapsible');
 		await import('@aifuxi/semi-ui-vue/cropper');
 		await import('@aifuxi/semi-ui-vue/descriptions');
@@ -469,6 +476,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/collapse.css').endsWith('/dist/collapse.css')) {
 		  throw new Error('Collapse 逐组件样式导出未指向 dist/collapse.css');
+		}
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/code-highlight.css').endsWith('/dist/code-highlight.css')) {
+		  throw new Error('CodeHighlight 逐组件样式导出未指向 dist/code-highlight.css');
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/collapsible.css').endsWith('/dist/collapsible.css')) {
 		  throw new Error('Collapsible 逐组件样式导出未指向 dist/collapsible.css');
@@ -640,6 +650,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { DatePicker, type DatePickerProps, type DatePickerType, type DatePickerValue } from '@aifuxi/semi-ui-vue/date-picker';
 		import { ArrayField, Form, useFieldApi, useForm, type ArrayFieldSlotProps, type FormApi, type FormInputProps, type FormState } from '@aifuxi/semi-ui-vue/form';
 		import { Collapse, CollapsePanel, type CollapseActiveKey, type CollapseIconPosition, type CollapseProps } from '@aifuxi/semi-ui-vue/collapse';
+		import { CodeHighlight, type CodeHighlightProps } from '@aifuxi/semi-ui-vue/code-highlight';
 		import { Collapsible, type CollapsibleProps } from '@aifuxi/semi-ui-vue/collapsible';
 		import { Cropper, type CropperMethods, type CropperShape } from '@aifuxi/semi-ui-vue/cropper';
 		import { Descriptions, DescriptionsItem, type DescriptionsDataItem, type DescriptionsLayout } from '@aifuxi/semi-ui-vue/descriptions';
@@ -784,6 +795,8 @@ h(Button, { type, htmlType: 'submit' });
 		const collapseProps: CollapseProps = { activeKey: collapseActiveKey, expandIconPosition: collapseIconPosition, motion: false };
 		h(Collapse, collapseProps, { default: () => h(CollapsePanel, { itemKey: 'overview', header: 'Overview' }, () => 'Content') });
 		h(Collapse.Panel, { itemKey: 'compound', header: 'Compound' }, () => 'Content');
+		const codeHighlightProps: CodeHighlightProps = { code: 'const ready = true;', language: 'javascript', lineNumber: true };
+		h(CodeHighlight, codeHighlightProps);
 		const collapsibleProps: CollapsibleProps = { collapseHeight: 24, motion: true };
 		h(Collapsible, collapsibleProps, () => h('div', 'Collapsible content'));
 		const cropperShape: CropperShape = 'roundRect';
@@ -1017,6 +1030,12 @@ h(Button, { type, htmlType: 'submit' });
   }
   if (!themeCss.includes('.semi-collapse-item') || !themeCss.includes('.semi-collapse-header')) {
     throw new Error('安装后的默认主题缺少 Collapse 样式');
+  }
+  if (
+    !themeCss.includes('.semi-codeHighlight-defaultTheme') ||
+    !themeCss.includes('.line-numbers-rows')
+  ) {
+    throw new Error('安装后的默认主题缺少 CodeHighlight 主题或行号样式');
   }
   if (!themeCss.includes('.semi-progress-track-inner')) {
     throw new Error('安装后的默认主题缺少 Progress 样式');
@@ -1861,6 +1880,24 @@ h(Button, { type, htmlType: 'submit' });
     !collapseThemeCss.includes('.semi-rtl .semi-collapse')
   ) {
     throw new Error('安装后的 Collapse 逐组件样式缺少状态、依赖或 RTL 样式');
+  }
+  const codeHighlightThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'code-highlight.css',
+    ),
+    'utf8',
+  );
+  if (
+    !codeHighlightThemeCss.includes('.semi-codeHighlight-defaultTheme') ||
+    !codeHighlightThemeCss.includes('.line-numbers-rows') ||
+    !codeHighlightThemeCss.includes('.token.keyword')
+  ) {
+    throw new Error('安装后的 CodeHighlight 逐组件样式缺少默认主题、行号或 token 样式');
   }
   const descriptionsThemeCss = await readFile(
     path.join(

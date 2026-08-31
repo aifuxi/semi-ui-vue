@@ -8,6 +8,7 @@ export * from './carousel';
 export * from './cascader';
 export * from './collapsible';
 export * from './collapse';
+export * from './code-highlight';
 export * from './color-picker';
 export * from './date-picker';
 export * from './cropper';

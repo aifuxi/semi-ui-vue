@@ -22,15 +22,15 @@ pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
 
 ## 复刻进度
 
-当前已完成 **68 / 85** 个上游公开根模块的完整垂直切片（约 **80.0%**）：
+当前已完成 **69 / 85** 个上游公开根模块的完整垂直切片（约 **81.2%**）：
 
 - 基础与布局：Button、IconButton、Divider、Icon、Space、FloatButton、Layout、Grid、Resizable、Typography、ConfigProvider。
 - 输入类：Switch、Tooltip、Select、AutoComplete、Cascader、ColorPicker、DatePicker、Form、Checkbox、Input、InputNumber、PinCode、Radio、Rating、Slider、TagInput、TimePicker、Transfer、TreeSelect、Upload。
 - 导航类：Anchor、BackTop、Breadcrumb、Navigation、Pagination、Steps、Tabs、Tree。
-- 数据展示与容器：Avatar、Badge、Calendar、Card、Carousel、Collapse、Collapsible、Descriptions、Dropdown、Empty、Highlight、Image、Cropper、List、Modal、OverflowList、Popover、ScrollList、SideSheet、Table、Tag、Timeline。
+- 数据展示与容器：Avatar、Badge、Calendar、Card、Carousel、Collapse、Collapsible、CodeHighlight、Descriptions、Dropdown、Empty、Highlight、Image、Cropper、List、Modal、OverflowList、Popover、ScrollList、SideSheet、Table、Tag、Timeline。
 - 反馈类：Banner、Notification、Popconfirm、Progress、Skeleton、Spin、Toast。
 
-最新完成组件为 IconButton；下一项回补固定 `content/order.js` 中尚未完成、依赖边界较小且可独立验收的 CodeHighlight，依赖更重的 Chat 与 MarkdownRender 继续按就绪度排队。每个已完成切片均包含 Vue API、Foundation/主题、中英文文档、React/Vue 场景、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证。Icon 还覆盖稳定图标、Lab 图标与生成漂移检查，插画包覆盖全部公开插画。
+最新完成组件为 CodeHighlight；下一项回补固定 `content/order.js` 中尚未完成、只依赖独立拖拽 Foundation 且可单独验收的 DragMove，依赖更重的 Chat 与 MarkdownRender 继续按就绪度排队。每个已完成切片均包含 Vue API、Foundation/主题、中英文文档、React/Vue 场景、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证。Icon 还覆盖稳定图标、Lab 图标与生成漂移检查，插画包覆盖全部公开插画。
 
 进度分母与剩余范围以 `docs/inventory/semi-v2.102.0.json` 的 `rootModuleCount` 为准；每完成一个 `ready` 垂直切片，必须在同一次提交中同步更新本节的数量、完成列表和下一项。唯一参考源码位于只读 submodule `vendor/semi-design`。
 

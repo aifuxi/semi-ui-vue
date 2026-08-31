@@ -10,6 +10,7 @@ import 'virtual:workspace-card-styles.css';
 import 'virtual:workspace-carousel-styles.css';
 import 'virtual:workspace-cascader-styles.css';
 import 'virtual:workspace-collapse-styles.css';
+import 'virtual:workspace-code-highlight-styles.css';
 import 'virtual:workspace-collapsible-styles.css';
 import 'virtual:workspace-color-picker-styles.css';
 import 'virtual:workspace-date-picker-styles.css';

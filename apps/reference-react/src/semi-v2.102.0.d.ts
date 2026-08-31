@@ -674,6 +674,23 @@ declare module '@semi-v2.102.0/icon-button' {
   export default IconButton;
 }
 
+declare module '@semi-v2.102.0/code-highlight' {
+  import type { ComponentType, CSSProperties } from 'react';
+
+  export interface CodeHighlightProps {
+    className?: string;
+    code: string;
+    defaultTheme?: boolean;
+    language: string;
+    lineNumber?: boolean;
+    style?: CSSProperties;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const CodeHighlight: ComponentType<CodeHighlightProps>;
+  export default CodeHighlight;
+}
+
 declare module '@semi-v2.102.0/input' {
   import type { ComponentType, CSSProperties, InputHTMLAttributes, ReactNode } from 'react';
 

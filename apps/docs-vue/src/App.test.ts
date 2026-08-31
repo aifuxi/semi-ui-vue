@@ -4,6 +4,26 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 CodeHighlight 渲染三种语言、行号与主题场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'code-highlight' } });
+    const scenario = wrapper.get('[data-testid="code-highlight-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.semi-codeHighlight')).toHaveLength(3);
+    expect(
+      scenario.get('[data-parity-target="code-highlight-javascript"] pre').classes(),
+    ).toContain('line-numbers');
+    expect(scenario.findAll('.line-numbers-rows > span')).toHaveLength(4);
+    expect(scenario.get('[data-parity-target="code-highlight-css"] .token.selector').text()).toBe(
+      '.card',
+    );
+    expect(scenario.find('[data-parity-target="code-highlight-custom"] img').exists()).toBe(false);
+    expect(scenario.get('[data-parity-target="code-highlight-custom"]').classes()).not.toContain(
+      'semi-codeHighlight-defaultTheme',
+    );
+    wrapper.unmount();
+  });
+
   it('通过公共 IconButton 渲染图标、文字、加载与禁用场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'icon-button' } });
     const scenario = wrapper.get('[data-testid="icon-button-vue"]');

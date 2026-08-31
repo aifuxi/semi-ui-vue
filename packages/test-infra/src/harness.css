@@ -3051,3 +3051,47 @@ p {
     width: 100%;
   }
 }
+
+.code-highlight-scenario {
+  display: grid;
+  gap: 18px;
+}
+
+.code-highlight-scenario__item {
+  min-width: 0;
+}
+
+.code-highlight-scenario__item h3 {
+  margin: 0 0 8px;
+  color: var(--semi-color-text-0);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.code-highlight-scenario .semi-codeHighlight pre {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.code-highlight-scenario__custom .semi-codeHighlight pre {
+  margin: 0.5em 0;
+  padding: 14px 16px;
+  overflow: auto;
+  color: rgb(225 232 240);
+  font-family: ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  background: rgb(30 41 59);
+  border-radius: 8px;
+}
+
+.code-highlight-scenario__custom .token.tag,
+.code-highlight-scenario__custom .token.attr-name {
+  color: rgb(125 211 252);
+}
+
+.code-highlight-scenario__custom .token.attr-value,
+.code-highlight-scenario__custom .token.string {
+  color: rgb(134 239 172);
+}

@@ -78,6 +78,7 @@ const licensedDependencies = [
     noticeName: 'bezier-easing',
     version: '2.1.0',
   },
+  { licenseFile: 'LICENSE', name: 'classnames', noticeName: 'classnames', version: '2.5.1' },
   { licenseFile: 'LICENSE.md', name: 'date-fns', noticeName: 'date-fns', version: '2.30.0' },
   {
     licenseFile: 'LICENSE.md',
@@ -86,6 +87,7 @@ const licensedDependencies = [
     version: '1.3.8',
   },
   { licenseFile: 'LICENSE', name: 'lodash', noticeName: 'Lodash', version: '4.17.21' },
+  { licenseFile: 'LICENSE', name: 'prismjs', noticeName: 'PrismJS', version: '1.29.0' },
   {
     licenseFile: 'LICENSE',
     name: 'scroll-into-view-if-needed',

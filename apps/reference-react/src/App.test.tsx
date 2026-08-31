@@ -5,6 +5,16 @@ import { describe, expect, it } from 'vitest';
 import { App } from './App';
 
 describe('React 参考工作台', () => {
+  it('登记固定 CodeHighlight Adapter 的三语言参考场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="code-highlight" />);
+
+    expect(html).toContain('data-parity-scenario="code-highlight"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/codeHighlight/index.tsx');
+    expect(html).toContain('data-testid="code-highlight-reference"');
+    expect(html.match(/semi-codeHighlight/g)).toHaveLength(5);
+    expect(html).toContain('data-parity-target="code-highlight-custom"');
+  });
+
   it('可以通过 Vitest 编译 TSX 并执行服务端渲染', () => {
     const html = renderToStaticMarkup(<App />);
 

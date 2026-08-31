@@ -55,6 +55,8 @@ export type {
   CollapseFoundationProps,
   CollapseFoundationState,
 } from './collapse.js';
+export { CodeHighlightFoundation } from './code-highlight.js';
+export type { CodeHighlightAdapter, CodeHighlightFoundationProps } from './code-highlight.js';
 export {
   colorPickerCssClasses,
   ColorPickerFoundation,

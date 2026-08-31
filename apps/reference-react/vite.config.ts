@@ -19,6 +19,7 @@ const cardPublicEntry = path.join(upstreamPackages, 'semi-ui/card/index.tsx');
 const carouselPublicEntry = path.join(upstreamPackages, 'semi-ui/carousel/index.tsx');
 const cascaderPublicEntry = path.join(upstreamPackages, 'semi-ui/cascader/index.tsx');
 const collapsePublicEntry = path.join(upstreamPackages, 'semi-ui/collapse/index.tsx');
+const codeHighlightPublicEntry = path.join(upstreamPackages, 'semi-ui/codeHighlight/index.tsx');
 const collapsiblePublicEntry = path.join(upstreamPackages, 'semi-ui/collapsible/index.tsx');
 const colorPickerPublicEntry = path.join(upstreamPackages, 'semi-ui/colorPicker/index.tsx');
 const datePickerPublicEntry = path.join(upstreamPackages, 'semi-ui/datePicker/index.tsx');
@@ -116,6 +117,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'button/iconButton.scss'),
   '@douyinfe/semi-foundation/checkbox/checkbox.scss',
   path.join(foundationRoot, 'checkbox/checkbox.scss'),
+  '@douyinfe/semi-foundation/codeHighlight/codeHighlight.scss',
+  path.join(foundationRoot, 'codeHighlight/codeHighlight.scss'),
   '@douyinfe/semi-foundation/divider/divider.scss',
   path.join(foundationRoot, 'divider/divider.scss'),
   '@douyinfe/semi-foundation/floatButton/floatButton.scss',
@@ -288,6 +291,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/card', replacement: cardPublicEntry },
       { find: '@semi-v2.102.0/carousel', replacement: carouselPublicEntry },
       { find: '@semi-v2.102.0/collapse', replacement: collapsePublicEntry },
+      { find: '@semi-v2.102.0/code-highlight', replacement: codeHighlightPublicEntry },
       { find: '@semi-v2.102.0/collapsible', replacement: collapsiblePublicEntry },
       { find: '@semi-v2.102.0/color-picker', replacement: colorPickerPublicEntry },
       { find: '@semi-v2.102.0/date-picker', replacement: datePickerPublicEntry },
