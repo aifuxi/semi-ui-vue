@@ -21,6 +21,7 @@ import FormScenario from './components/FormScenario.vue';
 import CropperScenario from './components/CropperScenario.vue';
 import DescriptionsScenario from './components/DescriptionsScenario.vue';
 import DropdownScenario from './components/DropdownScenario.vue';
+import DragMoveScenario from './components/DragMoveScenario.vue';
 import EmptyScenario from './components/EmptyScenario.vue';
 import HighlightScenario from './components/HighlightScenario.vue';
 import ImageScenario from './components/ImageScenario.vue';
@@ -145,6 +146,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <CropperScenario v-else-if="scenario.id === 'cropper'" />
       <DescriptionsScenario v-else-if="scenario.id === 'descriptions'" />
       <DropdownScenario v-else-if="scenario.id === 'dropdown'" />
+      <DragMoveScenario v-else-if="scenario.id === 'drag-move'" />
       <EmptyScenario v-else-if="scenario.id === 'empty'" />
       <HighlightScenario v-else-if="scenario.id === 'highlight'" />
       <ImageScenario v-else-if="scenario.id === 'image'" />

@@ -111,6 +111,8 @@ export { DescriptionsFoundation } from './descriptions.js';
 export type { DescriptionsAdapter } from './descriptions.js';
 export { DropdownFoundation, DropdownMenuFoundation } from './dropdown.js';
 export type { DropdownAdapter, DropdownMenuAdapter } from './dropdown.js';
+export { clampValueInRange as clampDragMoveValue, DragMoveFoundation } from './drag-move.js';
+export type { DragMoveAdapter, DragMoveFoundationProps } from './drag-move.js';
 export { HighlightFoundation } from './highlight.js';
 export type {
   HighlightFoundationChunk,

@@ -83,6 +83,9 @@ export default defineConfig({
       '@semi-v2.102.0/dropdown': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiDropdownStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/drag-move': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiDragMoveStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/empty': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiEmptyStub.tsx', import.meta.url),
       ),

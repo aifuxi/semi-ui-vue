@@ -5,6 +5,17 @@ import { describe, expect, it } from 'vitest';
 import { App } from './App';
 
 describe('React 参考工作台', () => {
+  it('登记固定 DragMove Adapter 的约束、handler、relative 与 input 场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="drag-move" />);
+
+    expect(html).toContain('data-parity-scenario="drag-move"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/dragMove/index.ts');
+    expect(html).toContain('data-testid="drag-move-reference"');
+    expect(html).toContain('data-parity-target="drag-move-basic"');
+    expect(html).toContain('data-parity-target="drag-move-input-allowed"');
+    expect(html.match(/drag-move-scenario__card/g)).toHaveLength(4);
+  });
+
   it('登记固定 CodeHighlight Adapter 的三语言参考场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="code-highlight" />);
 

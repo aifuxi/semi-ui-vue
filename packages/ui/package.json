@@ -107,6 +107,10 @@
       "types": "./dist/dropdown/index.d.ts",
       "import": "./dist/dropdown/index.js"
     },
+    "./drag-move": {
+      "types": "./dist/drag-move/index.d.ts",
+      "import": "./dist/drag-move/index.js"
+    },
     "./empty": {
       "types": "./dist/empty/index.d.ts",
       "import": "./dist/empty/index.js"

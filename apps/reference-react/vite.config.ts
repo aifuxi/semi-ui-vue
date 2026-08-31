@@ -27,6 +27,7 @@ const formPublicEntry = path.join(upstreamPackages, 'semi-ui/form/index.tsx');
 const cropperPublicEntry = path.join(upstreamPackages, 'semi-ui/cropper/index.tsx');
 const descriptionsPublicEntry = path.join(upstreamPackages, 'semi-ui/descriptions/index.tsx');
 const dropdownPublicEntry = path.join(upstreamPackages, 'semi-ui/dropdown/index.tsx');
+const dragMovePublicEntry = path.join(upstreamPackages, 'semi-ui/dragMove/index.ts');
 const emptyPublicEntry = path.join(upstreamPackages, 'semi-ui/empty/index.tsx');
 const highlightPublicEntry = path.join(upstreamPackages, 'semi-ui/highlight/index.tsx');
 const imagePublicEntry = path.join(upstreamPackages, 'semi-ui/image/index.tsx');
@@ -299,6 +300,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/cropper', replacement: cropperPublicEntry },
       { find: '@semi-v2.102.0/descriptions', replacement: descriptionsPublicEntry },
       { find: '@semi-v2.102.0/dropdown', replacement: dropdownPublicEntry },
+      { find: '@semi-v2.102.0/drag-move', replacement: dragMovePublicEntry },
       { find: '@semi-v2.102.0/empty', replacement: emptyPublicEntry },
       { find: '@semi-v2.102.0/highlight', replacement: highlightPublicEntry },
       { find: '@semi-v2.102.0/image', replacement: imagePublicEntry },

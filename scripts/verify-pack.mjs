@@ -348,6 +348,7 @@ try {
 		await import('@aifuxi/semi-ui-vue/cropper');
 		await import('@aifuxi/semi-ui-vue/descriptions');
 		await import('@aifuxi/semi-ui-vue/dropdown');
+		await import('@aifuxi/semi-ui-vue/drag-move');
 		await import('@aifuxi/semi-ui-vue/empty');
 		await import('@aifuxi/semi-ui-vue/highlight');
 		await import('@aifuxi/semi-ui-vue/image');
@@ -491,6 +492,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/dropdown.css').endsWith('/dist/dropdown.css')) {
 		  throw new Error('Dropdown 逐组件样式导出未指向 dist/dropdown.css');
+		}
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/drag-move.css').endsWith('/dist/drag-move.css')) {
+		  throw new Error('DragMove 逐组件样式导出未指向 dist/drag-move.css');
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/empty.css').endsWith('/dist/empty.css')) {
 		  throw new Error('Empty 逐组件样式导出未指向 dist/empty.css');
@@ -655,6 +659,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Cropper, type CropperMethods, type CropperShape } from '@aifuxi/semi-ui-vue/cropper';
 		import { Descriptions, DescriptionsItem, type DescriptionsDataItem, type DescriptionsLayout } from '@aifuxi/semi-ui-vue/descriptions';
 		import { Dropdown, DropdownItem, DropdownMenu, type DropdownItemType, type DropdownMenuItem } from '@aifuxi/semi-ui-vue/dropdown';
+		import { DragMove, type DragMoveConstrainer, type DragMoveProps } from '@aifuxi/semi-ui-vue/drag-move';
 		import { Empty, type EmptyLayout, type EmptySvgNode } from '@aifuxi/semi-ui-vue/empty';
 		import { Highlight, type HighlightSearchWords } from '@aifuxi/semi-ui-vue/highlight';
 		import { Image, ImagePreview, type ImagePreviewProps, type ImageRatioType } from '@aifuxi/semi-ui-vue/image';
@@ -813,6 +818,9 @@ h(Button, { type, htmlType: 'submit' });
 		h(Dropdown, { menu: dropdownMenu, trigger: 'click' }, () => h('button', 'Menu'));
 		h(Dropdown.Menu, null, () => h(Dropdown.Item, { type: dropdownType }, () => 'Delete'));
 		h(DropdownMenu, null, () => h(DropdownItem, null, () => 'Named'));
+		const dragMoveConstrainer: DragMoveConstrainer = 'parent';
+		const dragMoveProps: DragMoveProps = { allowInputDrag: false, constrainer: dragMoveConstrainer, positionStrategy: 'relative' };
+		h(DragMove, dragMoveProps, () => h('div', 'Drag me'));
 		const emptyLayout: EmptyLayout = 'horizontal';
 		const emptyImage: EmptySvgNode = { id: 'consumer-empty' };
 		h(Empty, { image: emptyImage, layout: emptyLayout, title: 'No content' }, () => h('button', 'Create'));
@@ -1935,6 +1943,23 @@ h(Button, { type, htmlType: 'submit' });
     !dropdownThemeCss.includes('.semi-portal-inner')
   ) {
     throw new Error('安装后的 Dropdown 逐组件样式缺少 Portal、Item 或 RTL 样式');
+  }
+  const dragMoveThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'drag-move.css',
+    ),
+    'utf8',
+  );
+  if (
+    !dragMoveThemeCss.includes('--semi-color-primary') ||
+    !dragMoveThemeCss.includes('[theme-mode=dark]')
+  ) {
+    throw new Error('安装后的 DragMove 逐组件样式缺少默认主题 Token 或暗色模式');
   }
   const emptyThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'empty.css'),

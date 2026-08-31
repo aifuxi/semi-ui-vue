@@ -28,6 +28,20 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records DragMove Adapter, Foundation and docs without inventing component styles', () => {
+    expect(getParityScenario('drag-move')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.dragMovePublicEntry,
+    });
+    expect(assertScenarioComparable('drag-move').targets).toHaveLength(5);
+    expect(getParityScenario('drag-move').sourceEvidence).toEqual([
+      REFERENCE_SOURCE_PATHS.dragMovePublicEntry,
+      REFERENCE_SOURCE_PATHS.dragMoveFoundation,
+      REFERENCE_SOURCE_PATHS.dragMoveDocumentation,
+    ]);
+  });
+
   it('records IconButton Adapter, Button base, fixed styles and docs', () => {
     expect(getParityScenario('icon-button')).toMatchObject({
       referenceStatus: 'ready',

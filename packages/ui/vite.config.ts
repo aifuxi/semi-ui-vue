@@ -105,6 +105,7 @@ export default defineConfig({
           new URL('./src/descriptions/index.ts', import.meta.url),
         ),
         'dropdown/index': fileURLToPath(new URL('./src/dropdown/index.ts', import.meta.url)),
+        'drag-move/index': fileURLToPath(new URL('./src/drag-move/index.ts', import.meta.url)),
         'empty/index': fileURLToPath(new URL('./src/empty/index.ts', import.meta.url)),
         'highlight/index': fileURLToPath(new URL('./src/highlight/index.ts', import.meta.url)),
         'image/index': fileURLToPath(new URL('./src/image/index.ts', import.meta.url)),

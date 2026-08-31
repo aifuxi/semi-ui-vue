@@ -14,6 +14,7 @@ export * from './date-picker';
 export * from './cropper';
 export * from './descriptions';
 export * from './dropdown';
+export * from './drag-move';
 export * from './empty';
 export * from './highlight';
 export * from './image';

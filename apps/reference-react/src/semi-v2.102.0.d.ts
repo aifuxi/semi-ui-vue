@@ -2539,3 +2539,27 @@ declare module '@semi-v2.102.0/navigation' {
   const Navigation: ComponentType<NavigationProps>;
   export default Navigation;
 }
+
+declare module '@semi-v2.102.0/drag-move' {
+  import type { ComponentType, ReactElement } from 'react';
+
+  export interface DragMoveProps {
+    allowInputDrag?: boolean;
+    allowMove?: (event: MouseEvent | TouchEvent, element: HTMLElement) => boolean;
+    children: ReactElement;
+    constrainer?: 'parent' | (() => HTMLElement | null);
+    customMove?: (element: HTMLElement, top: number, left: number) => void;
+    handler?: () => HTMLElement | null;
+    onMouseDown?: (event: MouseEvent) => void;
+    onMouseMove?: (event: MouseEvent) => void;
+    onMouseUp?: (event: MouseEvent) => void;
+    onTouchCancel?: (event: TouchEvent) => void;
+    onTouchEnd?: (event: TouchEvent) => void;
+    onTouchMove?: (event: TouchEvent) => void;
+    onTouchStart?: (event: TouchEvent) => void;
+    positionStrategy?: 'absolute' | 'relative';
+  }
+
+  const DragMove: ComponentType<DragMoveProps>;
+  export default DragMove;
+}

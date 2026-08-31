@@ -4,6 +4,30 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 DragMove 渲染约束、handler、relative 与 input 场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'drag-move' } });
+    const scenario = wrapper.get('[data-testid="drag-move-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.drag-move-scenario__card')).toHaveLength(4);
+    expect(
+      (scenario.get('[data-parity-target="drag-move-basic"]').element as HTMLElement).style
+        .position,
+    ).toBe('absolute');
+    expect(
+      (scenario.get('[data-parity-target="drag-move-relative"]').element as HTMLElement).style
+        .position,
+    ).toBe('relative');
+    expect((scenario.get('.drag-move-scenario__handle').element as HTMLElement).style.cursor).toBe(
+      'move',
+    );
+    expect(
+      (scenario.get('[data-parity-target="drag-move-handler"]').element as HTMLElement).style
+        .cursor,
+    ).toBe('');
+    wrapper.unmount();
+  });
+
   it('通过公共 CodeHighlight 渲染三种语言、行号与主题场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'code-highlight' } });
     const scenario = wrapper.get('[data-testid="code-highlight-vue"]');
