@@ -180,6 +180,55 @@ p {
   font-weight: 600;
 }
 
+.feedback-scenario {
+  display: grid;
+  margin-top: 24px;
+  gap: 12px;
+}
+
+.feedback-scenario__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.feedback-scenario__actions button {
+  box-sizing: border-box;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--semi-color-border);
+  border-radius: 3px;
+  background: var(--semi-color-bg-2);
+  color: var(--semi-color-text-0);
+  font: inherit;
+  cursor: pointer;
+}
+
+.feedback-scenario__actions [role='status'] {
+  color: var(--semi-color-text-2);
+  font-size: 12px;
+}
+
+.feedback-scenario__stage {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+  border: 1px solid var(--semi-color-border);
+  border-radius: 8px;
+  background: var(--semi-color-fill-0);
+}
+
+.feedback-scenario__backdrop-label {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  color: var(--semi-color-text-2);
+  font-size: 14px;
+}
+
 .table-scenario {
   box-sizing: border-box;
   width: 100%;

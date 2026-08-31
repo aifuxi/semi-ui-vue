@@ -346,6 +346,7 @@ try {
 		await import('@aifuxi/semi-ui-vue/avatar');
 		await import('@aifuxi/semi-ui-vue/badge');
 		await import('@aifuxi/semi-ui-vue/banner');
+		await import('@aifuxi/semi-ui-vue/feedback');
 		await import('@aifuxi/semi-ui-vue/notification');
 		await import('@aifuxi/semi-ui-vue/calendar');
 		await import('@aifuxi/semi-ui-vue/card');
@@ -447,6 +448,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/banner.css').endsWith('/dist/banner.css')) {
 		  throw new Error('Banner 逐组件样式导出未指向 dist/banner.css');
+		}
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/feedback.css').endsWith('/dist/feedback.css')) {
+		  throw new Error('Feedback 逐组件样式导出未指向 dist/feedback.css');
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/notification.css').endsWith('/dist/notification.css')) {
 		  throw new Error('Notification 逐组件样式导出未指向 dist/notification.css');
@@ -673,6 +677,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Avatar, AvatarGroup, type AvatarColor, type AvatarSize } from '@aifuxi/semi-ui-vue/avatar';
 		import { Badge, type BadgePosition, type BadgeType } from '@aifuxi/semi-ui-vue/badge';
 		import { Banner, type BannerType } from '@aifuxi/semi-ui-vue/banner';
+		import { Feedback, type FeedbackMode, type FeedbackProps, type FeedbackValue } from '@aifuxi/semi-ui-vue/feedback';
 		import { Notification, type NotificationPosition } from '@aifuxi/semi-ui-vue/notification';
 		import { Popconfirm, type PopconfirmProps } from '@aifuxi/semi-ui-vue/popconfirm';
 		import { Progress, type ProgressProps, type ProgressStrokePoint } from '@aifuxi/semi-ui-vue/progress';
@@ -769,6 +774,11 @@ h(Button, { type, htmlType: 'submit' });
 		h(Badge, { count: 120, overflowCount: 99, position: badgePosition, type: badgeType }, () => h(Avatar, null, () => 'B'));
 		const bannerType: BannerType = 'warning';
 		h(Banner, { description: 'Consumer notice', fullMode: false, type: bannerType, onClose: () => undefined }, () => h('button', 'Action'));
+		const feedbackMode: FeedbackMode = 'popup';
+		const feedbackValue: FeedbackValue = { emoji: '😃' };
+		const feedbackProps: FeedbackProps = { mode: feedbackMode, visible: false, onValueChange: value => void value };
+		h(Feedback, feedbackProps);
+		void feedbackValue;
 		const notificationPosition: NotificationPosition = 'topRight';
 		const notificationId: string = Notification.info({ content: 'Consumer notification', duration: 0, position: notificationPosition });
 		Notification.close(notificationId);
@@ -1710,6 +1720,27 @@ h(Button, { type, htmlType: 'submit' });
     !bannerThemeCss.includes('.semi-rtl .semi-banner')
   ) {
     throw new Error('安装后的 Banner 逐组件样式缺少类型、容器、关闭按钮或 RTL 样式');
+  }
+  const feedbackThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'feedback.css',
+    ),
+    'utf8',
+  );
+  for (const selector of [
+    '.semi-feedback-emoji-container',
+    '.semi-feedback-emoji-item-selected',
+    '.semi-feedback-footer',
+    '.semi-feedback.semi-sidesheet',
+  ]) {
+    if (!feedbackThemeCss.includes(selector)) {
+      throw new Error(`安装后的 Feedback 逐组件样式缺少选择器：${selector}`);
+    }
   }
   const notificationThemeCss = await readFile(
     path.join(

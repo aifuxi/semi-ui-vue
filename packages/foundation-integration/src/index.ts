@@ -12,6 +12,8 @@ export { AvatarFoundation } from './avatar.js';
 export type { AvatarAdapter } from './avatar.js';
 export { BannerFoundation } from './banner.js';
 export type { BannerAdapter } from './banner.js';
+export { FeedbackFoundation, feedbackCssClasses, feedbackStrings } from './feedback.js';
+export type { FeedbackAdapter } from './feedback.js';
 export { BackTopFoundation } from './back-top.js';
 export type { BackTopAdapter } from './back-top.js';
 export { BreadcrumbFoundation, BreadcrumbItemFoundation } from './breadcrumb.js';

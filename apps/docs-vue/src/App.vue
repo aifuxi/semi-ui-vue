@@ -40,6 +40,7 @@ import TableScenario from './components/TableScenario.vue';
 import TagScenario from './components/TagScenario.vue';
 import TimelineScenario from './components/TimelineScenario.vue';
 import BannerScenario from './components/BannerScenario.vue';
+import FeedbackScenario from './components/FeedbackScenario.vue';
 import NotificationScenario from './components/NotificationScenario.vue';
 import PopconfirmScenario from './components/PopconfirmScenario.vue';
 import ProgressScenario from './components/ProgressScenario.vue';
@@ -180,6 +181,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <TagScenario v-else-if="scenario.id === 'tag'" />
       <TimelineScenario v-else-if="scenario.id === 'timeline'" />
       <BannerScenario v-else-if="scenario.id === 'banner'" />
+      <FeedbackScenario v-else-if="scenario.id === 'feedback'" :direction="props.direction" />
       <NotificationScenario
         v-else-if="scenario.id === 'notification'"
         :direction="props.direction"

@@ -125,6 +125,7 @@ export default defineConfig({
         ),
         'dropdown/index': fileURLToPath(new URL('./src/dropdown/index.ts', import.meta.url)),
         'drag-move/index': fileURLToPath(new URL('./src/drag-move/index.ts', import.meta.url)),
+        'feedback/index': fileURLToPath(new URL('./src/feedback/index.ts', import.meta.url)),
         'hot-keys/index': fileURLToPath(new URL('./src/hot-keys/index.ts', import.meta.url)),
         'lottie/index': fileURLToPath(new URL('./src/lottie/index.ts', import.meta.url)),
         'locale/index': fileURLToPath(new URL('./src/locale/index.ts', import.meta.url)),

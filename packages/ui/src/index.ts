@@ -16,6 +16,7 @@ export * from './cropper';
 export * from './descriptions';
 export * from './dropdown';
 export * from './drag-move';
+export * from './feedback';
 export * from './hot-keys';
 export * from './lottie';
 export * from './locale';

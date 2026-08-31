@@ -545,6 +545,34 @@ declare module '@semi-v2.102.0/banner' {
   export default Banner;
 }
 
+declare module '@semi-v2.102.0/feedback' {
+  import type { ComponentType, MouseEvent, ReactNode } from 'react';
+
+  export type FeedbackMode = 'modal' | 'popup';
+  export type FeedbackType = 'text' | 'emoji' | 'radio' | 'checkbox' | 'custom';
+  export type FeedbackValue = string | unknown[] | { emoji?: string; text?: string };
+
+  export interface FeedbackProps {
+    children?: ReactNode;
+    getPopupContainer?: () => HTMLElement;
+    mode?: FeedbackMode;
+    motion?: boolean;
+    onCancel?: (event: MouseEvent) => void | Promise<unknown>;
+    onOk?: (event: MouseEvent) => void | Promise<unknown>;
+    onValueChange?: (value: FeedbackValue) => void;
+    radioGroupProps?: {
+      options?: Array<{ label: ReactNode; value: string | number }>;
+    };
+    title?: ReactNode;
+    type?: FeedbackType;
+    visible?: boolean;
+    [key: `data-${string}`]: string | number | boolean | undefined;
+  }
+
+  const Feedback: ComponentType<FeedbackProps>;
+  export default Feedback;
+}
+
 declare module '@semi-v2.102.0/notification' {
   import type { CSSProperties, ReactNode } from 'react';
 

@@ -6,6 +6,7 @@ export const virtualAnchorStyleId = 'virtual:workspace-anchor-styles.css';
 export const virtualAvatarStyleId = 'virtual:workspace-avatar-styles.css';
 export const virtualBadgeStyleId = 'virtual:workspace-badge-styles.css';
 export const virtualBannerStyleId = 'virtual:workspace-banner-styles.css';
+export const virtualFeedbackStyleId = 'virtual:workspace-feedback-styles.css';
 export const virtualNotificationStyleId = 'virtual:workspace-notification-styles.css';
 export const virtualCalendarStyleId = 'virtual:workspace-calendar-styles.css';
 export const virtualCardStyleId = 'virtual:workspace-card-styles.css';
@@ -79,6 +80,7 @@ const resolvedVirtualAnchorStyleId = `\0${virtualAnchorStyleId}`;
 const resolvedVirtualAvatarStyleId = `\0${virtualAvatarStyleId}`;
 const resolvedVirtualBadgeStyleId = `\0${virtualBadgeStyleId}`;
 const resolvedVirtualBannerStyleId = `\0${virtualBannerStyleId}`;
+const resolvedVirtualFeedbackStyleId = `\0${virtualFeedbackStyleId}`;
 const resolvedVirtualNotificationStyleId = `\0${virtualNotificationStyleId}`;
 const resolvedVirtualCalendarStyleId = `\0${virtualCalendarStyleId}`;
 const resolvedVirtualCardStyleId = `\0${virtualCardStyleId}`;
@@ -152,6 +154,7 @@ const anchorStyleEntry = fileURLToPath(new URL('./src/anchor.scss', import.meta.
 const avatarStyleEntry = fileURLToPath(new URL('./src/avatar.scss', import.meta.url));
 const badgeStyleEntry = fileURLToPath(new URL('./src/badge.scss', import.meta.url));
 const bannerStyleEntry = fileURLToPath(new URL('./src/banner.scss', import.meta.url));
+const feedbackStyleEntry = fileURLToPath(new URL('./src/feedback.scss', import.meta.url));
 const notificationStyleEntry = fileURLToPath(new URL('./src/notification.scss', import.meta.url));
 const calendarStyleEntry = fileURLToPath(new URL('./src/calendar.scss', import.meta.url));
 const cardStyleEntry = fileURLToPath(new URL('./src/card.scss', import.meta.url));
@@ -231,6 +234,7 @@ const styleEntries = new Map([
   [resolvedVirtualAvatarStyleId, avatarStyleEntry],
   [resolvedVirtualBadgeStyleId, badgeStyleEntry],
   [resolvedVirtualBannerStyleId, bannerStyleEntry],
+  [resolvedVirtualFeedbackStyleId, feedbackStyleEntry],
   [resolvedVirtualNotificationStyleId, notificationStyleEntry],
   [resolvedVirtualCalendarStyleId, calendarStyleEntry],
   [resolvedVirtualCardStyleId, cardStyleEntry],
@@ -312,6 +316,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualAvatarStyleId) return resolvedVirtualAvatarStyleId;
       if (source === virtualBadgeStyleId) return resolvedVirtualBadgeStyleId;
       if (source === virtualBannerStyleId) return resolvedVirtualBannerStyleId;
+      if (source === virtualFeedbackStyleId) return resolvedVirtualFeedbackStyleId;
       if (source === virtualNotificationStyleId) return resolvedVirtualNotificationStyleId;
       if (source === virtualCalendarStyleId) return resolvedVirtualCalendarStyleId;
       if (source === virtualCardStyleId) return resolvedVirtualCardStyleId;

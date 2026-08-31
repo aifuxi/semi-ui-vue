@@ -39,6 +39,7 @@ import { TableScenario } from './scenarios/TableScenario';
 import { TagScenario } from './scenarios/TagScenario';
 import { TimelineScenario } from './scenarios/TimelineScenario';
 import { BannerScenario } from './scenarios/BannerScenario';
+import { FeedbackScenario } from './scenarios/FeedbackScenario';
 import { NotificationScenario } from './scenarios/NotificationScenario';
 import { PopconfirmScenario } from './scenarios/PopconfirmScenario';
 import { ProgressScenario } from './scenarios/ProgressScenario';
@@ -188,6 +189,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'tag' ? <TagScenario /> : null}
         {scenario.id === 'timeline' ? <TimelineScenario /> : null}
         {scenario.id === 'banner' ? <BannerScenario /> : null}
+        {scenario.id === 'feedback' ? <FeedbackScenario direction={options.direction} /> : null}
         {scenario.id === 'notification' ? (
           <NotificationScenario direction={options.direction} />
         ) : null}

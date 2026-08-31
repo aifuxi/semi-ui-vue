@@ -13,6 +13,7 @@ const avatarPublicEntry = path.join(upstreamPackages, 'semi-ui/avatar/index.tsx'
 const avatarGroupEntry = path.join(upstreamPackages, 'semi-ui/avatar/avatarGroup.tsx');
 const badgePublicEntry = path.join(upstreamPackages, 'semi-ui/badge/index.tsx');
 const bannerPublicEntry = path.join(upstreamPackages, 'semi-ui/banner/index.tsx');
+const feedbackPublicEntry = path.join(upstreamPackages, 'semi-ui/feedback/index.tsx');
 const notificationPublicEntry = path.join(upstreamPackages, 'semi-ui/notification/index.tsx');
 const calendarPublicEntry = path.join(upstreamPackages, 'semi-ui/calendar/index.tsx');
 const cardPublicEntry = path.join(upstreamPackages, 'semi-ui/card/index.tsx');
@@ -68,6 +69,7 @@ const autoCompletePublicEntry = path.join(upstreamPackages, 'semi-ui/autoComplet
 const buttonPublicEntry = path.join(upstreamPackages, 'semi-ui/button/index.tsx');
 const iconButtonPublicEntry = path.join(upstreamPackages, 'semi-ui/iconButton/index.tsx');
 const checkboxPublicEntry = path.join(upstreamPackages, 'semi-ui/checkbox/index.tsx');
+const checkboxGroupEntry = path.join(upstreamPackages, 'semi-ui/checkbox/checkboxGroup.tsx');
 const configProviderPublicEntry = path.join(upstreamPackages, 'semi-ui/configProvider/index.tsx');
 const buttonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/buttonGroup.tsx');
 const splitButtonGroupEntry = path.join(upstreamPackages, 'semi-ui/button/splitButtonGroup.tsx');
@@ -83,6 +85,7 @@ const inputNumberPublicEntry = path.join(upstreamPackages, 'semi-ui/inputNumber/
 const pinCodePublicEntry = path.join(upstreamPackages, 'semi-ui/pincode/index.tsx');
 const paginationPublicEntry = path.join(upstreamPackages, 'semi-ui/pagination/index.tsx');
 const radioPublicEntry = path.join(upstreamPackages, 'semi-ui/radio/index.tsx');
+const radioGroupEntry = path.join(upstreamPackages, 'semi-ui/radio/radioGroup.tsx');
 const ratingPublicEntry = path.join(upstreamPackages, 'semi-ui/rating/index.tsx');
 const inputGroupEntry = path.join(upstreamPackages, 'semi-ui/input/inputGroup.tsx');
 const textAreaEntry = path.join(upstreamPackages, 'semi-ui/input/textarea.tsx');
@@ -111,6 +114,7 @@ const referenceStyleEntry = fileURLToPath(
 const virtualStyleId = 'virtual:semi-reference-styles.css';
 const resolvedVirtualStyleId = `\0${virtualStyleId}`;
 const emptyUpstreamStyleId = '\0semi-reference-upstream-style-loaded-from-entry';
+const feedbackDependenciesId = '\0semi-reference-feedback-dependencies';
 const capturedUpstreamStyleImports = new Set([
   '@douyinfe/semi-foundation/anchor/anchor.scss',
   path.join(foundationRoot, 'anchor/anchor.scss'),
@@ -142,6 +146,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'badge/badge.scss'),
   '@douyinfe/semi-foundation/banner/banner.scss',
   path.join(foundationRoot, 'banner/banner.scss'),
+  '@douyinfe/semi-foundation/feedback/feedback.scss',
+  path.join(foundationRoot, 'feedback/feedback.scss'),
   '@douyinfe/semi-foundation/notification/notification.scss',
   path.join(foundationRoot, 'notification/notification.scss'),
   '@douyinfe/semi-foundation/popconfirm/popconfirm.scss',
@@ -268,6 +274,9 @@ function compilePinnedReferenceStyles(): Plugin {
     enforce: 'pre',
     resolveId(source, importer) {
       if (source === virtualStyleId) return resolvedVirtualStyleId;
+      if (source === '../index' && importer === feedbackPublicEntry) {
+        return feedbackDependenciesId;
+      }
       if (capturedUpstreamStyleImports.has(source)) return emptyUpstreamStyleId;
       if (
         source === '../styles/icons.scss' &&
@@ -280,6 +289,16 @@ function compilePinnedReferenceStyles(): Plugin {
     },
     load(id) {
       if (id === emptyUpstreamStyleId) return '';
+      if (id === feedbackDependenciesId) {
+        return [
+          `export { default as TextArea } from ${JSON.stringify(textAreaEntry)};`,
+          `export { default as RadioGroup } from ${JSON.stringify(radioGroupEntry)};`,
+          `export { default as CheckboxGroup } from ${JSON.stringify(checkboxGroupEntry)};`,
+          `export { default as Button } from ${JSON.stringify(buttonPublicEntry)};`,
+          `export { default as Modal } from ${JSON.stringify(modalPublicEntry)};`,
+          `export { default as SideSheet } from ${JSON.stringify(sideSheetPublicEntry)};`,
+        ].join('\n');
+      }
       if (id !== resolvedVirtualStyleId) return null;
 
       return sass
@@ -301,6 +320,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/avatar-group', replacement: avatarGroupEntry },
       { find: '@semi-v2.102.0/badge', replacement: badgePublicEntry },
       { find: '@semi-v2.102.0/banner', replacement: bannerPublicEntry },
+      { find: '@semi-v2.102.0/feedback', replacement: feedbackPublicEntry },
       { find: '@semi-v2.102.0/notification', replacement: notificationPublicEntry },
       { find: '@semi-v2.102.0/calendar', replacement: calendarPublicEntry },
       { find: '@semi-v2.102.0/card', replacement: cardPublicEntry },

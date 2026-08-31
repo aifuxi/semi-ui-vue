@@ -939,6 +939,22 @@ describe('parity infrastructure contract', () => {
     );
   });
 
+  it('records Feedback Adapter, Foundation, constants, styles and docs as a complete parity scene', () => {
+    expect(getParityScenario('feedback')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.feedbackPublicEntry,
+    });
+    expect(assertScenarioComparable('feedback').targets).toHaveLength(3);
+    expect(getParityScenario('feedback').sourceEvidence).toEqual([
+      REFERENCE_SOURCE_PATHS.feedbackPublicEntry,
+      REFERENCE_SOURCE_PATHS.feedbackFoundation,
+      REFERENCE_SOURCE_PATHS.feedbackFoundationConstants,
+      REFERENCE_SOURCE_PATHS.feedbackFoundationStyle,
+      REFERENCE_SOURCE_PATHS.feedbackDocumentation,
+    ]);
+  });
+
   it('records Notification Adapter, Notice, both Foundations, styles and docs', () => {
     expect(getParityScenario('notification')).toMatchObject({
       referenceStatus: 'ready',
