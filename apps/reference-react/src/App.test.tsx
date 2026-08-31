@@ -5,6 +5,17 @@ import { describe, expect, it } from 'vitest';
 import { App } from './App';
 
 describe('React 参考工作台', () => {
+  it('登记固定 Lottie Adapter 的内部、重建与外部容器场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="lottie" />);
+
+    expect(html).toContain('data-parity-scenario="lottie"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/lottie/index.tsx');
+    expect(html).toContain('data-testid="lottie-reference"');
+    expect(html).toContain('data-parity-target="lottie-basic"');
+    expect(html).toContain('data-parity-target="lottie-external"');
+    expect(html.match(/lottie-scenario__card/g)).toHaveLength(4);
+  });
+
   it('登记固定 HotKeys Adapter 的组合、显示和局部目标场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="hot-keys" />);
 

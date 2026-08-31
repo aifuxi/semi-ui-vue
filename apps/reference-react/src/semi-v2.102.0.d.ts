@@ -2595,3 +2595,24 @@ declare module '@semi-v2.102.0/hot-keys' {
   const HotKeys: ComponentType<HotKeysProps> & { Keys: HotKeysKeyConstants };
   export default HotKeys;
 }
+
+declare module '@semi-v2.102.0/lottie' {
+  import type { AnimationItem, LottiePlayer } from 'lottie-web';
+  import type { ComponentType, CSSProperties } from 'react';
+
+  export type LottieAnimationItem = AnimationItem;
+
+  export interface LottieProps {
+    [key: `data-${string}`]: string | number | boolean | undefined;
+    className?: string;
+    getAnimationInstance?: (animation: AnimationItem | null) => void;
+    getLottie?: (lottie: LottiePlayer) => void;
+    height?: string;
+    params: Record<string, unknown> & { container?: Element };
+    style?: CSSProperties;
+    width?: string;
+  }
+
+  const Lottie: ComponentType<LottieProps> & { getLottie: () => LottiePlayer };
+  export default Lottie;
+}

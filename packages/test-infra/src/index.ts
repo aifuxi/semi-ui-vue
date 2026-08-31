@@ -5,6 +5,72 @@ export const REFERENCE_BASELINE = Object.freeze({
   commit: 'cdfba6e520fc83ad871b30f51f36d8af3aaa5a21',
 });
 
+function createLottieFixture(color: [number, number, number, number]) {
+  return {
+    v: '5.13.0',
+    fr: 30,
+    ip: 0,
+    op: 30,
+    w: 120,
+    h: 120,
+    nm: 'Semi Vue parity fixture',
+    ddd: 0,
+    assets: [],
+    layers: [
+      {
+        ddd: 0,
+        ind: 1,
+        ty: 4,
+        nm: 'Rounded square',
+        sr: 1,
+        ks: {
+          o: { a: 0, k: 100 },
+          r: { a: 0, k: 0 },
+          p: { a: 0, k: [60, 60, 0] },
+          a: { a: 0, k: [0, 0, 0] },
+          s: { a: 0, k: [100, 100, 100] },
+        },
+        ao: 0,
+        shapes: [
+          {
+            ty: 'gr',
+            nm: 'Square group',
+            it: [
+              {
+                ty: 'rc',
+                d: 1,
+                s: { a: 0, k: [64, 64] },
+                p: { a: 0, k: [0, 0] },
+                r: { a: 0, k: 12 },
+              },
+              { ty: 'fl', c: { a: 0, k: color }, o: { a: 0, k: 100 }, r: 1 },
+              {
+                ty: 'tr',
+                p: { a: 0, k: [0, 0] },
+                a: { a: 0, k: [0, 0] },
+                s: { a: 0, k: [100, 100] },
+                r: { a: 0, k: 0 },
+                o: { a: 0, k: 100 },
+                sk: { a: 0, k: 0 },
+                sa: { a: 0, k: 0 },
+              },
+            ],
+          },
+        ],
+        ip: 0,
+        op: 30,
+        st: 0,
+        bm: 0,
+      },
+    ],
+  };
+}
+
+// lottie-web normalizes animation data in place and adds completion markers.
+// Keep these deterministic fixtures mutable so the real player can consume them.
+export const LOTTIE_ANIMATION_DATA_BLUE = createLottieFixture([0.086, 0.353, 0.941, 1]);
+export const LOTTIE_ANIMATION_DATA_ORANGE = createLottieFixture([0.976, 0.451, 0.086, 1]);
+
 export const REFERENCE_SOURCE_PATHS = Object.freeze({
   anchorPublicEntry: 'vendor/semi-design/packages/semi-ui/anchor/index.tsx',
   anchorLinkEntry: 'vendor/semi-design/packages/semi-ui/anchor/link.tsx',
@@ -55,6 +121,10 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   hotKeysConstants: 'vendor/semi-design/packages/semi-foundation/hotKeys/constants.ts',
   hotKeysFoundationStyle: 'vendor/semi-design/packages/semi-foundation/hotKeys/hotKeys.scss',
   hotKeysDocumentation: 'vendor/semi-design/content/plus/hotkeys/index.md',
+  lottiePublicEntry: 'vendor/semi-design/packages/semi-ui/lottie/index.tsx',
+  lottieFoundation: 'vendor/semi-design/packages/semi-foundation/lottie/foundation.ts',
+  lottieConstants: 'vendor/semi-design/packages/semi-foundation/lottie/constants.ts',
+  lottieDocumentation: 'vendor/semi-design/content/plus/lottie/index.md',
   collapsePublicEntry: 'vendor/semi-design/packages/semi-ui/collapse/index.tsx',
   collapsePanelEntry: 'vendor/semi-design/packages/semi-ui/collapse/item.tsx',
   collapseFoundation: 'vendor/semi-design/packages/semi-foundation/collapse/foundation.ts',
@@ -814,6 +884,43 @@ export const PARITY_SCENARIOS = [
         id: 'hot-keys-local',
         selector: '[data-parity-target="hot-keys-local"]',
         computedStyleProperties: ['direction', 'display', 'height', 'width'],
+      },
+    ],
+  },
+  {
+    id: 'lottie',
+    title: 'Lottie 动画',
+    description:
+      '验证固定 animationData、默认 SVG 参数、实例控制、params 重建、外部容器、SSR、移动端、暗色与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.lottiePublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.lottiePublicEntry,
+      REFERENCE_SOURCE_PATHS.lottieFoundation,
+      REFERENCE_SOURCE_PATHS.lottieConstants,
+      REFERENCE_SOURCE_PATHS.lottieDocumentation,
+    ],
+    targets: [
+      {
+        id: 'lottie-basic',
+        selector: '[data-parity-target="lottie-basic"]',
+        computedStyleProperties: ['direction', 'display', 'height', 'overflow', 'width'],
+      },
+      {
+        id: 'lottie-basic-svg',
+        selector: '[data-parity-target="lottie-basic"] > svg',
+        computedStyleProperties: ['display', 'height', 'overflow', 'width'],
+      },
+      {
+        id: 'lottie-variant',
+        selector: '[data-parity-target="lottie-variant"]',
+        computedStyleProperties: ['direction', 'display', 'height', 'overflow', 'width'],
+      },
+      {
+        id: 'lottie-external',
+        selector: '[data-parity-target="lottie-external"]',
+        computedStyleProperties: ['direction', 'display', 'height', 'overflow', 'width'],
       },
     ],
   },

@@ -115,6 +115,10 @@
       "types": "./dist/hot-keys/index.d.ts",
       "import": "./dist/hot-keys/index.js"
     },
+    "./lottie": {
+      "types": "./dist/lottie/index.d.ts",
+      "import": "./dist/lottie/index.js"
+    },
     "./empty": {
       "types": "./dist/empty/index.d.ts",
       "import": "./dist/empty/index.js"
@@ -345,6 +349,7 @@
     "date-fns": "2.30.0",
     "date-fns-tz": "1.3.8",
     "lodash": "4.17.21",
+    "lottie-web": "5.13.0",
     "prismjs": "1.29.0",
     "scroll-into-view-if-needed": "2.2.31"
   },

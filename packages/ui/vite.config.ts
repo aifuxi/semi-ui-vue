@@ -107,6 +107,7 @@ export default defineConfig({
         'dropdown/index': fileURLToPath(new URL('./src/dropdown/index.ts', import.meta.url)),
         'drag-move/index': fileURLToPath(new URL('./src/drag-move/index.ts', import.meta.url)),
         'hot-keys/index': fileURLToPath(new URL('./src/hot-keys/index.ts', import.meta.url)),
+        'lottie/index': fileURLToPath(new URL('./src/lottie/index.ts', import.meta.url)),
         'empty/index': fileURLToPath(new URL('./src/empty/index.ts', import.meta.url)),
         'highlight/index': fileURLToPath(new URL('./src/highlight/index.ts', import.meta.url)),
         'image/index': fileURLToPath(new URL('./src/image/index.ts', import.meta.url)),

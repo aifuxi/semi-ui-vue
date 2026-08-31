@@ -58,6 +58,21 @@ describe('parity infrastructure contract', () => {
     ]);
   });
 
+  it('records Lottie Adapter, Foundation, constants and docs', () => {
+    expect(getParityScenario('lottie')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.lottiePublicEntry,
+    });
+    expect(assertScenarioComparable('lottie').targets).toHaveLength(4);
+    expect(getParityScenario('lottie').sourceEvidence).toEqual([
+      REFERENCE_SOURCE_PATHS.lottiePublicEntry,
+      REFERENCE_SOURCE_PATHS.lottieFoundation,
+      REFERENCE_SOURCE_PATHS.lottieConstants,
+      REFERENCE_SOURCE_PATHS.lottieDocumentation,
+    ]);
+  });
+
   it('records IconButton Adapter, Button base, fixed styles and docs', () => {
     expect(getParityScenario('icon-button')).toMatchObject({
       referenceStatus: 'ready',

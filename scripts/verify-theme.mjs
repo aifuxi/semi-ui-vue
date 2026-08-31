@@ -417,6 +417,8 @@ const hotKeysCssPath = path.join(
   'dist',
   'hot-keys.css',
 );
+const lottieEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'lottie.scss');
+const lottieCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'lottie.css');
 const dividerEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -2747,6 +2749,22 @@ if (!hotKeysCss.includes('[theme-mode=dark]')) {
   throw new Error('HotKeys 逐组件样式产物缺少暗色主题 Token');
 }
 
+const expectedLottieImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+];
+const lottieEntrySource = await readFile(lottieEntryPath, 'utf8');
+const actualLottieImports = [...lottieEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
+  (match) => match[1],
+);
+if (JSON.stringify(actualLottieImports) !== JSON.stringify(expectedLottieImports)) {
+  throw new Error('Lottie 逐组件样式入口未与固定源码的无组件 SCSS 契约对齐');
+}
+const lottieCss = await readFile(lottieCssPath, 'utf8');
+if (!lottieCss.includes('--semi-color-primary') || !lottieCss.includes('[theme-mode=dark]')) {
+  throw new Error('Lottie 逐组件样式产物缺少默认主题 Token 或暗色模式');
+}
+
 const navigationEntrySource = await readFile(navigationEntryPath, 'utf8');
 for (const dependency of [
   'semi-foundation/_portal/portal.scss',
@@ -2776,5 +2794,5 @@ for (const selector of [
 }
 
 process.stdout.write(
-  `默认主题入口与 Anchor/Avatar/Badge/Banner/Notification/Popconfirm/Progress/Skeleton/Spin/Transfer/Upload/Toast/Calendar/Card/Carousel/Cascader/ColorPicker/DatePicker/Form/Collapse/Collapsible/CodeHighlight/Cropper/Descriptions/DragMove/HotKeys/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/Tag/Timeline/BackTop/Breadcrumb/AutoComplete/Button/IconButton/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/TreeSelect/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + bannerCss.length + notificationCss.length + popconfirmCss.length + progressCss.length + skeletonCss.length + spinCss.length + transferCss.length + uploadCss.length + toastCss.length + calendarCss.length + cardCss.length + carouselCss.length + cascaderCss.length + colorPickerCss.length + datePickerCss.length + formCss.length + collapseCss.length + collapsibleCss.length + codeHighlightCss.length + cropperCss.length + descriptionsCss.length + dragMoveCss.length + hotKeysCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + tagCss.length + timelineCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + iconButtonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + treeSelectCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/Avatar/Badge/Banner/Notification/Popconfirm/Progress/Skeleton/Spin/Transfer/Upload/Toast/Calendar/Card/Carousel/Cascader/ColorPicker/DatePicker/Form/Collapse/Collapsible/CodeHighlight/Cropper/Descriptions/DragMove/HotKeys/Lottie/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/Tag/Timeline/BackTop/Breadcrumb/AutoComplete/Button/IconButton/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/TreeSelect/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + bannerCss.length + notificationCss.length + popconfirmCss.length + progressCss.length + skeletonCss.length + spinCss.length + transferCss.length + uploadCss.length + toastCss.length + calendarCss.length + cardCss.length + carouselCss.length + cascaderCss.length + colorPickerCss.length + datePickerCss.length + formCss.length + collapseCss.length + collapsibleCss.length + codeHighlightCss.length + cropperCss.length + descriptionsCss.length + dragMoveCss.length + hotKeysCss.length + lottieCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + tagCss.length + timelineCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + iconButtonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + treeSelectCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

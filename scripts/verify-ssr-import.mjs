@@ -81,6 +81,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/drag-move/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'hot-keys', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/hot-keys/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'lottie', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/lottie/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'empty', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/empty/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'highlight', 'index.js')).href);

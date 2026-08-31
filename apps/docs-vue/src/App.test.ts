@@ -4,6 +4,19 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 Lottie 渲染内部、重建与外部容器场景', () => {
+    const wrapper = mount(App, { props: { scenarioId: 'lottie' } });
+    const scenario = wrapper.get('[data-testid="lottie-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.lottie-scenario__card')).toHaveLength(3);
+    expect(scenario.get('[data-parity-target="lottie-basic"]').classes()).toContain('semi-lottie');
+    expect(scenario.get('[data-parity-target="lottie-external"]').classes()).not.toContain(
+      'semi-lottie',
+    );
+    wrapper.unmount();
+  });
+
   it('通过公共 HotKeys 渲染组合、显示、slot 与局部目标场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'hot-keys' } });
     const scenario = wrapper.get('[data-testid="hot-keys-vue"]');

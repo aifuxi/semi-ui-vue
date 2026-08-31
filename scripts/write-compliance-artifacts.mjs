@@ -87,6 +87,12 @@ const licensedDependencies = [
     version: '1.3.8',
   },
   { licenseFile: 'LICENSE', name: 'lodash', noticeName: 'Lodash', version: '4.17.21' },
+  {
+    licenseFile: 'LICENSE.md',
+    name: 'lottie-web',
+    noticeName: 'lottie-web',
+    version: '5.13.0',
+  },
   { licenseFile: 'LICENSE', name: 'prismjs', noticeName: 'PrismJS', version: '1.29.0' },
   {
     licenseFile: 'LICENSE',

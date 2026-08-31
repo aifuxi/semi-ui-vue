@@ -29,6 +29,7 @@ const descriptionsPublicEntry = path.join(upstreamPackages, 'semi-ui/description
 const dropdownPublicEntry = path.join(upstreamPackages, 'semi-ui/dropdown/index.tsx');
 const dragMovePublicEntry = path.join(upstreamPackages, 'semi-ui/dragMove/index.ts');
 const hotKeysPublicEntry = path.join(upstreamPackages, 'semi-ui/hotKeys/index.tsx');
+const lottiePublicEntry = path.join(upstreamPackages, 'semi-ui/lottie/index.tsx');
 const emptyPublicEntry = path.join(upstreamPackages, 'semi-ui/empty/index.tsx');
 const highlightPublicEntry = path.join(upstreamPackages, 'semi-ui/highlight/index.tsx');
 const imagePublicEntry = path.join(upstreamPackages, 'semi-ui/image/index.tsx');
@@ -305,6 +306,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/dropdown', replacement: dropdownPublicEntry },
       { find: '@semi-v2.102.0/drag-move', replacement: dragMovePublicEntry },
       { find: '@semi-v2.102.0/hot-keys', replacement: hotKeysPublicEntry },
+      { find: '@semi-v2.102.0/lottie', replacement: lottiePublicEntry },
       { find: '@semi-v2.102.0/empty', replacement: emptyPublicEntry },
       { find: '@semi-v2.102.0/highlight', replacement: highlightPublicEntry },
       { find: '@semi-v2.102.0/image', replacement: imagePublicEntry },

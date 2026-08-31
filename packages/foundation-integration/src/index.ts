@@ -115,6 +115,8 @@ export { clampValueInRange as clampDragMoveValue, DragMoveFoundation } from './d
 export type { DragMoveAdapter, DragMoveFoundationProps } from './drag-move.js';
 export { HotKeysFoundation, HotKeysFoundationKeys } from './hot-keys.js';
 export type { HotKeysAdapter, HotKeysFoundationProps } from './hot-keys.js';
+export { LottieFoundation, lottieCssClasses } from './lottie.js';
+export type { LottieAdapter, LottieFoundationProps, LottieLoadParams } from './lottie.js';
 export { HighlightFoundation } from './highlight.js';
 export type {
   HighlightFoundationChunk,

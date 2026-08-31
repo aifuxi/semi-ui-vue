@@ -29,6 +29,7 @@ export default defineConfig({
       'fast-copy': fileURLToPath(
         new URL('./packages/foundation-integration/src/fast-copy.js', import.meta.url),
       ),
+      'lottie-web': fileURLToPath(new URL('./packages/ui/src/test/lottieWeb.ts', import.meta.url)),
       '@semi-v2.102.0/anchor': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiAnchorStub.tsx', import.meta.url),
       ),
@@ -88,6 +89,9 @@ export default defineConfig({
       ),
       '@semi-v2.102.0/hot-keys': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiHotKeysStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/lottie': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiLottieStub.tsx', import.meta.url),
       ),
       '@semi-v2.102.0/empty': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiEmptyStub.tsx', import.meta.url),

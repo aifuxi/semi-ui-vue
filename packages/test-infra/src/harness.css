@@ -3306,3 +3306,73 @@ p {
     grid-template-columns: 1fr;
   }
 }
+
+.lottie-scenario {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.lottie-scenario__card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px;
+  border: 1px solid var(--semi-color-border);
+  border-radius: 12px;
+  background: var(--semi-color-bg-1);
+}
+
+.lottie-scenario__card--wide {
+  grid-column: 1 / -1;
+}
+
+.lottie-scenario__card h3 {
+  align-self: stretch;
+  margin: 0 0 6px;
+  color: var(--semi-color-text-0);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.lottie-scenario__card p {
+  align-self: stretch;
+  min-height: 40px;
+  margin: 0 0 12px;
+  color: var(--semi-color-text-2);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.lottie-scenario__card button {
+  min-height: 28px;
+  margin-top: 8px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--semi-color-primary);
+  color: var(--semi-color-white);
+  cursor: pointer;
+  font: inherit;
+}
+
+.lottie-scenario__status {
+  min-height: 20px;
+  margin-top: 4px;
+  color: var(--semi-color-text-2);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.lottie-scenario__external {
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+}
+
+@media (max-width: 680px) {
+  .lottie-scenario {
+    grid-template-columns: 1fr;
+  }
+}

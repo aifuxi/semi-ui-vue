@@ -129,6 +129,7 @@ try {
         'date-fns.txt',
         'date-fns-tz.txt',
         'lodash.txt',
+        'lottie-web.txt',
         'prismjs.txt',
         'scroll-into-view-if-needed.txt',
       ].some((license) => !packedFiles.has(`dist/THIRD_PARTY_LICENSES/${license}`))
@@ -148,6 +149,7 @@ try {
         'date-fns',
         'date-fns-tz',
         'lodash',
+        'lottie-web',
         'prismjs',
         'scroll-into-view-if-needed',
       ].map(async (dependency) => [
@@ -253,6 +255,7 @@ try {
         ['date-fns', 'LICENSE.md'],
         ['date-fns-tz', 'LICENSE.md'],
         ['lodash', 'LICENSE'],
+        ['lottie-web', 'LICENSE.md'],
         ['prismjs', 'LICENSE'],
         ['scroll-into-view-if-needed', 'LICENSE'],
       ]) {
@@ -350,6 +353,7 @@ try {
 		await import('@aifuxi/semi-ui-vue/dropdown');
 		await import('@aifuxi/semi-ui-vue/drag-move');
 		await import('@aifuxi/semi-ui-vue/hot-keys');
+		await import('@aifuxi/semi-ui-vue/lottie');
 		await import('@aifuxi/semi-ui-vue/empty');
 		await import('@aifuxi/semi-ui-vue/highlight');
 		await import('@aifuxi/semi-ui-vue/image');
@@ -499,6 +503,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/hot-keys.css').endsWith('/dist/hot-keys.css')) {
 		  throw new Error('HotKeys 逐组件样式导出未指向 dist/hot-keys.css');
+		}
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/lottie.css').endsWith('/dist/lottie.css')) {
+		  throw new Error('Lottie 逐组件样式导出未指向 dist/lottie.css');
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/empty.css').endsWith('/dist/empty.css')) {
 		  throw new Error('Empty 逐组件样式导出未指向 dist/empty.css');
@@ -665,6 +672,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Dropdown, DropdownItem, DropdownMenu, type DropdownItemType, type DropdownMenuItem } from '@aifuxi/semi-ui-vue/dropdown';
 		import { DragMove, type DragMoveConstrainer, type DragMoveProps } from '@aifuxi/semi-ui-vue/drag-move';
 		import { HotKeys, type HotKeysKey, type HotKeysProps } from '@aifuxi/semi-ui-vue/hot-keys';
+		import { Lottie, type LottieAnimationItem, type LottieParams, type LottiePlayer } from '@aifuxi/semi-ui-vue/lottie';
 		import { Empty, type EmptyLayout, type EmptySvgNode } from '@aifuxi/semi-ui-vue/empty';
 		import { Highlight, type HighlightSearchWords } from '@aifuxi/semi-ui-vue/highlight';
 		import { Image, ImagePreview, type ImagePreviewProps, type ImageRatioType } from '@aifuxi/semi-ui-vue/image';
@@ -829,6 +837,12 @@ h(Button, { type, htmlType: 'submit' });
 		const hotKeysKey: HotKeysKey = HotKeys.Keys.K;
 		const hotKeysProps: HotKeysProps = { hotKeys: [HotKeys.Keys.Control, hotKeysKey], preventDefault: true };
 		h(HotKeys, hotKeysProps);
+		const lottieParams: LottieParams = { animationData: {}, autoplay: false, loop: false };
+		const lottiePlayer: LottiePlayer = Lottie.getLottie();
+		let lottieAnimation: LottieAnimationItem | null = null;
+		h(Lottie, { params: lottieParams, getAnimationInstance: instance => { lottieAnimation = instance; } });
+		void lottiePlayer;
+		void lottieAnimation;
 		const emptyLayout: EmptyLayout = 'horizontal';
 		const emptyImage: EmptySvgNode = { id: 'consumer-empty' };
 		h(Empty, { image: emptyImage, layout: emptyLayout, title: 'No content' }, () => h('button', 'Create'));
@@ -1986,6 +2000,16 @@ h(Button, { type, htmlType: 'submit' });
     !hotKeysThemeCss.includes('[theme-mode=dark]')
   ) {
     throw new Error('安装后的 HotKeys 逐组件样式缺少键帽、分隔符或暗色主题');
+  }
+  const lottieThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'lottie.css'),
+    'utf8',
+  );
+  if (
+    !lottieThemeCss.includes('--semi-color-primary') ||
+    !lottieThemeCss.includes('[theme-mode=dark]')
+  ) {
+    throw new Error('安装后的 Lottie 逐组件样式缺少默认主题 Token 或暗色模式');
   }
   const emptyThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'empty.css'),
