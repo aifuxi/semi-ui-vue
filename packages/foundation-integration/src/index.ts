@@ -309,6 +309,13 @@ export type {
 export { TooltipFoundation } from './tooltip.js';
 export type { TooltipAdapter, TooltipPopupContainerRect } from './tooltip.js';
 export {
+  UserGuideFoundation,
+  userGuideCssClasses,
+  userGuideNumbers,
+  userGuideStrings,
+} from './user-guide.js';
+export type { UserGuideAdapter } from './user-guide.js';
+export {
   ToastFoundation,
   ToastListFoundation,
   toastCssClasses,

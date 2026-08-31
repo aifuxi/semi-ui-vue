@@ -55,6 +55,10 @@
       "types": "./dist/video-player/index.d.ts",
       "import": "./dist/video-player/index.js"
     },
+    "./user-guide": {
+      "types": "./dist/user-guide/index.d.ts",
+      "import": "./dist/user-guide/index.js"
+    },
     "./avatar": {
       "types": "./dist/avatar/index.d.ts",
       "import": "./dist/avatar/index.js"

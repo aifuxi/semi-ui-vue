@@ -2753,3 +2753,59 @@ declare module '@semi-v2.102.0/video-player' {
   const VideoPlayer: ComponentType<VideoPlayerProps>;
   export default VideoPlayer;
 }
+
+declare module '@semi-v2.102.0/user-guide' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface UserGuideButtonProps {
+    children?: ReactNode;
+    className?: string;
+    disabled?: boolean;
+    loading?: boolean;
+    onClick?: (event: MouseEvent) => void;
+    style?: CSSProperties;
+    theme?: 'solid' | 'borderless' | 'light' | 'outline';
+    type?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+  }
+
+  export interface UserGuideStepItem {
+    className?: string;
+    cover?: ReactNode;
+    description?: ReactNode;
+    mask?: boolean;
+    position?: string;
+    showArrow?: boolean;
+    spotlightPadding?: number;
+    target?: Element | (() => Element | null | undefined);
+    theme?: 'default' | 'primary';
+    title?: ReactNode;
+  }
+
+  export interface UserGuideProps {
+    className?: string;
+    current?: number;
+    finishText?: string;
+    getPopupContainer?: () => HTMLElement;
+    mask?: boolean;
+    mode?: 'popup' | 'modal';
+    nextButtonProps?: UserGuideButtonProps;
+    onChange?: (current: number) => void;
+    onFinish?: () => void;
+    onNext?: (current: number) => void;
+    onPrev?: (current: number) => void;
+    onSkip?: () => void;
+    position?: string;
+    prevButtonProps?: UserGuideButtonProps;
+    showPrevButton?: boolean;
+    showSkipButton?: boolean;
+    spotlightPadding?: number;
+    steps: UserGuideStepItem[];
+    style?: CSSProperties;
+    theme?: 'default' | 'primary';
+    visible?: boolean;
+    zIndex?: number;
+  }
+
+  const UserGuide: ComponentType<UserGuideProps>;
+  export default UserGuide;
+}

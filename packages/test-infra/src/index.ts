@@ -141,6 +141,12 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   videoPlayerFoundationStyle:
     'vendor/semi-design/packages/semi-foundation/videoPlayer/videoPlayer.scss',
   videoPlayerDocumentation: 'vendor/semi-design/content/plus/videoPlayer/index.md',
+  userGuidePublicEntry: 'vendor/semi-design/packages/semi-ui/userGuide/index.tsx',
+  userGuideFoundation: 'vendor/semi-design/packages/semi-foundation/userGuide/foundation.ts',
+  userGuideFoundationConstants:
+    'vendor/semi-design/packages/semi-foundation/userGuide/constants.ts',
+  userGuideFoundationStyle: 'vendor/semi-design/packages/semi-foundation/userGuide/userGuide.scss',
+  userGuideDocumentation: 'vendor/semi-design/content/show/userGuide/index.md',
   avatarPublicEntry: 'vendor/semi-design/packages/semi-ui/avatar/index.tsx',
   avatarGroupEntry: 'vendor/semi-design/packages/semi-ui/avatar/avatarGroup.tsx',
   avatarFoundation: 'vendor/semi-design/packages/semi-foundation/avatar/foundation.ts',
@@ -1204,6 +1210,47 @@ export const PARITY_SCENARIOS = [
         id: 'video-player-compact',
         selector: '.video-player-scenario__compact > .semi-videoPlayer',
         computedStyleProperties: ['display', 'height', 'position', 'width'],
+      },
+    ],
+  },
+  {
+    id: 'user-guide',
+    title: 'UserGuide 用户引导',
+    description:
+      '验证 popup/modal、受控步骤、目标测量、spotlight、主题、按钮、Locale、移动端、暗色与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.userGuidePublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.userGuidePublicEntry,
+      REFERENCE_SOURCE_PATHS.userGuideFoundation,
+      REFERENCE_SOURCE_PATHS.userGuideFoundationConstants,
+      REFERENCE_SOURCE_PATHS.userGuideFoundationStyle,
+      REFERENCE_SOURCE_PATHS.userGuideDocumentation,
+    ],
+    targets: [
+      {
+        id: 'user-guide-popup-body',
+        selector: '.semi-userGuide-popup-content-body',
+        computedStyleProperties: [
+          'boxSizing',
+          'color',
+          'paddingBottom',
+          'paddingLeft',
+          'paddingRight',
+          'paddingTop',
+          'width',
+        ],
+      },
+      {
+        id: 'user-guide-title',
+        selector: '.semi-userGuide-popup-content-title',
+        computedStyleProperties: ['fontSize', 'fontWeight', 'lineHeight', 'marginBottom'],
+      },
+      {
+        id: 'user-guide-footer',
+        selector: '.semi-userGuide-popup-content-footer',
+        computedStyleProperties: ['alignItems', 'display', 'justifyContent'],
       },
     ],
   },

@@ -4,6 +4,25 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 UserGuide 渲染 popup、spotlight 与三步目标', async () => {
+    const wrapper = mount(App, {
+      attachTo: document.body,
+      props: { scenarioId: 'user-guide', direction: 'rtl' },
+    });
+    await wrapper.vm.$nextTick();
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    await wrapper.vm.$nextTick();
+
+    const scenario = wrapper.get('[data-testid="user-guide-vue"]');
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.user-guide-scenario__target')).toHaveLength(3);
+    expect(scenario.find('.semi-userGuide-spotlight').exists()).toBe(true);
+    expect(document.querySelector('.semi-userGuide-popup-content-title')?.textContent).toBe(
+      '发现协作入口',
+    );
+    wrapper.unmount();
+  });
+
   it('通过公共 AudioPlayer 渲染播放列表、工具栏与精简场景', () => {
     const wrapper = mount(App, {
       props: { scenarioId: 'audio-player', theme: 'light', locale: 'en-US' },

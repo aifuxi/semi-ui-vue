@@ -108,6 +108,9 @@ export default defineConfig({
       '@semi-v2.102.0/video-player': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiVideoPlayerStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/user-guide': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiUserGuideStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/locale-provider': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiLocaleProviderStub.ts', import.meta.url),
       ),

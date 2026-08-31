@@ -5,6 +5,16 @@ import { describe, expect, it } from 'vitest';
 import { App } from './App';
 
 describe('React 参考工作台', () => {
+  it('登记固定 UserGuide 的 popup、modal 与三步目标场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="user-guide" direction="rtl" />);
+
+    expect(html).toContain('data-parity-scenario="user-guide"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/userGuide/index.tsx');
+    expect(html).toContain('data-testid="user-guide-reference"');
+    expect(html).toContain('data-action="open-user-guide-modal"');
+    expect(html.match(/user-guide-scenario__target/g)).toHaveLength(6);
+  });
+
   it('登记固定 AudioPlayer 的播放列表、工具栏和精简场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="audio-player" theme="light" />);
 

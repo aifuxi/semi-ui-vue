@@ -89,6 +89,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/audio-player/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'video-player', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/video-player/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'user-guide', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/user-guide/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'locale', 'index.js')).href);
     const localeSourceRoot = path.join(distPath, 'locale', 'source');
     const localeSourceFiles = (await readdir(localeSourceRoot))

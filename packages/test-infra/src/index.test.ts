@@ -106,6 +106,22 @@ describe('parity infrastructure contract', () => {
     ]);
   });
 
+  it('records UserGuide Adapter, Foundation, constants, styles and docs', () => {
+    expect(getParityScenario('user-guide')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.userGuidePublicEntry,
+    });
+    expect(assertScenarioComparable('user-guide').targets).toHaveLength(3);
+    expect(getParityScenario('user-guide').sourceEvidence).toEqual([
+      REFERENCE_SOURCE_PATHS.userGuidePublicEntry,
+      REFERENCE_SOURCE_PATHS.userGuideFoundation,
+      REFERENCE_SOURCE_PATHS.userGuideFoundationConstants,
+      REFERENCE_SOURCE_PATHS.userGuideFoundationStyle,
+      REFERENCE_SOURCE_PATHS.userGuideDocumentation,
+    ]);
+  });
+
   it('records IconButton Adapter, Button base, fixed styles and docs', () => {
     expect(getParityScenario('icon-button')).toMatchObject({
       referenceStatus: 'ready',

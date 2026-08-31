@@ -103,6 +103,7 @@ export default defineConfig({
         'video-player/index': fileURLToPath(
           new URL('./src/video-player/index.ts', import.meta.url),
         ),
+        'user-guide/index': fileURLToPath(new URL('./src/user-guide/index.ts', import.meta.url)),
         'avatar/index': fileURLToPath(new URL('./src/avatar/index.ts', import.meta.url)),
         'badge/index': fileURLToPath(new URL('./src/badge/index.ts', import.meta.url)),
         'banner/index': fileURLToPath(new URL('./src/banner/index.ts', import.meta.url)),

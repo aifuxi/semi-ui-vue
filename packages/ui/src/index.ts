@@ -87,6 +87,7 @@ export * from './switch';
 export * from './tag-input';
 export * from './time-picker';
 export * from './tooltip';
+export * from './user-guide';
 export * from './transfer';
 export * from './upload';
 export * from './navigation';

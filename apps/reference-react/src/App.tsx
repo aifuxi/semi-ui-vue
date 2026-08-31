@@ -26,6 +26,7 @@ import { LottieScenario } from './scenarios/LottieScenario';
 import { LocaleScenario } from './scenarios/LocaleScenario';
 import { AudioPlayerScenario } from './scenarios/AudioPlayerScenario';
 import { VideoPlayerScenario } from './scenarios/VideoPlayerScenario';
+import { UserGuideScenario } from './scenarios/UserGuideScenario';
 import { EmptyScenario } from './scenarios/EmptyScenario';
 import { HighlightScenario } from './scenarios/HighlightScenario';
 import { ImageScenario } from './scenarios/ImageScenario';
@@ -176,6 +177,7 @@ export function App(props: AppProps): React.ReactElement {
             theme={options.theme}
           />
         ) : null}
+        {scenario.id === 'user-guide' ? <UserGuideScenario direction={options.direction} /> : null}
         {scenario.id === 'empty' ? <EmptyScenario /> : null}
         {scenario.id === 'highlight' ? <HighlightScenario /> : null}
         {scenario.id === 'image' ? <ImageScenario /> : null}

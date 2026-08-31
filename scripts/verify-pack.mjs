@@ -366,6 +366,7 @@ try {
 		await import('@aifuxi/semi-ui-vue/lottie');
 		await import('@aifuxi/semi-ui-vue/audio-player');
 		await import('@aifuxi/semi-ui-vue/video-player');
+		await import('@aifuxi/semi-ui-vue/user-guide');
 		await import('@aifuxi/semi-ui-vue/locale');
 		const localeModules = await Promise.all(${JSON.stringify(localeSourceNames)}.map(sourceName => import('@aifuxi/semi-ui-vue/locale/source/' + sourceName)));
 		if (localeModules.length !== 57 || localeModules.some(module => typeof module.default?.code !== 'string')) {
@@ -532,6 +533,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/video-player.css').endsWith('/dist/video-player.css')) {
 		  throw new Error('VideoPlayer 逐组件样式导出未指向 dist/video-player.css');
+		}
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/user-guide.css').endsWith('/dist/user-guide.css')) {
+		  throw new Error('UserGuide 逐组件样式导出未指向 dist/user-guide.css');
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/locale.css').endsWith('/dist/locale.css')) {
 		  throw new Error('Locale 逐组件样式导出未指向 dist/locale.css');
@@ -705,6 +709,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { Lottie, type LottieAnimationItem, type LottieParams, type LottiePlayer } from '@aifuxi/semi-ui-vue/lottie';
 		import { AudioPlayer, formatAudioTime, type AudioInfo, type AudioPlayerProps, type AudioPlayerTheme } from '@aifuxi/semi-ui-vue/audio-player';
 		import { VideoPlayer, formatVideoTime, type VideoPlayerMarker, type VideoPlayerProps, type VideoPlayerTheme } from '@aifuxi/semi-ui-vue/video-player';
+		import { UserGuide, type UserGuideMode, type UserGuideProps, type UserGuideStepItem } from '@aifuxi/semi-ui-vue/user-guide';
 		import { LocaleConsumer, LocaleProvider, type LocaleConsumerSlotProps, type LocaleProviderProps } from '@aifuxi/semi-ui-vue/locale';
 		import enGB from '@aifuxi/semi-ui-vue/locale/source/en_GB';
 		import { Empty, type EmptyLayout, type EmptySvgNode } from '@aifuxi/semi-ui-vue/empty';
@@ -892,6 +897,10 @@ h(Button, { type, htmlType: 'submit' });
 		const videoPlayerProps: VideoPlayerProps = { src: '/video.mp4', clickToPlay: false, markers: videoMarkers, theme: videoTheme };
 		h(VideoPlayer, videoPlayerProps);
 		if (formatVideoTime(4) !== '00:04') throw new Error('VideoPlayer 公开时间格式化函数异常');
+		const userGuideMode: UserGuideMode = 'popup';
+		const userGuideSteps: UserGuideStepItem[] = [{ target: () => null, title: 'Consumer guide' }];
+		const userGuideProps: UserGuideProps = { current: 0, mode: userGuideMode, steps: userGuideSteps, visible: false };
+		h(UserGuide, userGuideProps);
 		const localeProviderProps: LocaleProviderProps = { locale: enGB };
 		const localeSlot: LocaleConsumerSlotProps<{ begin: string }> | undefined = undefined;
 		h(LocaleProvider, localeProviderProps, () => h(LocaleConsumer, { componentName: 'TimePicker' }));
@@ -2126,6 +2135,28 @@ h(Button, { type, htmlType: 'submit' });
   ]) {
     if (!videoPlayerThemeCss.includes(selector)) {
       throw new Error(`安装后的 VideoPlayer 逐组件样式缺少选择器：${selector}`);
+    }
+  }
+  const userGuideThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'user-guide.css',
+    ),
+    'utf8',
+  );
+  for (const selector of [
+    '.semi-userGuide-spotlight',
+    '.semi-userGuide-popover',
+    '.semi-userGuide-popup-content-primary',
+    '.semi-userGuide-modal-indicator-item-active',
+    '[theme-mode=dark]',
+  ]) {
+    if (!userGuideThemeCss.includes(selector)) {
+      throw new Error(`安装后的 UserGuide 逐组件样式缺少选择器：${selector}`);
     }
   }
   const localeThemeCss = await readFile(
