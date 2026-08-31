@@ -5,6 +5,17 @@ import { describe, expect, it } from 'vitest';
 import { App } from './App';
 
 describe('React 参考工作台', () => {
+  it('登记固定 Locale Provider/Consumer 与语言源场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="locale" />);
+
+    expect(html).toContain('data-parity-scenario="locale"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/locale/localeProvider.tsx');
+    expect(html).toContain('data-testid="locale-reference"');
+    expect(html).toContain('en-GB · GBP · Start Time · en-GB');
+    expect(html).toContain('ja-JP · JPY · ページへ · ja');
+    expect(html.match(/locale-scenario__card/g)).toHaveLength(4);
+  });
+
   it('登记固定 Lottie Adapter 的内部、重建与外部容器场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="lottie" />);
 

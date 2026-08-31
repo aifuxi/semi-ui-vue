@@ -23,6 +23,7 @@ import { DropdownScenario } from './scenarios/DropdownScenario';
 import { DragMoveScenario } from './scenarios/DragMoveScenario';
 import { HotKeysScenario } from './scenarios/HotKeysScenario';
 import { LottieScenario } from './scenarios/LottieScenario';
+import { LocaleScenario } from './scenarios/LocaleScenario';
 import { EmptyScenario } from './scenarios/EmptyScenario';
 import { HighlightScenario } from './scenarios/HighlightScenario';
 import { ImageScenario } from './scenarios/ImageScenario';
@@ -157,6 +158,7 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'drag-move' ? <DragMoveScenario /> : null}
         {scenario.id === 'hot-keys' ? <HotKeysScenario /> : null}
         {scenario.id === 'lottie' ? <LottieScenario /> : null}
+        {scenario.id === 'locale' ? <LocaleScenario /> : null}
         {scenario.id === 'empty' ? <EmptyScenario /> : null}
         {scenario.id === 'highlight' ? <HighlightScenario /> : null}
         {scenario.id === 'image' ? <ImageScenario /> : null}

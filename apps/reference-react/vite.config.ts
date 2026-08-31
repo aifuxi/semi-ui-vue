@@ -30,6 +30,10 @@ const dropdownPublicEntry = path.join(upstreamPackages, 'semi-ui/dropdown/index.
 const dragMovePublicEntry = path.join(upstreamPackages, 'semi-ui/dragMove/index.ts');
 const hotKeysPublicEntry = path.join(upstreamPackages, 'semi-ui/hotKeys/index.tsx');
 const lottiePublicEntry = path.join(upstreamPackages, 'semi-ui/lottie/index.tsx');
+const localeProviderEntry = path.join(upstreamPackages, 'semi-ui/locale/localeProvider.tsx');
+const localeConsumerEntry = path.join(upstreamPackages, 'semi-ui/locale/localeConsumer.tsx');
+const localeEnGBEntry = path.join(upstreamPackages, 'semi-ui/locale/source/en_GB.ts');
+const localeJaJPEntry = path.join(upstreamPackages, 'semi-ui/locale/source/ja_JP.ts');
 const emptyPublicEntry = path.join(upstreamPackages, 'semi-ui/empty/index.tsx');
 const highlightPublicEntry = path.join(upstreamPackages, 'semi-ui/highlight/index.tsx');
 const imagePublicEntry = path.join(upstreamPackages, 'semi-ui/image/index.tsx');
@@ -307,6 +311,10 @@ export default defineConfig({
       { find: '@semi-v2.102.0/drag-move', replacement: dragMovePublicEntry },
       { find: '@semi-v2.102.0/hot-keys', replacement: hotKeysPublicEntry },
       { find: '@semi-v2.102.0/lottie', replacement: lottiePublicEntry },
+      { find: '@semi-v2.102.0/locale-provider', replacement: localeProviderEntry },
+      { find: '@semi-v2.102.0/locale-consumer', replacement: localeConsumerEntry },
+      { find: '@semi-v2.102.0/locale-en-gb', replacement: localeEnGBEntry },
+      { find: '@semi-v2.102.0/locale-ja-jp', replacement: localeJaJPEntry },
       { find: '@semi-v2.102.0/empty', replacement: emptyPublicEntry },
       { find: '@semi-v2.102.0/highlight', replacement: highlightPublicEntry },
       { find: '@semi-v2.102.0/image', replacement: imagePublicEntry },

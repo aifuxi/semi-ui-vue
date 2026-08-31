@@ -1,4 +1,5 @@
 import type { VNodeChild } from 'vue';
+import type { Locale as DateFnsLocale } from 'date-fns';
 
 import type { TypographyLocale } from '../typography';
 import type { PaginationLocale } from '../pagination';
@@ -36,6 +37,7 @@ export interface OnBreakpoint {
 export interface SemiLocale {
   code?: string;
   currency?: string;
+  dateFnsLocale?: DateFnsLocale;
   Typography?: TypographyLocale;
   Pagination?: PaginationLocale;
   Image?: ImageLocale;

@@ -117,6 +117,7 @@ export { HotKeysFoundation, HotKeysFoundationKeys } from './hot-keys.js';
 export type { HotKeysAdapter, HotKeysFoundationProps } from './hot-keys.js';
 export { LottieFoundation, lottieCssClasses } from './lottie.js';
 export type { LottieAdapter, LottieFoundationProps, LottieLoadParams } from './lottie.js';
+export * from './locale.js';
 export { HighlightFoundation } from './highlight.js';
 export type {
   HighlightFoundationChunk,

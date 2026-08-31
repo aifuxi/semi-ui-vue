@@ -1,4 +1,5 @@
 import { fileURLToPath, URL } from 'node:url';
+import { readdirSync } from 'node:fs';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
@@ -12,13 +13,25 @@ const bezierEasingEntry = fileURLToPath(
 const fastCopyEntry = fileURLToPath(
   new URL('../foundation-integration/src/fast-copy.js', import.meta.url),
 );
+const localeSourceNames = readdirSync(
+  fileURLToPath(new URL('./src/locale/source', import.meta.url)),
+)
+  .filter((fileName) => fileName.endsWith('.ts'))
+  .map((fileName) => fileName.slice(0, -3))
+  .sort();
+const localeSourceEntries = Object.fromEntries(
+  localeSourceNames.map((sourceName) => [
+    `locale/source/${sourceName}`,
+    fileURLToPath(new URL(`./src/locale/source/${sourceName}.ts`, import.meta.url)),
+  ]),
+);
 
 export default defineConfig({
   plugins: [
     vue(),
     dts({
       entryRoot: 'src',
-      aliasesExclude: ['@aifuxi/semi-icons-vue'],
+      aliasesExclude: ['@aifuxi/semi-icons-vue', 'date-fns'],
       include: ['src'],
       exclude: [
         'src/**/*.test.ts',
@@ -108,6 +121,8 @@ export default defineConfig({
         'drag-move/index': fileURLToPath(new URL('./src/drag-move/index.ts', import.meta.url)),
         'hot-keys/index': fileURLToPath(new URL('./src/hot-keys/index.ts', import.meta.url)),
         'lottie/index': fileURLToPath(new URL('./src/lottie/index.ts', import.meta.url)),
+        'locale/index': fileURLToPath(new URL('./src/locale/index.ts', import.meta.url)),
+        ...localeSourceEntries,
         'empty/index': fileURLToPath(new URL('./src/empty/index.ts', import.meta.url)),
         'highlight/index': fileURLToPath(new URL('./src/highlight/index.ts', import.meta.url)),
         'image/index': fileURLToPath(new URL('./src/image/index.ts', import.meta.url)),

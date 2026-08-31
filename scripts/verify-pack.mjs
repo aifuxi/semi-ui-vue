@@ -31,6 +31,15 @@ if (sourceVersions.size !== 1) {
   throw new Error('五个公开包的源码版本不一致');
 }
 const [expectedVersion] = sourceVersions;
+const localeSourceNames = (
+  await readdir(path.join(workspaceRoot, 'packages', 'ui', 'src', 'locale', 'source'))
+)
+  .filter((fileName) => fileName.endsWith('.ts'))
+  .map((fileName) => fileName.slice(0, -3))
+  .sort();
+if (localeSourceNames.length !== 57) {
+  throw new Error(`公开 Locale 源码数量错误：${localeSourceNames.length}`);
+}
 
 function run(command, args, cwd) {
   return execFileSync(command, args, {
@@ -354,6 +363,11 @@ try {
 		await import('@aifuxi/semi-ui-vue/drag-move');
 		await import('@aifuxi/semi-ui-vue/hot-keys');
 		await import('@aifuxi/semi-ui-vue/lottie');
+		await import('@aifuxi/semi-ui-vue/locale');
+		const localeModules = await Promise.all(${JSON.stringify(localeSourceNames)}.map(sourceName => import('@aifuxi/semi-ui-vue/locale/source/' + sourceName)));
+		if (localeModules.length !== 57 || localeModules.some(module => typeof module.default?.code !== 'string')) {
+		  throw new Error('57 个 Locale 默认导出不完整');
+		}
 		await import('@aifuxi/semi-ui-vue/empty');
 		await import('@aifuxi/semi-ui-vue/highlight');
 		await import('@aifuxi/semi-ui-vue/image');
@@ -506,6 +520,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/lottie.css').endsWith('/dist/lottie.css')) {
 		  throw new Error('Lottie 逐组件样式导出未指向 dist/lottie.css');
+		}
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/locale.css').endsWith('/dist/locale.css')) {
+		  throw new Error('Locale 逐组件样式导出未指向 dist/locale.css');
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/empty.css').endsWith('/dist/empty.css')) {
 		  throw new Error('Empty 逐组件样式导出未指向 dist/empty.css');
@@ -673,6 +690,8 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { DragMove, type DragMoveConstrainer, type DragMoveProps } from '@aifuxi/semi-ui-vue/drag-move';
 		import { HotKeys, type HotKeysKey, type HotKeysProps } from '@aifuxi/semi-ui-vue/hot-keys';
 		import { Lottie, type LottieAnimationItem, type LottieParams, type LottiePlayer } from '@aifuxi/semi-ui-vue/lottie';
+		import { LocaleConsumer, LocaleProvider, type LocaleConsumerSlotProps, type LocaleProviderProps } from '@aifuxi/semi-ui-vue/locale';
+		import enGB from '@aifuxi/semi-ui-vue/locale/source/en_GB';
 		import { Empty, type EmptyLayout, type EmptySvgNode } from '@aifuxi/semi-ui-vue/empty';
 		import { Highlight, type HighlightSearchWords } from '@aifuxi/semi-ui-vue/highlight';
 		import { Image, ImagePreview, type ImagePreviewProps, type ImageRatioType } from '@aifuxi/semi-ui-vue/image';
@@ -843,6 +862,10 @@ h(Button, { type, htmlType: 'submit' });
 		h(Lottie, { params: lottieParams, getAnimationInstance: instance => { lottieAnimation = instance; } });
 		void lottiePlayer;
 		void lottieAnimation;
+		const localeProviderProps: LocaleProviderProps = { locale: enGB };
+		const localeSlot: LocaleConsumerSlotProps<{ begin: string }> | undefined = undefined;
+		h(LocaleProvider, localeProviderProps, () => h(LocaleConsumer, { componentName: 'TimePicker' }));
+		void localeSlot;
 		const emptyLayout: EmptyLayout = 'horizontal';
 		const emptyImage: EmptySvgNode = { id: 'consumer-empty' };
 		h(Empty, { image: emptyImage, layout: emptyLayout, title: 'No content' }, () => h('button', 'Create'));
@@ -2010,6 +2033,16 @@ h(Button, { type, htmlType: 'submit' });
     !lottieThemeCss.includes('[theme-mode=dark]')
   ) {
     throw new Error('安装后的 Lottie 逐组件样式缺少默认主题 Token 或暗色模式');
+  }
+  const localeThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'locale.css'),
+    'utf8',
+  );
+  if (
+    !localeThemeCss.includes('--semi-color-primary') ||
+    !localeThemeCss.includes('[theme-mode=dark]')
+  ) {
+    throw new Error('安装后的 Locale 逐组件样式缺少默认主题 Token 或暗色模式');
   }
   const emptyThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'empty.css'),

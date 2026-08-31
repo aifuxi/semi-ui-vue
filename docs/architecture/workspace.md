@@ -47,6 +47,8 @@ CodeHighlight 是第六十九个进入 `ready` 的 Vue 垂直切片：`packages/
 
 DragMove 是第七十个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/drag-move/` 通过范围受限的单 VNode renderer 合并调用方 ref，并由 Composition API 生命周期接通 absolute/relative、handler、constrainer、input guard、mouse/touch 与 customMove；`packages/foundation-integration/src/drag-move.js` 隔离固定 DragMove Foundation。固定源码没有专属 SCSS，`packages/theme-default/drag-move.css` 只编译默认 Token 与 global 暗色模式，不伪造组件选择器。完整矩阵见 `docs/components/drag-move/`。
 
+Locale 是第七十三个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/locale/` 提供透明 DOM 的 LocaleProvider、LocaleConsumer 与全部 57 个语言源子路径，使用类型化 provide/inject 保持嵌套实例隔离、响应式切换和 ConfigProvider 优先级；`packages/foundation-integration/src/locale.js` 从固定 submodule 选择性编译并内联语言数据，生成校验阻止清单与 facade 漂移。固定源码没有 Locale Foundation 或专属 SCSS，`packages/theme-default/locale.css` 只编译默认 Token 与 global 暗色模式。完整矩阵见 `docs/components/locale/`。
+
 Divider 是第二个进入 `ready` 的垂直切片：`packages/ui/src/divider/` 提供根/`divider` 子路径 ESM 与声明，`packages/theme-default/divider.css` 提供逐组件样式。它没有运行时 Foundation 状态机；纯文本与自定义 VNode 的 slot DOM 分支隔离在内容 renderer 中。完整矩阵见 `docs/components/divider/`。
 
 Icon 是第三个进入 `ready` 的横向基础设施切片：`packages/icons` 提供 Icon 基座、`convertIcon` 与稳定版 523 个图标，`packages/icons-lab` 独立提供 Lab 84 个图标，`packages/ui/src/icon/` 只转发稳定版基座。两套图标均从固定 submodule 的 TSX AST 生成 Vue `h()` 源码并由 `check:icons` 阻止漂移；`packages/theme-default/icon.css` 提供逐组件样式。完整矩阵与 React→Vue 迁移见 `docs/components/icon/`。

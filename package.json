@@ -24,8 +24,10 @@
     "inventory:generate": "node scripts/generate-upstream-inventory.mjs",
     "icons:generate": "node scripts/generate-icons.mjs",
     "illustrations:generate": "node scripts/generate-illustrations.mjs",
+    "locales:generate": "node scripts/generate-locales.mjs",
     "check:icons": "node scripts/generate-icons.mjs --check",
     "check:illustrations": "node scripts/generate-illustrations.mjs --check",
+    "check:locales": "node scripts/generate-locales.mjs --check",
     "check:inventory": "node scripts/generate-upstream-inventory.mjs --check",
     "check:boundaries": "node scripts/verify-source-boundaries.mjs",
     "format": "prettier --write .",
@@ -49,7 +51,7 @@
     "release:preflight": "pnpm release:verify && node scripts/release-preflight.mjs",
     "release:publish": "node scripts/publish-packages.mjs",
     "release:check": "pnpm check:full && pnpm release:verify",
-    "check": "pnpm check:vendor && pnpm check:inventory && pnpm check:icons && pnpm check:illustrations && pnpm check:boundaries && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:unit && pnpm build && pnpm verify:theme-dist && pnpm verify:ssr-dist && pnpm verify:pack-dist",
+    "check": "pnpm check:vendor && pnpm check:inventory && pnpm check:icons && pnpm check:illustrations && pnpm check:locales && pnpm check:boundaries && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:unit && pnpm build && pnpm verify:theme-dist && pnpm verify:ssr-dist && pnpm verify:pack-dist",
     "check:full": "pnpm check && pnpm test:browser"
   },
   "devDependencies": {

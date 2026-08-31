@@ -4,6 +4,22 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 Locale Provider/Consumer 渲染语言源与响应式场景', async () => {
+    const wrapper = mount(App, { props: { scenarioId: 'locale' } });
+    const scenario = wrapper.get('[data-testid="locale-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.locale-scenario__card')).toHaveLength(3);
+    expect(scenario.get('[data-parity-target="locale-en-gb"]').text()).toBe(
+      'en-GB · GBP · Start Time · en-GB',
+    );
+    expect(scenario.get('[data-parity-target="locale-ja-jp"]').text()).toBe(
+      'ja-JP · JPY · ページへ · ja',
+    );
+    await scenario.get('button').trigger('click');
+    expect(scenario.get('[data-parity-target="locale-switch"]').text()).toBe('ja-JP · 始まる時間');
+  });
+
   it('通过公共 Lottie 渲染内部、重建与外部容器场景', () => {
     const wrapper = mount(App, { props: { scenarioId: 'lottie' } });
     const scenario = wrapper.get('[data-testid="lottie-vue"]');

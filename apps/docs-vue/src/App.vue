@@ -24,6 +24,7 @@ import DropdownScenario from './components/DropdownScenario.vue';
 import DragMoveScenario from './components/DragMoveScenario.vue';
 import HotKeysScenario from './components/HotKeysScenario.vue';
 import LottieScenario from './components/LottieScenario.vue';
+import LocaleScenario from './components/LocaleScenario.vue';
 import EmptyScenario from './components/EmptyScenario.vue';
 import HighlightScenario from './components/HighlightScenario.vue';
 import ImageScenario from './components/ImageScenario.vue';
@@ -151,6 +152,7 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <DragMoveScenario v-else-if="scenario.id === 'drag-move'" />
       <HotKeysScenario v-else-if="scenario.id === 'hot-keys'" />
       <LottieScenario v-else-if="scenario.id === 'lottie'" />
+      <LocaleScenario v-else-if="scenario.id === 'locale'" />
       <EmptyScenario v-else-if="scenario.id === 'empty'" />
       <HighlightScenario v-else-if="scenario.id === 'highlight'" />
       <ImageScenario v-else-if="scenario.id === 'image'" />

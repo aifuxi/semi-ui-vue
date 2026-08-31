@@ -8,6 +8,12 @@ export default defineConfig({
   resolve: {
     alias: [
       {
+        find: /^@aifuxi\/semi-ui-vue\/locale\/source\/(.+)$/,
+        replacement: fileURLToPath(
+          new URL('../../packages/ui/src/locale/source/$1.ts', import.meta.url),
+        ),
+      },
+      {
         find: '@aifuxi/semi-ui-vue',
         replacement: fileURLToPath(new URL('../../packages/ui/src/index.ts', import.meta.url)),
       },

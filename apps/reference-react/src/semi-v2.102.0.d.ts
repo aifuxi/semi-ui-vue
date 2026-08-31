@@ -1,3 +1,44 @@
+declare module '@semi-v2.102.0/locale-provider' {
+  import type { ComponentType, ReactNode } from 'react';
+
+  export interface ReferenceLocale {
+    code?: string;
+    currency?: string;
+    dateFnsLocale?: { code?: string };
+    [componentName: string]: unknown;
+  }
+
+  const LocaleProvider: ComponentType<{ children?: ReactNode; locale?: ReferenceLocale }>;
+  export default LocaleProvider;
+}
+
+declare module '@semi-v2.102.0/locale-consumer' {
+  import type { ReactElement, ReactNode } from 'react';
+
+  const LocaleConsumer: <ComponentLocale>(props: {
+    children?: (
+      localeData: ComponentLocale,
+      localeCode: string,
+      dateFnsLocale: { code?: string },
+      currency: string,
+    ) => ReactNode;
+    componentName: string;
+  }) => ReactElement | null;
+  export default LocaleConsumer;
+}
+
+declare module '@semi-v2.102.0/locale-en-gb' {
+  import type { ReferenceLocale } from '@semi-v2.102.0/locale-provider';
+  const locale: ReferenceLocale;
+  export default locale;
+}
+
+declare module '@semi-v2.102.0/locale-ja-jp' {
+  import type { ReferenceLocale } from '@semi-v2.102.0/locale-provider';
+  const locale: ReferenceLocale;
+  export default locale;
+}
+
 declare module '@semi-v2.102.0/anchor' {
   import type { ComponentType, CSSProperties, KeyboardEvent, MouseEvent, ReactNode } from 'react';
 

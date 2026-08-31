@@ -83,6 +83,20 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/hot-keys/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'lottie', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/lottie/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'locale', 'index.js')).href);
+    const localeSourceRoot = path.join(distPath, 'locale', 'source');
+    const localeSourceFiles = (await readdir(localeSourceRoot))
+      .filter((fileName) => fileName.endsWith('.js'))
+      .sort();
+    if (localeSourceFiles.length !== 57) {
+      throw new Error(`Locale SSR 入口数量错误：${localeSourceFiles.length}`);
+    }
+    await Promise.all(
+      localeSourceFiles.map(
+        (fileName) => import(pathToFileURL(path.join(localeSourceRoot, fileName)).href),
+      ),
+    );
+    process.stdout.write('SSR import 通过：packages/ui/dist/locale 与 57 个语言源\n');
     await import(pathToFileURL(path.join(distPath, 'empty', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/empty/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'highlight', 'index.js')).href);

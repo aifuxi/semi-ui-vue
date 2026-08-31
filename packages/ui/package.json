@@ -119,6 +119,14 @@
       "types": "./dist/lottie/index.d.ts",
       "import": "./dist/lottie/index.js"
     },
+    "./locale": {
+      "types": "./dist/locale/index.d.ts",
+      "import": "./dist/locale/index.js"
+    },
+    "./locale/source/*": {
+      "types": "./dist/locale/source/*.d.ts",
+      "import": "./dist/locale/source/*.js"
+    },
     "./empty": {
       "types": "./dist/empty/index.d.ts",
       "import": "./dist/empty/index.js"

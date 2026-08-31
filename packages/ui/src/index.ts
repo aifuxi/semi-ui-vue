@@ -17,6 +17,7 @@ export * from './dropdown';
 export * from './drag-move';
 export * from './hot-keys';
 export * from './lottie';
+export * from './locale';
 export * from './empty';
 export * from './highlight';
 export * from './image';

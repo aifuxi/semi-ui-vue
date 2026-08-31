@@ -7,6 +7,12 @@ export default defineConfig({
   plugins: [vue(), react()],
   resolve: {
     alias: {
+      '@aifuxi/semi-ui-vue/locale/source/en_GB': fileURLToPath(
+        new URL('./packages/ui/src/locale/source/en_GB.ts', import.meta.url),
+      ),
+      '@aifuxi/semi-ui-vue/locale/source/ja_JP': fileURLToPath(
+        new URL('./packages/ui/src/locale/source/ja_JP.ts', import.meta.url),
+      ),
       '@aifuxi/semi-ui-vue': fileURLToPath(new URL('./packages/ui/src/index.ts', import.meta.url)),
       '@aifuxi/semi-icons-vue': fileURLToPath(
         new URL('./packages/icons/src/index.ts', import.meta.url),
@@ -92,6 +98,18 @@ export default defineConfig({
       ),
       '@semi-v2.102.0/lottie': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiLottieStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/locale-provider': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiLocaleProviderStub.ts', import.meta.url),
+      ),
+      '@semi-v2.102.0/locale-consumer': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiLocaleConsumerStub.ts', import.meta.url),
+      ),
+      '@semi-v2.102.0/locale-en-gb': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiLocaleEnGBStub.ts', import.meta.url),
+      ),
+      '@semi-v2.102.0/locale-ja-jp': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiLocaleJaJPStub.ts', import.meta.url),
       ),
       '@semi-v2.102.0/empty': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiEmptyStub.tsx', import.meta.url),
