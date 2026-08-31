@@ -278,6 +278,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     include: [
+      'scripts/**/*.{test,spec}.mjs',
       'packages/*/src/**/*.{test,spec}.ts',
       'apps/docs-vue/src/**/*.{test,spec}.ts',
       'apps/reference-react/src/**/*.{test,spec}.{ts,tsx}',

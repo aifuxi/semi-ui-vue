@@ -95,6 +95,9 @@ importers:
       scroll-into-view-if-needed:
         specifier: 2.2.31
         version: 2.2.31
+      semver:
+        specifier: 7.8.5
+        version: 7.8.5
       typescript:
         specifier: 5.9.3
         version: 5.9.3

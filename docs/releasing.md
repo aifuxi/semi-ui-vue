@@ -15,9 +15,34 @@
 - 五个公开包必须使用完全相同的版本。
 - 包含 prerelease 标识的版本发布到 `next`。
 - 没有 prerelease 标识的稳定版本才发布到 `latest`。
-- Git 标签必须严格为 `v<version>`，例如 `v0.1.0-alpha.0`。
+- Git 标签必须是 annotated tag，名称严格为 `v<version>`，message 严格为 `发布 v<version>`，例如标签 `v0.1.0-alpha.5` 的 message 是 `发布 v0.1.0-alpha.5`。
 
 `scripts/release-packages.mjs` 是包名、发布顺序、registry 和 dist-tag 规则的唯一集中清单。修改发布身份时必须同步通过 `pnpm release:verify`。
+
+## 自动升版、提交与标签
+
+后续统一版本使用根命令升级，不再逐个修改五个公开包：
+
+```bash
+# 只递增当前 x.y.z-alpha.N 的 N
+pnpm release:bump alpha
+
+# 显式指定严格、无 v 前缀且高于当前版本的 SemVer
+pnpm release:bump 0.2.0-beta.0
+pnpm release:bump 0.2.0
+```
+
+命令要求工作区和暂存区完全干净，并在写入前确认 Git 提交身份有效、五包版本一致且目标标签不存在。成功后只提交五个公开包的 `package.json`，预发布提交沿用 `chore(release): 升级公开包版本至 alpha.5` / `beta.0` 格式，稳定版提交使用完整版本号；随后创建 message 为 `发布 v<version>` 的 annotated tag。
+
+命令不会执行 `push`、`release:check` 或 npm 发布。检查生成的提交和标签后，先在标签所在提交运行发布门禁，再分别推送提交和精确标签：
+
+```bash
+pnpm release:check
+git push origin HEAD
+git push origin v0.1.0-alpha.5
+```
+
+推送 `v*` 标签后，`.github/workflows/publish.yml` 才会执行 GitHub OIDC 发布。
 
 ## 发布前门禁
 
@@ -48,7 +73,7 @@ npm trusted publisher 只能绑定已经存在的包。因此 `0.1.0-alpha.0` �
 2. 保证 `master` 上的发布提交已经推送，工作区干净，并创建精确标签：
 
    ```bash
-   git tag v0.1.0-alpha.0
+   git tag -a v0.1.0-alpha.0 -m "发布 v0.1.0-alpha.0"
    git push origin master v0.1.0-alpha.0
    ```
 
