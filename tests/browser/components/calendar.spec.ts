@@ -7,12 +7,16 @@ import {
   VISUAL_THRESHOLDS,
 } from '../../../packages/test-infra/src';
 import {
+  captureComparableGeometry,
   captureComputedStyle,
   expectComparableTarget,
+  expectComparableGeometry,
   expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
+  waitForStableRendering,
+  waitForTargetStable,
 } from '../parity-harness';
 
 test('Calendar 参考场景来自本地 v2.102.0 并保留周视图与事件 DOM', async ({ page }) => {
@@ -124,18 +128,12 @@ test('Calendar React/Vue 四种模式、事件、Locale、样式与几何一致'
   const vueCard = pair.vue.page.locator(
     '.semi-popover-wrapper:has(.semi-calendar-month-event-card)',
   );
-  await Promise.all(
-    [reactCard, vueCard].map((card) =>
-      card.evaluate(async (element) => {
-        await Promise.all(
-          element
-            .getAnimations({ subtree: true })
-            .map((animation) => animation.finished.catch(() => undefined)),
-        );
-      }),
-    ),
-  );
-  const [reactCardStyle, vueCardStyle, reactCardRect, vueCardRect] = await Promise.all([
+  await Promise.all([waitForTargetStable(reactCard), waitForTargetStable(vueCard)]);
+  await Promise.all([
+    waitForStableRendering(pair.react.page),
+    waitForStableRendering(pair.vue.page),
+  ]);
+  const [reactCardStyle, vueCardStyle, reactCardGeometry, vueCardGeometry] = await Promise.all([
     captureComputedStyle(reactCard, [
       'backgroundColor',
       'borderRadius',
@@ -154,17 +152,11 @@ test('Calendar React/Vue 四种模式、事件、Locale、样式与几何一致'
       'paddingRight',
       'paddingTop',
     ]),
-    reactCard.boundingBox(),
-    vueCard.boundingBox(),
+    captureComparableGeometry(reactCard),
+    captureComparableGeometry(vueCard),
   ]);
   expect(vueCardStyle).toEqual(reactCardStyle);
-  expect(reactCardRect).not.toBeNull();
-  expect(vueCardRect).not.toBeNull();
-  for (const axis of ['x', 'y', 'width', 'height'] as const) {
-    expect(Math.abs(vueCardRect![axis] - reactCardRect![axis])).toBeLessThanOrEqual(
-      VISUAL_THRESHOLDS.boundingRectToleranceCssPx,
-    );
-  }
+  expectComparableGeometry(vueCardGeometry, reactCardGeometry, 'calendar/month-event-card');
   await expect(reactCard).toHaveScreenshot('calendar-month-card-reference-light-en-US.png', {
     animations: 'disabled',
   });

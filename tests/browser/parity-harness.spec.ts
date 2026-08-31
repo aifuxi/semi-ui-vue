@@ -1,6 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
 import { readdir, readFile } from 'node:fs/promises';
-import { expectScreenshotPixelsToMatch, waitForStableRendering } from './parity-harness';
+import {
+  captureComparableGeometry,
+  expectScreenshotPixelsToMatch,
+  waitForStableRendering,
+  waitForTargetStable,
+} from './parity-harness';
 
 async function createComparisonPng(page: Page, changedPixelCount: number): Promise<Buffer> {
   const pngBase64 = await page.evaluate((pixelCount) => {
@@ -45,4 +50,54 @@ test('组件对照规格统一使用像素阈值而非 PNG 字节相等', async 
     const source = await readFile(new URL(file, componentDirectory), 'utf8');
     expect(source, `${file} 不得回退到 Buffer.equals 截图断言`).not.toMatch(/\.equals\(/);
   }
+});
+
+test('共享几何捕获按定位方式选择文档或视口坐标', async ({ page }) => {
+  await page.setContent(`
+    <style>
+      body { height: 1200px; margin: 0; }
+      #document-target { position: absolute; left: 20px; top: 240px; width: 40px; height: 30px; }
+      #viewport-target { position: fixed; left: 30px; top: 50px; width: 60px; height: 40px; }
+    </style>
+    <div id="document-target"></div>
+    <div id="viewport-target"></div>
+  `);
+  await page.evaluate(() => window.scrollTo(0, 120));
+  await waitForStableRendering(page);
+
+  const [documentGeometry, viewportGeometry] = await Promise.all([
+    captureComparableGeometry(page.locator('#document-target')),
+    captureComparableGeometry(page.locator('#viewport-target')),
+  ]);
+
+  expect(documentGeometry).toMatchObject({
+    coordinateSpace: 'document',
+    pageScrollY: 120,
+    x: 20,
+    y: 240,
+  });
+  expect(viewportGeometry).toMatchObject({
+    coordinateSpace: 'viewport',
+    pageScrollY: 120,
+    x: 30,
+    y: 50,
+  });
+});
+
+test('共享目标稳定等待会等有限动画进入最终帧', async ({ page }) => {
+  await page.setContent(`
+    <style>
+      body { margin: 0; }
+      @keyframes move-target { from { transform: translateX(0); } to { transform: translateX(40px); } }
+      #animated-target { width: 20px; height: 20px; animation: move-target 80ms linear forwards; }
+    </style>
+    <div id="animated-target"></div>
+  `);
+  const target = page.locator('#animated-target');
+
+  await waitForTargetStable(target);
+  await waitForStableRendering(page);
+
+  const geometry = await captureComparableGeometry(target);
+  expect(geometry.x).toBe(40);
 });

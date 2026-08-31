@@ -4,13 +4,17 @@ import {
   createParityScenarioUrl,
   PARITY_VIEWPORTS,
   REFERENCE_SOURCE_PATHS,
+  VISUAL_THRESHOLDS,
 } from '../../../packages/test-infra/src';
 import {
+  captureComparableGeometry,
   expectComparableTarget,
+  expectComparableGeometry,
   expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
+  waitForStableRendering,
 } from '../parity-harness';
 
 test('Popover 参考场景来自本地 v2.102.0 并保留 Portal、卡片、箭头与角色', async ({ page }) => {
@@ -98,6 +102,9 @@ test('Popover React/Vue 定位、click/Escape、焦点与 Element/Document scrol
       expect(page.locator('.popover-target-hover')).toHaveAttribute('role', 'tooltip'),
     ]),
   );
+  const captureBottomGeometry = (page: (typeof pair.react)['page']) =>
+    captureComparableGeometry(page.locator('.popover-target-bottom'));
+  const initialGeometry = await Promise.all(pages.map((page) => captureBottomGeometry(page)));
   await Promise.all(
     pages.map((page) =>
       page.getByTestId('popover-scroll-host').evaluate((element) => {
@@ -111,17 +118,22 @@ test('Popover React/Vue 定位、click/Escape、焦点与 Element/Document scrol
       page.evaluate(() => document.dispatchEvent(new Event('scroll', { bubbles: true }))),
     ),
   );
-  await Promise.all(pages.map((page) => page.waitForTimeout(50)));
-
-  const captureGeometry = async (page: (typeof pair.react)['page']) =>
-    page.locator('.popover-target-bottom').evaluate((element) => {
-      const rect = element.getBoundingClientRect();
-      return { height: rect.height, left: rect.left, top: rect.top, width: rect.width };
-    });
-  const [reactGeometry, vueGeometry] = await Promise.all(
-    pages.map((page) => captureGeometry(page)),
+  await Promise.all(
+    pages.map((page, index) =>
+      expect
+        .poll(async () => {
+          const geometry = await captureBottomGeometry(page);
+          return Math.abs(geometry.x - initialGeometry[index]!.x);
+        })
+        .toBeGreaterThan(VISUAL_THRESHOLDS.boundingRectToleranceCssPx),
+    ),
   );
-  expect(vueGeometry).toEqual(reactGeometry);
+  await Promise.all(pages.map((page) => waitForStableRendering(page)));
+  const [reactGeometry, vueGeometry] = await Promise.all([
+    captureBottomGeometry(pair.react.page),
+    captureBottomGeometry(pair.vue.page),
+  ]);
+  expectComparableGeometry(vueGeometry, reactGeometry, 'popover/bottom-scroll-reposition');
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);
 });

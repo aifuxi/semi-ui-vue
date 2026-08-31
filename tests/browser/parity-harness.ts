@@ -31,6 +31,16 @@ export interface ParityPagePair {
   readonly vue: ParityPage;
 }
 
+export interface ComparableGeometry {
+  readonly coordinateSpace: 'document' | 'viewport';
+  readonly height: number;
+  readonly pageScrollX: number;
+  readonly pageScrollY: number;
+  readonly width: number;
+  readonly x: number;
+  readonly y: number;
+}
+
 interface ScreenshotPixelComparison {
   readonly actualHeight: number;
   readonly actualWidth: number;
@@ -102,6 +112,54 @@ export async function captureComputedStyle(
       requestedProperties.map((property) => [property, styleRecord[property] ?? '']),
     );
   }, properties);
+}
+
+export async function waitForTargetStable(locator: Locator): Promise<void> {
+  await locator.evaluate(async (element) => {
+    const finiteAnimations = element.getAnimations({ subtree: true }).filter((animation) => {
+      const endTime = animation.effect?.getComputedTiming().endTime;
+      return (
+        typeof endTime === 'number' &&
+        Number.isFinite(endTime) &&
+        animation.playState !== 'paused' &&
+        animation.playbackRate !== 0
+      );
+    });
+    await Promise.all(
+      finiteAnimations.map((animation) => animation.finished.catch(() => undefined)),
+    );
+  });
+}
+
+export async function captureComparableGeometry(locator: Locator): Promise<ComparableGeometry> {
+  return locator.evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    const position = getComputedStyle(element).position;
+    const viewportAnchored = position === 'fixed' || position === 'sticky';
+    return {
+      coordinateSpace: viewportAnchored ? 'viewport' : 'document',
+      height: rect.height,
+      pageScrollX: window.scrollX,
+      pageScrollY: window.scrollY,
+      width: rect.width,
+      x: rect.x + (viewportAnchored ? 0 : window.scrollX),
+      y: rect.y + (viewportAnchored ? 0 : window.scrollY),
+    };
+  });
+}
+
+export function expectComparableGeometry(
+  actual: ComparableGeometry,
+  expected: ComparableGeometry,
+  label = 'React/Vue 几何',
+): void {
+  expect(actual.coordinateSpace, `${label} 坐标空间不一致`).toBe(expected.coordinateSpace);
+  for (const axis of ['x', 'y', 'width', 'height'] as const) {
+    expect(
+      Math.abs(actual[axis] - expected[axis]),
+      `${label} ${axis} 差异超限；React scroll=(${expected.pageScrollX}, ${expected.pageScrollY})，Vue scroll=(${actual.pageScrollX}, ${actual.pageScrollY})`,
+    ).toBeLessThanOrEqual(VISUAL_THRESHOLDS.boundingRectToleranceCssPx);
+  }
 }
 
 export async function expectScreenshotPixelsToMatch(
@@ -207,15 +265,17 @@ export async function expectComparableTarget(
   const vueTarget = pair.vue.page.locator(target.selector);
   await Promise.all([expect(reactTarget).toBeVisible(), expect(vueTarget).toBeVisible()]);
 
-  const [reactStyle, vueStyle, reactRect, vueRect] = await Promise.all([
-    captureComputedStyle(reactTarget, target.computedStyleProperties),
-    captureComputedStyle(vueTarget, target.computedStyleProperties),
-    reactTarget.boundingBox(),
-    vueTarget.boundingBox(),
-  ]);
+  await Promise.all([waitForTargetStable(reactTarget), waitForTargetStable(vueTarget)]);
   await Promise.all([
     waitForStableRendering(pair.react.page),
     waitForStableRendering(pair.vue.page),
+  ]);
+
+  const [reactStyle, vueStyle, reactGeometry, vueGeometry] = await Promise.all([
+    captureComputedStyle(reactTarget, target.computedStyleProperties),
+    captureComputedStyle(vueTarget, target.computedStyleProperties),
+    captureComparableGeometry(reactTarget),
+    captureComparableGeometry(vueTarget),
   ]);
   const [reactScreenshot, vueScreenshot] = await Promise.all([
     reactTarget.screenshot({ animations: 'disabled' }),
@@ -229,13 +289,7 @@ export async function expectComparableTarget(
     reactScreenshot,
     `${scenarioId}/${targetId}`,
   );
-  if (!reactRect || !vueRect) throw new Error(`${scenarioId}/${targetId} 目标不可测量`);
-
-  for (const axis of ['x', 'y', 'width', 'height'] as const) {
-    expect(Math.abs(vueRect[axis] - reactRect[axis])).toBeLessThanOrEqual(
-      VISUAL_THRESHOLDS.boundingRectToleranceCssPx,
-    );
-  }
+  expectComparableGeometry(vueGeometry, reactGeometry, `${scenarioId}/${targetId}`);
 }
 
 export function referenceSourceWasRequested(
