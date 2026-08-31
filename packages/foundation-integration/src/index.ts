@@ -2,6 +2,12 @@
 // 具体组件适配会在对应对齐矩阵建立后加入，并由公开包构建阶段内联。
 export { AnchorFoundation, AnchorLinkFoundation } from './anchor.js';
 export type { AnchorAdapter, AnchorLinkAdapter } from './anchor.js';
+export { AudioPlayerFoundation, audioPlayerCssClasses } from './audio-player.js';
+export type {
+  AudioPlayerAdapter,
+  AudioPlayerFoundationProps,
+  AudioPlayerFoundationState,
+} from './audio-player.js';
 export { AvatarFoundation } from './avatar.js';
 export type { AvatarAdapter } from './avatar.js';
 export { BannerFoundation } from './banner.js';

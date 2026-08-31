@@ -97,6 +97,9 @@ export default defineConfig({
       entry: {
         index: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
         'anchor/index': fileURLToPath(new URL('./src/anchor/index.ts', import.meta.url)),
+        'audio-player/index': fileURLToPath(
+          new URL('./src/audio-player/index.ts', import.meta.url),
+        ),
         'avatar/index': fileURLToPath(new URL('./src/avatar/index.ts', import.meta.url)),
         'badge/index': fileURLToPath(new URL('./src/badge/index.ts', import.meta.url)),
         'banner/index': fileURLToPath(new URL('./src/banner/index.ts', import.meta.url)),

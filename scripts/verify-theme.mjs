@@ -419,6 +419,20 @@ const hotKeysCssPath = path.join(
 );
 const lottieEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'lottie.scss');
 const lottieCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'lottie.css');
+const audioPlayerEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'audio-player.scss',
+);
+const audioPlayerCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'audio-player.css',
+);
 const localeEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'locale.scss');
 const localeCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'locale.css');
 const dividerEntryPath = path.join(
@@ -2767,6 +2781,30 @@ if (!lottieCss.includes('--semi-color-primary') || !lottieCss.includes('[theme-m
   throw new Error('Lottie 逐组件样式产物缺少默认主题 Token 或暗色模式');
 }
 
+const expectedAudioPlayerImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/audioPlayer/audioPlayer.scss'),
+];
+const audioPlayerEntrySource = await readFile(audioPlayerEntryPath, 'utf8');
+const actualAudioPlayerImports = [
+  ...audioPlayerEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g),
+].map((match) => match[1]);
+if (JSON.stringify(actualAudioPlayerImports) !== JSON.stringify(expectedAudioPlayerImports)) {
+  throw new Error('AudioPlayer 逐组件样式入口未按固定主题与 Foundation 顺序导入');
+}
+const audioPlayerCss = await readFile(audioPlayerCssPath, 'utf8');
+for (const selector of [
+  '.semi-audio-player',
+  '.semi-audio-player-control-volume',
+  '.semi-audio-player-slider-horizontal',
+  '[theme-mode=dark]',
+]) {
+  if (!audioPlayerCss.includes(selector)) {
+    throw new Error(`AudioPlayer 逐组件样式产物缺少固定选择器：${selector}`);
+  }
+}
+
 const localeEntrySource = await readFile(localeEntryPath, 'utf8');
 const actualLocaleImports = [...localeEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
   (match) => match[1],
@@ -2808,5 +2846,5 @@ for (const selector of [
 }
 
 process.stdout.write(
-  `默认主题入口与 Anchor/Avatar/Badge/Banner/Notification/Popconfirm/Progress/Skeleton/Spin/Transfer/Upload/Toast/Calendar/Card/Carousel/Cascader/ColorPicker/DatePicker/Form/Collapse/Collapsible/CodeHighlight/Cropper/Descriptions/DragMove/HotKeys/Lottie/Locale/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/Tag/Timeline/BackTop/Breadcrumb/AutoComplete/Button/IconButton/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/TreeSelect/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + bannerCss.length + notificationCss.length + popconfirmCss.length + progressCss.length + skeletonCss.length + spinCss.length + transferCss.length + uploadCss.length + toastCss.length + calendarCss.length + cardCss.length + carouselCss.length + cascaderCss.length + colorPickerCss.length + datePickerCss.length + formCss.length + collapseCss.length + collapsibleCss.length + codeHighlightCss.length + cropperCss.length + descriptionsCss.length + dragMoveCss.length + hotKeysCss.length + lottieCss.length + localeCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + tagCss.length + timelineCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + iconButtonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + treeSelectCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/Avatar/Badge/Banner/Notification/Popconfirm/Progress/Skeleton/Spin/Transfer/Upload/Toast/Calendar/Card/Carousel/Cascader/ColorPicker/DatePicker/Form/Collapse/Collapsible/CodeHighlight/Cropper/Descriptions/DragMove/HotKeys/Lottie/AudioPlayer/Locale/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/Tag/Timeline/BackTop/Breadcrumb/AutoComplete/Button/IconButton/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/TreeSelect/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + bannerCss.length + notificationCss.length + popconfirmCss.length + progressCss.length + skeletonCss.length + spinCss.length + transferCss.length + uploadCss.length + toastCss.length + calendarCss.length + cardCss.length + carouselCss.length + cascaderCss.length + colorPickerCss.length + datePickerCss.length + formCss.length + collapseCss.length + collapsibleCss.length + codeHighlightCss.length + cropperCss.length + descriptionsCss.length + dragMoveCss.length + hotKeysCss.length + lottieCss.length + audioPlayerCss.length + localeCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + tagCss.length + timelineCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + iconButtonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + treeSelectCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

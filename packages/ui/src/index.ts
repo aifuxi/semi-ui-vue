@@ -1,4 +1,5 @@
 export * from './anchor';
+export * from './audio-player';
 export * from './avatar';
 export * from './badge';
 export * from './banner';

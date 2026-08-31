@@ -71,6 +71,52 @@ function createLottieFixture(color: [number, number, number, number]) {
 export const LOTTIE_ANIMATION_DATA_BLUE = createLottieFixture([0.086, 0.353, 0.941, 1]);
 export const LOTTIE_ANIMATION_DATA_ORANGE = createLottieFixture([0.976, 0.451, 0.086, 1]);
 
+function encodeBase64(bytes: Uint8Array): string {
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+  let output = '';
+  for (let index = 0; index < bytes.length; index += 3) {
+    const first = bytes[index] ?? 0;
+    const second = bytes[index + 1] ?? 0;
+    const third = bytes[index + 2] ?? 0;
+    const combined = (first << 16) | (second << 8) | third;
+    output += alphabet[(combined >> 18) & 63];
+    output += alphabet[(combined >> 12) & 63];
+    output += index + 1 < bytes.length ? alphabet[(combined >> 6) & 63] : '=';
+    output += index + 2 < bytes.length ? alphabet[combined & 63] : '=';
+  }
+  return output;
+}
+
+export function createSilentAudioDataUri(durationSeconds = 4): string {
+  const sampleRate = 8000;
+  const dataLength = Math.max(1, Math.floor(sampleRate * durationSeconds));
+  const bytes = new Uint8Array(44 + dataLength);
+  const view = new DataView(bytes.buffer);
+  const writeText = (offset: number, text: string) => {
+    for (let index = 0; index < text.length; index += 1) {
+      view.setUint8(offset + index, text.charCodeAt(index));
+    }
+  };
+  writeText(0, 'RIFF');
+  view.setUint32(4, 36 + dataLength, true);
+  writeText(8, 'WAVE');
+  writeText(12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate, true);
+  view.setUint16(32, 1, true);
+  view.setUint16(34, 8, true);
+  writeText(36, 'data');
+  view.setUint32(40, dataLength, true);
+  bytes.fill(128, 44);
+  return `data:audio/wav;base64,${encodeBase64(bytes)}`;
+}
+
+export const AUDIO_PLAYER_COVER_DATA_URI =
+  'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"%3E%3Crect width="50" height="50" rx="6" fill="%231c1f2b"/%3E%3Ccircle cx="25" cy="25" r="14" fill="%234f7cff"/%3E%3Ccircle cx="25" cy="25" r="4" fill="white"/%3E%3C/svg%3E';
+
 export const REFERENCE_SOURCE_PATHS = Object.freeze({
   anchorPublicEntry: 'vendor/semi-design/packages/semi-ui/anchor/index.tsx',
   anchorLinkEntry: 'vendor/semi-design/packages/semi-ui/anchor/link.tsx',
@@ -78,6 +124,12 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   anchorLinkFoundation: 'vendor/semi-design/packages/semi-foundation/anchor/linkFoundation.ts',
   anchorFoundationStyle: 'vendor/semi-design/packages/semi-foundation/anchor/anchor.scss',
   anchorDocumentation: 'vendor/semi-design/content/navigation/anchor/index.md',
+  audioPlayerPublicEntry: 'vendor/semi-design/packages/semi-ui/audioPlayer/index.tsx',
+  audioPlayerSliderEntry: 'vendor/semi-design/packages/semi-ui/audioPlayer/audioSlider.tsx',
+  audioPlayerFoundation: 'vendor/semi-design/packages/semi-foundation/audioPlayer/foundation.ts',
+  audioPlayerFoundationStyle:
+    'vendor/semi-design/packages/semi-foundation/audioPlayer/audioPlayer.scss',
+  audioPlayerDocumentation: 'vendor/semi-design/content/plus/audioPlayer/index.md',
   avatarPublicEntry: 'vendor/semi-design/packages/semi-ui/avatar/index.tsx',
   avatarGroupEntry: 'vendor/semi-design/packages/semi-ui/avatar/avatarGroup.tsx',
   avatarFoundation: 'vendor/semi-design/packages/semi-foundation/avatar/foundation.ts',
@@ -991,6 +1043,77 @@ export const PARITY_SCENARIOS = [
           'fontWeight',
           'lineHeight',
           'minHeight',
+          'width',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'audio-player',
+    title: 'AudioPlayer 音频播放器',
+    description:
+      '验证单曲/播放列表、metadata、进度、倍速、音量 Portal、工具栏缺省值、Locale、SSR、移动端、暗色与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.audioPlayerPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.audioPlayerPublicEntry,
+      REFERENCE_SOURCE_PATHS.audioPlayerSliderEntry,
+      REFERENCE_SOURCE_PATHS.audioPlayerFoundation,
+      REFERENCE_SOURCE_PATHS.audioPlayerFoundationStyle,
+      REFERENCE_SOURCE_PATHS.audioPlayerDocumentation,
+    ],
+    targets: [
+      {
+        id: 'audio-player-main',
+        selector: '.audio-player-scenario__main > .semi-audio-player',
+        computedStyleProperties: [
+          'alignItems',
+          'backgroundColor',
+          'boxSizing',
+          'display',
+          'gap',
+          'height',
+          'justifyContent',
+          'maxWidth',
+          'width',
+        ],
+      },
+      {
+        id: 'audio-player-control',
+        selector:
+          '.audio-player-scenario__main > .semi-audio-player > .semi-audio-player-control:first-of-type',
+        computedStyleProperties: ['alignItems', 'display', 'gap', 'height', 'width'],
+      },
+      {
+        id: 'audio-player-info',
+        selector: '.audio-player-scenario__main .semi-audio-player-info-time',
+        computedStyleProperties: [
+          'alignItems',
+          'color',
+          'display',
+          'fontSize',
+          'gap',
+          'height',
+          'justifyContent',
+          'width',
+        ],
+      },
+      {
+        id: 'audio-player-slider',
+        selector: '.audio-player-scenario__main .semi-audio-player-slider-horizontal',
+        computedStyleProperties: ['backgroundColor', 'borderRadius', 'height', 'position', 'width'],
+      },
+      {
+        id: 'audio-player-compact',
+        selector: '.audio-player-scenario__compact > .semi-audio-player',
+        computedStyleProperties: [
+          'alignItems',
+          'backgroundColor',
+          'display',
+          'gap',
+          'height',
+          'justifyContent',
           'width',
         ],
       },

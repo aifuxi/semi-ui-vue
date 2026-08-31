@@ -83,6 +83,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/hot-keys/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'lottie', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/lottie/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'audio-player', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/audio-player/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'locale', 'index.js')).href);
     const localeSourceRoot = path.join(distPath, 'locale', 'source');
     const localeSourceFiles = (await readdir(localeSourceRoot))

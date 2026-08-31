@@ -363,6 +363,7 @@ try {
 		await import('@aifuxi/semi-ui-vue/drag-move');
 		await import('@aifuxi/semi-ui-vue/hot-keys');
 		await import('@aifuxi/semi-ui-vue/lottie');
+		await import('@aifuxi/semi-ui-vue/audio-player');
 		await import('@aifuxi/semi-ui-vue/locale');
 		const localeModules = await Promise.all(${JSON.stringify(localeSourceNames)}.map(sourceName => import('@aifuxi/semi-ui-vue/locale/source/' + sourceName)));
 		if (localeModules.length !== 57 || localeModules.some(module => typeof module.default?.code !== 'string')) {
@@ -520,6 +521,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/lottie.css').endsWith('/dist/lottie.css')) {
 		  throw new Error('Lottie 逐组件样式导出未指向 dist/lottie.css');
+		}
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/audio-player.css').endsWith('/dist/audio-player.css')) {
+		  throw new Error('AudioPlayer 逐组件样式导出未指向 dist/audio-player.css');
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/locale.css').endsWith('/dist/locale.css')) {
 		  throw new Error('Locale 逐组件样式导出未指向 dist/locale.css');
@@ -690,6 +694,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { DragMove, type DragMoveConstrainer, type DragMoveProps } from '@aifuxi/semi-ui-vue/drag-move';
 		import { HotKeys, type HotKeysKey, type HotKeysProps } from '@aifuxi/semi-ui-vue/hot-keys';
 		import { Lottie, type LottieAnimationItem, type LottieParams, type LottiePlayer } from '@aifuxi/semi-ui-vue/lottie';
+		import { AudioPlayer, formatAudioTime, type AudioInfo, type AudioPlayerProps, type AudioPlayerTheme } from '@aifuxi/semi-ui-vue/audio-player';
 		import { LocaleConsumer, LocaleProvider, type LocaleConsumerSlotProps, type LocaleProviderProps } from '@aifuxi/semi-ui-vue/locale';
 		import enGB from '@aifuxi/semi-ui-vue/locale/source/en_GB';
 		import { Empty, type EmptyLayout, type EmptySvgNode } from '@aifuxi/semi-ui-vue/empty';
@@ -862,6 +867,11 @@ h(Button, { type, htmlType: 'submit' });
 		h(Lottie, { params: lottieParams, getAnimationInstance: instance => { lottieAnimation = instance; } });
 		void lottiePlayer;
 		void lottieAnimation;
+		const audioTheme: AudioPlayerTheme = 'light';
+		const audioInfo: AudioInfo = { src: 'data:audio/wav;base64,', title: 'Consumer track' };
+		const audioPlayerProps: AudioPlayerProps = { audioUrl: audioInfo, showToolbar: false, theme: audioTheme };
+		h(AudioPlayer, audioPlayerProps);
+		if (formatAudioTime(4) !== '0:04') throw new Error('AudioPlayer 公开时间格式化函数异常');
 		const localeProviderProps: LocaleProviderProps = { locale: enGB };
 		const localeSlot: LocaleConsumerSlotProps<{ begin: string }> | undefined = undefined;
 		h(LocaleProvider, localeProviderProps, () => h(LocaleConsumer, { componentName: 'TimePicker' }));
@@ -2033,6 +2043,27 @@ h(Button, { type, htmlType: 'submit' });
     !lottieThemeCss.includes('[theme-mode=dark]')
   ) {
     throw new Error('安装后的 Lottie 逐组件样式缺少默认主题 Token 或暗色模式');
+  }
+  const audioPlayerThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'audio-player.css',
+    ),
+    'utf8',
+  );
+  for (const selector of [
+    '.semi-audio-player',
+    '.semi-audio-player-control-volume',
+    '.semi-audio-player-slider-horizontal',
+    '[theme-mode=dark]',
+  ]) {
+    if (!audioPlayerThemeCss.includes(selector)) {
+      throw new Error(`安装后的 AudioPlayer 逐组件样式缺少选择器：${selector}`);
+    }
   }
   const localeThemeCss = await readFile(
     path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'locale.css'),

@@ -5,6 +5,17 @@ import { describe, expect, it } from 'vitest';
 import { App } from './App';
 
 describe('React 参考工作台', () => {
+  it('登记固定 AudioPlayer 的播放列表、工具栏和精简场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="audio-player" theme="light" />);
+
+    expect(html).toContain('data-parity-scenario="audio-player"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/audioPlayer/index.tsx');
+    expect(html).toContain('data-testid="audio-player-reference"');
+    expect(html).toContain('data-parity-target="audio-player-main"');
+    expect(html).toContain('data-parity-target="audio-player-compact"');
+    expect(html.match(/audio-player-scenario__card/g)).toHaveLength(2);
+  });
+
   it('登记固定 Locale Provider/Consumer 与语言源场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="locale" />);
 

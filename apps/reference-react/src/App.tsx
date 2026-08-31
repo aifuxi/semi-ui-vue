@@ -24,6 +24,7 @@ import { DragMoveScenario } from './scenarios/DragMoveScenario';
 import { HotKeysScenario } from './scenarios/HotKeysScenario';
 import { LottieScenario } from './scenarios/LottieScenario';
 import { LocaleScenario } from './scenarios/LocaleScenario';
+import { AudioPlayerScenario } from './scenarios/AudioPlayerScenario';
 import { EmptyScenario } from './scenarios/EmptyScenario';
 import { HighlightScenario } from './scenarios/HighlightScenario';
 import { ImageScenario } from './scenarios/ImageScenario';
@@ -159,6 +160,13 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'hot-keys' ? <HotKeysScenario /> : null}
         {scenario.id === 'lottie' ? <LottieScenario /> : null}
         {scenario.id === 'locale' ? <LocaleScenario /> : null}
+        {scenario.id === 'audio-player' ? (
+          <AudioPlayerScenario
+            direction={options.direction}
+            locale={options.locale}
+            theme={options.theme}
+          />
+        ) : null}
         {scenario.id === 'empty' ? <EmptyScenario /> : null}
         {scenario.id === 'highlight' ? <HighlightScenario /> : null}
         {scenario.id === 'image' ? <ImageScenario /> : null}

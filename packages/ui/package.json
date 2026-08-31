@@ -47,6 +47,10 @@
       "types": "./dist/anchor/index.d.ts",
       "import": "./dist/anchor/index.js"
     },
+    "./audio-player": {
+      "types": "./dist/audio-player/index.d.ts",
+      "import": "./dist/audio-player/index.js"
+    },
     "./avatar": {
       "types": "./dist/avatar/index.d.ts",
       "import": "./dist/avatar/index.js"

@@ -4,6 +4,26 @@ import { describe, expect, it, vi } from 'vitest';
 import App from './App.vue';
 
 describe('Vue 对照工作台', () => {
+  it('通过公共 AudioPlayer 渲染播放列表、工具栏与精简场景', () => {
+    const wrapper = mount(App, {
+      props: { scenarioId: 'audio-player', theme: 'light', locale: 'en-US' },
+    });
+    const scenario = wrapper.get('[data-testid="audio-player-vue"]');
+
+    expect(wrapper.attributes('data-vue-status')).toBe('ready');
+    expect(scenario.findAll('.audio-player-scenario__card')).toHaveLength(2);
+    expect(scenario.get('[data-parity-target="audio-player-main"]').classes()).toContain(
+      'semi-audio-player-light',
+    );
+    expect(
+      scenario.get('[data-parity-target="audio-player-main"] .semi-audio-player-info-title').text(),
+    ).toBe('Parity track A');
+    expect(
+      scenario.get('[data-parity-target="audio-player-compact"] .semi-audio-player-control'),
+    ).toBeTruthy();
+    wrapper.unmount();
+  });
+
   it('通过公共 Locale Provider/Consumer 渲染语言源与响应式场景', async () => {
     const wrapper = mount(App, { props: { scenarioId: 'locale' } });
     const scenario = wrapper.get('[data-testid="locale-vue"]');

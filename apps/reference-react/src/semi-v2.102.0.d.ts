@@ -1043,6 +1043,7 @@ declare module '@semi-v2.102.0/config-provider' {
   }
   export interface ConfigProviderProps extends Partial<ConfigContextValue> {
     children?: ReactNode;
+    getPopupContainer?: () => HTMLElement;
   }
   type ConfigProviderComponent = ComponentType<ConfigProviderProps> & {
     defaultResponsiveMap: ResponsiveMap;
@@ -2656,4 +2657,25 @@ declare module '@semi-v2.102.0/lottie' {
 
   const Lottie: ComponentType<LottieProps> & { getLottie: () => LottiePlayer };
   export default Lottie;
+}
+
+declare module '@semi-v2.102.0/audio-player' {
+  import type { ComponentType, HTMLAttributes } from 'react';
+
+  export interface AudioInfo {
+    title?: string;
+    cover?: string;
+    src: string;
+  }
+
+  export interface AudioPlayerProps extends HTMLAttributes<HTMLDivElement> {
+    audioUrl: string | AudioInfo | Array<string | AudioInfo>;
+    autoPlay?: boolean;
+    showToolbar?: boolean;
+    skipDuration?: number;
+    theme?: 'dark' | 'light';
+  }
+
+  const AudioPlayer: ComponentType<AudioPlayerProps>;
+  export default AudioPlayer;
 }
