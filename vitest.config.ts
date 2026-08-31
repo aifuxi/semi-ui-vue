@@ -2,9 +2,10 @@ import { fileURLToPath } from 'node:url';
 import react from '@vitejs/plugin-react';
 import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vitest/config';
+import { adaptPinnedJsonViewerCore } from './packages/foundation-integration/vite-json-viewer-plugin.js';
 
 export default defineConfig({
-  plugins: [vue(), react()],
+  plugins: [adaptPinnedJsonViewerCore(), vue(), react()],
   resolve: {
     alias: {
       '@aifuxi/semi-ui-vue/locale/source/en_GB': fileURLToPath(
@@ -110,6 +111,9 @@ export default defineConfig({
       ),
       '@semi-v2.102.0/user-guide': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiUserGuideStub.tsx', import.meta.url),
+      ),
+      '@semi-v2.102.0/json-viewer': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiJsonViewerStub.tsx', import.meta.url),
       ),
       '@semi-v2.102.0/locale-provider': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiLocaleProviderStub.ts', import.meta.url),

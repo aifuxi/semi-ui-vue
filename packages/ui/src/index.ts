@@ -19,6 +19,7 @@ export * from './drag-move';
 export * from './feedback';
 export * from './hot-keys';
 export * from './lottie';
+export * from './json-viewer';
 export * from './locale';
 export * from './empty';
 export * from './highlight';

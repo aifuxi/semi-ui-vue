@@ -2754,6 +2754,36 @@ declare module '@semi-v2.102.0/video-player' {
   export default VideoPlayer;
 }
 
+declare module '@semi-v2.102.0/json-viewer' {
+  import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
+
+  export interface JsonViewerSearchControls {
+    showSearchBar: boolean;
+    onToggleSearchBar(): void;
+    onSearch(text: string, caseSensitive?: boolean, wholeWord?: boolean, regex?: boolean): void;
+    onPrevSearch(): void;
+    onNextSearch(): void;
+    onReplace(text: string): void;
+    onReplaceAll(text: string): void;
+  }
+
+  export interface JsonViewerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
+    className?: string;
+    height?: number | string;
+    limitSearchButtonBounds?: boolean;
+    onChange?: (value: string) => void;
+    options?: Record<string, unknown>;
+    renderSearchButton?: (button: ReactNode, controls: JsonViewerSearchControls) => ReactNode;
+    showSearch?: boolean;
+    style?: CSSProperties;
+    value?: string;
+    width?: number | string;
+  }
+
+  const JsonViewer: ComponentType<JsonViewerProps>;
+  export default JsonViewer;
+}
+
 declare module '@semi-v2.102.0/user-guide' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 

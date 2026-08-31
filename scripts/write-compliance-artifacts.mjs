@@ -56,11 +56,12 @@ const sourceRuntimeDependencies = {
   ...sortRecord(manifest.optionalDependencies),
   ...sortRecord(manifest.peerDependencies),
 };
+const bundledRuntimeDependencies =
+  manifest.name === '@aifuxi/semi-ui-vue' ? { 'jsonc-parser': '3.3.1' } : {};
 const runtimeDependencies = Object.fromEntries(
-  Object.entries(sourceRuntimeDependencies).map(([name, version]) => [
-    name,
-    publishedDependencyVersion(version),
-  ]),
+  Object.entries({ ...sourceRuntimeDependencies, ...bundledRuntimeDependencies }).map(
+    ([name, version]) => [name, publishedDependencyVersion(version)],
+  ),
 );
 const dependencyEntries = Object.entries(runtimeDependencies).sort(([left], [right]) =>
   left.localeCompare(right),
@@ -87,6 +88,13 @@ const licensedDependencies = [
     version: '1.3.8',
   },
   { licenseFile: 'LICENSE', name: 'lodash', noticeName: 'Lodash', version: '4.17.21' },
+  {
+    licenseFile: 'LICENSE.md',
+    licenseRoot: path.join(workspaceRoot, 'packages', 'foundation-integration', 'node_modules'),
+    name: 'jsonc-parser',
+    noticeName: 'jsonc-parser',
+    version: '3.3.1',
+  },
   {
     licenseFile: 'LICENSE.md',
     name: 'lottie-web',
@@ -122,7 +130,11 @@ await copyFile(
 );
 for (const dependency of licensedDependencies) {
   await copyFile(
-    path.join(workspaceRoot, 'node_modules', dependency.name, dependency.licenseFile),
+    path.join(
+      dependency.licenseRoot ?? path.join(workspaceRoot, 'node_modules'),
+      dependency.name,
+      dependency.licenseFile,
+    ),
     path.join(licenseRoot, `${dependency.name}.txt`),
   );
 }

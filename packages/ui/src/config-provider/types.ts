@@ -11,6 +11,7 @@ import type { PopconfirmLocale } from '../popconfirm/types';
 import type { TableLocale } from '../table/types';
 import type { UploadLocaleConfig } from '../upload/types';
 import type { UserGuideLocale } from '../user-guide/types';
+import type { JsonViewerLocale } from '../json-viewer/types';
 
 export const CONFIG_BREAKPOINTS = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as const;
 
@@ -49,6 +50,7 @@ export interface SemiLocale {
   Table?: TableLocale;
   Upload?: UploadLocaleConfig;
   UserGuide?: UserGuideLocale;
+  JsonViewer?: JsonViewerLocale;
   [componentName: string]: unknown;
 }
 

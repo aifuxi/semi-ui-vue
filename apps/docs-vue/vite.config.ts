@@ -2,9 +2,10 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { compilePinnedComponentStyles } from '../../packages/theme-default/vite-plugin.ts';
+import { adaptPinnedJsonViewerCore } from '../../packages/foundation-integration/vite-json-viewer-plugin.js';
 
 export default defineConfig({
-  plugins: [compilePinnedComponentStyles(), vue()],
+  plugins: [adaptPinnedJsonViewerCore(), compilePinnedComponentStyles(), vue()],
   resolve: {
     alias: [
       {

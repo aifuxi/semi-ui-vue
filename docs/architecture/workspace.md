@@ -49,6 +49,8 @@ DragMove 是第七十个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/d
 
 Locale 是第七十三个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/locale/` 提供透明 DOM 的 LocaleProvider、LocaleConsumer 与全部 57 个语言源子路径，使用类型化 provide/inject 保持嵌套实例隔离、响应式切换和 ConfigProvider 优先级；`packages/foundation-integration/src/locale.js` 从固定 submodule 选择性编译并内联语言数据，生成校验阻止清单与 facade 漂移。固定源码没有 Locale Foundation 或专属 SCSS，`packages/theme-default/locale.css` 只编译默认 Token 与 global 暗色模式。完整矩阵见 `docs/components/locale/`。
 
+JsonViewer 是第七十八个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/json-viewer/` 提供编辑/只读、搜索替换、格式化、自动换行、自定义 Vue VNode token 和公开实例方法；`packages/foundation-integration/vite-json-viewer-plugin.ts` 将固定 `semi-json-viewer-core`、本地 namespace 与 Vite 内联 Worker 限定在私有构建边界。`jsonc-parser@3.3.1` 只编入 Worker，并纳入许可证、第三方声明与 SPDX SBOM；发布包不携带外置 Worker、不泄漏 vendor 路径，且 SSR 只输出稳定容器。`packages/theme-default/json-viewer.css` 编译 Button、Input、Icon 与固定 JsonViewer SCSS。完整矩阵见 `docs/components/json-viewer/`。
+
 Divider 是第二个进入 `ready` 的垂直切片：`packages/ui/src/divider/` 提供根/`divider` 子路径 ESM 与声明，`packages/theme-default/divider.css` 提供逐组件样式。它没有运行时 Foundation 状态机；纯文本与自定义 VNode 的 slot DOM 分支隔离在内容 renderer 中。完整矩阵见 `docs/components/divider/`。
 
 Icon 是第三个进入 `ready` 的横向基础设施切片：`packages/icons` 提供 Icon 基座、`convertIcon` 与稳定版 523 个图标，`packages/icons-lab` 独立提供 Lab 84 个图标，`packages/ui/src/icon/` 只转发稳定版基座。两套图标均从固定 submodule 的 TSX AST 生成 Vue `h()` 源码并由 `check:icons` 阻止漂移；`packages/theme-default/icon.css` 提供逐组件样式。完整矩阵与 React→Vue 迁移见 `docs/components/icon/`。
@@ -115,7 +117,7 @@ Notification 是第五十二个进入 `ready` 的 Vue 垂直切片：`packages/u
 
 Popconfirm 是第五十三个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/popconfirm/` 提供受控/非受控显隐、同步/Promise 确认取消、独立 loading、locale、焦点与 Portal/定位/RTL；`packages/foundation-integration/src/popconfirm.js` 隔离固定 Popconfirm Foundation，`packages/theme-default/popconfirm.css` 编译 Popconfirm、Popover、Button、Portal 与 Icon 样式。完整矩阵见 `docs/components/popconfirm/`。
 
-Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox、Input、Rating、Slider、TagInput、TimePicker、Anchor、BackTop、Breadcrumb、Pagination、Tabs、Table、Banner、Notification 与 Popconfirm 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。Anchor 精确锁定并内联 `scroll-into-view-if-needed@2.2.31`；BackTop 首次接通固定 `semi-animation` 并精确锁定 `bezier-easing@2.1.0`。两项第三方依赖均纳入许可与 SBOM 验证。后续仍必须逐组件处理 `semi-json-viewer-core` Worker、第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
+Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox、Input、Rating、Slider、TagInput、TimePicker、Anchor、BackTop、Breadcrumb、Pagination、Tabs、Table、Banner、Notification、Popconfirm 与 JsonViewer 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。Anchor 精确锁定并内联 `scroll-into-view-if-needed@2.2.31`；BackTop 首次接通固定 `semi-animation` 并精确锁定 `bezier-easing@2.1.0`；JsonViewer 将固定 core 与 `jsonc-parser@3.3.1` 编入 SSR-safe 内联 Worker。三项第三方依赖均纳入许可与 SBOM 验证。后续仍必须逐组件处理第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。
 

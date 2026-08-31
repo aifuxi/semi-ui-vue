@@ -59,6 +59,10 @@
       "types": "./dist/user-guide/index.d.ts",
       "import": "./dist/user-guide/index.js"
     },
+    "./json-viewer": {
+      "types": "./dist/json-viewer/index.d.ts",
+      "import": "./dist/json-viewer/index.js"
+    },
     "./avatar": {
       "types": "./dist/avatar/index.d.ts",
       "import": "./dist/avatar/index.js"

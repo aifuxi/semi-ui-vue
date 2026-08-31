@@ -28,6 +28,7 @@ import LocaleScenario from './components/LocaleScenario.vue';
 import AudioPlayerScenario from './components/AudioPlayerScenario.vue';
 import VideoPlayerScenario from './components/VideoPlayerScenario.vue';
 import UserGuideScenario from './components/UserGuideScenario.vue';
+import JsonViewerScenario from './components/JsonViewerScenario.vue';
 import EmptyScenario from './components/EmptyScenario.vue';
 import HighlightScenario from './components/HighlightScenario.vue';
 import ImageScenario from './components/ImageScenario.vue';
@@ -170,6 +171,11 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
         :theme="props.theme"
       />
       <UserGuideScenario v-else-if="scenario.id === 'user-guide'" :direction="props.direction" />
+      <JsonViewerScenario
+        v-else-if="scenario.id === 'json-viewer'"
+        :direction="props.direction"
+        :locale="props.locale"
+      />
       <EmptyScenario v-else-if="scenario.id === 'empty'" />
       <HighlightScenario v-else-if="scenario.id === 'highlight'" />
       <ImageScenario v-else-if="scenario.id === 'image'" />

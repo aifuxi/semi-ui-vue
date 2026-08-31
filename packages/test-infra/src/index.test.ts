@@ -122,6 +122,23 @@ describe('parity infrastructure contract', () => {
     ]);
   });
 
+  it('records JsonViewer Adapter, core Worker, Foundation, styles and docs', () => {
+    expect(getParityScenario('json-viewer')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.jsonViewerPublicEntry,
+    });
+    expect(assertScenarioComparable('json-viewer').targets).toHaveLength(4);
+    expect(getParityScenario('json-viewer').sourceEvidence).toEqual([
+      REFERENCE_SOURCE_PATHS.jsonViewerPublicEntry,
+      REFERENCE_SOURCE_PATHS.jsonViewerCoreEntry,
+      REFERENCE_SOURCE_PATHS.jsonViewerWorkerEntry,
+      REFERENCE_SOURCE_PATHS.jsonViewerFoundation,
+      REFERENCE_SOURCE_PATHS.jsonViewerFoundationStyle,
+      REFERENCE_SOURCE_PATHS.jsonViewerDocumentation,
+    ]);
+  });
+
   it('records IconButton Adapter, Button base, fixed styles and docs', () => {
     expect(getParityScenario('icon-button')).toMatchObject({
       referenceStatus: 'ready',

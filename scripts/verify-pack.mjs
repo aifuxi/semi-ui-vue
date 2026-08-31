@@ -139,11 +139,23 @@ try {
         'date-fns-tz.txt',
         'lodash.txt',
         'lottie-web.txt',
+        'jsonc-parser.txt',
         'prismjs.txt',
         'scroll-into-view-if-needed.txt',
       ].some((license) => !packedFiles.has(`dist/THIRD_PARTY_LICENSES/${license}`))
     ) {
       throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少运行时依赖许可证');
+    }
+    if (packageInfo.name === '@aifuxi/semi-ui-vue') {
+      if (!packedFiles.has('dist/json-viewer/index.js')) {
+        throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少 JsonViewer 子路径产物');
+      }
+      const externalWorker = [...packedFiles].find((filePath) =>
+        /dist\/.*json[-.]?viewer.*worker.*\.js$/i.test(filePath),
+      );
+      if (externalWorker) {
+        throw new Error(`JsonViewer Worker 未内联到组件产物：${externalWorker}`);
+      }
     }
 
     tarballs.set(packageInfo.name, path.resolve(artifactsRoot, packResult.filename));
@@ -257,6 +269,25 @@ try {
       throw new Error(`${packageInfo.name} 未原样携带上游许可证`);
     }
     if (packageInfo.name === '@aifuxi/semi-ui-vue') {
+      const uiDistRoot = path.join(installedRoot, 'dist');
+      const jsonViewerChunkNames = (await readdir(uiDistRoot)).filter((fileName) =>
+        /^json-viewer-.*\.js$/.test(fileName),
+      );
+      const jsonViewerDist = (
+        await Promise.all([
+          readFile(path.join(uiDistRoot, 'json-viewer', 'index.js'), 'utf8'),
+          ...jsonViewerChunkNames.map((fileName) =>
+            readFile(path.join(uiDistRoot, fileName), 'utf8'),
+          ),
+        ])
+      ).join('\n');
+      if (
+        jsonViewerDist.includes('%WORKER_RAW%') ||
+        jsonViewerDist.includes('vendor/semi-design') ||
+        !jsonViewerDist.includes('createObjectURL')
+      ) {
+        throw new Error('@aifuxi/semi-ui-vue 的 JsonViewer 未包含 SSR-safe 内联 Worker');
+      }
       for (const [dependency, licenseFile] of [
         ['async-validator', 'LICENSE.md'],
         ['bezier-easing', 'LICENSE'],
@@ -265,6 +296,7 @@ try {
         ['date-fns-tz', 'LICENSE.md'],
         ['lodash', 'LICENSE'],
         ['lottie-web', 'LICENSE.md'],
+        ['jsonc-parser', 'LICENSE.md'],
         ['prismjs', 'LICENSE'],
         ['scroll-into-view-if-needed', 'LICENSE'],
       ]) {
@@ -273,7 +305,14 @@ try {
           'utf8',
         );
         const sourceLicense = await readFile(
-          path.join(workspaceRoot, 'node_modules', dependency, licenseFile),
+          path.join(
+            workspaceRoot,
+            ...(dependency === 'jsonc-parser'
+              ? ['packages', 'foundation-integration', 'node_modules']
+              : ['node_modules']),
+            dependency,
+            licenseFile,
+          ),
           'utf8',
         );
         if (installedLicense !== sourceLicense) {
@@ -293,6 +332,7 @@ try {
         ...(manifest.optionalDependencies ?? {}),
         ...(manifest.peerDependencies ?? {}),
       }),
+      ...(packageInfo.name === '@aifuxi/semi-ui-vue' ? ['jsonc-parser'] : []),
     ].sort();
     const actualSbomPackageNames = (sbom.packages ?? []).map(({ name }) => name).sort();
     const expectedSbomVersions = {
@@ -300,6 +340,7 @@ try {
       ...manifest.dependencies,
       ...manifest.optionalDependencies,
       ...manifest.peerDependencies,
+      ...(packageInfo.name === '@aifuxi/semi-ui-vue' ? { 'jsonc-parser': '3.3.1' } : {}),
     };
     const hasExpectedSbomVersions = Object.entries(expectedSbomVersions).every(([name, version]) =>
       (sbom.packages ?? []).some(
@@ -367,6 +408,7 @@ try {
 		await import('@aifuxi/semi-ui-vue/audio-player');
 		await import('@aifuxi/semi-ui-vue/video-player');
 		await import('@aifuxi/semi-ui-vue/user-guide');
+		await import('@aifuxi/semi-ui-vue/json-viewer');
 		await import('@aifuxi/semi-ui-vue/locale');
 		const localeModules = await Promise.all(${JSON.stringify(localeSourceNames)}.map(sourceName => import('@aifuxi/semi-ui-vue/locale/source/' + sourceName)));
 		if (localeModules.length !== 57 || localeModules.some(module => typeof module.default?.code !== 'string')) {
@@ -536,6 +578,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/user-guide.css').endsWith('/dist/user-guide.css')) {
 		  throw new Error('UserGuide 逐组件样式导出未指向 dist/user-guide.css');
+		}
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/json-viewer.css').endsWith('/dist/json-viewer.css')) {
+		  throw new Error('JsonViewer 逐组件样式导出未指向 dist/json-viewer.css');
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/locale.css').endsWith('/dist/locale.css')) {
 		  throw new Error('Locale 逐组件样式导出未指向 dist/locale.css');
@@ -710,6 +755,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { AudioPlayer, formatAudioTime, type AudioInfo, type AudioPlayerProps, type AudioPlayerTheme } from '@aifuxi/semi-ui-vue/audio-player';
 		import { VideoPlayer, formatVideoTime, type VideoPlayerMarker, type VideoPlayerProps, type VideoPlayerTheme } from '@aifuxi/semi-ui-vue/video-player';
 		import { UserGuide, type UserGuideMode, type UserGuideProps, type UserGuideStepItem } from '@aifuxi/semi-ui-vue/user-guide';
+		import { JsonViewer, type JsonViewerOptions, type JsonViewerProps, type JsonViewerSearchControls } from '@aifuxi/semi-ui-vue/json-viewer';
 		import { LocaleConsumer, LocaleProvider, type LocaleConsumerSlotProps, type LocaleProviderProps } from '@aifuxi/semi-ui-vue/locale';
 		import enGB from '@aifuxi/semi-ui-vue/locale/source/en_GB';
 		import { Empty, type EmptyLayout, type EmptySvgNode } from '@aifuxi/semi-ui-vue/empty';
@@ -901,6 +947,11 @@ h(Button, { type, htmlType: 'submit' });
 		const userGuideSteps: UserGuideStepItem[] = [{ target: () => null, title: 'Consumer guide' }];
 		const userGuideProps: UserGuideProps = { current: 0, mode: userGuideMode, steps: userGuideSteps, visible: false };
 		h(UserGuide, userGuideProps);
+		const jsonViewerOptions: JsonViewerOptions = { readOnly: true, autoWrap: true };
+		const jsonViewerProps: JsonViewerProps = { value: '{"ready":true}', width: 320, height: 160, options: jsonViewerOptions };
+		const jsonViewerSearchControls: JsonViewerSearchControls | undefined = undefined;
+		h(JsonViewer, { ...jsonViewerProps, 'onUpdate:value': value => void value });
+		void jsonViewerSearchControls;
 		const localeProviderProps: LocaleProviderProps = { locale: enGB };
 		const localeSlot: LocaleConsumerSlotProps<{ begin: string }> | undefined = undefined;
 		h(LocaleProvider, localeProviderProps, () => h(LocaleConsumer, { componentName: 'TimePicker' }));
@@ -2157,6 +2208,28 @@ h(Button, { type, htmlType: 'submit' });
   ]) {
     if (!userGuideThemeCss.includes(selector)) {
       throw new Error(`安装后的 UserGuide 逐组件样式缺少选择器：${selector}`);
+    }
+  }
+  const jsonViewerThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'json-viewer.css',
+    ),
+    'utf8',
+  );
+  for (const selector of [
+    '.semi-json-viewer-background',
+    '.semi-json-viewer-search-bar',
+    '.semi-json-viewer-current-search-result',
+    '.semi-json-viewer-folding',
+    '[theme-mode=dark]',
+  ]) {
+    if (!jsonViewerThemeCss.includes(selector)) {
+      throw new Error(`安装后的 JsonViewer 逐组件样式缺少选择器：${selector}`);
     }
   }
   const localeThemeCss = await readFile(

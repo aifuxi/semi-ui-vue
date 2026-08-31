@@ -27,6 +27,7 @@ import { LocaleScenario } from './scenarios/LocaleScenario';
 import { AudioPlayerScenario } from './scenarios/AudioPlayerScenario';
 import { VideoPlayerScenario } from './scenarios/VideoPlayerScenario';
 import { UserGuideScenario } from './scenarios/UserGuideScenario';
+import { JsonViewerScenario } from './scenarios/JsonViewerScenario';
 import { EmptyScenario } from './scenarios/EmptyScenario';
 import { HighlightScenario } from './scenarios/HighlightScenario';
 import { ImageScenario } from './scenarios/ImageScenario';
@@ -178,6 +179,9 @@ export function App(props: AppProps): React.ReactElement {
           />
         ) : null}
         {scenario.id === 'user-guide' ? <UserGuideScenario direction={options.direction} /> : null}
+        {scenario.id === 'json-viewer' ? (
+          <JsonViewerScenario direction={options.direction} locale={options.locale} />
+        ) : null}
         {scenario.id === 'empty' ? <EmptyScenario /> : null}
         {scenario.id === 'highlight' ? <HighlightScenario /> : null}
         {scenario.id === 'image' ? <ImageScenario /> : null}

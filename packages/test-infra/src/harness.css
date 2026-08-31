@@ -3619,3 +3619,37 @@ p {
   font-size: 14px;
   line-height: 20px;
 }
+
+.json-viewer-scenario {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+}
+
+.json-viewer-scenario__card {
+  min-width: 0;
+  padding: 18px;
+  overflow: hidden;
+  border: 1px solid var(--semi-color-border);
+  border-radius: 12px;
+  background: var(--semi-color-bg-1);
+}
+
+.json-viewer-scenario__card h3 {
+  margin: 0 0 12px;
+  color: var(--semi-color-text-0);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.json-viewer-scenario__custom-token {
+  color: var(--semi-color-success);
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .json-viewer-scenario__card {
+    padding: 10px;
+    overflow: auto;
+  }
+}

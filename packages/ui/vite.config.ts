@@ -3,6 +3,7 @@ import { readdirSync } from 'node:fs';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
+import { adaptPinnedJsonViewerCore } from '../foundation-integration/vite-json-viewer-plugin.js';
 
 const animationEntry = fileURLToPath(
   new URL('../../vendor/semi-design/packages/semi-animation/index.ts', import.meta.url),
@@ -28,6 +29,7 @@ const localeSourceEntries = Object.fromEntries(
 
 export default defineConfig({
   plugins: [
+    adaptPinnedJsonViewerCore(),
     vue(),
     dts({
       entryRoot: 'src',
@@ -129,6 +131,7 @@ export default defineConfig({
         'feedback/index': fileURLToPath(new URL('./src/feedback/index.ts', import.meta.url)),
         'hot-keys/index': fileURLToPath(new URL('./src/hot-keys/index.ts', import.meta.url)),
         'lottie/index': fileURLToPath(new URL('./src/lottie/index.ts', import.meta.url)),
+        'json-viewer/index': fileURLToPath(new URL('./src/json-viewer/index.ts', import.meta.url)),
         'locale/index': fileURLToPath(new URL('./src/locale/index.ts', import.meta.url)),
         ...localeSourceEntries,
         'empty/index': fileURLToPath(new URL('./src/empty/index.ts', import.meta.url)),

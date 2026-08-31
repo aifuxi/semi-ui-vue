@@ -125,6 +125,19 @@ export { HotKeysFoundation, HotKeysFoundationKeys } from './hot-keys.js';
 export type { HotKeysAdapter, HotKeysFoundationProps } from './hot-keys.js';
 export { LottieFoundation, lottieCssClasses } from './lottie.js';
 export type { LottieAdapter, LottieFoundationProps, LottieLoadParams } from './lottie.js';
+export { JsonViewerFoundation, jsonViewerCssClasses } from './json-viewer.js';
+export type {
+  JsonViewerAdapter,
+  JsonViewerCompletionItem,
+  JsonViewerCore,
+  JsonViewerCustomRenderRule,
+  JsonViewerFormattingOptions,
+  JsonViewerFoundationProps,
+  JsonViewerFoundationState,
+  JsonViewerOptions,
+  JsonViewerSearchResult,
+  JsonViewerTokenRenderType,
+} from './json-viewer.js';
 export * from './locale.js';
 export { HighlightFoundation } from './highlight.js';
 export type {
