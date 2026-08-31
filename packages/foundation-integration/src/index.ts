@@ -273,6 +273,20 @@ export { SelectFoundation } from './select.js';
 export type { SelectAdapter } from './select.js';
 export { SliderFoundation } from './slider.js';
 export type { SliderAdapter, SliderLengths } from './slider.js';
+export {
+  VideoPlayerFoundation,
+  VideoProgressFoundation,
+  videoPlayerCssClasses,
+  videoPlayerDefaultPlaybackRate,
+  videoPlayerNumbers,
+  videoPlayerStrings,
+} from './video-player.js';
+export type {
+  VideoMarker,
+  VideoMarkerListItem,
+  VideoPlayerAdapter,
+  VideoProgressAdapter,
+} from './video-player.js';
 export { SwitchFoundation } from './switch.js';
 export type { SwitchAdapter } from './switch.js';
 export { TabsFoundation } from './tabs.js';

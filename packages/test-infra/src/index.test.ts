@@ -89,6 +89,23 @@ describe('parity infrastructure contract', () => {
     ]);
   });
 
+  it('records VideoPlayer Adapter, progress, Foundations, styles and docs', () => {
+    expect(getParityScenario('video-player')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.videoPlayerPublicEntry,
+    });
+    expect(assertScenarioComparable('video-player').targets).toHaveLength(5);
+    expect(getParityScenario('video-player').sourceEvidence).toEqual([
+      REFERENCE_SOURCE_PATHS.videoPlayerPublicEntry,
+      REFERENCE_SOURCE_PATHS.videoPlayerProgressEntry,
+      REFERENCE_SOURCE_PATHS.videoPlayerFoundation,
+      REFERENCE_SOURCE_PATHS.videoPlayerProgressFoundation,
+      REFERENCE_SOURCE_PATHS.videoPlayerFoundationStyle,
+      REFERENCE_SOURCE_PATHS.videoPlayerDocumentation,
+    ]);
+  });
+
   it('records IconButton Adapter, Button base, fixed styles and docs', () => {
     expect(getParityScenario('icon-button')).toMatchObject({
       referenceStatus: 'ready',

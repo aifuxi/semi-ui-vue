@@ -433,6 +433,20 @@ const audioPlayerCssPath = path.join(
   'dist',
   'audio-player.css',
 );
+const videoPlayerEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'video-player.scss',
+);
+const videoPlayerCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'video-player.css',
+);
 const localeEntryPath = path.join(workspaceRoot, 'packages', 'theme-default', 'src', 'locale.scss');
 const localeCssPath = path.join(workspaceRoot, 'packages', 'theme-default', 'dist', 'locale.css');
 const dividerEntryPath = path.join(
@@ -2805,6 +2819,32 @@ for (const selector of [
   }
 }
 
+const expectedVideoPlayerImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/audioPlayer/audioPlayer.scss'),
+  vendorImport('semi-foundation/videoPlayer/videoPlayer.scss'),
+];
+const videoPlayerEntrySource = await readFile(videoPlayerEntryPath, 'utf8');
+const actualVideoPlayerImports = [
+  ...videoPlayerEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g),
+].map((match) => match[1]);
+if (JSON.stringify(actualVideoPlayerImports) !== JSON.stringify(expectedVideoPlayerImports)) {
+  throw new Error('VideoPlayer 逐组件样式入口未按固定主题、AudioSlider 与 Foundation 顺序导入');
+}
+const videoPlayerCss = await readFile(videoPlayerCssPath, 'utf8');
+for (const selector of [
+  '.semi-videoPlayer',
+  '.semi-videoPlayer-controls-volume',
+  '.semi-videoPlayer-progress-slider',
+  '.semi-audio-player-slider-wrapper-vertical',
+  '[theme-mode=dark]',
+]) {
+  if (!videoPlayerCss.includes(selector)) {
+    throw new Error(`VideoPlayer 逐组件样式产物缺少固定选择器：${selector}`);
+  }
+}
+
 const localeEntrySource = await readFile(localeEntryPath, 'utf8');
 const actualLocaleImports = [...localeEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
   (match) => match[1],
@@ -2846,5 +2886,5 @@ for (const selector of [
 }
 
 process.stdout.write(
-  `默认主题入口与 Anchor/Avatar/Badge/Banner/Notification/Popconfirm/Progress/Skeleton/Spin/Transfer/Upload/Toast/Calendar/Card/Carousel/Cascader/ColorPicker/DatePicker/Form/Collapse/Collapsible/CodeHighlight/Cropper/Descriptions/DragMove/HotKeys/Lottie/AudioPlayer/Locale/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/Tag/Timeline/BackTop/Breadcrumb/AutoComplete/Button/IconButton/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/TreeSelect/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + bannerCss.length + notificationCss.length + popconfirmCss.length + progressCss.length + skeletonCss.length + spinCss.length + transferCss.length + uploadCss.length + toastCss.length + calendarCss.length + cardCss.length + carouselCss.length + cascaderCss.length + colorPickerCss.length + datePickerCss.length + formCss.length + collapseCss.length + collapsibleCss.length + codeHighlightCss.length + cropperCss.length + descriptionsCss.length + dragMoveCss.length + hotKeysCss.length + lottieCss.length + audioPlayerCss.length + localeCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + tagCss.length + timelineCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + iconButtonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + treeSelectCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 Anchor/Avatar/Badge/Banner/Notification/Popconfirm/Progress/Skeleton/Spin/Transfer/Upload/Toast/Calendar/Card/Carousel/Cascader/ColorPicker/DatePicker/Form/Collapse/Collapsible/CodeHighlight/Cropper/Descriptions/DragMove/HotKeys/Lottie/AudioPlayer/VideoPlayer/Locale/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/Tag/Timeline/BackTop/Breadcrumb/AutoComplete/Button/IconButton/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/TreeSelect/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + anchorCss.length + avatarCss.length + badgeCss.length + bannerCss.length + notificationCss.length + popconfirmCss.length + progressCss.length + skeletonCss.length + spinCss.length + transferCss.length + uploadCss.length + toastCss.length + calendarCss.length + cardCss.length + carouselCss.length + cascaderCss.length + colorPickerCss.length + datePickerCss.length + formCss.length + collapseCss.length + collapsibleCss.length + codeHighlightCss.length + cropperCss.length + descriptionsCss.length + dragMoveCss.length + hotKeysCss.length + lottieCss.length + audioPlayerCss.length + videoPlayerCss.length + localeCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + tagCss.length + timelineCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + iconButtonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + treeSelectCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

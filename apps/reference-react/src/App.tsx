@@ -25,6 +25,7 @@ import { HotKeysScenario } from './scenarios/HotKeysScenario';
 import { LottieScenario } from './scenarios/LottieScenario';
 import { LocaleScenario } from './scenarios/LocaleScenario';
 import { AudioPlayerScenario } from './scenarios/AudioPlayerScenario';
+import { VideoPlayerScenario } from './scenarios/VideoPlayerScenario';
 import { EmptyScenario } from './scenarios/EmptyScenario';
 import { HighlightScenario } from './scenarios/HighlightScenario';
 import { ImageScenario } from './scenarios/ImageScenario';
@@ -162,6 +163,13 @@ export function App(props: AppProps): React.ReactElement {
         {scenario.id === 'locale' ? <LocaleScenario /> : null}
         {scenario.id === 'audio-player' ? (
           <AudioPlayerScenario
+            direction={options.direction}
+            locale={options.locale}
+            theme={options.theme}
+          />
+        ) : null}
+        {scenario.id === 'video-player' ? (
+          <VideoPlayerScenario
             direction={options.direction}
             locale={options.locale}
             theme={options.theme}

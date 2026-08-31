@@ -2679,3 +2679,49 @@ declare module '@semi-v2.102.0/audio-player' {
   const AudioPlayer: ComponentType<AudioPlayerProps>;
   export default AudioPlayer;
 }
+
+declare module '@semi-v2.102.0/video-player' {
+  import type { ComponentType, CSSProperties, HTMLAttributes } from 'react';
+
+  export interface VideoPlayerMarker {
+    start: number;
+    title: string;
+  }
+
+  export interface VideoPlayerProps extends Omit<
+    HTMLAttributes<HTMLDivElement>,
+    'onPlay' | 'onPause'
+  > {
+    autoPlay?: boolean;
+    captionsSrc?: string;
+    clickToPlay?: boolean;
+    controlsList?: string[];
+    crossOrigin?: '' | 'anonymous' | 'use-credentials';
+    defaultPlaybackRate?: number;
+    defaultQuality?: string;
+    defaultRoute?: string;
+    height?: number | string;
+    loop?: boolean;
+    markers?: VideoPlayerMarker[];
+    muted?: boolean;
+    onPause?: () => void;
+    onPlay?: () => void;
+    onQualityChange?: (quality: string) => void;
+    onRateChange?: (rate: number) => void;
+    onRouteChange?: (route: string) => void;
+    onVolumeChange?: (volume: number) => void;
+    playbackRateList?: Array<{ label: string; value: number }>;
+    poster?: string;
+    qualityList?: Array<{ label: string; value: string }>;
+    routeList?: Array<{ label: string; value: string }>;
+    seekTime?: number;
+    src?: string;
+    style?: CSSProperties;
+    theme?: 'dark' | 'light';
+    volume?: number;
+    width?: number | string;
+  }
+
+  const VideoPlayer: ComponentType<VideoPlayerProps>;
+  export default VideoPlayer;
+}

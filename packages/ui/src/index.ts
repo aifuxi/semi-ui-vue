@@ -92,3 +92,4 @@ export * from './navigation';
 export * from './tree';
 export * from './tree-select';
 export * from './typography';
+export * from './video-player';

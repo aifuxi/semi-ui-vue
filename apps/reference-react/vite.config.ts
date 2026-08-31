@@ -31,6 +31,7 @@ const dragMovePublicEntry = path.join(upstreamPackages, 'semi-ui/dragMove/index.
 const hotKeysPublicEntry = path.join(upstreamPackages, 'semi-ui/hotKeys/index.tsx');
 const lottiePublicEntry = path.join(upstreamPackages, 'semi-ui/lottie/index.tsx');
 const audioPlayerPublicEntry = path.join(upstreamPackages, 'semi-ui/audioPlayer/index.tsx');
+const videoPlayerPublicEntry = path.join(upstreamPackages, 'semi-ui/videoPlayer/index.tsx');
 const localeProviderEntry = path.join(upstreamPackages, 'semi-ui/locale/localeProvider.tsx');
 const localeConsumerEntry = path.join(upstreamPackages, 'semi-ui/locale/localeConsumer.tsx');
 const localeEnGBEntry = path.join(upstreamPackages, 'semi-ui/locale/source/en_GB.ts');
@@ -131,6 +132,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'hotKeys/hotKeys.scss'),
   '@douyinfe/semi-foundation/audioPlayer/audioPlayer.scss',
   path.join(foundationRoot, 'audioPlayer/audioPlayer.scss'),
+  '@douyinfe/semi-foundation/videoPlayer/videoPlayer.scss',
+  path.join(foundationRoot, 'videoPlayer/videoPlayer.scss'),
   '@douyinfe/semi-foundation/divider/divider.scss',
   path.join(foundationRoot, 'divider/divider.scss'),
   '@douyinfe/semi-foundation/floatButton/floatButton.scss',
@@ -315,6 +318,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/hot-keys', replacement: hotKeysPublicEntry },
       { find: '@semi-v2.102.0/lottie', replacement: lottiePublicEntry },
       { find: '@semi-v2.102.0/audio-player', replacement: audioPlayerPublicEntry },
+      { find: '@semi-v2.102.0/video-player', replacement: videoPlayerPublicEntry },
       { find: '@semi-v2.102.0/locale-provider', replacement: localeProviderEntry },
       { find: '@semi-v2.102.0/locale-consumer', replacement: localeConsumerEntry },
       { find: '@semi-v2.102.0/locale-en-gb', replacement: localeEnGBEntry },

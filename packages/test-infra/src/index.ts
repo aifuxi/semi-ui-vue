@@ -117,6 +117,9 @@ export function createSilentAudioDataUri(durationSeconds = 4): string {
 export const AUDIO_PLAYER_COVER_DATA_URI =
   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"%3E%3Crect width="50" height="50" rx="6" fill="%231c1f2b"/%3E%3Ccircle cx="25" cy="25" r="14" fill="%234f7cff"/%3E%3Ccircle cx="25" cy="25" r="4" fill="white"/%3E%3C/svg%3E';
 
+export const VIDEO_PLAYER_POSTER_DATA_URI =
+  'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450"%3E%3Cdefs%3E%3ClinearGradient id="g" x1="0" y1="0" x2="1" y2="1"%3E%3Cstop stop-color="%23131a2b"/%3E%3Cstop offset="1" stop-color="%23395489"/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width="800" height="450" fill="url(%23g)"/%3E%3Ccircle cx="630" cy="100" r="150" fill="%234f7cff" fill-opacity=".28"/%3E%3Ccircle cx="180" cy="370" r="210" fill="%23ff9a3d" fill-opacity=".18"/%3E%3Cpath d="M360 155v140l120-70z" fill="white" fill-opacity=".9"/%3E%3Ctext x="32" y="55" fill="white" font-family="Arial,sans-serif" font-size="24"%3EVideoPlayer parity fixture%3C/text%3E%3C/svg%3E';
+
 export const REFERENCE_SOURCE_PATHS = Object.freeze({
   anchorPublicEntry: 'vendor/semi-design/packages/semi-ui/anchor/index.tsx',
   anchorLinkEntry: 'vendor/semi-design/packages/semi-ui/anchor/link.tsx',
@@ -130,6 +133,14 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   audioPlayerFoundationStyle:
     'vendor/semi-design/packages/semi-foundation/audioPlayer/audioPlayer.scss',
   audioPlayerDocumentation: 'vendor/semi-design/content/plus/audioPlayer/index.md',
+  videoPlayerPublicEntry: 'vendor/semi-design/packages/semi-ui/videoPlayer/index.tsx',
+  videoPlayerProgressEntry: 'vendor/semi-design/packages/semi-ui/videoPlayer/videoProgress.tsx',
+  videoPlayerFoundation: 'vendor/semi-design/packages/semi-foundation/videoPlayer/foundation.ts',
+  videoPlayerProgressFoundation:
+    'vendor/semi-design/packages/semi-foundation/videoPlayer/progressFoundation.ts',
+  videoPlayerFoundationStyle:
+    'vendor/semi-design/packages/semi-foundation/videoPlayer/videoPlayer.scss',
+  videoPlayerDocumentation: 'vendor/semi-design/content/plus/videoPlayer/index.md',
   avatarPublicEntry: 'vendor/semi-design/packages/semi-ui/avatar/index.tsx',
   avatarGroupEntry: 'vendor/semi-design/packages/semi-ui/avatar/avatarGroup.tsx',
   avatarFoundation: 'vendor/semi-design/packages/semi-foundation/avatar/foundation.ts',
@@ -1116,6 +1127,78 @@ export const PARITY_SCENARIOS = [
           'justifyContent',
           'width',
         ],
+      },
+    ],
+  },
+  {
+    id: 'video-player',
+    title: 'VideoPlayer 视频播放器',
+    description:
+      '验证固定海报、章节进度、控制列表、音量/倍速/清晰度/线路 Portal、键盘、Locale、移动端、暗色与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.videoPlayerPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.videoPlayerPublicEntry,
+      REFERENCE_SOURCE_PATHS.videoPlayerProgressEntry,
+      REFERENCE_SOURCE_PATHS.videoPlayerFoundation,
+      REFERENCE_SOURCE_PATHS.videoPlayerProgressFoundation,
+      REFERENCE_SOURCE_PATHS.videoPlayerFoundationStyle,
+      REFERENCE_SOURCE_PATHS.videoPlayerDocumentation,
+    ],
+    targets: [
+      {
+        id: 'video-player-main',
+        selector: '.video-player-scenario__main > .semi-videoPlayer',
+        computedStyleProperties: ['display', 'height', 'position', 'width'],
+      },
+      {
+        id: 'video-player-wrapper',
+        selector: '.video-player-scenario__main .semi-videoPlayer-wrapper',
+        computedStyleProperties: [
+          'backgroundColor',
+          'color',
+          'height',
+          'lineHeight',
+          'position',
+          'width',
+        ],
+      },
+      {
+        id: 'video-player-progress',
+        selector: '.video-player-scenario__main .semi-videoPlayer-progress',
+        computedStyleProperties: [
+          'alignItems',
+          'cursor',
+          'display',
+          'height',
+          'marginLeft',
+          'marginRight',
+          'position',
+          'width',
+        ],
+      },
+      {
+        id: 'video-player-menu',
+        selector: '.video-player-scenario__main .semi-videoPlayer-controls-menu',
+        computedStyleProperties: [
+          'alignItems',
+          'backgroundColor',
+          'boxSizing',
+          'display',
+          'height',
+          'justifyContent',
+          'paddingBottom',
+          'paddingLeft',
+          'paddingRight',
+          'paddingTop',
+          'width',
+        ],
+      },
+      {
+        id: 'video-player-compact',
+        selector: '.video-player-scenario__compact > .semi-videoPlayer',
+        computedStyleProperties: ['display', 'height', 'position', 'width'],
       },
     ],
   },

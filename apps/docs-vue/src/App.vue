@@ -26,6 +26,7 @@ import HotKeysScenario from './components/HotKeysScenario.vue';
 import LottieScenario from './components/LottieScenario.vue';
 import LocaleScenario from './components/LocaleScenario.vue';
 import AudioPlayerScenario from './components/AudioPlayerScenario.vue';
+import VideoPlayerScenario from './components/VideoPlayerScenario.vue';
 import EmptyScenario from './components/EmptyScenario.vue';
 import HighlightScenario from './components/HighlightScenario.vue';
 import ImageScenario from './components/ImageScenario.vue';
@@ -156,6 +157,12 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       <LocaleScenario v-else-if="scenario.id === 'locale'" />
       <AudioPlayerScenario
         v-else-if="scenario.id === 'audio-player'"
+        :direction="props.direction"
+        :locale="props.locale"
+        :theme="props.theme"
+      />
+      <VideoPlayerScenario
+        v-else-if="scenario.id === 'video-player'"
         :direction="props.direction"
         :locale="props.locale"
         :theme="props.theme"

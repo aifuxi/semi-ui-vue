@@ -51,6 +51,10 @@
       "types": "./dist/audio-player/index.d.ts",
       "import": "./dist/audio-player/index.js"
     },
+    "./video-player": {
+      "types": "./dist/video-player/index.d.ts",
+      "import": "./dist/video-player/index.js"
+    },
     "./avatar": {
       "types": "./dist/avatar/index.d.ts",
       "import": "./dist/avatar/index.js"

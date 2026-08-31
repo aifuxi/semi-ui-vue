@@ -17,6 +17,7 @@ export const virtualDragMoveStyleId = 'virtual:workspace-drag-move-styles.css';
 export const virtualHotKeysStyleId = 'virtual:workspace-hot-keys-styles.css';
 export const virtualLottieStyleId = 'virtual:workspace-lottie-styles.css';
 export const virtualAudioPlayerStyleId = 'virtual:workspace-audio-player-styles.css';
+export const virtualVideoPlayerStyleId = 'virtual:workspace-video-player-styles.css';
 export const virtualCollapsibleStyleId = 'virtual:workspace-collapsible-styles.css';
 export const virtualColorPickerStyleId = 'virtual:workspace-color-picker-styles.css';
 export const virtualDatePickerStyleId = 'virtual:workspace-date-picker-styles.css';
@@ -89,6 +90,7 @@ const resolvedVirtualDragMoveStyleId = `\0${virtualDragMoveStyleId}`;
 const resolvedVirtualHotKeysStyleId = `\0${virtualHotKeysStyleId}`;
 const resolvedVirtualLottieStyleId = `\0${virtualLottieStyleId}`;
 const resolvedVirtualAudioPlayerStyleId = `\0${virtualAudioPlayerStyleId}`;
+const resolvedVirtualVideoPlayerStyleId = `\0${virtualVideoPlayerStyleId}`;
 const resolvedVirtualCollapsibleStyleId = `\0${virtualCollapsibleStyleId}`;
 const resolvedVirtualColorPickerStyleId = `\0${virtualColorPickerStyleId}`;
 const resolvedVirtualDatePickerStyleId = `\0${virtualDatePickerStyleId}`;
@@ -163,6 +165,7 @@ const dragMoveStyleEntry = fileURLToPath(new URL('./src/drag-move.scss', import.
 const hotKeysStyleEntry = fileURLToPath(new URL('./src/hot-keys.scss', import.meta.url));
 const lottieStyleEntry = fileURLToPath(new URL('./src/lottie.scss', import.meta.url));
 const audioPlayerStyleEntry = fileURLToPath(new URL('./src/audio-player.scss', import.meta.url));
+const videoPlayerStyleEntry = fileURLToPath(new URL('./src/video-player.scss', import.meta.url));
 const collapsibleStyleEntry = fileURLToPath(new URL('./src/collapsible.scss', import.meta.url));
 const colorPickerStyleEntry = fileURLToPath(new URL('./src/color-picker.scss', import.meta.url));
 const datePickerStyleEntry = fileURLToPath(new URL('./src/date-picker.scss', import.meta.url));
@@ -239,6 +242,7 @@ const styleEntries = new Map([
   [resolvedVirtualHotKeysStyleId, hotKeysStyleEntry],
   [resolvedVirtualLottieStyleId, lottieStyleEntry],
   [resolvedVirtualAudioPlayerStyleId, audioPlayerStyleEntry],
+  [resolvedVirtualVideoPlayerStyleId, videoPlayerStyleEntry],
   [resolvedVirtualCollapsibleStyleId, collapsibleStyleEntry],
   [resolvedVirtualColorPickerStyleId, colorPickerStyleEntry],
   [resolvedVirtualDatePickerStyleId, datePickerStyleEntry],
@@ -319,6 +323,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualHotKeysStyleId) return resolvedVirtualHotKeysStyleId;
       if (source === virtualLottieStyleId) return resolvedVirtualLottieStyleId;
       if (source === virtualAudioPlayerStyleId) return resolvedVirtualAudioPlayerStyleId;
+      if (source === virtualVideoPlayerStyleId) return resolvedVirtualVideoPlayerStyleId;
       if (source === virtualCollapsibleStyleId) return resolvedVirtualCollapsibleStyleId;
       if (source === virtualColorPickerStyleId) return resolvedVirtualColorPickerStyleId;
       if (source === virtualDatePickerStyleId) return resolvedVirtualDatePickerStyleId;

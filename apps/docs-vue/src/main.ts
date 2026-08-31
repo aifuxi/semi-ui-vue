@@ -15,6 +15,7 @@ import 'virtual:workspace-drag-move-styles.css';
 import 'virtual:workspace-hot-keys-styles.css';
 import 'virtual:workspace-lottie-styles.css';
 import 'virtual:workspace-audio-player-styles.css';
+import 'virtual:workspace-video-player-styles.css';
 import 'virtual:workspace-collapsible-styles.css';
 import 'virtual:workspace-color-picker-styles.css';
 import 'virtual:workspace-date-picker-styles.css';
