@@ -145,10 +145,14 @@ try {
         'tiptap--core.txt',
         'tiptap--extension-document.txt',
         'tiptap--extension-hard-break.txt',
+        'tiptap--extension-image.txt',
         'tiptap--extension-paragraph.txt',
         'tiptap--extension-text.txt',
+        'tiptap--extension-text-align.txt',
+        'tiptap--extension-text-style.txt',
         'tiptap--extensions.txt',
         'tiptap--pm.txt',
+        'tiptap--starter-kit.txt',
         'tiptap--vue-3.txt',
       ].some((license) => !packedFiles.has(`dist/THIRD_PARTY_LICENSES/${license}`))
     ) {
@@ -160,6 +164,9 @@ try {
       }
       if (!packedFiles.has('dist/ai-chat-input/index.js')) {
         throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少 AIChatInput 子路径产物');
+      }
+      if (!packedFiles.has('dist/sidebar/index.js')) {
+        throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少 Sidebar 子路径产物');
       }
       const externalWorker = [...packedFiles].find((filePath) =>
         /dist\/.*json[-.]?viewer.*worker.*\.js$/i.test(filePath),
@@ -187,10 +194,14 @@ try {
         '@tiptap/core',
         '@tiptap/extension-document',
         '@tiptap/extension-hard-break',
+        '@tiptap/extension-image',
         '@tiptap/extension-paragraph',
         '@tiptap/extension-text',
+        '@tiptap/extension-text-align',
+        '@tiptap/extension-text-style',
         '@tiptap/extensions',
         '@tiptap/pm',
+        '@tiptap/starter-kit',
         '@tiptap/vue-3',
       ].map(async (dependency) => [
         dependency,
@@ -434,6 +445,7 @@ try {
 		await import('@aifuxi/semi-ui-vue/video-player');
 		await import('@aifuxi/semi-ui-vue/user-guide');
 		await import('@aifuxi/semi-ui-vue/json-viewer');
+		await import('@aifuxi/semi-ui-vue/sidebar');
 		await import('@aifuxi/semi-ui-vue/locale');
 		const localeModules = await Promise.all(${JSON.stringify(localeSourceNames)}.map(sourceName => import('@aifuxi/semi-ui-vue/locale/source/' + sourceName)));
 		if (localeModules.length !== 57 || localeModules.some(module => typeof module.default?.code !== 'string')) {
@@ -610,6 +622,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/ai-chat-input.css').endsWith('/dist/ai-chat-input.css')) {
 		  throw new Error('AIChatInput 逐组件样式导出未指向 dist/ai-chat-input.css');
 		}
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/sidebar.css').endsWith('/dist/sidebar.css')) {
+		  throw new Error('Sidebar 逐组件样式导出未指向 dist/sidebar.css');
+		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/locale.css').endsWith('/dist/locale.css')) {
 		  throw new Error('Locale 逐组件样式导出未指向 dist/locale.css');
 		}
@@ -785,6 +800,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { UserGuide, type UserGuideMode, type UserGuideProps, type UserGuideStepItem } from '@aifuxi/semi-ui-vue/user-guide';
 		import { JsonViewer, type JsonViewerOptions, type JsonViewerProps, type JsonViewerSearchControls } from '@aifuxi/semi-ui-vue/json-viewer';
 		import { AIChatInput, type AIChatInputProps, type Attachment, type MessageContent } from '@aifuxi/semi-ui-vue/ai-chat-input';
+		import { Sidebar, type SidebarMode, type SidebarOption, type SidebarProps } from '@aifuxi/semi-ui-vue/sidebar';
 		import { LocaleConsumer, LocaleProvider, type LocaleConsumerSlotProps, type LocaleProviderProps } from '@aifuxi/semi-ui-vue/locale';
 		import enGB from '@aifuxi/semi-ui-vue/locale/source/en_GB';
 		import { Empty, type EmptyLayout, type EmptySvgNode } from '@aifuxi/semi-ui-vue/empty';
@@ -986,6 +1002,11 @@ h(Button, { type, htmlType: 'submit' });
 		const aiMessage: MessageContent = { attachments: [aiAttachment], inputContents: [{ type: 'text', text: 'Consumer' }] };
 		h(AIChatInput, aiChatInputProps);
 		void aiMessage;
+		const sidebarMode: SidebarMode = 'main';
+		const sidebarOptions: SidebarOption[] = [{ key: 'code', icon: h('span', 'C'), name: 'Code' }];
+		const sidebarProps: SidebarProps = { mode: sidebarMode, activeKey: 'code', options: sidebarOptions, visible: true, motion: false };
+		h(Sidebar, sidebarProps);
+		h(Sidebar.CodeContent, { activeKey: 'main', codes: [{ key: 'main', name: 'main.ts', content: 'export {}' }] });
 		const localeProviderProps: LocaleProviderProps = { locale: enGB };
 		const localeSlot: LocaleConsumerSlotProps<{ begin: string }> | undefined = undefined;
 		h(LocaleProvider, localeProviderProps, () => h(LocaleConsumer, { componentName: 'TimePicker' }));
@@ -2286,6 +2307,22 @@ h(Button, { type, htmlType: 'submit' });
   ]) {
     if (!aiChatInputThemeCss.includes(selector)) {
       throw new Error(`安装后的 AIChatInput 逐组件样式缺少选择器：${selector}`);
+    }
+  }
+  const sidebarThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'sidebar.css'),
+    'utf8',
+  );
+  for (const selector of [
+    '.semi-sidebar-container',
+    '.semi-sidebar-options',
+    '.semi-sidebar-collapse',
+    '.semi-sidebar-file-menu-bar',
+    '.semi-sidebar-mcp-configure-content',
+    '[theme-mode=dark]',
+  ]) {
+    if (!sidebarThemeCss.includes(selector)) {
+      throw new Error(`安装后的 Sidebar 逐组件样式缺少选择器：${selector}`);
     }
   }
   const localeThemeCss = await readFile(

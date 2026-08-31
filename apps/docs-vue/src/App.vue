@@ -30,6 +30,7 @@ import VideoPlayerScenario from './components/VideoPlayerScenario.vue';
 import UserGuideScenario from './components/UserGuideScenario.vue';
 import JsonViewerScenario from './components/JsonViewerScenario.vue';
 import AIChatInputScenario from './components/AIChatInputScenario.vue';
+import SidebarScenario from './components/SidebarScenario.vue';
 import EmptyScenario from './components/EmptyScenario.vue';
 import HighlightScenario from './components/HighlightScenario.vue';
 import ImageScenario from './components/ImageScenario.vue';
@@ -179,6 +180,11 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
       />
       <AIChatInputScenario
         v-else-if="scenario.id === 'ai-chat-input'"
+        :direction="props.direction"
+        :locale="props.locale"
+      />
+      <SidebarScenario
+        v-else-if="scenario.id === 'sidebar'"
         :direction="props.direction"
         :locale="props.locale"
       />

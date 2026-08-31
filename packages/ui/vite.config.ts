@@ -179,6 +179,7 @@ export default defineConfig({
         'toast/index': fileURLToPath(new URL('./src/toast/index.ts', import.meta.url)),
         'scroll-list/index': fileURLToPath(new URL('./src/scroll-list/index.ts', import.meta.url)),
         'side-sheet/index': fileURLToPath(new URL('./src/side-sheet/index.ts', import.meta.url)),
+        'sidebar/index': fileURLToPath(new URL('./src/sidebar/index.ts', import.meta.url)),
         'table/index': fileURLToPath(new URL('./src/table/index.ts', import.meta.url)),
         'tag/index': fileURLToPath(new URL('./src/tag/index.ts', import.meta.url)),
         'timeline/index': fileURLToPath(new URL('./src/timeline/index.ts', import.meta.url)),

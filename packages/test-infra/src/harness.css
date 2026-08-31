@@ -3662,9 +3662,33 @@ p {
   background: var(--semi-color-bg-1);
 }
 
+.sidebar-scenario {
+  display: flex;
+  justify-content: flex-end;
+  height: 480px;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--semi-color-border);
+  border-radius: 12px;
+  background: var(--semi-color-bg-0);
+}
+
+.sidebar-scenario .semi-sidebar-container {
+  width: 420px;
+  height: 100%;
+}
+
 @media (max-width: 720px) {
   .ai-chat-input-scenario__card {
     padding: 10px;
+  }
+
+  .sidebar-scenario {
+    height: 420px;
+  }
+
+  .sidebar-scenario .semi-sidebar-container {
+    width: 100%;
   }
 }
 

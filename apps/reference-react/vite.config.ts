@@ -37,6 +37,7 @@ const videoPlayerPublicEntry = path.join(upstreamPackages, 'semi-ui/videoPlayer/
 const userGuidePublicEntry = path.join(upstreamPackages, 'semi-ui/userGuide/index.tsx');
 const jsonViewerPublicEntry = path.join(upstreamPackages, 'semi-ui/jsonViewer/index.tsx');
 const aiChatInputPublicEntry = path.join(upstreamPackages, 'semi-ui/aiChatInput/index.tsx');
+const sidebarPublicEntry = path.join(upstreamPackages, 'semi-ui/sideBar/index.tsx');
 const localeProviderEntry = path.join(upstreamPackages, 'semi-ui/locale/localeProvider.tsx');
 const localeConsumerEntry = path.join(upstreamPackages, 'semi-ui/locale/localeConsumer.tsx');
 const localeEnGBEntry = path.join(upstreamPackages, 'semi-ui/locale/source/en_GB.ts');
@@ -120,6 +121,7 @@ const resolvedVirtualStyleId = `\0${virtualStyleId}`;
 const emptyUpstreamStyleId = '\0semi-reference-upstream-style-loaded-from-entry';
 const feedbackDependenciesId = '\0semi-reference-feedback-dependencies';
 const aiChatInputDependenciesId = '\0semi-reference-ai-chat-input-dependencies';
+const sidebarDependenciesId = '\0semi-reference-sidebar-dependencies';
 const capturedUpstreamStyleImports = new Set([
   '@douyinfe/semi-foundation/anchor/anchor.scss',
   path.join(foundationRoot, 'anchor/anchor.scss'),
@@ -149,6 +151,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'jsonViewer/jsonViewer.scss'),
   '@douyinfe/semi-foundation/aiChatInput/aiChatInput.scss',
   path.join(foundationRoot, 'aiChatInput/aiChatInput.scss'),
+  '@douyinfe/semi-foundation/sidebar/sidebar.scss',
+  path.join(foundationRoot, 'sidebar/sidebar.scss'),
   '@douyinfe/semi-foundation/divider/divider.scss',
   path.join(foundationRoot, 'divider/divider.scss'),
   '@douyinfe/semi-foundation/floatButton/floatButton.scss',
@@ -291,6 +295,9 @@ function compilePinnedReferenceStyles(): Plugin {
       if (/^(?:\.\.\/)+index$/.test(source) && importer?.includes('/semi-ui/aiChatInput/')) {
         return aiChatInputDependenciesId;
       }
+      if (/^(?:\.\.\/)+index$/.test(source) && importer?.includes('/semi-ui/sideBar/')) {
+        return sidebarDependenciesId;
+      }
       if (capturedUpstreamStyleImports.has(source)) return emptyUpstreamStyleId;
       if (
         source === '../styles/icons.scss' &&
@@ -323,6 +330,23 @@ function compilePinnedReferenceStyles(): Plugin {
           `export { default as Select } from ${JSON.stringify(selectPublicEntry)};`,
           `export { default as RadioGroup } from ${JSON.stringify(radioGroupEntry)};`,
           `export { default as Dropdown } from ${JSON.stringify(dropdownPublicEntry)};`,
+        ].join('\n');
+      }
+      if (id === sidebarDependenciesId) {
+        return [
+          `export { default as Button } from ${JSON.stringify(buttonPublicEntry)};`,
+          `export { default as JsonViewer } from ${JSON.stringify(jsonViewerPublicEntry)};`,
+          `export { default as CodeHighlight } from ${JSON.stringify(codeHighlightPublicEntry)};`,
+          `export { default as Collapse } from ${JSON.stringify(collapsePublicEntry)};`,
+          `export { default as Toast } from ${JSON.stringify(toastPublicEntry)};`,
+          `export { default as Divider } from ${JSON.stringify(dividerPublicEntry)};`,
+          `export { default as Dropdown } from ${JSON.stringify(dropdownPublicEntry)};`,
+          `export { default as Input } from ${JSON.stringify(inputPublicEntry)};`,
+          `export { default as Upload } from ${JSON.stringify(uploadPublicEntry)};`,
+          `export { default as RadioGroup } from ${JSON.stringify(radioGroupEntry)};`,
+          `export { default as Radio } from ${JSON.stringify(radioPublicEntry)};`,
+          `export { default as Tooltip } from ${JSON.stringify(tooltipPublicEntry)};`,
+          `export { default as Empty } from ${JSON.stringify(emptyPublicEntry)};`,
         ].join('\n');
       }
       if (id !== resolvedVirtualStyleId) return null;
@@ -368,9 +392,10 @@ export default defineConfig({
       { find: '@semi-v2.102.0/user-guide', replacement: userGuidePublicEntry },
       { find: '@semi-v2.102.0/json-viewer', replacement: jsonViewerPublicEntry },
       { find: '@semi-v2.102.0/ai-chat-input', replacement: aiChatInputPublicEntry },
+      { find: '@semi-v2.102.0/sidebar', replacement: sidebarPublicEntry },
       {
-        find: '@tiptap',
-        replacement: fileURLToPath(new URL('./node_modules/@tiptap', import.meta.url)),
+        find: /^@tiptap\/(core|extension-document|extension-hard-break|extension-image|extension-paragraph|extension-text|extension-text-align|extension-text-style|extensions|pm(?:\/.+)?|react|starter-kit)$/,
+        replacement: `${fileURLToPath(new URL('./node_modules/@tiptap', import.meta.url))}/$1`,
       },
       {
         find: 'prosemirror-state',

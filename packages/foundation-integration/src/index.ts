@@ -258,6 +258,24 @@ export type {
 } from './scroll-list.js';
 export { SideSheetFoundation, sideSheetCssClasses, sideSheetStrings } from './side-sheet.js';
 export {
+  getSidebarFilterResult,
+  sidebarBaseFilter,
+  sidebarCssClasses,
+  SidebarContainerFoundation,
+  SidebarMCPConfigureFoundation,
+  sidebarStrings,
+} from './sidebar.js';
+export type {
+  SidebarContainerAdapter,
+  SidebarContainerFoundationProps,
+  SidebarContainerFoundationState,
+  SidebarMCPConfigureAdapter,
+  SidebarMCPFoundationProps,
+  SidebarMCPFoundationState,
+  SidebarMCPMode,
+  SidebarMCPOption,
+} from './sidebar.js';
+export {
   DatePickerFoundation,
   datePickerCssClasses,
   datePickerNumbers,

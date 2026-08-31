@@ -155,6 +155,24 @@ describe('parity infrastructure contract', () => {
     ]);
   });
 
+  it('records Sidebar Adapter, compound content, Foundation, styles and docs', () => {
+    expect(getParityScenario('sidebar')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.sidebarPublicEntry,
+    });
+    expect(assertScenarioComparable('sidebar').targets).toHaveLength(4);
+    expect(getParityScenario('sidebar').sourceEvidence).toEqual([
+      REFERENCE_SOURCE_PATHS.sidebarPublicEntry,
+      REFERENCE_SOURCE_PATHS.sidebarContainerEntry,
+      REFERENCE_SOURCE_PATHS.sidebarCodeEntry,
+      REFERENCE_SOURCE_PATHS.sidebarFileEntry,
+      REFERENCE_SOURCE_PATHS.sidebarFoundation,
+      REFERENCE_SOURCE_PATHS.sidebarFoundationStyle,
+      REFERENCE_SOURCE_PATHS.sidebarDocumentation,
+    ]);
+  });
+
   it('records IconButton Adapter, Button base, fixed styles and docs', () => {
     expect(getParityScenario('icon-button')).toMatchObject({
       referenceStatus: 'ready',

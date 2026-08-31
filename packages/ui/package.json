@@ -271,6 +271,10 @@
       "types": "./dist/side-sheet/index.d.ts",
       "import": "./dist/side-sheet/index.js"
     },
+    "./sidebar": {
+      "types": "./dist/sidebar/index.d.ts",
+      "import": "./dist/sidebar/index.js"
+    },
     "./table": {
       "types": "./dist/table/index.d.ts",
       "import": "./dist/table/index.js"
@@ -375,13 +379,18 @@
   },
   "dependencies": {
     "@aifuxi/semi-icons-vue": "workspace:*",
+    "@aifuxi/semi-illustrations-vue": "workspace:*",
     "@tiptap/core": "3.10.7",
     "@tiptap/extension-document": "3.10.7",
     "@tiptap/extension-hard-break": "3.10.7",
+    "@tiptap/extension-image": "3.10.7",
     "@tiptap/extension-paragraph": "3.10.7",
     "@tiptap/extension-text": "3.10.7",
+    "@tiptap/extension-text-align": "3.10.7",
+    "@tiptap/extension-text-style": "3.10.7",
     "@tiptap/extensions": "3.10.7",
     "@tiptap/pm": "3.10.7",
+    "@tiptap/starter-kit": "3.10.7",
     "@tiptap/vue-3": "3.10.7",
     "async-validator": "3.5.2",
     "bezier-easing": "2.1.0",

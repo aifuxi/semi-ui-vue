@@ -74,6 +74,7 @@ export type {
 export * from './resizable';
 export * from './scroll-list';
 export * from './side-sheet';
+export * from './sidebar';
 export * from './spin';
 export * from './toast';
 export * from './table';

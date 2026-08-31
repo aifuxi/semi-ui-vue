@@ -2808,6 +2808,54 @@ declare module '@semi-v2.102.0/ai-chat-input' {
   export default AIChatInput;
 }
 
+declare module '@semi-v2.102.0/sidebar' {
+  import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
+
+  export interface SidebarOption {
+    icon: ReactNode;
+    key: string;
+    name: ReactNode;
+  }
+
+  export interface SidebarCodeItemProps {
+    content?: string;
+    isJson?: boolean;
+    key?: string;
+    language?: string;
+    name?: string;
+  }
+
+  export interface SidebarCodeContentProps {
+    activeKey?: string | string[];
+    className?: string;
+    codes?: SidebarCodeItemProps[];
+    onChange?: (activeKey: string | string[]) => void;
+    onExpand?: (event: MouseEvent, code: SidebarCodeItemProps, mode: string) => void;
+    style?: CSSProperties;
+  }
+
+  export interface SidebarProps {
+    activeKey?: string;
+    className?: string;
+    fileEditable?: boolean;
+    mode?: string;
+    motion?: boolean;
+    onActiveOptionChange?: (event: MouseEvent, activeKey: string) => void;
+    options?: SidebarOption[];
+    renderMainContent?: (activeKey: string) => ReactNode;
+    resizable?: boolean;
+    showClose?: boolean;
+    style?: CSSProperties;
+    title?: ReactNode;
+    visible?: boolean;
+  }
+
+  const Sidebar: ComponentType<SidebarProps> & {
+    CodeContent: ComponentType<SidebarCodeContentProps>;
+  };
+  export default Sidebar;
+}
+
 declare module '@semi-v2.102.0/user-guide' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 

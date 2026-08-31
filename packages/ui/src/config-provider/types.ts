@@ -12,6 +12,7 @@ import type { TableLocale } from '../table/types';
 import type { UploadLocaleConfig } from '../upload/types';
 import type { UserGuideLocale } from '../user-guide/types';
 import type { JsonViewerLocale } from '../json-viewer/types';
+import type { SidebarLocale } from '../sidebar/types';
 
 export const CONFIG_BREAKPOINTS = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as const;
 
@@ -51,6 +52,7 @@ export interface SemiLocale {
   Upload?: UploadLocaleConfig;
   UserGuide?: UserGuideLocale;
   JsonViewer?: JsonViewerLocale;
+  Sidebar?: SidebarLocale;
   [componentName: string]: unknown;
 }
 

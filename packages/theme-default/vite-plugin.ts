@@ -22,6 +22,7 @@ export const virtualVideoPlayerStyleId = 'virtual:workspace-video-player-styles.
 export const virtualUserGuideStyleId = 'virtual:workspace-user-guide-styles.css';
 export const virtualJsonViewerStyleId = 'virtual:workspace-json-viewer-styles.css';
 export const virtualAIChatInputStyleId = 'virtual:workspace-ai-chat-input-styles.css';
+export const virtualSidebarStyleId = 'virtual:workspace-sidebar-styles.css';
 export const virtualCollapsibleStyleId = 'virtual:workspace-collapsible-styles.css';
 export const virtualColorPickerStyleId = 'virtual:workspace-color-picker-styles.css';
 export const virtualDatePickerStyleId = 'virtual:workspace-date-picker-styles.css';
@@ -99,6 +100,7 @@ const resolvedVirtualVideoPlayerStyleId = `\0${virtualVideoPlayerStyleId}`;
 const resolvedVirtualUserGuideStyleId = `\0${virtualUserGuideStyleId}`;
 const resolvedVirtualJsonViewerStyleId = `\0${virtualJsonViewerStyleId}`;
 const resolvedVirtualAIChatInputStyleId = `\0${virtualAIChatInputStyleId}`;
+const resolvedVirtualSidebarStyleId = `\0${virtualSidebarStyleId}`;
 const resolvedVirtualCollapsibleStyleId = `\0${virtualCollapsibleStyleId}`;
 const resolvedVirtualColorPickerStyleId = `\0${virtualColorPickerStyleId}`;
 const resolvedVirtualDatePickerStyleId = `\0${virtualDatePickerStyleId}`;
@@ -178,6 +180,7 @@ const videoPlayerStyleEntry = fileURLToPath(new URL('./src/video-player.scss', i
 const userGuideStyleEntry = fileURLToPath(new URL('./src/user-guide.scss', import.meta.url));
 const jsonViewerStyleEntry = fileURLToPath(new URL('./src/json-viewer.scss', import.meta.url));
 const aiChatInputStyleEntry = fileURLToPath(new URL('./src/ai-chat-input.scss', import.meta.url));
+const sidebarStyleEntry = fileURLToPath(new URL('./src/sidebar.scss', import.meta.url));
 const collapsibleStyleEntry = fileURLToPath(new URL('./src/collapsible.scss', import.meta.url));
 const colorPickerStyleEntry = fileURLToPath(new URL('./src/color-picker.scss', import.meta.url));
 const datePickerStyleEntry = fileURLToPath(new URL('./src/date-picker.scss', import.meta.url));
@@ -259,6 +262,7 @@ const styleEntries = new Map([
   [resolvedVirtualUserGuideStyleId, userGuideStyleEntry],
   [resolvedVirtualJsonViewerStyleId, jsonViewerStyleEntry],
   [resolvedVirtualAIChatInputStyleId, aiChatInputStyleEntry],
+  [resolvedVirtualSidebarStyleId, sidebarStyleEntry],
   [resolvedVirtualCollapsibleStyleId, collapsibleStyleEntry],
   [resolvedVirtualColorPickerStyleId, colorPickerStyleEntry],
   [resolvedVirtualDatePickerStyleId, datePickerStyleEntry],
@@ -344,6 +348,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualUserGuideStyleId) return resolvedVirtualUserGuideStyleId;
       if (source === virtualJsonViewerStyleId) return resolvedVirtualJsonViewerStyleId;
       if (source === virtualAIChatInputStyleId) return resolvedVirtualAIChatInputStyleId;
+      if (source === virtualSidebarStyleId) return resolvedVirtualSidebarStyleId;
       if (source === virtualCollapsibleStyleId) return resolvedVirtualCollapsibleStyleId;
       if (source === virtualColorPickerStyleId) return resolvedVirtualColorPickerStyleId;
       if (source === virtualDatePickerStyleId) return resolvedVirtualDatePickerStyleId;
