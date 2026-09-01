@@ -113,6 +113,13 @@ const licensedDependencies = [
   },
   { licenseFile: 'LICENSE', name: 'lodash', noticeName: 'Lodash', version: '4.17.21' },
   {
+    licenseFile: 'LICENSE',
+    licenseRoot: path.join(workspaceRoot, 'packages', 'ui', 'node_modules'),
+    name: 'markdown-it',
+    noticeName: 'markdown-it',
+    version: '14.3.1',
+  },
+  {
     licenseFile: 'LICENSE.md',
     licenseRoot: path.join(workspaceRoot, 'packages', 'foundation-integration', 'node_modules'),
     name: 'jsonc-parser',

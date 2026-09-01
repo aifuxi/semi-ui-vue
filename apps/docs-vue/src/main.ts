@@ -78,6 +78,7 @@ import 'virtual:workspace-transfer-styles.css';
 import 'virtual:workspace-upload-styles.css';
 import 'virtual:workspace-navigation-styles.css';
 import 'virtual:workspace-typography-styles.css';
+import 'virtual:workspace-chat-styles.css';
 import '@workspace/test-infra/harness.css';
 
 import { createApp } from 'vue';

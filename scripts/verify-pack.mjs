@@ -139,6 +139,7 @@ try {
         'date-fns-tz.txt',
         'lodash.txt',
         'lottie-web.txt',
+        'markdown-it.txt',
         'jsonc-parser.txt',
         'prismjs.txt',
         'scroll-into-view-if-needed.txt',
@@ -168,6 +169,9 @@ try {
       if (!packedFiles.has('dist/sidebar/index.js')) {
         throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少 Sidebar 子路径产物');
       }
+      if (!packedFiles.has('dist/chat/index.js')) {
+        throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少 Chat 子路径产物');
+      }
       const externalWorker = [...packedFiles].find((filePath) =>
         /dist\/.*json[-.]?viewer.*worker.*\.js$/i.test(filePath),
       );
@@ -189,6 +193,7 @@ try {
         'date-fns-tz',
         'lodash',
         'lottie-web',
+        'markdown-it',
         'prismjs',
         'scroll-into-view-if-needed',
         '@tiptap/core',
@@ -208,7 +213,9 @@ try {
         `link:${await realpath(
           path.join(
             workspaceRoot,
-            dependency.startsWith('@tiptap/') ? 'packages/ui/node_modules' : 'node_modules',
+            dependency.startsWith('@tiptap/') || dependency === 'markdown-it'
+              ? 'packages/ui/node_modules'
+              : 'node_modules',
             dependency,
           ),
         )}`,
@@ -446,6 +453,7 @@ try {
 		await import('@aifuxi/semi-ui-vue/user-guide');
 		await import('@aifuxi/semi-ui-vue/json-viewer');
 		await import('@aifuxi/semi-ui-vue/sidebar');
+		await import('@aifuxi/semi-ui-vue/chat');
 		await import('@aifuxi/semi-ui-vue/locale');
 		const localeModules = await Promise.all(${JSON.stringify(localeSourceNames)}.map(sourceName => import('@aifuxi/semi-ui-vue/locale/source/' + sourceName)));
 		if (localeModules.length !== 57 || localeModules.some(module => typeof module.default?.code !== 'string')) {
@@ -625,6 +633,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/sidebar.css').endsWith('/dist/sidebar.css')) {
 		  throw new Error('Sidebar 逐组件样式导出未指向 dist/sidebar.css');
 		}
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/chat.css').endsWith('/dist/chat.css')) {
+		  throw new Error('Chat 逐组件样式导出未指向 dist/chat.css');
+		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/locale.css').endsWith('/dist/locale.css')) {
 		  throw new Error('Locale 逐组件样式导出未指向 dist/locale.css');
 		}
@@ -801,6 +812,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { JsonViewer, type JsonViewerOptions, type JsonViewerProps, type JsonViewerSearchControls } from '@aifuxi/semi-ui-vue/json-viewer';
 		import { AIChatInput, type AIChatInputProps, type Attachment, type MessageContent } from '@aifuxi/semi-ui-vue/ai-chat-input';
 		import { Sidebar, type SidebarMode, type SidebarOption, type SidebarProps } from '@aifuxi/semi-ui-vue/sidebar';
+		import { Chat, type ChatMessage, type ChatProps, type ChatSendHotKey } from '@aifuxi/semi-ui-vue/chat';
 		import { LocaleConsumer, LocaleProvider, type LocaleConsumerSlotProps, type LocaleProviderProps } from '@aifuxi/semi-ui-vue/locale';
 		import enGB from '@aifuxi/semi-ui-vue/locale/source/en_GB';
 		import { Empty, type EmptyLayout, type EmptySvgNode } from '@aifuxi/semi-ui-vue/empty';
@@ -1007,6 +1019,10 @@ h(Button, { type, htmlType: 'submit' });
 		const sidebarProps: SidebarProps = { mode: sidebarMode, activeKey: 'code', options: sidebarOptions, visible: true, motion: false };
 		h(Sidebar, sidebarProps);
 		h(Sidebar.CodeContent, { activeKey: 'main', codes: [{ key: 'main', name: 'main.ts', content: 'export {}' }] });
+		const chatHotKey: ChatSendHotKey = 'enter';
+		const chatMessages: ChatMessage[] = [{ id: 'consumer-chat', role: 'assistant', content: 'Ready', status: 'complete' }];
+		const chatProps: ChatProps = { chats: chatMessages, sendHotKey: chatHotKey, enableUpload: false };
+		h(Chat, chatProps);
 		const localeProviderProps: LocaleProviderProps = { locale: enGB };
 		const localeSlot: LocaleConsumerSlotProps<{ begin: string }> | undefined = undefined;
 		h(LocaleProvider, localeProviderProps, () => h(LocaleConsumer, { componentName: 'TimePicker' }));
@@ -1855,6 +1871,21 @@ h(Button, { type, htmlType: 'submit' });
   ]) {
     if (!feedbackThemeCss.includes(selector)) {
       throw new Error(`安装后的 Feedback 逐组件样式缺少选择器：${selector}`);
+    }
+  }
+  const chatThemeCss = await readFile(
+    path.join(consumerRoot, 'node_modules', '@aifuxi', 'semi-theme-default', 'dist', 'chat.css'),
+    'utf8',
+  );
+  for (const selector of [
+    '.semi-chat',
+    '.semi-chat-chatBox',
+    '.semi-chat-inputBox-container',
+    '.semi-chat-hint-item',
+    '[theme-mode=dark]',
+  ]) {
+    if (!chatThemeCss.includes(selector)) {
+      throw new Error(`安装后的 Chat 逐组件样式缺少选择器：${selector}`);
     }
   }
   const notificationThemeCss = await readFile(

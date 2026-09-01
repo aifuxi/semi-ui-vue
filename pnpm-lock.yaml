@@ -396,6 +396,9 @@ importers:
       lottie-web:
         specifier: 5.13.0
         version: 5.13.0
+      markdown-it:
+        specifier: 14.3.1
+        version: 14.3.1
       prismjs:
         specifier: 1.29.0
         version: 1.29.0
@@ -406,6 +409,9 @@ importers:
       '@types/lodash':
         specifier: 4.17.20
         version: 4.17.20
+      '@types/markdown-it':
+        specifier: 14.2.0
+        version: 14.2.0
 
 packages:
 

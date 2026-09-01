@@ -3673,6 +3673,15 @@ p {
   background: var(--semi-color-bg-0);
 }
 
+.chat-scenario {
+  display: flex;
+  justify-content: center;
+  width: min(720px, 100%);
+  min-width: 0;
+  margin: 0 auto;
+  background: var(--semi-color-bg-0);
+}
+
 .sidebar-scenario .semi-sidebar-container {
   width: 420px;
   height: 100%;

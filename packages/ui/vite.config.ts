@@ -113,6 +113,7 @@ export default defineConfig({
         'badge/index': fileURLToPath(new URL('./src/badge/index.ts', import.meta.url)),
         'banner/index': fileURLToPath(new URL('./src/banner/index.ts', import.meta.url)),
         'calendar/index': fileURLToPath(new URL('./src/calendar/index.ts', import.meta.url)),
+        'chat/index': fileURLToPath(new URL('./src/chat/index.ts', import.meta.url)),
         'card/index': fileURLToPath(new URL('./src/card/index.ts', import.meta.url)),
         'carousel/index': fileURLToPath(new URL('./src/carousel/index.ts', import.meta.url)),
         'cascader/index': fileURLToPath(new URL('./src/cascader/index.ts', import.meta.url)),

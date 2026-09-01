@@ -19,6 +19,14 @@ export type {
   AIChatInputFoundationProps,
   AIChatInputFoundationState,
 } from './ai-chat-input.js';
+export {
+  ChatBoxActionFoundation,
+  ChatFoundation,
+  ChatInputBoxFoundation,
+  chatCssClasses,
+  chatStrings,
+} from './chat.js';
+export type { ChatBoxActionAdapter, ChatFoundationAdapter, ChatInputBoxAdapter } from './chat.js';
 export { AudioPlayerFoundation, audioPlayerCssClasses } from './audio-player.js';
 export type {
   AudioPlayerAdapter,

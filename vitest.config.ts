@@ -118,6 +118,9 @@ export default defineConfig({
       '@semi-v2.102.0/ai-chat-input': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiAIChatInputStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/chat': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiChatStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/sidebar': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiSidebarStub.tsx', import.meta.url),
       ),

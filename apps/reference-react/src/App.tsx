@@ -29,6 +29,7 @@ import { VideoPlayerScenario } from './scenarios/VideoPlayerScenario';
 import { UserGuideScenario } from './scenarios/UserGuideScenario';
 import { JsonViewerScenario } from './scenarios/JsonViewerScenario';
 import { AIChatInputScenario } from './scenarios/AIChatInputScenario';
+import { ChatScenario } from './scenarios/ChatScenario';
 import { SidebarScenario } from './scenarios/SidebarScenario';
 import { EmptyScenario } from './scenarios/EmptyScenario';
 import { HighlightScenario } from './scenarios/HighlightScenario';
@@ -186,6 +187,8 @@ export function App(props: AppProps): React.ReactElement {
         ) : null}
         {scenario.id === 'ai-chat-input' ? (
           <AIChatInputScenario direction={options.direction} locale={options.locale} />
+        ) : scenario.id === 'chat' ? (
+          <ChatScenario direction={options.direction} locale={options.locale} />
         ) : scenario.id === 'sidebar' ? (
           <SidebarScenario direction={options.direction} locale={options.locale} />
         ) : null}

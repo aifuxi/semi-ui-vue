@@ -37,7 +37,9 @@ const videoPlayerPublicEntry = path.join(upstreamPackages, 'semi-ui/videoPlayer/
 const userGuidePublicEntry = path.join(upstreamPackages, 'semi-ui/userGuide/index.tsx');
 const jsonViewerPublicEntry = path.join(upstreamPackages, 'semi-ui/jsonViewer/index.tsx');
 const aiChatInputPublicEntry = path.join(upstreamPackages, 'semi-ui/aiChatInput/index.tsx');
+const chatPublicEntry = path.join(upstreamPackages, 'semi-ui/chat/index.tsx');
 const sidebarPublicEntry = path.join(upstreamPackages, 'semi-ui/sideBar/index.tsx');
+const baseComponentEntry = path.join(upstreamPackages, 'semi-ui/_base/baseComponent.tsx');
 const localeProviderEntry = path.join(upstreamPackages, 'semi-ui/locale/localeProvider.tsx');
 const localeConsumerEntry = path.join(upstreamPackages, 'semi-ui/locale/localeConsumer.tsx');
 const localeEnGBEntry = path.join(upstreamPackages, 'semi-ui/locale/source/en_GB.ts');
@@ -121,6 +123,8 @@ const resolvedVirtualStyleId = `\0${virtualStyleId}`;
 const emptyUpstreamStyleId = '\0semi-reference-upstream-style-loaded-from-entry';
 const feedbackDependenciesId = '\0semi-reference-feedback-dependencies';
 const aiChatInputDependenciesId = '\0semi-reference-ai-chat-input-dependencies';
+const chatDependenciesId = '\0semi-reference-chat-dependencies';
+const chatMarkdownRenderId = '\0semi-reference-chat-markdown-render';
 const sidebarDependenciesId = '\0semi-reference-sidebar-dependencies';
 const capturedUpstreamStyleImports = new Set([
   '@douyinfe/semi-foundation/anchor/anchor.scss',
@@ -151,6 +155,10 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'jsonViewer/jsonViewer.scss'),
   '@douyinfe/semi-foundation/aiChatInput/aiChatInput.scss',
   path.join(foundationRoot, 'aiChatInput/aiChatInput.scss'),
+  '@douyinfe/semi-foundation/chat/chat.scss',
+  path.join(foundationRoot, 'chat/chat.scss'),
+  '@douyinfe/semi-foundation/markdownRender/markdownRender.scss',
+  path.join(foundationRoot, 'markdownRender/markdownRender.scss'),
   '@douyinfe/semi-foundation/sidebar/sidebar.scss',
   path.join(foundationRoot, 'sidebar/sidebar.scss'),
   '@douyinfe/semi-foundation/divider/divider.scss',
@@ -295,6 +303,12 @@ function compilePinnedReferenceStyles(): Plugin {
       if (/^(?:\.\.\/)+index$/.test(source) && importer?.includes('/semi-ui/aiChatInput/')) {
         return aiChatInputDependenciesId;
       }
+      if (/^(?:\.\.\/)+index$/.test(source) && importer?.includes('/semi-ui/chat/')) {
+        return chatDependenciesId;
+      }
+      if (/^(?:\.\.\/)+markdownRender$/.test(source) && importer?.includes('/semi-ui/chat/')) {
+        return chatMarkdownRenderId;
+      }
       if (/^(?:\.\.\/)+index$/.test(source) && importer?.includes('/semi-ui/sideBar/')) {
         return sidebarDependenciesId;
       }
@@ -330,6 +344,26 @@ function compilePinnedReferenceStyles(): Plugin {
           `export { default as Select } from ${JSON.stringify(selectPublicEntry)};`,
           `export { default as RadioGroup } from ${JSON.stringify(radioGroupEntry)};`,
           `export { default as Dropdown } from ${JSON.stringify(dropdownPublicEntry)};`,
+        ].join('\n');
+      }
+      if (id === chatDependenciesId) {
+        return [
+          `export { default as BaseComponent } from ${JSON.stringify(baseComponentEntry)};`,
+          `export { default as Button } from ${JSON.stringify(buttonPublicEntry)};`,
+          `export { default as Upload } from ${JSON.stringify(uploadPublicEntry)};`,
+          `export { default as Tooltip } from ${JSON.stringify(tooltipPublicEntry)};`,
+          `export { default as TextArea } from ${JSON.stringify(textAreaEntry)};`,
+          `export { default as Progress } from ${JSON.stringify(progressPublicEntry)};`,
+          `export { default as Popconfirm } from ${JSON.stringify(popconfirmPublicEntry)};`,
+          `export { default as Toast } from ${JSON.stringify(toastPublicEntry)};`,
+        ].join('\n');
+      }
+      if (id === chatMarkdownRenderId) {
+        return [
+          `import React from 'react';`,
+          `export default function ChatMarkdownRender({ raw = '' }) {`,
+          `  return React.createElement('div', { className: 'semi-markdownRender' }, raw);`,
+          `}`,
         ].join('\n');
       }
       if (id === sidebarDependenciesId) {
@@ -392,6 +426,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/user-guide', replacement: userGuidePublicEntry },
       { find: '@semi-v2.102.0/json-viewer', replacement: jsonViewerPublicEntry },
       { find: '@semi-v2.102.0/ai-chat-input', replacement: aiChatInputPublicEntry },
+      { find: '@semi-v2.102.0/chat', replacement: chatPublicEntry },
       { find: '@semi-v2.102.0/sidebar', replacement: sidebarPublicEntry },
       {
         find: /^@tiptap\/(core|extension-document|extension-hard-break|extension-image|extension-paragraph|extension-text|extension-text-align|extension-text-style|extensions|pm(?:\/.+)?|react|starter-kit)$/,

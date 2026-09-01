@@ -24,6 +24,16 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-aiChatInput');
   });
 
+  it('登记固定 Chat 消息、建议与输入场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="chat" />);
+
+    expect(html).toContain('data-parity-scenario="chat"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/chat/index.tsx');
+    expect(html).toContain('data-testid="chat-reference"');
+    expect(html).toContain('semi-chat-chatBox');
+    expect(html).toContain('semi-chat-hint-item');
+  });
+
   it('登记固定 AudioPlayer 的播放列表、工具栏和精简场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="audio-player" theme="light" />);
 

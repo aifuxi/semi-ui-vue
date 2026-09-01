@@ -44,6 +44,7 @@ const publicPackagePolicies = [
       'date-fns-tz': '1.3.8',
       lodash: '4.17.21',
       'lottie-web': '5.13.0',
+      'markdown-it': '14.3.1',
       prismjs: '1.29.0',
       'scroll-into-view-if-needed': '2.2.31',
     },
@@ -51,6 +52,7 @@ const publicPackagePolicies = [
     peerDependencies: { vue: '>=3.5.0' },
     devDependencies: {
       '@types/lodash': '4.17.20',
+      '@types/markdown-it': '14.2.0',
     },
   },
   {

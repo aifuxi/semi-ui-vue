@@ -4,6 +4,7 @@ export * from './avatar';
 export * from './badge';
 export * from './banner';
 export * from './calendar';
+export * from './chat';
 export * from './card';
 export * from './carousel';
 export * from './cascader';

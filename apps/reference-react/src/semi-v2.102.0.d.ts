@@ -2808,6 +2808,37 @@ declare module '@semi-v2.102.0/ai-chat-input' {
   export default AIChatInput;
 }
 
+declare module '@semi-v2.102.0/chat' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface ChatMessage {
+    id?: string | number;
+    role?: string;
+    content?: string;
+    status?: 'loading' | 'incomplete' | 'complete' | 'error';
+  }
+  export interface ChatProps {
+    align?: 'leftRight' | 'leftAlign';
+    mode?: 'bubble' | 'noBubble' | 'userBubble';
+    chats?: ChatMessage[];
+    hints?: string[];
+    roleConfig?: Record<string, { name?: string; avatar?: ReactNode; color?: string }>;
+    chatBoxRenderConfig?: Record<string, unknown>;
+    renderHintBox?: (props: {
+      content: string;
+      index: number;
+      onHintClick: () => void;
+    }) => ReactNode;
+    enableUpload?: boolean;
+    showClearContext?: boolean;
+    style?: CSSProperties;
+    onChatsChange?: (chats: ChatMessage[]) => void;
+    onMessageSend?: (content: string, attachment: unknown[]) => void;
+  }
+  const Chat: ComponentType<ChatProps>;
+  export default Chat;
+}
+
 declare module '@semi-v2.102.0/sidebar' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 

@@ -51,6 +51,10 @@
       "types": "./dist/ai-chat-input/index.d.ts",
       "import": "./dist/ai-chat-input/index.js"
     },
+    "./chat": {
+      "types": "./dist/chat/index.d.ts",
+      "import": "./dist/chat/index.js"
+    },
     "./audio-player": {
       "types": "./dist/audio-player/index.d.ts",
       "import": "./dist/audio-player/index.js"
@@ -375,7 +379,8 @@
     "clean": "rimraf dist"
   },
   "devDependencies": {
-    "@types/lodash": "4.17.20"
+    "@types/lodash": "4.17.20",
+    "@types/markdown-it": "14.2.0"
   },
   "dependencies": {
     "@aifuxi/semi-icons-vue": "workspace:*",
@@ -399,6 +404,7 @@
     "date-fns-tz": "1.3.8",
     "lodash": "4.17.21",
     "lottie-web": "5.13.0",
+    "markdown-it": "14.3.1",
     "prismjs": "1.29.0",
     "scroll-into-view-if-needed": "2.2.31"
   },

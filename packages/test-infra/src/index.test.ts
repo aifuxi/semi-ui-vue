@@ -173,6 +173,24 @@ describe('parity infrastructure contract', () => {
     ]);
   });
 
+  it('records Chat Adapter, message/input Foundations, styles and docs', () => {
+    expect(getParityScenario('chat')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.chatPublicEntry,
+    });
+    expect(assertScenarioComparable('chat').targets).toHaveLength(4);
+    expect(getParityScenario('chat').sourceEvidence).toEqual([
+      REFERENCE_SOURCE_PATHS.chatPublicEntry,
+      REFERENCE_SOURCE_PATHS.chatBoxEntry,
+      REFERENCE_SOURCE_PATHS.chatInputBoxEntry,
+      REFERENCE_SOURCE_PATHS.chatFoundation,
+      REFERENCE_SOURCE_PATHS.chatInputBoxFoundation,
+      REFERENCE_SOURCE_PATHS.chatFoundationStyle,
+      REFERENCE_SOURCE_PATHS.chatDocumentation,
+    ]);
+  });
+
   it('records IconButton Adapter, Button base, fixed styles and docs', () => {
     expect(getParityScenario('icon-button')).toMatchObject({
       referenceStatus: 'ready',

@@ -22,16 +22,16 @@ pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
 
 ## 复刻进度
 
-当前已完成 **80 / 85** 个上游公开根模块的完整垂直切片（约 **94.1%**）：
+当前已完成 **81 / 85** 个上游公开根模块的完整垂直切片（约 **95.3%**）：
 
 - 基础与布局：Button、IconButton、Divider、Icon、Space、FloatButton、Layout、Grid、Resizable、Typography、ConfigProvider、Locale、DragMove、HotKeys、Lottie。
 - 输入类：Switch、Tooltip、Select、AutoComplete、AIChatInput、Cascader、ColorPicker、DatePicker、Form、Checkbox、Input、InputNumber、PinCode、Radio、Rating、Slider、TagInput、TimePicker、Transfer、TreeSelect、Upload。
 - 导航类：Anchor、BackTop、Breadcrumb、Navigation、Pagination、Steps、Tabs、Tree。
-- 数据展示与容器：Avatar、Badge、Calendar、Card、Carousel、Collapse、Collapsible、CodeHighlight、Descriptions、Dropdown、Empty、Highlight、Image、Cropper、JsonViewer、List、Modal、OverflowList、Popover、ScrollList、Sidebar、SideSheet、Table、Tag、Timeline。
+- 数据展示与容器：Avatar、Badge、Calendar、Card、Carousel、Chat、Collapse、Collapsible、CodeHighlight、Descriptions、Dropdown、Empty、Highlight、Image、Cropper、JsonViewer、List、Modal、OverflowList、Popover、ScrollList、Sidebar、SideSheet、Table、Tag、Timeline。
 - 反馈与引导类：Banner、Feedback、Notification、Popconfirm、Progress、Skeleton、Spin、Toast、UserGuide。
 - 媒体类：AudioPlayer、VideoPlayer。
 
-最新完成组件为 Sidebar：主容器、折叠标题、选项列表、代码/文件详情、Annotation、MCP 配置、Tiptap 工具栏与图片上传、固定 Foundation、`.semi-sidebar-*` class、SSR、许可证/SBOM 与真实 tarball 消费均已闭合。下一项为 Chat；之后 MarkdownRender、AIChatDialogue 继续按依赖闭合度排队。每个已完成切片均包含 Vue API、Foundation/主题、中英文文档、React/Vue 场景、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证。Locale 还覆盖固定基线的全部 57 个语言源，Icon 覆盖稳定图标、Lab 图标与生成漂移检查，插画包覆盖全部公开插画。
+最新完成组件为 Chat：受控消息、角色气泡、Markdown/附件、建议问题、反馈操作、上下文分隔、输入热键与上传、固定 Foundation、`.semi-chat-*` class、SSR、许可证/SBOM 与真实 tarball 消费均已闭合。下一项为 MarkdownRender；之后 AIChatDialogue 继续按依赖闭合度排队。每个已完成切片均包含 Vue API、Foundation/主题、中英文文档、React/Vue 场景、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证。Locale 还覆盖固定基线的全部 57 个语言源，Icon 覆盖稳定图标、Lab 图标与生成漂移检查，插画包覆盖全部公开插画。
 
 进度分母与剩余范围以 `docs/inventory/semi-v2.102.0.json` 的 `rootModuleCount` 为准；每完成一个 `ready` 垂直切片，必须在同一次提交中同步更新本节的数量、完成列表和下一项。唯一参考源码位于只读 submodule `vendor/semi-design`。
 
