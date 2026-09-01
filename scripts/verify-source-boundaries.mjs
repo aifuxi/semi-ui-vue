@@ -115,6 +115,10 @@ const referenceApplicationPolicy = {
   },
 };
 const manifestPolicies = [...publicPackagePolicies, referenceApplicationPolicy];
+const publicSourcePathPolicies = {
+  '@aifuxi/semi-icons-vue': ['packages/icons/src/index.ts'],
+  '@aifuxi/semi-illustrations-vue': ['packages/illustrations/src/index.ts'],
+};
 
 function normalizedDependencies(value = {}) {
   return Object.fromEntries(
@@ -192,6 +196,18 @@ for (const policy of manifestPolicies) {
   }
 }
 
+const uiTsconfig = JSON.parse(
+  await readFile(path.join(workspaceRoot, 'packages/ui/tsconfig.json'), 'utf8'),
+);
+const uiSourcePaths = uiTsconfig.compilerOptions?.paths ?? {};
+for (const [specifier, expectedPaths] of Object.entries(publicSourcePathPolicies)) {
+  if (JSON.stringify(uiSourcePaths[specifier]) !== JSON.stringify(expectedPaths)) {
+    throw new Error(
+      `packages/ui/tsconfig.json 缺少公开包干净源码映射：${specifier} -> ${expectedPaths.join(', ')}`,
+    );
+  }
+}
+
 process.stdout.write(
-  `源码边界通过：检查 ${files.length} 个运行时文件、${publicPackagePolicies.length} 个公开包清单与 React 参考应用清单\n`,
+  `源码边界通过：检查 ${files.length} 个运行时文件、${publicPackagePolicies.length} 个公开包清单、${Object.keys(publicSourcePathPolicies).length} 个公开源码映射与 React 参考应用清单\n`,
 );

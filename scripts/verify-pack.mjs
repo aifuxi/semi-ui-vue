@@ -317,11 +317,12 @@ try {
     ) {
       throw new Error(`${packageInfo.name} 的已安装 manifest 仍不是最终公开发布契约`);
     }
-    if (
-      packageInfo.name === '@aifuxi/semi-ui-vue' &&
-      manifest.dependencies?.['@aifuxi/semi-icons-vue'] !== manifest.version
-    ) {
-      throw new Error('@aifuxi/semi-ui-vue 未精确依赖同版本公开图标包');
+    if (packageInfo.name === '@aifuxi/semi-ui-vue') {
+      for (const dependency of ['@aifuxi/semi-icons-vue', '@aifuxi/semi-illustrations-vue']) {
+        if (manifest.dependencies?.[dependency] !== manifest.version) {
+          throw new Error(`@aifuxi/semi-ui-vue 未精确依赖同版本公开包：${dependency}`);
+        }
+      }
     }
 
     if (packageInfo.type === 'javascript' && manifest.peerDependencies?.vue !== '>=3.5.0') {
@@ -348,6 +349,23 @@ try {
     }
     if (packageInfo.name === '@aifuxi/semi-ui-vue') {
       const uiDistRoot = path.join(installedRoot, 'dist');
+      const uiRootJavaScriptNames = (await readdir(uiDistRoot)).filter((fileName) =>
+        fileName.endsWith('.js'),
+      );
+      const uiRootJavaScript = (
+        await Promise.all(
+          uiRootJavaScriptNames.map((fileName) =>
+            readFile(path.join(uiDistRoot, fileName), 'utf8'),
+          ),
+        )
+      ).join('\n');
+      if (
+        !uiRootJavaScript.includes('@aifuxi/semi-illustrations-vue') ||
+        uiRootJavaScript.includes('packages/illustrations') ||
+        uiRootJavaScript.includes('../illustrations/dist')
+      ) {
+        throw new Error('@aifuxi/semi-ui-vue 未保留独立插画包边界');
+      }
       const jsonViewerChunkNames = (await readdir(uiDistRoot)).filter((fileName) =>
         /^json-viewer-.*\.js$/.test(fileName),
       );

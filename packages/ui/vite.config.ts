@@ -44,7 +44,7 @@ export default defineConfig({
     vue(),
     dts({
       entryRoot: 'src',
-      aliasesExclude: ['@aifuxi/semi-icons-vue', 'date-fns'],
+      aliasesExclude: ['@aifuxi/semi-icons-vue', '@aifuxi/semi-illustrations-vue', 'date-fns'],
       include: ['src'],
       exclude: [
         'src/**/*.test.ts',
@@ -251,7 +251,7 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['vue', '@aifuxi/semi-icons-vue'],
+      external: ['vue', '@aifuxi/semi-icons-vue', '@aifuxi/semi-illustrations-vue'],
     },
   },
 });

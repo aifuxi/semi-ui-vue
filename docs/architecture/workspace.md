@@ -28,7 +28,7 @@ vendor/semi-design/      唯一、只读的 v2.102.0 参考源码
 
 - `apps/reference-react` 是唯一允许为参考运行读取本地固定上游的应用，后续负责提供真实 React 参考场景。
 - `apps/docs-vue` 消费 Vue 侧包并承载文档和可复现演示。
-- `packages/ui` 只通过 `packages/foundation-integration` 适配 Foundation 逻辑；不能在组件目录中散落导入 Foundation 源码。
+- `packages/ui` 只通过 `packages/foundation-integration` 适配 Foundation 逻辑；不能在组件目录中散落导入 Foundation 源码。稳定图标与插画分别通过 `@aifuxi/semi-icons-vue`、`@aifuxi/semi-illustrations-vue` 公共身份依赖，并在 UI 构建中保持外部化；干净源码类型检查通过 tsconfig 映射读取对应源码入口，不依赖预先存在的 `dist`。
 - `packages/theme-default` 直接从只读上游 SCSS 编译样式；`packages/icons*` 与 `packages/illustrations` 各自通过生成脚本从固定上游 TSX AST 生成 Vue 资产，并由漂移检查锁定公开面。
 - `packages/theme-default/src/index.scss` 只作为仓库内构建入口；发布文件只包含编译后的 CSS，消费者不依赖 submodule。
 - 两个对照应用共用 `packages/test-infra/src/harness.css`，避免参考壳层的字体和布局环境发生漂移。

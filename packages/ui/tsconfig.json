@@ -3,7 +3,8 @@
   "compilerOptions": {
     "baseUrl": "../..",
     "paths": {
-      "@aifuxi/semi-icons-vue": ["packages/icons/src/index.ts"]
+      "@aifuxi/semi-icons-vue": ["packages/icons/src/index.ts"],
+      "@aifuxi/semi-illustrations-vue": ["packages/illustrations/src/index.ts"]
     },
     "types": ["vite/client"]
   },
