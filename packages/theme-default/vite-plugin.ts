@@ -22,6 +22,7 @@ export const virtualVideoPlayerStyleId = 'virtual:workspace-video-player-styles.
 export const virtualUserGuideStyleId = 'virtual:workspace-user-guide-styles.css';
 export const virtualJsonViewerStyleId = 'virtual:workspace-json-viewer-styles.css';
 export const virtualAIChatInputStyleId = 'virtual:workspace-ai-chat-input-styles.css';
+export const virtualAIChatDialogueStyleId = 'virtual:workspace-ai-chat-dialogue-styles.css';
 export const virtualChatStyleId = 'virtual:workspace-chat-styles.css';
 export const virtualMarkdownRenderStyleId = 'virtual:workspace-markdown-render-styles.css';
 export const virtualSidebarStyleId = 'virtual:workspace-sidebar-styles.css';
@@ -102,6 +103,7 @@ const resolvedVirtualVideoPlayerStyleId = `\0${virtualVideoPlayerStyleId}`;
 const resolvedVirtualUserGuideStyleId = `\0${virtualUserGuideStyleId}`;
 const resolvedVirtualJsonViewerStyleId = `\0${virtualJsonViewerStyleId}`;
 const resolvedVirtualAIChatInputStyleId = `\0${virtualAIChatInputStyleId}`;
+const resolvedVirtualAIChatDialogueStyleId = `\0${virtualAIChatDialogueStyleId}`;
 const resolvedVirtualChatStyleId = `\0${virtualChatStyleId}`;
 const resolvedVirtualMarkdownRenderStyleId = `\0${virtualMarkdownRenderStyleId}`;
 const resolvedVirtualSidebarStyleId = `\0${virtualSidebarStyleId}`;
@@ -184,6 +186,9 @@ const videoPlayerStyleEntry = fileURLToPath(new URL('./src/video-player.scss', i
 const userGuideStyleEntry = fileURLToPath(new URL('./src/user-guide.scss', import.meta.url));
 const jsonViewerStyleEntry = fileURLToPath(new URL('./src/json-viewer.scss', import.meta.url));
 const aiChatInputStyleEntry = fileURLToPath(new URL('./src/ai-chat-input.scss', import.meta.url));
+const aiChatDialogueStyleEntry = fileURLToPath(
+  new URL('./src/ai-chat-dialogue.scss', import.meta.url),
+);
 const chatStyleEntry = fileURLToPath(new URL('./src/chat.scss', import.meta.url));
 const markdownRenderStyleEntry = fileURLToPath(
   new URL('./src/markdown-render.scss', import.meta.url),
@@ -270,6 +275,7 @@ const styleEntries = new Map([
   [resolvedVirtualUserGuideStyleId, userGuideStyleEntry],
   [resolvedVirtualJsonViewerStyleId, jsonViewerStyleEntry],
   [resolvedVirtualAIChatInputStyleId, aiChatInputStyleEntry],
+  [resolvedVirtualAIChatDialogueStyleId, aiChatDialogueStyleEntry],
   [resolvedVirtualChatStyleId, chatStyleEntry],
   [resolvedVirtualMarkdownRenderStyleId, markdownRenderStyleEntry],
   [resolvedVirtualSidebarStyleId, sidebarStyleEntry],
@@ -358,6 +364,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualUserGuideStyleId) return resolvedVirtualUserGuideStyleId;
       if (source === virtualJsonViewerStyleId) return resolvedVirtualJsonViewerStyleId;
       if (source === virtualAIChatInputStyleId) return resolvedVirtualAIChatInputStyleId;
+      if (source === virtualAIChatDialogueStyleId) return resolvedVirtualAIChatDialogueStyleId;
       if (source === virtualChatStyleId) return resolvedVirtualChatStyleId;
       if (source === virtualMarkdownRenderStyleId) return resolvedVirtualMarkdownRenderStyleId;
       if (source === virtualSidebarStyleId) return resolvedVirtualSidebarStyleId;

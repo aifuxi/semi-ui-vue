@@ -1,5 +1,6 @@
 // Limit the pinned Foundation integrations' Lodash surface to the functions they use.
 export { default as assign } from 'lodash/assign.js';
+export { default as cloneDeep } from 'lodash/cloneDeep.js';
 export { default as debounce } from 'lodash/debounce.js';
 export { default as difference } from 'lodash/difference.js';
 export { default as find } from 'lodash/find.js';

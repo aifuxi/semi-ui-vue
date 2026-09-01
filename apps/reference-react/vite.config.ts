@@ -37,6 +37,7 @@ const videoPlayerPublicEntry = path.join(upstreamPackages, 'semi-ui/videoPlayer/
 const userGuidePublicEntry = path.join(upstreamPackages, 'semi-ui/userGuide/index.tsx');
 const jsonViewerPublicEntry = path.join(upstreamPackages, 'semi-ui/jsonViewer/index.tsx');
 const aiChatInputPublicEntry = path.join(upstreamPackages, 'semi-ui/aiChatInput/index.tsx');
+const aiChatDialoguePublicEntry = path.join(upstreamPackages, 'semi-ui/aiChatDialogue/index.tsx');
 const chatPublicEntry = path.join(upstreamPackages, 'semi-ui/chat/index.tsx');
 const markdownRenderPublicEntry = path.join(upstreamPackages, 'semi-ui/markdownRender/index.tsx');
 const sidebarPublicEntry = path.join(upstreamPackages, 'semi-ui/sideBar/index.tsx');
@@ -124,6 +125,7 @@ const resolvedVirtualStyleId = `\0${virtualStyleId}`;
 const emptyUpstreamStyleId = '\0semi-reference-upstream-style-loaded-from-entry';
 const feedbackDependenciesId = '\0semi-reference-feedback-dependencies';
 const aiChatInputDependenciesId = '\0semi-reference-ai-chat-input-dependencies';
+const aiChatDialogueDependenciesId = '\0semi-reference-ai-chat-dialogue-dependencies';
 const chatDependenciesId = '\0semi-reference-chat-dependencies';
 const chatMarkdownRenderId = '\0semi-reference-chat-markdown-render';
 const sidebarDependenciesId = '\0semi-reference-sidebar-dependencies';
@@ -156,6 +158,8 @@ const capturedUpstreamStyleImports = new Set([
   path.join(foundationRoot, 'jsonViewer/jsonViewer.scss'),
   '@douyinfe/semi-foundation/aiChatInput/aiChatInput.scss',
   path.join(foundationRoot, 'aiChatInput/aiChatInput.scss'),
+  '@douyinfe/semi-foundation/aiChatDialogue/aiChatDialogue.scss',
+  path.join(foundationRoot, 'aiChatDialogue/aiChatDialogue.scss'),
   '@douyinfe/semi-foundation/chat/chat.scss',
   path.join(foundationRoot, 'chat/chat.scss'),
   '@douyinfe/semi-foundation/markdownRender/markdownRender.scss',
@@ -304,6 +308,9 @@ function compilePinnedReferenceStyles(): Plugin {
       if (/^(?:\.\.\/)+index$/.test(source) && importer?.includes('/semi-ui/aiChatInput/')) {
         return aiChatInputDependenciesId;
       }
+      if (/^(?:\.\.\/)+index$/.test(source) && importer?.includes('/semi-ui/aiChatDialogue/')) {
+        return aiChatDialogueDependenciesId;
+      }
       if (/^(?:\.\.\/)+index$/.test(source) && importer?.includes('/semi-ui/chat/')) {
         return chatDependenciesId;
       }
@@ -345,6 +352,15 @@ function compilePinnedReferenceStyles(): Plugin {
           `export { default as Select } from ${JSON.stringify(selectPublicEntry)};`,
           `export { default as RadioGroup } from ${JSON.stringify(radioGroupEntry)};`,
           `export { default as Dropdown } from ${JSON.stringify(dropdownPublicEntry)};`,
+        ].join('\n');
+      }
+      if (id === aiChatDialogueDependenciesId) {
+        return [
+          `export { default as Button } from ${JSON.stringify(buttonPublicEntry)};`,
+          `export { default as Dropdown } from ${JSON.stringify(dropdownPublicEntry)};`,
+          `export { default as Modal } from ${JSON.stringify(modalPublicEntry)};`,
+          `export { default as Toast } from ${JSON.stringify(toastPublicEntry)};`,
+          `export { default as Image } from ${JSON.stringify(imagePublicEntry)};`,
         ].join('\n');
       }
       if (id === chatDependenciesId) {
@@ -427,6 +443,7 @@ export default defineConfig({
       { find: '@semi-v2.102.0/user-guide', replacement: userGuidePublicEntry },
       { find: '@semi-v2.102.0/json-viewer', replacement: jsonViewerPublicEntry },
       { find: '@semi-v2.102.0/ai-chat-input', replacement: aiChatInputPublicEntry },
+      { find: '@semi-v2.102.0/ai-chat-dialogue', replacement: aiChatDialoguePublicEntry },
       { find: '@semi-v2.102.0/chat', replacement: chatPublicEntry },
       { find: '@semi-v2.102.0/markdown-render', replacement: markdownRenderPublicEntry },
       { find: '@semi-v2.102.0/sidebar', replacement: sidebarPublicEntry },

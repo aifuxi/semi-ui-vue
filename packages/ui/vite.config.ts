@@ -116,6 +116,12 @@ export default defineConfig({
         'ai-chat-input/index': fileURLToPath(
           new URL('./src/ai-chat-input/index.ts', import.meta.url),
         ),
+        'ai-chat-dialogue/index': fileURLToPath(
+          new URL('./src/ai-chat-dialogue/index.ts', import.meta.url),
+        ),
+        'ai-chat-dialogue/data-adapter': fileURLToPath(
+          new URL('./src/ai-chat-dialogue/data-adapter.ts', import.meta.url),
+        ),
         'anchor/index': fileURLToPath(new URL('./src/anchor/index.ts', import.meta.url)),
         'audio-player/index': fileURLToPath(
           new URL('./src/audio-player/index.ts', import.meta.url),

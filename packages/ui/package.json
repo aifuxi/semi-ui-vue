@@ -51,6 +51,14 @@
       "types": "./dist/ai-chat-input/index.d.ts",
       "import": "./dist/ai-chat-input/index.js"
     },
+    "./ai-chat-dialogue": {
+      "types": "./dist/ai-chat-dialogue/index.d.ts",
+      "import": "./dist/ai-chat-dialogue/index.js"
+    },
+    "./ai-chat-dialogue/data-adapter": {
+      "types": "./dist/ai-chat-dialogue/data-adapter.d.ts",
+      "import": "./dist/ai-chat-dialogue/data-adapter.js"
+    },
     "./chat": {
       "types": "./dist/chat/index.d.ts",
       "import": "./dist/chat/index.js"

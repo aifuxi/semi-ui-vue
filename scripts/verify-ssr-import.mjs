@@ -95,6 +95,10 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/json-viewer/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'ai-chat-input', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/ai-chat-input/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'ai-chat-dialogue', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/ai-chat-dialogue/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'ai-chat-dialogue', 'data-adapter.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/ai-chat-dialogue/data-adapter.js\n');
     await import(pathToFileURL(path.join(distPath, 'sidebar', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/sidebar/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'chat', 'index.js')).href);

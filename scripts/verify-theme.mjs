@@ -503,6 +503,20 @@ const aiChatInputCssPath = path.join(
   'dist',
   'ai-chat-input.css',
 );
+const aiChatDialogueEntryPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'src',
+  'ai-chat-dialogue.scss',
+);
+const aiChatDialogueCssPath = path.join(
+  workspaceRoot,
+  'packages',
+  'theme-default',
+  'dist',
+  'ai-chat-dialogue.css',
+);
 const sidebarEntryPath = path.join(
   workspaceRoot,
   'packages',
@@ -3059,6 +3073,47 @@ for (const selector of [
   }
 }
 
+const expectedAIChatDialogueImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-foundation/button/button.scss'),
+  vendorImport('semi-foundation/checkbox/checkbox.scss'),
+  vendorImport('semi-foundation/avatar/avatar.scss'),
+  vendorImport('semi-foundation/image/image.scss'),
+  vendorImport('semi-foundation/collapsible/collapsible.scss'),
+  vendorImport('semi-foundation/dropdown/dropdown.scss'),
+  vendorImport('semi-foundation/modal/modal.scss'),
+  vendorImport('semi-foundation/toast/toast.scss'),
+  vendorImport('semi-foundation/typography/typography.scss'),
+  vendorImport('semi-foundation/table/table.scss'),
+  vendorImport('semi-foundation/pagination/pagination.scss'),
+  vendorImport('semi-foundation/codeHighlight/codeHighlight.scss'),
+  vendorImport('semi-foundation/markdownRender/markdownRender.scss'),
+  vendorImport('semi-foundation/chat/chat.scss'),
+  vendorImport('semi-foundation/aiChatDialogue/aiChatDialogue.scss'),
+  vendorImport('semi-icons/src/styles/icons.scss'),
+];
+const aiChatDialogueEntrySource = await readFile(aiChatDialogueEntryPath, 'utf8');
+const actualAIChatDialogueImports = [
+  ...aiChatDialogueEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g),
+].map((match) => match[1]);
+if (JSON.stringify(actualAIChatDialogueImports) !== JSON.stringify(expectedAIChatDialogueImports)) {
+  throw new Error('AIChatDialogue 逐组件样式入口未按固定主题与公开依赖顺序导入');
+}
+const aiChatDialogueCss = await readFile(aiChatDialogueCssPath, 'utf8');
+for (const selector of [
+  '.semi-ai-chat-dialogue',
+  '.semi-ai-chat-dialogue-content-user',
+  '.semi-ai-chat-dialogue-action-show',
+  '.semi-ai-chat-dialogue-hint-item',
+  '.semi-chat-chatBox-action-icon-flip',
+  '[theme-mode=dark]',
+]) {
+  if (!aiChatDialogueCss.includes(selector)) {
+    throw new Error(`AIChatDialogue 逐组件样式产物缺少固定选择器：${selector}`);
+  }
+}
+
 const expectedSidebarImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -3208,5 +3263,5 @@ for (const selector of [
 }
 
 process.stdout.write(
-  `默认主题入口与 MarkdownRender/Chat/AIChatInput/Sidebar/Anchor/Avatar/Badge/Banner/Feedback/Notification/Popconfirm/Progress/Skeleton/Spin/Transfer/Upload/Toast/Calendar/Card/Carousel/Cascader/ColorPicker/DatePicker/Form/Collapse/Collapsible/CodeHighlight/Cropper/Descriptions/DragMove/HotKeys/Lottie/AudioPlayer/VideoPlayer/UserGuide/JsonViewer/Locale/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/Tag/Timeline/BackTop/Breadcrumb/AutoComplete/Button/IconButton/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/TreeSelect/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + markdownRenderCss.length + chatCss.length + aiChatInputCss.length + sidebarCss.length + anchorCss.length + avatarCss.length + badgeCss.length + bannerCss.length + feedbackCss.length + notificationCss.length + popconfirmCss.length + progressCss.length + skeletonCss.length + spinCss.length + transferCss.length + uploadCss.length + toastCss.length + calendarCss.length + cardCss.length + carouselCss.length + cascaderCss.length + colorPickerCss.length + datePickerCss.length + formCss.length + collapseCss.length + collapsibleCss.length + codeHighlightCss.length + cropperCss.length + descriptionsCss.length + dragMoveCss.length + hotKeysCss.length + lottieCss.length + audioPlayerCss.length + videoPlayerCss.length + userGuideCss.length + jsonViewerCss.length + localeCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + tagCss.length + timelineCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + iconButtonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + treeSelectCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
+  `默认主题入口与 AIChatDialogue/MarkdownRender/Chat/AIChatInput/Sidebar/Anchor/Avatar/Badge/Banner/Feedback/Notification/Popconfirm/Progress/Skeleton/Spin/Transfer/Upload/Toast/Calendar/Card/Carousel/Cascader/ColorPicker/DatePicker/Form/Collapse/Collapsible/CodeHighlight/Cropper/Descriptions/DragMove/HotKeys/Lottie/AudioPlayer/VideoPlayer/UserGuide/JsonViewer/Locale/Dropdown/Empty/Highlight/Image/List/Modal/OverflowList/Popover/ScrollList/SideSheet/Table/Tag/Timeline/BackTop/Breadcrumb/AutoComplete/Button/IconButton/Checkbox/ConfigProvider/Divider/FloatButton/Grid/Icon/Input/InputNumber/PinCode/Pagination/Radio/Rating/Layout/Resizable/Select/Slider/Space/Steps/Tabs/Tree/TreeSelect/Switch/TagInput/TimePicker/Tooltip/Typography 逐组件产物通过：${expectedImports.length} 个根入口，${css.length + aiChatDialogueCss.length + markdownRenderCss.length + chatCss.length + aiChatInputCss.length + sidebarCss.length + anchorCss.length + avatarCss.length + badgeCss.length + bannerCss.length + feedbackCss.length + notificationCss.length + popconfirmCss.length + progressCss.length + skeletonCss.length + spinCss.length + transferCss.length + uploadCss.length + toastCss.length + calendarCss.length + cardCss.length + carouselCss.length + cascaderCss.length + colorPickerCss.length + datePickerCss.length + formCss.length + collapseCss.length + collapsibleCss.length + codeHighlightCss.length + cropperCss.length + descriptionsCss.length + dragMoveCss.length + hotKeysCss.length + lottieCss.length + audioPlayerCss.length + videoPlayerCss.length + userGuideCss.length + jsonViewerCss.length + localeCss.length + dropdownCss.length + emptyCss.length + highlightCss.length + imageCss.length + listCss.length + modalCss.length + overflowListCss.length + popoverCss.length + scrollListCss.length + sideSheetCss.length + tableCss.length + tagCss.length + timelineCss.length + backTopCss.length + breadcrumbCss.length + autoCompleteCss.length + buttonCss.length + iconButtonCss.length + checkboxCss.length + configProviderCss.length + dividerCss.length + floatButtonCss.length + gridCss.length + iconCss.length + inputCss.length + inputNumberCss.length + pinCodeCss.length + paginationCss.length + radioCss.length + ratingCss.length + layoutCss.length + resizableCss.length + selectCss.length + sliderCss.length + spaceCss.length + stepsCss.length + tabsCss.length + treeCss.length + treeSelectCss.length + switchCss.length + tagInputCss.length + timePickerCss.length + tooltipCss.length + typographyCss.length} 字节 CSS\n`,
 );

@@ -161,6 +161,17 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   aiChatInputFoundationStyle:
     'vendor/semi-design/packages/semi-foundation/aiChatInput/aiChatInput.scss',
   aiChatInputDocumentation: 'vendor/semi-design/content/ai/aiChatInput/index.md',
+  aiChatDialoguePublicEntry: 'vendor/semi-design/packages/semi-ui/aiChatDialogue/index.tsx',
+  aiChatDialogueItemEntry: 'vendor/semi-design/packages/semi-ui/aiChatDialogue/Dialogue.tsx',
+  aiChatDialogueContentEntry:
+    'vendor/semi-design/packages/semi-ui/aiChatDialogue/widgets/dialogueContent.tsx',
+  aiChatDialogueFoundation:
+    'vendor/semi-design/packages/semi-foundation/aiChatDialogue/foundation.ts',
+  aiChatDialogueDataAdapter:
+    'vendor/semi-design/packages/semi-foundation/aiChatDialogue/dataAdapter/index.ts',
+  aiChatDialogueFoundationStyle:
+    'vendor/semi-design/packages/semi-foundation/aiChatDialogue/aiChatDialogue.scss',
+  aiChatDialogueDocumentation: 'vendor/semi-design/content/ai/aiChatDialogue/index.md',
   chatPublicEntry: 'vendor/semi-design/packages/semi-ui/chat/index.tsx',
   chatBoxEntry: 'vendor/semi-design/packages/semi-ui/chat/chatBox/index.tsx',
   chatInputBoxEntry: 'vendor/semi-design/packages/semi-ui/chat/inputBox/index.tsx',
@@ -1406,6 +1417,63 @@ export const PARITY_SCENARIOS = [
           'justifyContent',
           'width',
         ],
+      },
+    ],
+  },
+  {
+    id: 'ai-chat-dialogue',
+    title: 'AIChatDialogue 智能对话',
+    description: '验证受控消息、角色布局、气泡、操作区、提示、Locale、移动端、暗色与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.aiChatDialoguePublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.aiChatDialoguePublicEntry,
+      REFERENCE_SOURCE_PATHS.aiChatDialogueItemEntry,
+      REFERENCE_SOURCE_PATHS.aiChatDialogueContentEntry,
+      REFERENCE_SOURCE_PATHS.aiChatDialogueFoundation,
+      REFERENCE_SOURCE_PATHS.aiChatDialogueDataAdapter,
+      REFERENCE_SOURCE_PATHS.aiChatDialogueFoundationStyle,
+      REFERENCE_SOURCE_PATHS.aiChatDialogueDocumentation,
+    ],
+    targets: [
+      {
+        id: 'ai-chat-dialogue-message',
+        selector: '.ai-chat-dialogue-scenario .semi-ai-chat-dialogue-wrapper:first-child',
+        computedStyleProperties: [
+          'columnGap',
+          'display',
+          'marginTop',
+          'paddingBottom',
+          'paddingLeft',
+          'paddingRight',
+          'paddingTop',
+        ],
+      },
+      {
+        id: 'ai-chat-dialogue-user-content',
+        selector: '.ai-chat-dialogue-scenario .semi-ai-chat-dialogue-content-user',
+        computedStyleProperties: [
+          'backgroundColor',
+          'borderRadius',
+          'boxSizing',
+          'color',
+          'paddingBottom',
+          'paddingLeft',
+          'paddingRight',
+          'paddingTop',
+        ],
+      },
+      {
+        id: 'ai-chat-dialogue-action',
+        selector:
+          '.ai-chat-dialogue-scenario .semi-ai-chat-dialogue-wrapper:last-of-type .semi-ai-chat-dialogue-action',
+        computedStyleProperties: ['display', 'height', 'marginTop', 'visibility'],
+      },
+      {
+        id: 'ai-chat-dialogue-root',
+        selector: '.ai-chat-dialogue-scenario .semi-ai-chat-dialogue',
+        computedStyleProperties: ['boxSizing', 'height', 'overflow', 'position', 'width'],
       },
     ],
   },

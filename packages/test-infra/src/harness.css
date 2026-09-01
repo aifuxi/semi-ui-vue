@@ -3682,6 +3682,15 @@ p {
   background: var(--semi-color-bg-0);
 }
 
+.ai-chat-dialogue-scenario {
+  display: flex;
+  justify-content: center;
+  width: min(720px, 100%);
+  min-width: 0;
+  margin: 0 auto;
+  background: var(--semi-color-bg-0);
+}
+
 .markdown-render-scenario {
   width: min(760px, 100%);
   min-width: 0;

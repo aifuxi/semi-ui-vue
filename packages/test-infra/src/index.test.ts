@@ -191,6 +191,24 @@ describe('parity infrastructure contract', () => {
     ]);
   });
 
+  it('records AIChatDialogue Adapter, content, Foundation, data adapters, styles and docs', () => {
+    expect(getParityScenario('ai-chat-dialogue')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.aiChatDialoguePublicEntry,
+    });
+    expect(assertScenarioComparable('ai-chat-dialogue').targets).toHaveLength(4);
+    expect(getParityScenario('ai-chat-dialogue').sourceEvidence).toEqual([
+      REFERENCE_SOURCE_PATHS.aiChatDialoguePublicEntry,
+      REFERENCE_SOURCE_PATHS.aiChatDialogueItemEntry,
+      REFERENCE_SOURCE_PATHS.aiChatDialogueContentEntry,
+      REFERENCE_SOURCE_PATHS.aiChatDialogueFoundation,
+      REFERENCE_SOURCE_PATHS.aiChatDialogueDataAdapter,
+      REFERENCE_SOURCE_PATHS.aiChatDialogueFoundationStyle,
+      REFERENCE_SOURCE_PATHS.aiChatDialogueDocumentation,
+    ]);
+  });
+
   it('records MarkdownRender Adapter, default components, Foundation, styles and docs', () => {
     expect(getParityScenario('markdown-render')).toMatchObject({
       referenceStatus: 'ready',

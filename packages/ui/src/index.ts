@@ -100,3 +100,39 @@ export * from './tree-select';
 export * from './typography';
 export * from './video-player';
 export * from './ai-chat-input';
+export {
+  AIChatDialogue,
+  AIChatDialogueAnnotation,
+  AIChatDialogueCode,
+  AIChatDialogueReasoning,
+  AIChatDialogueStep,
+  chatCompletionToMessage,
+  chatInputToChatCompletion,
+  chatInputToMessage,
+  messageToChatInput,
+  responseToMessage,
+  streamingChatCompletionToMessage,
+  streamingResponseToMessage,
+} from './ai-chat-dialogue';
+export type {
+  AIChatDialogueExpose,
+  AIChatDialogueLocale,
+  AIChatDialogueMessage,
+  AIChatDialogueMetadata,
+  AIChatDialogueProps,
+  AIChatDialogueReasoningItem,
+  AIChatDialogueReasoningProps,
+  AIChatDialogueRoleConfig,
+  AIChatDialogueStepAction,
+  AIChatDialogueStepItem,
+  ChatCompletion as AIChatDialogueChatCompletion,
+  ChatCompletionChunk as AIChatDialogueChatCompletionChunk,
+  ContentItem as AIChatDialogueContentItem,
+  DialogueContentItemRenderer,
+  DialogueContentItemRendererMap,
+  DialogueRenderConfig,
+  Response as AIChatDialogueResponse,
+  ResponseChunk as AIChatDialogueResponseChunk,
+  StreamingChatState as AIChatDialogueStreamingChatState,
+  StreamingResponseState as AIChatDialogueStreamingResponseState,
+} from './ai-chat-dialogue';

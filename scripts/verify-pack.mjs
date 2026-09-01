@@ -168,6 +168,14 @@ try {
       if (!packedFiles.has('dist/ai-chat-input/index.js')) {
         throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少 AIChatInput 子路径产物');
       }
+      if (!packedFiles.has('dist/ai-chat-dialogue/index.js')) {
+        throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少 AIChatDialogue 子路径产物');
+      }
+      if (!packedFiles.has('dist/ai-chat-dialogue/data-adapter.js')) {
+        throw new Error(
+          '@aifuxi/semi-ui-vue 的 tarball 缺少 AIChatDialogue data-adapter 子路径产物',
+        );
+      }
       if (!packedFiles.has('dist/sidebar/index.js')) {
         throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少 Sidebar 子路径产物');
       }
@@ -471,6 +479,8 @@ try {
 		await import('@aifuxi/semi-ui-vue/video-player');
 		await import('@aifuxi/semi-ui-vue/user-guide');
 		await import('@aifuxi/semi-ui-vue/json-viewer');
+		await import('@aifuxi/semi-ui-vue/ai-chat-dialogue');
+		await import('@aifuxi/semi-ui-vue/ai-chat-dialogue/data-adapter');
 		await import('@aifuxi/semi-ui-vue/sidebar');
 		await import('@aifuxi/semi-ui-vue/chat');
 		await import('@aifuxi/semi-ui-vue/markdown-render');
@@ -649,6 +659,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/ai-chat-input.css').endsWith('/dist/ai-chat-input.css')) {
 		  throw new Error('AIChatInput 逐组件样式导出未指向 dist/ai-chat-input.css');
+		}
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/ai-chat-dialogue.css').endsWith('/dist/ai-chat-dialogue.css')) {
+		  throw new Error('AIChatDialogue 逐组件样式导出未指向 dist/ai-chat-dialogue.css');
 		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/sidebar.css').endsWith('/dist/sidebar.css')) {
 		  throw new Error('Sidebar 逐组件样式导出未指向 dist/sidebar.css');
@@ -834,6 +847,8 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { UserGuide, type UserGuideMode, type UserGuideProps, type UserGuideStepItem } from '@aifuxi/semi-ui-vue/user-guide';
 		import { JsonViewer, type JsonViewerOptions, type JsonViewerProps, type JsonViewerSearchControls } from '@aifuxi/semi-ui-vue/json-viewer';
 		import { AIChatInput, type AIChatInputProps, type Attachment, type MessageContent } from '@aifuxi/semi-ui-vue/ai-chat-input';
+		import { AIChatDialogue, AIChatDialogueReasoning, type AIChatDialogueMessage, type AIChatDialogueProps } from '@aifuxi/semi-ui-vue/ai-chat-dialogue';
+		import { chatCompletionToMessage, streamingChatCompletionToMessage, type ChatCompletion, type StreamingChatState } from '@aifuxi/semi-ui-vue/ai-chat-dialogue/data-adapter';
 		import { Sidebar, type SidebarMode, type SidebarOption, type SidebarProps } from '@aifuxi/semi-ui-vue/sidebar';
 		import { Chat, type ChatMessage, type ChatProps, type ChatSendHotKey } from '@aifuxi/semi-ui-vue/chat';
 		import { MarkdownRender, markdownRenderDefaultComponents, type MarkdownRenderFormat, type MarkdownRenderProps } from '@aifuxi/semi-ui-vue/markdown-render';
@@ -1038,6 +1053,14 @@ h(Button, { type, htmlType: 'submit' });
 		const aiMessage: MessageContent = { attachments: [aiAttachment], inputContents: [{ type: 'text', text: 'Consumer' }] };
 		h(AIChatInput, aiChatInputProps);
 		void aiMessage;
+		const aiDialogueMessages: AIChatDialogueMessage[] = [{ id: 'consumer-dialogue', role: 'assistant', content: 'Ready', status: 'completed' }];
+		const aiDialogueProps: AIChatDialogueProps = { chats: aiDialogueMessages, hints: ['Continue'], roleConfig: { assistant: { name: 'Assistant' } } };
+		h(AIChatDialogue, aiDialogueProps);
+		h(AIChatDialogueReasoning, { content: [{ type: 'reasoning_text', text: 'Reasoning' }], status: 'completed' });
+		const completion: ChatCompletion = { id: 'completion', choices: [{ message: { role: 'assistant', content: 'Ready' } }] };
+		chatCompletionToMessage(completion);
+		const streamingState: StreamingChatState = { choices: new Map() };
+		streamingChatCompletionToMessage([{ id: 'chunk', choices: [] }], streamingState);
 		const sidebarMode: SidebarMode = 'main';
 		const sidebarOptions: SidebarOption[] = [{ key: 'code', icon: h('span', 'C'), name: 'Code' }];
 		const sidebarProps: SidebarProps = { mode: sidebarMode, activeKey: 'code', options: sidebarOptions, visible: true, motion: false };
@@ -2387,6 +2410,29 @@ h(Button, { type, htmlType: 'submit' });
   ]) {
     if (!aiChatInputThemeCss.includes(selector)) {
       throw new Error(`安装后的 AIChatInput 逐组件样式缺少选择器：${selector}`);
+    }
+  }
+  const aiChatDialogueThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'ai-chat-dialogue.css',
+    ),
+    'utf8',
+  );
+  for (const selector of [
+    '.semi-ai-chat-dialogue',
+    '.semi-ai-chat-dialogue-content-user',
+    '.semi-ai-chat-dialogue-action-show',
+    '.semi-ai-chat-dialogue-hint-item',
+    '.semi-chat-chatBox-action-icon-flip',
+    '[theme-mode=dark]',
+  ]) {
+    if (!aiChatDialogueThemeCss.includes(selector)) {
+      throw new Error(`安装后的 AIChatDialogue 逐组件样式缺少选择器：${selector}`);
     }
   }
   const sidebarThemeCss = await readFile(

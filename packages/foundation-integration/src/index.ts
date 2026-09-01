@@ -14,6 +14,17 @@ export {
   isImageType as isAIChatInputImageType,
   transformJSONResult as transformAIChatInputJSONResult,
 } from './ai-chat-input.js';
+export {
+  aiChatDialogueCssClasses,
+  aiChatDialogueStrings,
+  chatCompletionToMessage,
+  chatInputToChatCompletion,
+  chatInputToMessage,
+  messageToChatInput,
+  responseToMessage,
+  streamingChatCompletionToMessage,
+  streamingResponseToMessage,
+} from './ai-chat-dialogue.js';
 export type {
   AIChatInputAdapter,
   AIChatInputFoundationProps,

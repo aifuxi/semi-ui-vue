@@ -53,6 +53,8 @@ JsonViewer 是第七十八个进入 `ready` 的 Vue 垂直切片：`packages/ui/
 
 AIChatInput 是第七十九个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/ai-chat-input/` 使用 Tiptap Vue Adapter 实现富文本、技能、建议、模板、引用、附件与生成态，保持固定 `.semi-aiChatInput-*` class 和 Foundation 事件顺序；`packages/foundation-integration/src/ai-chat-input.js` 隔离固定 Foundation、常量和内容转换工具。Tiptap `3.10.7` 运行时链作为精确依赖纳入源码边界、MIT 许可、SPDX SBOM、SSR 与隔离 tarball consumer，`packages/theme-default/ai-chat-input.css` 编译全部公开依赖与固定 AIChatInput SCSS。完整矩阵见 `docs/components/ai-chat-input/`。
 
+AIChatDialogue 是第八十三个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/ai-chat-dialogue/` 提供受控消息、选择、滚动跟随、角色布局、气泡、多模态内容、推理/步骤/引用、操作区和提示，并以 Vue slots/render 函数映射固定 React render props；`packages/foundation-integration/src/ai-chat-dialogue.js` 隔离固定 Foundation、常量与 Chat Completions/Responses 数据适配器。`packages/theme-default/ai-chat-dialogue.css` 编译 MarkdownRender、Chat 等公开依赖和固定 AIChatDialogue SCSS；根/组件/data-adapter 子路径均通过 SSR-safe import 与隔离 tarball consumer。完整矩阵见 `docs/components/ai-chat-dialogue/`。
+
 Divider 是第二个进入 `ready` 的垂直切片：`packages/ui/src/divider/` 提供根/`divider` 子路径 ESM 与声明，`packages/theme-default/divider.css` 提供逐组件样式。它没有运行时 Foundation 状态机；纯文本与自定义 VNode 的 slot DOM 分支隔离在内容 renderer 中。完整矩阵见 `docs/components/divider/`。
 
 Icon 是第三个进入 `ready` 的横向基础设施切片：`packages/icons` 提供 Icon 基座、`convertIcon` 与稳定版 523 个图标，`packages/icons-lab` 独立提供 Lab 84 个图标，`packages/ui/src/icon/` 只转发稳定版基座。两套图标均从固定 submodule 的 TSX AST 生成 Vue `h()` 源码并由 `check:icons` 阻止漂移；`packages/theme-default/icon.css` 提供逐组件样式。完整矩阵与 React→Vue 迁移见 `docs/components/icon/`。
@@ -119,7 +121,7 @@ Notification 是第五十二个进入 `ready` 的 Vue 垂直切片：`packages/u
 
 Popconfirm 是第五十三个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/popconfirm/` 提供受控/非受控显隐、同步/Promise 确认取消、独立 loading、locale、焦点与 Portal/定位/RTL；`packages/foundation-integration/src/popconfirm.js` 隔离固定 Popconfirm Foundation，`packages/theme-default/popconfirm.css` 编译 Popconfirm、Popover、Button、Portal 与 Icon 样式。完整矩阵见 `docs/components/popconfirm/`。
 
-Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox、Input、Rating、Slider、TagInput、TimePicker、Anchor、BackTop、Breadcrumb、Pagination、Tabs、Table、Banner、Notification、Popconfirm、JsonViewer 与 AIChatInput 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。Anchor 精确锁定并内联 `scroll-into-view-if-needed@2.2.31`；BackTop 首次接通固定 `semi-animation` 并精确锁定 `bezier-easing@2.1.0`；JsonViewer 将固定 core 与 `jsonc-parser@3.3.1` 编入 SSR-safe 内联 Worker；AIChatInput 精确锁定 Tiptap `3.10.7` 富文本链。相关第三方依赖均纳入许可与 SBOM 验证。后续仍必须逐组件处理第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
+Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox、Input、Rating、Slider、TagInput、TimePicker、Anchor、BackTop、Breadcrumb、Pagination、Tabs、Table、Banner、Notification、Popconfirm、JsonViewer、AIChatInput 与 AIChatDialogue 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。Anchor 精确锁定并内联 `scroll-into-view-if-needed@2.2.31`；BackTop 首次接通固定 `semi-animation` 并精确锁定 `bezier-easing@2.1.0`；JsonViewer 将固定 core 与 `jsonc-parser@3.3.1` 编入 SSR-safe 内联 Worker；AIChatInput 精确锁定 Tiptap `3.10.7` 富文本链；AIChatDialogue 复用已归属的 lodash 并内联固定消息/流式响应适配逻辑。相关第三方依赖均纳入许可与 SBOM 验证。后续仍必须逐组件处理第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。
 

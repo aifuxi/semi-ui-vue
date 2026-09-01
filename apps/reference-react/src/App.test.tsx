@@ -34,6 +34,16 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-chat-hint-item');
   });
 
+  it('登记固定 AIChatDialogue 消息、操作与建议场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="ai-chat-dialogue" />);
+
+    expect(html).toContain('data-parity-scenario="ai-chat-dialogue"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/aiChatDialogue/index.tsx');
+    expect(html).toContain('data-testid="ai-chat-dialogue-reference"');
+    expect(html).toContain('semi-ai-chat-dialogue-wrapper');
+    expect(html).toContain('semi-ai-chat-dialogue-hint-item');
+  });
+
   it('登记固定 MarkdownRender 异步渲染场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="markdown-render" />);
 

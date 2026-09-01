@@ -2908,6 +2908,34 @@ declare module '@semi-v2.102.0/markdown-render' {
   export default MarkdownRender;
 }
 
+declare module '@semi-v2.102.0/ai-chat-dialogue' {
+  import type { ComponentType, CSSProperties, ReactNode } from 'react';
+
+  export interface Message {
+    id: string;
+    role: string;
+    content?: string | unknown[];
+    status?: string;
+    [key: string]: unknown;
+  }
+  export interface AIChatDialogueProps {
+    chats?: Message[];
+    hints?: string[];
+    style?: CSSProperties;
+    roleConfig: Record<string, { name?: string; avatar?: ReactNode; color?: string }>;
+    dialogueRenderConfig?: {
+      renderDialogueContent?: (properties: {
+        message?: Message;
+        className?: string;
+        defaultContent?: ReactNode;
+      }) => ReactNode;
+    };
+    onChatsChange?: (chats: Message[]) => void;
+  }
+  const AIChatDialogue: ComponentType<AIChatDialogueProps>;
+  export default AIChatDialogue;
+}
+
 declare module '@semi-v2.102.0/user-guide' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
