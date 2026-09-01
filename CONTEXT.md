@@ -99,3 +99,111 @@ _Avoid_: 用整页面稀释差异、只看全局比例、扩大 mask
 **默认对照场景矩阵（Default Parity Scenario Matrix）**:
 每个组件的最低对照环境集：桌面 light/dark，并根据组件契约增加移动 viewport、RTL、zh-CN/en-US 以及全 Locale 完整性验证。
 _Avoid_: 只测文档默认例、用一张截图代表全部状态
+
+**组件文档门户（Component Documentation Portal）**:
+面向 Vue 移植版使用者的首期文档产品，范围包括组件发现、使用说明、交互示例、示例代码与公开 API，并支持双语、主题和搜索体验。
+_Avoid_: 完整官网、对照工作台、Demo 合集
+
+**完整官网门户（Full Website Portal）**:
+在组件文档门户之外，还承载首页、设计原则、设计资源、生态与版本信息等完整产品叙事的未来扩展范围。
+_Avoid_: 首期组件文档、仅组件列表
+
+**对照工作台（Parity Workbench）**:
+供维护者运行固定场景并收集 React/Vue 对齐证据的内部工具，不承担面向组件使用者的文档职责。
+_Avoid_: 组件文档门户、官网
+
+**完整文档迁移（Complete Documentation Port）**:
+把参考基线中对 Vue 移植版仍适用的全部组件说明和示例转换为 Vue 表达，并补充 Vue 公开 API 与迁移差异，而不是只挑选常用场景。
+_Avoid_: 精选文档、核心示例集、直接展示 React 示例
+
+**正式文档内容源（Canonical Documentation Source）**:
+由本项目维护、面向 Vue 使用者的双语文档内容；参考源码只用于核对范围和语义，不作为门户直接发布的内容源。
+_Avoid_: 运行时读取 vendor、直接渲染上游 React MDX、把参考源码当成可编辑文档
+
+**文档体验对齐（Documentation Experience Parity）**:
+组件文档门户在信息层级、布局、排版、主题、导航和组件页面交互上对齐参考官网，但不复制其品牌身份或官方宣传内容。
+_Avoid_: 品牌复制、只换 Logo 的官网镜像、使用默认主题即宣称复刻
+
+**独立站点身份（Independent Site Identity）**:
+组件文档门户以 Semi UI Vue 和 `@aifuxi/*` 标识自身，并持续说明它是基于固定参考基线的独立 Vue 实现。
+_Avoid_: Semi 官方 Vue 版、复用 Semi Logo、隐藏非隶属关系
+
+**双语页面对（Bilingual Page Pair）**:
+中文与英文中表达同一主题、共享同一非语言路径的两份正式页面；缺少任一成员都表示该主题尚未达到可发布状态。
+_Avoid_: 自动回退即完成、只有标题被翻译、两个语言版本使用无关路径
+
+**正式文档 URL（Canonical Documentation URL）**:
+带有显式 `zh-CN` 或 `en-US` 前缀，并保留参考官网分类层级的稳定页面地址；无语言前缀或简写地址只作为跳转入口。
+_Avoid_: 根据浏览器语言产生不确定根页面、把重定向别名当正式地址
+
+**文档 API 契约（Documentation API Contract）**:
+由公开 TypeScript 类型定义成员与类型、由结构化双语元数据定义说明和默认值的组件 API 文档事实；两部分必须完整对应才能发布。
+_Avoid_: 手写整张 API 表、只展示类型名、从内部运行时类型推断公开 API
+
+**组件文档完成门槛（Component Documentation Completion Gate）**:
+组件页面进入正式导航前必须满足的双语内容、上游覆盖、API、示例、浏览器体验、链接与搜索证据集合；任一部分缺失都表示页面未完成。
+_Avoid_: 页面能打开、先上线再补、用待办提示代替完整内容
+
+**文档覆盖清单（Documentation Coverage Ledger）**:
+逐项记录参考基线章节与示例在 Vue 文档中的迁移结果或有证据的排除理由，用于证明完整文档迁移没有静默遗漏。
+_Avoid_: 只比较页面数量、凭印象判断完整、删除不适用内容但不说明
+
+**正式站点源（Canonical Site Origin）**:
+公开组件文档门户被索引、分享和生成正式链接时使用的唯一域名源，即 `https://semi.fuxiaochen.com`。
+_Avoid_: GitHub Pages 临时地址、开发服务器地址、同时发布多个 canonical origin
+
+**文档发布产物（Documentation Distribution Artifact）**:
+由仓库构建并验证、可部署到任意静态 Web 服务器的完整站点文件集合；它是仓库交付边界，不包含云服务器凭据或上线操作。
+_Avoid_: 本地开发目录、GitHub Pages 专用产物、把服务器配置当成站点源码
+
+**活动文档版本（Active Documentation Version）**:
+正式站点当前唯一描述的组件库发布线；预发布阶段需要明确标识，但页面 URL 不包含版本前缀。
+_Avoid_: 参考基线版本、默认代表所有历史版本、每次发包复制整站
+
+**语言隔离搜索（Locale-scoped Search）**:
+只在当前语言的正式页面中检索标题、正文语义、示例用途和公开 API 名称的静态搜索体验；示例源码正文不参与普通全文排名。
+_Avoid_: 中英文结果混排、索引开发中页面、让通用代码词淹没文档结果
+
+**门户基础指南（Portal Foundation Guides）**:
+让使用者能够正确安装、导入、主题化、国际化、SSR 渲染、迁移和理解支持边界的双语全站说明；它们与组件页面共同构成首期组件文档门户。
+_Avoid_: 只有组件 API、营销内容、用 README 代替站点指南
+
+**文档体验对照证据（Documentation Experience Comparison Evidence）**:
+在代表页面中证明站点导航、布局、排版、主题、示例和 API 区域与参考官网关键样式及几何一致的局部证据。
+_Avoid_: 复制品牌资产、只比较整页截图、用本站基线代替上游对照
+
+**文档站回归证据（Documentation Portal Regression Evidence）**:
+以 Semi UI Vue 独立品牌和实际 Starlight 页面为对象，保护双语、主题、桌面/移动、键盘、可访问性和整页视觉稳定性的本站证据。
+_Avoid_: 上游 React/Vue 组件对照、只测一个桌面中文页面
+
+**公开文档内容（Published Documentation Content）**:
+组件门户直接发布给使用者的双语指南、组件说明、迁移内容、示例和 API 解释，由文档应用拥有并进入站点质量门禁。
+_Avoid_: 对齐矩阵、覆盖审计、内部测试结论
+
+**文档维护证据（Documentation Maintenance Evidence）**:
+供维护者证明上游覆盖、组件对齐和页面完成状态的矩阵、清单与验收记录，不作为面向使用者的站点正文。
+_Avoid_: 用户指南、公开 API 说明、把内部验收记录直接发布
+
+**文档参考批次（Documentation Reference Cohort）**:
+在批量迁移前用于验证并冻结站点壳、页面模板、示例、API、搜索、视觉和发布产物约定的一组差异化组件页面。
+_Avoid_: 随机挑一个简单组件、试点未闭环就批量复制、把参考批次缩小为视觉样稿
+
+**文档来源记录（Documentation Provenance Record）**:
+把迁移后的公开内容追溯到固定上游文档、示例、样式或资产路径及版本的记录，并标明改编或排除结果。
+_Avoid_: 只写灵感来自 Semi、无法定位原文件、用在线最新页面替代固定来源
+
+**站点归属声明（Portal Attribution Notice）**:
+随静态文档产物公开提供的项目、Semi Design 和实际第三方依赖许可与归属说明。
+_Avoid_: 只在源码仓库保留 License、把非隶属声明当成许可证、遗漏文档运行时依赖
+
+**文档影响链（Documentation Affected Chain）**:
+由一次内容、示例、站点壳、生成器、组件源码或共享基础设施变更实际触达的文档检查与组件对照集合。
+_Avoid_: 每次文案修改都跑全部组件、只构建当前页面、凭文件名猜测影响范围
+
+**混合文档壳（Hybrid Documentation Shell）**:
+由 Starlight 提供内容、路由、双语和搜索基础，由 Semi UI Vue override 提供接近参考官网的可见导航与页面壳体验的门户结构。
+_Avoid_: Starlight 默认主题换色、完全脱离 Starlight 的自研文档系统、直接迁移 Gatsby React 壳
+
+**无跟踪静态门户（Tracking-free Static Portal）**:
+不依赖分析、监控、Cookie、用户标识或外部运行时服务即可完整浏览、搜索和运行本地示例的组件文档门户。
+_Avoid_: 迁移上游监控、默认接入统计、核心资源依赖第三方 CDN
