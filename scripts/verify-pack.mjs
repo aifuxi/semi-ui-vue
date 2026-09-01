@@ -162,6 +162,23 @@ try {
       throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少运行时依赖许可证');
     }
     if (packageInfo.name === '@aifuxi/semi-ui-vue') {
+      for (const infrastructureEntry of [
+        'dist/_base/index.js',
+        'dist/_base/base.js',
+        'dist/_base/base-foundation.js',
+        'dist/_base/base-component.js',
+        'dist/_base/component-utils.js',
+        'dist/_utils/index.js',
+        'dist/_utils/use-prev-focus.js',
+        'dist/_utils/vue-render.js',
+        'dist/_utils/semi-global.js',
+      ]) {
+        if (!packedFiles.has(infrastructureEntry)) {
+          throw new Error(
+            `@aifuxi/semi-ui-vue 的 tarball 缺少基础设施产物：${infrastructureEntry}`,
+          );
+        }
+      }
       if (!packedFiles.has('dist/json-viewer/index.js')) {
         throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少 JsonViewer 子路径产物');
       }
@@ -453,6 +470,31 @@ try {
   await writeFile(
     path.join(consumerRoot, 'smoke.mjs'),
     `await Promise.all(${JSON.stringify(javascriptPackages)}.map(packageName => import(packageName)));
+		const [uiRoot, baseRoot, baseTypes, baseFoundation, baseComponent, componentUtils, utils, prevFocus, vueRender, utilsGlobal, configProvider] = await Promise.all([
+		  import('@aifuxi/semi-ui-vue'),
+		  import('@aifuxi/semi-ui-vue/_base'),
+		  import('@aifuxi/semi-ui-vue/_base/base'),
+		  import('@aifuxi/semi-ui-vue/_base/base-foundation'),
+		  import('@aifuxi/semi-ui-vue/_base/base-component'),
+		  import('@aifuxi/semi-ui-vue/_base/component-utils'),
+		  import('@aifuxi/semi-ui-vue/_utils'),
+		  import('@aifuxi/semi-ui-vue/_utils/use-prev-focus'),
+		  import('@aifuxi/semi-ui-vue/_utils/vue-render'),
+		  import('@aifuxi/semi-ui-vue/_utils/semi-global'),
+		  import('@aifuxi/semi-ui-vue/config-provider'),
+		]);
+		if (typeof baseRoot.BaseComponent !== 'function' || typeof baseRoot.BaseFoundation !== 'function') {
+		  throw new Error('_base 运行时导出不完整');
+		}
+		if (!Array.isArray(baseTypes.VALIDATE_STATUSES) || typeof baseFoundation.BaseFoundation !== 'function' || typeof baseComponent.default !== 'function' || typeof componentUtils.isVueComponent !== 'function') {
+		  throw new Error('_base 子路径运行时导出不完整');
+		}
+		if (typeof utils.cloneDeep !== 'function' || typeof prevFocus.usePrevFocus !== 'function' || typeof vueRender.render !== 'function') {
+		  throw new Error('_utils 子路径运行时导出不完整');
+		}
+		if (uiRoot.semiGlobal !== utils.semiGlobal || uiRoot.semiGlobal !== utilsGlobal.default || uiRoot.semiGlobal !== configProvider.semiGlobal) {
+		  throw new Error('semiGlobal 多入口 singleton identity 分裂');
+		}
 		await import('@aifuxi/semi-ui-vue/anchor');
 		await import('@aifuxi/semi-ui-vue/avatar');
 		await import('@aifuxi/semi-ui-vue/badge');
@@ -811,6 +853,15 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
   await writeFile(
     path.join(consumerRoot, 'type-smoke.ts'),
     `${javascriptPackages.map((packageName) => `import '${packageName}';`).join('\n')}
+	import { BaseComponent, BaseFoundation, type BaseProps, type ValidateStatus } from '@aifuxi/semi-ui-vue/_base';
+	import { VALIDATE_STATUSES } from '@aifuxi/semi-ui-vue/_base/base';
+	import { BaseFoundation as DirectBaseFoundation } from '@aifuxi/semi-ui-vue/_base/base-foundation';
+	import DirectBaseComponent from '@aifuxi/semi-ui-vue/_base/base-component';
+	import { isElement, isVueComponent } from '@aifuxi/semi-ui-vue/_base/component-utils';
+	import { cloneDeep, getDefaultPropsFromGlobalConfig, registerMediaQuery, type RegisterMediaQueryOption } from '@aifuxi/semi-ui-vue/_utils';
+	import { usePrevFocus, type PreviousFocusRef } from '@aifuxi/semi-ui-vue/_utils/use-prev-focus';
+	import { getRef, render as renderVNode, resolveDOM, unmount as unmountVNode } from '@aifuxi/semi-ui-vue/_utils/vue-render';
+	import utilitySemiGlobal from '@aifuxi/semi-ui-vue/_utils/semi-global';
 	import { AutoComplete, AutoCompleteOption, type AutoCompleteModelValue } from '@aifuxi/semi-ui-vue/auto-complete';
 		import { Anchor, AnchorLink, type AnchorPosition } from '@aifuxi/semi-ui-vue/anchor';
 		import { Avatar, AvatarGroup, type AvatarColor, type AvatarSize } from '@aifuxi/semi-ui-vue/avatar';
@@ -904,6 +955,35 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 	import { convertIllustration } from '@aifuxi/semi-illustrations-vue/Illustration';
 	import IllustrationNoContentDirect from '@aifuxi/semi-illustrations-vue/illustrations/IllustrationNoContent';
 	import { h } from 'vue';
+	type ConsumerBaseState = Record<string, unknown> & { ready: boolean };
+	const baseProps: BaseProps = { class: 'consumer' };
+	const validateStatus: ValidateStatus = VALIDATE_STATUSES[0];
+	const baseController = new BaseComponent<BaseProps, ConsumerBaseState>({ props: baseProps, state: { ready: false } });
+	const directBaseController = new DirectBaseComponent({ props: baseProps });
+	const baseFoundation = new BaseFoundation<BaseProps, ConsumerBaseState>({ getProps: () => baseProps });
+	const directBaseFoundation = new DirectBaseFoundation({});
+	baseController.mount();
+	baseFoundation.init();
+	directBaseFoundation.destroy();
+	void directBaseController;
+	void validateStatus;
+	const clonedConsumer = cloneDeep({ ready: true });
+	const globalDefaults = getDefaultPropsFromGlobalConfig('Consumer', { size: 'default' });
+	const mediaOptions: RegisterMediaQueryOption = { callInInit: false };
+	const unregisterConsumerMedia = registerMediaQuery('(min-width: 1px)', mediaOptions);
+	unregisterConsumerMedia();
+	const previousFocusType: PreviousFocusRef | undefined = undefined;
+	void previousFocusType;
+	void usePrevFocus;
+	void renderVNode;
+	void unmountVNode;
+	void resolveDOM;
+	void getRef;
+	void utilitySemiGlobal;
+	void clonedConsumer;
+	void globalDefaults;
+	void isElement(h('span'));
+	void isVueComponent(Button);
 const type: ButtonType = 'primary';
 h(Button, { type, htmlType: 'submit' });
 	const horizontalPadding: HorizontalPaddingType = 'left';

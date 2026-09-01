@@ -43,6 +43,42 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./_base": {
+      "types": "./dist/_base/index.d.ts",
+      "import": "./dist/_base/index.js"
+    },
+    "./_base/base": {
+      "types": "./dist/_base/base.d.ts",
+      "import": "./dist/_base/base.js"
+    },
+    "./_base/base-foundation": {
+      "types": "./dist/_base/base-foundation.d.ts",
+      "import": "./dist/_base/base-foundation.js"
+    },
+    "./_base/base-component": {
+      "types": "./dist/_base/base-component.d.ts",
+      "import": "./dist/_base/base-component.js"
+    },
+    "./_base/component-utils": {
+      "types": "./dist/_base/component-utils.d.ts",
+      "import": "./dist/_base/component-utils.js"
+    },
+    "./_utils": {
+      "types": "./dist/_utils/index.d.ts",
+      "import": "./dist/_utils/index.js"
+    },
+    "./_utils/use-prev-focus": {
+      "types": "./dist/_utils/use-prev-focus.d.ts",
+      "import": "./dist/_utils/use-prev-focus.js"
+    },
+    "./_utils/vue-render": {
+      "types": "./dist/_utils/vue-render.d.ts",
+      "import": "./dist/_utils/vue-render.js"
+    },
+    "./_utils/semi-global": {
+      "types": "./dist/_utils/semi-global.d.ts",
+      "import": "./dist/_utils/semi-global.js"
+    },
     "./anchor": {
       "types": "./dist/anchor/index.d.ts",
       "import": "./dist/anchor/index.js"

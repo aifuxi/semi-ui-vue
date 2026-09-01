@@ -1,3 +1,16 @@
+export { BaseComponent, BaseFoundation, useBaseComponent } from './_base';
+export type {
+  ArrayElement,
+  BaseComponentOptions,
+  BaseFoundationAdapter,
+  BaseProps,
+  FoundationLifecycle,
+  Motion,
+  MotionChildrenProps,
+  MotionFunction,
+  MotionObject,
+  ValidateStatus,
+} from './_base';
 export * from './anchor';
 export * from './audio-player';
 export * from './avatar';

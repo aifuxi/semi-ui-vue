@@ -49,6 +49,20 @@ for (const packageName of publicPackages) {
   process.stdout.write(`SSR import 通过：packages/${packageName}/dist/index.js\n`);
 
   if (packageName === 'ui') {
+    for (const baseEntry of [
+      '_base/index.js',
+      '_base/base.js',
+      '_base/base-foundation.js',
+      '_base/base-component.js',
+      '_base/component-utils.js',
+      '_utils/index.js',
+      '_utils/use-prev-focus.js',
+      '_utils/vue-render.js',
+      '_utils/semi-global.js',
+    ]) {
+      await import(pathToFileURL(path.join(distPath, baseEntry)).href);
+    }
+    process.stdout.write('SSR import 通过：packages/ui/dist/_base 与 _utils 全部公开入口\n');
     await import(pathToFileURL(path.join(distPath, 'anchor', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/anchor/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'avatar', 'index.js')).href);

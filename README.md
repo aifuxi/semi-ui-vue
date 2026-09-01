@@ -22,16 +22,16 @@ pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
 
 ## 复刻进度
 
-当前已完成 **83 / 85** 个上游公开根模块的完整垂直切片（约 **97.6%**）：
+当前已完成 **85 / 85** 个上游公开根模块的完整垂直切片（**100%**）：
 
-- 基础与布局：Button、IconButton、Divider、Icon、Space、FloatButton、Layout、Grid、Resizable、Typography、ConfigProvider、Locale、DragMove、HotKeys、Lottie。
+- 基础与布局：`_base`、`_utils`、Button、IconButton、Divider、Icon、Space、FloatButton、Layout、Grid、Resizable、Typography、ConfigProvider、Locale、DragMove、HotKeys、Lottie。
 - 输入类：Switch、Tooltip、Select、AutoComplete、AIChatInput、Cascader、ColorPicker、DatePicker、Form、Checkbox、Input、InputNumber、PinCode、Radio、Rating、Slider、TagInput、TimePicker、Transfer、TreeSelect、Upload。
 - 导航类：Anchor、BackTop、Breadcrumb、Navigation、Pagination、Steps、Tabs、Tree。
 - 数据展示与容器：AIChatDialogue、Avatar、Badge、Calendar、Card、Carousel、Chat、Collapse、Collapsible、CodeHighlight、Descriptions、Dropdown、Empty、Highlight、Image、Cropper、JsonViewer、List、MarkdownRender、Modal、OverflowList、Popover、ScrollList、Sidebar、SideSheet、Table、Tag、Timeline。
 - 反馈与引导类：Banner、Feedback、Notification、Popconfirm、Progress、Skeleton、Spin、Toast、UserGuide。
 - 媒体类：AudioPlayer、VideoPlayer。
 
-最新完成组件为 AIChatDialogue：受控消息与选择、角色布局、气泡与多模态内容、推理/步骤/引用、操作区、提示、OpenAI Chat Completions/Responses 数据适配、固定 Foundation、`.semi-ai-chat-dialogue-*` class、SSR、暗色/RTL/Locale 与真实 tarball 消费均已闭合。下一项为 `_base` 与 `_utils` 两个公开基础设施根模块的出口收口；它们不是普通可视组件，仍按 inventory 的公开导出、声明、SSR、许可和 tarball 证据完成。每个已完成切片均包含 Vue API、Foundation/主题、中英文文档、React/Vue 场景、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证。Locale 还覆盖固定基线的全部 57 个语言源，Icon 覆盖稳定图标、Lab 图标与生成漂移检查，插画包覆盖全部公开插画。
+最新完成范围为 `_base` 与 `_utils`：`BaseComponent`/`BaseFoundation`、基础类型、Vue 组件与 VNode 判定、全局单例、事件/复制/媒体查询/焦点工具、Vue 命令式 render、SSR-safe 子路径与真实 tarball 消费均已闭合。至此 inventory 的 85 个公开根模块全部进入 `ready`；下一阶段是 1.0 发布审计，不再追加组件切片。可视组件切片均包含 Vue API、Foundation/主题、中英文文档、React/Vue 场景、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证；`_base` / `_utils` 没有独立 DOM 或 SCSS，因此以行为、声明、SSR、许可和 tarball 证据验收。Locale 还覆盖固定基线的全部 57 个语言源，Icon 覆盖稳定图标、Lab 图标与生成漂移检查，插画包覆盖全部公开插画。
 
 进度分母与剩余范围以 `docs/inventory/semi-v2.102.0.json` 的 `rootModuleCount` 为准；每完成一个 `ready` 垂直切片，必须在同一次提交中同步更新本节的数量、完成列表和下一项。唯一参考源码位于只读 submodule `vendor/semi-design`。
 

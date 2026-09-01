@@ -1,5 +1,7 @@
 // 这是唯一允许从 vendor/semi-design 的 Foundation TypeScript 源码建立运行时依赖的包。
 // 具体组件适配会在对应对齐矩阵建立后加入，并由公开包构建阶段内联。
+export { BaseFoundation, baseValidateStatus } from './base.js';
+export type { BaseFoundationAdapter } from './base.js';
 export { AnchorFoundation, AnchorLinkFoundation } from './anchor.js';
 export type { AnchorAdapter, AnchorLinkAdapter } from './anchor.js';
 export {

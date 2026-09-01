@@ -113,6 +113,25 @@ export default defineConfig({
     lib: {
       entry: {
         index: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
+        '_base/index': fileURLToPath(new URL('./src/_base/index.ts', import.meta.url)),
+        '_base/base': fileURLToPath(new URL('./src/_base/base.ts', import.meta.url)),
+        '_base/base-foundation': fileURLToPath(
+          new URL('./src/_base/base-foundation.ts', import.meta.url),
+        ),
+        '_base/base-component': fileURLToPath(
+          new URL('./src/_base/base-component.ts', import.meta.url),
+        ),
+        '_base/component-utils': fileURLToPath(
+          new URL('./src/_base/component-utils.ts', import.meta.url),
+        ),
+        '_utils/index': fileURLToPath(new URL('./src/_utils/index.ts', import.meta.url)),
+        '_utils/use-prev-focus': fileURLToPath(
+          new URL('./src/_utils/use-prev-focus.ts', import.meta.url),
+        ),
+        '_utils/vue-render': fileURLToPath(new URL('./src/_utils/vue-render.ts', import.meta.url)),
+        '_utils/semi-global': fileURLToPath(
+          new URL('./src/_utils/semi-global.ts', import.meta.url),
+        ),
         'ai-chat-input/index': fileURLToPath(
           new URL('./src/ai-chat-input/index.ts', import.meta.url),
         ),
