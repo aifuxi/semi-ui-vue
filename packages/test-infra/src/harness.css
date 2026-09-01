@@ -3682,12 +3682,30 @@ p {
   background: var(--semi-color-bg-0);
 }
 
+.markdown-render-scenario {
+  width: min(760px, 100%);
+  min-width: 0;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid var(--semi-color-border);
+  border-radius: 12px;
+  background: var(--semi-color-bg-0);
+}
+
+.markdown-render-scenario .semi-table-container {
+  margin-top: 12px;
+}
+
 .sidebar-scenario .semi-sidebar-container {
   width: 420px;
   height: 100%;
 }
 
 @media (max-width: 720px) {
+  .markdown-render-scenario {
+    padding: 12px;
+  }
+
   .ai-chat-input-scenario__card {
     padding: 10px;
   }

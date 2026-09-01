@@ -150,6 +150,18 @@ export { HotKeysFoundation, HotKeysFoundationKeys } from './hot-keys.js';
 export type { HotKeysAdapter, HotKeysFoundationProps } from './hot-keys.js';
 export { LottieFoundation, lottieCssClasses } from './lottie.js';
 export type { LottieAdapter, LottieFoundationProps, LottieLoadParams } from './lottie.js';
+export {
+  compileMarkdownRender,
+  evaluateMarkdownRender,
+  evaluateMarkdownRenderSync,
+} from './markdown-render.js';
+export type {
+  MarkdownRenderContent,
+  MarkdownRenderEvaluationOptions,
+  MarkdownRenderFormat,
+  MarkdownRenderPluginList,
+  MarkdownRenderRuntime,
+} from './markdown-render.js';
 export { JsonViewerFoundation, jsonViewerCssClasses } from './json-viewer.js';
 export type {
   JsonViewerAdapter,

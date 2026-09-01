@@ -34,6 +34,15 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-chat-hint-item');
   });
 
+  it('登记固定 MarkdownRender 异步渲染场景', () => {
+    const html = renderToStaticMarkup(<App scenarioId="markdown-render" />);
+
+    expect(html).toContain('data-parity-scenario="markdown-render"');
+    expect(html).toContain('vendor/semi-design/packages/semi-ui/markdownRender/index.tsx');
+    expect(html).toContain('data-testid="markdown-render-reference"');
+    expect(html).toContain('semi-markdownRender');
+  });
+
   it('登记固定 AudioPlayer 的播放列表、工具栏和精简场景', () => {
     const html = renderToStaticMarkup(<App scenarioId="audio-player" theme="light" />);
 

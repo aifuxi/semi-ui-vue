@@ -99,6 +99,8 @@ for (const packageName of publicPackages) {
     process.stdout.write('SSR import 通过：packages/ui/dist/sidebar/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'chat', 'index.js')).href);
     process.stdout.write('SSR import 通过：packages/ui/dist/chat/index.js\n');
+    await import(pathToFileURL(path.join(distPath, 'markdown-render', 'index.js')).href);
+    process.stdout.write('SSR import 通过：packages/ui/dist/markdown-render/index.js\n');
     await import(pathToFileURL(path.join(distPath, 'locale', 'index.js')).href);
     const localeSourceRoot = path.join(distPath, 'locale', 'source');
     const localeSourceFiles = (await readdir(localeSourceRoot))

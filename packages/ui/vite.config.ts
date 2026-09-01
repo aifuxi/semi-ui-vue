@@ -1,5 +1,6 @@
 import { fileURLToPath, URL } from 'node:url';
-import { readdirSync } from 'node:fs';
+import { readdirSync, realpathSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
@@ -13,6 +14,16 @@ const bezierEasingEntry = fileURLToPath(
 );
 const fastCopyEntry = fileURLToPath(
   new URL('../foundation-integration/src/fast-copy.js', import.meta.url),
+);
+const mdxRequire = createRequire(
+  realpathSync(fileURLToPath(new URL('./node_modules/@mdx-js/mdx/package.json', import.meta.url))),
+);
+const remarkParseRequire = createRequire(mdxRequire.resolve('remark-parse'));
+const mdastFromMarkdownRequire = createRequire(
+  remarkParseRequire.resolve('mdast-util-from-markdown'),
+);
+const decodeNamedCharacterReferenceEntry = mdastFromMarkdownRequire.resolve(
+  'decode-named-character-reference',
 );
 const localeSourceNames = readdirSync(
   fileURLToPath(new URL('./src/locale/source', import.meta.url)),
@@ -61,6 +72,10 @@ export default defineConfig({
       { find: '@douyinfe/semi-animation', replacement: animationEntry },
       { find: 'bezier-easing', replacement: bezierEasingEntry },
       { find: /^fast-copy$/, replacement: fastCopyEntry },
+      {
+        find: /^decode-named-character-reference$/,
+        replacement: decodeNamedCharacterReferenceEntry,
+      },
       {
         find: /^async-validator$/,
         replacement: fileURLToPath(
@@ -114,6 +129,9 @@ export default defineConfig({
         'banner/index': fileURLToPath(new URL('./src/banner/index.ts', import.meta.url)),
         'calendar/index': fileURLToPath(new URL('./src/calendar/index.ts', import.meta.url)),
         'chat/index': fileURLToPath(new URL('./src/chat/index.ts', import.meta.url)),
+        'markdown-render/index': fileURLToPath(
+          new URL('./src/markdown-render/index.ts', import.meta.url),
+        ),
         'card/index': fileURLToPath(new URL('./src/card/index.ts', import.meta.url)),
         'carousel/index': fileURLToPath(new URL('./src/carousel/index.ts', import.meta.url)),
         'cascader/index': fileURLToPath(new URL('./src/cascader/index.ts', import.meta.url)),

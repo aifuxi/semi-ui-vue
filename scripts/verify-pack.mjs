@@ -133,6 +133,7 @@ try {
       packageInfo.name === '@aifuxi/semi-ui-vue' &&
       [
         'async-validator.txt',
+        'mdx-js--mdx.txt',
         'bezier-easing.txt',
         'classnames.txt',
         'date-fns.txt',
@@ -142,6 +143,7 @@ try {
         'markdown-it.txt',
         'jsonc-parser.txt',
         'prismjs.txt',
+        'remark-gfm.txt',
         'scroll-into-view-if-needed.txt',
         'tiptap--core.txt',
         'tiptap--extension-document.txt',
@@ -172,6 +174,9 @@ try {
       if (!packedFiles.has('dist/chat/index.js')) {
         throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少 Chat 子路径产物');
       }
+      if (!packedFiles.has('dist/markdown-render/index.js')) {
+        throw new Error('@aifuxi/semi-ui-vue 的 tarball 缺少 MarkdownRender 子路径产物');
+      }
       const externalWorker = [...packedFiles].find((filePath) =>
         /dist\/.*json[-.]?viewer.*worker.*\.js$/i.test(filePath),
       );
@@ -187,6 +192,7 @@ try {
     await Promise.all(
       [
         'async-validator',
+        '@mdx-js/mdx',
         'bezier-easing',
         'classnames',
         'date-fns',
@@ -195,6 +201,7 @@ try {
         'lottie-web',
         'markdown-it',
         'prismjs',
+        'remark-gfm',
         'scroll-into-view-if-needed',
         '@tiptap/core',
         '@tiptap/extension-document',
@@ -213,7 +220,10 @@ try {
         `link:${await realpath(
           path.join(
             workspaceRoot,
-            dependency.startsWith('@tiptap/') || dependency === 'markdown-it'
+            dependency.startsWith('@tiptap/') ||
+              dependency === 'markdown-it' ||
+              dependency === '@mdx-js/mdx' ||
+              dependency === 'remark-gfm'
               ? 'packages/ui/node_modules'
               : 'node_modules',
             dependency,
@@ -333,6 +343,7 @@ try {
       }
       for (const [dependency, licenseFile] of [
         ['async-validator', 'LICENSE.md'],
+        ['@mdx-js/mdx', 'license'],
         ['bezier-easing', 'LICENSE'],
         ['classnames', 'LICENSE'],
         ['date-fns', 'LICENSE.md'],
@@ -341,10 +352,16 @@ try {
         ['lottie-web', 'LICENSE.md'],
         ['jsonc-parser', 'LICENSE.md'],
         ['prismjs', 'LICENSE'],
+        ['remark-gfm', 'license'],
         ['scroll-into-view-if-needed', 'LICENSE'],
       ]) {
         const installedLicense = await readFile(
-          path.join(installedRoot, 'dist', 'THIRD_PARTY_LICENSES', `${dependency}.txt`),
+          path.join(
+            installedRoot,
+            'dist',
+            'THIRD_PARTY_LICENSES',
+            `${dependency.replace(/^@/, '').replaceAll('/', '--')}.txt`,
+          ),
           'utf8',
         );
         const sourceLicense = await readFile(
@@ -352,7 +369,9 @@ try {
             workspaceRoot,
             ...(dependency === 'jsonc-parser'
               ? ['packages', 'foundation-integration', 'node_modules']
-              : ['node_modules']),
+              : dependency === '@mdx-js/mdx' || dependency === 'remark-gfm'
+                ? ['packages', 'ui', 'node_modules']
+                : ['node_modules']),
             dependency,
             licenseFile,
           ),
@@ -454,6 +473,7 @@ try {
 		await import('@aifuxi/semi-ui-vue/json-viewer');
 		await import('@aifuxi/semi-ui-vue/sidebar');
 		await import('@aifuxi/semi-ui-vue/chat');
+		await import('@aifuxi/semi-ui-vue/markdown-render');
 		await import('@aifuxi/semi-ui-vue/locale');
 		const localeModules = await Promise.all(${JSON.stringify(localeSourceNames)}.map(sourceName => import('@aifuxi/semi-ui-vue/locale/source/' + sourceName)));
 		if (localeModules.length !== 57 || localeModules.some(module => typeof module.default?.code !== 'string')) {
@@ -636,6 +656,9 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/chat.css').endsWith('/dist/chat.css')) {
 		  throw new Error('Chat 逐组件样式导出未指向 dist/chat.css');
 		}
+		if (!import.meta.resolve('@aifuxi/semi-theme-default/markdown-render.css').endsWith('/dist/markdown-render.css')) {
+		  throw new Error('MarkdownRender 逐组件样式导出未指向 dist/markdown-render.css');
+		}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/locale.css').endsWith('/dist/locale.css')) {
 		  throw new Error('Locale 逐组件样式导出未指向 dist/locale.css');
 		}
@@ -813,6 +836,7 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
 		import { AIChatInput, type AIChatInputProps, type Attachment, type MessageContent } from '@aifuxi/semi-ui-vue/ai-chat-input';
 		import { Sidebar, type SidebarMode, type SidebarOption, type SidebarProps } from '@aifuxi/semi-ui-vue/sidebar';
 		import { Chat, type ChatMessage, type ChatProps, type ChatSendHotKey } from '@aifuxi/semi-ui-vue/chat';
+		import { MarkdownRender, markdownRenderDefaultComponents, type MarkdownRenderFormat, type MarkdownRenderProps } from '@aifuxi/semi-ui-vue/markdown-render';
 		import { LocaleConsumer, LocaleProvider, type LocaleConsumerSlotProps, type LocaleProviderProps } from '@aifuxi/semi-ui-vue/locale';
 		import enGB from '@aifuxi/semi-ui-vue/locale/source/en_GB';
 		import { Empty, type EmptyLayout, type EmptySvgNode } from '@aifuxi/semi-ui-vue/empty';
@@ -1023,6 +1047,10 @@ h(Button, { type, htmlType: 'submit' });
 		const chatMessages: ChatMessage[] = [{ id: 'consumer-chat', role: 'assistant', content: 'Ready', status: 'complete' }];
 		const chatProps: ChatProps = { chats: chatMessages, sendHotKey: chatHotKey, enableUpload: false };
 		h(Chat, chatProps);
+		const markdownRenderFormat: MarkdownRenderFormat = 'md';
+		const markdownRenderProps: MarkdownRenderProps = { raw: '# Consumer', format: markdownRenderFormat };
+		h(MarkdownRender, markdownRenderProps);
+		void markdownRenderDefaultComponents;
 		const localeProviderProps: LocaleProviderProps = { locale: enGB };
 		const localeSlot: LocaleConsumerSlotProps<{ begin: string }> | undefined = undefined;
 		h(LocaleProvider, localeProviderProps, () => h(LocaleConsumer, { componentName: 'TimePicker' }));
@@ -1886,6 +1914,27 @@ h(Button, { type, htmlType: 'submit' });
   ]) {
     if (!chatThemeCss.includes(selector)) {
       throw new Error(`安装后的 Chat 逐组件样式缺少选择器：${selector}`);
+    }
+  }
+  const markdownRenderThemeCss = await readFile(
+    path.join(
+      consumerRoot,
+      'node_modules',
+      '@aifuxi',
+      'semi-theme-default',
+      'dist',
+      'markdown-render.css',
+    ),
+    'utf8',
+  );
+  for (const selector of [
+    '.semi-markdownRender-simple-code',
+    '.semi-markdownRender-component-header',
+    '.semi-table-container',
+    '[theme-mode=dark]',
+  ]) {
+    if (!markdownRenderThemeCss.includes(selector)) {
+      throw new Error(`安装后的 MarkdownRender 逐组件样式缺少选择器：${selector}`);
     }
   }
   const notificationThemeCss = await readFile(

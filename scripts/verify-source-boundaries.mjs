@@ -25,6 +25,7 @@ const publicPackagePolicies = [
     dependencies: {
       '@aifuxi/semi-icons-vue': 'workspace:*',
       '@aifuxi/semi-illustrations-vue': 'workspace:*',
+      '@mdx-js/mdx': '3.0.1',
       '@tiptap/core': '3.10.7',
       '@tiptap/extension-document': '3.10.7',
       '@tiptap/extension-hard-break': '3.10.7',
@@ -46,6 +47,7 @@ const publicPackagePolicies = [
       'lottie-web': '5.13.0',
       'markdown-it': '14.3.1',
       prismjs: '1.29.0',
+      'remark-gfm': '4.0.0',
       'scroll-into-view-if-needed': '2.2.31',
     },
     optionalDependencies: {},

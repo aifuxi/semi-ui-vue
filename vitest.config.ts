@@ -121,6 +121,9 @@ export default defineConfig({
       '@semi-v2.102.0/chat': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiChatStub.tsx', import.meta.url),
       ),
+      '@semi-v2.102.0/markdown-render': fileURLToPath(
+        new URL('./apps/reference-react/src/test/SemiMarkdownRenderStub.tsx', import.meta.url),
+      ),
       '@semi-v2.102.0/sidebar': fileURLToPath(
         new URL('./apps/reference-react/src/test/SemiSidebarStub.tsx', import.meta.url),
       ),

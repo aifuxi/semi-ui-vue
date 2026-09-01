@@ -71,6 +71,13 @@ const dependencyEntries = Object.entries(runtimeDependencies).sort(([left], [rig
   left.localeCompare(right),
 );
 const licensedDependencies = [
+  {
+    licenseFile: 'license',
+    licenseRoot: path.join(workspaceRoot, 'packages', 'ui', 'node_modules'),
+    name: '@mdx-js/mdx',
+    noticeName: '@mdx-js/mdx',
+    version: '3.0.1',
+  },
   ...[
     '@tiptap/core',
     '@tiptap/extension-document',
@@ -102,6 +109,13 @@ const licensedDependencies = [
     name: 'bezier-easing',
     noticeName: 'bezier-easing',
     version: '2.1.0',
+  },
+  {
+    licenseFile: 'license',
+    licenseRoot: path.join(workspaceRoot, 'packages', 'ui', 'node_modules'),
+    name: 'remark-gfm',
+    noticeName: 'remark-gfm',
+    version: '4.0.0',
   },
   { licenseFile: 'LICENSE', name: 'classnames', noticeName: 'classnames', version: '2.5.1' },
   { licenseFile: 'LICENSE.md', name: 'date-fns', noticeName: 'date-fns', version: '2.30.0' },

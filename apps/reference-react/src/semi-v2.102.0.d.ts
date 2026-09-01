@@ -2887,6 +2887,27 @@ declare module '@semi-v2.102.0/sidebar' {
   export default Sidebar;
 }
 
+declare module '@semi-v2.102.0/markdown-render' {
+  import type { ComponentType, CSSProperties } from 'react';
+
+  export interface MarkdownRenderProps {
+    className?: string;
+    components?: Record<string, ComponentType<Record<string, unknown>>>;
+    format?: 'md' | 'mdx';
+    raw: string;
+    rehypePlugins?: unknown[];
+    remarkGfm?: boolean;
+    remarkPlugins?: unknown[];
+    style?: CSSProperties;
+    [key: `data-${string}`]: unknown;
+  }
+
+  const MarkdownRender: ComponentType<MarkdownRenderProps> & {
+    defaultComponents: Record<string, ComponentType<Record<string, unknown>>>;
+  };
+  export default MarkdownRender;
+}
+
 declare module '@semi-v2.102.0/user-guide' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 

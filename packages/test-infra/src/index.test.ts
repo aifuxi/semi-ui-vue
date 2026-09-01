@@ -191,6 +191,22 @@ describe('parity infrastructure contract', () => {
     ]);
   });
 
+  it('records MarkdownRender Adapter, default components, Foundation, styles and docs', () => {
+    expect(getParityScenario('markdown-render')).toMatchObject({
+      referenceStatus: 'ready',
+      vueStatus: 'ready',
+      referenceSource: REFERENCE_SOURCE_PATHS.markdownRenderPublicEntry,
+    });
+    expect(assertScenarioComparable('markdown-render').targets).toHaveLength(4);
+    expect(getParityScenario('markdown-render').sourceEvidence).toEqual([
+      REFERENCE_SOURCE_PATHS.markdownRenderPublicEntry,
+      REFERENCE_SOURCE_PATHS.markdownRenderComponentsEntry,
+      REFERENCE_SOURCE_PATHS.markdownRenderFoundation,
+      REFERENCE_SOURCE_PATHS.markdownRenderFoundationStyle,
+      REFERENCE_SOURCE_PATHS.markdownRenderDocumentation,
+    ]);
+  });
+
   it('records IconButton Adapter, Button base, fixed styles and docs', () => {
     expect(getParityScenario('icon-button')).toMatchObject({
       referenceStatus: 'ready',

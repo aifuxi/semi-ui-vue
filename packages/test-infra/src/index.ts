@@ -168,6 +168,14 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
   chatInputBoxFoundation: 'vendor/semi-design/packages/semi-foundation/chat/inputboxFoundation.ts',
   chatFoundationStyle: 'vendor/semi-design/packages/semi-foundation/chat/chat.scss',
   chatDocumentation: 'vendor/semi-design/content/plus/chat/index.md',
+  markdownRenderPublicEntry: 'vendor/semi-design/packages/semi-ui/markdownRender/index.tsx',
+  markdownRenderComponentsEntry:
+    'vendor/semi-design/packages/semi-ui/markdownRender/components/index.tsx',
+  markdownRenderFoundation:
+    'vendor/semi-design/packages/semi-foundation/markdownRender/foundation.ts',
+  markdownRenderFoundationStyle:
+    'vendor/semi-design/packages/semi-foundation/markdownRender/markdownRender.scss',
+  markdownRenderDocumentation: 'vendor/semi-design/content/plus/markdownrender/index.md',
   sidebarPublicEntry: 'vendor/semi-design/packages/semi-ui/sideBar/index.tsx',
   sidebarContainerEntry: 'vendor/semi-design/packages/semi-ui/sideBar/container/index.tsx',
   sidebarCodeEntry: 'vendor/semi-design/packages/semi-ui/sideBar/widget/code.tsx',
@@ -1472,6 +1480,57 @@ export const PARITY_SCENARIOS = [
           'paddingTop',
           'width',
         ],
+      },
+    ],
+  },
+  {
+    id: 'markdown-render',
+    title: 'MarkdownRender 渲染器',
+    description: '验证异步 MDX、GFM 表格、默认 Typography/链接/代码、移动端、暗色与 RTL。',
+    referenceStatus: 'ready',
+    vueStatus: 'ready',
+    referenceSource: REFERENCE_SOURCE_PATHS.markdownRenderPublicEntry,
+    sourceEvidence: [
+      REFERENCE_SOURCE_PATHS.markdownRenderPublicEntry,
+      REFERENCE_SOURCE_PATHS.markdownRenderComponentsEntry,
+      REFERENCE_SOURCE_PATHS.markdownRenderFoundation,
+      REFERENCE_SOURCE_PATHS.markdownRenderFoundationStyle,
+      REFERENCE_SOURCE_PATHS.markdownRenderDocumentation,
+    ],
+    targets: [
+      {
+        id: 'markdown-render-root',
+        selector: '.markdown-render-scenario .semi-markdownRender',
+        computedStyleProperties: [
+          'color',
+          'direction',
+          'fontFamily',
+          'fontSize',
+          'lineHeight',
+          'width',
+        ],
+      },
+      {
+        id: 'markdown-render-heading',
+        selector: '.markdown-render-scenario .semi-markdownRender-component-header',
+        computedStyleProperties: [
+          'color',
+          'fontSize',
+          'fontWeight',
+          'lineHeight',
+          'marginBottom',
+          'marginTop',
+        ],
+      },
+      {
+        id: 'markdown-render-code',
+        selector: '.markdown-render-scenario .semi-markdownRender-simple-code',
+        computedStyleProperties: ['backgroundColor', 'color', 'fontFamily', 'fontSize'],
+      },
+      {
+        id: 'markdown-render-table',
+        selector: '.markdown-render-scenario .semi-table-container',
+        computedStyleProperties: ['backgroundColor', 'boxSizing', 'color', 'width'],
       },
     ],
   },

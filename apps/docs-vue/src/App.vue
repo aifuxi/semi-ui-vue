@@ -31,6 +31,7 @@ import UserGuideScenario from './components/UserGuideScenario.vue';
 import JsonViewerScenario from './components/JsonViewerScenario.vue';
 import AIChatInputScenario from './components/AIChatInputScenario.vue';
 import ChatScenario from './components/ChatScenario.vue';
+import MarkdownRenderScenario from './components/MarkdownRenderScenario.vue';
 import SidebarScenario from './components/SidebarScenario.vue';
 import EmptyScenario from './components/EmptyScenario.vue';
 import HighlightScenario from './components/HighlightScenario.vue';
@@ -188,6 +189,10 @@ const scenario = computed(() => getParityScenario(props.scenarioId));
         v-else-if="scenario.id === 'chat'"
         :direction="props.direction"
         :locale="props.locale"
+      />
+      <MarkdownRenderScenario
+        v-else-if="scenario.id === 'markdown-render'"
+        :direction="props.direction"
       />
       <SidebarScenario
         v-else-if="scenario.id === 'sidebar'"

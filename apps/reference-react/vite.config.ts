@@ -38,6 +38,7 @@ const userGuidePublicEntry = path.join(upstreamPackages, 'semi-ui/userGuide/inde
 const jsonViewerPublicEntry = path.join(upstreamPackages, 'semi-ui/jsonViewer/index.tsx');
 const aiChatInputPublicEntry = path.join(upstreamPackages, 'semi-ui/aiChatInput/index.tsx');
 const chatPublicEntry = path.join(upstreamPackages, 'semi-ui/chat/index.tsx');
+const markdownRenderPublicEntry = path.join(upstreamPackages, 'semi-ui/markdownRender/index.tsx');
 const sidebarPublicEntry = path.join(upstreamPackages, 'semi-ui/sideBar/index.tsx');
 const baseComponentEntry = path.join(upstreamPackages, 'semi-ui/_base/baseComponent.tsx');
 const localeProviderEntry = path.join(upstreamPackages, 'semi-ui/locale/localeProvider.tsx');
@@ -427,7 +428,26 @@ export default defineConfig({
       { find: '@semi-v2.102.0/json-viewer', replacement: jsonViewerPublicEntry },
       { find: '@semi-v2.102.0/ai-chat-input', replacement: aiChatInputPublicEntry },
       { find: '@semi-v2.102.0/chat', replacement: chatPublicEntry },
+      { find: '@semi-v2.102.0/markdown-render', replacement: markdownRenderPublicEntry },
       { find: '@semi-v2.102.0/sidebar', replacement: sidebarPublicEntry },
+      {
+        find: '@mdx-js/mdx',
+        replacement: fileURLToPath(
+          new URL(
+            '../../packages/foundation-integration/node_modules/@mdx-js/mdx/index.js',
+            import.meta.url,
+          ),
+        ),
+      },
+      {
+        find: 'remark-gfm',
+        replacement: fileURLToPath(
+          new URL(
+            '../../packages/foundation-integration/node_modules/remark-gfm/index.js',
+            import.meta.url,
+          ),
+        ),
+      },
       {
         find: /^@tiptap\/(core|extension-document|extension-hard-break|extension-image|extension-paragraph|extension-text|extension-text-align|extension-text-style|extensions|pm(?:\/.+)?|react|starter-kit)$/,
         replacement: `${fileURLToPath(new URL('./node_modules/@tiptap', import.meta.url))}/$1`,
