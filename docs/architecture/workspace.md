@@ -43,7 +43,7 @@ Button 是首个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/button/` 
 
 IconButton 是第六十八个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/icon-button/` 通过范围受限的 Composition API render function 将 Vue `icon` slot 直接交给 Button，保留固定 Adapter 的 icon-only、图标位置、分方向去内边距、loading/disabled 与 colorful fill 契约；固定源码没有独立 JavaScript Foundation，`packages/theme-default/icon-button.css` 编译 Button/IconButton 与 Icon 样式。完整矩阵见 `docs/components/icon-button/`。
 
-CodeHighlight 是第六十九个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/code-highlight/` 保留固定 `pre > code` DOM、缺省为真的行号/主题配置、Prism token 与固定的 code-only 更新语义；`packages/foundation-integration/src/code-highlight.js` 隔离固定 CodeHighlight Foundation，`packages/theme-default/code-highlight.css` 编译默认 Token、global 与 CodeHighlight 样式。`prismjs@1.29.0` 与 `classnames@2.5.1` 作为精确锁定的运行时依赖纳入许可、SBOM、SSR 和真实 tarball 验证。完整矩阵见 `docs/components/code-highlight/`。
+CodeHighlight 是第六十九个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/code-highlight/` 保留固定 `pre > code` DOM、缺省为真的行号/主题配置、Prism token 与固定的 code-only 更新语义；`packages/foundation-integration/src/code-highlight.js` 隔离固定 CodeHighlight Foundation，`packages/theme-default/code-highlight.css` 编译默认 Token、global 与 CodeHighlight 样式。`prismjs@1.30.0` 与 `classnames@2.5.1` 作为精确锁定的运行时依赖纳入许可、SBOM、SSR 和真实 tarball 验证。完整矩阵见 `docs/components/code-highlight/`。
 
 DragMove 是第七十个进入 `ready` 的 Vue 垂直切片：`packages/ui/src/drag-move/` 通过范围受限的单 VNode renderer 合并调用方 ref，并由 Composition API 生命周期接通 absolute/relative、handler、constrainer、input guard、mouse/touch 与 customMove；`packages/foundation-integration/src/drag-move.js` 隔离固定 DragMove Foundation。固定源码没有专属 SCSS，`packages/theme-default/drag-move.css` 只编译默认 Token 与 global 暗色模式，不伪造组件选择器。完整矩阵见 `docs/components/drag-move/`。
 

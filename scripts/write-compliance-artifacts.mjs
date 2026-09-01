@@ -125,7 +125,7 @@ const licensedDependencies = [
     noticeName: 'date-fns-tz',
     version: '1.3.8',
   },
-  { licenseFile: 'LICENSE', name: 'lodash', noticeName: 'Lodash', version: '4.17.21' },
+  { licenseFile: 'LICENSE', name: 'lodash', noticeName: 'Lodash', version: '4.18.1' },
   {
     licenseFile: 'LICENSE',
     licenseRoot: path.join(workspaceRoot, 'packages', 'ui', 'node_modules'),
@@ -146,7 +146,7 @@ const licensedDependencies = [
     noticeName: 'lottie-web',
     version: '5.13.0',
   },
-  { licenseFile: 'LICENSE', name: 'prismjs', noticeName: 'PrismJS', version: '1.29.0' },
+  { licenseFile: 'LICENSE', name: 'prismjs', noticeName: 'PrismJS', version: '1.30.0' },
   {
     licenseFile: 'LICENSE',
     name: 'scroll-into-view-if-needed',

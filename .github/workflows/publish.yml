@@ -27,6 +27,7 @@ jobs:
           package-manager-cache: false
       - run: corepack enable
       - run: pnpm install --frozen-lockfile
+      - run: pnpm audit:prod
       - run: pnpm check
 
   browser:

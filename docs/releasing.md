@@ -54,7 +54,7 @@ pnpm playwright:install
 pnpm release:check
 ```
 
-`release:check` 包含边界、格式、lint、类型、单元/SSR、构建、主题、真实 tarball 消费和完整 Chromium 回归。发布验证还会扫描公开 manifest、README 和 `dist`，阻止 `@workspace/*`、`vendor/**`、私有 Foundation 类型及本机绝对路径进入产物。
+`release:check` 先固定到官方 npm registry 审计全部 production 依赖，并阻止 moderate、high 或 critical 已知漏洞；随后执行边界、格式、lint、类型、单元/SSR、构建、主题、真实 tarball 消费和完整 Chromium 回归。发布验证还会扫描公开 manifest、README 和 `dist`，阻止 `@workspace/*`、`vendor/**`、私有 Foundation 类型及本机绝对路径进入产物。显式使用官方 registry 是为了避免本地镜像未实现 npm audit API 时产生错误结论。
 
 Linux 截图不能覆盖 Darwin 基线。首次启用 Linux CI 前，手动运行 `visual-linux.yml`，下载生成的 `linux-snapshots` artifact，人工审核后再把 Linux 基线纳入仓库。
 
@@ -112,4 +112,4 @@ pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
 npm audit signatures
 ```
 
-同时核对五个 npm 页面：公开可见、版本一致、预发布只更新 `next`、`latest` 未被占用、repository 指向 `aifuxi/semi-ui-vue`，并显示正确的 MIT License、README、provenance 与依赖关系。注册表中的 UI manifest 必须把 `@aifuxi/semi-icons-vue` 固定为同版本号，不得出现 `workspace:`。
+同时核对五个 npm 页面：公开可见、版本一致、预发布只更新 `next`、repository 指向 `aifuxi/semi-ui-vue`，并显示正确的 MIT License、README、provenance 与依赖关系。首次人工引导版本可能使 `latest` 暂时停留在 `0.1.0-alpha.0`；首个稳定版本发布后，必须再确认 `latest` 精确指向该稳定版本。注册表中的 UI manifest 必须把 `@aifuxi/semi-icons-vue` 固定为同版本号，不得出现 `workspace:`。
