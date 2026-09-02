@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ConfigProvider, MarkdownRender } from '@aifuxi/semi-ui-vue';
+import { ConfigProvider } from '@aifuxi/semi-ui-vue/config-provider';
+import { MarkdownRender } from '@aifuxi/semi-ui-vue/markdown-render';
 import type { ParityDirection } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection }>();

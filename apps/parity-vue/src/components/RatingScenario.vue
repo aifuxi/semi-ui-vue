@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Rating } from '@aifuxi/semi-ui-vue';
+import { Rating } from '@aifuxi/semi-ui-vue/rating';
 import { shallowRef } from 'vue';
 
 const TOOLTIPS = ['terrible', 'bad', 'normal', 'good', 'wonderful'];

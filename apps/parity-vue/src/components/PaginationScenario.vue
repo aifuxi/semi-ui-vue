@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { ConfigProvider, Pagination, type SemiLocale } from '@aifuxi/semi-ui-vue';
+import { ConfigProvider, type SemiLocale } from '@aifuxi/semi-ui-vue/config-provider';
+import { Pagination } from '@aifuxi/semi-ui-vue/pagination';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>();

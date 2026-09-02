@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { h, nextTick, onMounted, ref, useTemplateRef } from 'vue';
-import { ConfigProvider, UserGuide } from '@aifuxi/semi-ui-vue';
-import type { ConfigDirection, UserGuideMode, UserGuideStepItem } from '@aifuxi/semi-ui-vue';
+import { ConfigProvider, type ConfigDirection } from '@aifuxi/semi-ui-vue/config-provider';
+import {
+  UserGuide,
+  type UserGuideMode,
+  type UserGuideStepItem,
+} from '@aifuxi/semi-ui-vue/user-guide';
 
 const props = defineProps<{ direction: ConfigDirection }>();
 const first = useTemplateRef<HTMLButtonElement>('first');

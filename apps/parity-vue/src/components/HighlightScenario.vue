@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Highlight } from '@aifuxi/semi-ui-vue';
+import { Highlight } from '@aifuxi/semi-ui-vue/highlight';
 </script>
 
 <template>

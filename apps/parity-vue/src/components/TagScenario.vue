@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SplitTagGroup, Tag, TagGroup, type TagData } from '@aifuxi/semi-ui-vue';
+import { SplitTagGroup, Tag, TagGroup, type TagData } from '@aifuxi/semi-ui-vue/tag';
 
 const tagList: TagData[] = [
   { tagKey: 'one', content: 'One', color: 'blue' },

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Carousel } from '@aifuxi/semi-ui-vue';
+import { Carousel } from '@aifuxi/semi-ui-vue/carousel';
 
 const slideLabels = ['设计', '开发', '交付'];
 const status = shallowRef('当前：设计');

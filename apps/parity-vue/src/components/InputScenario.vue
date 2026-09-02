@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Input, InputGroup, TextArea } from '@aifuxi/semi-ui-vue';
+import { Input, InputGroup, TextArea } from '@aifuxi/semi-ui-vue/input';
 import { shallowRef } from 'vue';
 
 const lastValue = shallowRef('none');

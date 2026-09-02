@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, shallowRef, useTemplateRef } from 'vue';
-import { Lottie, type LottieAnimationItem, type LottieParams } from '@aifuxi/semi-ui-vue';
+import { Lottie, type LottieAnimationItem, type LottieParams } from '@aifuxi/semi-ui-vue/lottie';
 import { LOTTIE_ANIMATION_DATA_BLUE, LOTTIE_ANIMATION_DATA_ORANGE } from '@workspace/test-infra';
 
 const orange = shallowRef(false);

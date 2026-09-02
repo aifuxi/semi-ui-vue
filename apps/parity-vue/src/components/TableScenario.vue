@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { h } from 'vue';
-import {
-  ConfigProvider,
-  Table,
-  type ConfigDirection,
-  type TableColumnProps,
-} from '@aifuxi/semi-ui-vue';
+import { ConfigProvider, type ConfigDirection } from '@aifuxi/semi-ui-vue/config-provider';
+import { Table, type TableColumnProps } from '@aifuxi/semi-ui-vue/table';
 
 defineProps<{ direction: ConfigDirection }>();
 

@@ -6,8 +6,8 @@ import {
   LayoutFooter,
   LayoutHeader,
   LayoutSider,
-} from '@aifuxi/semi-ui-vue';
-import type { LayoutBreakpoint } from '@aifuxi/semi-ui-vue';
+  type LayoutBreakpoint,
+} from '@aifuxi/semi-ui-vue/layout';
 
 const headerFooterStyle = {
   height: 42,

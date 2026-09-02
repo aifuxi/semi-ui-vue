@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef, useTemplateRef } from 'vue';
-import { DragMove } from '@aifuxi/semi-ui-vue';
+import { DragMove } from '@aifuxi/semi-ui-vue/drag-move';
 
 const basicContainer = useTemplateRef<HTMLDivElement>('basicContainer');
 const handlerContainer = useTemplateRef<HTMLDivElement>('handlerContainer');

@@ -1,13 +1,8 @@
 <script setup lang="ts">
 import { h, shallowRef, type CSSProperties } from 'vue';
 import { enUS, zhCN } from 'date-fns/locale';
-import {
-  Calendar,
-  ConfigProvider,
-  type CalendarEvent,
-  type CalendarMode,
-  type SemiLocale,
-} from '@aifuxi/semi-ui-vue';
+import { Calendar, type CalendarEvent, type CalendarMode } from '@aifuxi/semi-ui-vue/calendar';
+import { ConfigProvider, type SemiLocale } from '@aifuxi/semi-ui-vue/config-provider';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>();

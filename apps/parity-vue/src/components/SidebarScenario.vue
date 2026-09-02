@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { computed, h, ref } from 'vue';
+import { ConfigProvider, type SemiLocale } from '@aifuxi/semi-ui-vue/config-provider';
 import {
-  ConfigProvider,
   Sidebar,
-  type SemiLocale,
   type SidebarCodeItemProps,
   type SidebarOption,
-} from '@aifuxi/semi-ui-vue';
+} from '@aifuxi/semi-ui-vue/sidebar';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>();

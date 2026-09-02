@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Cascader, ConfigProvider, type CascaderData, type SemiLocale } from '@aifuxi/semi-ui-vue';
+import { Cascader, type CascaderData } from '@aifuxi/semi-ui-vue/cascader';
+import { ConfigProvider, type SemiLocale } from '@aifuxi/semi-ui-vue/config-provider';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>();

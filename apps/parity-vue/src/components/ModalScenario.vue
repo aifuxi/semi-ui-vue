@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Button, ConfigProvider, Modal } from '@aifuxi/semi-ui-vue';
-import type { ConfigDirection } from '@aifuxi/semi-ui-vue';
+import { Button } from '@aifuxi/semi-ui-vue/button';
+import { ConfigProvider, type ConfigDirection } from '@aifuxi/semi-ui-vue/config-provider';
+import { Modal } from '@aifuxi/semi-ui-vue/modal';
 
 defineProps<{ direction: ConfigDirection }>();
 const visible = ref(true);

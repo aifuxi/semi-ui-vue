@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Transfer } from '@aifuxi/semi-ui-vue';
+import { Transfer } from '@aifuxi/semi-ui-vue/transfer';
 
 const data = [
   { key: 'design', label: 'Design', value: 'design' },

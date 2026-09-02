@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, h, ref } from 'vue';
-import { Chat, ConfigProvider, type ChatMessage, type SemiLocale } from '@aifuxi/semi-ui-vue';
+import { Chat, type ChatMessage } from '@aifuxi/semi-ui-vue/chat';
+import { ConfigProvider, type SemiLocale } from '@aifuxi/semi-ui-vue/config-provider';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>();

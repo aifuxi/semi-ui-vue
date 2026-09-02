@@ -79,6 +79,8 @@ Button 的运行依赖使用固定版本，并通过 alias 保证从参考应用
 
 Vue 文档应用从 `@aifuxi/semi-ui-vue` 源码入口消费 Button，并通过 `packages/theme-default/vite-plugin.ts` 使用 Sass 1.54.9 编译逐组件样式。插件只存在于主题构建边界，Vue 组件源码没有 `vendor/**` 引用。React/Vue 的 Button 类型与合同截图在全部样式、几何、状态和来源断言通过后生成；同场景对应图片的 SHA-256 完全一致。
 
+Vue 对照场景必须从 `@aifuxi/semi-ui-vue/<component>` 公开子路径导入。场景注册仍使用 `import.meta.glob` 按需加载，但禁止场景回到组件包根入口，否则 Vite 开发服务会沿根入口的全部 re-export 展开整个组件库。工作台以 Divider 场景不超过 200 个浏览器请求作为回归门禁，并同时断言请求包含 `divider/index.ts`、不包含组件包根 `index.ts`。
+
 ## 新增组件场景
 
 1. 从 Inventory 和固定源码确认公开入口、文档场景、Foundation/SCSS、依赖与测试证据。

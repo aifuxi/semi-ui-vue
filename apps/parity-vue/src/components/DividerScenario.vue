@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Divider } from '@aifuxi/semi-ui-vue';
+import { Divider } from '@aifuxi/semi-ui-vue/divider';
 </script>
 
 <template>

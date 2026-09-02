@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { Avatar, Button, List, ListItem } from '@aifuxi/semi-ui-vue';
+import { Avatar } from '@aifuxi/semi-ui-vue/avatar';
+import { Button } from '@aifuxi/semi-ui-vue/button';
+import { List, ListItem } from '@aifuxi/semi-ui-vue/list';
 
 const people = [
   { name: 'Alice', role: 'Designer', initials: 'AL', color: 'blue' as const },

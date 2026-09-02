@@ -4,7 +4,7 @@ import {
   AutoComplete,
   type AutoCompleteDataItem,
   type AutoCompleteItem,
-} from '@aifuxi/semi-ui-vue';
+} from '@aifuxi/semi-ui-vue/auto-complete';
 import { onMounted, shallowRef } from 'vue';
 
 const domains = ['gmail.com', '163.com', 'qq.com'];

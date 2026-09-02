@@ -2,10 +2,27 @@ import { fileURLToPath } from 'node:url';
 import react from '@vitejs/plugin-react';
 import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vitest/config';
+import type { Plugin } from 'vite';
 import { adaptPinnedJsonViewerCore } from './packages/foundation-integration/vite-json-viewer-plugin.js';
 
+function resolveSemiUiVueComponentSubpaths(): Plugin {
+  return {
+    name: 'resolve-semi-ui-vue-component-subpaths',
+    enforce: 'pre',
+    resolveId(source) {
+      if (source === '@aifuxi/semi-ui-vue') {
+        return fileURLToPath(new URL('./packages/ui/src/index.ts', import.meta.url));
+      }
+      const component = source.match(/^@aifuxi\/semi-ui-vue\/([^/]+)$/)?.[1];
+      return component
+        ? fileURLToPath(new URL(`./packages/ui/src/${component}/index.ts`, import.meta.url))
+        : null;
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [adaptPinnedJsonViewerCore(), vue(), react()],
+  plugins: [resolveSemiUiVueComponentSubpaths(), adaptPinnedJsonViewerCore(), vue(), react()],
   resolve: {
     alias: {
       '@aifuxi/semi-ui-vue/locale/source/en_GB': fileURLToPath(
@@ -14,7 +31,6 @@ export default defineConfig({
       '@aifuxi/semi-ui-vue/locale/source/ja_JP': fileURLToPath(
         new URL('./packages/ui/src/locale/source/ja_JP.ts', import.meta.url),
       ),
-      '@aifuxi/semi-ui-vue': fileURLToPath(new URL('./packages/ui/src/index.ts', import.meta.url)),
       '@aifuxi/semi-icons-vue': fileURLToPath(
         new URL('./packages/icons/src/index.ts', import.meta.url),
       ),

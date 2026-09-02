@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, shallowRef } from 'vue';
-import type { ConfigContextValue } from '@aifuxi/semi-ui-vue';
+import { type ConfigContextValue } from '@aifuxi/semi-ui-vue/config-provider';
 
 const props = defineProps<{ context: ConfigContextValue }>();
 const screens = shallowRef(props.context.screens);

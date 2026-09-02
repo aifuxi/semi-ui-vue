@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { h } from 'vue';
-import { Descriptions, type DescriptionsDataItem } from '@aifuxi/semi-ui-vue';
+import { Descriptions, type DescriptionsDataItem } from '@aifuxi/semi-ui-vue/descriptions';
 
 const profileData: DescriptionsDataItem[] = [
   { key: h('strong', '项目名称'), value: 'Semi UI Vue' },

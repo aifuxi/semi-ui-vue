@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
 import { IconChevronRight, IconHome } from '@aifuxi/semi-icons-vue';
-import { Breadcrumb, BreadcrumbItem, ConfigProvider } from '@aifuxi/semi-ui-vue';
-import type { BreadcrumbItemInfo } from '@aifuxi/semi-ui-vue';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  type BreadcrumbItemInfo,
+} from '@aifuxi/semi-ui-vue/breadcrumb';
+import { ConfigProvider } from '@aifuxi/semi-ui-vue/config-provider';
+
 import type { ParityDirection } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection }>();

@@ -5,7 +5,7 @@ import {
   IllustrationSuccess,
   IllustrationSuccessDark,
 } from '@aifuxi/semi-illustrations-vue';
-import { Empty } from '@aifuxi/semi-ui-vue';
+import { Empty } from '@aifuxi/semi-ui-vue/empty';
 
 const stringImage =
   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72"%3E%3Crect x="8" y="8" width="56" height="56" rx="14" fill="%23e8f3ff"/%3E%3Cpath d="M23 36h26M36 23v26" stroke="%230066ff" stroke-width="4" stroke-linecap="round"/%3E%3C/svg%3E';

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useTemplateRef } from 'vue';
 
-import { Button, ConfigProvider, Popover } from '@aifuxi/semi-ui-vue';
+import { Button } from '@aifuxi/semi-ui-vue/button';
+import { ConfigProvider } from '@aifuxi/semi-ui-vue/config-provider';
+import { Popover } from '@aifuxi/semi-ui-vue/popover';
 
 import type { ParityDirection } from '@workspace/test-infra';
 

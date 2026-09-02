@@ -1,10 +1,11 @@
 import { expect, test } from '@playwright/test';
 import {
   assertScenarioComparable,
+  createParityScenarioUrl,
   PARITY_VIEWPORTS,
   REFERENCE_BASELINE,
 } from '../../packages/test-infra/src';
-import { expectComparableTarget, openParityPages } from './parity-harness';
+import { expectComparableTarget, openParityPages, PARITY_APPLICATIONS } from './parity-harness';
 
 test('React 与 Vue 工作台在同一 Chromium 上下文中可用', async ({ context }) => {
   assertScenarioComparable('harness-calibration');
@@ -47,4 +48,27 @@ test('React 与 Vue 工作台保留窄视口专项入口', async ({ context }) =
   ]);
   expect(await pair.react.page.evaluate(() => window.devicePixelRatio)).toBe(deviceScaleFactor);
   expect(await pair.vue.page.evaluate(() => window.devicePixelRatio)).toBe(deviceScaleFactor);
+});
+
+test('Vue 工作台只加载当前场景的公开组件子路径', async ({ page }) => {
+  const requestedUrls: string[] = [];
+  page.on('request', (request) => requestedUrls.push(request.url()));
+
+  await page.goto(
+    createParityScenarioUrl(PARITY_APPLICATIONS.vue.baseUrl, {
+      scenarioId: 'divider',
+      theme: 'light',
+      direction: 'ltr',
+      locale: 'zh-CN',
+    }),
+  );
+  await expect(page.getByTestId('divider-vue')).toBeVisible();
+  await page.waitForLoadState('networkidle');
+
+  const requestedPaths = requestedUrls.map((url) => new URL(url).pathname);
+  expect(requestedPaths.some((path) => path.endsWith('/packages/ui/src/divider/index.ts'))).toBe(
+    true,
+  );
+  expect(requestedPaths.some((path) => path.endsWith('/packages/ui/src/index.ts'))).toBe(false);
+  expect(requestedUrls.length).toBeLessThanOrEqual(200);
 });

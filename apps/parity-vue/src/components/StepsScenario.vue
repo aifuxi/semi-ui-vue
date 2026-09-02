@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Step, Steps } from '@aifuxi/semi-ui-vue';
+import { Step, Steps } from '@aifuxi/semi-ui-vue/steps';
 
 const status = shallowRef('等待操作');
 </script>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, shallowRef } from 'vue';
-import { LocaleConsumer, LocaleProvider } from '@aifuxi/semi-ui-vue';
+import { LocaleConsumer, LocaleProvider } from '@aifuxi/semi-ui-vue/locale';
 import enGB from '@aifuxi/semi-ui-vue/locale/source/en_GB';
 import jaJP from '@aifuxi/semi-ui-vue/locale/source/ja_JP';
 

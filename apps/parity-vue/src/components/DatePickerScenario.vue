@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DatePicker } from '@aifuxi/semi-ui-vue';
+import { DatePicker } from '@aifuxi/semi-ui-vue/date-picker';
 
 const props = defineProps<{ direction: 'ltr' | 'rtl' }>();
 

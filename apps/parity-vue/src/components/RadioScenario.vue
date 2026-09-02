@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Radio, RadioGroup, type RadioChangeEvent } from '@aifuxi/semi-ui-vue';
+import { Radio, RadioGroup, type RadioChangeEvent } from '@aifuxi/semi-ui-vue/radio';
 import { shallowRef } from 'vue';
 
 const lastValue = shallowRef('none');

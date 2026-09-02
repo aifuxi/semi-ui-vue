@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CodeHighlight } from '@aifuxi/semi-ui-vue';
+import { CodeHighlight } from '@aifuxi/semi-ui-vue/code-highlight';
 
 const javascriptCode = [
   'const message = "Hello, Semi";',

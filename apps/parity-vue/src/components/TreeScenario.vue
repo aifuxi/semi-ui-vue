@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import {
-  ConfigProvider,
-  Tree,
-  type SemiLocale,
-  type TreeNodeData,
-  type TreeValue,
-} from '@aifuxi/semi-ui-vue';
+import { ConfigProvider, type SemiLocale } from '@aifuxi/semi-ui-vue/config-provider';
+import { Tree, type TreeNodeData, type TreeValue } from '@aifuxi/semi-ui-vue/tree';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>();

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Space, type SpaceAlign, type SpaceSpacingPreset } from '@aifuxi/semi-ui-vue';
+import { Space, type SpaceAlign, type SpaceSpacingPreset } from '@aifuxi/semi-ui-vue/space';
 
 const spacingPresets: readonly SpaceSpacingPreset[] = ['tight', 'medium', 'loose'];
 const alignments: readonly SpaceAlign[] = ['start', 'center', 'end', 'baseline'];

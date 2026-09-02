@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Progress } from '@aifuxi/semi-ui-vue';
+import { Progress } from '@aifuxi/semi-ui-vue/progress';
 
 const gradientStroke = [
   { percent: 50, color: '#fff' },

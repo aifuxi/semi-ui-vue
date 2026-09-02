@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Switch } from '@aifuxi/semi-ui-vue';
+import { Switch } from '@aifuxi/semi-ui-vue/switch';
 
 const controlled = shallowRef(false);
 const lastChange = shallowRef('none');

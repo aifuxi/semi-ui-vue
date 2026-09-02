@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TagInput } from '@aifuxi/semi-ui-vue';
+import { TagInput } from '@aifuxi/semi-ui-vue/tag-input';
 import { shallowRef } from 'vue';
 
 const status = shallowRef('none');

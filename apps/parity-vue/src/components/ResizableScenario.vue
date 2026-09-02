@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Resizable, ResizeGroup, ResizeHandler, ResizeItem } from '@aifuxi/semi-ui-vue';
+import { Resizable, ResizeGroup, ResizeHandler, ResizeItem } from '@aifuxi/semi-ui-vue/resizable';
 import { shallowRef } from 'vue';
 
 const singleStatus = shallowRef('Drag edge to resize');

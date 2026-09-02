@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Toast, type ConfigDirection } from '@aifuxi/semi-ui-vue';
+import { Toast } from '@aifuxi/semi-ui-vue/toast';
+import { type ConfigDirection } from '@aifuxi/semi-ui-vue/config-provider';
 import { onBeforeUnmount, onMounted } from 'vue';
 
 const props = withDefaults(defineProps<{ direction?: ConfigDirection }>(), {

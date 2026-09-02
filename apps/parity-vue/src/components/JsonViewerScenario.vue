@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { h } from 'vue';
-import {
-  ConfigProvider,
-  JsonViewer,
-  type JsonViewerOptions,
-  type SemiLocale,
-} from '@aifuxi/semi-ui-vue';
+import { ConfigProvider, type SemiLocale } from '@aifuxi/semi-ui-vue/config-provider';
+import { JsonViewer, type JsonViewerOptions } from '@aifuxi/semi-ui-vue/json-viewer';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>();

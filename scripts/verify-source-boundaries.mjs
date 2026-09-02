@@ -171,6 +171,14 @@ for (const filePath of files) {
   for (const pattern of importPatterns) {
     for (const match of source.matchAll(pattern)) {
       const specifier = match[1];
+      if (
+        relativePath.startsWith('apps/parity-vue/src/components/') &&
+        specifier === '@aifuxi/semi-ui-vue'
+      ) {
+        throw new Error(
+          `${relativePath} 从组件包根入口加载全部场景依赖；对照场景必须使用公开组件子路径`,
+        );
+      }
       if (specifier?.includes('vendor/semi-design')) {
         throw new Error(`${relativePath} 绕过允许边界读取 vendor/semi-design：${specifier}`);
       }

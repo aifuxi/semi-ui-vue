@@ -43,6 +43,7 @@ git -C vendor/semi-design describe --tags --exact-match
 - 每个组件只有在以下产物同时完成后才能标记完成：对齐矩阵、Vue 源码、中英文文档与 React→Vue 迁移表、类型验证、单元测试、Chromium 行为/无障碍/适用时 SSR 测试、React/Vue 计算样式与截图对照、真实发布包安装验证。
 - 每完成一个 `ready` 垂直切片，必须在同一次提交中同步更新 `README.md` 的完成数量、完成列表和下一组件；README 未更新时不得提交该切片。
 - 测试优先验证公开行为，不依赖私有 state/method 或 Foundation spy 证明正确性；结构快照和视觉截图不得是唯一断言。
+- `apps/parity-vue` 的组件场景必须从公开组件子路径导入，不得从 `@aifuxi/semi-ui-vue` 根入口导入；浏览器工作台应只加载当前场景依赖，并以简单场景不超过 200 个请求作为回归门禁。
 - 任何无法等价的差异必须在 deviation 记录中说明源码证据、原因、用户影响和验收结论；“暂未实现”不是可接受 deviation。
 - 视觉回归对组件、Portal 弹层或最小完整场景单独裁剪，不用大页面面积稀释组件差异。
 - 关键 computed style 逐项精确相等；对应节点的 bounding rect 各轴差值不超过 `0.5 CSS px`。

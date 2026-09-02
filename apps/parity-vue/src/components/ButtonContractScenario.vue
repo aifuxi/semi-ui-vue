@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, ButtonGroup, SplitButtonGroup } from '@aifuxi/semi-ui-vue';
+import { Button, ButtonGroup, SplitButtonGroup } from '@aifuxi/semi-ui-vue/button';
 </script>
 
 <template>

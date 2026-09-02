@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Col, Row } from '@aifuxi/semi-ui-vue';
+import { Col, Row } from '@aifuxi/semi-ui-vue/grid';
 
 const tallCellStyle = { minHeight: '52px' };
 const shortCellStyle = { minHeight: '32px' };

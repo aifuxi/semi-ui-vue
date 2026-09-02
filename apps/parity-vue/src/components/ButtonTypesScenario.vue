@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Button, type ButtonType } from '@aifuxi/semi-ui-vue';
+import { Button, type ButtonType } from '@aifuxi/semi-ui-vue/button';
 
 const BUTTON_TYPES: readonly { type: ButtonType; label: string }[] = [
   { type: 'primary', label: '主要按钮' },

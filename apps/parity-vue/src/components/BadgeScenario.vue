@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Avatar, Badge, ConfigProvider, type BadgePosition } from '@aifuxi/semi-ui-vue';
+import { Avatar } from '@aifuxi/semi-ui-vue/avatar';
+import { Badge, type BadgePosition } from '@aifuxi/semi-ui-vue/badge';
+import { ConfigProvider } from '@aifuxi/semi-ui-vue/config-provider';
 
 defineProps<{ direction: 'ltr' | 'rtl' }>();
 const status = shallowRef('等待操作');

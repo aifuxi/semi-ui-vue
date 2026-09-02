@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount } from 'vue';
-import { ConfigProvider, VideoPlayer, type SemiLocale } from '@aifuxi/semi-ui-vue';
+import { ConfigProvider, type SemiLocale } from '@aifuxi/semi-ui-vue/config-provider';
+import { VideoPlayer } from '@aifuxi/semi-ui-vue/video-player';
 import {
   VIDEO_PLAYER_POSTER_DATA_URI,
   createSilentAudioDataUri,

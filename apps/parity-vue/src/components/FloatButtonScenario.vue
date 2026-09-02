@@ -6,7 +6,7 @@ import {
   FloatButtonGroup,
   type FloatButtonGroupItem,
   type FloatButtonSize,
-} from '@aifuxi/semi-ui-vue';
+} from '@aifuxi/semi-ui-vue/float-button';
 
 const sizes: readonly FloatButtonSize[] = ['small', 'default', 'large'];
 const inlineStyle: CSSProperties = {

@@ -8,7 +8,7 @@ import {
   IconSpin,
 } from '@aifuxi/semi-icons-vue';
 import { IconAvatar } from '@aifuxi/semi-icons-lab-vue';
-import { Icon } from '@aifuxi/semi-ui-vue';
+import { Icon } from '@aifuxi/semi-ui-vue/icon';
 
 const sizes = ['extra-small', 'small', 'default', 'large', 'extra-large'] as const;
 </script>

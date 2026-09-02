@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount } from 'vue';
-import { AudioPlayer, ConfigProvider, type SemiLocale } from '@aifuxi/semi-ui-vue';
+import { AudioPlayer } from '@aifuxi/semi-ui-vue/audio-player';
+import { ConfigProvider, type SemiLocale } from '@aifuxi/semi-ui-vue/config-provider';
 import {
   AUDIO_PLAYER_COVER_DATA_URI,
   createSilentAudioDataUri,

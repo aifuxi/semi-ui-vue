@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef, useTemplateRef } from 'vue';
-import { HotKeys } from '@aifuxi/semi-ui-vue';
+import { HotKeys } from '@aifuxi/semi-ui-vue/hot-keys';
 
 const localTarget = useTemplateRef<HTMLDivElement>('localTarget');
 const status = shallowRef('Ready');

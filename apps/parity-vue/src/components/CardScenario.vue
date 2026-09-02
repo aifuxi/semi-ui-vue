@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Avatar, Button, Card, CardGroup, CardMeta, Text } from '@aifuxi/semi-ui-vue';
+import { Avatar } from '@aifuxi/semi-ui-vue/avatar';
+import { Button } from '@aifuxi/semi-ui-vue/button';
+import { Card, CardGroup, CardMeta } from '@aifuxi/semi-ui-vue/card';
+import { Text } from '@aifuxi/semi-ui-vue/typography';
 
 const status = shallowRef('等待操作');
 </script>

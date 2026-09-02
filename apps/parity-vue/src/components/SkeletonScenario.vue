@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Skeleton } from '@aifuxi/semi-ui-vue';
+import { Skeleton } from '@aifuxi/semi-ui-vue/skeleton';
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Spin } from '@aifuxi/semi-ui-vue';
+import { Spin } from '@aifuxi/semi-ui-vue/spin';
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { IconButton } from '@aifuxi/semi-ui-vue';
+import { IconButton } from '@aifuxi/semi-ui-vue/icon-button';
 
 const lastAction = shallowRef('尚未触发');
 

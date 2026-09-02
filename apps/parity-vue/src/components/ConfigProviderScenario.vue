@@ -2,10 +2,10 @@
 import {
   ConfigConsumer,
   ConfigProvider,
-  Text,
   type ConfigContextValue,
   type SemiLocale,
-} from '@aifuxi/semi-ui-vue';
+} from '@aifuxi/semi-ui-vue/config-provider';
+import { Text } from '@aifuxi/semi-ui-vue/typography';
 import ConfigProviderSummary from './ConfigProviderSummary.vue';
 
 const englishLocale: SemiLocale = {

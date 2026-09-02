@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { shallowRef, useTemplateRef } from 'vue';
-import { BackTop, ConfigProvider } from '@aifuxi/semi-ui-vue';
+import { BackTop } from '@aifuxi/semi-ui-vue/back-top';
+import { ConfigProvider } from '@aifuxi/semi-ui-vue/config-provider';
 import type { ParityDirection } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection }>();

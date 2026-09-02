@@ -15,7 +15,11 @@ export default defineConfig({
         ),
       },
       {
-        find: '@aifuxi/semi-ui-vue',
+        find: /^@aifuxi\/semi-ui-vue\/([^/]+)$/,
+        replacement: fileURLToPath(new URL('../../packages/ui/src/$1/index.ts', import.meta.url)),
+      },
+      {
+        find: /^@aifuxi\/semi-ui-vue$/,
         replacement: fileURLToPath(new URL('../../packages/ui/src/index.ts', import.meta.url)),
       },
       {

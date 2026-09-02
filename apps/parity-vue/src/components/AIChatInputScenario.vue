@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { AIChatInput, ConfigProvider, type Attachment, type SemiLocale } from '@aifuxi/semi-ui-vue';
+import { AIChatInput, type Attachment } from '@aifuxi/semi-ui-vue/ai-chat-input';
+import { ConfigProvider, type SemiLocale } from '@aifuxi/semi-ui-vue/config-provider';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>();

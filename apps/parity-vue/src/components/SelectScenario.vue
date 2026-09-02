@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { onMounted, shallowRef } from 'vue';
-import { Select, SelectOption, SelectOptionGroup } from '@aifuxi/semi-ui-vue';
-import type { SelectModelValue } from '@aifuxi/semi-ui-vue';
+import {
+  Select,
+  SelectOption,
+  SelectOptionGroup,
+  type SelectModelValue,
+} from '@aifuxi/semi-ui-vue/select';
 
 const host = shallowRef<HTMLElement | null>(null);
 const ready = shallowRef(false);

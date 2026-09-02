@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Button, Upload, type UploadFileItem } from '@aifuxi/semi-ui-vue';
+import { Button } from '@aifuxi/semi-ui-vue/button';
+import { Upload, type UploadFileItem } from '@aifuxi/semi-ui-vue/upload';
 
 const files: UploadFileItem[] = [
   { uid: 'guide', name: 'product-guide.pdf', size: '1.2MB', status: 'success' },

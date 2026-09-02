@@ -4,7 +4,7 @@ import {
   CheckboxGroup,
   type CheckboxChangeEvent,
   type CheckboxValue,
-} from '@aifuxi/semi-ui-vue';
+} from '@aifuxi/semi-ui-vue/checkbox';
 import { shallowRef } from 'vue';
 
 const horizontalOptions = ['Semi UI', 'Semi DSM', 'Semi D2C'];
