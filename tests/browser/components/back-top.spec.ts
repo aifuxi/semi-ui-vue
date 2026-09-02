@@ -34,7 +34,7 @@ test('BackTop 参考场景来自本地 v2.102.0 并保留阈值、默认与自�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.backTopPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'back-top')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'back-top')).toBe(true);
   await expect(page.locator('[data-parity-target="back-top-default"]')).toHaveCount(0);
   const custom = page.locator('[data-parity-target="back-top-custom"]');
   await expect(custom).toBeVisible();

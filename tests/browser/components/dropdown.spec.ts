@@ -30,7 +30,7 @@ test('Dropdown 参考场景来自本地 v2.102.0 并保留 Portal/Menu/Item 契�
     }),
   );
 
-  expect(referenceSourceWasRequested(requestedUrls, 'dropdown')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'dropdown')).toBe(true);
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.dropdownPublicEntry,
   );

@@ -34,7 +34,7 @@ test('Divider 参考场景来自本地 v2.102.0 公开源码并保留 DOM 契约
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.dividerPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'divider')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'divider')).toBe(true);
   await expect(page.getByTestId('divider-reference').locator('.semi-divider')).toHaveCount(8);
   await expect(page.getByRole('separator', { name: '章节分隔' })).toHaveClass(
     /semi-divider-horizontal/,

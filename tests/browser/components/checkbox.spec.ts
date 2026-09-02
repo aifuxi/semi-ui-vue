@@ -34,7 +34,7 @@ test('Checkbox 参考场景来自本地 v2.102.0 并保留单项、组、ARIA �
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.checkboxPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'checkbox')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'checkbox')).toBe(true);
   const scenario = page.getByTestId('checkbox-reference');
   await expect(scenario.locator('.semi-checkbox')).toHaveCount(12);
   await expect(scenario.locator('.semi-checkbox-indeterminate')).toHaveCount(1);

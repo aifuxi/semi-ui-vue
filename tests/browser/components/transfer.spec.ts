@@ -32,7 +32,7 @@ test('Transfer 参考场景来自本地 v2.102.0 并保留双面板、搜索与�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.transferPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'transfer')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'transfer')).toBe(true);
   const scenario = page.getByTestId('transfer-reference');
   await expect(scenario.locator('.semi-transfer')).toHaveCount(1);
   await expect(scenario.locator('.semi-transfer-left')).toHaveCount(1);

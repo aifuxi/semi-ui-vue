@@ -32,7 +32,7 @@ test('TreeSelect 参考场景来自本地 v2.102.0 并保留触发器、搜索�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.treeSelectPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'tree-select')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'tree-select')).toBe(true);
   await expect(page.locator('[data-parity-target="tree-select-root"]')).toHaveAttribute(
     'role',
     'combobox',

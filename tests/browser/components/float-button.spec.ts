@@ -35,7 +35,7 @@ test('FloatButton 参考场景来自本地 v2.102.0 公开源码并保留 DOM �
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.floatButtonPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'float-button')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'float-button')).toBe(true);
   await expect(page.getByTestId('float-button-reference').locator('.semi-floatButton')).toHaveCount(
     7,
   );

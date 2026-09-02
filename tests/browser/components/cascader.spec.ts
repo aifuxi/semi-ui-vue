@@ -32,7 +32,7 @@ test('Cascader 参考场景来自本地 v2.102.0 并保留触发器、级联列�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.cascaderPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'cascader')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'cascader')).toBe(true);
   await expect(page.locator('[data-parity-target="cascader-root"]')).toHaveAttribute(
     'role',
     'combobox',

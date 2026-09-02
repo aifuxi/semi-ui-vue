@@ -32,7 +32,7 @@ test('Popconfirm 参考场景来自本地 v2.102.0 并保留 Portal、按钮与�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.popconfirmPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'popconfirm')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'popconfirm')).toBe(true);
   await expect(
     page.getByTestId('popconfirm-reference').locator(':scope > .semi-portal'),
   ).toHaveCount(2);

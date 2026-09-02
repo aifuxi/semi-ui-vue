@@ -48,7 +48,9 @@ test('AIChatDialogue 参考场景来自本地 v2.102.0 且无运行时错误', a
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.aiChatDialoguePublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'ai-chat-dialogue')).toBe(true);
+  await expect
+    .poll(() => referenceSourceWasRequested(requestedUrls, 'ai-chat-dialogue'))
+    .toBe(true);
   expect(runtimeErrors).toEqual([]);
 });
 

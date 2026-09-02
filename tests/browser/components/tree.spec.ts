@@ -33,7 +33,7 @@ test('Tree 参考场景来自本地 v2.102.0 并保留节点、选择、搜索�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.treePublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'tree')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'tree')).toBe(true);
   const scenario = page.getByTestId('tree-reference');
   await expect(scenario.locator('[role="tree"]')).toHaveCount(4);
   await expect(scenario.locator('[data-key="beijing"]')).toHaveCount(4);

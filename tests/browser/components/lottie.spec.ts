@@ -34,7 +34,7 @@ test('Lottie 参考场景来自本地 v2.102.0 公开源码', async ({ page }) =
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.lottiePublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'lottie')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'lottie')).toBe(true);
   await expect(page.getByTestId('lottie-reference').locator('.semi-lottie')).toHaveCount(2);
   await expect(page.locator('[data-parity-target="lottie-basic"] > svg')).toHaveCount(1);
   await expect(page.locator('[data-parity-target="lottie-external"] > svg')).toHaveCount(1);

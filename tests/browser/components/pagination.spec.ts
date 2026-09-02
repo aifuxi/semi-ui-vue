@@ -38,7 +38,7 @@ test('Pagination 参考场景来自本地 v2.102.0 并保留截断、容量、�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.paginationPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'pagination')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'pagination')).toBe(true);
   const scenario = page.getByTestId('pagination-reference');
   await expect(scenario.locator('.semi-page')).toHaveCount(4);
   await expect(

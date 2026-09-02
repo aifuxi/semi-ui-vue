@@ -33,7 +33,7 @@ test('DatePicker 参考场景来自本地 v2.102.0 并保留输入、月历、�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.datePickerPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'date-picker')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'date-picker')).toBe(true);
   await expect(page.getByTestId('date-picker-reference')).toBeVisible();
   await expect(page.locator('.date-picker-target-popup')).toBeVisible();
   await expect(page.locator('[data-parity-target="date-picker-trigger"] input')).toHaveValue(

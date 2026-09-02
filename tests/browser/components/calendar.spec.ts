@@ -38,7 +38,7 @@ test('Calendar 参考场景来自本地 v2.102.0 并保留周视图与事件 DOM
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.calendarPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'calendar')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'calendar')).toBe(true);
   const scenario = page.getByTestId('calendar-reference');
   await expect(scenario.locator('.semi-calendar-week')).toHaveCount(1);
   await expect(scenario.locator('.semi-calendar-week-header li')).toHaveCount(7);

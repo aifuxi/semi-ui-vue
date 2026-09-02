@@ -32,7 +32,7 @@ test('Feedback 参考场景来自本地 v2.102.0 并保留 popup、Portal 与默
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.feedbackPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'feedback')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'feedback')).toBe(true);
   const stage = page.getByTestId('feedback-reference');
   await expect(stage.locator(':scope > .semi-portal')).toHaveCount(1);
   await expect(stage.locator('.semi-sidesheet-mask')).toHaveCount(0);

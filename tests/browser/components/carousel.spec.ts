@@ -33,7 +33,7 @@ test('Carousel 参考场景来自本地 v2.102.0 并保留轮播 DOM 与无障�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.carouselPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'carousel')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'carousel')).toBe(true);
   const scenario = page.getByTestId('carousel-reference');
   await expect(scenario.locator('.semi-carousel')).toHaveCount(4);
   await expect(scenario.locator('.semi-carousel-content-fade')).toHaveCount(1);

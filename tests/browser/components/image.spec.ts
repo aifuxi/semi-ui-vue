@@ -49,7 +49,7 @@ test('Image 参考场景来自本地 v2.102.0 公开源码', async ({ page }) =>
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.imagePublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'image')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'image')).toBe(true);
   await expect(page.getByTestId('image-reference').locator('.semi-image')).toHaveCount(3);
 });
 

@@ -35,7 +35,7 @@ test('Switch 参考场景来自本地 v2.102.0 并保留原生控件与状态 DO
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.switchPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'switch')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'switch')).toBe(true);
   const scenario = page.getByTestId('switch-reference');
   await expect(scenario.locator('.semi-switch')).toHaveCount(11);
   await expect(scenario.locator('input[type="checkbox"][role="switch"]')).toHaveCount(11);

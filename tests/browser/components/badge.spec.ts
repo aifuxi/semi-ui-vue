@@ -33,7 +33,7 @@ test('Badge 参考场景来自本地 v2.102.0 并保留计数、圆点、溢出�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.badgePublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'badge')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'badge')).toBe(true);
   const scenario = page.getByTestId('badge-reference');
   await expect(scenario.locator('.semi-badge')).toHaveCount(15);
   await expect(

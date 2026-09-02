@@ -34,7 +34,7 @@ test('ConfigProvider 参考场景来自本地 v2.102.0 并保留 Context 契约'
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.configProviderPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'config-provider')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'config-provider')).toBe(true);
   const scenario = page.getByTestId('config-provider-reference');
   await expect(scenario.locator(':scope > .semi-rtl')).toHaveCount(1);
   await expect(scenario.locator('[data-parity-target="config-provider-direction"]')).toHaveText(

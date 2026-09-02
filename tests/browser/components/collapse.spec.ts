@@ -32,7 +32,7 @@ test('Collapse 参考场景来自本地 v2.102.0 并保留复合组件与 ARIA �
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.collapsePublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'collapse')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'collapse')).toBe(true);
   const scenario = page.getByTestId('collapse-reference');
   await expect(scenario.locator('.semi-collapse')).toHaveCount(4);
   await expect(scenario.locator('.semi-collapse-header')).toHaveCount(10);

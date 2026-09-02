@@ -41,7 +41,7 @@ test('Notification 参考场景来自本地 v2.102.0 并保留 wrapper、类型�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.notificationPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'notification')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'notification')).toBe(true);
   await expect(page.locator('.semi-notification-wrapper')).toHaveCount(1);
   await expect(page.locator('.semi-notification-list[placement="topRight"]')).toHaveCount(1);
   await expect(page.getByRole('alert')).toHaveCount(2);

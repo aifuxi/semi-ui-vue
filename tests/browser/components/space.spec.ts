@@ -34,7 +34,7 @@ test('Space 参考场景来自本地 v2.102.0 公开源码并保留 DOM 契约',
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.spacePublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'space')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'space')).toBe(true);
   await expect(page.getByTestId('space-reference').locator('.semi-space')).toHaveCount(10);
   await expect(page.locator('[data-parity-target="space-tight"]')).toHaveAttribute(
     'x-semi-prop',

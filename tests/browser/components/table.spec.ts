@@ -32,7 +32,7 @@ test('Table 参考场景来自本地 v2.102.0 并保留表格、选择与滚动�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.tablePublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'table')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'table')).toBe(true);
   const table = page.locator('[data-parity-target="table-basic"]');
   await expect(table.locator('thead th')).toHaveCount(4);
   await expect(table.locator('tbody tr')).toHaveCount(3);

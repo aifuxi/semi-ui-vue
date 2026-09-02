@@ -34,7 +34,7 @@ test('Radio 参考场景来自本地 v2.102.0 并保留单项、组、ARIA、按
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.radioPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'radio')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'radio')).toBe(true);
   const scenario = page.getByTestId('radio-reference');
   await expect(scenario.locator('.semi-radio')).toHaveCount(14);
   await expect(scenario.locator('.semi-radioGroup-horizontal')).toHaveCount(1);

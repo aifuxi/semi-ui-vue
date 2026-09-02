@@ -134,16 +134,10 @@ export function measureTypographyEllipsis(
 
     return inRange() ? measureText(middle, end) : measureText(start, middle);
   };
-  let answer = measureText(
+  const answer = measureText(
     0,
     position === 'middle' ? Math.floor(content.length / 2) : content.length,
   );
-  if (position === 'end' && answer.endsWith('...')) {
-    const retainedLength = answer.length - 3;
-    if (content[retainedLength] === ' ') {
-      answer = `${content.slice(0, retainedLength + 1)}...`;
-    }
-  }
   ellipsisContainer.replaceChildren();
   return answer;
 }

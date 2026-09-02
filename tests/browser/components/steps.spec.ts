@@ -34,7 +34,7 @@ test('Steps 参考场景来自本地 v2.102.0 并保留 fill/basic/vertical/nav 
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.stepsPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'steps')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'steps')).toBe(true);
   const scenario = page.getByTestId('steps-reference');
   await expect(scenario.locator('.semi-steps')).toHaveCount(1);
   await expect(scenario.locator('.semi-steps-basic')).toHaveCount(2);

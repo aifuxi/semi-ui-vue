@@ -34,7 +34,7 @@ test('Locale 参考场景来自本地 v2.102.0 Provider 与语言源', async ({ 
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.localeProviderEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'locale')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'locale')).toBe(true);
   await expect(page.getByTestId('locale-reference')).toContainText(
     'en-GB · GBP · Start Time · en-GB',
   );

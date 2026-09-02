@@ -32,7 +32,7 @@ test('Form 参考场景来自本地 v2.102.0 并保留字段、标签、帮助�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.formPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'form')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'form')).toBe(true);
   await expect(page.getByTestId('form-reference')).toBeVisible();
   await expect(page.locator('[x-field-id="description"] input')).toHaveValue('Semi Vue');
   await expect(page.locator('.semi-form-field-help-text')).toHaveText('用于识别当前方案');

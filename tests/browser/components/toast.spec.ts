@@ -34,7 +34,7 @@ test('Toast 参考场景来自本地 v2.102.0 并保留类型、light、关闭�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.toastPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'toast')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'toast')).toBe(true);
   await expect(page.locator('.semi-toast-wrapper')).toHaveCount(1);
   await expect(page.getByRole('alert')).toHaveCount(2);
   await expect(page.locator('.toast-scenario__info')).toHaveClass(/semi-toast-info/);

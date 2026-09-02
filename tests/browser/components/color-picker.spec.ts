@@ -32,7 +32,7 @@ test('ColorPicker 参考场景来自本地 v2.102.0 并保留内联、Popover、
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.colorPickerPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'color-picker')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'color-picker')).toBe(true);
   await expect(page.getByTestId('color-picker-reference')).toBeVisible();
   await expect(page.locator('.color-picker-target-popover')).toBeVisible();
   await expect(

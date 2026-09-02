@@ -34,7 +34,7 @@ test('CodeHighlight 参考场景来自本地 v2.102.0 公开源码', async ({ pa
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.codeHighlightPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'code-highlight')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'code-highlight')).toBe(true);
   await expect(
     page.getByTestId('code-highlight-reference').locator('.semi-codeHighlight'),
   ).toHaveCount(3);

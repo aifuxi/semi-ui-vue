@@ -30,7 +30,7 @@ test('Illustrations 参考场景来自本地 v2.102.0 并保留完整公开导�
     }),
   );
 
-  expect(referenceSourceWasRequested(requestedUrls, 'illustrations')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'illustrations')).toBe(true);
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.illustrationsPublicEntry,
   );

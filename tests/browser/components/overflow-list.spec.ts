@@ -36,7 +36,7 @@ test('OverflowList 参考场景来自本地 v2.102.0 公开源码', async ({ pag
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.overflowListPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'overflow-list')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'overflow-list')).toBe(true);
   await page.goto(
     createParityScenarioUrl(PARITY_APPLICATIONS.vue.baseUrl, {
       scenarioId: 'overflow-list',

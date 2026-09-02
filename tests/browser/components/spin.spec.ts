@@ -32,7 +32,7 @@ test('Spin 参考场景来自本地 v2.102.0 并保留三尺寸、包装与 hidd
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.spinPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'spin')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'spin')).toBe(true);
   const scenario = page.getByTestId('spin-reference');
   await expect(scenario.locator('.semi-spin-small')).toHaveCount(1);
   await expect(scenario.locator('.semi-spin-middle')).toHaveCount(4);

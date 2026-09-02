@@ -38,7 +38,7 @@ test('Button 参考场景来自本地 v2.102.0 公开源码并保留公开行为
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.buttonPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'button-types')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'button-types')).toBe(true);
 
   const buttons = page.getByTestId('button-types-reference').getByRole('button');
   await expect(buttons).toHaveCount(5);

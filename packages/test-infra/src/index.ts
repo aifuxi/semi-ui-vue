@@ -6003,6 +6003,68 @@ export interface ParityScenarioOptions {
   readonly locale: ParityLocale;
 }
 
+export type ParityScenarioRuntimeProps = Partial<
+  Pick<ParityScenarioOptions, 'direction' | 'locale' | 'theme'>
+>;
+
+const DIRECTION_SCENARIOS = new Set<ParityScenarioId>([
+  'ai-chat-dialogue',
+  'ai-chat-input',
+  'anchor',
+  'audio-player',
+  'back-top',
+  'badge',
+  'breadcrumb',
+  'calendar',
+  'cascader',
+  'chat',
+  'date-picker',
+  'feedback',
+  'json-viewer',
+  'markdown-render',
+  'modal',
+  'notification',
+  'pagination',
+  'popconfirm',
+  'popover',
+  'side-sheet',
+  'sidebar',
+  'slider',
+  'table',
+  'toast',
+  'tree',
+  'tree-select',
+  'user-guide',
+  'video-player',
+]);
+
+const LOCALE_SCENARIOS = new Set<ParityScenarioId>([
+  'ai-chat-dialogue',
+  'ai-chat-input',
+  'audio-player',
+  'calendar',
+  'cascader',
+  'chat',
+  'json-viewer',
+  'pagination',
+  'sidebar',
+  'tree',
+  'tree-select',
+  'video-player',
+]);
+
+const THEME_SCENARIOS = new Set<ParityScenarioId>(['audio-player', 'video-player']);
+
+export function getParityScenarioRuntimeProps(
+  options: ParityScenarioOptions,
+): ParityScenarioRuntimeProps {
+  return {
+    ...(DIRECTION_SCENARIOS.has(options.scenarioId) ? { direction: options.direction } : undefined),
+    ...(LOCALE_SCENARIOS.has(options.scenarioId) ? { locale: options.locale } : undefined),
+    ...(THEME_SCENARIOS.has(options.scenarioId) ? { theme: options.theme } : undefined),
+  };
+}
+
 function includesValue<T extends string>(values: readonly T[], value: string | null): value is T {
   return value !== null && values.includes(value as T);
 }

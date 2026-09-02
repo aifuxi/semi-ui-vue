@@ -34,7 +34,7 @@ test('TagInput 参考场景来自本地 v2.102.0 并保留标签、折叠与输�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.tagInputPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'tag-input')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'tag-input')).toBe(true);
   const scenario = page.getByTestId('tag-input-reference');
   await expect(scenario.locator('.semi-tagInput')).toHaveCount(7);
   await expect(scenario.locator('[data-parity-target="tag-input-basic"] .semi-tag')).toHaveCount(3);

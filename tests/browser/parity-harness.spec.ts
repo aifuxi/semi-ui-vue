@@ -101,3 +101,29 @@ test('共享目标稳定等待会等有限动画进入最终帧', async ({ page 
   const geometry = await captureComparableGeometry(target);
   expect(geometry.x).toBe(40);
 });
+
+test('共享目标稳定等待会把无限动画冻结在确定的起始帧', async ({ page }) => {
+  await page.setContent(`
+    <style>
+      body { margin: 0; }
+      @keyframes rotate-target { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      #animated-target { width: 20px; height: 40px; animation: rotate-target 80ms linear infinite; }
+    </style>
+    <div id="animated-target"></div>
+  `);
+  const target = page.locator('#animated-target');
+
+  await page.waitForTimeout(35);
+  await waitForTargetStable(target);
+  const firstGeometry = await captureComparableGeometry(target);
+  await page.waitForTimeout(50);
+  const secondGeometry = await captureComparableGeometry(target);
+  const animationState = await target.evaluate((element) => {
+    const animation = element.getAnimations()[0];
+    return { currentTime: animation?.currentTime, playState: animation?.playState };
+  });
+
+  expect(animationState).toEqual({ currentTime: 0, playState: 'paused' });
+  expect(secondGeometry).toEqual(firstGeometry);
+  expect(firstGeometry).toMatchObject({ x: 0, y: 0, width: 20, height: 40 });
+});

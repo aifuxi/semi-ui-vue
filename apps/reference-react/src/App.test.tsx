@@ -1,12 +1,26 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
+import { DEFAULT_SCENARIO_ID } from '@workspace/test-infra';
 
-import { App } from './App';
+import { App, type AppProps } from './App';
+import { resolveEagerReactScenarioComponent, type ReactScenarioModule } from './scenario-registry';
+
+const eagerScenarioModules = import.meta.glob<ReactScenarioModule>('./scenarios/*Scenario.tsx', {
+  eager: true,
+});
+
+function renderApp(element: React.ReactElement<AppProps>): string {
+  const scenarioId = element.props.scenarioId ?? DEFAULT_SCENARIO_ID;
+  const scenarioComponent = resolveEagerReactScenarioComponent(scenarioId, eagerScenarioModules);
+  return renderToStaticMarkup(
+    scenarioComponent ? React.cloneElement(element, { scenarioComponent }) : element,
+  );
+}
 
 describe('React 参考工作台', () => {
   it('登记固定 UserGuide 的 popup、modal 与三步目标场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="user-guide" direction="rtl" />);
+    const html = renderApp(<App scenarioId="user-guide" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="user-guide"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/userGuide/index.tsx');
@@ -16,7 +30,7 @@ describe('React 参考工作台', () => {
   });
 
   it('登记固定 AIChatInput 富文本、引用与附件场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="ai-chat-input" />);
+    const html = renderApp(<App scenarioId="ai-chat-input" />);
 
     expect(html).toContain('data-parity-scenario="ai-chat-input"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/aiChatInput/index.tsx');
@@ -25,7 +39,7 @@ describe('React 参考工作台', () => {
   });
 
   it('登记固定 Chat 消息、建议与输入场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="chat" />);
+    const html = renderApp(<App scenarioId="chat" />);
 
     expect(html).toContain('data-parity-scenario="chat"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/chat/index.tsx');
@@ -35,7 +49,7 @@ describe('React 参考工作台', () => {
   });
 
   it('登记固定 AIChatDialogue 消息、操作与建议场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="ai-chat-dialogue" />);
+    const html = renderApp(<App scenarioId="ai-chat-dialogue" />);
 
     expect(html).toContain('data-parity-scenario="ai-chat-dialogue"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/aiChatDialogue/index.tsx');
@@ -45,7 +59,7 @@ describe('React 参考工作台', () => {
   });
 
   it('登记固定 MarkdownRender 异步渲染场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="markdown-render" />);
+    const html = renderApp(<App scenarioId="markdown-render" />);
 
     expect(html).toContain('data-parity-scenario="markdown-render"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/markdownRender/index.tsx');
@@ -54,7 +68,7 @@ describe('React 参考工作台', () => {
   });
 
   it('登记固定 AudioPlayer 的播放列表、工具栏和精简场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="audio-player" theme="light" />);
+    const html = renderApp(<App scenarioId="audio-player" theme="light" />);
 
     expect(html).toContain('data-parity-scenario="audio-player"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/audioPlayer/index.tsx');
@@ -65,7 +79,7 @@ describe('React 参考工作台', () => {
   });
 
   it('登记固定 Locale Provider/Consumer 与语言源场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="locale" />);
+    const html = renderApp(<App scenarioId="locale" />);
 
     expect(html).toContain('data-parity-scenario="locale"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/locale/localeProvider.tsx');
@@ -76,7 +90,7 @@ describe('React 参考工作台', () => {
   });
 
   it('登记固定 Lottie Adapter 的内部、重建与外部容器场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="lottie" />);
+    const html = renderApp(<App scenarioId="lottie" />);
 
     expect(html).toContain('data-parity-scenario="lottie"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/lottie/index.tsx');
@@ -87,7 +101,7 @@ describe('React 参考工作台', () => {
   });
 
   it('登记固定 HotKeys Adapter 的组合、显示和局部目标场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="hot-keys" />);
+    const html = renderApp(<App scenarioId="hot-keys" />);
 
     expect(html).toContain('data-parity-scenario="hot-keys"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/hotKeys/index.tsx');
@@ -98,7 +112,7 @@ describe('React 参考工作台', () => {
   });
 
   it('登记固定 DragMove Adapter 的约束、handler、relative 与 input 场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="drag-move" />);
+    const html = renderApp(<App scenarioId="drag-move" />);
 
     expect(html).toContain('data-parity-scenario="drag-move"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/dragMove/index.ts');
@@ -109,7 +123,7 @@ describe('React 参考工作台', () => {
   });
 
   it('登记固定 CodeHighlight Adapter 的三语言参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="code-highlight" />);
+    const html = renderApp(<App scenarioId="code-highlight" />);
 
     expect(html).toContain('data-parity-scenario="code-highlight"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/codeHighlight/index.tsx');
@@ -119,14 +133,14 @@ describe('React 参考工作台', () => {
   });
 
   it('可以通过 Vitest 编译 TSX 并执行服务端渲染', () => {
-    const html = renderToStaticMarkup(<App />);
+    const html = renderApp(<App />);
 
     expect(html).toContain('Semi Design React 参考工作台');
     expect(html).toContain('v2.102.0');
   });
 
   it('按共享契约渲染场景元数据', () => {
-    const html = renderToStaticMarkup(<App scenarioId="button-types" />);
+    const html = renderApp(<App scenarioId="button-types" />);
 
     expect(html).toContain('data-parity-scenario="button-types"');
     expect(html).toContain('data-reference-status="ready"');
@@ -134,7 +148,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 IconButton Adapter 渲染图标、加载与禁用场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="icon-button" />);
+    const html = renderApp(<App scenarioId="icon-button" />);
 
     expect(html).toContain('data-parity-scenario="icon-button"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/iconButton/index.tsx');
@@ -144,7 +158,7 @@ describe('React 参考工作台', () => {
   });
 
   it('登记固定 Modal Adapter 的可比较参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="modal" direction="rtl" />);
+    const html = renderApp(<App scenarioId="modal" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="modal"');
     expect(html).toContain('data-reference-status="ready"');
@@ -152,7 +166,7 @@ describe('React 参考工作台', () => {
   });
 
   it('登记固定 OverflowList Adapter 的可比较参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="overflow-list" direction="rtl" />);
+    const html = renderApp(<App scenarioId="overflow-list" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="overflow-list"');
     expect(html).toContain('data-reference-status="ready"');
@@ -161,7 +175,7 @@ describe('React 参考工作台', () => {
   });
 
   it('登记固定 Popover Adapter 的可比较参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="popover" direction="rtl" />);
+    const html = renderApp(<App scenarioId="popover" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="popover"');
     expect(html).toContain('data-reference-status="ready"');
@@ -170,7 +184,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 ScrollList Adapter 渲染 normal、wheel 与循环列场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="scroll-list" direction="rtl" />);
+    const html = renderApp(<App scenarioId="scroll-list" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="scroll-list"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/scrollList/index.tsx');
@@ -179,7 +193,7 @@ describe('React 参考工作台', () => {
   });
 
   it('登记固定 SideSheet Adapter 的容器内参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="side-sheet" direction="rtl" />);
+    const html = renderApp(<App scenarioId="side-sheet" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="side-sheet"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/sideSheet/index.tsx');
@@ -187,7 +201,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Table Adapter 渲染表头、选择列与选中行场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="table" direction="rtl" />);
+    const html = renderApp(<App scenarioId="table" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="table"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/table/index.tsx');
@@ -196,7 +210,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Divider Adapter 渲染完整参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="divider" />);
+    const html = renderApp(<App scenarioId="divider" />);
 
     expect(html).toContain('data-parity-scenario="divider"');
     expect(html).toContain('semi-divider-with-text-left');
@@ -204,7 +218,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Checkbox 与 Group Adapter 渲染单项、组与卡片场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="checkbox" />);
+    const html = renderApp(<App scenarioId="checkbox" />);
 
     expect(html).toContain('data-parity-scenario="checkbox"');
     expect(html).toContain('data-parity-target="checkbox-basic"');
@@ -214,7 +228,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Input、InputGroup 与 TextArea Adapter 渲染完整参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="input" />);
+    const html = renderApp(<App scenarioId="input" />);
 
     expect(html).toContain('data-parity-scenario="input"');
     expect(html).toContain('input-target-basic');
@@ -225,7 +239,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 InputNumber Adapter 渲染步进、货币与科学计数场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="input-number" />);
+    const html = renderApp(<App scenarioId="input-number" />);
 
     expect(html).toContain('data-parity-scenario="input-number"');
     expect(html).toContain('semi-input-number-suffix-btns');
@@ -234,7 +248,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 PinCode Adapter 渲染三种尺寸、混合码与禁用场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="pin-code" />);
+    const html = renderApp(<App scenarioId="pin-code" />);
 
     expect(html).toContain('data-parity-scenario="pin-code"');
     expect(html).toContain('pin-code-target-small');
@@ -244,7 +258,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Radio Adapter 渲染单项、组合、按钮和卡片场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="radio" />);
+    const html = renderApp(<App scenarioId="radio" />);
 
     expect(html).toContain('data-parity-scenario="radio"');
     expect(html).toContain('data-parity-target="radio-basic"');
@@ -254,7 +268,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Icon、稳定图标和 Lab 入口渲染完整参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="icon" />);
+    const html = renderApp(<App scenarioId="icon" />);
 
     expect(html).toContain('data-parity-scenario="icon"');
     expect(html).toContain('semi-icon-extra-large');
@@ -263,7 +277,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Illustrations 入口渲染全部 light/dark 插画', () => {
-    const html = renderToStaticMarkup(<App scenarioId="illustrations" />);
+    const html = renderApp(<App scenarioId="illustrations" />);
 
     expect(html).toContain('data-parity-scenario="illustrations"');
     expect(html.match(/data-illustration=/g)).toHaveLength(16);
@@ -273,7 +287,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Space Adapter 渲染完整参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="space" />);
+    const html = renderApp(<App scenarioId="space" />);
 
     expect(html).toContain('data-parity-scenario="space"');
     expect(html).toContain('semi-space-medium-horizontal');
@@ -282,7 +296,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 FloatButton 与 Group Adapter 渲染完整参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="float-button" />);
+    const html = renderApp(<App scenarioId="float-button" />);
 
     expect(html).toContain('data-parity-scenario="float-button"');
     expect(html).toContain('semi-floatButton-colorful');
@@ -292,7 +306,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Layout Adapter 渲染语义区块与 Sider 场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="layout" />);
+    const html = renderApp(<App scenarioId="layout" />);
 
     expect(html).toContain('data-parity-scenario="layout"');
     expect(html).toContain('semi-layout-has-sider');
@@ -301,7 +315,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Grid Adapter 渲染基础、Gutter、Flex 与响应式栅格', () => {
-    const html = renderToStaticMarkup(<App scenarioId="grid" />);
+    const html = renderApp(<App scenarioId="grid" />);
 
     expect(html).toContain('data-parity-scenario="grid"');
     expect(html).toContain('semi-row-flex-space-between');
@@ -310,7 +324,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Resizable Adapter 渲染单体、组合面板与拖拽手柄', () => {
-    const html = renderToStaticMarkup(<App scenarioId="resizable" />);
+    const html = renderApp(<App scenarioId="resizable" />);
 
     expect(html).toContain('data-parity-scenario="resizable"');
     expect(html).toContain('semi-resizable-resizable');
@@ -320,7 +334,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Typography Adapter 渲染标题、文本、段落、数值与复制', () => {
-    const html = renderToStaticMarkup(<App scenarioId="typography" />);
+    const html = renderApp(<App scenarioId="typography" />);
 
     expect(html).toContain('data-parity-scenario="typography"');
     expect(html).toContain('semi-typography-h2');
@@ -330,7 +344,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 ConfigProvider 渲染 RTL、Consumer、Locale 与嵌套配置', () => {
-    const html = renderToStaticMarkup(<App scenarioId="config-provider" />);
+    const html = renderApp(<App scenarioId="config-provider" />);
 
     expect(html).toContain('data-parity-scenario="config-provider"');
     expect(html).toContain('class="semi-rtl"');
@@ -341,7 +355,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Switch Adapter 渲染尺寸、文本、禁用与加载状态', () => {
-    const html = renderToStaticMarkup(<App scenarioId="switch" />);
+    const html = renderApp(<App scenarioId="switch" />);
 
     expect(html).toContain('data-parity-scenario="switch"');
     expect(html).toContain('semi-switch-small');
@@ -353,7 +367,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Tooltip Adapter 渲染方位、ARIA 与特殊 trigger 场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="tooltip" />);
+    const html = renderApp(<App scenarioId="tooltip" />);
 
     expect(html).toContain('data-parity-scenario="tooltip"');
     expect(html).toContain('data-parity-target="tooltip-trigger-top"');
@@ -363,7 +377,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Select Adapter 渲染单选、多选、禁用与分组搜索场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="select" />);
+    const html = renderApp(<App scenarioId="select" />);
 
     expect(html).toContain('data-parity-scenario="select"');
     expect(html).toContain('data-parity-target="select-basic"');
@@ -373,7 +387,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Slider Adapter 渲染单值、范围、刻度、禁用与纵向场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="slider" />);
+    const html = renderApp(<App scenarioId="slider" />);
 
     expect(html).toContain('data-parity-scenario="slider"');
     expect(html).toContain('data-parity-target="slider-basic"');
@@ -384,7 +398,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 TagInput Adapter 渲染标签、尺寸、校验、折叠与前后缀场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="tag-input" />);
+    const html = renderApp(<App scenarioId="tag-input" />);
 
     expect(html).toContain('data-parity-scenario="tag-input"');
     expect(html).toContain('data-parity-target="tag-input-basic"');
@@ -396,7 +410,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 TimePicker Adapter 渲染单值、范围、尺寸、禁用与十二小时制场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="time-picker" />);
+    const html = renderApp(<App scenarioId="time-picker" />);
 
     expect(html).toContain('data-parity-scenario="time-picker"');
     expect(html).toContain('data-parity-target="time-picker-basic"');
@@ -408,7 +422,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Anchor Adapter 渲染尺寸、嵌套、禁用与滚动容器场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="anchor" />);
+    const html = renderApp(<App scenarioId="anchor" />);
 
     expect(html).toContain('data-parity-scenario="anchor"');
     expect(html).toContain('data-testid="anchor-reference"');
@@ -419,7 +433,7 @@ describe('React 参考工作台', () => {
   });
 
   it('渲染 Avatar 尺寸、图片、Group 与装饰参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="avatar" />);
+    const html = renderApp(<App scenarioId="avatar" />);
 
     expect(html).toContain('data-parity-scenario="avatar"');
     expect(html).toContain('data-testid="avatar-reference"');
@@ -430,7 +444,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Badge Adapter 渲染计数、圆点、溢出与自定义场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="badge" />);
+    const html = renderApp(<App scenarioId="badge" />);
 
     expect(html).toContain('data-parity-scenario="badge"');
     expect(html).toContain('data-testid="badge-reference"');
@@ -442,7 +456,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Calendar Adapter 渲染周视图与事件场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="calendar" />);
+    const html = renderApp(<App scenarioId="calendar" />);
 
     expect(html).toContain('data-parity-scenario="calendar"');
     expect(html).toContain('data-testid="calendar-reference"');
@@ -453,7 +467,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Card、Meta 与 CardGroup Adapter 渲染完整场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="card" />);
+    const html = renderApp(<App scenarioId="card" />);
 
     expect(html).toContain('data-parity-scenario="card"');
     expect(html).toContain('data-testid="card-reference"');
@@ -464,7 +478,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Carousel Adapter 渲染 slide、fade、指示器、箭头与单项场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="carousel" />);
+    const html = renderApp(<App scenarioId="carousel" />);
 
     expect(html).toContain('data-parity-scenario="carousel"');
     expect(html).toContain('data-testid="carousel-reference"');
@@ -476,7 +490,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Collapsible Adapter 渲染开合、摘要、自适应与懒渲染场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="collapsible" />);
+    const html = renderApp(<App scenarioId="collapsible" />);
 
     expect(html).toContain('data-parity-scenario="collapsible"');
     expect(html).toContain('data-testid="collapsible-reference"');
@@ -488,7 +502,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Collapse Adapter 渲染多面板、手风琴、左图标与受控场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="collapse" />);
+    const html = renderApp(<App scenarioId="collapse" />);
 
     expect(html).toContain('data-parity-scenario="collapse"');
     expect(html).toContain('data-testid="collapse-reference"');
@@ -501,7 +515,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Descriptions Adapter 渲染 data、Item、双行与横向场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="descriptions" />);
+    const html = renderApp(<App scenarioId="descriptions" />);
 
     expect(html).toContain('data-parity-scenario="descriptions"');
     expect(html).toContain('data-testid="descriptions-reference"');
@@ -512,7 +526,7 @@ describe('React 参考工作台', () => {
     expect(html).not.toContain('不可见');
   });
   it('从固定 Skeleton Adapter 渲染 loading 三态与全部占位项', () => {
-    const html = renderToStaticMarkup(<App scenarioId="skeleton" />);
+    const html = renderApp(<App scenarioId="skeleton" />);
 
     expect(html).toContain('data-parity-scenario="skeleton"');
     expect(html).toContain('data-testid="skeleton-reference"');
@@ -526,7 +540,7 @@ describe('React 参考工作台', () => {
     expect(html).not.toContain('Image loaded');
   });
   it('从固定 Spin Adapter 渲染三尺寸、自定义指示器与包装/hidden 状态', () => {
-    const html = renderToStaticMarkup(<App scenarioId="spin" />);
+    const html = renderApp(<App scenarioId="spin" />);
 
     expect(html).toContain('data-parity-scenario="spin"');
     expect(html).toContain('data-testid="spin-reference"');
@@ -539,7 +553,7 @@ describe('React 参考工作台', () => {
     expect(html).toContain('Content ready');
   });
   it('从固定 Transfer Adapter 渲染候选与已选面板', () => {
-    const html = renderToStaticMarkup(<App scenarioId="transfer" />);
+    const html = renderApp(<App scenarioId="transfer" />);
 
     expect(html).toContain('data-parity-scenario="transfer"');
     expect(html).toContain('data-testid="transfer-reference"');
@@ -547,7 +561,7 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-transfer-right-item');
   });
   it('从固定 Upload Adapter 渲染普通与图片文件列表', () => {
-    const html = renderToStaticMarkup(<App scenarioId="upload" />);
+    const html = renderApp(<App scenarioId="upload" />);
 
     expect(html).toContain('data-parity-scenario="upload"');
     expect(html).toContain('data-testid="upload-reference"');
@@ -556,7 +570,7 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-upload-picture-add');
   });
   it('登记固定 TreeSelect Adapter 的可比较参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="tree-select" direction="rtl" />);
+    const html = renderApp(<App scenarioId="tree-select" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="tree-select"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/treeSelect/index.tsx');
@@ -565,7 +579,7 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-tree-select');
   });
   it('登记固定 Cascader Adapter 的可比较参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="cascader" direction="rtl" />);
+    const html = renderApp(<App scenarioId="cascader" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="cascader"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/cascader/index.tsx');
@@ -574,7 +588,7 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-cascader');
   });
   it('登记固定 ColorPicker Adapter 的可比较参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="color-picker" direction="rtl" />);
+    const html = renderApp(<App scenarioId="color-picker" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="color-picker"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/colorPicker/index.tsx');
@@ -583,7 +597,7 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-colorPicker');
   });
   it('登记固定 DatePicker Adapter 的可比较参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="date-picker" direction="rtl" />);
+    const html = renderApp(<App scenarioId="date-picker" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="date-picker"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/datePicker/index.tsx');
@@ -592,7 +606,7 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-datepicker');
   });
   it('登记固定 Form Adapter 的可比较参考场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="form" direction="rtl" />);
+    const html = renderApp(<App scenarioId="form" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="form"');
     expect(html).toContain('vendor/semi-design/packages/semi-ui/form/index.tsx');
@@ -601,7 +615,7 @@ describe('React 参考工作台', () => {
     expect(html).toContain('semi-form-field-label-required');
   });
   it('从固定 Empty Adapter 渲染图片、无图片、水平与 SVG 场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="empty" direction="rtl" />);
+    const html = renderApp(<App scenarioId="empty" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="empty"');
     expect(html).toContain('data-testid="empty-reference"');
@@ -612,7 +626,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Highlight Adapter 渲染默认、样式、正则与重叠场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="highlight" direction="rtl" />);
+    const html = renderApp(<App scenarioId="highlight" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="highlight"');
     expect(html).toContain('data-testid="highlight-reference"');
@@ -623,7 +637,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Image Adapter 渲染单图与分组预览场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="image" direction="rtl" />);
+    const html = renderApp(<App scenarioId="image" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="image"');
     expect(html).toContain('data-testid="image-reference"');
@@ -633,7 +647,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Cropper Adapter 渲染矩形与圆形场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="cropper" direction="rtl" />);
+    const html = renderApp(<App scenarioId="cropper" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="cropper"');
     expect(html).toContain('data-testid="cropper-reference"');
@@ -643,7 +657,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 List Adapter 渲染数据源、Item 分区、horizontal 与 Grid 场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="list" direction="rtl" />);
+    const html = renderApp(<App scenarioId="list" direction="rtl" />);
 
     expect(html).toContain('data-parity-scenario="list"');
     expect(html).toContain('data-testid="list-reference"');
@@ -655,7 +669,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 BackTop Adapter 渲染 Element target、默认与自定义场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="back-top" />);
+    const html = renderApp(<App scenarioId="back-top" />);
 
     expect(html).toContain('data-parity-scenario="back-top"');
     expect(html).toContain('data-testid="back-top-reference"');
@@ -665,7 +679,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Breadcrumb Adapter 渲染图标、链接与受控激活场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="breadcrumb" />);
+    const html = renderApp(<App scenarioId="breadcrumb" />);
 
     expect(html).toContain('data-parity-scenario="breadcrumb"');
     expect(html).toContain('data-testid="breadcrumb-reference"');
@@ -675,7 +689,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Pagination Adapter 渲染截断、容量、快速跳页、small 与禁用场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="pagination" locale="en-US" />);
+    const html = renderApp(<App scenarioId="pagination" locale="en-US" />);
 
     expect(html).toContain('data-parity-scenario="pagination"');
     expect(html).toContain('data-testid="pagination-reference"');
@@ -686,7 +700,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Steps Adapter 渲染 fill/basic/vertical/nav 场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="steps" />);
+    const html = renderApp(<App scenarioId="steps" />);
 
     expect(html).toContain('data-parity-scenario="steps"');
     expect(html).toContain('data-testid="steps-reference"');
@@ -697,7 +711,7 @@ describe('React 参考工作台', () => {
   });
 
   it('从固定 Tabs Adapter 渲染四类型、竖向、More 与折叠场景', () => {
-    const html = renderToStaticMarkup(<App scenarioId="tabs" />);
+    const html = renderApp(<App scenarioId="tabs" />);
 
     expect(html).toContain('data-parity-scenario="tabs"');
     expect(html).toContain('data-testid="tabs-reference"');

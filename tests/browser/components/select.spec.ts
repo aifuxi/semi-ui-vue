@@ -34,7 +34,7 @@ test('Select 参考场景来自本地 v2.102.0 并保留 Option、分组与 Port
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.selectPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'select')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'select')).toBe(true);
   const scenario = page.getByTestId('select-reference');
   await expect(scenario.locator('.semi-select')).toHaveCount(5);
   await expect(scenario.locator('[data-parity-target="select-disabled"]')).toHaveAttribute(

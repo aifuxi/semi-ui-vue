@@ -34,7 +34,7 @@ test('Anchor 参考场景来自本地 v2.102.0 并保留导航、嵌套与禁用
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.anchorPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'anchor')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'anchor')).toBe(true);
   const scenario = page.getByTestId('anchor-reference');
   await expect(scenario.locator('.semi-anchor')).toHaveCount(2);
   await expect(scenario.locator('.semi-anchor-link-title')).toHaveCount(6);

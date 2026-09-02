@@ -1,11 +1,29 @@
-import { mount } from '@vue/test-utils';
+import { mount, type ComponentMountingOptions } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
+import { DEFAULT_SCENARIO_ID } from '@workspace/test-infra';
 
 import App from './App.vue';
+import { resolveEagerVueScenarioComponent, type VueScenarioModule } from './scenario-registry';
+
+const eagerScenarioModules = import.meta.glob<VueScenarioModule>('./components/*Scenario.vue', {
+  eager: true,
+});
+
+function mountApp(options: ComponentMountingOptions<typeof App> = {}) {
+  const scenarioId = options.props?.scenarioId ?? DEFAULT_SCENARIO_ID;
+  const scenarioComponent = resolveEagerVueScenarioComponent(scenarioId, eagerScenarioModules);
+  return mount(App, {
+    ...options,
+    props: {
+      ...options.props,
+      ...(scenarioComponent ? { scenarioComponent } : undefined),
+    },
+  });
+}
 
 describe('Vue 对照工作台', () => {
   it('通过公共 UserGuide 渲染 popup、spotlight 与三步目标', async () => {
-    const wrapper = mount(App, {
+    const wrapper = mountApp({
       attachTo: document.body,
       props: { scenarioId: 'user-guide', direction: 'rtl' },
     });
@@ -24,7 +42,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 AudioPlayer 渲染播放列表、工具栏与精简场景', () => {
-    const wrapper = mount(App, {
+    const wrapper = mountApp({
       props: { scenarioId: 'audio-player', theme: 'light', locale: 'en-US' },
     });
     const scenario = wrapper.get('[data-testid="audio-player-vue"]');
@@ -44,7 +62,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Locale Provider/Consumer 渲染语言源与响应式场景', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'locale' } });
+    const wrapper = mountApp({ props: { scenarioId: 'locale' } });
     const scenario = wrapper.get('[data-testid="locale-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -60,7 +78,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Lottie 渲染内部、重建与外部容器场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'lottie' } });
+    const wrapper = mountApp({ props: { scenarioId: 'lottie' } });
     const scenario = wrapper.get('[data-testid="lottie-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -73,7 +91,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 HotKeys 渲染组合、显示、slot 与局部目标场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'hot-keys' } });
+    const wrapper = mountApp({ props: { scenarioId: 'hot-keys' } });
     const scenario = wrapper.get('[data-testid="hot-keys-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -90,7 +108,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 DragMove 渲染约束、handler、relative 与 input 场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'drag-move' } });
+    const wrapper = mountApp({ props: { scenarioId: 'drag-move' } });
     const scenario = wrapper.get('[data-testid="drag-move-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -114,7 +132,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 CodeHighlight 渲染三种语言、行号与主题场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'code-highlight' } });
+    const wrapper = mountApp({ props: { scenarioId: 'code-highlight' } });
     const scenario = wrapper.get('[data-testid="code-highlight-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -134,7 +152,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 IconButton 渲染图标、文字、加载与禁用场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'icon-button' } });
+    const wrapper = mountApp({ props: { scenarioId: 'icon-button' } });
     const scenario = wrapper.get('[data-testid="icon-button-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -152,7 +170,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Table 渲染表头、选择列、选中行与横向滚动场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'table', direction: 'rtl' } });
+    const wrapper = mountApp({ props: { scenarioId: 'table', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="table-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -165,7 +183,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 SideSheet 渲染稳定容器、dialog、标题、正文与 footer', async () => {
-    const wrapper = mount(App, {
+    const wrapper = mountApp({
       attachTo: document.body,
       props: { scenarioId: 'side-sheet', direction: 'rtl' },
     });
@@ -184,7 +202,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 ScrollList 渲染 normal、wheel、循环与 disabled 场景', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'scroll-list', direction: 'rtl' } });
+    const wrapper = mountApp({ props: { scenarioId: 'scroll-list', direction: 'rtl' } });
     await wrapper.vm.$nextTick();
     await wrapper.vm.$nextTick();
     const scenario = wrapper.get('[data-testid="scroll-list-vue"]');
@@ -198,7 +216,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Popover 渲染卡片、箭头、角色与首次自定义容器', async () => {
-    const wrapper = mount(App, {
+    const wrapper = mountApp({
       attachTo: document.body,
       props: { scenarioId: 'popover', direction: 'rtl' },
     });
@@ -216,7 +234,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Popconfirm 渲染两种确认卡、按钮、箭头、RTL 与首次自定义容器', async () => {
-    const wrapper = mount(App, {
+    const wrapper = mountApp({
       attachTo: document.body,
       props: { scenarioId: 'popconfirm', direction: 'rtl' },
     });
@@ -236,7 +254,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 OverflowList 渲染 collapse 与 scroll 场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'overflow-list', direction: 'rtl' } });
+    const wrapper = mountApp({ props: { scenarioId: 'overflow-list', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="overflow-list-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -253,7 +271,7 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
   it('通过公共 Modal 渲染 Portal、标题、正文与默认 footer', async () => {
-    const wrapper = mount(App, {
+    const wrapper = mountApp({
       attachTo: document.body,
       props: { scenarioId: 'modal', direction: 'rtl' },
     });
@@ -267,7 +285,7 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
   it('通过公共 Descriptions 渲染 data、Item、双行与横向场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'descriptions', direction: 'rtl' } });
+    const wrapper = mountApp({ props: { scenarioId: 'descriptions', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="descriptions-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -283,7 +301,7 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
   it('通过公共 Skeleton 渲染 loading 三态与全部占位项', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'skeleton', direction: 'rtl' } });
+    const wrapper = mountApp({ props: { scenarioId: 'skeleton', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="skeleton-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -301,7 +319,7 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
   it('通过公共 Spin 渲染三尺寸、自定义指示器与包装/hidden 状态', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'spin', direction: 'rtl' } });
+    const wrapper = mountApp({ props: { scenarioId: 'spin', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="spin-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -319,7 +337,7 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
   it('通过公共 Transfer 渲染候选、已选与 RTL 场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'transfer', direction: 'rtl' } });
+    const wrapper = mountApp({ props: { scenarioId: 'transfer', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="transfer-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -329,7 +347,7 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
   it('通过公共 Upload 渲染普通/图片文件列表与 RTL 场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'upload', direction: 'rtl' } });
+    const wrapper = mountApp({ props: { scenarioId: 'upload', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="upload-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -340,7 +358,7 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
   it('通过公共 TreeSelect 渲染受控触发器、搜索浮层、选中节点与 RTL', async () => {
-    const wrapper = mount(App, {
+    const wrapper = mountApp({
       attachTo: document.body,
       props: { scenarioId: 'tree-select', direction: 'rtl', locale: 'en-US' },
     });
@@ -362,7 +380,7 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
   it('通过公共 Cascader 渲染触发器、搜索级联浮层、选中路径与 RTL', async () => {
-    const wrapper = mount(App, {
+    const wrapper = mountApp({
       attachTo: document.body,
       props: { scenarioId: 'cascader', direction: 'rtl', locale: 'en-US' },
     });
@@ -383,7 +401,7 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
   it('通过公共 ColorPicker 渲染内联选择器、透明度条与 Popover', async () => {
-    const wrapper = mount(App, {
+    const wrapper = mountApp({
       attachTo: document.body,
       props: { scenarioId: 'color-picker', direction: 'rtl', locale: 'en-US' },
     });
@@ -400,7 +418,7 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
   it('通过公共 DatePicker 渲染固定日期、月历与选中态', async () => {
-    const wrapper = mount(App, {
+    const wrapper = mountApp({
       attachTo: document.body,
       props: { scenarioId: 'date-picker', direction: 'rtl', locale: 'zh-CN' },
     });
@@ -419,7 +437,7 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
   it('通过公共 Form 渲染标签、字段、帮助文案与必填状态', async () => {
-    const wrapper = mount(App, {
+    const wrapper = mountApp({
       attachTo: document.body,
       props: { scenarioId: 'form', direction: 'rtl', locale: 'zh-CN' },
     });
@@ -438,7 +456,7 @@ describe('Vue 对照工作台', () => {
     wrapper.unmount();
   });
   it('通过公共 Empty 渲染图片、无图片、水平与 SVG 场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'empty', direction: 'rtl' } });
+    const wrapper = mountApp({ props: { scenarioId: 'empty', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="empty-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -458,7 +476,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Highlight 渲染默认、样式、正则与重叠场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'highlight', direction: 'rtl' } });
+    const wrapper = mountApp({ props: { scenarioId: 'highlight', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="highlight-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -472,7 +490,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Image 渲染单图与分组预览场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'image', direction: 'rtl' } });
+    const wrapper = mountApp({ props: { scenarioId: 'image', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="image-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -483,7 +501,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Cropper 渲染矩形与圆形场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'cropper', direction: 'rtl' } });
+    const wrapper = mountApp({ props: { scenarioId: 'cropper', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="cropper-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -498,7 +516,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 List 渲染数据源、Item 分区、horizontal 与 Grid 场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'list', direction: 'rtl' } });
+    const wrapper = mountApp({ props: { scenarioId: 'list', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="list-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -515,7 +533,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Illustrations 包渲染全部 light/dark 插画', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'illustrations' } });
+    const wrapper = mountApp({ props: { scenarioId: 'illustrations' } });
     const scenario = wrapper.get('[data-testid="illustrations-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -531,7 +549,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Collapsible 渲染开合、摘要、自适应与懒渲染场景', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'collapsible' } });
+    const wrapper = mountApp({ props: { scenarioId: 'collapsible' } });
     const scenario = wrapper.get('[data-testid="collapsible-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -554,7 +572,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Collapse 渲染多面板、手风琴、图标热区、懒渲染与 v-model', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'collapse' } });
+    const wrapper = mountApp({ props: { scenarioId: 'collapse' } });
     const scenario = wrapper.get('[data-testid="collapse-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -582,7 +600,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Carousel 渲染多动效、指示器、箭头、单项并闭环 change', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'carousel' } });
+    const wrapper = mountApp({ props: { scenarioId: 'carousel' } });
     const scenario = wrapper.get('[data-testid="carousel-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -605,7 +623,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Card、Meta 与 CardGroup 渲染完整场景并派发操作', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'card' } });
+    const wrapper = mountApp({ props: { scenarioId: 'card' } });
     const scenario = wrapper.get('[data-testid="card-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -620,7 +638,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Calendar 渲染周视图、事件并支持模式切换', async () => {
-    const wrapper = mount(App, {
+    const wrapper = mountApp({
       props: { scenarioId: 'calendar', locale: 'en-US', direction: 'ltr' },
     });
     const scenario = wrapper.get('[data-testid="calendar-vue"]');
@@ -637,7 +655,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Badge 渲染计数、圆点、溢出、自定义与事件场景', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'badge', direction: 'rtl' } });
+    const wrapper = mountApp({ props: { scenarioId: 'badge', direction: 'rtl' } });
     const scenario = wrapper.get('[data-testid="badge-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -664,7 +682,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Button 包渲染已就绪的对照场景', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'button-types' } });
+    const wrapper = mountApp({ props: { scenarioId: 'button-types' } });
 
     expect(wrapper.attributes('data-parity-scenario')).toBe('button-types');
     expect(wrapper.attributes('data-reference-status')).toBe('ready');
@@ -677,7 +695,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Divider 包渲染完整对照场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'divider' } });
+    const wrapper = mountApp({ props: { scenarioId: 'divider' } });
 
     expect(wrapper.attributes('data-parity-scenario')).toBe('divider');
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -686,7 +704,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Checkbox 包渲染单项、组、辅助文本与卡片场景', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'checkbox' } });
+    const wrapper = mountApp({ props: { scenarioId: 'checkbox' } });
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
     const scenario = wrapper.get('[data-testid="checkbox-vue"]');
@@ -703,7 +721,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Input 包渲染输入、组合、密码与 TextArea 场景', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'input' } });
+    const wrapper = mountApp({ props: { scenarioId: 'input' } });
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
     const scenario = wrapper.get('[data-testid="input-vue"]');
@@ -717,7 +735,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 InputNumber 包渲染步进、货币与科学计数场景', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'input-number' } });
+    const wrapper = mountApp({ props: { scenarioId: 'input-number' } });
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
     const scenario = wrapper.get('[data-testid="input-number-vue"]');
@@ -732,7 +750,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 PinCode 包渲染三种尺寸、混合码、禁用与输入状态', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'pin-code' } });
+    const wrapper = mountApp({ props: { scenarioId: 'pin-code' } });
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
     const scenario = wrapper.get('[data-testid="pin-code-vue"]');
@@ -748,7 +766,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Radio 包渲染单项、组合、按钮、卡片与交互状态', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'radio' } });
+    const wrapper = mountApp({ props: { scenarioId: 'radio' } });
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
     const scenario = wrapper.get('[data-testid="radio-vue"]');
@@ -766,7 +784,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公开图标包渲染稳定、AI、Lab 与自定义 Icon 场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'icon' } });
+    const wrapper = mountApp({ props: { scenarioId: 'icon' } });
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
     expect(wrapper.get('[data-testid="icon-vue"]').findAll('.semi-icon')).toHaveLength(12);
@@ -777,7 +795,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Space 包渲染间距、换行、方向与对齐场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'space' } });
+    const wrapper = mountApp({ props: { scenarioId: 'space' } });
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
     expect(wrapper.get('[data-testid="space-vue"]').findAll('.semi-space')).toHaveLength(10);
@@ -790,7 +808,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 FloatButton 包渲染尺寸、状态、徽章与按钮组场景', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'float-button' } });
+    const wrapper = mountApp({ props: { scenarioId: 'float-button' } });
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
     expect(
@@ -805,7 +823,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Layout 包渲染语义区块、嵌套布局与 Sider', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'layout' } });
+    const wrapper = mountApp({ props: { scenarioId: 'layout' } });
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
     expect(wrapper.get('[data-testid="layout-vue"]').findAll('.semi-layout')).toHaveLength(4);
@@ -817,7 +835,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Grid 包渲染基础、Gutter、Flex 与响应式栅格', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'grid' } });
+    const wrapper = mountApp({ props: { scenarioId: 'grid' } });
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
     expect(wrapper.get('[data-testid="grid-vue"]').findAll('.semi-row')).toHaveLength(3);
@@ -831,7 +849,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Resizable 包渲染单体、水平/垂直组合与拖拽手柄', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'resizable' } });
+    const wrapper = mountApp({ props: { scenarioId: 'resizable' } });
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
     expect(
@@ -849,7 +867,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Typography 包渲染标题、文本、段落、数值与复制', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'typography' } });
+    const wrapper = mountApp({ props: { scenarioId: 'typography' } });
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
     const scenario = wrapper.get('[data-testid="typography-vue"]');
@@ -862,7 +880,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 ConfigProvider 渲染 RTL、Consumer、Locale 与嵌套配置', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'config-provider' } });
+    const wrapper = mountApp({ props: { scenarioId: 'config-provider' } });
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
     const scenario = wrapper.get('[data-testid="config-provider-vue"]');
@@ -878,7 +896,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Switch 渲染尺寸、文本、禁用、加载与受控场景', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'switch' } });
+    const wrapper = mountApp({ props: { scenarioId: 'switch' } });
     await wrapper.vm.$nextTick();
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -904,7 +922,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Tooltip 渲染四向 Portal、箭头与特殊 trigger 包裹', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'tooltip' } });
+    const wrapper = mountApp({ props: { scenarioId: 'tooltip' } });
     await wrapper.vm.$nextTick();
     await wrapper.vm.$nextTick();
 
@@ -922,7 +940,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Select 渲染单选、多选、分组搜索与默认展开场景', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'select' }, attachTo: document.body });
+    const wrapper = mountApp({ props: { scenarioId: 'select' }, attachTo: document.body });
     await wrapper.vm.$nextTick();
     await wrapper.vm.$nextTick();
 
@@ -942,7 +960,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Slider 渲染单值、范围、刻度、禁用与纵向场景', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'slider' } });
+    const wrapper = mountApp({ props: { scenarioId: 'slider' } });
     const scenario = wrapper.get('[data-testid="slider-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -960,7 +978,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 TagInput 渲染标签、尺寸、校验、折叠与前后缀场景', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'tag-input' } });
+    const wrapper = mountApp({ props: { scenarioId: 'tag-input' } });
     const scenario = wrapper.get('[data-testid="tag-input-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -983,7 +1001,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 TimePicker 渲染单值、范围、尺寸、禁用与十二小时制场景', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'time-picker' } });
+    const wrapper = mountApp({ props: { scenarioId: 'time-picker' } });
     const scenario = wrapper.get('[data-testid="time-picker-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -1008,7 +1026,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Anchor 渲染尺寸、嵌套、禁用并响应点击', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'anchor' } });
+    const wrapper = mountApp({ props: { scenarioId: 'anchor' } });
     const scenario = wrapper.get('[data-testid="anchor-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -1035,7 +1053,7 @@ describe('Vue 对照工作台', () => {
       return 1;
     });
     vi.stubGlobal('cancelAnimationFrame', vi.fn());
-    const wrapper = mount(App, { props: { scenarioId: 'back-top' } });
+    const wrapper = mountApp({ props: { scenarioId: 'back-top' } });
     const scenario = wrapper.get('[data-testid="back-top-vue"]');
     const scrollTarget = scenario.get('.back-top-scenario__scroll');
 
@@ -1058,7 +1076,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Breadcrumb 渲染图标、链接、折叠与受控激活场景', () => {
-    const wrapper = mount(App, { props: { scenarioId: 'breadcrumb' } });
+    const wrapper = mountApp({ props: { scenarioId: 'breadcrumb' } });
     const scenario = wrapper.get('[data-testid="breadcrumb-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -1076,7 +1094,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Pagination 渲染截断、容量、快速跳页、small 与禁用场景', () => {
-    const wrapper = mount(App, {
+    const wrapper = mountApp({
       props: { scenarioId: 'pagination', direction: 'rtl', locale: 'en-US' },
     });
     const scenario = wrapper.get('[data-testid="pagination-vue"]');
@@ -1097,7 +1115,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Steps 渲染 fill/basic/vertical/nav 并闭环 change', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'steps' } });
+    const wrapper = mountApp({ props: { scenarioId: 'steps' } });
     const scenario = wrapper.get('[data-testid="steps-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');
@@ -1118,7 +1136,7 @@ describe('Vue 对照工作台', () => {
   });
 
   it('通过公共 Tabs 渲染四类型、竖向、More、折叠并闭环 change', async () => {
-    const wrapper = mount(App, { props: { scenarioId: 'tabs' } });
+    const wrapper = mountApp({ props: { scenarioId: 'tabs' } });
     const scenario = wrapper.get('[data-testid="tabs-vue"]');
 
     expect(wrapper.attributes('data-vue-status')).toBe('ready');

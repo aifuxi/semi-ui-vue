@@ -33,7 +33,7 @@ test('SideSheet 参考场景来自本地 v2.102.0 并保留 Portal 与 dialog �
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.sideSheetPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'side-sheet')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'side-sheet')).toBe(true);
 
   const stage = page.getByTestId('side-sheet-reference');
   await expect(stage.locator(':scope > .semi-portal')).toHaveCount(1);

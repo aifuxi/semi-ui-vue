@@ -34,7 +34,7 @@ test('DragMove 参考场景来自本地 v2.102.0 公开源码', async ({ page })
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.dragMovePublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'drag-move')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'drag-move')).toBe(true);
   await expect(page.getByTestId('drag-move-reference').locator('[data-parity-target]')).toHaveCount(
     5,
   );

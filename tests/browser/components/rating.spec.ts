@@ -36,7 +36,7 @@ test('Rating 参考场景来自本地 v2.102.0 并保留整星、半星、空值
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.ratingPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'rating')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'rating')).toBe(true);
   const scenario = page.getByTestId('rating-reference');
   await expect(scenario.locator('.semi-rating')).toHaveCount(6);
   await expect(scenario.locator('.semi-rating-star')).toHaveCount(36);

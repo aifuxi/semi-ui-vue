@@ -44,7 +44,7 @@ test('MarkdownRender 参考场景来自本地 v2.102.0 且无运行时错误', a
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.markdownRenderPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'markdown-render')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'markdown-render')).toBe(true);
   expect(runtimeErrors).toEqual([]);
 });
 

@@ -34,7 +34,7 @@ test('InputNumber 参考场景来自本地 v2.102.0 并保留 spinbutton/步进�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.inputNumberPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'input-number')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'input-number')).toBe(true);
   const scenario = page.getByTestId('input-number-reference');
   await expect(scenario.locator('.semi-input-number')).toHaveCount(8);
   await expect(scenario.getByRole('spinbutton')).toHaveCount(8);

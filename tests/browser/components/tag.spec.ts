@@ -32,7 +32,7 @@ test('Tag 参考场景来自本地 v2.102.0 并保留关闭、Group 与 Split �
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.tagPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'tag')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'tag')).toBe(true);
   await expect(page.locator('[data-parity-target="tag-basic"] .semi-tag')).toHaveCount(3);
   await expect(page.locator('[data-parity-target="tag-group"] .semi-tag')).toHaveCount(3);
   await expect(page.locator('[data-parity-target="tag-group"] .semi-tag').last()).toHaveText('+2');

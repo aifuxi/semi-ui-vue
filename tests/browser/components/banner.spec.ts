@@ -32,7 +32,7 @@ test('Banner 参考场景来自本地 v2.102.0 并保留类型、容器与关闭
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.bannerPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'banner')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'banner')).toBe(true);
   await expect(page.getByRole('alert')).toHaveCount(5);
   await expect(page.locator('.semi-banner-info')).toHaveCount(1);
   await expect(page.locator('.semi-banner-warning')).toHaveCount(2);

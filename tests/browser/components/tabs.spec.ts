@@ -34,7 +34,7 @@ test('Tabs 参考场景来自本地 v2.102.0 并保留类型、竖向、More 与
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.tabsPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'tabs')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'tabs')).toBe(true);
   const scenario = page.getByTestId('tabs-reference');
   await expect(scenario.locator('.semi-tabs')).toHaveCount(7);
   await expect(scenario.locator('.semi-tabs-bar-card')).toHaveCount(4);

@@ -34,7 +34,7 @@ test('Tooltip 参考场景来自本地 v2.102.0 并保留 Portal、箭头与 pla
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.tooltipPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'tooltip')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'tooltip')).toBe(true);
   await expect(page.getByTestId('tooltip-reference').locator('.semi-portal')).toHaveCount(4);
   await expect(page.locator('.semi-tooltip-wrapper-show')).toHaveCount(4);
   for (const position of ['top', 'right', 'bottom', 'left'] as const) {

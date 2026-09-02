@@ -41,7 +41,7 @@ test('Sidebar 参考场景来自本地 v2.102.0 且无运行时错误', async ({
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.sidebarPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'sidebar')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'sidebar')).toBe(true);
   expect(runtimeErrors).toEqual([]);
 });
 

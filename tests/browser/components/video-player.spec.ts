@@ -63,7 +63,7 @@ test('VideoPlayer 参考场景来自本地 v2.102.0 公开源码', async ({ page
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.videoPlayerPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'video-player')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'video-player')).toBe(true);
   expect(runtimeErrors).toEqual([]);
 });
 

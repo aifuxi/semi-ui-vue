@@ -34,7 +34,7 @@ test('HotKeys 参考场景来自本地 v2.102.0 公开源码', async ({ page }) 
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.hotKeysPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'hot-keys')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'hot-keys')).toBe(true);
   await expect(page.getByTestId('hot-keys-reference').locator('.semi-hotKeys')).toHaveCount(4);
   await expect(page.locator('[data-parity-target="hot-keys-basic"]')).toContainText(
     'control+shift+k',

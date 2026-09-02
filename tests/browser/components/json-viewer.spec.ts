@@ -42,7 +42,7 @@ test('JsonViewer 参考场景来自本地 v2.102.0，Worker 内联且无运行�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.jsonViewerPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'json-viewer')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'json-viewer')).toBe(true);
   expect(
     requestedUrls.filter((url) =>
       /(?:^|\/)json[-.]?worker(?:\.[a-z0-9_-]+)?\.js(?:\?|$)/i.test(url),

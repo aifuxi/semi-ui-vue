@@ -32,7 +32,7 @@ test('Navigation 参考场景来自本地 v2.102.0 并保留公开结构', async
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.navigationPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'navigation')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'navigation')).toBe(true);
   const scenario = page.getByTestId('navigation-reference');
   await expect(scenario.locator('.semi-navigation')).toHaveCount(1);
   await expect(scenario.locator('.semi-navigation-sub-open')).toHaveCount(1);

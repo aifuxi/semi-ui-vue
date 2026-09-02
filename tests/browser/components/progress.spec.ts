@@ -32,7 +32,7 @@ test('Progress 参考场景来自本地 v2.102.0 并保留 line/circle、颜色�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.progressPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'progress')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'progress')).toBe(true);
   const scenario = page.getByTestId('progress-reference');
   await expect(scenario.getByRole('progressbar')).toHaveCount(6);
   await expect(scenario.locator('.semi-progress-horizontal')).toHaveCount(2);

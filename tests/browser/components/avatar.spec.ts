@@ -33,7 +33,7 @@ test('Avatar 参考场景来自本地 v2.102.0 并保留尺寸、图片、Group 
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.avatarPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'avatar')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'avatar')).toBe(true);
   const scenario = page.getByTestId('avatar-reference');
   await expect(scenario.locator('.semi-avatar')).toHaveCount(18);
   await expect(scenario.locator('.semi-avatar-extra-extra-small')).toHaveCount(1);

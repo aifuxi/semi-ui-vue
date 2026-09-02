@@ -32,7 +32,7 @@ test('Timeline 参考场景来自本地 v2.102.0 并保留类型、布局与点�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.timelinePublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'timeline')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'timeline')).toBe(true);
   await expect(page.locator('[data-parity-target="timeline-basic"] > li')).toHaveCount(4);
   await expect(page.locator('[data-parity-target="timeline-center"] > li')).toHaveCount(3);
   await expect(page.locator('.semi-timeline-item-head-success')).toHaveCount(2);

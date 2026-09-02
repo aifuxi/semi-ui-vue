@@ -54,7 +54,7 @@ test('AudioPlayer 参考场景来自本地 v2.102.0 公开源码', async ({ page
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.audioPlayerPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'audio-player')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'audio-player')).toBe(true);
   await expect(
     page.getByTestId('audio-player-reference').locator('div.semi-audio-player'),
   ).toHaveCount(2);

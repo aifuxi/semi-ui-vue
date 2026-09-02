@@ -34,7 +34,7 @@ test('Resizable 参考场景来自本地 v2.102.0 公开源码并保留 DOM 契�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.resizablePublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'resizable')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'resizable')).toBe(true);
   const scenario = page.getByTestId('resizable-reference');
   await expect(scenario.locator('.semi-resizable-resizable')).toHaveCount(1);
   await expect(scenario.locator('.semi-resizable-resizableHandler')).toHaveCount(8);

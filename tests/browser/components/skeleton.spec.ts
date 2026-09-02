@@ -32,7 +32,7 @@ test('Skeleton 参考场景来自本地 v2.102.0 并保留 loading 三态与全�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.skeletonPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'skeleton')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'skeleton')).toBe(true);
   const scenario = page.getByTestId('skeleton-reference');
   await expect(scenario.locator('.semi-skeleton')).toHaveCount(2);
   await expect(scenario.locator('.semi-skeleton-active')).toHaveCount(1);

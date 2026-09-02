@@ -34,7 +34,7 @@ test('AutoComplete 参考场景来自本地 v2.102.0 并保留 Input、Option �
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.autoCompletePublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'auto-complete')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'auto-complete')).toBe(true);
   const scenario = page.getByTestId('auto-complete-reference');
   await expect(scenario.locator('.semi-autocomplete')).toHaveCount(4);
   await expect(scenario.locator('.semi-input')).toHaveCount(4);

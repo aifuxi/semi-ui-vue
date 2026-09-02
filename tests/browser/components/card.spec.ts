@@ -35,7 +35,7 @@ test('Card 参考场景来自本地 v2.102.0 并保留 Meta、actions、loading 
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.cardPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'card')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'card')).toBe(true);
   const scenario = page.getByTestId('card-reference');
   await expect(scenario.locator('.semi-card')).toHaveCount(8);
   await expect(scenario.locator('.semi-card-meta-wrapper-description')).toHaveText(

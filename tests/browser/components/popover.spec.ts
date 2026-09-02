@@ -37,7 +37,7 @@ test('Popover 参考场景来自本地 v2.102.0 并保留 Portal、卡片、箭�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.popoverPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'popover')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'popover')).toBe(true);
   await expect(page.getByTestId('popover-reference').locator(':scope > .semi-portal')).toHaveCount(
     2,
   );

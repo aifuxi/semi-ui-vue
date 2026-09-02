@@ -34,7 +34,7 @@ test('Grid 参考场景来自本地 v2.102.0 公开源码并保留 DOM 契约', 
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.gridPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'grid')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'grid')).toBe(true);
   await expect(page.getByTestId('grid-reference').locator('.semi-row')).toHaveCount(3);
   await expect(page.getByTestId('grid-reference').locator('.semi-row-flex')).toHaveCount(1);
   await expect(page.getByTestId('grid-reference').locator('.semi-col')).toHaveCount(12);

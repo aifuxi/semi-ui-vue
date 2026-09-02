@@ -37,7 +37,7 @@ test('Breadcrumb 参考场景来自本地 v2.102.0 并保留图标、链接、�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.breadcrumbPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'breadcrumb')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'breadcrumb')).toBe(true);
   const scenario = page.getByTestId('breadcrumb-reference');
   await expect(scenario.locator('.semi-breadcrumb-wrapper')).toHaveCount(3);
   await expect(scenario.locator('.semi-icon-home')).toHaveCount(1);

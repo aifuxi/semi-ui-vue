@@ -32,7 +32,7 @@ test('Upload 参考场景来自本地 v2.102.0 并保留普通与图片文件列
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.uploadPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'upload')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'upload')).toBe(true);
   const scenario = page.getByTestId('upload-reference');
   await expect(scenario.locator('.semi-upload')).toHaveCount(2);
   await expect(scenario.locator('.semi-upload-file-card')).toHaveCount(2);

@@ -26,7 +26,11 @@ async function expectUserGuideReady(page: Page): Promise<void> {
     const element = image as HTMLImageElement;
     if (!element.complete) await element.decode();
   });
-  await page.waitForTimeout(240);
+  await Promise.all([
+    waitForTargetStable(page.locator('.semi-userGuide-popover')),
+    waitForTargetStable(page.locator('.semi-userGuide-spotlight')),
+  ]);
+  await waitForStableRendering(page);
 }
 
 async function readSpotlightMetrics(page: Page) {
@@ -116,6 +120,67 @@ async function expectMobileTargetComparable(
   );
 }
 
+async function captureMobileScenarioWithoutScrolling(
+  pair: Awaited<ReturnType<typeof openParityPages>>,
+  theme: 'light' | 'dark',
+): Promise<{ reactScreenshot: Buffer; vueScreenshot: Buffer }> {
+  await Promise.all(
+    [pair.react.page, pair.vue.page].map(async (page) => {
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await waitForStableRendering(page);
+    }),
+  );
+
+  const reactTarget = pair.react.page.getByTestId('user-guide-reference');
+  const vueTarget = pair.vue.page.getByTestId('user-guide-vue');
+  const [reactBox, vueBox] = await Promise.all([
+    reactTarget.boundingBox(),
+    vueTarget.boundingBox(),
+  ]);
+  if (!reactBox || !vueBox) throw new Error('UserGuide 移动端场景缺少可见边界');
+  expectComparableGeometry(
+    {
+      coordinateSpace: 'document',
+      height: vueBox.height,
+      pageScrollX: 0,
+      pageScrollY: 0,
+      width: vueBox.width,
+      x: vueBox.x,
+      y: vueBox.y,
+    },
+    {
+      coordinateSpace: 'document',
+      height: reactBox.height,
+      pageScrollX: 0,
+      pageScrollY: 0,
+      width: reactBox.width,
+      x: reactBox.x,
+      y: reactBox.y,
+    },
+    'user-guide/mobile-scenario',
+  );
+
+  const viewport = pair.react.page.viewportSize();
+  if (!viewport) throw new Error('UserGuide 移动端场景缺少 viewport');
+  const x = Math.max(0, Math.floor(reactBox.x));
+  const y = Math.max(0, Math.floor(reactBox.y));
+  const right = Math.min(viewport.width, Math.ceil(reactBox.x + reactBox.width));
+  const bottom = Math.min(viewport.height, Math.ceil(reactBox.y + reactBox.height));
+  const clip = { x, y, width: right - x, height: bottom - y };
+
+  await Promise.all([
+    expect(pair.react.page).toHaveScreenshot(`user-guide-reference-mobile-${theme}.png`, {
+      clip,
+    }),
+    expect(pair.vue.page).toHaveScreenshot(`user-guide-vue-mobile-${theme}.png`, { clip }),
+  ]);
+  const [reactScreenshot, vueScreenshot] = await Promise.all([
+    pair.react.page.screenshot({ animations: 'disabled', clip }),
+    pair.vue.page.screenshot({ animations: 'disabled', clip }),
+  ]);
+  return { reactScreenshot, vueScreenshot };
+}
+
 test('UserGuide 参考场景来自本地 v2.102.0 并保留 spotlight 与 Portal', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
@@ -136,7 +201,7 @@ test('UserGuide 参考场景来自本地 v2.102.0 并保留 spotlight 与 Portal
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.userGuidePublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'user-guide')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'user-guide')).toBe(true);
   const stage = page.getByTestId('user-guide-reference');
   await expect(page.locator('body > .semi-portal')).toHaveCount(1);
   await expect(stage.locator('.semi-userGuide-spotlight-transparent-rect')).toHaveCount(4);
@@ -205,16 +270,25 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
         );
       }
       await expectOverlayMetricsEqual(pair.react.page, pair.vue.page);
-      const reactTarget = pair.react.page.getByTestId('user-guide-reference');
-      const vueTarget = pair.vue.page.getByTestId('user-guide-vue');
-      await expect(reactTarget).toHaveScreenshot(
-        `user-guide-reference-${viewportName}-${theme}.png`,
-      );
-      await expect(vueTarget).toHaveScreenshot(`user-guide-vue-${viewportName}-${theme}.png`);
-      const [reactScreenshot, vueScreenshot] = await Promise.all([
-        reactTarget.screenshot({ animations: 'disabled' }),
-        vueTarget.screenshot({ animations: 'disabled' }),
-      ]);
+      let reactScreenshot: Buffer;
+      let vueScreenshot: Buffer;
+      if (viewportName === 'mobile') {
+        ({ reactScreenshot, vueScreenshot } = await captureMobileScenarioWithoutScrolling(
+          pair,
+          theme,
+        ));
+      } else {
+        const reactTarget = pair.react.page.getByTestId('user-guide-reference');
+        const vueTarget = pair.vue.page.getByTestId('user-guide-vue');
+        await expect(reactTarget).toHaveScreenshot(
+          `user-guide-reference-${viewportName}-${theme}.png`,
+        );
+        await expect(vueTarget).toHaveScreenshot(`user-guide-vue-${viewportName}-${theme}.png`);
+        [reactScreenshot, vueScreenshot] = await Promise.all([
+          reactTarget.screenshot({ animations: 'disabled' }),
+          vueTarget.screenshot({ animations: 'disabled' }),
+        ]);
+      }
       await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
       expect(pair.react.runtimeErrors).toEqual([]);
       expect(pair.vue.runtimeErrors).toEqual([]);

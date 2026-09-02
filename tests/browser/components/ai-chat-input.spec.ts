@@ -44,7 +44,7 @@ test('AIChatInput 参考场景来自本地 v2.102.0 且无运行时错误', asyn
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.aiChatInputPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'ai-chat-input')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'ai-chat-input')).toBe(true);
   expect(runtimeErrors).toEqual([]);
 });
 
@@ -64,20 +64,29 @@ test('AIChatInput React/Vue 基础 DOM、样式、几何与交互一致', async 
     await test.step(target.id, () => expectComparableTarget(pair, 'ai-chat-input', target.id));
   }
 
-  for (const parityPage of [pair.react.page, pair.vue.page]) {
-    const editor = parityPage.locator('.ai-chat-input-scenario .ProseMirror');
-    await editor.click();
-    await editor.press('ControlOrMeta+A');
-    await editor.fill('Send parity message');
-    await parityPage.locator('.semi-aiChatInput-footer-action-send').click();
-    await editor.click();
-    await editor.press('ControlOrMeta+A');
-    await editor.press('Backspace');
-    await expect(editor).toHaveText('');
-    await editor.press('/');
-    await expect(parityPage.locator('.semi-aiChatInput-skill-item')).toContainText('联网搜索');
-    await parityPage.locator('.semi-aiChatInput-skill-item').dispatchEvent('click');
-    await expect(editor.locator('.skill-slot')).toContainText('联网搜索');
+  for (const [framework, parityPage] of [
+    ['React', pair.react.page],
+    ['Vue', pair.vue.page],
+  ] as const) {
+    await test.step(`${framework} 发送消息并通过 / 选择技能`, async () => {
+      let editor = parityPage.locator('.ai-chat-input-scenario .ProseMirror');
+      await editor.fill('Send parity message');
+      await parityPage.locator('.semi-aiChatInput-footer-action-send').click();
+
+      await parityPage.reload();
+      await expectAIChatInputReady(parityPage);
+      editor = parityPage.locator('.ai-chat-input-scenario .ProseMirror');
+      await editor.focus();
+      await editor.press('ControlOrMeta+A');
+      await editor.press('Backspace');
+      await expect(editor).toHaveText('');
+      await editor.press('/');
+      const skillItem = parityPage.locator('.semi-aiChatInput-skill-item');
+      await expect(skillItem).toBeVisible();
+      await expect(skillItem).toContainText('联网搜索');
+      await skillItem.click();
+      await expect(editor.locator('.skill-slot')).toContainText('联网搜索');
+    });
   }
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);

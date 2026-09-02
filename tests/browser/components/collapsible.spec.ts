@@ -33,7 +33,7 @@ test('Collapsible 参考场景来自本地 v2.102.0 并保留测量与无交互�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.collapsiblePublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'collapsible')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'collapsible')).toBe(true);
   const scenario = page.getByTestId('collapsible-reference');
   await expect(scenario.locator('.semi-collapsible-wrapper')).toHaveCount(4);
   await expect(scenario.locator('[data-parity-target="collapsible-basic"]')).toHaveCSS(

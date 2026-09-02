@@ -36,7 +36,7 @@ test('Modal 参考场景来自本地 v2.102.0 公开源码', async ({ page }) =>
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.modalPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'modal')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'modal')).toBe(true);
   expect(runtimeErrors).toEqual([]);
 });
 

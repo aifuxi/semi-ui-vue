@@ -34,7 +34,7 @@ test('Typography 参考场景来自本地 v2.102.0 公开源码并保留 DOM 契
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.typographyPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'typography')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'typography')).toBe(true);
   const scenario = page.getByTestId('typography-reference');
   await expect(scenario.locator('.semi-typography')).toHaveCount(17);
   await expect(scenario.locator('h2.semi-typography-h2')).toHaveCount(1);
@@ -54,13 +54,16 @@ test('Typography 标题、装饰、链接、数值、复制、样式和几何契
     locale: 'zh-CN',
   });
 
-  await Promise.all(
+  const [reactEllipsisText, vueEllipsisText] = await Promise.all(
     [pair.react.page, pair.vue.page].map((parityPage) =>
-      expect(
-        parityPage.locator('[data-parity-target="typography-js-ellipsis"] > span').first(),
-      ).toHaveText('Expandable typography content ...'),
+      parityPage
+        .locator('[data-parity-target="typography-js-ellipsis"] > span')
+        .first()
+        .textContent(),
     ),
   );
+  expect(vueEllipsisText).toBe(reactEllipsisText);
+  expect(reactEllipsisText).toBe('Expandable typography content...');
   expect(assertScenarioComparable('typography').targets).toHaveLength(10);
   for (const target of assertScenarioComparable('typography').targets) {
     await expectComparableTarget(pair, 'typography', target.id);

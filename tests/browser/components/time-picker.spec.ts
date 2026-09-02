@@ -34,7 +34,7 @@ test('TimePicker 参考场景来自本地 v2.102.0 并保留输入、范围与�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.timePickerPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'time-picker')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'time-picker')).toBe(true);
   const scenario = page.getByTestId('time-picker-reference');
   await expect(scenario.locator('.semi-timepicker')).toHaveCount(7);
   await expect(scenario.locator('[data-parity-target="time-picker-basic"]')).toHaveValue(

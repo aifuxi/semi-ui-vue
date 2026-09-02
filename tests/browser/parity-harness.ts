@@ -93,6 +93,10 @@ export async function openParityPages(
     ).toBeVisible(),
     expect(vuePage.getByRole('heading', { name: PARITY_APPLICATIONS.vue.heading })).toBeVisible(),
   ]);
+  await Promise.all([
+    expect(reactPage.locator('[data-parity-scenario-loading]')).toHaveCount(0),
+    expect(vuePage.locator('[data-parity-scenario-loading]')).toHaveCount(0),
+  ]);
   await Promise.all([waitForStableRendering(reactPage), waitForStableRendering(vuePage)]);
 
   return {
@@ -128,6 +132,22 @@ export async function waitForTargetStable(locator: Locator): Promise<void> {
     await Promise.all(
       finiteAnimations.map((animation) => animation.finished.catch(() => undefined)),
     );
+
+    const infiniteAnimations = element.getAnimations({ subtree: true }).filter((animation) => {
+      const endTime = animation.effect?.getComputedTiming().endTime;
+      return typeof endTime === 'number' && !Number.isFinite(endTime);
+    });
+    await Promise.all(
+      infiniteAnimations.map((animation) => animation.ready.catch(() => undefined)),
+    );
+    for (const animation of infiniteAnimations) {
+      animation.pause();
+      try {
+        animation.currentTime = 0;
+      } catch {
+        // 部分浏览器动画时间轴不允许写入；pause 仍可阻止后续几何漂移。
+      }
+    }
   });
 }
 

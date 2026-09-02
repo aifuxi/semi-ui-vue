@@ -30,7 +30,7 @@ test('Descriptions 参考场景来自本地 v2.102.0 并保留 table/span/hidden
     }),
   );
 
-  expect(referenceSourceWasRequested(requestedUrls, 'descriptions')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'descriptions')).toBe(true);
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.descriptionsPublicEntry,
   );

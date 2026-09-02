@@ -36,7 +36,7 @@ test('Slider 参考场景来自本地 v2.102.0 并保留单值、范围、marks�
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.sliderPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'slider')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'slider')).toBe(true);
   const scenario = page.getByTestId('slider-reference');
   await expect(scenario.locator('.semi-slider-wrapper')).toHaveCount(5);
   await expect(scenario.locator('[role="slider"]')).toHaveCount(7);

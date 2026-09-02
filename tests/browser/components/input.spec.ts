@@ -34,7 +34,7 @@ test('Input 参考场景来自本地 v2.102.0 并保留 Input/Group/TextArea DOM
   await expect(page.getByTestId('reference-source')).toHaveText(
     REFERENCE_SOURCE_PATHS.inputPublicEntry,
   );
-  expect(referenceSourceWasRequested(requestedUrls, 'input')).toBe(true);
+  await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'input')).toBe(true);
   const scenario = page.getByTestId('input-reference');
   await expect(scenario.locator('.semi-input-wrapper')).toHaveCount(10);
   await expect(scenario.locator('.semi-input-textarea-wrapper')).toHaveCount(2);
