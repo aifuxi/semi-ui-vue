@@ -1,0 +1,47 @@
+---
+title: Table
+description: Render structured data from typed column definitions.
+sidebar:
+  order: 4
+---
+
+import DemoBlock from '../../../../components/DemoBlock.astro';
+import ApiTable from '../../../../components/ApiTable.astro';
+import TableShowcase from '../../../../demos/table/Showcase.vue';
+import tableSource from '../../../../demos/table/Showcase.vue?raw';
+import { tableApi } from '../../../../data/api/table';
+
+## Demos
+
+### How to import
+
+```ts
+import { Table, type TableColumnProps } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/table.css';
+```
+
+## Data, selection, and scrolling
+
+<DemoBlock
+  title="Table reference scenario"
+  description="Covers typed columns, sorting, controlled row selection, the cell slot, and horizontal scrolling."
+  source={tableSource}
+>
+  <TableShowcase client:load />
+</DemoBlock>
+
+The DOM-free declarative form is also available: `<Table.Column title="Name" data-index="name" />`. `rowSelection.selectedRowKeys`, `expandedRowKeys`, column `sortOrder` / `filteredValue`, and pagination `currentPage` / `pageSize` are controlled inputs. Callbacks and typed emits report changes.
+
+## Vue slots
+
+- `#cell` and `#headerCell` map column rendering; column `render`, `onCell`, and `onHeaderCell` functions remain available.
+- `#title`, `#footer`, `#empty`, `#expandedRow`, `#groupSection`, and `#pagination` receive scoped props.
+- `showHeader` and `hideExpandedColumn` default to `true`; an explicit `false` is preserved.
+
+## React to Vue
+
+React `columns[].render` can remain a VNode-returning function or move to `#cell`. Prefer matching named slots for ReactNode content props. The component ref exposes only `getCurrentPageData()` and does not reveal Foundation private state.
+
+## API
+
+<ApiTable sections={tableApi} locale="en-US" />

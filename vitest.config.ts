@@ -342,7 +342,8 @@ export default defineConfig({
     include: [
       'scripts/**/*.{test,spec}.mjs',
       'packages/*/src/**/*.{test,spec}.ts',
-      'apps/docs-vue/src/**/*.{test,spec}.ts',
+      'apps/parity-vue/src/**/*.{test,spec}.ts',
+      'apps/docs/src/**/*.{test,spec}.ts',
       'apps/reference-react/src/**/*.{test,spec}.{ts,tsx}',
     ],
     exclude: ['vendor/**', '**/dist/**', 'tests/browser/**'],

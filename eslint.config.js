@@ -10,6 +10,7 @@ export default tseslint.config(
       'vendor/**',
       '.agents/**',
       '.codex/**',
+      '**/.astro/**',
       '**/dist/**',
       '**/node_modules/**',
       'coverage/**',
@@ -40,6 +41,7 @@ export default tseslint.config(
     files: [
       '*.{js,mjs,cjs,ts,mts,cts}',
       'scripts/**/*.{js,mjs,cjs,ts,mts,cts}',
+      'apps/*/scripts/**/*.{js,mjs,cjs,ts,mts,cts}',
       'tests/**/*.{js,mjs,cjs,ts,mts,cts}',
       '**/*.config.{js,mjs,cjs,ts,mts,cts}',
     ],
@@ -63,6 +65,12 @@ export default tseslint.config(
     },
   },
   {
+    files: ['apps/docs/src/env.d.ts'],
+    rules: {
+      '@typescript-eslint/triple-slash-reference': 'off',
+    },
+  },
+  {
     files: ['apps/reference-react/**/*.{ts,tsx}'],
     languageOptions: {
       parserOptions: {
@@ -72,7 +80,8 @@ export default tseslint.config(
   },
   {
     files: [
-      'apps/docs-vue/src/**/*.{ts,vue}',
+      'apps/parity-vue/src/**/*.{ts,vue}',
+      'apps/docs/src/**/*.{ts,vue}',
       'packages/ui/src/**/*.{ts,vue}',
       'packages/icons/src/**/*.{ts,vue}',
       'packages/icons-lab/src/**/*.{ts,vue}',

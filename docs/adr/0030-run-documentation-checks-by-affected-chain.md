@@ -4,7 +4,7 @@ status: accepted
 
 # 文档检查按影响链分层执行
 
-所有文档改动都执行内容 schema、双语配对、API 覆盖、Demo 类型、静态构建、链接、锚点、搜索和许可检查。单组件内容只运行对应页面矩阵；站点壳、Starlight override、全局样式、DemoBlock、API 生成器或搜索变更运行完整文档代表页矩阵；组件源码或主题变更还运行对应组件及受影响链的现有 React/Vue 对照。
+所有文档改动都执行内容 schema、双语配对、API 覆盖、Demo 类型、静态构建、链接、锚点、搜索和许可检查。单组件内容只运行对应页面矩阵；Starlight 配置、DemoBlock、API 生成器或搜索变更运行完整文档代表页 smoke；组件源码或发布主题变更还运行对应组件及受影响链的现有 React/Vue 对照。
 
 ## Consequences
 

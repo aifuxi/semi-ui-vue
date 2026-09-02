@@ -1,0 +1,48 @@
+---
+title: Button
+description: Trigger an action, submit a form, or group related actions.
+sidebar:
+  order: 1
+---
+
+import DemoBlock from '../../../../components/DemoBlock.astro';
+import ApiTable from '../../../../components/ApiTable.astro';
+import ButtonShowcase from '../../../../demos/button/Showcase.vue';
+import buttonSource from '../../../../demos/button/Showcase.vue?raw';
+import { buttonApi } from '../../../../data/api/button';
+
+## Demos
+
+### How to import
+
+```ts
+import { Button, ButtonGroup, SplitButtonGroup } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/button.css';
+```
+
+## Types, states, and groups
+
+<DemoBlock
+  title="Button reference scenario"
+  description="Covers semantic types, icons, loading, disabled, ButtonGroup, and SplitButtonGroup."
+  source={buttonSource}
+>
+  <ButtonShowcase client:load />
+</DemoBlock>
+
+Loading blocks pointer interaction. Disabled takes precedence when both states are present. Icon-only buttons need an accessible name through `aria-label` or visible text. `htmlType` defaults to `button`; use `submit` only for an intentional form submission.
+
+## React to Vue
+
+| React                         | Vue                                                          |
+| ----------------------------- | ------------------------------------------------------------ |
+| `children`                    | Default slot                                                 |
+| `icon={<Icon />}`             | `#icon` slot                                                 |
+| `className` / `style`         | Native `class` / `style` attrs                               |
+| `contentClassName`            | `contentClass`                                               |
+| `onClick` and other callbacks | Vue events such as `@click`                                  |
+| React ref                     | Vue template ref; focus usually targets the root DOM element |
+
+## API
+
+<ApiTable sections={buttonApi} locale="en-US" />

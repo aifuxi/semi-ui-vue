@@ -1,0 +1,57 @@
+---
+title: Semi UI Vue
+description: An independent Vue 3 component library aligned with Semi Design v2.102.0.
+template: splash
+hero:
+  tagline: Vue-native APIs with Semi visual, behavior, and theme compatibility contracts.
+  actions:
+    - text: Browse pilot components
+      link: /en-us/components/
+      icon: right-arrow
+      variant: primary
+    - text: GitHub
+      link: https://github.com/aifuxi/semi-ui-vue
+      icon: external
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## Current reference batch
+
+<CardGrid>
+  <LinkCard
+    title="Button"
+    href="/en-us/components/button/"
+    description="Actions, states, icons, and button groups."
+  />
+  <LinkCard
+    title="Select"
+    href="/en-us/components/select/"
+    description="Single, multiple, search, and Portal behavior."
+  />
+  <LinkCard
+    title="Modal"
+    href="/en-us/components/modal/"
+    description="Controlled dialogs, promises, and imperative calls."
+  />
+  <LinkCard
+    title="Table"
+    href="/en-us/components/table/"
+    description="Data, columns, selection, sorting, and scrolling."
+  />
+  <LinkCard
+    title="Icon"
+    href="/en-us/components/icon/"
+    description="Sizing, rotation, color, and AI multicolor icons."
+  />
+  <LinkCard
+    title="JsonViewer"
+    href="/en-us/components/json-viewer/"
+    description="JSON viewing, editing, search, and Worker runtime."
+  />
+</CardGrid>
+
+<Card title="Version boundary" icon="information">
+  The current library version is `0.1.0-alpha.6`; the parity reference is the pinned, read-only Semi
+  Design `v2.102.0`. This project is not an official Semi Design Vue package.
+</Card>

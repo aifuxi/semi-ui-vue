@@ -4,14 +4,14 @@
 
 为已完成的 Semi UI Vue 公开组件建立面向使用者的双语组件文档门户。首期完整迁移 Semi Design v2.102.0 中仍适用于 Vue 的组件说明和示例，并提供可运行 Vue Demo、公开 API、搜索、主题、移动端、可访问性与通用静态发布产物。
 
-门户使用独立的 `Semi UI Vue` / `@aifuxi/*` 身份，在文档体验上对齐固定 Semi 官网，但不复制 Semi Logo、官方宣传内容或内部服务。
+门户使用独立的 `Semi UI Vue` / `@aifuxi/*` 身份，并直接采用 Starlight 默认文档界面，不维护独立站点主题或仿制 Semi 官网壳层。
 
 ## 首期范围
 
 - 双语首页与组件总览。
 - 快速开始、导入与样式、TypeScript、主题与暗色模式、国际化、SSR、React→Vue 迁移、图标与插画、可访问性与浏览器支持。
 - 全部公开组件的完整双语页面、Vue Demo 和 API 文档。
-- Header、Sidebar、页内目录、搜索入口、主题/语言切换、页面标题、分页与 Footer 的 Semi UI Vue 自定义壳。
+- Starlight 默认 Header、Sidebar、页内目录、搜索、主题/语言切换、页面标题、分页与 Footer。
 - Pagefind 静态搜索和通用静态发布产物。
 
 首期不包含设计原则、客户案例、生态市场、博客、营销首页、多版本站点、在线代码编辑器、分析监控和自动服务器部署。
@@ -51,31 +51,14 @@ docs/components/<component>/
 ## URL 与版本
 
 - 正式域名：`https://semi.fuxiaochen.com`。
-- 正式 URL：`/zh-CN/<category>/<page>` 与 `/en-US/<category>/<page>`。
-- `/` 固定跳转到 `/zh-CN/`。
+- 正式 canonical URL：`/zh-cn/<category>/<page>` 与 `/en-us/<category>/<page>`；`lang` 仍使用 BCP-47 的 `zh-CN` / `en-US`。
+- `/` 固定跳转到 `/zh-cn/`；同时为原计划中的 `/zh-CN/*` 与 `/en-US/*` 生成带 canonical 的静态兼容入口。
 - 两种语言必须使用相同相对路径并完整成对，不以内容回退掩盖缺失翻译。
 - 首期只维护一个活动组件库版本，不增加版本前缀；页面同时显示组件库版本和固定参考基线 v2.102.0。
 
 ## 站点壳
 
-Starlight 保留内容集合、静态路由、双语关联、Pagefind、SEO 数据和基础布局；Semi UI Vue 通过 override 提供可见壳层。
-
-首期自定义：
-
-- `Header`、`SiteTitle`
-- `Sidebar`
-- `TableOfContents`、`MobileTableOfContents`
-- `ThemeSelect`、`LanguageSelect`
-- `PageTitle`
-- `Pagination`、`Footer`
-- Semi 风格 `Search` 入口，复用 Pagefind 结果逻辑
-
-首期保留 Starlight：
-
-- `Head`、`ThemeProvider`、`SkipLink`
-- `PageFrame`、`TwoColumnContent`
-- Pagefind 结果逻辑
-- Markdown/MDX 渲染基础
+站点直接使用 Starlight 默认主题和全部默认壳层组件，包括 Header、Sidebar、页内目录、搜索、主题与语言切换、页面标题、分页和 Footer。`apps/docs` 不注册 `customCss`，不维护 Starlight component overrides，也不建立独立的文档站主题层。
 
 ## Demo 契约
 
@@ -112,14 +95,10 @@ Starlight 保留内容集合、静态路由、双语关联、Pagefind、SEO 数�
 6. 链接、锚点、搜索与许可检查通过。
 7. 不包含“待补充”或“即将支持”等绕过完成门槛的占位内容。
 
-## 视觉与浏览器证据
+## 浏览器证据
 
-- 对代表页面的导航、布局、排版、主题、Demo、代码区和 API 表格执行上游关键样式与几何对照。
-- 为 Semi UI Vue 独立站点建立整页视觉回归基线。
-- 代表页覆盖首页、组件总览、普通组件、Portal 组件、复杂表格、图标资源和长 API 页面。
-- 矩阵覆盖桌面 `1440×900`、移动 `390×844`、zh-CN/en-US、light/dark。
-- 所有其他正式页面执行路由、链接、锚点、溢出和基础交互 smoke。
-- 键盘导航、焦点可见性、SkipLink、ARIA 与 reduced-motion 单独验收。
+- 文档站只验证 Starlight 默认壳层下的路由、链接、锚点、溢出、主题切换、键盘导航和基础交互，不维护自定义壳层几何或整页视觉快照。
+- 组件本身的视觉、明暗主题和响应式对齐继续由独立 React/Vue parity 测试负责，不能用文档站截图代替。
 
 ## 许可、隐私与发布产物
 
@@ -145,9 +124,9 @@ Starlight 保留内容集合、静态路由、双语关联、Pagefind、SEO 数�
 - 配置双语内容、正式域名、根路径、Pagefind、静态输出和根路径跳转。
 - 增加 `dev:docs`、对照工作台命令及文档专属检查入口。
 
-### 阶段 2：站点壳与内容基础设施
+### 阶段 2：默认站点壳与内容基础设施
 
-- 实现确认的 Starlight overrides 与 Semi UI Vue 主题层。
+- 使用 Starlight 默认主题和默认组件，不增加 `customCss` 或壳层 override。
 - 建立页面 schema、双语配对、导航 registry 和完成状态过滤。
 - 实现 DemoBlock、源码读取、API 生成器和覆盖清单校验。
 - 实现 License/Notice 页面、无跟踪检查和通用静态产物验证。
@@ -161,7 +140,7 @@ Starlight 保留内容集合、静态路由、双语关联、Pagefind、SEO 数�
 - Icon
 - JsonViewer
 
-六个组件全部通过内容、API、Demo、搜索、视觉、可访问性和静态产物门禁后，冻结模板和批量迁移规范。
+六个组件全部通过内容、API、Demo、搜索、可访问性和静态产物门禁后，冻结模板和批量迁移规范。
 
 ### 阶段 4：批量迁移
 
@@ -179,7 +158,7 @@ Starlight 保留内容集合、静态路由、双语关联、Pagefind、SEO 数�
 
 ### 阶段 5：首期发布审计
 
-- 执行全部双语、API、Demo、链接、搜索、视觉、可访问性和许可门禁。
+- 执行全部双语、API、Demo、链接、搜索、可访问性和许可门禁。
 - 在隔离静态服务器中验证最终产物，不以 Astro 开发服务器结果替代。
 - 审核正式域名链接、站点地图、canonical、404、根路径跳转和旧地址别名。
 - 输出静态目录与完整性证据，由项目所有者部署至云服务器。
@@ -188,7 +167,7 @@ Starlight 保留内容集合、静态路由、双语关联、Pagefind、SEO 数�
 
 - 所有文档变更：schema、双语、API、Demo 类型、构建、链接、锚点、搜索、许可。
 - 单组件文档变更：对应页面浏览器矩阵。
-- 壳层、全局样式、DemoBlock、API 生成器、搜索变更：完整代表页矩阵。
+- DemoBlock、API 生成器、搜索变更：完整代表页浏览器 smoke。
 - 组件源码或主题变更：文档测试加对应组件及受影响链的 React/Vue 对照。
 - 共享运行时、共享主题、Playwright 基础设施或发布审计：全部组件浏览器回归。
 

@@ -15,7 +15,8 @@
   },
   "scripts": {
     "dev": "pnpm dev:docs",
-    "dev:docs": "pnpm --filter @workspace/docs-vue dev",
+    "dev:docs": "pnpm --filter @workspace/docs dev",
+    "dev:parity": "pnpm --filter @workspace/parity-vue dev",
     "dev:reference": "pnpm --filter @workspace/reference-react dev",
     "build": "pnpm -r --if-present run build",
     "build:public-js": "pnpm --filter @aifuxi/semi-ui-vue --filter @aifuxi/semi-icons-vue --filter @aifuxi/semi-icons-lab-vue --filter @aifuxi/semi-illustrations-vue run build",
@@ -30,6 +31,7 @@
     "check:locales": "node scripts/generate-locales.mjs --check",
     "check:inventory": "node scripts/generate-upstream-inventory.mjs --check",
     "check:boundaries": "node scripts/verify-source-boundaries.mjs",
+    "check:docs": "pnpm --filter @workspace/docs check",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint . --concurrency auto --max-warnings=0",
@@ -44,6 +46,7 @@
     "verify:pack-dist": "node scripts/verify-pack.mjs",
     "test:pack": "pnpm build && pnpm verify:theme-dist && pnpm verify:pack-dist",
     "test:browser": "playwright test tests/browser",
+    "test:browser:docs": "pnpm --filter @workspace/docs test:browser",
     "playwright:install": "playwright install chromium",
     "verify:ssr-dist": "node scripts/verify-ssr-import.mjs",
     "test:ssr": "pnpm build:public-js && pnpm verify:ssr-dist",
@@ -53,8 +56,8 @@
     "release:preflight": "pnpm release:verify && node scripts/release-preflight.mjs",
     "release:publish": "node scripts/publish-packages.mjs",
     "release:check": "pnpm audit:prod && pnpm check:full && pnpm release:verify",
-    "check": "pnpm check:vendor && pnpm check:inventory && pnpm check:icons && pnpm check:illustrations && pnpm check:locales && pnpm check:boundaries && pnpm format:check && pnpm lint && pnpm typecheck:clean && pnpm test:unit && pnpm build && pnpm verify:theme-dist && pnpm verify:ssr-dist && pnpm verify:pack-dist",
-    "check:full": "pnpm check && pnpm test:browser"
+    "check": "pnpm check:vendor && pnpm check:inventory && pnpm check:icons && pnpm check:illustrations && pnpm check:locales && pnpm check:boundaries && pnpm --filter @workspace/docs check:content && pnpm format:check && pnpm lint && pnpm typecheck:clean && pnpm test:unit && pnpm build && pnpm --filter @workspace/docs check:dist && pnpm verify:theme-dist && pnpm verify:ssr-dist && pnpm verify:pack-dist",
+    "check:full": "pnpm check && pnpm test:browser && pnpm test:browser:docs"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

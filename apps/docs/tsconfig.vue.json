@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "../..",
+    "paths": {
+      "@aifuxi/semi-icons-lab-vue": ["packages/icons-lab/src/index.ts"],
+      "@aifuxi/semi-icons-vue": ["packages/icons/src/index.ts"],
+      "@aifuxi/semi-illustrations-vue": ["packages/illustrations/src/index.ts"],
+      "@aifuxi/semi-ui-vue/locale/source/*": ["packages/ui/src/locale/source/*"],
+      "@aifuxi/semi-ui-vue": ["packages/ui/src/index.ts"]
+    },
+    "types": ["astro/client"]
+  },
+  "include": ["src/env.d.ts", "src/demos/**/*.vue", "src/data/**/*.ts"],
+  "exclude": ["dist", ".astro"]
+}

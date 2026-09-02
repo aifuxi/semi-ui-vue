@@ -1,0 +1,57 @@
+---
+title: Semi UI Vue
+description: 对齐 Semi Design v2.102.0 的独立 Vue 3 组件库。
+template: splash
+hero:
+  tagline: Vue 3 原生 API，保留 Semi 的视觉、行为与主题兼容契约。
+  actions:
+    - text: 浏览试点组件
+      link: /zh-cn/components/
+      icon: right-arrow
+      variant: primary
+    - text: GitHub
+      link: https://github.com/aifuxi/semi-ui-vue
+      icon: external
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## 当前参考批次
+
+<CardGrid>
+  <LinkCard
+    title="Button"
+    href="/zh-cn/components/button/"
+    description="操作、状态、图标与组合按钮。"
+  />
+  <LinkCard
+    title="Select"
+    href="/zh-cn/components/select/"
+    description="单选、多选、搜索与 Portal。"
+  />
+  <LinkCard
+    title="Modal"
+    href="/zh-cn/components/modal/"
+    description="受控对话框、Promise 与命令式调用。"
+  />
+  <LinkCard
+    title="Table"
+    href="/zh-cn/components/table/"
+    description="数据、列、选择、排序和滚动。"
+  />
+  <LinkCard
+    title="Icon"
+    href="/zh-cn/components/icon/"
+    description="尺寸、旋转、颜色与 AI 多色图标。"
+  />
+  <LinkCard
+    title="JsonViewer"
+    href="/zh-cn/components/json-viewer/"
+    description="JSON 查看、编辑、搜索与 Worker。"
+  />
+</CardGrid>
+
+<Card title="版本边界" icon="information">
+  当前组件库版本为 `0.1.0-alpha.6`；对齐参考固定为本地只读 Semi Design `v2.102.0`。本项目不是 Semi
+  Design 官方 Vue 版本。
+</Card>

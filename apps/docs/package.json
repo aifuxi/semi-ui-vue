@@ -1,0 +1,33 @@
+{
+  "name": "@workspace/docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --port 4321 --host 127.0.0.1",
+    "preview": "astro preview --port 4321 --host 127.0.0.1",
+    "preview:test": "node scripts/preview-foreground.mjs",
+    "build": "astro build",
+    "check:content": "node scripts/verify-content.mjs",
+    "check:dist": "node scripts/verify-dist.mjs",
+    "typecheck": "astro check && vue-tsc --noEmit -p tsconfig.vue.json",
+    "test:browser": "pnpm build && playwright test -c playwright.config.ts",
+    "check": "pnpm check:content && pnpm typecheck && astro build && pnpm check:dist",
+    "clean": "rimraf .astro dist"
+  },
+  "dependencies": {
+    "@aifuxi/semi-icons-vue": "workspace:*",
+    "@aifuxi/semi-theme-default": "workspace:*",
+    "@aifuxi/semi-ui-vue": "workspace:*",
+    "@astrojs/mdx": "8.0.0",
+    "@astrojs/starlight": "0.41.10",
+    "@astrojs/vue": "7.0.2",
+    "astro": "7.2.10",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.6",
+    "@playwright/test": "1.62.1",
+    "typescript": "5.9.3"
+  }
+}

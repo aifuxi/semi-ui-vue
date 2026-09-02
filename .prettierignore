@@ -2,6 +2,7 @@ vendor
 .agents
 .codex
 node_modules
+.astro
 dist
 coverage
 playwright-report

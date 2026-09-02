@@ -1,0 +1,60 @@
+---
+title: Modal
+description: Present a task above the page when confirmation or extra input is required.
+sidebar:
+  order: 3
+---
+
+import DemoBlock from '../../../../components/DemoBlock.astro';
+import ApiTable from '../../../../components/ApiTable.astro';
+import ModalShowcase from '../../../../demos/modal/Showcase.vue';
+import modalSource from '../../../../demos/modal/Showcase.vue?raw';
+import { modalApi } from '../../../../data/api/modal';
+
+## Demos
+
+### How to import
+
+```ts
+import { Button, Modal } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/modal.css';
+```
+
+## Controlled state and promises
+
+<DemoBlock
+  title="Modal reference scenario"
+  description="Covers v-model:visible, the default footer, accessible status, and a Promise action."
+  source={modalSource}
+>
+  <ModalShowcase client:load />
+</DemoBlock>
+
+When `onOk` or `onCancel` returns a Promise, the default footer displays its pending state. Imperative confirm dialogs close after resolution and stay open after rejection. Pass `footer={null}` explicitly to remove the default footer.
+
+## Imperative calls
+
+```ts
+const handle = Modal.confirm({
+  title: 'Delete project',
+  content: 'This action cannot be undone.',
+  onOk: async () => save(),
+});
+
+handle.update({ content: 'Checking dependencies…' });
+handle.destroy();
+```
+
+Use `const [modal, ContextHolder] = Modal.useModal()` and render `ContextHolder` in the same Vue subtree when an imperative dialog needs ConfigProvider context.
+
+## React to Vue
+
+Move `visible` + `onChange` to `v-model:visible`. Prefer matching slots for `children`, `title`, `header`, `footer`, `icon`, and `closeIcon`. `Modal.useModal()` returns a Vue `ContextHolder` component that can be rendered in a template.
+
+## Accessibility, Portal, and SSR
+
+The dialog keeps `role="dialog"`, `aria-modal`, and title/body relationships. Opening creates a focus trap and closing restores the prior focus. Escape, mask-click, and unmount paths clean document listeners. Public imports are SSR-safe; the Teleport target is resolved after client mount.
+
+## API
+
+<ApiTable sections={modalApi} locale="en-US" />

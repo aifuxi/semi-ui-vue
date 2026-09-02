@@ -1,0 +1,132 @@
+import { apiItem as p } from './helpers';
+import type { ApiSection } from './types';
+
+export const modalApi: readonly ApiSection[] = [
+  {
+    id: 'modal-props',
+    title: { 'zh-CN': 'Modal Props', 'en-US': 'Modal props' },
+    kind: 'props',
+    items: [
+      p(
+        'visible',
+        'boolean',
+        'false',
+        '显示状态，支持 v-model:visible。',
+        'Visibility with v-model:visible.',
+      ),
+      p(
+        'title / header / content / footer',
+        'VNodeChild',
+        '—',
+        '内容区域，均可用 slot 替代。',
+        'Content regions with matching slots.',
+      ),
+      p(
+        'closable / closeOnEsc',
+        'boolean',
+        'true',
+        '关闭入口与 ESC 行为。',
+        'Close control and Escape behavior.',
+      ),
+      p(
+        'mask / maskClosable / maskFixed',
+        'boolean',
+        'true / true / false',
+        '遮罩行为。',
+        'Mask behavior.',
+      ),
+      p(
+        'hasCancel / okText / cancelText',
+        'boolean / string',
+        'true / locale',
+        '默认 footer 配置。',
+        'Default footer configuration.',
+      ),
+      p('okType', 'ButtonType', 'primary', '确认按钮语义。', 'Confirm button semantic type.'),
+      p(
+        'confirmLoading / cancelLoading',
+        'boolean',
+        'false',
+        '按钮加载状态。',
+        'Button loading states.',
+      ),
+      p(
+        'okButtonProps / cancelButtonProps',
+        'ModalButtonProps',
+        '—',
+        '按钮透传属性。',
+        'Forwarded button props.',
+      ),
+      p('size', 'small | medium | large | full-width', 'small', '预设尺寸。', 'Preset size.'),
+      p('width / height', 'string | number', '—', '自定义尺寸。', 'Custom dimensions.'),
+      p('centered / fullScreen / footerFill', 'boolean', 'false', '布局模式。', 'Layout modes.'),
+      p('bodyStyle / maskStyle / style', 'StyleValue', '—', '区域样式。', 'Region styles.'),
+      p(
+        'class / className / modalContentClass',
+        'class value',
+        '—',
+        'DOM class 扩展。',
+        'DOM class hooks.',
+      ),
+      p(
+        'getPopupContainer',
+        '() => HTMLElement',
+        'document.body',
+        'Portal 容器。',
+        'Portal container.',
+      ),
+      p('zIndex', 'number', '1000', 'Portal 层级。', 'Portal stacking level.'),
+      p(
+        'lazyRender / keepDOM',
+        'boolean',
+        'true / false',
+        '首次渲染与关闭后 DOM 保留。',
+        'Initial render and retained DOM.',
+      ),
+      p(
+        'motion / preventScroll',
+        'boolean',
+        'true / false',
+        '动效与页面滚动控制。',
+        'Motion and page-scroll control.',
+      ),
+      p(
+        'modalRender',
+        '(dialog) => VNodeChild',
+        '—',
+        '包裹对话框 VNode。',
+        'Wraps the dialog VNode.',
+      ),
+      p(
+        'onOk / onCancel',
+        'ModalActionHandler',
+        '—',
+        '支持 Promise 的动作处理。',
+        'Promise-aware action handlers.',
+      ),
+      p(
+        'afterClose / onAfterClose',
+        '() => void',
+        '—',
+        '退场完成回调。',
+        'Callback after leave completes.',
+      ),
+    ],
+  },
+  {
+    id: 'modal-slots',
+    title: { 'zh-CN': 'Slots', 'en-US': 'Slots' },
+    kind: 'slots',
+    items: ['default', 'body', 'title', 'header', 'footer', 'icon', 'closeIcon'].map((name) =>
+      p(name, '() => VNodeChild', '—', '公开内容插槽。', 'Public content slot.'),
+    ),
+  },
+  {
+    id: 'modal-methods',
+    title: { 'zh-CN': '静态方法', 'en-US': 'Static methods' },
+    kind: 'methods',
+    items: ['confirm', 'info', 'success', 'warning', 'error', 'destroyAll', 'useModal'].map(
+      (name) => p(name, 'ModalMethod', '—', '命令式 Modal API。', 'Imperative Modal API.'),
+    ),
+  },
+];

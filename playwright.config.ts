@@ -62,7 +62,7 @@ export default defineConfig({
       timeout: 120_000,
     },
     {
-      command: 'pnpm --filter @workspace/docs-vue dev --host 127.0.0.1',
+      command: 'pnpm --filter @workspace/parity-vue dev --host 127.0.0.1',
       url: 'http://127.0.0.1:4174',
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,

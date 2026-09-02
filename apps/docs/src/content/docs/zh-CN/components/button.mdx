@@ -1,0 +1,48 @@
+---
+title: Button 按钮
+description: 触发操作、提交表单或组合相关动作。
+sidebar:
+  order: 1
+---
+
+import DemoBlock from '../../../../components/DemoBlock.astro';
+import ApiTable from '../../../../components/ApiTable.astro';
+import ButtonShowcase from '../../../../demos/button/Showcase.vue';
+import buttonSource from '../../../../demos/button/Showcase.vue?raw';
+import { buttonApi } from '../../../../data/api/button';
+
+## 代码演示
+
+### 如何引入
+
+```ts
+import { Button, ButtonGroup, SplitButtonGroup } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/button.css';
+```
+
+## 类型、状态与组合
+
+<DemoBlock
+  title="Button 参考场景"
+  description="覆盖语义类型、图标、loading、disabled、ButtonGroup 与 SplitButtonGroup。"
+  source={buttonSource}
+>
+  <ButtonShowcase client:load />
+</DemoBlock>
+
+`loading` 会阻止指针事件；当 `disabled` 与 `loading` 同时存在时，disabled 优先。纯图标按钮必须通过 `aria-label` 或可见文本提供可访问名称。`htmlType` 默认为 `button`，只有明确提交表单时才使用 `submit`。
+
+## React → Vue
+
+| React                 | Vue                                      |
+| --------------------- | ---------------------------------------- |
+| `children`            | 默认 slot                                |
+| `icon={<Icon />}`     | `#icon` slot                             |
+| `className` / `style` | 原生 `class` / `style` attrs             |
+| `contentClassName`    | `contentClass`                           |
+| `onClick` 等回调      | `@click` 等 Vue 事件                     |
+| React ref             | Vue template ref；焦点通常直接使用根 DOM |
+
+## API
+
+<ApiTable sections={buttonApi} locale="zh-CN" />

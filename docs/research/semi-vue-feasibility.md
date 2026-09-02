@@ -130,7 +130,8 @@ Foundation 也不是可以不经审查直接接入 Vue 的“纯逻辑黑盒”�
 ```text
 apps/
   reference-react/       # 只运行 v2.102.0 参考场景
-  docs-vue/              # Vue 文档与演示
+  docs/                  # Astro + Starlight 公开文档门户
+  parity-vue/            # Vue 固定场景与对照工作台
 packages/
   vue/                   # Vue 组件与 Adapter
   theme-default/         # 发布用主题 CSS/SCSS 产物

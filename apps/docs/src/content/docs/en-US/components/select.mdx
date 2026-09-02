@@ -1,0 +1,54 @@
+---
+title: Select
+description: Choose one or more values from an option collection.
+sidebar:
+  order: 2
+---
+
+import DemoBlock from '../../../../components/DemoBlock.astro';
+import ApiTable from '../../../../components/ApiTable.astro';
+import SelectShowcase from '../../../../demos/select/Showcase.vue';
+import selectSource from '../../../../demos/select/Showcase.vue?raw';
+import { selectApi } from '../../../../data/api/select';
+
+## Demos
+
+### How to import
+
+```ts
+import { Select, SelectOption, SelectOptionGroup } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/select.css';
+```
+
+## Single, multiple, and search
+
+<DemoBlock
+  title="Select reference scenario"
+  description="Covers v-model, disabled options, multiple selection, groups, filtering, and collapsed tags."
+  source={selectSource}
+>
+  <SelectShowcase client:only="vue" />
+</DemoBlock>
+
+Use `optionList` for `{ value, label, disabled }[]`. Prefer `v-model` for controlled state; `value` / `update:value` remains available for incremental React migrations. The popup teleports to `document.body` by default; use `getPopupContainer` for a local scrolling container.
+
+## Slots and React to Vue
+
+`prefix`, `insetLabel`, `suffix`, `arrowIcon`, `clearIcon`, `emptyContent`, `outerTop`, `innerTop`, `innerBottom`, and `outerBottom` are named slots. `option`, `selectedItem`, `createItem`, and `trigger` are scoped slots.
+
+| React                               | Vue                                  |
+| ----------------------------------- | ------------------------------------ |
+| `value` + `onChange`                | `v-model`                            |
+| `Select.Option` / `Select.OptGroup` | `SelectOption` / `SelectOptionGroup` |
+| `renderOptionItem`                  | `#option`                            |
+| `renderSelectedItem`                | `#selectedItem`                      |
+| `triggerRender`                     | `#trigger`                           |
+| ReactNode extension points          | Matching named slots                 |
+
+## Keyboard and accessibility
+
+The trigger uses combobox/listbox semantics. Enter, Space, ArrowUp/ArrowDown, Home, End, Escape, and Tab follow the pinned reference. Provide a stable `insetLabelId` for an inset label.
+
+## API
+
+<ApiTable sections={selectApi} locale="en-US" />

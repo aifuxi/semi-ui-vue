@@ -57,3 +57,12 @@ overrides:
   '@tiptap/pm': 3.10.7
   '@tiptap/starter-kit': 3.10.7
   '@tiptap/vue-3': 3.10.7
+
+minimumReleaseAgeExclude:
+  - '@astrojs/internal-helpers@0.11.0'
+  - '@astrojs/markdown-satteri@0.4.0'
+  - '@astrojs/mdx@8.0.0'
+  - astro@7.2.10
+
+allowBuilds:
+  esbuild: true

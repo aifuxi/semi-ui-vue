@@ -1,0 +1,60 @@
+---
+title: Modal 对话框
+description: 在当前页面之上承载需要确认或补充信息的任务。
+sidebar:
+  order: 3
+---
+
+import DemoBlock from '../../../../components/DemoBlock.astro';
+import ApiTable from '../../../../components/ApiTable.astro';
+import ModalShowcase from '../../../../demos/modal/Showcase.vue';
+import modalSource from '../../../../demos/modal/Showcase.vue?raw';
+import { modalApi } from '../../../../data/api/modal';
+
+## 代码演示
+
+### 如何引入
+
+```ts
+import { Button, Modal } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/modal.css';
+```
+
+## 受控状态与 Promise
+
+<DemoBlock
+  title="Modal 参考场景"
+  description="覆盖 v-model:visible、默认 footer、可访问状态与 Promise 动作。"
+  source={modalSource}
+>
+  <ModalShowcase client:load />
+</DemoBlock>
+
+`onOk` / `onCancel` 返回 Promise 时，默认 footer 在 pending 期间显示 loading；命令式 confirm 只在 resolve 后关闭，reject 时保持打开。显式传入 `footer={null}` 可移除默认按钮区。
+
+## 命令式调用
+
+```ts
+const handle = Modal.confirm({
+  title: '删除项目',
+  content: '此操作不可恢复。',
+  onOk: async () => save(),
+});
+
+handle.update({ content: '正在检查依赖…' });
+handle.destroy();
+```
+
+在 ConfigProvider 上下文中使用 `const [modal, ContextHolder] = Modal.useModal()`，并将 `ContextHolder` 渲染在同一 Vue 子树内。
+
+## React → Vue
+
+`visible` + `onChange` 迁移为 `v-model:visible`；`children`、`title`、`header`、`footer`、`icon` 与 `closeIcon` 优先迁移为同名 slot。`Modal.useModal()` 返回可在模板中渲染的 Vue `ContextHolder` 组件。
+
+## 无障碍、Portal 与 SSR
+
+对话框保持 `role="dialog"`、`aria-modal` 与标题/正文关联。打开后建立焦点陷阱，关闭后恢复先前焦点；ESC、遮罩点击和卸载都会清理 document 监听。公共入口 SSR-safe，Teleport 目标只在客户端挂载后解析。
+
+## API
+
+<ApiTable sections={modalApi} locale="zh-CN" />

@@ -1,0 +1,47 @@
+---
+title: Table 表格
+description: 用列描述渲染结构化数据。
+sidebar:
+  order: 4
+---
+
+import DemoBlock from '../../../../components/DemoBlock.astro';
+import ApiTable from '../../../../components/ApiTable.astro';
+import TableShowcase from '../../../../demos/table/Showcase.vue';
+import tableSource from '../../../../demos/table/Showcase.vue?raw';
+import { tableApi } from '../../../../data/api/table';
+
+## 代码演示
+
+### 如何引入
+
+```ts
+import { Table, type TableColumnProps } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/table.css';
+```
+
+## 数据、选择与滚动
+
+<DemoBlock
+  title="Table 参考场景"
+  description="覆盖类型化列、排序、受控行选择、cell slot 与横向滚动。"
+  source={tableSource}
+>
+  <TableShowcase client:load />
+</DemoBlock>
+
+也可以使用无 DOM 的声明式列：`<Table.Column title="名称" data-index="name" />`。`rowSelection.selectedRowKeys`、`expandedRowKeys`、列 `sortOrder` / `filteredValue` 与分页 `currentPage` / `pageSize` 都是受控输入，变化通过回调和类型化 emits 上报。
+
+## Vue 插槽
+
+- `#cell`、`#headerCell` 映射列渲染；列上的 `render`、`onCell`、`onHeaderCell` 仍可直接使用。
+- `#title`、`#footer`、`#empty`、`#expandedRow`、`#groupSection` 与 `#pagination` 接收对应的 scoped props。
+- `showHeader` 与 `hideExpandedColumn` 默认值为 `true`，显式 `false` 不会被全局默认值覆盖。
+
+## React → Vue
+
+React 的 `columns[].render` 可保留为返回 VNode 的函数，也可迁移为 `#cell`；ReactNode 内容 prop 优先迁移为同名 slot。实例 ref 只公开 `getCurrentPageData()`，不暴露 Foundation 私有状态。
+
+## API
+
+<ApiTable sections={tableApi} locale="zh-CN" />

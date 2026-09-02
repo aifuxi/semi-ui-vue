@@ -1,0 +1,54 @@
+---
+title: Select 选择器
+description: 从候选项集合中选择一个或多个值。
+sidebar:
+  order: 2
+---
+
+import DemoBlock from '../../../../components/DemoBlock.astro';
+import ApiTable from '../../../../components/ApiTable.astro';
+import SelectShowcase from '../../../../demos/select/Showcase.vue';
+import selectSource from '../../../../demos/select/Showcase.vue?raw';
+import { selectApi } from '../../../../data/api/select';
+
+## 代码演示
+
+### 如何引入
+
+```ts
+import { Select, SelectOption, SelectOptionGroup } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/select.css';
+```
+
+## 单选、多选与搜索
+
+<DemoBlock
+  title="Select 参考场景"
+  description="覆盖 v-model、禁用项、多选、分组、过滤和标签折叠。"
+  source={selectSource}
+>
+  <SelectShowcase client:only="vue" />
+</DemoBlock>
+
+`optionList` 可直接传入 `{ value, label, disabled }[]`。受控场景优先使用 `v-model`；组件也保留 `value` / `update:value`，便于逐步迁移 React 状态。弹层默认 Teleport 到 `document.body`，需要局部滚动容器时使用 `getPopupContainer`。
+
+## 插槽与 React → Vue
+
+`prefix`、`insetLabel`、`suffix`、`arrowIcon`、`clearIcon`、`emptyContent`、`outerTop`、`innerTop`、`innerBottom`、`outerBottom` 是具名插槽；`option`、`selectedItem`、`createItem`、`trigger` 是 scoped slot。
+
+| React                               | Vue                                  |
+| ----------------------------------- | ------------------------------------ |
+| `value` + `onChange`                | `v-model`                            |
+| `Select.Option` / `Select.OptGroup` | `SelectOption` / `SelectOptionGroup` |
+| `renderOptionItem`                  | `#option`                            |
+| `renderSelectedItem`                | `#selectedItem`                      |
+| `triggerRender`                     | `#trigger`                           |
+| ReactNode 扩展位                    | 对应具名 slot                        |
+
+## 键盘与可访问性
+
+触发器使用 combobox/listbox 语义。Enter、Space、ArrowUp/ArrowDown、Home、End、Escape 与 Tab 的行为与固定基线一致；使用内嵌标签时应提供稳定的 `insetLabelId`。
+
+## API
+
+<ApiTable sections={selectApi} locale="zh-CN" />

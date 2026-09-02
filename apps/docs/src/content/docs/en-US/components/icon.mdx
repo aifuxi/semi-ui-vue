@@ -1,0 +1,41 @@
+---
+title: Icon
+description: Independently published semantic vector graphics.
+sidebar:
+  order: 5
+---
+
+import DemoBlock from '../../../../components/DemoBlock.astro';
+import ApiTable from '../../../../components/ApiTable.astro';
+import IconShowcase from '../../../../demos/icon/Showcase.vue';
+import iconSource from '../../../../demos/icon/Showcase.vue?raw';
+import { iconApi } from '../../../../data/api/icon';
+
+## Demos
+
+### How to import
+
+```ts
+import { IconHome } from '@aifuxi/semi-icons-vue';
+import '@aifuxi/semi-theme-default/icon.css';
+```
+
+## Size, rotation, and color
+
+<DemoBlock
+  title="Icon reference scenario"
+  description="Covers size, rotation, spin, monochrome, AI bicolor, and multicolor fills."
+  source={iconSource}
+>
+  <IconShowcase client:load />
+</DemoBlock>
+
+Monochrome icons inherit CSS `color`. AI bicolor and multicolor icons accept one color or a color array through `fill`. Sizes are `extra-small`, `small`, `default`, `large`, `extra-large`, and `inherit` for the surrounding font size.
+
+## Custom icons and migration
+
+The default `Icon` export accepts custom SVG through its default slot. React `<Icon svg={<CustomIcon />} />` maps to Vue `<Icon><CustomIcon /></Icon>`; `className` becomes native `class`. Decorative icons should be hidden from assistive technology, while standalone icon buttons need a button-level accessible name.
+
+## API
+
+<ApiTable sections={iconApi} locale="en-US" />

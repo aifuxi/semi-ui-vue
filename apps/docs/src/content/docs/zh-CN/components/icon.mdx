@@ -1,0 +1,41 @@
+---
+title: Icon 图标
+description: 独立发布的语义矢量图形资源。
+sidebar:
+  order: 5
+---
+
+import DemoBlock from '../../../../components/DemoBlock.astro';
+import ApiTable from '../../../../components/ApiTable.astro';
+import IconShowcase from '../../../../demos/icon/Showcase.vue';
+import iconSource from '../../../../demos/icon/Showcase.vue?raw';
+import { iconApi } from '../../../../data/api/icon';
+
+## 代码演示
+
+### 如何引入
+
+```ts
+import { IconHome } from '@aifuxi/semi-icons-vue';
+import '@aifuxi/semi-theme-default/icon.css';
+```
+
+## 尺寸、旋转与颜色
+
+<DemoBlock
+  title="Icon 参考场景"
+  description="覆盖尺寸、旋转、spin、单色、AI 双色与多色填充。"
+  source={iconSource}
+>
+  <IconShowcase client:load />
+</DemoBlock>
+
+单色图标继承 CSS `color`。AI 双色与多色图标通过 `fill` 接收单个颜色或颜色数组。尺寸包括 `extra-small`、`small`、`default`、`large`、`extra-large` 和继承周围字号的 `inherit`。
+
+## 自定义图标与迁移
+
+默认导出的 `Icon` 可通过默认 slot 接收自定义 SVG。React 的 `<Icon svg={<CustomIcon />} />` 对应 Vue 的 `<Icon><CustomIcon /></Icon>`；`className` 改为原生 `class`。仅装饰用途的图标应隐藏于辅助技术，独立图标按钮必须由按钮提供可访问名称。
+
+## API
+
+<ApiTable sections={iconApi} locale="zh-CN" />

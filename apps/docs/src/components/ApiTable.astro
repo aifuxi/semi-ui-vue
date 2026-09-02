@@ -1,0 +1,36 @@
+---
+import type { ApiSection } from '../data/api/types';
+
+interface Props {
+  sections: readonly ApiSection[];
+  locale: 'zh-CN' | 'en-US';
+}
+
+const { sections, locale } = Astro.props;
+const labels = locale === 'zh-CN'
+  ? { name: '名称', type: '类型', defaultValue: '默认值', description: '说明' }
+  : { name: 'Name', type: 'Type', defaultValue: 'Default', description: 'Description' };
+---
+
+{
+  sections.map((section) => (
+    <section data-api-kind={section.kind}>
+      <h3 id={section.id}>{section.title[locale]}</h3>
+      <table>
+        <thead>
+          <tr><th>{labels.name}</th><th>{labels.type}</th><th>{labels.defaultValue}</th><th>{labels.description}</th></tr>
+        </thead>
+        <tbody>
+          {section.items.map((item) => (
+            <tr>
+              <td><code>{item.name}</code></td>
+              <td><code>{item.type}</code></td>
+              <td>{item.defaultValue ?? '—'}</td>
+              <td>{item.description[locale]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  ))
+}

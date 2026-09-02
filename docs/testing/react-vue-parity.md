@@ -82,7 +82,7 @@ Vue 文档应用从 `@aifuxi/semi-ui-vue` 源码入口消费 Button，并通过 
 1. 从 Inventory 和固定源码确认公开入口、文档场景、Foundation/SCSS、依赖与测试证据。
 2. 在 `PARITY_SCENARIOS` 注册场景、源码证据、稳定目标和要比较的 computed-style 字段；初始 `vueStatus` 必须为 `pending`。
 3. 在 `apps/reference-react/src/scenarios/` 复现确定性 React 场景，并把公开入口加入只读源码解析适配。
-4. 在 `apps/docs-vue/src/` 使用 Vue 公共包实现同场景；不得从 Vue 运行时读取 vendor。
+4. 在 `apps/parity-vue/src/` 使用 Vue 公共包实现同场景；不得从 Vue 运行时读取 vendor。
 5. 先增加公开行为、键盘/焦点、ARIA、Portal/动效等适用断言，再将 `vueStatus` 改为 `ready`。
 6. 使用 `expectComparableTarget()` 比较对应目标的计算样式、几何和像素；复杂场景可在同一共享契约上增加专用行为步骤。
 7. 按组件矩阵补齐桌面/移动、light/dark、适用时 RTL 与 zh-CN/en-US 截图。

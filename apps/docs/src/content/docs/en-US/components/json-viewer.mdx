@@ -1,0 +1,50 @@
+---
+title: JsonViewer
+description: View, edit, search, replace, format, and fold JSON.
+sidebar:
+  order: 6
+---
+
+import DemoBlock from '../../../../components/DemoBlock.astro';
+import ApiTable from '../../../../components/ApiTable.astro';
+import JsonViewerShowcase from '../../../../demos/json-viewer/Showcase.vue';
+import jsonViewerSource from '../../../../demos/json-viewer/Showcase.vue?raw';
+import { jsonViewerApi } from '../../../../data/api/json-viewer';
+
+## Demos
+
+### How to import
+
+```ts
+import { JsonViewer } from '@aifuxi/semi-ui-vue';
+import '@aifuxi/semi-theme-default/json-viewer.css';
+```
+
+## Editing and search
+
+<DemoBlock
+  title="JsonViewer reference scenario"
+  description="Covers v-model:value, formatting options, editor dimensions, and the client Worker."
+  source={jsonViewerSource}
+>
+  <JsonViewerShowcase client:visible />
+</DemoBlock>
+
+The `change` and `update:value` events emit the complete JSON source. `options` configures read-only mode, wrapping, formatting, static completion, and custom token rendering. The Worker is inlined into the published bundle; consumers do not copy a worker file or initialize the vendor submodule.
+
+## React to Vue
+
+| React                                         | Vue                                          |
+| --------------------------------------------- | -------------------------------------------- |
+| `value` + `onChange`                          | `v-model:value`                              |
+| `renderSearchButton(node, controls)`          | `renderSearchButton` prop or `#searchButton` |
+| `customRenderRule[].render` returns ReactNode | Return Vue VNodeChild or HTMLElement         |
+| `ref.current.foundation...`                   | Public component-ref methods                 |
+
+## Accessibility and SSR
+
+Search options support pointer, Enter, and Space activation and expose `aria-pressed`. SSR emits stable containers only. The core, ResizeObserver, and Worker are created after client mount and disposed on unmount.
+
+## API
+
+<ApiTable sections={jsonViewerApi} locale="en-US" />
