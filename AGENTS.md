@@ -57,7 +57,7 @@ git -C vendor/semi-design describe --tags --exact-match
 
 - 项目使用 pnpm workspace 单仓库，统一 lockfile、脚本入口和内部包版本策略。
 - Vue 组件、Foundation 集成层、默认主题、图标、插画与测试基础设施分包管理；参考 React 应用与 Vue 文档应用放在 `apps/` 下。
-- 固定目录分别是：`apps/reference-react`、`apps/docs-vue`、`packages/ui`、`packages/foundation-integration`、`packages/theme-default`、`packages/icons`、`packages/icons-lab`、`packages/illustrations` 和 `packages/test-infra`；详细依赖方向见 `docs/architecture/workspace.md`。
+- 固定目录分别是：`apps/reference-react`、`apps/docs`、`apps/parity-vue`、`packages/ui`、`packages/foundation-integration`、`packages/theme-default`、`packages/icons`、`packages/icons-lab`、`packages/illustrations` 和 `packages/test-infra`；详细依赖方向见 `docs/architecture/workspace.md`。
 - 对外发布主组件包和独立的默认主题、图标、插画包；Foundation 集成层和测试基础设施保持私有。
 - 内部包的目录名不得被当成尚未确认的 npm scope 或品牌承诺。
 - 首版发布契约是 ESM、TypeScript 声明、根 CSS 入口、逐组件样式入口和明确的 `exports`，并必须支持 tree-shaking 与 SSR-safe import。
