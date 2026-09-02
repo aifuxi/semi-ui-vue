@@ -556,10 +556,10 @@ describe('parity infrastructure contract', () => {
     });
   });
 
-  it('keeps the minimum desktop/mobile matrix and strict visual gates', () => {
+  it('keeps the minimum desktop/narrow matrix and strict visual gates', () => {
     expect(PARITY_VIEWPORTS).toEqual({
       desktop: { width: 1440, height: 900, deviceScaleFactor: 1 },
-      mobile: { width: 390, height: 844, deviceScaleFactor: 1 },
+      narrow: { width: 390, height: 844, deviceScaleFactor: 1 },
     });
     expect(VISUAL_THRESHOLDS).toEqual({
       screenshotThreshold: 0.1,
