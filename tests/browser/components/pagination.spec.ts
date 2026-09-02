@@ -231,7 +231,7 @@ test('Pagination React/Vue 页码、快速跳页、容量 Select、Popover、样
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-for (const viewportName of ['desktop', 'mobile'] as const) {
+for (const viewportName of ['desktop'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`Pagination React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {
       const viewport = PARITY_VIEWPORTS[viewportName];

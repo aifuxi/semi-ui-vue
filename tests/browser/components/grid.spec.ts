@@ -94,9 +94,10 @@ test('Grid 栅格、Gutter、Flex、响应式与 RTL 契约一致', async ({ con
     expect(responsiveColBox.width / responsiveRowBox.width).toBeCloseTo(6 / 24, 4);
   }
 
+  const narrowViewport = PARITY_VIEWPORTS.narrow;
   await Promise.all([
-    pair.react.page.setViewportSize({ width: 390, height: 844 }),
-    pair.vue.page.setViewportSize({ width: 390, height: 844 }),
+    pair.react.page.setViewportSize(narrowViewport),
+    pair.vue.page.setViewportSize(narrowViewport),
   ]);
   for (const parityPage of [pair.react.page, pair.vue.page]) {
     await expect(parityPage.locator('[data-parity-target="grid-gutter-row"]')).toHaveCSS(
@@ -113,7 +114,7 @@ test('Grid 栅格、Gutter、Flex、响应式与 RTL 契约一致', async ({ con
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-for (const viewportName of ['desktop', 'mobile'] as const) {
+for (const viewportName of ['desktop', 'narrow'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`Grid React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {
       const viewport = PARITY_VIEWPORTS[viewportName];

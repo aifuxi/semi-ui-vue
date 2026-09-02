@@ -73,14 +73,14 @@
 
 - 单元：默认/slot/dataSource、item slot/renderItem 优先级、空态与 locale、header/footer/loadMore、三 size、horizontal、bordered/split Boolean 门禁、loading、Grid/响应式、item header/main/extra/align、上下文/本地事件覆盖、attrs。
 - SSR：普通/空态/Grid/loading 输出及无警告 hydration。
-- Chromium：桌面 `1440x900`、移动 `390x844` 的 light/dark，LTR/RTL；基础、header/body/extra、horizontal、grid、empty、loading；computed style 精确相等且对应 bounding rect 各轴差 `<=0.5px`。
+- Chromium：桌面 `1440x900` 与窄视口 `390x844` 的 light/dark，LTR/RTL；窄视口只验证公开响应式 Grid 契约，不表示移动端兼容；基础、header/body/extra、horizontal、grid、empty、loading；computed style 精确相等且对应 bounding rect 各轴差 `<=0.5px`。
 - 截图阈值遵守仓库门禁；动画 loading 场景优先验证结构/终态 computed style，不对旋转中间帧宣称字节一致。
 
 ## 实际验收证据
 
 - `pnpm check` 全绿：固定 vendor、inventory、源码边界、格式、lint、类型、79 个测试文件/583 项单测、全 workspace 构建、86 个主题根入口、SSR import 与真实 tarball 安装/exports/类型/样式/许可验证全部通过。
 - List 定向 Chromium 验收 7/7 通过；随后完整 Chromium 回归 306/306 通过，执行期间未触发重试。
-- React/Vue 的 desktop/mobile × light/dark 四组 List PNG 均通过独立 `cmp` 字节相等；RTL 场景也以独立截图 buffer 直接相等验收。对应 target 的 computed style 精确相等，bounding rect 各轴差不超过 `0.5px`。
+- React/Vue 的 desktop/narrow × light/dark 四组 List PNG 均通过独立 `cmp` 字节相等；RTL 场景也以独立截图 buffer 直接相等验收。对应 target 的 computed style 精确相等，bounding rect 各轴差不超过 `0.5px`。
 - 截图未使用 mask，未放宽仓库 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001` 门禁；List 对齐结论不依赖阈值通过。
 
 ## Deviation

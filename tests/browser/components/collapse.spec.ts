@@ -100,7 +100,7 @@ test('Collapse React/Vue 多开、手风琴、受控、图标热区、懒渲染�
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-for (const viewportName of ['desktop', 'mobile'] as const) {
+for (const viewportName of ['desktop'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`Collapse React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {
       const viewport = PARITY_VIEWPORTS[viewportName];

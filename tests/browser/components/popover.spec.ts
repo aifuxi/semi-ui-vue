@@ -138,7 +138,7 @@ test('Popover React/Vue 定位、click/Escape、焦点与 Element/Document scrol
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-for (const viewportName of ['desktop', 'mobile'] as const) {
+for (const viewportName of ['desktop'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`Popover React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {
       const viewport = PARITY_VIEWPORTS[viewportName];

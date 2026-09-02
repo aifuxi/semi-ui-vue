@@ -76,7 +76,7 @@ test('Locale React/Vue slot 数据、响应式切换、样式与几何一致', a
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-for (const viewportName of ['desktop', 'mobile'] as const) {
+for (const viewportName of ['desktop'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`Locale React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {
       const pair = await openParityPages(

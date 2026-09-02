@@ -107,7 +107,7 @@ test('Carousel React/Vue 默认值、切换、样式、几何和 hover 箭头一
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-for (const viewportName of ['desktop', 'mobile'] as const) {
+for (const viewportName of ['desktop'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`Carousel React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {
       const viewport = PARITY_VIEWPORTS[viewportName];

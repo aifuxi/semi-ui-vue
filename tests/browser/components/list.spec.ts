@@ -62,7 +62,7 @@ test('List React/Vue DOM、computed style 与几何一致', async ({ context }) 
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-for (const viewportName of ['desktop', 'mobile'] as const) {
+for (const viewportName of ['desktop', 'narrow'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`List React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {
       const viewport = PARITY_VIEWPORTS[viewportName];

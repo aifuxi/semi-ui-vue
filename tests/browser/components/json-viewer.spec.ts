@@ -91,7 +91,7 @@ test('JsonViewer React/Vue DOM、搜索替换、自定义渲染、样式与几�
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-for (const viewportName of ['desktop', 'mobile'] as const) {
+for (const viewportName of ['desktop'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`JsonViewer React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {
       const pair = await openParityPages(

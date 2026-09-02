@@ -120,7 +120,7 @@ test('VideoPlayer React/Vue DOM、交互、Portal、样式与几何一致', asyn
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-for (const viewportName of ['desktop', 'mobile'] as const) {
+for (const viewportName of ['desktop'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`VideoPlayer React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {
       const pair = await openParityPages(

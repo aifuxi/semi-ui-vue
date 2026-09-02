@@ -80,7 +80,7 @@ test('AIChatDialogue React/Vue DOM、样式、几何与 hint 受控更新一致'
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-for (const viewportName of ['desktop', 'mobile'] as const) {
+for (const viewportName of ['desktop'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`AIChatDialogue React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {
       const pair = await openParityPages(

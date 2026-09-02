@@ -68,7 +68,7 @@ test('Sidebar React/Vue 基础 DOM、样式、几何与受控选项一致', asyn
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-for (const viewportName of ['desktop', 'mobile'] as const) {
+for (const viewportName of ['desktop'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`Sidebar React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {
       const pair = await openParityPages(

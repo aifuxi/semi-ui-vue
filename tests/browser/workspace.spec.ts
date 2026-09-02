@@ -32,8 +32,8 @@ test('React 与 Vue 工作台在同一 Chromium 上下文中可用', async ({ co
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-test('React 与 Vue 工作台保留移动视口入口', async ({ context }) => {
-  const { width, height, deviceScaleFactor } = PARITY_VIEWPORTS.mobile;
+test('React 与 Vue 工作台保留窄视口专项入口', async ({ context }) => {
+  const { width, height, deviceScaleFactor } = PARITY_VIEWPORTS.narrow;
   const pair = await openParityPages(context, {
     scenarioId: 'harness-calibration',
     theme: 'light',

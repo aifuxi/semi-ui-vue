@@ -614,7 +614,7 @@ export const REFERENCE_SOURCE_PATHS = Object.freeze({
 
 export const PARITY_VIEWPORTS = Object.freeze({
   desktop: Object.freeze({ width: 1440, height: 900, deviceScaleFactor: 1 }),
-  mobile: Object.freeze({ width: 390, height: 844, deviceScaleFactor: 1 }),
+  narrow: Object.freeze({ width: 390, height: 844, deviceScaleFactor: 1 }),
 });
 
 export const VISUAL_THRESHOLDS = Object.freeze({
@@ -672,7 +672,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'carousel',
     title: 'Carousel 轮播图',
-    description: '验证 slide/fade、点线柱指示器、箭头、单项、受控切换、动效、暗色、移动端与 RTL。',
+    description: '验证 slide/fade、点线柱指示器、箭头、单项、受控切换、动效、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.carouselPublicEntry,
@@ -768,7 +768,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'code-highlight',
     title: 'CodeHighlight 代码高亮',
-    description: '验证 JavaScript/CSS/Markup token、行号、默认与自定义主题、暗色、移动端和 RTL。',
+    description: '验证 JavaScript/CSS/Markup token、行号、默认与自定义主题、暗色和 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.codeHighlightPublicEntry,
@@ -854,7 +854,7 @@ export const PARITY_SCENARIOS = [
     id: 'drag-move',
     title: 'DragMove 拖拽移动',
     description:
-      '验证 absolute/relative、约束范围、自定义 handler、input guard、customMove、暗色、移动端与 RTL。',
+      '验证 absolute/relative、约束范围、自定义 handler、input guard、customMove、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.dragMovePublicEntry,
@@ -947,7 +947,7 @@ export const PARITY_SCENARIOS = [
     id: 'hot-keys',
     title: 'HotKeys 快捷键',
     description:
-      '验证严格修饰键组合、KeyboardEvent.code、显示内容、自定义 render/slot、局部监听目标、暗色、移动端与 RTL。',
+      '验证严格修饰键组合、KeyboardEvent.code、显示内容、自定义 render/slot、局部监听目标、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.hotKeysPublicEntry,
@@ -1019,7 +1019,7 @@ export const PARITY_SCENARIOS = [
     id: 'lottie',
     title: 'Lottie 动画',
     description:
-      '验证固定 animationData、默认 SVG 参数、实例控制、params 重建、外部容器、SSR、移动端、暗色与 RTL。',
+      '验证固定 animationData、默认 SVG 参数、实例控制、params 重建、外部容器、SSR、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.lottiePublicEntry,
@@ -1056,7 +1056,7 @@ export const PARITY_SCENARIOS = [
     id: 'locale',
     title: 'Locale 多语言上下文',
     description:
-      '验证 Provider/Consumer、57 个固定语言源、具名 slot、响应式切换、ConfigProvider 优先级、SSR、暗色、移动端与 RTL。',
+      '验证 Provider/Consumer、57 个固定语言源、具名 slot、响应式切换、ConfigProvider 优先级、SSR、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.localeProviderEntry,
@@ -1121,7 +1121,7 @@ export const PARITY_SCENARIOS = [
     id: 'audio-player',
     title: 'AudioPlayer 音频播放器',
     description:
-      '验证单曲/播放列表、metadata、进度、倍速、音量 Portal、工具栏缺省值、Locale、SSR、移动端、暗色与 RTL。',
+      '验证单曲/播放列表、metadata、进度、倍速、音量 Portal、工具栏缺省值、Locale、SSR、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.audioPlayerPublicEntry,
@@ -1192,7 +1192,7 @@ export const PARITY_SCENARIOS = [
     id: 'video-player',
     title: 'VideoPlayer 视频播放器',
     description:
-      '验证固定海报、章节进度、控制列表、音量/倍速/清晰度/线路 Portal、键盘、Locale、移动端、暗色与 RTL。',
+      '验证固定海报、章节进度、控制列表、音量/倍速/清晰度/线路 Portal、键盘、Locale、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.videoPlayerPublicEntry,
@@ -1264,7 +1264,7 @@ export const PARITY_SCENARIOS = [
     id: 'user-guide',
     title: 'UserGuide 用户引导',
     description:
-      '验证 popup/modal、受控步骤、目标测量、spotlight、主题、按钮、Locale、移动端、暗色与 RTL。',
+      '验证 popup/modal、受控步骤、目标测量、spotlight、主题、按钮、Locale、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.userGuidePublicEntry,
@@ -1305,7 +1305,7 @@ export const PARITY_SCENARIOS = [
     id: 'json-viewer',
     title: 'JsonViewer JSON 编辑器',
     description:
-      '验证 Worker 解析、编辑/只读、搜索替换、自定义 token、Locale、自动换行、移动端、暗色与 RTL。',
+      '验证 Worker 解析、编辑/只读、搜索替换、自定义 token、Locale、自动换行、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.jsonViewerPublicEntry,
@@ -1366,8 +1366,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'ai-chat-input',
     title: 'AIChatInput 智能输入框',
-    description:
-      '验证 Tiptap 富文本、引用与附件、建议/技能、发送状态、Locale、移动端、暗色与 RTL。',
+    description: '验证 Tiptap 富文本、引用与附件、建议/技能、发送状态、Locale、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.aiChatInputPublicEntry,
@@ -1423,7 +1422,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'ai-chat-dialogue',
     title: 'AIChatDialogue 智能对话',
-    description: '验证受控消息、角色布局、气泡、操作区、提示、Locale、移动端、暗色与 RTL。',
+    description: '验证受控消息、角色布局、气泡、操作区、提示、Locale、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.aiChatDialoguePublicEntry,
@@ -1480,7 +1479,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'chat',
     title: 'Chat 对话',
-    description: '验证消息气泡、角色布局、Markdown、提示、输入区、Locale、移动端、暗色与 RTL。',
+    description: '验证消息气泡、角色布局、Markdown、提示、输入区、Locale、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.chatPublicEntry,
@@ -1554,7 +1553,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'markdown-render',
     title: 'MarkdownRender 渲染器',
-    description: '验证异步 MDX、GFM 表格、默认 Typography/链接/代码、移动端、暗色与 RTL。',
+    description: '验证异步 MDX、GFM 表格、默认 Typography/链接/代码、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.markdownRenderPublicEntry,
@@ -1605,7 +1604,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'sidebar',
     title: 'Sidebar AI 侧边栏',
-    description: '验证主视图选项、代码折叠内容、受控状态、Locale、移动端、暗色与 RTL。',
+    description: '验证主视图选项、代码折叠内容、受控状态、Locale、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.sidebarPublicEntry,
@@ -1680,7 +1679,7 @@ export const PARITY_SCENARIOS = [
     id: 'collapse',
     title: 'Collapse 折叠面板',
     description:
-      '验证多面板/手风琴、受控状态、禁用与图标热区、VNode header、keepDOM/lazyRender、暗色、移动端与 RTL。',
+      '验证多面板/手风琴、受控状态、禁用与图标热区、VNode header、keepDOM/lazyRender、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.collapsePublicEntry,
@@ -1770,7 +1769,7 @@ export const PARITY_SCENARIOS = [
     id: 'collapsible',
     title: 'Collapsible 折叠',
     description:
-      '验证开合、过渡终态、DOM 保留/懒渲染、淡入淡出、自适应折叠高度、动态重测、暗色、移动端与 RTL。',
+      '验证开合、过渡终态、DOM 保留/懒渲染、淡入淡出、自适应折叠高度、动态重测、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.collapsiblePublicEntry,
@@ -1815,7 +1814,7 @@ export const PARITY_SCENARIOS = [
     id: 'descriptions',
     title: 'Descriptions 描述列表',
     description:
-      '验证 data/Item、四种对齐、双行尺寸、横向 column/span/hidden、VNode 内容、暗色、移动端与 RTL。',
+      '验证 data/Item、四种对齐、双行尺寸、横向 column/span/hidden、VNode 内容、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.descriptionsPublicEntry,
@@ -1867,7 +1866,7 @@ export const PARITY_SCENARIOS = [
     id: 'dropdown',
     title: 'Dropdown 下拉菜单',
     description:
-      '验证 trigger/Portal、Menu/Item/Title/Divider、勾选与类型、disabled、键盘焦点、暗色、移动端与 RTL。',
+      '验证 trigger/Portal、Menu/Item/Title/Divider、勾选与类型、disabled、键盘焦点、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.dropdownPublicEntry,
@@ -1938,7 +1937,7 @@ export const PARITY_SCENARIOS = [
     id: 'empty',
     title: 'Empty 空状态',
     description:
-      '验证真实 NoContent/Success light/dark 插画、标题、描述、footer、无图片、水平布局、SVG 描述对象、字符串图片、暗色、移动端与 RTL。',
+      '验证真实 NoContent/Success light/dark 插画、标题、描述、footer、无图片、水平布局、SVG 描述对象、字符串图片、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.emptyPublicEntry,
@@ -1996,7 +1995,7 @@ export const PARITY_SCENARIOS = [
     id: 'highlight',
     title: 'Highlight 高亮文本',
     description:
-      '验证默认 mark、统一 class/style、大小写、正则、重叠合并、自定义标签、暗色、移动端与 RTL。',
+      '验证默认 mark、统一 class/style、大小写、正则、重叠合并、自定义标签、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.highlightPublicEntry,
@@ -2069,7 +2068,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'image',
     title: 'Image 图片',
-    description: '验证固定尺寸、原生图片属性、分组预览、标题、Portal、主题、移动端与 RTL。',
+    description: '验证固定尺寸、原生图片属性、分组预览、标题、Portal、主题与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.imagePublicEntry,
@@ -2101,7 +2100,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'cropper',
     title: 'Cropper 图片裁切',
-    description: '验证图片与裁切框几何、矩形/圆形调整块、遮罩、主题、移动端与 RTL。',
+    description: '验证图片与裁切框几何、矩形/圆形调整块、遮罩、主题与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.cropperPublicEntry,
@@ -2158,7 +2157,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'list',
     title: 'List 列表',
-    description: '验证数据源、Item 分区、header/footer、horizontal、Grid、主题、移动端与 RTL。',
+    description: '验证数据源、Item 分区、header/footer、horizontal、Grid、主题与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.listPublicEntry,
@@ -2201,7 +2200,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'modal',
     title: 'Modal 对话框',
-    description: '验证 Portal、标题/正文/footer、遮罩、焦点、主题、移动端与 RTL。',
+    description: '验证 Portal、标题/正文/footer、遮罩、焦点、主题与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.modalPublicEntry,
@@ -2292,7 +2291,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'popover',
     title: 'Popover 气泡卡片',
-    description: '验证内容卡片、Portal、箭头、角色、click/hover、暗色、移动端与 RTL。',
+    description: '验证内容卡片、Portal、箭头、角色、click/hover、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.popoverPublicEntry,
@@ -2336,7 +2335,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'scroll-list',
     title: 'ScrollList 滚动列表',
-    description: '验证 normal/wheel、循环列、禁用、变换、滚动选择、暗色、移动端与 RTL。',
+    description: '验证 normal/wheel、循环列、禁用、变换、滚动选择、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.scrollListPublicEntry,
@@ -2403,7 +2402,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'side-sheet',
     title: 'SideSheet 滑动侧边栏',
-    description: '验证稳定容器 Portal、mask/header/body/footer、关闭、暗色、移动端与 RTL。',
+    description: '验证稳定容器 Portal、mask/header/body/footer、关闭、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.sideSheetPublicEntry,
@@ -2457,7 +2456,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'table',
     title: 'Table 表格',
-    description: '验证表头、数据行、选择、边框、横向滚动、暗色、移动端与 RTL。',
+    description: '验证表头、数据行、选择、边框、横向滚动、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.tablePublicEntry,
@@ -2519,7 +2518,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'tag',
     title: 'Tag 标签',
-    description: '验证类型、尺寸、关闭、折叠标签组、组合标签、暗色、移动端与 RTL。',
+    description: '验证类型、尺寸、关闭、折叠标签组、组合标签、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.tagPublicEntry,
@@ -2587,7 +2586,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'timeline',
     title: 'Timeline 时间轴',
-    description: '验证节点类型、内容、时间、附加信息、center 布局、点击、暗色、移动端与 RTL。',
+    description: '验证节点类型、内容、时间、附加信息、center 布局、点击、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.timelinePublicEntry,
@@ -2641,7 +2640,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'banner',
     title: 'Banner 通知横幅',
-    description: '验证四种类型、全屏/容器模式、默认/空图标、关闭、暗色、移动端与 RTL。',
+    description: '验证四种类型、全屏/容器模式、默认/空图标、关闭、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.bannerPublicEntry,
@@ -2705,7 +2704,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'feedback',
     title: 'Feedback 反馈',
-    description: '验证 popup/modal、五种内容类型、异步提交、Portal、国际化、暗色、移动端与 RTL。',
+    description: '验证 popup/modal、五种内容类型、异步提交、Portal、国际化、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.feedbackPublicEntry,
@@ -2737,7 +2736,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'notification',
     title: 'Notification 通知',
-    description: '验证命令式通知、语义类型、normal/light、关闭按钮、暗色、移动端与 RTL。',
+    description: '验证命令式通知、语义类型、normal/light、关闭按钮、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.notificationPublicEntry,
@@ -2804,7 +2803,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'popconfirm',
     title: 'Popconfirm 气泡确认框',
-    description: '验证默认/危险操作、按钮、箭头、Portal、焦点、暗色、移动端与 RTL。',
+    description: '验证默认/危险操作、按钮、箭头、Portal、焦点、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.popconfirmPublicEntry,
@@ -2857,7 +2856,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'progress',
     title: 'Progress 进度条',
-    description: '验证水平/垂直/环形、文字、颜色插值、尺寸、ARIA、暗色、移动端与 RTL。',
+    description: '验证水平/垂直/环形、文字、颜色插值、尺寸、ARIA、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.progressPublicEntry,
@@ -2950,7 +2949,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'skeleton',
     title: 'Skeleton 骨架屏',
-    description: '验证 loading 三态、复合占位项、尺寸、动画、暗色、移动端与 RTL。',
+    description: '验证 loading 三态、复合占位项、尺寸、动画、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.skeletonPublicEntry,
@@ -3028,7 +3027,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'spin',
     title: 'Spin 加载器',
-    description: '验证三尺寸、默认与自定义指示器、包装/hidden、动画、暗色、移动端与 RTL。',
+    description: '验证三尺寸、默认与自定义指示器、包装/hidden、动画、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.spinPublicEntry,
@@ -3089,7 +3088,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'transfer',
     title: 'Transfer 穿梭框',
-    description: '验证候选/已选面板、搜索、禁用项、light/dark、移动端与 RTL。',
+    description: '验证候选/已选面板、搜索、禁用项、light/dark与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.transferPublicEntry,
@@ -3190,7 +3189,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'upload',
     title: 'Upload 上传',
-    description: '验证普通/图片文件列表、成功/失败状态、提示、light/dark、移动端与 RTL。',
+    description: '验证普通/图片文件列表、成功/失败状态、提示、light/dark与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.uploadPublicEntry,
@@ -3264,7 +3263,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'navigation',
     title: 'Navigation 导航',
-    description: '验证垂直导航、头尾、展开/选中/禁用、收起按钮、主题、移动端与 RTL。',
+    description: '验证垂直导航、头尾、展开/选中/禁用、收起按钮、主题与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.navigationPublicEntry,
@@ -3330,7 +3329,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'toast',
     title: 'Toast 提示',
-    description: '验证命令式类型、light、关闭按钮、暗色、移动端、RTL 与固定容器。',
+    description: '验证命令式类型、light、关闭按钮、暗色、RTL 与固定容器。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.toastPublicEntry,
@@ -3411,7 +3410,7 @@ export const PARITY_SCENARIOS = [
     id: 'card',
     title: 'Card 卡片',
     description:
-      '验证标题、额外内容、封面、Meta、操作组、页脚、边框、阴影、loading、CardGroup、暗色、移动端与 RTL。',
+      '验证标题、额外内容、封面、Meta、操作组、页脚、边框、阴影、loading、CardGroup、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.cardPublicEntry,
@@ -3483,7 +3482,7 @@ export const PARITY_SCENARIOS = [
     id: 'calendar',
     title: 'Calendar 日历',
     description:
-      '验证日、周、月、范围模式，事件布局、全天事件、点击、更多事件浮层、深浅色、移动端、RTL 与中英文 Locale。',
+      '验证日、周、月、范围模式，事件布局、全天事件、点击、更多事件浮层、深浅色、RTL 与中英文 Locale。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.calendarPublicEntry,
@@ -3572,8 +3571,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'badge',
     title: 'Badge 徽章',
-    description:
-      '验证计数、圆点、溢出、主题、类型、四角位置、自定义内容、独立使用、暗色、移动端与 RTL。',
+    description: '验证计数、圆点、溢出、主题、类型、四角位置、自定义内容、独立使用、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.badgePublicEntry,
@@ -3644,7 +3642,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'avatar',
     title: 'Avatar 头像',
-    description: '验证七种尺寸、颜色、形状、图片、hover、头像组、装饰、暗色、移动端与 RTL。',
+    description: '验证七种尺寸、颜色、形状、图片、hover、头像组、装饰、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.avatarPublicEntry,
@@ -3712,7 +3710,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'anchor',
     title: 'Anchor 锚点',
-    description: '验证尺寸/滑轨、嵌套链接、点击与滚动激活、禁用、暗色、移动端与 RTL。',
+    description: '验证尺寸/滑轨、嵌套链接、点击与滚动激活、禁用、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.anchorPublicEntry,
@@ -3765,8 +3763,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'back-top',
     title: 'BackTop 回到顶部',
-    description:
-      '验证 Window/Element 阈值、回顶动画、默认/自定义内容、固定定位、暗色、移动端与 RTL。',
+    description: '验证 Window/Element 阈值、回顶动画、默认/自定义内容、固定定位、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.backTopPublicEntry,
@@ -3815,7 +3812,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'breadcrumb',
     title: 'Breadcrumb 面包屑',
-    description: '验证 routes/Item、图标、链接、折叠/Popover、受控激活、暗色、移动端与 RTL。',
+    description: '验证 routes/Item、图标、链接、折叠/Popover、受控激活、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.breadcrumbPublicEntry,
@@ -3862,7 +3859,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'pagination',
     title: 'Pagination 分页器',
-    description: '验证页码截断、容量切换、快速跳页、迷你/禁用、Locale、暗色、移动端与 RTL。',
+    description: '验证页码截断、容量切换、快速跳页、迷你/禁用、Locale、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.paginationPublicEntry,
@@ -3925,7 +3922,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'steps',
     title: 'Steps 步骤',
-    description: '验证 fill/basic/nav、横竖方向、状态覆盖、点击与键盘、暗色、移动端与 RTL。',
+    description: '验证 fill/basic/nav、横竖方向、状态覆盖、点击与键盘、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.stepsPublicEntry,
@@ -4022,7 +4019,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'tree',
     title: 'Tree 树形控件',
-    description: '验证单选、多选关联、搜索、目录、连接线、禁用、键盘、暗色、移动端与 RTL。',
+    description: '验证单选、多选关联、搜索、目录、连接线、禁用、键盘、暗色与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.treePublicEntry,
@@ -4079,7 +4076,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'tree-select',
     title: 'TreeSelect 树选择器',
-    description: '验证单选触发器、搜索浮层、展开树、禁用项、light/dark、移动端与 RTL。',
+    description: '验证单选触发器、搜索浮层、展开树、禁用项、light/dark与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.treeSelectPublicEntry,
@@ -4181,7 +4178,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'cascader',
     title: 'Cascader 级联选择器',
-    description: '验证单选触发器、搜索、级联列、禁用项、light/dark、移动端与 RTL。',
+    description: '验证单选触发器、搜索、级联列、禁用项、light/dark与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.cascaderPublicEntry,
@@ -4276,8 +4273,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'color-picker',
     title: 'ColorPicker 颜色选择器',
-    description:
-      '验证内联与 Popover 模式、颜色区、色相/透明度滑条、格式输入、light/dark、移动端与 RTL。',
+    description: '验证内联与 Popover 模式、颜色区、色相/透明度滑条、格式输入、light/dark与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.colorPickerPublicEntry,
@@ -4364,7 +4360,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'date-picker',
     title: 'DatePicker 日期选择器',
-    description: '验证固定日期输入、受控展开、月历导航、日期状态、light/dark、移动端与 RTL。',
+    description: '验证固定日期输入、受控展开、月历导航、日期状态、light/dark与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.datePickerPublicEntry,
@@ -4435,7 +4431,7 @@ export const PARITY_SCENARIOS = [
   {
     id: 'form',
     title: 'Form 表单',
-    description: '验证字段注册、标签、帮助文案、必填校验、提交、light/dark、移动端与 RTL。',
+    description: '验证字段注册、标签、帮助文案、必填校验、提交、light/dark与 RTL。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.formPublicEntry,

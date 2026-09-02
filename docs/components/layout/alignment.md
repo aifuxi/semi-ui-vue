@@ -71,9 +71,9 @@ Layout 不需要 Foundation 状态机或额外 composable；断点副作用留�
 | --------------------- | ----------------------------------------------------------------------------------------------------------- |
 | 单元行为              | 静态/具名导出、默认与自定义 tag/prefix、attrs、直接/动态 Sider、过滤规则、断点顺序/变更/清理、无 matchMedia |
 | SSR/hydration         | 直接 Sider 在服务端输出 has-sider；无浏览器全局访问；客户端无 hydration 警告                                |
-| Chromium 行为/ARIA    | 固定源码请求、语义标签、直接/嵌套 Sider、desktop/mobile 断点、role 与 aria-label                            |
+| Chromium 行为/ARIA    | 固定源码请求、语义标签、直接/嵌套 Sider、desktop/narrow 断点、role 与 aria-label                            |
 | computed style / 几何 | 8 个目标逐项比较 display/flex/direction/box-sizing/position/overflow/尺寸；每轴误差不超过 0.5px             |
-| 视觉                  | desktop 1440×900 与 mobile 390×844，light/dark；额外 desktop light RTL；组件裁剪                            |
+| 视觉                  | desktop 1440×900 与 narrow 390×844，light/dark；额外 desktop light RTL；组件裁剪                            |
 | 发布                  | 根/`layout` 子路径 ESM 与 types、根/`layout.css`、SSR import、真实 tarball 安装                             |
 
 截图阈值保持 `threshold=0.1`、`maxDiffPixelRatio=0.001`，并要求同一 Chromium 中 React/Vue 组件截图字节完全一致。

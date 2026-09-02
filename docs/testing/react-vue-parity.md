@@ -6,46 +6,48 @@
 
 React 页面只允许从只读 `vendor/semi-design` 的固定 v2.102.0 源码构建。Vue 页面只消费本项目 Vue 能力；未完成的 Vue 场景必须保持 `pending`，不能用手写镜像 DOM、旧截图或 React 组件冒充已对齐实现。
 
+本项目与固定上游一样定位为桌面端组件库，不建立全组件移动端兼容矩阵。所有组件默认覆盖桌面 `1440×900`、DPR 1 的 light/dark；只有固定源码的公开 API、文档或实现明确依赖响应式断点、触摸输入或可视区域边界时，才增加 `390×844` 的 `narrow` 或触摸专项。`narrow` 只验证对应公开契约，不表示移动端兼容，也不要求复制完整主题矩阵。
+
 ## 代表场景
 
 下表用于说明共享场景合同的覆盖方式，不是完整清单。机器可读的完整场景注册以 `packages/test-infra/src/index.ts` 为准，完整浏览器规格以 `tests/browser/components/*.spec.ts` 为准。
 
-| 场景                  | React | Vue   | 用途                                                           |
-| --------------------- | ----- | ----- | -------------------------------------------------------------- |
-| `harness-calibration` | ready | ready | 校准字体、壳层、viewport、DPR、计算样式、几何和局部截图        |
-| `button-types`        | ready | ready | 直接复现固定中文文档首个 Button 类型场景；五种类型逐节点对照   |
-| `button-contract`     | ready | ready | 图标、loading、disabled、尺寸、ButtonGroup、Split 与 RTL 合同  |
-| `divider`             | ready | ready | 水平/垂直、实线/虚线、边距、内容对齐、dark/mobile/RTL          |
-| `icon`                | ready | ready | 尺寸、旋转、spin、颜色、AI fill、Lab、dark/mobile              |
-| `space`               | ready | ready | 预设/自定义 gap、方向、换行、四种对齐、dark/mobile/RTL         |
-| `float-button`        | ready | ready | 尺寸、形状、Badge、Group 事件、dark/mobile/RTL                 |
-| `layout`              | ready | ready | 三行/侧栏/嵌套布局、语义标签、响应断点、dark/mobile/RTL        |
-| `grid`                | ready | ready | 24 栅格、Gutter、Flex、排序、六断点、dark/mobile/RTL           |
-| `resizable`           | ready | ready | 单体八方向、尺寸约束、水平/垂直 Group、拖拽回调、dark/mobile   |
-| `typography`          | ready | ready | 标题、装饰、链接、截断、Numeral、复制、dark/mobile             |
-| `config-provider`     | ready | ready | RTL、Locale、Consumer、嵌套配置、六断点、dark/mobile           |
-| `switch`              | ready | ready | 受控/非受控、三尺寸、文本、disabled/loading、键盘、RTL         |
-| `tooltip`             | ready | ready | 四向 Portal、箭头、hover/click、disabled trigger、dark/RTL     |
-| `select`              | ready | ready | 基础/禁用/占位、多选、分组搜索、Portal、dark/mobile/RTL        |
-| `auto-complete`       | ready | ready | 输入搜索、键盘选择、自定义候选、Portal、dark/mobile/RTL        |
-| `checkbox`            | ready | ready | 单选/组合、Card/PureCard、Group/options、键盘、dark/mobile/RTL |
-| `input`               | ready | ready | 输入/组合/TextArea、清除、密码、行号、dark/mobile/RTL          |
-| `input-number`        | ready | ready | 格式化、步进、限制、键盘与 dark/mobile/RTL                     |
-| `pin-code`            | ready | ready | 分格输入、格式、粘贴、焦点与 dark/mobile/RTL                   |
-| `radio`               | ready | ready | 普通/组合、Button/Card/PureCard、键盘、dark/mobile/RTL         |
-| `rating`              | ready | ready | 半星、清除、Tooltip、键盘与 dark/mobile/RTL                    |
-| `slider`              | ready | ready | 单值/范围、Marks、拖拽、键盘与 dark/mobile/RTL                 |
-| `tag-input`           | ready | ready | 添加/删除、尺寸、校验、折叠、Portal、dark/mobile/RTL           |
-| `time-picker`         | ready | ready | 单值/范围、12 小时制、时区、Portal、dark/mobile/RTL            |
-| `anchor`              | ready | ready | 嵌套锚点、滚动激活、折叠、Tooltip、dark/mobile/RTL             |
-| `back-top`            | ready | ready | Window/Element 阈值、回顶动画、节流、dark/mobile               |
-| `breadcrumb`          | ready | ready | routes/Item、折叠 Popover、键盘、dark/mobile/RTL               |
-| `pagination`          | ready | ready | 基础/完整/小尺寸/禁用、跳转、键盘、dark/mobile/RTL             |
-| `steps`               | ready | ready | fill/basic/nav/vertical、状态、键盘、dark/mobile/RTL           |
-| `tabs`                | ready | ready | 四类型、横/竖、More/折叠、键盘、dark/mobile/RTL                |
-| `side-sheet`          | ready | ready | 稳定 Portal、mask、header/body/footer、dark/mobile/RTL         |
+| 场景                  | React | Vue   | 用途                                                          |
+| --------------------- | ----- | ----- | ------------------------------------------------------------- |
+| `harness-calibration` | ready | ready | 校准字体、壳层、viewport、DPR、计算样式、几何和局部截图       |
+| `button-types`        | ready | ready | 直接复现固定中文文档首个 Button 类型场景；五种类型逐节点对照  |
+| `button-contract`     | ready | ready | 图标、loading、disabled、尺寸、ButtonGroup、Split 与 RTL 合同 |
+| `divider`             | ready | ready | 水平/垂直、实线/虚线、边距、内容对齐、dark/RTL                |
+| `icon`                | ready | ready | 尺寸、旋转、spin、颜色、AI fill、Lab、dark                    |
+| `space`               | ready | ready | 预设/自定义 gap、方向、换行、四种对齐、dark/RTL               |
+| `float-button`        | ready | ready | 尺寸、形状、Badge、Group 事件、dark/RTL                       |
+| `layout`              | ready | ready | 三行/侧栏/嵌套布局、语义标签、响应断点、dark/narrow/RTL       |
+| `grid`                | ready | ready | 24 栅格、Gutter、Flex、排序、六断点、dark/narrow/RTL          |
+| `resizable`           | ready | ready | 单体八方向、尺寸约束、水平/垂直 Group、拖拽回调、dark         |
+| `typography`          | ready | ready | 标题、装饰、链接、截断、Numeral、复制、dark                   |
+| `config-provider`     | ready | ready | RTL、Locale、Consumer、嵌套配置、六断点、dark/narrow          |
+| `switch`              | ready | ready | 受控/非受控、三尺寸、文本、disabled/loading、键盘、RTL        |
+| `tooltip`             | ready | ready | 四向 Portal、箭头、hover/click、disabled trigger、dark/RTL    |
+| `select`              | ready | ready | 基础/禁用/占位、多选、分组搜索、Portal、dark/RTL              |
+| `auto-complete`       | ready | ready | 输入搜索、键盘选择、自定义候选、Portal、dark/RTL              |
+| `checkbox`            | ready | ready | 单选/组合、Card/PureCard、Group/options、键盘、dark/RTL       |
+| `input`               | ready | ready | 输入/组合/TextArea、清除、密码、行号、dark/RTL                |
+| `input-number`        | ready | ready | 格式化、步进、限制、键盘与 dark/RTL                           |
+| `pin-code`            | ready | ready | 分格输入、格式、粘贴、焦点与 dark/RTL                         |
+| `radio`               | ready | ready | 普通/组合、Button/Card/PureCard、键盘、dark/RTL               |
+| `rating`              | ready | ready | 半星、清除、Tooltip、键盘与 dark/RTL                          |
+| `slider`              | ready | ready | 单值/范围、Marks、拖拽、键盘与 dark/RTL                       |
+| `tag-input`           | ready | ready | 添加/删除、尺寸、校验、折叠、Portal、dark/RTL                 |
+| `time-picker`         | ready | ready | 单值/范围、12 小时制、时区、Portal、dark/RTL                  |
+| `anchor`              | ready | ready | 嵌套锚点、滚动激活、折叠、Tooltip、dark/RTL                   |
+| `back-top`            | ready | ready | Window/Element 阈值、回顶动画、节流、dark                     |
+| `breadcrumb`          | ready | ready | routes/Item、折叠 Popover、键盘、dark/RTL                     |
+| `pagination`          | ready | ready | 基础/完整/小尺寸/禁用、跳转、键盘、dark/RTL                   |
+| `steps`               | ready | ready | fill/basic/nav/vertical、状态、键盘、dark/RTL                 |
+| `tabs`                | ready | ready | 四类型、横/竖、More/折叠、键盘、dark/RTL                      |
+| `side-sheet`          | ready | ready | 稳定 Portal、mask、header/body/footer、dark/RTL               |
 
-场景契约定义在 `packages/test-infra/src/index.ts`。`assertScenarioComparable()` 只有在 React/Vue 均为 `ready` 时才返回场景，否则立即失败。所有已完成组件的固定源码矩阵、Vue API 与迁移表见 `docs/components/`。Icon 场景覆盖尺寸、旋转、暂停后的 spin、单色、双色、四色渐变、Lab 和自定义 SVG 基座；Space 场景覆盖预设/数字/数组 gap、方向、换行、交叉轴对齐和 RTL；FloatButton 场景覆盖尺寸、形状、colorful、disabled、Badge 与 Group 委托事件；Layout 场景覆盖语义标签、嵌套 Sider 注册与桌面/移动断点回调；Grid 场景覆盖 24 栅格、水平/垂直/响应式 Gutter、Flex 对齐与排序、响应式 Col 和 RTL；Resizable 场景覆盖单体八方向手柄、受约束拖拽、水平/垂直 Group、默认 IconHandle、相邻 Item 回调与桌面/移动明暗主题；Typography 场景覆盖标题层级、七类文本颜色、装饰顺序、段落、链接、复制和数值格式化；ConfigProvider 场景覆盖 RTL、Locale、Consumer、嵌套配置和桌面/移动断点；Switch、Tooltip、Select、AutoComplete、Checkbox、Input、TagInput 与 TimePicker 分别覆盖其公开输入、状态、键盘/焦点、ARIA、Portal 和适用主题矩阵。Tabs 场景覆盖四种 type、top/left、disabled/closable、More、可收起 OverflowList、点击/键盘、Dropdown Portal、桌面/移动明暗主题和 RTL。React/Vue 成对截图统一解码为像素后比较，门禁保持 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`；历史垂直切片记录中的逐字节 `cmp` 仅作为当次独立证据，不作为跨宿主 CI 的通过条件。
+场景契约定义在 `packages/test-infra/src/index.ts`。`assertScenarioComparable()` 只有在 React/Vue 均为 `ready` 时才返回场景，否则立即失败。所有已完成组件的固定源码矩阵、Vue API 与迁移表见 `docs/components/`。Layout、Grid、ConfigProvider 与 List 保留响应式断点的 `narrow` 视觉专项；UserGuide 保留固定弹层超出窄 viewport 时的可视边界专项。其余组件只运行桌面 light/dark，并按契约补充 RTL、Locale、Portal、键盘、焦点、动效或触摸行为。React/Vue 成对截图统一解码为像素后比较，门禁保持 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`。历史垂直切片记录中的 `mobile` 与逐字节 `cmp` 是当时验收证据，不是当前移动端兼容承诺，也不作为跨宿主 CI 的通过条件。
 
 ## 运行入口
 
@@ -85,7 +87,7 @@ Vue 文档应用从 `@aifuxi/semi-ui-vue` 源码入口消费 Button，并通过 
 4. 在 `apps/parity-vue/src/` 使用 Vue 公共包实现同场景；不得从 Vue 运行时读取 vendor。
 5. 先增加公开行为、键盘/焦点、ARIA、Portal/动效等适用断言，再将 `vueStatus` 改为 `ready`。
 6. 使用 `expectComparableTarget()` 比较对应目标的计算样式、几何和像素；复杂场景可在同一共享契约上增加专用行为步骤。
-7. 按组件矩阵补齐桌面/移动、light/dark、适用时 RTL 与 zh-CN/en-US 截图。
+7. 默认补齐桌面 light/dark；仅在固定上游有明确契约时增加 `narrow`、触摸、RTL 与 zh-CN/en-US 专项。
 
 ## 验证
 

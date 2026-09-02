@@ -71,8 +71,8 @@ Grid 不需要 Foundation 运行时实例或额外 composable；Foundation 仅�
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | 类型          | 根/`grid` 子路径导出，Row/Col props、断点、Gutter 与 ColSize 类型                                                                      |
 | 单元          | 基础/flex/custom prefix class，attrs/slot，数值/二维/响应式 Gutter，style 覆盖，六断点 class 与零值，监听清理，缺少 Row，SSR/hydration |
-| Chromium 行为 | 固定源码来源、24 栅格、Flex 对齐/排序、桌面/移动响应式 Gutter 与 Col、RTL float/offset、无运行时错误                                   |
-| 视觉          | desktop 1440×900 与 mobile 390×844，light/dark；额外 desktop light RTL；组件裁剪                                                       |
+| Chromium 行为 | 固定源码来源、24 栅格、Flex 对齐/排序、桌面/窄视口响应式 Gutter 与 Col、RTL float/offset、无运行时错误                                 |
+| 视觉          | desktop 1440×900 与 narrow 390×844，light/dark；额外 desktop light RTL；组件裁剪                                                       |
 | 发布          | build、SSR import、真实 pack 安装、根/子路径 ESM 与 types、根/逐组件 CSS、许可证/SBOM                                                  |
 
 截图阈值保持 `threshold=0.1`、`maxDiffPixelRatio=0.001`，同时要求同一 Chromium 中 React/Vue 组件截图字节完全一致；对应节点 bounding rect 各轴差值不超过 `0.5 CSS px`。

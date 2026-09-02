@@ -85,9 +85,10 @@ test('ConfigProvider RTL、Locale、Consumer、嵌套上下文与断点行为一
     ),
   ]);
 
+  const narrowViewport = PARITY_VIEWPORTS.narrow;
   await Promise.all([
-    pair.react.page.setViewportSize({ width: 390, height: 844 }),
-    pair.vue.page.setViewportSize({ width: 390, height: 844 }),
+    pair.react.page.setViewportSize(narrowViewport),
+    pair.vue.page.setViewportSize(narrowViewport),
   ]);
   await Promise.all([
     expect(pair.react.page.locator('[data-parity-target="config-provider-screens"]')).toHaveText(
@@ -101,7 +102,7 @@ test('ConfigProvider RTL、Locale、Consumer、嵌套上下文与断点行为一
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-for (const viewportName of ['desktop', 'mobile'] as const) {
+for (const viewportName of ['desktop', 'narrow'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`ConfigProvider React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {
       const viewport = PARITY_VIEWPORTS[viewportName];

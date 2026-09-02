@@ -49,7 +49,7 @@ git -C vendor/semi-design describe --tags --exact-match
 - Playwright 截图 `threshold` 不高于 `0.1`，`maxDiffPixelRatio` 不高于 `0.001`（0.1%）。数值通过不代表可见或局部集中差异可被接受，此类差异仍必须定位并消除或记录为 accepted deviation。
 - 截图 mask 只能用于有源码/运行时证据的非确定内容，且必须使用最小范围并在测试中注明原因；禁止为让测试通过而扩大 mask 或盲目更新基线。
 - 所有组件的默认视觉矩阵包含桌面 viewport `1440×900`、DPR 1、light/dark；不得因组件“看起来与主题无关”而跳过 dark。
-- 响应式、输入与浮层类组件增加移动 viewport `390×844`、DPR 1；方向敏感组件增加 RTL 场景。
+- 项目定位为桌面端组件库，不作移动端兼容承诺。只有固定源码的公开 API、文档或实现明确依赖响应式断点、触摸输入或可视区域边界时，才增加窄视口 `390×844`、DPR 1 或触摸专项；窄视口只验证对应公开行为，不为所有组件复制完整 light/dark 视觉矩阵，也不构成移动端兼容承诺。方向敏感组件增加 RTL 场景。
 - 国际化敏感组件对 zh-CN/en-US 执行视觉与行为对照；全部 57 个 Locale 必须通过数据完整性、公开导出和可渲染验证。
 - 默认场景矩阵是最低门槛；每个组件仍须按对齐矩阵增加适用的 hover、active、focus-visible、disabled、loading、validation、open/close、键盘、Portal 和动画场景。
 

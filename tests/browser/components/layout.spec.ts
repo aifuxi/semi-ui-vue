@@ -94,9 +94,10 @@ test('Layout 语义、嵌套、Sider 与响应式断点契约一致', async ({ c
     await expect(parityPage.getByRole('status')).toHaveText('xs:false · md:true');
   }
 
+  const narrowViewport = PARITY_VIEWPORTS.narrow;
   await Promise.all([
-    pair.react.page.setViewportSize({ width: 390, height: 844 }),
-    pair.vue.page.setViewportSize({ width: 390, height: 844 }),
+    pair.react.page.setViewportSize(narrowViewport),
+    pair.vue.page.setViewportSize(narrowViewport),
   ]);
   await Promise.all([
     expect(pair.react.page.getByRole('status')).toHaveText('xs:true · md:false'),
@@ -106,7 +107,7 @@ test('Layout 语义、嵌套、Sider 与响应式断点契约一致', async ({ c
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-for (const viewportName of ['desktop', 'mobile'] as const) {
+for (const viewportName of ['desktop', 'narrow'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`Layout React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {
       const viewport = PARITY_VIEWPORTS[viewportName];

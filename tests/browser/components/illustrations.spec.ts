@@ -47,7 +47,7 @@ test('Illustrations 参考场景来自本地 v2.102.0 并保留完整公开导�
   expect(runtimeErrors).toEqual([]);
 });
 
-for (const viewportName of ['desktop', 'mobile'] as const) {
+for (const viewportName of ['desktop'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`Illustrations React/Vue 全量视觉：${viewportName}/${theme}`, async ({ context }) => {
       const viewport = PARITY_VIEWPORTS[viewportName];

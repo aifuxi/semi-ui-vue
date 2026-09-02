@@ -77,7 +77,7 @@ async function expectOverlayMetricsEqual(reactPage: Page, vuePage: Page): Promis
   expect(await readPopoverMetrics(vuePage)).toEqual(await readPopoverMetrics(reactPage));
 }
 
-async function expectMobileTargetComparable(
+async function expectNarrowTargetComparable(
   pair: Awaited<ReturnType<typeof openParityPages>>,
   target: ReturnType<typeof assertScenarioComparable>['targets'][number],
 ): Promise<void> {
@@ -102,7 +102,7 @@ async function expectMobileTargetComparable(
   if (!reactBox) throw new Error(`${target.id} 缺少可见边界`);
 
   const viewport = pair.react.page.viewportSize();
-  if (!viewport) throw new Error('UserGuide 移动端场景缺少 viewport');
+  if (!viewport) throw new Error('UserGuide 窄视口场景缺少 viewport');
   const x = Math.max(0, Math.floor(reactBox.x));
   const y = Math.max(0, Math.floor(reactBox.y));
   const right = Math.min(viewport.width, Math.ceil(reactBox.x + reactBox.width));
@@ -116,11 +116,11 @@ async function expectMobileTargetComparable(
     pair.react.page,
     vueScreenshot,
     reactScreenshot,
-    `user-guide/${target.id}/mobile-visible-viewport`,
+    `user-guide/${target.id}/narrow-visible-viewport`,
   );
 }
 
-async function captureMobileScenarioWithoutScrolling(
+async function captureNarrowScenarioWithoutScrolling(
   pair: Awaited<ReturnType<typeof openParityPages>>,
   theme: 'light' | 'dark',
 ): Promise<{ reactScreenshot: Buffer; vueScreenshot: Buffer }> {
@@ -137,7 +137,7 @@ async function captureMobileScenarioWithoutScrolling(
     reactTarget.boundingBox(),
     vueTarget.boundingBox(),
   ]);
-  if (!reactBox || !vueBox) throw new Error('UserGuide 移动端场景缺少可见边界');
+  if (!reactBox || !vueBox) throw new Error('UserGuide 窄视口场景缺少可见边界');
   expectComparableGeometry(
     {
       coordinateSpace: 'document',
@@ -157,11 +157,11 @@ async function captureMobileScenarioWithoutScrolling(
       x: reactBox.x,
       y: reactBox.y,
     },
-    'user-guide/mobile-scenario',
+    'user-guide/narrow-scenario',
   );
 
   const viewport = pair.react.page.viewportSize();
-  if (!viewport) throw new Error('UserGuide 移动端场景缺少 viewport');
+  if (!viewport) throw new Error('UserGuide 窄视口场景缺少 viewport');
   const x = Math.max(0, Math.floor(reactBox.x));
   const y = Math.max(0, Math.floor(reactBox.y));
   const right = Math.min(viewport.width, Math.ceil(reactBox.x + reactBox.width));
@@ -169,10 +169,10 @@ async function captureMobileScenarioWithoutScrolling(
   const clip = { x, y, width: right - x, height: bottom - y };
 
   await Promise.all([
-    expect(pair.react.page).toHaveScreenshot(`user-guide-reference-mobile-${theme}.png`, {
+    expect(pair.react.page).toHaveScreenshot(`user-guide-reference-narrow-${theme}.png`, {
       clip,
     }),
-    expect(pair.vue.page).toHaveScreenshot(`user-guide-vue-mobile-${theme}.png`, { clip }),
+    expect(pair.vue.page).toHaveScreenshot(`user-guide-vue-narrow-${theme}.png`, { clip }),
   ]);
   const [reactScreenshot, vueScreenshot] = await Promise.all([
     pair.react.page.screenshot({ animations: 'disabled', clip }),
@@ -250,7 +250,7 @@ test('UserGuide React/Vue 步骤、主题、箭头、完成与 modal 行为一�
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-for (const viewportName of ['desktop', 'mobile'] as const) {
+for (const viewportName of ['desktop', 'narrow'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`UserGuide React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {
       const pair = await openParityPages(
@@ -264,16 +264,16 @@ for (const viewportName of ['desktop', 'mobile'] as const) {
       ]);
       for (const target of assertScenarioComparable('user-guide').targets) {
         await test.step(target.id, () =>
-          viewportName === 'mobile'
-            ? expectMobileTargetComparable(pair, target)
+          viewportName === 'narrow'
+            ? expectNarrowTargetComparable(pair, target)
             : expectComparableTarget(pair, 'user-guide', target.id),
         );
       }
       await expectOverlayMetricsEqual(pair.react.page, pair.vue.page);
       let reactScreenshot: Buffer;
       let vueScreenshot: Buffer;
-      if (viewportName === 'mobile') {
-        ({ reactScreenshot, vueScreenshot } = await captureMobileScenarioWithoutScrolling(
+      if (viewportName === 'narrow') {
+        ({ reactScreenshot, vueScreenshot } = await captureNarrowScenarioWithoutScrolling(
           pair,
           theme,
         ));

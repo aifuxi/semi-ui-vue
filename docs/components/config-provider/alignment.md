@@ -47,7 +47,7 @@
 - LTR 返回 slot Fragment；RTL 输出唯一的 `<div class="semi-rtl">`，子树顺序不变。
 - 组件本身没有焦点、键盘、ARIA、Portal 或动效节点；相关契约由消费组件负责。
 - 上游没有 ConfigProvider 专属 SCSS。`config-provider.css` 仅发布固定主题 Token/global，使逐组件样式入口可独立安装；RTL 效果来自各消费组件的固定 RTL 选择器。
-- dark 不改变 Provider DOM；场景通过 Typography 和共享壳层分别验证 light/dark。移动视口用于验证断点快照变化。
+- dark 不改变 Provider DOM；场景通过 Typography 和共享壳层分别验证 light/dark。窄视口专项用于验证断点快照变化，不构成移动端兼容承诺。
 
 ## Locale、RTL、SSR 与迁移
 
@@ -61,8 +61,8 @@
 | 层级           | 覆盖                                                                                                                 |
 | -------------- | -------------------------------------------------------------------------------------------------------------------- |
 | 单元/SSR       | LTR/RTL DOM、公开/默认 Context、嵌套隔离、动态 locale、两类断点订阅、过滤、取消、默认禁用、静态属性、semiGlobal、SSR |
-| React/Vue 场景 | 固定 React Adapter 请求、RTL 包装、Consumer、timeZone、en-US Typography、嵌套 LTR、桌面/移动断点                     |
-| Chromium       | 公开 DOM、计算样式、几何、响应式 viewport、无 console/page error、桌面/移动 light/dark 截图                          |
+| React/Vue 场景 | 固定 React Adapter 请求、RTL 包装、Consumer、timeZone、en-US Typography、嵌套 LTR、桌面/窄视口断点                   |
+| Chromium       | 公开 DOM、计算样式、几何、响应式 viewport、无 console/page error、desktop/narrow light/dark 截图                     |
 | 发布包         | 根/`config-provider` ESM 与声明、`config-provider.css`、SSR import、真实 tarball 离线安装                            |
 
 当前没有 accepted visual/behavior deviation。Vue scoped slot、InjectionKey 和响应式只读上下文属于框架原生映射。
