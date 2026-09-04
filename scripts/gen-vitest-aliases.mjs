@@ -16,7 +16,7 @@
 import { readdir } from 'node:fs/promises';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, join, relative } from 'node:path';
+import { join, relative } from 'node:path';
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const UI_SRC = join(ROOT, 'packages/ui/src');
@@ -37,7 +37,10 @@ function internalAliases() {
     '@aifuxi/semi-ui-vue/locale/source/ja_JP': join(UI_SRC, 'locale/source/ja_JP.ts'),
     '@aifuxi/semi-icons-vue': join(ROOT, 'packages/icons/src/index.ts'),
     '@aifuxi/semi-icons-lab-vue': join(ROOT, 'packages/icons-lab/src/index.ts'),
-    '@aifuxi/semi-illustrations-vue': join(ROOT, 'vendor/semi-design/packages/semi-animation/index.ts'),
+    '@aifuxi/semi-illustrations-vue': join(
+      ROOT,
+      'vendor/semi-design/packages/semi-animation/index.ts',
+    ),
     // 第三方依赖（硬编码，不生成）
     'bezier-easing': join(ROOT, 'packages/ui/node_modules/bezier-easing/src/index.js'),
     'async-validator': join(ROOT, 'packages/ui/node_modules/async-validator/dist-web/index.js'),
@@ -60,9 +63,11 @@ function parseStubName(filename) {
 
   const camel = m[1];
   // "AIChatDialogue" → "ai-chat-dialogue"
-  const key = camel.replace(/([A-Z]+)(?=[A-Z][a-z])|([A-Z])(?=[a-z])/g, (match) => {
-    return '-' + match.toLowerCase();
-  }).replace(/^-/, ''); // Remove leading hyphen
+  const key = camel
+    .replace(/([A-Z]+)(?=[A-Z][a-z])|([A-Z])(?=[a-z])/g, (match) => {
+      return '-' + match.toLowerCase();
+    })
+    .replace(/^-/, ''); // Remove leading hyphen
   return { key, ext: m[2] };
 }
 
@@ -134,7 +139,7 @@ async function check() {
           }
           pendingKey = keyMatch[1];
           // Handle single-line entries (key and new URL on same line).
-          if (line.includes("new URL")) {
+          if (line.includes('new URL')) {
             const pathMatch = line.match(/new URL\(\s*['"](.+?)['"]/);
             if (pathMatch) {
               pendingValue = pathMatch[1];
@@ -144,7 +149,7 @@ async function check() {
           } else {
             pendingValue = null;
           }
-        } else if (pendingKey && line.includes("new URL")) {
+        } else if (pendingKey && line.includes('new URL')) {
           const pathMatch = line.match(/new URL\(\s*['"](.+?)['"]/);
           if (pathMatch) {
             pendingValue = pathMatch[1];
@@ -217,7 +222,7 @@ async function check() {
 
 const args = process.argv.slice(2);
 const checkMode = args.includes('--check');
-const outFile = args.find(a => a.startsWith('--out='))?.split('=')[1];
+const outFile = args.find((a) => a.startsWith('--out='))?.split('=')[1];
 
 if (checkMode) {
   await check();
