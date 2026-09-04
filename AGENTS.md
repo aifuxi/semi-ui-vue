@@ -78,6 +78,12 @@ git -C vendor/semi-design describe --tags --exact-match
 - 所有公开包必须 SSR-safe import；适用组件必须验证 SSR render/hydration，DOM 查询、Portal、Observer 和全局事件只能在客户端生命周期内创建并完整清理。
 - Portal、浮层和定位组件必须验证自定义容器首次挂载、Element/Document capture scroll 后重定位与卸载清理；不得在缺少上游证据时把事件目标收窄为 `Element`。
 
-## Git
+## 测试与门禁
 
-- Git commit message 优先使用简体中文 Conventional Commit。
+- `failOnFlakyTests`（CI 环境已启用）和 `retries: 2` 是防抖基础配置。一个只在单独运行时通过的 spec 是 spec 的缺陷，不是 runner 不稳定——修复 spec 或添加确定性 fixture，而非增加 retries。
+- 每个组件完成 = 对齐矩阵 + Vue 源码/类型 + 中英文文档与迁移表 + 黑盒单测 + Chromium 行为/键盘/焦点/ARIA/Portal/动效测试 + SSR 证据 + React/Vue computed style 与截图对照 + npm pack 验证。
+- 测试优先公开行为，不把私有 state/method 或 Foundation spy 当主证据；快照必须与行为断言配对。
+- Teleport/真实焦点/拖拽/ResizeObserver/computed style/动画不能用 jsdom 结果代替 Chromium 证据。
+- 桌面优先矩阵（ADR 0013）：默认 1440×900 DPR1 light/dark；仅上游契约明确依赖时才加 390×844 narrow/触摸专项。
+
+## Git
