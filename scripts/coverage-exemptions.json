@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "description": "Per-file coverage exemptions. Each entry has a reason and optional TODO for when it should be removed.",
+  "exemptions": [
+    {
+      "file": "packages/ui/src/select/SelectOption.vue",
+      "reason": "Template-only SFC: <slot /> with no script logic. Cannot be meaningfully covered by unit tests.",
+      "category": "template-only"
+    },
+    {
+      "file": "packages/ui/src/select/SelectOptionGroup.vue",
+      "reason": "Template-only SFC: <slot /> with no script logic. Cannot be meaningfully covered by unit tests.",
+      "category": "template-only"
+    },
+    {
+      "file": "packages/ui/src/tag-input/types.ts",
+      "reason": "Type-only export file. No executable statements.",
+      "category": "type-only"
+    },
+    {
+      "file": "packages/ui/src/ai-chat-dialogue/AIChatDialogueCode.ts",
+      "reason": "Internal helper component with copy-to-clipboard logic. Exercised through parity/browser tests but not unit-tested directly.",
+      "category": "internal-helper",
+      "todo": "Add unit test when AIChatDialogue has dedicated parity scenario"
+    },
+    {
+      "file": "packages/ui/src/ai-chat-input/AIChatInputConfigureRadioButton.vue",
+      "reason": "Template-only SFC: renders radio button options. No script logic.",
+      "category": "template-only"
+    },
+    {
+      "file": "packages/ui/src/ai-chat-input/AIChatInputConfigureSelect.vue",
+      "reason": "Template-only SFC: renders select options. No script logic.",
+      "category": "template-only"
+    },
+    {
+      "file": "packages/ui/src/ai-chat-input/InputSlotNodeView.vue",
+      "reason": "Template-only SFC: renders input slot node. No script logic.",
+      "category": "template-only"
+    },
+    {
+      "file": "packages/ui/src/ai-chat-input/SelectSlotNodeView.vue",
+      "reason": "Template-only SFC: renders select slot node. No script logic.",
+      "category": "template-only"
+    },
+    {
+      "file": "packages/ui/src/form/FormInputGroup.ts",
+      "reason": "Internal form helper with flatten/getAtPath logic. Exercised through Form unit tests but not directly tested.",
+      "category": "internal-helper",
+      "todo": "Add unit test when Form has dedicated integration scenario"
+    },
+    {
+      "file": "packages/ui/src/form/FormSlot.ts",
+      "reason": "Internal form helper with label/error rendering logic. Exercised through Form unit tests but not directly tested.",
+      "category": "internal-helper",
+      "todo": "Add unit test when Form has dedicated integration scenario"
+    },
+    {
+      "file": "packages/ui/src/form/with-form.ts",
+      "reason": "Internal form hook. Exercised through Form unit tests but not directly tested.",
+      "category": "internal-helper",
+      "todo": "Add unit test when Form has dedicated integration scenario"
+    },
+    {
+      "file": "packages/ui/src/navigation/NavigationIconRenderer.ts",
+      "reason": "Internal navigation helper with icon resolution logic. Exercised through Navigation unit tests but not directly tested.",
+      "category": "internal-helper",
+      "todo": "Add unit test when Navigation has dedicated integration scenario"
+    },
+    {
+      "file": "packages/ui/src/sidebar/SidebarAnnotation.vue",
+      "reason": "Template-only SFC: renders sidebar annotation. No script logic.",
+      "category": "template-only"
+    },
+    {
+      "file": "packages/ui/src/sidebar/SidebarFileContent.vue",
+      "reason": "Template-only SFC: renders sidebar file content. No script logic.",
+      "category": "template-only"
+    },
+    {
+      "file": "packages/ui/src/sidebar/SidebarImageUploadNodeView.vue",
+      "reason": "Template-only SFC: renders image upload node. No script logic.",
+      "category": "template-only"
+    },
+    {
+      "file": "packages/ui/src/sidebar/SidebarMCPConfigure.vue",
+      "reason": "Template-only SFC: renders MCP configuration. No script logic.",
+      "category": "template-only"
+    }
+  ]
+}

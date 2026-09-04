@@ -41,6 +41,7 @@
     "test": "pnpm test:unit",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "verify:theme-dist": "node scripts/verify-theme.mjs",
     "test:theme": "pnpm check:vendor && pnpm --filter @aifuxi/semi-theme-default build && pnpm verify:theme-dist",
     "verify:pack-dist": "node scripts/verify-pack.mjs",

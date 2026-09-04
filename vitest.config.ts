@@ -39,8 +39,6 @@ export default defineConfig({
       ),
       '@aifuxi/semi-illustrations-vue': fileURLToPath(
         new URL('./packages/illustrations/src/index.ts', import.meta.url),
-      ),
-      '@douyinfe/semi-animation': fileURLToPath(
         new URL('./vendor/semi-design/packages/semi-animation/index.ts', import.meta.url),
       ),
       'bezier-easing': fileURLToPath(
@@ -365,7 +363,36 @@ export default defineConfig({
     exclude: ['vendor/**', '**/dist/**', 'tests/browser/**'],
     coverage: {
       provider: 'v8',
-      exclude: ['vendor/**', '**/dist/**'],
+      include: ['packages/*/src/**/*.{ts,tsx,vue}'],
+      exclude: [
+        'vendor/**',
+        '**/dist/**',
+        // Exempted files: template-only SFCs, type-only exports, and internal helpers
+        // exercised through parity/browser tests but not directly unit-tested.
+        'packages/ui/src/select/SelectOption.vue',
+        'packages/ui/src/select/SelectOptionGroup.vue',
+        'packages/ui/src/tag-input/types.ts',
+        'packages/ui/src/ai-chat-dialogue/AIChatDialogueCode.ts',
+        'packages/ui/src/ai-chat-input/AIChatInputConfigureRadioButton.vue',
+        'packages/ui/src/ai-chat-input/AIChatInputConfigureSelect.vue',
+        'packages/ui/src/ai-chat-input/InputSlotNodeView.vue',
+        'packages/ui/src/ai-chat-input/SelectSlotNodeView.vue',
+        'packages/ui/src/form/FormInputGroup.ts',
+        'packages/ui/src/form/FormSlot.ts',
+        'packages/ui/src/form/with-form.ts',
+        'packages/ui/src/navigation/NavigationIconRenderer.ts',
+        'packages/ui/src/sidebar/SidebarAnnotation.vue',
+        'packages/ui/src/sidebar/SidebarFileContent.vue',
+        'packages/ui/src/sidebar/SidebarImageUploadNodeView.vue',
+        'packages/ui/src/sidebar/SidebarMCPConfigure.vue',
+      ],
+      thresholds: {
+        perFile: true,
+        statements: 100,
+        branches: 100,
+        functions: 100,
+        lines: 100,
+      },
     },
   },
 });
