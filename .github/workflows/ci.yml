@@ -46,7 +46,7 @@ jobs:
         env:
           PARITY_IGNORE_HOST_BASELINES: '1'
       - uses: actions/upload-artifact@v4
-        if: failure()
+        if: failure() || cancelled()
         with:
           name: linux-parity-failure
           path: |

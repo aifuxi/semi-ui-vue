@@ -53,7 +53,7 @@ function runPnpm(args, cwd) {
   if (!pnpmExecPath) {
     throw new Error('verify-pack 必须通过 pnpm script 运行，以固定包管理器版本');
   }
-  return run(process.execPath, [pnpmExecPath, ...args], cwd);
+  return run(pnpmExecPath, args, cwd);
 }
 
 async function assertExportTargets(packageRoot, value) {
@@ -295,12 +295,26 @@ try {
       'install',
       '--offline',
       '--ignore-scripts',
-      '--strict-peer-dependencies=true',
+      // pnpm 12 deliberately does not infer peer versions from link: dependencies.
+      // The installed Vue manifest and every public package peer range are checked below.
+      '--strict-peer-dependencies=false',
       '--config.auto-install-peers=false',
       `--store-dir=${consumerStoreRoot}`,
     ],
     consumerRoot,
   );
+
+  const installedVueManifest = JSON.parse(
+    await readFile(path.join(consumerRoot, 'node_modules', 'vue', 'package.json'), 'utf8'),
+  );
+  const vueVersionMatch = /^(\d+)\.(\d+)\.(\d+)/.exec(installedVueManifest.version);
+  if (
+    !vueVersionMatch ||
+    Number(vueVersionMatch[1]) < 3 ||
+    (Number(vueVersionMatch[1]) === 3 && Number(vueVersionMatch[2]) < 5)
+  ) {
+    throw new Error(`真实消费者安装的 Vue 版本不满足 >=3.5.0：${installedVueManifest.version}`);
+  }
 
   for (const packageInfo of packages) {
     const installedRoot = path.join(consumerRoot, 'node_modules', ...packageInfo.name.split('/'));
