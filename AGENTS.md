@@ -1,5 +1,22 @@
 # 项目协作约束
 
+本文件保留所有任务都应遵守的项目约束。代码新增、修改、修复、重构或测试使用
+[`ai-change-workflow`](.agents/skills/ai-change-workflow/SKILL.md) Skill；团队层面的 Ownership、
+Intent Review 与理解预算见 [`docs/ai-governance.md`](docs/ai-governance.md)。
+
+## 通用 AI 协作约束
+
+- 以用户目标和明确的验收标准为完成依据，不为未定义的“完美”扩大范围；步骤与目标冲突时先回到目标。
+- 不把当前任务授权扩展到无关文件、外部系统、生产环境或其他人员。信息足以安全推进时作合理假设；会显著改变结果或外部状态时再请求确认。
+- 对环境、依赖、源码和运行行为的结论给出可复核证据，并明确区分已验证事实、推断和未验证假设。
+- 只有实际执行相应验证，才能声称“能运行”“测试通过”或“已修复”。
+- 回复、报告和说明使用中文；代码标识符、日志及约定俗成的技术术语保留英文。
+- 直接给出结果和必要依据，避免客套、逐文件复述和冗长总结；重要取舍给出推荐方案、理由和可行备选。
+- 优先选择满足需求的最小实现，保持现有风格并保护用户已有修改。
+- 注释解释意图、约束、边界或非显然取舍；保留仍然有效的注释，并随代码变化更新或删除失效注释。
+- 修改公共 API、持久化数据、安全边界、生产行为、依赖方向或核心架构前，必须说明候选方案、影响和回退方式并由人确认。
+- 纯问答、只读调查和不产生交付物的讨论不强制生成工作报告。
+
 ## Semi Design 参考基线
 
 - Semi Design 唯一参考基线是只读 Git submodule：`vendor/semi-design`。
@@ -78,6 +95,15 @@ git -C vendor/semi-design describe --tags --exact-match
 - 所有公开包必须 SSR-safe import；适用组件必须验证 SSR render/hydration，DOM 查询、Portal、Observer 和全局事件只能在客户端生命周期内创建并完整清理。
 - Portal、浮层和定位组件必须验证自定义容器首次挂载、Element/Document capture scroll 后重定位与卸载清理；不得在缺少上游证据时把事件目标收窄为 `Element`。
 
+## 测试与门禁
+
+- `failOnFlakyTests`（CI 环境已启用）和 `retries: 2` 是防抖基础配置。一个只在单独运行时通过的 spec 是 spec 的缺陷，不是 runner 不稳定——修复 spec 或添加确定性 fixture，而非增加 retries。
+- 每个组件完成 = 对齐矩阵 + Vue 源码/类型 + 中英文文档与迁移表 + 黑盒单测 + Chromium 行为/键盘/焦点/ARIA/Portal/动效测试 + SSR 证据 + React/Vue computed style 与截图对照 + npm pack 验证。
+- 测试优先公开行为，不把私有 state/method 或 Foundation spy 当主证据；快照必须与行为断言配对。
+- Teleport/真实焦点/拖拽/ResizeObserver/computed style/动画不能用 jsdom 结果代替 Chromium 证据。
+- 桌面优先矩阵（ADR 0013）：默认 1440×900 DPR1 light/dark；仅上游契约明确依赖时才加 390×844 narrow/触摸专项。
+
 ## Git
 
-- Git commit message 优先使用简体中文 Conventional Commit。
+- 提交前检查工作区状态与最终 diff，只暂存本次任务相关文件，不覆盖或提交用户的无关修改。
+- commit 信息应准确描述本次变更；没有实际提交成功时不得声称已经提交。

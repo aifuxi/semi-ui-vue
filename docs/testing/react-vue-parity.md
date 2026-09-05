@@ -51,6 +51,12 @@ React 页面只允许从只读 `vendor/semi-design` 的固定 v2.102.0 源码构
 
 ## 运行入口
 
+`pnpm test:browser` 默认使用开发服务器，适合单组件迭代；`pnpm test:browser:built` 先构建两个工作台再运行同一套测试。CI 浏览器 job 使用 `PARITY_SERVER_MODE=build`，本地可用 `PARITY_SERVER_MODE=dev` 对照或回退。worker 数量、重试、flaky 门禁和视觉阈值不随服务模式改变。
+
+预构建保留 development 运行模式及 React 诊断，不等于生产包测试；生产构建与真实包安装仍由 `pnpm check` 验证。每次运行验证固定 vendor、生成独立临时产物，禁止复用已有服务。构建适配只补齐 Prism 的显式初始化依赖，以及 JSON Worker 消息入口的 sideEffects 元数据，不修改 vendor 或组件。
+
+预构建的来源证据由 `parity-provenance.json` 记录实际代码块模块及被优化掉的静态转导出入口。测试只认可当前页面实际请求的代码块，不把未请求的动态代码块算作来源；映射缺失必须失败。开发模式继续直接验证源码请求。`pnpm benchmark:parity dev`（也支持 `warm`、`build`）是单独的加载实验，不替代本节的完整门禁，其生产构建实验与正式预构建开发模式的耗时不可直接互换。
+
 两个应用使用相同查询参数：
 
 - `scenario`：共享场景 ID。
@@ -75,11 +81,11 @@ vendor/semi-design/packages/semi-ui/button/index.tsx
 
 Button 的运行依赖使用固定版本，并通过 alias 保证从参考应用解析。样式由 Sass 1.54.9 将主题 Token、global、Button、IconButton 和 icons SCSS 编译为虚拟 CSS 模块；上游 TSX 的对应副作用样式导入仅做去重。这样既不修改 vendor，也不要求 Vite 8 调用已移除的旧 Sass API。
 
-浏览器测试监听真实模块请求，要求 Button 公开入口的请求 URL 落在上述 vendor 路径；同时独立断言 `.semi-button-*` 公开 class、32px 默认高度、3px 圆角、字体、内边距与点击行为。
+浏览器测试监听真实模块请求，开发模式要求 Button 公开入口的请求 URL 落在上述 vendor 路径，预构建模式则核对已请求代码块的来源映射；同时独立断言 `.semi-button-*` 公开 class、32px 默认高度、3px 圆角、字体、内边距与点击行为。
 
 Vue 文档应用从 `@aifuxi/semi-ui-vue` 源码入口消费 Button，并通过 `packages/theme-default/vite-plugin.ts` 使用 Sass 1.54.9 编译逐组件样式。插件只存在于主题构建边界，Vue 组件源码没有 `vendor/**` 引用。React/Vue 的 Button 类型与合同截图在全部样式、几何、状态和来源断言通过后生成；同场景对应图片的 SHA-256 完全一致。
 
-Vue 对照场景必须从 `@aifuxi/semi-ui-vue/<component>` 公开子路径导入。场景注册仍使用 `import.meta.glob` 按需加载，但禁止场景回到组件包根入口，否则 Vite 开发服务会沿根入口的全部 re-export 展开整个组件库。工作台以 Divider 场景不超过 200 个浏览器请求作为回归门禁，并同时断言请求包含 `divider/index.ts`、不包含组件包根 `index.ts`。
+Vue 对照场景必须从 `@aifuxi/semi-ui-vue/<component>` 公开子路径导入。场景注册仍使用 `import.meta.glob` 按需加载，但禁止场景回到组件包根入口，否则 Vite 开发服务会沿根入口的全部 re-export 展开整个组件库。工作台以 Divider 场景不超过 200 个浏览器请求作为回归门禁，并同时断言请求来源包含 `divider/index.ts`、不包含组件包根 `index.ts`；两种服务模式都保留此检查。
 
 ## 新增组件场景
 

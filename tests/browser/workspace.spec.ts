@@ -5,7 +5,12 @@ import {
   PARITY_VIEWPORTS,
   REFERENCE_BASELINE,
 } from '../../packages/test-infra/src';
-import { expectComparableTarget, openParityPages, PARITY_APPLICATIONS } from './parity-harness';
+import {
+  expectComparableTarget,
+  openParityPages,
+  PARITY_APPLICATIONS,
+  requestedSourcePaths,
+} from './parity-harness';
 
 test('React 与 Vue 工作台在同一 Chromium 上下文中可用', async ({ context }) => {
   assertScenarioComparable('harness-calibration');
@@ -65,10 +70,10 @@ test('Vue 工作台只加载当前场景的公开组件子路径', async ({ page
   await expect(page.getByTestId('divider-vue')).toBeVisible();
   await page.waitForLoadState('networkidle');
 
-  const requestedPaths = requestedUrls.map((url) => new URL(url).pathname);
-  expect(requestedPaths.some((path) => path.endsWith('/packages/ui/src/divider/index.ts'))).toBe(
+  const requestedPaths = await requestedSourcePaths(requestedUrls, PARITY_APPLICATIONS.vue.baseUrl);
+  expect(requestedPaths.some((path) => path.endsWith('packages/ui/src/divider/index.ts'))).toBe(
     true,
   );
-  expect(requestedPaths.some((path) => path.endsWith('/packages/ui/src/index.ts'))).toBe(false);
+  expect(requestedPaths.some((path) => path.endsWith('packages/ui/src/index.ts'))).toBe(false);
   expect(requestedUrls.length).toBeLessThanOrEqual(200);
 });

@@ -176,6 +176,12 @@ test('Pagination React/Vue 页码、快速跳页、容量 Select、Popover、样
     vuePopover.boundingBox(),
   ]);
   expect(vueStyle).toEqual(reactStyle);
+  // Completed portal motion must release its transform, as upstream CSSAnimation does.
+  // A retained transform changes Linux Chromium text rasterization even at scale(1).
+  for (const popover of [reactPopover, vuePopover]) {
+    await expect(popover).toHaveCSS('animation-name', 'none');
+    await expect(popover).toHaveCSS('transform', 'none');
+  }
   if (!reactBox || !vueBox) throw new Error('Pagination Popover 不可测量');
   for (const axis of ['x', 'y', 'width', 'height'] as const) {
     expect(

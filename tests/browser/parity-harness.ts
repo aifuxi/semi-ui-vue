@@ -1,4 +1,5 @@
 import { expect, type BrowserContext, type Locator, type Page } from '@playwright/test';
+import { requestedBuildSources } from '../../scripts/parity-build-provenance.mjs';
 import {
   assertScenarioComparable,
   createParityScenarioUrl,
@@ -120,7 +121,12 @@ export async function captureComputedStyle(
 
 export async function waitForTargetStable(locator: Locator): Promise<void> {
   await locator.evaluate(async (element) => {
-    const finiteAnimations = element.getAnimations({ subtree: true }).filter((animation) => {
+    // Portal ancestors can move this target even when the target itself has no animation.
+    const relevantAnimations = new Set(element.getAnimations({ subtree: true }));
+    for (let ancestor = element.parentElement; ancestor; ancestor = ancestor.parentElement) {
+      for (const animation of ancestor.getAnimations()) relevantAnimations.add(animation);
+    }
+    const finiteAnimations = [...relevantAnimations].filter((animation) => {
       const endTime = animation.effect?.getComputedTiming().endTime;
       return (
         typeof endTime === 'number' &&
@@ -133,7 +139,7 @@ export async function waitForTargetStable(locator: Locator): Promise<void> {
       finiteAnimations.map((animation) => animation.finished.catch(() => undefined)),
     );
 
-    const infiniteAnimations = element.getAnimations({ subtree: true }).filter((animation) => {
+    const infiniteAnimations = [...relevantAnimations].filter((animation) => {
       const endTime = animation.effect?.getComputedTiming().endTime;
       return typeof endTime === 'number' && !Number.isFinite(endTime);
     });
@@ -312,11 +318,37 @@ export async function expectComparableTarget(
   expectComparableGeometry(vueGeometry, reactGeometry, `${scenarioId}/${targetId}`);
 }
 
-export function referenceSourceWasRequested(
+const buildManifests = new Map<string, Promise<unknown>>();
+
+export async function requestedSourcePaths(
+  requestedUrls: readonly string[],
+  baseUrl: string,
+): Promise<string[]> {
+  if (process.env.PARITY_SERVER_MODE !== 'build') {
+    return requestedUrls
+      .filter((url) => new URL(url).origin === new URL(baseUrl).origin)
+      .map((url) => decodeURIComponent(new URL(url).pathname));
+  }
+  let manifest = buildManifests.get(baseUrl);
+  if (!manifest) {
+    manifest = fetch(new URL('/parity-provenance.json', baseUrl), {
+      signal: AbortSignal.timeout(5000),
+    }).then(async (response) => {
+      if (!response.ok) throw new Error(`Missing parity provenance: ${response.status}`);
+      return response.json();
+    });
+    buildManifests.set(baseUrl, manifest);
+  }
+  return requestedBuildSources(requestedUrls, baseUrl, await manifest);
+}
+
+export async function referenceSourceWasRequested(
   requestedUrls: readonly string[],
   scenarioId: ParityScenarioId,
-): boolean {
+): Promise<boolean> {
   const source = getParityScenario(scenarioId).referenceSource;
   if (!source) return false;
-  return requestedUrls.some((url) => decodeURIComponent(url).includes(source));
+  return (await requestedSourcePaths(requestedUrls, PARITY_APPLICATIONS.react.baseUrl)).some(
+    (path) => path.includes(source),
+  );
 }

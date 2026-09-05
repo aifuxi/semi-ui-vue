@@ -1,7 +1,16 @@
 /* eslint-disable vue/one-component-per-file -- test hosts exercise controlled state, template Boolean props, and hydration. */
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { createSSRApp, defineComponent, h, nextTick, shallowRef } from 'vue';
+import {
+  Comment,
+  Fragment,
+  Text,
+  createSSRApp,
+  defineComponent,
+  h,
+  nextTick,
+  shallowRef,
+} from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
 import { Button } from '../button';
@@ -29,6 +38,102 @@ describe('Tooltip', () => {
     document.body.replaceChildren();
     vi.restoreAllMocks();
   });
+
+  it('自身动画结束清理 class，忽略内容冒泡动画，并可再次关闭和打开', async () => {
+    const afterClose = vi.fn();
+    const wrapper = mount(Tooltip, {
+      props: {
+        content: h('span', { id: 'animated-content' }, '动画内容'),
+        trigger: 'custom',
+        visible: true,
+        motion: true,
+        keepDOM: true,
+        onAfterClose: afterClose,
+      },
+      slots: { default: '<button>触发</button>' },
+    });
+    await flushTooltip();
+    const popup = document.body.querySelector<HTMLElement>('.semi-tooltip-wrapper')!;
+    const content = popup.querySelector('#animated-content')!;
+    expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
+    content.dispatchEvent(new Event('animationstart', { bubbles: true }));
+    content.dispatchEvent(new Event('animationend', { bubbles: true }));
+    await nextTick();
+    expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
+    popup.dispatchEvent(new Event('animationstart'));
+    popup.dispatchEvent(new Event('animationend'));
+    await nextTick();
+    expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(false);
+    expect(popup.textContent).toContain('动画内容');
+    await wrapper.setProps({ visible: false });
+    await flushTooltip();
+    expect(popup.classList.contains('semi-tooltip-animation-hide')).toBe(true);
+    popup.dispatchEvent(new Event('animationstart'));
+    popup.dispatchEvent(new Event('animationend'));
+    await flushTooltip();
+    expect(popup.style.display).toBe('none');
+    expect(afterClose).toHaveBeenCalledOnce();
+    await wrapper.setProps({ visible: true });
+    await flushTooltip();
+    expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
+    popup.dispatchEvent(new Event('animationend'));
+    await nextTick();
+    expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(false);
+    wrapper.unmount();
+  });
+
+  it('content slot 优先，slot 变空后回退到 content prop', async () => {
+    const showSlot = shallowRef(true);
+    const wrapper = mount(Tooltip, {
+      props: { content: '备用内容', visible: true, trigger: 'custom', motion: false },
+      slots: {
+        default: '<button>触发</button>',
+        content: () => (showSlot.value ? h('span', '插槽内容') : h(Comment)),
+      },
+    });
+    await flushTooltip();
+    const popup = document.body.querySelector<HTMLElement>('[role="tooltip"]')!;
+    expect(popup.textContent).toContain('插槽内容');
+    expect(popup.textContent).not.toContain('备用内容');
+    showSlot.value = false;
+    await flushTooltip();
+    expect(popup.textContent).toContain('备用内容');
+    expect(popup.textContent).not.toContain('插槽内容');
+    wrapper.unmount();
+  });
+
+  it('箭头 slot 忽略空白和注释、展开 Fragment，并保留嵌套数组节点', async () => {
+    const wrapper = mount(Tooltip, {
+      props: { content: '说明', visible: true, trigger: 'custom', motion: false },
+      slots: {
+        default: '<button>触发</button>',
+        arrow: () => [
+          h(Comment),
+          h(Text, null, '  '),
+          h(Fragment, null, [[h('i', { class: 'nested-arrow' })]]),
+        ],
+      },
+    });
+    await flushTooltip();
+    expect(document.body.querySelectorAll('.nested-arrow')).toHaveLength(1);
+    expect(document.body.querySelector('.semi-tooltip-icon-arrow')).toBeNull();
+    wrapper.unmount();
+  });
+
+  it.each(['background-color: red', [{ backgroundColor: 'red' }]])(
+    '字符串或数组 style 保持弹层样式且默认箭头可渲染：%j',
+    async (style) => {
+      const wrapper = mount(Tooltip, {
+        props: { content: '说明', visible: true, trigger: 'custom', motion: false, style },
+        slots: { default: '<button>触发</button>' },
+      });
+      await flushTooltip();
+      const popup = document.body.querySelector<HTMLElement>('.semi-tooltip-wrapper')!;
+      expect(popup.style.backgroundColor).toBe('red');
+      expect(popup.querySelector('svg')).not.toBeNull();
+      wrapper.unmount();
+    },
+  );
 
   it('SSR 只渲染 trigger，并在显式 wrapperId 下输出稳定 ARIA', async () => {
     const html = await renderToString(

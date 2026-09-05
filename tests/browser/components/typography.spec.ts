@@ -63,7 +63,13 @@ test('Typography 标题、装饰、链接、数值、复制、样式和几何契
     ),
   );
   expect(vueEllipsisText).toBe(reactEllipsisText);
-  expect(reactEllipsisText).toBe('Expandable typography content...');
+  // The fallback font for the Chinese expand label differs across hosts, changing
+  // the space left for text. The pinned React implementation in this Chromium
+  // environment is the oracle, not a hard-coded macOS truncation boundary.
+  const fullText = 'Expandable typography content keeps keyboard and collapse behavior aligned.';
+  expect(reactEllipsisText).toMatch(/^.+\.\.\.$/);
+  expect(fullText.startsWith(reactEllipsisText!.slice(0, -3))).toBe(true);
+  expect(reactEllipsisText!.length).toBeLessThan(fullText.length);
   expect(assertScenarioComparable('typography').targets).toHaveLength(10);
   for (const target of assertScenarioComparable('typography').targets) {
     await expectComparableTarget(pair, 'typography', target.id);
@@ -115,6 +121,7 @@ test('Typography 标题、装饰、链接、数值、复制、样式和几何契
       'Expandable typography content keeps keyboard and collapse behavior aligned.',
     );
     await jsEllipsis.getByRole('button', { name: '收起' }).press('Enter');
+    await expect(jsEllipsis.locator('span').first()).toHaveText(reactEllipsisText!);
   }
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);
@@ -134,6 +141,20 @@ for (const viewportName of ['desktop'] as const) {
         pair.react.page.setViewportSize({ width: viewport.width, height: viewport.height }),
         pair.vue.page.setViewportSize({ width: viewport.width, height: viewport.height }),
       ]);
+      const reactCollapsed = pair.react.page.locator(
+        '[data-parity-target="typography-js-ellipsis"]',
+      );
+      const vueCollapsed = pair.vue.page.locator('[data-parity-target="typography-js-ellipsis"]');
+      await expect(vueCollapsed).toHaveText((await reactCollapsed.textContent())!);
+      const [reactCollapsedScreenshot, vueCollapsedScreenshot] = await Promise.all([
+        reactCollapsed.screenshot({ animations: 'disabled' }),
+        vueCollapsed.screenshot({ animations: 'disabled' }),
+      ]);
+      await expectScreenshotPixelsToMatch(
+        pair.react.page,
+        vueCollapsedScreenshot,
+        reactCollapsedScreenshot,
+      );
       await Promise.all(
         [pair.react.page, pair.vue.page].map(async (parityPage) => {
           const jsEllipsis = parityPage.locator('[data-parity-target="typography-js-ellipsis"]');

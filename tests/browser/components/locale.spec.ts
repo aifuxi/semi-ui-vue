@@ -11,6 +11,7 @@ import {
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
+  requestedSourcePaths,
 } from '../parity-harness';
 
 test('Locale 参考场景来自本地 v2.102.0 Provider 与语言源', async ({ page }) => {
@@ -39,16 +40,13 @@ test('Locale 参考场景来自本地 v2.102.0 Provider 与语言源', async ({ 
     'en-GB · GBP · Start Time · en-GB',
   );
   await expect(page.getByTestId('locale-reference')).toContainText('ja-JP · JPY · ページへ · ja');
-  expect(
-    requestedUrls.some((url) =>
-      decodeURIComponent(url).includes(REFERENCE_SOURCE_PATHS.localeEnGBSource),
-    ),
-  ).toBe(true);
-  expect(
-    requestedUrls.some((url) =>
-      decodeURIComponent(url).includes(REFERENCE_SOURCE_PATHS.localeJaJPSource),
-    ),
-  ).toBe(true);
+  const sources = await requestedSourcePaths(requestedUrls, PARITY_APPLICATIONS.react.baseUrl);
+  expect(sources.some((source) => source.includes(REFERENCE_SOURCE_PATHS.localeEnGBSource))).toBe(
+    true,
+  );
+  expect(sources.some((source) => source.includes(REFERENCE_SOURCE_PATHS.localeJaJPSource))).toBe(
+    true,
+  );
   expect(runtimeErrors).toEqual([]);
 });
 
