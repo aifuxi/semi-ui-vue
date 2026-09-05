@@ -4,8 +4,10 @@ import {
   Fragment,
   Text,
   computed,
+  h,
   isVNode,
   nextTick,
+  renderSlot,
   shallowRef,
   useSlots,
   watch,
@@ -48,6 +50,21 @@ defineSlots<{
 }>();
 const slots = useSlots();
 const animationFinished = shallowRef(false);
+
+// Keep the fallback as a named source function. The template-generated callback
+// receives inconsistent V8 source ranges across workers when the slot overrides it.
+function renderContentFallback(): VNode[] {
+  return [h(TooltipNodeRenderer, { content: props.content })];
+}
+
+function ContentRenderer(): VNode {
+  return renderSlot(
+    slots,
+    'content',
+    { initialFocusRef: props.initialFocusRef },
+    renderContentFallback,
+  );
+}
 
 const transitionClass = computed(() => {
   if (
@@ -205,9 +222,7 @@ watch(
         @animationend.self="handleAnimationEnd"
       >
         <div :class="`${prefixCls}-content`">
-          <slot name="content" :initial-focus-ref="initialFocusRef">
-            <TooltipNodeRenderer :content="content" />
-          </slot>
+          <ContentRenderer />
         </div>
         <template v-if="showArrow">
           <TooltipNodeRenderer v-if="customArrowNodes.length" :content="customArrowNodes" />
