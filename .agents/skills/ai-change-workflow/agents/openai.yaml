@@ -1,0 +1,3 @@
+interface:
+  display_name: "AI 变更工作流"
+  short_description: "调查、实施、验证并交付可维护的代码变更"
