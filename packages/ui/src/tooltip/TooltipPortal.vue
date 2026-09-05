@@ -6,6 +6,7 @@ import {
   computed,
   isVNode,
   nextTick,
+  shallowRef,
   useSlots,
   watch,
   type ComponentPublicInstance,
@@ -46,9 +47,15 @@ defineSlots<{
   content?: (props: { initialFocusRef: TooltipInitialFocusRef }) => VNodeChild;
 }>();
 const slots = useSlots();
+const animationFinished = shallowRef(false);
 
 const transitionClass = computed(() => {
-  if (!props.motion || !props.state.isPositionUpdated || !props.state.transitionState)
+  if (
+    animationFinished.value ||
+    !props.motion ||
+    !props.state.isPositionUpdated ||
+    !props.state.transitionState
+  )
     return undefined;
   return `${props.prefixCls}-animation-${props.state.transitionState === 'enter' ? 'show' : 'hide'}`;
 });
@@ -151,12 +158,16 @@ function handleAnimationStart(): void {
 }
 
 function handleAnimationEnd(): void {
+  // Match the pinned CSSAnimation adapter: release the completed animation's
+  // transform so the portal returns to its normal text rasterization layer.
+  animationFinished.value = true;
   if (props.state.transitionState) emit('animationEnd', props.state.transitionState);
 }
 
 watch(
   () => [props.state.transitionState, props.motion, props.state.isPositionUpdated] as const,
   ([state, motion, positioned], previous) => {
+    animationFinished.value = false;
     if (!state) return;
     const changed =
       !previous || previous[0] !== state || previous[1] !== motion || previous[2] !== positioned;
@@ -190,8 +201,8 @@ watch(
         :style="wrapperStyle"
         :role="role"
         :x-placement="state.placement"
-        @animationstart="handleAnimationStart"
-        @animationend="handleAnimationEnd"
+        @animationstart.self="handleAnimationStart"
+        @animationend.self="handleAnimationEnd"
       >
         <div :class="`${prefixCls}-content`">
           <slot name="content" :initial-focus-ref="initialFocusRef">
