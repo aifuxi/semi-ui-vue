@@ -1,0 +1,200 @@
+{
+  "upstream": "input/taginput",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "tag-input/zh-cn/Basic",
+      "enUS": "tag-input/en-us/Basic",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 2,
+      "zhCN": "tag-input/zh-cn/BatchAdd",
+      "enUS": "tag-input/en-us/BatchAdd",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 3,
+      "zhCN": "tag-input/zh-cn/Clear",
+      "enUS": "tag-input/en-us/Clear",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 4,
+      "zhCN": "tag-input/zh-cn/Disabled",
+      "enUS": "tag-input/en-us/Disabled",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 5,
+      "zhCN": "tag-input/zh-cn/Size",
+      "enUS": "tag-input/en-us/Size",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 6,
+      "zhCN": "tag-input/zh-cn/Validation",
+      "enUS": "tag-input/en-us/Validation",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 7,
+      "zhCN": "tag-input/zh-cn/Affixes",
+      "enUS": "tag-input/en-us/Affixes",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 8,
+      "zhCN": "tag-input/zh-cn/AddOnBlur",
+      "enUS": "tag-input/en-us/AddOnBlur",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。 对应英文第 9 个 live Demo（Autocomplete）。"
+    },
+    {
+      "index": 9,
+      "zhCN": "tag-input/zh-cn/Unique",
+      "enUS": "tag-input/en-us/Unique",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。 对应英文第 8 个 live Demo（Allow Duplicates）。"
+    },
+    {
+      "index": 10,
+      "zhCN": "tag-input/zh-cn/Limits",
+      "enUS": "tag-input/en-us/Limits",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 11,
+      "zhCN": "tag-input/zh-cn/MaxTagCount",
+      "enUS": "tag-input/en-us/MaxTagCount",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 12,
+      "zhCN": "tag-input/zh-cn/Controlled",
+      "enUS": "tag-input/en-us/Controlled",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 13,
+      "zhCN": "tag-input/zh-cn/ControlledInput",
+      "enUS": "tag-input/en-us/ControlledInput",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 14,
+      "zhCN": "tag-input/zh-cn/Callbacks",
+      "enUS": "tag-input/en-us/Callbacks",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 15,
+      "zhCN": "tag-input/zh-cn/Focus",
+      "enUS": "tag-input/en-us/Focus",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 16,
+      "zhCN": "tag-input/zh-cn/Custom",
+      "enUS": "tag-input/en-us/Custom",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。 头像采用本项目 public/demos/photo.svg、one.svg、two.svg，经本地 assets.ts 数据 URL 供 REPL。原始远程头像未引入，不宣称视觉已验收。"
+    },
+    {
+      "index": 17,
+      "zhCN": "tag-input/zh-cn/Draggable",
+      "enUS": "tag-input/en-us/Draggable",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "headings": [
+        "代码演示",
+        "如何引入",
+        "基本演示",
+        "批量添加",
+        "批量删除",
+        "禁用",
+        "尺寸大小",
+        "不同校验状态样式",
+        "前缀 / 后缀",
+        "失焦后自动创建标签",
+        "过滤重复标签",
+        "输入限制",
+        "限制标签展示数量",
+        "标签受控",
+        "输入受控",
+        "回调",
+        "焦点管理",
+        "自定义标签渲染",
+        "拖拽排序",
+        "API 参考",
+        "TagInput",
+        "TagInputRestPopover",
+        "事件",
+        "TagInput",
+        "插槽与类型",
+        "Methods",
+        "Accessibility",
+        "ARIA",
+        "键盘和焦点",
+        "设计变量",
+        "React → Vue 迁移",
+        "FAQ",
+        "标签和输入文字如何分别受控？",
+        "为什么拖拽前要禁止重复值？"
+      ]
+    },
+    {
+      "locale": "en-us",
+      "headings": [
+        "Demos",
+        "How to import",
+        "Basic Usage",
+        "Batch Add",
+        "Batch Remove",
+        "Disabled",
+        "Size",
+        "Different validate status",
+        "Prefix / Suffix",
+        "Allow Duplicates",
+        "Autocomplete",
+        "Limits",
+        "Limit the number of tags displayed",
+        "Controlled Tag",
+        "Controlled Input",
+        "Callback",
+        "Focus Management",
+        "Custom TagInput rendering",
+        "Drag to sort",
+        "API Reference",
+        "TagInput",
+        "TagInputRestPopover",
+        "Events",
+        "TagInput",
+        "Slots and types",
+        "Methods",
+        "Accessibility",
+        "ARIA",
+        "Keyboard and focus",
+        "Design Tokens",
+        "React → Vue migration",
+        "FAQ",
+        "How are tags and input text controlled independently?",
+        "Why must duplicate values be disabled before dragging?"
+      ]
+    },
+    {
+      "source": "自定义标签上游头像引用",
+      "originalUrls": [
+        "https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/avatarDemo.jpeg",
+        "https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/bf8647bffab13c38772c9ff94bf91a9d.jpg",
+        "https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/dbf7351bb779433d17c4f50478cf42f7.jpg",
+        "https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/7abf810ff060ac3387bd027ead92c4e0.jpg",
+        "https://lf3-static.bytednsdoc.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/dy.png"
+      ],
+      "replacement": "tag-input/assets.ts",
+      "reason": "使用项目已有确定性本地插图，避免许可不明的远程素材；保留演示标签和交互。"
+    }
+  ],
+  "exclusions": []
+}

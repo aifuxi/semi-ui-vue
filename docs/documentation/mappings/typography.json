@@ -1,0 +1,88 @@
+{
+  "upstream": "basic/typography",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "typography/zh-cn/Title",
+      "enUS": "typography/en-us/Title",
+      "notes": "保留 h1-h6 及上下 8px margin。"
+    },
+    {
+      "index": 2,
+      "zhCN": "typography/zh-cn/Text",
+      "enUS": "typography/en-us/Text",
+      "notes": "保留全部文本颜色与 disabled/mark/code/underline/delete/strong。"
+    },
+    {
+      "index": 3,
+      "zhCN": "typography/zh-cn/Link",
+      "enUS": "typography/en-us/Link",
+      "notes": "icon ReactNode 改为 icon slot；保留链接对象及 underline。"
+    },
+    {
+      "index": 4,
+      "zhCN": "typography/zh-cn/Paragraph",
+      "enUS": "typography/en-us/Paragraph",
+      "notes": "保留 normal/extended 段落行距。"
+    },
+    {
+      "index": 5,
+      "zhCN": "typography/zh-cn/Numeral",
+      "enUS": "typography/en-us/Numeral",
+      "notes": "保留科学计数输入、百分比、两种字节规则及精度；含 p 子节点的 Numeral 用 component=div 避免无效块级 HTML。"
+    },
+    {
+      "index": 6,
+      "zhCN": "typography/zh-cn/Parser",
+      "enUS": "typography/en-us/Parser",
+      "notes": "保留 parserTCH、四项统计及链接；React 函数组件改为 v-for，保留嵌套数字节点。"
+    },
+    {
+      "index": 7,
+      "zhCN": "typography/zh-cn/Size",
+      "enUS": "typography/en-us/Size",
+      "notes": "保留 normal/small/嵌套 inherit 三种尺寸。"
+    },
+    {
+      "index": 8,
+      "zhCN": "typography/zh-cn/Copyable",
+      "enUS": "typography/en-us/Copyable",
+      "notes": "默认/自定义内容、回调、时间戳、图标和 render 六组复制场景全部保留；自定义图标使用 copyIcon slot，copyable.render 使用 Vue h 保留成功状态下再次复制；Toast 真实公开导入；当前时间戳在 onMounted 读取避免 SSR 不一致。"
+    },
+    {
+      "index": 9,
+      "zhCN": "typography/zh-cn/Ellipsis",
+      "enUS": "typography/en-us/Ellipsis",
+      "notes": "保留九组省略场景；renderTooltip 改 tooltip scoped slot。当前 Vue 默认浮层不读取 opts.content，自定义内容通过公开 tooltip slot；英文补齐中文单词断行示例。"
+    },
+    {
+      "index": 10,
+      "zhCN": "typography/zh-cn/TooltipWrapping",
+      "enUS": "typography/en-us/TooltipWrapping",
+      "notes": "保留默认、class、style 三种浮层断行对照；opts.content 使用公开 tooltip slot；示例 CSS 随 SFC 一并运行。"
+    }
+  ],
+  "chapters": [
+    "使用场景",
+    "代码演示",
+    "如何引入",
+    "标题组件",
+    "文本组件",
+    "段落组件",
+    "数值组件",
+    "文本大小",
+    "可复制文本",
+    "省略文本",
+    "API参考",
+    "Typography.Text",
+    "Typography.Title",
+    "Typography.Paragraph",
+    "Typography.Numeral",
+    "Ellipsis Config",
+    "Copyable Config",
+    "文案规范",
+    "设计变量",
+    "FAQ"
+  ],
+  "exclusions": []
+}

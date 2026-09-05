@@ -1,0 +1,73 @@
+{
+  "upstream": "show/timeline",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "timeline/zh-cn/Basic",
+      "enUS": "timeline/en-us/Basic",
+      "notes": "保留三个日期与节点内容，Item 以 TimelineItem 导入。"
+    },
+    {
+      "index": 2,
+      "zhCN": "timeline/zh-cn/Types",
+      "enUS": "timeline/en-us/Types",
+      "notes": "保留 ongoing/success/error 节点。"
+    },
+    {
+      "index": 3,
+      "zhCN": "timeline/zh-cn/Custom",
+      "enUS": "timeline/en-us/Custom",
+      "notes": "dot 改 dot 插槽；保留图标、自定义粉色与18px节点内容。"
+    },
+    {
+      "index": 4,
+      "zhCN": "timeline/zh-cn/Left",
+      "enUS": "timeline/en-us/Left",
+      "notes": "保留 left 模式四个日期、说明与内容。"
+    },
+    {
+      "index": 5,
+      "zhCN": "timeline/zh-cn/Center",
+      "enUS": "timeline/en-us/Center",
+      "notes": "保留 center 模式四个日期、说明与内容。"
+    },
+    {
+      "index": 6,
+      "zhCN": "timeline/zh-cn/Alternate",
+      "enUS": "timeline/en-us/Alternate",
+      "notes": "保留 alternate 模式四个日期、说明与内容。"
+    },
+    {
+      "index": 7,
+      "zhCN": "timeline/zh-cn/Right",
+      "enUS": "timeline/en-us/Right",
+      "notes": "保留 right 模式四个日期、说明与内容。"
+    },
+    {
+      "index": 8,
+      "zhCN": "timeline/zh-cn/DataSource",
+      "enUS": "timeline/en-us/DataSource",
+      "notes": "dataSource 使用公开 TimelineData 类型；ReactNode 改 Vue h 创建的 VNode，保留混合节点类型、图标与颜色。"
+    }
+  ],
+  "chapters": [
+    "代码演示",
+    "如何引入",
+    "基本用法",
+    "节点类型",
+    "自定义节点",
+    "时间轴位置",
+    "时间轴在左侧（默认）",
+    "时间节点在左侧",
+    "交替展现",
+    "时间轴在右侧",
+    "使用 dataSource",
+    "API 参考",
+    "TimeLine",
+    "TimeLine.Item",
+    "Accessibility",
+    "ARIA",
+    "设计变量"
+  ],
+  "exclusions": []
+}

@@ -1,0 +1,101 @@
+{
+  "upstream": "feedback/skeleton",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "skeleton/zh-cn/Basic",
+      "enUS": "skeleton/en-us/Basic",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 2,
+      "zhCN": "skeleton/zh-cn/ImageTitle",
+      "enUS": "skeleton/en-us/ImageTitle",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 3,
+      "zhCN": "skeleton/zh-cn/Statistics",
+      "enUS": "skeleton/en-us/Statistics",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 4,
+      "zhCN": "skeleton/zh-cn/AvatarTitle",
+      "enUS": "skeleton/en-us/AvatarTitle",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 5,
+      "zhCN": "skeleton/zh-cn/ParagraphButton",
+      "enUS": "skeleton/en-us/ParagraphButton",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 6,
+      "zhCN": "skeleton/zh-cn/AvatarParagraph",
+      "enUS": "skeleton/en-us/AvatarParagraph",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 7,
+      "zhCN": "skeleton/zh-cn/Table",
+      "enUS": "skeleton/en-us/Table",
+      "notes": "保留真实 Table、遮罩和三列四行 Skeleton 占位；数据中节点使用 Vue h()，不以静态 HTML 表格替代。"
+    },
+    {
+      "index": 8,
+      "zhCN": "skeleton/zh-cn/Animation",
+      "enUS": "skeleton/en-us/Animation",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "source": "vendor/semi-design/content/feedback/skeleton/index.md",
+      "headings": [
+        "## 概述",
+        "## 代码演示",
+        "### 如何引入",
+        "### 基本使用",
+        "### 组合使用",
+        "### 加载动画",
+        "## API 参考",
+        "### Skeleton",
+        "### Skeleton.Avatar",
+        "### Skeleton.Paragraph",
+        "## 文案规范",
+        "## 设计变量"
+      ],
+      "notes": "保留原有章节顺序，API 依据真实公开 Vue 类型更新；增加需要的 FAQ/无障碍与 React→Vue 映射"
+    },
+    {
+      "locale": "en-us",
+      "source": "vendor/semi-design/content/feedback/skeleton/index-en-US.md",
+      "headings": [
+        "## Overview",
+        "## Demos",
+        "### How to import",
+        "### Basic Usage",
+        "### Combinations",
+        "### Animated Loading",
+        "## API reference",
+        "### Skeleton",
+        "### Skeleton.Avatar",
+        "### Skeleton.Paragraph",
+        "## Content Guidelines",
+        "## Design Tokens"
+      ],
+      "notes": "保留原有章节顺序，API 依据真实公开 Vue 类型更新；增加需要的 FAQ/无障碍与 React→Vue 映射"
+    }
+  ],
+  "exclusions": [],
+  "assetAdaptations": [
+    {
+      "source": "上游 CDN dy.png / avatarDemo.jpeg",
+      "replacement": "/demos/photo.svg",
+      "reason": "按任务使用现有确定性本地素材，不复制品牌 Logo，不依赖远程 CDN；保持图片尺寸与布局。图片视觉内容与上游不同。"
+    }
+  ]
+}

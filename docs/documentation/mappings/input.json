@@ -1,0 +1,206 @@
+{
+  "upstream": "input/input",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "input/zh-cn/Basic",
+      "enUS": "input/en-us/Basic",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 2,
+      "zhCN": "input/zh-cn/Size",
+      "enUS": "input/en-us/Size",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 3,
+      "zhCN": "input/zh-cn/Disabled",
+      "enUS": "input/en-us/Disabled",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 4,
+      "zhCN": "input/zh-cn/Affixes",
+      "enUS": "input/en-us/Affixes",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 5,
+      "zhCN": "input/zh-cn/Addons",
+      "enUS": "input/en-us/Addons",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 6,
+      "zhCN": "input/zh-cn/Clear",
+      "enUS": "input/en-us/Clear",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 7,
+      "zhCN": "input/zh-cn/Password",
+      "enUS": "input/en-us/Password",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 8,
+      "zhCN": "input/zh-cn/Validation",
+      "enUS": "input/en-us/Validation",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 9,
+      "zhCN": "input/zh-cn/Controlled",
+      "enUS": "input/en-us/Controlled",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 10,
+      "zhCN": "input/zh-cn/Group",
+      "enUS": "input/en-us/Group",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 11,
+      "zhCN": "input/zh-cn/GroupTree",
+      "enUS": "input/en-us/GroupTree",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 12,
+      "zhCN": "input/zh-cn/TextArea",
+      "enUS": "input/en-us/TextArea",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 13,
+      "zhCN": "input/zh-cn/TextAreaHeight",
+      "enUS": "input/en-us/TextAreaHeight",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 14,
+      "zhCN": "input/zh-cn/LineNumbers",
+      "enUS": "input/en-us/LineNumbers",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 15,
+      "zhCN": "input/zh-cn/ShiftEnter",
+      "enUS": "input/en-us/ShiftEnter",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 16,
+      "zhCN": "input/zh-cn/Autosize",
+      "enUS": "input/en-us/Autosize",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 17,
+      "zhCN": "input/zh-cn/ValueLength",
+      "enUS": "input/en-us/ValueLength",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。 使用 Intl.Segmenter 代替 grapheme-splitter，示例两个 emoji 按字素均为 1，不新增生产依赖。"
+    },
+    {
+      "index": 18,
+      "zhCN": "input/zh-cn/Composition",
+      "enUS": "input/en-us/Composition",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "headings": [
+        "代码演示",
+        "如何引入",
+        "基本",
+        "三种大小",
+        "不可用",
+        "前缀/后缀",
+        "前置/后置标签",
+        "带移除图标",
+        "密码模式",
+        "校验状态",
+        "受控组件",
+        "输入框组合",
+        "多行输入框",
+        "设置 TextArea 高度",
+        "行号",
+        "使用 Shift + Enter 换行的多行输入框",
+        "自动扩展的多行输入框",
+        "自定义计算字符串长度",
+        "输入法模式",
+        "API 参考",
+        "Input",
+        "TextArea",
+        "InputGroup",
+        "InputGroupLabel",
+        "AutosizeRows",
+        "事件",
+        "Input",
+        "TextArea",
+        "InputGroup",
+        "插槽与类型",
+        "Methods",
+        "Accessibility",
+        "ARIA",
+        "键盘和焦点",
+        "设计变量",
+        "相关物料",
+        "React → Vue 迁移",
+        "FAQ",
+        "为什么中文拼音过程中会触发变更？",
+        "textareaStyle 和 style 有什么区别？"
+      ]
+    },
+    {
+      "locale": "en-us",
+      "headings": [
+        "Demos",
+        "How to import",
+        "Basic Usage",
+        "Size",
+        "Disabled",
+        "Prefix/Suffix",
+        "Addon",
+        "Clear Icon",
+        "Password Mode",
+        "Validation",
+        "Controlled Component",
+        "InputGroup",
+        "TextArea",
+        "Setting TextArea Height",
+        "Line Numbers",
+        "Line break by Shift + Enter",
+        "Autosize TextArea",
+        "Custom calculated character string length",
+        "IME Input Mode",
+        "API Reference",
+        "Input",
+        "TextArea",
+        "InputGroup",
+        "InputGroupLabel",
+        "AutosizeRows",
+        "Events",
+        "Input",
+        "TextArea",
+        "InputGroup",
+        "Slots and types",
+        "Methods",
+        "Accessibility",
+        "ARIA",
+        "Keyboard and focus",
+        "Design Tokens",
+        "Related Material",
+        "React → Vue migration",
+        "FAQ",
+        "Why does typing pinyin trigger changes?",
+        "How do textareaStyle and style differ?"
+      ]
+    }
+  ],
+  "exclusions": []
+}

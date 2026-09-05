@@ -1,0 +1,80 @@
+{
+  "upstream": "show/cropper",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "cropper/zh-cn/Basic",
+      "enUS": "cropper/en-us/Basic",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 2,
+      "zhCN": "cropper/zh-cn/AspectRatio",
+      "enUS": "cropper/en-us/AspectRatio",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 3,
+      "zhCN": "cropper/zh-cn/Controlled",
+      "enUS": "cropper/en-us/Controlled",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 4,
+      "zhCN": "cropper/zh-cn/CropBox",
+      "enUS": "cropper/en-us/CropBox",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 5,
+      "zhCN": "cropper/zh-cn/Preview",
+      "enUS": "cropper/en-us/Preview",
+      "notes": "实时预览采用模板ref返回已挂载容器；补齐上游遗漏Slider导入；保留英文上游此项原中文按钮/说明。"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "source": "vendor/semi-design/content/show/cropper/index.md",
+      "headings": [
+        "## 使用场景",
+        "## 代码演示",
+        "### 如何引入",
+        "### 基本用法",
+        "### 自定义裁切框比例",
+        "### 受控旋转/缩放图片",
+        "### 裁切框设置",
+        "### 实时预览裁切效果",
+        "### API",
+        "### Methods",
+        "## 设计变量"
+      ],
+      "notes": "保留章节顺序、说明及非live类型示例；API按实际公开Vue类型生成，补足slots/emits、FAQ、无障碍与迁移。"
+    },
+    {
+      "locale": "en-us",
+      "source": "vendor/semi-design/content/show/cropper/index-en-US.md",
+      "headings": [
+        "## When to use",
+        "## Demos",
+        "### Basic usage",
+        "### Customize crop box ratio",
+        "### Controlled rotation/zooming of images",
+        "### Crop box settings",
+        "### 实时预览裁切效果",
+        "### API",
+        "### Methods",
+        "## Design Token"
+      ],
+      "notes": "保留章节顺序、说明及非live类型示例；API按实际公开Vue类型生成，补足slots/emits、FAQ、无障碍与迁移。"
+    }
+  ],
+  "exclusions": [],
+  "assetAdaptations": [
+    {
+      "source": "固定上游远程照片、背景与裁切素材",
+      "replacement": "现有 /demos/photo.svg、one.svg、two.svg、poster.svg",
+      "reason": "任务要求使用确定性同源资产，避免网络/CORS依赖；保留原尺寸与操作，图像内容和视觉与上游不同。"
+    }
+  ]
+}

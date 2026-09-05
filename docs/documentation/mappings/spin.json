@@ -1,0 +1,83 @@
+{
+  "upstream": "feedback/spin",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "spin/zh-cn/Basic",
+      "enUS": "spin/en-us/Basic",
+      "notes": "复杂节点以 Vue slot 或 h() 提供"
+    },
+    {
+      "index": 2,
+      "zhCN": "spin/zh-cn/Size",
+      "enUS": "spin/en-us/Size",
+      "notes": "保留固定上游参数与交互；Vue props、slots、shallowRef 适配"
+    },
+    {
+      "index": 3,
+      "zhCN": "spin/zh-cn/Tip",
+      "enUS": "spin/en-us/Tip",
+      "notes": "保留固定上游参数与交互；Vue props、slots、shallowRef 适配"
+    },
+    {
+      "index": 4,
+      "zhCN": "spin/zh-cn/Indicator",
+      "enUS": "spin/en-us/Indicator",
+      "notes": "保留固定上游参数与交互；Vue props、slots、shallowRef 适配"
+    },
+    {
+      "index": 5,
+      "zhCN": "spin/zh-cn/Delay",
+      "enUS": "spin/en-us/Delay",
+      "notes": "保留固定上游参数与交互；Vue props、slots、shallowRef 适配"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "source": "vendor/semi-design/content/feedback/spin/index.md",
+      "headings": [
+        "## 代码演示",
+        "### 如何引入",
+        "### 基本用法",
+        "### 尺寸",
+        "### 带文字的",
+        "### 自定义指示符",
+        "### 延迟显示",
+        "## API 参考",
+        "## 设计变量",
+        "## 文案规范",
+        "## FAQ"
+      ],
+      "notes": "保留固定上游章节顺序；代码改为 Vue SFC，API 改为实际公开 Vue 类型，附补充 Accessibility/FAQ/迁移说明"
+    },
+    {
+      "locale": "en-us",
+      "source": "vendor/semi-design/content/feedback/spin/index-en-US.md",
+      "headings": [
+        "## Demos",
+        "### How to import",
+        "### Basic usage",
+        "### Size",
+        "### With Description",
+        "### Customized Indicator",
+        "### Delay",
+        "### Controlled",
+        "## API Reference",
+        "## Design Tokens",
+        "## Content Guidelines",
+        "## FAQ"
+      ],
+      "notes": "保留固定上游章节顺序；代码改为 Vue SFC，API 改为实际公开 Vue 类型，附补充 Accessibility/FAQ/迁移说明"
+    }
+  ],
+  "exclusions": [],
+  "additionalDemos": [
+    {
+      "sourceLocale": "en-US",
+      "index": 6,
+      "enUS": "spin/en-us/Controlled",
+      "notes": "保留英文上游独立 Controlled 示例；中文上游该行为包含在 Delay 示例中"
+    }
+  ]
+}

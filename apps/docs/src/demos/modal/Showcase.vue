@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Button, Modal } from '@aifuxi/semi-ui-vue';
+import { Button } from '@aifuxi/semi-ui-vue/button';
+import { Modal } from '@aifuxi/semi-ui-vue/modal';
 import '@aifuxi/semi-theme-default/button.css';
 import '@aifuxi/semi-theme-default/modal.css';
 

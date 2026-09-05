@@ -1,0 +1,92 @@
+{
+  "upstream": "navigation/steps",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "steps/zh-cn/Fill",
+      "enUS": "steps/en-us/Fill",
+      "notes": "保留默认 fill、current1、三项与 change 日志。"
+    },
+    {
+      "index": 2,
+      "zhCN": "steps/zh-cn/Basic",
+      "enUS": "steps/en-us/Basic",
+      "notes": "保留 basic、current1、三项与 change 日志。"
+    },
+    {
+      "index": 3,
+      "zhCN": "steps/zh-cn/Navigation",
+      "enUS": "steps/en-us/Navigation",
+      "notes": "保留 nav 四项与内容宽度、change 日志；依据固定 navStep 源码纠正文档不支持交互的陈旧说明。"
+    },
+    {
+      "index": 4,
+      "zhCN": "steps/zh-cn/Small",
+      "enUS": "steps/en-us/Small",
+      "notes": "保留 basic small 三项。"
+    },
+    {
+      "index": 5,
+      "zhCN": "steps/zh-cn/SmallNavigation",
+      "enUS": "steps/en-us/SmallNavigation",
+      "notes": "保留 nav small 四项。"
+    },
+    {
+      "index": 6,
+      "zhCN": "steps/zh-cn/Progress",
+      "enUS": "steps/en-us/Progress",
+      "notes": "useState 改 shallowRef；保留 Next/Previous/Done 按钮与三步内容切换、完成日志。"
+    },
+    {
+      "index": 7,
+      "zhCN": "steps/zh-cn/VerticalFill",
+      "enUS": "steps/en-us/VerticalFill",
+      "notes": "保留 vertical fill、300px 宽度和三项。"
+    },
+    {
+      "index": 8,
+      "zhCN": "steps/zh-cn/VerticalBasic",
+      "enUS": "steps/en-us/VerticalBasic",
+      "notes": "保留 vertical basic 三项。"
+    },
+    {
+      "index": 9,
+      "zhCN": "steps/zh-cn/Status",
+      "enUS": "steps/en-us/Status",
+      "notes": "保留当前步骤 error 状态。"
+    },
+    {
+      "index": 10,
+      "zhCN": "steps/zh-cn/Icons",
+      "enUS": "steps/en-us/Icons",
+      "notes": "保留五种状态和自定义 Home/Lock 图标；英文同时保留本语言上游四图标示例。"
+    },
+    {
+      "index": 11,
+      "zhCN": "steps/zh-cn/Controlled",
+      "enUS": "steps/en-us/Controlled",
+      "notes": "保留 current1 与三步；change 回调更新 shallowRef 实现受控切换。"
+    }
+  ],
+  "chapters": [
+    "代码演示",
+    "如何引入",
+    "默认步骤条（旧版）",
+    "简单步骤条（新版）",
+    "导航步骤条",
+    "迷你尺寸步骤条",
+    "处理进度",
+    "竖直方向的步骤条",
+    "指定步骤状态",
+    "自定义图标/状态",
+    "onChange 回调",
+    "Accessibility",
+    "ARIA",
+    "API 参考",
+    "Steps",
+    "Steps.Step",
+    "文案规范",
+    "设计变量"
+  ],
+  "exclusions": []
+}

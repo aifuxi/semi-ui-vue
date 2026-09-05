@@ -1,0 +1,81 @@
+{
+  "upstream": "show/popover",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "popover/zh-cn/TriggerChildren",
+      "enUS": "popover/en-us/TriggerChildren",
+      "notes": "forwardRef/Class Component 改显式 useAttrs 透传与原生单根属性继承两个独立Vue子组件，保留三种触发器及各语言内容。"
+    },
+    {
+      "index": 2,
+      "zhCN": "popover/zh-cn/Basic",
+      "enUS": "popover/en-us/Basic",
+      "notes": "content 改 content 插槽，保留各语言原 Empty/文章及Tag。"
+    },
+    {
+      "index": 3,
+      "zhCN": "popover/zh-cn/Position",
+      "enUS": "popover/en-us/Position",
+      "notes": "保留12位置与各语言原尺寸、文章/Empty内容，map改v-for。"
+    },
+    {
+      "index": 4,
+      "zhCN": "popover/zh-cn/Controlled",
+      "enUS": "popover/en-us/Controlled",
+      "notes": "保留中文按钮式RadioGroup与英文Button控制visible的各自原示例。"
+    },
+    {
+      "index": 5,
+      "zhCN": "popover/zh-cn/Condition",
+      "enUS": "popover/en-us/Condition",
+      "notes": "useState/useMemo 改 shallowRef/computed，保留 hover/click 两组condition开关。"
+    },
+    {
+      "index": 6,
+      "zhCN": "popover/zh-cn/Arrow",
+      "enUS": "popover/en-us/Arrow",
+      "notes": "保留12位置、小三角、两行文章和上游Tag间距。"
+    },
+    {
+      "index": 7,
+      "zhCN": "popover/zh-cn/ArrowCenter",
+      "enUS": "popover/en-us/ArrowCenter",
+      "notes": "保留12位置与 arrowPointAtCenter=true。"
+    },
+    {
+      "index": 8,
+      "zhCN": "popover/zh-cn/Color",
+      "enUS": "popover/en-us/Color",
+      "notes": "保留默认打开与蓝色样式，容器使用实例template ref，设置最小高度和overflow避免浮层覆盖其他示例。"
+    },
+    {
+      "index": 9,
+      "zhCN": "popover/zh-cn/InitialFocus",
+      "enUS": "popover/en-us/InitialFocus",
+      "notes": "content render function 改 #content={initialFocusRef}，Vue callback ref绑定Input保持初始焦点。"
+    }
+  ],
+  "chapters": [
+    "使用场景",
+    "代码演示",
+    "如何引入",
+    "注意事项",
+    "基本使用",
+    "弹出位置",
+    "受控显示",
+    "condition 条件触发",
+    "显示小三角",
+    "指向元素中心",
+    "设置浮层背景色",
+    "初始化弹出层焦点位置",
+    "搭配 Tooltip 或 Popconfirm 使用",
+    "API 参考",
+    "Accessibility",
+    "ARIA",
+    "键盘和焦点",
+    "设计变量",
+    "FAQ"
+  ],
+  "exclusions": []
+}

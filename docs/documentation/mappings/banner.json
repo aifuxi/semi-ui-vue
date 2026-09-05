@@ -1,0 +1,70 @@
+{
+  "upstream": "feedback/banner",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "banner/zh-cn/Basic",
+      "enUS": "banner/en-us/Basic",
+      "notes": "保留 v-if 显示关闭与布局示例；补入上游 docDemo.scss 中 .components-layout-demo 装饰样式；中英文保留各自 Banner 文案。英文上游没有中文示例的Header/Footer高度和Content高度配置，英文SFC保留其原始无高度设置。"
+    },
+    {
+      "index": 2,
+      "zhCN": "banner/zh-cn/Types",
+      "enUS": "banner/en-us/Types",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    },
+    {
+      "index": 3,
+      "zhCN": "banner/zh-cn/Container",
+      "enUS": "banner/en-us/Container",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    },
+    {
+      "index": 4,
+      "zhCN": "banner/zh-cn/Custom",
+      "enUS": "banner/en-us/Custom",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "source": "vendor/semi-design/content/feedback/banner/index.md",
+      "headings": [
+        "## 代码演示",
+        "### 如何引入",
+        "### 基本用法",
+        "### 不同类型",
+        "### 非全屏模式",
+        "### 自定义内容",
+        "## API参考",
+        "## Accessibility",
+        "### ARIA",
+        "### 键盘和焦点",
+        "## 文案规范",
+        "## 设计变量"
+      ],
+      "notes": "保留固定版本原有章节顺序与非live示例，API 按公开 Vue 类型替换，补充 FAQ/无障碍/React→Vue 迁移。"
+    },
+    {
+      "locale": "en-us",
+      "source": "vendor/semi-design/content/feedback/banner/index-en-US.md",
+      "headings": [
+        "## Demos",
+        "### How to import",
+        "### Basic Usage",
+        "### Types",
+        "### Use in Container",
+        "### Customized Content",
+        "## API Reference",
+        "## Accessibility",
+        "### ARIA",
+        "### Keyboard and Focus",
+        "## Content Guidelines",
+        "## Design Tokens"
+      ],
+      "notes": "保留固定版本原有章节顺序与非live示例，API 按公开 Vue 类型替换，补充 FAQ/无障碍/React→Vue 迁移。"
+    }
+  ],
+  "exclusions": []
+}

@@ -5,6 +5,7 @@ import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import sass from 'sass';
 import { adaptPinnedJsonViewerCore } from '../../packages/foundation-integration/vite-json-viewer-plugin.js';
+import { pinnedButtonDocumentation } from './docs-reference-plugin.js';
 
 const require = createRequire(import.meta.url);
 const workspaceRoot = fileURLToPath(new URL('../..', import.meta.url));
@@ -413,7 +414,12 @@ function compilePinnedReferenceStyles(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [adaptPinnedJsonViewerCore(), compilePinnedReferenceStyles(), react()],
+  plugins: [
+    adaptPinnedJsonViewerCore(),
+    compilePinnedReferenceStyles(),
+    pinnedButtonDocumentation(),
+    react(),
+  ],
   resolve: {
     alias: [
       { find: '@semi-v2.102.0/anchor', replacement: anchorPublicEntry },
@@ -422,30 +428,66 @@ export default defineConfig({
       { find: '@semi-v2.102.0/badge', replacement: badgePublicEntry },
       { find: '@semi-v2.102.0/banner', replacement: bannerPublicEntry },
       { find: '@semi-v2.102.0/feedback', replacement: feedbackPublicEntry },
-      { find: '@semi-v2.102.0/notification', replacement: notificationPublicEntry },
+      {
+        find: '@semi-v2.102.0/notification',
+        replacement: notificationPublicEntry,
+      },
       { find: '@semi-v2.102.0/calendar', replacement: calendarPublicEntry },
       { find: '@semi-v2.102.0/card', replacement: cardPublicEntry },
       { find: '@semi-v2.102.0/carousel', replacement: carouselPublicEntry },
       { find: '@semi-v2.102.0/collapse', replacement: collapsePublicEntry },
-      { find: '@semi-v2.102.0/code-highlight', replacement: codeHighlightPublicEntry },
-      { find: '@semi-v2.102.0/collapsible', replacement: collapsiblePublicEntry },
-      { find: '@semi-v2.102.0/color-picker', replacement: colorPickerPublicEntry },
-      { find: '@semi-v2.102.0/date-picker', replacement: datePickerPublicEntry },
+      {
+        find: '@semi-v2.102.0/code-highlight',
+        replacement: codeHighlightPublicEntry,
+      },
+      {
+        find: '@semi-v2.102.0/collapsible',
+        replacement: collapsiblePublicEntry,
+      },
+      {
+        find: '@semi-v2.102.0/color-picker',
+        replacement: colorPickerPublicEntry,
+      },
+      {
+        find: '@semi-v2.102.0/date-picker',
+        replacement: datePickerPublicEntry,
+      },
       { find: '@semi-v2.102.0/form', replacement: formPublicEntry },
       { find: '@semi-v2.102.0/cropper', replacement: cropperPublicEntry },
-      { find: '@semi-v2.102.0/descriptions', replacement: descriptionsPublicEntry },
+      {
+        find: '@semi-v2.102.0/descriptions',
+        replacement: descriptionsPublicEntry,
+      },
       { find: '@semi-v2.102.0/dropdown', replacement: dropdownPublicEntry },
       { find: '@semi-v2.102.0/drag-move', replacement: dragMovePublicEntry },
       { find: '@semi-v2.102.0/hot-keys', replacement: hotKeysPublicEntry },
       { find: '@semi-v2.102.0/lottie', replacement: lottiePublicEntry },
-      { find: '@semi-v2.102.0/audio-player', replacement: audioPlayerPublicEntry },
-      { find: '@semi-v2.102.0/video-player', replacement: videoPlayerPublicEntry },
+      {
+        find: '@semi-v2.102.0/audio-player',
+        replacement: audioPlayerPublicEntry,
+      },
+      {
+        find: '@semi-v2.102.0/video-player',
+        replacement: videoPlayerPublicEntry,
+      },
       { find: '@semi-v2.102.0/user-guide', replacement: userGuidePublicEntry },
-      { find: '@semi-v2.102.0/json-viewer', replacement: jsonViewerPublicEntry },
-      { find: '@semi-v2.102.0/ai-chat-input', replacement: aiChatInputPublicEntry },
-      { find: '@semi-v2.102.0/ai-chat-dialogue', replacement: aiChatDialoguePublicEntry },
+      {
+        find: '@semi-v2.102.0/json-viewer',
+        replacement: jsonViewerPublicEntry,
+      },
+      {
+        find: '@semi-v2.102.0/ai-chat-input',
+        replacement: aiChatInputPublicEntry,
+      },
+      {
+        find: '@semi-v2.102.0/ai-chat-dialogue',
+        replacement: aiChatDialoguePublicEntry,
+      },
       { find: '@semi-v2.102.0/chat', replacement: chatPublicEntry },
-      { find: '@semi-v2.102.0/markdown-render', replacement: markdownRenderPublicEntry },
+      {
+        find: '@semi-v2.102.0/markdown-render',
+        replacement: markdownRenderPublicEntry,
+      },
       { find: '@semi-v2.102.0/sidebar', replacement: sidebarPublicEntry },
       {
         find: '@mdx-js/mdx',
@@ -481,8 +523,14 @@ export default defineConfig({
           new URL('./node_modules/prosemirror-model/dist/index.js', import.meta.url),
         ),
       },
-      { find: '@semi-v2.102.0/locale-provider', replacement: localeProviderEntry },
-      { find: '@semi-v2.102.0/locale-consumer', replacement: localeConsumerEntry },
+      {
+        find: '@semi-v2.102.0/locale-provider',
+        replacement: localeProviderEntry,
+      },
+      {
+        find: '@semi-v2.102.0/locale-consumer',
+        replacement: localeConsumerEntry,
+      },
       { find: '@semi-v2.102.0/locale-en-gb', replacement: localeEnGBEntry },
       { find: '@semi-v2.102.0/locale-ja-jp', replacement: localeJaJPEntry },
       { find: '@semi-v2.102.0/empty', replacement: emptyPublicEntry },
@@ -490,7 +538,10 @@ export default defineConfig({
       { find: '@semi-v2.102.0/image', replacement: imagePublicEntry },
       { find: '@semi-v2.102.0/list', replacement: listPublicEntry },
       { find: '@semi-v2.102.0/modal', replacement: modalPublicEntry },
-      { find: '@semi-v2.102.0/overflow-list', replacement: overflowListPublicEntry },
+      {
+        find: '@semi-v2.102.0/overflow-list',
+        replacement: overflowListPublicEntry,
+      },
       { find: '@semi-v2.102.0/popover', replacement: popoverPublicEntry },
       { find: '@semi-v2.102.0/popconfirm', replacement: popconfirmPublicEntry },
       { find: '@semi-v2.102.0/progress', replacement: progressPublicEntry },
@@ -500,31 +551,64 @@ export default defineConfig({
       { find: '@semi-v2.102.0/upload', replacement: uploadPublicEntry },
       { find: '@semi-v2.102.0/navigation', replacement: navigationPublicEntry },
       { find: '@semi-v2.102.0/toast', replacement: toastPublicEntry },
-      { find: '@semi-v2.102.0/scroll-list', replacement: scrollListPublicEntry },
-      { find: '@semi-v2.102.0/scroll-item', replacement: scrollItemPublicEntry },
+      {
+        find: '@semi-v2.102.0/scroll-list',
+        replacement: scrollListPublicEntry,
+      },
+      {
+        find: '@semi-v2.102.0/scroll-item',
+        replacement: scrollItemPublicEntry,
+      },
       { find: '@semi-v2.102.0/side-sheet', replacement: sideSheetPublicEntry },
       { find: '@semi-v2.102.0/table', replacement: tablePublicEntry },
       { find: '@semi-v2.102.0/tag', replacement: tagPublicEntry },
       { find: '@semi-v2.102.0/tag-group', replacement: tagGroupEntry },
-      { find: '@semi-v2.102.0/split-tag-group', replacement: splitTagGroupEntry },
+      {
+        find: '@semi-v2.102.0/split-tag-group',
+        replacement: splitTagGroupEntry,
+      },
       { find: '@semi-v2.102.0/timeline', replacement: timelinePublicEntry },
-      { find: '@semi-v2.102.0/illustrations', replacement: illustrationsPublicEntry },
+      {
+        find: '@semi-v2.102.0/illustrations',
+        replacement: illustrationsPublicEntry,
+      },
       { find: '@semi-v2.102.0/card-group', replacement: cardGroupEntry },
       { find: '@semi-v2.102.0/back-top', replacement: backTopPublicEntry },
       { find: '@semi-v2.102.0/breadcrumb', replacement: breadcrumbPublicEntry },
-      { find: '@semi-v2.102.0/auto-complete', replacement: autoCompletePublicEntry },
+      {
+        find: '@semi-v2.102.0/auto-complete',
+        replacement: autoCompletePublicEntry,
+      },
       { find: '@semi-v2.102.0/button', replacement: buttonPublicEntry },
-      { find: '@semi-v2.102.0/icon-button', replacement: iconButtonPublicEntry },
+      {
+        find: '@semi-v2.102.0/icon-button',
+        replacement: iconButtonPublicEntry,
+      },
       { find: '@semi-v2.102.0/checkbox', replacement: checkboxPublicEntry },
-      { find: '@semi-v2.102.0/config-provider', replacement: configProviderPublicEntry },
+      {
+        find: '@semi-v2.102.0/config-provider',
+        replacement: configProviderPublicEntry,
+      },
       { find: '@semi-v2.102.0/button-group', replacement: buttonGroupEntry },
-      { find: '@semi-v2.102.0/split-button-group', replacement: splitButtonGroupEntry },
+      {
+        find: '@semi-v2.102.0/split-button-group',
+        replacement: splitButtonGroupEntry,
+      },
       { find: '@semi-v2.102.0/divider', replacement: dividerPublicEntry },
-      { find: '@semi-v2.102.0/float-button', replacement: floatButtonPublicEntry },
-      { find: '@semi-v2.102.0/float-button-group', replacement: floatButtonGroupEntry },
+      {
+        find: '@semi-v2.102.0/float-button',
+        replacement: floatButtonPublicEntry,
+      },
+      {
+        find: '@semi-v2.102.0/float-button-group',
+        replacement: floatButtonGroupEntry,
+      },
       { find: '@semi-v2.102.0/icon', replacement: iconPublicEntry },
       { find: '@semi-v2.102.0/input', replacement: inputPublicEntry },
-      { find: '@semi-v2.102.0/input-number', replacement: inputNumberPublicEntry },
+      {
+        find: '@semi-v2.102.0/input-number',
+        replacement: inputNumberPublicEntry,
+      },
       { find: '@semi-v2.102.0/pin-code', replacement: pinCodePublicEntry },
       { find: '@semi-v2.102.0/pagination', replacement: paginationPublicEntry },
       { find: '@semi-v2.102.0/radio', replacement: radioPublicEntry },
@@ -540,11 +624,17 @@ export default defineConfig({
       { find: '@semi-v2.102.0/steps', replacement: stepsPublicEntry },
       { find: '@semi-v2.102.0/tabs', replacement: tabsPublicEntry },
       { find: '@semi-v2.102.0/tree', replacement: treePublicEntry },
-      { find: '@semi-v2.102.0/tree-select', replacement: treeSelectPublicEntry },
+      {
+        find: '@semi-v2.102.0/tree-select',
+        replacement: treeSelectPublicEntry,
+      },
       { find: '@semi-v2.102.0/cascader', replacement: cascaderPublicEntry },
       { find: '@semi-v2.102.0/switch', replacement: switchPublicEntry },
       { find: '@semi-v2.102.0/tag-input', replacement: tagInputPublicEntry },
-      { find: '@semi-v2.102.0/time-picker', replacement: timePickerPublicEntry },
+      {
+        find: '@semi-v2.102.0/time-picker',
+        replacement: timePickerPublicEntry,
+      },
       { find: '@semi-v2.102.0/tooltip', replacement: tooltipPublicEntry },
       { find: '@semi-v2.102.0/typography', replacement: typographyPublicEntry },
       { find: '@semi-v2.102.0/icons', replacement: iconsEntry },
@@ -586,7 +676,10 @@ export default defineConfig({
       },
       { find: /^date-fns$/, replacement: require.resolve('date-fns') },
       { find: /^date-fns-tz$/, replacement: require.resolve('date-fns-tz') },
-      { find: /^bezier-easing$/, replacement: require.resolve('bezier-easing') },
+      {
+        find: /^bezier-easing$/,
+        replacement: require.resolve('bezier-easing'),
+      },
       {
         find: /^async-validator$/,
         replacement: path.join(

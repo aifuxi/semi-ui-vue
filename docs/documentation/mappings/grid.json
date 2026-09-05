@@ -1,0 +1,65 @@
+{
+  "upstream": "basic/grid",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "grid/zh-cn/Basic",
+      "enUS": "grid/en-us/Basic",
+      "notes": "保留 24/12/8/6 列四组布局；示例样式独立作用域化。"
+    },
+    {
+      "index": 2,
+      "zhCN": "grid/zh-cn/Gutter",
+      "enUS": "grid/en-us/Gutter",
+      "notes": "保留水平 16px 与 [16,24] 水平/垂直间隔、每组八列。"
+    },
+    {
+      "index": 3,
+      "zhCN": "grid/zh-cn/Offset",
+      "enUS": "grid/en-us/Offset",
+      "notes": "保留三组 offset 布局。"
+    },
+    {
+      "index": 4,
+      "zhCN": "grid/zh-cn/Flex",
+      "enUS": "grid/en-us/Flex",
+      "notes": "保留五种 justify 对齐及每组四列。"
+    },
+    {
+      "index": 5,
+      "zhCN": "grid/zh-cn/VerticalAlign",
+      "enUS": "grid/en-us/VerticalAlign",
+      "notes": "保留三种 align、四列及上游 value 属性；源码 docDemo.scss 的 50px Flex 行高保留。"
+    },
+    {
+      "index": 6,
+      "zhCN": "grid/zh-cn/Order",
+      "enUS": "grid/en-us/Order",
+      "notes": "保留 order 4/3/2/1。"
+    },
+    {
+      "index": 7,
+      "zhCN": "grid/zh-cn/Responsive",
+      "enUS": "grid/en-us/Responsive",
+      "notes": "保留六断点 gutter、数值列宽和对象 span/offset 两种形式。"
+    }
+  ],
+  "chapters": [
+    "概述",
+    "弹性布局",
+    "代码演示",
+    "如何引入",
+    "基础使用",
+    "Gutter 间隔",
+    "Offset 偏移",
+    "Flex 布局",
+    "Flex 子元素垂直对齐",
+    "Flex 元素排序",
+    "响应式",
+    "API 参考",
+    "Row",
+    "Col",
+    "设计变量"
+  ],
+  "exclusions": []
+}

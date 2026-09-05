@@ -1,0 +1,78 @@
+{
+  "upstream": "show/badge",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "badge/zh-cn/Basic",
+      "enUS": "badge/en-us/Basic",
+      "notes": "复杂节点以 Vue slot 或 h() 提供"
+    },
+    {
+      "index": 2,
+      "zhCN": "badge/zh-cn/Overflow",
+      "enUS": "badge/en-us/Overflow",
+      "notes": "保留固定上游参数与交互；Vue props、slots、shallowRef 适配"
+    },
+    {
+      "index": 3,
+      "zhCN": "badge/zh-cn/Position",
+      "enUS": "badge/en-us/Position",
+      "notes": "保留固定上游参数与交互；Vue props、slots、shallowRef 适配"
+    },
+    {
+      "index": 4,
+      "zhCN": "badge/zh-cn/Theme",
+      "enUS": "badge/en-us/Theme",
+      "notes": "保留固定上游参数与交互；Vue props、slots、shallowRef 适配"
+    },
+    {
+      "index": 5,
+      "zhCN": "badge/zh-cn/Type",
+      "enUS": "badge/en-us/Type",
+      "notes": "保留固定上游参数与交互；Vue props、slots、shallowRef 适配"
+    },
+    {
+      "index": 6,
+      "zhCN": "badge/zh-cn/Standalone",
+      "enUS": "badge/en-us/Standalone",
+      "notes": "保留固定上游参数与交互；Vue props、slots、shallowRef 适配"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "source": "vendor/semi-design/content/show/badge/index.md",
+      "headings": [
+        "## 代码演示",
+        "### 如何引入",
+        "### 基本用法",
+        "### 设置显示数字最大值",
+        "### 设置徽标位置",
+        "### 设置徽标样式",
+        "### 独立使用",
+        "## API参考",
+        "## 文案规范",
+        "## 设计变量"
+      ],
+      "notes": "保留固定上游章节顺序；代码改为 Vue SFC，API 改为实际公开 Vue 类型，附补充 Accessibility/FAQ/迁移说明"
+    },
+    {
+      "locale": "en-us",
+      "source": "vendor/semi-design/content/show/badge/index-en-US.md",
+      "headings": [
+        "## Demos",
+        "### How to import",
+        "### Basic Usage",
+        "### Maximum Value",
+        "### Position",
+        "### Theming",
+        "### Independent Usage",
+        "## API Reference",
+        "## Content Guidelines",
+        "## Design Tokens"
+      ],
+      "notes": "保留固定上游章节顺序；代码改为 Vue SFC，API 改为实际公开 Vue 类型，附补充 Accessibility/FAQ/迁移说明"
+    }
+  ],
+  "exclusions": []
+}

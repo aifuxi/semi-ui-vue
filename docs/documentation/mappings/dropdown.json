@@ -1,0 +1,69 @@
+{
+  "upstream": "show/dropdown",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "dropdown/zh-cn/Basic",
+      "enUS": "dropdown/en-us/Basic",
+      "notes": "render改content插槽，复合菜单成员改公开命名导入；保留分组、禁用项、图标和HotKeys。"
+    },
+    {
+      "index": 2,
+      "zhCN": "dropdown/zh-cn/Nested",
+      "enUS": "dropdown/en-us/Nested",
+      "notes": "保留rightTop/leftTop两个嵌套菜单；useMemo节点改重复具名插槽。"
+    },
+    {
+      "index": 3,
+      "zhCN": "dropdown/zh-cn/Position",
+      "enUS": "dropdown/en-us/Position",
+      "notes": "保留bottom/bottomLeft/bottomRight三个菜单。"
+    },
+    {
+      "index": 4,
+      "zhCN": "dropdown/zh-cn/Trigger",
+      "enUS": "dropdown/en-us/Trigger",
+      "notes": "保留hover/focus/click/contextMenu四种触发；菜单内容用content插槽。"
+    },
+    {
+      "index": 5,
+      "zhCN": "dropdown/zh-cn/Events",
+      "enUS": "dropdown/en-us/Events",
+      "notes": "保留click/mouseenter/mouseleave/contextmenu四种Toast反馈与事件文案。"
+    },
+    {
+      "index": 6,
+      "zhCN": "dropdown/zh-cn/Menu",
+      "enUS": "dropdown/en-us/Menu",
+      "notes": "menu使用公开DropdownMenuItem[]类型；保留两个标题、divider、类型色与active/showTick。"
+    }
+  ],
+  "chapters": [
+    "代码演示",
+    "如何引入",
+    "基本用法",
+    "嵌套使用",
+    "弹出位置",
+    "触发方式",
+    "触发事件",
+    "Json 用法",
+    "API 参考",
+    "Dropdown",
+    "Dropdown.Menu",
+    "Dropdown.Item",
+    "Dropdown.Title",
+    "DropdownMenuItem",
+    "Accessibility",
+    "ARIA",
+    "文案规范",
+    "设计变量",
+    "FAQ",
+    "相关物料"
+  ],
+  "exclusions": [
+    {
+      "item": "相关物料 / Related Material",
+      "reason": "外部 semi-material-list 营销平台入口不接入本地文档；全部live Demo保留。"
+    }
+  ]
+}

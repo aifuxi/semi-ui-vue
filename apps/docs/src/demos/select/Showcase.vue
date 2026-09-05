@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Select, SelectOption, SelectOptionGroup } from '@aifuxi/semi-ui-vue';
+import { Select, SelectOption, SelectOptionGroup } from '@aifuxi/semi-ui-vue/select';
 import '@aifuxi/semi-theme-default/select.css';
 
 const product = shallowRef('douyin');

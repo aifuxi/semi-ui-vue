@@ -1,0 +1,84 @@
+{
+  "upstream": "navigation/pagination",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "pagination/zh-cn/Basic",
+      "enUS": "pagination/en-us/Basic",
+      "notes": "保留 total 30/80/200 与 total80 pageSize30 四组。"
+    },
+    {
+      "index": 2,
+      "zhCN": "pagination/zh-cn/Disabled",
+      "enUS": "pagination/en-us/Disabled",
+      "notes": "保留 disabled 与 total30。"
+    },
+    {
+      "index": 3,
+      "zhCN": "pagination/zh-cn/Total",
+      "enUS": "pagination/en-us/Total",
+      "notes": "保留 total80/200 的 showTotal。"
+    },
+    {
+      "index": 4,
+      "zhCN": "pagination/zh-cn/DefaultPage",
+      "enUS": "pagination/en-us/DefaultPage",
+      "notes": "保留 defaultCurrentPage=3 非受控示例。"
+    },
+    {
+      "index": 5,
+      "zhCN": "pagination/zh-cn/SizeChanger",
+      "enUS": "pagination/en-us/SizeChanger",
+      "notes": "保留 total80/300 两种每页容量切换。"
+    },
+    {
+      "index": 6,
+      "zhCN": "pagination/zh-cn/QuickJumper",
+      "enUS": "pagination/en-us/QuickJumper",
+      "notes": "保留 total80/300 两种输入快速跳转。"
+    },
+    {
+      "index": 7,
+      "zhCN": "pagination/zh-cn/Controlled",
+      "enUS": "pagination/en-us/Controlled",
+      "notes": "React useState/currentPage/onPageChange 映射 shallowRef 与 v-model:current-page。"
+    },
+    {
+      "index": 8,
+      "zhCN": "pagination/zh-cn/PageSizeOptions",
+      "enUS": "pagination/en-us/PageSizeOptions",
+      "notes": "保留两组 pageSizeOpts 及默认容量规则。"
+    },
+    {
+      "index": 9,
+      "zhCN": "pagination/zh-cn/Mini",
+      "enUS": "pagination/en-us/Mini",
+      "notes": "保留 total90 size=small。"
+    },
+    {
+      "index": 10,
+      "zhCN": "pagination/zh-cn/MiniSelect",
+      "enUS": "pagination/en-us/MiniSelect",
+      "notes": "保留迷你分页 hoverShowPageSelect 下拉。"
+    }
+  ],
+  "chapters": [
+    "代码演示",
+    "如何引入",
+    "基本",
+    "禁用",
+    "总页数显示",
+    "指定当前页码",
+    "每页容量切换",
+    "快速跳转至某页",
+    "页码受控",
+    "预设每页容量可选值",
+    "迷你版本",
+    "API 参考",
+    "Accessibility",
+    "ARIA",
+    "设计变量",
+    "FAQ"
+  ],
+  "exclusions": []
+}

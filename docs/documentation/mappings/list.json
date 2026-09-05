@@ -1,0 +1,114 @@
+{
+  "upstream": "show/list",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "list/zh-cn/Basic",
+      "enUS": "list/en-us/Basic",
+      "notes": "保留各语言原诗句及三种尺寸、Header/Footer。"
+    },
+    {
+      "index": 2,
+      "zhCN": "list/zh-cn/Template",
+      "enUS": "list/en-us/Template",
+      "notes": "renderItem 改 item 作用域插槽；保留三种正文长度与截断、header/main/extra 插槽。"
+    },
+    {
+      "index": 3,
+      "zhCN": "list/zh-cn/Layout",
+      "enUS": "list/en-us/Layout",
+      "notes": "保留 horizontal 三项与各语言标题、头像颜色。"
+    },
+    {
+      "index": 4,
+      "zhCN": "list/zh-cn/Grid",
+      "enUS": "list/en-us/Grid",
+      "notes": "保留各语言原平台数据与 span6/gutter12、Descriptions/Rating/按钮。"
+    },
+    {
+      "index": 5,
+      "zhCN": "list/zh-cn/Responsive",
+      "enUS": "list/en-us/Responsive",
+      "notes": "保留六项及响应式断点；修正上游英文 Xs/Xl 为有效 xs/xl。"
+    },
+    {
+      "index": 6,
+      "zhCN": "list/zh-cn/LoadMore",
+      "enUS": "list/en-us/LoadMore",
+      "notes": "useState/effect 改 shallowRef/onMounted；保留40项、每批3项、一秒延迟、Skeleton与加载更多，并清理计时器。"
+    },
+    {
+      "index": 7,
+      "zhCN": "list/zh-cn/ScrollLoad",
+      "enUS": "list/en-us/ScrollLoad",
+      "notes": "React infinite-scroller 改本例原生 scroll 监听；保留100项、每批5项、420px容器和每三次自动加载后的按钮门槛。"
+    },
+    {
+      "index": 8,
+      "zhCN": "list/zh-cn/Virtualized",
+      "enUS": "list/en-us/Virtualized",
+      "notes": "React virtualized 改本例 Vue 可见窗口计算与绝对定位；保留50行、118px行高、500px视口、一秒异步加载，最多渲染10行并清理计时器。"
+    },
+    {
+      "index": 9,
+      "zhCN": "list/zh-cn/DragSort",
+      "enUS": "list/en-us/DragSort",
+      "notes": "React dnd-kit 改本例 Pointer Events；保留五行、纵向拖动、拖动层级、释放排序和页面边缘自动滚动。"
+    },
+    {
+      "index": 10,
+      "zhCN": "list/zh-cn/Pagination",
+      "enUS": "list/en-us/Pagination",
+      "notes": "保留各语言书单、每页4项和迷你受控分页；v-model:current-page。"
+    },
+    {
+      "index": 11,
+      "zhCN": "list/zh-cn/Filter",
+      "enUS": "list/en-us/Filter",
+      "notes": "Input v-model/computed 筛选，支持中文输入法和英文输入；原英文仅 compositionEnd 筛选的问题不延续。"
+    },
+    {
+      "index": 12,
+      "zhCN": "list/zh-cn/AddRemove",
+      "enUS": "list/en-us/AddRemove",
+      "notes": "保留添加/删除书籍；追加下一本未显示书籍，避免源例删除后按长度追加产生重复。"
+    },
+    {
+      "index": 13,
+      "zhCN": "list/zh-cn/Selection",
+      "enUS": "list/en-us/Selection",
+      "notes": "CheckboxGroup/RadioGroup 使用 v-model；默认多选值为完整首本书名，修正源例将字符串展开成字符数组的问题。"
+    },
+    {
+      "index": 14,
+      "zhCN": "list/zh-cn/Keyboard",
+      "enUS": "list/en-us/Keyboard",
+      "notes": "保留上下方向键循环高亮；监听范围限定本例可聚焦容器，避免整个文档页接管键盘。"
+    }
+  ],
+  "chapters": [
+    "代码演示",
+    "如何引入",
+    "基本用法",
+    "模板用法",
+    "布局",
+    "栅格列表",
+    "响应式的栅格列表",
+    "加载更多",
+    "滚动加载",
+    "滚动加载无限长列表",
+    "拖拽排序",
+    "带分页器 ",
+    "带筛选器",
+    "添加删除项",
+    "单选或多选",
+    "响应键盘事件",
+    "API 参考",
+    "List",
+    "List grid props",
+    "List.Item",
+    "文案规范",
+    "设计变量"
+  ],
+  "exclusions": []
+}

@@ -1,0 +1,139 @@
+{
+  "upstream": "input/inputnumber",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "input-number/zh-cn/Basic",
+      "enUS": "input-number/en-us/Basic",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 2,
+      "zhCN": "input-number/zh-cn/Defaults",
+      "enUS": "input-number/en-us/Defaults",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 3,
+      "zhCN": "input-number/zh-cn/InnerButtons",
+      "enUS": "input-number/en-us/InnerButtons",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 4,
+      "zhCN": "input-number/zh-cn/HideButtons",
+      "enUS": "input-number/en-us/HideButtons",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 5,
+      "zhCN": "input-number/zh-cn/Size",
+      "enUS": "input-number/en-us/Size",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 6,
+      "zhCN": "input-number/zh-cn/Formatter",
+      "enUS": "input-number/en-us/Formatter",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。 中文上游 this.log 在函数组件中无效，迁移为局部 log 回调。"
+    },
+    {
+      "index": 7,
+      "zhCN": "input-number/zh-cn/Digits",
+      "enUS": "input-number/en-us/Digits",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 8,
+      "zhCN": "input-number/zh-cn/CurrencyLocale",
+      "enUS": "input-number/en-us/CurrencyLocale",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 9,
+      "zhCN": "input-number/zh-cn/Currency",
+      "enUS": "input-number/en-us/Currency",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 10,
+      "zhCN": "input-number/zh-cn/CurrencyDisplay",
+      "enUS": "input-number/en-us/CurrencyDisplay",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 11,
+      "zhCN": "input-number/zh-cn/CurrencyAffixes",
+      "enUS": "input-number/en-us/CurrencyAffixes",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    },
+    {
+      "index": 12,
+      "zhCN": "input-number/zh-cn/Scientific",
+      "enUS": "input-number/en-us/Scientific",
+      "notes": "独立双语 Vue SFC；保留固定上游演示文案、默认值和布局，公开子路径导入并显式引入样式。"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "headings": [
+        "代码演示",
+        "如何引入",
+        "基本输入框",
+        "隐藏步进器",
+        "尺寸",
+        "自定义显示格式与解析方式",
+        "纯数字输入框",
+        "货币展示",
+        "科学计数法显示",
+        "API 参考",
+        "InputNumber",
+        "ScientificNotationConfig",
+        "事件",
+        "InputNumber",
+        "插槽与类型",
+        "Methods",
+        "Accessibility",
+        "ARIA",
+        "键盘和焦点",
+        "设计变量",
+        "React → Vue 迁移",
+        "FAQ",
+        "formatter 与 parser 为什么通常成对出现？",
+        "为什么更换货币语言后需要 key？"
+      ]
+    },
+    {
+      "locale": "en-us",
+      "headings": [
+        "When to Use",
+        "Demos",
+        "How to import",
+        "Basic Input Box",
+        "Inner Buttons",
+        "Size",
+        "Custom Display Format and Resolution",
+        "Can Only Enter Numbers",
+        "Currency Display",
+        "Scientific Notation Display",
+        "API Reference",
+        "InputNumber",
+        "ScientificNotationConfig",
+        "Events",
+        "InputNumber",
+        "Slots and types",
+        "Methods",
+        "Accessibility",
+        "ARIA",
+        "Keyboard and Focus",
+        "Design Tokens",
+        "React → Vue migration",
+        "FAQ",
+        "Why are formatter and parser usually paired?",
+        "Why does changing currency locale need a key?"
+      ]
+    }
+  ],
+  "exclusions": []
+}

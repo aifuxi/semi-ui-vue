@@ -1,0 +1,102 @@
+{
+  "upstream": "show/descriptions",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "descriptions/zh-cn/Basic",
+      "enUS": "descriptions/en-us/Basic",
+      "notes": "复杂节点以 Vue slot 或 h() 提供"
+    },
+    {
+      "index": 2,
+      "zhCN": "descriptions/zh-cn/Alignment",
+      "enUS": "descriptions/en-us/Alignment",
+      "notes": "保留固定上游参数与交互；Vue props、slots、shallowRef 适配"
+    },
+    {
+      "index": 3,
+      "zhCN": "descriptions/zh-cn/Items",
+      "enUS": "descriptions/en-us/Items",
+      "notes": "JSX children 迁移为 DescriptionsItem 默认插槽"
+    },
+    {
+      "index": 4,
+      "zhCN": "descriptions/zh-cn/Vertical",
+      "enUS": "descriptions/en-us/Vertical",
+      "notes": "保留固定上游参数与交互；Vue props、slots、shallowRef 适配"
+    },
+    {
+      "index": 5,
+      "zhCN": "descriptions/zh-cn/Horizontal",
+      "enUS": "descriptions/en-us/Horizontal",
+      "notes": "保留固定上游参数与交互；Vue props、slots、shallowRef 适配"
+    },
+    {
+      "index": 6,
+      "zhCN": "descriptions/zh-cn/DoubleRow",
+      "enUS": "descriptions/en-us/DoubleRow",
+      "notes": "保留固定上游参数与交互；Vue props、slots、shallowRef 适配"
+    },
+    {
+      "index": 7,
+      "zhCN": "descriptions/zh-cn/KeyStyle",
+      "enUS": "descriptions/en-us/KeyStyle",
+      "notes": "保留固定上游参数与交互；Vue props、slots、shallowRef 适配"
+    },
+    {
+      "index": 8,
+      "zhCN": "descriptions/zh-cn/ItemKeyStyle",
+      "enUS": "descriptions/en-us/ItemKeyStyle",
+      "notes": "保留固定上游参数与交互；Vue props、slots、shallowRef 适配"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "source": "vendor/semi-design/content/show/descriptions/index.md",
+      "headings": [
+        "## 代码演示",
+        "### 如何引入",
+        "### 基本用法",
+        "### 设置对齐方式",
+        "### JSX 写法",
+        "### 设置布局模式",
+        "### 双行显示",
+        "### 自定义 Key 样式",
+        "## API 参考",
+        "### Descriptions",
+        "### DataItem",
+        "### DescriptionItem",
+        "## 文案规范",
+        "## 设计变量"
+      ],
+      "notes": "保留固定上游章节顺序；代码改为 Vue SFC，API 改为实际公开 Vue 类型，附补充 Accessibility/FAQ/迁移说明"
+    },
+    {
+      "locale": "en-us",
+      "source": "vendor/semi-design/content/show/descriptions/index-en-US.md",
+      "headings": [
+        "## Demos",
+        "### How to import",
+        "### Basic Usage",
+        "### Alignment",
+        "### Row Display",
+        "### Descriptions Using JSX",
+        "### Set layout mode",
+        "### Custom Key Style",
+        "## API Reference",
+        "### Descriptions",
+        "### DataItem",
+        "### Descriptions.Item",
+        "## Content Guidelines",
+        "## Design Tokens"
+      ],
+      "notes": "保留固定上游章节顺序；代码改为 Vue SFC，API 改为实际公开 Vue 类型，附补充 Accessibility/FAQ/迁移说明"
+    }
+  ],
+  "exclusions": [],
+  "localeDifferences": [
+    "英文顺序为 Basic/Alignment/DoubleRow/Items/Horizontal/KeyStyle/ItemKeyStyle；英文补充中文 Vertical 示例。",
+    "英文 Basic 没有箭头；Alignment 使用带样式的 Descriptions；Horizontal 保留英文 column=4 与六项数据。中文保留 Card 对齐、column=5 与上次直播时间。"
+  ]
+}

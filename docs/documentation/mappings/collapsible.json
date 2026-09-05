@@ -1,0 +1,43 @@
+{
+  "upstream": "show/collapsible",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "collapsible/zh-cn/Basic",
+      "enUS": "collapsible/en-us/Basic",
+      "notes": "useState 改 shallowRef；保留中文四条设计原则及英文原诗句与无段落列表结构，按钮 aria-controls/expanded 关联面板。"
+    },
+    {
+      "index": 2,
+      "zhCN": "collapsible/zh-cn/Duration",
+      "enUS": "collapsible/en-us/Duration",
+      "notes": "保留 InputNumber min0/step10/初始250ms 控制动画时长。"
+    },
+    {
+      "index": 3,
+      "zhCN": "collapsible/zh-cn/Nested",
+      "enUS": "collapsible/en-us/Nested",
+      "notes": "保留父子独立开关与嵌套四条内容。"
+    },
+    {
+      "index": 4,
+      "zhCN": "collapsible/zh-cn/CollapseHeight",
+      "enUS": "collapsible/en-us/CollapseHeight",
+      "notes": "保留 collapseHeight60、渐变mask与ShowMore；无href锚点改原生按钮保证键盘可用。"
+    }
+  ],
+  "chapters": [
+    "使用场景",
+    "代码演示",
+    "如何引入",
+    "基本用法",
+    "自定义动画时间",
+    "嵌套使用",
+    "自定义折叠高度",
+    "API 参考",
+    "Accessibility",
+    "ARIA",
+    "FAQ"
+  ],
+  "exclusions": []
+}

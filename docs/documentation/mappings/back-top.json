@@ -1,0 +1,19 @@
+{
+  "upstream": "navigation/backtop",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "back-top/zh-cn/Basic",
+      "enUS": "back-top/en-us/Basic",
+      "notes": "保留默认 window 目标和向下滚动提示；返回按钮有可访问名称。"
+    },
+    {
+      "index": 2,
+      "zhCN": "back-top/zh-cn/Custom",
+      "enUS": "back-top/en-us/Custom",
+      "notes": "保留30px蓝色圆形样式与100px底部位置，默认插槽包含原生按钮以支持键盘激活。"
+    }
+  ],
+  "chapters": ["代码演示", "如何引入", "基本用法", "自定义样式", "API 参考", "设计变量"],
+  "exclusions": []
+}

@@ -1,0 +1,57 @@
+{
+  "upstream": "show/sidesheet",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "side-sheet/zh-cn/Basic",
+      "enUS": "side-sheet/en-us/Basic",
+      "notes": "保留默认right侧栏、两段内容和受控开关。"
+    },
+    {
+      "index": 2,
+      "zhCN": "side-sheet/zh-cn/Placement",
+      "enUS": "side-sheet/en-us/Placement",
+      "notes": "保留right/left/top/bottom四种placement及RadioGroup受控切换。"
+    },
+    {
+      "index": 3,
+      "zhCN": "side-sheet/zh-cn/Size",
+      "enUS": "side-sheet/en-us/Size",
+      "notes": "保留small/medium/large尺寸与RadioGroup受控切换。"
+    },
+    {
+      "index": 4,
+      "zhCN": "side-sheet/zh-cn/Outside",
+      "enUS": "side-sheet/en-us/Outside",
+      "notes": "TextArea v-model同步侧栏内容；保留mask=false/disableScroll=false。"
+    },
+    {
+      "index": 5,
+      "zhCN": "side-sheet/zh-cn/Container",
+      "enUS": "side-sheet/en-us/Container",
+      "notes": "全局class查询改实例template ref；保留320px高容器、220px宽侧栏、overflowhidden与原文案。"
+    },
+    {
+      "index": 6,
+      "zhCN": "side-sheet/zh-cn/Custom",
+      "enUS": "side-sheet/en-us/Custom",
+      "notes": "Form复合字段改FormDatePicker/FormRadioGroup/FormRadio/FormSelect；保留各语言用户、Banner、标签与尺寸；点击打开时生成当前创建时间，页脚连接公开表单reset/submitForm。"
+    }
+  ],
+  "chapters": [
+    "代码演示",
+    "如何引入",
+    "基本",
+    "自定义位置",
+    "自定义尺寸",
+    "可操作的外部区域",
+    "渲染在指定容器",
+    "自定义内容区域",
+    "API 参考",
+    "Accessibility",
+    "ARIA",
+    "设计变量",
+    "FAQ:"
+  ],
+  "exclusions": []
+}

@@ -1,0 +1,76 @@
+{
+  "upstream": "show/empty",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "empty/zh-cn/Basic",
+      "enUS": "empty/en-us/Basic",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 2,
+      "zhCN": "empty/zh-cn/Custom",
+      "enUS": "empty/en-us/Custom",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 3,
+      "zhCN": "empty/zh-cn/WithoutImage",
+      "enUS": "empty/en-us/WithoutImage",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 4,
+      "zhCN": "empty/zh-cn/Layout",
+      "enUS": "empty/en-us/Layout",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 5,
+      "zhCN": "empty/zh-cn/Illustrations",
+      "enUS": "empty/en-us/Illustrations",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "source": "vendor/semi-design/content/show/empty/index.md",
+      "headings": [
+        "## 代码演示",
+        "### 如何引入",
+        "### 基本用法",
+        "### 自定义",
+        "### 不同布局",
+        "### 占位图插画(建设中)",
+        "## API 参考",
+        "## Accessibility",
+        "### ARIA",
+        "## 文案规范",
+        "## 设计变量",
+        "## FAQ"
+      ],
+      "notes": "保留原有章节顺序，API 依据真实公开 Vue 类型更新；增加需要的 FAQ/无障碍与 React→Vue 映射"
+    },
+    {
+      "locale": "en-us",
+      "source": "vendor/semi-design/content/show/empty/index-en-US.md",
+      "headings": [
+        "## Demos",
+        "### How to import",
+        "### Basic usage",
+        "### Custom content",
+        "### Different layout",
+        "### Placeholder illustration (under construction)",
+        "## API reference",
+        "## Accessibility",
+        "### ARIA",
+        "## Content Guidelines",
+        "## Design Token",
+        "## FAQ"
+      ],
+      "notes": "保留原有章节顺序，API 依据真实公开 Vue 类型更新；增加需要的 FAQ/无障碍与 React→Vue 映射"
+    }
+  ],
+  "exclusions": []
+}

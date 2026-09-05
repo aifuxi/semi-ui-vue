@@ -1,0 +1,45 @@
+{
+  "upstream": "feedback/popconfirm",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "popconfirm/zh-cn/Basic",
+      "enUS": "popconfirm/en-us/Basic",
+      "notes": "保留标题、正文、保存按钮及确认/取消Toast；监听器使用@confirm/@cancel。"
+    },
+    {
+      "index": 2,
+      "zhCN": "popconfirm/zh-cn/Types",
+      "enUS": "popconfirm/en-us/Types",
+      "notes": "保留四种图标/确认按钮类型以及默认visible=true；实例局部容器限制弹层区域；各语言Radio样式保持原样。"
+    },
+    {
+      "index": 3,
+      "zhCN": "popconfirm/zh-cn/Async",
+      "enUS": "popconfirm/en-us/Async",
+      "notes": "保留2秒Promise：确认resolve关闭、取消reject保持打开；卸载清理timer并settle待处理Promise。"
+    },
+    {
+      "index": 4,
+      "zhCN": "popconfirm/zh-cn/InitialFocus",
+      "enUS": "popconfirm/en-us/InitialFocus",
+      "notes": "保留okButtonProps.autoFocus、cancelButtonProps.autoFocus、content初始焦点三种；render function改作用域插槽与callback ref。"
+    }
+  ],
+  "chapters": [
+    "代码演示",
+    "如何引入",
+    "基本使用",
+    "类型搭配",
+    "延时关闭",
+    "初始化弹出层焦点位置",
+    "搭配 Tooltip 或 Popover 使用",
+    "API 参考",
+    "Accessibility",
+    "ARIA",
+    "键盘和焦点",
+    "设计变量",
+    "FAQ"
+  ],
+  "exclusions": []
+}

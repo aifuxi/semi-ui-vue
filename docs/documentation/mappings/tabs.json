@@ -1,0 +1,191 @@
+{
+  "upstream": "navigation/tabs",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "tabs/zh-cn/Basic",
+      "enUS": "tabs/en-us/Basic",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    },
+    {
+      "index": 2,
+      "zhCN": "tabs/zh-cn/Button",
+      "enUS": "tabs/en-us/Button",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    },
+    {
+      "index": 3,
+      "zhCN": "tabs/zh-cn/Card",
+      "enUS": "tabs/en-us/Card",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    },
+    {
+      "index": 4,
+      "zhCN": "tabs/zh-cn/Slash",
+      "enUS": "tabs/en-us/Slash",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    },
+    {
+      "index": 5,
+      "zhCN": "tabs/zh-cn/Icons",
+      "enUS": "tabs/en-us/Icons",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    },
+    {
+      "index": 6,
+      "zhCN": "tabs/zh-cn/More",
+      "enUS": "tabs/en-us/More",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    },
+    {
+      "index": 7,
+      "zhCN": "tabs/zh-cn/CustomMore",
+      "enUS": "tabs/en-us/CustomMore",
+      "notes": "more.render 改用公开 #more 插槽；保留 click trigger、bottomRight 与原 Button 文案。"
+    },
+    {
+      "index": 8,
+      "zhCN": "tabs/zh-cn/Vertical",
+      "enUS": "tabs/en-us/Vertical",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    },
+    {
+      "index": 9,
+      "zhCN": "tabs/zh-cn/Collapsible",
+      "enUS": "tabs/en-us/Collapsible",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    },
+    {
+      "index": 10,
+      "zhCN": "tabs/zh-cn/CustomArrow",
+      "enUS": "tabs/en-us/CustomArrow",
+      "notes": "renderArrow 改用 #arrow，Dropdown render 改 #content；补齐上游遗漏的状态导入；保留自定义箭头样式与菜单交互。"
+    },
+    {
+      "index": 11,
+      "zhCN": "tabs/zh-cn/ArrowPosition",
+      "enUS": "tabs/en-us/ArrowPosition",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    },
+    {
+      "index": 12,
+      "zhCN": "tabs/zh-cn/AutoOverflow",
+      "enUS": "tabs/en-us/AutoOverflow",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    },
+    {
+      "index": 13,
+      "zhCN": "tabs/zh-cn/Disabled",
+      "enUS": "tabs/en-us/Disabled",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    },
+    {
+      "index": 14,
+      "zhCN": "tabs/zh-cn/Extra",
+      "enUS": "tabs/en-us/Extra",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    },
+    {
+      "index": 15,
+      "zhCN": "tabs/zh-cn/CustomBar",
+      "enUS": "tabs/en-us/CustomBar",
+      "notes": "Vue 不公开 React DefaultTabBar，以 #tabBar + 公开 TabItem 保留原 DOM class、activeKey 文案和键盘切换；没有导入内部组件。"
+    },
+    {
+      "index": 16,
+      "zhCN": "tabs/zh-cn/Draggable",
+      "enUS": "tabs/en-us/Draggable",
+      "notes": "React dnd-kit 无法直接用于 Vue；使用原生 Pointer Events，保留 5px 激活距离、closest-center 排序、原 TabItem 样式、拖动透明度与 activeKey；新增自身内容，不依赖共享实现。拖动过渡/位移细节与 dnd-kit 不承诺像素一致，尚未浏览器验证。"
+    },
+    {
+      "index": 17,
+      "zhCN": "tabs/zh-cn/Dynamic",
+      "enUS": "tabs/en-us/Dynamic",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    },
+    {
+      "index": 18,
+      "zhCN": "tabs/zh-cn/Closable",
+      "enUS": "tabs/en-us/Closable",
+      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "source": "vendor/semi-design/content/navigation/tabs/index.md",
+      "headings": [
+        "## 代码演示",
+        "### 如何引入",
+        "### 基本用法",
+        "### 带图标的",
+        "### 更多选项收入 More 展示",
+        "### 垂直的标签栏",
+        "### 滚动折叠",
+        "### 自动溢出检测",
+        "### 禁用",
+        "### 标签栏内容扩展",
+        "### 标签栏二次封装",
+        "### 拖拽排序",
+        "### 动态更新",
+        "### 关闭",
+        "## API 参考",
+        "### Tab",
+        "### TabPane",
+        "## Accessibility",
+        "### ARIA",
+        "### 键盘和焦点",
+        "## 设计变量",
+        "## 文案规范",
+        "## FAQ"
+      ],
+      "notes": "保留固定版本原有章节顺序与非live示例，API 按公开 Vue 类型替换，补充 FAQ/无障碍/React→Vue 迁移。"
+    },
+    {
+      "locale": "en-us",
+      "source": "vendor/semi-design/content/navigation/tabs/index-en-US.md",
+      "headings": [
+        "## Demos",
+        "### How to import",
+        "### Basic Usage",
+        "### With Icon",
+        "### More with Dropdown",
+        "### Vertical mode",
+        "### Scrollable Tabs",
+        "### Auto Overflow Detection",
+        "### Disable",
+        "### Extra Content",
+        "### Custom Render",
+        "### Drag and Drop Reordering",
+        "### Dynamic Update",
+        "### Closeable",
+        "## API Reference",
+        "### Tab",
+        "### TabPane",
+        "## Accessibility",
+        "### ARIA",
+        "### Keyboard and Focus",
+        "## Content Guidelines",
+        "## Design Token",
+        "## FAQ"
+      ],
+      "notes": "保留固定版本原有章节顺序与非live示例，API 按公开 Vue 类型替换，补充 FAQ/无障碍/React→Vue 迁移。"
+    }
+  ],
+  "exclusions": [
+    {
+      "source": "英文 Basic/Vertical 中 Eden 初始化 React 工程段落",
+      "reason": "专属外部内部平台且指向 React 工程，非 Vue 组件功能，删除此段。保留同示例其他正文；安装命令改为公开 Vue 包。"
+    },
+    {
+      "source": "拖拽示例 React @dnd-kit 依赖安装",
+      "reason": "已以独立 Vue Pointer Events 实现同项拖拽意图，不引入 React 依赖。"
+    }
+  ],
+  "apiCorrections": [
+    "defaultActiveKey 未传时选择首个未禁用项，不是固定字符串1。",
+    "arrowPosition 默认为 both。",
+    "visibleTabsChange 真实 Vue 载荷是 Map<string, boolean>。",
+    "下拉菜单仅支持公开 TabsDropdownOptions 字段，不能宣称接受任意 DropdownProps/render。"
+  ]
+}

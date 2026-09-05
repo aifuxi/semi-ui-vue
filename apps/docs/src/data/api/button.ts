@@ -65,4 +65,68 @@ export const buttonApi: readonly ApiSection[] = [
       p(name, 'MouseEvent', '—', '原生鼠标事件。', 'Native mouse event.'),
     ),
   },
+  {
+    id: 'button-group-props',
+    title: { 'zh-CN': 'ButtonGroup Props', 'en-US': 'ButtonGroup props' },
+    kind: 'props',
+    items: [
+      p(
+        'size',
+        'large | default | small',
+        'default',
+        '组合尺寸，子按钮可显式覆盖。',
+        'Group size; an explicit child prop overrides it.',
+      ),
+      p(
+        'type',
+        'primary | secondary | tertiary | warning | danger',
+        'primary',
+        '组合语义色。',
+        'Group semantic color.',
+      ),
+      p('theme', 'light | solid | borderless | outline', 'light', '组合主题。', 'Group theme.'),
+      p('disabled', 'boolean', 'false', '组合禁用状态。', 'Disables the group.'),
+      p('colorful', 'boolean', 'false', '组合多彩样式。', 'Colorful group style.'),
+      p('aria-label', 'string', '—', '组合的可访问名称。', 'Accessible group name.'),
+      p(
+        'class / style',
+        'HTMLAttributes[class] / StyleValue',
+        '—',
+        '根节点原生属性。',
+        'Native root attributes.',
+      ),
+    ],
+  },
+  {
+    id: 'split-button-group-props',
+    title: { 'zh-CN': 'SplitButtonGroup Props', 'en-US': 'SplitButtonGroup props' },
+    kind: 'props',
+    items: [
+      p('aria-label', 'string', '—', '组合的可访问名称。', 'Accessible group name.'),
+      p(
+        'class / style',
+        'HTMLAttributes[class] / StyleValue',
+        '—',
+        '根节点原生属性。',
+        'Native root attributes.',
+      ),
+    ],
+  },
+  {
+    id: 'button-group-slots',
+    title: {
+      'zh-CN': 'ButtonGroup / SplitButtonGroup Slots',
+      'en-US': 'ButtonGroup / SplitButtonGroup slots',
+    },
+    kind: 'slots',
+    items: [
+      p(
+        'default',
+        '() => VNodeChild',
+        '—',
+        '组合内的按钮或 Dropdown。',
+        'Buttons or Dropdown within the group.',
+      ),
+    ],
+  },
 ];

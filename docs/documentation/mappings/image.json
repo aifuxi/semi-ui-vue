@@ -1,0 +1,121 @@
+{
+  "upstream": "show/image",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "image/zh-cn/Basic",
+      "enUS": "image/en-us/Basic",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 2,
+      "zhCN": "image/zh-cn/Fallback",
+      "enUS": "image/en-us/Fallback",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 3,
+      "zhCN": "image/zh-cn/Progressive",
+      "enUS": "image/en-us/Progressive",
+      "notes": "本地同源图片与placeholder独立URL，Reload递增序号重新挂载；本地加载速度比远端快，未人为延迟。"
+    },
+    {
+      "index": 4,
+      "zhCN": "image/zh-cn/PreviewSource",
+      "enUS": "image/en-us/PreviewSource",
+      "notes": "源Markdown围栏前1空格导致旧统计漏项，仍属于live Demo，完整保留缩略图与preview.src配置。"
+    },
+    {
+      "index": 5,
+      "zhCN": "image/zh-cn/Group",
+      "enUS": "image/en-us/Group",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 6,
+      "zhCN": "image/zh-cn/Standalone",
+      "enUS": "image/en-us/Standalone",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 7,
+      "zhCN": "image/zh-cn/Container",
+      "enUS": "image/en-us/Container",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 8,
+      "zhCN": "image/zh-cn/CustomMenu",
+      "enUS": "image/en-us/CustomMenu",
+      "notes": "renderPreviewMenu迁移#previewMenu；修正上游disableZoomIn/disableZoomOut拼写为真实公开disabledZoomIn/disabledZoomOut，保留全部7种操作。"
+    },
+    {
+      "index": 9,
+      "zhCN": "image/zh-cn/ExtendMenu",
+      "enUS": "image/en-us/ExtendMenu",
+      "notes": "保留menuItems分组与自定义Tooltip；小范围render function仅用于渲染作用域插槽传来的既有VNode，不替代模板实现。"
+    },
+    {
+      "index": 10,
+      "zhCN": "image/zh-cn/Header",
+      "enUS": "image/en-us/Header",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "source": "vendor/semi-design/content/show/image/index.md",
+      "headings": [
+        "## 代码演示",
+        "### 如何引入",
+        "### 基本用法",
+        "### 加载失败的占位图",
+        "### 渐进加载",
+        "### 自定义预览图片",
+        "### 多图预览",
+        "### 单独使用预览组件",
+        "### 渲染在指定容器",
+        "### 自定义预览底部操作区",
+        "### 自定义预览顶部展示区",
+        "## API 参考",
+        "### Image",
+        "### ImagePreview",
+        "### MenuProps",
+        "## 设计变量"
+      ],
+      "notes": "保留章节顺序、说明及非live类型示例；API按实际公开Vue类型生成，补足slots/emits、FAQ、无障碍与迁移。"
+    },
+    {
+      "locale": "en-us",
+      "source": "vendor/semi-design/content/show/image/index-en-US.md",
+      "headings": [
+        "## Demos",
+        "### How to import",
+        "### Basic usage",
+        "### Loading failed placeholder",
+        "### Progressive loading",
+        "### Customize the preview image",
+        "### Multi-image preview",
+        "### Use the preview component alone",
+        "### Render in the specified container",
+        "### Customize the bottom operation area of the preview",
+        "### Customize the preview top display area",
+        "## API reference",
+        "### Image",
+        "### ImagePreview",
+        "### MenuProps",
+        "## Design Token"
+      ],
+      "notes": "保留章节顺序、说明及非live类型示例；API按实际公开Vue类型生成，补足slots/emits、FAQ、无障碍与迁移。"
+    }
+  ],
+  "exclusions": [],
+  "assetAdaptations": [
+    {
+      "source": "固定上游远程照片、背景与裁切素材",
+      "replacement": "现有 /demos/photo.svg、one.svg、two.svg、poster.svg",
+      "reason": "任务要求使用确定性同源资产，避免网络/CORS依赖；保留原尺寸与操作，图像内容和视觉与上游不同。"
+    }
+  ]
+}

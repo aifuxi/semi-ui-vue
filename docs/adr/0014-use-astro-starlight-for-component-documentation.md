@@ -1,8 +1,11 @@
 ---
-status: accepted
+status: superseded
+superseded-by: 0015-use-nuxt-for-component-documentation
 ---
 
 # 使用 Astro、Starlight、Vue 3 与 TypeScript 构建组件文档门户
+
+架构决策已由 [ADR 0015](./0015-use-nuxt-for-component-documentation.md) 替代。默认入口在全量迁移验收完成之前保留，作为明确的回退边界。
 
 组件文档门户采用 Astro 与 Starlight 构建内容、导航和站点基础能力，交互示例使用 Vue 3 与 TypeScript。该组合既能承载首期完整组件文档迁移，也能在不替换内容架构的前提下扩展为包含首页、设计资源与生态内容的完整官网门户。
 

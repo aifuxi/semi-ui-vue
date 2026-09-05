@@ -1,0 +1,106 @@
+{
+  "upstream": "input/colorpicker",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "color-picker/zh-cn/Popover",
+      "enUS": "color-picker/en-us/Popover",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 2,
+      "zhCN": "color-picker/zh-cn/Basic",
+      "enUS": "color-picker/en-us/Basic",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 3,
+      "zhCN": "color-picker/zh-cn/EyeDropper",
+      "enUS": "color-picker/en-us/EyeDropper",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 4,
+      "zhCN": "color-picker/zh-cn/DefaultValue",
+      "enUS": "color-picker/en-us/DefaultValue",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 5,
+      "zhCN": "color-picker/zh-cn/Controlled",
+      "enUS": "color-picker/en-us/Controlled",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 6,
+      "zhCN": "color-picker/zh-cn/Slots",
+      "enUS": "color-picker/en-us/Slots",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "headings": [
+        "代码演示",
+        "如何引入",
+        "基本用法",
+        "放在弹层",
+        "正常展示",
+        "滴管取色器",
+        "默认值",
+        "受控",
+        "顶部和底部渲染额外元素",
+        "API 参考",
+        "ColorPickerProps",
+        "事件",
+        "插槽",
+        "Methods",
+        "类型定义",
+        "Accessibility",
+        "ARIA、键盘和焦点",
+        "设计变量",
+        "FAQ",
+        "如何用颜色字符串设置初值？",
+        "隐藏透明度会改变值格式吗？",
+        "为什么看不到滴管或无法取色？",
+        "React → Vue 迁移"
+      ]
+    },
+    {
+      "locale": "en-us",
+      "headings": [
+        "Demos",
+        "How to import",
+        "Basic Use",
+        "In portal",
+        "Normal display",
+        "Eyedropper Color Picker",
+        "Default Value",
+        "Controlled",
+        "Rendering additional elements at the top and bottom",
+        "API Reference",
+        "ColorPickerProps",
+        "Events",
+        "Slots",
+        "Methods",
+        "Type definitions",
+        "Accessibility",
+        "ARIA, keyboard and focus",
+        "Design Tokens",
+        "FAQ",
+        "How can a color string initialize the value?",
+        "Does hiding alpha change the value shape?",
+        "Why is the eye dropper unavailable?",
+        "React → Vue migration"
+      ]
+    },
+    {
+      "source": "固定基线",
+      "tag": "v2.102.0",
+      "commit": "cdfba6e520fc83ad871b30f51f36d8af3aaa5a21",
+      "validation": "独立 SFC 编译与限定类型检查；浏览器、键盘和视觉验收由共享工作流另行执行。"
+    }
+  ],
+  "exclusions": []
+}

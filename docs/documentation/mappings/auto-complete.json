@@ -1,0 +1,130 @@
+{
+  "upstream": "input/autocomplete",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "auto-complete/zh-cn/Basic",
+      "enUS": "auto-complete/en-us/Basic",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 2,
+      "zhCN": "auto-complete/zh-cn/CustomOption",
+      "enUS": "auto-complete/en-us/CustomOption",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。 中文原例在搜索后覆盖源数组导致清空后不能再次搜索；使用固定原始人员列表恢复可重复搜索。"
+    },
+    {
+      "index": 3,
+      "zhCN": "auto-complete/zh-cn/Remote",
+      "enUS": "auto-complete/en-us/Remote",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。 上游随机结果/延迟替换为固定序列；本地定时器模拟异步并清理卸载与过期响应。 中文上游 handleSelect 引用了未定义 value，改为直接记录 select 参数；两语言远程示例数据和渲染各自保留。"
+    },
+    {
+      "index": 4,
+      "zhCN": "auto-complete/zh-cn/Size",
+      "enUS": "auto-complete/en-us/Size",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 5,
+      "zhCN": "auto-complete/zh-cn/Position",
+      "enUS": "auto-complete/en-us/Position",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 6,
+      "zhCN": "auto-complete/zh-cn/Disabled",
+      "enUS": "auto-complete/en-us/Disabled",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 7,
+      "zhCN": "auto-complete/zh-cn/Validation",
+      "enUS": "auto-complete/en-us/Validation",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 8,
+      "zhCN": "auto-complete/zh-cn/Empty",
+      "enUS": "auto-complete/en-us/Empty",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。 上游随机结果/延迟替换为固定序列；本地定时器模拟异步并清理卸载与过期响应。"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "headings": [
+        "使用场景",
+        "代码演示",
+        "如何引入",
+        "基本用法",
+        "自定义候选项渲染",
+        "远程搜索",
+        "尺寸",
+        "下拉菜单的位置",
+        "禁用",
+        "校验状态",
+        "自定义空内容",
+        "API 参考",
+        "AutoCompleteProps",
+        "AutoCompleteDataItem",
+        "AutoCompleteOptionProps",
+        "事件",
+        "插槽",
+        "相关类型",
+        "Methods",
+        "Accessibility",
+        "ARIA",
+        "键盘和焦点",
+        "文案规范",
+        "设计变量",
+        "React → Vue 迁移",
+        "FAQ",
+        "输入文本和选项值有什么区别？",
+        "如何获取完整选项？",
+        "异步搜索如何避免旧结果覆盖？"
+      ]
+    },
+    {
+      "locale": "en-us",
+      "headings": [
+        "When to use",
+        "Demos",
+        "How to import",
+        "Basic usage",
+        "Custom option rendering",
+        "Remote search",
+        "Size",
+        "The position of the drop-down menu",
+        "Disabled",
+        "Validate status",
+        "Custom empty content",
+        "API Reference",
+        "AutoCompleteProps",
+        "AutoCompleteDataItem",
+        "AutoCompleteOptionProps",
+        "Events",
+        "Slots",
+        "Related types",
+        "Methods",
+        "Accessibility",
+        "ARIA",
+        "Keyboard and Focus",
+        "Content Guidelines",
+        "Design Token",
+        "React → Vue migration",
+        "FAQ",
+        "How do input text and option values differ?",
+        "How can I receive the complete option?",
+        "How can stale search responses be avoided?"
+      ]
+    },
+    {
+      "source": "固定基线",
+      "tag": "v2.102.0",
+      "commit": "cdfba6e520fc83ad871b30f51f36d8af3aaa5a21",
+      "validation": "独立 SFC 编译和限定类型检查；浏览器与视觉验收单独执行，不将差异标 accepted。"
+    }
+  ],
+  "exclusions": []
+}

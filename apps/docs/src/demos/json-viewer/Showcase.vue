@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { JsonViewer } from '@aifuxi/semi-ui-vue';
+import { JsonViewer } from '@aifuxi/semi-ui-vue/json-viewer';
 import '@aifuxi/semi-theme-default/json-viewer.css';
 
 const value = shallowRef(`{

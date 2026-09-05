@@ -1,0 +1,159 @@
+{
+  "upstream": "show/tag",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "tag/zh-cn/Basic",
+      "enUS": "tag/en-us/Basic",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 2,
+      "zhCN": "tag/zh-cn/Size",
+      "enUS": "tag/en-us/Size",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 3,
+      "zhCN": "tag/zh-cn/Shape",
+      "enUS": "tag/en-us/Shape",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 4,
+      "zhCN": "tag/zh-cn/Icons",
+      "enUS": "tag/en-us/Icons",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 5,
+      "zhCN": "tag/zh-cn/Color",
+      "enUS": "tag/en-us/Color",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 6,
+      "zhCN": "tag/zh-cn/Colorful",
+      "enUS": "tag/en-us/Colorful",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 7,
+      "zhCN": "tag/zh-cn/Type",
+      "enUS": "tag/en-us/Type",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 8,
+      "zhCN": "tag/zh-cn/Avatar",
+      "enUS": "tag/en-us/Avatar",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 9,
+      "zhCN": "tag/zh-cn/Visible",
+      "enUS": "tag/en-us/Visible",
+      "notes": "RadioGroup v-model 驱动 visible；选择 Show/Hide 按选项值更新，修正上游回调忽略选项、单纯反转状态的写法。"
+    },
+    {
+      "index": 10,
+      "zhCN": "tag/zh-cn/Group",
+      "enUS": "tag/en-us/Group",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 11,
+      "zhCN": "tag/zh-cn/GroupClose",
+      "enUS": "tag/en-us/GroupClose",
+      "notes": "tagList[].children 迁移为 content；父层按唯一 tagKey 更新数组；英文重复 key 修正。"
+    },
+    {
+      "index": 12,
+      "zhCN": "tag/zh-cn/SplitGroup",
+      "enUS": "tag/en-us/SplitGroup",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "source": "vendor/semi-design/content/show/tag/index.md",
+      "headings": [
+        "## 代码演示",
+        "### 如何引入",
+        "### 基本用法",
+        "### 尺寸",
+        "### 形状",
+        "### 配置图标",
+        "### 颜色",
+        "### AI 风格 - 多彩标签",
+        "### 样式类型",
+        "### 头像标签",
+        "### 不可见的",
+        "### TagGroup 使用",
+        "### SplitTagGroup 组合标签",
+        "## API参考",
+        "### Tag",
+        "### TagGroup",
+        "### SplitTagGroup",
+        "## Accessibility",
+        "### ARIA",
+        "### 键盘和焦点",
+        "## 文案规范",
+        "## 设计变量"
+      ],
+      "notes": "保留原有章节顺序，API 依据真实公开 Vue 类型更新；增加需要的 FAQ/无障碍与 React→Vue 映射"
+    },
+    {
+      "locale": "en-us",
+      "source": "vendor/semi-design/content/show/tag/index-en-US.md",
+      "headings": [
+        "## Demos",
+        "### How to import",
+        "### Basic usage",
+        "### Size",
+        "### Shape",
+        "### Color",
+        "### AI style - colorful labels",
+        "### Type",
+        "### Avatar Tag",
+        "### Invisible",
+        "### TagGroup",
+        "### SplitTagGroup",
+        "## API Reference",
+        "### Tag",
+        "### TagGroup",
+        "### SplitTagGroup",
+        "## Accessibility",
+        "### ARIA",
+        "### Keyboard and Focus",
+        "## Content Guidelines",
+        "## Design Tokens"
+      ],
+      "notes": "保留原有章节顺序，API 依据真实公开 Vue 类型更新；增加需要的 FAQ/无障碍与 React→Vue 映射"
+    }
+  ],
+  "exclusions": [
+    {
+      "source": "配置图标/样式类型中的 IconGithubLogo、IconSemiLogo",
+      "replacement": "公开 IconCode、IconCodeStroked",
+      "reason": "项目与任务禁止复用品牌 Logo；保留前后图标位置、尺寸、原演示文字。"
+    },
+    {
+      "source": "文末已注释 material 53 平台物料",
+      "reason": "上游平台内部物料编号，不是公开组件文档或 live Demo。"
+    }
+  ],
+  "assetAdaptations": [
+    {
+      "source": "上游 CDN dy.png / avatarDemo.jpeg",
+      "replacement": "/demos/photo.svg",
+      "reason": "按任务使用现有确定性本地素材，不复制品牌 Logo，不依赖远程 CDN；保持图片尺寸与布局。图片视觉内容与上游不同。"
+    }
+  ],
+  "localeDifferences": [
+    "英文上游缺少单独配置图标章节，补译中文第4项。",
+    "TagGroup 保留中英文各自标签数量/文案/颜色。",
+    "英文 GroupClose 原第2/3项重复 tagKey=3；修正为唯一标识以保证删除正确项。英文不启用 showPopover，与英文源码一致。"
+  ]
+}

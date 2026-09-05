@@ -1,0 +1,115 @@
+{
+  "upstream": "show/calendar",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "calendar/zh-cn/Day",
+      "enUS": "calendar/en-us/Day",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 2,
+      "zhCN": "calendar/zh-cn/Week",
+      "enUS": "calendar/en-us/Week",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 3,
+      "zhCN": "calendar/zh-cn/Month",
+      "enUS": "calendar/en-us/Month",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 4,
+      "zhCN": "calendar/zh-cn/WeekStart",
+      "enUS": "calendar/en-us/WeekStart",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 5,
+      "zhCN": "calendar/zh-cn/Range",
+      "enUS": "calendar/en-us/Range",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 6,
+      "zhCN": "calendar/zh-cn/Events",
+      "enUS": "calendar/en-us/Events",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 7,
+      "zhCN": "calendar/zh-cn/CustomEvents",
+      "enUS": "calendar/en-us/CustomEvents",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 8,
+      "zhCN": "calendar/zh-cn/CellStyle",
+      "enUS": "calendar/en-us/CellStyle",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    },
+    {
+      "index": 9,
+      "zhCN": "calendar/zh-cn/DateDisplay",
+      "enUS": "calendar/en-us/DateDisplay",
+      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "source": "vendor/semi-design/content/show/calendar/index.md",
+      "headings": [
+        "## 代码演示",
+        "### 如何引入",
+        "### 日视图",
+        "### 周视图",
+        "### 月视图",
+        "### 设置周起始日",
+        "### 多日视图",
+        "### 事件渲染用法",
+        "### 自定义渲染",
+        "#### 自定义渲染事件",
+        "#### 自定义渲染单元格样式",
+        "#### 自定义日期文案",
+        "## API 参考",
+        "### Calendar",
+        "### Event Object",
+        "## 文案规范",
+        "## 设计变量"
+      ],
+      "notes": "保留章节顺序、说明及非live类型示例；API按实际公开Vue类型生成，补足slots/emits、FAQ、无障碍与迁移。"
+    },
+    {
+      "locale": "en-us",
+      "source": "vendor/semi-design/content/show/calendar/index-en-US.md",
+      "headings": [
+        "## Demos",
+        "### How to import",
+        "### Day Mode",
+        "### Week Mode",
+        "### Month Mode",
+        "### Set week start day",
+        "### Range Mode",
+        "### Render Events",
+        "### Custom Render",
+        "#### Custom Render Events",
+        "#### Customized Date Cell Style",
+        "#### Customized Date Render",
+        "## API Reference",
+        "### Calendar",
+        "### Event Object",
+        "## Content Guidelines",
+        "## Design Tokens"
+      ],
+      "notes": "保留章节顺序、说明及非live类型示例；API按实际公开Vue类型生成，补足slots/emits、FAQ、无障碍与迁移。"
+    }
+  ],
+  "exclusions": [],
+  "clockAdaptation": {
+    "date": "基础视图固定2019-07-23；保留原有2019事件、2020范围、2023日期文案示例的日期。",
+    "showCurrTime": false,
+    "reason": "明确日期并关闭运行时当前时间线，避免日期与时钟漂移。"
+  }
+}

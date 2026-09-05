@@ -1,0 +1,154 @@
+{
+  "upstream": "input/timepicker",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "time-picker/zh-cn/Basic",
+      "enUS": "time-picker/en-us/Basic",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 2,
+      "zhCN": "time-picker/zh-cn/Wheel",
+      "enUS": "time-picker/en-us/Wheel",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 3,
+      "zhCN": "time-picker/zh-cn/Controlled",
+      "enUS": "time-picker/en-us/Controlled",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 4,
+      "zhCN": "time-picker/zh-cn/Format",
+      "enUS": "time-picker/en-us/Format",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 5,
+      "zhCN": "time-picker/zh-cn/PanelSlots",
+      "enUS": "time-picker/en-us/PanelSlots",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 6,
+      "zhCN": "time-picker/zh-cn/Disabled",
+      "enUS": "time-picker/en-us/Disabled",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 7,
+      "zhCN": "time-picker/zh-cn/Step",
+      "enUS": "time-picker/en-us/Step",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 8,
+      "zhCN": "time-picker/zh-cn/TwelveHours",
+      "enUS": "time-picker/en-us/TwelveHours",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 9,
+      "zhCN": "time-picker/zh-cn/Range",
+      "enUS": "time-picker/en-us/Range",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 10,
+      "zhCN": "time-picker/zh-cn/DisabledRange",
+      "enUS": "time-picker/en-us/DisabledRange",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 11,
+      "zhCN": "time-picker/zh-cn/Trigger",
+      "enUS": "time-picker/en-us/Trigger",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。 初始时间固定为 2024-08-15 10:24:30，使用公开 trigger 插槽；IconTimePicker 从 icons-lab 公开包导入。"
+    },
+    {
+      "index": 12,
+      "zhCN": "time-picker/zh-cn/TimeZone",
+      "enUS": "time-picker/en-us/TimeZone",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。 保留固定时间戳 1581599305265 和 GMT-11 至 GMT+14 时区列表。"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "headings": [
+        "代码演示",
+        "如何引入",
+        "基础使用",
+        "无限滚动",
+        "受控组件",
+        "不同的 Format 格式",
+        "设置面板头部，底部",
+        "禁用时间选择",
+        "设置步长",
+        "12 小时制",
+        "时间范围",
+        "Range 模式下分别禁用左右面板（disabledTime）",
+        "自定义触发器",
+        "时区设置",
+        "API 参考",
+        "TimePickerProps",
+        "事件",
+        "插槽",
+        "Methods",
+        "类型定义",
+        "文案规范",
+        "设计变量",
+        "Accessibility",
+        "ARIA、键盘和焦点",
+        "FAQ",
+        "为什么只展示小时或分钟？",
+        "范围两侧如何使用不同禁用规则？",
+        "change 与 v-model 的类型为什么不同？",
+        "React → Vue 迁移"
+      ]
+    },
+    {
+      "locale": "en-us",
+      "headings": [
+        "Demos",
+        "How to import",
+        "Basic Usage",
+        "Infinite Scroll",
+        "Controlled Component",
+        "Different Format",
+        "Set Panel Header and Footer",
+        "Disable Time Selection",
+        "Set Step Length",
+        "12-hour System",
+        "Time Range",
+        "Disable left/right panels in Range mode (disabledTime)",
+        "Custom Trigger",
+        "TimeZone Config",
+        "API Reference",
+        "TimePickerProps",
+        "Events",
+        "Slots",
+        "Methods",
+        "Type definitions",
+        "Content Guidelines",
+        "Design Tokens",
+        "Accessibility",
+        "ARIA, keyboard and focus",
+        "FAQ",
+        "Why are only hours or minutes visible?",
+        "How can range panels have different disabled rules?",
+        "Why do change and v-model have different payload types?",
+        "React → Vue migration"
+      ]
+    },
+    {
+      "source": "固定基线",
+      "tag": "v2.102.0",
+      "commit": "cdfba6e520fc83ad871b30f51f36d8af3aaa5a21",
+      "validation": "独立 SFC 编译与限定类型检查；浏览器、键盘和视觉验收由共享工作流另行执行。"
+    }
+  ],
+  "exclusions": []
+}

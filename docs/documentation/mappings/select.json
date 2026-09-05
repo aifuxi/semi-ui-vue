@@ -1,0 +1,285 @@
+{
+  "upstream": "input/select",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "select/zh-cn/Basic",
+      "enUS": "select/en-us/Basic",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 2,
+      "zhCN": "select/zh-cn/Options",
+      "enUS": "select/en-us/Options",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 3,
+      "zhCN": "select/zh-cn/Multiple",
+      "enUS": "select/en-us/Multiple",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 4,
+      "zhCN": "select/zh-cn/Groups",
+      "enUS": "select/en-us/Groups",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 5,
+      "zhCN": "select/zh-cn/GroupData",
+      "enUS": "select/en-us/GroupData",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 6,
+      "zhCN": "select/zh-cn/Size",
+      "enUS": "select/en-us/Size",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 7,
+      "zhCN": "select/zh-cn/Validation",
+      "enUS": "select/en-us/Validation",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 8,
+      "zhCN": "select/zh-cn/Affixes",
+      "enUS": "select/en-us/Affixes",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 9,
+      "zhCN": "select/zh-cn/BottomSlots",
+      "enUS": "select/en-us/BottomSlots",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 10,
+      "zhCN": "select/zh-cn/TopTabs",
+      "enUS": "select/en-us/TopTabs",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 11,
+      "zhCN": "select/zh-cn/Controlled",
+      "enUS": "select/en-us/Controlled",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 12,
+      "zhCN": "select/zh-cn/DynamicOptions",
+      "enUS": "select/en-us/DynamicOptions",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。 对应英文第 19 个 live Demo。 上游随机结果/延迟替换为固定序列；本地定时器模拟异步并清理卸载与过期响应。"
+    },
+    {
+      "index": 13,
+      "zhCN": "select/zh-cn/Linkage",
+      "enUS": "select/en-us/Linkage",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。 对应英文第 12 个 live Demo。"
+    },
+    {
+      "index": 14,
+      "zhCN": "select/zh-cn/Search",
+      "enUS": "select/en-us/Search",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。 对应英文第 13 个 live Demo。"
+    },
+    {
+      "index": 15,
+      "zhCN": "select/zh-cn/SearchPosition",
+      "enUS": "select/en-us/SearchPosition",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。 对应英文第 14 个 live Demo。"
+    },
+    {
+      "index": 16,
+      "zhCN": "select/zh-cn/Remote",
+      "enUS": "select/en-us/Remote",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。 对应英文第 15 个 live Demo。 上游随机结果/延迟替换为固定序列；本地定时器模拟异步并清理卸载与过期响应。"
+    },
+    {
+      "index": 17,
+      "zhCN": "select/zh-cn/CustomFilter",
+      "enUS": "select/en-us/CustomFilter",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。 对应英文第 16 个 live Demo。"
+    },
+    {
+      "index": 18,
+      "zhCN": "select/zh-cn/SelectedItem",
+      "enUS": "select/en-us/SelectedItem",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。 对应英文第 17 个 live Demo。 头像使用项目自有 /demos/{photo,one,two}.svg；selectedItem 固定位于内建 Tag 内容区，不支持 React isRenderInTag:false，保留头像形状及默认关闭交互。外层 DOM 差异未验收。"
+    },
+    {
+      "index": 19,
+      "zhCN": "select/zh-cn/DropdownStyle",
+      "enUS": "select/en-us/DropdownStyle",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。 对应英文第 18 个 live Demo。"
+    },
+    {
+      "index": 20,
+      "zhCN": "select/zh-cn/ObjectValue",
+      "enUS": "select/en-us/ObjectValue",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 21,
+      "zhCN": "select/zh-cn/Create",
+      "enUS": "select/en-us/Create",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 22,
+      "zhCN": "select/zh-cn/Virtual",
+      "enUS": "select/en-us/Virtual",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 23,
+      "zhCN": "select/zh-cn/Trigger",
+      "enUS": "select/en-us/Trigger",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 24,
+      "zhCN": "select/zh-cn/DraggableTrigger",
+      "enUS": "select/en-us/DraggableTrigger",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    },
+    {
+      "index": 25,
+      "zhCN": "select/zh-cn/CustomOption",
+      "enUS": "select/en-us/CustomOption",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、数据文案与布局；公开子路径导入和逐组件样式。"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "headings": [
+        "代码演示",
+        "如何引入",
+        "基本使用",
+        "以数组形式传入 Option",
+        "多选",
+        "分组",
+        "不同尺寸",
+        "不同校验状态样式",
+        "配置前缀、后缀、清除按钮",
+        "在顶部/底部渲染附加项",
+        "受控组件",
+        "动态修改 Options",
+        "联动",
+        "开启搜索",
+        "搜索框位置",
+        "远程搜索",
+        "自定义搜索逻辑",
+        "自定义已选项标签渲染",
+        "自定义弹出层样式",
+        "获取选项的其他属性",
+        "创建条目",
+        "虚拟化",
+        "自定义触发器",
+        "自定义候选项渲染",
+        "API 参考",
+        "SelectProps",
+        "SelectOptionProps",
+        "SelectOptionGroupProps",
+        "SelectVirtualizeProps",
+        "事件",
+        "插槽",
+        "相关类型",
+        "Methods",
+        "Accessibility",
+        "ARIA",
+        "键盘和焦点",
+        "文案规范",
+        "设计变量",
+        "TypeScript 类型",
+        "相关物料",
+        "React → Vue 迁移",
+        "FAQ",
+        "为什么 label 应保持唯一？",
+        "远程请求完成前为什么显示暂无数据？",
+        "切换语言后如何更新选项文本？",
+        "动态修改 disabled 后如何更新？",
+        "下拉菜单的宽度如何控制？",
+        "allowCreate 为什么不响应外部选项更新？",
+        "选择完成或 Esc 后为什么没有 blur？",
+        "自定义多选 Tag 可以完全替换外层吗？"
+      ]
+    },
+    {
+      "locale": "en-us",
+      "headings": [
+        "Demos",
+        "How to import",
+        "Basic Usage",
+        "Pass Option as an array",
+        "Multi-choice",
+        "With Group",
+        "Different sizes",
+        "Different validate status",
+        "Configure Prefix, Suffix, Clear Button",
+        "Additional items",
+        "Controlled component",
+        "Linkage Select",
+        "Search",
+        "Search position",
+        "Remote search",
+        "Custom search strategy",
+        "Custom selection rendering",
+        "Custom pop-up layer style",
+        "Dynamic Modification Options",
+        "Get all attribute of selected option",
+        "Create entries",
+        "Virtualize",
+        "Custom Trigger",
+        "Custom Option Render",
+        "API Reference",
+        "SelectProps",
+        "SelectOptionProps",
+        "SelectOptionGroupProps",
+        "SelectVirtualizeProps",
+        "Events",
+        "Slots",
+        "Related types",
+        "Methods",
+        "Accessibility",
+        "ARIA",
+        "Keyboard and Focus",
+        "Content Guidelines",
+        "Design Tokens",
+        "Related Material",
+        "TypeScript types",
+        "React → Vue migration",
+        "FAQ",
+        "Why should labels be unique?",
+        "Why does an empty result appear before a remote request completes?",
+        "How should option text update after switching locale?",
+        "How can disabled options update dynamically?",
+        "How is dropdown width controlled?",
+        "Why does allowCreate ignore external option updates?",
+        "Why does selection or Escape not emit blur?",
+        "Can a custom selected Tag replace its entire wrapper?"
+      ]
+    },
+    {
+      "source": "固定基线",
+      "tag": "v2.102.0",
+      "commit": "cdfba6e520fc83ad871b30f51f36d8af3aaa5a21",
+      "validation": "独立 SFC 编译和限定类型检查；浏览器与视觉验收单独执行，不将差异标 accepted。"
+    },
+    {
+      "source": "自定义头像",
+      "originalUrls": [
+        "https://lf3-static.bytednsdoc.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/Viamaker.png",
+        "https://lf3-static.bytednsdoc.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/bag.jpeg",
+        "https://lf3-static.bytednsdoc.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/dy.png",
+        "https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/6fbafc2d-e3e6-4cff-a1e2-17709c680624.png"
+      ],
+      "replacement": ["/demos/photo.svg", "/demos/one.svg", "/demos/two.svg"],
+      "reason": "使用项目自有确定性插图；不引入许可不明的远程素材。"
+    }
+  ],
+  "exclusions": []
+}

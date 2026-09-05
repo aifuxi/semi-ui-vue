@@ -5,7 +5,7 @@ import {
   type TableColumnProps,
   type TableRowKey,
   type TableRowSelection,
-} from '@aifuxi/semi-ui-vue';
+} from '@aifuxi/semi-ui-vue/table';
 import '@aifuxi/semi-theme-default/table.css';
 
 const columns: TableColumnProps[] = [

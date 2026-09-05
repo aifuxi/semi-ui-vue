@@ -10,24 +10,44 @@
     "build": "astro build",
     "check:content": "node scripts/verify-content.mjs",
     "check:dist": "node scripts/verify-dist.mjs",
-    "typecheck": "astro check && vue-tsc --noEmit -p tsconfig.vue.json",
+    "typecheck": "astro check --tsconfig tsconfig.astro.json && vue-tsc --noEmit -p tsconfig.vue.json",
     "test:browser": "pnpm build && playwright test -c playwright.config.ts",
     "check": "pnpm check:content && pnpm typecheck && astro build && pnpm check:dist",
-    "clean": "rimraf .astro dist"
+    "clean": "rimraf .astro dist",
+    "prepare:nuxt": "node scripts/prepare-assets.mjs && node scripts/prepare-tokens.mjs && node scripts/prepare-content.mjs && node scripts/prepare-coverage.mjs && node scripts/prepare-repl.mjs",
+    "dev:nuxt": "pnpm prepare:nuxt && nuxt dev --port 4321 --host 127.0.0.1",
+    "build:nuxt": "pnpm prepare:nuxt && nuxt generate && node scripts/prepare-static.mjs && node scripts/prepare-notices.mjs",
+    "typecheck:nuxt": "nuxt typecheck",
+    "preview:nuxt": "node scripts/preview-static.mjs",
+    "test:nuxt": "playwright test -c playwright.nuxt.config.ts",
+    "check:nuxt:content": "node scripts/verify-nuxt-content.mjs",
+    "check:nuxt:coverage": "node scripts/prepare-coverage.mjs --require-complete",
+    "check:nuxt": "pnpm build:nuxt && pnpm check:nuxt:content && pnpm typecheck:nuxt && pnpm test:nuxt"
   },
   "dependencies": {
+    "@aifuxi/semi-icons-lab-vue": "workspace:*",
     "@aifuxi/semi-icons-vue": "workspace:*",
+    "@aifuxi/semi-illustrations-vue": "workspace:*",
     "@aifuxi/semi-theme-default": "workspace:*",
     "@aifuxi/semi-ui-vue": "workspace:*",
     "@astrojs/mdx": "8.0.0",
     "@astrojs/starlight": "0.41.10",
     "@astrojs/vue": "7.0.2",
+    "@nuxt/content": "3.16.0",
+    "@vue/repl": "4.7.2",
     "astro": "7.2.10",
+    "nuxt": "4.5.2",
     "vue": "catalog:"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.6",
+    "@douyinfe/semi-site-doc-style": "0.0.5",
     "@playwright/test": "1.62.1",
-    "typescript": "5.9.3"
+    "es-module-shims": "2.8.4",
+    "esbuild": "0.28.1",
+    "sass": "1.54.9",
+    "typeface-inconsolata": "1.1.13",
+    "typescript": "5.9.3",
+    "yaml": "2.9.0"
   }
 }

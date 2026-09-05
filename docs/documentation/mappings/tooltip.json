@@ -1,0 +1,89 @@
+{
+  "upstream": "show/tooltip",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "tooltip/zh-cn/TriggerChildren",
+      "enUS": "tooltip/en-us/TriggerChildren",
+      "notes": "React forwardRef/Class Component 改显式透传和单根继承两个Vue子组件，保留三种触发器。"
+    },
+    {
+      "index": 2,
+      "zhCN": "tooltip/zh-cn/Position",
+      "enUS": "tooltip/en-us/Position",
+      "notes": "保留12方向、两段内容和 arrowPointAtCenter=false；map改v-for。"
+    },
+    {
+      "index": 3,
+      "zhCN": "tooltip/zh-cn/ArrowCenter",
+      "enUS": "tooltip/en-us/ArrowCenter",
+      "notes": "保留默认中心指向与边缘对齐两个示例及按钮尺寸。"
+    },
+    {
+      "index": 4,
+      "zhCN": "tooltip/zh-cn/Trigger",
+      "enUS": "tooltip/en-us/Trigger",
+      "notes": "保留中文五种/英文四种触发方式；所有Popup实例绑定本例container ref，中文RadioGroup/英文ButtonGroup控制显示。"
+    },
+    {
+      "index": 5,
+      "zhCN": "tooltip/zh-cn/Condition",
+      "enUS": "tooltip/en-us/Condition",
+      "notes": "useState/useMemo 改 shallowRef/computed，保留 hover/click condition 控制。"
+    },
+    {
+      "index": 6,
+      "zhCN": "tooltip/zh-cn/Style",
+      "enUS": "tooltip/en-us/Style",
+      "notes": "保留 maxWidth320、自定义class与Tag文案。"
+    },
+    {
+      "index": 7,
+      "zhCN": "tooltip/zh-cn/Container",
+      "enUS": "tooltip/en-us/Container",
+      "notes": "固定ID查询改实例template ref；保留right/click与容器相对定位。"
+    },
+    {
+      "index": 8,
+      "zhCN": "tooltip/zh-cn/Popconfirm",
+      "enUS": "tooltip/en-us/Popconfirm",
+      "notes": "保留Popconfirm外包、span中间层和Tooltip内包按钮，避免触发器事件冲突。"
+    },
+    {
+      "index": 9,
+      "zhCN": "tooltip/zh-cn/Overflow",
+      "enUS": "tooltip/en-us/Overflow",
+      "notes": "保留Title、Text中间截断、Paragraph三行Popover三个示例；上游英文缺本节，根据中文完整翻译补齐。"
+    }
+  ],
+  "chapters": [
+    "代码演示",
+    "如何引入",
+    "注意事项",
+    "位置",
+    "指向元素中心",
+    "触发时机",
+    "condition 条件触发",
+    "覆盖特定样式",
+    "渲染至指定 DOM",
+    "搭配 Popover 或 Popconfirm 使用",
+    "仅当内容宽度超出时展示 Tooltip",
+    "API 参考",
+    "Accessibility",
+    "ARIA",
+    "文案规范",
+    "设计变量",
+    "FAQ",
+    "相关物料"
+  ],
+  "exclusions": [
+    {
+      "item": "相关物料 / Related Material",
+      "reason": "外部 semi-material-list 营销平台入口不接入本地文档；全部live Demo保留。"
+    },
+    {
+      "item": "React 19专属触发器兼容说明",
+      "reason": "由Vue单根DOM与属性/事件透传说明替代；不接入React专属迁移页面。"
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "upstream": "basic/layout",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "layout/zh-cn/ThreeSections",
+      "enUS": "layout/en-us/ThreeSections",
+      "notes": "保留 Header/Content/Footer 三行与原始高度；具备独立 scoped docDemo 样式。"
+    },
+    {
+      "index": 2,
+      "zhCN": "layout/zh-cn/LeftSidebar",
+      "enUS": "layout/en-us/LeftSidebar",
+      "notes": "保留左侧 120px Sider 与内部 Layout。"
+    },
+    {
+      "index": 3,
+      "zhCN": "layout/zh-cn/RightSidebar",
+      "enUS": "layout/en-us/RightSidebar",
+      "notes": "保留右侧 120px Sider 与内部 Layout。"
+    },
+    {
+      "index": 4,
+      "zhCN": "layout/zh-cn/Sidebar",
+      "enUS": "layout/en-us/Sidebar",
+      "notes": "保留全高侧栏包围三行的嵌套结构。"
+    },
+    {
+      "index": 5,
+      "zhCN": "layout/zh-cn/Responsive",
+      "enUS": "layout/en-us/Responsive",
+      "notes": "保留 md 断点和日志回调；onBreakpoint 映射 @breakpoint，Sider 本身不自动折叠。"
+    },
+    {
+      "index": 6,
+      "zhCN": "layout/zh-cn/TopNavigation",
+      "enUS": "layout/en-us/TopNavigation",
+      "notes": "保留顶部导航、三个 NavItem、通知/帮助按钮、Avatar、Breadcrumb、两行 Skeleton 与 Footer；品牌 Logo 替换为 IconInfoCircle。"
+    },
+    {
+      "index": 7,
+      "zhCN": "layout/zh-cn/TopSidebar",
+      "enUS": "layout/en-us/TopSidebar",
+      "notes": "保留模板顶部导航、四项侧边导航及真实折叠按钮、内容和 Footer；ReactNode 改命名插槽。"
+    },
+    {
+      "index": 8,
+      "zhCN": "layout/zh-cn/SideNavigation",
+      "enUS": "layout/en-us/SideNavigation",
+      "notes": "保留全高侧边导航、顶部操作区与内部三行内容；品牌使用独立 aifuxi 名称，保留折叠交互。"
+    }
+  ],
+  "chapters": [
+    "概述",
+    "代码演示",
+    "如何引入",
+    "三行布局",
+    "左侧边栏布局",
+    "右侧边栏布局",
+    "侧边栏布局",
+    "响应式布局",
+    "布局示例",
+    "顶部导航布局",
+    "顶部导航-侧边布局",
+    "侧边导航",
+    "API 参考",
+    "Layout",
+    "Layout.Sider",
+    "responsive map",
+    "Accessibility",
+    "ARIA",
+    "相关物料"
+  ],
+  "exclusions": [
+    {
+      "item": "相关物料 / Related Material",
+      "reason": "外部 semi-material-list 物料平台接入，不属于组件文档与演示运行能力。"
+    },
+    {
+      "item": "Semi / ByteDance 品牌 Logo",
+      "reason": "按仓库独立品牌约束替换为通用图标与 aifuxi 名称；保留全部 8 个布局示例。"
+    }
+  ]
+}

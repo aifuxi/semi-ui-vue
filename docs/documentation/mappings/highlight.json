@@ -1,0 +1,40 @@
+{
+  "upstream": "show/highlight",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "highlight/zh-cn/Basic",
+      "enUS": "highlight/en-us/Basic",
+      "notes": "保留各语言 sourceString/searchWords 与h2包裹。"
+    },
+    {
+      "index": 2,
+      "zhCN": "highlight/zh-cn/Style",
+      "enUS": "highlight/en-us/Style",
+      "notes": "保留各语言原高亮样式；React 数字尺寸转换为 Vue CSS px。"
+    },
+    {
+      "index": 3,
+      "zhCN": "highlight/zh-cn/Keywords",
+      "enUS": "highlight/en-us/Keywords",
+      "notes": "保留三个关键词的独立class/style，component=span。"
+    },
+    {
+      "index": 4,
+      "zhCN": "highlight/zh-cn/Tag",
+      "enUS": "highlight/en-us/Tag",
+      "notes": "保留 component=strong 自定义高亮标签。"
+    }
+  ],
+  "chapters": [
+    "代码演示",
+    "如何引入",
+    "基本用法",
+    "指定高亮样式",
+    "不同文本使用差异化样式",
+    "指定高亮标签",
+    "API 参考",
+    "Highlight"
+  ],
+  "exclusions": []
+}

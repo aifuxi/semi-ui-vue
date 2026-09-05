@@ -1,0 +1,118 @@
+{
+  "upstream": "show/card",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "card/zh-cn/Basic",
+      "enUS": "card/en-us/Basic",
+      "notes": "保留标题、正文与额外操作；headerExtraContent 使用同名插槽。"
+    },
+    {
+      "index": 2,
+      "zhCN": "card/zh-cn/Simple",
+      "enUS": "card/en-us/Simple",
+      "notes": "保留纯正文和 Meta+Popover 两种卡片；头像使用现有本地 photo.svg。"
+    },
+    {
+      "index": 3,
+      "zhCN": "card/zh-cn/Cover",
+      "enUS": "card/en-us/Cover",
+      "notes": "cover prop 映射 cover 插槽；使用现有本地 poster.svg 保证离线资源可用。"
+    },
+    {
+      "index": 4,
+      "zhCN": "card/zh-cn/Border",
+      "enUS": "card/en-us/Border",
+      "notes": "保留 bordered=false、headerLine=true 与背景容器。"
+    },
+    {
+      "index": 5,
+      "zhCN": "card/zh-cn/Shadows",
+      "enUS": "card/en-us/Shadows",
+      "notes": "保留 hover/always 两种阴影与 Meta+Popover。"
+    },
+    {
+      "index": 6,
+      "zhCN": "card/zh-cn/Flexible",
+      "enUS": "card/en-us/Flexible",
+      "notes": "title/cover/footer 等 VNode 改具名插槽，保持尺寸、按钮与布局。"
+    },
+    {
+      "index": 7,
+      "zhCN": "card/zh-cn/Inner",
+      "enUS": "card/en-us/Inner",
+      "notes": "保留两个内部 Card、标题额外操作与间距。"
+    },
+    {
+      "index": 8,
+      "zhCN": "card/zh-cn/Grid",
+      "enUS": "card/en-us/Grid",
+      "notes": "保留 gutter=[16,16] 两行及 span8/16 布局。"
+    },
+    {
+      "index": 9,
+      "zhCN": "card/zh-cn/Loading",
+      "enUS": "card/en-us/Loading",
+      "notes": "useState 改 shallowRef；Switch 控制 loading 的取反状态。"
+    },
+    {
+      "index": 10,
+      "zhCN": "card/zh-cn/Skeleton",
+      "enUS": "card/en-us/Skeleton",
+      "notes": "保留 title/description/avatar/extra/cover 五个独立 Skeleton 占位；使用同名插槽。"
+    },
+    {
+      "index": 11,
+      "zhCN": "card/zh-cn/Tabs",
+      "enUS": "card/en-us/Tabs",
+      "notes": "保留两个 TabPane 与各三段内容、负20px上下边距。"
+    },
+    {
+      "index": 12,
+      "zhCN": "card/zh-cn/Actions",
+      "enUS": "card/en-us/Actions",
+      "notes": "actions 数组改 actions 插槽，保留四星 Rating。"
+    },
+    {
+      "index": 13,
+      "zhCN": "card/zh-cn/Group",
+      "enUS": "card/en-us/Group",
+      "notes": "保留八张卡片和10至40的间距调节；Slider change 更新 shallowRef。"
+    },
+    {
+      "index": 14,
+      "zhCN": "card/zh-cn/GridGroup",
+      "enUS": "card/en-us/GridGroup",
+      "notes": "保留七张卡片及 CardGroup type=grid。"
+    }
+  ],
+  "chapters": [
+    "代码演示",
+    "如何引入",
+    "基础卡片",
+    "简洁卡片",
+    "封面",
+    "边线和外边框",
+    "阴影",
+    "更灵活的内容展示",
+    "内部卡片",
+    "栅格卡片",
+    "内置预加载",
+    "更丰富的预加载效果",
+    "带页签的卡片",
+    "卡片操作区",
+    "卡片组",
+    "网格型卡片组",
+    "API 参考",
+    "Accessibility",
+    "文案规范",
+    "设计变量",
+    "相关物料"
+  ],
+  "exclusions": [
+    {
+      "item": "相关物料 / Related Material",
+      "reason": "外部 semi-material-list 营销物料平台不在本地组件文档运行范围；全部14个live Demo均保留。"
+    }
+  ]
+}

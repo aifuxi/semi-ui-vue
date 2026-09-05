@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Button, ButtonGroup, SplitButtonGroup } from '@aifuxi/semi-ui-vue';
+import { Button, ButtonGroup, SplitButtonGroup } from '@aifuxi/semi-ui-vue/button';
 import { IconCamera, IconChevronDown } from '@aifuxi/semi-icons-vue';
 import '@aifuxi/semi-theme-default/button.css';
 

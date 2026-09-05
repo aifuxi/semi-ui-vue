@@ -1,0 +1,98 @@
+{
+  "upstream": "input/pincode",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "pin-code/zh-cn/Basic",
+      "enUS": "pin-code/en-us/Basic",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 2,
+      "zhCN": "pin-code/zh-cn/Controlled",
+      "enUS": "pin-code/en-us/Controlled",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。 Math.random 改为固定种子的确定性序列，按钮文案和受控交互保留。"
+    },
+    {
+      "index": 3,
+      "zhCN": "pin-code/zh-cn/Count",
+      "enUS": "pin-code/en-us/Count",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 4,
+      "zhCN": "pin-code/zh-cn/Format",
+      "enUS": "pin-code/en-us/Format",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    },
+    {
+      "index": 5,
+      "zhCN": "pin-code/zh-cn/Focus",
+      "enUS": "pin-code/en-us/Focus",
+      "notes": "独立双语 Vue SFC，保留上游演示意图、文案、布局和交互；公开子路径及逐组件主题导入。"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "headings": [
+        "代码演示",
+        "如何引入",
+        "基本使用",
+        "受控",
+        "限制验证码格式",
+        "设置位数",
+        "设置字符范围",
+        "手动聚焦失焦",
+        "API 参考",
+        "PinCodeProps",
+        "事件",
+        "插槽",
+        "Methods",
+        "类型定义",
+        "Accessibility",
+        "ARIA、键盘和焦点",
+        "设计变量",
+        "FAQ",
+        "change 和 complete 何时触发？",
+        "自定义 format 检查整串吗？",
+        "如何聚焦第三位？",
+        "React → Vue 迁移"
+      ]
+    },
+    {
+      "locale": "en-us",
+      "headings": [
+        "Code demonstration",
+        "How to import",
+        "Basic usage",
+        "Controlled",
+        "Limit verification code format",
+        "Set the number of digits",
+        "Set character range",
+        "Manual focus and blur",
+        "API Reference",
+        "PinCodeProps",
+        "Events",
+        "Slots",
+        "Methods",
+        "Type definitions",
+        "Accessibility",
+        "ARIA, keyboard and focus",
+        "Design Tokens",
+        "FAQ",
+        "When do change and complete fire?",
+        "Does a custom format validate the entire code?",
+        "How can the third input be focused?",
+        "React → Vue migration"
+      ]
+    },
+    {
+      "source": "固定基线",
+      "tag": "v2.102.0",
+      "commit": "cdfba6e520fc83ad871b30f51f36d8af3aaa5a21",
+      "validation": "独立 SFC 编译与限定类型检查；浏览器、键盘和视觉验收由共享工作流另行执行。"
+    }
+  ],
+  "exclusions": []
+}

@@ -1,0 +1,43 @@
+# Nuxt 文档迁移记录
+
+状态：实施中，尚未达到全量迁移与视觉对齐的完成标准。
+
+## 已实现
+
+- Nuxt 4.5.2、Nuxt Content 3.16.0、SSR 与全量预渲染；当前 194 页双语内容。
+- 独立品牌页头、分组导航、正文与目录、API/Token 表、前后篇导航、本地搜索、语言与主题切换。
+- 221 个已注册 SFC Demo，运行、源码与编辑初始内容来自同一文件；支持示例目录中的多文件依赖。
+- Vue REPL 4.7.2 和 Monaco 按需加载；Vue、编译器、公共包、样式、Worker 与类型入口均从本站加载。
+- 编辑 iframe 使用不透明源，无法读取文档页面 DOM；通过消息同步主题。复制、运行、重置、编译/运行错误恢复及卸载有浏览器检查。
+- 本地图片、音视频与上传模拟。示例不会向真实上传服务发送文件。
+- canonical/hreflang、sitemap、404 与历史大小写入口；上游样式通过只读构建适配器编译。
+
+## 运行与验证
+
+使用 Node.js 24.18.0、仓库锁定的 pnpm 与 Playwright Chromium。先按仓库流程构建公开包，再运行：
+
+```bash
+pnpm --filter @workspace/docs build:nuxt
+pnpm --filter @workspace/docs preview:nuxt
+pnpm --filter @workspace/docs typecheck:nuxt
+pnpm --filter @workspace/docs check:nuxt:content
+pnpm --filter @workspace/docs test:nuxt
+```
+
+预览为 `http://127.0.0.1:4321/`，静态输出为 `apps/docs/.output/public`。`dev:nuxt` 启动开发服务。默认 `dev`、`build` 与旧内容门禁暂时保留；Nuxt 页面放在 `src/nuxt-pages`，避免被 Astro 扫描。`check:nuxt:coverage` 会在全量验收缺失时失败，不可用结构检查结果代替它。
+
+部署端需要为 `/repl/*` 设置 `Access-Control-Allow-Origin: *`，使不透明源 iframe 可以读取公开演示模块；产物包含 `_headers`。这仅开放公共静态演示资源，不携带凭据。区分大小写的构建环境会输出独立兼容 HTML；不区分大小写的文件系统通过 `_redirects` 保留兼容规则，部署主机需支持这些规则或配置等效 301。预览脚本执行同一重定向规则。
+
+## 覆盖与剩余工作
+
+[coverage.json](./coverage.json) 记录 102 组固定上游文档及每个中文 live Demo 的章节和源码行号。当前 Button 的 17 个 Demo 已逐项映射并实现，其他已迁入示例尚未完成逐项语义与视觉对照；855 个中文上游 Demo 的总范围保持不变。
+
+尚需完成：其余组件的完整章节与示例；所有 API 的统一元数据审阅；特殊内容与适用指南；中英文迁移段落校订；固定 React/Nuxt 同进程视觉、计算样式与几何对照；Nuxt/REPL 内部打包传递依赖的完整许可审计；全仓库完整门禁。Astro、Starlight、MDX 和旧用户文档只有在这些验收完成后才清理并切换默认入口。
+
+当前 CSS 已使用固定上游站点源，但还未形成像素级验收结论。独立品牌、Vue 语法、移除外部平台功能是明确适配；Inter Bold 暂用固定源码内的 SemiBold 字体文件，需作为视觉差异继续处理。
+
+## 归属与回退
+
+`prepare-assets.mjs` 输出固定源码版本与样式哈希；`prepare-notices.mjs` 随静态产物保留直接依赖、字体许可、公开包的 THIRD_PARTY_NOTICES/SBOM 及文件哈希。其 `limitations` 明示仍待完成的传递依赖审计。本地演示图片、音频和视频为本项目生成的固定测试资源。
+
+本次未发布线上站点。回退应恢复同一迁移变更中的应用源码、脚本、工程配置与 lockfile；不要仅回退依赖清单而保留新内容管线。

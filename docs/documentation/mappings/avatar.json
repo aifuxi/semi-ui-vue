@@ -1,0 +1,157 @@
+{
+  "upstream": "show/avatar",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "avatar/zh-cn/Size",
+      "enUS": "avatar/en-us/Size",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 2,
+      "zhCN": "avatar/zh-cn/Color",
+      "enUS": "avatar/en-us/Color",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 3,
+      "zhCN": "avatar/zh-cn/Adaptive",
+      "enUS": "avatar/en-us/Adaptive",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 4,
+      "zhCN": "avatar/zh-cn/Image",
+      "enUS": "avatar/en-us/Image",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 5,
+      "zhCN": "avatar/zh-cn/Shape",
+      "enUS": "avatar/en-us/Shape",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 6,
+      "zhCN": "avatar/zh-cn/Hover",
+      "enUS": "avatar/en-us/Hover",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 7,
+      "zhCN": "avatar/zh-cn/Slots",
+      "enUS": "avatar/en-us/Slots",
+      "notes": "保留顶部、底部、边框及内容动效；补上上游遗漏的 IconPlus 导入；使用公开图标包与 Vue h()。"
+    },
+    {
+      "index": 8,
+      "zhCN": "avatar/zh-cn/TopSlot",
+      "enUS": "avatar/en-us/TopSlot",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 9,
+      "zhCN": "avatar/zh-cn/BottomSlot",
+      "enUS": "avatar/en-us/BottomSlot",
+      "notes": "英文底部示例误用 content，按固定 Adapter 的 bottomSlot.text 契约修正；保留 LIVE 文案与六种形状/尺寸组合。"
+    },
+    {
+      "index": 10,
+      "zhCN": "avatar/zh-cn/Border",
+      "enUS": "avatar/en-us/Border",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 11,
+      "zhCN": "avatar/zh-cn/Animation",
+      "enUS": "avatar/en-us/Animation",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 12,
+      "zhCN": "avatar/zh-cn/Group",
+      "enUS": "avatar/en-us/Group",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 13,
+      "zhCN": "avatar/zh-cn/MaxCount",
+      "enUS": "avatar/en-us/MaxCount",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    },
+    {
+      "index": 14,
+      "zhCN": "avatar/zh-cn/More",
+      "enUS": "avatar/en-us/More",
+      "notes": "renderMore 转为 #more 作用域插槽；React.cloneElement 转为 Vue cloneVNode，保留 Popover 定位/间距和本语言文字。"
+    },
+    {
+      "index": 15,
+      "zhCN": "avatar/zh-cn/Overlap",
+      "enUS": "avatar/en-us/Overlap",
+      "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-cn",
+      "source": "vendor/semi-design/content/show/avatar/index.md",
+      "headings": [
+        "## 代码演示",
+        "### 如何引入",
+        "### 尺寸",
+        "### 颜色",
+        "### 自适应字符大小",
+        "### 图片",
+        "### 形状",
+        "### 事件",
+        "### 顶部和底部 Slot",
+        "#### 顶部",
+        "#### 底部",
+        "### 额外边框",
+        "### 额外动效",
+        "### 头像组",
+        "## API 参考",
+        "### Avatar",
+        "### AvatarGroup",
+        "## Accessibility",
+        "## 设计变量"
+      ],
+      "notes": "保留原有章节顺序，API 依据真实公开 Vue 类型更新；增加需要的 FAQ/无障碍与 React→Vue 映射"
+    },
+    {
+      "locale": "en-us",
+      "source": "vendor/semi-design/content/show/avatar/index-en-US.md",
+      "headings": [
+        "## Demos",
+        "### How to import",
+        "### Size",
+        "### Color",
+        "### Adaptive character size",
+        "### Image",
+        "### Shape",
+        "### Event",
+        "### Top and Bottom Slot",
+        "#### Top",
+        "#### Bottom",
+        "### Additional border",
+        "### Additional Animation",
+        "### AvatarGroup",
+        "## API Reference",
+        "### Avatar",
+        "### AvatarGroup",
+        "## Accessibility",
+        "## Design Tokens"
+      ],
+      "notes": "保留原有章节顺序，API 依据真实公开 Vue 类型更新；增加需要的 FAQ/无障碍与 React→Vue 映射"
+    }
+  ],
+  "exclusions": [],
+  "assetAdaptations": [
+    {
+      "source": "上游 CDN dy.png / avatarDemo.jpeg",
+      "replacement": "/demos/photo.svg",
+      "reason": "按任务使用现有确定性本地素材，不复制品牌 Logo，不依赖远程 CDN；保持图片尺寸与布局。图片视觉内容与上游不同。"
+    }
+  ]
+}

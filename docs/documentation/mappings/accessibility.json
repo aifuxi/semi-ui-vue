@@ -1,0 +1,27 @@
+{
+  "upstream": "experience/accessibility",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "guides/accessibility/zh-cn/ImageAlt",
+      "enUS": "guides/accessibility/en-us/ImageAlt",
+      "notes": "固定本地图像代替上游远程头像，保留 alt 可访问名称；尚未视觉验收。"
+    }
+  ],
+  "chapters": [],
+  "exclusions": [
+    {
+      "source": "@semi-bot/semi-theme-a11y / DSM",
+      "reason": "不分发上游平台主题；改为本项目公开 Token 覆盖说明。"
+    },
+    {
+      "source": "ImageBox 远程示意图",
+      "reason": "使用本站语义化 HTML 对比示例，保留说明意图；图像内容不作为像素等价项。"
+    },
+    {
+      "source": "文字对比 18px 与 Message/Banner 例外说明",
+      "reason": "依据 W3C WCAG 2.2 校正单位与例外范围；这属于文档事实校正，不改变固定组件基线。",
+      "evidence": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+    }
+  ]
+}
