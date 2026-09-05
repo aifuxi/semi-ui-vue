@@ -6,6 +6,10 @@ import { PARITY_VIEWPORTS, VISUAL_THRESHOLDS } from './packages/test-infra/src';
 // runner-specific tuning does not need to change the PARITY_WORKERS contract.
 const DEFAULT_LOCAL_PARITY_WORKERS = 3;
 const DEFAULT_CI_PARITY_WORKERS = 3;
+const prebuilt = process.env.PARITY_SERVER_MODE === 'build';
+if (process.env.PARITY_SERVER_MODE && !['dev', 'build'].includes(process.env.PARITY_SERVER_MODE)) {
+  throw new Error('PARITY_SERVER_MODE must be dev or build');
+}
 const requestedWorkers = Number.parseInt(process.env.PARITY_WORKERS ?? '', 10);
 const parityWorkers =
   Number.isSafeInteger(requestedWorkers) && requestedWorkers > 0
@@ -56,15 +60,19 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: 'pnpm --filter @workspace/reference-react dev --host 127.0.0.1',
+      command: prebuilt
+        ? 'node scripts/serve-parity-build.mjs reference-react'
+        : 'pnpm --filter @workspace/reference-react dev --host 127.0.0.1',
       url: 'http://127.0.0.1:4173',
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: !prebuilt && !process.env.CI,
       timeout: 120_000,
     },
     {
-      command: 'pnpm --filter @workspace/parity-vue dev --host 127.0.0.1',
+      command: prebuilt
+        ? 'node scripts/serve-parity-build.mjs parity-vue'
+        : 'pnpm --filter @workspace/parity-vue dev --host 127.0.0.1',
       url: 'http://127.0.0.1:4174',
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: !prebuilt && !process.env.CI,
       timeout: 120_000,
     },
   ],

@@ -84,6 +84,21 @@ test('共享几何捕获按定位方式选择文档或视口坐标', async ({ pa
   });
 });
 
+test('共享目标稳定等待包含影响子节点几何的祖先动画', async ({ page }) => {
+  await page.setContent(`
+    <style>
+      body { margin: 0; }
+      @keyframes move-parent { from { transform: translateY(0); } to { transform: translateY(40px); } }
+      #parent { animation: move-parent 300ms linear forwards; }
+      #child { width: 20px; height: 20px; }
+    </style>
+    <div id="parent"><div id="child"></div></div>
+  `);
+  const target = page.locator('#child');
+  await waitForTargetStable(target);
+  expect((await captureComparableGeometry(target)).y).toBe(40);
+});
+
 test('共享目标稳定等待会等有限动画进入最终帧', async ({ page }) => {
   await page.setContent(`
     <style>
