@@ -1,0 +1,79 @@
+<script setup lang="ts">
+import { h } from 'vue';
+import { Table, type TableColumnProps } from '@aifuxi/semi-ui-vue/table';
+import { Avatar } from '@aifuxi/semi-ui-vue/avatar';
+import '@aifuxi/semi-theme-default/table.css';
+import '@aifuxi/semi-theme-default/avatar.css';
+
+const figmaIcon = '/demos/one.svg';
+type Row = Record<string, unknown>;
+function makeData(total: number): Row[] {
+  return Array.from({ length: total }, (_, index) => ({
+    key: String(index),
+    name: `${index % 2 ? 'Semi D2C' : 'Semi Design'} design${index}.fig`,
+    nameIconSrc: figmaIcon,
+    size: (index * 1000) % 199,
+    owner: index % 2 ? 'Hao Xuan' : 'Jiang Pengzhi',
+    status: index % 3 === 0 ? 'success' : index % 3 === 1 ? 'pending' : 'wait',
+    updateTime: new Date(Date.UTC(2020, 1, 2) + ((index * 1000) % 199) * 86400000)
+      .toISOString()
+      .slice(0, 10),
+    avatarBg: index % 2 ? 'red' : 'grey',
+  }));
+}
+const baseColumns: TableColumnProps[] = [
+  {
+    title: 'Title',
+    dataIndex: 'name',
+    width: 400,
+    render: (text, record) =>
+      h('span', { style: { display: 'inline-flex', alignItems: 'center' } }, [
+        h(Avatar, {
+          size: 'small',
+          shape: 'square',
+          src: String(record.nameIconSrc),
+          style: { marginRight: '12px' },
+        }),
+        String(text),
+      ]),
+  },
+  { title: 'Size', dataIndex: 'size', width: 150, render: (text) => `${text} KB` },
+  {
+    title: 'Owner',
+    dataIndex: 'owner',
+    width: 200,
+    render: (text, record) =>
+      h('span', [
+        h(
+          Avatar,
+          {
+            size: 'small',
+            color: record.avatarBg as 'red' | 'grey',
+            style: { marginRight: '4px' },
+          },
+          () => String(text).slice(0, 1),
+        ),
+        String(text),
+      ]),
+  },
+  { title: 'Updated', dataIndex: 'updateTime', width: 200 },
+];
+
+const data = makeData(5);
+const columns: TableColumnProps[] = baseColumns.map((column, columnIndex) => ({
+  ...column,
+  render: (text, _record, index) => {
+    const children = column.dataIndex === 'size' ? `${text} KB` : String(text);
+    if (index === 0) return { children, props: { colSpan: columnIndex === 0 ? 4 : 0 } };
+    if (columnIndex !== 2 && index === 1) return { children, props: { rowSpan: 2 } };
+    if (columnIndex !== 2 && index === 2) return { children, props: { rowSpan: 0 } };
+    return children;
+  },
+}));
+</script>
+
+<template>
+  <div>
+    <Table :columns="columns" :data-source="data" :pagination="false"></Table>
+  </div>
+</template>

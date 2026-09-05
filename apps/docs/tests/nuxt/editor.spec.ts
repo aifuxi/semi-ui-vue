@@ -47,13 +47,18 @@ test('上传示例只模拟本地响应', async ({ page }) => {
     if (request.method() === 'POST') submissions.push(request.url());
   });
   await page.goto('/en-us/components/upload/');
-  const demo = page.locator('[data-demo-id="upload/en-US/Example1"]');
+  const demo = page.locator('[data-demo-id="upload/en-US/Manual"]');
   await demo.locator('input.semi-upload-hidden-input').setInputFiles({
-    name: 'sample.pdf',
-    mimeType: 'application/pdf',
-    buffer: Buffer.from('%PDF-1.4\nlocal demonstration'),
+    name: 'sample.png',
+    mimeType: 'image/png',
+    buffer: Buffer.from(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=',
+      'base64',
+    ),
   });
-  await expect(demo).toContainText('sample.pdf');
-  await expect(demo.locator('.semi-upload-file-fail')).toHaveCount(0);
+  await expect(demo).toContainText('sample.png');
+  await demo.getByRole('button', { name: /Start upload$/ }).click();
+  await expect(demo.getByRole('status')).toHaveText('Upload succeeded');
+  await expect(demo.locator('.semi-upload-file-card-fail')).toHaveCount(0);
   expect(submissions).toEqual([]);
 });

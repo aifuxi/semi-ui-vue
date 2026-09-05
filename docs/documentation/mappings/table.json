@@ -1,0 +1,301 @@
+{
+  "upstream": "show/table",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "table/zh-cn/Basic",
+      "enUS": "table/en-us/Basic",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 2,
+      "zhCN": "table/zh-cn/DeclarativeColumns",
+      "enUS": "table/en-us/DeclarativeColumns",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 3,
+      "zhCN": "table/zh-cn/Selection",
+      "enUS": "table/en-us/Selection",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 4,
+      "zhCN": "table/zh-cn/CustomRendering",
+      "enUS": "table/en-us/CustomRendering",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 5,
+      "zhCN": "table/zh-cn/Pagination",
+      "enUS": "table/en-us/Pagination",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 6,
+      "zhCN": "table/zh-cn/RemoteData",
+      "enUS": "table/en-us/RemoteData",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。 当前 Vue Table.vue 的 pageData 无条件本地切片；已切页数据搭配受控第2页会二次切片为空。本例禁用 Table 内部 pagination，组合公开 Pagination 和上游 footer class/页码文案，保留每页5条、总46条及500ms本地加载；这是文档组合适配，不声明上游内部远程分页等价。"
+    },
+    {
+      "index": 7,
+      "zhCN": "table/zh-cn/Fixed",
+      "enUS": "table/en-us/Fixed",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 8,
+      "zhCN": "table/zh-cn/SortFilter",
+      "enUS": "table/en-us/SortFilter",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 9,
+      "zhCN": "table/zh-cn/UndefinedSort",
+      "enUS": "table/en-us/UndefinedSort",
+      "notes": "上游第三 sorter 参数不在 Vue 两参数公开类型中；使用非受控方向、sorter=true 与 change 在外部排序以保留 undefined 置后。当前 Vue 受控 sortOrder 的点击通知读取当前值，不提供下一方向，故不传该属性，正文记录此限制；不改组件。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 10,
+      "zhCN": "table/zh-cn/HeaderFilter",
+      "enUS": "table/en-us/HeaderFilter",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 11,
+      "zhCN": "table/zh-cn/CustomFilter",
+      "enUS": "table/en-us/CustomFilter",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 12,
+      "zhCN": "table/zh-cn/FilterConfirm",
+      "enUS": "table/en-us/FilterConfirm",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 13,
+      "zhCN": "table/zh-cn/FilterItem",
+      "enUS": "table/en-us/FilterItem",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 14,
+      "zhCN": "table/zh-cn/Expanded",
+      "enUS": "table/en-us/Expanded",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 15,
+      "zhCN": "table/zh-cn/SeparateExpand",
+      "enUS": "table/en-us/SeparateExpand",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 16,
+      "zhCN": "table/zh-cn/RowExpandable",
+      "enUS": "table/en-us/RowExpandable",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 17,
+      "zhCN": "table/zh-cn/Tree",
+      "enUS": "table/en-us/Tree",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 18,
+      "zhCN": "table/zh-cn/TreeReorder",
+      "enUS": "table/en-us/TreeReorder",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 19,
+      "zhCN": "table/zh-cn/TreeSelection",
+      "enUS": "table/en-us/TreeSelection",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 20,
+      "zhCN": "table/zh-cn/TreeRelation",
+      "enUS": "table/en-us/TreeRelation",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 21,
+      "zhCN": "table/zh-cn/RowEvents",
+      "enUS": "table/en-us/RowEvents",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 22,
+      "zhCN": "table/zh-cn/Zebra",
+      "enUS": "table/en-us/Zebra",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 23,
+      "zhCN": "table/zh-cn/HeaderStyle",
+      "enUS": "table/en-us/HeaderStyle",
+      "notes": "固定英文上游缺失本例，依据中文 Column.onHeaderCell 示例翻译。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 24,
+      "zhCN": "table/zh-cn/CellHover",
+      "enUS": "table/en-us/CellHover",
+      "notes": "固定英文上游缺失本例，依据中文 scoped deep CSS 单元格 Hover 示例翻译。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 25,
+      "zhCN": "table/zh-cn/Ellipsis",
+      "enUS": "table/en-us/Ellipsis",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 26,
+      "zhCN": "table/zh-cn/EllipsisTooltip",
+      "enUS": "table/en-us/EllipsisTooltip",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 27,
+      "zhCN": "table/zh-cn/Resizable",
+      "enUS": "table/en-us/Resizable",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 28,
+      "zhCN": "table/zh-cn/ResizableStyle",
+      "enUS": "table/en-us/ResizableStyle",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 29,
+      "zhCN": "table/zh-cn/DragSort",
+      "enUS": "table/en-us/DragSort",
+      "notes": "React dnd-kit 集成改为公开 onRow 原生 drag/drop 和键盘排序；未复刻其传感器、拖动动画和自动滚动，不标 accepted。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 30,
+      "zhCN": "table/zh-cn/Grouping",
+      "enUS": "table/en-us/Grouping",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 31,
+      "zhCN": "table/zh-cn/Virtualized",
+      "enUS": "table/en-us/Virtualized",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 32,
+      "zhCN": "table/zh-cn/InfiniteScroll",
+      "enUS": "table/en-us/InfiniteScroll",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 33,
+      "zhCN": "table/zh-cn/Dynamic",
+      "enUS": "table/en-us/Dynamic",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 34,
+      "zhCN": "table/zh-cn/FullRender",
+      "enUS": "table/en-us/FullRender",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 35,
+      "zhCN": "table/zh-cn/GroupedColumns",
+      "enUS": "table/en-us/GroupedColumns",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 36,
+      "zhCN": "table/zh-cn/GroupedDeclarative",
+      "enUS": "table/en-us/GroupedDeclarative",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    },
+    {
+      "index": 37,
+      "zhCN": "table/zh-cn/Span",
+      "enUS": "table/en-us/Span",
+      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+    }
+  ],
+  "chapters": [
+    "如何使用",
+    "代码演示",
+    "基本表格",
+    "JSX 写法",
+    "行选择操作",
+    "自定义渲染",
+    "带分页组件的表格",
+    "拉取远程数据",
+    "固定列或表头",
+    "带排序和过滤功能的表头",
+    "自定义表头筛选",
+    "自定义筛选器",
+    "筛选确认模式",
+    "自定义筛选项渲染",
+    "可以展开的表格",
+    "一般可展开行",
+    "展开按钮渲染为单独列",
+    "关闭某一行的可展开按钮渲染",
+    "树形数据展示",
+    "树形数据简单示例",
+    "行可交换的树形数据",
+    "树形选择",
+    "树形选择关联（checkRelation）",
+    "自定义行或单元格事件以及属性",
+    "实现斑马纹样式",
+    "实现表头样式定制",
+    "实现单元格 Hover 样式定制",
+    "单元格缩略",
+    "可伸缩列",
+    "基本伸缩列",
+    "进阶的伸缩列",
+    "拖拽排序",
+    "表格分组",
+    "虚拟化表格",
+    "无限滚动",
+    "受控的动态表格",
+    "完全自定义渲染",
+    "表头合并",
+    "合并表头配置式写法",
+    "合并表头 JSX 写法",
+    "行列合并",
+    "API 参考",
+    "Table",
+    "headerStyle 示例",
+    "onHeaderRow / onRow 用法",
+    "Column",
+    "Column.onCell / onHeaderCell 用法",
+    "rowSelection",
+    "scroll",
+    "pagination",
+    "Resizable",
+    "方法",
+    "Accessibility",
+    "ARIA",
+    "RTL/LTR",
+    "文案规范",
+    "设计变量",
+    "FAQ"
+  ],
+  "exclusions": [
+    {
+      "item": "React dnd-kit / react-window 专属实现细节",
+      "reason": "改为当前 Vue 公开 onRow 拖拽与 virtualized/ref 契约；集成差异已在对应正文和映射注明，不作为 accepted 视觉等价差异。"
+    },
+    {
+      "item": "外部 Table 设计方案与飞书 FAQ",
+      "reason": "保留本地源码可核对的 FAQ，不接入需权限的外部飞书页面。"
+    },
+    {
+      "item": "StickyHeaderTable 上游站点专属嵌入组件",
+      "reason": "保留 sticky/top 公开用法说明；该节点不是 upstreamLiveDemos 解析出的 live Demo，未伪计为迁移示例。"
+    }
+  ]
+}

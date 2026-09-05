@@ -428,7 +428,7 @@
   },
   {
     "title": "Form",
-    "description": "`Form` owns field values, errors, touched state, validation, submit, and reset. The implementation is pinned to Semi Design v2.102.0 while exposing Vue-native props, emits, slots, and composables.",
+    "description": "Field values, validation, layouts and dynamic forms.",
     "locale": "en-US",
     "slug": "form",
     "category": "input",
@@ -1002,7 +1002,7 @@
   },
   {
     "title": "Tree",
-    "description": "A tree view component presents a hierarchical list.",
+    "description": "Hierarchical tree lists.",
     "locale": "en-US",
     "slug": "tree",
     "category": "navigation",
@@ -1026,7 +1026,7 @@
   },
   {
     "title": "Upload",
-    "description": "File selection upload",
+    "description": "File selection and upload",
     "locale": "en-US",
     "slug": "upload",
     "category": "input",
@@ -1595,8 +1595,8 @@
     "path": "/zh-cn/components/float-button/"
   },
   {
-    "title": "表单",
-    "description": "`Form` 管理字段值、错误、触碰状态、校验、提交与重置。实现基线固定为 Semi Design v2.102.0；公开接口使用 Vue 原生 props、emits、slots 与 composable。",
+    "title": "Form 表单",
+    "description": "管理字段值、校验、布局和动态表单。",
     "locale": "zh-CN",
     "slug": "form",
     "category": "input",

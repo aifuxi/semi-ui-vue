@@ -37,7 +37,7 @@ pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
 
 ## 本地环境
 
-文档门户正在按 [Nuxt 迁移决策](docs/adr/0015-use-nuxt-for-component-documentation.md) 重建。预览构建使用 `pnpm --filter @workspace/docs build:nuxt`，本地预览使用 `pnpm --filter @workspace/docs preview:nuxt`（Node.js 24.18.0）。迁移状态与剩余范围见 [文档迁移记录](docs/documentation/README.md)；组件的 `ready` 状态不代表新文档已完成 855 个上游 Demo 的逐项复刻。全量验收前保留原默认入口。
+文档门户正在按 [Nuxt 迁移决策](docs/adr/0015-use-nuxt-for-component-documentation.md) 重建。预览构建使用 `pnpm --filter @workspace/docs build:nuxt`，本地预览使用 `pnpm --filter @workspace/docs preview:nuxt`（Node.js 24.18.0）。迁移状态与剩余范围见 [文档迁移记录](docs/documentation/README.md)；组件的 `ready` 状态不代表新文档已完成 859 个上游 Demo 的逐项复刻。全量验收前保留原默认入口。
 
 - Node.js `24.18.0`（支持 `20.19+`、`22.13+` 和 `24.x`）
 - pnpm `11.19.0`

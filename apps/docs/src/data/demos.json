@@ -5242,34 +5242,1208 @@
     "upstream": "basic/floatbutton"
   },
   {
-    "id": "form/en-US/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "form/en-US/Example1.vue" },
-    "dependencies": ["@aifuxi/semi-theme-default/form.css", "@aifuxi/semi-ui-vue/form", "vue"],
+    "id": "form/en-US/ArrayFields",
+    "entry": "ArrayFields.vue",
+    "files": { "ArrayFields.vue": "form/en-US/ArrayFields.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
     "pages": ["/en-us/components/form/"],
     "upstream": "input/form"
   },
   {
-    "id": "form/en-US/Example2",
-    "entry": "Example2.vue",
-    "files": { "Example2.vue": "form/en-US/Example2.vue" },
+    "id": "form/en-US/AsyncFormValidator",
+    "entry": "AsyncFormValidator.vue",
+    "files": { "AsyncFormValidator.vue": "form/en-US/AsyncFormValidator.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "form/en-US/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-theme-default/tooltip.css",
+      "@aifuxi/semi-ui-vue/form",
+      "@aifuxi/semi-ui-vue/tooltip",
+      "vue"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/Component",
+    "entry": "en-US/Component.vue",
+    "files": {
+      "en-US/Component.vue": "form/en-US/Component.vue",
+      "shared/ComponentFields.vue": "form/shared/ComponentFields.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/CustomNative",
+    "entry": "en-US/CustomNative.vue",
+    "files": {
+      "en-US/CustomNative.vue": "form/en-US/CustomNative.vue",
+      "shared/NativeInput.vue": "form/shared/NativeInput.vue"
+    },
     "dependencies": ["@aifuxi/semi-theme-default/form.css", "@aifuxi/semi-ui-vue/form"],
     "pages": ["/en-us/components/form/"],
     "upstream": "input/form"
   },
   {
-    "id": "form/zh-CN/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "form/zh-CN/Example1.vue" },
-    "dependencies": ["@aifuxi/semi-theme-default/form.css", "@aifuxi/semi-ui-vue/form", "vue"],
+    "id": "form/en-US/CustomObject",
+    "entry": "en-US/CustomObject.vue",
+    "files": {
+      "en-US/CustomObject.vue": "form/en-US/CustomObject.vue",
+      "shared/ObjectInput.vue": "form/shared/ObjectInput.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/form",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/select"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/Dependencies",
+    "entry": "Dependencies.vue",
+    "files": { "Dependencies.vue": "form/en-US/Dependencies.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/Dynamic",
+    "entry": "Dynamic.vue",
+    "files": { "Dynamic.vue": "form/en-US/Dynamic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/radio.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/ExternalForm",
+    "entry": "ExternalForm.vue",
+    "files": { "ExternalForm.vue": "form/en-US/ExternalForm.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/ExtraText",
+    "entry": "ExtraText.vue",
+    "files": { "ExtraText.vue": "form/en-US/ExtraText.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input-number.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/FieldValidator",
+    "entry": "FieldValidator.vue",
+    "files": { "FieldValidator.vue": "form/en-US/FieldValidator.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/FormValidator",
+    "entry": "FormValidator.vue",
+    "files": { "FormValidator.vue": "form/en-US/FormValidator.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/Grid",
+    "entry": "Grid.vue",
+    "files": { "Grid.vue": "form/en-US/Grid.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/date-picker.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/grid.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/form",
+      "@aifuxi/semi-ui-vue/grid"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/HelpText",
+    "entry": "HelpText.vue",
+    "files": { "HelpText.vue": "form/en-US/HelpText.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form",
+      "vue"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/Horizontal",
+    "entry": "Horizontal.vue",
+    "files": { "Horizontal.vue": "form/en-US/Horizontal.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/InitialRules",
+    "entry": "InitialRules.vue",
+    "files": { "InitialRules.vue": "form/en-US/InitialRules.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/InputGroup",
+    "entry": "InputGroup.vue",
+    "files": { "InputGroup.vue": "form/en-US/InputGroup.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/Inset",
+    "entry": "Inset.vue",
+    "files": { "Inset.vue": "form/en-US/Inset.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/date-picker.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/KeepState",
+    "entry": "KeepState.vue",
+    "files": { "KeepState.vue": "form/en-US/KeepState.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form",
+      "vue"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/LabelColumns",
+    "entry": "LabelColumns.vue",
+    "files": { "LabelColumns.vue": "form/en-US/LabelColumns.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/LabelLayout",
+    "entry": "LabelLayout.vue",
+    "files": { "LabelLayout.vue": "form/en-US/LabelLayout.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input-number.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/radio.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-ui-vue/form",
+      "vue"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/Modal",
+    "entry": "Modal.vue",
+    "files": { "Modal.vue": "form/en-US/Modal.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/modal.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form",
+      "@aifuxi/semi-ui-vue/modal",
+      "vue"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/NestedArrays",
+    "entry": "en-US/NestedArrays.vue",
+    "files": {
+      "en-US/NestedArrays.vue": "form/en-US/NestedArrays.vue",
+      "shared/NestedRules.vue": "form/shared/NestedRules.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/NoLabel",
+    "entry": "NoLabel.vue",
+    "files": { "NoLabel.vue": "form/en-US/NoLabel.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/PartialValidation",
+    "entry": "PartialValidation.vue",
+    "files": { "PartialValidation.vue": "form/en-US/PartialValidation.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form",
+      "vue"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/Render",
+    "entry": "en-US/Render.vue",
+    "files": {
+      "en-US/Render.vue": "form/en-US/Render.vue",
+      "shared/RenderFields.vue": "form/shared/RenderFields.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/form",
+      "vue"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/ScopedSlot",
+    "entry": "ScopedSlot.vue",
+    "files": { "ScopedSlot.vue": "form/en-US/ScopedSlot.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/Sections",
+    "entry": "Sections.vue",
+    "files": { "Sections.vue": "form/en-US/Sections.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/date-picker.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input-number.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/radio.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/SilentValidation",
+    "entry": "SilentValidation.vue",
+    "files": { "SilentValidation.vue": "form/en-US/SilentValidation.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form",
+      "vue"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/Slot",
+    "entry": "Slot.vue",
+    "files": { "Slot.vue": "form/en-US/Slot.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/SupportedFields",
+    "entry": "SupportedFields.vue",
+    "files": { "SupportedFields.vue": "form/en-US/SupportedFields.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/auto-complete.css",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/cascader.css",
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/date-picker.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input-number.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/pin-code.css",
+      "@aifuxi/semi-theme-default/radio.css",
+      "@aifuxi/semi-theme-default/rating.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-theme-default/slider.css",
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-theme-default/tag-input.css",
+      "@aifuxi/semi-theme-default/time-picker.css",
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/UseFieldApi",
+    "entry": "en-US/UseFieldApi.vue",
+    "files": {
+      "en-US/UseFieldApi.vue": "form/en-US/UseFieldApi.vue",
+      "shared/FieldApiControl.vue": "form/shared/FieldApiControl.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/UseFieldState",
+    "entry": "en-US/UseFieldState.vue",
+    "files": {
+      "en-US/UseFieldState.vue": "form/en-US/UseFieldState.vue",
+      "shared/FieldStateView.vue": "form/shared/FieldStateView.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/UseFormApi",
+    "entry": "en-US/UseFormApi.vue",
+    "files": {
+      "en-US/UseFormApi.vue": "form/en-US/UseFormApi.vue",
+      "shared/FormApiControl.vue": "form/shared/FormApiControl.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/UseFormState",
+    "entry": "en-US/UseFormState.vue",
+    "files": {
+      "en-US/UseFormState.vue": "form/en-US/UseFormState.vue",
+      "shared/FormStateView.vue": "form/shared/FormStateView.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/ValuePaths",
+    "entry": "ValuePaths.vue",
+    "files": { "ValuePaths.vue": "form/en-US/ValuePaths.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/Vertical",
+    "entry": "Vertical.vue",
+    "files": { "Vertical.vue": "form/en-US/Vertical.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form",
+      "vue"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/WithFormApi",
+    "entry": "en-US/WithFormApi.vue",
+    "files": {
+      "en-US/WithFormApi.vue": "form/en-US/WithFormApi.vue",
+      "shared/ApiReceiver.vue": "form/shared/ApiReceiver.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/en-US/WithFormState",
+    "entry": "en-US/WithFormState.vue",
+    "files": {
+      "en-US/WithFormState.vue": "form/en-US/WithFormState.vue",
+      "shared/StateReceiver.vue": "form/shared/StateReceiver.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/en-us/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/ArrayFields",
+    "entry": "ArrayFields.vue",
+    "files": { "ArrayFields.vue": "form/zh-CN/ArrayFields.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
     "pages": ["/zh-cn/components/form/"],
     "upstream": "input/form"
   },
   {
-    "id": "form/zh-CN/Example2",
-    "entry": "Example2.vue",
-    "files": { "Example2.vue": "form/zh-CN/Example2.vue" },
+    "id": "form/zh-CN/AsyncFormValidator",
+    "entry": "AsyncFormValidator.vue",
+    "files": { "AsyncFormValidator.vue": "form/zh-CN/AsyncFormValidator.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "form/zh-CN/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-theme-default/tooltip.css",
+      "@aifuxi/semi-ui-vue/form",
+      "@aifuxi/semi-ui-vue/tooltip",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/Component",
+    "entry": "zh-CN/Component.vue",
+    "files": {
+      "zh-CN/Component.vue": "form/zh-CN/Component.vue",
+      "shared/ComponentFields.vue": "form/shared/ComponentFields.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/CustomNative",
+    "entry": "zh-CN/CustomNative.vue",
+    "files": {
+      "zh-CN/CustomNative.vue": "form/zh-CN/CustomNative.vue",
+      "shared/NativeInput.vue": "form/shared/NativeInput.vue"
+    },
     "dependencies": ["@aifuxi/semi-theme-default/form.css", "@aifuxi/semi-ui-vue/form"],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/CustomObject",
+    "entry": "zh-CN/CustomObject.vue",
+    "files": {
+      "zh-CN/CustomObject.vue": "form/zh-CN/CustomObject.vue",
+      "shared/ObjectInput.vue": "form/shared/ObjectInput.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/form",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/select"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/Dependencies",
+    "entry": "Dependencies.vue",
+    "files": { "Dependencies.vue": "form/zh-CN/Dependencies.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/Dynamic",
+    "entry": "Dynamic.vue",
+    "files": { "Dynamic.vue": "form/zh-CN/Dynamic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/radio.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/ExternalForm",
+    "entry": "ExternalForm.vue",
+    "files": { "ExternalForm.vue": "form/zh-CN/ExternalForm.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/ExtraText",
+    "entry": "ExtraText.vue",
+    "files": { "ExtraText.vue": "form/zh-CN/ExtraText.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input-number.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/FieldValidator",
+    "entry": "FieldValidator.vue",
+    "files": { "FieldValidator.vue": "form/zh-CN/FieldValidator.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/FormValidator",
+    "entry": "FormValidator.vue",
+    "files": { "FormValidator.vue": "form/zh-CN/FormValidator.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/Grid",
+    "entry": "Grid.vue",
+    "files": { "Grid.vue": "form/zh-CN/Grid.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/date-picker.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/grid.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/form",
+      "@aifuxi/semi-ui-vue/grid"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/HelpText",
+    "entry": "HelpText.vue",
+    "files": { "HelpText.vue": "form/zh-CN/HelpText.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/Horizontal",
+    "entry": "Horizontal.vue",
+    "files": { "Horizontal.vue": "form/zh-CN/Horizontal.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/InitialRules",
+    "entry": "InitialRules.vue",
+    "files": { "InitialRules.vue": "form/zh-CN/InitialRules.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/InputGroup",
+    "entry": "InputGroup.vue",
+    "files": { "InputGroup.vue": "form/zh-CN/InputGroup.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/Inset",
+    "entry": "Inset.vue",
+    "files": { "Inset.vue": "form/zh-CN/Inset.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/date-picker.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/KeepState",
+    "entry": "KeepState.vue",
+    "files": { "KeepState.vue": "form/zh-CN/KeepState.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/LabelColumns",
+    "entry": "LabelColumns.vue",
+    "files": { "LabelColumns.vue": "form/zh-CN/LabelColumns.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/LabelLayout",
+    "entry": "LabelLayout.vue",
+    "files": { "LabelLayout.vue": "form/zh-CN/LabelLayout.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input-number.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/radio.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-ui-vue/form",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/Modal",
+    "entry": "Modal.vue",
+    "files": { "Modal.vue": "form/zh-CN/Modal.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/modal.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form",
+      "@aifuxi/semi-ui-vue/modal",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/NestedArrays",
+    "entry": "zh-CN/NestedArrays.vue",
+    "files": {
+      "zh-CN/NestedArrays.vue": "form/zh-CN/NestedArrays.vue",
+      "shared/NestedRules.vue": "form/shared/NestedRules.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/NoLabel",
+    "entry": "NoLabel.vue",
+    "files": { "NoLabel.vue": "form/zh-CN/NoLabel.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/PartialValidation",
+    "entry": "PartialValidation.vue",
+    "files": { "PartialValidation.vue": "form/zh-CN/PartialValidation.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/Render",
+    "entry": "zh-CN/Render.vue",
+    "files": {
+      "zh-CN/Render.vue": "form/zh-CN/Render.vue",
+      "shared/RenderFields.vue": "form/shared/RenderFields.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/form",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/ScopedSlot",
+    "entry": "ScopedSlot.vue",
+    "files": { "ScopedSlot.vue": "form/zh-CN/ScopedSlot.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/Sections",
+    "entry": "Sections.vue",
+    "files": { "Sections.vue": "form/zh-CN/Sections.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/date-picker.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input-number.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/radio.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/SilentValidation",
+    "entry": "SilentValidation.vue",
+    "files": { "SilentValidation.vue": "form/zh-CN/SilentValidation.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/Slot",
+    "entry": "Slot.vue",
+    "files": { "Slot.vue": "form/zh-CN/Slot.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/SupportedFields",
+    "entry": "SupportedFields.vue",
+    "files": { "SupportedFields.vue": "form/zh-CN/SupportedFields.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/auto-complete.css",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/cascader.css",
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/date-picker.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input-number.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/pin-code.css",
+      "@aifuxi/semi-theme-default/radio.css",
+      "@aifuxi/semi-theme-default/rating.css",
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-theme-default/slider.css",
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-theme-default/tag-input.css",
+      "@aifuxi/semi-theme-default/time-picker.css",
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/UseFieldApi",
+    "entry": "zh-CN/UseFieldApi.vue",
+    "files": {
+      "zh-CN/UseFieldApi.vue": "form/zh-CN/UseFieldApi.vue",
+      "shared/FieldApiControl.vue": "form/shared/FieldApiControl.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/UseFieldState",
+    "entry": "zh-CN/UseFieldState.vue",
+    "files": {
+      "zh-CN/UseFieldState.vue": "form/zh-CN/UseFieldState.vue",
+      "shared/FieldStateView.vue": "form/shared/FieldStateView.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/UseFormApi",
+    "entry": "zh-CN/UseFormApi.vue",
+    "files": {
+      "zh-CN/UseFormApi.vue": "form/zh-CN/UseFormApi.vue",
+      "shared/FormApiControl.vue": "form/shared/FormApiControl.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/UseFormState",
+    "entry": "zh-CN/UseFormState.vue",
+    "files": {
+      "zh-CN/UseFormState.vue": "form/zh-CN/UseFormState.vue",
+      "shared/FormStateView.vue": "form/shared/FormStateView.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/ValuePaths",
+    "entry": "ValuePaths.vue",
+    "files": { "ValuePaths.vue": "form/zh-CN/ValuePaths.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/Vertical",
+    "entry": "Vertical.vue",
+    "files": { "Vertical.vue": "form/zh-CN/Vertical.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/WithFormApi",
+    "entry": "zh-CN/WithFormApi.vue",
+    "files": {
+      "zh-CN/WithFormApi.vue": "form/zh-CN/WithFormApi.vue",
+      "shared/ApiReceiver.vue": "form/shared/ApiReceiver.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/form"
+    ],
+    "pages": ["/zh-cn/components/form/"],
+    "upstream": "input/form"
+  },
+  {
+    "id": "form/zh-CN/WithFormState",
+    "entry": "zh-CN/WithFormState.vue",
+    "files": {
+      "zh-CN/WithFormState.vue": "form/zh-CN/WithFormState.vue",
+      "shared/StateReceiver.vue": "form/shared/StateReceiver.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/form"
+    ],
     "pages": ["/zh-cn/components/form/"],
     "upstream": "input/form"
   },
@@ -11128,11 +12302,1107 @@
     "upstream": "input/switch"
   },
   {
-    "id": "table/Showcase",
-    "entry": "Showcase.vue",
-    "files": { "Showcase.vue": "table/Showcase.vue" },
+    "id": "table/en-us/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "table/en-us/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/CellHover",
+    "entry": "CellHover.vue",
+    "files": { "CellHover.vue": "table/en-us/CellHover.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/CustomFilter",
+    "entry": "CustomFilter.vue",
+    "files": { "CustomFilter.vue": "table/en-us/CustomFilter.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/CustomRendering",
+    "entry": "CustomRendering.vue",
+    "files": { "CustomRendering.vue": "table/en-us/CustomRendering.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-illustrations-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/empty.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/empty",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
+      "@aifuxi/semi-ui-vue/typography",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/DeclarativeColumns",
+    "entry": "DeclarativeColumns.vue",
+    "files": { "DeclarativeColumns.vue": "table/en-us/DeclarativeColumns.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/DragSort",
+    "entry": "DragSort.vue",
+    "files": { "DragSort.vue": "table/en-us/DragSort.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/Dynamic",
+    "entry": "Dynamic.vue",
+    "files": { "Dynamic.vue": "table/en-us/Dynamic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/switch",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/Ellipsis",
+    "entry": "Ellipsis.vue",
+    "files": { "Ellipsis.vue": "table/en-us/Ellipsis.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/EllipsisTooltip",
+    "entry": "EllipsisTooltip.vue",
+    "files": { "EllipsisTooltip.vue": "table/en-us/EllipsisTooltip.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/typography",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/Expanded",
+    "entry": "Expanded.vue",
+    "files": { "Expanded.vue": "table/en-us/Expanded.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/FilterConfirm",
+    "entry": "FilterConfirm.vue",
+    "files": { "FilterConfirm.vue": "table/en-us/FilterConfirm.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/FilterItem",
+    "entry": "FilterItem.vue",
+    "files": { "FilterItem.vue": "table/en-us/FilterItem.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/dropdown.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/dropdown",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/Fixed",
+    "entry": "Fixed.vue",
+    "files": { "Fixed.vue": "table/en-us/Fixed.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/FullRender",
+    "entry": "FullRender.vue",
+    "files": { "FullRender.vue": "table/en-us/FullRender.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/GroupedColumns",
+    "entry": "GroupedColumns.vue",
+    "files": { "GroupedColumns.vue": "table/en-us/GroupedColumns.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/GroupedDeclarative",
+    "entry": "GroupedDeclarative.vue",
+    "files": { "GroupedDeclarative.vue": "table/en-us/GroupedDeclarative.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/Grouping",
+    "entry": "Grouping.vue",
+    "files": { "Grouping.vue": "table/en-us/Grouping.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/HeaderFilter",
+    "entry": "HeaderFilter.vue",
+    "files": { "HeaderFilter.vue": "table/en-us/HeaderFilter.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/HeaderStyle",
+    "entry": "HeaderStyle.vue",
+    "files": { "HeaderStyle.vue": "table/en-us/HeaderStyle.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/InfiniteScroll",
+    "entry": "InfiniteScroll.vue",
+    "files": { "InfiniteScroll.vue": "table/en-us/InfiniteScroll.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/Pagination",
+    "entry": "Pagination.vue",
+    "files": { "Pagination.vue": "table/en-us/Pagination.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/RemoteData",
+    "entry": "RemoteData.vue",
+    "files": { "RemoteData.vue": "table/en-us/RemoteData.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/pagination.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/pagination",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/Resizable",
+    "entry": "Resizable.vue",
+    "files": { "Resizable.vue": "table/en-us/Resizable.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/ResizableStyle",
+    "entry": "ResizableStyle.vue",
+    "files": { "ResizableStyle.vue": "table/en-us/ResizableStyle.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/RowEvents",
+    "entry": "RowEvents.vue",
+    "files": { "RowEvents.vue": "table/en-us/RowEvents.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/RowExpandable",
+    "entry": "RowExpandable.vue",
+    "files": { "RowExpandable.vue": "table/en-us/RowExpandable.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/Selection",
+    "entry": "Selection.vue",
+    "files": { "Selection.vue": "table/en-us/Selection.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/SeparateExpand",
+    "entry": "SeparateExpand.vue",
+    "files": { "SeparateExpand.vue": "table/en-us/SeparateExpand.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/SortFilter",
+    "entry": "SortFilter.vue",
+    "files": { "SortFilter.vue": "table/en-us/SortFilter.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/Span",
+    "entry": "Span.vue",
+    "files": { "Span.vue": "table/en-us/Span.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/Tree",
+    "entry": "Tree.vue",
+    "files": { "Tree.vue": "table/en-us/Tree.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/table.css", "@aifuxi/semi-ui-vue/table"],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/TreeRelation",
+    "entry": "TreeRelation.vue",
+    "files": { "TreeRelation.vue": "table/en-us/TreeRelation.vue" },
     "dependencies": ["@aifuxi/semi-theme-default/table.css", "@aifuxi/semi-ui-vue/table", "vue"],
-    "pages": ["/en-us/components/table/", "/zh-cn/components/table/"],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/TreeReorder",
+    "entry": "TreeReorder.vue",
+    "files": { "TreeReorder.vue": "table/en-us/TreeReorder.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/TreeSelection",
+    "entry": "TreeSelection.vue",
+    "files": { "TreeSelection.vue": "table/en-us/TreeSelection.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/table.css", "@aifuxi/semi-ui-vue/table", "vue"],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/UndefinedSort",
+    "entry": "UndefinedSort.vue",
+    "files": { "UndefinedSort.vue": "table/en-us/UndefinedSort.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/Virtualized",
+    "entry": "Virtualized.vue",
+    "files": { "Virtualized.vue": "table/en-us/Virtualized.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/en-us/Zebra",
+    "entry": "Zebra.vue",
+    "files": { "Zebra.vue": "table/en-us/Zebra.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/en-us/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "table/zh-cn/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/CellHover",
+    "entry": "CellHover.vue",
+    "files": { "CellHover.vue": "table/zh-cn/CellHover.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/CustomFilter",
+    "entry": "CustomFilter.vue",
+    "files": { "CustomFilter.vue": "table/zh-cn/CustomFilter.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/CustomRendering",
+    "entry": "CustomRendering.vue",
+    "files": { "CustomRendering.vue": "table/zh-cn/CustomRendering.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-illustrations-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/empty.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/empty",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
+      "@aifuxi/semi-ui-vue/typography",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/DeclarativeColumns",
+    "entry": "DeclarativeColumns.vue",
+    "files": { "DeclarativeColumns.vue": "table/zh-cn/DeclarativeColumns.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/DragSort",
+    "entry": "DragSort.vue",
+    "files": { "DragSort.vue": "table/zh-cn/DragSort.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/Dynamic",
+    "entry": "Dynamic.vue",
+    "files": { "Dynamic.vue": "table/zh-cn/Dynamic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/switch",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/Ellipsis",
+    "entry": "Ellipsis.vue",
+    "files": { "Ellipsis.vue": "table/zh-cn/Ellipsis.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/EllipsisTooltip",
+    "entry": "EllipsisTooltip.vue",
+    "files": { "EllipsisTooltip.vue": "table/zh-cn/EllipsisTooltip.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/typography",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/Expanded",
+    "entry": "Expanded.vue",
+    "files": { "Expanded.vue": "table/zh-cn/Expanded.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/FilterConfirm",
+    "entry": "FilterConfirm.vue",
+    "files": { "FilterConfirm.vue": "table/zh-cn/FilterConfirm.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/FilterItem",
+    "entry": "FilterItem.vue",
+    "files": { "FilterItem.vue": "table/zh-cn/FilterItem.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/dropdown.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/dropdown",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/Fixed",
+    "entry": "Fixed.vue",
+    "files": { "Fixed.vue": "table/zh-cn/Fixed.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/FullRender",
+    "entry": "FullRender.vue",
+    "files": { "FullRender.vue": "table/zh-cn/FullRender.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/GroupedColumns",
+    "entry": "GroupedColumns.vue",
+    "files": { "GroupedColumns.vue": "table/zh-cn/GroupedColumns.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/GroupedDeclarative",
+    "entry": "GroupedDeclarative.vue",
+    "files": { "GroupedDeclarative.vue": "table/zh-cn/GroupedDeclarative.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/Grouping",
+    "entry": "Grouping.vue",
+    "files": { "Grouping.vue": "table/zh-cn/Grouping.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/HeaderFilter",
+    "entry": "HeaderFilter.vue",
+    "files": { "HeaderFilter.vue": "table/zh-cn/HeaderFilter.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/HeaderStyle",
+    "entry": "HeaderStyle.vue",
+    "files": { "HeaderStyle.vue": "table/zh-cn/HeaderStyle.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/InfiniteScroll",
+    "entry": "InfiniteScroll.vue",
+    "files": { "InfiniteScroll.vue": "table/zh-cn/InfiniteScroll.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/Pagination",
+    "entry": "Pagination.vue",
+    "files": { "Pagination.vue": "table/zh-cn/Pagination.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/RemoteData",
+    "entry": "RemoteData.vue",
+    "files": { "RemoteData.vue": "table/zh-cn/RemoteData.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/pagination.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/pagination",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/Resizable",
+    "entry": "Resizable.vue",
+    "files": { "Resizable.vue": "table/zh-cn/Resizable.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/ResizableStyle",
+    "entry": "ResizableStyle.vue",
+    "files": { "ResizableStyle.vue": "table/zh-cn/ResizableStyle.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/RowEvents",
+    "entry": "RowEvents.vue",
+    "files": { "RowEvents.vue": "table/zh-cn/RowEvents.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/RowExpandable",
+    "entry": "RowExpandable.vue",
+    "files": { "RowExpandable.vue": "table/zh-cn/RowExpandable.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/Selection",
+    "entry": "Selection.vue",
+    "files": { "Selection.vue": "table/zh-cn/Selection.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/SeparateExpand",
+    "entry": "SeparateExpand.vue",
+    "files": { "SeparateExpand.vue": "table/zh-cn/SeparateExpand.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/SortFilter",
+    "entry": "SortFilter.vue",
+    "files": { "SortFilter.vue": "table/zh-cn/SortFilter.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/Span",
+    "entry": "Span.vue",
+    "files": { "Span.vue": "table/zh-cn/Span.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/Tree",
+    "entry": "Tree.vue",
+    "files": { "Tree.vue": "table/zh-cn/Tree.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/table.css", "@aifuxi/semi-ui-vue/table"],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/TreeRelation",
+    "entry": "TreeRelation.vue",
+    "files": { "TreeRelation.vue": "table/zh-cn/TreeRelation.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/table.css", "@aifuxi/semi-ui-vue/table", "vue"],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/TreeReorder",
+    "entry": "TreeReorder.vue",
+    "files": { "TreeReorder.vue": "table/zh-cn/TreeReorder.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/TreeSelection",
+    "entry": "TreeSelection.vue",
+    "files": { "TreeSelection.vue": "table/zh-cn/TreeSelection.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/table.css", "@aifuxi/semi-ui-vue/table", "vue"],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/UndefinedSort",
+    "entry": "UndefinedSort.vue",
+    "files": { "UndefinedSort.vue": "table/zh-cn/UndefinedSort.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/Virtualized",
+    "entry": "Virtualized.vue",
+    "files": { "Virtualized.vue": "table/zh-cn/Virtualized.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
+    "upstream": "show/table"
+  },
+  {
+    "id": "table/zh-cn/Zebra",
+    "entry": "Zebra.vue",
+    "files": { "Zebra.vue": "table/zh-cn/Zebra.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/table",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/table/"],
     "upstream": "show/table"
   },
   {
@@ -12916,13 +15186,14 @@
     "upstream": "input/transfer"
   },
   {
-    "id": "tree-select/en-US/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "tree-select/en-US/Example1.vue" },
+    "id": "tree-select/en-us/AsyncData",
+    "entry": "en-us/AsyncData.vue",
+    "files": {
+      "en-us/AsyncData.vue": "tree-select/en-us/AsyncData.vue",
+      "data.ts": "tree-select/data.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-theme-default/tree-select.css",
-      "@aifuxi/semi-theme-default/tree.css",
-      "@aifuxi/semi-ui-vue/tree",
       "@aifuxi/semi-ui-vue/tree-select",
       "vue"
     ],
@@ -12930,13 +15201,270 @@
     "upstream": "input/treeselect"
   },
   {
-    "id": "tree-select/zh-CN/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "tree-select/zh-CN/Example1.vue" },
+    "id": "tree-select/en-us/Basic",
+    "entry": "en-us/Basic.vue",
+    "files": { "en-us/Basic.vue": "tree-select/en-us/Basic.vue", "data.ts": "tree-select/data.ts" },
     "dependencies": [
       "@aifuxi/semi-theme-default/tree-select.css",
-      "@aifuxi/semi-theme-default/tree.css",
-      "@aifuxi/semi-ui-vue/tree",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/CheckRelation",
+    "entry": "en-us/CheckRelation.vue",
+    "files": {
+      "en-us/CheckRelation.vue": "tree-select/en-us/CheckRelation.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/Controlled",
+    "entry": "en-us/Controlled.vue",
+    "files": {
+      "en-us/Controlled.vue": "tree-select/en-us/Controlled.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/CustomTrigger",
+    "entry": "en-us/CustomTrigger.vue",
+    "files": {
+      "en-us/CustomTrigger.vue": "tree-select/en-us/CustomTrigger.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tag-input.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tag",
+      "@aifuxi/semi-ui-vue/tag-input",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/Disabled",
+    "entry": "en-us/Disabled.vue",
+    "files": {
+      "en-us/Disabled.vue": "tree-select/en-us/Disabled.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/DisableStrictly",
+    "entry": "en-us/DisableStrictly.vue",
+    "files": {
+      "en-us/DisableStrictly.vue": "tree-select/en-us/DisableStrictly.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/DynamicData",
+    "entry": "DynamicData.vue",
+    "files": { "DynamicData.vue": "tree-select/en-us/DynamicData.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/tree-select",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/ExpandAll",
+    "entry": "en-us/ExpandAll.vue",
+    "files": {
+      "en-us/ExpandAll.vue": "tree-select/en-us/ExpandAll.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/MaxTagCount",
+    "entry": "en-us/MaxTagCount.vue",
+    "files": {
+      "en-us/MaxTagCount.vue": "tree-select/en-us/MaxTagCount.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/Multiple",
+    "entry": "en-us/Multiple.vue",
+    "files": {
+      "en-us/Multiple.vue": "tree-select/en-us/Multiple.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/Remote",
+    "entry": "Remote.vue",
+    "files": { "Remote.vue": "tree-select/en-us/Remote.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/Search",
+    "entry": "en-us/Search.vue",
+    "files": {
+      "en-us/Search.vue": "tree-select/en-us/Search.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/switch",
+      "@aifuxi/semi-ui-vue/tree-select",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/SearchExpansion",
+    "entry": "en-us/SearchExpansion.vue",
+    "files": {
+      "en-us/SearchExpansion.vue": "tree-select/en-us/SearchExpansion.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/SearchPosition",
+    "entry": "en-us/SearchPosition.vue",
+    "files": {
+      "en-us/SearchPosition.vue": "tree-select/en-us/SearchPosition.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/SelectedItem",
+    "entry": "en-us/SelectedItem.vue",
+    "files": {
+      "en-us/SelectedItem.vue": "tree-select/en-us/SelectedItem.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tag",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/Sizes",
+    "entry": "en-us/Sizes.vue",
+    "files": { "en-us/Sizes.vue": "tree-select/en-us/Sizes.vue", "data.ts": "tree-select/data.ts" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/TriggerTagWrap",
+    "entry": "en-us/TriggerTagWrap.vue",
+    "files": {
+      "en-us/TriggerTagWrap.vue": "tree-select/en-us/TriggerTagWrap.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/en-us/Virtualized",
+    "entry": "Virtualized.vue",
+    "files": { "Virtualized.vue": "tree-select/en-us/Virtualized.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/tree-select",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/AsyncData",
+    "entry": "zh-cn/AsyncData.vue",
+    "files": {
+      "zh-cn/AsyncData.vue": "tree-select/zh-cn/AsyncData.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
       "@aifuxi/semi-ui-vue/tree-select",
       "vue"
     ],
@@ -12944,18 +15472,900 @@
     "upstream": "input/treeselect"
   },
   {
-    "id": "tree/en-US/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "tree/en-US/Example1.vue" },
+    "id": "tree-select/zh-cn/Basic",
+    "entry": "zh-cn/Basic.vue",
+    "files": { "zh-cn/Basic.vue": "tree-select/zh-cn/Basic.vue", "data.ts": "tree-select/data.ts" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/CheckRelation",
+    "entry": "zh-cn/CheckRelation.vue",
+    "files": {
+      "zh-cn/CheckRelation.vue": "tree-select/zh-cn/CheckRelation.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/Controlled",
+    "entry": "zh-cn/Controlled.vue",
+    "files": {
+      "zh-cn/Controlled.vue": "tree-select/zh-cn/Controlled.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/CustomTrigger",
+    "entry": "zh-cn/CustomTrigger.vue",
+    "files": {
+      "zh-cn/CustomTrigger.vue": "tree-select/zh-cn/CustomTrigger.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tag-input.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tag",
+      "@aifuxi/semi-ui-vue/tag-input",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/Disabled",
+    "entry": "zh-cn/Disabled.vue",
+    "files": {
+      "zh-cn/Disabled.vue": "tree-select/zh-cn/Disabled.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/DisableStrictly",
+    "entry": "zh-cn/DisableStrictly.vue",
+    "files": {
+      "zh-cn/DisableStrictly.vue": "tree-select/zh-cn/DisableStrictly.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/DynamicData",
+    "entry": "DynamicData.vue",
+    "files": { "DynamicData.vue": "tree-select/zh-cn/DynamicData.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/tree-select",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/ExpandAll",
+    "entry": "zh-cn/ExpandAll.vue",
+    "files": {
+      "zh-cn/ExpandAll.vue": "tree-select/zh-cn/ExpandAll.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/MaxTagCount",
+    "entry": "zh-cn/MaxTagCount.vue",
+    "files": {
+      "zh-cn/MaxTagCount.vue": "tree-select/zh-cn/MaxTagCount.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/Multiple",
+    "entry": "zh-cn/Multiple.vue",
+    "files": {
+      "zh-cn/Multiple.vue": "tree-select/zh-cn/Multiple.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/Remote",
+    "entry": "Remote.vue",
+    "files": { "Remote.vue": "tree-select/zh-cn/Remote.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/Search",
+    "entry": "zh-cn/Search.vue",
+    "files": {
+      "zh-cn/Search.vue": "tree-select/zh-cn/Search.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/switch",
+      "@aifuxi/semi-ui-vue/tree-select",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/SearchExpansion",
+    "entry": "zh-cn/SearchExpansion.vue",
+    "files": {
+      "zh-cn/SearchExpansion.vue": "tree-select/zh-cn/SearchExpansion.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/SearchPosition",
+    "entry": "zh-cn/SearchPosition.vue",
+    "files": {
+      "zh-cn/SearchPosition.vue": "tree-select/zh-cn/SearchPosition.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/SelectedItem",
+    "entry": "zh-cn/SelectedItem.vue",
+    "files": {
+      "zh-cn/SelectedItem.vue": "tree-select/zh-cn/SelectedItem.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tag",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/Sizes",
+    "entry": "zh-cn/Sizes.vue",
+    "files": { "zh-cn/Sizes.vue": "tree-select/zh-cn/Sizes.vue", "data.ts": "tree-select/data.ts" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/TriggerTagWrap",
+    "entry": "zh-cn/TriggerTagWrap.vue",
+    "files": {
+      "zh-cn/TriggerTagWrap.vue": "tree-select/zh-cn/TriggerTagWrap.vue",
+      "data.ts": "tree-select/data.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/tree-select"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree-select/zh-cn/Virtualized",
+    "entry": "Virtualized.vue",
+    "files": { "Virtualized.vue": "tree-select/zh-cn/Virtualized.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/tree-select.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/tree-select",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree-select/"],
+    "upstream": "input/treeselect"
+  },
+  {
+    "id": "tree/en-US/AsyncData",
+    "entry": "en-US/AsyncData.vue",
+    "files": {
+      "en-US/AsyncData.vue": "tree/en-US/AsyncData.vue",
+      "treeOperations.ts": "tree/treeOperations.ts"
+    },
     "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree", "vue"],
     "pages": ["/en-us/components/tree/"],
     "upstream": "navigation/tree"
   },
   {
-    "id": "tree/zh-CN/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "tree/zh-CN/Example1.vue" },
+    "id": "tree/en-US/AutoExpandParent",
+    "entry": "AutoExpandParent.vue",
+    "files": { "AutoExpandParent.vue": "tree/en-US/AutoExpandParent.vue" },
     "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree", "vue"],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "tree/en-US/Basic.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree"],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/BlockNode",
+    "entry": "BlockNode.vue",
+    "files": { "BlockNode.vue": "tree/en-US/BlockNode.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree"],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/CheckRelation",
+    "entry": "CheckRelation.vue",
+    "files": { "CheckRelation.vue": "tree/en-US/CheckRelation.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree"],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/Controlled",
+    "entry": "Controlled.vue",
+    "files": { "Controlled.vue": "tree/en-US/Controlled.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree", "vue"],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/ControlledSearch",
+    "entry": "ControlledSearch.vue",
+    "files": { "ControlledSearch.vue": "tree/en-US/ControlledSearch.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree", "vue"],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/CustomSearch",
+    "entry": "CustomSearch.vue",
+    "files": { "CustomSearch.vue": "tree/en-US/CustomSearch.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/tree"
+    ],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/Directory",
+    "entry": "Directory.vue",
+    "files": { "Directory.vue": "tree/en-US/Directory.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree"],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/Disabled",
+    "entry": "Disabled.vue",
+    "files": { "Disabled.vue": "tree/en-US/Disabled.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree"],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/Draggable",
+    "entry": "en-US/Draggable.vue",
+    "files": {
+      "en-US/Draggable.vue": "tree/en-US/Draggable.vue",
+      "treeOperations.ts": "tree/treeOperations.ts"
+    },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree", "vue"],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/DynamicData",
+    "entry": "DynamicData.vue",
+    "files": { "DynamicData.vue": "tree/en-US/DynamicData.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/ExpandAll",
+    "entry": "ExpandAll.vue",
+    "files": { "ExpandAll.vue": "tree/en-US/ExpandAll.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/ExpandIcon",
+    "entry": "ExpandIcon.vue",
+    "files": { "ExpandIcon.vue": "tree/en-US/ExpandIcon.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/FullLabelCheckbox",
+    "entry": "en-US/FullLabelCheckbox.vue",
+    "files": {
+      "en-US/FullLabelCheckbox.vue": "tree/en-US/FullLabelCheckbox.vue",
+      "VNodeContent.ts": "tree/VNodeContent.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/checkbox",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/FullLabelDraggable",
+    "entry": "en-US/FullLabelDraggable.vue",
+    "files": {
+      "en-US/FullLabelDraggable.vue": "tree/en-US/FullLabelDraggable.vue",
+      "VNodeContent.ts": "tree/VNodeContent.ts",
+      "treeOperations.ts": "tree/treeOperations.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/FullLabelHighlight",
+    "entry": "en-US/FullLabelHighlight.vue",
+    "files": {
+      "en-US/FullLabelHighlight.vue": "tree/en-US/FullLabelHighlight.vue",
+      "VNodeContent.ts": "tree/VNodeContent.ts",
+      "treeOperations.ts": "tree/treeOperations.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/FullLabelSingle",
+    "entry": "en-US/FullLabelSingle.vue",
+    "files": {
+      "en-US/FullLabelSingle.vue": "tree/en-US/FullLabelSingle.vue",
+      "VNodeContent.ts": "tree/VNodeContent.ts"
+    },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree", "vue"],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/Icons",
+    "entry": "Icons.vue",
+    "files": { "Icons.vue": "tree/en-US/Icons.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/LabelActions",
+    "entry": "LabelActions.vue",
+    "files": { "LabelActions.vue": "tree/en-US/LabelActions.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/LabelEllipsis",
+    "entry": "LabelEllipsis.vue",
+    "files": { "LabelEllipsis.vue": "tree/en-US/LabelEllipsis.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/tree",
+      "@aifuxi/semi-ui-vue/typography",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/Lines",
+    "entry": "Lines.vue",
+    "files": { "Lines.vue": "tree/en-US/Lines.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/switch",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/ManualSearch",
+    "entry": "ManualSearch.vue",
+    "files": { "ManualSearch.vue": "tree/en-US/ManualSearch.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/Multiple",
+    "entry": "Multiple.vue",
+    "files": { "Multiple.vue": "tree/en-US/Multiple.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree"],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/Search",
+    "entry": "Search.vue",
+    "files": { "Search.vue": "tree/en-US/Search.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/switch",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/SimpleJson",
+    "entry": "SimpleJson.vue",
+    "files": { "SimpleJson.vue": "tree/en-US/SimpleJson.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree", "vue"],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/en-US/Virtualized",
+    "entry": "en-US/Virtualized.vue",
+    "files": {
+      "en-US/Virtualized.vue": "tree/en-US/Virtualized.vue",
+      "treeOperations.ts": "tree/treeOperations.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/en-us/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/AsyncData",
+    "entry": "zh-CN/AsyncData.vue",
+    "files": {
+      "zh-CN/AsyncData.vue": "tree/zh-CN/AsyncData.vue",
+      "treeOperations.ts": "tree/treeOperations.ts"
+    },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree", "vue"],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/AutoExpandParent",
+    "entry": "AutoExpandParent.vue",
+    "files": { "AutoExpandParent.vue": "tree/zh-CN/AutoExpandParent.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree", "vue"],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "tree/zh-CN/Basic.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree"],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/BlockNode",
+    "entry": "BlockNode.vue",
+    "files": { "BlockNode.vue": "tree/zh-CN/BlockNode.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree"],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/CheckRelation",
+    "entry": "CheckRelation.vue",
+    "files": { "CheckRelation.vue": "tree/zh-CN/CheckRelation.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree"],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/Controlled",
+    "entry": "Controlled.vue",
+    "files": { "Controlled.vue": "tree/zh-CN/Controlled.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree", "vue"],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/ControlledSearch",
+    "entry": "ControlledSearch.vue",
+    "files": { "ControlledSearch.vue": "tree/zh-CN/ControlledSearch.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree", "vue"],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/CustomSearch",
+    "entry": "CustomSearch.vue",
+    "files": { "CustomSearch.vue": "tree/zh-CN/CustomSearch.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/tree"
+    ],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/Directory",
+    "entry": "Directory.vue",
+    "files": { "Directory.vue": "tree/zh-CN/Directory.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree"],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/Disabled",
+    "entry": "Disabled.vue",
+    "files": { "Disabled.vue": "tree/zh-CN/Disabled.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree"],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/Draggable",
+    "entry": "zh-CN/Draggable.vue",
+    "files": {
+      "zh-CN/Draggable.vue": "tree/zh-CN/Draggable.vue",
+      "treeOperations.ts": "tree/treeOperations.ts"
+    },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree", "vue"],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/DynamicData",
+    "entry": "DynamicData.vue",
+    "files": { "DynamicData.vue": "tree/zh-CN/DynamicData.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/ExpandAll",
+    "entry": "ExpandAll.vue",
+    "files": { "ExpandAll.vue": "tree/zh-CN/ExpandAll.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/ExpandIcon",
+    "entry": "ExpandIcon.vue",
+    "files": { "ExpandIcon.vue": "tree/zh-CN/ExpandIcon.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/FullLabelCheckbox",
+    "entry": "zh-CN/FullLabelCheckbox.vue",
+    "files": {
+      "zh-CN/FullLabelCheckbox.vue": "tree/zh-CN/FullLabelCheckbox.vue",
+      "VNodeContent.ts": "tree/VNodeContent.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/checkbox",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/FullLabelDraggable",
+    "entry": "zh-CN/FullLabelDraggable.vue",
+    "files": {
+      "zh-CN/FullLabelDraggable.vue": "tree/zh-CN/FullLabelDraggable.vue",
+      "VNodeContent.ts": "tree/VNodeContent.ts",
+      "treeOperations.ts": "tree/treeOperations.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/FullLabelHighlight",
+    "entry": "zh-CN/FullLabelHighlight.vue",
+    "files": {
+      "zh-CN/FullLabelHighlight.vue": "tree/zh-CN/FullLabelHighlight.vue",
+      "VNodeContent.ts": "tree/VNodeContent.ts",
+      "treeOperations.ts": "tree/treeOperations.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/FullLabelSingle",
+    "entry": "zh-CN/FullLabelSingle.vue",
+    "files": {
+      "zh-CN/FullLabelSingle.vue": "tree/zh-CN/FullLabelSingle.vue",
+      "VNodeContent.ts": "tree/VNodeContent.ts"
+    },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree", "vue"],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/Icons",
+    "entry": "Icons.vue",
+    "files": { "Icons.vue": "tree/zh-CN/Icons.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/LabelActions",
+    "entry": "LabelActions.vue",
+    "files": { "LabelActions.vue": "tree/zh-CN/LabelActions.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/LabelEllipsis",
+    "entry": "LabelEllipsis.vue",
+    "files": { "LabelEllipsis.vue": "tree/zh-CN/LabelEllipsis.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/tree",
+      "@aifuxi/semi-ui-vue/typography",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/Lines",
+    "entry": "Lines.vue",
+    "files": { "Lines.vue": "tree/zh-CN/Lines.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/switch",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/ManualSearch",
+    "entry": "ManualSearch.vue",
+    "files": { "ManualSearch.vue": "tree/zh-CN/ManualSearch.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/Multiple",
+    "entry": "Multiple.vue",
+    "files": { "Multiple.vue": "tree/zh-CN/Multiple.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree"],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/Search",
+    "entry": "Search.vue",
+    "files": { "Search.vue": "tree/zh-CN/Search.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/switch.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/switch",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/SimpleJson",
+    "entry": "SimpleJson.vue",
+    "files": { "SimpleJson.vue": "tree/zh-CN/SimpleJson.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/tree.css", "@aifuxi/semi-ui-vue/tree", "vue"],
+    "pages": ["/zh-cn/components/tree/"],
+    "upstream": "navigation/tree"
+  },
+  {
+    "id": "tree/zh-CN/Virtualized",
+    "entry": "zh-CN/Virtualized.vue",
+    "files": {
+      "zh-CN/Virtualized.vue": "tree/zh-CN/Virtualized.vue",
+      "treeOperations.ts": "tree/treeOperations.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/tree.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/tree",
+      "vue"
+    ],
     "pages": ["/zh-cn/components/tree/"],
     "upstream": "navigation/tree"
   },
@@ -13187,44 +16597,1482 @@
     "upstream": "basic/typography"
   },
   {
-    "id": "upload/en-US/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "upload/en-US/Example1.vue" },
+    "id": "upload/en-US/Accept",
+    "entry": "en-US/Accept.vue",
+    "files": {
+      "en-US/Accept.vue": "upload/en-US/Accept.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/button.css",
       "@aifuxi/semi-theme-default/upload.css",
       "@aifuxi/semi-ui-vue/button",
-      "@aifuxi/semi-ui-vue/upload"
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
     ],
     "pages": ["/en-us/components/upload/"],
     "upstream": "input/upload"
   },
   {
-    "id": "upload/en-US/Example2",
-    "entry": "Example2.vue",
-    "files": { "Example2.vue": "upload/en-US/Example2.vue" },
+    "id": "upload/en-US/AfterUpload",
+    "entry": "en-US/AfterUpload.vue",
+    "files": {
+      "en-US/AfterUpload.vue": "upload/en-US/AfterUpload.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/AsyncBeforeUpload",
+    "entry": "en-US/AsyncBeforeUpload.vue",
+    "files": {
+      "en-US/AsyncBeforeUpload.vue": "upload/en-US/AsyncBeforeUpload.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/AvatarUpload",
+    "entry": "en-US/AvatarUpload.vue",
+    "files": {
+      "en-US/AvatarUpload.vue": "upload/en-US/AvatarUpload.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/Basic",
+    "entry": "en-US/Basic.vue",
+    "files": {
+      "en-US/Basic.vue": "upload/en-US/Basic.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/BeforeCrop",
+    "entry": "en-US/BeforeCrop.vue",
+    "files": {
+      "en-US/BeforeCrop.vue": "upload/en-US/BeforeCrop.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/BeforeUpload",
+    "entry": "en-US/BeforeUpload.vue",
+    "files": {
+      "en-US/BeforeUpload.vue": "upload/en-US/BeforeUpload.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/Controlled",
+    "entry": "en-US/Controlled.vue",
+    "files": {
+      "en-US/Controlled.vue": "upload/en-US/Controlled.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/CropBasic",
+    "entry": "en-US/CropBasic.vue",
+    "files": {
+      "en-US/CropBasic.vue": "upload/en-US/CropBasic.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/CropDrag",
+    "entry": "en-US/CropDrag.vue",
+    "files": {
+      "en-US/CropDrag.vue": "upload/en-US/CropDrag.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/CropModal",
+    "entry": "en-US/CropModal.vue",
+    "files": {
+      "en-US/CropModal.vue": "upload/en-US/CropModal.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/CropOptions",
+    "entry": "en-US/CropOptions.vue",
+    "files": {
+      "en-US/CropOptions.vue": "upload/en-US/CropOptions.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/CropRound",
+    "entry": "en-US/CropRound.vue",
+    "files": {
+      "en-US/CropRound.vue": "upload/en-US/CropRound.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/CustomRequest",
+    "entry": "en-US/CustomRequest.vue",
+    "files": {
+      "en-US/CustomRequest.vue": "upload/en-US/CustomRequest.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/CustomTooltip",
+    "entry": "en-US/CustomTooltip.vue",
+    "files": {
+      "en-US/CustomTooltip.vue": "upload/en-US/CustomTooltip.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/DefaultList",
+    "entry": "en-US/DefaultList.vue",
+    "files": {
+      "en-US/DefaultList.vue": "upload/en-US/DefaultList.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/Directory",
+    "entry": "en-US/Directory.vue",
+    "files": {
+      "en-US/Directory.vue": "upload/en-US/Directory.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/DisableAtLimit",
+    "entry": "en-US/DisableAtLimit.vue",
+    "files": {
+      "en-US/DisableAtLimit.vue": "upload/en-US/DisableAtLimit.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/Disabled",
+    "entry": "en-US/Disabled.vue",
+    "files": {
+      "en-US/Disabled.vue": "upload/en-US/Disabled.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/Drag",
+    "entry": "en-US/Drag.vue",
+    "files": {
+      "en-US/Drag.vue": "upload/en-US/Drag.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
     "dependencies": ["@aifuxi/semi-theme-default/upload.css", "@aifuxi/semi-ui-vue/upload", "vue"],
     "pages": ["/en-us/components/upload/"],
     "upstream": "input/upload"
   },
   {
-    "id": "upload/zh-CN/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "upload/zh-CN/Example1.vue" },
+    "id": "upload/en-US/DragContent",
+    "entry": "en-US/DragContent.vue",
+    "files": {
+      "en-US/DragContent.vue": "upload/en-US/DragContent.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/DragIcon",
+    "entry": "en-US/DragIcon.vue",
+    "files": {
+      "en-US/DragIcon.vue": "upload/en-US/DragIcon.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/FileOperations",
+    "entry": "en-US/FileOperations.vue",
+    "files": {
+      "en-US/FileOperations.vue": "upload/en-US/FileOperations.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/image.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/image",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/HotSpot",
+    "entry": "en-US/HotSpot.vue",
+    "files": {
+      "en-US/HotSpot.vue": "upload/en-US/HotSpot.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/radio.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/radio",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/ListTitle",
+    "entry": "en-US/ListTitle.vue",
+    "files": {
+      "en-US/ListTitle.vue": "upload/en-US/ListTitle.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/button.css",
       "@aifuxi/semi-theme-default/upload.css",
       "@aifuxi/semi-ui-vue/button",
-      "@aifuxi/semi-ui-vue/upload"
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/ListTitleSlot",
+    "entry": "en-US/ListTitleSlot.vue",
+    "files": {
+      "en-US/ListTitleSlot.vue": "upload/en-US/ListTitleSlot.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/Manual",
+    "entry": "en-US/Manual.vue",
+    "files": {
+      "en-US/Manual.vue": "upload/en-US/Manual.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/Multiple",
+    "entry": "en-US/Multiple.vue",
+    "files": {
+      "en-US/Multiple.vue": "upload/en-US/Multiple.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/NoTooltip",
+    "entry": "en-US/NoTooltip.vue",
+    "files": {
+      "en-US/NoTooltip.vue": "upload/en-US/NoTooltip.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/PictureInfo",
+    "entry": "en-US/PictureInfo.vue",
+    "files": {
+      "en-US/PictureInfo.vue": "upload/en-US/PictureInfo.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/PictureLimit",
+    "entry": "en-US/PictureLimit.vue",
+    "files": {
+      "en-US/PictureLimit.vue": "upload/en-US/PictureLimit.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/PicturePrompt",
+    "entry": "en-US/PicturePrompt.vue",
+    "files": {
+      "en-US/PicturePrompt.vue": "upload/en-US/PicturePrompt.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/PictureSize",
+    "entry": "en-US/PictureSize.vue",
+    "files": {
+      "en-US/PictureSize.vue": "upload/en-US/PictureSize.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/PictureWall",
+    "entry": "en-US/PictureWall.vue",
+    "files": {
+      "en-US/PictureWall.vue": "upload/en-US/PictureWall.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/PreviewFile",
+    "entry": "en-US/PreviewFile.vue",
+    "files": {
+      "en-US/PreviewFile.vue": "upload/en-US/PreviewFile.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/image.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/image",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/PreviewIcon",
+    "entry": "en-US/PreviewIcon.vue",
+    "files": {
+      "en-US/PreviewIcon.vue": "upload/en-US/PreviewIcon.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/PreviewOperations",
+    "entry": "en-US/PreviewOperations.vue",
+    "files": {
+      "en-US/PreviewOperations.vue": "upload/en-US/PreviewOperations.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/image.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/image",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/Prompt",
+    "entry": "en-US/Prompt.vue",
+    "files": {
+      "en-US/Prompt.vue": "upload/en-US/Prompt.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/RequestAttributes",
+    "entry": "en-US/RequestAttributes.vue",
+    "files": {
+      "en-US/RequestAttributes.vue": "upload/en-US/RequestAttributes.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/SingleLimit",
+    "entry": "en-US/SingleLimit.vue",
+    "files": {
+      "en-US/SingleLimit.vue": "upload/en-US/SingleLimit.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/SizeLimit",
+    "entry": "en-US/SizeLimit.vue",
+    "files": {
+      "en-US/SizeLimit.vue": "upload/en-US/SizeLimit.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/en-US/ThumbnailPreview",
+    "entry": "en-US/ThumbnailPreview.vue",
+    "files": {
+      "en-US/ThumbnailPreview.vue": "upload/en-US/ThumbnailPreview.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/image.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/image",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/Accept",
+    "entry": "zh-CN/Accept.vue",
+    "files": {
+      "zh-CN/Accept.vue": "upload/zh-CN/Accept.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
     ],
     "pages": ["/zh-cn/components/upload/"],
     "upstream": "input/upload"
   },
   {
-    "id": "upload/zh-CN/Example2",
-    "entry": "Example2.vue",
-    "files": { "Example2.vue": "upload/zh-CN/Example2.vue" },
+    "id": "upload/zh-CN/AfterUpload",
+    "entry": "zh-CN/AfterUpload.vue",
+    "files": {
+      "zh-CN/AfterUpload.vue": "upload/zh-CN/AfterUpload.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/AsyncBeforeUpload",
+    "entry": "zh-CN/AsyncBeforeUpload.vue",
+    "files": {
+      "zh-CN/AsyncBeforeUpload.vue": "upload/zh-CN/AsyncBeforeUpload.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/AvatarUpload",
+    "entry": "zh-CN/AvatarUpload.vue",
+    "files": {
+      "zh-CN/AvatarUpload.vue": "upload/zh-CN/AvatarUpload.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/Basic",
+    "entry": "zh-CN/Basic.vue",
+    "files": {
+      "zh-CN/Basic.vue": "upload/zh-CN/Basic.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/BeforeCrop",
+    "entry": "zh-CN/BeforeCrop.vue",
+    "files": {
+      "zh-CN/BeforeCrop.vue": "upload/zh-CN/BeforeCrop.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/BeforeUpload",
+    "entry": "zh-CN/BeforeUpload.vue",
+    "files": {
+      "zh-CN/BeforeUpload.vue": "upload/zh-CN/BeforeUpload.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/Controlled",
+    "entry": "zh-CN/Controlled.vue",
+    "files": {
+      "zh-CN/Controlled.vue": "upload/zh-CN/Controlled.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/CropBasic",
+    "entry": "zh-CN/CropBasic.vue",
+    "files": {
+      "zh-CN/CropBasic.vue": "upload/zh-CN/CropBasic.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/CropDrag",
+    "entry": "zh-CN/CropDrag.vue",
+    "files": {
+      "zh-CN/CropDrag.vue": "upload/zh-CN/CropDrag.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/CropModal",
+    "entry": "zh-CN/CropModal.vue",
+    "files": {
+      "zh-CN/CropModal.vue": "upload/zh-CN/CropModal.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/CropOptions",
+    "entry": "zh-CN/CropOptions.vue",
+    "files": {
+      "zh-CN/CropOptions.vue": "upload/zh-CN/CropOptions.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/CropRound",
+    "entry": "zh-CN/CropRound.vue",
+    "files": {
+      "zh-CN/CropRound.vue": "upload/zh-CN/CropRound.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/CustomRequest",
+    "entry": "zh-CN/CustomRequest.vue",
+    "files": {
+      "zh-CN/CustomRequest.vue": "upload/zh-CN/CustomRequest.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/CustomTooltip",
+    "entry": "zh-CN/CustomTooltip.vue",
+    "files": {
+      "zh-CN/CustomTooltip.vue": "upload/zh-CN/CustomTooltip.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/DefaultList",
+    "entry": "zh-CN/DefaultList.vue",
+    "files": {
+      "zh-CN/DefaultList.vue": "upload/zh-CN/DefaultList.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/Directory",
+    "entry": "zh-CN/Directory.vue",
+    "files": {
+      "zh-CN/Directory.vue": "upload/zh-CN/Directory.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/DisableAtLimit",
+    "entry": "zh-CN/DisableAtLimit.vue",
+    "files": {
+      "zh-CN/DisableAtLimit.vue": "upload/zh-CN/DisableAtLimit.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/Disabled",
+    "entry": "zh-CN/Disabled.vue",
+    "files": {
+      "zh-CN/Disabled.vue": "upload/zh-CN/Disabled.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/Drag",
+    "entry": "zh-CN/Drag.vue",
+    "files": {
+      "zh-CN/Drag.vue": "upload/zh-CN/Drag.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
     "dependencies": ["@aifuxi/semi-theme-default/upload.css", "@aifuxi/semi-ui-vue/upload", "vue"],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/DragContent",
+    "entry": "zh-CN/DragContent.vue",
+    "files": {
+      "zh-CN/DragContent.vue": "upload/zh-CN/DragContent.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/DragIcon",
+    "entry": "zh-CN/DragIcon.vue",
+    "files": {
+      "zh-CN/DragIcon.vue": "upload/zh-CN/DragIcon.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/FileOperations",
+    "entry": "zh-CN/FileOperations.vue",
+    "files": {
+      "zh-CN/FileOperations.vue": "upload/zh-CN/FileOperations.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/image.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/image",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/HotSpot",
+    "entry": "zh-CN/HotSpot.vue",
+    "files": {
+      "zh-CN/HotSpot.vue": "upload/zh-CN/HotSpot.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/radio.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/radio",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/ListTitle",
+    "entry": "zh-CN/ListTitle.vue",
+    "files": {
+      "zh-CN/ListTitle.vue": "upload/zh-CN/ListTitle.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/ListTitleSlot",
+    "entry": "zh-CN/ListTitleSlot.vue",
+    "files": {
+      "zh-CN/ListTitleSlot.vue": "upload/zh-CN/ListTitleSlot.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/Manual",
+    "entry": "zh-CN/Manual.vue",
+    "files": {
+      "zh-CN/Manual.vue": "upload/zh-CN/Manual.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/Multiple",
+    "entry": "zh-CN/Multiple.vue",
+    "files": {
+      "zh-CN/Multiple.vue": "upload/zh-CN/Multiple.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/NoTooltip",
+    "entry": "zh-CN/NoTooltip.vue",
+    "files": {
+      "zh-CN/NoTooltip.vue": "upload/zh-CN/NoTooltip.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/PictureInfo",
+    "entry": "zh-CN/PictureInfo.vue",
+    "files": {
+      "zh-CN/PictureInfo.vue": "upload/zh-CN/PictureInfo.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/PictureLimit",
+    "entry": "zh-CN/PictureLimit.vue",
+    "files": {
+      "zh-CN/PictureLimit.vue": "upload/zh-CN/PictureLimit.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/PicturePrompt",
+    "entry": "zh-CN/PicturePrompt.vue",
+    "files": {
+      "zh-CN/PicturePrompt.vue": "upload/zh-CN/PicturePrompt.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/PictureSize",
+    "entry": "zh-CN/PictureSize.vue",
+    "files": {
+      "zh-CN/PictureSize.vue": "upload/zh-CN/PictureSize.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/image.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/image",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/PictureWall",
+    "entry": "zh-CN/PictureWall.vue",
+    "files": {
+      "zh-CN/PictureWall.vue": "upload/zh-CN/PictureWall.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/PreviewFile",
+    "entry": "zh-CN/PreviewFile.vue",
+    "files": {
+      "zh-CN/PreviewFile.vue": "upload/zh-CN/PreviewFile.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/image.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/image",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/PreviewIcon",
+    "entry": "zh-CN/PreviewIcon.vue",
+    "files": {
+      "zh-CN/PreviewIcon.vue": "upload/zh-CN/PreviewIcon.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/PreviewOperations",
+    "entry": "zh-CN/PreviewOperations.vue",
+    "files": {
+      "zh-CN/PreviewOperations.vue": "upload/zh-CN/PreviewOperations.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/image.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/image",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/Prompt",
+    "entry": "zh-CN/Prompt.vue",
+    "files": {
+      "zh-CN/Prompt.vue": "upload/zh-CN/Prompt.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/RequestAttributes",
+    "entry": "zh-CN/RequestAttributes.vue",
+    "files": {
+      "zh-CN/RequestAttributes.vue": "upload/zh-CN/RequestAttributes.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/SingleLimit",
+    "entry": "zh-CN/SingleLimit.vue",
+    "files": {
+      "zh-CN/SingleLimit.vue": "upload/zh-CN/SingleLimit.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/SizeLimit",
+    "entry": "zh-CN/SizeLimit.vue",
+    "files": {
+      "zh-CN/SizeLimit.vue": "upload/zh-CN/SizeLimit.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/upload/"],
+    "upstream": "input/upload"
+  },
+  {
+    "id": "upload/zh-CN/ThumbnailPreview",
+    "entry": "zh-CN/ThumbnailPreview.vue",
+    "files": {
+      "zh-CN/ThumbnailPreview.vue": "upload/zh-CN/ThumbnailPreview.vue",
+      "simulateUpload.ts": "upload/simulateUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/image.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/image",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
     "pages": ["/zh-cn/components/upload/"],
     "upstream": "input/upload"
   },
