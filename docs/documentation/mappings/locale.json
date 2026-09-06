@@ -1,0 +1,31 @@
+{
+  "upstream": "other/locale",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "locale/zh-cn/Internationalization",
+      "enUS": "locale/en-us/Internationalization"
+    },
+    {
+      "index": 2,
+      "zhCN": "locale/zh-cn/Custom",
+      "enUS": "locale/en-us/Custom"
+    },
+    {
+      "index": 3,
+      "zhCN": "locale/zh-cn/Components",
+      "enUS": "locale/en-us/Components"
+    }
+  ],
+  "review": {
+    "fingerprint": "e0021af11bdc9b3045844b34c82559e3ed2fa2c4ecef5417780711a87e94ee1e",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "三个固定 live 示例逐项双语映射；中文 57 与英文 54 个菜单项分别保留。",
+      "Provider/Consumer 的 Vue props、默认值、ConfigProvider 优先级与具名 slot 已审阅。",
+      "图片采用本站样本、导航使用独立品牌，两端参考入口同步显式适配。"
+    ]
+  }
+}

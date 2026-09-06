@@ -209,7 +209,9 @@ describe('Typography', () => {
       },
     });
     const wrapper = mount(Host);
-    expect(wrapper.get('[role="button"]').attributes('aria-label')).toBe('Copy');
+    expect(wrapper.get('[role="button"]').attributes('aria-label')).toBe('copy');
+    await wrapper.get('[role="button"]').trigger('keydown', { key: 'Enter' });
+    expect(wrapper.text()).toContain('Copied');
   });
 
   it('CSS ellipsis 输出固定 class，多行输出 line clamp', () => {

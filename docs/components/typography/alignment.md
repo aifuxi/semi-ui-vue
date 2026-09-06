@@ -84,3 +84,7 @@
 实现说明：TypographyTooltip 使用范围受限的 render function，在无需浮层时直接返回原 VNode；SFC slot 会引入 Fragment 并改变原根节点。TypographyBase 在根节点替换后重新绑定 ResizeObserver。新增 Popover 箭头三态、VNode 内容、tooltip slot、显式容器和清理单测，以及双主题 Tooltip/Popover 的真实几何、computed style、完整箭头截图、Document 滚动、宽度恢复与卸载用例。
 
 最终证据：新增 8 项双主题浮层 Chromium 用例及 ConfigProvider Consumer 双语明暗 4 项均通过；共享修改后全仓 Chromium 442 项通过，真实 tarball 和 SSR dist 通过。
+
+## Locale 文档消费者回归（2026-09-06）
+
+固定 copyable.tsx 默认 IconCopy 保留图标自己的 aria-label=copy；本地化 copyTip 属于 Tooltip 提示文案，不覆盖默认或自定义 VNode 图标名称。复制入口使用现有 Tooltip 实现真实浮层，替代原生 title；新增本地化提示与 Enter 复制回归，以及文档矩阵中的日语复制浮层完整截图。RTL 展开入口的短暂缺失来自重挂载后的测量状态；验收在滚动定位后等待公开的折叠入口，不修改截断算法或放宽截图阈值。

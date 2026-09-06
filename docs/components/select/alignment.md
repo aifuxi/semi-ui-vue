@@ -78,3 +78,11 @@ Select 是 Tooltip PoC 后的第二道复杂度门槛，用来验证搜索、多
 ## Deviation
 
 无 accepted deviation。
+
+## Locale/Pagination 菜单回归（2026-09-06）
+
+固定 option.tsx 仅为字符串 children 添加 semi-select-option-text；VNode/数字内容直接作为 option 子节点。补充字符串与 VNode 菜单结构及选择行为回归，消除分页大小菜单多出的包裹节点；不更改过滤/选中值或默认 true 的处理。
+
+固定 Select.componentDidUpdate 仅在选项变化时调用 handleOptionListChange 并重置 focusIndex；单独 value 变化保留当前焦点。Vue 使用稳定的 optionList computed 作为深度监听源，防止 runtimeProps 因 value 更新而创建新对象时误重置焦点。补充受控值变化时悬停项保持的公开行为测试，并由 Locale 语言选择后再次打开菜单的 RTL 对照验证。
+
+打开浮层后按上游 handlePopoverVisibleChange 滚动首个已选项到列表中部；计算 offsetTop 时扣除列表 offsetTop，保留键盘焦点项滚动的相同坐标系。Locale 长语言菜单在重复打开后逐项比较位置，覆盖中文/英文与 RTL。

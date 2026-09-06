@@ -14,17 +14,36 @@ LocaleProvider supplies the pinned Semi v2.102.0 locale data to a Vue subtree. L
 lets custom components read one component locale, the locale code, the date-fns locale, and the
 currency. A surrounding ConfigProvider locale takes precedence.
 
-## Basic usage
+## Supported languages
 
-::demo-block{demo="locale/en-US/Example1" title="Basic usage"}
+The pinned v2.102.0 release exports 57 locale sources. Import each through `@aifuxi/semi-ui-vue/locale/source/<name>`.
+
+`ar`, `az`, `bg`, `bn_IN`, `ca`, `ceb_PH`, `cs_CZ`, `da`, `de`, `el_GR`, `en_GB`, `en_US`, `es`, `es_419`, `et`, `fa_IR`, `fi_FI`, `fil_PH`, `fr`, `fr_CA`, `ga`, `he_IL`, `hi_IN`, `hr`, `hu_HU`, `id_ID`, `is`, `it`, `ja_JP`, `jv_ID`, `kk`, `km_KH`, `ko_KR`, `lt`, `lv`, `ms_MY`, `my_MM`, `nb`, `nl_NL`, `pl_PL`, `pt`, `pt_BR`, `ro`, `ru_RU`, `sk`, `sl`, `sq`, `sv_SE`, `sw`, `th_TH`, `tr_TR`, `uk_UA`, `ur`, `uz`, `vi_VN`, `zh_CN`, `zh_TW`
+
+## Supported components
+
+Calendar, Cascader, Chat, DatePicker, Form, Image, List, Modal, Navigation, Pagination, Popconfirm, Select, Table, TimePicker, Transfer, Tree, TreeSelect, Typography and Upload.
+
+## Usage
+
+Wrap the application in LocaleProvider and update its locale prop to switch languages. ConfigProvider takes precedence when present and also supports direction for RTL.
+
+## Internationalization
+
+::demo-block{demo="locale/en-us/Internationalization" title="Internationalization"}
 ::
 
-## Reactive switching
+## Custom internationalized components
 
-Updating the `locale` prop updates descendants of that Provider. Nested providers stay isolated.
-
-::demo-block{demo="locale/en-US/Example2" title="Reactive switching"}
+::demo-block{demo="locale/en-us/Custom" title="Custom internationalized components"}
 ::
+
+## Components supporting multiple languages
+
+::demo-block{demo="locale/en-us/Components" title="Components supporting multiple languages"}
+::
+
+The language menu preserves the pinned English list (54 entries); the Chinese example has 57. Images use local samples and navigation uses independent branding. Changing language remounts the consumer showcase, matching the upstream nested component.
 
 ## API
 

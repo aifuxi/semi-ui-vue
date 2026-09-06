@@ -129,7 +129,9 @@ describe('ConfigProvider', () => {
       props: { locale: english },
       slots: { default: () => h(Text, { copyable: true }, () => 'Token') },
     });
-    expect(wrapper.get('[role="button"]').attributes('aria-label')).toBe('Copy');
+    expect(wrapper.get('[role="button"]').attributes('aria-label')).toBe('copy');
+    await wrapper.get('[role="button"]').trigger('keydown', { key: 'Enter' });
+    expect(wrapper.text()).toContain('Copied');
 
     await wrapper.setProps({
       locale: {
@@ -137,7 +139,7 @@ describe('ConfigProvider', () => {
         Typography: { copy: '复制它', copied: '已复制', expand: '展开', collapse: '收起' },
       },
     });
-    expect(wrapper.get('[role="button"]').attributes('aria-label')).toBe('复制它');
+    expect(wrapper.text()).toContain('已复制');
   });
 
   it('首次订阅时读取断点，过滤变更回调并在最后取消订阅时清理', async () => {

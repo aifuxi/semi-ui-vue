@@ -1,0 +1,67 @@
+{
+  "id": "locale",
+  "upstream": "other/locale",
+  "title": "Locale 文档",
+  "spec": "locale-matrix.spec.ts",
+  "locales": ["zh-cn", "en-us"],
+  "themes": ["light", "dark"],
+  "examples": [
+    {
+      "index": 1,
+      "name": "Internationalization",
+      "zhCN": "locale/zh-cn/Internationalization",
+      "enUS": "locale/en-us/Internationalization"
+    },
+    {
+      "index": 2,
+      "name": "Custom",
+      "zhCN": "locale/zh-cn/Custom",
+      "enUS": "locale/en-us/Custom"
+    },
+    {
+      "index": 3,
+      "name": "Components",
+      "zhCN": "locale/zh-cn/Components",
+      "enUS": "locale/en-us/Components"
+    }
+  ],
+  "inputs": [
+    "pnpm-lock.yaml",
+    "package.json",
+    "apps/docs/package.json",
+    "apps/docs/nuxt.config.ts",
+    "apps/docs/content/zh-cn/components/locale.md",
+    "apps/docs/content/en-us/components/locale.md",
+    "apps/docs/src/demos/locale",
+    "apps/docs/src/data/api",
+    "apps/docs/src/assets",
+    "apps/docs/src/components",
+    "apps/docs/scripts",
+    "apps/docs/playwright.nuxt.config.ts",
+    "apps/docs/playwright.config.ts",
+    "apps/reference-react",
+    "packages/ui/src",
+    "packages/icons/src",
+    "packages/theme-default",
+    "packages/foundation-integration",
+    "tests/browser/parity-harness.ts",
+    "tests/browser/parity-provenance.ts",
+    "docs/documentation/batches/locale.json",
+    "docs/documentation/mappings/locale.json",
+    "docs/documentation/locale-acceptance.md",
+    "packages/test-infra/src",
+    "apps/docs/content.config.ts",
+    "apps/docs/tests/nuxt/locale-matrix.spec.ts",
+    "apps/docs/tests/nuxt/demo-parity.ts",
+    "apps/docs/tests/nuxt/visual-context.ts",
+    "apps/docs/src/composables",
+    "apps/docs/src/layouts",
+    "apps/docs/src/pages",
+    "apps/docs/src/app.vue",
+    "apps/docs/public/theme.js",
+    "apps/docs/licenses/locale-examples.json",
+    "apps/docs/public/demos/one.svg",
+    "apps/docs/public/demos/two.svg"
+  ],
+  "rtlExamples": ["Components"]
+}

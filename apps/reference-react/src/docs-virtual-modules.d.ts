@@ -29,3 +29,9 @@ declare module 'virtual:pinned-config-provider-examples' {
   const examples: Record<'zh-cn' | 'en-us', Array<() => Promise<{ default: ComponentType }>>>;
   export default examples;
 }
+
+declare module 'virtual:pinned-locale-examples' {
+  import type { ComponentType } from 'react';
+  const examples: Record<'zh-cn' | 'en-us', Array<() => Promise<{ default: ComponentType }>>>;
+  export default examples;
+}

@@ -98,3 +98,7 @@
 - Accepted：Vue 用 `modelValue`/`update:modelValue` 提供原生 `v-model`，同时保留 `currentPage`/`update:currentPage`；这是 React 受控 prop 的 Vue 原生映射，不改变页码与事件语义。
 - Accepted：React 用 `react-window` 渲染省略页列表；Vue 使用等价固定行高窗口化组件，保持 78px 宽、32px 行高、5 行 viewport、滚动可达范围和公开 DOM class，不引入 React 运行时依赖。
 - Accepted parity limitation：固定上游的 `handleKeyDown` 是空实现且页码项未提供 tabindex；Vue 不额外添加新的键盘导航契约。Select、InputNumber 与 Popover 自身的键盘/焦点能力照常保留。
+
+## Locale 文档消费者回归（2026-09-06）
+
+固定 LocaleConsumer 优先 ConfigProvider，再取最近 LocaleProvider，缺 code 整体回退默认语言。新增 Pagination 同屏 en_GB/ja_JP、响应式切换、嵌套隔离和 ConfigProvider 优先级公开行为/SSR 回归，修复仅读 ConfigProvider 的遗漏；语言元数据不深层代理，不改变 props/emits 或默认方向。

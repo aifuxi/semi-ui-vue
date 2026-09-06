@@ -72,3 +72,7 @@
 - 发布结果：根/`table` ESM 与声明、根/独立 `table.css`、SSR-safe import、许可证、第三方声明和 SPDX SBOM 均通过真实 tarball 离线安装消费；公开 `.d.ts` 不含私有 Foundation 或 vendor 路径。
 - Deviation：无能力损失或已接受差异；ReactNode、render props、children、className 仅按上表映射为 Vue 原生 VNode/slot/props 语义。
 - 当前状态：`ready`。
+
+## Locale 文档消费者回归（2026-09-06）
+
+固定 TablePagination 在 total <= 0 时保留外层和两个 span，省略 Pagination；Foundation.formatPaginationInfo 默认文本为空，自定义 formatPageText 仍调用。固定头表不添加显式 role，普通 body 为 grid，分组/展开/非空 children 数据为 treegrid。新增空数据→有数据、双端分页位置、自定义分页文案与表格语义回归，严格对照公开 DOM/ARIA。

@@ -2,6 +2,7 @@
 import { IconCopy, IconTick } from '@aifuxi/semi-icons-vue';
 import { cloneVNode, computed, inject, isVNode, onBeforeUnmount, shallowRef, unref } from 'vue';
 
+import Tooltip from '../tooltip/Tooltip.vue';
 import TypographyNodeRenderer from './TypographyNodeRenderer';
 import { DEFAULT_TYPOGRAPHY_LOCALE, typographyLocaleKey } from './typography-locale';
 import type { TypographyCopyableConfig } from './types';
@@ -29,7 +30,6 @@ const customIcon = computed(() => {
   return cloneVNode(icon, {
     role: 'button',
     tabindex: 0,
-    'aria-label': String(copyTip.value),
     onClick: copy,
     onKeydown,
   });
@@ -86,12 +86,7 @@ defineExpose({ copy, copied });
 
 <template>
   <TypographyNodeRenderer v-if="config.render" :content="config.render(copied, copy, config)" />
-  <span
-    v-else
-    :class="classes"
-    :title="copied ? undefined : String(copyTip)"
-    style="margin-left: 4px"
-  >
+  <span v-else :class="classes" style="margin-left: 4px">
     <template v-if="copied">
       <slot name="copied">
         <TypographyNodeRenderer
@@ -101,25 +96,21 @@ defineExpose({ copy, copied });
         <span v-else><IconTick />{{ locale.copied }}</span>
       </slot>
     </template>
-    <TypographyNodeRenderer v-else-if="config.icon !== undefined" :content="customIcon" />
-    <a
-      v-else
-      class="semi-typography-action-copy-icon"
-      :role="$slots.icon ? 'button' : undefined"
-      :tabindex="$slots.icon ? 0 : undefined"
-      :aria-label="$slots.icon ? String(copyTip) : undefined"
-      @click="$slots.icon ? copy($event) : undefined"
-      @keydown="$slots.icon ? onKeydown($event) : undefined"
-    >
-      <slot name="icon" :copied="copied" :copy="copy">
-        <IconCopy
-          role="button"
-          tabindex="0"
-          :aria-label="String(copyTip)"
-          @click="copy"
-          @keydown="onKeydown"
-        />
-      </slot>
-    </a>
+    <Tooltip v-else :content="copyTip">
+      <TypographyNodeRenderer v-if="config.icon !== undefined" :content="customIcon" />
+      <a
+        v-else
+        class="semi-typography-action-copy-icon"
+        :role="$slots.icon ? 'button' : undefined"
+        :tabindex="$slots.icon ? 0 : undefined"
+        :aria-label="$slots.icon ? String(copyTip) : undefined"
+        @click="$slots.icon ? copy($event) : undefined"
+        @keydown="$slots.icon ? onKeydown($event) : undefined"
+      >
+        <slot name="icon" :copied="copied" :copy="copy">
+          <IconCopy role="button" tabindex="0" @click="copy" @keydown="onKeydown" />
+        </slot>
+      </a>
+    </Tooltip>
   </span>
 </template>

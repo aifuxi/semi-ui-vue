@@ -18,6 +18,7 @@ import {
 } from 'vue';
 
 import { configContextKey, type ConfigContextValue } from '../config-provider';
+import { localeContextKey } from '../locale/locale-context';
 import InputNumber from '../input-number/InputNumber.vue';
 import Select from '../select/Select.vue';
 import SelectOption from '../select/SelectOption.vue';
@@ -55,10 +56,14 @@ const attrs = useAttrs();
 const slots = useSlots();
 const instance = getCurrentInstance();
 const injectedConfig = inject(configContextKey, undefined);
+const injectedLocale = inject(localeContextKey, undefined);
 const config = computed<ConfigContextValue>(() =>
   injectedConfig
     ? injectedConfig.value
-    : ({ direction: 'ltr', locale: { code: 'zh-CN' } } as ConfigContextValue),
+    : ({
+        direction: 'ltr',
+        locale: injectedLocale?.value.code ? injectedLocale.value : { code: 'zh-CN' },
+      } as ConfigContextValue),
 );
 
 function hasRawProp(name: string): boolean {

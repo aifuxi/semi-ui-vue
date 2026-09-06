@@ -106,6 +106,14 @@ const direction = computed<TableDirection>(
   () => props.direction ?? injectedConfig?.value.direction ?? 'ltr',
 );
 const dataSource = computed(() => resolveProp('dataSource', [] as RecordType[]));
+const bodyRole = computed(() =>
+  props.groupBy ||
+  props.expandedRowRender ||
+  slots.expandedRow ||
+  dataSource.value.some((record) => Array.isArray(record.children) && record.children.length)
+    ? 'treegrid'
+    : 'grid',
+);
 const childrenRecordName = computed(() => resolveProp('childrenRecordName', 'children'));
 const rowKey = computed(() => resolveProp('rowKey', 'key'));
 const hideExpandedColumn = computed(() => resolveProp('hideExpandedColumn', true));
@@ -781,7 +789,7 @@ const pageInfo = computed(() => {
   if (typeof pagination.formatPageText === 'function') {
     return pagination.formatPageText({ currentEnd: end, currentStart: start, total });
   }
-  if (pagination.formatPageText === false) return '';
+  if (pagination.formatPageText === false || total <= 0) return '';
   return (locale.value.pageText ?? '')
     .replace('${currentStart}', String(start))
     .replace('${currentEnd}', String(end))
@@ -935,7 +943,11 @@ onBeforeUnmount(() => {
               ><TableNodeRenderer :content="pageInfo"
             /></span>
             <span :class="`${prefix}-pagination-wrapper`">
-              <Pagination v-bind="paginationConfig" @change="handlePageChange" />
+              <Pagination
+                v-if="(paginationConfig.total ?? 0) > 0"
+                v-bind="paginationConfig"
+                @change="handlePageChange"
+              />
             </span>
           </template>
         </div>
@@ -952,7 +964,6 @@ onBeforeUnmount(() => {
               :is="tableComponent('header', 'outer') || props.components?.table || 'table'"
               :class="[prefix, `${prefix}-fixed`]"
               :style="tableStyle"
-              role="table"
             >
               <colgroup :class="`${prefix}-colgroup`">
                 <col
@@ -1001,7 +1012,7 @@ onBeforeUnmount(() => {
                   : undefined,
               ]"
               :style="tableStyle"
-              role="table"
+              :role="bodyRole"
             >
               <component :is="bodyColgroupComponent('wrapper')" :class="`${prefix}-colgroup`">
                 <component
@@ -1100,7 +1111,11 @@ onBeforeUnmount(() => {
               ><TableNodeRenderer :content="pageInfo"
             /></span>
             <span :class="`${prefix}-pagination-wrapper`">
-              <Pagination v-bind="paginationConfig" @change="handlePageChange" />
+              <Pagination
+                v-if="(paginationConfig.total ?? 0) > 0"
+                v-bind="paginationConfig"
+                @change="handlePageChange"
+              />
             </span>
           </template>
         </div>

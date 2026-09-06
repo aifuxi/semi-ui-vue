@@ -560,6 +560,11 @@ defineExpose<SelectExposed>({
     :re-pos-key="`${state.optionKey}-${runtimeProps.rePosKey ?? ''}`"
     v-bind="popupContainer ? { getPopupContainer: popupContainer } : {}"
     @after-close="() => foundation.handlePopoverClose()"
+    @visible-change="
+      (visible) => {
+        if (visible) foundation.updateScrollTop();
+      }
+    "
     @update:visible="
       (visible) => {
         if (!visible && state.isOpen) foundation.close();
@@ -685,7 +690,12 @@ defineExpose<SelectExposed>({
                 <div v-if="entry.option.showTick !== false" class="semi-select-option-icon">
                   <IconTick />
                 </div>
-                <div class="semi-select-option-text">
+                <div
+                  v-if="
+                    entry.option._inputCreateOnly || typeof optionContent(entry.option) === 'string'
+                  "
+                  class="semi-select-option-text"
+                >
                   <template v-if="entry.option._inputCreateOnly">
                     <span class="semi-select-create-tips">{{
                       selectLocale.createText ?? '创建'
@@ -713,6 +723,7 @@ defineExpose<SelectExposed>({
                   </template>
                   <SelectNodeRenderer v-else :content="optionContent(entry.option)" />
                 </div>
+                <SelectNodeRenderer v-else :content="optionContent(entry.option)" />
               </div>
             </template>
           </template>

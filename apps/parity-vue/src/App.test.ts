@@ -892,7 +892,7 @@ describe('Vue 对照工作台', () => {
     expect(scenario.get('[data-parity-target="config-provider-nested"]').text()).toBe(
       'nested: ltr',
     );
-    expect(scenario.get('[role="button"]').attributes('aria-label')).toBe('Copy');
+    expect(scenario.get('[role="button"]').attributes('aria-label')).toBe('copy');
   });
 
   it('通过公共 Switch 渲染尺寸、文本、禁用、加载与受控场景', async () => {

@@ -6,6 +6,7 @@ import { transformWithEsbuild, type Plugin } from 'vite';
 const root = fileURLToPath(new URL('../..', import.meta.url));
 const prefix = 'virtual:pinned-button-docs/';
 const iconPrefix = 'virtual:pinned-icon-docs/';
+const localePrefix = 'virtual:pinned-locale-docs/';
 const configPrefix = 'virtual:pinned-config-provider-docs/';
 const sourceRoot = path.join(root, 'vendor/semi-design');
 async function publicImports(code: string): Promise<string> {
@@ -16,7 +17,7 @@ async function publicImports(code: string): Promise<string> {
     ),
   );
   const localized = code.replace(
-    /(['"])@douyinfe\/semi-ui\/locale\/source\/([A-Za-z_]+)\1/g,
+    /(['"])@douyinfe\/semi-ui\/(?:lib\/es\/)?locale\/source\/([A-Za-z0-9_]+)\1/g,
     (_, _quote: string, locale: string) =>
       JSON.stringify(path.join(sourceRoot, `packages/semi-ui/locale/source/${locale}.ts`)),
   );
@@ -29,6 +30,10 @@ async function publicImports(code: string): Promise<string> {
           const [component, local = component] = name.trim().split(/\s+as\s+/);
           if (component === 'Row' || component === 'Col')
             return `import { ${component} as ${local} } from ${JSON.stringify(path.join(sourceRoot, 'packages/semi-ui/grid/index.tsx'))};`;
+          if (component === 'ImagePreview')
+            return `import { Preview as ${local} } from ${JSON.stringify(path.join(sourceRoot, 'packages/semi-ui/image/index.tsx'))};`;
+          if (component === 'Form')
+            return `import { Form as ${local} } from ${JSON.stringify(path.join(sourceRoot, 'packages/semi-ui/form/index.tsx'))};`;
           if (component === 'Toast')
             return `import ${local} from ${JSON.stringify(path.join(sourceRoot, 'packages/semi-ui/toast/index.tsx'))};`;
           if (component === 'ConfigConsumer')
@@ -56,10 +61,16 @@ export function pinnedButtonDocumentation(): Plugin {
           'virtual:pinned-button-examples',
           'virtual:pinned-icon-examples',
           'virtual:pinned-config-provider-examples',
+          'virtual:pinned-locale-examples',
         ].includes(id)
       )
         return `\0${id}`;
-      if (id.startsWith(prefix) || id.startsWith(iconPrefix) || id.startsWith(configPrefix))
+      if (
+        id.startsWith(localePrefix) ||
+        id.startsWith(prefix) ||
+        id.startsWith(iconPrefix) ||
+        id.startsWith(configPrefix)
+      )
         return `\0${id}`;
     },
     async load(id) {
@@ -69,6 +80,8 @@ export function pinnedButtonDocumentation(): Plugin {
         return `export default {${['zh-cn', 'en-us'].map((locale) => `${JSON.stringify(locale)}:[${Array.from({ length: 8 }, (_, index) => `()=>import('${iconPrefix}${locale}/${index + 1}.jsx')`).join(',')}]`).join(',')}}`;
       if (id === '\0virtual:pinned-config-provider-examples')
         return `export default {${['zh-cn', 'en-us'].map((locale) => `${JSON.stringify(locale)}:[${Array.from({ length: 3 }, (_, index) => `()=>import('${configPrefix}${locale}/${index + 1}.jsx')`).join(',')}]`).join(',')}}`;
+      if (id === '\0virtual:pinned-locale-examples')
+        return `export default {${['zh-cn', 'en-us'].map((locale) => `${JSON.stringify(locale)}:[${Array.from({ length: 3 }, (_, index) => `()=>import('${localePrefix}${locale}/${index + 1}.jsx')`).join(',')}]`).join(',')}}`;
       if (id === '\0virtual:pinned-doc-gatsby')
         return `import React from 'react'; export const withPrefix = path => path; export const Link = ({to, children, ...props}) => React.createElement('a', {...props, href:to}, children);`;
       if (id === '\0virtual:pinned-doc-locale')
@@ -130,16 +143,17 @@ export function pinnedButtonDocumentation(): Plugin {
         const css = await readFile(path.join(root, 'apps/docs/public/upstream/site.css'), 'utf8');
         return css.replaceAll('/upstream/Inter-', 'http://127.0.0.1:4321/repl/fonts/Inter-');
       }
+      const isLocale = id.startsWith(`\0${localePrefix}`);
       const isConfigProvider = id.startsWith(`\0${configPrefix}`);
       const isIcon = id.startsWith(`\0${iconPrefix}`);
-      if (!isConfigProvider && !isIcon && !id.startsWith(`\0${prefix}`)) return;
+      if (!isLocale && !isConfigProvider && !isIcon && !id.startsWith(`\0${prefix}`)) return;
       const [, locale, number] = id.match(/\/([\w-]+)\/(\d+)\.jsx$/) ?? [];
       if (!['zh-cn', 'en-us'].includes(locale ?? '')) throw new Error('Invalid reference locale');
       const filename = locale === 'en-us' ? 'index-en-US.md' : 'index.md';
       const source = await readFile(
         path.join(
           root,
-          `vendor/semi-design/content/${isConfigProvider ? 'other/configprovider' : `basic/${isIcon ? 'icon' : 'button'}`}`,
+          `vendor/semi-design/content/${isLocale ? 'other/locale' : isConfigProvider ? 'other/configprovider' : `basic/${isIcon ? 'icon' : 'button'}`}`,
           filename,
         ),
         'utf8',
@@ -147,7 +161,8 @@ export function pinnedButtonDocumentation(): Plugin {
       const examples = [...source.matchAll(/```[^\n]*live=true[^\n]*\n([\s\S]*?)```/g)];
       let code = examples[Number(number) - 1]?.[1];
       if (!code) throw new Error(`Missing pinned Button example ${locale}/${number}`);
-      const entry = code.match(/^function\s+(\w+)\s*\(/m)?.[1];
+      const entry =
+        code.match(/^render\((\w+)\);?$/m)?.[1] ?? code.match(/^function\s+(\w+)\s*\(/m)?.[1];
       if (!entry && !isIcon)
         throw new Error(`Unsupported pinned example entry ${locale}/${number}`);
       // Fixed Markdown assigns an undeclared variable in both Split examples. The original
@@ -157,6 +172,25 @@ export function pinnedButtonDocumentation(): Plugin {
       // The pinned RTL demo calls Toast but omits its import. Supply only that binding.
       if (isConfigProvider && Number(number) === 3)
         code = `import { Toast } from '@douyinfe/semi-ui';\n${code}`;
+      if (isLocale) {
+        // The live evaluator supplies hooks and render(); ESM supplies those bindings explicitly.
+        code = code
+          .replace(
+            "import React from 'react';",
+            "import React, { useState, useMemo, useCallback } from 'react';",
+          )
+          .replace(/^render\(\w+\);?$/m, '');
+        // Match the site's local media and independent branding without masking either region.
+        let imageIndex = 0;
+        code = code
+          .replace(
+            /https:\/\/lf3-static\.bytednsdoc\.com[^"'\s]+/g,
+            () => `http://127.0.0.1:4321/demos/${imageIndex++ % 2 ? 'two' : 'one'}.svg`,
+          )
+          .replaceAll('IconSemiLogo', 'IconApps')
+          .replaceAll('Semi 数据后台', '组件数据后台')
+          .replaceAll('Semi Platform', 'Component Platform');
+      }
       code = await publicImports(code);
       // Icon demos use a top-level anonymous arrow expression, including a nested CustomIcon.
       if (isIcon) code = code.replace(/^\(\) =>/m, 'const DocumentationExample = () =>');

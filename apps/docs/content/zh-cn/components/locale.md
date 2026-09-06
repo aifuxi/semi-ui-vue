@@ -14,18 +14,36 @@ LocaleProvider 向当前 Vue 子树提供 Semi v2.102.0 语言数据，LocaleCon
 组件读取指定组件的文案、locale code、date-fns locale 与 currency。若同时存在
 ConfigProvider，其 locale 优先。
 
-## 基本使用
+## 目前支持语言
 
-::demo-block{demo="locale/zh-CN/Example1" title="基本使用"}
+固定 v2.102.0 导出 57 个语言源，通过 `@aifuxi/semi-ui-vue/locale/source/<文件名>` 导入。
+
+`ar`, `az`, `bg`, `bn_IN`, `ca`, `ceb_PH`, `cs_CZ`, `da`, `de`, `el_GR`, `en_GB`, `en_US`, `es`, `es_419`, `et`, `fa_IR`, `fi_FI`, `fil_PH`, `fr`, `fr_CA`, `ga`, `he_IL`, `hi_IN`, `hr`, `hu_HU`, `id_ID`, `is`, `it`, `ja_JP`, `jv_ID`, `kk`, `km_KH`, `ko_KR`, `lt`, `lv`, `ms_MY`, `my_MM`, `nb`, `nl_NL`, `pl_PL`, `pt`, `pt_BR`, `ro`, `ru_RU`, `sk`, `sl`, `sq`, `sv_SE`, `sw`, `th_TH`, `tr_TR`, `uk_UA`, `ur`, `uz`, `vi_VN`, `zh_CN`, `zh_TW`
+
+## 已支持组件
+
+Calendar、Cascader、Chat、DatePicker、Form、Image、List、Modal、Navigation、Pagination、Popconfirm、Select、Table、TimePicker、Transfer、Tree、TreeSelect、Typography、Upload。
+
+## 使用
+
+在应用外围包裹 LocaleProvider，更新 locale prop 即可切换语言。存在 ConfigProvider 时其 locale 优先；需要 RTL 时同时配置 direction。
+
+## 国际化
+
+::demo-block{demo="locale/zh-cn/Internationalization" title="国际化"}
 ::
 
-## 响应式切换
+## 自定义国际化组件
 
-`locale` 可以是 computed/ref 解包后的对象；prop 更新会立即传给当前 Provider 的后代，
-嵌套 Provider 彼此隔离。
-
-::demo-block{demo="locale/zh-CN/Example2" title="响应式切换"}
+::demo-block{demo="locale/zh-cn/Custom" title="自定义国际化组件"}
 ::
+
+## 支持多语言的组件
+
+::demo-block{demo="locale/zh-cn/Components" title="支持多语言的组件"}
+::
+
+语言菜单保留固定中文示例的 57 项，英文示例为 54 项；图片使用本地样本，导航使用独立品牌。切换语言重新挂载消费者，与上游内嵌组件的生命周期一致。
 
 ## API
 

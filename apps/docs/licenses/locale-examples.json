@@ -1,0 +1,65 @@
+{
+  "name": "Locale documentation examples",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2021 DouyinFE",
+  "baseline": "cdfba6e520fc83ad871b30f51f36d8af3aaa5a21",
+  "source": [
+    "vendor/semi-design/content/other/locale/index.md",
+    "vendor/semi-design/content/other/locale/index-en-US.md"
+  ],
+  "adaptations": [
+    "React JSX adapted to Vue SFC and named slots; consumer showcase split into input, display and navigation components.",
+    "Local generated image samples and independent IconApps branding used on both sides.",
+    "Reference ESM supplies live evaluator hooks and resolves render(I18nCustomDemo)."
+  ],
+  "files": [
+    {
+      "path": "apps/docs/src/demos/locale/en-us/Components.vue",
+      "sha256": "56756d56cb598ce426c088f3286a8a8150cc07126188398cd3834338dbd6d96f"
+    },
+    {
+      "path": "apps/docs/src/demos/locale/en-us/ComponentsDisplay.vue",
+      "sha256": "9033214be3e07c2d500d0844bad79379adce606ada6c9eeba014b400b4c51ee6"
+    },
+    {
+      "path": "apps/docs/src/demos/locale/en-us/ComponentsInputs.vue",
+      "sha256": "7f756716207395406cb0ed31c6db2ab948cc7cc38d1f0a0a71732a295a2b91c6"
+    },
+    {
+      "path": "apps/docs/src/demos/locale/en-us/ComponentsNavigation.vue",
+      "sha256": "ae24dec4587cf639b8103813dda1da78cd1b36bc4936abe8c4e433a6e18527fe"
+    },
+    {
+      "path": "apps/docs/src/demos/locale/en-us/Custom.vue",
+      "sha256": "4dfa038db629320b22ffc09c4ca7fb2d7ddcef5bb25e11f39fa0ac42c06d5fd1"
+    },
+    {
+      "path": "apps/docs/src/demos/locale/en-us/Internationalization.vue",
+      "sha256": "94700923612b1bfb1533796c672989120f761385b9a65a4baff4264f2c05cede"
+    },
+    {
+      "path": "apps/docs/src/demos/locale/zh-cn/Components.vue",
+      "sha256": "9c6801e91b934436093c4aa277246a4f1982696e4c2918da7a7b3f943c0ae1f3"
+    },
+    {
+      "path": "apps/docs/src/demos/locale/zh-cn/ComponentsDisplay.vue",
+      "sha256": "d140410c7dfc899a16389e37555e82b2e35d472cca07b54fb21e7c9940ff0c3e"
+    },
+    {
+      "path": "apps/docs/src/demos/locale/zh-cn/ComponentsInputs.vue",
+      "sha256": "7f756716207395406cb0ed31c6db2ab948cc7cc38d1f0a0a71732a295a2b91c6"
+    },
+    {
+      "path": "apps/docs/src/demos/locale/zh-cn/ComponentsNavigation.vue",
+      "sha256": "24065389eee7fb9698728fdd8eb1881f05545eee9146769798cc316c4f2cbdbb"
+    },
+    {
+      "path": "apps/docs/src/demos/locale/zh-cn/Custom.vue",
+      "sha256": "4dfa038db629320b22ffc09c4ca7fb2d7ddcef5bb25e11f39fa0ac42c06d5fd1"
+    },
+    {
+      "path": "apps/docs/src/demos/locale/zh-cn/Internationalization.vue",
+      "sha256": "94700923612b1bfb1533796c672989120f761385b9a65a4baff4264f2c05cede"
+    }
+  ]
+}
