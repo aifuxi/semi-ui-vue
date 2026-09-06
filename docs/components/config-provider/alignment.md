@@ -75,4 +75,8 @@
 
 第二份消费者补丁对齐 TextArea 默认 validation class、Checkbox normal/card enable class、Switch 缺省 checked ARIA、DatePicker 四类输入的装饰图标、TimePicker 实际触发节点、Navigation 箭头，以及 Steps 有/无监听器的点击状态。Steps 的当前项保留上游点击样式但不发出 change，另验证动态增删监听器。Navigation 的缺省 aria-expanded 被 Dropdown 覆盖，因此 Dropdown 内部触发器也保留 props.visible 缺省与显式 false 的区别（固定 `dropdown/index.tsx` 的 state.popVisible 初始为 props.visible）。未新增公开 API。
 
-Chromium 定向回归不能替代 ConfigProvider 新文档组合矩阵；Typography 手写弹层差异仍未解决。
+Chromium 定向回归不能替代 ConfigProvider 新文档组合矩阵；后续完整验收结果见下节。
+
+## 2026-09-06 消费者续验
+
+用户授权后，DatePicker/TimePicker 按固定上游区分 UTC value 更新与 state.value 的时区重投影；Modal 独立清理 mask/content 入场状态。Typography 改为正式 Tooltip/Popover 集成，ConfigProvider 直接导入 typography-locale 注入键，避免聚合入口产生循环。最终文档矩阵 16/16 通过（双语、light/dark、Direction LTR/RTL），无失败/重试/跳过；真实 tarball 安装、ESM、类型、样式与 SSR import 通过。正式证据为 `docs/documentation/evidence/config-provider.json` 及对应压缩报告；没有 accepted deviation。

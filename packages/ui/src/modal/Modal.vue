@@ -39,6 +39,8 @@ const dialog = useTemplateRef<ModalDialogExposed>('dialog');
 const teleportTarget = shallowRef<HTMLElement | null>(null);
 const mounted = shallowRef(false);
 const haveRendered = shallowRef(false);
+const contentAnimating = shallowRef(true);
+const maskAnimating = shallowRef(true);
 const cache = new Map<unknown, unknown>();
 let activeCycle = false;
 let hideTimer: ReturnType<typeof setTimeout> | undefined;
@@ -216,14 +218,14 @@ const modalClasses = computed(() => [
 ]);
 const contentClass = computed(() => [
   resolveOptional('modalContentClass'),
-  runtimeProps.value.motion
+  runtimeProps.value.motion && contentAnimating.value
     ? runtimeVisible.value
       ? 'semi-modal-content-animate-show'
       : 'semi-modal-content-animate-hide'
     : undefined,
 ]);
 const maskClass = computed(() =>
-  runtimeProps.value.motion
+  runtimeProps.value.motion && maskAnimating.value
     ? runtimeVisible.value
       ? 'semi-modal-mask-animate-show'
       : 'semi-modal-mask-animate-hide'
@@ -279,9 +281,21 @@ function beginHide(): void {
   hideTimer = setTimeout(finishHide, 180);
 }
 
-function handleAnimationEnd(): void {
+function handleAnimationEnd(event: AnimationEvent): void {
+  // Mask and content have independent durations; one must not finish the other's enter phase.
+  const element = event.currentTarget as HTMLElement | null;
+  if (element?.classList.contains('semi-modal-mask')) maskAnimating.value = false;
+  else if (element?.classList.contains('semi-modal-content')) contentAnimating.value = false;
   if (!runtimeVisible.value) finishHide();
 }
+
+watch(
+  () => [runtimeVisible.value, runtimeProps.value.motion],
+  () => {
+    contentAnimating.value = true;
+    maskAnimating.value = true;
+  },
+);
 
 onMounted(() => {
   mounted.value = true;

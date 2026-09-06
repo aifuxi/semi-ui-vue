@@ -82,3 +82,7 @@
 - 视觉基线：React/Vue 分别保留 desktop/mobile light/dark 与 RTL 裁剪截图，阈值继续为 `threshold ≤ 0.1`、`maxDiffPixelRatio ≤ 0.001`，无 mask。
 - 发布：完整 `pnpm check` 通过，包含 vendor/inventory/assets/source-boundary、format、lint、typecheck、unit、全部 workspace build、主题入口、Modal 子路径 SSR import 与真实 tarball 安装/ESM/声明/样式/SBOM consumer 验证。
 - Deviation：无 accepted deviation。
+
+## ConfigProvider 命令式反馈续验
+
+根据固定 `Modal.tsx:377` 与 `_cssAnimation/index.tsx`，mask/content 使用独立动画结束状态；各自 animationend 后清除入场 class，motion 或 visible 变化时重新启动。新增分别结束两层动画、关闭回调只触发一次及重开的公开 DOM 测试，另用真实 Chromium 检查终态 transform/class。

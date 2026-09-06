@@ -222,7 +222,8 @@ watch(
         @animationstart.self="handleAnimationStart"
         @animationend.self="handleAnimationEnd"
       >
-        <div :class="`${prefixCls}-content`">
+        <!-- The pinned Tooltip keeps its content class even when Popover/Dropdown override prefixCls. -->
+        <div class="semi-tooltip-content">
           <ContentRenderer />
         </div>
         <template v-if="showArrow">

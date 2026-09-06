@@ -12,12 +12,14 @@ import {
   unref,
   useAttrs,
   useSlots,
+  watch,
   type CSSProperties,
   type ComputedRef,
   type VNodeChild,
   isVNode,
 } from 'vue';
 
+import TypographyTooltip from './TypographyTooltip';
 import TypographyCopyable from './TypographyCopyable.vue';
 import TypographyDecorations from './TypographyDecorations';
 import TypographyNodeRenderer from './TypographyNodeRenderer';
@@ -88,8 +90,6 @@ const expanded = shallowRef(false);
 const isOverflowed = shallowRef(false);
 const isTruncated = shallowRef(false);
 const ellipsisContent = shallowRef('');
-const tooltipOpen = shallowRef(false);
-const tooltipPosition = shallowRef<CSSProperties>({});
 let resizeObserver: ResizeObserver | undefined;
 let animationFrame: number | undefined;
 let lastMeasuredContent = '';
@@ -301,28 +301,20 @@ function onExpandKeydown(event: KeyboardEvent): void {
   if (event.key === 'Enter') toggleExpanded(event);
 }
 
+const tooltipEnabled = computed(() => {
+  const options = ellipsisOptions.value;
+  return Boolean(
+    props.ellipsis &&
+    !expanded.value &&
+    (canUseCssEllipsis.value ? isOverflowed.value : isTruncated.value) &&
+    !options.expandable &&
+    options.expandText === undefined &&
+    options.showTooltip,
+  );
+});
+
 function onContentMouseenter(): void {
   if (canUseCssEllipsis.value) isOverflowed.value = shouldTruncate();
-  const overflowed = canUseCssEllipsis.value ? isOverflowed.value : isTruncated.value;
-  const noExpand =
-    !ellipsisOptions.value.expandable && ellipsisOptions.value.expandText === undefined;
-  if (!expanded.value && overflowed && noExpand && ellipsisOptions.value.showTooltip) {
-    const rect = root.value?.getBoundingClientRect();
-    if (rect) {
-      tooltipPosition.value = {
-        position: 'fixed',
-        left: `${rect.left + rect.width / 2}px`,
-        top: `${Math.max(8, rect.top - 8)}px`,
-        transform: 'translate(-50%, -100%)',
-        zIndex: 1060,
-      };
-    }
-    tooltipOpen.value = true;
-  }
-}
-
-function onContentMouseleave(): void {
-  tooltipOpen.value = false;
 }
 
 onMounted(() => {
@@ -333,6 +325,15 @@ onMounted(() => {
     resizeObserver = new ResizeObserver(scheduleEllipsisUpdate);
     resizeObserver.observe(root.value);
     if (root.value.parentElement) resizeObserver.observe(root.value.parentElement);
+  }
+});
+
+// Wrapping or unwrapping the text can replace its DOM node; observe the current root.
+watch(root, (element) => {
+  resizeObserver?.disconnect();
+  if (element && resizeObserver) {
+    resizeObserver.observe(element);
+    if (element.parentElement) resizeObserver.observe(element.parentElement);
   }
 });
 
@@ -355,83 +356,78 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <component :is="component" ref="root" v-bind="rootAttrs" :class="rootClasses" :style="rootStyle">
-    <TypographyDecorations
-      :mark="mark"
-      :code="code"
-      :underline="underline"
-      :strong="strong"
-      :delete="props.delete"
-      :disabled="disabled"
-      :link="link"
+  <TypographyTooltip
+    :enabled="tooltipEnabled"
+    :options="tooltipOptions"
+    :content="contentNodes"
+    :text="contentText"
+  >
+    <component
+      :is="component"
+      ref="root"
+      v-bind="rootAttrs"
+      :class="rootClasses"
+      :style="rootStyle"
     >
-      <span v-if="iconContent" class="semi-typography-icon" x-semi-prop="icon">
-        <TypographyNodeRenderer :content="iconContent" />
-      </span>
-      <span v-if="link" :class="linkClasses">
-        <span v-if="ellipsis" @mouseenter="onContentMouseenter" @mouseleave="onContentMouseleave">
-          <template v-if="expanded || !isTruncated">
-            <TypographyNodeRenderer :content="contentNodes" />{{ ellipsisOptions.suffix }}
-          </template>
-          <template v-else>{{ ellipsisContent }}{{ ellipsisOptions.suffix }}</template>
+      <TypographyDecorations
+        :mark="mark"
+        :code="code"
+        :underline="underline"
+        :strong="strong"
+        :delete="props.delete"
+        :disabled="disabled"
+        :link="link"
+      >
+        <span v-if="iconContent" class="semi-typography-icon" x-semi-prop="icon">
+          <TypographyNodeRenderer :content="iconContent" />
         </span>
-        <TypographyNodeRenderer v-else :content="contentNodes" />
-      </span>
-      <template v-else>
-        <span v-if="ellipsis" @mouseenter="onContentMouseenter" @mouseleave="onContentMouseleave">
-          <template v-if="expanded || !isTruncated">
-            <TypographyNodeRenderer :content="contentNodes" />{{ ellipsisOptions.suffix }}
-          </template>
-          <template v-else>{{ ellipsisContent }}{{ ellipsisOptions.suffix }}</template>
+        <span v-if="link" :class="linkClasses">
+          <span v-if="ellipsis" @mouseenter="onContentMouseenter">
+            <template v-if="expanded || !isTruncated">
+              <TypographyNodeRenderer :content="contentNodes" />{{ ellipsisOptions.suffix }}
+            </template>
+            <template v-else>{{ ellipsisContent }}{{ ellipsisOptions.suffix }}</template>
+          </span>
+          <TypographyNodeRenderer v-else :content="contentNodes" />
         </span>
-        <TypographyNodeRenderer v-else :content="contentNodes" />
-      </template>
-    </TypographyDecorations>
+        <template v-else>
+          <span v-if="ellipsis" @mouseenter="onContentMouseenter">
+            <template v-if="expanded || !isTruncated">
+              <TypographyNodeRenderer :content="contentNodes" />{{ ellipsisOptions.suffix }}
+            </template>
+            <template v-else>{{ ellipsisContent }}{{ ellipsisOptions.suffix }}</template>
+          </span>
+          <TypographyNodeRenderer v-else :content="contentNodes" />
+        </template>
+      </TypographyDecorations>
 
-    <a
-      v-if="hasExpandOperation"
-      ref="expandElement"
-      role="button"
-      tabindex="0"
-      class="semi-typography-ellipsis-expand"
-      :aria-label="expandLabel"
-      @click="toggleExpanded"
-      @keydown="onExpandKeydown"
-      >{{ expandLabel }}</a
-    >
+      <a
+        v-if="hasExpandOperation"
+        ref="expandElement"
+        role="button"
+        tabindex="0"
+        class="semi-typography-ellipsis-expand"
+        :aria-label="expandLabel"
+        @click="toggleExpanded"
+        @keydown="onExpandKeydown"
+        >{{ expandLabel }}</a
+      >
 
-    <TypographyCopyable
-      v-if="copyConfig"
-      ref="copyElement"
-      :config="copyConfig"
-      :content="copyContent"
-      @copy="(...arguments_) => emit('copy', ...arguments_)"
-    >
-      <template v-if="$slots.copyIcon" #icon="slotProps">
-        <slot name="copyIcon" v-bind="slotProps" />
-      </template>
-      <template v-if="$slots.copied" #copied><slot name="copied" /></template>
-    </TypographyCopyable>
-
-    <Teleport v-if="tooltipOpen" to="body">
-      <div class="semi-portal">
-        <div class="semi-portal-inner" :style="tooltipPosition">
-          <slot name="tooltip" :content="contentText">
-            <div
-              :class="[
-                tooltipOptions.type?.toLowerCase() === 'popover'
-                  ? 'semi-popover-wrapper'
-                  : 'semi-tooltip-wrapper semi-tooltip-wrapper-show',
-                tooltipOptions.opts?.className,
-              ]"
-              :style="tooltipOptions.opts?.style"
-              role="tooltip"
-            >
-              <div class="semi-tooltip-content">{{ contentText }}</div>
-            </div>
-          </slot>
-        </div>
-      </div>
-    </Teleport>
-  </component>
+      <TypographyCopyable
+        v-if="copyConfig"
+        ref="copyElement"
+        :config="copyConfig"
+        :content="copyContent"
+        @copy="(...arguments_) => emit('copy', ...arguments_)"
+      >
+        <template v-if="$slots.copyIcon" #icon="slotProps">
+          <slot name="copyIcon" v-bind="slotProps" />
+        </template>
+        <template v-if="$slots.copied" #copied><slot name="copied" /></template>
+      </TypographyCopyable>
+    </component>
+    <template v-if="slots.tooltip" #tooltip="slotProps"
+      ><slot name="tooltip" v-bind="slotProps"
+    /></template>
+  </TypographyTooltip>
 </template>

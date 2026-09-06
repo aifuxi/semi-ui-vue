@@ -1,5 +1,19 @@
 <script setup lang="ts">
+import { shallowRef } from 'vue';
 import { Numeral, Paragraph, Text, Title } from '@aifuxi/semi-ui-vue/typography';
+const query = new URLSearchParams(typeof window === 'undefined' ? '' : window.location.search);
+const tipMode = query.get('typographyTip');
+const wide = shallowRef(false);
+const textMounted = shallowRef(true);
+const tipOptions = tipMode
+  ? {
+      type: tipMode,
+      opts: {
+        getPopupContainer: () => document.getElementById('typography-tip-container')!,
+        ...(query.has('arrow') ? { showArrow: query.get('arrow') === 'true' } : {}),
+      },
+    }
+  : true;
 </script>
 
 <template>
@@ -46,9 +60,15 @@ import { Numeral, Paragraph, Text, Title } from '@aifuxi/semi-ui-vue/typography'
     </section>
 
     <section class="typography-scenario__section" aria-label="截断与提示">
+      <template v-if="tipMode">
+        <div id="typography-tip-container" style="position: relative" />
+        <button @click="wide = !wide">Toggle width</button>
+        <button @click="textMounted = !textMounted">Toggle text</button>
+      </template>
       <Text
-        :ellipsis="{ showTooltip: true }"
-        style="width: 180px"
+        v-if="textMounted"
+        :ellipsis="{ showTooltip: tipOptions }"
+        :style="{ width: wide ? '900px' : '180px' }"
         data-parity-target="typography-css-ellipsis"
         >Typography ellipsis tooltip contains the complete original content.</Text
       >

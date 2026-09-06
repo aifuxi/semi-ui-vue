@@ -138,6 +138,7 @@ describe('Toast', () => {
     document.body.addEventListener('click', parentClick);
     Toast.info({ content: 'Close me', duration: 0, motion: false, onClose });
     const button = document.querySelector<HTMLButtonElement>('.semi-toast-close-button button');
+    expect(button?.getAttribute('aria-label')).toBeNull();
     button?.click();
     await nextTick();
 

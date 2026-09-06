@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, provide } from 'vue';
 
-import { typographyLocaleKey } from '../typography';
+import { typographyLocaleKey } from '../typography/typography-locale';
 
 import { configContextKey } from './config-context';
 import { DEFAULT_CONFIG_LOCALE, defaultResponsiveMap } from './constants';

@@ -58,6 +58,7 @@ describe('Tooltip', () => {
       await flushTooltip();
       const popup = document.body.querySelector<HTMLElement>(`.${prefixCls}-wrapper`)!;
       const content = popup.querySelector('#animated-content')!;
+      expect(popup.querySelector(':scope > .semi-tooltip-content')).not.toBeNull();
       expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
       content.dispatchEvent(new Event('animationstart', { bubbles: true }));
       content.dispatchEvent(new Event('animationend', { bubbles: true }));

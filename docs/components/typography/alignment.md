@@ -74,3 +74,13 @@
 ## Deviation
 
 没有 accepted visual/behavior deviation。React children、ReactNode 和 ref 分别迁移为默认/命名 slot、VNodeChild 与 template ref；`renderTooltip` 迁移为 scoped slot，属于框架原生 API 映射。
+
+## ConfigProvider 文档续验：正式浮层集成
+
+- 固定源码 `typography/base.tsx:311,739`：仅在溢出且无展开操作时用 Tooltip/Popover 包裹整个 Typography；Popover 默认 showArrow=true，opts 可覆盖，保留 ellipsis-popover class。
+- Vue 将浮层职责集中到 TypographyTooltip：透传 opts、原始 VNode 内容和 tooltip scoped slot；测量与装饰仍归 TypographyBase。复用既有 Tooltip/Popover 定位、Portal、事件及卸载逻辑；逐组件样式已有这些依赖。
+- 必须验证默认 Tooltip、Popover showArrow 缺省/false/true、自定义容器、滚动定位、溢出恢复、卸载与 SSR；ConfigProvider Consumer 双语 light/dark 比较完整浮层的 DOM、样式、几何和截图。现有 ready 记录不构成本次改动的通过证据。
+
+实现说明：TypographyTooltip 使用范围受限的 render function，在无需浮层时直接返回原 VNode；SFC slot 会引入 Fragment 并改变原根节点。TypographyBase 在根节点替换后重新绑定 ResizeObserver。新增 Popover 箭头三态、VNode 内容、tooltip slot、显式容器和清理单测，以及双主题 Tooltip/Popover 的真实几何、computed style、完整箭头截图、Document 滚动、宽度恢复与卸载用例。
+
+最终证据：新增 8 项双主题浮层 Chromium 用例及 ConfigProvider Consumer 双语明暗 4 项均通过；共享修改后全仓 Chromium 442 项通过，真实 tarball 和 SSR dist 通过。

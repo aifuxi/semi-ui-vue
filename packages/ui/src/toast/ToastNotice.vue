@@ -143,7 +143,7 @@ onBeforeUnmount(() => foundation.destroy());
           <ToastNodeRenderer :content="props.entry.content" />
         </span>
         <div v-if="props.entry.showClose" class="semi-toast-close-button">
-          <Button aria-label="Close" size="small" theme="borderless" type="tertiary" @click="close">
+          <Button size="small" theme="borderless" type="tertiary" @click="close">
             <template #icon><IconClose x-semi-prop="icon" /></template>
           </Button>
         </div>
@@ -173,7 +173,7 @@ onBeforeUnmount(() => foundation.destroy());
         <ToastNodeRenderer :content="props.entry.content" />
       </span>
       <div v-if="props.entry.showClose" class="semi-toast-close-button">
-        <Button aria-label="Close" size="small" theme="borderless" type="tertiary" @click="close">
+        <Button size="small" theme="borderless" type="tertiary" @click="close">
           <template #icon><IconClose x-semi-prop="icon" /></template>
         </Button>
       </div>

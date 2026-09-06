@@ -105,9 +105,13 @@ async function pixels(reference: Locator, vue: Locator, info: TestInfo, state: s
       await root.evaluate((element) =>
         element.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' }),
       );
-      if (!(await root.evaluate((element) => element.matches('.semi-badge'))))
+      if (
+        !(await root.evaluate((element) =>
+          element.matches('.semi-badge, .semi-tooltip-wrapper, .semi-popover-wrapper'),
+        ))
+      )
         return root.screenshot();
-      // Badge counters extend outside the host box. Capture their complete painted bounds.
+      // Badge counters and popup arrows extend outside the host box; include their painted bounds.
       const clip = await root.evaluate((element) => {
         const rects = [element, ...element.querySelectorAll('*')]
           .map((node) => node.getBoundingClientRect())
@@ -336,7 +340,37 @@ for (const locale of ['zh-cn', 'en-us'])
                     `${label} ${axis}`,
                   ).toBeLessThanOrEqual(0.5);
                 await compare(reference.locator(popup), vue.locator(popup), info, label);
-                await pixels(reference.locator(popup), vue.locator(popup), info, label);
+                // Rounded transparent corners sample the host page. Keep the two host backdrops identical,
+                // without changing the popup, its real mask, or any screenshot pixels.
+                const backdrops = await Promise.all(
+                  [reference, vue].map((page) =>
+                    page.evaluate(() => {
+                      const app =
+                        document.getElementById('root') ?? document.getElementById('__nuxt')!;
+                      const previous = {
+                        opacity: app.style.opacity,
+                        background: document.body.style.backgroundColor,
+                      };
+                      app.style.opacity = '0';
+                      document.body.style.backgroundColor = 'var(--semi-color-bg-0)';
+                      return previous;
+                    }),
+                  ),
+                );
+                try {
+                  await pixels(reference.locator(popup), vue.locator(popup), info, label);
+                } finally {
+                  await Promise.all(
+                    [reference, vue].map((page, index) =>
+                      page.evaluate((previous) => {
+                        const app =
+                          document.getElementById('root') ?? document.getElementById('__nuxt')!;
+                        app.style.opacity = previous!.opacity;
+                        document.body.style.backgroundColor = previous!.background;
+                      }, backdrops[index]),
+                    ),
+                  );
+                }
                 for (const page of [reference, vue]) {
                   await page.locator(popup).locator(close).first().press('Enter');
                   await page.clock.runFor(1000);
@@ -376,7 +410,39 @@ for (const locale of ['zh-cn', 'en-us'])
                     info,
                     `changed-${item}`,
                   );
+                for (const root of [expected, actual]) {
+                  for (const picker of ['.semi-datepicker', '.semi-timepicker']) {
+                    const input = root.locator(`${picker} input`);
+                    await input.hover();
+                    await root.locator(`${picker} .semi-input-clearbtn`).click();
+                    await expect(input).toHaveValue('');
+                  }
+                  // Commit a new time through the public keyboard/blur path in the active timezone.
+                  const timeInput = root.locator('.semi-timepicker input');
+                  await timeInput.fill('14:30:00');
+                  await timeInput.press('Tab');
+                  await expect(timeInput).toHaveValue('14:30:00');
+                  await root.page().mouse.move(1400, 880);
+                }
+                await freezeAnimations([reference, vue], 300);
+                await compare(expected, actual, info, 'cleared-and-keyboard-input');
               } else {
+                // Diagnostic crops scroll each host independently. Restore identical trigger coordinates
+                // before comparing absolute popup placement.
+                const triggerRects = await Promise.all(
+                  [expected, actual].map((root) =>
+                    root.locator('.semi-typography').first().boundingBox(),
+                  ),
+                );
+                await info.attach('tooltip-trigger-position', {
+                  body: JSON.stringify(triggerRects),
+                  contentType: 'application/json',
+                });
+                await expected.evaluate((element, rects) => {
+                  const root = element as HTMLElement;
+                  root.style.left = `${parseFloat(root.style.left) + rects[1]!.x - rects[0]!.x}px`;
+                  root.style.top = `${parseFloat(root.style.top) + rects[1]!.y - rects[0]!.y}px`;
+                }, triggerRects);
                 for (const root of [expected, actual])
                   await root.locator('.semi-typography').first().hover();
                 for (const page of [reference, vue]) await page.clock.runFor(1000);
@@ -384,6 +450,14 @@ for (const locale of ['zh-cn', 'en-us'])
                 await freezeAnimations([reference, vue], 1000);
                 const tooltip = '.semi-tooltip-wrapper';
                 await expect(vue.locator(tooltip)).toBeVisible();
+                const popupRects = await Promise.all(
+                  [reference, vue].map((page) => page.locator(tooltip).boundingBox()),
+                );
+                for (const axis of ['x', 'y', 'width', 'height'] as const)
+                  expect(
+                    Math.abs(popupRects[0]![axis] - popupRects[1]![axis]),
+                    `tooltip ${axis}`,
+                  ).toBeLessThanOrEqual(0.5);
                 await compare(reference.locator(tooltip), vue.locator(tooltip), info, 'tooltip');
                 await pixels(reference.locator(tooltip), vue.locator(tooltip), info, 'tooltip');
               }

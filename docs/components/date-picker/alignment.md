@@ -81,3 +81,7 @@
 ## Deviation
 
 - RTL 单日期场景在计算样式、全部目标几何与独立截图基线一致的前提下，React/Vue 成对 PNG 仍有不可见的抗锯齿通道差异；其中触发器 ImageMagick AE 为 `0.278431`（约 `0.0000398` 像素比）。该差异低于项目 `0.001` 门槛，因此 RTL 触发器与弹层按共享 React 参考截图执行阈值比较，不宣称字节相等；桌面/移动 light/dark 的触发器和弹层仍执行独立字节相等断言。
+
+## ConfigProvider 时区更新回归
+
+固定 `datePicker/datePicker.tsx:417` 与 Foundation `initFromProps` 区分 value 更新和 timeZone 更新：新公开 value 作为 UTC 输入，不传 prevTimeZone；仅时区变化时传当前 state.value 和旧时区，受控/非受控均执行。新增连续 GMT+08→00→-11→+14→+08、同时更新 value/timeZone、随后更新 value 及不发出 change 的公开行为测试。

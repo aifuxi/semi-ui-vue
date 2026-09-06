@@ -114,3 +114,7 @@ Escape 在 `closeOnEsc=true` 时关闭并通知；ArrowDown/ArrowUp 将焦点移
 ## 文档组合场景补充
 
 固定 React Adapter 在 index.tsx:762 使用常量 prefix（semi-tooltip）生成动画类，公开 prefixCls 只控制 wrapper 等样式类。Vue 必须保留这一分离；Dropdown/Popover 自定义 wrapper 前缀时仍使用 semi-tooltip-animation-show/hide，以便 animationend 清理 Portal 和通知 afterClose。增加自定义前缀开关回归与 Button Split 浏览器实测。
+
+## Typography 集成发现的内容容器修正
+
+固定 `tooltip/index.tsx:795` 使用常量 prefix 生成 `.semi-tooltip-content`，不随 `prefixCls` 的 Popover/Dropdown 覆盖而变化。Vue Portal 修正该外层内容 class；Popover/Dropdown 自身的内层内容 class 保留。新增前缀回归并运行全仓 Chromium，不能仅以 Typography 的定向结果覆盖共享影响。

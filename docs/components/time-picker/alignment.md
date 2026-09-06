@@ -101,3 +101,7 @@
 - 全量 Chromium 161 项单次通过；根/`time-picker` ESM 与声明、`time-picker.css`、许可证/SBOM、真实 tarball 安装/导入/类型/样式验证均通过。
 
 上述两项 React → Vue slots 映射和 TimePicker 私有组合边界为已解释 deviation，不损失公开可实现能力；TimePicker 状态为 `ready`。
+
+## ConfigProvider 时区更新回归
+
+固定 `timePicker/TimePicker.tsx:305` 使用 value-first 的互斥分支。合并 Vue value/timeZone watcher：新 value 不传 __prevTimeZone；仅时区变化时从 state.value 重投影，避免受控值被当成旧 zoned value，且同 tick 更新只转换一次。新增受控/非受控连续时区与同时更新 value/timeZone 的回归。

@@ -98,3 +98,7 @@
 - Chromium 定向验收覆盖桌面 `1440×900` 与移动 `390×844`、DPR 1、light/dark、RTL、关闭交互、ARIA、关键 computed style 和 bounding rect。
 - 18 张 Toast 裁剪基线均由 React/Vue 独立截图生成并通过严格阈值，未使用截图 mask；每个场景还会在同一稳定时刻独立抓取 React/Vue buffer，并以 `Buffer.equals` 验证直接字节相同。
 - 根入口、`@aifuxi/semi-ui-vue/toast` 子路径、`@aifuxi/semi-theme-default/toast.css`、声明文件、SSR import 和隔离 tarball 消费均验证通过。
+
+## ConfigProvider 反馈文档续验
+
+固定 `toast/toast.tsx:159` 的关闭 Button 不设置 aria-label，名称由 IconClose 提供。移除 Vue 两种 stack 渲染分支额外注入的 `aria-label="Close"`；保留图标和原生 Button 键盘关闭行为，新增属性回归并运行 Toast 定向 Chromium。
