@@ -11,7 +11,12 @@ import {
   acceptedBatch,
 } from './documentation-evidence.mjs';
 import { batchInputs, preflightBatch } from './documentation-inputs.mjs';
-import { prepareAcceptance, timedRunner, runBrowserMatrices } from './documentation-pipeline.mjs';
+import {
+  prepareAcceptance,
+  assertPreparationCurrent,
+  timedRunner,
+  runBrowserMatrices,
+} from './documentation-pipeline.mjs';
 
 const args = process.argv.slice(2);
 const all = await loadBatches();
@@ -76,18 +81,21 @@ const run = timedRunner(stages);
 const startedAt = new Date().toISOString();
 const started = performance.now();
 let status = 'failed';
+let browserReport;
 try {
   const before = new Map(
     await Promise.all(selected.map(async (batch) => [batch.id, await fingerprint(batch)])),
   );
   const buildBefore = await fingerprint(buildInputs);
-  const checks = prepareAcceptance(run);
+  const preparation = {};
+  const checks = await prepareAcceptance(run, { stages, preparation });
   if ((await fingerprint(buildInputs)) !== buildBefore)
     throw new Error('构建输入发生变化，停止验收。请稳定源码后重跑。');
   await rm(reportFile, { force: true });
   runBrowserMatrices(selected, reportFile, resolve(root, 'apps/docs/test-results/batches'), run);
-  const report = JSON.parse(await readFile(reportFile, 'utf8'));
-  const completed = splitBatchReport(report, selected).map(({ batch, report }) => ({
+  await assertPreparationCurrent(preparation);
+  browserReport = JSON.parse(await readFile(reportFile, 'utf8'));
+  const completed = splitBatchReport(browserReport, selected).map(({ batch, report }) => ({
     batch,
     compressed: gzipSync(JSON.stringify(report)),
   }));
@@ -126,11 +134,23 @@ try {
   status = 'passed';
 } finally {
   let slowestTests = [];
+  let browserSummary;
   // A failed Playwright run can still provide useful diagnostic timings.
   try {
-    const report = JSON.parse(await readFile(reportFile, 'utf8'));
+    // Successful reports contain hundreds of MB of image/style attachments. Reuse
+    // the parsed report instead of loading and parsing the same bytes a second time.
+    const report = browserReport ?? JSON.parse(await readFile(reportFile, 'utf8'));
     if (report.stats?.startTime >= startedAt) {
-      slowestTests = reportCases(report)
+      const cases = reportCases(report);
+      browserSummary = {
+        workers: report.config?.workers,
+        cases: cases.length,
+        caseFingerprint: sha256(
+          JSON.stringify(cases.map(({ file, title }) => [file, title]).sort()),
+        ),
+        stats: report.stats,
+      };
+      slowestTests = cases
         .flatMap((test) =>
           test.results.map((result) => ({
             title: test.title,
@@ -157,6 +177,7 @@ try {
         durationMs: Math.round(performance.now() - started),
         batches: selected.map((batch) => batch.id),
         stages,
+        browser: browserSummary,
         slowestTests,
       },
       null,

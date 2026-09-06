@@ -18,44 +18,206 @@ export function sourceFiles(inputs, root = workspace) {
   ].sort();
 }
 
-// Keep this resolver conservative: unknown local/dynamic imports expand to all UI sources.
-// Dependencies outside UI remain explicit shared inputs in each batch manifest.
+const foundationDirectory = 'packages/foundation-integration';
+const foundationIndex = `${foundationDirectory}/src/index.ts`;
+const scriptPattern = /\.(vue|[cm]?[jt]sx?)$/;
+
+async function parseScript(file, root) {
+  let source = await readFile(resolve(root, file), 'utf8');
+  const fallback = [];
+  if (file.endsWith('.vue')) {
+    const scripts = [...source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)];
+    if (scripts.some((match) => /\bsrc\s*=/.test(match[1])))
+      fallback.push(`外部 SFC script ${file}`);
+    source = scripts.map((match) => match[2]).join('\n');
+  }
+  const ast = ts.createSourceFile(
+    file,
+    source,
+    ts.ScriptTarget.Latest,
+    true,
+    /\.[jt]sx$/.test(file) ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
+  );
+  if (ast.parseDiagnostics.length) fallback.push(`脚本解析失败 ${file}`);
+  return { ast, fallback };
+}
+
+async function resolveLocal(requested, root) {
+  requested = requested.split('?')[0]; // Vite ?raw and ?worker still consume the source bytes.
+  // TS source commonly imports its eventual .js output. Match the build resolver.
+  const requests = /\.[cm]?js$/.test(requested)
+    ? [requested.replace(/\.[cm]?js$/, '.ts'), requested.replace(/\.[cm]?js$/, '.tsx'), requested]
+    : [requested];
+  for (const request of requests)
+    for (const suffix of [
+      '',
+      '.ts',
+      '.tsx',
+      '.js',
+      '.mjs',
+      '.vue',
+      '.json',
+      '/index.ts',
+      '/index.tsx',
+      '/index.js',
+    ]) {
+      const candidate = request + suffix;
+      if (
+        await stat(resolve(root, candidate)).then(
+          (value) => value.isFile(),
+          () => false,
+        )
+      )
+        return candidate;
+    }
+}
+
+// Only proven forwarding facades can be narrowed. Build aliases, plugins and executable
+// helpers stay shared; adding executable code to an unselected barrel target expands safely.
+async function foundationInputs(root) {
+  const files = sourceFiles([foundationDirectory], root);
+  const shared = new Set();
+  const exports = new Map();
+  const fallback = [];
+  const pure = new Map();
+  for (const file of files) {
+    if (file.endsWith('.d.ts') || file.endsWith('.test.ts')) continue;
+    if (!file.endsWith('.js') || !file.startsWith(`${foundationDirectory}/src/`)) {
+      shared.add(file);
+      continue;
+    }
+    let parsed;
+    try {
+      parsed = await parseScript(file, root);
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+      shared.add(file);
+      fallback.push(`缺失 Foundation 输入 ${file}`);
+      continue;
+    }
+    const forwarding =
+      !parsed.fallback.length &&
+      parsed.ast.statements.every(
+        (node) =>
+          ts.isExportDeclaration(node) &&
+          node.moduleSpecifier &&
+          ts.isStringLiteral(node.moduleSpecifier),
+      );
+    let pinnedForwarding = forwarding;
+    if (forwarding) {
+      for (const node of parsed.ast.statements) {
+        const imported = node.moduleSpecifier.text;
+        if (!imported.startsWith('.')) {
+          pinnedForwarding = false;
+          continue;
+        }
+        const requested = relative(root, resolve(root, dirname(file), imported));
+        const dependency = await resolveLocal(requested, root);
+        if (!requested.startsWith('vendor/semi-design/')) {
+          pinnedForwarding = false;
+          if (imported.includes('vendor/semi-design/'))
+            fallback.push(`Foundation 转发越过固定 vendor 边界 ${file}: ${imported}`);
+        } else if (!dependency || !/\.[cm]?[jt]sx?$/.test(dependency)) {
+          pinnedForwarding = false;
+          fallback.push(`非脚本或缺失的 Foundation 转发 ${file}: ${imported}`);
+        }
+      }
+    }
+    pure.set(file, forwarding ? parsed.ast : null);
+    if (!pinnedForwarding) shared.add(file);
+  }
+  if (!files.includes(foundationIndex)) return { shared: [...shared], exports, fallback };
+  let parsed;
+  try {
+    parsed = await parseScript(foundationIndex, root);
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+    fallback.push(`缺失 Foundation 根导出 ${foundationIndex}`);
+    return { shared: [...shared], exports, fallback };
+  }
+  fallback.push(...parsed.fallback);
+  for (const node of parsed.ast.statements) {
+    if (node.isTypeOnly) continue;
+    if (
+      !ts.isExportDeclaration(node) ||
+      !node.moduleSpecifier ||
+      !ts.isStringLiteral(node.moduleSpecifier)
+    ) {
+      fallback.push(`非转发 Foundation 根导出 ${foundationIndex}`);
+      continue;
+    }
+    const dependency = await resolveLocal(
+      relative(root, resolve(root, dirname(foundationIndex), node.moduleSpecifier.text)),
+      root,
+    );
+    if (!dependency || (dependency.endsWith('.js') && !pure.get(dependency))) {
+      fallback.push(`无法证明无副作用的 Foundation 导出 ${node.moduleSpecifier.text}`);
+      continue;
+    }
+    if (node.exportClause && ts.isNamedExports(node.exportClause)) {
+      for (const exported of node.exportClause.elements)
+        if (!exported.isTypeOnly) exports.set(exported.name.text, dependency);
+    } else if (!node.exportClause) {
+      if (!pure.get(dependency)) {
+        fallback.push(`未解析 Foundation 星号导出 ${dependency}`);
+        continue;
+      }
+      for (const declaration of pure.get(dependency).statements) {
+        if (!declaration.exportClause || !ts.isNamedExports(declaration.exportClause)) {
+          fallback.push(`未解析 Foundation 星号导出 ${dependency}`);
+          continue;
+        }
+        for (const exported of declaration.exportClause.elements)
+          if (!exported.isTypeOnly) exports.set(exported.name.text, dependency);
+      }
+    } else fallback.push(`未解析 Foundation 命名空间导出 ${foundationIndex}`);
+  }
+  return { shared: [...shared], exports, fallback };
+}
+
+// Unknown local/dynamic dependencies expand to UI, Foundation and reference adapters.
+// Pinned vendor contents are covered by the submodule revision + dirty diff in fingerprint().
 export async function uiDependencies(entries, root = workspace) {
   const visited = new Set();
   const reasons = new Set();
-  const files = new Set();
-  async function visit(file) {
-    if (visited.has(file)) return;
-    visited.add(file);
+  const foundation = await foundationInputs(root);
+  const files = new Set(foundation.shared);
+  for (const reason of foundation.fallback) reasons.add(reason);
+  async function visit(file, followLocal = false) {
+    const traverseLocal =
+      followLocal ||
+      file.startsWith(`${foundationDirectory}/`) ||
+      file.startsWith('apps/reference-react/docs-adapters/');
+    const visitKey = `${file}:${traverseLocal}`;
+    if (visited.has(visitKey)) return;
+    visited.add(visitKey);
     files.add(file);
-    let source;
+    if (!scriptPattern.test(file)) return;
+    let parsed;
     try {
-      source = await readFile(resolve(root, file), 'utf8');
+      parsed = await parseScript(file, root);
     } catch (error) {
       if (error.code !== 'ENOENT') throw error;
       reasons.add(`缺失依赖 ${file}`);
       return;
     }
-    if (!/\.(vue|[cm]?[jt]sx?)$/.test(file)) return;
-    if (file.endsWith('.vue')) {
-      const scripts = [...source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)];
-      if (scripts.some((match) => /\bsrc\s*=/.test(match[1])))
-        reasons.add(`外部 SFC script ${file}`);
-      source = scripts.map((match) => match[2]).join('\n');
-    }
-    const ast = ts.createSourceFile(
-      file,
-      source,
-      ts.ScriptTarget.Latest,
-      true,
-      /\.[jt]sx$/.test(file) ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
-    );
-    if (ast.parseDiagnostics.length) reasons.add(`脚本解析失败 ${file}`);
+    const { ast } = parsed;
+    for (const reason of parsed.fallback) reasons.add(reason);
+    const foundationNames = new Set();
     const imports = new Set();
     function inspect(node) {
       if ((ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) && node.moduleSpecifier) {
         if (node.isTypeOnly || node.importClause?.isTypeOnly) return;
-        if (ts.isStringLiteral(node.moduleSpecifier)) imports.add(node.moduleSpecifier.text);
+        if (ts.isStringLiteral(node.moduleSpecifier)) {
+          if (node.moduleSpecifier.text === '@workspace/foundation-integration') {
+            const bindings = node.importClause?.namedBindings ?? node.exportClause;
+            if (bindings && (ts.isNamedImports(bindings) || ts.isNamedExports(bindings))) {
+              for (const binding of bindings.elements)
+                if (!binding.isTypeOnly)
+                  foundationNames.add((binding.propertyName ?? binding.name).text);
+            } else reasons.add(`Foundation 非命名导入 ${file}`);
+          } else imports.add(node.moduleSpecifier.text);
+        }
       }
       if (
         ts.isCallExpression(node) &&
@@ -83,9 +245,24 @@ export async function uiDependencies(entries, root = workspace) {
           imports.add(node.arguments[0].text);
         else reasons.add(`动态依赖 ${file}`);
       }
+      if (
+        ts.isNewExpression(node) &&
+        node.expression.getText(ast) === 'URL' &&
+        node.arguments?.[1]?.getText(ast) === 'import.meta.url'
+      ) {
+        if (ts.isStringLiteral(node.arguments[0])) imports.add(node.arguments[0].text);
+        else reasons.add(`动态 URL 依赖 ${file}`);
+      }
       ts.forEachChild(node, inspect);
     }
     inspect(ast);
+    if (foundationNames.size) {
+      for (const name of foundationNames) {
+        const dependency = foundation.exports.get(name);
+        if (dependency) await visit(dependency);
+        else reasons.add(`未解析 Foundation 导出 ${name}: ${file}`);
+      }
+    }
     for (const imported of imports) {
       let requested;
       if (imported === '@aifuxi/semi-ui-vue') requested = 'packages/ui/src/index';
@@ -93,33 +270,22 @@ export async function uiDependencies(entries, root = workspace) {
         requested = `packages/ui/src/${imported.slice('@aifuxi/semi-ui-vue/'.length)}`;
       else if (imported.startsWith('.'))
         requested = relative(root, resolve(root, dirname(file), imported));
-      else if (imported.startsWith('~') || imported.startsWith('@/')) {
+      else if (
+        imported.startsWith('~') ||
+        imported.startsWith('@/') ||
+        imported.startsWith('@workspace/')
+      ) {
         reasons.add(`未解析别名 ${file}: ${imported}`);
         continue;
       } else continue; // External packages are covered by lockfile and shared package inputs.
-      let dependency;
-      for (const suffix of [
-        '',
-        '.ts',
-        '.tsx',
-        '.js',
-        '.vue',
-        '.json',
-        '/index.ts',
-        '/index.tsx',
-        '/index.js',
-      ]) {
-        const candidate = requested + suffix;
-        if (
-          await stat(resolve(root, candidate)).then(
-            (value) => value.isFile(),
-            () => false,
-          )
-        ) {
-          dependency = candidate;
-          break;
-        }
-      }
+      // The fixed vendor source is fingerprinted as a whole. Following its aliases here
+      // would duplicate the integration/build resolver and lose that stronger boundary.
+      if (
+        requested.startsWith('vendor/semi-design/') ||
+        requested.split('/').includes('node_modules')
+      )
+        continue;
+      const dependency = await resolveLocal(requested, root);
       if (!dependency) {
         reasons.add(`未解析依赖 ${file}: ${imported}`);
         continue;
@@ -127,21 +293,32 @@ export async function uiDependencies(entries, root = workspace) {
       // Generated site registries include every demo. Their generator is a shared input;
       // seed only the current batch plus the shell, rather than following that registry.
       if (
+        traverseLocal ||
         dependency.startsWith('packages/ui/src/') ||
+        dependency.startsWith(`${foundationDirectory}/src/`) ||
+        dependency.startsWith('apps/reference-react/docs-adapters/') ||
         dependency.startsWith('apps/docs/src/demos/')
       )
-        await visit(dependency);
+        await visit(dependency, traverseLocal);
       else files.add(dependency);
     }
   }
+  for (const file of foundation.shared)
+    if (file !== foundationIndex && scriptPattern.test(file)) await visit(file, true);
   for (const entry of entries) await visit(entry);
-  if (reasons.size) for (const file of sourceFiles(['packages/ui/src'], root)) files.add(file);
+  if (reasons.size)
+    for (const file of sourceFiles(
+      ['packages/ui/src', foundationDirectory, 'apps/reference-react/docs-adapters'],
+      root,
+    ))
+      files.add(file);
   return { files: [...files].sort(), fallback: [...reasons].sort() };
 }
 
 export async function batchInputs(batch, root = workspace) {
   const explicit = sourceFiles(batch.inputs, root);
-  if (batch.dependencyMode !== 'imports-v1') return { files: explicit, fallback: [] };
+  if (!['imports-v1', 'imports-v2'].includes(batch.dependencyMode))
+    return { files: explicit, fallback: [] };
   const entries = explicit.filter(
     (file) =>
       /\.(vue|[cm]?[jt]sx?)$/.test(file) &&
@@ -149,6 +326,7 @@ export async function batchInputs(batch, root = workspace) {
         file.startsWith('apps/docs/src/components/') ||
         file.startsWith('apps/docs/src/layouts/') ||
         file.startsWith('apps/docs/src/composables/') ||
+        file.startsWith('apps/reference-react/docs-adapters/') ||
         file === 'apps/docs/src/app.vue'),
   );
   const dependencies = await uiDependencies(entries, root);

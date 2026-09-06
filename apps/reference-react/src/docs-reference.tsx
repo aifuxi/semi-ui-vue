@@ -2,12 +2,7 @@ import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import 'virtual:semi-reference-styles.css';
 import 'virtual:pinned-doc-site.css';
-import buttonSources from 'virtual:pinned-button-examples';
-import iconSources from 'virtual:pinned-icon-examples';
-import configProviderSources from 'virtual:pinned-config-provider-examples';
-import darkModeSources from 'virtual:pinned-dark-mode-examples';
-import localeSources from 'virtual:pinned-locale-examples';
-import navigationSources from 'virtual:pinned-navigation-examples';
+import batchSources from 'virtual:pinned-documentation-examples';
 import Sidebar from 'virtual:pinned-doc-sidebar';
 import { docPages, categories } from '../../docs/src/data/docs';
 
@@ -16,19 +11,15 @@ const locale = query.get('locale') === 'en-us' ? 'en-us' : 'zh-cn';
 const theme = query.get('theme') === 'dark' ? 'dark' : 'light';
 document.documentElement.lang = locale;
 document.body.setAttribute('theme-mode', theme);
-const sources =
-  query.get('component') === 'navigation'
-    ? navigationSources
-    : query.get('component') === 'dark-mode'
-      ? darkModeSources
-      : query.get('component') === 'locale'
-        ? localeSources
-        : query.get('component') === 'config-provider'
-          ? configProviderSources
-          : query.get('component') === 'icon'
-            ? iconSources
-            : buttonSources;
-const Example = React.lazy(sources[locale][Number(query.get('example') ?? 1) - 1]!);
+const component = query.get('component') ?? 'button';
+const loadSources = batchSources[component];
+if (!loadSources) throw new Error(`Unknown documentation reference ${component}`);
+const Example = React.lazy(async () => {
+  const { default: sources } = await loadSources();
+  const loadExample = sources[locale][Number(query.get('example') ?? 1) - 1];
+  if (!loadExample) throw new Error(`Unknown ${component} reference example`);
+  return loadExample();
+});
 const origin = 'http://127.0.0.1:4321';
 const style = document.createElement('style');
 style.textContent = `

@@ -26,7 +26,8 @@
     "check:nuxt:coverage": "node scripts/prepare-coverage.mjs --require-complete",
     "check:nuxt": "pnpm check && pnpm test:nuxt",
     "accept:nuxt:batch": "node scripts/accept-documentation-batch.mjs",
-    "check:nuxt:evidence": "node --test scripts/documentation-evidence.test.mjs scripts/documentation-inputs.test.mjs scripts/documentation-pipeline.test.mjs"
+    "check:nuxt:evidence": "node --test scripts/documentation-*.test.mjs scripts/repl-module-bundles.test.mjs ../reference-react/docs-reference-plugin.test.mjs",
+    "diagnose:nuxt:batch": "node scripts/diagnose-documentation-batch.mjs"
   },
   "dependencies": {
     "@aifuxi/semi-icons-lab-vue": "workspace:*",

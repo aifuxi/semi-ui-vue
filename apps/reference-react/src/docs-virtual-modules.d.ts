@@ -1,12 +1,8 @@
-declare module 'virtual:pinned-button-docs/*.jsx' {
+declare module 'virtual:pinned-documentation-examples' {
   import type { ComponentType } from 'react';
-  const component: ComponentType;
-  export default component;
-}
-declare module 'virtual:pinned-button-examples' {
-  import type { ComponentType } from 'react';
-  const examples: Record<'zh-cn' | 'en-us', Array<() => Promise<{ default: ComponentType }>>>;
-  export default examples;
+  type Examples = Record<'zh-cn' | 'en-us', Array<() => Promise<{ default: ComponentType }>>>;
+  const batches: Record<string, () => Promise<{ default: Examples }>>;
+  export default batches;
 }
 declare module 'virtual:pinned-doc-sidebar' {
   import type { ComponentType } from 'react';
@@ -16,33 +12,4 @@ declare module 'virtual:pinned-doc-sidebar' {
     edges: unknown[];
   }>;
   export default sidebar;
-}
-
-declare module 'virtual:pinned-icon-examples' {
-  import type { ComponentType } from 'react';
-  const examples: Record<'zh-cn' | 'en-us', Array<() => Promise<{ default: ComponentType }>>>;
-  export default examples;
-}
-
-declare module 'virtual:pinned-config-provider-examples' {
-  import type { ComponentType } from 'react';
-  const examples: Record<'zh-cn' | 'en-us', Array<() => Promise<{ default: ComponentType }>>>;
-  export default examples;
-}
-
-declare module 'virtual:pinned-locale-examples' {
-  import type { ComponentType } from 'react';
-  const examples: Record<'zh-cn' | 'en-us', Array<() => Promise<{ default: ComponentType }>>>;
-  export default examples;
-}
-
-declare module 'virtual:pinned-dark-mode-examples' {
-  import type { ComponentType } from 'react';
-  const examples: Record<'zh-cn' | 'en-us', Array<() => Promise<{ default: ComponentType }>>>;
-  export default examples;
-}
-
-declare module 'virtual:pinned-navigation-examples' {
-  const sources: Record<string, Array<() => Promise<{ default: import('react').ComponentType }>>>;
-  export default sources;
 }

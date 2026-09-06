@@ -92,7 +92,6 @@
     "apps/docs/playwright.config.ts",
     "packages/icons/src",
     "packages/theme-default",
-    "packages/foundation-integration",
     "tests/browser/parity-harness.ts",
     "tests/browser/parity-provenance.ts",
     "docs/documentation/batches/navigation.json",
@@ -131,8 +130,9 @@
     "apps/docs/src/data/api/helpers.ts",
     "pnpm-workspace.yaml",
     "tsconfig.base.json",
-    "apps/reference-react/src/docs-virtual-modules.d.ts"
+    "apps/reference-react/src/docs-virtual-modules.d.ts",
+    "apps/reference-react/docs-adapters/navigation.mjs"
   ],
   "rtlExamples": ["TogglePosition", "Indentation", "Horizontal"],
-  "dependencyMode": "imports-v1"
+  "dependencyMode": "imports-v2"
 }

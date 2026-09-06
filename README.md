@@ -39,6 +39,8 @@ pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
 
 文档门户已按 [Nuxt 迁移决策](docs/adr/0015-use-nuxt-for-component-documentation.md)统一为 Nuxt。构建使用 `pnpm --filter @workspace/docs build`，本地预览使用 `pnpm --filter @workspace/docs preview`（Node.js 24.18.0）。迁移状态与剩余范围见 [文档迁移记录](docs/documentation/README.md)；组件的 `ready` 状态不代表新文档已完成 859 个上游 Demo 的逐项复刻。根 `pnpm dev`、文档构建和门禁统一使用 Nuxt。 当前文档示例映射为 **722/859**，有效严格验收为 **43/859（Button、Icon、ConfigProvider、Locale、Dark Mode、Navigation）**；下一文档批次为 **OverflowList（4 项）**。批次入口与证据规则见 [分批验收说明](docs/documentation/README.md#分批验收)。 Navigation 中文 10 个、英文 12 个示例已补齐，52 项双语明暗及适用 RTL 验收全部通过；导航、浮层与 Worker 请求隔离差异已修复，六批共 224 项正式矩阵已刷新证据，见 [当前工作记录](ai-work/20260906-200000-navigation-documentation.md)。
 
+文档验收已完成一次端到端提速：同一六批 224 项冷启动从 17 分 49 秒降至 9 分 03 秒（减少 49.24%），全部一次通过；准备复用命令实测 9.5 秒。默认使用 3 workers、按实际依赖判定失效，并限制 REPL 模块请求，后续有效批次直接跳过。详见 [性能工作记录](ai-work/20260906-211800-documentation-performance.md)。
+
 - Node.js `24.18.0`（支持 `20.19+`、`22.13+` 和 `24.x`）
 - pnpm `11.19.0`
 - Playwright 固定 Chromium 构建

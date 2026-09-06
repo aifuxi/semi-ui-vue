@@ -390,6 +390,15 @@ for (const locale of ['zh-cn', 'en-us'])
                     .filter({ hasText: /^GMT\+00:00$/ })
                     .click();
                   await expect(root.locator('.semi-select')).toContainText('GMT+00:00');
+                  // Option clicks leave different pointer coordinates in the two hosts. The
+                  // subsequent crop scroll can hover only one Select and replace its arrow
+                  // with the clear icon; sample the closed control with focus retained.
+                  await root.page().mouse.move(1400, 880);
+                  await expect(root.locator('.semi-select')).toHaveAttribute(
+                    'aria-expanded',
+                    'false',
+                  );
+                  await expect(root.locator('.semi-select-clear')).toHaveCount(0);
                 }
                 await freezeAnimations([reference, vue], 300);
                 await compare(expected, actual, info, 'timezone-changed');

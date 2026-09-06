@@ -70,7 +70,6 @@
     "apps/docs/playwright.config.ts",
     "packages/icons/src",
     "packages/theme-default",
-    "packages/foundation-integration",
     "tests/browser/parity-harness.ts",
     "tests/browser/parity-provenance.ts",
     "docs/documentation/batches/icon.json",
@@ -109,8 +108,10 @@
     "apps/reference-react/src/semi-reference-theme.scss",
     "apps/docs/src/data/api/helpers.ts",
     "pnpm-workspace.yaml",
-    "tsconfig.base.json"
+    "tsconfig.base.json",
+    "apps/reference-react/docs-adapters/icon.mjs",
+    "apps/reference-react/src/docs-virtual-modules.d.ts"
   ],
   "rtlExamples": ["RotateSpin", "Colors", "Multicolor", "Custom"],
-  "dependencyMode": "imports-v1"
+  "dependencyMode": "imports-v2"
 }

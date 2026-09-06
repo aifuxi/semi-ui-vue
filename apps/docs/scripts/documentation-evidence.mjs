@@ -56,9 +56,8 @@ export function reportCases(report) {
     ];
   });
 }
-export function validateReport(report, batch) {
-  const cases = reportCases(report);
-  const wanted = batch.examples.flatMap(({ name }) =>
+export function expectedCaseTitles(batch) {
+  return batch.examples.flatMap(({ name }) =>
     batch.locales.flatMap((locale) =>
       batch.themes.flatMap((theme) =>
         (batch.rtlExamples?.includes(name) ? ['ltr', 'rtl'] : ['ltr']).map(
@@ -68,6 +67,10 @@ export function validateReport(report, batch) {
       ),
     ),
   );
+}
+export function validateReport(report, batch) {
+  const cases = reportCases(report);
+  const wanted = expectedCaseTitles(batch);
   if (
     report.errors?.length ||
     cases.length !== wanted.length ||

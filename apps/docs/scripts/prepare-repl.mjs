@@ -1,7 +1,7 @@
 import { cp, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { createRequire } from 'node:module';
-import { build } from 'esbuild';
+import { buildReplModules } from './repl-module-bundles.mjs';
 
 const require = createRequire(import.meta.url);
 const app = resolve(import.meta.dirname, '..');
@@ -41,20 +41,12 @@ for (const [directory, name] of packages) {
     imports[`${name}${subpath === '.' ? '' : subpath.slice(1)}`] = `/repl/modules/${key}.js`;
   }
 }
-await build({
+const { graph } = await buildReplModules({
   entryPoints,
   outdir: resolve(output, 'modules'),
-  bundle: true,
-  splitting: true,
-  format: 'esm',
-  platform: 'browser',
-  target: 'es2022',
-  external: ['vue'],
-  define: { 'process.env.NODE_ENV': '"production"' },
-  minify: true,
-  chunkNames: 'chunks/[name]-[hash]',
-  logLevel: 'warning',
+  packageSpecifiers: Object.fromEntries(packages),
 });
+await writeFile(resolve(output, 'module-graph.json'), JSON.stringify(graph, null, 2) + '\n');
 const vueRoot = dirname(require.resolve('vue/package.json'));
 await cp(resolve(vueRoot, 'dist/vue.runtime.esm-browser.js'), resolve(output, 'vue.js'));
 const vueRequire = createRequire(resolve(vueRoot, 'package.json'));
