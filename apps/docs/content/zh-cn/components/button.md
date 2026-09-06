@@ -142,6 +142,8 @@ Button 与 Dropdown 组合时使用 SplitButtonGroup，保留按钮间距和圆�
 | `onClick` 等回调      | `@click` 等 Vue 事件                     |
 | React ref             | Vue template ref；焦点通常直接使用根 DOM |
 
+`htmlType` 默认为 `button`；只有明确提交表单时才设置为 `submit`。
+
 ## Accessibility
 
 ### ARIA

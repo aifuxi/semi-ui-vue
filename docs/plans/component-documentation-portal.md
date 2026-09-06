@@ -1,5 +1,7 @@
 # Semi UI Vue 组件文档门户实施计划
 
+> 历史方案：框架和内容管线已由 [Nuxt 决策](../adr/0015-use-nuxt-for-component-documentation.md) 替代，当前运行方式见 [文档说明](../documentation/README.md)。
+
 ## 目标
 
 为已完成的 Semi UI Vue 公开组件建立面向使用者的双语组件文档门户。首期完整迁移 Semi Design v2.102.0 中仍适用于 Vue 的组件说明和示例，并提供可运行 Vue Demo、公开 API、搜索、主题、移动端、可访问性与通用静态发布产物。

@@ -131,6 +131,19 @@ Use SplitButtonGroup with Button and Dropdown to preserve spacing and corner rad
 ::api-table{slug="button"}
 ::
 
+`htmlType` defaults to `button`; use `submit` only when the button should submit its form.
+
+## React to Vue
+
+| React                         | Vue                                                          |
+| ----------------------------- | ------------------------------------------------------------ |
+| `children`                    | Default slot                                                 |
+| `icon={<Icon />}`             | `#icon` slot                                                 |
+| `className` / `style`         | Native `class` / `style` attrs                               |
+| `contentClassName`            | `contentClass`                                               |
+| `onClick` and other callbacks | Vue events such as `@click`                                  |
+| React ref                     | Vue template ref; focus usually targets the root DOM element |
+
 ## Accessibility
 
 ### ARIA

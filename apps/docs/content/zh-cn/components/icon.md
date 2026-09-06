@@ -15,6 +15,7 @@ upstream: 'basic/icon'
 ### 如何引入
 
 ```typescript
+import { IconHome } from '@aifuxi/semi-icons-vue';
 import '@aifuxi/semi-theme-default/icon.css';
 ```
 

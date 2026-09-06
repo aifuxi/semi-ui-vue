@@ -4,7 +4,6 @@ import pages from './src/data/pages.json';
 export default defineNuxtConfig({
   compatibilityDate: '2026-09-05',
   srcDir: 'src',
-  dir: { pages: 'nuxt-pages' },
   modules: ['@nuxt/content'],
   devtools: { enabled: false },
   telemetry: false,
@@ -73,12 +72,7 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
     tsConfig: {
-      exclude: [
-        '../src/env.d.ts',
-        '../src/content.config.ts',
-        '../astro.config.ts',
-        '../../../vendor/**',
-      ],
+      exclude: ['../../../vendor/**'],
     },
   },
 });

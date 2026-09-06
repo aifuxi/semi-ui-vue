@@ -39,7 +39,7 @@
     "format:check": "prettier --check .",
     "lint": "eslint . --concurrency auto --max-warnings=0",
     "typecheck": "pnpm typecheck:root && pnpm -r --if-present run typecheck",
-    "typecheck:clean": "pnpm clean && pnpm typecheck",
+    "typecheck:clean": "pnpm run clean && pnpm typecheck",
     "typecheck:root": "tsc -p tsconfig.tools.json --noEmit",
     "test": "pnpm test:unit",
     "test:unit": "vitest run",
@@ -62,7 +62,7 @@
     "release:preflight": "pnpm release:verify && node scripts/release-preflight.mjs",
     "release:publish": "node scripts/publish-packages.mjs",
     "release:check": "pnpm audit:prod && pnpm check:full && pnpm release:verify",
-    "check": "pnpm check:vendor && pnpm check:inventory && pnpm check:icons && pnpm check:illustrations && pnpm check:locales && pnpm check:boundaries && pnpm check:vitest-aliases && pnpm check:coverage-exemptions && pnpm --filter @workspace/docs check:content && pnpm format:check && pnpm lint && pnpm typecheck:clean && pnpm test:coverage && pnpm build && pnpm --filter @workspace/docs check:dist && pnpm verify:theme-dist && pnpm verify:ssr-dist && pnpm verify:pack-dist",
+    "check": "pnpm check:vendor && pnpm check:inventory && pnpm check:icons && pnpm check:illustrations && pnpm check:locales && pnpm check:boundaries && pnpm check:vitest-aliases && pnpm check:coverage-exemptions && pnpm format:check && pnpm lint && pnpm typecheck:clean && pnpm test:coverage && pnpm build && pnpm --filter @workspace/docs check:content && pnpm --filter @workspace/docs check:dist && pnpm verify:theme-dist && pnpm verify:ssr-dist && pnpm verify:pack-dist",
     "check:full": "pnpm check && pnpm test:browser && pnpm test:browser:docs"
   },
   "devDependencies": {

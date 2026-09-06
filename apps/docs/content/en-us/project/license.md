@@ -25,3 +25,5 @@ Published packages include LICENSE, THIRD_PARTY_NOTICES and SBOM records. Websit
 ## Local examples
 
 Code editing runs in a browser sandbox. The site does not integrate analytics, advertising, remote login or external search services.
+
+Project license: [repository LICENSE](https://github.com/aifuxi/semi-ui-vue/blob/master/LICENSE).

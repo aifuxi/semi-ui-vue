@@ -75,6 +75,14 @@ test('兼容地址、404、目录定位和历史导航', async ({ page }) => {
   await expect(page).toHaveURL(/\/zh-cn\/start\/introduction\/$/);
   await page.goto('/zh-CN/components/button/');
   await expect(page).toHaveURL(/\/zh-cn\/components\/button\/$/);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    'https://semi.fuxiaochen.com/zh-cn/components/button/',
+  );
+  await expect(page.locator('link[hreflang="en-US"]')).toHaveAttribute(
+    'href',
+    'https://semi.fuxiaochen.com/en-us/components/button/',
+  );
   const toc = page.getByRole('navigation', { name: '本页目录' });
   await toc.getByRole('link', { name: '设计变量', exact: true }).click();
   await expect(toc.getByRole('link', { name: '设计变量', exact: true })).toHaveAttribute(

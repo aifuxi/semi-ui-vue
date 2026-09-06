@@ -19,7 +19,6 @@ for (const name of [
   '@douyinfe/semi-site-doc-style',
   'typeface-inconsolata',
 ]) {
-  if (name === 'astro' || name.startsWith('@astrojs/')) continue;
   let packageFile;
   try {
     packageFile = require.resolve(`${name}/package.json`);

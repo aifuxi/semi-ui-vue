@@ -1,6 +1,6 @@
 # Nuxt 文档迁移记录
 
-状态：实施中，尚未达到全量迁移与视觉对齐的完成标准。
+状态：框架已统一为 Nuxt；内容覆盖与视觉对齐仍在实施中。
 
 ## 已实现
 
@@ -17,14 +17,16 @@
 使用 Node.js 24.18.0、仓库锁定的 pnpm 与 Playwright Chromium。先按仓库流程构建公开包，再运行：
 
 ```bash
-pnpm --filter @workspace/docs build:nuxt
-pnpm --filter @workspace/docs preview:nuxt
-pnpm --filter @workspace/docs typecheck:nuxt
-pnpm --filter @workspace/docs check:nuxt:content
+pnpm --filter @workspace/docs build
+pnpm --filter @workspace/docs preview
+pnpm --filter @workspace/docs typecheck
+pnpm --filter @workspace/docs check:content
 pnpm --filter @workspace/docs test:nuxt
 ```
 
-预览为 `http://127.0.0.1:4321/`，静态输出为 `apps/docs/.output/public`。`dev:nuxt` 启动开发服务。默认 `dev`、`build` 与旧内容门禁暂时保留；Nuxt 页面放在 `src/nuxt-pages`，避免被 Astro 扫描。`check:nuxt:coverage` 会在全量验收缺失时失败，不可用结构检查结果代替它。
+清理构建产物使用 `pnpm --filter @workspace/docs run clean`（显式 `run` 避免与 pnpm 内建命令冲突）。
+
+预览为 `http://127.0.0.1:4321/`，静态输出为 `apps/docs/.output/public`。默认 `dev`、`build`、`preview`、`typecheck`、`check` 与浏览器测试均使用 Nuxt；页面位于 `src/pages`，正式内容位于 `content`。原 `:nuxt` 命令保留为同一实现的别名。开发、构建和类型检查会先构建公开包并准备站点资源；`check:content` 刷新内容注册表，并检查构建生成的本地 REPL import map。`check:nuxt:coverage` 会在全量验收缺失时失败，不可用结构检查结果代替它。
 
 部署端需要为 `/repl/*` 设置 `Access-Control-Allow-Origin: *`，使不透明源 iframe 可以读取公开演示模块；产物包含 `_headers`。这仅开放公共静态演示资源，不携带凭据。区分大小写的构建环境会输出独立兼容 HTML；不区分大小写的文件系统通过 `_redirects` 保留兼容规则，部署主机需支持这些规则或配置等效 301。预览脚本执行同一重定向规则。
 
@@ -32,7 +34,7 @@ pnpm --filter @workspace/docs test:nuxt
 
 [coverage.json](./coverage.json) 记录 102 组固定上游文档及每个中文 live Demo 的章节和源码行号。当前 859 个中文上游 Demo 中，696 个已建立双语内容与示例映射，有效严格验收为 17 个（Button，84 条双语/明暗/适用 RTL 用例全部通过）。此前补齐 Form（39）、Table（37）、Upload（42）、TreeSelect（19）、Tree（27），共新增 164 个上游 Demo 的双语映射。中英文上游章节数量与顺序不同的条目已在各组件 mapping 中注明；映射数量不代表逐项视觉验收完成。总数 859 来自固定源码的 live Demo 解析，修正了旧统计遗漏的 4 个示例。
 
-尚需完成：其余组件的完整章节与示例；所有 API 的统一元数据审阅；特殊内容与适用指南；中英文迁移段落校订；固定 React/Nuxt 同进程视觉、计算样式与几何对照；Nuxt/REPL 内部打包传递依赖的完整许可审计；全仓库完整门禁。Astro、Starlight、MDX 和旧用户文档只有在这些验收完成后才清理并切换默认入口。
+尚需完成：其余组件的完整章节与示例；所有 API 的统一元数据审阅；特殊内容与适用指南；中英文迁移段落校订；固定 React/Nuxt 同进程视觉、计算样式与几何对照；Nuxt/REPL 内部打包传递依赖的完整许可审计；全仓库完整门禁。框架替换与上述验收分开记录；不再保留旧框架或第二套用户文档。
 
 当前 CSS 已使用固定上游站点源，但还未形成像素级验收结论。独立品牌、Vue 语法、移除外部平台功能是明确适配；Inter Bold 暂用固定源码内的 SemiBold 字体文件，需作为视觉差异继续处理。
 

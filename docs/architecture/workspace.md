@@ -9,7 +9,7 @@
 ```text
 apps/
   reference-react/       承载固定 v2.102.0 React 参考场景的工作台
-  docs/                  公开双语文档门户，按 ADR 0015 迁移至 Nuxt + Nuxt Content
+  docs/                  公开双语文档门户，使用 Nuxt + Nuxt Content（ADR 0015）
   parity-vue/            Vue 固定场景与对照工作台
 packages/
   ui/                    Vue 主组件包（@aifuxi/semi-ui-vue）
@@ -29,7 +29,7 @@ vendor/semi-design/      唯一、只读的 v2.102.0 参考源码
 
 - `apps/reference-react` 是唯一允许为参考运行读取本地固定上游的应用，后续负责提供真实 React 参考场景。
 - `apps/docs` 只消费公开 Vue 包，承载正式双语文档、Demo 与 API 元数据。
-- 文档构建适配器集中读取固定上游的站点 SCSS、字体、导航图标与设计变量；运行时只读取生成后的 CSS、JSON 和公开 Vue 包。REPL 编译器、Worker、运行模块与类型文件从本站静态资源加载。迁移验收前 Astro 默认入口与 Nuxt 预览入口分离，见 `docs/documentation/README.md`。
+- 文档构建适配器集中读取固定上游的站点 SCSS、字体、导航图标与设计变量；运行时只读取生成后的 CSS、JSON 和公开 Vue 包。REPL 编译器、Worker、运行模块与类型文件从本站静态资源加载。开发、构建、预览与验收统一使用 Nuxt，见 `docs/documentation/README.md`。
 - `apps/parity-vue` 消费 Vue 侧包并承载固定 URL、可复现场景和浏览器对照证据。
 - `packages/ui` 只通过 `packages/foundation-integration` 适配 Foundation 逻辑；不能在组件目录中散落导入 Foundation 源码。稳定图标与插画分别通过 `@aifuxi/semi-icons-vue`、`@aifuxi/semi-illustrations-vue` 公共身份依赖，并在 UI 构建中保持外部化；干净源码类型检查通过 tsconfig 映射读取对应源码入口，不依赖预先存在的 `dist`。
 - `packages/theme-default` 直接从只读上游 SCSS 编译样式；`packages/icons*` 与 `packages/illustrations` 各自通过生成脚本从固定上游 TSX AST 生成 Vue 资产，并由漂移检查锁定公开面。

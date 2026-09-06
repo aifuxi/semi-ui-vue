@@ -173,7 +173,7 @@ _Avoid_: 只有组件 API、营销内容、用 README 代替站点指南
 _Avoid_: 复制品牌资产、只比较整页截图、用本站基线代替上游对照
 
 **文档站回归证据（Documentation Portal Regression Evidence）**:
-以 Semi UI Vue 独立品牌和实际 Starlight 页面为对象，保护双语、主题、桌面/移动、键盘、可访问性和整页视觉稳定性的本站证据。
+以 Semi UI Vue 独立品牌和实际 Nuxt 页面为对象，保护双语、主题、桌面/移动、键盘、可访问性和整页视觉稳定性的本站证据。
 _Avoid_: 上游 React/Vue 组件对照、只测一个桌面中文页面
 
 **公开文档内容（Published Documentation Content）**:
@@ -201,8 +201,8 @@ _Avoid_: 只在源码仓库保留 License、把非隶属声明当成许可证、
 _Avoid_: 每次文案修改都跑全部组件、只构建当前页面、凭文件名猜测影响范围
 
 **混合文档壳（Hybrid Documentation Shell）**:
-由 Starlight 提供内容、路由、双语和搜索基础，由 Semi UI Vue override 提供接近参考官网的可见导航与页面壳体验的门户结构。
-_Avoid_: Starlight 默认主题换色、完全脱离 Starlight 的自研文档系统、直接迁移 Gatsby React 壳
+由 Nuxt 与 Nuxt Content 提供内容、路由与预渲染，本站 Vue 组件提供双语、静态搜索和接近固定参考官网的导航与页面壳。
+_Avoid_: 第二套文档框架、自建 Markdown 解析管线、直接迁移 Gatsby React 壳
 
 **无跟踪静态门户（Tracking-free Static Portal）**:
 不依赖分析、监控、Cookie、用户标识或外部运行时服务即可完整浏览、搜索和运行本地示例的组件文档门户。

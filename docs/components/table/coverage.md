@@ -1,7 +1,7 @@
 # Table 文档覆盖清单
 
 - 状态：`ready`
-- 正式页面：`apps/docs/src/content/docs/{zh-CN,en-US}/components/table.mdx`
+- 正式页面：`apps/docs/content/{zh-cn,en-us}/components/table.md`
 - Vue Demo：`apps/docs/src/demos/table/Showcase.vue`
 - API 元数据：`apps/docs/src/data/api/table.ts`
 - 固定上游：`vendor/semi-design/content/show/table/index{,-en-US}.md`

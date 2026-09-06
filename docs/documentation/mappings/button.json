@@ -88,14 +88,15 @@
     }
   ],
   "review": {
-    "fingerprint": "947223c922d603b0dc9ffcb63ddba02c6e6feeae745db8980c0de5f76076db50",
+    "fingerprint": "cba37b71d0f6ba638af445f732f6745f641ea7bf80fa8188b67d43781aa7450c",
     "chapters": true,
     "api": true,
     "migration": true,
     "notes": [
       "双语章节按固定源码语义对应，React 语法迁移为 Vue slots/emits。",
       "上游相关物料平台不接入；文案规范保留可用于独立品牌的原则和文字例子。",
-      "原生 attrs、ButtonGroup 显式覆盖和 loading 指针/键盘差异已核对源码。"
+      "原生 attrs、ButtonGroup 显式覆盖和 loading 指针/键盘差异已核对源码。",
+      "框架清理时核对双语增量：补回原英文 React→Vue 表和 htmlType 使用提示；htmlType 默认值与固定上游 button 文档、Vue Button.vue 一致，其余章节/API 源文件未变。"
     ]
   }
 }

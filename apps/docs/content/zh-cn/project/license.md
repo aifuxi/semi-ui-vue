@@ -25,3 +25,5 @@ Semi UI Vue 使用 MIT License。基于 DouyinFE/Semi Design v2.102.0 的代码�
 ## 本地示例
 
 代码编辑在浏览器沙箱运行。本站不接入分析、广告、远程登录或外部搜索服务。
+
+项目 License：[仓库 LICENSE](https://github.com/aifuxi/semi-ui-vue/blob/master/LICENSE)。

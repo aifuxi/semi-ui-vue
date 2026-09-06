@@ -10,7 +10,6 @@ export default tseslint.config(
       'vendor/**',
       '.agents/**',
       '.codex/**',
-      '**/.astro/**',
       '**/.nuxt/**',
       '**/.output/**',
       '**/.data/**',

@@ -22,4 +22,4 @@ supersedes: 0014-use-astro-starlight-for-component-documentation
 
 保留 Astro 无法满足用户明确的框架要求；常驻 Nuxt SSR 会改变静态部署方式；自建 Markdown 管线增加维护成本，因此均不采用。新依赖精确锁定并补充许可记录。
 
-不修改公共组件 API、Foundation 集成方向或公开包发布契约。迁移保留 Git 历史，回退时整体恢复文档应用、工程配置与 lockfile。全量门禁通过后才切换默认入口。
+不修改公共组件 API、Foundation 集成方向或公开包发布契约。迁移保留 Git 历史，回退时整体恢复文档应用、工程配置与 lockfile。默认入口统一使用 Nuxt，删除旧框架依赖与内容树；剩余内容和视觉验收独立推进，不作为保留旧框架的前提。

@@ -2,7 +2,6 @@ vendor
 .agents
 .codex
 node_modules
-.astro
 .nuxt
 .output
 .data

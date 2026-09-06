@@ -1,81 +1,70 @@
 import { access, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-const root = resolve(import.meta.dirname, '../../..');
-const docsRoot = resolve(root, 'apps/docs');
-const pilots = ['button', 'select', 'modal', 'table', 'icon', 'json-viewer'];
-const locales = ['zh-CN', 'en-US'];
+const app = resolve(import.meta.dirname, '..');
+const pages = JSON.parse(await readFile(resolve(app, 'src/data/pages.json'), 'utf8'));
+const demos = JSON.parse(await readFile(resolve(app, 'src/data/demos.json'), 'utf8'));
+const paths = new Set(pages.map((page) => page.path));
 const errors = [];
-
-async function exists(path) {
-  try {
-    await access(path);
-    return true;
-  } catch {
-    return false;
+const exists = (file) =>
+  access(file).then(
+    () => true,
+    () => false,
+  );
+for (const page of pages) {
+  const file = resolve(app, 'content', page.path.slice(1).replace(/\/$/, '') + '.md');
+  const source = await readFile(
+    (await exists(file)) ? file : file.replace(/\.md$/, '/index.md'),
+    'utf8',
+  );
+  if (!page.title || !page.description || !page.category || !Number.isFinite(page.order))
+    errors.push(`Invalid metadata: ${page.path}`);
+  if (
+    !paths.has(
+      page.path.replace(/^\/(?:zh-cn|en-us)/, page.locale === 'zh-CN' ? '/en-us' : '/zh-cn'),
+    )
+  )
+    errors.push(`Missing translation: ${page.path}`);
+  if ([...source.matchAll(/```[^\n]*\n([\s\S]*?)```/g)].some((match) => !match[1].trim()))
+    errors.push(`Empty code block: ${page.path}`);
+  if (!/^## .+/m.test(source) && !source.includes('::component-overview'))
+    errors.push(`Missing sections: ${page.path}`);
+  for (const match of source.matchAll(/::demo-block\{[^}]*demo="([^"]+)"/g)) {
+    if (!demos.some((demo) => demo.id === match[1] && demo.pages.includes(page.path)))
+      errors.push(`Unregistered demo: ${page.path}: ${match[1]}`);
+  }
+  for (const match of source.replace(/```[\s\S]*?```/g, '').matchAll(/\]\(([^\s)]+)\)/g)) {
+    const target = new URL(match[1], `https://docs.local${page.path}`);
+    if (target.origin !== 'https://docs.local' || target.pathname === page.path) continue;
+    if (
+      !paths.has(target.pathname) &&
+      !(await exists(resolve(app, 'public', target.pathname.slice(1))))
+    )
+      errors.push(`Broken link: ${page.path}: ${match[1]}`);
   }
 }
-
-const astroConfig = await readFile(resolve(docsRoot, 'astro.config.ts'), 'utf8');
-if (/\bcustomCss\s*:|\bcomponents\s*:/.test(astroConfig)) {
-  errors.push('Starlight 配置不得注册 customCss 或组件 override');
-}
-if (await exists(resolve(docsRoot, 'src/theme'))) {
-  errors.push('默认 Starlight 文档站不得保留 src/theme');
-}
-
-for (const slug of pilots) {
-  const required = [
-    resolve(docsRoot, `src/demos/${slug}/Showcase.vue`),
-    resolve(docsRoot, `src/data/api/${slug}.ts`),
-    resolve(root, `docs/components/${slug}/coverage.md`),
-    ...locales.map((locale) =>
-      resolve(docsRoot, `src/content/docs/${locale}/components/${slug}.mdx`),
-    ),
-  ];
-
-  for (const path of required) {
-    if (!(await exists(path))) errors.push(`缺少 ${path.slice(root.length + 1)}`);
-  }
-
-  for (const locale of locales) {
-    const pagePath = resolve(docsRoot, `src/content/docs/${locale}/components/${slug}.mdx`);
-    if (!(await exists(pagePath))) continue;
-    const page = await readFile(pagePath, 'utf8');
-    for (const marker of ['DemoBlock', 'ApiTable', 'React']) {
-      if (!page.includes(marker)) errors.push(`${slug}/${locale} 缺少 ${marker}`);
-    }
-    if (/待补充|即将支持|TODO|TBD/i.test(page)) {
-      errors.push(`${slug}/${locale} 包含未完成占位内容`);
-    }
-  }
-
-  for (const legacy of ['index.md', 'index.en-US.md', 'react-to-vue.md']) {
-    const legacyPath = resolve(root, `docs/components/${slug}/${legacy}`);
-    if (await exists(legacyPath))
-      errors.push(`仍存在重复用户文档 ${legacyPath.slice(root.length + 1)}`);
+const importMap = JSON.parse(
+  await readFile(resolve(app, 'public/repl/import-map.json'), 'utf8'),
+).imports;
+for (const demo of demos) {
+  for (const dependency of demo.dependencies)
+    if (!(dependency in importMap))
+      errors.push(`Sandbox dependency missing: ${demo.id}: ${dependency}`);
+  for (const file of Object.values(demo.files)) {
+    const source = await readFile(resolve(app, 'src/demos', file), 'utf8');
+    if (/vendor\/semi-design|@douyinfe\//.test(source))
+      errors.push(`Runtime crosses public boundary: ${file}`);
+    if (
+      file.endsWith('.vue') &&
+      (!source.includes('<script setup lang="ts">') || !source.includes('<template>'))
+    )
+      errors.push(`Incomplete Vue SFC: ${file}`);
   }
 }
-
-const runtimeFiles = [
-  resolve(docsRoot, 'src/components/DemoBlock.astro'),
-  resolve(docsRoot, 'src/components/ApiTable.astro'),
-  ...pilots.map((slug) => resolve(docsRoot, `src/demos/${slug}/Showcase.vue`)),
-];
-
-for (const path of runtimeFiles) {
-  const source = await readFile(path, 'utf8');
-  if (source.includes('vendor/semi-design') || source.includes('@douyinfe/')) {
-    errors.push(`公开文档运行时越过边界 ${path.slice(root.length + 1)}`);
-  }
-  if (path.endsWith('.vue') && /<style(?:\s|>)/i.test(source)) {
-    errors.push(`Demo 不得维护文档站自定义样式 ${path.slice(root.length + 1)}`);
-  }
-}
-
-if (errors.length > 0) {
+if (errors.length) {
   console.error(errors.join('\n'));
   process.exitCode = 1;
-} else {
-  console.log(`文档内容门禁通过：${pilots.length} 个组件、${locales.length} 种语言。`);
-}
+} else
+  console.log(
+    `Nuxt 内容结构检查通过：${pages.length} 页，${demos.length} 个已注册 Demo。此检查不替代上游覆盖与视觉验收。`,
+  );
