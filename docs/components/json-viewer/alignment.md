@@ -87,3 +87,9 @@
 ### `renderTooltip` 为基线兼容 no-op
 
 固定 React Adapter 把 `renderTooltip` 放入 `notifyHover`，但固定 Foundation 的 `init()` 只订阅 `customRender` 和 `contentChanged`，没有订阅 core 的 `hoverNode`，因此该回调在 v2.102.0 实际不会触发。Vue 保留同名公开类型且不额外接通，避免超出固定基线；用户影响与上游一致。如未来基线升级接通该事件，必须重新建立行为与 Portal/清理门禁。
+
+## 文档回归发现的 Worker 请求隔离修复
+
+Navigation 文档回归的全仓门禁发现 JsonViewer 首轮出现 `ErrorWidget._problems` 为 undefined、重试通过。固定 `src/worker/jsonWorkerManager.ts` 及集成边界原先以 `Date.now() + Math.random()` 生成 messageId；同毫秒内浮点数碰撞会覆盖 callback，使 init 的空响应送到 validate。定时与随机值固定的协议单测已复现该错误。
+
+集成边界改用每个 Worker 实例递增的 messageId；消息格式、Worker 核心及公开行为不变，React/Vue 参考共同使用该既有构建边界。此处是为确定性和请求隔离做的适配，不以增加 retries 掩盖失败。验收包含 init/validate 响应隔离单测、JsonViewer 公开行为/SSR、重复 Chromium 矩阵与全仓回归。

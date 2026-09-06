@@ -1,0 +1,76 @@
+{
+  "upstream": "navigation/navigation",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "navigation/zh-CN/Basic",
+      "enUS": "navigation/en-US/Basic",
+      "notes": "英文上游索引 1；英文独有 Plain(2)、HeaderFooter(3) 在 Basic 验收内额外覆盖。"
+    },
+    {
+      "index": 2,
+      "zhCN": "navigation/zh-CN/Scrollable",
+      "enUS": "navigation/en-US/Scrollable",
+      "notes": "英文上游索引 4；英文独有 Plain(2)、HeaderFooter(3) 在 Basic 验收内额外覆盖。"
+    },
+    {
+      "index": 3,
+      "zhCN": "navigation/zh-CN/Template",
+      "enUS": "navigation/en-US/Template",
+      "notes": "英文上游索引 5；英文独有 Plain(2)、HeaderFooter(3) 在 Basic 验收内额外覆盖。"
+    },
+    {
+      "index": 4,
+      "zhCN": "navigation/zh-CN/Vertical",
+      "enUS": "navigation/en-US/Vertical",
+      "notes": "英文上游索引 6；英文独有 Plain(2)、HeaderFooter(3) 在 Basic 验收内额外覆盖。"
+    },
+    {
+      "index": 5,
+      "zhCN": "navigation/zh-CN/Horizontal",
+      "enUS": "navigation/en-US/Horizontal",
+      "notes": "英文上游索引 7；英文独有 Plain(2)、HeaderFooter(3) 在 Basic 验收内额外覆盖。"
+    },
+    {
+      "index": 6,
+      "zhCN": "navigation/zh-CN/Combined",
+      "enUS": "navigation/en-US/Combined",
+      "notes": "英文上游索引 8；英文独有 Plain(2)、HeaderFooter(3) 在 Basic 验收内额外覆盖。"
+    },
+    {
+      "index": 7,
+      "zhCN": "navigation/zh-CN/TogglePosition",
+      "enUS": "navigation/en-US/TogglePosition",
+      "notes": "英文上游索引 9；英文独有 Plain(2)、HeaderFooter(3) 在 Basic 验收内额外覆盖。"
+    },
+    {
+      "index": 8,
+      "zhCN": "navigation/zh-CN/Indentation",
+      "enUS": "navigation/en-US/Indentation",
+      "notes": "英文上游索引 10；英文独有 Plain(2)、HeaderFooter(3) 在 Basic 验收内额外覆盖。"
+    },
+    {
+      "index": 9,
+      "zhCN": "navigation/zh-CN/Uncontrolled",
+      "enUS": "navigation/en-US/Uncontrolled",
+      "notes": "英文上游索引 11；英文独有 Plain(2)、HeaderFooter(3) 在 Basic 验收内额外覆盖。"
+    },
+    {
+      "index": 10,
+      "zhCN": "navigation/zh-CN/Controlled",
+      "enUS": "navigation/en-US/Controlled",
+      "notes": "英文上游索引 12；英文独有 Plain(2)、HeaderFooter(3) 在 Basic 验收内额外覆盖。"
+    }
+  ],
+  "review": {
+    "fingerprint": "3ccd487fe602e56f3e668905e21083518d2befce713f1c1dd15b2061405c5048",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "中文10与英文12个live示例分别逐项保留；英文额外两个示例纳入Basic矩阵。",
+      "公开API按固定Adapter与原文五张表审阅；事件与VNode/slots迁移沿用现有对齐矩阵。",
+      "React参考修复重复import、缺少super；两端相同独立品牌替换，不下载远程Logo。"
+    ]
+  }
+}

@@ -41,3 +41,8 @@ declare module 'virtual:pinned-dark-mode-examples' {
   const examples: Record<'zh-cn' | 'en-us', Array<() => Promise<{ default: ComponentType }>>>;
   export default examples;
 }
+
+declare module 'virtual:pinned-navigation-examples' {
+  const sources: Record<string, Array<() => Promise<{ default: import('react').ComponentType }>>>;
+  export default sources;
+}

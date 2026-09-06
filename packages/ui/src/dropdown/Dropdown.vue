@@ -186,6 +186,7 @@ function handleVisibleChange(visible: boolean): void {
   ) {
     restoreFocusAfterClose = true;
     resolveCurrentTrigger()?.focus();
+    clearEnterTimer();
   }
 }
 
@@ -210,6 +211,7 @@ function clearLeaveTimer(): void {
 }
 
 function requestVisible(visible: boolean): void {
+  if (!visible) clearEnterTimer();
   if (runtimeVisible.value === visible) return;
   popVisible.value = visible;
   pendingNotification.value = visible;
@@ -246,6 +248,14 @@ const triggerEventSet = computed<
       delayVisible(true);
     };
     events.onMouseleave = () => delayVisible(false);
+    // The pinned hover trigger is also keyboard accessible unless explicitly disabled.
+    if (!resolveProp('disableFocusListener', false)) {
+      events.onFocus = (event) => {
+        rememberTrigger(event);
+        delayVisible(true);
+      };
+      events.onBlur = () => delayVisible(false);
+    }
   } else if (runtimeTrigger.value === 'focus') {
     events.onFocus = (event) => {
       rememberTrigger(event);
@@ -262,8 +272,38 @@ const triggerEventSet = computed<
   return events;
 });
 
+function handlePopupInserted(): void {
+  // Tooltip Foundation.show rechecks :hover after insertion, even when focus opened it.
+  void nextTick(() => {
+    if (
+      runtimeTrigger.value === 'hover' &&
+      runtimeVisible.value &&
+      !resolveCurrentTrigger()?.matches(':hover')
+    )
+      requestVisible(false);
+  });
+}
+
 function handlePopupEnter(): void {
   if (runtimeTrigger.value === 'hover' || runtimeTrigger.value === 'focus') clearLeaveTimer();
+}
+
+function handlePopupFocus(): void {
+  if (
+    runtimeTrigger.value === 'focus' ||
+    (runtimeTrigger.value === 'hover' && !resolveProp('disableFocusListener', false))
+  ) {
+    clearLeaveTimer();
+  }
+}
+
+function handlePopupBlur(): void {
+  if (
+    runtimeTrigger.value === 'focus' ||
+    (runtimeTrigger.value === 'hover' && !resolveProp('disableFocusListener', false))
+  ) {
+    delayVisible(false);
+  }
 }
 
 function handlePopupLeave(): void {
@@ -273,11 +313,12 @@ function handlePopupLeave(): void {
 function handlePopupKeydown(event: KeyboardEvent): void {
   if (event.key !== 'Escape' || !resolveProp('closeOnEsc', true)) return;
   emit('escKeydown', event);
-  requestVisible(false);
   if (resolveProp('returnFocusOnClose', true)) {
     restoreFocusAfterClose = true;
     resolveCurrentTrigger()?.focus();
   }
+  // Focus returns before hiding, matching the pinned Tooltip Escape order.
+  requestVisible(false);
 }
 
 function handleAfterClose(): void {
@@ -363,8 +404,11 @@ onBeforeUnmount(() => {
       <div
         :class="[runtimePrefixCls, props.contentClassName]"
         :style="props.style"
+        @vue:mounted="handlePopupInserted"
         @mouseenter="handlePopupEnter"
         @mouseleave="handlePopupLeave"
+        @focusin="handlePopupFocus"
+        @focusout="handlePopupBlur"
         @keydown.capture="handlePopupKeydown"
       >
         <div :class="`${runtimePrefixCls}-content`" x-semi-prop="render">

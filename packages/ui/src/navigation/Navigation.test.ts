@@ -2,6 +2,7 @@
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
+import { IconStar } from '@aifuxi/semi-icons-vue';
 
 import { ConfigProvider } from '../config-provider';
 import { LocaleProvider } from '../locale';
@@ -17,6 +18,61 @@ const items = [
 ];
 
 describe('Navigation', () => {
+  it('图标插槽应用导航尺寸，Item 保留显式尺寸而 Sub 强制使用 large', () => {
+    const Host = defineComponent({
+      components: { Nav, NavItem, SubNav, IconStar },
+      template: `<Nav>
+        <NavItem item-key="default" text="Default"><template #icon><IconStar /></template></NavItem>
+        <NavItem item-key="small" text="Small"><template #icon><IconStar size="small" /></template></NavItem>
+        <SubNav item-key="sub" text="Sub"><template #icon><IconStar size="small" /></template></SubNav>
+      </Nav>`,
+    });
+    const wrapper = mount(Host);
+    expect(wrapper.findAll('.semi-icon-star').map((icon) => icon.classes())).toEqual([
+      expect.arrayContaining(['semi-icon-large']),
+      expect.arrayContaining(['semi-icon-small']),
+      expect.arrayContaining(['semi-icon-large']),
+    ]);
+    wrapper.unmount();
+  });
+
+  it.each(['left', 'right'] as const)(
+    '收起态保留 %s 箭头空容器与动效外壳，展开后仍可选择',
+    async (toggleIconPosition) => {
+      const wrapper = mount(Nav, {
+        props: {
+          items,
+          toggleIconPosition,
+          defaultIsCollapsed: true,
+          defaultOpenKeys: ['manage'],
+          footer: { collapseButton: true },
+        },
+      });
+      const title = wrapper.get('.semi-navigation-sub-title');
+      expect(title.find(`.semi-navigation-item-icon-toggle-${toggleIconPosition}`).exists()).toBe(
+        true,
+      );
+      expect(
+        title.find(`.semi-navigation-item-icon-toggle-${toggleIconPosition} .semi-icon`).exists(),
+      ).toBe(false);
+      expect(wrapper.find('.semi-collapsible-wrapper').exists()).toBe(true);
+      expect(wrapper.find('ul.semi-navigation-sub').exists()).toBe(false);
+      await wrapper.get('.semi-navigation-collapse-btn button').trigger('click');
+      expect(wrapper.classes()).not.toContain('semi-navigation-collapsed');
+      expect(wrapper.get('.semi-navigation-sub-title').attributes('aria-expanded')).toBe('true');
+      await wrapper.get('ul.semi-navigation-sub .semi-navigation-item').trigger('click');
+      expect(wrapper.emitted('select')?.[0]?.[0]).toMatchObject({
+        itemKey: 'users',
+        selectedKeys: ['users'],
+      });
+      await wrapper.get('.semi-navigation-collapse-btn button').trigger('click');
+      expect(wrapper.emitted('collapseChange')).toEqual([[false], [true]]);
+      expect(wrapper.find('.semi-collapsible-wrapper').exists()).toBe(true);
+      expect(wrapper.find('ul.semi-navigation-sub').exists()).toBe(false);
+      wrapper.unmount();
+    },
+  );
+
   it('从 items 输出固定 DOM/class/ARIA 且不修改输入', () => {
     const source = structuredClone(items);
     const wrapper = mount(Nav, {

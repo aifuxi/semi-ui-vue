@@ -1,0 +1,126 @@
+{
+  "name": "Pinned Semi Design Navigation documentation examples",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2021 DouyinFE",
+  "baseline": "cdfba6e520fc83ad871b30f51f36d8af3aaa5a21",
+  "source": [
+    "vendor/semi-design/content/navigation/navigation/index.md",
+    "vendor/semi-design/content/navigation/navigation/index-en-US.md"
+  ],
+  "adaptations": [
+    "React live examples translated into Composition API SFCs, stable VNode data and typed v-model; combined layout split into focused SFCs.",
+    "Independent IconApps and branding replace upstream logos symmetrically on React/Vue; language-specific examples preserved.",
+    "LocaleProvider supplies pinned site locale to standalone demos.",
+    "Dimensional style values use explicit CSS units; navigation.css includes its upstream dependency styles."
+  ],
+  "files": [
+    {
+      "path": "apps/docs/src/demos/navigation/zh-CN/Basic.vue",
+      "sha256": "fbd3025dc825f30a9717dec8d186dd7db646b317f6351c93d2487b942711b4fb"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/zh-CN/Combined.vue",
+      "sha256": "105d4f454956f84d6d702c0b85089df57255281c579a47241ad5503ca414d96c"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/zh-CN/CombinedFooterContent.vue",
+      "sha256": "e5bc3e58761dece117c4cde0be073bd0f1c07c166bbb65a0890c4a259a8f99dc"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/zh-CN/CombinedLeftNav.vue",
+      "sha256": "0c6da4a29fe8546b8be042dbf82652e7c6389c606cbd356da7b0167d52cac128"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/zh-CN/CombinedTopHeader.vue",
+      "sha256": "d79b3e1afdc9e2821321a24857f10a05b2e4ab69fbde8adfb1b523b26abf6013"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/zh-CN/Controlled.vue",
+      "sha256": "21424c7d17ed2882d325b51822a339c13349134a3132a6e5212e7f77c103d31e"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/zh-CN/Horizontal.vue",
+      "sha256": "6aad2cd01bc279c62572ea4b4e8fd3ddf083cf4a5019c9a71bf4d7676792ab9e"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/zh-CN/Indentation.vue",
+      "sha256": "e756372eaead6a202fd355eafc73a8860f81547c226017d5438d8718bb9dc848"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/zh-CN/Scrollable.vue",
+      "sha256": "c46e9a585c40f85fa1e093758e0d6bd9a05042d7dbc442c7d17f540781d4451a"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/zh-CN/Template.vue",
+      "sha256": "e2a136e5c2d5599ba3d809967fb9dd4b8c1d19dd29a70a19a3d0fa53b485651f"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/zh-CN/TogglePosition.vue",
+      "sha256": "55bc66c1f3f0234d2c1d9caa9eb10fa4ca14d4c625a50d6da9a8b3fe7fd29266"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/zh-CN/Uncontrolled.vue",
+      "sha256": "1603f887e43a4de7db6ffb37a90d502c676c4e5baa291d9c6ee4ad9902751bd0"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/zh-CN/Vertical.vue",
+      "sha256": "05748611b1e200cf0747765e7d506af36b979eb990ce25503b7a13b9cfe27e2f"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/en-US/Basic.vue",
+      "sha256": "d048fc926d836d68c3e64deb20bd5c9e85afe86df5d10edb0fa663f0ec91417b"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/en-US/Combined.vue",
+      "sha256": "88895ea0aadbc7d08cdbd804cca6357bd3ea07128312368564814f3c68e61be9"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/en-US/CombinedRenderHorizontal.vue",
+      "sha256": "3314f89e64694b97fe5f0d3fe5a2c24a05471e97c5fa528d5b58b24a9cc1116c"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/en-US/CombinedRenderVertical.vue",
+      "sha256": "dc9e6e66dd31407644ff63b00fb1a9a49ce8dc618064ad4de173dc98a45085eb"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/en-US/Controlled.vue",
+      "sha256": "e4cabdff0c887ea03a8c392a6e6a88262a79993ceaf71b0516fa33642e17704f"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/en-US/HeaderFooter.vue",
+      "sha256": "c025bb78888c65b609fcfd82243ae563a4e69d46395fb8e6423639b826b0f2f7"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/en-US/Horizontal.vue",
+      "sha256": "80e16ad005119c9d9f13dd5f517c874f5529b307fe53844457b3a68039c14e3f"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/en-US/Indentation.vue",
+      "sha256": "a0756a6d4bdac8251248a67333255ab9db1db17fc4d5dac7f5d07df42d7f7505"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/en-US/Plain.vue",
+      "sha256": "e0554fe92aaa3a035bb7f1e800ce995f01141ead1e54523aa309ef89d3085221"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/en-US/Scrollable.vue",
+      "sha256": "177eba95f2fcf38cc0c4c67915a23139177575f93076a9bec9841fdd09d667be"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/en-US/Template.vue",
+      "sha256": "5414df1b98f0694b40e104525a0bea8e196c8a49b9b8a13a14010cafc1697ba4"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/en-US/TogglePosition.vue",
+      "sha256": "d1a669a97ac0283c393b6a17feb8f2421b2716f87819fac9b739d818f3798ce8"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/en-US/Uncontrolled.vue",
+      "sha256": "1071924885efa7c1a8398c111a806848617f4c9bbc237dd254c123fd96fed9ae"
+    },
+    {
+      "path": "apps/docs/src/demos/navigation/en-US/Vertical.vue",
+      "sha256": "d601abd8a5b74d703c126e9b9957a3a66f898188448e36fceb19a3f7b7f793d7"
+    }
+  ]
+}

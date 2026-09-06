@@ -9540,18 +9540,365 @@
     "upstream": "show/modal"
   },
   {
-    "id": "navigation/en-US/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "navigation/en-US/Example1.vue" },
-    "dependencies": ["@aifuxi/semi-theme-default/navigation.css", "@aifuxi/semi-ui-vue/navigation"],
+    "id": "navigation/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "navigation/en-US/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
     "pages": ["/en-us/components/navigation/"],
     "upstream": "navigation/navigation"
   },
   {
-    "id": "navigation/zh-CN/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "navigation/zh-CN/Example1.vue" },
-    "dependencies": ["@aifuxi/semi-theme-default/navigation.css", "@aifuxi/semi-ui-vue/navigation"],
+    "id": "navigation/en-US/Combined",
+    "entry": "Combined.vue",
+    "files": {
+      "Combined.vue": "navigation/en-US/Combined.vue",
+      "CombinedRenderHorizontal.vue": "navigation/en-US/CombinedRenderHorizontal.vue",
+      "CombinedRenderVertical.vue": "navigation/en-US/CombinedRenderVertical.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/dropdown",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/en-us/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/en-US/Controlled",
+    "entry": "Controlled.vue",
+    "files": { "Controlled.vue": "navigation/en-US/Controlled.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/en-us/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/en-US/HeaderFooter",
+    "entry": "HeaderFooter.vue",
+    "files": { "HeaderFooter.vue": "navigation/en-US/HeaderFooter.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/en-us/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/en-US/Horizontal",
+    "entry": "Horizontal.vue",
+    "files": { "Horizontal.vue": "navigation/en-US/Horizontal.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/dropdown",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/en-us/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/en-US/Indentation",
+    "entry": "Indentation.vue",
+    "files": { "Indentation.vue": "navigation/en-US/Indentation.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/en-us/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/en-US/Plain",
+    "entry": "Plain.vue",
+    "files": { "Plain.vue": "navigation/en-US/Plain.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/navigation"
+    ],
+    "pages": ["/en-us/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/en-US/Scrollable",
+    "entry": "Scrollable.vue",
+    "files": { "Scrollable.vue": "navigation/en-US/Scrollable.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/en-us/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/en-US/Template",
+    "entry": "Template.vue",
+    "files": { "Template.vue": "navigation/en-US/Template.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/navigation"
+    ],
+    "pages": ["/en-us/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/en-US/TogglePosition",
+    "entry": "TogglePosition.vue",
+    "files": { "TogglePosition.vue": "navigation/en-US/TogglePosition.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/en-us/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/en-US/Uncontrolled",
+    "entry": "Uncontrolled.vue",
+    "files": { "Uncontrolled.vue": "navigation/en-US/Uncontrolled.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/en-us/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/en-US/Vertical",
+    "entry": "Vertical.vue",
+    "files": { "Vertical.vue": "navigation/en-US/Vertical.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/en-us/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "navigation/zh-CN/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-lab-vue",
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/zh-CN/Combined",
+    "entry": "Combined.vue",
+    "files": {
+      "Combined.vue": "navigation/zh-CN/Combined.vue",
+      "CombinedTopHeader.vue": "navigation/zh-CN/CombinedTopHeader.vue",
+      "CombinedLeftNav.vue": "navigation/zh-CN/CombinedLeftNav.vue",
+      "CombinedFooterContent.vue": "navigation/zh-CN/CombinedFooterContent.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-lab-vue",
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/breadcrumb.css",
+      "@aifuxi/semi-theme-default/layout.css",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-theme-default/skeleton.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/breadcrumb",
+      "@aifuxi/semi-ui-vue/dropdown",
+      "@aifuxi/semi-ui-vue/layout",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/navigation",
+      "@aifuxi/semi-ui-vue/skeleton",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/zh-CN/Controlled",
+    "entry": "Controlled.vue",
+    "files": { "Controlled.vue": "navigation/zh-CN/Controlled.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-lab-vue",
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/zh-CN/Horizontal",
+    "entry": "Horizontal.vue",
+    "files": { "Horizontal.vue": "navigation/zh-CN/Horizontal.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-lab-vue",
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/dropdown",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/zh-CN/Indentation",
+    "entry": "Indentation.vue",
+    "files": { "Indentation.vue": "navigation/zh-CN/Indentation.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-lab-vue",
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/zh-CN/Scrollable",
+    "entry": "Scrollable.vue",
+    "files": { "Scrollable.vue": "navigation/zh-CN/Scrollable.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-lab-vue",
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/zh-CN/Template",
+    "entry": "Template.vue",
+    "files": { "Template.vue": "navigation/zh-CN/Template.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-lab-vue",
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/navigation"
+    ],
+    "pages": ["/zh-cn/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/zh-CN/TogglePosition",
+    "entry": "TogglePosition.vue",
+    "files": { "TogglePosition.vue": "navigation/zh-CN/TogglePosition.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-lab-vue",
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/zh-CN/Uncontrolled",
+    "entry": "Uncontrolled.vue",
+    "files": { "Uncontrolled.vue": "navigation/zh-CN/Uncontrolled.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-lab-vue",
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/navigation/"],
+    "upstream": "navigation/navigation"
+  },
+  {
+    "id": "navigation/zh-CN/Vertical",
+    "entry": "Vertical.vue",
+    "files": { "Vertical.vue": "navigation/zh-CN/Vertical.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-lab-vue",
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/navigation.css",
+      "@aifuxi/semi-ui-vue/locale",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/navigation",
+      "vue"
+    ],
     "pages": ["/zh-cn/components/navigation/"],
     "upstream": "navigation/navigation"
   },

@@ -13,9 +13,20 @@ async function flushDropdown(): Promise<void> {
   }
 }
 
+const nativeMatches = Element.prototype.matches;
+let pointerOverTrigger = true;
+
 describe('Dropdown', () => {
   beforeEach(() => {
     vi.useFakeTimers();
+    pointerOverTrigger = true;
+    // jsdom does not update :hover when dispatching mouse events; model the real pointer.
+    vi.spyOn(Element.prototype, 'matches').mockImplementation(function (
+      this: Element,
+      selector: string,
+    ) {
+      return selector === ':hover' ? pointerOverTrigger : nativeMatches.call(this, selector);
+    });
     document.body.replaceChildren();
     semiGlobal.config = {};
   });
@@ -27,6 +38,51 @@ describe('Dropdown', () => {
     semiGlobal.config = {};
     vi.restoreAllMocks();
   });
+
+  it('hover 仅由焦点打开且指针不在触发器上时遵守上游插入后关闭规则', async () => {
+    pointerOverTrigger = false;
+    const wrapper = mount(Dropdown, {
+      props: { trigger: 'hover', motion: false },
+      slots: {
+        default: () => h('button', '菜单'),
+        content: () => h(DropdownMenu, null, () => h(DropdownItem, null, () => '操作')),
+      },
+    });
+    await wrapper.get('button').trigger('focus');
+    await flushDropdown();
+    expect(wrapper.emitted('visibleChange')).toEqual([[true], [false]]);
+    expect(document.querySelector('.semi-dropdown-menu')).toBeNull();
+    wrapper.unmount();
+  });
+
+  it.each([undefined, false, true])(
+    'hover 的 focus/blur 遵守 disableFocusListener=%s',
+    async (disableFocusListener) => {
+      const wrapper = mount(Dropdown, {
+        props: {
+          trigger: 'hover',
+          motion: false,
+          ...(disableFocusListener === undefined ? {} : { disableFocusListener }),
+        },
+        slots: {
+          default: () => h('button', '菜单'),
+          content: () => h(DropdownMenu, null, () => h(DropdownItem, null, () => '操作')),
+        },
+      });
+      await wrapper.get('button').trigger('focus');
+      await flushDropdown();
+      expect(Boolean(document.querySelector('.semi-dropdown-menu'))).toBe(
+        disableFocusListener !== true,
+      );
+      await wrapper.get('button').trigger('blur');
+      await flushDropdown();
+      expect(document.querySelector('.semi-dropdown-menu')).toBeNull();
+      await wrapper.get('button').trigger('mouseenter');
+      await flushDropdown();
+      expect(document.querySelector('.semi-dropdown-menu')).not.toBeNull();
+      wrapper.unmount();
+    },
+  );
 
   it('custom visible 输出固定 Portal、trigger ARIA、class/style/zIndex 与公开实例方法', async () => {
     const wrapper = mount(Dropdown, {

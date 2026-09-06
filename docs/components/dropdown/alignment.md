@@ -98,3 +98,9 @@
 - 行为门禁：Dropdown 专项单元/SSR 2 个文件、11 项通过，覆盖模板与 `h()` trigger 装饰、缺省/显式 Boolean、菜单数组/slot、受控/非受控、hover/focus/click/custom/contextMenu、outside click、事件顺序、disabled/nested、键盘/焦点/ARIA、稳定自定义 Portal、卸载清理与 SSR/hydration；仓库全量为 68 个文件、507 项通过。
 - 视觉门禁：同 Chromium 的 desktop 1440×900 与 mobile 390×844，DPR 1，light/dark，并追加 RTL；Dropdown 专项 7/7、仓库浏览器回归 266/266 通过。6 个关键目标的 computed style 精确相等、bounding rect 各轴差值不超过 0.5 CSS px；5 组成对场景共 10 张独立 PNG 经测试内 `Buffer.equals` 与命令行 `cmp` 双重确认逐字节相同。
 - 发布门禁：`pnpm check` 通过固定 vendor/inventory、源码边界、格式、lint、类型、全量构建、主题和 SSR；真实 tarball 的根/子路径 ESM、公开声明、逐组件 CSS、隔离安装/import、许可证与 SPDX SBOM 全部通过。
+
+## Navigation 文档键盘差异补充
+
+固定 Tooltip Foundation 的 hover 分支为 trigger 与 Portal 同时绑定 focus/blur（受 disableFocusListener 控制）。Vue Dropdown 自行管理 custom Tooltip 的可见性，因此必须补齐等价焦点事件，不能只代理 mouseenter/mouseleave。门禁：focus 打开、blur 关闭、ArrowDown 进入后保持、Escape 返回并取消焦点导致的待打开计时；disableFocusListener=true 禁止焦点打开但保留 hover。
+
+进一步核对固定 Foundation.ts:348–356：hover Portal 插入后会检查触发器的 :hover，即使由 focus 打开，指针不在触发器上也会再次关闭。此前双页采样中参考菜单消失来自这一规则，不能归因于页面切换。Vue 在内容插入后的 nextTick 执行相同检查；保留 visibleChange 的 true→false 顺序，不把上游限制擅自改为持续打开。单测只为 jsdom 的鼠标事件补充 :hover 环境状态，Chromium 验证实际指针。
