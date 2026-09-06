@@ -16,8 +16,11 @@ function reset(status: boolean) {
 <template>
   <div>
     <div>
-      <div style="display: inline-flex; align-items: center; padding-bottom: 14px">
-        <Button style="margin-right: 8px" @click="reset(false)">关闭加载态</Button
+      <div
+        class="btn-margin-right"
+        style="display: inline-flex; align-items: center; padding-bottom: 14px"
+      >
+        <Button @click="reset(false)">关闭加载态</Button
         ><Button @click="reset(true)">开启加载态</Button>
       </div>
     </div>

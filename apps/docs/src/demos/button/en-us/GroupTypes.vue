@@ -7,8 +7,8 @@ const types = ['primary', 'secondary', 'tertiary', 'warning', 'danger'] as const
 <template>
   <div style="display: flex">
     <div v-for="type in types" :key="type" style="margin-right: 10px">
-      <ButtonGroup :type="type" aria-label="Action buttons"
-        ><Button>Copy</Button><Button>Query</Button><Button>Cut</Button></ButtonGroup
+      <ButtonGroup :type="type" aria-label="Operate button group"
+        ><Button>Copy</Button><Button>Search</Button><Button>Cut</Button></ButtonGroup
       >
     </div>
   </div>

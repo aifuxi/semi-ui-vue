@@ -7,7 +7,7 @@ import '@aifuxi/semi-theme-default/button.css';
   <div style="display: flex">
     <div style="margin-right: 10px">
       <ButtonGroup disabled
-        ><Button>Copy</Button><Button>Query</Button><Button>Cut</Button></ButtonGroup
+        ><Button>Copy</Button><Button>Search</Button><Button>Cut</Button></ButtonGroup
       >
     </div>
   </div>

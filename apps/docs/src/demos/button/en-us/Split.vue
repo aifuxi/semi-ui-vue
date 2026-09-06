@@ -8,13 +8,14 @@ import '@aifuxi/semi-theme-default/dropdown.css';
 const themes = ['solid', 'light', 'borderless'] as const;
 const visible = reactive({ solid: false, light: false, borderless: false });
 const menu: DropdownMenuItem[] = [
-  { node: 'item', name: 'Edit project' },
-  { node: 'item', name: 'Reset project' },
+  { node: 'title', name: 'Title' },
+  { node: 'item', name: 'Edit', onClick: () => console.log('Edit clicked') },
+  { node: 'item', name: 'Reset', type: 'secondary' },
   { node: 'divider' },
-  { node: 'item', name: 'Copy project' },
-  { node: 'item', name: 'Create template from project' },
+  { node: 'item', name: 'Create', type: 'tertiary' },
+  { node: 'item', name: 'Copy', type: 'warning' },
   { node: 'divider' },
-  { node: 'item', name: 'Delete project', type: 'danger' },
+  { node: 'item', name: 'Delete', type: 'danger' },
 ];
 </script>
 
@@ -23,15 +24,15 @@ const menu: DropdownMenuItem[] = [
     <SplitButtonGroup
       v-for="theme in themes"
       :key="theme"
-      style="margin-right: 10px"
-      aria-label="Project actions"
+      :style="theme === 'borderless' ? {} : { marginRight: '10px' }"
+      aria-label="Project operate button group"
       ><Button
         :theme="theme"
         type="primary"
         :style="
           theme === 'borderless' && visible[theme] ? { background: 'var(--semi-color-fill-0)' } : {}
         "
-        >Split button</Button
+        >SplitButton</Button
       ><Dropdown
         :menu="menu"
         trigger="click"
@@ -49,7 +50,7 @@ const menu: DropdownMenuItem[] = [
               : undefined,
           }"
           aria-label="More project actions"
-          ><template #icon><IconTreeTriangleDown /></template></Button></Dropdown
+          ><template #icon><IconTreeTriangleDown size="small" /></template></Button></Dropdown
     ></SplitButtonGroup>
   </div>
 </template>

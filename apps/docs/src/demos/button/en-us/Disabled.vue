@@ -6,9 +6,9 @@ import '@aifuxi/semi-theme-default/button.css';
 <template>
   <div>
     <Button disabled>Disabled</Button
-    ><Button disabled theme="borderless">Borderless disabled</Button
-    ><Button disabled theme="light">Light disabled</Button
-    ><Button disabled theme="borderless" type="primary">Primary borderless disabled</Button
-    ><Button disabled theme="solid" type="warning">Solid warning disabled</Button>
+    ><Button disabled theme="borderless">No background and disabled</Button
+    ><Button disabled theme="light">Light and disbaled</Button
+    ><Button disabled theme="borderless" type="primary">No background, primary and disabled</Button
+    ><Button disabled theme="solid" type="warning">Solid, warning and disabled</Button>
   </div>
 </template>

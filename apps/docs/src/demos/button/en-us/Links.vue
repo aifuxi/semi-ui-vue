@@ -7,11 +7,11 @@ import '@aifuxi/semi-theme-default/typography.css';
 
 <template>
   <div>
-    <Text :link="{ href: '/en-us/start/introduction/' }">Link text</Text><br /><br /><Text
+    <Text :link="{ href: '/en-us/start/introduction/' }">Link</Text><br /><br /><Text
       :link="{ href: '/en-us/start/introduction/' }"
-      >Open website</Text
+      >Open Website</Text
     ><br /><br /><Text link underline
-      ><template #icon><IconLink /></template>Underlined link</Text
+      ><template #icon><IconLink /></template>Link</Text
     >
   </div>
 </template>

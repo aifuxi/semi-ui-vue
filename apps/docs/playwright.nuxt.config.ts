@@ -23,13 +23,13 @@ export default defineConfig({
     {
       command: 'node scripts/preview-static.mjs',
       url: 'http://127.0.0.1:4321/zh-cn/start/introduction/',
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: !process.env.CI && !process.env.DOCS_ACCEPTANCE,
       timeout: 120_000,
     },
     {
       command: 'pnpm --filter @workspace/reference-react dev --host 127.0.0.1',
       url: 'http://127.0.0.1:4173/docs.html',
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: !process.env.CI && !process.env.DOCS_ACCEPTANCE,
       timeout: 120_000,
     },
   ],

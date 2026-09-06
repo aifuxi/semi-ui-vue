@@ -3,11 +3,29 @@ import { renderToString } from '@vue/server-renderer';
 import { h, nextTick } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
+import { IconDelete } from '@aifuxi/semi-icons-vue';
 import Button from './Button.vue';
 import ButtonGroup from './ButtonGroup';
 import SplitButtonGroup from './SplitButtonGroup.vue';
 
 describe('Button', () => {
+  it('组件图标在多次 loading 切换后恢复，并能正常卸载', async () => {
+    const wrapper = mount(Button, {
+      slots: {
+        icon: () => h(IconDelete, { 'data-testid': 'component-icon' }),
+        default: () => '删除',
+      },
+    });
+    for (let cycle = 0; cycle < 3; cycle++) {
+      await wrapper.setProps({ loading: true });
+      expect(wrapper.find('[data-testid="component-icon"]').exists()).toBe(false);
+      await wrapper.setProps({ loading: false });
+      expect(wrapper.find('[data-testid="component-icon"]').exists()).toBe(true);
+      await wrapper.trigger('click');
+      expect(wrapper.emitted('click')).toHaveLength(cycle + 1);
+    }
+    wrapper.unmount();
+  });
   it('renders the pinned default DOM and forwards native attributes', () => {
     const wrapper = mount(Button, {
       attrs: {

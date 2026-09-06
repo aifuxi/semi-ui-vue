@@ -123,6 +123,10 @@ export function pinnedButtonDocumentation(): Plugin {
       if (!code) throw new Error(`Missing pinned Button example ${locale}/${number}`);
       const entry = code.match(/^function\s+(\w+)\s*\(/m)?.[1];
       if (!entry) throw new Error(`Unsupported pinned example entry ${locale}/${number}`);
+      // Fixed Markdown assigns an undeclared variable in both Split examples. The original
+      // site evaluates demos outside ESM; declare that local when compiling the reference as ESM.
+      if (Number(number) === 17)
+        code = code.replace('        newBtnVisible =', '        const newBtnVisible =');
       code = await publicImports(code);
       return (
         await transformWithEsbuild(`${code}\nexport default ${entry};`, 'pinned-button.jsx', {

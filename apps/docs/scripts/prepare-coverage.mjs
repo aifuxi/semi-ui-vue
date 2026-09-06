@@ -1,6 +1,7 @@
 import { readFile, readdir, writeFile, mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { format, resolveConfig } from 'prettier';
+import { loadBatches, acceptedBatch, sha256 } from './documentation-evidence.mjs';
 import { upstreamLiveDemos } from '../../../scripts/upstream-markdown.mjs';
 
 const root = resolve(import.meta.dirname, '../../..');
@@ -58,6 +59,20 @@ if (!mappings.has('basic/button'))
     })),
   });
 const registeredIds = new Set(demos.map((demo) => demo.id));
+const batches = await loadBatches();
+const requestedBatch = process.argv.find((arg) => arg.startsWith('--batch='))?.slice(8);
+if (requestedBatch && !batches.some((batch) => batch.id === requestedBatch))
+  throw new Error(`Unknown batch: ${requestedBatch}`);
+const accepted = new Map();
+for (const batch of batches) {
+  const evidence = await acceptedBatch(batch);
+  if (!evidence) continue;
+  for (const example of batch.examples) {
+    const key = `${batch.upstream}/${example.index}`;
+    if (accepted.has(key)) throw new Error(`Duplicate acceptance: ${key}`);
+    accepted.set(key, { ...example, evidence });
+  }
+}
 const documents = [];
 for (const doc of inventory.documentation) {
   const source = `${doc.category}/${doc.slug}`;
@@ -80,6 +95,8 @@ for (const doc of inventory.documentation) {
     const chapter = [...preceding.matchAll(/^#{2,5} (.+)$/gm)].at(-1)?.[1] ?? '';
     const entry = mapping?.demos.find((demo) => demo.index === index + 1);
     const mapped = entry?.zhCN ?? null;
+    const proof = accepted.get(`${source}/${index + 1}`);
+    const verified = proof?.zhCN === mapped && proof?.enUS === entry?.enUS;
     return {
       index: index + 1,
       line: preceding.split('\n').length,
@@ -87,20 +104,52 @@ for (const doc of inventory.documentation) {
       vue: mapped,
       englishVue: entry?.enUS ?? null,
       ...(entry?.notes ? { notes: entry.notes } : {}),
-      status: mapped ? 'implemented-awaiting-parity' : 'unmapped',
+      status: verified ? 'accepted' : mapped ? 'implemented-awaiting-parity' : 'unmapped',
+      ...(verified ? { evidence: proof.evidence } : {}),
     };
   });
+  const reviewFiles = [
+    doc.zhCN.path,
+    doc.enUS.path,
+    ...(assigned[0]?.slug ? [`apps/docs/src/data/api/${assigned[0].slug}.ts`] : []),
+  ];
+  // Review binds to the actual source and both published pages, not a hand-edited status counter.
+  const pagePaths = assigned.map((page) => `apps/docs/content${page.path.replace(/\/$/, '')}.md`);
+  const reviewHash = sha256(
+    Buffer.concat(
+      await Promise.all(
+        [...new Set([...reviewFiles, ...pagePaths])].map(async (file) => {
+          try {
+            return Buffer.concat([Buffer.from(file + '\0'), await readFile(resolve(root, file))]);
+          } catch (error) {
+            if (error.code !== 'ENOENT') throw error;
+            return Buffer.from(file + '\0missing');
+          }
+        }),
+      ),
+    ),
+  );
+  const reviewed =
+    mapping?.review?.fingerprint === reviewHash &&
+    ['chapters', 'api', 'migration'].every((key) => mapping.review[key] === true);
   documents.push({
     source,
     sourceFiles: { 'zh-CN': doc.zhCN.path, 'en-US': doc.enUS.path },
     pages: assigned.map((page) => page.path),
     upstreamDemoCount: doc.zhCN.liveDemoCount,
     registeredChineseDemoCount: registered.length,
-    status: exclusions[source] ? 'excluded' : assigned.length === 2 ? 'in-progress' : 'pending',
+    status: exclusions[source]
+      ? 'excluded'
+      : reviewed && live.every((demo) => demo.status === 'accepted')
+        ? 'accepted'
+        : assigned.length === 2
+          ? 'in-progress'
+          : 'pending',
+    reviewFingerprint: reviewHash,
     ...(exclusions[source] ? { reason: exclusions[source] } : {}),
     chapters: [...text.matchAll(/^#{2,5} (.+)$/gm)].map((match) => ({
       title: match[1],
-      status: 'needs-review',
+      status: reviewed ? 'reviewed' : 'needs-review',
     })),
     demos: live,
   });
@@ -114,18 +163,38 @@ const result = {
     registeredDemos: demos.length,
     upstreamChineseDemos: documents.reduce((sum, doc) => sum + doc.upstreamDemoCount, 0),
     mappedChineseDemos: documents.flatMap((doc) => doc.demos).filter((demo) => demo.vue).length,
-    acceptedChineseDemos: 0,
+    acceptedChineseDemos: documents
+      .flatMap((doc) => doc.demos)
+      .filter((demo) => demo.status === 'accepted').length,
   },
   documents,
 };
+result.status = documents.every((doc) => ['accepted', 'excluded'].includes(doc.status))
+  ? 'complete'
+  : 'in-progress';
 await writeFile(
   resolve(root, 'docs/documentation/coverage.json'),
   await format(JSON.stringify(result), { ...prettierConfig, parser: 'json' }),
 );
 console.log(
-  `覆盖账本：${result.totals.pages} 页，${result.totals.mappedChineseDemos}/${result.totals.upstreamChineseDemos} 个上游 Demo 已建立逐项映射，尚无新增视觉验收结论。`,
+  `覆盖账本：${result.totals.pages} 页，${result.totals.mappedChineseDemos}/${result.totals.upstreamChineseDemos} 个上游 Demo 已建立逐项映射，${result.totals.acceptedChineseDemos} 个已有有效验收证据。`,
 );
-if (process.argv.includes('--require-complete')) {
-  console.error('全量迁移验收未完成：不能切换默认入口或声称像素级对齐。');
+if (requestedBatch) {
+  const batch = batches.find((batch) => batch.id === requestedBatch);
+  const doc = documents.find((doc) => doc.source === batch.upstream);
+  const complete =
+    doc?.chapters.every((chapter) => chapter.status === 'reviewed') &&
+    batch.examples.every(
+      (example) => doc?.demos.find((demo) => demo.index === example.index)?.status === 'accepted',
+    );
+  if (!complete) {
+    console.error(`批次 ${requestedBatch} 的验收证据缺失或已过期。`);
+    process.exitCode = 1;
+  }
+}
+if (process.argv.includes('--require-complete') && result.status !== 'complete') {
+  console.error(
+    `全量内容验收未完成：${result.totals.acceptedChineseDemos}/${result.totals.upstreamChineseDemos} 个 Demo 有有效证据；章节/API/迁移审阅同样必须闭环。不能切换默认入口。`,
+  );
   process.exitCode = 1;
 }

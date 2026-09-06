@@ -7,6 +7,20 @@ import Icon, * as iconPackage from './index';
 import { IconAIFilledLevel2, IconAIWandLevel3, IconHome, IconSpin } from './icons';
 
 describe('Icon', () => {
+  it('缺省 fill 保留 SVG 默认值，显式覆盖清除后恢复，AI 数组只应用于 path', async () => {
+    const wrapper = mount(IconHome);
+    expect(wrapper.get('svg').attributes('fill')).toBe('none');
+    await wrapper.setProps({ fill: 'red' });
+    expect(wrapper.get('svg').attributes('fill')).toBe('red');
+    // JavaScript consumers can explicitly remove fill despite exact optional TS props.
+    // @ts-expect-error Exercise runtime undefined without broadening the public IconFill type.
+    await wrapper.setProps({ fill: undefined });
+    expect(wrapper.get('svg').attributes('fill')).toBe('none');
+    const ai = mount(IconAIFilledLevel2, { props: { fill: ['red', 'blue'] } });
+    expect(ai.get('svg').attributes('fill')).toBe('none');
+    expect(ai.findAll('path').map((path) => path.attributes('fill'))).toEqual(['blue', 'red']);
+    expect(await renderToString(createSSRApp(IconHome))).toContain('fill="none"');
+  });
   it('保留内置图标的根节点、尺寸、语义与 SVG 契约', () => {
     const wrapper = mount(IconHome, {
       props: { size: 'small' },

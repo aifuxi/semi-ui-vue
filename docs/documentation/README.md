@@ -30,11 +30,27 @@ pnpm --filter @workspace/docs test:nuxt
 
 ## 覆盖与剩余工作
 
-[coverage.json](./coverage.json) 记录 102 组固定上游文档及每个中文 live Demo 的章节和源码行号。当前 859 个中文上游 Demo 中，696 个已建立双语内容与示例映射，严格视觉验收仍为 0 个。本轮补齐 Form（39）、Table（37）、Upload（42）、TreeSelect（19）、Tree（27），共新增 164 个上游 Demo 的双语映射。中英文上游章节数量与顺序不同的条目已在各组件 mapping 中注明；映射数量不代表逐项视觉验收完成。总数 859 来自固定源码的 live Demo 解析，修正了旧统计遗漏的 4 个示例。
+[coverage.json](./coverage.json) 记录 102 组固定上游文档及每个中文 live Demo 的章节和源码行号。当前 859 个中文上游 Demo 中，696 个已建立双语内容与示例映射，有效严格验收为 17 个（Button，84 条双语/明暗/适用 RTL 用例全部通过）。此前补齐 Form（39）、Table（37）、Upload（42）、TreeSelect（19）、Tree（27），共新增 164 个上游 Demo 的双语映射。中英文上游章节数量与顺序不同的条目已在各组件 mapping 中注明；映射数量不代表逐项视觉验收完成。总数 859 来自固定源码的 live Demo 解析，修正了旧统计遗漏的 4 个示例。
 
 尚需完成：其余组件的完整章节与示例；所有 API 的统一元数据审阅；特殊内容与适用指南；中英文迁移段落校订；固定 React/Nuxt 同进程视觉、计算样式与几何对照；Nuxt/REPL 内部打包传递依赖的完整许可审计；全仓库完整门禁。Astro、Starlight、MDX 和旧用户文档只有在这些验收完成后才清理并切换默认入口。
 
 当前 CSS 已使用固定上游站点源，但还未形成像素级验收结论。独立品牌、Vue 语法、移除外部平台功能是明确适配；Inter Bold 暂用固定源码内的 SemiBold 字体文件，需作为视觉差异继续处理。
+
+## 分批验收
+
+执行顺序见 [批次计划](./batch-plan.md)，首批矩阵见 [Button 验收要求](./button-acceptance.md)。每个批次的范围、语言/主题、RTL 专项和源码输入在 `batches/`；双语映射与章节/API/迁移审阅在 `mappings/`。
+
+```bash
+pnpm --filter @workspace/docs accept:nuxt:batch button
+pnpm --filter @workspace/docs check:nuxt:evidence
+node apps/docs/scripts/prepare-coverage.mjs --batch=button
+```
+
+批次命令重新构建公开 JS、主题和 Nuxt 静态产物，运行类型、内容及完整浏览器矩阵；验收时不复用既有服务。全部通过且运行前后源码指纹不变，才写入 `evidence/<batch>.json` 与包含截图/样式附件的压缩 Playwright JSON 报告。重试通过、跳过、遗漏用例、全局错误和缺少附件均不能生成新记录。
+
+覆盖生成器重新校验当前源码指纹、映射和报告哈希。失效的证据不计入 accepted 数量；批次门禁还要求对应章节/API/迁移审阅有效。其它未完成批次不阻塞当前批次，全量内容门禁继续要求所有适用文档完成。批次完成不能替代最终站点、许可和全仓验收。
+
+为稳妥处理共享依赖，首批指纹包含 UI/图标源码及文档公共框架；这些输入变更可能使此前证据失效，届时应重跑对应批次。后续添加独立 Demo 不会因目录数量增加而自动获得验收。
 
 ## 归属与回退
 

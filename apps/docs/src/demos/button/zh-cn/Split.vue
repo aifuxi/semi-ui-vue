@@ -8,11 +8,11 @@ import '@aifuxi/semi-theme-default/dropdown.css';
 const themes = ['solid', 'light', 'borderless'] as const;
 const visible = reactive({ solid: false, light: false, borderless: false });
 const menu: DropdownMenuItem[] = [
-  { node: 'item', name: '编辑项目' },
+  { node: 'item', name: '编辑项目', onClick: () => console.log('编辑项目点击') },
   { node: 'item', name: '重置项目' },
   { node: 'divider' },
   { node: 'item', name: '复制项目' },
-  { node: 'item', name: '从项目创建模板' },
+  { node: 'item', name: '从项目创建模版' },
   { node: 'divider' },
   { node: 'item', name: '删除项目', type: 'danger' },
 ];
@@ -23,7 +23,7 @@ const menu: DropdownMenuItem[] = [
     <SplitButtonGroup
       v-for="theme in themes"
       :key="theme"
-      style="margin-right: 10px"
+      :style="theme === 'borderless' ? {} : { marginRight: '10px' }"
       aria-label="项目操作按钮组"
       ><Button
         :theme="theme"

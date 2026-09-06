@@ -22,7 +22,9 @@
     "test:nuxt": "playwright test -c playwright.nuxt.config.ts",
     "check:nuxt:content": "node scripts/verify-nuxt-content.mjs",
     "check:nuxt:coverage": "node scripts/prepare-coverage.mjs --require-complete",
-    "check:nuxt": "pnpm build:nuxt && pnpm check:nuxt:content && pnpm typecheck:nuxt && pnpm test:nuxt"
+    "check:nuxt": "pnpm check:nuxt:evidence && pnpm build:nuxt && pnpm check:nuxt:content && pnpm typecheck:nuxt && pnpm test:nuxt",
+    "accept:nuxt:batch": "node scripts/accept-documentation-batch.mjs",
+    "check:nuxt:evidence": "node --test scripts/documentation-evidence.test.mjs"
   },
   "dependencies": {
     "@aifuxi/semi-icons-lab-vue": "workspace:*",

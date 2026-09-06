@@ -24,8 +24,8 @@ export const buttonApi: readonly ApiSection[] = [
         'loading',
         'boolean',
         'false',
-        '显示加载并阻止点击。',
-        'Shows loading and prevents clicks.',
+        '显示加载图标并阻止指针点击；键盘仍可激活，disabled 优先。',
+        'Shows loading and blocks pointer clicks; keyboard activation remains available unless disabled.',
       ),
       p('colorful', 'boolean', 'false', '启用 AI 多彩样式。', 'Enables the AI colorful style.'),
       p('iconPosition', 'left | right', 'left', '图标位置。', 'Icon position.'),
@@ -40,6 +40,13 @@ export const buttonApi: readonly ApiSection[] = [
       ),
       p('contentClass', 'HTMLAttributes[class]', '—', '内容容器 class。', 'Content wrapper class.'),
       p('prefixCls', 'string', 'semi-button', 'DOM class 前缀。', 'DOM class prefix.'),
+      p(
+        'aria-label / id / class / style',
+        'HTMLAttributes',
+        '—',
+        '原生根节点属性。',
+        'Native root attributes.',
+      ),
     ],
   },
   {
@@ -80,13 +87,20 @@ export const buttonApi: readonly ApiSection[] = [
       p(
         'type',
         'primary | secondary | tertiary | warning | danger',
-        'primary',
-        '组合语义色。',
-        'Group semantic color.',
+        '—',
+        '组合语义色；未指定时保留子按钮配置，Button 默认为 primary。',
+        'Group semantic color; omitted values preserve child configuration (Button defaults to primary).',
       ),
-      p('theme', 'light | solid | borderless | outline', 'light', '组合主题。', 'Group theme.'),
+      p(
+        'theme',
+        'light | solid | borderless | outline',
+        '—',
+        '显式传入时覆盖子按钮主题；否则保留子按钮配置。',
+        'An explicit theme overrides child themes; omission preserves child configuration.',
+      ),
       p('disabled', 'boolean', 'false', '组合禁用状态。', 'Disables the group.'),
       p('colorful', 'boolean', 'false', '组合多彩样式。', 'Colorful group style.'),
+      p('prefixCls', 'string', 'semi-button', 'DOM class 前缀。', 'DOM class prefix.'),
       p('aria-label', 'string', '—', '组合的可访问名称。', 'Accessible group name.'),
       p(
         'class / style',
@@ -102,6 +116,7 @@ export const buttonApi: readonly ApiSection[] = [
     title: { 'zh-CN': 'SplitButtonGroup Props', 'en-US': 'SplitButtonGroup props' },
     kind: 'props',
     items: [
+      p('prefixCls', 'string', 'semi-button', 'DOM class 前缀。', 'DOM class prefix.'),
       p('aria-label', 'string', '—', '组合的可访问名称。', 'Accessible group name.'),
       p(
         'class / style',

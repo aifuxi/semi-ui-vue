@@ -1,12 +1,21 @@
 <script setup lang="ts">
 import { Button } from '@aifuxi/semi-ui-vue/button';
 import '@aifuxi/semi-theme-default/button.css';
+const types = ['primary', 'secondary', 'tertiary', 'warning', 'danger'] as const;
 </script>
 
 <template>
-  <Button theme="outline" type="primary" style="margin-right: 8px">Primary</Button>
-  <Button theme="outline" type="secondary" style="margin-right: 8px">Secondary</Button>
-  <Button theme="outline" type="tertiary" style="margin-right: 8px">Tertiary</Button>
-  <Button theme="outline" type="warning" style="margin-right: 8px">Warning</Button>
-  <Button theme="outline" type="danger" style="margin-right: 8px">Danger</Button>
+  <div>
+    <div>
+      <ul style="list-style: none; display: flex; margin: 0; padding: 0">
+        <li v-for="type in types" :key="type" style="margin: 10px">
+          <Button theme="outline" :type="type"
+            ><template v-for="(part, index) in ['outline', ' ', type]" :key="index">{{
+              part
+            }}</template></Button
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>

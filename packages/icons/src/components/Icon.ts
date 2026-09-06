@@ -147,19 +147,23 @@ export function convertIcon(renderSvg: IconSvgRenderer, iconType: string): SemiI
       const element = computed(() => iconInstance?.element.value ?? null);
       expose({ element });
 
-      return () =>
-        h(
+      return () => {
+        // The generated renderer owns fill (including AI path palettes). Passing it to
+        // Icon again would overwrite the rendered SVG root and erase its default fill.
+        const { fill, ...iconProps } = props;
+        return h(
           Icon as Component,
           {
-            ...props,
+            ...iconProps,
             ...attrs,
             ref: (value: unknown) => {
               iconInstance = value as IconExposed | null;
             },
             type: iconType,
           },
-          { default: () => renderSvg({ fill: props.fill }) },
+          { default: () => renderSvg(fill === undefined ? {} : { fill }) },
         );
+      };
     },
   }) as unknown as SemiIconComponent;
 

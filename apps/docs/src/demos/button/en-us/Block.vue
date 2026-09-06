@@ -4,5 +4,5 @@ import '@aifuxi/semi-theme-default/button.css';
 </script>
 
 <template>
-  <div><Button block>Block button</Button></div>
+  <div><Button block>block button</Button></div>
 </template>

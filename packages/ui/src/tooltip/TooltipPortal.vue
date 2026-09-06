@@ -74,7 +74,8 @@ const transitionClass = computed(() => {
     !props.state.transitionState
   )
     return undefined;
-  return `${props.prefixCls}-animation-${props.state.transitionState === 'enter' ? 'show' : 'hide'}`;
+  // Upstream CSSAnimation uses the fixed Tooltip prefix even for Dropdown/Popover wrappers.
+  return `semi-tooltip-animation-${props.state.transitionState === 'enter' ? 'show' : 'hide'}`;
 });
 const wrapperClasses = computed(() => [
   props.popupClass,

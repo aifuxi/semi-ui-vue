@@ -6,15 +6,15 @@ import { IconCamera, IconSidebar, IconChevronDown } from '@aifuxi/semi-icons-vue
 
 <template>
   <div>
-    <strong>Default:</strong
+    <strong>Default Status: </strong
     ><Button aria-label="Screenshot"
       ><template #icon><IconCamera /></template></Button
     ><br /><br />
-    <strong>Disabled:</strong
-    ><Button disabled aria-label="Screenshot"
+    <strong>Disabled Status：</strong
+    ><Button aria-label="Screenshot"
       ><template #icon><IconCamera /></template></Button
     ><br /><br />
-    <strong>Types:</strong
+    <strong>With Type: </strong
     ><Button type="primary" style="margin-right: 8px" aria-label="Screenshot"
       ><template #icon><IconCamera /></template></Button
     ><Button type="secondary" style="margin-right: 8px" aria-label="Screenshot"
@@ -24,17 +24,17 @@ import { IconCamera, IconSidebar, IconChevronDown } from '@aifuxi/semi-icons-vue
     ><Button type="danger" style="margin-right: 8px" aria-label="Screenshot"
       ><template #icon><IconCamera /></template></Button
     ><br /><br />
-    <strong>Themes:</strong
+    <strong>Change Theme: </strong
     ><Button theme="solid" style="margin-right: 10px" aria-label="Screenshot"
       ><template #icon><IconCamera /></template></Button
     ><Button theme="light" aria-label="Screenshot"
       ><template #icon><IconCamera /></template></Button
     ><br /><br />
-    <strong>Icon position:</strong
+    <strong>Change Icon Position: </strong
     ><Button theme="solid" style="margin-right: 10px"
       ><template #icon><IconSidebar /></template>Collapse</Button
     ><Button theme="solid" icon-position="right"
-      ><template #icon><IconChevronDown /></template>Expand options</Button
+      ><template #icon><IconChevronDown /></template>Expand Options</Button
     ><br /><br />
   </div>
 </template>

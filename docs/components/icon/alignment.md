@@ -68,3 +68,8 @@
 | 发布       | icons/icons-lab/UI 根与子路径、types、`icon.css`、SSR import、真实 tarball 安装           |
 
 当前没有 accepted deviation。
+
+## 文档批次补充验收
+
+- 固定 Icon Adapter 只在调用方提供 fill 时 clone SVG 组件。Vue convertIcon 不得将缺省 fill 覆盖生成 SVG 的 fill=none；双色/四色 fill 应先由生成器分配给 path，不能再作为数组写入 SVG 根节点。
+- 增加缺省、显式 undefined、字符串、数组及 prop 更新后复原的公开 DOM/SSR 断言；Button 文档图标场景增加 computed fill 对照。

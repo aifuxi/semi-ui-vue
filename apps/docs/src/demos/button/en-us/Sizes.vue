@@ -5,8 +5,8 @@ import '@aifuxi/semi-theme-default/button.css';
 
 <template>
   <div>
-    <Button size="large" style="margin-right: 8px">Large</Button
-    ><Button size="default" style="margin-right: 8px">Default</Button
-    ><Button size="small">Small</Button>
+    <Button size="large" style="margin-right: 8px">large</Button
+    ><Button size="default" style="margin-right: 8px">default</Button
+    ><Button size="small">small</Button>
   </div>
 </template>

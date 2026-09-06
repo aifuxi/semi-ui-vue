@@ -2397,6 +2397,7 @@ const expectedDropdownImports = [
   vendorImport('semi-theme-default/scss/global.scss'),
   vendorImport('semi-theme-default/scss/animation.scss'),
   vendorImport('semi-foundation/_portal/portal.scss'),
+  vendorImport('semi-foundation/tooltip/tooltip.scss'),
   vendorImport('semi-foundation/dropdown/dropdown.scss'),
   vendorImport('semi-icons/src/styles/icons.scss'),
 ];
@@ -2413,6 +2414,8 @@ if (
   !dropdownCss.includes('.semi-dropdown-item-disabled') ||
   !dropdownCss.includes('.semi-rtl .semi-dropdown') ||
   !dropdownCss.includes('.semi-portal-inner') ||
+  !dropdownCss.includes('.semi-tooltip-animation-show') ||
+  !dropdownCss.includes('.semi-tooltip-animation-hide') ||
   !dropdownCss.includes('.semi-icon')
 ) {
   throw new Error('Dropdown 逐组件样式产物缺少 Portal、Item、Icon 或 RTL 样式');
@@ -2611,6 +2614,7 @@ const expectedPopoverImports = [
   vendorImport('semi-theme-default/scss/global.scss'),
   vendorImport('semi-theme-default/scss/animation.scss'),
   vendorImport('semi-foundation/_portal/portal.scss'),
+  vendorImport('semi-foundation/tooltip/tooltip.scss'),
   vendorImport('semi-foundation/popover/popover.scss'),
 ];
 const popoverEntrySource = await readFile(popoverEntryPath, 'utf8');
@@ -2627,6 +2631,8 @@ for (const selector of [
   '.semi-popover-with-arrow',
   '.semi-popover-icon-arrow',
   '.semi-popover-animation-show',
+  '.semi-tooltip-animation-show',
+  '.semi-tooltip-animation-hide',
   '.semi-popover.semi-popover-rtl',
 ]) {
   if (!popoverCss.includes(selector)) {

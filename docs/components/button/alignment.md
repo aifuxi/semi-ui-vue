@@ -91,3 +91,8 @@ Button 不存在受控/非受控双态；props 只读，组件不修改调用方
 ## Deviation
 
 当前没有 accepted visual/behavior deviation。ReactNode、className 和 `onXxx` 只按 Vue 原生 slots、attrs、emits 迁移，不作为差异；`iconSize/iconStyle` 在固定 React Adapter 中没有可观察输出，Vue 将其作为 icon slot props 暴露，避免伪造上游不存在的 DOM 行为。
+
+## 文档批次新增回归
+
+- 图标 slot 的组件 VNode 不得放在 computed 中跨卸载缓存；loading 往返切换时在渲染阶段重新读取 slot，验证至少三轮恢复图标、click 和卸载。
+- 文档覆盖全部 17 个双语示例，具体矩阵与构建适配见 `docs/documentation/button-acceptance.md`。证据计数由指纹校验决定，不复用本组件历史 ready 状态。

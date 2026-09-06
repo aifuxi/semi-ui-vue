@@ -39,48 +39,52 @@ describe('Tooltip', () => {
     vi.restoreAllMocks();
   });
 
-  it('自身动画结束清理 class，忽略内容冒泡动画，并可再次关闭和打开', async () => {
-    const afterClose = vi.fn();
-    const wrapper = mount(Tooltip, {
-      props: {
-        content: h('span', { id: 'animated-content' }, '动画内容'),
-        trigger: 'custom',
-        visible: true,
-        motion: true,
-        keepDOM: true,
-        onAfterClose: afterClose,
-      },
-      slots: { default: '<button>触发</button>' },
-    });
-    await flushTooltip();
-    const popup = document.body.querySelector<HTMLElement>('.semi-tooltip-wrapper')!;
-    const content = popup.querySelector('#animated-content')!;
-    expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
-    content.dispatchEvent(new Event('animationstart', { bubbles: true }));
-    content.dispatchEvent(new Event('animationend', { bubbles: true }));
-    await nextTick();
-    expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
-    popup.dispatchEvent(new Event('animationstart'));
-    popup.dispatchEvent(new Event('animationend'));
-    await nextTick();
-    expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(false);
-    expect(popup.textContent).toContain('动画内容');
-    await wrapper.setProps({ visible: false });
-    await flushTooltip();
-    expect(popup.classList.contains('semi-tooltip-animation-hide')).toBe(true);
-    popup.dispatchEvent(new Event('animationstart'));
-    popup.dispatchEvent(new Event('animationend'));
-    await flushTooltip();
-    expect(popup.style.display).toBe('none');
-    expect(afterClose).toHaveBeenCalledOnce();
-    await wrapper.setProps({ visible: true });
-    await flushTooltip();
-    expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
-    popup.dispatchEvent(new Event('animationend'));
-    await nextTick();
-    expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(false);
-    wrapper.unmount();
-  });
+  it.each(['semi-tooltip', 'semi-dropdown'])(
+    '前缀 %s 的自身动画结束清理 class，忽略冒泡动画，并可再次开关',
+    async (prefixCls) => {
+      const afterClose = vi.fn();
+      const wrapper = mount(Tooltip, {
+        props: {
+          prefixCls,
+          content: h('span', { id: 'animated-content' }, '动画内容'),
+          trigger: 'custom',
+          visible: true,
+          motion: true,
+          keepDOM: true,
+          onAfterClose: afterClose,
+        },
+        slots: { default: '<button>触发</button>' },
+      });
+      await flushTooltip();
+      const popup = document.body.querySelector<HTMLElement>(`.${prefixCls}-wrapper`)!;
+      const content = popup.querySelector('#animated-content')!;
+      expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
+      content.dispatchEvent(new Event('animationstart', { bubbles: true }));
+      content.dispatchEvent(new Event('animationend', { bubbles: true }));
+      await nextTick();
+      expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
+      popup.dispatchEvent(new Event('animationstart'));
+      popup.dispatchEvent(new Event('animationend'));
+      await nextTick();
+      expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(false);
+      expect(popup.textContent).toContain('动画内容');
+      await wrapper.setProps({ visible: false });
+      await flushTooltip();
+      expect(popup.classList.contains('semi-tooltip-animation-hide')).toBe(true);
+      popup.dispatchEvent(new Event('animationstart'));
+      popup.dispatchEvent(new Event('animationend'));
+      await flushTooltip();
+      expect(popup.style.display).toBe('none');
+      expect(afterClose).toHaveBeenCalledOnce();
+      await wrapper.setProps({ visible: true });
+      await flushTooltip();
+      expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
+      popup.dispatchEvent(new Event('animationend'));
+      await nextTick();
+      expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(false);
+      wrapper.unmount();
+    },
+  );
 
   it('content slot 优先，slot 变空后回退到 content prop', async () => {
     const showSlot = shallowRef(true);

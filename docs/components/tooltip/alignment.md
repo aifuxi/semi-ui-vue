@@ -110,3 +110,7 @@ Escape 在 `closeOnEsc=true` 时关闭并通知；ArrowDown/ArrowUp 将焦点移
 - 根/`tooltip` ESM 与声明、`tooltip.css`、SSR-safe import、主题顺序、许可证/SBOM 和真实 tarball 离线安装均通过。
 
 当前没有 accepted deviation，Tooltip 状态为 `ready`。
+
+## 文档组合场景补充
+
+固定 React Adapter 在 index.tsx:762 使用常量 prefix（semi-tooltip）生成动画类，公开 prefixCls 只控制 wrapper 等样式类。Vue 必须保留这一分离；Dropdown/Popover 自定义 wrapper 前缀时仍使用 semi-tooltip-animation-show/hide，以便 animationend 清理 Portal 和通知 afterClose。增加自定义前缀开关回归与 Button Split 浏览器实测。

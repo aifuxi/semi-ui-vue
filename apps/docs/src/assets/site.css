@@ -58,12 +58,11 @@ input {
 button {
   cursor: pointer;
 }
-button:disabled {
+button:disabled:not([data-demo-preview] *, [class*='semi-']) {
   cursor: default;
 }
-button:focus-visible,
-a:focus-visible,
-input:focus-visible {
+/* Site controls own this ring; demos and Semi components keep their upstream focus styles. */
+:is(button, a, input):focus-visible:not([data-demo-preview] *, [class*='semi-']) {
   outline: 2px solid var(--semi-color-primary);
   outline-offset: 2px;
 }

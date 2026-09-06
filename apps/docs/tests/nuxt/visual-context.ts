@@ -5,6 +5,7 @@ export async function visualContext(
   info: TestInfo,
   locale: string,
   theme: string,
+  direction = 'ltr',
 ) {
   const options = {
     locale: locale === 'en-us' ? 'en-US' : 'zh-CN',
@@ -17,6 +18,7 @@ export async function visualContext(
     body: JSON.stringify(
       {
         browser: browser.version(),
+        direction,
         playwright: '1.62.1',
         ...options,
         date: '2024-08-15T10:24:30+08:00',

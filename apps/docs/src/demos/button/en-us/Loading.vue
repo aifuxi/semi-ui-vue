@@ -16,8 +16,11 @@ function reset(status: boolean) {
 <template>
   <div>
     <div>
-      <div style="display: inline-flex; align-items: center; padding-bottom: 14px">
-        <Button style="margin-right: 8px" @click="reset(false)">Stop loading</Button
+      <div
+        class="btn-margin-right"
+        style="display: inline-flex; align-items: center; padding-bottom: 14px"
+      >
+        <Button @click="reset(false)">Stop loading</Button
         ><Button @click="reset(true)">Start loading</Button>
       </div>
     </div>
@@ -33,7 +36,7 @@ function reset(status: boolean) {
     >
     <div style="width: 200px; display: inline-block">
       <Button :loading="repLoading" type="warning" block theme="solid" @click="repLoading = true"
-        >Undo</Button
+        >Revoke</Button
       >
     </div>
   </div>
