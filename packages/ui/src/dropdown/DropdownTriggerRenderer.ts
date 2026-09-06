@@ -55,6 +55,7 @@ export default defineComponent({
       required: true,
     },
     visible: Boolean,
+    expanded: { type: Boolean as PropType<boolean | undefined>, default: undefined },
   },
   setup(props, { slots }) {
     return () => {
@@ -74,7 +75,7 @@ export default defineComponent({
         Object.entries(original).filter(([key]) => !eventNames.has(key)),
       );
       const merged = mergeProps(originalRest, {
-        'aria-expanded': String(props.visible),
+        'aria-expanded': props.expanded === undefined ? undefined : String(props.expanded),
         'aria-haspopup': 'true',
         class: [original.class, props.visible ? `${props.prefixCls}-showing` : undefined],
         'data-popupid': props.popupId,

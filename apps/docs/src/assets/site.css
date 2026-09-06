@@ -19,7 +19,8 @@
   font-weight: 400;
   font-display: swap;
 }
-* {
+/* Keep site resets outside demos and portal components; Semi owns their box model. */
+*:not([data-demo-preview] *, [class*='semi-'], [class*='semi-'] *) {
   box-sizing: border-box;
 }
 html {
@@ -51,8 +52,7 @@ a {
   color: var(--semi-color-link);
   text-decoration: none;
 }
-button,
-input {
+:is(button, input):not([data-demo-preview] *, [class*='semi-'], [class*='semi-'] *) {
   font: inherit;
 }
 button {
@@ -294,7 +294,13 @@ button:disabled:not([data-demo-preview] *, [class*='semi-']) {
   margin: 24px 0 32px;
   overflow: hidden;
 }
+/* The pinned theme uses tokens for dark colors, with normal native control colors. */
+.demo-preview,
+[class*='semi-'] {
+  color-scheme: normal;
+}
 .demo-preview {
+  overflow-wrap: normal;
   padding: 24px;
   background: var(--semi-color-bg-0);
   color: var(--semi-color-text-0);

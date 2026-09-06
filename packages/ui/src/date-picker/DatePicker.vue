@@ -718,7 +718,10 @@ watch(
             /></slot>
           </div>
           <div class="semi-datepicker-range-input-suffix">
-            <IconCalendarClock v-if="type.includes('Time')" /><IconCalendar v-else />
+            <IconCalendarClock v-if="type.includes('Time')" aria-hidden="true" /><IconCalendar
+              v-else
+              aria-hidden="true"
+            />
           </div>
         </template>
         <Input
@@ -727,7 +730,8 @@ watch(
           ref="inputComponent"
           :auto-focus="state.autofocus"
           :class-name="[
-            'semi-datepicker-input-readonly',
+            (runtimeProps.inputReadOnly || Boolean(runtimeProps.insetInput)) &&
+              'semi-datepicker-input-readonly',
             type === 'monthRange' && 'semi-datepicker-monthRange-input',
           ]"
           :disabled="inputDisabled"
@@ -758,7 +762,9 @@ watch(
                 :content="props.clearIcon" /><IconClear v-else /></slot
           ></template>
           <template #suffix
-            ><IconCalendarClock v-if="type.includes('Time')" /><IconCalendar v-else
+            ><IconCalendarClock v-if="type.includes('Time')" aria-hidden="true" /><IconCalendar
+              v-else
+              aria-hidden="true"
           /></template>
         </Input>
       </div>

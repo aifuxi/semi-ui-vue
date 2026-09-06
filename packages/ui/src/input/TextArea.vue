@@ -32,7 +32,6 @@ const props = withDefaults(defineProps<TextAreaProps>(), {
   showClear: false,
   showCounter: false,
   showLineNumber: false,
-  validateStatus: 'default',
 });
 const emit = defineEmits<TextAreaEmits>();
 

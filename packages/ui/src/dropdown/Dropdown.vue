@@ -42,7 +42,9 @@ const instance = getCurrentInstance();
 const parentContext = inject(dropdownContextKey, undefined);
 const tooltipRef = useTemplateRef<TooltipExposed>('tooltip');
 const triggerElement = shallowRef<HTMLElement | null>(null);
-const popVisible = shallowRef(Boolean(props.visible));
+const popVisible = shallowRef<boolean | undefined>(
+  hasRawProp('visible') ? props.visible : undefined,
+);
 const generatedPopupId = `semi-dropdown-${useId()}`;
 const pendingNotification = shallowRef<boolean | undefined>(undefined);
 let enterTimer: ReturnType<typeof setTimeout> | undefined;
@@ -80,7 +82,7 @@ const runtimeTrigger = computed(() => resolveProp('trigger', 'hover'));
 const runtimeShowTick = computed(() => resolveProp('showTick', false));
 const runtimePrefixCls = computed(() => resolveProp('prefixCls', 'semi-dropdown'));
 const runtimeVisible = computed(() =>
-  hasRawProp('visible') ? Boolean(props.visible) : popVisible.value,
+  hasRawProp('visible') ? Boolean(props.visible) : Boolean(popVisible.value),
 );
 const runtimePopupId = computed(() => resolveOptional('wrapperId') ?? generatedPopupId);
 const runtimeSpacing = computed<number | TooltipSpacing>(() => {
@@ -385,6 +387,7 @@ onBeforeUnmount(() => {
 
     <DropdownTriggerRenderer
       :event-set="triggerEventSet"
+      :expanded="hasRawProp('visible') ? props.visible : popVisible"
       :popup-id="runtimePopupId"
       :prefix-cls="runtimePrefixCls"
       :set-trigger-element="setTriggerElement"

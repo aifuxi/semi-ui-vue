@@ -28,6 +28,8 @@ describe('Switch', () => {
     expect(wrapper.attributes('data-source')).toBe('unit');
     expect(wrapper.get('.semi-switch-knob').attributes('aria-hidden')).toBe('true');
     const input = wrapper.get('input');
+    // Pinned Switch keeps omitted checked distinct from explicit false.
+    expect(input.attributes('aria-checked')).toBeUndefined();
     expect(input.attributes()).toMatchObject({
       type: 'checkbox',
       role: 'switch',
@@ -37,7 +39,6 @@ describe('Switch', () => {
       'aria-errormessage': 'switch-error',
       'aria-invalid': 'true',
       'aria-labelledby': 'switch-label',
-      'aria-checked': 'false',
       'aria-disabled': 'false',
     });
   });

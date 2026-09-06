@@ -147,7 +147,7 @@ const placeholderCount = computed(() => {
   return Math.max(0, (props.icon && !props.indent ? props.level : props.level - 1) || 0);
 });
 const iconRotation = computed(() =>
-  context.subNavMotion.value
+  context.subNavMotion.value && context.mode.value === 'vertical' && !collapsed.value
     ? `${context.prefixCls.value}-icon-rotate-${isOpen.value ? '180' : '0'}`
     : undefined,
 );
@@ -210,7 +210,7 @@ const dropdownBindings = computed(() => {
           role="menuitem"
           :tabindex="showNestedChevron ? -1 : 0"
           :class="titleClasses"
-          :aria-expanded="isOpen ? 'true' : 'false'"
+          :aria-expanded="undefined"
           @click="handleClick"
           @keypress="handleKey"
         >
@@ -234,6 +234,7 @@ const dropdownBindings = computed(() => {
                 :is="defaultToggleIcon"
                 v-if="!hasCustomToggleIcon"
                 :class="iconRotation"
+                :aria-hidden="!collapsed || undefined"
                 size="default"
               />
               <NavigationIconRenderer
@@ -271,6 +272,7 @@ const dropdownBindings = computed(() => {
                 :is="defaultToggleIcon"
                 v-if="!hasCustomToggleIcon"
                 :class="iconRotation"
+                :aria-hidden="!collapsed || undefined"
                 size="default"
               />
               <NavigationIconRenderer
@@ -317,6 +319,7 @@ const dropdownBindings = computed(() => {
                 :is="defaultToggleIcon"
                 v-if="!hasCustomToggleIcon"
                 :class="iconRotation"
+                :aria-hidden="!collapsed || undefined"
                 size="default"
               />
               <NavigationIconRenderer
@@ -350,6 +353,7 @@ const dropdownBindings = computed(() => {
                 :is="defaultToggleIcon"
                 v-if="!hasCustomToggleIcon"
                 :class="iconRotation"
+                :aria-hidden="!collapsed || undefined"
                 size="default"
               />
               <NavigationIconRenderer

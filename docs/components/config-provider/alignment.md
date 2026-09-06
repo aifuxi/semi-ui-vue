@@ -51,7 +51,7 @@
 
 ## Locale、RTL、SSR 与迁移
 
-- 默认配置保留 `zh-CN`、`CNY` 和当前已公开组件所需的 Typography 文案。完整 57 Locale 的数据导出、完整性和可渲染验证属于独立 Locale 垂直切片，不在 ConfigProvider 中复制上游数据。
+- 默认配置通过 Foundation 集成入口直接使用固定 `pinnedLocale_zh_CN`，包括 dateFnsLocale 和全部组件字段；ConfigConsumer 与 SSR 使用相同对象。完整 57 Locale 的导出验证由 Locale 切片维护，不在 ConfigProvider 中复制数据。
 - 用户传入的 Locale 对象保持开放结构，后续组件可按原字段直接消费，不需要修改 ConfigProvider 公共 API。
 - React Context.Consumer 的 render function 在 Vue 中迁移为 `v-slot="context"`；Context 值只读消费，更新仍由 Provider props 和内部断点观察驱动。
 - SSR import/render 不创建 DOM、media query 或全局监听；hydration 后首次订阅才读取真实断点。
@@ -66,3 +66,13 @@
 | 发布包         | 根/`config-provider` ESM 与声明、`config-provider.css`、SSR import、真实 tarball 离线安装                            |
 
 当前没有 accepted visual/behavior deviation。Vue scoped slot、InjectionKey 和响应式只读上下文属于框架原生映射。
+
+## 文档示例补充验收
+
+三个双语 live 示例及默认 Locale/DatePicker readonly 回归见 `docs/documentation/config-provider-acceptance.md`。文档示例不以组件既有 ready 状态代替严格验收；有效结果读取 coverage.json。
+
+### 文档消费者后续修复（2026-09-06，用户已确认）
+
+第二份消费者补丁对齐 TextArea 默认 validation class、Checkbox normal/card enable class、Switch 缺省 checked ARIA、DatePicker 四类输入的装饰图标、TimePicker 实际触发节点、Navigation 箭头，以及 Steps 有/无监听器的点击状态。Steps 的当前项保留上游点击样式但不发出 change，另验证动态增删监听器。Navigation 的缺省 aria-expanded 被 Dropdown 覆盖，因此 Dropdown 内部触发器也保留 props.visible 缺省与显式 false 的区别（固定 `dropdown/index.tsx` 的 state.popVisible 初始为 props.visible）。未新增公开 API。
+
+Chromium 定向回归不能替代 ConfigProvider 新文档组合矩阵；Typography 手写弹层差异仍未解决。

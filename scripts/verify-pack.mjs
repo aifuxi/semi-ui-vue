@@ -908,6 +908,35 @@ for (const Icon of [IconAIFilledLevel3, DirectIcon]) {
   run(process.execPath, ['icon-palette-smoke.mjs'], consumerRoot);
 
   await writeFile(
+    path.join(consumerRoot, 'config-provider-smoke.mjs'),
+    String.raw`
+import assert from 'node:assert/strict';
+import { h } from 'vue';
+import { renderToString } from 'vue/server-renderer';
+import * as root from '@aifuxi/semi-ui-vue';
+import * as config from '@aifuxi/semi-ui-vue/config-provider';
+import { DatePicker } from '@aifuxi/semi-ui-vue/date-picker';
+import zhCN from '@aifuxi/semi-ui-vue/locale/source/zh_CN';
+for (const { ConfigProvider, ConfigConsumer } of [root, config]) {
+  let received;
+  await renderToString(h(ConfigProvider, null, () => h(ConfigConsumer, null, {
+    default: (context) => { received = context.locale; return h('span', context.locale.code); },
+  })));
+  assert.deepEqual(JSON.parse(JSON.stringify(received)), JSON.parse(JSON.stringify(zhCN)));
+  assert.equal(received.dateFnsLocale.code, 'zh-CN');
+  assert.ok(received.AIChatInput && received.DatePicker && received.TimePicker);
+}
+for (const Component of [root.DatePicker, DatePicker]) {
+  for (const inputReadOnly of [undefined, false, true]) {
+    const html = await renderToString(h(Component, inputReadOnly === undefined ? {} : { inputReadOnly }));
+    assert.equal(html.includes('semi-datepicker-input-readonly'), inputReadOnly === true);
+  }
+}
+`,
+  );
+  run(process.execPath, ['config-provider-smoke.mjs'], consumerRoot);
+
+  await writeFile(
     path.join(consumerRoot, 'type-smoke.ts'),
     `${javascriptPackages.map((packageName) => `import '${packageName}';`).join('\n')}
 	import { BaseComponent, BaseFoundation, type BaseProps, type ValidateStatus } from '@aifuxi/semi-ui-vue/_base';

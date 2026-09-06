@@ -84,6 +84,10 @@ function mountViewer(
 }
 
 beforeEach(() => {
+  // The pinned manager uses Date.now() + Math.random() as a request ID. At epoch
+  // magnitudes its fractional precision can collide in this synchronous Worker fixture.
+  let workerClock = Date.now();
+  vi.spyOn(Date, 'now').mockImplementation(() => ++workerClock);
   TestWorker.instances = [];
   TestResizeObserver.instances = [];
   vi.stubGlobal('Worker', TestWorker);

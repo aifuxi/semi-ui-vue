@@ -4,6 +4,7 @@ import 'virtual:semi-reference-styles.css';
 import 'virtual:pinned-doc-site.css';
 import buttonSources from 'virtual:pinned-button-examples';
 import iconSources from 'virtual:pinned-icon-examples';
+import configProviderSources from 'virtual:pinned-config-provider-examples';
 import Sidebar from 'virtual:pinned-doc-sidebar';
 import { docPages, categories } from '../../docs/src/data/docs';
 
@@ -12,7 +13,12 @@ const locale = query.get('locale') === 'en-us' ? 'en-us' : 'zh-cn';
 const theme = query.get('theme') === 'dark' ? 'dark' : 'light';
 document.documentElement.lang = locale;
 document.body.setAttribute('theme-mode', theme);
-const sources = query.get('component') === 'icon' ? iconSources : buttonSources;
+const sources =
+  query.get('component') === 'config-provider'
+    ? configProviderSources
+    : query.get('component') === 'icon'
+      ? iconSources
+      : buttonSources;
 const Example = React.lazy(sources[locale][Number(query.get('example') ?? 1) - 1]!);
 const origin = 'http://127.0.0.1:4321';
 const style = document.createElement('style');

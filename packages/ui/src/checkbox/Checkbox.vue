@@ -114,7 +114,7 @@ const rootClasses = computed(() => [
   effectiveChecked.value ? `${prefix.value}-checked` : `${prefix.value}-unChecked`,
   isCardType.value ? `${prefix.value}-cardType` : undefined,
   effectiveDisabled.value && isCardType.value ? `${prefix.value}-cardType_disabled` : undefined,
-  !effectiveDisabled.value && isCardType.value ? `${prefix.value}-cardType_enable` : undefined,
+  !(effectiveDisabled.value && isCardType.value) ? `${prefix.value}-cardType_enable` : undefined,
   isCardType.value && effectiveChecked.value && !effectiveDisabled.value
     ? `${prefix.value}-cardType_checked`
     : undefined,
