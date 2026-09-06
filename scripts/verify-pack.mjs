@@ -882,6 +882,31 @@ if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 inde
   );
   run(process.execPath, ['smoke.mjs'], consumerRoot);
 
+  // Exercise the installed tarball, so the palette fix cannot be lost during bundling.
+  await writeFile(
+    path.join(consumerRoot, 'icon-palette-smoke.mjs'),
+    String.raw`
+import assert from 'node:assert/strict';
+import { h } from 'vue';
+import { renderToString } from 'vue/server-renderer';
+import { IconAIFilledLevel3 } from '@aifuxi/semi-icons-vue';
+import DirectIcon from '@aifuxi/semi-icons-vue/icons/IconAIFilledLevel3';
+for (const Icon of [IconAIFilledLevel3, DirectIcon]) {
+  for (const [fill, expected] of [
+    [['red'], ['red', 'red', 'red', 'red']],
+    [['red', 'blue'], ['red', 'blue', 'red', 'blue']],
+    [['red', 'blue', 'green'], ['red', 'blue', 'green', 'red']],
+    [['red', 'blue', 'green', 'yellow'], ['yellow', 'green', 'blue', 'red']],
+  ]) {
+    const html = await renderToString(h(Icon, { fill }));
+    const stops = [...html.matchAll(/stop-color="([^"]+)"/g)].map((match) => match[1]);
+    assert.deepEqual(stops, expected, 'Installed Icon gradient palette order');
+  }
+}
+`,
+  );
+  run(process.execPath, ['icon-palette-smoke.mjs'], consumerRoot);
+
   await writeFile(
     path.join(consumerRoot, 'type-smoke.ts'),
     `${javascriptPackages.map((packageName) => `import '${packageName}';`).join('\n')}

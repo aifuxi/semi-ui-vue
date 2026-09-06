@@ -6766,11 +6766,131 @@
     "upstream": null
   },
   {
-    "id": "icon/Showcase",
-    "entry": "Showcase.vue",
-    "files": { "Showcase.vue": "icon/Showcase.vue" },
+    "id": "icon/en-us/Accessibility",
+    "entry": "Accessibility.vue",
+    "files": { "Accessibility.vue": "icon/en-us/Accessibility.vue" },
     "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
-    "pages": ["/en-us/components/icon/", "/zh-cn/components/icon/"],
+    "pages": ["/en-us/components/icon/"],
+    "upstream": "basic/icon"
+  },
+  {
+    "id": "icon/en-us/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "icon/en-us/Basic.vue" },
+    "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
+    "pages": ["/en-us/components/icon/"],
+    "upstream": "basic/icon"
+  },
+  {
+    "id": "icon/en-us/Bicolor",
+    "entry": "Bicolor.vue",
+    "files": { "Bicolor.vue": "icon/en-us/Bicolor.vue" },
+    "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
+    "pages": ["/en-us/components/icon/"],
+    "upstream": "basic/icon"
+  },
+  {
+    "id": "icon/en-us/Colors",
+    "entry": "Colors.vue",
+    "files": { "Colors.vue": "icon/en-us/Colors.vue" },
+    "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
+    "pages": ["/en-us/components/icon/"],
+    "upstream": "basic/icon"
+  },
+  {
+    "id": "icon/en-us/Custom",
+    "entry": "Custom.vue",
+    "files": { "Custom.vue": "icon/en-us/Custom.vue", "CustomSvg.vue": "icon/en-us/CustomSvg.vue" },
+    "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
+    "pages": ["/en-us/components/icon/"],
+    "upstream": "basic/icon"
+  },
+  {
+    "id": "icon/en-us/Multicolor",
+    "entry": "Multicolor.vue",
+    "files": { "Multicolor.vue": "icon/en-us/Multicolor.vue" },
+    "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
+    "pages": ["/en-us/components/icon/"],
+    "upstream": "basic/icon"
+  },
+  {
+    "id": "icon/en-us/RotateSpin",
+    "entry": "RotateSpin.vue",
+    "files": { "RotateSpin.vue": "icon/en-us/RotateSpin.vue" },
+    "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
+    "pages": ["/en-us/components/icon/"],
+    "upstream": "basic/icon"
+  },
+  {
+    "id": "icon/en-us/Sizes",
+    "entry": "Sizes.vue",
+    "files": { "Sizes.vue": "icon/en-us/Sizes.vue" },
+    "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
+    "pages": ["/en-us/components/icon/"],
+    "upstream": "basic/icon"
+  },
+  {
+    "id": "icon/zh-cn/Accessibility",
+    "entry": "Accessibility.vue",
+    "files": { "Accessibility.vue": "icon/zh-cn/Accessibility.vue" },
+    "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
+    "pages": ["/zh-cn/components/icon/"],
+    "upstream": "basic/icon"
+  },
+  {
+    "id": "icon/zh-cn/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "icon/zh-cn/Basic.vue" },
+    "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
+    "pages": ["/zh-cn/components/icon/"],
+    "upstream": "basic/icon"
+  },
+  {
+    "id": "icon/zh-cn/Bicolor",
+    "entry": "Bicolor.vue",
+    "files": { "Bicolor.vue": "icon/zh-cn/Bicolor.vue" },
+    "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
+    "pages": ["/zh-cn/components/icon/"],
+    "upstream": "basic/icon"
+  },
+  {
+    "id": "icon/zh-cn/Colors",
+    "entry": "Colors.vue",
+    "files": { "Colors.vue": "icon/zh-cn/Colors.vue" },
+    "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
+    "pages": ["/zh-cn/components/icon/"],
+    "upstream": "basic/icon"
+  },
+  {
+    "id": "icon/zh-cn/Custom",
+    "entry": "Custom.vue",
+    "files": { "Custom.vue": "icon/zh-cn/Custom.vue", "CustomSvg.vue": "icon/zh-cn/CustomSvg.vue" },
+    "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
+    "pages": ["/zh-cn/components/icon/"],
+    "upstream": "basic/icon"
+  },
+  {
+    "id": "icon/zh-cn/Multicolor",
+    "entry": "Multicolor.vue",
+    "files": { "Multicolor.vue": "icon/zh-cn/Multicolor.vue" },
+    "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
+    "pages": ["/zh-cn/components/icon/"],
+    "upstream": "basic/icon"
+  },
+  {
+    "id": "icon/zh-cn/RotateSpin",
+    "entry": "RotateSpin.vue",
+    "files": { "RotateSpin.vue": "icon/zh-cn/RotateSpin.vue" },
+    "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
+    "pages": ["/zh-cn/components/icon/"],
+    "upstream": "basic/icon"
+  },
+  {
+    "id": "icon/zh-cn/Sizes",
+    "entry": "Sizes.vue",
+    "files": { "Sizes.vue": "icon/zh-cn/Sizes.vue" },
+    "dependencies": ["@aifuxi/semi-icons-vue", "@aifuxi/semi-theme-default/icon.css"],
+    "pages": ["/zh-cn/components/icon/"],
     "upstream": "basic/icon"
   },
   {

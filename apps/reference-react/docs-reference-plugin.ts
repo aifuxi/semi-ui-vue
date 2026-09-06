@@ -5,6 +5,7 @@ import { transformWithEsbuild, type Plugin } from 'vite';
 
 const root = fileURLToPath(new URL('../..', import.meta.url));
 const prefix = 'virtual:pinned-button-docs/';
+const iconPrefix = 'virtual:pinned-icon-docs/';
 const sourceRoot = path.join(root, 'vendor/semi-design');
 async function publicImports(code: string): Promise<string> {
   const index = await readFile(path.join(sourceRoot, 'packages/semi-ui/index.ts'), 'utf8');
@@ -41,14 +42,17 @@ export function pinnedButtonDocumentation(): Plugin {
           'virtual:pinned-doc-gatsby',
           'virtual:pinned-doc-locale',
           'virtual:pinned-button-examples',
+          'virtual:pinned-icon-examples',
         ].includes(id)
       )
         return `\0${id}`;
-      if (id.startsWith(prefix)) return `\0${id}`;
+      if (id.startsWith(prefix) || id.startsWith(iconPrefix)) return `\0${id}`;
     },
     async load(id) {
       if (id === '\0virtual:pinned-button-examples')
         return `export default {${['zh-cn', 'en-us'].map((locale) => `${JSON.stringify(locale)}:[${Array.from({ length: 17 }, (_, index) => `()=>import('${prefix}${locale}/${index + 1}.jsx')`).join(',')}]`).join(',')}}`;
+      if (id === '\0virtual:pinned-icon-examples')
+        return `export default {${['zh-cn', 'en-us'].map((locale) => `${JSON.stringify(locale)}:[${Array.from({ length: 8 }, (_, index) => `()=>import('${iconPrefix}${locale}/${index + 1}.jsx')`).join(',')}]`).join(',')}}`;
       if (id === '\0virtual:pinned-doc-gatsby')
         return `import React from 'react'; export const withPrefix = path => path; export const Link = ({to, children, ...props}) => React.createElement('a', {...props, href:to}, children);`;
       if (id === '\0virtual:pinned-doc-locale')
@@ -110,29 +114,37 @@ export function pinnedButtonDocumentation(): Plugin {
         const css = await readFile(path.join(root, 'apps/docs/public/upstream/site.css'), 'utf8');
         return css.replaceAll('/upstream/Inter-', 'http://127.0.0.1:4321/repl/fonts/Inter-');
       }
-      if (!id.startsWith(`\0${prefix}`)) return;
+      const isIcon = id.startsWith(`\0${iconPrefix}`);
+      if (!isIcon && !id.startsWith(`\0${prefix}`)) return;
       const [, locale, number] = id.match(/\/([\w-]+)\/(\d+)\.jsx$/) ?? [];
       if (!['zh-cn', 'en-us'].includes(locale ?? '')) throw new Error('Invalid reference locale');
       const filename = locale === 'en-us' ? 'index-en-US.md' : 'index.md';
       const source = await readFile(
-        path.join(root, 'vendor/semi-design/content/basic/button', filename),
+        path.join(root, `vendor/semi-design/content/basic/${isIcon ? 'icon' : 'button'}`, filename),
         'utf8',
       );
       const examples = [...source.matchAll(/```[^\n]*live=true[^\n]*\n([\s\S]*?)```/g)];
       let code = examples[Number(number) - 1]?.[1];
       if (!code) throw new Error(`Missing pinned Button example ${locale}/${number}`);
       const entry = code.match(/^function\s+(\w+)\s*\(/m)?.[1];
-      if (!entry) throw new Error(`Unsupported pinned example entry ${locale}/${number}`);
+      if (!entry && !isIcon)
+        throw new Error(`Unsupported pinned example entry ${locale}/${number}`);
       // Fixed Markdown assigns an undeclared variable in both Split examples. The original
       // site evaluates demos outside ESM; declare that local when compiling the reference as ESM.
-      if (Number(number) === 17)
+      if (!isIcon && Number(number) === 17)
         code = code.replace('        newBtnVisible =', '        const newBtnVisible =');
       code = await publicImports(code);
+      // Icon demos use a top-level anonymous arrow expression, including a nested CustomIcon.
+      if (isIcon) code = code.replace(/^\(\) =>/m, 'const DocumentationExample = () =>');
       return (
-        await transformWithEsbuild(`${code}\nexport default ${entry};`, 'pinned-button.jsx', {
-          loader: 'jsx',
-          jsx: 'transform',
-        })
+        await transformWithEsbuild(
+          `${code}\nexport default ${isIcon ? 'DocumentationExample' : entry};`,
+          'pinned-button.jsx',
+          {
+            loader: 'jsx',
+            jsx: 'transform',
+          },
+        )
       ).code;
     },
   };

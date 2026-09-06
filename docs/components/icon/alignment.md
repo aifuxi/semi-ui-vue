@@ -73,3 +73,12 @@
 
 - 固定 Icon Adapter 只在调用方提供 fill 时 clone SVG 组件。Vue convertIcon 不得将缺省 fill 覆盖生成 SVG 的 fill=none；双色/四色 fill 应先由生成器分配给 path，不能再作为数组写入 SVG 根节点。
 - 增加缺省、显式 undefined、字符串、数组及 prop 更新后复原的公开 DOM/SSR 断言；Button 文档图标场景增加 computed fill 对照。
+
+## 2026-09-06 短 fill 调色板回归修复
+
+上游 `semi-icons/src/utils.ts:getFillColor` 对不足 4 色的数组在循环补齐后立即返回，不执行 reverse；原 Vue 实现无条件反转四色结果，导致 2/3 色输入的渐变顺序错误。用户确认后，已将反转条件限定为完整四色或更长输入，短数组按原顺序补齐，并保持调用方数组不被修改。
+
+- DOM、SSR 和 prop 更新回归 9/9 通过；真实 tarball 根入口与图标子路径均验证 1/2/3/4 色顺序。
+- Icon 文档双语 light/dark 和适用 RTL 共 48/48 通过，computed style、几何与逐图标截图门槛未放宽。
+- 全仓 Chromium 回归 434/434 通过。
+- 原始失败报告与已应用补丁保留在 `ai-work/20260906-095242-icon-*`；有效文档证据见 `docs/documentation/evidence/icon.json`。该回归已关闭，无新增 accepted deviation。

@@ -4,7 +4,13 @@ import { createSSRApp, h, type Component } from 'vue';
 import { describe, expect, it } from 'vitest';
 
 import Icon, * as iconPackage from './index';
-import { IconAIFilledLevel2, IconAIWandLevel3, IconHome, IconSpin } from './icons';
+import {
+  IconAIFilledLevel2,
+  IconAIFilledLevel3,
+  IconAIWandLevel3,
+  IconHome,
+  IconSpin,
+} from './icons';
 
 describe('Icon', () => {
   it('缺省 fill 保留 SVG 默认值，显式覆盖清除后恢复，AI 数组只应用于 path', async () => {
@@ -105,6 +111,34 @@ describe('Icon', () => {
         ?.findAll('stop')
         .map((stop) => stop.attributes('stop-color')),
     ).toEqual(['#444444', '#333333', '#222222', '#111111']);
+  });
+
+  it.each([
+    [['red'], ['red', 'red', 'red', 'red']],
+    [
+      ['red', 'blue'],
+      ['red', 'blue', 'red', 'blue'],
+    ],
+    [
+      ['red', 'blue', 'green'],
+      ['red', 'blue', 'green', 'red'],
+    ],
+  ])('短 fill 调色板按固定上游顺序补齐：%j', async (fill, expected) => {
+    const wrapper = mount(IconAIFilledLevel3, { props: { fill } });
+    expect(wrapper.findAll('stop').map((stop) => stop.attributes('stop-color'))).toEqual(expected);
+    const html = await renderToString(h(IconAIFilledLevel3, { fill }));
+    expect([...html.matchAll(/stop-color="([^"]+)"/g)].map((match) => match[1])).toEqual(expected);
+    // Updating from a complete palette must restore the short-palette order as well.
+    await wrapper.setProps({ fill: ['red', 'blue', 'green', 'yellow'] });
+    expect(wrapper.findAll('stop').map((stop) => stop.attributes('stop-color'))).toEqual([
+      'yellow',
+      'green',
+      'blue',
+      'red',
+    ]);
+    await wrapper.setProps({ fill });
+    expect(wrapper.findAll('stop').map((stop) => stop.attributes('stop-color'))).toEqual(expected);
+    wrapper.unmount();
   });
 
   it('完整导出并可服务端渲染 523 个固定稳定图标', async () => {

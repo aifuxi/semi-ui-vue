@@ -17,3 +17,9 @@ declare module 'virtual:pinned-doc-sidebar' {
   }>;
   export default sidebar;
 }
+
+declare module 'virtual:pinned-icon-examples' {
+  import type { ComponentType } from 'react';
+  const examples: Record<'zh-cn' | 'en-us', Array<() => Promise<{ default: ComponentType }>>>;
+  export default examples;
+}

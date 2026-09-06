@@ -1,0 +1,95 @@
+{
+  "id": "icon",
+  "upstream": "basic/icon",
+  "title": "Icon 文档",
+  "spec": "icon-matrix.spec.ts",
+  "locales": ["zh-cn", "en-us"],
+  "themes": ["light", "dark"],
+  "examples": [
+    {
+      "index": 1,
+      "name": "Basic",
+      "zhCN": "icon/zh-cn/Basic",
+      "enUS": "icon/en-us/Basic"
+    },
+    {
+      "index": 2,
+      "name": "RotateSpin",
+      "zhCN": "icon/zh-cn/RotateSpin",
+      "enUS": "icon/en-us/RotateSpin"
+    },
+    {
+      "index": 3,
+      "name": "Sizes",
+      "zhCN": "icon/zh-cn/Sizes",
+      "enUS": "icon/en-us/Sizes"
+    },
+    {
+      "index": 4,
+      "name": "Colors",
+      "zhCN": "icon/zh-cn/Colors",
+      "enUS": "icon/en-us/Colors"
+    },
+    {
+      "index": 5,
+      "name": "Bicolor",
+      "zhCN": "icon/zh-cn/Bicolor",
+      "enUS": "icon/en-us/Bicolor"
+    },
+    {
+      "index": 6,
+      "name": "Multicolor",
+      "zhCN": "icon/zh-cn/Multicolor",
+      "enUS": "icon/en-us/Multicolor"
+    },
+    {
+      "index": 7,
+      "name": "Custom",
+      "zhCN": "icon/zh-cn/Custom",
+      "enUS": "icon/en-us/Custom"
+    },
+    {
+      "index": 8,
+      "name": "Accessibility",
+      "zhCN": "icon/zh-cn/Accessibility",
+      "enUS": "icon/en-us/Accessibility"
+    }
+  ],
+  "inputs": [
+    "pnpm-lock.yaml",
+    "package.json",
+    "apps/docs/package.json",
+    "apps/docs/nuxt.config.ts",
+    "apps/docs/content/zh-cn/components/icon.md",
+    "apps/docs/content/en-us/components/icon.md",
+    "apps/docs/src/demos/icon",
+    "apps/docs/src/data/api",
+    "apps/docs/src/assets",
+    "apps/docs/src/components",
+    "apps/docs/scripts",
+    "apps/docs/playwright.nuxt.config.ts",
+    "apps/docs/playwright.config.ts",
+    "apps/reference-react",
+    "packages/ui/src",
+    "packages/icons/src",
+    "packages/theme-default",
+    "packages/foundation-integration",
+    "tests/browser/parity-harness.ts",
+    "tests/browser/parity-provenance.ts",
+    "docs/documentation/batches/icon.json",
+    "docs/documentation/mappings/icon.json",
+    "docs/documentation/icon-acceptance.md",
+    "packages/test-infra/src",
+    "apps/docs/content.config.ts",
+    "apps/docs/tests/nuxt/icon-matrix.spec.ts",
+    "apps/docs/tests/nuxt/demo-parity.ts",
+    "apps/docs/tests/nuxt/visual-context.ts",
+    "apps/docs/src/composables",
+    "apps/docs/src/layouts",
+    "apps/docs/src/pages",
+    "apps/docs/src/app.vue",
+    "apps/docs/public/theme.js",
+    "apps/docs/licenses/icon-examples.json"
+  ],
+  "rtlExamples": ["RotateSpin", "Colors", "Multicolor", "Custom"]
+}
