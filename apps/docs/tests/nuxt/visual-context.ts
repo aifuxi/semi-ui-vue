@@ -1,4 +1,26 @@
-import type { Browser, TestInfo } from '@playwright/test';
+import type { Browser, Locator, TestInfo } from '@playwright/test';
+
+/** Wait for real local assets; a missing font/image must fail instead of using a fallback screenshot. */
+export async function waitForVisualAssets(targets: Locator[]) {
+  await Promise.all(
+    targets.map(async (target) => {
+      await target.page().evaluate(async () => {
+        const fonts = await Promise.all([
+          document.fonts.load('12px Inter'),
+          document.fonts.load('600 14px Inter'),
+        ]);
+        if (fonts.some((faces) => !faces.length))
+          throw new Error('Inter 字体未注册，不能验收视觉。');
+        await document.fonts.ready;
+      });
+      await target
+        .locator('img')
+        .evaluateAll((images) =>
+          Promise.all(images.map((image) => (image as HTMLImageElement).decode())),
+        );
+    }),
+  );
+}
 
 export async function visualContext(
   browser: Browser,

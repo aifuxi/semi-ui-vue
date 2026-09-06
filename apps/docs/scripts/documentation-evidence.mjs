@@ -3,6 +3,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { gunzipSync } from 'node:zlib';
+import { batchInputs } from './documentation-inputs.mjs';
 
 export const root = resolve(import.meta.dirname, '../../..');
 export const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
@@ -22,13 +23,7 @@ export async function loadBatches() {
 
 /** Include uncommitted edits and new source files; never fingerprint dist or the evidence itself. */
 export async function fingerprint(batch) {
-  const files = execFileSync(
-    'git',
-    ['ls-files', '--cached', '--others', '--exclude-standard', '-z', '--', ...batch.inputs],
-    { cwd: root, encoding: 'utf8' },
-  )
-    .split('\0')
-    .filter(Boolean);
+  const { files } = await batchInputs(batch);
   const hash = createHash('sha256');
   for (const file of [...new Set(files)].sort()) {
     hash.update(file + '\0');

@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { test, expect, type Locator, type TestInfo } from '@playwright/test';
-import { visualContext } from './visual-context';
+import { visualContext, waitForVisualAssets } from './visual-context';
 import { freezeAnimations } from './demo-parity';
 import { expectScreenshotPixelsToMatch } from '../../../../tests/browser/parity-harness';
 
@@ -208,24 +208,7 @@ for (const [index, name] of examples.entries())
                 'utf8',
               ),
             );
-            await Promise.all(
-              [reference, vue].map((page) =>
-                page.evaluate(async () => {
-                  await Promise.all([
-                    document.fonts.load('12px Inter'),
-                    document.fonts.load('600 14px Inter'),
-                  ]);
-                  await document.fonts.ready;
-                }),
-              ),
-            );
-            if (name === 'Components')
-              for (const root of [expected, actual])
-                await root
-                  .locator('img')
-                  .evaluateAll((images) =>
-                    Promise.all(images.map((image) => (image as HTMLImageElement).decode())),
-                  );
+            await waitForVisualAssets([expected, actual]);
             if (name === 'Components' && direction === 'rtl') {
               for (const root of [expected, actual]) {
                 await root.locator('.semi-select').first().click();

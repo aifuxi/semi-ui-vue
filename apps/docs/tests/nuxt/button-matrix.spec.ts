@@ -1,6 +1,6 @@
 import { compareStyles, compareTarget, freezeAnimations } from './demo-parity';
 import { readFile } from 'node:fs/promises';
-import { visualContext } from './visual-context';
+import { visualContext, waitForVisualAssets } from './visual-context';
 import { expect, test, type Locator } from '@playwright/test';
 import { expectScreenshotPixelsToMatch } from '../../../../tests/browser/parity-harness';
 
@@ -92,10 +92,7 @@ for (const locale of ['zh-cn', 'en-us'])
             'utf8',
           );
           expect(await demo.locator('[data-demo-source] code').textContent()).toBe(source);
-          await Promise.all([
-            reference.evaluate(() => document.fonts.ready),
-            vue.evaluate(() => document.fonts.ready),
-          ]);
+          await waitForVisualAssets([expected, actual]);
           for (const root of [expected, actual])
             await root.evaluate((element, direction) => {
               (element as HTMLElement).dir = direction;

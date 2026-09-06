@@ -14,7 +14,7 @@
     "check:dist": "node scripts/verify-dist.mjs",
     "typecheck": "pnpm prepare:site && nuxt typecheck",
     "test:browser": "pnpm build && playwright test -c playwright.config.ts",
-    "check": "pnpm check:nuxt:evidence && pnpm build && pnpm check:content && pnpm typecheck && pnpm check:dist",
+    "check": "node scripts/documentation-pipeline.mjs",
     "clean": "rimraf .nuxt .output .data dist public/upstream public/repl public/search-index.json public/sitemap.xml",
     "prepare:nuxt": "pnpm prepare:site",
     "dev:nuxt": "pnpm dev",
@@ -26,7 +26,7 @@
     "check:nuxt:coverage": "node scripts/prepare-coverage.mjs --require-complete",
     "check:nuxt": "pnpm check && pnpm test:nuxt",
     "accept:nuxt:batch": "node scripts/accept-documentation-batch.mjs",
-    "check:nuxt:evidence": "node --test scripts/documentation-evidence.test.mjs"
+    "check:nuxt:evidence": "node --test scripts/documentation-evidence.test.mjs scripts/documentation-inputs.test.mjs scripts/documentation-pipeline.test.mjs"
   },
   "dependencies": {
     "@aifuxi/semi-icons-lab-vue": "workspace:*",

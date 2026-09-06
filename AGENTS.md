@@ -97,6 +97,8 @@ git -C vendor/semi-design describe --tags --exact-match
 
 ## 测试与门禁
 
+- 后续所有示例补齐、文档示例修复和严格视觉验收，按 [`docs/documentation/workflow.md`](docs/documentation/workflow.md) 执行：先预检与代表用例，修复稳定后集中跑受影响矩阵，最后一次刷新证据；正式入口共享一次构建，不为提交重复验证。
+
 - `failOnFlakyTests`（CI 环境已启用）和 `retries: 2` 是防抖基础配置。一个只在单独运行时通过的 spec 是 spec 的缺陷，不是 runner 不稳定——修复 spec 或添加确定性 fixture，而非增加 retries。
 - 每个组件完成 = 对齐矩阵 + Vue 源码/类型 + 中英文文档与迁移表 + 黑盒单测 + Chromium 行为/键盘/焦点/ARIA/Portal/动效测试 + SSR 证据 + React/Vue computed style 与截图对照 + npm pack 验证。
 - 测试优先公开行为，不把私有 state/method 或 Foundation spy 当主证据；快照必须与行为断言配对。
