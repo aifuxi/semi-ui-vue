@@ -34,3 +34,43 @@ if (process.argv[1] === import.meta.filename) {
   runDocs(['check:nuxt:evidence']);
   prepareAcceptance();
 }
+
+/** Record failed stages too, so timeout/build failures remain measurable. */
+export function timedRunner(
+  entries,
+  run = runDocs,
+  now = () => performance.now(),
+  log = console.log,
+) {
+  return (args, env) => {
+    const started = now();
+    const entry = { command: args.join(' '), durationMs: 0, status: 'failed' };
+    try {
+      const result = run(args, env);
+      entry.status = 'passed';
+      return result;
+    } finally {
+      entry.durationMs = Math.round(now() - started);
+      entries.push(entry);
+      log(
+        `[阶段耗时] ${entry.command}: ${(entry.durationMs / 1000).toFixed(1)}s (${entry.status})`,
+      );
+    }
+  };
+}
+
+export function runBrowserMatrices(batches, reportFile, outputDirectory, run = runDocs) {
+  run(
+    [
+      'exec',
+      'playwright',
+      'test',
+      '-c',
+      'playwright.nuxt.config.ts',
+      ...batches.map((batch) => batch.spec),
+      '--reporter=json',
+      `--output=${outputDirectory}`,
+    ],
+    { DOCS_ACCEPTANCE: '1', PLAYWRIGHT_JSON_OUTPUT_NAME: reportFile },
+  );
+}

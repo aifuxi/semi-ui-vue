@@ -50,7 +50,7 @@ pnpm --filter @workspace/docs check:nuxt:evidence
 node apps/docs/scripts/prepare-coverage.mjs --batch=button
 ```
 
-批次命令支持多个批次及 `--affected --plan`。有效批次直接跳过，其余批次共享一次公开 JS、主题和 Nuxt 静态构建，运行一次类型、内容和产物检查，再顺序运行完整浏览器矩阵；验收时不复用既有服务。全部通过且运行前后源码指纹不变，才写入 `evidence/<batch>.json` 与包含截图/样式附件的压缩 Playwright JSON 报告。重试通过、跳过、遗漏用例、全局错误和缺少附件均不能生成新记录。
+批次命令支持多个批次及 `--affected --plan`。有效批次直接跳过，其余批次共享一次公开 JS、主题和 Nuxt 静态构建，运行一次类型、内容和产物检查，再以一次 Playwright 调用共享服务、顺序运行完整浏览器矩阵；验收时不复用既有服务。全部通过且运行前后源码指纹不变，才写入 `evidence/<batch>.json` 与包含截图/样式附件的压缩 Playwright JSON 报告。重试通过、跳过、遗漏用例、全局错误和缺少附件均不能生成新记录。
 
 覆盖生成器重新校验当前源码指纹、映射和报告哈希。失效的证据不计入 accepted 数量；批次门禁还要求对应章节/API/迁移审阅有效。其它未完成批次不阻塞当前批次，全量内容门禁继续要求所有适用文档完成。批次完成不能替代最终站点、许可和全仓验收。
 

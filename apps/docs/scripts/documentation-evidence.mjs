@@ -148,3 +148,43 @@ export async function acceptedBatch(batch) {
     throw error;
   }
 }
+
+/** Partition only known specs; never discard unexpected tests or global errors. */
+export function splitBatchReport(report, batches) {
+  const specs = new Set(batches.map((batch) => batch.spec));
+  if (specs.size !== batches.length || report.errors?.length)
+    throw new Error('批次 spec 重复或报告包含全局错误；不生成新证据。');
+  const cases = reportCases(report);
+  if (cases.some((test) => !specs.has(test.file)))
+    throw new Error('报告包含未选择的 spec；不生成新证据。');
+  return batches.map((batch) => {
+    function select(suites) {
+      return (suites ?? []).flatMap((suite) => {
+        const specs = (suite.specs ?? []).filter((spec) => spec.file === batch.spec);
+        const children = select(suite.suites);
+        return specs.length || children.length ? [{ ...suite, specs, suites: children }] : [];
+      });
+    }
+    const selected = cases.filter((test) => test.file === batch.spec);
+    const result = {
+      ...report,
+      suites: select(report.suites),
+      // The original elapsed time belongs to the shared run, not to each batch.
+      sharedRunStats: report.stats,
+      stats: {
+        startTime: report.stats?.startTime,
+        duration: selected.reduce(
+          (total, test) => total + test.results.reduce((sum, run) => sum + run.duration, 0),
+          0,
+        ),
+        expected: selected.filter((test) => test.status === 'expected').length,
+        skipped: selected.filter((test) => test.status === 'skipped').length,
+        unexpected: selected.filter((test) => test.status === 'unexpected').length,
+        flaky: selected.filter((test) => test.status === 'flaky').length,
+      },
+    };
+    if (!validateReport(result, batch))
+      throw new Error(`${batch.id}: 报告缺少完整矩阵、附件，或存在重试/跳过/失败；不计入验收。`);
+    return { batch, report: result };
+  });
+}

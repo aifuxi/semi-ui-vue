@@ -1,27 +1,31 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { evidenceIsCurrent, validateReport } from './documentation-evidence.mjs';
+import { evidenceIsCurrent, validateReport, splitBatchReport } from './documentation-evidence.mjs';
 const batch = {
+  id: 'button',
+  spec: 'button-matrix.spec.ts',
   title: 'Button 文档',
   upstream: 'basic/button',
   examples: [{ index: 1, name: 'Types' }],
   locales: ['zh-cn', 'en-us'],
   themes: ['light', 'dark'],
 };
-function fixture() {
+function fixture(current = batch) {
   return {
     errors: [],
     suites: [
       {
-        specs: batch.locales.flatMap((locale) =>
-          batch.themes.map((theme) => ({
-            title: `Button 文档 Types ${locale} ${theme}`,
+        specs: current.locales.flatMap((locale) =>
+          current.themes.map((theme) => ({
+            file: current.spec,
+            title: `${current.title} Types ${locale} ${theme}`,
             tests: [
               {
                 status: 'expected',
                 results: [
                   {
                     status: 'passed',
+                    duration: 25,
                     attachments: [
                       [
                         'environment',
@@ -37,7 +41,7 @@ function fixture() {
                       [
                         'acceptance',
                         {
-                          upstream: 'basic/button',
+                          upstream: current.upstream,
                           index: 1,
                           name: 'Types',
                           locale,
@@ -109,4 +113,49 @@ test('修改源码或映射后旧验收失效，缺少构建检查也不能接�
     false,
   );
   assert.equal(evidenceIsCurrent({ ...evidence, checks: [] }, batch, 'current'), false);
+});
+
+const second = {
+  ...batch,
+  id: 'second',
+  spec: 'second.spec.ts',
+  title: '第二批',
+  upstream: 'second',
+};
+function combined() {
+  return {
+    errors: [],
+    stats: { duration: 250 },
+    suites: [{ title: 'nested', suites: fixture().suites }, ...fixture(second).suites],
+  };
+}
+test('共享报告按 spec 分批，保留完整附件与共享耗时', () => {
+  const parts = splitBatchReport(combined(), [batch, second]);
+  assert.equal(parts.length, 2);
+  for (const part of parts) {
+    assert.equal(validateReport(part.report, part.batch), true);
+    assert.equal(part.report.stats.expected, 4);
+    assert.equal(part.report.stats.duration, 100);
+    assert.equal(part.report.sharedRunStats.duration, 250);
+  }
+});
+for (const [name, mutate] of [
+  ['未知 spec', (r) => r.suites.push(...fixture({ ...second, spec: 'unknown.ts' }).suites)],
+  ['缺失整批', (r) => r.suites.pop()],
+  ['重复用例', (r) => r.suites.push(...fixture(second).suites)],
+  ['全局错误', (r) => r.errors.push({ message: 'teardown failed' })],
+  ['另一批失败', (r) => (r.suites[1].specs[0].tests[0].results[0].status = 'failed')],
+  [
+    '另一批重试',
+    (r) => r.suites[1].specs[0].tests[0].results.push(r.suites[1].specs[0].tests[0].results[0]),
+  ],
+  ['另一批缺少附件', (r) => r.suites[1].specs[0].tests[0].results[0].attachments.pop()],
+])
+  test(`共享报告${name}时整轮拒绝`, () => {
+    const report = combined();
+    mutate(report);
+    assert.throws(() => splitBatchReport(report, [batch, second]));
+  });
+test('不能用两个批次重复认领同一 spec', () => {
+  assert.throws(() => splitBatchReport(combined(), [batch, { ...second, spec: batch.spec }]));
 });

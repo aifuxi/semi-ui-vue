@@ -1,16 +1,17 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { gzipSync } from 'node:zlib';
 import {
   root,
   loadBatches,
   fingerprint,
-  validateReport,
+  splitBatchReport,
+  reportCases,
   sha256,
   acceptedBatch,
 } from './documentation-evidence.mjs';
 import { batchInputs, preflightBatch } from './documentation-inputs.mjs';
-import { prepareAcceptance, runDocs } from './documentation-pipeline.mjs';
+import { prepareAcceptance, timedRunner, runBrowserMatrices } from './documentation-pipeline.mjs';
 
 const args = process.argv.slice(2);
 const all = await loadBatches();
@@ -68,62 +69,99 @@ const buildInputs = {
     'docs/documentation/mappings',
   ],
 };
-const before = new Map(
-  await Promise.all(selected.map(async (batch) => [batch.id, await fingerprint(batch)])),
-);
-const buildBefore = await fingerprint(buildInputs);
-const checks = prepareAcceptance();
-const completed = [];
-for (const batch of selected) {
+const timingFile = resolve(root, 'apps/docs/test-results/acceptance-timing.json');
+const reportFile = resolve(root, 'apps/docs/test-results/batches.json');
+const stages = [];
+const run = timedRunner(stages);
+const startedAt = new Date().toISOString();
+const started = performance.now();
+let status = 'failed';
+try {
+  const before = new Map(
+    await Promise.all(selected.map(async (batch) => [batch.id, await fingerprint(batch)])),
+  );
+  const buildBefore = await fingerprint(buildInputs);
+  const checks = prepareAcceptance(run);
   if ((await fingerprint(buildInputs)) !== buildBefore)
     throw new Error('构建输入发生变化，停止验收。请稳定源码后重跑。');
-  const reportFile = resolve(root, 'apps/docs/test-results', `batch-${batch.id}.json`);
-  runDocs(
-    [
-      'exec',
-      'playwright',
-      'test',
-      '-c',
-      'playwright.nuxt.config.ts',
-      batch.spec,
-      '--reporter=json',
-      `--output=${resolve(root, 'apps/docs/test-results', `batch-${batch.id}`)}`,
-    ],
-    { DOCS_ACCEPTANCE: '1', PLAYWRIGHT_JSON_OUTPUT_NAME: reportFile },
-  );
-  const report = await readFile(reportFile);
-  if (!validateReport(JSON.parse(report), batch))
-    throw new Error('报告缺少完整矩阵、附件，或存在重试/跳过/失败；不计入验收。');
-  completed.push({ batch, compressed: gzipSync(report) });
-}
-if ((await fingerprint(buildInputs)) !== buildBefore)
-  throw new Error('验收期间构建输入发生变化；不生成新证据。');
-for (const { batch } of completed)
-  if ((await fingerprint(batch)) !== before.get(batch.id))
-    throw new Error(`验收期间 ${batch.id} 源码发生变化。`);
+  await rm(reportFile, { force: true });
+  runBrowserMatrices(selected, reportFile, resolve(root, 'apps/docs/test-results/batches'), run);
+  const report = JSON.parse(await readFile(reportFile, 'utf8'));
+  const completed = splitBatchReport(report, selected).map(({ batch, report }) => ({
+    batch,
+    compressed: gzipSync(JSON.stringify(report)),
+  }));
+  if ((await fingerprint(buildInputs)) !== buildBefore)
+    throw new Error('验收期间构建输入发生变化；不生成新证据。');
+  for (const { batch } of completed)
+    if ((await fingerprint(batch)) !== before.get(batch.id))
+      throw new Error(`验收期间 ${batch.id} 源码发生变化。`);
 
-const directory = resolve(root, 'docs/documentation/evidence');
-await mkdir(directory, { recursive: true });
-for (const { batch, compressed } of completed) {
-  await writeFile(resolve(directory, `${batch.id}.report.json.gz`), compressed);
+  const directory = resolve(root, 'docs/documentation/evidence');
+  await mkdir(directory, { recursive: true });
+  for (const { batch, compressed } of completed) {
+    await writeFile(resolve(directory, `${batch.id}.report.json.gz`), compressed);
+    await writeFile(
+      resolve(directory, `${batch.id}.json`),
+      JSON.stringify(
+        {
+          batch: batch.id,
+          fingerprint: before.get(batch.id),
+          examples: batch.examples,
+          checks,
+          reportSha256: sha256(compressed),
+          completedAt: new Date().toISOString(),
+        },
+        null,
+        2,
+      ) + '\n',
+    );
+  }
+  // Refresh coverage once after the complete stable batch set; never rehash an old browser report.
+  run(['exec', 'node', 'scripts/prepare-coverage.mjs']);
+  console.log(
+    `已验收 ${completed.map(({ batch }) => batch.id).join('、')}；共享一次公开包、主题、站点构建、类型检查与浏览器运行。`,
+  );
+
+  status = 'passed';
+} finally {
+  let slowestTests = [];
+  // A failed Playwright run can still provide useful diagnostic timings.
+  try {
+    const report = JSON.parse(await readFile(reportFile, 'utf8'));
+    if (report.stats?.startTime >= startedAt) {
+      slowestTests = reportCases(report)
+        .flatMap((test) =>
+          test.results.map((result) => ({
+            title: test.title,
+            file: test.file,
+            retry: result.retry,
+            status: result.status,
+            durationMs: result.duration,
+          })),
+        )
+        .sort((a, b) => b.durationMs - a.durationMs)
+        .slice(0, 10);
+    }
+  } catch (error) {
+    if (error.code !== 'ENOENT' && !(error instanceof SyntaxError))
+      console.warn('无法读取诊断报告：', error.message);
+  }
+  await mkdir(resolve(root, 'apps/docs/test-results'), { recursive: true });
   await writeFile(
-    resolve(directory, `${batch.id}.json`),
+    timingFile,
     JSON.stringify(
       {
-        batch: batch.id,
-        fingerprint: before.get(batch.id),
-        examples: batch.examples,
-        checks,
-        reportSha256: sha256(compressed),
-        completedAt: new Date().toISOString(),
+        startedAt,
+        status,
+        durationMs: Math.round(performance.now() - started),
+        batches: selected.map((batch) => batch.id),
+        stages,
+        slowestTests,
       },
       null,
       2,
     ) + '\n',
   );
+  console.log(`阶段耗时与最慢用例：${timingFile}`);
 }
-// Refresh coverage once after the complete stable batch set; never rehash an old browser report.
-runDocs(['exec', 'node', 'scripts/prepare-coverage.mjs']);
-console.log(
-  `已验收 ${completed.map(({ batch }) => batch.id).join('、')}；共享一次公开包、主题、站点构建和类型检查。`,
-);
