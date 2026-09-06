@@ -37,7 +37,7 @@ pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
 
 ## 本地环境
 
-文档门户已按 [Nuxt 迁移决策](docs/adr/0015-use-nuxt-for-component-documentation.md)统一为 Nuxt。构建使用 `pnpm --filter @workspace/docs build`，本地预览使用 `pnpm --filter @workspace/docs preview`（Node.js 24.18.0）。迁移状态与剩余范围见 [文档迁移记录](docs/documentation/README.md)；组件的 `ready` 状态不代表新文档已完成 859 个上游 Demo 的逐项复刻。根 `pnpm dev`、文档构建和门禁统一使用 Nuxt。 当前文档示例映射为 **710/859**，有效严格验收为 **31/859（Button、Icon、ConfigProvider、Locale）**；下一文档批次为 **Dark Mode（2 项）**。批次入口与证据规则见 [分批验收说明](docs/documentation/README.md#分批验收)。 Locale 三个示例的 16 项双语明暗/适用 RTL 验收全部通过；Pagination、Table、Typography 与 Select 消费者差异已修复，见 [当前工作记录](ai-work/20260906-150000-locale-documentation.md)。
+文档门户已按 [Nuxt 迁移决策](docs/adr/0015-use-nuxt-for-component-documentation.md)统一为 Nuxt。构建使用 `pnpm --filter @workspace/docs build`，本地预览使用 `pnpm --filter @workspace/docs preview`（Node.js 24.18.0）。迁移状态与剩余范围见 [文档迁移记录](docs/documentation/README.md)；组件的 `ready` 状态不代表新文档已完成 859 个上游 Demo 的逐项复刻。根 `pnpm dev`、文档构建和门禁统一使用 Nuxt。 当前文档示例映射为 **712/859**，有效严格验收为 **33/859（Button、Icon、ConfigProvider、Locale、Dark Mode）**；下一文档批次为 **Navigation（10 项）**。批次入口与证据规则见 [分批验收说明](docs/documentation/README.md#分批验收)。 Dark Mode 两个示例的 8 项双语明暗验收全部通过；相关导航、焦点与分页差异已修复，五批共 172 项正式矩阵已刷新证据，见 [当前工作记录](ai-work/20260906-180000-dark-mode-documentation.md)。
 
 - Node.js `24.18.0`（支持 `20.19+`、`22.13+` 和 `24.x`）
 - pnpm `11.19.0`

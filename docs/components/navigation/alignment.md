@@ -97,3 +97,9 @@
 - 单元/SSR/类型、键盘/ARIA、Portal/locale/RTL、桌面/移动 light/dark 浏览器对照。
 - 关键 computed style 精确相等、几何误差不超过 `0.5 CSS px`；阈值截图通过后再直接比较成对 PNG。
 - 真实 tarball 安装、根/子路径 ESM、声明、样式、tree-shaking、SSR import、许可与 SBOM 验证。
+
+## Dark Mode 文档回归补充
+
+固定 Header.tsx 的 text 判定仅排除 null/undefined；缺省 text 与显式 false 不同。Vue 的 VNodeChild 含 Boolean，需以默认 undefined 阻止缺省转换为 false，避免自定义 default slot 前多出 header-text。单测覆盖缺省、undefined、null、false、空字符串、文本以及模板 children；SSR 与 Dark Mode 双语明暗 Chromium 覆盖真实结构与颜色。
+
+Navigation 的 LocaleConsumer 同时消费独立 LocaleProvider。Dark Mode 英文站点上下文补充了此路径：无 ConfigProvider 时读取 LocaleProvider，有 ConfigProvider 时保留其优先级；包括动态语言、独立实例与 SSR 英文侧栏文案回归。

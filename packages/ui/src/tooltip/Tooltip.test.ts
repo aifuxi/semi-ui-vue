@@ -14,6 +14,7 @@ import {
 import { renderToString } from 'vue/server-renderer';
 
 import { Button } from '../button';
+import { Tag } from '../tag';
 import { ConfigProvider } from '../config-provider';
 
 import Tooltip from './Tooltip.vue';
@@ -38,6 +39,27 @@ describe('Tooltip', () => {
     document.body.replaceChildren();
     vi.restoreAllMocks();
   });
+
+  it.each([undefined, 0, -1, 2])(
+    '向组件触发器传入 tabIndex=%s 并支持真实焦点',
+    async (tabIndex) => {
+      const wrapper = mount(Tooltip, {
+        attachTo: document.body,
+        props: { content: 'Tag tooltip', trigger: 'focus', motion: false },
+        slots: {
+          default: () => h(Tag, tabIndex === undefined ? {} : { tabIndex }, () => 'Focusable tag'),
+        },
+      });
+      await flushTooltip();
+      const tag = wrapper.get('.semi-tag');
+      expect(tag.attributes('tabindex')).toBe(String(tabIndex ?? 0));
+      (tag.element as HTMLElement).focus();
+      await flushTooltip();
+      expect(document.activeElement).toBe(tag.element);
+      expect(document.body.querySelector('.semi-tooltip-content')?.textContent).toBe('Tag tooltip');
+      wrapper.unmount();
+    },
+  );
 
   it.each(['semi-tooltip', 'semi-dropdown'])(
     '前缀 %s 的自身动画结束清理 class，忽略冒泡动画，并可再次开关',

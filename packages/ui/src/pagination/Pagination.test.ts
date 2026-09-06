@@ -44,6 +44,23 @@ describe('Pagination', () => {
     expect(wrapper.get('[aria-current="page"]').text()).toBe('1');
   });
 
+  it('页大小变化按上游重建选择器并释放旧触发器焦点', async () => {
+    const wrapper = mountPagination(
+      { total: 200, pageSize: 10, showSizeChanger: true },
+      { attachTo: document.body },
+    );
+    await nextTick();
+    const previous = wrapper.get('.semi-select').element as HTMLElement;
+    previous.focus();
+    expect(document.activeElement).toBe(previous);
+    await wrapper.setProps({ pageSize: 20 });
+    await nextTick();
+    expect(wrapper.get('.semi-select').text()).toContain('20');
+    expect(previous.isConnected).toBe(false);
+    expect(document.activeElement).not.toBe(wrapper.get('.semi-select').element);
+    expect(wrapper.get('.semi-select').classes()).not.toContain('semi-select-focus');
+  });
+
   it('严格复现 7 项页码截断的四个分支与省略范围', async () => {
     const wrapper = mountPagination({ total: 200, currentPage: 1 });
     const labels = () =>

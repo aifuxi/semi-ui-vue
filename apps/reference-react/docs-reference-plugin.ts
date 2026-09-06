@@ -6,6 +6,7 @@ import { transformWithEsbuild, type Plugin } from 'vite';
 const root = fileURLToPath(new URL('../..', import.meta.url));
 const prefix = 'virtual:pinned-button-docs/';
 const iconPrefix = 'virtual:pinned-icon-docs/';
+const darkPrefix = 'virtual:pinned-dark-mode-docs/';
 const localePrefix = 'virtual:pinned-locale-docs/';
 const configPrefix = 'virtual:pinned-config-provider-docs/';
 const sourceRoot = path.join(root, 'vendor/semi-design');
@@ -28,6 +29,8 @@ async function publicImports(code: string): Promise<string> {
         .split(',')
         .map((name) => {
           const [component, local = component] = name.trim().split(/\s+as\s+/);
+          if (component === 'Layout')
+            return `import { Layout as ${local} } from ${JSON.stringify(path.join(sourceRoot, 'packages/semi-ui/layout/index.tsx'))};`;
           if (component === 'Row' || component === 'Col')
             return `import { ${component} as ${local} } from ${JSON.stringify(path.join(sourceRoot, 'packages/semi-ui/grid/index.tsx'))};`;
           if (component === 'ImagePreview')
@@ -62,10 +65,12 @@ export function pinnedButtonDocumentation(): Plugin {
           'virtual:pinned-icon-examples',
           'virtual:pinned-config-provider-examples',
           'virtual:pinned-locale-examples',
+          'virtual:pinned-dark-mode-examples',
         ].includes(id)
       )
         return `\0${id}`;
       if (
+        id.startsWith(darkPrefix) ||
         id.startsWith(localePrefix) ||
         id.startsWith(prefix) ||
         id.startsWith(iconPrefix) ||
@@ -80,6 +85,8 @@ export function pinnedButtonDocumentation(): Plugin {
         return `export default {${['zh-cn', 'en-us'].map((locale) => `${JSON.stringify(locale)}:[${Array.from({ length: 8 }, (_, index) => `()=>import('${iconPrefix}${locale}/${index + 1}.jsx')`).join(',')}]`).join(',')}}`;
       if (id === '\0virtual:pinned-config-provider-examples')
         return `export default {${['zh-cn', 'en-us'].map((locale) => `${JSON.stringify(locale)}:[${Array.from({ length: 3 }, (_, index) => `()=>import('${configPrefix}${locale}/${index + 1}.jsx')`).join(',')}]`).join(',')}}`;
+      if (id === '\0virtual:pinned-dark-mode-examples')
+        return `export default {${['zh-cn', 'en-us'].map((locale) => `${JSON.stringify(locale)}:[${Array.from({ length: 2 }, (_, index) => `()=>import('${darkPrefix}${locale}/${index + 1}.jsx')`).join(',')}]`).join(',')}}`;
       if (id === '\0virtual:pinned-locale-examples')
         return `export default {${['zh-cn', 'en-us'].map((locale) => `${JSON.stringify(locale)}:[${Array.from({ length: 3 }, (_, index) => `()=>import('${localePrefix}${locale}/${index + 1}.jsx')`).join(',')}]`).join(',')}}`;
       if (id === '\0virtual:pinned-doc-gatsby')
@@ -143,17 +150,19 @@ export function pinnedButtonDocumentation(): Plugin {
         const css = await readFile(path.join(root, 'apps/docs/public/upstream/site.css'), 'utf8');
         return css.replaceAll('/upstream/Inter-', 'http://127.0.0.1:4321/repl/fonts/Inter-');
       }
+      const isDarkMode = id.startsWith(`\0${darkPrefix}`);
       const isLocale = id.startsWith(`\0${localePrefix}`);
       const isConfigProvider = id.startsWith(`\0${configPrefix}`);
       const isIcon = id.startsWith(`\0${iconPrefix}`);
-      if (!isLocale && !isConfigProvider && !isIcon && !id.startsWith(`\0${prefix}`)) return;
+      if (!isDarkMode && !isLocale && !isConfigProvider && !isIcon && !id.startsWith(`\0${prefix}`))
+        return;
       const [, locale, number] = id.match(/\/([\w-]+)\/(\d+)\.jsx$/) ?? [];
       if (!['zh-cn', 'en-us'].includes(locale ?? '')) throw new Error('Invalid reference locale');
       const filename = locale === 'en-us' ? 'index-en-US.md' : 'index.md';
       const source = await readFile(
         path.join(
           root,
-          `vendor/semi-design/content/${isLocale ? 'other/locale' : isConfigProvider ? 'other/configprovider' : `basic/${isIcon ? 'icon' : 'button'}`}`,
+          `vendor/semi-design/content/${isDarkMode ? 'advanced/dark-mode' : isLocale ? 'other/locale' : isConfigProvider ? 'other/configprovider' : `basic/${isIcon ? 'icon' : 'button'}`}`,
           filename,
         ),
         'utf8',
@@ -163,7 +172,7 @@ export function pinnedButtonDocumentation(): Plugin {
       if (!code) throw new Error(`Missing pinned Button example ${locale}/${number}`);
       const entry =
         code.match(/^render\((\w+)\);?$/m)?.[1] ?? code.match(/^function\s+(\w+)\s*\(/m)?.[1];
-      if (!entry && !isIcon)
+      if (!entry && !isIcon && !isDarkMode)
         throw new Error(`Unsupported pinned example entry ${locale}/${number}`);
       // Fixed Markdown assigns an undeclared variable in both Split examples. The original
       // site evaluates demos outside ESM; declare that local when compiling the reference as ESM.
@@ -191,18 +200,35 @@ export function pinnedButtonDocumentation(): Plugin {
           .replaceAll('Semi 数据后台', '组件数据后台')
           .replaceAll('Semi Platform', 'Component Platform');
       }
+      if (isDarkMode) {
+        // Supply the live evaluator hook and replace site-only branding/callback symmetrically.
+        code = code
+          .replace("import React from 'react';", "import React, { useState } from 'react';")
+          .replaceAll('IconSemiLogo', 'IconApps')
+          .replaceAll('IconBytedanceLogo', 'IconApps')
+          .replaceAll('IconApps, IconHome', 'IconHome')
+          .replaceAll('Semi Design</span>', 'Component Design</span>')
+          .replaceAll('Semi Theme</span>', 'Component Theme</span>')
+          .replaceAll('Semi Blocks</span>', 'Component Blocks</span>')
+          .replaceAll('Copyright © 2019 ByteDance. All Rights Reserved. ', 'Component workspace')
+          .replace(/window\.setMode\('[^']+'\);/g, '')
+          .replace("body.hasAttribute('theme-mode')", "body.getAttribute('theme-mode') === 'dark'");
+        if (!entry) code = code.replace(/^\(\) =>/m, 'const DocumentationExample = () =>');
+      }
+      if (isDarkMode)
+        code = `import { LocaleProvider } from '@douyinfe/semi-ui';\nimport documentationLocale from '@douyinfe/semi-ui/locale/source/${locale === 'en-us' ? 'en_US' : 'zh_CN'}';\n${code}`;
       code = await publicImports(code);
       // Icon demos use a top-level anonymous arrow expression, including a nested CustomIcon.
       if (isIcon) code = code.replace(/^\(\) =>/m, 'const DocumentationExample = () =>');
+      const entryName = isIcon || (isDarkMode && !entry) ? 'DocumentationExample' : entry;
+      const exportCode = isDarkMode
+        ? `const PinnedExample = ${entryName}; export default () => <LocaleProvider locale={documentationLocale}><PinnedExample /></LocaleProvider>;`
+        : `export default ${entryName};`;
       return (
-        await transformWithEsbuild(
-          `${code}\nexport default ${isIcon ? 'DocumentationExample' : entry};`,
-          'pinned-button.jsx',
-          {
-            loader: 'jsx',
-            jsx: 'transform',
-          },
-        )
+        await transformWithEsbuild(`${code}\n${exportCode}`, 'pinned-button.jsx', {
+          loader: 'jsx',
+          jsx: 'transform',
+        })
       ).code;
     },
   };

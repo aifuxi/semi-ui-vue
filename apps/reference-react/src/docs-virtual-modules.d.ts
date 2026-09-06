@@ -35,3 +35,9 @@ declare module 'virtual:pinned-locale-examples' {
   const examples: Record<'zh-cn' | 'en-us', Array<() => Promise<{ default: ComponentType }>>>;
   export default examples;
 }
+
+declare module 'virtual:pinned-dark-mode-examples' {
+  import type { ComponentType } from 'react';
+  const examples: Record<'zh-cn' | 'en-us', Array<() => Promise<{ default: ComponentType }>>>;
+  export default examples;
+}

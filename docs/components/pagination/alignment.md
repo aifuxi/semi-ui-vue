@@ -102,3 +102,9 @@
 ## Locale 文档消费者回归（2026-09-06）
 
 固定 LocaleConsumer 优先 ConfigProvider，再取最近 LocaleProvider，缺 code 整体回退默认语言。新增 Pagination 同屏 en_GB/ja_JP、响应式切换、嵌套隔离和 ConfigProvider 优先级公开行为/SSR 回归，修复仅读 ConfigProvider 的遗漏；语言元数据不深层代理，不改变 props/emits 或默认方向。
+
+## Dark Mode 页大小切换补充
+
+固定 `pagination/index.tsx:312` 使用 `pageSize + pageSizeToken` 作为 Select key。Vue 同步该身份契约，在页大小或语言文案变化时重建选择器并释放旧焦点，避免关闭菜单后保留多余焦点 class/边框。公开受控页大小变更测试和双语明暗文档中的真实菜单选择共同验证此行为。
+
+相邻 Select 消费路径的 `updateScrollTop()` 已存在于固定 Foundation `select/foundation.ts:1198`，补齐集成层漏写的声明，不修改上游逻辑。

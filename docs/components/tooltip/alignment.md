@@ -118,3 +118,9 @@ Escape 在 `closeOnEsc=true` 时关闭并通知；ArrowDown/ArrowUp 将焦点移
 ## Typography 集成发现的内容容器修正
 
 固定 `tooltip/index.tsx:795` 使用常量 prefix 生成 `.semi-tooltip-content`，不随 `prefixCls` 的 Popover/Dropdown 覆盖而变化。Vue Portal 修正该外层内容 class；Popover/Dropdown 自身的内层内容 class 保留。新增前缀回归并运行全仓 Chromium，不能仅以 Typography 的定向结果覆盖共享影响。
+
+## Dark Mode 组合触发器补充
+
+固定 `tooltip/index.tsx:927` 给子组件传递 `tabIndex`。Vue 装饰 VNode 时也必须使用组件声明的 camelCase prop，而非仅写原生 `tabindex` attribute；否则 Tag 的显式绑定会覆盖该 attribute，导致不可键盘聚焦。覆盖缺省、0、-1、2、显式 focus 打开，以及文档真实 Tab 焦点与焦点环。
+
+固定 Foundation `show` 在 `foundation.ts:348-356` 对 hover 触发器执行 `:hover` 检查；单纯键盘聚焦且指针移开时会关闭刚插入的弹层。文档测试保留这一上游行为，不把“聚焦后持续显示 hover 弹层”作为当前基线。显式 `trigger="focus"` 不走该检查，单测验证其聚焦打开。

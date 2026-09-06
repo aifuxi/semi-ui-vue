@@ -1,8 +1,12 @@
+/* eslint-disable vue/one-component-per-file -- independent template hosts verify native slot and Boolean contracts. */
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider } from '../config-provider';
+import { LocaleProvider } from '../locale';
+import enUS from '../locale/source/en_US';
+import zhCN from '../locale/source/zh_CN';
 import { Dropdown } from '../dropdown';
 import { Nav, NavItem, SubNav, type NavigationWrapperData } from './index';
 
@@ -113,6 +117,53 @@ describe('Navigation', () => {
       },
     });
     expect(render.find('.semi-navigation-collapse-btn').exists()).toBe(true);
+  });
+
+  it('消费独立 LocaleProvider 的响应语言，ConfigProvider 保持优先', async () => {
+    const wrapper = mount(LocaleProvider, {
+      props: { locale: enUS },
+      slots: { default: () => h(Nav, { footer: { collapseButton: true }, items }) },
+    });
+    expect(wrapper.get('.semi-navigation-collapse-btn').text()).toBe('Collapse Sidebar');
+    await wrapper.setProps({ locale: zhCN });
+    expect(wrapper.get('.semi-navigation-collapse-btn').text()).toBe('收起侧边栏');
+    wrapper.unmount();
+    const nested = mount(LocaleProvider, {
+      props: { locale: enUS },
+      slots: {
+        default: () =>
+          h(ConfigProvider, { locale: zhCN }, () =>
+            h(Nav, { footer: { collapseButton: true }, items }),
+          ),
+      },
+    });
+    expect(nested.get('.semi-navigation-collapse-btn').text()).toBe('收起侧边栏');
+    nested.unmount();
+  });
+
+  it('Header 缺省 text 不产生文本容器，显式 false 保留上游非空判断', async () => {
+    const wrapper = mount(Nav, {
+      slots: { default: () => h(Nav.Header, {}, () => h('button', { type: 'button' }, 'Brand')) },
+    });
+    expect(wrapper.find('.semi-navigation-header-text').exists()).toBe(false);
+    expect(wrapper.get('.semi-navigation-header > button').text()).toBe('Brand');
+    wrapper.unmount();
+    for (const text of [undefined, null, false, '', 'Title']) {
+      const header = mount(Nav, { props: { header: { text } } });
+      expect(header.find('.semi-navigation-header-text').exists()).toBe(
+        text !== undefined && text !== null,
+      );
+      header.unmount();
+    }
+    const Host = defineComponent({
+      components: { Nav, NavHeader: Nav.Header },
+      template: '<Nav><NavHeader><button type="button">Brand</button></NavHeader></Nav>',
+    });
+    const template = mount(Host);
+    expect(template.find('.semi-navigation-header-text').exists()).toBe(false);
+    await template.get('button').trigger('click');
+    expect(template.get('.semi-navigation-header > button').text()).toBe('Brand');
+    template.unmount();
   });
 
   it('header/footer、link、wrapper、disabled、键盘和 locale 保持公开行为', async () => {

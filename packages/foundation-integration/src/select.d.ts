@@ -42,6 +42,7 @@ export declare class SelectFoundation<P = Record<string, unknown>, S = Record<st
   handlePopoverClose(): void;
   onSelect(option: unknown, index: number, event: Event): void;
   removeTag(option: unknown): void;
+  updateScrollTop(): void;
   updateOverflowItemCount(length: number, overflow?: number): void;
   _handleKeyDown(event: KeyboardEvent): void;
 }

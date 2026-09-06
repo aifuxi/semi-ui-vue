@@ -377,6 +377,7 @@ function handleQuickJumpKeydown(event: KeyboardEvent): void {
 
     <div v-if="props.size !== 'small' && props.showSizeChanger" class="semi-page-switch">
       <Select
+        :key="state.pageSize + locale.pageSize"
         aria-label="Page size selector"
         click-to-hide
         :disabled="props.disabled"

@@ -5,7 +5,16 @@ import { useDocsPreferences } from '../../composables/useDocsPreferences';
 import { demoRegistry } from '../../data/demos';
 
 const props = defineProps<{ demo: string; title?: string }>();
-const { locale } = useDocsPreferences();
+const { locale, theme } = useDocsPreferences();
+// Only the standalone theme example emits this optional host notification.
+const demoEvents =
+  props.demo.startsWith('dark-mode/') && props.demo.endsWith('/Global')
+    ? {
+        themeChange: (value: 'light' | 'dark') => {
+          theme.value = value;
+        },
+      }
+    : {};
 const sources = import.meta.glob('../../demos/**/*.{vue,ts,js,css,json}', {
   query: '?raw',
   import: 'default',
@@ -61,7 +70,7 @@ function reset() {
     <div v-if="!editorOpen" class="demo-preview" data-demo-preview>
       <p v-if="error" class="demo-error" role="alert">{{ error }}</p>
       <ClientOnly v-else
-        ><component :is="preview" v-if="preview" :key="key" /><template #fallback
+        ><component :is="preview" v-if="preview" :key="key" v-on="demoEvents" /><template #fallback
           ><div class="demo-loading">
             {{ locale === 'zh-CN' ? '加载交互示例…' : 'Loading interactive example…' }}
           </div></template

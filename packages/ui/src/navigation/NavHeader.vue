@@ -6,7 +6,11 @@ import NavigationNodeRenderer from './NavigationNodeRenderer';
 import type { NavHeaderProps, NavHeaderSlots } from './types';
 
 defineOptions({ name: 'NavHeader', inheritAttrs: false });
-const props = withDefaults(defineProps<NavHeaderProps>(), { prefixCls: 'semi-navigation' });
+const props = withDefaults(defineProps<NavHeaderProps>(), {
+  prefixCls: 'semi-navigation',
+  // VNodeChild includes Boolean; preserve absence instead of Vue casting it to false.
+  text: undefined,
+});
 defineSlots<NavHeaderSlots>();
 const context = inject(navigationContextKey);
 if (!context) throw new Error('please make sure <NavHeader> inside <Nav>');

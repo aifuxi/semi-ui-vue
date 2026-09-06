@@ -1,0 +1,27 @@
+{
+  "upstream": "advanced/dark-mode",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "dark-mode/zh-cn/Global",
+      "enUS": "dark-mode/en-us/Global"
+    },
+    {
+      "index": 2,
+      "zhCN": "dark-mode/zh-cn/Local",
+      "enUS": "dark-mode/en-us/Local"
+    }
+  ],
+  "review": {
+    "fingerprint": "fdcfbef9f0f7f2ab2b184f76b25a71d05135ea429671f3b5a9c17ef02a51d2ce",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "固定中英文两个 live 示例逐项映射；局部模式改为固定主题 class，保留 body 与局部 Portal 差别。",
+      "上游官网品牌替换为 IconApps 与独立名称；React/Vue 两端一致，归属保留在许可清单。",
+      "显式 light 属性按亮色处理；官网 window.setMode 替换为可选 themeChange 事件；非 live 系统偏好示例补充立即同步与卸载清理。",
+      "固定站点 layout.js 的 LocaleProvider 纳入参考上下文；Vue Local 入口显式 Locale 保证编辑器一致；hover 聚焦后关闭按固定 Foundation 行为验收。"
+    ]
+  }
+}
