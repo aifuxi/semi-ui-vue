@@ -1,0 +1,13 @@
+<script setup lang="ts">
+import { ConfigProvider } from '@aifuxi/semi-ui-vue/config-provider';
+import locale from '@aifuxi/semi-ui-vue/locale/source/en_US';
+import { MarkdownRender } from '@aifuxi/semi-ui-vue/markdown-render';
+import '@aifuxi/semi-theme-default/markdown-render.css';
+const raw =
+  '\n#### Semi Design DSM\n[Semi DSM](https://semi.design/dsm) is a design system management tool provided by Semi Design. It supports global and component-level style customization and keeps synchronization between Figma and front-end code.\nSuitable for teams of all sizes. Whether you need to simplify workflow, improve team collaboration, or increase productivity, we have features suitable for you.\n\n##### Medium and large enterprises\n- Up to 3000+ Design Tokens, in-depth customization of every detail, color, shadow, margin, rounded corners, dynamic effects, rendering structure can be customized freely, say goodbye to ~~CSS hard coding~~\n- Powerful, UI lib verified by thousands of projects in Douyin, easy to deal with various complex scenarios\n- A11y barrier-free and friendly, with complete international functions\n- Community-oriented, completely open source, no usage restrictions\n- From designOps to devOps, automated workflow, Figma UI Kit one-click brush into the theme, generate Style Guideline, develop a line of npm code configuration access\n\n##### Startups\n- No need to invest a lot of R&D resources from 0 to 1, quickly reuse excellent solutions from the open source community, and quickly customize a design system with brand characteristics at low cost.\n- One-click support for dark mode generation, support for quickly generating a color system containing 320 full color levels and compatible with dark/light modes based on brand colors, and support dynamic switching\n- Continuously evolving, DSM + Semi Design components are professionally maintained by the <u>TikTok front-end architecture team</u>, and have been stable for more than five years, and are trustworthy\n\n##### Freelance designer/individual developer\n- Quickly create design systems of different styles at low cost, less time, faster delivery\n- Friendly R&D access, no need for repeated communication, deliver npm package products, and complete code access with one click\n\n![DSM](/demos/photo.svg)\n\n| Support | Markdown tables | c | d |\n| - | :- | -: | :-: |\n| 1 | 2 | 3 | 4 |\n| 21 | 22 | 23 | 24 |\n| 31 | 32 | 33 | 34 |\n| 41 | 42 | 43 | 44 |\n    ';
+</script>
+<template>
+  <ConfigProvider :locale="locale"
+    ><MarkdownRender :raw="raw" :components="MarkdownRender.defaultComponents"
+  /></ConfigProvider>
+</template>

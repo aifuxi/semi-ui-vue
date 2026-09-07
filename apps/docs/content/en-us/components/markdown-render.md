@@ -38,6 +38,30 @@ Use `format="md"` when the content has no MDX JSX. Braces and angle brackets no 
 
 `remarkPlugins` and `rehypePlugins` are forwarded to pinned `@mdx-js/mdx@3.0.1`. `remarkGfm` is enabled by default; set it explicitly to `false` to disable tables, strikethrough, and other GFM extensions.
 
+## Upstream examples
+
+The pinned bilingual text and heading color differences are preserved. A local illustration replaces the DSM image; the text is an upstream rendering sample.
+
+### Basic usage
+
+::demo-block{demo="markdown-render/en-US/Basic" title="Basic usage"}
+::
+
+### Modify element style
+
+::demo-block{demo="markdown-render/en-US/ElementStyle" title="Modify element style"}
+::
+
+### Pure Markdown
+
+::demo-block{demo="markdown-render/en-US/PureMarkdown" title="Pure Markdown"}
+::
+
+### Custom components
+
+::demo-block{demo="markdown-render/en-US/CustomComponent" title="Custom components"}
+::
+
 ## API
 
 | Prop                  | Type                       | Default      | Description                                   |

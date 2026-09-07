@@ -38,6 +38,30 @@ upstream: 'plus/markdownrender'
 
 `remarkPlugins`、`rehypePlugins` 直接传给固定 `@mdx-js/mdx@3.0.1`。`remarkGfm` 默认开启；显式传入 `false` 可关闭表格、删除线等 GFM 扩展。
 
+## 固定上游示例
+
+保留固定版本双语文案与标题颜色差异；DSM 示意图使用本地素材，文案仅为上游渲染样本。
+
+### 基本用法
+
+::demo-block{demo="markdown-render/zh-CN/Basic" title="基本用法"}
+::
+
+### 修改元素样式
+
+::demo-block{demo="markdown-render/zh-CN/ElementStyle" title="修改元素样式"}
+::
+
+### 仅纯 Markdown
+
+::demo-block{demo="markdown-render/zh-CN/PureMarkdown" title="仅纯 Markdown"}
+::
+
+### 添加自定义组件
+
+::demo-block{demo="markdown-render/zh-CN/CustomComponent" title="添加自定义组件"}
+::
+
 ## API
 
 | 属性                  | 类型                       | 默认值   | 说明                          |

@@ -9826,6 +9826,51 @@
     "upstream": "plus/lottie"
   },
   {
+    "id": "markdown-render/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "markdown-render/en-US/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/markdown-render.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/markdown-render"
+    ],
+    "pages": ["/en-us/components/markdown-render/"],
+    "upstream": "plus/markdownrender"
+  },
+  {
+    "id": "markdown-render/en-US/CustomComponent",
+    "entry": "CustomComponent.vue",
+    "files": {
+      "CustomComponent.vue": "markdown-render/en-US/CustomComponent.vue",
+      "MarkdownButton.vue": "markdown-render/en-US/MarkdownButton.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/markdown-render.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/markdown-render"
+    ],
+    "pages": ["/en-us/components/markdown-render/"],
+    "upstream": "plus/markdownrender"
+  },
+  {
+    "id": "markdown-render/en-US/ElementStyle",
+    "entry": "ElementStyle.vue",
+    "files": {
+      "ElementStyle.vue": "markdown-render/en-US/ElementStyle.vue",
+      "SecondaryHeading.vue": "markdown-render/en-US/SecondaryHeading.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/markdown-render.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/markdown-render",
+      "@aifuxi/semi-ui-vue/typography"
+    ],
+    "pages": ["/en-us/components/markdown-render/"],
+    "upstream": "plus/markdownrender"
+  },
+  {
     "id": "markdown-render/en-US/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "markdown-render/en-US/Example1.vue" },
@@ -9849,6 +9894,67 @@
     "upstream": "plus/markdownrender"
   },
   {
+    "id": "markdown-render/en-US/PureMarkdown",
+    "entry": "PureMarkdown.vue",
+    "files": {
+      "PureMarkdown.vue": "markdown-render/en-US/PureMarkdown.vue",
+      "PrimaryHeading.vue": "markdown-render/en-US/PrimaryHeading.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/markdown-render.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/markdown-render",
+      "@aifuxi/semi-ui-vue/typography"
+    ],
+    "pages": ["/en-us/components/markdown-render/"],
+    "upstream": "plus/markdownrender"
+  },
+  {
+    "id": "markdown-render/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "markdown-render/zh-CN/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/markdown-render.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/markdown-render"
+    ],
+    "pages": ["/zh-cn/components/markdown-render/"],
+    "upstream": "plus/markdownrender"
+  },
+  {
+    "id": "markdown-render/zh-CN/CustomComponent",
+    "entry": "CustomComponent.vue",
+    "files": {
+      "CustomComponent.vue": "markdown-render/zh-CN/CustomComponent.vue",
+      "MarkdownButton.vue": "markdown-render/zh-CN/MarkdownButton.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/markdown-render.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/markdown-render"
+    ],
+    "pages": ["/zh-cn/components/markdown-render/"],
+    "upstream": "plus/markdownrender"
+  },
+  {
+    "id": "markdown-render/zh-CN/ElementStyle",
+    "entry": "ElementStyle.vue",
+    "files": {
+      "ElementStyle.vue": "markdown-render/zh-CN/ElementStyle.vue",
+      "SecondaryHeading.vue": "markdown-render/zh-CN/SecondaryHeading.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/markdown-render.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/markdown-render",
+      "@aifuxi/semi-ui-vue/typography"
+    ],
+    "pages": ["/zh-cn/components/markdown-render/"],
+    "upstream": "plus/markdownrender"
+  },
+  {
     "id": "markdown-render/zh-CN/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "markdown-render/zh-CN/Example1.vue" },
@@ -9867,6 +9973,22 @@
       "@aifuxi/semi-theme-default/markdown-render.css",
       "@aifuxi/semi-ui-vue/markdown-render",
       "vue"
+    ],
+    "pages": ["/zh-cn/components/markdown-render/"],
+    "upstream": "plus/markdownrender"
+  },
+  {
+    "id": "markdown-render/zh-CN/PureMarkdown",
+    "entry": "PureMarkdown.vue",
+    "files": {
+      "PureMarkdown.vue": "markdown-render/zh-CN/PureMarkdown.vue",
+      "PrimaryHeading.vue": "markdown-render/zh-CN/PrimaryHeading.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/markdown-render.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/markdown-render",
+      "@aifuxi/semi-ui-vue/typography"
     ],
     "pages": ["/zh-cn/components/markdown-render/"],
     "upstream": "plus/markdownrender"

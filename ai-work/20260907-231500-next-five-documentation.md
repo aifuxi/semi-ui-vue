@@ -58,3 +58,11 @@ JsonViewer 收尾验证：
 - 本次构建集成修改使六批历史证据失效，随后集中重验受影响矩阵；本批只增加映射，不增加accepted。
 
 JsonViewer 历史证据重验完成：224/224通过，5.9分钟，无重试或跳过；六批证据刷新，覆盖791/859，有效严格验收仍43/859。日志 `/tmp/semi-json-affected.log`。本组件单独提交后继续下批。
+
+## MarkdownRender 代表
+
+已依固定 Adapter/components、Foundation、SCSS、主题、双语文档与alignment核查4项。先实现PureMarkdown（3）与CustomComponent（4）：分别验证无需转义的md文本，以及多文件Vue自定义按钮的slot、emits、MDX事件和alert。两个子组件PrimaryHeading/MarkdownButton只承担元素渲染，主例保留原始Markdown文案；后续再扩展基本富文本和h2颜色差异。
+
+MarkdownRender 双语代表和全批开发检查均通过。新增Basic的HMR源码映射为空，重启开发服务后定点验证恢复；初版烟测把表头计为数据行，依据真实tbody收窄定位后四行断言通过，中文额外删除线按固定正文计为2处。完整结果在 `apps/docs/.data/documentation-smoke/markdown-render/full-dev-passed/summary.json`。本批ESLint及代表Nuxt类型通过。4项映射保留中英文原文、h2颜色差异，基础表格传完整Locale；使用自有photo.svg替换DSM远程图片并在双语文档注明。主例+元素子组件按SFC边界拆分，在线编辑器验证依赖文件与MDX点击事件。未修改组件与共享构建，不重复发布包验证。
+
+MarkdownRender 收尾：联合check退出0，64流程测试、196页/1633注册Demo/5946产物，Nuxt类型和内容资源门禁通过。最终 `full-static-ready/summary.json` 双语各10阶段通过、issues为空；首次full-static因预览服务尚未监听连接被拒，确认监听后执行，未改源码或重建。静态编辑器修改md文本与重跑MDX按钮均正常，已查看英文局部截图。affected检查六批均有效并跳过，覆盖795/859、accepted43不变。日志 `/tmp/semi-md-check.log`、`/tmp/semi-md-affected.log`。
