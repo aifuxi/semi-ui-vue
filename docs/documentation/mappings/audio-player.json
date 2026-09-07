@@ -1,0 +1,23 @@
+{
+  "upstream": "plus/audioPlayer",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "audio-player/zh-CN/Basic",
+      "enUS": "audio-player/en-US/Basic",
+      "notes": "双语索引一致；完整Locale；本地tone.wav与查询参数替换双曲目，one/two.svg替换远程封面。保留输入形态、主题及工具栏默认值。 窄REPL中通过示例外层横向滚动和1000px最小场景宽度保持控件可达；不修改组件。"
+    },
+    {
+      "index": 2,
+      "zhCN": "audio-player/zh-CN/NoToolbar",
+      "enUS": "audio-player/en-US/NoToolbar",
+      "notes": "双语索引一致；完整Locale；本地tone.wav与查询参数替换双曲目，one/two.svg替换远程封面。保留输入形态、主题及工具栏默认值。"
+    },
+    {
+      "index": 3,
+      "zhCN": "audio-player/zh-CN/Theme",
+      "enUS": "audio-player/en-US/Theme",
+      "notes": "双语索引一致；完整Locale；本地tone.wav与查询参数替换双曲目，one/two.svg替换远程封面。保留输入形态、主题及工具栏默认值。"
+    }
+  ]
+}

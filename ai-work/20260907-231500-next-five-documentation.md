@@ -66,3 +66,13 @@ JsonViewer 历史证据重验完成：224/224通过，5.9分钟，无重试或�
 MarkdownRender 双语代表和全批开发检查均通过。新增Basic的HMR源码映射为空，重启开发服务后定点验证恢复；初版烟测把表头计为数据行，依据真实tbody收窄定位后四行断言通过，中文额外删除线按固定正文计为2处。完整结果在 `apps/docs/.data/documentation-smoke/markdown-render/full-dev-passed/summary.json`。本批ESLint及代表Nuxt类型通过。4项映射保留中英文原文、h2颜色差异，基础表格传完整Locale；使用自有photo.svg替换DSM远程图片并在双语文档注明。主例+元素子组件按SFC边界拆分，在线编辑器验证依赖文件与MDX点击事件。未修改组件与共享构建，不重复发布包验证。
 
 MarkdownRender 收尾：联合check退出0，64流程测试、196页/1633注册Demo/5946产物，Nuxt类型和内容资源门禁通过。最终 `full-static-ready/summary.json` 双语各10阶段通过、issues为空；首次full-static因预览服务尚未监听连接被拒，确认监听后执行，未改源码或重建。静态编辑器修改md文本与重跑MDX按钮均正常，已查看英文局部截图。affected检查六批均有效并跳过，覆盖795/859、accepted43不变。日志 `/tmp/semi-md-check.log`、`/tmp/semi-md-affected.log`。
+
+## AudioPlayer 代表
+
+已依固定Adapter/公开类型、Foundation、SCSS、主题、双语文档及现有alignment核查3项。先Basic（1）和NoToolbar（2）双语：四种audioUrl输入，真实播放暂停、曲目切换、菜单关闭重开、音量和源码/在线编辑；紧凑例保留显式false工具栏。每例一个模板SFC，无需额外子组件。素材使用已有4秒tone.wav和one/two.svg，标题遵循中英文原文，ConfigProvider传完整Locale。
+
+AudioPlayer 代表初次失败于Basic在线预览：iframe x=810，而播放按钮x=678，固定控件宽度在窄视口居中溢出到左侧。Basic外层增加横向滚动，每个桌面场景min-width:1000px；不改组件，并在双语文档/映射说明。实际iframe按钮x=920.5后真实点击通过，`representatives-fixed`双语全部通过才扩展Theme。完整开发检查初次英文Theme切回太快取消two.svg，定点改为先确认封面complete/naturalWidth再继续切换；不忽略requestfailed。`theme-probe`和`full-dev-passed`通过，三个示例的播放、暂停、切曲、主题/工具栏、速率/音量、源码重置、在线SFC修改运行均有证据。代表Nuxt类型和本批ESLint通过。无组件/共享设施变更，采用文档门禁，不重复tarball。
+
+AudioPlayer 视觉复核补充：900px在文档正文中仍有右侧溢出，尝试850px导致完整播放列表的上一曲在iframe中不可点击。停止尚未完成的首次check，最终采用1000px完整桌面场景+外层横向滚动，并记录与上游示例容器的适配差异。`full-dev-final`双语全部通过；这不改变组件API/样式源码，也不声称精细视觉对齐。最终静态检查还验证横向滚动后的刷新按钮可点击。
+
+AudioPlayer 收尾：最终check退出0，64流程测试、196页、1639注册Demo、5958静态产物，Nuxt类型与内容/许可/资源门禁通过。修正mapping的上游路径大小写为plus/audioPlayer（映射不属于静态构建输入），prepare-coverage验证798/859。`full-static/summary.json`双语各9阶段通过、issues为空，确认刷新按钮可随容器横向滚动点击。历史六批证据有效全部跳过；accepted43不变。日志 `/tmp/semi-audio-check-final.log`、`/tmp/semi-audio-affected.log`。

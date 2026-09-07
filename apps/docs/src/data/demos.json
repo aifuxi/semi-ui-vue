@@ -206,6 +206,19 @@
     "upstream": "navigation/anchor"
   },
   {
+    "id": "audio-player/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "audio-player/en-US/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/audio-player.css",
+      "@aifuxi/semi-ui-vue/audio-player",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US"
+    ],
+    "pages": ["/en-us/components/audio-player/"],
+    "upstream": "plus/audioPlayer"
+  },
+  {
     "id": "audio-player/en-US/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "audio-player/en-US/Example1.vue" },
@@ -217,12 +230,77 @@
     "upstream": "plus/audioPlayer"
   },
   {
+    "id": "audio-player/en-US/NoToolbar",
+    "entry": "NoToolbar.vue",
+    "files": { "NoToolbar.vue": "audio-player/en-US/NoToolbar.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/audio-player.css",
+      "@aifuxi/semi-ui-vue/audio-player",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US"
+    ],
+    "pages": ["/en-us/components/audio-player/"],
+    "upstream": "plus/audioPlayer"
+  },
+  {
+    "id": "audio-player/en-US/Theme",
+    "entry": "Theme.vue",
+    "files": { "Theme.vue": "audio-player/en-US/Theme.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/audio-player.css",
+      "@aifuxi/semi-ui-vue/audio-player",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US"
+    ],
+    "pages": ["/en-us/components/audio-player/"],
+    "upstream": "plus/audioPlayer"
+  },
+  {
+    "id": "audio-player/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "audio-player/zh-CN/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/audio-player.css",
+      "@aifuxi/semi-ui-vue/audio-player",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN"
+    ],
+    "pages": ["/zh-cn/components/audio-player/"],
+    "upstream": "plus/audioPlayer"
+  },
+  {
     "id": "audio-player/zh-CN/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "audio-player/zh-CN/Example1.vue" },
     "dependencies": [
       "@aifuxi/semi-theme-default/audio-player.css",
       "@aifuxi/semi-ui-vue/audio-player"
+    ],
+    "pages": ["/zh-cn/components/audio-player/"],
+    "upstream": "plus/audioPlayer"
+  },
+  {
+    "id": "audio-player/zh-CN/NoToolbar",
+    "entry": "NoToolbar.vue",
+    "files": { "NoToolbar.vue": "audio-player/zh-CN/NoToolbar.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/audio-player.css",
+      "@aifuxi/semi-ui-vue/audio-player",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN"
+    ],
+    "pages": ["/zh-cn/components/audio-player/"],
+    "upstream": "plus/audioPlayer"
+  },
+  {
+    "id": "audio-player/zh-CN/Theme",
+    "entry": "Theme.vue",
+    "files": { "Theme.vue": "audio-player/zh-CN/Theme.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/audio-player.css",
+      "@aifuxi/semi-ui-vue/audio-player",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN"
     ],
     "pages": ["/zh-cn/components/audio-player/"],
     "upstream": "plus/audioPlayer"

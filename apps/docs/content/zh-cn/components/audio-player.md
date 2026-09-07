@@ -30,6 +30,27 @@ AudioPlayer 用于播放单个音频或循环播放音频列表。实现以本�
 `theme` 支持 `dark` 和 `light`。工具栏默认显示音量、后退、前进、倍速和刷新；
 `showToolbar=false` 会完整移除工具栏，`skipDuration` 默认 10 秒。
 
+## 固定上游示例
+
+音频与封面替换为仓库自有的本地短音频和插画；保留四种输入形式、曲目切换和工具栏配置。
+
+### 基本用法
+
+::demo-block{demo="audio-player/zh-CN/Basic" title="基本用法"}
+::
+
+### 隐藏工具栏
+
+::demo-block{demo="audio-player/zh-CN/NoToolbar" title="隐藏工具栏"}
+::
+
+### 主题
+
+::demo-block{demo="audio-player/zh-CN/Theme" title="主题"}
+::
+
+基础示例在窄编辑预览中可横向滚动，以完整展示桌面播放器。
+
 ## API
 
 | 属性                  | 说明                                | 类型                | 默认值   |

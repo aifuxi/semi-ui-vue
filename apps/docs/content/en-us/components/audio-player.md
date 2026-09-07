@@ -33,6 +33,27 @@ the end.
 and refresh controls by default. Set `showToolbar` to `false` to remove it. `skipDuration` defaults
 to 10 seconds.
 
+## Upstream examples
+
+Audio and covers use local short audio and illustrations. All four input shapes, track switching and toolbar settings are preserved.
+
+### Basic usage
+
+::demo-block{demo="audio-player/en-US/Basic" title="Basic usage"}
+::
+
+### Hide toolbar
+
+::demo-block{demo="audio-player/en-US/NoToolbar" title="Hide toolbar"}
+::
+
+### Theme
+
+::demo-block{demo="audio-player/en-US/Theme" title="Theme"}
+::
+
+The basic example scrolls horizontally in a narrow editor preview to keep the desktop controls reachable.
+
 ## API
 
 | Property              | Description                                    | Type                | Default  |
