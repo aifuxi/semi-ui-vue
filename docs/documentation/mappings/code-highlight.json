@@ -1,0 +1,23 @@
+{
+  "upstream": "plus/codehighlight",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "code-highlight/zh-CN/Basic",
+      "enUS": "code-highlight/en-US/Basic",
+      "notes": "双语索引一致，保留固定上游代码文本。代码只用于高亮展示，不执行。"
+    },
+    {
+      "index": 2,
+      "zhCN": "code-highlight/zh-CN/Css",
+      "enUS": "code-highlight/en-US/Css",
+      "notes": "双语索引一致，保留固定上游代码文本。代码只用于高亮展示，不执行。"
+    },
+    {
+      "index": 3,
+      "zhCN": "code-highlight/zh-CN/Vala",
+      "enUS": "code-highlight/en-US/Vala",
+      "notes": "双语索引一致，保留固定上游代码文本。通过本地 Prism Vala 模块扩展语法，文档页与在线编辑均验证 token。"
+    }
+  ]
+}

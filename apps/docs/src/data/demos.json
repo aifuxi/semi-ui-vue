@@ -3240,6 +3240,28 @@
     "upstream": "input/checkbox"
   },
   {
+    "id": "code-highlight/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "code-highlight/en-US/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/code-highlight.css",
+      "@aifuxi/semi-ui-vue/code-highlight"
+    ],
+    "pages": ["/en-us/components/code-highlight/"],
+    "upstream": "plus/codehighlight"
+  },
+  {
+    "id": "code-highlight/en-US/Css",
+    "entry": "Css.vue",
+    "files": { "Css.vue": "code-highlight/en-US/Css.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/code-highlight.css",
+      "@aifuxi/semi-ui-vue/code-highlight"
+    ],
+    "pages": ["/en-us/components/code-highlight/"],
+    "upstream": "plus/codehighlight"
+  },
+  {
     "id": "code-highlight/en-US/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "code-highlight/en-US/Example1.vue" },
@@ -3251,12 +3273,58 @@
     "upstream": "plus/codehighlight"
   },
   {
+    "id": "code-highlight/en-US/Vala",
+    "entry": "Vala.vue",
+    "files": { "Vala.vue": "code-highlight/en-US/Vala.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/code-highlight.css",
+      "@aifuxi/semi-ui-vue/code-highlight",
+      "prismjs/components/prism-vala.js"
+    ],
+    "pages": ["/en-us/components/code-highlight/"],
+    "upstream": "plus/codehighlight"
+  },
+  {
+    "id": "code-highlight/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "code-highlight/zh-CN/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/code-highlight.css",
+      "@aifuxi/semi-ui-vue/code-highlight"
+    ],
+    "pages": ["/zh-cn/components/code-highlight/"],
+    "upstream": "plus/codehighlight"
+  },
+  {
+    "id": "code-highlight/zh-CN/Css",
+    "entry": "Css.vue",
+    "files": { "Css.vue": "code-highlight/zh-CN/Css.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/code-highlight.css",
+      "@aifuxi/semi-ui-vue/code-highlight"
+    ],
+    "pages": ["/zh-cn/components/code-highlight/"],
+    "upstream": "plus/codehighlight"
+  },
+  {
     "id": "code-highlight/zh-CN/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "code-highlight/zh-CN/Example1.vue" },
     "dependencies": [
       "@aifuxi/semi-theme-default/code-highlight.css",
       "@aifuxi/semi-ui-vue/code-highlight"
+    ],
+    "pages": ["/zh-cn/components/code-highlight/"],
+    "upstream": "plus/codehighlight"
+  },
+  {
+    "id": "code-highlight/zh-CN/Vala",
+    "entry": "Vala.vue",
+    "files": { "Vala.vue": "code-highlight/zh-CN/Vala.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/code-highlight.css",
+      "@aifuxi/semi-ui-vue/code-highlight",
+      "prismjs/components/prism-vala.js"
     ],
     "pages": ["/zh-cn/components/code-highlight/"],
     "upstream": "plus/codehighlight"

@@ -18,6 +18,7 @@ for (const name of [
   'es-module-shims',
   '@douyinfe/semi-site-doc-style',
   'typeface-inconsolata',
+  'prismjs',
 ]) {
   let packageFile;
   try {

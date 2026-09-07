@@ -23,6 +23,23 @@ Prism 核心默认包含 markup/html、CSS、类 C 与 JavaScript。其他语言
 import 'prismjs/components/prism-vala.js';
 ```
 
+## 固定上游示例
+
+### 基本用法
+
+::demo-block{demo="code-highlight/zh-CN/Basic" title="JavaScript 基础用法"}
+::
+
+### CSS
+
+::demo-block{demo="code-highlight/zh-CN/Css" title="CSS"}
+::
+
+### 其他语言：Vala
+
+::demo-block{demo="code-highlight/zh-CN/Vala" title="Vala"}
+::
+
 ## API
 
 | 属性                  | 说明                   | 类型            | 默认值 |

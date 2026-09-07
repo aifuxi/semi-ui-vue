@@ -58,6 +58,10 @@ await cp(
 await cp(require.resolve('typescript'), resolve(output, 'typescript.js'));
 await cp(require.resolve('es-module-shims'), resolve(output, 'es-module-shims.js'));
 imports.vue = '/repl/vue.js';
+// The Vala demo extends the Prism instance initialized by CodeHighlight.
+const valaModule = 'prismjs/components/prism-vala.js';
+await cp(require.resolve(valaModule), resolve(output, 'prism-vala.js'));
+imports[valaModule] = '/repl/prism-vala.js';
 const themeRoot = resolve(root, 'packages/theme-default/dist');
 await cp(resolve(themeRoot, 'index.css'), resolve(output, 'theme.css'));
 for (const file of await readdir(themeRoot)) {

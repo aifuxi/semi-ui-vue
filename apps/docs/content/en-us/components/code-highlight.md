@@ -23,6 +23,23 @@ Prism core includes markup/HTML, CSS, C-like languages, and JavaScript. Import o
 import 'prismjs/components/prism-vala.js';
 ```
 
+## Upstream examples
+
+### Basic usage
+
+::demo-block{demo="code-highlight/en-US/Basic" title="JavaScript basic usage"}
+::
+
+### CSS
+
+::demo-block{demo="code-highlight/en-US/Css" title="CSS"}
+::
+
+### Other languages: Vala
+
+::demo-block{demo="code-highlight/en-US/Vala" title="Vala"}
+::
+
 ## API
 
 | Prop                  | Description                      | Type            | Default  |
