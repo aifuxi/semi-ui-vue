@@ -34,9 +34,18 @@ pnpm --filter @workspace/docs test:nuxt
 
 [coverage.json](./coverage.json) 记录 102 组固定上游文档及每个中文 live Demo 的章节和源码行号。当前 859 个中文上游 Demo 中，722 个已建立双语内容与示例映射，有效严格验收为 43 个（Button 17 项、Icon 8 项、ConfigProvider 3 项、Locale 3 项、Dark Mode 2 项、Navigation 10 项，分别通过 84 条、48 条、16 条、16 条、8 条和 52 条双语/明暗/适用 RTL 用例）。Icon 短 fill 调色板顺序缺陷已修复，并通过全仓 Chromium 与真实发布包回归。此前补齐 Form（39）、Table（37）、Upload（42）、TreeSelect（19）、Tree（27），共新增 164 个上游 Demo 的双语映射。中英文上游章节数量与顺序不同的条目已在各组件 mapping 中注明；映射数量不代表逐项视觉验收完成。总数 859 来自固定源码的 live Demo 解析，修正了旧统计遗漏的 4 个示例。
 
+补齐与严格验收按 [双线计划](./batch-plan.md) 独立推进，不再要求同一批同时完成：
+
+| 工作线             | 当前统计                                                     | 下一批                                               |
+| ------------------ | ------------------------------------------------------------ | ---------------------------------------------------- |
+| 双语示例补齐       | 722/859 已映射，137 项待映射                                 | OverflowList 4 项 → ScrollList 1 项 → Transfer 14 项 |
+| 严格视觉与行为验收 | 43/859 有效验收，679 项已映射待验收；另有 137 项待补齐后入队 | Divider 2 项 → FloatButton 7 项 → Grid 7 项          |
+
+映射计数不追认为全部通过统一运行检查；后续补齐批次须提供内容、类型及实际站点加载运行证据，但无需等待严格矩阵即可交付。验收线独立处理已补齐示例；最终所有示例仍须严格验收，证据仍随真实依赖变化失效。完成标准与命令见 [工作流](./workflow.md)。
+
 Locale 三个 live 示例已补齐双语映射并通过完整 16 项验收，包含语言菜单、日语消费者切换、文本展开、Modal、复制 Tooltip 和多文件编辑器。Pagination 的 LocaleProvider 消费、Table 空分页/ARIA、Typography 复制提示与 Select 菜单结构/焦点/滚动差异已修复；全仓 Chromium 442 项通过，既有三个批次已按当前源码刷新证据。详见 [Locale 工作记录](../../ai-work/20260906-150000-locale-documentation.md)。Dark Mode 两个示例也已完成双语映射与 8 项严格验收，覆盖全局/局部主题、Portal、键盘焦点、分页及多文件编辑器；修复 NavHeader 空节点、Navigation 语言消费、Tooltip 触发器焦点和分页切换后的焦点样式。本轮 61 项单元/SSR、442 项全仓 Chromium 及五批 172 项正式文档矩阵通过，证据已按最终源码刷新，详见 [Dark Mode 工作记录](../../ai-work/20260906-180000-dark-mode-documentation.md)。
 
-Navigation 中文 10 个、英文 12 个 live 示例已补齐，52 项严格矩阵覆盖独立导航、水平/嵌套浮层、滚动、折叠恢复、键盘、RTL 和多文件编辑器。修复了折叠 DOM、图标插槽尺寸、嵌套菜单 class、Dropdown 焦点及 JsonViewer Worker 请求 ID 碰撞；42 项单元/SSR、442 项全仓 Chromium、六批 224 项正式文档矩阵和真实 tarball 验证通过，均无重试。详见 [Navigation 工作记录](../../ai-work/20260906-200000-navigation-documentation.md)。下一批为 OverflowList 4 个示例。
+Navigation 中文 10 个、英文 12 个 live 示例已补齐，52 项严格矩阵覆盖独立导航、水平/嵌套浮层、滚动、折叠恢复、键盘、RTL 和多文件编辑器。修复了折叠 DOM、图标插槽尺寸、嵌套菜单 class、Dropdown 焦点及 JsonViewer Worker 请求 ID 碰撞；42 项单元/SSR、442 项全仓 Chromium、六批 224 项正式文档矩阵和真实 tarball 验证通过，均无重试。详见 [Navigation 工作记录](../../ai-work/20260906-200000-navigation-documentation.md)。后续补齐线与验收线的下一批分别以上表为准。
 
 尚需完成：其余组件的完整章节与示例；所有 API 的统一元数据审阅；特殊内容与适用指南；中英文迁移段落校订；固定 React/Nuxt 同进程视觉、计算样式与几何对照；Nuxt/REPL 内部打包传递依赖的完整许可审计；全仓库完整门禁。框架替换与上述验收分开记录；不再保留旧框架或第二套用户文档。
 
@@ -44,7 +53,7 @@ Navigation 中文 10 个、英文 12 个 live 示例已补齐，52 项严格矩�
 
 ## 分批验收
 
-执行顺序见 [批次计划](./batch-plan.md)，已完成矩阵见 [Button 验收要求](./button-acceptance.md)、[Icon 验收要求](./icon-acceptance.md)与 [ConfigProvider 验收要求](./config-provider-acceptance.md)。每个批次的范围、语言/主题、RTL 专项和源码输入在 `batches/`；双语映射与章节/API/迁移审阅在 `mappings/`。
+严格验收执行顺序见 [双线计划](./batch-plan.md)，不以补齐线清空为前提。已完成矩阵见 [Button 验收要求](./button-acceptance.md)、[Icon 验收要求](./icon-acceptance.md)与 [ConfigProvider 验收要求](./config-provider-acceptance.md)。严格验收批次的范围、语言/主题、RTL 专项和源码输入在 `batches/`；双语映射与章节/API/迁移审阅在 `mappings/`。补齐线可先交付映射和运行证据，不要求同时新增严格验收批次或报告；严格验收时仍须完成全部审阅。
 
 ```bash
 pnpm --filter @workspace/docs accept:nuxt:batch button

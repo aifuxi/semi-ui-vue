@@ -37,7 +37,14 @@ pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
 
 ## 本地环境
 
-文档门户已按 [Nuxt 迁移决策](docs/adr/0015-use-nuxt-for-component-documentation.md)统一为 Nuxt。构建使用 `pnpm --filter @workspace/docs build`，本地预览使用 `pnpm --filter @workspace/docs preview`（Node.js 24.18.0）。迁移状态与剩余范围见 [文档迁移记录](docs/documentation/README.md)；组件的 `ready` 状态不代表新文档已完成 859 个上游 Demo 的逐项复刻。根 `pnpm dev`、文档构建和门禁统一使用 Nuxt。 当前文档示例映射为 **722/859**，有效严格验收为 **43/859（Button、Icon、ConfigProvider、Locale、Dark Mode、Navigation）**；下一文档批次为 **OverflowList（4 项）**。批次入口与证据规则见 [分批验收说明](docs/documentation/README.md#分批验收)。 Navigation 中文 10 个、英文 12 个示例已补齐，52 项双语明暗及适用 RTL 验收全部通过；导航、浮层与 Worker 请求隔离差异已修复，六批共 224 项正式矩阵已刷新证据，见 [当前工作记录](ai-work/20260906-200000-navigation-documentation.md)。
+文档门户已按 [Nuxt 迁移决策](docs/adr/0015-use-nuxt-for-component-documentation.md)统一为 Nuxt。构建使用 `pnpm --filter @workspace/docs build`，本地预览使用 `pnpm --filter @workspace/docs preview`（Node.js 24.18.0）。迁移状态与剩余范围见 [文档迁移记录](docs/documentation/README.md)；组件的 `ready` 状态不代表新文档已完成 859 个上游 Demo 的逐项复刻。根 `pnpm dev`、文档构建和门禁统一使用 Nuxt。
+
+文档示例按 [双线计划](docs/documentation/batch-plan.md) 独立推进：
+
+- **双语示例补齐：722/859 已映射**，剩余 137 项；下一批为 **OverflowList（4 项）**，随后 ScrollList、Transfer。映射数不代表全部通过统一运行检查，后续补齐交付须包含实际加载运行证据。
+- **严格视觉与行为验收：43/859 有效验收**（Button、Icon、ConfigProvider、Locale、Dark Mode、Navigation），当前有 679 项已映射待验收；下一批为 **Divider（2 项）**，随后 FloatButton、Grid，不等待补齐线完成。
+
+两条线只拆分交付顺序，不降低最终验收标准；批次入口与证据失效规则见 [分批验收说明](docs/documentation/README.md#分批验收)。Navigation 中文 10 个、英文 12 个示例已补齐，52 项双语明暗及适用 RTL 验收全部通过；导航、浮层与 Worker 请求隔离差异已修复，六批共 224 项正式矩阵已刷新证据，见 [当前工作记录](ai-work/20260906-200000-navigation-documentation.md)。
 
 文档验收已完成一次端到端提速：同一六批 224 项冷启动从 17 分 49 秒降至 9 分 03 秒（减少 49.24%），全部一次通过；准备复用命令实测 9.5 秒。默认使用 3 workers、按实际依赖判定失效，并限制 REPL 模块请求，后续有效批次直接跳过。详见 [性能工作记录](ai-work/20260906-211800-documentation-performance.md)。
 
