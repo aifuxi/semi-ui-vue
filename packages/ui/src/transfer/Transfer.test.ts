@@ -5,7 +5,12 @@ import { describe, expect, it, vi } from 'vitest';
 import { ConfigProvider } from '../config-provider';
 import Tree from '../tree/Tree.vue';
 import Transfer from './Transfer.vue';
-import type { TransferDataItem, TransferExposed, TransferLocale } from './types';
+import type {
+  TransferDataItem,
+  TransferExposed,
+  TransferLocale,
+  TransferSelectedItemProps,
+} from './types';
 
 const items: TransferDataItem[] = [
   { key: 'a', label: 'Alpha', value: 'alpha' },
@@ -189,6 +194,44 @@ describe('Transfer', () => {
     await slotted.findAll('.slot-selected')[0]!.trigger('click');
     expect(slotted.findAll('.slot-selected')).toHaveLength(1);
   });
+
+  it.each(['slot', 'render'] as const)(
+    '自定义已选项 %s 保留把手内容并接收整行拖放排序',
+    async (mode) => {
+      const renderItem = (item: TransferSelectedItemProps) =>
+        h('div', { class: 'custom-selected' }, [
+          mode === 'slot'
+            ? h('span', item.dragHandleProps, 'Move')
+            : item.sortableHandle?.(() => h('span', 'Move')),
+          h('span', { class: 'custom-label' }, String(item.label)),
+        ]);
+      const wrapper = mount(Transfer, {
+        props: {
+          dataSource: items,
+          defaultValue: ['alpha', 'beta'],
+          draggable: true,
+          ...(mode === 'render' ? { renderSelectedItem: renderItem } : {}),
+        },
+        slots: mode === 'slot' ? { selectedItem: renderItem } : {},
+      });
+      const handle = wrapper.get('[draggable="true"]');
+      expect(handle.text()).toBe('Move');
+      await handle.trigger('dragstart', { dataTransfer: { setData: vi.fn() } });
+      await wrapper.findAll('.custom-label')[1]!.trigger('drop');
+      expect(wrapper.emitted('change')?.[0]?.[0]).toEqual(['beta', 'alpha']);
+      expect(wrapper.findAll('.custom-label').map((node) => node.text())).toEqual([
+        'Beta',
+        'Alpha',
+      ]);
+      await wrapper.get('[draggable="true"]').trigger('dragstart', {
+        dataTransfer: { setData: vi.fn() },
+      });
+      await wrapper.get('[draggable="true"]').trigger('dragend');
+      await wrapper.findAll('.custom-label')[1]!.trigger('drop');
+      expect(wrapper.emitted('change')).toHaveLength(1);
+      wrapper.unmount();
+    },
+  );
 
   it('draggable 通过 handle 重排并发送最终顺序，virtualize 保留 list/listitem 语义', async () => {
     const draggable = mount(Transfer, {

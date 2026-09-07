@@ -16283,11 +16283,28 @@
     "upstream": "show/tooltip"
   },
   {
-    "id": "transfer/en-US/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "transfer/en-US/Example1.vue" },
+    "id": "transfer/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "transfer/en-US/Basic.vue" },
     "dependencies": [
+      "@aifuxi/semi-theme-default/config-provider.css",
       "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/transfer"
+    ],
+    "pages": ["/en-us/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/en-US/ControlledPagination",
+    "entry": "ControlledPagination.vue",
+    "files": { "ControlledPagination.vue": "transfer/en-US/ControlledPagination.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/config-provider.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
       "@aifuxi/semi-ui-vue/transfer",
       "vue"
     ],
@@ -16295,11 +16312,383 @@
     "upstream": "input/transfer"
   },
   {
-    "id": "transfer/zh-CN/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "transfer/zh-CN/Example1.vue" },
+    "id": "transfer/en-US/CustomDraggable",
+    "entry": "CustomDraggable.vue",
+    "files": { "CustomDraggable.vue": "transfer/en-US/CustomDraggable.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue/icons/IconClose",
+      "@aifuxi/semi-icons-vue/icons/IconHandle",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/config-provider.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/checkbox",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/transfer"
+    ],
+    "pages": ["/en-us/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/en-US/CustomFilter",
+    "entry": "CustomFilter.vue",
+    "files": { "CustomFilter.vue": "transfer/en-US/CustomFilter.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue/icons/IconClose",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/config-provider.css",
+      "@aifuxi/semi-theme-default/highlight.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/checkbox",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/highlight",
+      "@aifuxi/semi-ui-vue/transfer",
+      "vue"
+    ],
+    "pages": ["/en-us/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/en-US/CustomHeaders",
+    "entry": "CustomHeaders.vue",
+    "files": { "CustomHeaders.vue": "transfer/en-US/CustomHeaders.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/config-provider.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/transfer"
+    ],
+    "pages": ["/en-us/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/en-US/CustomPanelDnd",
+    "entry": "CustomPanelDnd.vue",
+    "files": { "CustomPanelDnd.vue": "transfer/en-US/CustomPanelDnd.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/config-provider.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/spin.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/spin",
+      "@aifuxi/semi-ui-vue/transfer",
+      "vue"
+    ],
+    "pages": ["/en-us/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/en-US/CustomPanels",
+    "entry": "CustomPanels.vue",
+    "files": { "CustomPanels.vue": "transfer/en-US/CustomPanels.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/config-provider.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/spin.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/spin",
+      "@aifuxi/semi-ui-vue/transfer"
+    ],
+    "pages": ["/en-us/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/en-US/CustomPanelSortable",
+    "entry": "CustomPanelSortable.vue",
+    "files": { "CustomPanelSortable.vue": "transfer/en-US/CustomPanelSortable.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/config-provider.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/spin.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/spin",
+      "@aifuxi/semi-ui-vue/transfer",
+      "vue"
+    ],
+    "pages": ["/en-us/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/en-US/Disabled",
+    "entry": "Disabled.vue",
+    "files": { "Disabled.vue": "transfer/en-US/Disabled.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/config-provider.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/transfer"
+    ],
+    "pages": ["/en-us/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/en-US/Draggable",
+    "entry": "Draggable.vue",
+    "files": { "Draggable.vue": "transfer/en-US/Draggable.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/config-provider.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/transfer"
+    ],
+    "pages": ["/en-us/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/en-US/Grouped",
+    "entry": "Grouped.vue",
+    "files": { "Grouped.vue": "transfer/en-US/Grouped.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/config-provider.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/transfer"
+    ],
+    "pages": ["/en-us/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/en-US/Pagination",
+    "entry": "Pagination.vue",
+    "files": { "Pagination.vue": "transfer/en-US/Pagination.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/config-provider.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/transfer"
+    ],
+    "pages": ["/en-us/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/en-US/Tree",
+    "entry": "Tree.vue",
+    "files": { "Tree.vue": "transfer/en-US/Tree.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/config-provider.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/transfer",
+      "vue"
+    ],
+    "pages": ["/en-us/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/en-US/TreeLeafCount",
+    "entry": "TreeLeafCount.vue",
+    "files": { "TreeLeafCount.vue": "transfer/en-US/TreeLeafCount.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/config-provider.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/transfer",
+      "vue"
+    ],
+    "pages": ["/en-us/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "transfer/zh-CN/Basic.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/transfer.css", "@aifuxi/semi-ui-vue/transfer"],
+    "pages": ["/zh-cn/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/zh-CN/ControlledPagination",
+    "entry": "ControlledPagination.vue",
+    "files": { "ControlledPagination.vue": "transfer/zh-CN/ControlledPagination.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/transfer",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/zh-CN/CustomDraggable",
+    "entry": "CustomDraggable.vue",
+    "files": { "CustomDraggable.vue": "transfer/zh-CN/CustomDraggable.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue/icons/IconClose",
+      "@aifuxi/semi-icons-vue/icons/IconHandle",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/checkbox",
+      "@aifuxi/semi-ui-vue/transfer"
+    ],
+    "pages": ["/zh-cn/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/zh-CN/CustomFilter",
+    "entry": "CustomFilter.vue",
+    "files": { "CustomFilter.vue": "transfer/zh-CN/CustomFilter.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue/icons/IconClose",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/checkbox.css",
+      "@aifuxi/semi-theme-default/highlight.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/checkbox",
+      "@aifuxi/semi-ui-vue/highlight",
+      "@aifuxi/semi-ui-vue/transfer",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/zh-CN/CustomHeaders",
+    "entry": "CustomHeaders.vue",
+    "files": { "CustomHeaders.vue": "transfer/zh-CN/CustomHeaders.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/transfer"
+    ],
+    "pages": ["/zh-cn/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/zh-CN/CustomPanelDnd",
+    "entry": "CustomPanelDnd.vue",
+    "files": { "CustomPanelDnd.vue": "transfer/zh-CN/CustomPanelDnd.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/spin.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/spin",
+      "@aifuxi/semi-ui-vue/transfer",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/zh-CN/CustomPanels",
+    "entry": "CustomPanels.vue",
+    "files": { "CustomPanels.vue": "transfer/zh-CN/CustomPanels.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/spin.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/spin",
+      "@aifuxi/semi-ui-vue/transfer"
+    ],
+    "pages": ["/zh-cn/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/zh-CN/CustomPanelSortable",
+    "entry": "CustomPanelSortable.vue",
+    "files": { "CustomPanelSortable.vue": "transfer/zh-CN/CustomPanelSortable.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/spin.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/spin",
+      "@aifuxi/semi-ui-vue/transfer",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/zh-CN/Disabled",
+    "entry": "Disabled.vue",
+    "files": { "Disabled.vue": "transfer/zh-CN/Disabled.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/transfer.css", "@aifuxi/semi-ui-vue/transfer"],
+    "pages": ["/zh-cn/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/zh-CN/Draggable",
+    "entry": "Draggable.vue",
+    "files": { "Draggable.vue": "transfer/zh-CN/Draggable.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/transfer.css", "@aifuxi/semi-ui-vue/transfer"],
+    "pages": ["/zh-cn/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/zh-CN/Grouped",
+    "entry": "Grouped.vue",
+    "files": { "Grouped.vue": "transfer/zh-CN/Grouped.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/transfer.css", "@aifuxi/semi-ui-vue/transfer"],
+    "pages": ["/zh-cn/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/zh-CN/Pagination",
+    "entry": "Pagination.vue",
+    "files": { "Pagination.vue": "transfer/zh-CN/Pagination.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/transfer.css", "@aifuxi/semi-ui-vue/transfer"],
+    "pages": ["/zh-cn/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/zh-CN/Tree",
+    "entry": "Tree.vue",
+    "files": { "Tree.vue": "transfer/zh-CN/Tree.vue" },
     "dependencies": [
       "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/transfer",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/transfer/"],
+    "upstream": "input/transfer"
+  },
+  {
+    "id": "transfer/zh-CN/TreeLeafCount",
+    "entry": "TreeLeafCount.vue",
+    "files": { "TreeLeafCount.vue": "transfer/zh-CN/TreeLeafCount.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/transfer.css",
+      "@aifuxi/semi-ui-vue/button",
       "@aifuxi/semi-ui-vue/transfer",
       "vue"
     ],

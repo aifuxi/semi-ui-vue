@@ -372,7 +372,7 @@ function selectedItemProps(
   if (fullPath) output.fullPath = fullPath;
   if (handleProps) {
     output.dragHandleProps = handleProps;
-    output.sortableHandle = (render) => h('span', handleProps, { default: render });
+    output.sortableHandle = (render) => h('span', handleProps, render());
   }
   return output;
 }
@@ -713,7 +713,12 @@ defineExpose<TransferExposed>({ search });
         </div>
       </div>
       <div v-else class="semi-transfer-right-list" role="list" aria-label="Selected list">
-        <template v-for="(item, index) in selectedData" :key="item.key">
+        <TransferNodeRenderer
+          v-for="(item, index) in selectedData"
+          :key="item.key"
+          :sortable="props.draggable"
+          @drop="dropAt(index)"
+        >
           <slot name="selectedItem" v-bind="selectedItemProps(item, index)">
             <TransferNodeRenderer
               v-if="props.renderSelectedItem"
@@ -727,8 +732,6 @@ defineExpose<TransferExposed>({ search });
                 'semi-transfer-right-item',
                 props.draggable && 'semi-transfer-right-item-draggable',
               ]"
-              @dragover.prevent
-              @drop.prevent="dropAt(index)"
             >
               <IconHandle
                 v-if="props.draggable"
@@ -748,7 +751,7 @@ defineExpose<TransferExposed>({ search });
               />
             </div>
           </slot>
-        </template>
+        </TransferNodeRenderer>
       </div>
     </section>
   </div>

@@ -38,6 +38,8 @@
 
 `renderSelectedItem` 的 React `sortableHandle(render)` 在 Vue 中保留为返回 `VNodeChild` 的函数；slot 额外提供 `dragHandleProps`，便于模板把 `draggable` 与 drag 事件绑定到任意节点。
 
+2026-09-07 文档补齐发现并修复：自定义 `selectedItem` slot / `renderSelectedItem` 不再绕过排序接收边界。拖拽行由 `.semi-transfer-right-item-sortable-item` 包裹并接收整行 drop，对应固定 `_sortable/index.tsx:242-249`；`sortableHandle(render)` 的原生 span 直接渲染返回内容。保留默认、非拖拽和虚拟列表分支及公开 API；新增 slot / render 两条失败前、修复后通过的回归，并验证真实文档拖拽。详见 [本次修复与运行证据](../../../ai-work/20260907-113702-transfer-documentation-content.md)。
+
 ## 状态、事件顺序与数据规则
 
 1. `groupList` 按组顺序展平并保存 `_parent`；`treeList` 深度优先展平，保存 `path`，叶节点标记 `isLeaf`，不修改调用方数据。
