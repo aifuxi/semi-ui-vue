@@ -12,10 +12,65 @@ upstream: 'show/userGuide'
 
 UserGuide introduces page features step by step with a popup card or a centered modal. The Vue implementation aligns with Semi Design v2.102.0 for DOM structure, state transitions, themes, masks, buttons, and locale text.
 
-## Basic usage
+## Demos
 
-::demo-block{demo="user-guide/en-US/Example1" title="Basic usage"}
+### Basic usage
+
+The popup guide visits Switch, Tag and Button. Use Next, Prev, Skip and Finish; target getters resolve only when opening on the client.
+
+::demo-block{demo="user-guide/en-US/Basic" title="Basic usage"}
 ::
+
+### Theme
+
+Set theme="primary" for the primary popup theme.
+
+::demo-block{demo="user-guide/en-US/Theme" title="Theme"}
+::
+
+### Popup position
+
+The steps demonstrate top, right and bottom; showArrow=false hides the last arrow.
+
+::demo-block{demo="user-guide/en-US/Position" title="Popup position"}
+::
+
+### Spotlight padding
+
+Set global spotlightPadding=10 and override it with 15 in the third step.
+
+::demo-block{demo="user-guide/en-US/Padding" title="Spotlight padding"}
+::
+
+### Custom buttons
+
+Use content in nextButtonProps/prevButtonProps for React children, and finishText for the final step.
+
+::demo-block{demo="user-guide/en-US/Buttons" title="Custom buttons"}
+::
+
+### Controlled
+
+v-model:current writes back the step. Finishing or skipping closes the guide and resets it to 0.
+
+::demo-block{demo="user-guide/en-US/Controlled" title="Controlled"}
+::
+
+### Modal guide
+
+mode="modal" displays three covers and descriptions. Existing local illustrations replace upstream-branded DSM screenshots; Image dimensions and emphasized text are retained.
+
+::demo-block{demo="user-guide/en-US/Modal" title="Modal guide"}
+::
+
+### No mask
+
+mask=false keeps the single-step popup without the mask.
+
+::demo-block{demo="user-guide/en-US/NoMask" title="No mask"}
+::
+
+## Basic usage
 
 Mount target elements before opening the guide. A target getter may temporarily return `null`; the component will then render neither the popup nor the spotlight.
 
@@ -113,29 +168,29 @@ Imports are SSR-safe. DOM lookup, scrolling, and measurement run only during a v
 
 ## React → Vue
 
-| React v2.102.0                                | Vue 3.5+                                                       |
-| --------------------------------------------- | -------------------------------------------------------------- |
-| `<UserGuide visible={visible} />`             | `<UserGuide :visible="visible" />`                             |
-| `current={current}` + `onChange={setCurrent}` | `v-model:current="current"`，也可监听 `@change`                |
-| `onNext/onPrev/onSkip/onFinish`               | `@next/@prev/@skip/@finish`                                    |
-| `StepItem.cover/title/description: ReactNode` | `VNodeChild`，或 `#cover/#title/#description` scoped slots     |
-| `nextButtonProps.children`                    | `nextButtonProps.content`                                      |
-| `prevButtonProps.children`                    | `prevButtonProps.content`                                      |
-| `className`                                   | 推荐原生 `class`；仍兼容 `className`                           |
-| `style: React.CSSProperties`                  | `style: StyleValue`                                            |
-| `target: Element \| (() => Element)`          | `Element \| (() => Element \| null \| undefined)`；推荐 getter |
+| React v2.102.0                                | Vue 3.5+                                                              |
+| --------------------------------------------- | --------------------------------------------------------------------- |
+| `<UserGuide visible={visible} />`             | `<UserGuide :visible="visible" />`                                    |
+| `current={current}` + `onChange={setCurrent}` | `v-model:current="current"`; or listen to `@change`                   |
+| `onNext/onPrev/onSkip/onFinish`               | `@next/@prev/@skip/@finish`                                           |
+| `StepItem.cover/title/description: ReactNode` | `VNodeChild`, or `#cover/#title/#description` scoped slots            |
+| `nextButtonProps.children`                    | `nextButtonProps.content`                                             |
+| `prevButtonProps.children`                    | `prevButtonProps.content`                                             |
+| `className`                                   | Native `class` preferred; `className` supported                       |
+| `style: React.CSSProperties`                  | `style: StyleValue`                                                   |
+| `target: Element \| (() => Element)`          | `Element \| (() => Element \| null \| undefined)`; getter recommended |
 
-## 可见性不是 v-model
+## Explicit visibility
 
-固定 React Adapter 在 `skip` 或 `finish` 后不会自动隐藏。Vue 保留这一点，因此应显式更新 `visible`：
+The pinned React Adapter does not hide after skip or finish. Update visible explicitly in Vue as well:
 
 ```vue
 <UserGuide :visible="visible" :steps="steps" @skip="visible = false" @finish="visible = false" />
 ```
 
-## Portal 容器
+## Portal container
 
-固定 v2.102.0 的 `UserGuide.getPopupContainer` 只用于跳过 body scroll 锁，并未传给内部 Popover/Modal。React 与 Vue 都应通过 ConfigProvider 控制真正的浮层容器：
+In v2.102.0, UserGuide.getPopupContainer only skips its body scroll lock; it is not forwarded to Popover/Modal. Use ConfigProvider to select the actual overlay container:
 
 ```vue
 <ConfigProvider :get-popup-container="() => stage!">
@@ -149,10 +204,17 @@ Imports are SSR-safe. DOM lookup, scrolling, and measurement run only during a v
 </ConfigProvider>
 ```
 
-同时传 UserGuide prop 可保持固定 Adapter 的 body-lock 行为；ConfigProvider 负责 Portal 父节点。
+Passing the UserGuide prop also preserves the pinned body-lock behavior; ConfigProvider selects the Portal parent.
 
-## 固定源码差异
+## Pinned-source behavior
 
-- step 级 `mask` 与 `className` 在上游公开类型中存在，但 v2.102.0 React Adapter 没有读取；Vue 不额外实现。
-- 全局 `theme="primary"` 会使所有步骤保持 primary，即使某一步写了 `theme="default"`；这是固定 Adapter 的 `global primary || step primary` 逻辑。
-- `spotlightPadding=0` 会按固定 Adapter 的 truthy fallback 回退到全局值或 5px。
+- Per-step mask and className are declared upstream but unused by the v2.102.0 Adapter; Vue preserves this.
+- Global theme="primary" keeps every step primary, even when a step sets theme="default", matching the pinned global-primary OR step-primary logic.
+- spotlightPadding=0 falls back to the global value or 5px through the pinned truthy fallback.
+
+## Additional Vue examples
+
+These examples supplement Vue API usage and are not counted as upstream demo mappings.
+
+::demo-block{demo="user-guide/en-US/Example1" title="Example1"}
+::

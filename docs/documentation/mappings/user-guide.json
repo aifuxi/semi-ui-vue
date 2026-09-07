@@ -1,0 +1,53 @@
+{
+  "upstream": "show/userGuide",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "user-guide/zh-CN/Basic",
+      "enUS": "user-guide/en-US/Basic",
+      "notes": "中英文索引均为1。气泡引导依次定位 Switch、Tag 与 Button；支持下一步、上一步、跳过和完成。目标使用延迟 getter，仅在客户端打开时查询。"
+    },
+    {
+      "index": 2,
+      "zhCN": "user-guide/zh-CN/Theme",
+      "enUS": "user-guide/en-US/Theme",
+      "notes": "中英文索引均为2。通过 theme=\"primary\" 设置 primary 气泡主题。"
+    },
+    {
+      "index": 3,
+      "zhCN": "user-guide/zh-CN/Position",
+      "enUS": "user-guide/en-US/Position",
+      "notes": "中英文索引均为3。三步依次演示 top、right、bottom，最后一步通过 showArrow=false 隐藏箭头。"
+    },
+    {
+      "index": 4,
+      "zhCN": "user-guide/zh-CN/Padding",
+      "enUS": "user-guide/en-US/Padding",
+      "notes": "中英文索引均为4。全局 spotlightPadding=10，第三步覆盖为15。"
+    },
+    {
+      "index": 5,
+      "zhCN": "user-guide/zh-CN/Buttons",
+      "enUS": "user-guide/en-US/Buttons",
+      "notes": "中英文索引均为5。nextButtonProps/prevButtonProps 的 content 对应 React children；最后一步使用 finishText。"
+    },
+    {
+      "index": 6,
+      "zhCN": "user-guide/zh-CN/Controlled",
+      "enUS": "user-guide/en-US/Controlled",
+      "notes": "中英文索引均为6。v-model:current 负责回写步骤，完成或跳过时关闭并复位到0。"
+    },
+    {
+      "index": 7,
+      "zhCN": "user-guide/zh-CN/Modal",
+      "enUS": "user-guide/en-US/Modal",
+      "notes": "中英文索引均为7。mode=\"modal\" 展示三步封面与说明。复用本站固定插图替换带上游品牌的 DSM 截图，保留 Image 尺寸和描述中的强调文本。"
+    },
+    {
+      "index": 8,
+      "zhCN": "user-guide/zh-CN/NoMask",
+      "enUS": "user-guide/en-US/NoMask",
+      "notes": "中英文索引均为8。mask=false 保留单步气泡但不绘制遮罩。"
+    }
+  ]
+}

@@ -12,10 +12,65 @@ upstream: 'show/userGuide'
 
 UserGuide 通过气泡卡片或居中弹窗分步介绍页面能力。Vue 版本对齐 Semi Design v2.102.0 的 DOM、状态机、主题、遮罩、按钮和国际化行为。
 
-## 基本用法
+## 代码演示
 
-::demo-block{demo="user-guide/zh-CN/Example1" title="基本用法"}
+### 基本用法
+
+气泡引导依次定位 Switch、Tag 与 Button；支持下一步、上一步、跳过和完成。目标使用延迟 getter，仅在客户端打开时查询。
+
+::demo-block{demo="user-guide/zh-CN/Basic" title="基本用法"}
 ::
+
+### 主题
+
+通过 theme="primary" 设置 primary 气泡主题。
+
+::demo-block{demo="user-guide/zh-CN/Theme" title="主题"}
+::
+
+### 气泡卡片弹出位置
+
+三步依次演示 top、right、bottom，最后一步通过 showArrow=false 隐藏箭头。
+
+::demo-block{demo="user-guide/zh-CN/Position" title="气泡卡片弹出位置"}
+::
+
+### 设置高亮区域大小
+
+全局 spotlightPadding=10，第三步覆盖为15。
+
+::demo-block{demo="user-guide/zh-CN/Padding" title="设置高亮区域大小"}
+::
+
+### 定制按钮
+
+nextButtonProps/prevButtonProps 的 content 对应 React children；最后一步使用 finishText。
+
+::demo-block{demo="user-guide/zh-CN/Buttons" title="定制按钮"}
+::
+
+### 受控
+
+v-model:current 负责回写步骤，完成或跳过时关闭并复位到0。
+
+::demo-block{demo="user-guide/zh-CN/Controlled" title="受控"}
+::
+
+### 弹窗式引导
+
+mode="modal" 展示三步封面与说明。复用本站固定插图替换带上游品牌的 DSM 截图，保留 Image 尺寸和描述中的强调文本。
+
+::demo-block{demo="user-guide/zh-CN/Modal" title="弹窗式引导"}
+::
+
+### 无遮罩
+
+mask=false 保留单步气泡但不绘制遮罩。
+
+::demo-block{demo="user-guide/zh-CN/NoMask" title="无遮罩"}
+::
+
+## 基本用法
 
 目标元素应在引导打开前完成挂载。目标函数可以暂时返回 `null`，此时不会创建气泡或 spotlight。
 
@@ -156,3 +211,10 @@ v2.102.0 的类型和文档声明了 step 级 `mask` 与 `className`，但固定
 - step 级 `mask` 与 `className` 在上游公开类型中存在，但 v2.102.0 React Adapter 没有读取；Vue 不额外实现。
 - 全局 `theme="primary"` 会使所有步骤保持 primary，即使某一步写了 `theme="default"`；这是固定 Adapter 的 `global primary || step primary` 逻辑。
 - `spotlightPadding=0` 会按固定 Adapter 的 truthy fallback 回退到全局值或 5px。
+
+## Vue 补充示例
+
+以下示例补充 Vue API 使用方式，不计入上游示例映射。
+
+::demo-block{demo="user-guide/zh-CN/Example1" title="Example1"}
+::
