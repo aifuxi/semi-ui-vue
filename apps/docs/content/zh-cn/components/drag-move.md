@@ -18,10 +18,37 @@ import { DragMove } from '@aifuxi/semi-ui-vue/drag-move';
 import '@aifuxi/semi-theme-default/drag-move.css';
 ```
 
-## 基本用法
+## 代码演示
 
-::demo-block{demo="drag-move/zh-CN/Example1" title="基本用法"}
+### 基本用法
+
+默认将唯一子元素设为 absolute 定位。此示例外层只预留演示空间，不限制拖动范围。
+
+::demo-block{demo="drag-move/zh-CN/Basic" title="基本用法"}
 ::
+
+### 限制拖动范围
+
+constrainer 返回 position: relative 的容器，蓝块不能移出其边界。
+
+::demo-block{demo="drag-move/zh-CN/Constrainer" title="限制拖动范围"}
+::
+
+### 自定义触发拖动的元素
+
+仅从中间图标开始拖动，其余区域不触发拖动。
+
+::demo-block{demo="drag-move/zh-CN/Handler" title="自定义触发拖动的元素"}
+::
+
+### 自定义拖动后的位置处理
+
+customMove 接管 top/left/right 写入，靠右时使用 right 定位，使点击变宽后仍不越界。中文小宽度60px，英文50px，均扩大至100px，保留上游语言差异。
+
+::demo-block{demo="drag-move/zh-CN/CustomMove" title="自定义拖动后的位置处理"}
+::
+
+## 基本用法
 
 DragMove 缺省把子元素设置为 `position: absolute`。约束容器应建立定位上下文，通常
 使用 `position: relative`。如果需要保留元素原本的布局位置，设置
@@ -108,3 +135,10 @@ move/end 回调。
 React 通过 `cloneElement` 合并 child ref；Vue 通过范围受限的 `cloneVNode(..., true)`
 合并 ref，同样不增加 wrapper。React class component / `forwardRef` 的 DOM 透传，对应 Vue
 中根节点为 `HTMLElement` 的单根组件。
+
+## Vue 补充示例
+
+以下示例补充 Vue API 使用方式，不计入上游示例映射。
+
+::demo-block{demo="drag-move/zh-CN/Example1" title="Example1"}
+::

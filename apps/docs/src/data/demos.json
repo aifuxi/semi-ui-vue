@@ -4952,6 +4952,38 @@
     "upstream": "basic/divider"
   },
   {
+    "id": "drag-move/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "drag-move/en-US/Basic.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/drag-move.css", "@aifuxi/semi-ui-vue/drag-move"],
+    "pages": ["/en-us/components/drag-move/"],
+    "upstream": "plus/dragMove"
+  },
+  {
+    "id": "drag-move/en-US/Constrainer",
+    "entry": "Constrainer.vue",
+    "files": { "Constrainer.vue": "drag-move/en-US/Constrainer.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/drag-move.css",
+      "@aifuxi/semi-ui-vue/drag-move",
+      "vue"
+    ],
+    "pages": ["/en-us/components/drag-move/"],
+    "upstream": "plus/dragMove"
+  },
+  {
+    "id": "drag-move/en-US/CustomMove",
+    "entry": "CustomMove.vue",
+    "files": { "CustomMove.vue": "drag-move/en-US/CustomMove.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/drag-move.css",
+      "@aifuxi/semi-ui-vue/drag-move",
+      "vue"
+    ],
+    "pages": ["/en-us/components/drag-move/"],
+    "upstream": "plus/dragMove"
+  },
+  {
     "id": "drag-move/en-US/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "drag-move/en-US/Example1.vue" },
@@ -4964,10 +4996,68 @@
     "upstream": "plus/dragMove"
   },
   {
+    "id": "drag-move/en-US/Handler",
+    "entry": "Handler.vue",
+    "files": { "Handler.vue": "drag-move/en-US/Handler.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/drag-move.css",
+      "@aifuxi/semi-ui-vue/drag-move",
+      "vue"
+    ],
+    "pages": ["/en-us/components/drag-move/"],
+    "upstream": "plus/dragMove"
+  },
+  {
+    "id": "drag-move/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "drag-move/zh-CN/Basic.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/drag-move.css", "@aifuxi/semi-ui-vue/drag-move"],
+    "pages": ["/zh-cn/components/drag-move/"],
+    "upstream": "plus/dragMove"
+  },
+  {
+    "id": "drag-move/zh-CN/Constrainer",
+    "entry": "Constrainer.vue",
+    "files": { "Constrainer.vue": "drag-move/zh-CN/Constrainer.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/drag-move.css",
+      "@aifuxi/semi-ui-vue/drag-move",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/drag-move/"],
+    "upstream": "plus/dragMove"
+  },
+  {
+    "id": "drag-move/zh-CN/CustomMove",
+    "entry": "CustomMove.vue",
+    "files": { "CustomMove.vue": "drag-move/zh-CN/CustomMove.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/drag-move.css",
+      "@aifuxi/semi-ui-vue/drag-move",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/drag-move/"],
+    "upstream": "plus/dragMove"
+  },
+  {
     "id": "drag-move/zh-CN/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "drag-move/zh-CN/Example1.vue" },
     "dependencies": [
+      "@aifuxi/semi-theme-default/drag-move.css",
+      "@aifuxi/semi-ui-vue/drag-move",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/drag-move/"],
+    "upstream": "plus/dragMove"
+  },
+  {
+    "id": "drag-move/zh-CN/Handler",
+    "entry": "Handler.vue",
+    "files": { "Handler.vue": "drag-move/zh-CN/Handler.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/drag-move.css",
       "@aifuxi/semi-ui-vue/drag-move",
       "vue"
