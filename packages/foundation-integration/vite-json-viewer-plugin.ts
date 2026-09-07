@@ -16,6 +16,30 @@ const jsoncParserEntry = fileURLToPath(
   new URL('./node_modules/jsonc-parser/lib/esm/main.js', import.meta.url),
 );
 
+export function preservePinnedJsonViewerWorker(): Plugin {
+  return {
+    name: 'preserve-pinned-json-viewer-worker',
+    transform(code, id) {
+      // This plugin runs only in the dedicated Worker build. Prune the main-thread
+      // branch, which otherwise retains the upstream nested-Worker placeholder.
+      if (id.replaceAll('\\', '/') === path.join(coreRoot, 'common/worker.ts')) {
+        return { code: 'export function isInWorkerThread() { return true; }', map: null };
+      }
+      // JSONModel imports the manager even in its Worker-only branch. A dedicated
+      // Worker never starts another manager; exclude the unexpanded upstream template.
+      if (id.replaceAll('\\', '/') === `${pinnedWorkerManager}.ts`) {
+        return {
+          code: 'export function getJsonWorkerManager() { throw new Error("Nested JsonViewer Worker is not supported"); }',
+          map: null,
+        };
+      }
+      // The pinned package marks every module side-effect-free, including its Worker handler.
+      if (id.replaceAll('\\', '/') !== path.join(coreRoot, 'worker/json.worker.ts')) return null;
+      return { code, map: null, moduleSideEffects: true };
+    },
+  };
+}
+
 export function adaptPinnedJsonViewerCore(): Plugin {
   return {
     name: 'adapt-pinned-json-viewer-core',

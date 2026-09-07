@@ -30,14 +30,48 @@ The `change` and `update:value` events emit the complete JSON source. `options` 
 
 | React                                         | Vue                                          |
 | --------------------------------------------- | -------------------------------------------- |
-| `value` + `onChange`                          | `v-model:value`                              |
+| `value` + `onChange`                          | `:value` + `@change`                         |
 | `renderSearchButton(node, controls)`          | `renderSearchButton` prop or `#searchButton` |
 | `customRenderRule[].render` returns ReactNode | Return Vue VNodeChild or HTMLElement         |
-| `ref.current.foundation...`                   | Public component-ref methods                 |
+| `ref.current.format()`                        | Public component-ref methods                 |
 
 ## Accessibility and SSR
 
 Search options support pointer, Enter, and Space activation and expose `aria-pressed`. SSR emits stable containers only. The core, ResizeObserver, and Worker are created after client mount and disposed on unmount.
+
+## Upstream examples
+
+These examples preserve the upstream uncontrolled editing pattern: value supplies the initial text and change reports edits. Writing value back on every change rebuilds the editor. The custom renderer uses a local illustration and matches its /demos/ path; string, numeric, path, and regular-expression rules are demonstrated separately.
+
+### Basic usage
+
+::demo-block{demo="json-viewer/en-US/Basic" title="Basic usage"}
+::
+
+### Line height
+
+::demo-block{demo="json-viewer/en-US/LineHeight" title="Line height"}
+::
+
+### Auto wrap
+
+::demo-block{demo="json-viewer/en-US/AutoWrap" title="Auto wrap"}
+::
+
+### Format options
+
+::demo-block{demo="json-viewer/en-US/Format" title="Format options"}
+::
+
+### Custom render rules
+
+::demo-block{demo="json-viewer/en-US/CustomRender" title="Custom render rules"}
+::
+
+### Custom search button
+
+::demo-block{demo="json-viewer/en-US/CustomSearch" title="Custom search button"}
+::
 
 ## API
 

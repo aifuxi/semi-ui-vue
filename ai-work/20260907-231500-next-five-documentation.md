@@ -37,3 +37,24 @@
 - 共享脚本导致六批历史证据失效，已启动一次完整 affected 验收（224用例）。验收期间 JsonViewer 草稿仅暂存临时目录，不更新文档注册或任何构建产物；本轮采样始终消费 CodeHighlight 最终静态产物。
 
 CodeHighlight 收尾：`accept:nuxt:batch --affected` 退出0，224/224通过、无重试或跳过，六批历史正式证据已重新生成，统计为785/859映射、43/859有效验收。代码、主题、Foundation和包导出未修改，因此不额外运行组件发布包门禁；共享REPL变更由最终静态运行、资源门禁与受影响完整矩阵验证。剩余四批继续按队列执行。
+
+## JsonViewer 代表与范围
+
+按固定 Adapter/公开类型、Foundation/core、SCSS、主题与双语文档及现有 alignment.md 核查，选择 Basic（1）、CustomRender（5）、CustomSearch（6）双语代表。基础例验证非受控编辑与搜索；自定义渲染验证只读、Rating/Tag、hover文本和图片；搜索按钮验证slot提供的defaultSearchButton与controls切换、查找替换、关闭重开。英文通过完整ConfigProvider locale数据提供搜索文案。
+
+每例一个小型SFC；customRenderRule要求返回任意VNode，因此仅该回调使用范围受限的h()；搜索slot里的任意默认VNode通过局部函数组件渲染。其他结构保持模板。图片复用已有photo.svg，并将URL匹配规则改为本地/demos路径；后续严格验收需对齐双侧素材。六个固定索引双语顺序一致，无多文件上游依赖。
+
+JsonViewer 代表失败证据：`representatives/summary.json` 双语 Basic 替换后 `.lines-content` 消失；`replace-probe.mjs` 读取到 DemoBlock 捕获的 notifyChangeModelContent 异常。Worker探针显示多个真实Worker收到 init/foldRange/validate却未返回；公开dist实际 inline代码为 `rt = ""`。根因是固定core sideEffects:false裁掉顶层消息处理器。现有静态React/Vue工作台已通过scripts/parity-build-runtime.mjs保留该入口，公开UI包缺失规则。本次在Foundation构建插件导出精确入口保留规则，并接入公开包worker.plugins；新增上游源码仍仅从固定vendor编译，既有core MIT归属和SBOM来源不变，由构建重新生成产物许可证据。
+
+JsonViewer 收尾验证：
+
+- 代表 `representatives-worker/summary.json` 与扩展 `full-dev/summary.json` 双语均通过，之后仅完善公开 Worker 构建隔离及 tarball 门禁。首次准备期间修改了验证脚本，缓存按设计拒绝保存；稳定后重新执行最终联合检查，未复用失败准备。
+- 独立 Worker 构建将固定 `common/worker.ts` 的环境判断固定为 true，并排除该环境永远不会调用的嵌套 Worker manager 模板；保留原 init/update/format/fold/validate 协议，不改 vendor。最初只有保留入口时仍携带 `%WORKER_RAW%`，已由原发布门禁发现并消除。
+- 新构建测试实际编译 pinned Worker 并验证 init/format/foldRange/validate 四个响应及无模板残留，1/1通过；JsonViewer 公开行为/SSR与 manager 隔离测试10/10通过；既有 Chromium 组件矩阵5/5通过。
+- `pnpm verify:pack-dist` 退出0：五个真实 tarball 安装、exports、ESM、类型、样式、SSR import，以及新加的真实浏览器搜索替换全部通过。pack 辅助脚本修正 Vite 多输出格式返回值后通过；未放松原门禁。日志 `/tmp/semi-json-pack.log`。
+- 本批 ESLint 通过。UI全包typecheck失败：未改动的Transfer.vue:375与TransferNodeRenderer.ts:33存在VNodeChild/RawChildren重载不匹配；记录为本次范围外已有问题，不宣称该检查通过。日志 `/tmp/semi-json-ui-types.log`。
+- 最终 `pnpm --filter @workspace/docs check` 退出0：64流程测试、196页、1625 Demo、5918静态产物，Nuxt类型与内容/资源/许可检查通过。日志 `/tmp/semi-json-check.log`。
+- 最终 `full-static/summary.json` 双语逐项通过6例加载、主要操作、源码/重置，三个代表在线运行，Basic还在Monaco实际修改SFC后运行。issues为空，已查看CustomRender英文截图。证据目录 `apps/docs/.data/documentation-smoke/json-viewer/`。
+- 本次构建集成修改使六批历史证据失效，随后集中重验受影响矩阵；本批只增加映射，不增加accepted。
+
+JsonViewer 历史证据重验完成：224/224通过，5.9分钟，无重试或跳过；六批证据刷新，覆盖791/859，有效严格验收仍43/859。日志 `/tmp/semi-json-affected.log`。本组件单独提交后继续下批。

@@ -93,3 +93,11 @@
 Navigation 文档回归的全仓门禁发现 JsonViewer 首轮出现 `ErrorWidget._problems` 为 undefined、重试通过。固定 `src/worker/jsonWorkerManager.ts` 及集成边界原先以 `Date.now() + Math.random()` 生成 messageId；同毫秒内浮点数碰撞会覆盖 callback，使 init 的空响应送到 validate。定时与随机值固定的协议单测已复现该错误。
 
 集成边界改用每个 Worker 实例递增的 messageId；消息格式、Worker 核心及公开行为不变，React/Vue 参考共同使用该既有构建边界。此处是为确定性和请求隔离做的适配，不以增加 retries 掩盖失败。验收包含 init/validate 响应隔离单测、JsonViewer 公开行为/SSR、重复 Chromium 矩阵与全仓回归。
+
+## 公开包 Worker 副作用保留
+
+双语文档补齐在实际公开包上复现：首次搜索后点击替换，文档捕获 `notifyChangeModelContent` 异常。构建后的 inline Worker 字符串为空，Worker收到了 init/foldRange/validate 请求但没有消息处理器，折叠模型因此未初始化。固定 core 的 `worker/json.worker.ts` 通过顶层 `self.onmessage` 注册协议，而其 package.json 的 sideEffects:false 导致公开包的独立 Worker 构建裁掉该模块。
+
+公开包的 Vite worker 构建对这一精确固定入口标记 moduleSideEffects:true，复用现有 Foundation 构建隔离边界；不改 vendor、协议、组件 API 或默认行为。参考静态工作台已有相同保留语义。回归必须用生产构建的真实 Worker 完成初始化、格式化和替换响应，只有源码测试或检查 Worker 构造器存在不能证明修复。
+
+Worker 专属构建同时固定 `common/worker.ts` 为 DedicatedWorker 环境，并以不可调用的报错入口隔离嵌套 manager，避免把主线程的 `%WORKER_RAW%` 模板带入发布产物。该 manager 在固定 JSONModel 的 Worker 分支不会调用。新增构建测试验证真实协议响应；真实 tarball 门禁通过安装包构建浏览器消费者，完成查找、替换与关闭搜索。原有 MIT 归属及 SBOM 来源沿用固定 core，随公开构建重新生成。

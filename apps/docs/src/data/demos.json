@@ -8639,6 +8639,99 @@
     "upstream": "input/input"
   },
   {
+    "id": "json-viewer/en-US/AutoWrap",
+    "entry": "AutoWrap.vue",
+    "files": { "AutoWrap.vue": "json-viewer/en-US/AutoWrap.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/json-viewer",
+      "@aifuxi/semi-ui-vue/locale/source/en_US"
+    ],
+    "pages": ["/en-us/components/json-viewer/"],
+    "upstream": "plus/jsonviewer"
+  },
+  {
+    "id": "json-viewer/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "json-viewer/en-US/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/json-viewer",
+      "@aifuxi/semi-ui-vue/locale/source/en_US"
+    ],
+    "pages": ["/en-us/components/json-viewer/"],
+    "upstream": "plus/jsonviewer"
+  },
+  {
+    "id": "json-viewer/en-US/CustomRender",
+    "entry": "CustomRender.vue",
+    "files": { "CustomRender.vue": "json-viewer/en-US/CustomRender.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/image.css",
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-theme-default/popover.css",
+      "@aifuxi/semi-theme-default/rating.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/image",
+      "@aifuxi/semi-ui-vue/json-viewer",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/popover",
+      "@aifuxi/semi-ui-vue/rating",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/en-us/components/json-viewer/"],
+    "upstream": "plus/jsonviewer"
+  },
+  {
+    "id": "json-viewer/en-US/CustomSearch",
+    "entry": "CustomSearch.vue",
+    "files": { "CustomSearch.vue": "json-viewer/en-US/CustomSearch.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/json-viewer",
+      "@aifuxi/semi-ui-vue/locale/source/en_US"
+    ],
+    "pages": ["/en-us/components/json-viewer/"],
+    "upstream": "plus/jsonviewer"
+  },
+  {
+    "id": "json-viewer/en-US/Format",
+    "entry": "Format.vue",
+    "files": { "Format.vue": "json-viewer/en-US/Format.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/json-viewer",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/json-viewer/"],
+    "upstream": "plus/jsonviewer"
+  },
+  {
+    "id": "json-viewer/en-US/LineHeight",
+    "entry": "LineHeight.vue",
+    "files": { "LineHeight.vue": "json-viewer/en-US/LineHeight.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/json-viewer",
+      "@aifuxi/semi-ui-vue/locale/source/en_US"
+    ],
+    "pages": ["/en-us/components/json-viewer/"],
+    "upstream": "plus/jsonviewer"
+  },
+  {
     "id": "json-viewer/Showcase",
     "entry": "Showcase.vue",
     "files": { "Showcase.vue": "json-viewer/Showcase.vue" },
@@ -8648,6 +8741,99 @@
       "vue"
     ],
     "pages": ["/en-us/components/json-viewer/", "/zh-cn/components/json-viewer/"],
+    "upstream": "plus/jsonviewer"
+  },
+  {
+    "id": "json-viewer/zh-CN/AutoWrap",
+    "entry": "AutoWrap.vue",
+    "files": { "AutoWrap.vue": "json-viewer/zh-CN/AutoWrap.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/json-viewer",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN"
+    ],
+    "pages": ["/zh-cn/components/json-viewer/"],
+    "upstream": "plus/jsonviewer"
+  },
+  {
+    "id": "json-viewer/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "json-viewer/zh-CN/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/json-viewer",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN"
+    ],
+    "pages": ["/zh-cn/components/json-viewer/"],
+    "upstream": "plus/jsonviewer"
+  },
+  {
+    "id": "json-viewer/zh-CN/CustomRender",
+    "entry": "CustomRender.vue",
+    "files": { "CustomRender.vue": "json-viewer/zh-CN/CustomRender.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/image.css",
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-theme-default/popover.css",
+      "@aifuxi/semi-theme-default/rating.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/image",
+      "@aifuxi/semi-ui-vue/json-viewer",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/popover",
+      "@aifuxi/semi-ui-vue/rating",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/json-viewer/"],
+    "upstream": "plus/jsonviewer"
+  },
+  {
+    "id": "json-viewer/zh-CN/CustomSearch",
+    "entry": "CustomSearch.vue",
+    "files": { "CustomSearch.vue": "json-viewer/zh-CN/CustomSearch.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/json-viewer",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN"
+    ],
+    "pages": ["/zh-cn/components/json-viewer/"],
+    "upstream": "plus/jsonviewer"
+  },
+  {
+    "id": "json-viewer/zh-CN/Format",
+    "entry": "Format.vue",
+    "files": { "Format.vue": "json-viewer/zh-CN/Format.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/json-viewer",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/json-viewer/"],
+    "upstream": "plus/jsonviewer"
+  },
+  {
+    "id": "json-viewer/zh-CN/LineHeight",
+    "entry": "LineHeight.vue",
+    "files": { "LineHeight.vue": "json-viewer/zh-CN/LineHeight.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/json-viewer",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN"
+    ],
+    "pages": ["/zh-cn/components/json-viewer/"],
     "upstream": "plus/jsonviewer"
   },
   {

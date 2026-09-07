@@ -4,7 +4,10 @@ import { createRequire } from 'node:module';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
-import { adaptPinnedJsonViewerCore } from '../foundation-integration/vite-json-viewer-plugin.js';
+import {
+  adaptPinnedJsonViewerCore,
+  preservePinnedJsonViewerWorker,
+} from '../foundation-integration/vite-json-viewer-plugin.js';
 
 const animationEntry = fileURLToPath(
   new URL('../../vendor/semi-design/packages/semi-animation/index.ts', import.meta.url),
@@ -39,6 +42,7 @@ const localeSourceEntries = Object.fromEntries(
 );
 
 export default defineConfig({
+  worker: { plugins: () => [preservePinnedJsonViewerWorker()] },
   plugins: [
     adaptPinnedJsonViewerCore(),
     vue(),

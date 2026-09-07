@@ -13,6 +13,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { publicPackages as packages } from './release-packages.mjs';
+import { verifyJsonViewerPackedWorker } from './verify-json-viewer-pack.mjs';
 
 const workspaceRoot = fileURLToPath(new URL('..', import.meta.url));
 const pnpmExecPath = process.env.npm_execpath;
@@ -2902,7 +2903,10 @@ h(Button, { type, htmlType: 'submit' });
     throw new Error('安装后的 Typography 逐组件样式缺少正文、复制、Tooltip 或 Icon 样式');
   }
 
-  process.stdout.write('真实 tarball 的安装、exports、ESM、类型、样式与 SSR import 均通过\n');
+  await verifyJsonViewerPackedWorker(consumerRoot);
+  process.stdout.write(
+    '真实 tarball 的安装、exports、ESM、类型、样式、SSR import 与 JsonViewer Worker 搜索替换均通过\n',
+  );
 } finally {
   await rm(temporaryRoot, { recursive: true, force: true });
 }
