@@ -23,6 +23,60 @@ only accessed after browser mount, so importing and rendering the static shell i
 events; after the new resource emits `loadeddata`, the player restores the previous position and
 playing state.
 
+## Upstream examples
+
+A local short clip and poster are used. Quality options switch between distinct URLs of the same clip, rather than different resolutions. Chapter times fit the short clip; seeking stops at media boundaries.
+
+### Basic usage
+
+::demo-block{demo="video-player/en-US/Basic" title="Basic usage"}
+::
+
+### Controls list
+
+::demo-block{demo="video-player/en-US/Controls" title="Controls list"}
+::
+
+### Loop playback
+
+::demo-block{demo="video-player/en-US/Loop" title="Loop playback"}
+::
+
+### Fast forward and rewind
+
+::demo-block{demo="video-player/en-US/Seek" title="Fast forward and rewind"}
+::
+
+### Playback rates
+
+::demo-block{demo="video-player/en-US/Rate" title="Playback rates"}
+::
+
+### Muted playback
+
+::demo-block{demo="video-player/en-US/Muted" title="Muted playback"}
+::
+
+### Quality switching
+
+::demo-block{demo="video-player/en-US/Quality" title="Quality switching"}
+::
+
+### Chapter markers
+
+::demo-block{demo="video-player/en-US/Markers" title="Chapter markers"}
+::
+
+### Theme
+
+::demo-block{demo="video-player/en-US/Theme" title="Theme"}
+::
+
+### Using ref for control
+
+::demo-block{demo="video-player/en-US/RefControl" title="Using ref for control"}
+::
+
 ## API
 
 | Prop                              | Type                                     | Default            | Description                                                      |
@@ -61,24 +115,24 @@ See [react-to-vue.md](#react-vue) for migration details and
 
 ## 属性、事件与 ref
 
-| React v2.102.0                        | Vue                                        |
-| ------------------------------------- | ------------------------------------------ |
-| `<VideoPlayer src={src} />`           | `<VideoPlayer :src="src" />`               |
-| `className` / `style`                 | `class` / `style`（也兼容 `className`）    |
-| `onPlay` / `onPause`                  | `@play` / `@pause`                         |
-| `onRateChange`                        | `@rate-change`                             |
-| `onQualityChange`                     | `@quality-change`                          |
-| `onRouteChange`                       | `@route-change`                            |
-| `onVolumeChange`                      | `@volume-change`                           |
-| `forwardRef` / React `ref` 指向 video | Vue 组件 ref 的 `element.value` 指向 video |
+| React v2.102.0                        | Vue                                     |
+| ------------------------------------- | --------------------------------------- |
+| `<VideoPlayer src={src} />`           | `<VideoPlayer :src="src" />`            |
+| `className` / `style`                 | `class` / `style`（也兼容 `className`） |
+| `onPlay` / `onPause`                  | `@play` / `@pause`                      |
+| `onRateChange`                        | `@rate-change`                          |
+| `onQualityChange`                     | `@quality-change`                       |
+| `onRouteChange`                       | `@route-change`                         |
+| `onVolumeChange`                      | `@volume-change`                        |
+| `forwardRef` / React `ref` 指向 video | Vue 组件 ref 的 `element` 指向 video    |
 
 ```vue
 <script setup lang="ts">
 import { onMounted, useTemplateRef } from 'vue';
-import { VideoPlayer, type VideoPlayerExposed } from '@aifuxi/semi-ui-vue';
+import { VideoPlayer } from '@aifuxi/semi-ui-vue/video-player';
 
-const player = useTemplateRef<VideoPlayerExposed>('player');
-onMounted(() => player.value?.element.value?.pause());
+const player = useTemplateRef('player');
+onMounted(() => player.value?.element?.pause());
 </script>
 
 <template><VideoPlayer ref="player" src="/demo.mp4" /></template>

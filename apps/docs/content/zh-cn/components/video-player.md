@@ -39,6 +39,60 @@ upstream: 'plus/videoPlayer'
 />
 ```
 
+## 固定上游示例
+
+使用本地短片与封面。清晰度示例用同一短片的不同 URL 验证源切换，不代表实际分辨率变化；章节时间缩放到短片范围，快进快退会在媒体边界停止。
+
+### 基本用法
+
+::demo-block{demo="video-player/zh-CN/Basic" title="基本用法"}
+::
+
+### 设置控制项
+
+::demo-block{demo="video-player/zh-CN/Controls" title="设置控制项"}
+::
+
+### 循环播放
+
+::demo-block{demo="video-player/zh-CN/Loop" title="循环播放"}
+::
+
+### 快进快退
+
+::demo-block{demo="video-player/zh-CN/Seek" title="快进快退"}
+::
+
+### 倍速设置
+
+::demo-block{demo="video-player/zh-CN/Rate" title="倍速设置"}
+::
+
+### 静音播放
+
+::demo-block{demo="video-player/zh-CN/Muted" title="静音播放"}
+::
+
+### 清晰度切换
+
+::demo-block{demo="video-player/zh-CN/Quality" title="清晰度切换"}
+::
+
+### 章节标记
+
+::demo-block{demo="video-player/zh-CN/Markers" title="章节标记"}
+::
+
+### 主题
+
+::demo-block{demo="video-player/zh-CN/Theme" title="主题"}
+::
+
+### 使用 ref 控制
+
+::demo-block{demo="video-player/zh-CN/RefControl" title="使用 ref 控制"}
+::
+
 ## API
 
 | Prop                              | 类型                                     | 默认值     | 说明                                     |
@@ -78,24 +132,24 @@ React 迁移差异见 [react-to-vue.md](#react-vue)，完整证据见
 
 ## 属性、事件与 ref
 
-| React v2.102.0                        | Vue                                        |
-| ------------------------------------- | ------------------------------------------ |
-| `<VideoPlayer src={src} />`           | `<VideoPlayer :src="src" />`               |
-| `className` / `style`                 | `class` / `style`（也兼容 `className`）    |
-| `onPlay` / `onPause`                  | `@play` / `@pause`                         |
-| `onRateChange`                        | `@rate-change`                             |
-| `onQualityChange`                     | `@quality-change`                          |
-| `onRouteChange`                       | `@route-change`                            |
-| `onVolumeChange`                      | `@volume-change`                           |
-| `forwardRef` / React `ref` 指向 video | Vue 组件 ref 的 `element.value` 指向 video |
+| React v2.102.0                        | Vue                                     |
+| ------------------------------------- | --------------------------------------- |
+| `<VideoPlayer src={src} />`           | `<VideoPlayer :src="src" />`            |
+| `className` / `style`                 | `class` / `style`（也兼容 `className`） |
+| `onPlay` / `onPause`                  | `@play` / `@pause`                      |
+| `onRateChange`                        | `@rate-change`                          |
+| `onQualityChange`                     | `@quality-change`                       |
+| `onRouteChange`                       | `@route-change`                         |
+| `onVolumeChange`                      | `@volume-change`                        |
+| `forwardRef` / React `ref` 指向 video | Vue 组件 ref 的 `element` 指向 video    |
 
 ```vue
 <script setup lang="ts">
 import { onMounted, useTemplateRef } from 'vue';
-import { VideoPlayer, type VideoPlayerExposed } from '@aifuxi/semi-ui-vue';
+import { VideoPlayer } from '@aifuxi/semi-ui-vue/video-player';
 
-const player = useTemplateRef<VideoPlayerExposed>('player');
-onMounted(() => player.value?.element.value?.pause());
+const player = useTemplateRef('player');
+onMounted(() => player.value?.element?.pause());
 </script>
 
 <template><VideoPlayer ref="player" src="/demo.mp4" /></template>

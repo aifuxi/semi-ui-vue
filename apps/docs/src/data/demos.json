@@ -21302,6 +21302,32 @@
     "upstream": "show/userGuide"
   },
   {
+    "id": "video-player/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "video-player/en-US/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/video-player"
+    ],
+    "pages": ["/en-us/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/en-US/Controls",
+    "entry": "Controls.vue",
+    "files": { "Controls.vue": "video-player/en-US/Controls.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/video-player"
+    ],
+    "pages": ["/en-us/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
     "id": "video-player/en-US/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "video-player/en-US/Example1.vue" },
@@ -21313,11 +21339,257 @@
     "upstream": "plus/videoPlayer"
   },
   {
+    "id": "video-player/en-US/Loop",
+    "entry": "Loop.vue",
+    "files": { "Loop.vue": "video-player/en-US/Loop.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/video-player"
+    ],
+    "pages": ["/en-us/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/en-US/Markers",
+    "entry": "Markers.vue",
+    "files": { "Markers.vue": "video-player/en-US/Markers.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/video-player"
+    ],
+    "pages": ["/en-us/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/en-US/Muted",
+    "entry": "Muted.vue",
+    "files": { "Muted.vue": "video-player/en-US/Muted.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/video-player"
+    ],
+    "pages": ["/en-us/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/en-US/Quality",
+    "entry": "Quality.vue",
+    "files": { "Quality.vue": "video-player/en-US/Quality.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/video-player",
+      "vue"
+    ],
+    "pages": ["/en-us/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/en-US/Rate",
+    "entry": "Rate.vue",
+    "files": { "Rate.vue": "video-player/en-US/Rate.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/video-player"
+    ],
+    "pages": ["/en-us/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/en-US/RefControl",
+    "entry": "RefControl.vue",
+    "files": { "RefControl.vue": "video-player/en-US/RefControl.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/video-player",
+      "vue"
+    ],
+    "pages": ["/en-us/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/en-US/Seek",
+    "entry": "Seek.vue",
+    "files": { "Seek.vue": "video-player/en-US/Seek.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/select",
+      "@aifuxi/semi-ui-vue/video-player",
+      "vue"
+    ],
+    "pages": ["/en-us/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/en-US/Theme",
+    "entry": "Theme.vue",
+    "files": { "Theme.vue": "video-player/en-US/Theme.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/video-player"
+    ],
+    "pages": ["/en-us/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "video-player/zh-CN/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/video-player"
+    ],
+    "pages": ["/zh-cn/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/zh-CN/Controls",
+    "entry": "Controls.vue",
+    "files": { "Controls.vue": "video-player/zh-CN/Controls.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/video-player"
+    ],
+    "pages": ["/zh-cn/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
     "id": "video-player/zh-CN/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "video-player/zh-CN/Example1.vue" },
     "dependencies": [
       "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/video-player"
+    ],
+    "pages": ["/zh-cn/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/zh-CN/Loop",
+    "entry": "Loop.vue",
+    "files": { "Loop.vue": "video-player/zh-CN/Loop.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/video-player"
+    ],
+    "pages": ["/zh-cn/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/zh-CN/Markers",
+    "entry": "Markers.vue",
+    "files": { "Markers.vue": "video-player/zh-CN/Markers.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/video-player"
+    ],
+    "pages": ["/zh-cn/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/zh-CN/Muted",
+    "entry": "Muted.vue",
+    "files": { "Muted.vue": "video-player/zh-CN/Muted.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/video-player"
+    ],
+    "pages": ["/zh-cn/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/zh-CN/Quality",
+    "entry": "Quality.vue",
+    "files": { "Quality.vue": "video-player/zh-CN/Quality.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/video-player",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/zh-CN/Rate",
+    "entry": "Rate.vue",
+    "files": { "Rate.vue": "video-player/zh-CN/Rate.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/video-player"
+    ],
+    "pages": ["/zh-cn/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/zh-CN/RefControl",
+    "entry": "RefControl.vue",
+    "files": { "RefControl.vue": "video-player/zh-CN/RefControl.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/video-player",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/zh-CN/Seek",
+    "entry": "Seek.vue",
+    "files": { "Seek.vue": "video-player/zh-CN/Seek.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/select.css",
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/select",
+      "@aifuxi/semi-ui-vue/video-player",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/video-player/"],
+    "upstream": "plus/videoPlayer"
+  },
+  {
+    "id": "video-player/zh-CN/Theme",
+    "entry": "Theme.vue",
+    "files": { "Theme.vue": "video-player/zh-CN/Theme.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/video-player.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
       "@aifuxi/semi-ui-vue/video-player"
     ],
     "pages": ["/zh-cn/components/video-player/"],

@@ -1,6 +1,7 @@
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, resolve, sep } from 'node:path';
+import { staticFileResponse } from './static-file-response.mjs';
 
 const root = resolve(import.meta.dirname, '../.output/public');
 const types = {
@@ -42,11 +43,13 @@ const server = createServer(async (request, response) => {
     }
     if ((await stat(file)).isDirectory()) file = resolve(file, 'index.html');
     const content = await readFile(file);
-    response.writeHead(200, {
-      'content-type': types[extname(file)] ?? 'application/octet-stream',
-      'access-control-allow-origin': '*',
+    const result = staticFileResponse(content, {
+      contentType: types[extname(file)] ?? 'application/octet-stream',
+      method: request.method,
+      range: request.headers.range,
     });
-    response.end(content);
+    response.writeHead(result.status, result.headers);
+    response.end(result.body);
   } catch {
     response.writeHead(404, { 'content-type': 'text/html; charset=utf-8' });
     response.end(await readFile(resolve(root, '404.html')).catch(() => 'Not found'));

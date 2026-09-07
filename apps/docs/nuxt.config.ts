@@ -8,6 +8,20 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   telemetry: false,
   ssr: true,
+  hooks: {
+    'build:manifest'(manifest) {
+      // SSR sees every demo's dynamic import through the shared document route.
+      // Keep current-page preload hints, but fetch other demos only when imported.
+      for (const entry of Object.values(manifest)) entry.prefetch = false;
+    },
+  },
+  experimental: {
+    defaults: {
+      // The shared document route exposes every lazy demo to route prefetching.
+      // Load its resources on navigation instead of prefetching thousands of demos.
+      nuxtLink: { prefetch: false },
+    },
+  },
   css: ['~~/public/upstream/site.css', '~/assets/site.css'],
   components: [{ path: '~/components', pathPrefix: false, global: true }],
   app: {

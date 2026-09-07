@@ -1,7 +1,7 @@
 # AI 工作记录：接续五个组件双语示例补齐
 
 - 日期：2026-09-07
-- 状态：进行中
+- 状态：完成
 
 ## 目标与验收
 
@@ -20,9 +20,9 @@
 - 代表 ESLint/Prettier 通过。开发资源准备命中缓存。
 - 交互浏览器复现 Vala 文档页加载成功，但 REPL 显示 Failed to resolve module specifier prismjs/components/prism-vala.js。需增加本地映射及 Prism 许可清单；不引入新版本，不复制到源码独立修改。
 
-## 未完成事项
+## 进度
 
-代表复验、其余示例、最终检查、静态运行、受影响历史证据重验和各批提交尚待执行。
+五个组件共26项双语示例完成，最终静态操作与受影响历史矩阵通过；每个组件独立提交。
 
 ## CodeHighlight 实施与静态验证
 
@@ -76,3 +76,41 @@ AudioPlayer 代表初次失败于Basic在线预览：iframe x=810，而播放按
 AudioPlayer 视觉复核补充：900px在文档正文中仍有右侧溢出，尝试850px导致完整播放列表的上一曲在iframe中不可点击。停止尚未完成的首次check，最终采用1000px完整桌面场景+外层横向滚动，并记录与上游示例容器的适配差异。`full-dev-final`双语全部通过；这不改变组件API/样式源码，也不声称精细视觉对齐。最终静态检查还验证横向滚动后的刷新按钮可点击。
 
 AudioPlayer 收尾：最终check退出0，64流程测试、196页、1639注册Demo、5958静态产物，Nuxt类型与内容/许可/资源门禁通过。修正mapping的上游路径大小写为plus/audioPlayer（映射不属于静态构建输入），prepare-coverage验证798/859。`full-static/summary.json`双语各9阶段通过、issues为空，确认刷新按钮可随容器横向滚动点击。历史六批证据有效全部跳过；accepted43不变。日志 `/tmp/semi-audio-check-final.log`、`/tmp/semi-audio-affected.log`。
+
+## VideoPlayer 代表
+
+固定Adapter/公开ref、Foundation、SCSS、主题、双语文档与alignment核查10项。先实现Basic（1）、Quality（7）、RefControl（10）双语：真实播放暂停，清晰度源更新和菜单重开，公开element对两个video同步控制，以及在线运行。每例模板SFC，双播放器共享的按钮回调属于单一用例，无需拆分。复用约4秒motion.webm和poster.svg，清晰度以不同查询URL演示源切换，不声称实际分辨率变化。完整Locale数据传入。
+
+VideoPlayer 代表通过后扩展10项：Basic/Controls/Loop/Seek/Rate/Muted/Quality/Markers/Theme/RefControl。完整dev结果 `full-dev-passed/summary.json` 双语通过；未篡改duration/currentTime媒体属性，循环通过真实进度条接近片尾后观察继续播放验证。视频约4.047秒，章节按0/0.7/1.7/2.7秒放入短片，保留双语标题；seekTime仍5/10/15，验证原生边界夹紧。完整Locale、媒体/封面替换和质量URL说明已加入映射与双语文档。
+
+烟测定位修正均保留失败摘要：REPL清晰度菜单在进入动画时点击会关闭，先确认trigger在iframe视口内，再等待祖先CSS动画完成后点击，未关闭动效；主题class在内部wrapper；固定Foundation静音通过video.volume=0实现，不写video.muted；Select实际option名含tick图标，依据DOM用10s后缀匹配。上述路径先定点验证再回归全批。代表/扩展Nuxt类型与ESLint通过，已查看英文双播放器局部截图。
+
+RefControl实际运行确认Vue公开实例自动解包expose中的ref，因此同步修复双语迁移表与docs/components/video-player/react-to-vue.md中的旧element.value示例，改为player.value?.element?.pause()并让useTemplateRef推断类型。未改组件/共享设施或新增第三方资产，本批不重复发布包验证。
+
+## VideoPlayer 静态预览 Range 修复与收尾验证
+
+首次静态键盘跳转失败，原生事件探针确认readyState=4但seekable=[0,0]，不是片尾重置。静态预览未提供Content-Length和HTTP Range；加入static-file-response.mjs，以200/206/416响应完整、首段、开放结束、后缀及非法范围，HEAD不发送body并忽略Range。3个协议测试覆盖这些边界。修复后同一视频seekable=[0,4.047554]，ArrowRight真实跳到4.047554，双语定点回归通过。新增的是开发/验收预览服务能力，不修改组件或发布包。
+
+静态整批检查还修正了时序：选择器option可访问名含tick；先等待listbox卸载，再聚焦播放器；等待timeupdate反映的00:04/00:04与原生seeking结束，再发下一按键。初次请求取消保留失败摘要；浏览器媒体请求对同URL作Range加载时会出现ERR_ABORTED，单独记录media-readiness文件，只有准确URL/阶段、成功206和全部相关媒体readyState=4、无error、完整seekable的证据齐全才分类为非阻断取消。音频额外限定resourceType=media，包含Basic-editor四个媒体都已实际就绪的情况；不忽略其它请求、控制台或页面错误，共享runner未改。
+
+- `pnpm --filter @workspace/docs check` 最初最终站点通过：64流程测试、196页、1659注册Demo、5998产物及Nuxt类型/内容/许可门禁。Range修复后的联合check再次退出0，67流程测试通过，resources/site/checks经指纹检查全部复用；预览脚本不是构建输入，因此不无谓重建。
+- `full-static-final/summary.json` 双语各23阶段通过，运行错误为空；真实循环、键盘seek、章节、静音、速率、质量切换、ref与三个代表REPL均通过。
+- 共享预览影响的AudioPlayer `full-static-range-verified/summary.json` 双语各9阶段通过，运行错误为空；原生媒体取消与就绪证据单独存档。
+- 代码/示例ESLint、3个Range协议测试通过。日志 `/tmp/semi-video-check-range.log`、`/tmp/semi-video-static-final.log`、`/tmp/semi-audio-range-verified.log`。没有更改公共包，因此不重复此前已通过的真实tarball验证。
+- 预览协议是六批正式验收的共享输入，需刷新全部历史证据；在此次矩阵结束前冻结相关源码及产物。
+
+## 全站资源预取回归
+
+历史224项矩阵发现net::ERR_INSUFFICIENT_RESOURCES，停止该次运行并将日志、trace、截图归档至video-player/historical-range-failure。trace中4894个请求、549个失败均指向脚本预取，静态HTML实际含4026条prefetch提示。新增双语navigation-loading回归准确复现；仅关闭NuxtLink预取仍失败，因为SSR也从共享文档路由的动态导入生成整站提示。依据已安装Nuxt 4.5.2的build:manifest hook及vue-bundle-renderer 2.3.2的prefetch过滤逻辑，将清单entry.prefetch设为false，同时关闭链接自动预取；保留preload、SSR hydration和点击导航/示例按需导入。没有忽略浏览器资源错误、降低worker数或增加重试。
+
+清单修复后静态HTML预取0条、modulepreload仍58条；最终check通过67流程测试、196页/1659 Demo/5998产物及Nuxt类型门禁。CI三项导航/此前失败Button回归3/3通过，无重试。全五批统一静态复验发现既有Volar emmet/pug提示异步到达后续非editor阶段；所有示例操作通过，但共享runner依阶段分类使摘要失败。局部烟测仅在已有成功editor阶段时单独保存精确匹配的这两条已知web不支持提示，不修改共享runner或忽略其它警告。
+
+最终共享设施静态复验：五批full-static-manifest-verified摘要均通过；CodeHighlight/JsonViewer/MarkdownRender/AudioPlayer/VideoPlayer每种语言分别7/16/10/9/23阶段，共130阶段，未分类issues为空。所有已知Volar与媒体取消证据独立保存。最终源码ESLint/Prettier检查通过。日志分别为/tmp/semi-verified-<component>.log；新导航回归为/tmp/semi-video-manifest-regression.log。
+
+## 最终交付
+
+CI模式历史矩阵224/224通过（4.5分钟），无重试或跳过；六批正式证据刷新，覆盖808/859、accepted43/859。README与队列同步更新，剩余51项，下一批Lottie4项随后Chat。日志/tmp/semi-video-affected-final.log；已验证内容未为提交重复检查。vendor仍为固定v2.102.0提交且未修改。
+
+本轮解决Vala在线模块缺失、JsonViewer发布包Worker初始化、VideoPlayer公开ref文档、静态媒体Range以及SSR/导航整站预取问题。五批均有双语静态运行证据；JsonViewer实际发布包安装和Worker浏览器验证通过。范围外已知限制仍为Transfer两处全包类型错误；不宣称全仓库typecheck通过，也不将新增映射计为严格视觉验收。
+
+前四批提交：e8f89b6、65a4369、a26dffc、9cdf071。第五批包含VideoPlayer示例、共享预览/资源加载修复、回归与全部必要进度/证据。

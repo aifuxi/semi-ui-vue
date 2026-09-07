@@ -2,24 +2,24 @@
 
 ## 属性、事件与 ref
 
-| React v2.102.0                        | Vue                                        |
-| ------------------------------------- | ------------------------------------------ |
-| `<VideoPlayer src={src} />`           | `<VideoPlayer :src="src" />`               |
-| `className` / `style`                 | `class` / `style`（也兼容 `className`）    |
-| `onPlay` / `onPause`                  | `@play` / `@pause`                         |
-| `onRateChange`                        | `@rate-change`                             |
-| `onQualityChange`                     | `@quality-change`                          |
-| `onRouteChange`                       | `@route-change`                            |
-| `onVolumeChange`                      | `@volume-change`                           |
-| `forwardRef` / React `ref` 指向 video | Vue 组件 ref 的 `element.value` 指向 video |
+| React v2.102.0                        | Vue                                     |
+| ------------------------------------- | --------------------------------------- |
+| `<VideoPlayer src={src} />`           | `<VideoPlayer :src="src" />`            |
+| `className` / `style`                 | `class` / `style`（也兼容 `className`） |
+| `onPlay` / `onPause`                  | `@play` / `@pause`                      |
+| `onRateChange`                        | `@rate-change`                          |
+| `onQualityChange`                     | `@quality-change`                       |
+| `onRouteChange`                       | `@route-change`                         |
+| `onVolumeChange`                      | `@volume-change`                        |
+| `forwardRef` / React `ref` 指向 video | Vue 组件 ref 的 `element` 指向 video    |
 
 ```vue
 <script setup lang="ts">
 import { onMounted, useTemplateRef } from 'vue';
-import { VideoPlayer, type VideoPlayerExposed } from '@aifuxi/semi-ui-vue';
+import { VideoPlayer } from '@aifuxi/semi-ui-vue/video-player';
 
-const player = useTemplateRef<VideoPlayerExposed>('player');
-onMounted(() => player.value?.element.value?.pause());
+const player = useTemplateRef('player');
+onMounted(() => player.value?.element?.pause());
 </script>
 
 <template><VideoPlayer ref="player" src="/demo.mp4" /></template>
