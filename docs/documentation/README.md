@@ -32,14 +32,14 @@ pnpm --filter @workspace/docs test:nuxt
 
 ## 覆盖与剩余工作
 
-[coverage.json](./coverage.json) 记录 102 组固定上游文档及每个中文 live Demo 的章节和源码行号。当前 859 个中文上游 Demo 中，741 个已建立双语内容与示例映射，有效严格验收为 43 个（Button 17 项、Icon 8 项、ConfigProvider 3 项、Locale 3 项、Dark Mode 2 项、Navigation 10 项，分别通过 84 条、48 条、16 条、16 条、8 条和 52 条双语/明暗/适用 RTL 用例）。Icon 短 fill 调色板顺序缺陷已修复，并通过全仓 Chromium 与真实发布包回归。此前补齐 Form（39）、Table（37）、Upload（42）、TreeSelect（19）、Tree（27），共新增 164 个上游 Demo 的双语映射。中英文上游章节数量与顺序不同的条目已在各组件 mapping 中注明；映射数量不代表逐项视觉验收完成。总数 859 来自固定源码的 live Demo 解析，修正了旧统计遗漏的 4 个示例。
+[coverage.json](./coverage.json) 记录 102 组固定上游文档及每个中文 live Demo 的章节和源码行号。当前 859 个中文上游 Demo 中，748 个已建立双语内容与示例映射，有效严格验收为 43 个（Button 17 项、Icon 8 项、ConfigProvider 3 项、Locale 3 项、Dark Mode 2 项、Navigation 10 项，分别通过 84 条、48 条、16 条、16 条、8 条和 52 条双语/明暗/适用 RTL 用例）。Icon 短 fill 调色板顺序缺陷已修复，并通过全仓 Chromium 与真实发布包回归。此前补齐 Form（39）、Table（37）、Upload（42）、TreeSelect（19）、Tree（27），共新增 164 个上游 Demo 的双语映射。中英文上游章节数量与顺序不同的条目已在各组件 mapping 中注明；映射数量不代表逐项视觉验收完成。总数 859 来自固定源码的 live Demo 解析，修正了旧统计遗漏的 4 个示例。
 
 补齐与严格验收按 [双线计划](./batch-plan.md) 独立推进，不再要求同一批同时完成：
 
 | 工作线             | 当前统计                                                     | 下一批                                      |
 | ------------------ | ------------------------------------------------------------ | ------------------------------------------- |
-| 双语示例补齐       | 741/859 已映射，118 项待映射                                 | Feedback 7 项 → Notification 8 项           |
-| 严格视觉与行为验收 | 43/859 有效验收，698 项已映射待验收；另有 118 项待补齐后入队 | Divider 2 项 → FloatButton 7 项 → Grid 7 项 |
+| 双语示例补齐       | 748/859 已映射，111 项待映射                                 | Notification 8 项 → Toast 9 项              |
+| 严格视觉与行为验收 | 43/859 有效验收，705 项已映射待验收；另有 111 项待补齐后入队 | Divider 2 项 → FloatButton 7 项 → Grid 7 项 |
 
 映射计数不追认为全部通过统一运行检查；后续补齐批次须提供内容、类型及实际站点加载运行证据，但无需等待严格矩阵即可交付。验收线独立处理已补齐示例；最终所有示例仍须严格验收，证据仍随真实依赖变化失效。完成标准与命令见 [工作流](./workflow.md)。
 
@@ -48,6 +48,8 @@ OverflowList 四项双语映射与八个独立 SFC 已补齐。文档联合检�
 ScrollList 一项双语示例已补齐三列 wheel、时段非循环、小时/分钟循环、禁用分钟与 `Ok` 日志。文档联合检查及中英文实际页面的选择、跨边界滚动、重置、源码、编辑器修改运行通过。随机分钟禁用改为固定交替序列，严格验收时须统一参考侧数据；编辑器 Emmet/Pug Web 支持警告保留记录，无页面异常或 console error。既有六批证据仍有效，详见 [ScrollList 补齐记录](../../ai-work/20260907-110551-scroll-list-documentation-content.md)。
 
 Transfer 14 项双语映射、28 个自包含 SFC 已补齐，覆盖列表、分组、筛选、自定义项、禁用、分页、四种拖拽演示、头部/面板与树。全部示例通过主要操作、重置、源码与编辑器修改运行检查。修复 Transfer 自定义已选项的 drop 接收边界和函数式把手内容，英文 Demo 自包含 ConfigProvider；14 项单元/SSR、5 项组件 Chromium、真实 tarball 与 SSR import 通过。Locale 历史证据按实际依赖失效后，16 项正式矩阵重验通过；其它五批证据有效。本批仍为待严格验收，详见 [Transfer 补齐记录](../../ai-work/20260907-113702-transfer-documentation-content.md)。
+
+Feedback 七项双语映射、14 个独立 SFC 已补齐，全部通过主要操作、重开、重置、源码与编辑器修改运行；双语两容器的四项独立时序检查通过。修复 SSR 退出动画后重开复用旧 VNode、Modal 动态 null footer 未隐藏的问题；69 项单元/SSR、15 项组件 Chromium 对照、真实 tarball 与 SSR import 通过。ConfigProvider、Locale 两批证据按实际依赖失效后，32 项正式矩阵全部重验通过；其它四批证据仍有效。REPL 的跨域自动聚焦限制与 Emmet/Pug 提示已记录，不阻断操作。本批仍待严格验收，详见 [Feedback 补齐记录](../../ai-work/20260907-161013-feedback-documentation-content.md)。
 
 Locale 三个 live 示例已补齐双语映射并通过完整 16 项验收，包含语言菜单、日语消费者切换、文本展开、Modal、复制 Tooltip 和多文件编辑器。Pagination 的 LocaleProvider 消费、Table 空分页/ARIA、Typography 复制提示与 Select 菜单结构/焦点/滚动差异已修复；全仓 Chromium 442 项通过，既有三个批次已按当前源码刷新证据。详见 [Locale 工作记录](../../ai-work/20260906-150000-locale-documentation.md)。Dark Mode 两个示例也已完成双语映射与 8 项严格验收，覆盖全局/局部主题、Portal、键盘焦点、分页及多文件编辑器；修复 NavHeader 空节点、Navigation 语言消费、Tooltip 触发器焦点和分页切换后的焦点样式。本轮 61 项单元/SSR、442 项全仓 Chromium 及五批 172 项正式文档矩阵通过，证据已按最终源码刷新，详见 [Dark Mode 工作记录](../../ai-work/20260906-180000-dark-mode-documentation.md)。
 

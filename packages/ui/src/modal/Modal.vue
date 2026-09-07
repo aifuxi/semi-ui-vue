@@ -174,23 +174,19 @@ const locale = computed<ModalLocale>(() => {
   const fallback = DEFAULT_CONFIG_LOCALE.Modal as ModalLocale | undefined;
   return configured ?? fallback ?? { confirm: '确定', cancel: '取消' };
 });
-const bodyContent = computed<VNodeChild>(
-  () => slots.body?.() ?? slots.default?.() ?? (hasRawProp('content') ? props.content : undefined),
-);
-const titleContent = computed<VNodeChild>(
-  () => slots.title?.() ?? (hasRawProp('title') ? props.title : undefined),
-);
-const iconContent = computed<VNodeChild>(
-  () => slots.icon?.() ?? (hasRawProp('icon') ? props.icon : undefined),
-);
-const closeIconContent = computed<VNodeChild>(
-  () => slots.closeIcon?.() ?? (hasRawProp('closeIcon') ? props.closeIcon : undefined),
-);
+// Slot VNodes carry mounted DOM state; evaluate them in each render, not across Portal lifetimes.
+const bodyContent = (): VNodeChild =>
+  slots.body?.() ?? slots.default?.() ?? (hasRawProp('content') ? props.content : undefined);
+const titleContent = (): VNodeChild =>
+  slots.title?.() ?? (hasRawProp('title') ? props.title : undefined);
+const iconContent = (): VNodeChild =>
+  slots.icon?.() ?? (hasRawProp('icon') ? props.icon : undefined);
+const closeIconContent = (): VNodeChild =>
+  slots.closeIcon?.() ?? (hasRawProp('closeIcon') ? props.closeIcon : undefined);
 const headerProvided = computed(() => Boolean(slots.header) || hasRawProp('header'));
-const headerContent = computed<VNodeChild>(() => slots.header?.() ?? props.header);
-const footerProvided = computed(() => Boolean(slots.footer) || hasRawProp('footer'));
-const footerContent = computed<VNodeChild>(() => {
-  if (footerProvided.value) return slots.footer?.() ?? props.footer;
+const headerContent = (): VNodeChild => slots.header?.() ?? props.header;
+const footerContent = (): VNodeChild => {
+  if (slots.footer || hasRawProp('footer')) return slots.footer?.() ?? props.footer;
   return h(ModalDefaultFooter, {
     cancelButtonProps: resolveOptional('cancelButtonProps'),
     cancelLoading:
@@ -206,7 +202,7 @@ const footerContent = computed<VNodeChild>(() => {
     onCancel: (event: MouseEvent) => foundation.handleCancel(event),
     onOk: (event: MouseEvent) => foundation.handleOk(event),
   });
-});
+};
 const dataAttrs = computed(() =>
   Object.fromEntries(Object.entries(attrs).filter(([name]) => name.startsWith('data-'))),
 );
@@ -332,24 +328,24 @@ onBeforeUnmount(() => {
     >
       <ModalDialog
         ref="dialog"
-        :body="bodyContent"
+        :body="bodyContent()"
         :body-style="resolveOptional('bodyStyle')"
         :centered="runtimeProps.centered"
         :class="modalClasses"
         :closable="runtimeProps.closable"
-        :close-icon="closeIconContent"
+        :close-icon="closeIconContent()"
         :close-on-esc="runtimeProps.closeOnEsc"
         :content-class="contentClass"
         :custom-container="customContainer"
         :data-attrs="dataAttrs"
         :direction="direction"
-        :footer="footerContent"
+        :footer="footerContent()"
         :full-screen="state.isFullScreen"
-        :header="headerContent"
+        :header="headerContent()"
         :header-provided="headerProvided"
         :height="resolveOptional('height')"
         :hidden="state.displayNone"
-        :icon="iconContent"
+        :icon="iconContent()"
         :mask="runtimeProps.mask"
         :mask-class="maskClass"
         :mask-closable="runtimeProps.maskClosable"
@@ -359,7 +355,7 @@ onBeforeUnmount(() => {
         :outer-style="[attrs.style, resolveOptional('style')]"
         :prevent-scroll="runtimeProps.preventScroll"
         :size="runtimeProps.size"
-        :title="titleContent"
+        :title="titleContent()"
         :visible="runtimeVisible"
         :width="resolveOptional('width')"
         @animation-end="handleAnimationEnd"

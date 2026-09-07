@@ -75,3 +75,8 @@
 - React `children/ReactNode/className` 映射为 Vue `slots/VNodeChild/class`，并增加原生 `v-model:visible` 与 emits；这是框架原生映射，不构成能力损失。
 - 当前没有 accepted visual/behavior deviation。任一未解释的 DOM、样式、几何、事件或截图差异均阻止 `pending -> ready`。
 - 当前状态：`ready`；固定源码、单元/SSR、主题/打包与 Chromium 全量门禁均已通过。
+
+## Feedback 文档运行修复（2026-09-07）
+
+- SSR 应用中，退出动画完成后重新挂载 Portal 必须重新求值 slots，不能缓存携带旧宿主节点的 VNode。正文、标题、footer 与关闭图标改为渲染期获取；保留状态、DOM、样式与原有动画。
+- `Feedback.ssr.test.ts` 通过选择、提交、真实 `animationend` 事件和重开验证正文及按钮可再次操作；该问题在 `motion=false` 下不会复现。三组件 30 项单元/SSR、直接消费者 39 项、三组件 15 项 Chromium 对照与真实包验证通过。

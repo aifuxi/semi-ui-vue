@@ -86,3 +86,9 @@
 ## ConfigProvider 命令式反馈续验
 
 根据固定 `Modal.tsx:377` 与 `_cssAnimation/index.tsx`，mask/content 使用独立动画结束状态；各自 animationend 后清除入场 class，motion 或 visible 变化时重新启动。新增分别结束两层动画、关闭回调只触发一次及重开的公开 DOM 测试，另用真实 Chromium 检查终态 transform/class。
+
+## Feedback 文档运行修复（2026-09-07）
+
+- SSR Portal 完成退出动画后重开，slot/default footer 不得复用带有已卸载 DOM 的 VNode。内容获取改为渲染期求值，保持组件状态、DOM、公开 API 与动效不变。
+- 动态添加 `footer: null` 必须隐藏默认按钮，移除该 prop 后恢复；raw prop 存在性在每次 footer 渲染时判断，不缓存非响应式的 VNode props 集合。
+- Feedback 单元与 SSR 回归覆盖失败前/修复后的两条路径；Modal/SideSheet/Feedback 共 30 项单元/SSR、直接消费者 39 项与三组件 15 项 Chromium 对照通过，真实发布包和 SSR import 通过。

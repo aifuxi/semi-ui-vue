@@ -12,8 +12,67 @@ upstream: 'feedback/feedback'
 
 `Feedback` collects text, emoji, radio, checkbox, or custom feedback in a Modal or bottom SideSheet. It follows Semi Design v2.102.0. Visibility remains controlled by the caller through `v-model:visible`.
 
-::demo-block{demo="feedback/en-US/Example1" title="Feedback"}
+## Demos
+
+### How to import
+
+```ts
+import { Feedback } from '@aifuxi/semi-ui-vue/feedback';
+import '@aifuxi/semi-theme-default/feedback.css';
+```
+
+### Basic usage
+
+Control visibility with `visible`. The defaults are popup and emoji; `@value-change` receives the selection. Submit and cancel callbacks close the example.
+
+::demo-block{demo="feedback/en-US/Basic" title="Basic usage"}
 ::
+
+### Text type
+
+Use `type="text"` and configure the multiline input through `textAreaProps`. This example preserves the upstream `maxCount: 200`.
+
+::demo-block{demo="feedback/en-US/Text" title="Text type"}
+::
+
+### Single choice feedback
+
+Use `type="radio"` and `radioGroupProps.options` for vertical role choices.
+
+::demo-block{demo="feedback/en-US/Radio" title="Single choice feedback"}
+::
+
+### Multiple choice feedback
+
+Use `type="checkbox"` and `checkboxGroupProps.options` for product choices. Clearing all choices disables submission again.
+
+::demo-block{demo="feedback/en-US/Checkbox" title="Multiple choice feedback"}
+::
+
+### Customized feedback content
+
+Use `type="custom"` with the default slot instead of React `renderContent`. Control submission through `okButtonProps.disabled`.
+
+::demo-block{demo="feedback/en-US/Custom" title="Customized feedback content"}
+::
+
+### Modal
+
+Set `mode="modal"` to display a modal dialog.
+
+::demo-block{demo="feedback/en-US/Modal" title="Modal"}
+::
+
+### Feedback completion tips
+
+Popup and Modal have independent state. Submission shows the success illustration and acknowledgment with the title and footer hidden. Each closes after 1500ms and resets the acknowledgment 200ms later. Timers are cleared on unmount.
+
+::demo-block{demo="feedback/en-US/Completion" title="Feedback completion tips"}
+::
+
+Both languages follow the same seven upstream examples, without language-only examples or additional source files. The Chinese Modal title and completion buttons/titles also retain the upstream English text. Each English example passes the complete `locale/source/en_US` data to `ConfigProvider` for English labels on the page and in the online editor; `{ code: 'en-US' }` alone does not supply the `Feedback` labels.
+
+The custom example initializes its value to an empty string instead of the upstream self-reference `useState(value)`. Its controlled input uses `v-model`, avoiding the stale closure caused by the upstream missing `value` dependency. Completion uses the existing Vue `footer: null` hiding behavior. These examples have basic runtime coverage, not strict React/Vue visual or behavioral acceptance.
 
 ## Content types
 
@@ -45,19 +104,19 @@ See [react-to-vue.md](#react-vue) for migration and [alignment.md](https://githu
 
 ## React → Vue
 
-| Semi React v2.102.0                           | Vue                                                   |
-| --------------------------------------------- | ----------------------------------------------------- |
-| `<Feedback visible={visible} />`              | `<Feedback v-model:visible="visible" />`              |
-| `mode="popup"` / `mode="modal"`               | 同名 `mode` prop                                      |
-| `type="emoji"` 等五种类型                     | 同名 `type` prop                                      |
-| `onValueChange={handleValue}`                 | `@value-change="handleValue"`                         |
-| `onOk={handleOk}` / `onCancel={handleCancel}` | `@ok="handleOk"` / `@cancel="handleCancel"`           |
-| `children` 且 `type="custom"`                 | 默认 slot 且 `type="custom"`                          |
-| `renderContent={content => ...}`              | `#content="{ content }"`，或保留 `renderContent` prop |
-| `footer={<Footer />}`                         | `#footer`，或 `footer` prop                           |
-| `title={<Title />}`                           | `#title`，或 `title` prop                             |
-| `className` / `style`                         | 优先使用 Vue 原生 `class` / `style`                   |
+| Semi React v2.102.0                           | Vue                                                  |
+| --------------------------------------------- | ---------------------------------------------------- |
+| `<Feedback visible={visible} />`              | `<Feedback v-model:visible="visible" />`             |
+| `mode="popup"` / `mode="modal"`               | Same `mode` prop                                     |
+| Five content types, including `type="emoji"`  | Same `type` prop                                     |
+| `onValueChange={handleValue}`                 | `@value-change="handleValue"`                        |
+| `onOk={handleOk}` / `onCancel={handleCancel}` | `@ok="handleOk"` / `@cancel="handleCancel"`          |
+| `children` with `type="custom"`               | Default slot with `type="custom"`                    |
+| `renderContent={content => ...}`              | `#content="{ content }"` or the `renderContent` prop |
+| `footer={<Footer />}`                         | `#footer` or the `footer` prop                       |
+| `title={<Title />}`                           | `#title` or the `title` prop                         |
+| `className` / `style`                         | Prefer native Vue `class` / `style`                  |
 
-`visible` 仍是父级受控状态。popup 的默认按钮只调用 `onOk` / `onCancel`，不会替调用方关闭；Modal 的 Promise 关闭流程由 Modal 处理。回调若必须返回 Promise，请使用 `:on-ok="handler"` / `:on-cancel="handler"`，以保留返回值给内部异步状态机。
+The parent controls `visible`. Default popup buttons call `onOk` / `onCancel` without closing on behalf of the caller; Modal handles its own Promise-based close flow. Use `:on-ok="handler"` / `:on-cancel="handler"` when the return value must reach the internal asynchronous state machine.
 
-固定 React Adapter 的 `className` 拼接存在字面 `.className` 行为，本实现为了像素兼容予以保留；普通 Vue 代码应使用 `class`。emoji 项保持上游可点击 `span` 的语义，没有额外创造键盘角色。
+The fixed React Adapter appends the literal `.className` class; this implementation preserves that compatibility behavior. Prefer native Vue `class` in application code. Emoji choices retain the upstream clickable `span` semantics without adding keyboard roles.

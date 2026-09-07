@@ -12,8 +12,67 @@ upstream: 'feedback/feedback'
 
 `Feedback` 用 Modal 或底部 SideSheet 收集文本、表情、单选、复选或自定义反馈。实现固定对齐 Semi Design v2.102.0；可见性由调用方通过 `v-model:visible` 控制。
 
-::demo-block{demo="feedback/zh-CN/Example1" title="反馈"}
+## 代码演示
+
+### 如何引入
+
+```ts
+import { Feedback } from '@aifuxi/semi-ui-vue/feedback';
+import '@aifuxi/semi-theme-default/feedback.css';
+```
+
+### 基本使用
+
+通过 `visible` 控制展示，默认使用 popup 与 emoji；`@value-change` 获取当前选择。示例通过提交或取消回调关闭。
+
+::demo-block{demo="feedback/zh-CN/Basic" title="基本使用"}
 ::
+
+### 文字类型
+
+`type="text"` 展示多行输入框，通过 `textAreaProps` 设置参数；本例保留上游的 `maxCount: 200`。
+
+::demo-block{demo="feedback/zh-CN/Text" title="文字类型"}
+::
+
+### 单选反馈
+
+`type="radio"` 与 `radioGroupProps.options` 展示纵向身份选项。
+
+::demo-block{demo="feedback/zh-CN/Radio" title="单选反馈"}
+::
+
+### 多选反馈
+
+`type="checkbox"` 与 `checkboxGroupProps.options` 支持多选产品；清空选择后提交按钮重新禁用。
+
+::demo-block{demo="feedback/zh-CN/Checkbox" title="多选反馈"}
+::
+
+### 自定义反馈内容
+
+`type="custom"` 使用默认 slot 替代 React `renderContent`，并通过 `okButtonProps.disabled` 自行控制提交状态。
+
+::demo-block{demo="feedback/zh-CN/Custom" title="自定义反馈内容"}
+::
+
+### 模态对话框形式
+
+`mode="modal"` 改为模态对话框。标题按固定上游保留英文。
+
+::demo-block{demo="feedback/zh-CN/Modal" title="模态对话框形式"}
+::
+
+### 反馈完成提示
+
+Popup 与 Modal 各有独立状态。提交后展示成功插画与感谢信息，隐藏标题和 footer，1500ms 后关闭，再等待 200ms 复原提示；示例卸载时清理定时器。
+
+::demo-block{demo="feedback/zh-CN/Completion" title="反馈完成提示"}
+::
+
+双语示例与固定上游七项顺序一致，无独有示例或额外文件依赖。完成提示的触发按钮、标题保留上游英文；英文示例通过 `ConfigProvider` 传入完整的 `locale/source/en_US` 数据，使内置按钮在页面与在线编辑器都使用英文；只传 `{ code: 'en-US' }` 不会自动补齐 `Feedback` 文案。
+
+自定义示例将上游 `useState(value)` 自引用初始化修正为空字符串；英文受控输入使用 `v-model`，不沿用上游 `useCallback` 遗漏 `value` 依赖的旧值闭包。完成提示沿用现有 Vue 的 `footer: null` 隐藏语义；本批仅验证基础运行，不代表严格 React/Vue 视觉与行为验收。
 
 ## 内容类型
 

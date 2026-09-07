@@ -5337,23 +5337,225 @@
     "upstream": "show/empty"
   },
   {
-    "id": "feedback/en-US/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "feedback/en-US/Example1.vue" },
+    "id": "feedback/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "feedback/en-US/Basic.vue" },
     "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
       "@aifuxi/semi-theme-default/feedback.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
       "@aifuxi/semi-ui-vue/feedback",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
       "vue"
     ],
     "pages": ["/en-us/components/feedback/"],
     "upstream": "feedback/feedback"
   },
   {
-    "id": "feedback/zh-CN/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "feedback/zh-CN/Example1.vue" },
+    "id": "feedback/en-US/Checkbox",
+    "entry": "Checkbox.vue",
+    "files": { "Checkbox.vue": "feedback/en-US/Checkbox.vue" },
     "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
       "@aifuxi/semi-theme-default/feedback.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/feedback",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/feedback/"],
+    "upstream": "feedback/feedback"
+  },
+  {
+    "id": "feedback/en-US/Completion",
+    "entry": "Completion.vue",
+    "files": { "Completion.vue": "feedback/en-US/Completion.vue" },
+    "dependencies": [
+      "@aifuxi/semi-illustrations-vue/illustrations/IllustrationSuccess",
+      "@aifuxi/semi-illustrations-vue/illustrations/IllustrationSuccessDark",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/empty.css",
+      "@aifuxi/semi-theme-default/feedback.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/empty",
+      "@aifuxi/semi-ui-vue/feedback",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/feedback/"],
+    "upstream": "feedback/feedback"
+  },
+  {
+    "id": "feedback/en-US/Custom",
+    "entry": "Custom.vue",
+    "files": { "Custom.vue": "feedback/en-US/Custom.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/feedback.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/feedback",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/feedback/"],
+    "upstream": "feedback/feedback"
+  },
+  {
+    "id": "feedback/en-US/Modal",
+    "entry": "Modal.vue",
+    "files": { "Modal.vue": "feedback/en-US/Modal.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/feedback.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/feedback",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/feedback/"],
+    "upstream": "feedback/feedback"
+  },
+  {
+    "id": "feedback/en-US/Radio",
+    "entry": "Radio.vue",
+    "files": { "Radio.vue": "feedback/en-US/Radio.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/feedback.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/feedback",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/feedback/"],
+    "upstream": "feedback/feedback"
+  },
+  {
+    "id": "feedback/en-US/Text",
+    "entry": "Text.vue",
+    "files": { "Text.vue": "feedback/en-US/Text.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/feedback.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/feedback",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/feedback/"],
+    "upstream": "feedback/feedback"
+  },
+  {
+    "id": "feedback/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "feedback/zh-CN/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/feedback.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/feedback",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/feedback/"],
+    "upstream": "feedback/feedback"
+  },
+  {
+    "id": "feedback/zh-CN/Checkbox",
+    "entry": "Checkbox.vue",
+    "files": { "Checkbox.vue": "feedback/zh-CN/Checkbox.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/feedback.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/feedback",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/feedback/"],
+    "upstream": "feedback/feedback"
+  },
+  {
+    "id": "feedback/zh-CN/Completion",
+    "entry": "Completion.vue",
+    "files": { "Completion.vue": "feedback/zh-CN/Completion.vue" },
+    "dependencies": [
+      "@aifuxi/semi-illustrations-vue/illustrations/IllustrationSuccess",
+      "@aifuxi/semi-illustrations-vue/illustrations/IllustrationSuccessDark",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/empty.css",
+      "@aifuxi/semi-theme-default/feedback.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/empty",
+      "@aifuxi/semi-ui-vue/feedback",
+      "@aifuxi/semi-ui-vue/input",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/feedback/"],
+    "upstream": "feedback/feedback"
+  },
+  {
+    "id": "feedback/zh-CN/Custom",
+    "entry": "Custom.vue",
+    "files": { "Custom.vue": "feedback/zh-CN/Custom.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/feedback.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/feedback",
+      "@aifuxi/semi-ui-vue/input",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/feedback/"],
+    "upstream": "feedback/feedback"
+  },
+  {
+    "id": "feedback/zh-CN/Modal",
+    "entry": "Modal.vue",
+    "files": { "Modal.vue": "feedback/zh-CN/Modal.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/feedback.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/feedback",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/feedback/"],
+    "upstream": "feedback/feedback"
+  },
+  {
+    "id": "feedback/zh-CN/Radio",
+    "entry": "Radio.vue",
+    "files": { "Radio.vue": "feedback/zh-CN/Radio.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/feedback.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/feedback",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/feedback/"],
+    "upstream": "feedback/feedback"
+  },
+  {
+    "id": "feedback/zh-CN/Text",
+    "entry": "Text.vue",
+    "files": { "Text.vue": "feedback/zh-CN/Text.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/feedback.css",
+      "@aifuxi/semi-ui-vue/button",
       "@aifuxi/semi-ui-vue/feedback",
       "vue"
     ],

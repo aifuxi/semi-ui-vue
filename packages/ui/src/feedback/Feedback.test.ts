@@ -172,6 +172,39 @@ describe('Feedback', () => {
     buttons.unmount();
   });
 
+  it('modal 完成提示可动态隐藏 footer，退出提示后恢复提交按钮', async () => {
+    const completed = ref(false);
+    const Host = () =>
+      h(
+        Feedback,
+        {
+          mode: 'modal',
+          motion: false,
+          visible: true,
+          type: 'custom',
+          okButtonProps: { disabled: false },
+          onOk: () => {
+            completed.value = true;
+          },
+          ...(completed.value ? { footer: null } : {}),
+        },
+        { default: () => h('p', completed.value ? '感谢反馈' : '反馈内容') },
+      );
+    const wrapper = mount(Host, { attachTo: document.body });
+    await settle();
+    document.querySelector<HTMLButtonElement>('[aria-label="confirm"]')!.click();
+    await settle();
+    expect(document.querySelector('.semi-modal-body')?.textContent).toContain('感谢反馈');
+    expect(document.querySelector('.semi-modal-footer')).toBeNull();
+    completed.value = false;
+    await settle();
+    expect(document.querySelector('.semi-modal-body')?.textContent).toContain('反馈内容');
+    expect(document.querySelector<HTMLButtonElement>('[aria-label="confirm"]')?.disabled).toBe(
+      false,
+    );
+    wrapper.unmount();
+  });
+
   it('popup Promise 确定显示 loading、resolve 后清值，取消同步清值', async () => {
     let resolveOk!: () => void;
     const okPromise = new Promise<void>((resolve) => {

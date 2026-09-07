@@ -153,16 +153,14 @@ const customContainer = computed(
   () => typeof document !== 'undefined' && teleportTarget.value !== document.body,
 );
 const direction = computed(() => config.value?.direction ?? 'ltr');
-const bodyContent = computed<VNodeChild>(() => slots.default?.());
-const titleContent = computed<VNodeChild>(
-  () => slots.title?.() ?? (hasRawProp('title') ? props.title : undefined),
-);
-const footerContent = computed<VNodeChild>(
-  () => slots.footer?.() ?? (hasRawProp('footer') ? props.footer : undefined),
-);
-const closeIconContent = computed<VNodeChild>(
-  () => slots.closeIcon?.() ?? (hasRawProp('closeIcon') ? props.closeIcon : undefined),
-);
+// Slot VNodes carry mounted DOM state; evaluate them in each render, not across Portal lifetimes.
+const bodyContent = (): VNodeChild => slots.default?.();
+const titleContent = (): VNodeChild =>
+  slots.title?.() ?? (hasRawProp('title') ? props.title : undefined);
+const footerContent = (): VNodeChild =>
+  slots.footer?.() ?? (hasRawProp('footer') ? props.footer : undefined);
+const closeIconContent = (): VNodeChild =>
+  slots.closeIcon?.() ?? (hasRawProp('closeIcon') ? props.closeIcon : undefined);
 const dataAttrs = computed(() =>
   Object.fromEntries(Object.entries(attrs).filter(([name]) => name.startsWith('data-'))),
 );
@@ -277,15 +275,15 @@ onBeforeUnmount(() => {
     >
       <SideSheetContent
         :aria-label="resolveOptional('aria-label')"
-        :body="bodyContent"
+        :body="bodyContent()"
         :body-style="resolveOptional('bodyStyle')"
         :class="rootClasses"
         :closable="runtimeProps.closable"
-        :close-icon="closeIconContent"
+        :close-icon="closeIconContent()"
         :custom-container="customContainer"
         :data-attrs="dataAttrs"
         :dialog-class="dialogClass"
-        :footer="footerContent"
+        :footer="footerContent()"
         :header-style="resolveOptional('headerStyle')"
         :height="contentHeight"
         :hidden="runtimeProps.keepDOM && state.displayNone"
@@ -297,7 +295,7 @@ onBeforeUnmount(() => {
         :placement="runtimeProps.placement"
         :rtl="direction === 'rtl'"
         :size="runtimeProps.size"
-        :title="titleContent"
+        :title="titleContent()"
         :width="contentWidth"
         :wrapper-width="resolveOptional('width')"
         @animation-end="handleAnimationEnd"

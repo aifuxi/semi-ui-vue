@@ -1,6 +1,6 @@
 import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, defineComponent, h, nextTick, ref } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, onTestFinished, vi } from 'vitest';
 
 import Feedback from './Feedback.vue';
 
@@ -20,7 +20,7 @@ describe('Feedback SSR', () => {
     expect(modal).not.toContain('Modal SSR');
   });
 
-  it('hydration 无 warning，客户端打开后进入稳定自定义容器并完整清理', async () => {
+  it.each(['popup', 'modal'] as const)('%s hydration 后可关闭重开并继续提交', async (mode) => {
     const portal = document.createElement('div');
     document.body.appendChild(portal);
     const visible = ref(false);
@@ -28,7 +28,11 @@ describe('Feedback SSR', () => {
       render: () =>
         h(Feedback, {
           getPopupContainer: () => portal,
-          motion: false,
+          mode,
+          onOk: () => {
+            visible.value = false;
+          },
+          motion: true,
           title: 'Hydration Feedback',
           visible: visible.value,
         }),
@@ -39,6 +43,14 @@ describe('Feedback SSR', () => {
     document.body.appendChild(container);
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     const app = createSSRApp(Host);
+    onTestFinished(async () => {
+      app.unmount();
+      await nextTick();
+      portal.remove();
+      container.remove();
+      consoleError.mockRestore();
+      expect(portal.querySelector('.semi-portal')).toBeNull();
+    });
     app.mount(container);
     await nextTick();
     visible.value = true;
@@ -47,11 +59,35 @@ describe('Feedback SSR', () => {
 
     expect(consoleError).not.toHaveBeenCalled();
     expect(portal.querySelector('.semi-feedback')?.textContent).toContain('Hydration Feedback');
-    app.unmount();
+    portal.querySelector<HTMLElement>('.semi-feedback-emoji-item:last-child')!.click();
     await nextTick();
-    expect(portal.querySelector('.semi-portal')).toBeNull();
-    portal.remove();
-    container.remove();
-    consoleError.mockRestore();
+    const submitSelector =
+      mode === 'popup' ? '.semi-feedback-footer button:last-child' : '[aria-label="confirm"]';
+    portal.querySelector<HTMLButtonElement>(submitSelector)!.click();
+    await nextTick();
+    await nextTick();
+    portal
+      .querySelector('.semi-sidesheet-inner, .semi-modal-content')!
+      .dispatchEvent(new Event('animationend'));
+    await nextTick();
+    expect(portal.querySelector('.semi-feedback')).toBeNull();
+    visible.value = true;
+    await nextTick();
+    await nextTick();
+    expect(portal.querySelectorAll('.semi-feedback-emoji-item')).toHaveLength(3);
+    const submit = portal.querySelector<HTMLButtonElement>(submitSelector)!;
+    expect(submit.disabled).toBe(true);
+    portal.querySelector<HTMLElement>('.semi-feedback-emoji-item:last-child')!.click();
+    await nextTick();
+    expect(submit.disabled).toBe(false);
+    submit.click();
+    await nextTick();
+    await nextTick();
+    portal
+      .querySelector('.semi-sidesheet-inner, .semi-modal-content')!
+      .dispatchEvent(new Event('animationend'));
+    await nextTick();
+    expect(portal.querySelector('.semi-feedback')).toBeNull();
+    expect(consoleError).not.toHaveBeenCalled();
   });
 });
