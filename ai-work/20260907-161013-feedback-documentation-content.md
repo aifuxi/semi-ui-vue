@@ -90,3 +90,15 @@
 - 没有执行全仓 `check:full`；没有提交或推送。没有新增第三方依赖或资产，静态产物归属与散列由既有流程刷新。
 
 下一补齐批次：Notification 8 项，随后 Toast 9 项。严格验收下一批仍为 Divider 2 项。已映射待验收 705 项，待映射 111 项。
+
+## 后续：将执行经验固化到项目流程
+
+上文保留 Feedback 批次交付时的状态；其代码已提交为 `f1f0acb`。本次根据用户复盘要求调整流程与诊断工具，不继续补齐下一组件，也不修改组件实现。
+
+- `AGENTS.md` 与项目 `ai-change-workflow` 技能明确要求：补齐线先做最简单和最高风险示例的双语预检，保留 SSR、退出动画、重开和受控 prop 增删条件；昂贵验证在修复稳定后集中执行，再跑已通过检查须先说明失效原因。
+- `docs/documentation/workflow.md` 增加代表选择、分阶段验证表和烟测定位约束。先观察 DOM/ARIA/可点击区域及两层 iframe 视口，批量断言使用 Node + 锁定 Playwright，Monaco 与受控时钟分开运行；零用例不能当作通过。
+- 烟测输出改约定到 `.data/documentation-smoke/<批次>/<运行标识>/`，直接 Playwright 运行显式使用独立输出目录。删除脚本、运行 clean 前分别检查证据保存和归档，避免再次丢失临时目录中的截图。
+- 已修复上文提到的诊断标题锚定问题：匹配 Playwright 项目/文件/分组前缀之后的完整用例标题，保留正则转义、标题前的空白边界和结尾约束。新的回归在修复前失败，修复后诊断单测 4 项全部通过；真实 Playwright `--list` 发现的 16 项与逻辑选择集合精确一致，原诊断入口的单项 Chromium 用例也通过。
+- 当前 `apps/docs/scripts` 整体参与六批证据指纹；本次没有修改输入集合、指纹算法或复用失效报告，而是将该影响写进流程并集中刷新受影响证据。
+- 验证命令：`node --test apps/docs/scripts/documentation-diagnostics.test.mjs`；`pnpm --filter @workspace/docs diagnose:nuxt:batch config-provider --grep 'TimeZone zh-cn light$'`。首次准备因脚本输入变化自动重建，类型、内容、静态产物检查及诊断用例均通过。真实发现集合保存在 ignored 的 `apps/docs/.data/documentation-smoke/workflow-diagnostics/20260907-title-prefix/selection.json`。
+- 最后一次执行 `pnpm --filter @workspace/docs accept:nuxt:batch --affected`：六批 224 项全部一次通过，无重试/跳过；正式阶段完整复用 resources/site/checks，未再构建站点，约 375 秒。六批 evidence 已按当前输入刷新，计数仍为 748/859 映射、43/859 有效严格验收；未新增 accepted，也未执行无关组件或全仓发布门禁。本次流程改进尚未提交。

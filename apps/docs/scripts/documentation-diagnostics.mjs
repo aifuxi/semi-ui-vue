@@ -24,7 +24,8 @@ export function diagnosticSelection(batches, grep) {
 }
 
 export function exactTitlePattern(titles) {
-  return `^(?:${titles.map((title) => title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})$`;
+  // Playwright grep includes project/file/describe prefixes, not just the leaf test title.
+  return `(?:^|\\s)(?:${titles.map((title) => title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})$`;
 }
 
 export function diagnosticArguments(args, batches) {

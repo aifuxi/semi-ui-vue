@@ -30,10 +30,23 @@ test('grep 精准选择失败用例，零匹配及无效表达式拒绝', () => 
   ]);
   assert.throws(() => diagnosticSelection([batch], 'Unknown'), /未匹配/);
   assert.throws(() => diagnosticSelection([batch], '['), SyntaxError);
-  const titles = ['Example (a+b) zh-cn light'];
+});
+test('Playwright 完整标题的项目、文件和分组前缀不影响精确用例选择', () => {
+  const titles = ['Example (a+b) zh-cn light', 'Example [x] en-us dark rtl'];
   const pattern = new RegExp(exactTitlePattern(titles));
-  assert.ok(pattern.test(titles[0]));
-  assert.ok(!pattern.test('prefix ' + titles[0]));
+  const discovered = [
+    titles[0],
+    `chromium tests/nuxt/example.spec.ts feedback ${titles[0]}`,
+    `tests/nuxt/example.spec.ts ${titles[1]}`,
+    'tests/nuxt/example.spec.ts Example aaab zh-cn light',
+    `tests/nuxt/example.spec.ts ${titles[0]} rtl`,
+    `tests/nuxt/example.spec.ts prefix${titles[0]}`,
+    'tests/nuxt/example.spec.ts Other zh-cn light',
+  ];
+  assert.deepEqual(
+    discovered.filter((title) => pattern.test(title)),
+    discovered.slice(0, 3),
+  );
 });
 test('诊断参数拒绝错误批次、不完整grep及不安全跳构建选项', () => {
   assert.equal(diagnosticArguments(['navigation', '--prepare-only'], [batch]).prepareOnly, true);

@@ -97,7 +97,9 @@ git -C vendor/semi-design describe --tags --exact-match
 
 ## 测试与门禁
 
-- 后续所有示例补齐、文档示例修复和严格视觉验收，按 [`docs/documentation/workflow.md`](docs/documentation/workflow.md) 执行：先预检与代表用例，修复稳定后集中跑受影响矩阵，最后一次刷新证据；正式入口共享一次构建，不为提交重复验证。
+- 后续所有示例补齐、文档示例修复和严格视觉验收，先读并按 [`docs/documentation/workflow.md`](docs/documentation/workflow.md) 执行。补齐线也先验证最简单与最高风险示例的双语代表路径，再铺开本批；修复稳定后集中跑联合检查、受影响矩阵与发布包验证，最后刷新证据，不为提交重复验证。
+- 烟测先观察实际 DOM、ARIA、Portal 和 iframe 视口再写定位器；真实复现不得丢掉 SSR、退出动画或重开条件。批量断言使用仓库 Node + Playwright，编辑器与模拟时钟分开运行。
+- 临时烟测结果存入 `apps/docs/.data/documentation-smoke/<批次>/<运行标识>/`，不得放在后续 Playwright 默认会清空的 `test-results` 根目录中；清理脚本前先保存运行摘要和必要截图，清理构建前按文档流程归档证据。
 
 - `failOnFlakyTests`（CI 环境已启用）和 `retries: 2` 是防抖基础配置。一个只在单独运行时通过的 spec 是 spec 的缺陷，不是 runner 不稳定——修复 spec 或添加确定性 fixture，而非增加 retries。
 - 每个组件完成 = 对齐矩阵 + Vue 源码/类型 + 中英文文档与迁移表 + 黑盒单测 + Chromium 行为/键盘/焦点/ARIA/Portal/动效测试 + SSR 证据 + React/Vue computed style 与截图对照 + npm pack 验证。
