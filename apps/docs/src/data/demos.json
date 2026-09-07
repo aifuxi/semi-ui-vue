@@ -7287,6 +7287,38 @@
     "upstream": "show/highlight"
   },
   {
+    "id": "hot-keys/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "hot-keys/en-US/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/hot-keys.css",
+      "@aifuxi/semi-theme-default/modal.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/hot-keys",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/modal",
+      "vue"
+    ],
+    "pages": ["/en-us/components/hot-keys/"],
+    "upstream": "plus/hotkeys"
+  },
+  {
+    "id": "hot-keys/en-US/Content",
+    "entry": "Content.vue",
+    "files": { "Content.vue": "hot-keys/en-US/Content.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/hot-keys.css",
+      "@aifuxi/semi-theme-default/modal.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/hot-keys",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/modal",
+      "vue"
+    ],
+    "pages": ["/en-us/components/hot-keys/"],
+    "upstream": "plus/hotkeys"
+  },
+  {
     "id": "hot-keys/en-US/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "hot-keys/en-US/Example1.vue" },
@@ -7307,6 +7339,90 @@
     "upstream": "plus/hotkeys"
   },
   {
+    "id": "hot-keys/en-US/ListenerTarget",
+    "entry": "ListenerTarget.vue",
+    "files": { "ListenerTarget.vue": "hot-keys/en-US/ListenerTarget.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/hot-keys.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/modal.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/hot-keys",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/modal",
+      "vue"
+    ],
+    "pages": ["/en-us/components/hot-keys/"],
+    "upstream": "plus/hotkeys"
+  },
+  {
+    "id": "hot-keys/en-US/PreventDefault",
+    "entry": "PreventDefault.vue",
+    "files": { "PreventDefault.vue": "hot-keys/en-US/PreventDefault.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/hot-keys.css",
+      "@aifuxi/semi-theme-default/modal.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/hot-keys",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/modal",
+      "vue"
+    ],
+    "pages": ["/en-us/components/hot-keys/"],
+    "upstream": "plus/hotkeys"
+  },
+  {
+    "id": "hot-keys/en-US/Render",
+    "entry": "Render.vue",
+    "files": { "Render.vue": "hot-keys/en-US/Render.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/hot-keys.css",
+      "@aifuxi/semi-theme-default/modal.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/hot-keys",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/modal",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/en-us/components/hot-keys/"],
+    "upstream": "plus/hotkeys"
+  },
+  {
+    "id": "hot-keys/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "hot-keys/zh-CN/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/hot-keys.css",
+      "@aifuxi/semi-theme-default/modal.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/hot-keys",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/modal",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/hot-keys/"],
+    "upstream": "plus/hotkeys"
+  },
+  {
+    "id": "hot-keys/zh-CN/Content",
+    "entry": "Content.vue",
+    "files": { "Content.vue": "hot-keys/zh-CN/Content.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/hot-keys.css",
+      "@aifuxi/semi-theme-default/modal.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/hot-keys",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/modal",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/hot-keys/"],
+    "upstream": "plus/hotkeys"
+  },
+  {
     "id": "hot-keys/zh-CN/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "hot-keys/zh-CN/Example1.vue" },
@@ -7321,6 +7437,58 @@
     "dependencies": [
       "@aifuxi/semi-theme-default/hot-keys.css",
       "@aifuxi/semi-ui-vue/hot-keys",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/hot-keys/"],
+    "upstream": "plus/hotkeys"
+  },
+  {
+    "id": "hot-keys/zh-CN/ListenerTarget",
+    "entry": "ListenerTarget.vue",
+    "files": { "ListenerTarget.vue": "hot-keys/zh-CN/ListenerTarget.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/hot-keys.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/modal.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/hot-keys",
+      "@aifuxi/semi-ui-vue/input",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/modal",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/hot-keys/"],
+    "upstream": "plus/hotkeys"
+  },
+  {
+    "id": "hot-keys/zh-CN/PreventDefault",
+    "entry": "PreventDefault.vue",
+    "files": { "PreventDefault.vue": "hot-keys/zh-CN/PreventDefault.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/hot-keys.css",
+      "@aifuxi/semi-theme-default/modal.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/hot-keys",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/modal",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/hot-keys/"],
+    "upstream": "plus/hotkeys"
+  },
+  {
+    "id": "hot-keys/zh-CN/Render",
+    "entry": "Render.vue",
+    "files": { "Render.vue": "hot-keys/zh-CN/Render.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/hot-keys.css",
+      "@aifuxi/semi-theme-default/modal.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/hot-keys",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/modal",
+      "@aifuxi/semi-ui-vue/tag",
       "vue"
     ],
     "pages": ["/zh-cn/components/hot-keys/"],

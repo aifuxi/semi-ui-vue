@@ -18,18 +18,49 @@ import { HotKeys } from '@aifuxi/semi-ui-vue/hot-keys';
 import '@aifuxi/semi-theme-default/hot-keys.css';
 ```
 
-## 基础用法
+## 代码演示
 
-::demo-block{demo="hot-keys/zh-CN/Example1" title="基础用法"}
+### 基本用法
+
+按 Control+Shift+A 打开弹窗，默认监听 document.body。未配置的修饰键必须释放。
+
+::demo-block{demo="hot-keys/zh-CN/Basic" title="基本用法"}
 ::
+
+### 自定义内容
+
+content 只替换显示为 Ctrl、Shift、B，不改变实际监听的 Control+Shift+B。
+
+::demo-block{demo="hot-keys/zh-CN/Content" title="自定义内容"}
+::
+
+### 自定义渲染
+
+默认 slot 替代 React render，通过 Tag 显示 Control+R 的提示。保留上游未阻止默认行为的设置；浏览器可能同时执行自己的快捷键。
+
+::demo-block{demo="hot-keys/zh-CN/Render" title="自定义渲染"}
+::
+
+### 阻止默认事件
+
+分别声明 Meta+S 与 Control+S 并设置 preventDefault。
+
+::demo-block{demo="hot-keys/zh-CN/PreventDefault" title="阻止默认事件"}
+::
+
+### 修改监听挂载 DOM
+
+Input 组件通过公开 input 属性提供真实 DOM；输入框获得焦点后按 Control+Q，焦点在外部时不触发。
+
+::demo-block{demo="hot-keys/zh-CN/ListenerTarget" title="修改监听挂载 DOM"}
+::
+
+## 基础用法
 
 普通键按 `KeyboardEvent.code` 匹配，因此字母大小写不影响组合。未声明的修饰键也必须
 处于未按下状态，例如配置 Control+S 时，Control+Shift+S 不会触发。
 
 ## 自定义监听目标
-
-::demo-block{demo="hot-keys/zh-CN/Example2" title="自定义监听目标"}
-::
 
 缺省监听 `document.body`。目标只在挂载时确定；运行中改变 getter 不会重绑，与固定
 v2.102.0 Adapter 一致。组件卸载时会从实际注册目标清理监听。
@@ -83,3 +114,13 @@ React 迁移见[迁移说明](#react-vue)。
 
 组件默认监听 `document.body`，也可用 `getListenerTarget` 限定到某个 HTMLElement。
 它不自动聚焦目标，不增加 role/tabindex；需要可聚焦局部快捷键区时由调用方设置。
+
+## Vue 补充示例
+
+以下示例补充 Vue API 使用方式，不计入上游示例映射。
+
+::demo-block{demo="hot-keys/zh-CN/Example1" title="Example1"}
+::
+
+::demo-block{demo="hot-keys/zh-CN/Example2" title="Example2"}
+::

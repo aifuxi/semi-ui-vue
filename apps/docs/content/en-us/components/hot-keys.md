@@ -19,19 +19,50 @@ import { HotKeys } from '@aifuxi/semi-ui-vue/hot-keys';
 import '@aifuxi/semi-theme-default/hot-keys.css';
 ```
 
-## Basic usage
+## Demos
 
-::demo-block{demo="hot-keys/en-US/Example1" title="Basic usage"}
+### Basic usage
+
+Press Control+Shift+A to open the modal. The default listener is document.body; unconfigured modifiers must be released.
+
+::demo-block{demo="hot-keys/en-US/Basic" title="Basic usage"}
 ::
+
+### Custom content
+
+content displays Ctrl, Shift and B without changing the Control+Shift+B shortcut.
+
+::demo-block{demo="hot-keys/en-US/Content" title="Custom content"}
+::
+
+### Custom rendering
+
+The default slot replaces React render with a Tag for Control+R. Like the upstream example, it does not prevent the browser’s default shortcut action.
+
+::demo-block{demo="hot-keys/en-US/Render" title="Custom rendering"}
+::
+
+### Prevent default behavior
+
+Declare Meta+S and Control+S separately with preventDefault enabled.
+
+::demo-block{demo="hot-keys/en-US/PreventDefault" title="Prevent default behavior"}
+::
+
+### Custom listener target
+
+The Input component exposes its actual DOM through input. Press Control+Q while the input is focused; keys outside it do not trigger the shortcut.
+
+::demo-block{demo="hot-keys/en-US/ListenerTarget" title="Custom listener target"}
+::
+
+## Basic usage
 
 The ordinary key is matched through `KeyboardEvent.code`, so letter casing does not change the
 combination. Modifiers that are not configured must also be released: Control+Shift+S does not
 match a Control+S shortcut.
 
 ## Custom listener target
-
-::demo-block{demo="hot-keys/en-US/Example2" title="Custom listener target"}
-::
 
 The default target is `document.body`. The target is resolved on mount and is not rebound when the
 getter changes, matching the pinned v2.102.0 Adapter. Unmount removes the listener from the target
@@ -69,21 +100,28 @@ deviations, and the [migration guide](#react-vue) for React mappings.
 
 ## React → Vue
 
-| React v2.102.0                              | Vue 3                                         | 说明                                      |
-| ------------------------------------------- | --------------------------------------------- | ----------------------------------------- |
-| `<HotKeys hotKeys={keys} onHotKey={run} />` | `<HotKeys :hot-keys="keys" @hot-key="run" />` | 组合值、事件 payload 和严格修饰键语义不变 |
-| `content={['Ctrl', 'K']}`                   | `:content="['Ctrl', 'K']"`                    | 只改变显示文本                            |
-| `render={<Tag>...</Tag>}`                   | 默认 slot                                     | ReactNode 映射为 Vue slot                 |
-| `render={() => node}`                       | 默认 slot                                     | slot 只求值一次                           |
-| `onClick={run}`                             | `@click="run"`                                | Vue 回调接收原生 `MouseEvent`             |
-| `className` / `style`                       | `class` / `style`，也兼容 `className`         | Vue 原生 attrs 可继续透传                 |
-| `HotKeys.Keys.Control`                      | `HotKeys.Keys.Control`                        | 静态键表保持同名                          |
+| React v2.102.0                              | Vue 3                                         | Notes                                                       |
+| ------------------------------------------- | --------------------------------------------- | ----------------------------------------------------------- |
+| `<HotKeys hotKeys={keys} onHotKey={run} />` | `<HotKeys :hot-keys="keys" @hot-key="run" />` | Same key values, event payload and strict modifier matching |
+| `content={['Ctrl', 'K']}`                   | `:content="['Ctrl', 'K']"`                    | Only changes labels                                         |
+| `render={<Tag>...</Tag>}`                   | Default slot                                  | ReactNode maps to a Vue slot                                |
+| `render={() => node}`                       | Default slot                                  | Slot evaluated once                                         |
+| `onClick={run}`                             | `@click="run"`                                | Receives the native MouseEvent                              |
+| `className` / `style`                       | `class` / `style`; also accepts `className`   | Native Vue attributes are forwarded                         |
+| `HotKeys.Keys.Control`                      | `HotKeys.Keys.Control`                        | Same static key table                                       |
 
-`hotKeys` 在上游类型中可选，但固定 Foundation 在 mounted 时要求合法组合；Vue 声明
-将它标为必填，以便在编译期表达真实运行时契约。
+The upstream type makes hotKeys optional, but the pinned Foundation requires a valid combination on mount. Vue marks it required to express that runtime contract at compile time.
 
-固定 v2.102.0 Foundation 虽读取 `mergeMetaCtrl`，但没有使用该值。因此即使设为
-`true`，Meta 也不会匹配 Control 组合，Vue 版本不擅自引入更新版本语义。
+The pinned v2.102.0 Foundation reads mergeMetaCtrl but does not use it. Even when true, Meta does not match a Control combination; Vue preserves that behavior.
 
-组件默认监听 `document.body`，也可用 `getListenerTarget` 限定到某个 HTMLElement。
-它不自动聚焦目标，不增加 role/tabindex；需要可聚焦局部快捷键区时由调用方设置。
+The default listener is document.body. Use getListenerTarget to select an HTMLElement. The component does not focus it or add role/tabindex; configure focusability when a local shortcut area needs it.
+
+## Additional Vue examples
+
+These examples supplement Vue API usage and are not counted as upstream demo mappings.
+
+::demo-block{demo="hot-keys/en-US/Example1" title="Example1"}
+::
+
+::demo-block{demo="hot-keys/en-US/Example2" title="Example2"}
+::
