@@ -12,66 +12,92 @@ upstream: 'feedback/toast'
 
 Toast provides brief and timely feedback after an operation. The Vue port follows Semi Design v2.102.0 and preserves the `.semi-toast-*` DOM/classes, theme tokens, imperative methods, factory instances, and context holder.
 
-## Basic usage
+## Demos
+
+### How to import
 
 ```ts
 import { Toast } from '@aifuxi/semi-ui-vue/toast';
 import '@aifuxi/semi-theme-default/toast.css';
-
-Toast.success('Saved');
-
-const id = Toast.warning({
-  content: 'The access credential expires soon',
-  duration: 0,
-  theme: 'light',
-});
-
-Toast.close(id);
 ```
 
-`info`, `success`, `warning`, and `error` accept either a string or an options object and return an id. Calling a method again with the same id updates the existing Toast and restarts its timer.
+### Basic Usage
 
-```ts
-const id = Toast.info({ content: 'Syncing', duration: 10 });
-Toast.success({ id, content: 'Sync complete', duration: 3 });
-```
+Call Toast methods to display feedback. Set `stack: true` to stack multiple Toasts and expand them on hover (since v2.42.0). The second button uses a 10-second leading-only throttle; closing the Toast cancels the throttle so it can open again immediately.
 
-## Stack and placement
-
-Use `stack` for multiple Toasts on the same screen; hovering expands the stack. Numeric offsets become pixels, while CSS strings are preserved.
-
-```ts
-Toast.config({ top: 24, zIndex: 1200 });
-Toast.info({ content: 'First', stack: true });
-Toast.warning({ content: 'Second', stack: true });
-```
-
-Call `Toast.config` before the current instance first opens. Once the wrapper exists, `zIndex` and `getPopupContainer` do not migrate it; explicitly supplied offsets can still update it.
-
-## Vue context holder
-
-Call `useToast` inside `<script setup>` and render the returned holder where it should inherit ConfigProvider context.
-
-::demo-block{demo="toast/en-US/Example1" title="Vue context holder"}
+::demo-block{demo="toast/en-US/Basic" title="Basic Usage"}
 ::
 
-The holder API also exposes `open(options)` for the `default` type.
+### Other Types
 
-## Independent factories
+Use `success`, `warning`, and `error` for other feedback types. The success example accepts a string directly.
 
-Use `ToastFactory.create` for a different container or defaults. Each instance owns an isolated wrapper, configuration, and destroy boundary.
+::demo-block{demo="toast/en-US/Types" title="Other Types"}
+::
 
-```ts
-import { ToastFactory } from '@aifuxi/semi-ui-vue/toast';
+### Colored Background
 
-const LocalToast = ToastFactory.create({
-  getPopupContainer: () => document.querySelector('#toast-host') as HTMLElement,
-  top: 12,
-});
+Use `theme: 'light'` for a colored background. The default is `normal`.
 
-LocalToast.info('Local feedback');
-LocalToast.destroyAll();
-```
+::demo-block{demo="toast/en-US/Colored" title="Colored Background"}
+::
+
+### Stacking styles
+
+The fixed English reference includes this additional demo. Click repeatedly, then hover the Toast stack to expand it.
+
+::demo-block{demo="toast/en-US/Stacking" title="Stacking styles"}
+::
+
+### Custom Children with Link
+
+Use Typography for custom single-line and multi-line links.
+
+::demo-block{demo="toast/en-US/Links" title="Custom Children with Link"}
+::
+
+### Delay
+
+Set `duration` in seconds. The default is 3 seconds; this example closes after 10 seconds.
+
+::demo-block{demo="toast/en-US/Delay" title="Delay"}
+::
+
+### Manual Close
+
+Set `duration: 0` to disable automatic closing. This example saves the returned id, prevents duplicate Toasts, and permits reopening after a manual close.
+
+::demo-block{demo="toast/en-US/ManualClose" title="Manual Close"}
+::
+
+### Update Toast Content
+
+Reuse an id to update the existing Toast and restart its close timer. This example changes info to success after one second.
+
+::demo-block{demo="toast/en-US/Update" title="Update Toast Content"}
+::
+
+### Destroy all
+
+`Toast.destroyAll()` destroys all Toasts and the wrapper owned by that imperative instance. Destroy independent factory instances separately.
+
+### Consume Context
+
+Call `useToast()` in `<script setup>` and render the returned holder inside the desired Vue context. A separate content component uses `inject` to read Light from `provide`; the message is not computed ahead of time.
+
+::demo-block{demo="toast/en-US/Context" title="Consume Context"}
+::
+
+### Create Toast with different configurations
+
+Use `ToastFactory.create(config)` for different defaults or containers. This example isolates the default and custom instances, uses a template ref for the container, and destroys the local instance on unmount.
+
+::demo-block{demo="toast/en-US/Factory" title="Create Toast with different configurations"}
+::
+
+A custom container changes the DOM parent, not the fixed positioning. For local layout, set both the container and its `.semi-toast-wrapper` to `position: relative`.
+
+The fixed Chinese reference has nine live demos; English has ten, including Stacking styles at index 4. Shared English button labels are preserved, while links are localized. Bytedance text is replaced with AIFUXI under the independent branding policy. The factory example adds the Toast import missing upstream. The context example omits the unsupported title field and includes its two dependency files in the online editor.
 
 ## API
 
@@ -86,7 +112,7 @@ LocalToast.destroyAll();
 | `stack`                 | `boolean`                   | `false`         | Stacks multiple Toasts                     |
 | `direction`             | `'ltr' \| 'rtl'`            | context or LTR  | Text direction                             |
 | `id`                    | `string \| number`          | generated       | Custom id; the same id updates             |
-| `onClose`               | `() => void`                | -               | Close callback                             |
+| `onClose`               | `() => void`                | -               | Automatic or close-button callback         |
 | `className`             | Vue class value             | -               | Class on the Toast root                    |
 | `style`                 | `StyleValue`                | -               | Style on the Toast root                    |
 | `top/right/bottom/left` | `number \| string`          | -               | Wrapper offsets                            |
@@ -95,24 +121,48 @@ LocalToast.destroyAll();
 
 Methods: `Toast.info`, `success`, `warning`, `error`, `close`, `destroyAll`, `config`, `ToastFactory.create`, and `useToast` / `Toast.useToast`.
 
+## Config
+
+Call `Toast.config(config)` before the first display. It accepts `top/right/bottom/left`, `duration`, `theme`, `zIndex`, and `getPopupContainer` from the table above. Once created, the wrapper does not change its parent or z-index; explicitly supplied offsets can still update it.
+
+Static methods return string ids; Vue accepts string/number inputs and normalizes them to strings. The upstream docs list number for id, but its public React type is string. Automatic closing and the close button call `onClose`; external `close(id)` and `destroyAll()` do not. Holder methods accept options and create a new entry on every call, and also expose `open(options)`. The static same-id update contract does not apply to the holder.
+
 ## Accessibility and SSR
 
 Each Toast has `role="alert"` and a `{type} type` aria-label. The close control reuses Button's native keyboard and focus behavior; Toast does not capture Escape or move focus.
 
 Both the root entry and `@aifuxi/semi-ui-vue/toast` are SSR-safe to import. Imperative methods are browser-only, while an empty holder can render on the server.
 
+## Content Guidelines
+
+- Keep messages short, omit ending periods, and use noun + verb phrasing.
+- Offer one clear action such as Retry. Avoid OK, Got it, Dismiss, and Cancel.
+
+| Recommended            | Not recommended                          |
+| ---------------------- | ---------------------------------------- |
+| Language added         | New language has been added successfully |
+| Ticket transfer failed | Can’t transfer ticket                    |
+| Retry                  | Dismiss                                  |
+
+The upstream ToastCard illustrations are internal and are not publicly exported; the content rules are retained without inventing a public component.
+
+## Design Tokens
+
+::token-table{component="toast"}
+::
+
 ## React → Vue
 
-| React v2.102.0                           | Vue 3.5+                           | 说明                            |
-| ---------------------------------------- | ---------------------------------- | ------------------------------- |
-| `Toast.info('Saved')`                    | `Toast.info('Saved')`              | 字符串简写不变                  |
-| `Toast.success(options)`                 | `Toast.success(options)`           | 返回 id；同 id 原位更新         |
-| `Toast.close(id)`                        | `Toast.close(id)`                  | 命令式关闭不变                  |
-| `Toast.config(config)`                   | `Toast.config(config)`             | 应在实例第一次显示前调用        |
-| `ToastFactory.create(config)`            | `ToastFactory.create(config)`      | 返回隔离的 Vue 命令式实例       |
-| `const [api, holder] = Toast.useToast()` | `const [api, Holder] = useToast()` | Vue 返回可直接渲染的 Component  |
-| `{holder}`                               | `<Holder />`                       | holder 放在需要继承上下文的位置 |
-| `ReactNode` content/icon                 | `VNodeChild` content/icon          | 使用 Vue VNode/组件实例         |
-| React context direction                  | `ConfigProvider` direction         | holder 可继承；静态实例默认 LTR |
+| React v2.102.0                           | Vue 3.5+                           | Notes                                                    |
+| ---------------------------------------- | ---------------------------------- | -------------------------------------------------------- |
+| `Toast.info('Saved')`                    | `Toast.info('Saved')`              | String shorthand is unchanged                            |
+| `Toast.success(options)`                 | `Toast.success(options)`           | Returns an id; reuse it to update                        |
+| `Toast.close(id)`                        | `Toast.close(id)`                  | Imperative closing is unchanged                          |
+| `Toast.config(config)`                   | `Toast.config(config)`             | Call before the first display                            |
+| `ToastFactory.create(config)`            | `ToastFactory.create(config)`      | Returns an isolated Vue imperative instance              |
+| `const [api, holder] = Toast.useToast()` | `const [api, Holder] = useToast()` | Returns a renderable Vue Component                       |
+| `{holder}`                               | `<Holder />`                       | Place the holder inside the desired context              |
+| `ReactNode` content/icon                 | `VNodeChild` content/icon          | Use Vue VNodes or components                             |
+| React context direction                  | `ConfigProvider` direction         | Holder inherits context; static instances default to LTR |
 
-Vue 不公开 React component ref、render prop 或 `ReactElement`。Toast 是命令式反馈 API，没有 `v-model` 或业务数据双向绑定。
+Vue does not expose React component refs, render props, or ReactElement. Toast is an imperative feedback API and has no v-model binding.

@@ -16379,18 +16379,271 @@
     "upstream": "show/timeline"
   },
   {
-    "id": "toast/en-US/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "toast/en-US/Example1.vue" },
-    "dependencies": ["@aifuxi/semi-theme-default/toast.css", "@aifuxi/semi-ui-vue/toast"],
+    "id": "toast/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "toast/en-US/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast"
+    ],
     "pages": ["/en-us/components/toast/"],
     "upstream": "feedback/toast"
   },
   {
-    "id": "toast/zh-CN/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "toast/zh-CN/Example1.vue" },
-    "dependencies": ["@aifuxi/semi-theme-default/toast.css", "@aifuxi/semi-ui-vue/toast"],
+    "id": "toast/en-US/Colored",
+    "entry": "Colored.vue",
+    "files": { "Colored.vue": "toast/en-US/Colored.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast"
+    ],
+    "pages": ["/en-us/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/en-US/Context",
+    "entry": "Context.vue",
+    "files": {
+      "Context.vue": "toast/en-US/Context.vue",
+      "ContextContent.vue": "toast/en-US/ContextContent.vue",
+      "context-key.ts": "toast/en-US/context-key.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast",
+      "vue"
+    ],
+    "pages": ["/en-us/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/en-US/Delay",
+    "entry": "Delay.vue",
+    "files": { "Delay.vue": "toast/en-US/Delay.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast"
+    ],
+    "pages": ["/en-us/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/en-US/Factory",
+    "entry": "Factory.vue",
+    "files": { "Factory.vue": "toast/en-US/Factory.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast",
+      "vue"
+    ],
+    "pages": ["/en-us/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/en-US/Links",
+    "entry": "Links.vue",
+    "files": { "Links.vue": "toast/en-US/Links.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast",
+      "@aifuxi/semi-ui-vue/typography",
+      "vue"
+    ],
+    "pages": ["/en-us/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/en-US/ManualClose",
+    "entry": "ManualClose.vue",
+    "files": { "ManualClose.vue": "toast/en-US/ManualClose.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast",
+      "vue"
+    ],
+    "pages": ["/en-us/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/en-US/Stacking",
+    "entry": "Stacking.vue",
+    "files": { "Stacking.vue": "toast/en-US/Stacking.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast"
+    ],
+    "pages": ["/en-us/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/en-US/Types",
+    "entry": "Types.vue",
+    "files": { "Types.vue": "toast/en-US/Types.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast"
+    ],
+    "pages": ["/en-us/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/en-US/Update",
+    "entry": "Update.vue",
+    "files": { "Update.vue": "toast/en-US/Update.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast",
+      "vue"
+    ],
+    "pages": ["/en-us/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "toast/zh-CN/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast"
+    ],
+    "pages": ["/zh-cn/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/zh-CN/Colored",
+    "entry": "Colored.vue",
+    "files": { "Colored.vue": "toast/zh-CN/Colored.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast"
+    ],
+    "pages": ["/zh-cn/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/zh-CN/Context",
+    "entry": "Context.vue",
+    "files": {
+      "Context.vue": "toast/zh-CN/Context.vue",
+      "ContextContent.vue": "toast/zh-CN/ContextContent.vue",
+      "context-key.ts": "toast/zh-CN/context-key.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/zh-CN/Delay",
+    "entry": "Delay.vue",
+    "files": { "Delay.vue": "toast/zh-CN/Delay.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast"
+    ],
+    "pages": ["/zh-cn/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/zh-CN/Factory",
+    "entry": "Factory.vue",
+    "files": { "Factory.vue": "toast/zh-CN/Factory.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/zh-CN/Links",
+    "entry": "Links.vue",
+    "files": { "Links.vue": "toast/zh-CN/Links.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast",
+      "@aifuxi/semi-ui-vue/typography",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/zh-CN/ManualClose",
+    "entry": "ManualClose.vue",
+    "files": { "ManualClose.vue": "toast/zh-CN/ManualClose.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/zh-CN/Types",
+    "entry": "Types.vue",
+    "files": { "Types.vue": "toast/zh-CN/Types.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast"
+    ],
+    "pages": ["/zh-cn/components/toast/"],
+    "upstream": "feedback/toast"
+  },
+  {
+    "id": "toast/zh-CN/Update",
+    "entry": "Update.vue",
+    "files": { "Update.vue": "toast/zh-CN/Update.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/toast.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/toast",
+      "vue"
+    ],
     "pages": ["/zh-cn/components/toast/"],
     "upstream": "feedback/toast"
   },

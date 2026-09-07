@@ -1,0 +1,132 @@
+{
+  "upstream": "feedback/toast",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "toast/zh-CN/Basic",
+      "enUS": "toast/en-US/Basic",
+      "notes": "中文索引1，英文索引1。普通3秒与10秒leading-only节流、stack hover展开、onClose取消节流；本地时间戳避免引入第三方REPL依赖。"
+    },
+    {
+      "index": 2,
+      "zhCN": "toast/zh-CN/Types",
+      "enUS": "toast/en-US/Types",
+      "notes": "中文索引2，英文索引2。success字符串简写与warning/error对象输入，保留纵向布局及颜色。"
+    },
+    {
+      "index": 3,
+      "zhCN": "toast/zh-CN/Colored",
+      "enUS": "toast/en-US/Colored",
+      "notes": "中文索引3，英文索引3。info/success/warning/error，theme=light与3秒延时。"
+    },
+    {
+      "index": 4,
+      "zhCN": "toast/zh-CN/Links",
+      "enUS": "toast/en-US/Links",
+      "notes": "中文索引4，英文索引5。h(Text)和VNodeChild数组适配单行/多行链接；12px、8px、20px间距与双语链接文案。"
+    },
+    {
+      "index": 5,
+      "zhCN": "toast/zh-CN/Delay",
+      "enUS": "toast/en-US/Delay",
+      "notes": "中文索引5，英文索引6。duration=10，默认3秒，保留Close After 10s。"
+    },
+    {
+      "index": 6,
+      "zhCN": "toast/zh-CN/ManualClose",
+      "enUS": "toast/en-US/ManualClose",
+      "notes": "中文索引6，英文索引7。shallowRef保存id，duration=0、重复展示去重、按钮与回调清空id；卸载关闭持久提示。"
+    },
+    {
+      "index": 7,
+      "zhCN": "toast/zh-CN/Update",
+      "enUS": "toast/en-US/Update",
+      "notes": "中文索引7，英文索引8。同id首次info，1秒后success并重启默认3秒timer；useId隔离示例实例，卸载清理待触发timer和当前提示。"
+    },
+    {
+      "index": 8,
+      "zhCN": "toast/zh-CN/Context",
+      "enUS": "toast/en-US/Context",
+      "notes": "中文索引8，英文索引9。provide/inject+InjectionKey及独立ContextContent组件真实消费Light；holder在原地渲染，duration=0；移除未支持的title。多文件依赖同语言目录./ContextContent.vue与./context-key.ts（REPL不处理跨父目录依赖）。"
+    },
+    {
+      "index": 9,
+      "zhCN": "toast/zh-CN/Factory",
+      "enUS": "toast/en-US/Factory",
+      "notes": "中文索引9，英文索引10。ToastFactory.create独立容器；模板ref替代固定DOM id，补上游缺失Toast导入，卸载销毁局部实例；保持上游fixed位置。"
+    }
+  ],
+  "additionalDemos": [
+    {
+      "sourceLocale": "en-US",
+      "index": 4,
+      "enUS": "toast/en-US/Stacking",
+      "notes": "英文独有堆叠示例，duration=10、stack=true与连续点击/hover展开；中文对应能力在Basic。"
+    }
+  ],
+  "chapters": [
+    {
+      "locale": "zh-CN",
+      "source": "vendor/semi-design/content/feedback/toast/index.md",
+      "headings": [
+        "## 代码演示",
+        "### 如何引入",
+        "### 普通提示",
+        "### 其他提示类型",
+        "### 多色样式",
+        "### 链接文本",
+        "### 修改延时",
+        "### 手动关闭",
+        "### 更新消息内容",
+        "### 销毁所有",
+        "### 消费 Context",
+        "### 创建不同配置 Toast",
+        "## API 参考",
+        "## Options",
+        "## Config",
+        "## Accessibility",
+        "### ARIA",
+        "## 文案规范",
+        "## 设计变量"
+      ],
+      "notes": "保留双语章节关联、API/ARIA/文案/Token与React→Vue迁移；品牌文案替换AIFUXI，无新增外部资产。"
+    },
+    {
+      "locale": "en-US",
+      "source": "vendor/semi-design/content/feedback/toast/index-en-US.md",
+      "headings": [
+        "## Demos",
+        "### How to import",
+        "### Basic Usage",
+        "### Other Types",
+        "### Colored Background",
+        "### Stacking styles",
+        "### Custom Children with Link",
+        "### Delay",
+        "### Manual Close",
+        "### Update Toast Content",
+        "### Destroy all",
+        "### Consume Context",
+        "### Create Toast with different configurations",
+        "## API Reference",
+        "## Options",
+        "## Config",
+        "## Accessibility",
+        "### ARIA",
+        "## Content Guidelines",
+        "## Design Tokens"
+      ],
+      "notes": "保留双语章节关联、API/ARIA/文案/Token与React→Vue迁移；品牌文案替换AIFUXI，无新增外部资产。"
+    }
+  ],
+  "exclusions": [
+    {
+      "source": "文案规范中的ToastCard静态示意",
+      "reason": "非公开导出，保留完整文案规范，不伪造公开组件或live演示。"
+    },
+    {
+      "source": "Context示例title字段；Factory示例遗漏Toast导入",
+      "reason": "固定公开Toast类型和Adapter不消费title，故移除；工厂示例补全实际所需导入。"
+    }
+  ]
+}
