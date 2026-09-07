@@ -19,33 +19,39 @@ import { OverflowList } from '@aifuxi/semi-ui-vue/overflow-list';
 import '@aifuxi/semi-theme-default/overflow-list.css';
 ```
 
-## 折叠模式
+## 代码演示
 
-```vue
-<OverflowList :items="items">
-  <template #visibleItem="{ item }">
-    <span class="token">{{ item.label }}</span>
-  </template>
-  <template #overflow="{ items: hidden }">
-    <button v-if="hidden.length">+{{ hidden.length }}</button>
-  </template>
-</OverflowList>
-```
+### 折叠模式 - 默认
 
-`collapseFrom="start"` 从数组开头折叠，`minVisibleItems` 设置即使空间不足也必须保留的最少项目数。
+`renderMode="collapse"` 为默认模式。拖动滑块调整列表容器的宽度，放不下的项目会从末尾折叠为 `+N` 标签；恢复宽度后重新显示。六个图标标签与固定上游一致。
 
-## 滚动模式
+::demo-block{demo="overflow-list/zh-CN/Collapse" title="折叠模式 - 默认"}
+::
 
-```vue
-<OverflowList :items="items" render-mode="scroll">
-  <template #visibleItem="{ item }"><span>{{ item.label }}</span></template>
-  <template #overflow="{ items: hidden, position }">
-    <button v-if="hidden.length">{{ position }}: {{ hidden.length }}</button>
-  </template>
-</OverflowList>
-```
+### 折叠模式 - 方向
 
-scroll 模式要求每项具有稳定 `key`，也可用 `itemKey` 指定字段名或 getter。最终可观察元素带有 `data-scrollkey`。
+`collapseFrom="start"` 从数组开头折叠，保留末尾项目，并把 `+N` 标签放在列表前方。拖动滑块观察与默认方向的区别。
+
+::demo-block{demo="overflow-list/zh-CN/CollapseFromStart" title="折叠模式 - 方向"}
+::
+
+### 折叠模式 - 最小展示的数目
+
+`:min-visible-items="3"` 至少保留三个可见项目，即使容器宽度不足也不会继续折叠这三个项目。拖动滑块缩小宽度，观察最少可见项目与溢出数量。
+
+::demo-block{demo="overflow-list/zh-CN/MinVisibleItems" title="折叠模式 - 最小展示的数目"}
+::
+
+### 滚动模式
+
+通过 `renderMode="scroll"` 保留全部项目并横向滚动。缩小容器后在列表中横向滚动，两端标签显示各自溢出的项目数；与固定上游一样，没有溢出时也显示 `+0`。
+
+::demo-block{demo="overflow-list/zh-CN/Scroll" title="滚动模式"}
+::
+
+scroll 模式要求每项具有稳定 `key`，也可用 `itemKey` 指定字段名或 getter。最终可观察元素带有 `data-scrollkey`；若要把某项滚入视图，可在当前示例容器内选取 `.item-cls[data-scrollkey="folder"]`，再调用 `scrollIntoView({ block: 'nearest', inline: 'nearest' })`。
+
+四项示例分别使用独立 SFC，可在示例编辑器中修改并运行；当前已建立双语映射，严格视觉与行为验收另行推进。
 
 ## API
 
@@ -69,13 +75,14 @@ scroll 模式要求每项具有稳定 `key`，也可用 `itemKey` 指定字段�
 
 ## React → Vue
 
-| React v2.102.0                               | Vue                               |
-| -------------------------------------------- | --------------------------------- |
-| `visibleItemRenderer={(item, index) => ...}` | `#visibleItem="{ item, index }"`  |
-| `overflowRenderer={items => ...}`            | `#overflow="{ items, position }"` |
-| `onOverflow={handler}`                       | `@overflow="handler"`             |
-| `onIntersect={handler}`                      | `@intersect="handler"`            |
-| `onVisibleStateChange={handler}`             | `@visibleStateChange="handler"`   |
-| `className`                                  | `class`（也兼容 `className`）     |
+| React v2.102.0                                | Vue                                              |
+| --------------------------------------------- | ------------------------------------------------ |
+| `visibleItemRenderer={(item, index) => ...}`  | `#visibleItem="{ item, index }"`                 |
+| `overflowRenderer={items => ...}`             | `#overflow="{ items, position }"`                |
+| `onOverflow={handler}`                        | `@overflow="handler"`                            |
+| `onIntersect={handler}`                       | `@intersect="handler"`                           |
+| `onVisibleStateChange={handler}`              | `@visibleStateChange="handler"`                  |
+| scroll renderer 接收 `[startItems, endItems]` | `#overflow` 按 `position` 分别接收一侧的 `items` |
+| `className`                                   | `class`（也兼容 `className`）                    |
 
 其余枚举值和自然可保留的 prop 名保持一致。scroll 模式下，React 要求 renderer 返回可 clone 的单个 ReactElement；Vue 单根元素会直接获得 `data-scrollkey`，多根 slot 会由内部 `.semi-overflow-list-scroll-item` 包装，这是唯一已接受的框架结构差异。

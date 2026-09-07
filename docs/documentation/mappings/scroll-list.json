@@ -1,0 +1,24 @@
+{
+  "upstream": "show/scrolllist",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "scroll-list/zh-CN/Example1",
+      "enUS": "scroll-list/en-US/Example1",
+      "notes": "中英文上游索引均为 1，无独有示例或多文件依赖。保留三列 wheel、初始索引 1、时段非循环、小时/分钟循环、type=1/2/3、选择日志及 Ok 的 close 日志。中文时段为上午/下午、标题为无限滚动列表；英文为 AM/PM 与 Infinite Scroll List。上游 Math.random 禁用分钟改为固定禁用偶数分钟，避免渲染/重置数据漂移；严格验收时须统一参考侧数据。header/footer 改具名插槽，onSelect 改 @select，受控索引改 shallowRef；补充双语 aria-label，保留默认 300px body 和 unset 边框/阴影。"
+    }
+  ],
+  "chapters": [
+    "代码演示",
+    "如何引入",
+    "基本使用",
+    "API 参考",
+    "ScrollList",
+    "ScrollItem",
+    "ItemData",
+    "Accessibility",
+    "ARIA",
+    "设计变量"
+  ],
+  "exclusions": []
+}

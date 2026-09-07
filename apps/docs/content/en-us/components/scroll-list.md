@@ -12,12 +12,27 @@ upstream: 'show/scrolllist'
 
 ScrollList renders one or more selectable columns in a constrained height. This implementation is aligned exclusively with the pinned local Semi Design v2.102.0 source, including normal and wheel modes, cyclic rendering, disabled items, transforms, themes, and RTL.
 
-## Basic usage
+## Demos
+
+### How to import
+
+```ts
+import { ScrollList, ScrollItem } from '@aifuxi/semi-ui-vue/scroll-list';
+import '@aifuxi/semi-theme-default/scroll-list.css';
+```
+
+### Basic usage
+
+The list supports iOS-like wheel selection and clicking an option. The AM/PM column does not cycle; the hour and minute columns do. All three selected indices start at 1: PM, hour 2, and minute 1.
 
 ::demo-block{demo="scroll-list/en-US/Example1" title="Basic usage"}
 ::
 
 `selectedIndex` is controlled state. The component reports a choice through `select`, and the consumer updates the index. Normal mode selects on click; wheel mode settles on the nearest enabled item. `cycled` only affects wheel mode.
+
+The upstream minute list uses `Math.random()` to disable items. This demo disables even minutes instead, retaining mixed enabled/disabled options while keeping data stable across the page, resets, and editor runs. This is a demo-data adaptation, not a completed strict React/Vue comparison.
+
+Hour and minute selections are logged to the browser console. As upstream, the footer's `Ok` button only logs `close`; it does not close the list. React `header` and `footer` content becomes the `#header` and `#footer` slots, `onSelect` becomes `@select`, and each controlled index is stored in a `shallowRef`.
 
 ## ScrollList API
 

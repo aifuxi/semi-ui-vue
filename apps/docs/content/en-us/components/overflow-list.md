@@ -19,33 +19,39 @@ import { OverflowList } from '@aifuxi/semi-ui-vue/overflow-list';
 import '@aifuxi/semi-theme-default/overflow-list.css';
 ```
 
-## Collapse mode
+## Demos
 
-```vue
-<OverflowList :items="items">
-  <template #visibleItem="{ item }">
-    <span class="token">{{ item.label }}</span>
-  </template>
-  <template #overflow="{ items: hidden }">
-    <button v-if="hidden.length">+{{ hidden.length }}</button>
-  </template>
-</OverflowList>
-```
+### Collapse Mode - Simple
 
-Set `collapseFrom="start"` to collect items from the beginning. `minVisibleItems` keeps a minimum number of items even when space is insufficient.
+`renderMode="collapse"` is the default. Move the slider to change the container width. Items that no longer fit are collected from the end into a `+N` tag and return when the container expands. The six icon tags follow the fixed upstream examples.
 
-## Scroll mode
+::demo-block{demo="overflow-list/en-US/Collapse" title="Collapse Mode - Simple"}
+::
 
-```vue
-<OverflowList :items="items" render-mode="scroll">
-  <template #visibleItem="{ item }"><span>{{ item.label }}</span></template>
-  <template #overflow="{ items: hidden, position }">
-    <button v-if="hidden.length">{{ position }}: {{ hidden.length }}</button>
-  </template>
-</OverflowList>
-```
+### Collapse Mode - Direction
 
-Scroll mode requires stable item keys. Use `itemKey` for a different key field or getter. The observed element receives `data-scrollkey`.
+`collapseFrom="start"` collects items from the beginning, retains the trailing items, and places the `+N` tag before the list. Move the slider to compare this with the default direction.
+
+::demo-block{demo="overflow-list/en-US/CollapseFromStart" title="Collapse Mode - Direction"}
+::
+
+### Collapse Mode - Visible
+
+`:min-visible-items="3"` keeps at least three items visible, even if the container is too narrow to fit them. Reduce the width to observe the minimum visible items and the overflow count.
+
+::demo-block{demo="overflow-list/en-US/MinVisibleItems" title="Collapse Mode - Visible"}
+::
+
+### Scroll Mode
+
+Use `renderMode="scroll"` to keep all items in a horizontally scrollable list. Reduce the width, then scroll horizontally to see the two tags report the overflow count on each side. As in the fixed upstream example, an empty side still displays `+0`.
+
+::demo-block{demo="overflow-list/en-US/Scroll" title="Scroll Mode"}
+::
+
+Scroll mode requires stable item keys. Use `itemKey` for a different key field or getter. The observed element receives `data-scrollkey`. To reveal an item, select `.item-cls[data-scrollkey="folder"]` within the current demo container and call `scrollIntoView({ block: 'nearest', inline: 'nearest' })`.
+
+Each example is an independent SFC that can be edited and run in the demo editor. All four examples have bilingual mappings; strict visual and behavioral acceptance is tracked separately.
 
 ## API
 
@@ -69,13 +75,14 @@ Scroll mode requires stable item keys. Use `itemKey` for a different key field o
 
 ## React → Vue
 
-| React v2.102.0                               | Vue                               |
-| -------------------------------------------- | --------------------------------- |
-| `visibleItemRenderer={(item, index) => ...}` | `#visibleItem="{ item, index }"`  |
-| `overflowRenderer={items => ...}`            | `#overflow="{ items, position }"` |
-| `onOverflow={handler}`                       | `@overflow="handler"`             |
-| `onIntersect={handler}`                      | `@intersect="handler"`            |
-| `onVisibleStateChange={handler}`             | `@visibleStateChange="handler"`   |
-| `className`                                  | `class`（也兼容 `className`）     |
+| React v2.102.0                                    | Vue                                                    |
+| ------------------------------------------------- | ------------------------------------------------------ |
+| `visibleItemRenderer={(item, index) => ...}`      | `#visibleItem="{ item, index }"`                       |
+| `overflowRenderer={items => ...}`                 | `#overflow="{ items, position }"`                      |
+| `onOverflow={handler}`                            | `@overflow="handler"`                                  |
+| `onIntersect={handler}`                           | `@intersect="handler"`                                 |
+| `onVisibleStateChange={handler}`                  | `@visibleStateChange="handler"`                        |
+| Scroll renderer receives `[startItems, endItems]` | `#overflow` receives one side's `items` per `position` |
+| `className`                                       | `class` (`className` is also supported)                |
 
-其余枚举值和自然可保留的 prop 名保持一致。scroll 模式下，React 要求 renderer 返回可 clone 的单个 ReactElement；Vue 单根元素会直接获得 `data-scrollkey`，多根 slot 会由内部 `.semi-overflow-list-scroll-item` 包装，这是唯一已接受的框架结构差异。
+Other enum values and naturally transferable prop names remain unchanged. In scroll mode, React requires each item renderer to return one cloneable ReactElement. Vue adds `data-scrollkey` directly to a single element root; a multi-root slot receives an internal `.semi-overflow-list-scroll-item` wrapper. This is the structural framework deviation already documented for the component, not a strict acceptance result for these documentation examples.

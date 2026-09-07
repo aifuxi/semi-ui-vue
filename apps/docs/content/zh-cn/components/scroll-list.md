@@ -12,12 +12,27 @@ upstream: 'show/scrolllist'
 
 ScrollList 用于在有限高度内展示一列或多列可滚动选项。本实现以本地 Semi Design v2.102.0 为唯一基线，保留 normal、wheel、循环滚动、禁用、变换、主题与 RTL 契约。
 
-## 基础用法
+## 代码演示
 
-::demo-block{demo="scroll-list/zh-CN/Example1" title="基础用法"}
+### 如何引入
+
+```ts
+import { ScrollList, ScrollItem } from '@aifuxi/semi-ui-vue/scroll-list';
+import '@aifuxi/semi-theme-default/scroll-list.css';
+```
+
+### 基本使用
+
+滚动列表提供类似 iOS 的滚动选择方式，也支持点击选项。时段列不循环，小时和分钟列循环滚动；三列初始索引均为 1，即下午、2 点、1 分。
+
+::demo-block{demo="scroll-list/zh-CN/Example1" title="基本使用"}
 ::
 
 `selectedIndex` 是受控状态：组件通过 `select` 事件通知选择结果，调用方更新索引。`normal` 模式直接点击选项；`wheel` 模式会把最近的启用项滚动到选择线。`cycled` 只在 wheel 模式生效。
+
+上游分钟列表使用 `Math.random()` 决定禁用项；这里固定禁用偶数分钟，保留可选与禁用项混排，并保证页面、重置和编辑器运行的数据一致。这是演示数据适配，尚未完成严格 React/Vue 对照。
+
+小时和分钟的选择结果输出到浏览器控制台；底部 `Ok` 按钮与上游一样只输出 `close`，不会关闭列表。React 的 `header`、`footer` 内容分别改为 `#header`、`#footer` 插槽，`onSelect` 改为 `@select`，使用 `shallowRef` 保存各列受控索引。
 
 ## ScrollList API
 

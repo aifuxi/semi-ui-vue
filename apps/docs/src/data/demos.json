@@ -9925,6 +9925,142 @@
     "upstream": "feedback/notification"
   },
   {
+    "id": "overflow-list/en-US/Collapse",
+    "entry": "Collapse.vue",
+    "files": { "Collapse.vue": "overflow-list/en-US/Collapse.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/overflow-list.css",
+      "@aifuxi/semi-theme-default/slider.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/overflow-list",
+      "@aifuxi/semi-ui-vue/slider",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/en-us/components/overflow-list/"],
+    "upstream": "show/overflowlist"
+  },
+  {
+    "id": "overflow-list/en-US/CollapseFromStart",
+    "entry": "CollapseFromStart.vue",
+    "files": { "CollapseFromStart.vue": "overflow-list/en-US/CollapseFromStart.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/overflow-list.css",
+      "@aifuxi/semi-theme-default/slider.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/overflow-list",
+      "@aifuxi/semi-ui-vue/slider",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/en-us/components/overflow-list/"],
+    "upstream": "show/overflowlist"
+  },
+  {
+    "id": "overflow-list/en-US/MinVisibleItems",
+    "entry": "MinVisibleItems.vue",
+    "files": { "MinVisibleItems.vue": "overflow-list/en-US/MinVisibleItems.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/overflow-list.css",
+      "@aifuxi/semi-theme-default/slider.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/overflow-list",
+      "@aifuxi/semi-ui-vue/slider",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/en-us/components/overflow-list/"],
+    "upstream": "show/overflowlist"
+  },
+  {
+    "id": "overflow-list/en-US/Scroll",
+    "entry": "Scroll.vue",
+    "files": { "Scroll.vue": "overflow-list/en-US/Scroll.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/overflow-list.css",
+      "@aifuxi/semi-theme-default/slider.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/overflow-list",
+      "@aifuxi/semi-ui-vue/slider",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/en-us/components/overflow-list/"],
+    "upstream": "show/overflowlist"
+  },
+  {
+    "id": "overflow-list/zh-CN/Collapse",
+    "entry": "Collapse.vue",
+    "files": { "Collapse.vue": "overflow-list/zh-CN/Collapse.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/overflow-list.css",
+      "@aifuxi/semi-theme-default/slider.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/overflow-list",
+      "@aifuxi/semi-ui-vue/slider",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/overflow-list/"],
+    "upstream": "show/overflowlist"
+  },
+  {
+    "id": "overflow-list/zh-CN/CollapseFromStart",
+    "entry": "CollapseFromStart.vue",
+    "files": { "CollapseFromStart.vue": "overflow-list/zh-CN/CollapseFromStart.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/overflow-list.css",
+      "@aifuxi/semi-theme-default/slider.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/overflow-list",
+      "@aifuxi/semi-ui-vue/slider",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/overflow-list/"],
+    "upstream": "show/overflowlist"
+  },
+  {
+    "id": "overflow-list/zh-CN/MinVisibleItems",
+    "entry": "MinVisibleItems.vue",
+    "files": { "MinVisibleItems.vue": "overflow-list/zh-CN/MinVisibleItems.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/overflow-list.css",
+      "@aifuxi/semi-theme-default/slider.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/overflow-list",
+      "@aifuxi/semi-ui-vue/slider",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/overflow-list/"],
+    "upstream": "show/overflowlist"
+  },
+  {
+    "id": "overflow-list/zh-CN/Scroll",
+    "entry": "Scroll.vue",
+    "files": { "Scroll.vue": "overflow-list/zh-CN/Scroll.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/overflow-list.css",
+      "@aifuxi/semi-theme-default/slider.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-ui-vue/overflow-list",
+      "@aifuxi/semi-ui-vue/slider",
+      "@aifuxi/semi-ui-vue/tag",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/overflow-list/"],
+    "upstream": "show/overflowlist"
+  },
+  {
     "id": "pagination/en-us/Basic",
     "entry": "Basic.vue",
     "files": { "Basic.vue": "pagination/en-us/Basic.vue" },
@@ -11576,7 +11712,9 @@
     "entry": "Example1.vue",
     "files": { "Example1.vue": "scroll-list/en-US/Example1.vue" },
     "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
       "@aifuxi/semi-theme-default/scroll-list.css",
+      "@aifuxi/semi-ui-vue/button",
       "@aifuxi/semi-ui-vue/scroll-list",
       "vue"
     ],
@@ -11588,7 +11726,9 @@
     "entry": "Example1.vue",
     "files": { "Example1.vue": "scroll-list/zh-CN/Example1.vue" },
     "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
       "@aifuxi/semi-theme-default/scroll-list.css",
+      "@aifuxi/semi-ui-vue/button",
       "@aifuxi/semi-ui-vue/scroll-list",
       "vue"
     ],

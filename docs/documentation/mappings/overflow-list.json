@@ -1,0 +1,41 @@
+{
+  "upstream": "show/overflowlist",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "overflow-list/zh-CN/Collapse",
+      "enUS": "overflow-list/en-US/Collapse",
+      "notes": "中英文上游索引均为 1：默认 collapse、100% 初始宽度、step=1 滑块及六个图标标签；无溢出时不渲染 +N。"
+    },
+    {
+      "index": 2,
+      "zhCN": "overflow-list/zh-CN/CollapseFromStart",
+      "enUS": "overflow-list/en-US/CollapseFromStart",
+      "notes": "中英文上游索引均为 2：collapseFrom=start，前置 +N 标签保留右侧 8px 间距。"
+    },
+    {
+      "index": 3,
+      "zhCN": "overflow-list/zh-CN/MinVisibleItems",
+      "enUS": "overflow-list/en-US/MinVisibleItems",
+      "notes": "中英文上游索引均为 3：minVisibleItems=3，容器缩窄时仍保留前三项。"
+    },
+    {
+      "index": 4,
+      "zhCN": "overflow-list/zh-CN/Scroll",
+      "enUS": "overflow-list/en-US/Scroll",
+      "notes": "中英文上游索引均为 4：scroll 模式保留 .item-cls 元素根与 data-scrollkey；React 的首尾两组 overflow 数组映射为 Vue 两次插槽调用，保留两端 +0 标签。"
+    }
+  ],
+  "chapters": [
+    "代码演示",
+    "如何引入",
+    "折叠模式 - 默认",
+    "折叠模式 - 方向",
+    "折叠模式 - 最小展示的数目",
+    "滚动模式",
+    "API 参考",
+    "renderMode='collapse'",
+    "renderMode='scroll'"
+  ],
+  "exclusions": []
+}
