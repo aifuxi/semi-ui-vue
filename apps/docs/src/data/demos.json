@@ -10105,23 +10105,223 @@
     "upstream": "navigation/navigation"
   },
   {
-    "id": "notification/en-US/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "notification/en-US/Example1.vue" },
+    "id": "notification/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "notification/en-US/Basic.vue" },
     "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
       "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-ui-vue/button",
       "@aifuxi/semi-ui-vue/notification"
     ],
     "pages": ["/en-us/components/notification/"],
     "upstream": "feedback/notification"
   },
   {
-    "id": "notification/zh-CN/Example1",
-    "entry": "Example1.vue",
-    "files": { "Example1.vue": "notification/zh-CN/Example1.vue" },
+    "id": "notification/en-US/Colored",
+    "entry": "Colored.vue",
+    "files": { "Colored.vue": "notification/en-US/Colored.vue" },
     "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
       "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-ui-vue/button",
       "@aifuxi/semi-ui-vue/notification"
+    ],
+    "pages": ["/en-us/components/notification/"],
+    "upstream": "feedback/notification"
+  },
+  {
+    "id": "notification/en-US/Delay",
+    "entry": "Delay.vue",
+    "files": { "Delay.vue": "notification/en-US/Delay.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/notification"
+    ],
+    "pages": ["/en-us/components/notification/"],
+    "upstream": "feedback/notification"
+  },
+  {
+    "id": "notification/en-US/Icons",
+    "entry": "Icons.vue",
+    "files": { "Icons.vue": "notification/en-US/Icons.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/notification",
+      "vue"
+    ],
+    "pages": ["/en-us/components/notification/"],
+    "upstream": "feedback/notification"
+  },
+  {
+    "id": "notification/en-US/Links",
+    "entry": "Links.vue",
+    "files": { "Links.vue": "notification/en-US/Links.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/notification",
+      "@aifuxi/semi-ui-vue/typography",
+      "vue"
+    ],
+    "pages": ["/en-us/components/notification/"],
+    "upstream": "feedback/notification"
+  },
+  {
+    "id": "notification/en-US/ManualClose",
+    "entry": "ManualClose.vue",
+    "files": { "ManualClose.vue": "notification/en-US/ManualClose.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/notification",
+      "vue"
+    ],
+    "pages": ["/en-us/components/notification/"],
+    "upstream": "feedback/notification"
+  },
+  {
+    "id": "notification/en-US/Position",
+    "entry": "Position.vue",
+    "files": { "Position.vue": "notification/en-US/Position.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/notification"
+    ],
+    "pages": ["/en-us/components/notification/"],
+    "upstream": "feedback/notification"
+  },
+  {
+    "id": "notification/en-US/Update",
+    "entry": "Update.vue",
+    "files": { "Update.vue": "notification/en-US/Update.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/notification",
+      "vue"
+    ],
+    "pages": ["/en-us/components/notification/"],
+    "upstream": "feedback/notification"
+  },
+  {
+    "id": "notification/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "notification/zh-CN/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/notification"
+    ],
+    "pages": ["/zh-cn/components/notification/"],
+    "upstream": "feedback/notification"
+  },
+  {
+    "id": "notification/zh-CN/Colored",
+    "entry": "Colored.vue",
+    "files": { "Colored.vue": "notification/zh-CN/Colored.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/notification"
+    ],
+    "pages": ["/zh-cn/components/notification/"],
+    "upstream": "feedback/notification"
+  },
+  {
+    "id": "notification/zh-CN/Delay",
+    "entry": "Delay.vue",
+    "files": { "Delay.vue": "notification/zh-CN/Delay.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/notification"
+    ],
+    "pages": ["/zh-cn/components/notification/"],
+    "upstream": "feedback/notification"
+  },
+  {
+    "id": "notification/zh-CN/Icons",
+    "entry": "Icons.vue",
+    "files": { "Icons.vue": "notification/zh-CN/Icons.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/notification",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/notification/"],
+    "upstream": "feedback/notification"
+  },
+  {
+    "id": "notification/zh-CN/Links",
+    "entry": "Links.vue",
+    "files": { "Links.vue": "notification/zh-CN/Links.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/notification",
+      "@aifuxi/semi-ui-vue/typography",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/notification/"],
+    "upstream": "feedback/notification"
+  },
+  {
+    "id": "notification/zh-CN/ManualClose",
+    "entry": "ManualClose.vue",
+    "files": { "ManualClose.vue": "notification/zh-CN/ManualClose.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/notification",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/notification/"],
+    "upstream": "feedback/notification"
+  },
+  {
+    "id": "notification/zh-CN/Position",
+    "entry": "Position.vue",
+    "files": { "Position.vue": "notification/zh-CN/Position.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/notification"
+    ],
+    "pages": ["/zh-cn/components/notification/"],
+    "upstream": "feedback/notification"
+  },
+  {
+    "id": "notification/zh-CN/Update",
+    "entry": "Update.vue",
+    "files": { "Update.vue": "notification/zh-CN/Update.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/notification.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/notification",
+      "vue"
     ],
     "pages": ["/zh-cn/components/notification/"],
     "upstream": "feedback/notification"

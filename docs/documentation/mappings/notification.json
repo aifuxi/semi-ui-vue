@@ -1,0 +1,80 @@
+{
+  "upstream": "feedback/notification",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "notification/zh-CN/Basic",
+      "enUS": "notification/en-US/Basic",
+      "notes": "中英文上游索引均为1，无独有示例或外部文件依赖。保留open、title/content与3秒自动关闭；英文上游with误写修正为duration。按独立品牌约束将Bytedance文案替换为AIFUXI。"
+    },
+    {
+      "index": 2,
+      "zhCN": "notification/zh-CN/Position",
+      "enUS": "notification/en-US/Position",
+      "notes": "中英文上游索引均为2。保留两组ButtonGroup、六种position、默认topRight及3秒延时；英文上游with/Position误写修正为duration/position。"
+    },
+    {
+      "index": 3,
+      "zhCN": "notification/zh-CN/Icons",
+      "enUS": "notification/en-US/Icons",
+      "notes": "中英文上游索引均为3。保留四种默认状态图标与三个自定义图标/颜色按钮；按独立品牌约束将Toutiao/Vigo Logo替换为通用Bell/Star，并为纯图标按钮补充双语aria-label。"
+    },
+    {
+      "index": 4,
+      "zhCN": "notification/zh-CN/Colored",
+      "enUS": "notification/en-US/Colored",
+      "notes": "中英文上游索引均为4。保留info/success/warning/error纵向排列、theme=light与3秒延时。"
+    },
+    {
+      "index": 5,
+      "zhCN": "notification/zh-CN/Links",
+      "enUS": "notification/en-US/Links",
+      "notes": "中英文上游索引均为5。React Fragment/Typography.Text节点迁移为h生成的Vue VNodeChild，保留8px/20px间距与双语链接文案。"
+    },
+    {
+      "index": 6,
+      "zhCN": "notification/zh-CN/Delay",
+      "enUS": "notification/en-US/Delay",
+      "notes": "中英文上游索引均为6。保留无标题正文、duration=10和双语触发按钮。"
+    },
+    {
+      "index": 7,
+      "zhCN": "notification/zh-CN/ManualClose",
+      "enUS": "notification/en-US/ManualClose",
+      "notes": "中英文上游索引均为7。React useState数组迁移为shallowRef，保留duration=0、返回id队列及按创建顺序close；空队列安全忽略。"
+    },
+    {
+      "index": 8,
+      "zhCN": "notification/zh-CN/Update",
+      "enUS": "notification/en-US/Update",
+      "notes": "中英文上游索引均为8。保留首次3秒、1秒后复用id更新内容与10秒延时；Vue卸载时清理所有未触发timer，避免页面切换后写入全局通知。"
+    }
+  ],
+  "chapters": [
+    "代码演示",
+    "如何引入",
+    "普通通知",
+    "不同位置弹出",
+    "带有图标的通知",
+    "多色样式",
+    "链接文本",
+    "修改延时",
+    "手动关闭",
+    "更新内容",
+    "API 参考",
+    "Accessibility",
+    "ARIA",
+    "文案规范",
+    "设计变量"
+  ],
+  "exclusions": [
+    {
+      "source": "文案规范中的 NotificationCard 静态示意",
+      "reason": "固定公开入口不导出内部NotificationCard；保留文案规范，不伪造公开组件或live示例。"
+    },
+    {
+      "source": "IconToutiaoLogo 与 IconVigoLogo",
+      "reason": "按仓库独立品牌约束替换为通用Bell/Star图标；自定义图标、颜色与三个触发按钮的演示能力保持不变。"
+    }
+  ]
+}

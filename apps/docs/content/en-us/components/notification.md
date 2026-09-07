@@ -12,61 +12,84 @@ upstream: 'feedback/notification'
 
 Notification actively presents asynchronous results or status messages. The Vue port aligns with Semi Design v2.102.0 command methods, six placements, timers, updates, themes, motion, ARIA, and the context-holder API.
 
-## Basic usage
+## Demos
+
+### How to import
 
 ```ts
 import { Notification } from '@aifuxi/semi-ui-vue/notification';
 import '@aifuxi/semi-theme-default/notification.css';
-
-const id = Notification.info({
-  title: 'Task completed',
-  content: '400 tasks succeeded and 600 tasks failed.',
-});
-
-Notification.close(id);
 ```
 
-`open` creates the default type. `info`, `success`, `warning`, and `error` add their pinned default icon and status color. Every display method returns the notification id.
+### Basic usage
 
-## Update an existing notification
+The most basic notification closes automatically after three seconds.
 
-Opening an existing id updates the current DOM instead of adding another card and restarts its automatic-close timer.
-
-```ts
-const id = Notification.open({ title: 'Working', content: 'Synchronizing data', duration: 10 });
-Notification.open({ id, title: 'Complete', content: 'Data is up to date', duration: 3 });
-```
-
-## Placement, theme, and container
-
-```ts
-Notification.warning({
-  title: 'Configuration expiring',
-  content: 'Refresh the credential within four days.',
-  position: 'bottomLeft',
-  theme: 'light',
-  getPopupContainer: () => document.querySelector('#notification-root')!,
-});
-```
-
-Placements are `top`, `topLeft`, `topRight`, `bottom`, `bottomLeft`, and `bottomRight`. Imperative notifications share the first wrapper. `getPopupContainer` and `zIndex` are resolved only when that wrapper is created; a new wrapper resolves them again after `destroyAll()`.
-
-## Global configuration
-
-```ts
-Notification.config({ position: 'top', top: 24, duration: 5, zIndex: 1200 });
-```
-
-Precedence is per-call options, `semiGlobal.config.overrideDefaultProps.Notification`, then `Notification.config` and pinned defaults.
-
-## Local context
-
-::demo-block{demo="notification/en-US/Example1" title="Local context"}
+::demo-block{demo="notification/en-US/Basic" title="Basic usage"}
 ::
 
-The holder inherits Vue context such as `ConfigProvider` direction. The pinned v2.102.0 defaults already set `topRight`; RTL changes card direction, but callers should explicitly choose `topLeft` when the placement must mirror.
+### Position
 
-## API
+Notifications can appear in six positions. The default is `topRight`.
+
+::demo-block{demo="notification/en-US/Position" title="Position"}
+::
+
+### With icons
+
+`success`, `info`, `warning`, and `error` provide default status icons. A Vue VNode can replace the icon.
+
+::demo-block{demo="notification/en-US/Icons" title="With icons"}
+::
+
+### Colored background
+
+Set `theme="light"` for a status-tinted background with stronger contrast. The default is `normal`.
+
+::demo-block{demo="notification/en-US/Colored" title="Colored background"}
+::
+
+### Custom children with links
+
+Combine Notification with Typography links to provide actions in more involved messages.
+
+::demo-block{demo="notification/en-US/Links" title="Custom children with links"}
+::
+
+### Delay
+
+Use `duration` to customize the automatic-close delay. This example closes after ten seconds; the default is three seconds.
+
+::demo-block{demo="notification/en-US/Delay" title="Delay"}
+::
+
+### Manual close
+
+Set `duration: 0` to disable automatic close. The example stores each returned id and closes the oldest notification first.
+
+::demo-block{demo="notification/en-US/ManualClose" title="Manual close"}
+::
+
+### Update content
+
+Opening an existing id updates the current notification instead of adding another card, and restarts its automatic-close timer.
+
+::demo-block{demo="notification/en-US/Update" title="Update content"}
+::
+
+Both pinned upstream languages contain the same eight live examples in the same order, with no language-only or multi-file examples. The first two English snippets misspell `duration` and `position` as `with` and `Position`; the Vue examples use the real public API. To preserve this repository's independent branding, Bytedance copy and Toutiao/Vigo brand icons are replaced with AIFUXI copy and generic Bell/Star icons while retaining the custom-icon and color behavior. The update example clears pending timers on unmount. This batch establishes basic runtime coverage, not strict React/Vue visual or behavioral acceptance.
+
+## API Reference
+
+Display methods accept an options object and return the notification id:
+
+- `Notification.open(options)`
+- `Notification.info(options)`
+- `Notification.error(options)`
+- `Notification.warning(options)`
+- `Notification.success(options)`
+
+Use `Notification.close(id)` to close one notification and `Notification.destroyAll()` to destroy all notifications and the imperative wrapper.
 
 | Property            | Type                   | Default         | Description                                |
 | ------------------- | ---------------------- | --------------- | ------------------------------------------ |
@@ -84,10 +107,75 @@ The holder inherits Vue context such as `ConfigProvider` direction. The pinned v
 | `onClose`           | `() => void`           | -               | Auto-close or close-button callback        |
 | `onCloseClick`      | `(id) => void`         | -               | Close-button callback                      |
 
-Static methods are `open`, `info`, `success`, `warning`, `error`, `close`, `destroyAll`, `config`, and `useNotification`.
+Call global configuration before the first display method:
 
-## Accessibility and SSR
+```ts
+Notification.config({ position: 'top', top: 24, duration: 5, zIndex: 1200 });
+```
 
-Each notification has `role="alert"`; a rendered title is connected through `aria-labelledby`. The close Button remains keyboard focusable and activatable. Root/subpath imports and an empty holder are SSR-safe; imperative display methods require a browser.
+| Option     | Type                   | Default    | Description                 |
+| ---------- | ---------------------- | ---------- | --------------------------- |
+| `bottom`   | `number \| string`     | -          | Bottom offset               |
+| `duration` | `number`               | `3`        | Auto-close delay in seconds |
+| `left`     | `number \| string`     | -          | Left offset                 |
+| `position` | `NotificationPosition` | `topRight` | Default popup placement     |
+| `right`    | `number \| string`     | -          | Right offset                |
+| `top`      | `number \| string`     | -          | Top offset                  |
+| `zIndex`   | `number`               | `1010`     | Wrapper stacking level      |
 
-See the [alignment matrix](https://github.com/aifuxi/semi-ui-vue/blob/master/docs/components/notification/alignment.md) and [React → Vue migration](#react-vue) for source evidence and event ordering.
+Imperative notifications share the first wrapper. `getPopupContainer` and `zIndex` are resolved only when that wrapper is created; displaying again after `destroyAll()` resolves them again.
+
+### Local context
+
+`Notification.useNotification()` returns `[notification, NotificationHolder]`. The holder inherits Vue context such as `ConfigProvider` direction.
+
+```vue
+<script setup lang="ts">
+import { Notification } from '@aifuxi/semi-ui-vue/notification';
+
+const [notification, NotificationHolder] = Notification.useNotification();
+</script>
+
+<template>
+  <NotificationHolder />
+  <button @click="notification.success({ title: 'Saved' })">Save</button>
+</template>
+```
+
+## Accessibility
+
+### ARIA
+
+- Each notification has `role="alert"`.
+- When a title is rendered, `aria-labelledby` references its title id.
+- The close button is focusable with `Tab` and activatable with `Enter` or `Space`.
+
+Imports and an empty holder are SSR-safe; imperative display methods require a browser.
+
+## Content Guidelines
+
+- Use a short, clear title and avoid unnecessary punctuation.
+- Keep the body to one or two complete sentences. Explain the title rather than repeating it, and use correct punctuation.
+- Make action copy specific, such as “Check failed tasks,” rather than a generic “Check.”
+
+The pinned upstream chapter uses an internal `NotificationCard` for a static copy example. It is not a public export, so this site retains the writing guidance without presenting it as a public component demo.
+
+## Design Tokens
+
+::token-table{component="notification"}
+::
+
+## React → Vue
+
+| Semi React v2.102.0                                    | Vue equivalent                                               |
+| ------------------------------------------------------ | ------------------------------------------------------------ |
+| `Notification.info(options)`                           | `Notification.info(options)`                                 |
+| `Notification.open/success/warning/error`              | Same static methods                                          |
+| `Notification.close(id)` / `destroyAll()`              | Same static methods                                          |
+| `Notification.config(options)`                         | Same static method                                           |
+| `const [api, holder] = Notification.useNotification()` | Same tuple; holder is a Vue `Component`                      |
+| `ReactNode` title/content/icon                         | Vue `VNodeChild`                                             |
+| JSX `<>{holder}</>`                                    | Template `<NotificationHolder />` or `h(NotificationHolder)` |
+| React context inherited at holder                      | Vue provide/inject context inherited at holder               |
+
+The imperative API does not become `v-model` or component slots. `onCloseClick(id)` runs before `onClose()`, and the close button stops the card's `onClick`. External `close(id)` and `destroyAll()` removal do not trigger the individual notification's `onClose`, matching the pinned Adapter. See the [alignment matrix](https://github.com/aifuxi/semi-ui-vue/blob/master/docs/components/notification/alignment.md) for complete evidence and deviation decisions.
