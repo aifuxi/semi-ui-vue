@@ -1,6 +1,8 @@
 import MarkdownIt, { type Token } from 'markdown-it';
 import { defineComponent, h, type Component, type PropType, type VNodeChild } from 'vue';
 
+import { CodeHighlight } from '../code-highlight';
+
 import type { ChatMarkdownRenderProps } from './types';
 
 function safeUrl(value: string | null): string | undefined {
@@ -64,9 +66,11 @@ function renderTokens(tokens: Token[], components: Record<string, unknown>): VNo
                   h('span', { class: 'semi-chat-chatBox-content-code-topSlot-type' }, language),
                 ])
               : undefined,
-            h('pre', [
-              h('code', { class: language ? `language-${language}` : undefined }, token.content),
-            ]),
+            h(CodeHighlight, {
+              code: token.content,
+              language: language || 'text',
+              lineNumber: true,
+            }),
           ]),
         );
         index += 1;

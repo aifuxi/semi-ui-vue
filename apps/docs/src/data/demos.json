@@ -3064,6 +3064,107 @@
     "upstream": "input/cascader"
   },
   {
+    "id": "chat/en-US/Actions",
+    "entry": "Actions.vue",
+    "files": {
+      "Actions.vue": "chat/en-US/Actions.vue",
+      "useMockChat.ts": "chat/en-US/useMockChat.ts",
+      "CustomActions.vue": "chat/en-US/CustomActions.vue",
+      "NodeContent.ts": "chat/en-US/NodeContent.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-theme-default/dropdown.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/dropdown",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/en-US/AvatarTitle",
+    "entry": "AvatarTitle.vue",
+    "files": {
+      "AvatarTitle.vue": "chat/en-US/AvatarTitle.vue",
+      "useMockChat.ts": "chat/en-US/useMockChat.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-theme-default/radio.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/radio",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "chat/en-US/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-theme-default/markdown-render.css",
+      "@aifuxi/semi-theme-default/radio.css",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/radio",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/en-US/ClearContext",
+    "entry": "ClearContext.vue",
+    "files": {
+      "ClearContext.vue": "chat/en-US/ClearContext.vue",
+      "useMockChat.ts": "chat/en-US/useMockChat.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/en-US/CustomHints",
+    "entry": "CustomHints.vue",
+    "files": {
+      "CustomHints.vue": "chat/en-US/CustomHints.vue",
+      "useMockChat.ts": "chat/en-US/useMockChat.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
     "id": "chat/en-US/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "chat/en-US/Example1.vue" },
@@ -3072,10 +3173,347 @@
     "upstream": "plus/chat"
   },
   {
+    "id": "chat/en-US/FullBox",
+    "entry": "FullBox.vue",
+    "files": {
+      "FullBox.vue": "chat/en-US/FullBox.vue",
+      "useMockChat.ts": "chat/en-US/useMockChat.ts",
+      "NodeContent.ts": "chat/en-US/NodeContent.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/en-US/Hints",
+    "entry": "Hints.vue",
+    "files": { "Hints.vue": "chat/en-US/Hints.vue", "useMockChat.ts": "chat/en-US/useMockChat.ts" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/en-US/InputArea",
+    "entry": "InputArea.vue",
+    "files": {
+      "InputArea.vue": "chat/en-US/InputArea.vue",
+      "useMockChat.ts": "chat/en-US/useMockChat.ts",
+      "CustomInput.vue": "chat/en-US/CustomInput.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/form",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/en-US/Sources",
+    "entry": "Sources.vue",
+    "files": {
+      "Sources.vue": "chat/en-US/Sources.vue",
+      "useMockChat.ts": "chat/en-US/useMockChat.ts",
+      "SourceCard.vue": "chat/en-US/SourceCard.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-theme-default/markdown-render.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/markdown-render",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/en-US/Status",
+    "entry": "Status.vue",
+    "files": {
+      "Status.vue": "chat/en-US/Status.vue",
+      "useMockChat.ts": "chat/en-US/useMockChat.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/en-US/Streaming",
+    "entry": "Streaming.vue",
+    "files": { "Streaming.vue": "chat/en-US/Streaming.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/zh-CN/Actions",
+    "entry": "Actions.vue",
+    "files": {
+      "Actions.vue": "chat/zh-CN/Actions.vue",
+      "useMockChat.ts": "chat/zh-CN/useMockChat.ts",
+      "CustomActions.vue": "chat/zh-CN/CustomActions.vue",
+      "NodeContent.ts": "chat/zh-CN/NodeContent.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-theme-default/dropdown.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/dropdown",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/zh-CN/AvatarTitle",
+    "entry": "AvatarTitle.vue",
+    "files": {
+      "AvatarTitle.vue": "chat/zh-CN/AvatarTitle.vue",
+      "useMockChat.ts": "chat/zh-CN/useMockChat.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-theme-default/radio.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/radio",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "chat/zh-CN/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-theme-default/markdown-render.css",
+      "@aifuxi/semi-theme-default/radio.css",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/radio",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/zh-CN/ClearContext",
+    "entry": "ClearContext.vue",
+    "files": {
+      "ClearContext.vue": "chat/zh-CN/ClearContext.vue",
+      "useMockChat.ts": "chat/zh-CN/useMockChat.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/zh-CN/CustomHints",
+    "entry": "CustomHints.vue",
+    "files": {
+      "CustomHints.vue": "chat/zh-CN/CustomHints.vue",
+      "useMockChat.ts": "chat/zh-CN/useMockChat.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
     "id": "chat/zh-CN/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "chat/zh-CN/Example1.vue" },
     "dependencies": ["@aifuxi/semi-theme-default/chat.css", "@aifuxi/semi-ui-vue/chat", "vue"],
+    "pages": ["/zh-cn/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/zh-CN/FullBox",
+    "entry": "FullBox.vue",
+    "files": {
+      "FullBox.vue": "chat/zh-CN/FullBox.vue",
+      "useMockChat.ts": "chat/zh-CN/useMockChat.ts",
+      "NodeContent.ts": "chat/zh-CN/NodeContent.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/zh-CN/Hints",
+    "entry": "Hints.vue",
+    "files": { "Hints.vue": "chat/zh-CN/Hints.vue", "useMockChat.ts": "chat/zh-CN/useMockChat.ts" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/zh-CN/InputArea",
+    "entry": "InputArea.vue",
+    "files": {
+      "InputArea.vue": "chat/zh-CN/InputArea.vue",
+      "useMockChat.ts": "chat/zh-CN/useMockChat.ts",
+      "CustomInput.vue": "chat/zh-CN/CustomInput.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/upload.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/form",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/zh-CN/Sources",
+    "entry": "Sources.vue",
+    "files": {
+      "Sources.vue": "chat/zh-CN/Sources.vue",
+      "useMockChat.ts": "chat/zh-CN/useMockChat.ts",
+      "SourceCard.vue": "chat/zh-CN/SourceCard.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-theme-default/markdown-render.css",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/markdown-render",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/zh-CN/Status",
+    "entry": "Status.vue",
+    "files": {
+      "Status.vue": "chat/zh-CN/Status.vue",
+      "useMockChat.ts": "chat/zh-CN/useMockChat.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/chat/"],
+    "upstream": "plus/chat"
+  },
+  {
+    "id": "chat/zh-CN/Streaming",
+    "entry": "Streaming.vue",
+    "files": { "Streaming.vue": "chat/zh-CN/Streaming.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/chat.css",
+      "@aifuxi/semi-ui-vue/chat",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
     "pages": ["/zh-cn/components/chat/"],
     "upstream": "plus/chat"
   },

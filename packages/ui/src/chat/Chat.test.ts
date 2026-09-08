@@ -32,6 +32,40 @@ describe('Chat', () => {
     expect(wrapper.find('.semi-markdownRender strong').text()).toBe('Semi');
   });
 
+  it('代码消息通过公开高亮容器展示原始文本', () => {
+    const wrapper = mount(Chat, {
+      props: {
+        chats: [{ id: 'code', role: 'assistant', content: '```js\nconst answer = 42;\n```' }],
+        enableUpload: false,
+      },
+    });
+    expect(wrapper.get('.semi-codeHighlight pre code').text()).toContain('const answer = 42;');
+    expect(wrapper.get('.semi-codeHighlight').classes()).toContain(
+      'semi-codeHighlight-defaultTheme',
+    );
+    wrapper.unmount();
+  });
+
+  it('完整消息 slot 的 defaultNodes.action 保留反馈和重置公开行为', async () => {
+    const source: ChatMessage[] = [{ id: 'answer', role: 'assistant', content: 'Answer' }];
+    const wrapper = mount(Chat, {
+      props: { chats: source, enableUpload: false },
+      slots: {
+        'chat-box': ({ defaultNodes }) =>
+          h('div', { class: 'custom-box' }, [defaultNodes.content, defaultNodes.action]),
+      },
+    });
+    expect(wrapper.find('.custom-box').text()).toContain('Answer');
+    await wrapper.get('button[aria-label="like"]').trigger('click');
+    expect(wrapper.emitted('message-good-feedback')?.[0]?.[0]).toEqual(source[0]);
+    expect((wrapper.emitted('update:chats')?.[0]?.[0] as ChatMessage[])[0]).toMatchObject({
+      like: true,
+    });
+    await wrapper.get('button[aria-label="reset"]').trigger('click');
+    expect(wrapper.emitted('message-reset')?.[0]?.[0]).toEqual(source[0]);
+    wrapper.unmount();
+  });
+
   it('sendMessage 先生成受控 user 消息，再发出发送 payload', () => {
     const wrapper = mount(Chat, { props: { chats: messages, enableUpload: false } });
     (wrapper.vm as unknown as ChatExposed).sendMessage('New message', []);

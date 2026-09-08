@@ -15,6 +15,67 @@ upstream: 'plus/chat'
 ::demo-block{demo="chat/en-US/Example1" title="Chat"}
 ::
 
+## Upstream examples
+
+Messages and states follow the pinned bilingual examples. Repository-owned images replace remote assets; customRequest simulates successful uploads locally without sending files to a remote service.
+
+### Basic usage
+
+::demo-block{demo="chat/en-US/Basic" title="Basic usage"}
+::
+
+### Message status
+
+::demo-block{demo="chat/en-US/Status" title="Message status"}
+::
+
+### Dynamic data updates
+
+::demo-block{demo="chat/en-US/Streaming" title="Dynamic data updates"}
+::
+
+### Clear context
+
+::demo-block{demo="chat/en-US/ClearContext" title="Clear context"}
+::
+
+### Custom avatar and title
+
+::demo-block{demo="chat/en-US/AvatarTitle" title="Custom avatar and title"}
+::
+
+### Custom actions
+
+::demo-block{demo="chat/en-US/Actions" title="Custom actions"}
+::
+
+### Custom sources
+
+::demo-block{demo="chat/en-US/Sources" title="Custom sources"}
+::
+
+### Custom full chat box
+
+::demo-block{demo="chat/en-US/FullBox" title="Custom full chat box"}
+::
+
+### Custom input area
+
+::demo-block{demo="chat/en-US/InputArea" title="Custom input area"}
+::
+
+### Hints
+
+::demo-block{demo="chat/en-US/Hints" title="Hints"}
+::
+
+### Custom hints
+
+::demo-block{demo="chat/en-US/CustomHints" title="Custom hints"}
+::
+
+The Button response is adapted to a Vue SFC. Scoped slots and local components implement avatar, action, source, full-message and form-input rendering. Language-specific hints are preserved. Source buttons support keyboard expansion/collapse, and image replies describe the local illustration.
+
 ## Vue API
 
 | Prop                                    | Description                                             | Default     |

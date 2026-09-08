@@ -15,6 +15,67 @@ upstream: 'plus/chat'
 ::demo-block{demo="chat/zh-CN/Example1" title="对话"}
 ::
 
+## 上游示例
+
+保留固定基线的双语消息与状态；头像/图片使用仓库自有素材，上传通过 customRequest 本地模拟成功，不发送文件到远程服务。
+
+### 基本用法
+
+::demo-block{demo="chat/zh-CN/Basic" title="基本用法"}
+::
+
+### 消息状态
+
+::demo-block{demo="chat/zh-CN/Status" title="消息状态"}
+::
+
+### 动态更新数据
+
+::demo-block{demo="chat/zh-CN/Streaming" title="动态更新数据"}
+::
+
+### 清除上下文
+
+::demo-block{demo="chat/zh-CN/ClearContext" title="清除上下文"}
+::
+
+### 自定义头像和标题
+
+::demo-block{demo="chat/zh-CN/AvatarTitle" title="自定义头像和标题"}
+::
+
+### 自定义操作区
+
+::demo-block{demo="chat/zh-CN/Actions" title="自定义操作区"}
+::
+
+### 自定义来源内容
+
+::demo-block{demo="chat/zh-CN/Sources" title="自定义来源内容"}
+::
+
+### 自定义整个会话框
+
+::demo-block{demo="chat/zh-CN/FullBox" title="自定义整个会话框"}
+::
+
+### 自定义输入框
+
+::demo-block{demo="chat/zh-CN/InputArea" title="自定义输入框"}
+::
+
+### 提示信息
+
+::demo-block{demo="chat/zh-CN/Hints" title="提示信息"}
+::
+
+### 自定义提示信息
+
+::demo-block{demo="chat/zh-CN/CustomHints" title="自定义提示信息"}
+::
+
+基础回答中的 Button 代码改为 Vue SFC。头像、操作、来源卡片、完整消息与表单输入分别用 scoped slots 和局部子组件适配；保留上游双语 hints 差异。来源卡片使用按钮支持键盘展开/收起；图片问答对应本地插画。
+
 ## Vue API
 
 | 属性                                    | 说明                                             | 默认值      |

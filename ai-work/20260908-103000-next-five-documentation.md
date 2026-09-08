@@ -18,3 +18,23 @@
 Lottie 代表 `representatives-dom` 双语通过。首轮烟测错误地用path查找solid层，实际DOM是rect，已修正而未改动画。扩展 Data（2）、Instance（3）后 `full-dev-restarted` 全部通过；新增文件的开发HMR源码注册为空，重启服务后恢复。代表Nuxt类型、全批ESLint、内容注册通过。开始最终联合检查，未修改组件或共享设施，无需重复发布包验证。运行使用锁定Chromium151.0.7922.34，1440×900/DPR1/light/双语独立context和真实时钟。
 
 Lottie 收尾：`pnpm --filter @workspace/docs check` 退出0，67流程测试、196页、1667注册Demo、6015静态文件与Nuxt类型/内容/REPL/许可散列通过（日志/tmp/semi-lottie-check.log）。`full-static/summary.json` 双语各7阶段通过，issues为空；动画URL、异步data、实例/全局控制、源码重置与两个代表的真实Monaco编辑运行均通过，英文局部截图已检查。证据位于apps/docs/.data/documentation-smoke/lottie/。affected plan六批均有效；覆盖812/859、accepted43不变。无组件、共享运行时或第三方资产变更。
+
+## Chat 代表
+
+已读取固定Adapter/接口、Foundation事件、SCSS、默认主题、双语11项文档与既有alignment；保留原始双语消息文本，头像替换为本地one/two.svg，上传通过customRequest/afterUpload返回本地素材URL。Basic（1）验证三种mode/两种align、文本/附件发送及异步回复/重置；Streaming（3）验证loading→incomplete→complete、停止与再次发送。源码明确notifyChatsChange在message-send之前，mock保留异步时序并清理timeout/interval。每个代表一个独立SFC，仅承担一个示例状态机，暂不抽象共享逻辑。
+
+Chat 代表：页面阶段由representatives-editor前六阶段通过，编辑器由representatives-editor-placeholder双语通过；停止按钮可访问名称含disc图标，上传有普通/替换两个input，TextArea有隐藏测量节点，均按DOM修正。在线编辑先误匹配ChatMessage泛型，随后改用公开placeholder验证。基础消息内React包名触发内容边界门禁，因此展示代码也迁移为Vue SFC，并记录语言说明。
+
+扩展发现FullBox缺失defaultNodes.action，实际浏览器仅有上传/发送按钮。新增公开slot反馈/重置测试先失败（/tmp/semi-chat-action-before.log），抽取共享actionNode后15项Chat单元/SSR通过。固定源码chatBox/index.tsx:112-116包含action，未改事件、样式或Foundation。UI全包类型仍失败于既有Transfer两处VNodeChild/RawChildren重载（/tmp/semi-chat-ui-types.log）；不宣称全包类型通过。组件修改使resources失效，已停止开发服务重建公开包/REPL。
+
+Chat扩展页面操作已通过：Status/ClearContext在full-dev-targeted；AvatarTitle在full-dev-avatar；Actions在full-dev-actions；Sources/FullBox/InputArea/Hints/CustomHints在full-dev-content。AvatarTitle沿用固定上游key=avatar+title，恢复默认slot；菜单项无自动关闭，验证触发按钮关闭/重开。FullBox反馈和删除取消/确认均通过。
+
+Chat Chromium组件对照5/5通过（/tmp/semi-chat-browser.log；服务日志有ResizeObserver通知警告，浏览器断言仍通过），真实tarball安装/exports/ESM/类型/样式/SSR与Worker消费验证通过（/tmp/semi-chat-pack.log）。扩展Nuxt类型发现Form.Upload action必填，补显式空action供customRequest使用后通过。编辑器多文件根目录因跨语言共享helper提升到chat层，入口改名App.vue后局部import找不到；将两份helper放回各语言目录，与已有REPL约定一致，不更改共享设施。
+
+Chat多文件REPL第二处阻断是helper的外部defineProps类型解析；CustomActions/CustomInput改为实际使用字段的局部类型后，Actions与其余复杂编辑路径双语定点通过。full-dev-final整批双语通过。未改共享编辑器或额外组件，准备最终静态检查。
+
+Chat静态full-static-ready双语各30阶段通过、issues为空，但截图揭示代码块白字浅底。仅增加Basic的markdown-render.css未解决（full-static-style仍可复现）。DOM/computed style证明原ChatMarkdownContent直接pre/code缺失CodeHighlight容器；固定chatBox/code.tsx→markdownRender/components/code.tsx使用CodeHighlight。修正为公开CodeHighlight并保留lineNumber=true；新增公开Chat代码文本/主题容器测试，Chat单元/SSR 16项通过。此组件变动使之前包/浏览器证据需刷新，最终结果尚待后续记录。
+
+Chat代码块开发定点双语通过，computed style确认为前景rgb(249,249,249)、背景rgb(22,22,26)，区别于原来的白字浅底。最终Chat单元/SSR 16/16、Chromium对照5/5和真实tarball验证均通过（/tmp/semi-chat-code-final-unit.log、/tmp/semi-chat-final-browser.log、/tmp/semi-chat-final-pack.log）。联合门禁/tmp/semi-chat-final-check.log通过；未新增第三方代码/素材，CodeHighlight复用现有公开组件与许可链。
+
+Chat最终证据为apps/docs/.data/documentation-smoke/chat/full-static-final/summary.json：双语各31阶段通过、issues为空，代码块截图已复核可读。先前full-static连接拒绝是预览启动竞态，保留失败结果，不作为证据。affected plan六批有效；823/859已映射、accepted43不变，README与队列同步，下一批AIChatDialogue。
