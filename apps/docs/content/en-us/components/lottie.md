@@ -47,6 +47,32 @@ Set `params.container` to render into an Element owned by the caller. Lottie the
 internal root and does not copy class, style, data, or ARIA attributes to that Element. The caller
 owns the container DOM and semantics; the component still destroys the animation instance.
 
+## Upstream examples
+
+The repository-owned rotating square replaces the upstream CDN animation, preserving URL loading and instance/global control. The unitless Chinese height is normalized to 300px, matching the English example.
+
+### Animation URL
+
+::demo-block{demo="lottie/en-US/Path" title="Animation URL"}
+::
+
+### Animation data
+
+::demo-block{demo="lottie/en-US/Data" title="Animation data"}
+::
+
+### Get animation instance
+
+::demo-block{demo="lottie/en-US/Instance" title="Get animation instance"}
+::
+
+The animationData example preserves the upstream asynchronous data demonstration, mounts only after loading, and handles errors and cancellation on unmount. Applications can import JSON directly.
+
+### Get global Lottie
+
+::demo-block{demo="lottie/en-US/Global" title="Get global Lottie"}
+::
+
 ## API
 
 | Property               | Description                                                                      | Type                 | Default  |

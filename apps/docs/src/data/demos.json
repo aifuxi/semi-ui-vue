@@ -9888,6 +9888,14 @@
     "upstream": "other/locale"
   },
   {
+    "id": "lottie/en-US/Data",
+    "entry": "Data.vue",
+    "files": { "Data.vue": "lottie/en-US/Data.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/lottie.css", "@aifuxi/semi-ui-vue/lottie", "vue"],
+    "pages": ["/en-us/components/lottie/"],
+    "upstream": "plus/lottie"
+  },
+  {
     "id": "lottie/en-US/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "lottie/en-US/Example1.vue" },
@@ -9896,10 +9904,90 @@
     "upstream": "plus/lottie"
   },
   {
+    "id": "lottie/en-US/Global",
+    "entry": "Global.vue",
+    "files": { "Global.vue": "lottie/en-US/Global.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/lottie.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/lottie",
+      "vue"
+    ],
+    "pages": ["/en-us/components/lottie/"],
+    "upstream": "plus/lottie"
+  },
+  {
+    "id": "lottie/en-US/Instance",
+    "entry": "Instance.vue",
+    "files": { "Instance.vue": "lottie/en-US/Instance.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/lottie.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/lottie",
+      "vue"
+    ],
+    "pages": ["/en-us/components/lottie/"],
+    "upstream": "plus/lottie"
+  },
+  {
+    "id": "lottie/en-US/Path",
+    "entry": "Path.vue",
+    "files": { "Path.vue": "lottie/en-US/Path.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/lottie.css", "@aifuxi/semi-ui-vue/lottie"],
+    "pages": ["/en-us/components/lottie/"],
+    "upstream": "plus/lottie"
+  },
+  {
+    "id": "lottie/zh-CN/Data",
+    "entry": "Data.vue",
+    "files": { "Data.vue": "lottie/zh-CN/Data.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/lottie.css", "@aifuxi/semi-ui-vue/lottie", "vue"],
+    "pages": ["/zh-cn/components/lottie/"],
+    "upstream": "plus/lottie"
+  },
+  {
     "id": "lottie/zh-CN/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "lottie/zh-CN/Example1.vue" },
     "dependencies": ["@aifuxi/semi-theme-default/lottie.css", "@aifuxi/semi-ui-vue/lottie", "vue"],
+    "pages": ["/zh-cn/components/lottie/"],
+    "upstream": "plus/lottie"
+  },
+  {
+    "id": "lottie/zh-CN/Global",
+    "entry": "Global.vue",
+    "files": { "Global.vue": "lottie/zh-CN/Global.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/lottie.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/lottie",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/lottie/"],
+    "upstream": "plus/lottie"
+  },
+  {
+    "id": "lottie/zh-CN/Instance",
+    "entry": "Instance.vue",
+    "files": { "Instance.vue": "lottie/zh-CN/Instance.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/lottie.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/lottie",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/lottie/"],
+    "upstream": "plus/lottie"
+  },
+  {
+    "id": "lottie/zh-CN/Path",
+    "entry": "Path.vue",
+    "files": { "Path.vue": "lottie/zh-CN/Path.vue" },
+    "dependencies": ["@aifuxi/semi-theme-default/lottie.css", "@aifuxi/semi-ui-vue/lottie"],
     "pages": ["/zh-cn/components/lottie/"],
     "upstream": "plus/lottie"
   },

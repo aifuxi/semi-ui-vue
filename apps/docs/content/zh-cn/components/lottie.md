@@ -47,6 +47,32 @@ import { Lottie } from '@aifuxi/semi-ui-vue/lottie';
 节点，也不会把 class、style、data 或 ARIA attrs 写到外部容器；调用方负责该容器的
 结构与语义，组件仍负责动画实例销毁。
 
+## 上游示例
+
+使用仓库自有旋转方块替换上游 CDN 动画；保留 URL 加载、实例和全局控制契约。中文首例无单位 height 修正为与英文一致的 300px。
+
+### URL 动画
+
+::demo-block{demo="lottie/zh-CN/Path" title="URL 动画"}
+::
+
+### animationData 动画
+
+::demo-block{demo="lottie/zh-CN/Data" title="animationData 动画"}
+::
+
+### 获取动画实例
+
+::demo-block{demo="lottie/zh-CN/Instance" title="获取动画实例"}
+::
+
+animationData 示例沿用上游异步获取数据的演示方式，但只在数据就绪后创建动画，并处理错误和卸载取消。生产应用可直接导入 JSON。
+
+### 获取全局 Lottie
+
+::demo-block{demo="lottie/zh-CN/Global" title="获取全局 Lottie"}
+::
+
 ## API
 
 | 属性                   | 说明                                                      | 类型                 | 默认值 |
