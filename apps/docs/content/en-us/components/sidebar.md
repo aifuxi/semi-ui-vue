@@ -15,6 +15,52 @@ upstream: 'ai/sidebar'
 ::demo-block{demo="sidebar/en-US/Example1" title="Sidebar"}
 ::
 
+## Upstream examples
+
+These examples follow the pinned v2.102.0 container and workspace. Images, reference destinations, and uploads use local demo resources. Displayed code is adapted to Vue; historical rich-text React package names use descriptive labels and are not installation instructions. Workspace file edits are retained.
+
+The MCP example uses a generic code icon instead of the Semi Logo; its form also accepts local demo image paths. Standalone lists display expand events, while the full workspace opens detail views.
+
+### Basic container
+
+::demo-block{demo="sidebar/en-US/Basic" title="Basic container"}
+::
+
+### MCP configuration
+
+::demo-block{demo="sidebar/en-US/Mcp" title="MCP configuration"}
+::
+
+### References
+
+::demo-block{demo="sidebar/en-US/References" title="References"}
+::
+
+### Code display
+
+::demo-block{demo="sidebar/en-US/Code" title="Code display"}
+::
+
+### Code list
+
+::demo-block{demo="sidebar/en-US/CodeList" title="Code list"}
+::
+
+### Rich-text editor
+
+::demo-block{demo="sidebar/en-US/RichText" title="Rich-text editor"}
+::
+
+### File list
+
+::demo-block{demo="sidebar/en-US/FileList" title="File list"}
+::
+
+### Sidebar workspace
+
+::demo-block{demo="sidebar/en-US/Workspace" title="Sidebar workspace"}
+::
+
 ## Vue API
 
 ### Sidebar / Container
@@ -79,3 +125,5 @@ See [alignment.md](https://github.com/aifuxi/semi-ui-vue/blob/master/docs/compon
 默认值为 `true` 的 `motion`、`resizable`、`showClose`、`fileEditable` 在 Vue 中保留原名，并区分缺省与显式 `false`。Compound API 可以继续写成 `Sidebar.Container` / `Sidebar.CodeContent` / `Sidebar.FileItem`，也可以使用同名具名导出。
 
 `CodeItemProps` / `FileItemProps` 的上游 `key` 在 React 中同时承担列表 key；Vue 的 `key` 是保留 VNode 属性，列表使用组件自身数组项的 `key`，不要期望它作为子组件普通 prop 读取。
+
+`Annotation` and `MCPConfigure` retain the container defaults: omitted `motion`, `resizable`, and `showClose` are `true`; each can be disabled explicitly with `false`.

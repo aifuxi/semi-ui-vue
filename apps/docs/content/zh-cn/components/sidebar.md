@@ -15,6 +15,52 @@ upstream: 'ai/sidebar'
 ::demo-block{demo="sidebar/zh-CN/Example1" title="侧边信息栏"}
 ::
 
+## 固定上游示例
+
+以下演示固定 v2.102.0 的基础容器和完整工作区。图片、引用跳转及上传使用本地演示资源；展示代码迁移为 Vue，历史富文本文字中的 React 包名改用说明文字，不作为本库安装指引。工作区保存文件编辑结果。
+
+MCP 标识使用通用代码图标替代 Semi Logo；创建表单允许本地演示图片路径。代码/文件列表的展开事件以可见文本反馈，完整工作区提供详情切换。
+
+### 基础容器
+
+::demo-block{demo="sidebar/zh-CN/Basic" title="基础容器"}
+::
+
+### MCP 配置
+
+::demo-block{demo="sidebar/zh-CN/Mcp" title="MCP 配置"}
+::
+
+### 参考来源
+
+::demo-block{demo="sidebar/zh-CN/References" title="参考来源"}
+::
+
+### 代码展示
+
+::demo-block{demo="sidebar/zh-CN/Code" title="代码展示"}
+::
+
+### 代码列表
+
+::demo-block{demo="sidebar/zh-CN/CodeList" title="代码列表"}
+::
+
+### 富文本编辑器
+
+::demo-block{demo="sidebar/zh-CN/RichText" title="富文本编辑器"}
+::
+
+### 富文本列表
+
+::demo-block{demo="sidebar/zh-CN/FileList" title="富文本列表"}
+::
+
+### 侧边信息栏
+
+::demo-block{demo="sidebar/zh-CN/Workspace" title="侧边信息栏"}
+::
+
 ## Vue API
 
 ### Sidebar / Container
@@ -79,3 +125,5 @@ File 编辑器固定使用 Tiptap `3.10.7`；`extensions` 接收 Vue Tiptap exte
 默认值为 `true` 的 `motion`、`resizable`、`showClose`、`fileEditable` 在 Vue 中保留原名，并区分缺省与显式 `false`。Compound API 可以继续写成 `Sidebar.Container` / `Sidebar.CodeContent` / `Sidebar.FileItem`，也可以使用同名具名导出。
 
 `CodeItemProps` / `FileItemProps` 的上游 `key` 在 React 中同时承担列表 key；Vue 的 `key` 是保留 VNode 属性，列表使用组件自身数组项的 `key`，不要期望它作为子组件普通 prop 读取。
+
+`Annotation` 与 `MCPConfigure` 保留基础容器的默认值：`motion`、`resizable`、`showClose` 省略时均为 `true`，显式传 `false` 可分别关闭。

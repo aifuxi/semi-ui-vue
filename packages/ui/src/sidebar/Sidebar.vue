@@ -55,11 +55,13 @@ function resolved<Key extends keyof SidebarProps>(
 
 const mode = computed<SidebarMode>(() => resolved('mode', 'main'));
 const fileEditable = computed(() => resolved('fileEditable', true));
-const mainContent = computed(
-  () =>
+// Slot VNodes must be created during each render, never reused after their view unmounts.
+function mainContent() {
+  return (
     slots['main-content']?.({ activeKey: props.activeKey }) ??
-    props.renderMainContent?.(props.activeKey),
-);
+    props.renderMainContent?.(props.activeKey)
+  );
+}
 const detailContent = computed(
   () => slots['detail-content']?.({ mode: mode.value }) ?? props.renderDetailContent?.(mode.value),
 );
@@ -208,7 +210,9 @@ onBeforeUnmount(() => toast.destroyAll());
             ><slot name="option" v-bind="slotProps"
           /></template>
         </SidebarOptions>
-        <div class="semi-sidebar-main-content"><SidebarNodeRenderer :content="mainContent" /></div>
+        <div class="semi-sidebar-main-content">
+          <SidebarNodeRenderer :content="mainContent()" />
+        </div>
       </div>
       <SidebarNodeRenderer v-else-if="detailContent" :content="detailContent" />
       <SidebarCodeItem v-else-if="mode === 'code'" v-bind="codeDetailBindings" />

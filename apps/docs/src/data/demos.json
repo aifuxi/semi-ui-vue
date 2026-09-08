@@ -15015,6 +15015,58 @@
     "upstream": "show/sidesheet"
   },
   {
+    "id": "sidebar/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "sidebar/en-US/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "@aifuxi/semi-ui-vue/switch",
+      "vue"
+    ],
+    "pages": ["/en-us/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
+    "id": "sidebar/en-US/Code",
+    "entry": "Code.vue",
+    "files": { "Code.vue": "sidebar/en-US/Code.vue", "listData.ts": "sidebar/en-US/listData.ts" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/code-highlight.css",
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/radio",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "vue"
+    ],
+    "pages": ["/en-us/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
+    "id": "sidebar/en-US/CodeList",
+    "entry": "CodeList.vue",
+    "files": {
+      "CodeList.vue": "sidebar/en-US/CodeList.vue",
+      "listData.ts": "sidebar/en-US/listData.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/code-highlight.css",
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "vue"
+    ],
+    "pages": ["/en-us/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
     "id": "sidebar/en-US/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "sidebar/en-US/Example1.vue" },
@@ -15028,12 +15080,256 @@
     "upstream": "ai/sidebar"
   },
   {
+    "id": "sidebar/en-US/FileList",
+    "entry": "FileList.vue",
+    "files": {
+      "FileList.vue": "sidebar/en-US/FileList.vue",
+      "listData.ts": "sidebar/en-US/listData.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "vue"
+    ],
+    "pages": ["/en-us/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
+    "id": "sidebar/en-US/Mcp",
+    "entry": "Mcp.vue",
+    "files": { "Mcp.vue": "sidebar/en-US/Mcp.vue", "McpCreate.vue": "sidebar/en-US/McpCreate.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/modal.css",
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/form",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/modal",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "vue"
+    ],
+    "pages": ["/en-us/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
+    "id": "sidebar/en-US/References",
+    "entry": "References.vue",
+    "files": {
+      "References.vue": "sidebar/en-US/References.vue",
+      "listData.ts": "sidebar/en-US/listData.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "vue"
+    ],
+    "pages": ["/en-us/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
+    "id": "sidebar/en-US/RichText",
+    "entry": "RichText.vue",
+    "files": {
+      "RichText.vue": "sidebar/en-US/RichText.vue",
+      "listData.ts": "sidebar/en-US/listData.ts",
+      "mockUpload.ts": "sidebar/en-US/mockUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "vue"
+    ],
+    "pages": ["/en-us/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
+    "id": "sidebar/en-US/Workspace",
+    "entry": "Workspace.vue",
+    "files": {
+      "Workspace.vue": "sidebar/en-US/Workspace.vue",
+      "workspaceData.ts": "sidebar/en-US/workspaceData.ts",
+      "mockUpload.ts": "sidebar/en-US/mockUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/code-highlight.css",
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "vue"
+    ],
+    "pages": ["/en-us/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
+    "id": "sidebar/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "sidebar/zh-CN/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "@aifuxi/semi-ui-vue/switch",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
+    "id": "sidebar/zh-CN/Code",
+    "entry": "Code.vue",
+    "files": { "Code.vue": "sidebar/zh-CN/Code.vue", "listData.ts": "sidebar/zh-CN/listData.ts" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/code-highlight.css",
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/radio",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
+    "id": "sidebar/zh-CN/CodeList",
+    "entry": "CodeList.vue",
+    "files": {
+      "CodeList.vue": "sidebar/zh-CN/CodeList.vue",
+      "listData.ts": "sidebar/zh-CN/listData.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/code-highlight.css",
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
     "id": "sidebar/zh-CN/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "sidebar/zh-CN/Example1.vue" },
     "dependencies": [
       "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
+    "id": "sidebar/zh-CN/FileList",
+    "entry": "FileList.vue",
+    "files": {
+      "FileList.vue": "sidebar/zh-CN/FileList.vue",
+      "listData.ts": "sidebar/zh-CN/listData.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
+    "id": "sidebar/zh-CN/Mcp",
+    "entry": "Mcp.vue",
+    "files": { "Mcp.vue": "sidebar/zh-CN/Mcp.vue", "McpCreate.vue": "sidebar/zh-CN/McpCreate.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/form.css",
+      "@aifuxi/semi-theme-default/input.css",
+      "@aifuxi/semi-theme-default/modal.css",
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/form",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/modal",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
+    "id": "sidebar/zh-CN/References",
+    "entry": "References.vue",
+    "files": {
+      "References.vue": "sidebar/zh-CN/References.vue",
+      "listData.ts": "sidebar/zh-CN/listData.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
+    "id": "sidebar/zh-CN/RichText",
+    "entry": "RichText.vue",
+    "files": {
+      "RichText.vue": "sidebar/zh-CN/RichText.vue",
+      "listData.ts": "sidebar/zh-CN/listData.ts",
+      "mockUpload.ts": "sidebar/zh-CN/mockUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/sidebar",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/sidebar/"],
+    "upstream": "ai/sidebar"
+  },
+  {
+    "id": "sidebar/zh-CN/Workspace",
+    "entry": "Workspace.vue",
+    "files": {
+      "Workspace.vue": "sidebar/zh-CN/Workspace.vue",
+      "workspaceData.ts": "sidebar/zh-CN/workspaceData.ts",
+      "mockUpload.ts": "sidebar/zh-CN/mockUpload.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/code-highlight.css",
+      "@aifuxi/semi-theme-default/json-viewer.css",
+      "@aifuxi/semi-theme-default/sidebar.css",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
       "@aifuxi/semi-ui-vue/sidebar",
       "vue"
     ],

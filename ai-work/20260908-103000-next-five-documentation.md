@@ -68,3 +68,27 @@ AIChatDialogue最终联合门禁通过（/tmp/semi-dialogue-final-check.log，19
 AIChatInput收尾：新增Item导出最初导致tarball消费方GlobalComponents泛型约束错误；改显式公共组件声明后真实包通过（/tmp/semi-input-final-pack2.log）。Nuxt类型最终/tmp/semi-input-full-types3.log退出0，联合门禁/tmp/semi-input-final-check2.log退出0（196页/1741注册Demo）；单元SSR9/9、Chromium5/5、ESLint通过。最终仅类型声明收窄，不重复运行已通过且运行代码未变化的浏览器矩阵。
 
 full-static-final双语各32阶段通过，issues为空，覆盖13例全部主要操作/源码/重置及7条编辑器路径。扩展局部截图复核，六批历史证据有效；849/859映射、43 accepted，README和队列更新，下一批Sidebar。临时脚本与摘要保存在apps/docs/.data/documentation-smoke/ai-chat-input/。
+
+## Sidebar 代表与扩展
+
+按固定 sideBar Adapter/interface、Container/Annotation/MCP/Code/File widgets、sidebar Foundation/SCSS/180ms动效、默认theme、双语8例与图标核查。先做Basic(1)、Workspace(8)：容器显隐/动效/伸缩/拖拽、代码详情复制、文件加粗/保存/返回、引用/图片视图；数据helper按语言隔离，图片/跳转/上传为本地已有素材，代码示例改Vue，富文本历史React包名替换为说明文字，明确不是本库安装指南。
+
+representatives页面阶段通过；representatives-editors双语源码/重置/编辑通过。实际iframe约471px，Basic最小250px与最大60%约束不允许复制完整页面的50px扩宽断言；页面证明真实拖拽，iframe验证开关/关闭/重开和编辑标题，未改viewport或组件尺寸规避。Workspace文件/详情采用shallowRef以避免Tiptap Extensions公开类型深展开，back回调显式void；代表Nuxt类型最终/tmp/semi-sidebar-reps-types2.log退出0后扩展其余6例。
+
+扩展Mcp、References、Code、CodeList、RichText、FileList，McpCreate与listData保持同语言多文件。MCP以通用代码图标替代Semi Logo，表单URL验证额外允许/demos/本地图片；列表展开以可见事件反馈，Workspace负责详情；RichText保持可编辑/只读、真实格式与本地图片上传。
+
+浏览器发现Annotation/MCPConfigure缺省Boolean被Vue转false后覆盖Container默认，缺失关闭按钮、动效和伸缩。固定Container/index.tsx:37-41均默认true；补充两个包装组件的缺省/false/true和关闭回调黑盒测试，先失败2项（/tmp/semi-sidebar-boolean-before.log），withDefaults修正后11项单元/SSR通过（/tmp/semi-sidebar-boolean-after.log）。双语API和alignment同步；资源重建完成后，Chromium对照5/5与真实tarball验证通过（/tmp/semi-sidebar-final-browser.log、/tmp/semi-sidebar-final-pack.log）。
+
+MCP校验重试调查：最初误认为Promise状态阻止重复确认；直接原因经固定ModalFoundation:71-74确认是100ms leading-only debounce。烟测在三次确认之间按源码等待110ms，保留真实时钟；同步submit启动validate.then/catch与固定示例一致，不修改Modal。Form.TextArea需要input.css，已补公开主题入口。MCP计数包含内置和自定义总数，应从1/2变2/3，而非custom子集1/1。失败记录保留，未放宽组件断言。
+
+首次静态full-static-final的双语各20阶段交互断言通过，但issues各2条，因此不作为完成证据。定位修正了初步“SSR水合”判断：Demo实际位于ClientOnly，错误发生在工作区详情返回主视图；对浏览器响应临时注入Vue mismatch诊断（不修改产物）显示旧Collapse Fragment VNode再次挂载。Sidebar把slot VNode缓存于computed，改在渲染时创建，避免复用已卸载节点；主视图有状态子组件退出/重开黑盒测试补充，12项单元/SSR通过。此问题依赖生产编译，修改前开发单测本身通过，不能以单测替代静态浏览器复现。
+
+另一条错误来自固定Modal取消按钮原生autofocus在静态编辑器跨源iframe中被浏览器阻止。McpCreate通过公开cancelButtonProps.autofocus=false关闭原生属性，保留ModalDialog程序焦点管理；烟测增加对话框包含真实activeElement的断言，不过滤该错误、不修改Modal共享实现。临时诊断脚本和首次失败摘要保留；运行时更新后重新执行联合检查、组件Chromium与真实发布包验证。
+
+修正后full-static-fixes定点与full-static-final2双语各20阶段通过，issues为空，含MCP实际焦点。最终diff审阅进一步将VNode修复收窄到主内容，保留详情内容/标题原有计算方式及完整回调参数；该收窄后的最终资源与门禁仍须刷新，结果以下方最终收尾为准。
+
+Sidebar最终收尾：联合检查/tmp/semi-sidebar-final-check3.log退出0，67流程测试、Nuxt类型、196页/1757注册Demo/6284静态文件、内容/REPL/许可散列通过。最终单元/SSR12/12（semi-sidebar-remount-unit3.log）、Chromium5/5（semi-sidebar-final-browser3.log）、真实tarball安装/类型/样式/SSR/Worker（semi-sidebar-final-pack3.log）与ESLint（semi-sidebar-final-lint3.log）通过。静态full-static-final3双语各20阶段通过、issues为空，覆盖8例主要操作/源码/重置及5条编辑器路径，工作区局部截图已复核。最终affected plan六批历史证据均有效。
+
+本次五批Lottie4、Chat11、AIChatDialogue13、AIChatInput13、Sidebar8，共49个上游索引的双语补齐完成，映射808→857/859；README与双线队列已同步。严格accepted保持43，814项已映射待严格验收，补齐线剩AIComponent2项。每个组件独立提交；已有Transfer全UI类型错误未纳入本批，不宣称全仓门禁通过。临时烟测脚本、摘要、失败与成功截图均保留在apps/docs/.data/documentation-smoke对应组件目录。
+
+截图收尾：退出编辑后立即截取的工作区可能仍在异步重挂载/绘制，补充capture-final.mjs，等待真实代码DOM、滚动到可视区、fonts.ready与双requestAnimationFrame后取workspace-*-ready.png；双语可见状态确认，英文最终截图已人工复核。未修改产品尺寸、内容或截图容差。

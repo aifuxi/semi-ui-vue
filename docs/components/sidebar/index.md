@@ -74,3 +74,5 @@ File 编辑器固定使用 Tiptap `3.10.7`；`extensions` 接收 Vue Tiptap exte
 隐藏状态 SSR 不输出容器；可见主视图可稳定渲染。Tiptap、剪贴板和全局键盘监听只在客户端创建。默认关闭、返回、复制和展开按钮具有 aria-label。固定 React 基线中的引用卡片是 clickable `div`；需要更强键盘语义时请用 `#item` 自定义。
 
 完整 API、DOM/class、事件顺序、暗色/RTL/SSR 与 deviation 证据见 [alignment.md](./alignment.md)，迁移说明见 [react-to-vue.md](./react-to-vue.md)。
+
+`Annotation` 与 `MCPConfigure` 保留基础容器的默认值：`motion`、`resizable`、`showClose` 省略时均为 `true`，显式传 `false` 可分别关闭。

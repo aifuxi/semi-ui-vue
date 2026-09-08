@@ -6,7 +6,11 @@ import SidebarMCPConfigureContent from './SidebarMCPConfigureContent.vue';
 import type { SidebarLocale, SidebarMCPConfigureProps } from './types';
 
 defineOptions({ name: 'SidebarMCPConfigure', inheritAttrs: false });
-const props = defineProps<SidebarMCPConfigureProps>();
+const props = withDefaults(defineProps<SidebarMCPConfigureProps>(), {
+  motion: true,
+  resizable: true,
+  showClose: true,
+});
 const containerBindings = computed<Record<string, unknown>>(() =>
   Object.fromEntries(
     Object.entries({
