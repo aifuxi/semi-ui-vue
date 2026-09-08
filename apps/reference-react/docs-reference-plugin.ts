@@ -59,6 +59,10 @@ export function pinnedButtonDocumentation(): Plugin {
   const adapterConsumers = new Map<string, Set<string>>();
   return {
     name: 'pinned-button-documentation',
+    // The site package's React controls must resolve to the same fixed submodule as demos.
+    async transform(code, id) {
+      if (id.includes('/semi-site-header/dist/index.es.js')) return publicImports(code);
+    },
     async configureServer(instance) {
       server = instance;
       const realAdaptersRoot = await realpath(adaptersRoot);

@@ -420,6 +420,10 @@ export default defineConfig({
     pinnedButtonDocumentation(),
     react(),
   ],
+  optimizeDeps: {
+    exclude: ['@douyinfe/semi-site-header'],
+    include: ['@douyinfe/semi-site-header > react-i18next', '@douyinfe/semi-site-header > axios'],
+  },
   resolve: {
     alias: [
       { find: '@semi-v2.102.0/anchor', replacement: anchorPublicEntry },

@@ -83,6 +83,14 @@ await writeFile(
           licenseSource: 'https://github.com/google/fonts/blob/main/ofl/inconsolata/OFL.txt',
         },
       ],
+      siteHeader: {
+        source: '@douyinfe/semi-site-header@0.0.29/dist/index.css',
+        license: 'MIT',
+        author: 'yanqi.xu',
+        adaptations:
+          'Vue 页头布局、语言按钮样式；Logo 与图标来自现有图标包，搜索使用固定 Input 外观。',
+        referenceOnly: '@douyinfe/semi-site-header@0.0.29/dist/index.es.js',
+      },
       replAdaptations: [
         '本地 Worker URL',
         '移除 iframe 同源、弹窗和顶层跳转权限',

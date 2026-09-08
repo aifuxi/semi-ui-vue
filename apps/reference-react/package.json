@@ -41,6 +41,7 @@
     "typeface-inter": "catalog:"
   },
   "devDependencies": {
+    "@douyinfe/semi-site-header": "0.0.29",
     "@types/lodash": "4.17.20",
     "@types/react": "18.0.5",
     "@types/react-dom": "18.0.1",

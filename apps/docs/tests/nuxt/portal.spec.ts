@@ -4,7 +4,7 @@ import pages from '../../src/data/pages.json' with { type: 'json' };
 test('导航、搜索、语言与主题切换', async ({ page }) => {
   await page.goto('/zh-cn/start/introduction/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('介绍');
-  await page.getByRole('button', { name: '搜索 ⌘ K' }).click();
+  await page.getByRole('button', { name: '搜索', exact: true }).click();
   await page.getByRole('combobox').fill('Button');
   await expect(page.getByRole('option').first()).toBeVisible();
   await page.getByRole('combobox').press('Enter');
@@ -13,7 +13,7 @@ test('导航、搜索、语言与主题切换', async ({ page }) => {
   await page.getByRole('link', { name: 'Switch to English', exact: true }).click();
   await expect(page).toHaveURL(/\/en-us\/components\/button\/$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
-  await page.getByRole('button', { name: 'Toggle theme', exact: true }).click();
+  await page.getByRole('button', { name: /^Switch to (light|dark) mode$/ }).click();
   await expect(page.locator('body')).toHaveAttribute('theme-mode', 'dark');
   await page.reload();
   await expect(page.locator('body')).toHaveAttribute('theme-mode', 'dark');
@@ -63,7 +63,7 @@ test('示例交互与在线编辑使用本地资源', async ({ page }) => {
       }
     }),
   ).toBe(false);
-  await page.getByRole('button', { name: 'Toggle theme', exact: true }).click();
+  await page.getByRole('button', { name: /^Switch to (light|dark) mode$/ }).click();
   await expect(preview.locator('body')).toHaveAttribute('theme-mode', 'dark');
   await demo.getByRole('button', { name: 'Close editor', exact: true }).click();
   await expect(page.locator('.demo-editor iframe')).toHaveCount(0);

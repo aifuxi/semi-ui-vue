@@ -25,6 +25,9 @@ peerDependencyRules:
     react-dom: 16.14.0
 
 overrides:
+  # The reference adapter resolves these imports directly to vendor/semi-design v2.102.0.
+  '@douyinfe/semi-site-header>@douyinfe/semi-ui': '-'
+  '@douyinfe/semi-site-header>@douyinfe/semi-icons': '-'
   '@types/react': 18.0.5
   '@tiptap/core': 3.10.7
   '@tiptap/extension-blockquote': 3.10.7

@@ -28,6 +28,8 @@ style.textContent = `
 body {margin:0}
 `;
 document.head.append(style);
+const header = query.get('region') === 'header';
+const Header = React.lazy(() => import('./docs-header'));
 const sidebar = query.get('region') === 'navigation';
 const pathname = `/${locale}/start/introduction/`;
 const edges = docPages
@@ -49,7 +51,9 @@ const edges = docPages
 if (sidebar) history.replaceState(null, '', pathname);
 ReactDOM.render(
   <Suspense fallback="Loading fixed reference">
-    {sidebar ? (
+    {header ? (
+      <Header locale={locale} theme={theme} />
+    ) : sidebar ? (
       <Sidebar
         location={{ pathname }}
         itemsArr={categories.map(([itemKey, text, textUs]) => ({ itemKey, text, textUs }))}

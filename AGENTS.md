@@ -83,6 +83,7 @@ git -C vendor/semi-design describe --tags --exact-match
 - 每个发布包必须对 `npm pack` 结果执行安装、导入、类型、样式入口与 SSR import 验证，不得只验证 workspace 源码。
 - 项目从首版起按可公开发布标准处理：保留 Semi Design MIT License 与适用的第三方声明，并对实际 `npm pack` 产物生成 SBOM/许可清单。
 - 不复用 Semi Logo；对外品牌与 npm scope 使用独立名称。`.semi-*` / `--semi-*` 只是技术兼容契约，不得被表述为官方授权、合作或品牌身份。
+- 文档站页头是经用户明确选择的品牌例外：允许使用现有 `IconSemiLogo`，保留 `Semi UI Vue` 名称及独立项目身份；不扩展至其他品牌或发布资产。依据与边界见 [`页头对齐记录`](docs/documentation/site-header.md)。
 - 新增、替换或内联任何第三方代码/资产时，必须同步更新归属、许可和 SBOM 证据，不得留到发布前补录。
 
 ## Vue 运行时与编码基线

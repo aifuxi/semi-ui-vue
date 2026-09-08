@@ -1,5 +1,7 @@
 @import '@aifuxi/semi-theme-default/button.css';
 @import '@aifuxi/semi-theme-default/navigation.css';
+@import '@aifuxi/semi-theme-default/input.css';
+@import '@aifuxi/semi-theme-default/tooltip.css';
 
 @font-face {
   font-family: Inter;
@@ -78,18 +80,22 @@ button:disabled:not([data-demo-preview] *, [class*='semi-']) {
   top: 8px;
 }
 .site-header {
+  /* Upstream header declares a 60px content box plus its 1px bottom border. */
+  box-sizing: content-box;
   position: fixed;
   inset: 0 0 auto;
   height: 60px;
   display: flex;
   align-items: center;
   gap: 40px;
-  padding: 0 32px;
-  background: var(--semi-color-bg-0);
+  padding: 0 24px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: saturate(180%) blur(40px);
   border-bottom: 1px solid var(--semi-color-border);
   z-index: 100;
 }
 .site-brand {
+  margin-left: 8px;
   display: flex;
   gap: 10px;
   align-items: center;
@@ -98,18 +104,8 @@ button:disabled:not([data-demo-preview] *, [class*='semi-']) {
   font-weight: 600;
   white-space: nowrap;
 }
-.site-brand strong {
-  color: var(--semi-color-success);
-}
-.brand-mark {
-  width: 32px;
-  height: 32px;
-  display: grid;
-  place-items: center;
-  color: white;
-  background: #00a870;
-  border-radius: 8px;
-  font-size: 23px;
+body[theme-mode='dark'] .site-header {
+  background: rgba(22, 22, 26, 1);
 }
 .header-links {
   display: flex;
@@ -124,42 +120,60 @@ button:disabled:not([data-demo-preview] *, [class*='semi-']) {
 .header-links a:hover {
   color: var(--semi-color-primary);
 }
+/* Operation spacing and language button overrides follow semi-site-header 0.0.29. */
 .header-actions {
   margin-left: auto;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 16px;
+  column-gap: 10px;
 }
-.icon-action {
-  border: 0;
-  background: transparent;
-  width: 28px;
-  height: 32px;
-  display: grid;
-  place-items: center;
+.header-control {
+  box-sizing: border-box;
+  outline-offset: 0;
+  text-align: center;
+  font-family: inherit;
+  text-decoration: none;
+}
+.header-icon,
+.locale-text {
   color: var(--semi-color-text-2);
-  font-size: 25px;
-  padding: 0;
 }
-.locale-action {
-  color: var(--semi-color-text-1);
-  font-size: 14px;
+.site-header .locale-action {
+  border-radius: 6px;
+  padding: 5px;
+}
+.locale-action .semi-button-content-right {
+  margin-left: 5px;
+}
+.locale-text {
+  font-style: normal;
   font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
 }
-.search-trigger {
-  border: 0;
-  border-radius: 20px;
-  background: var(--semi-color-fill-0);
-  color: var(--semi-color-text-2);
-  height: 36px;
-  padding: 0 14px;
-  display: flex;
+.locale-text-en {
+  font-family: Inter;
+}
+.locale-text-zh {
+  font-family: 'PingFang SC';
+}
+.site-header .search-trigger {
+  width: 160px;
+  padding: 0 12px;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--semi-color-text-2);
 }
 .search-trigger kbd {
+  margin-left: auto;
   font-size: 12px;
   font-family: inherit;
+}
+.search-trigger:focus-visible {
+  border-color: var(--semi-color-focus-border);
 }
 .site-header .menu-action {
   display: none;
@@ -501,14 +515,14 @@ button:disabled:not([data-demo-preview] *, [class*='semi-']) {
   .site-header .menu-action {
     display: grid;
   }
-  .search-trigger {
+  .site-header .search-trigger {
     font-size: 0;
     padding: 0;
     width: 28px;
     background: transparent;
   }
-  .search-trigger span {
-    font-size: 24px;
+  .search-trigger-label {
+    display: none;
   }
   .content-area {
     padding-left: 0;
