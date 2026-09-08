@@ -1,150 +1,65 @@
 ---
-title: Vue Router Navigation Guard next() Function Deprecated
+title: 普通导航守卫优先 return，保留有效 next 语义
 impact: HIGH
-impactDescription: Using the deprecated next() function incorrectly causes navigation to hang, infinite loops, or silent failures
+impactDescription: next 漏调用、重复调用或与 return 混用会造成导航挂起、重复跳转或错误
 type: gotcha
 tags: [vue3, vue-router, navigation-guards, migration, async]
 ---
 
-# Vue Router Navigation Guard next() Function Deprecated
+# 普通导航守卫优先 return，保留有效 next 语义
 
-**Impact: HIGH** - The third `next()` argument in navigation guards is deprecated in Vue Router 4. While still supported for backward compatibility, using it incorrectly is one of the most common sources of bugs: calling it multiple times, forgetting to call it, or calling it conditionally without proper logic.
+Vue Router 官方指南仍说明可选第三参数 `next` 可用。本仓库 Nuxt 依赖的 Router `5.3.1` 在类型中将它标记为 `@deprecated`，开发环境执行时会给出 `VUE_ROUTER_R0025` 诊断，但仍保留执行语义。新增普通守卫、或修复相关分支错误时，优先采用 return 形式；弃用提示不意味着现有导航已经失败，也不要求默认删除所有调用。
 
-## Task Checklist
+本文件保留原路径供已有技能链接使用；路径中的 `deprecated` 不构成当前 API 已删除或需要全库迁移的证据。
 
-- [ ] Refactor guards to use return-based syntax instead of next()
-- [ ] Remove all next() calls from navigation guards
-- [ ] Use async/await pattern for asynchronous checks
-- [ ] Return false to cancel, return route to redirect, return nothing to proceed
+## 按症状修复
 
-## The Problem
+- 导航挂起：检查声明第三参数的守卫是否有分支既没有调用 `next`，也没有通过异常结束。
+- 重复导航或警告：检查重定向后是否继续执行另一个 `next`；每次正常执行路径只能完成一次。
+- 异步校验后结果异常：等待校验结果，不在同一守卫混用 `next` 与 return 路由值来控制导航。
+- 登录重定向循环：检查目标页是否被同一鉴权条件再次拦截；为公开入口建立明确的放行条件。
 
-```javascript
-// WRONG: Using deprecated next() function
+## return 形式
+
+以下示例假设应用已经提供 `router` 与 `checkAccess`。Nuxt middleware 应保留现有框架 API，不直接把该全局注册示例粘入页面。
+
+```typescript
+router.beforeEach(async (to) => {
+  if (to.name === 'Login') return;
+
+  const allowed = await checkAccess(to);
+  if (!allowed) {
+    return { name: 'Login', query: { redirect: to.fullPath } };
+  }
+});
+```
+
+普通守卫返回 `undefined` 或 `true` 放行，返回 `false` 取消，返回路由位置重定向。异常可 `throw` 交由 `router.onError` 处理；不要吞掉异常后意外放行。已知业务拒绝与意外错误的处理按应用契约决定。
+
+## 保留 next 时
+
+正确的已有守卫可以在当前维护范围内保留，但会有上述弃用提示。正常分支调用一次 `next` 并及时结束；异步异常进入既有错误处理路径。
+
+```typescript
 router.beforeEach((to, from, next) => {
-  if (!isAuthenticated) {
-    next('/login')  // Easy to forget this call
+  if (to.name !== 'Login' && !isAuthenticated()) {
+    next({ name: 'Login' });
+    return;
   }
-  // BUG: next() not called when authenticated - navigation hangs!
-})
 
-// WRONG: Multiple next() calls
-router.beforeEach((to, from, next) => {
-  if (!isAuthenticated) {
-    next('/login')
-  }
-  next()  // BUG: Called twice when not authenticated!
-})
-
-// WRONG: next() in async code without proper handling
-router.beforeEach(async (to, from, next) => {
-  const user = await fetchUser()
-  if (!user) {
-    next('/login')
-  }
-  next()  // Still gets called even after redirect!
-})
+  next();
+});
 ```
 
-## Solution: Use Return-Based Guards
+`beforeRouteEnter` 的 `next(vm => ...)` 还承担导航确认后访问组件实例的语义，不能机械替换成 return 回调。维护既有 Options API 代码时保留此语义；本仓库新增组件仍遵守 Composition API 基线，不为演示该回调引入 Options API。
 
-```javascript
-// CORRECT: Return-based syntax (modern Vue Router 4+)
-router.beforeEach((to, from) => {
-  if (!isAuthenticated) {
-    return '/login'  // Redirect
-  }
-  // Return nothing (undefined) to proceed
-})
+## 验证与证据
 
-// CORRECT: Return false to cancel navigation
-router.beforeEach((to, from) => {
-  if (hasUnsavedChanges) {
-    return false  // Cancel navigation
-  }
-})
+按改动覆盖放行、取消、重定向、异步拒绝与异常等实际分支，断言最终 route、导航结果和可见页面，不以私有守卫计数作为唯一证据。参数更新与路由组件复用仍需读取对应症状参考；内存路由可以验证导航决策，组件实例、焦点和 Nuxt SSR/hydration 需要相应组件或浏览器场景。
 
-// CORRECT: Async with return-based syntax
-router.beforeEach(async (to, from) => {
-  const user = await fetchUser()
-  if (!user) {
-    return { name: 'Login', query: { redirect: to.fullPath } }
-  }
-  // Proceed with navigation
-})
-```
+版本来源见 [lockfile](../../../../pnpm-lock.yaml) 中 Nuxt `4.5.2` 的 `vue-router: 5.3.1` 依赖，以及任务环境实际安装的 Router 类型与实现。后续版本变化时重新核对所使用的 API，不把这份记录当作永久兼容保证。
 
-## Return Values Explained
+## 参考
 
-```javascript
-router.beforeEach((to, from) => {
-  // Return nothing/undefined - allow navigation
-  return
-
-  // Return false - cancel navigation, stay on current route
-  return false
-
-  // Return string path - redirect to path
-  return '/login'
-
-  // Return route object - redirect with full control
-  return { name: 'Login', query: { redirect: to.fullPath } }
-
-  // Return Error - cancel and trigger router.onError()
-  return new Error('Navigation cancelled')
-})
-```
-
-## If You Must Use next() (Legacy Code)
-
-If maintaining legacy code that uses `next()`, follow these rules strictly:
-
-```javascript
-// CORRECT: Exactly one next() call per code path
-router.beforeEach((to, from, next) => {
-  if (!isAuthenticated) {
-    next('/login')
-    return  // CRITICAL: Exit after calling next()
-  }
-
-  if (!hasPermission(to)) {
-    next('/forbidden')
-    return  // CRITICAL: Exit after calling next()
-  }
-
-  next()  // Only reached if all checks pass
-})
-```
-
-## Error Handling Pattern
-
-```javascript
-router.beforeEach(async (to, from) => {
-  try {
-    await validateAccess(to)
-    // Proceed
-  } catch (error) {
-    if (error.status === 401) {
-      return '/login'
-    }
-    if (error.status === 403) {
-      return '/forbidden'
-    }
-    // Log error and proceed anyway (or return false)
-    console.error('Access validation failed:', error)
-    return false
-  }
-})
-```
-
-## Key Points
-
-1. **Prefer return-based syntax** - Cleaner, less error-prone, modern standard
-2. **next() must be called exactly once** - If using legacy syntax, ensure single call per path
-3. **Always return/exit after redirect** - Prevent multiple navigation actions
-4. **Async guards work naturally** - Just return the redirect route or nothing
-5. **Test all code paths** - Each branch must result in either return or next()
-
-## Reference
 - [Vue Router Navigation Guards](https://router.vuejs.org/guide/advanced/navigation-guards.html)
-- [RFC: Remove next() from Navigation Guards](https://github.com/vuejs/rfcs/discussions/302)
+- [Vue Router 5 Migration](https://router.vuejs.org/guide/migration/v4-to-v5.html)

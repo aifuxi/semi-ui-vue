@@ -1,191 +1,49 @@
 ---
-title: Scoped Styles May Not Apply to Teleported Content
+title: Teleport Preserves Scoped Attributes but Changes DOM Ancestry
 impact: MEDIUM
-impactDescription: Scoped styles can fail to apply to teleported elements due to data attribute limitations
+impactDescription: Teleported elements retain scope IDs; ancestor selectors and inherited styles depend on the actual target DOM
 type: gotcha
 tags: [vue3, teleport, scoped-styles, css]
 ---
 
-# Scoped Styles May Not Apply to Teleported Content
+# Teleport 保留 scopeId，但会改变 DOM 祖先关系
 
-**Impact: MEDIUM** - When using scoped styles with Teleport, the styles may not apply correctly to teleported elements. This is a known limitation related to how Vue's scoped style attributes work with elements rendered outside the component's DOM tree.
+Teleport 移动渲染节点时会保留组件的作用域属性。组件模板自己生成的 `.modal` 节点通常仍带有 `data-v-*`，所以 `<style scoped>` 中单独的 `.modal` 规则可以正常匹配。不能把 Teleport 样式问题统一归因于作用域属性丢失。
 
-## Task Checklist
+## 按实际选择器排查
 
-- [ ] Test scoped styles on teleported content
-- [ ] Use `:deep()` selector or non-scoped styles for teleported content
-- [ ] Consider CSS modules as an alternative
-- [ ] Keep teleported content styles in a separate non-scoped style block
+1. 在浏览器检查目标节点、`data-v-*`、CSS 加载情况及 computed style。
+2. 若选择器是 `.host .modal`，确认 Teleport 后 `.host` 是否仍是 DOM 祖先。组件的逻辑父子关系不能满足 CSS 后代选择器。
+3. 检查原父节点提供的 CSS 变量、字体或颜色继承是否随目标容器改变；主题应作用到真实 Portal 容器。
+4. 子组件内部节点、slot 或 `v-html` 内容再按各自的 scoped 规则处理；不要默认扩大到全局样式。
 
-**Problem - Scoped Styles Not Applied:**
 ```vue
 <template>
-  <Teleport to="body">
-    <div class="modal">
-      <p class="modal-text">This text may not be styled!</p>
-    </div>
-  </Teleport>
+  <section class="host">
+    <Teleport to="body">
+      <div class="modal">Dialog</div>
+    </Teleport>
+  </section>
 </template>
 
 <style scoped>
-/* These styles may NOT apply to teleported content */
+/* 仍能匹配带 scopeId 的 Teleport 节点。 */
 .modal {
-  background: white;
-  padding: 20px;
-}
-
-.modal-text {
-  color: blue;  /* May not work */
-}
-</style>
-```
-
-**Solution 1 - Use Non-Scoped Styles for Teleported Content:**
-```vue
-<template>
-  <Teleport to="body">
-    <div class="my-modal">
-      <p class="my-modal-text">This text will be styled</p>
-    </div>
-  </Teleport>
-</template>
-
-<style scoped>
-/* Component-specific styles */
-.button { color: blue; }
-</style>
-
-<style>
-/* Non-scoped styles for teleported content */
-/* Use specific class names to avoid conflicts */
-.my-modal {
-  background: white;
-  padding: 20px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.my-modal-text {
   color: blue;
 }
-</style>
-```
 
-**Solution 2 - Use :deep() Selector:**
-```vue
-<template>
-  <Teleport to="body">
-    <div class="modal">
-      <p class="modal-text">Styled with :deep()</p>
-    </div>
-  </Teleport>
-</template>
-
-<style scoped>
-:deep(.modal) {
-  background: white;
-  padding: 20px;
-}
-
-:deep(.modal-text) {
-  color: blue;
+/* Teleport 到 body 后，.host 不再是 .modal 的 DOM 祖先。 */
+.host .modal {
+  border: 1px solid red;
 }
 </style>
 ```
 
-**Solution 3 - CSS Modules:**
-```vue
-<template>
-  <Teleport to="body">
-    <div :class="$style.modal">
-      <p :class="$style.modalText">Styled with CSS modules</p>
-    </div>
-  </Teleport>
-</template>
+`:deep()` 只改变作用域选择器的编译方式，不会恢复已不存在的 DOM 祖先。优先按真实节点关系调整选择器或容器；只有样式确实需要跨组件或全局作用域时才使用 deep/global。本仓库的浮层应继续遵守主题包、`.semi-*` class 与 `--semi-*` Token 契约。
 
-<style module>
-.modal {
-  background: white;
-  padding: 20px;
-}
+多根组件的 class/style fallthrough 是另一项问题；需要显式声明 attrs 的目标时参见 [多根组件 attrs](multi-root-component-class-attrs.md)。
 
-.modalText {
-  color: blue;
-}
-</style>
-```
+## 参考
 
-## Multi-Root Components with Teleport
-
-Using Teleport as one of multiple root nodes causes additional issues:
-
-```vue
-<template>
-  <!-- Multi-root component -->
-  <button @click="open = true">Open</button>
-  <Teleport to="body">
-    <div class="modal">Content</div>
-  </Teleport>
-</template>
-
-<!-- Warning: class/style attributes may not be inherited -->
-```
-
-Pass classes explicitly to avoid inheritance issues:
-
-```vue
-<template>
-  <button @click="open = true">Open</button>
-  <Teleport to="body">
-    <div :class="['modal', $attrs.class]" :style="$attrs.style">
-      Content
-    </div>
-  </Teleport>
-</template>
-```
-
-## Best Practice: Dedicated Modal Styles
-
-Create a dedicated stylesheet for modal/overlay components:
-
-```css
-/* modal-styles.css */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-content {
-  background: white;
-  border-radius: 8px;
-  padding: 24px;
-  max-width: 500px;
-  width: 90%;
-}
-```
-
-```vue
-<script setup>
-import './modal-styles.css'
-</script>
-
-<template>
-  <Teleport to="body">
-    <div v-if="open" class="modal-overlay">
-      <div class="modal-content">
-        <slot />
-      </div>
-    </div>
-  </Teleport>
-</template>
-```
-
-## Reference
-- [Vue.js SFC CSS Features - Scoped CSS](https://vuejs.org/api/sfc-css-features.html#scoped-css)
-- [GitHub Issue #2047 - Scoped styles and teleport](https://github.com/vuejs/core/issues/2047)
+- [Vue：Scoped CSS 与 Deep Selectors](https://vuejs.org/api/sfc-css-features.html#scoped-css)
+- [Vue：Teleport 的逻辑层级与实际 DOM](https://vuejs.org/guide/built-ins/teleport.html)

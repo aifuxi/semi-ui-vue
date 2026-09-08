@@ -1,240 +1,52 @@
-# 工作流：使用 MCP 工具查询组件
+# 使用 MCP 查询组件
 
-本文件描述如何使用 Semi MCP 工具完成常见任务。
+本流程用于上游 Semi React 的普通业务查询。本仓库 Vue 复刻仍以只读 `vendor/semi-design` v2.102.0 为唯一基线，不能用 MCP 结果替换。
 
-## Semi MCP 工具概览
+## 先确定版本
 
-| 工具名称 | 功能 | 使用场景 |
-|---------|------|---------|
-| `get_semi_document` | 获取组件文档或组件列表 | 查找组件、了解 API |
-| `get_component_file_list` | 获取组件源码文件列表 | 了解组件结构 |
-| `get_file_code` | 获取文件代码内容 | 查看组件实现 |
-| `get_function_code` | 获取函数完整实现 | 深入了解逻辑 |
+从用户明确指定的版本或消费项目实际安装的 `@douyinfe/semi-ui` 版本确定本次查询版本；依赖声明是范围时，继续查看 lockfile 或已安装包的精确版本。缺少版本信息且版本会影响答案时，再询问用户。用户要求查看当前上游时，先确认具体版本，再进行关联查询。
 
-## 基础查询流程
+**每次调用都显式传入同一个 `version`**，包括组件列表、文档代码块、源码文件和函数。当前工具声明中，文档与代码块工具默认 `latest`，三个源码工具默认 `2.89.2-alpha.3`；省略参数可能混用版本。对比版本时，分别记录各版本的查询链和结论。
 
-### 1. 查找组件
+## 按问题逐步查询
 
-当你不确定使用哪个组件时，先查询组件列表：
+下表使用当前环境中的工具名；调用前核对实际可用的工具 schema，参数以它为准。
 
-```json
-{
-  "name": "get_semi_document"
-}
+| 需要解决的问题           | 工具与参数                                                                                         |
+| ------------------------ | -------------------------------------------------------------------------------------------------- |
+| 选择组件或查公开 API     | `mcp__semi_mcp__get_semi_document`：`componentName`、`version`；仅需组件列表时省略 `componentName` |
+| 文档隐藏了所需示例代码   | `mcp__semi_mcp__get_semi_code_block`：`componentName`、文档返回的 `codeBlockIndex`、`version`      |
+| 文档不足以解释实际行为   | `mcp__semi_mcp__get_component_file_list`：`componentName`、`version`                               |
+| 查看相关文件             | `mcp__semi_mcp__get_file_code`：文件列表返回的 `filePath`、`version`                               |
+| 查看已定位函数的完整实现 | `mcp__semi_mcp__get_function_code`：已确认的 `filePath`、`functionName`、`version`                 |
+
+优先用公开 API 和文档示例回答问题；信息足够时停止查询。需要源码证据时才取文件列表并读取相关文件，不预设文件路径或内部方法名。文件只返回结构时，可读取目标函数；确实需要完整文件时才设置 `fullCode: true`。
+
+### 版本一致的示例
+
+假设已确认业务项目使用 `2.102.0`，正在调查 Table 行为：
+
+```js
+const version = '2.102.0'; // 替换为已确认的消费版本
+const document = await tools.mcp__semi_mcp__get_semi_document({
+  componentName: 'Table',
+  version,
+});
+
+// 仅当文档不足以回答当前问题时继续。
+const files = await tools.mcp__semi_mcp__get_component_file_list({
+  componentName: 'Table',
+  version,
+});
 ```
 
-返回所有可用组件列表，选择合适的组件。
+后续调用 `get_file_code` 或 `get_function_code` 时沿用这个 `version`，路径取自 `files`，函数名从对应文件确认。示例版本不代表 MCP 已验证支持该版本，也不改变本仓库的固定复刻基线。
 
-### 2. 查询组件详情
+## 查询失败时
 
-获取指定组件的完整文档：
+- 组件未找到：核对目标版本和组件名称，必要时查询该版本的组件列表。
+- 文件或函数未找到：重新核对同版本 `get_component_file_list` 返回的路径和文件中的函数名称，不猜测替代名称。
+- 文档代码块被隐藏：按返回的代码块序号获取同版本示例；不要用其他版本示例补齐。
+- 目标版本、源码或工具不可用：说明缺失的证据，优先检查消费项目已有的同版本包与资料；不要静默回退到 `latest` 或源码工具默认版本。
 
-```json
-{
-  "name": "get_semi_document",
-  "arguments": {
-    "componentName": "Table"
-  }
-}
-```
-
-### 3. 查看组件源码
-
-了解组件的内部实现：
-
-```json
-{
-  "name": "get_component_file_list",
-  "arguments": {
-    "componentName": "Table"
-  }
-}
-```
-
-获取文件列表后，可以用 `get_file_code` 查看具体文件：
-
-```json
-{
-  "name": "get_file_code",
-  "arguments": {
-    "filePath": "@douyinfe/semi-ui/table/Table.tsx"
-  }
-}
-```
-
-### 4. 查看函数实现
-
-深入了解某个函数的逻辑：
-
-```json
-{
-  "name": "get_function_code",
-  "arguments": {
-    "filePath": "@douyinfe/semi-ui/table/Table.tsx",
-    "functionName": "render"
-  }
-}
-```
-
-## 完整任务示例
-
-### 任务 1：创建一个带筛选功能的 Table
-
-**目标**：创建一个支持本地筛选的 Table 组件
-
-**步骤**：
-
-1. **查询 Table 组件文档**
-   ```json
-   { "name": "get_semi_document", "arguments": { "componentName": "Table" } }
-   ```
-
-2. **获取 Table 相关文件**
-   ```json
-   { "name": "get_component_file_list", "arguments": { "componentName": "Table" } }
-   ```
-
-3. **查看筛选相关源码**
-   - 查看 `foundation.ts` 中的筛选逻辑
-   - 查看 `filter.tsx` 的实现
-   - 查看 `columns.tsx` 了解列配置
-
-4. **查看 onFilter 示例**
-   ```json
-   {
-     "name": "get_function_code",
-     "arguments": {
-       "filePath": "@douyinfe/semi-ui/table/table.tsx",
-       "functionName": "handleFilter"
-     }
-   }
-   ```
-
-5. **生成代码**
-   根据查询结果，生成符合规范的 Table 筛选代码
-
-### 任务 2：定制 Table 的列
-
-**目标**：创建一个支持自定义列渲染的 Table
-
-**步骤**：
-
-1. **查询 Table 文档**，了解列配置选项
-2. **查询 Column 组件**（如果有独立文档）
-3. **查看 render 函数实现**，了解如何自定义单元格
-4. **生成代码**，创建自定义列配置
-
-### 任务 3：实现表单验证
-
-**目标**：创建一个带复杂验证逻辑的表单
-
-**步骤**：
-
-1. **查询 Form 组件文档**
-   ```json
-   { "name": "get_semi_document", "arguments": { "componentName": "Form" } }
-   ```
-
-2. **获取 Form 相关文件**
-   ```json
-   { "name": "get_component_file_list", "arguments": { "componentName": "Form" } }
-   ```
-
-3. **查看验证相关代码**
-   - 查看 `rules.ts` 或验证逻辑文件
-   - 查看 `label.tsx` 了解标签配置
-
-4. **生成表单代码**，包含：
-   - 必填验证
-   - 格式验证（邮箱、手机号）
-   - 自定义验证函数
-
-### 任务 4：创建级联选择器
-
-**目标**：实现省市区三级级联选择
-
-**步骤**：
-
-1. **查询 Cascader 组件文档**
-   ```json
-   { "name": "get_semi_document", "arguments": { "componentName": "Cascader" } }
-   ```
-
-2. **查看数据结构示例**
-   - 查看组件中的 data 格式
-   - 了解 loadData 或 onChange 用法
-
-3. **生成级联选择器代码**
-
-### 任务 5：实现拖拽排序
-
-**目标**：创建一个支持行拖拽排序的 Table
-
-**步骤**：
-
-1. **查询 Table 组件**，了解是否内置拖拽支持
-2. **查询 Sortable 组件**（如果有）
-3. **查看拖拽相关源码**
-4. **生成带拖拽功能的 Table 代码**
-
-## 常用查询技巧
-
-### 1. 指定版本查询
-
-```json
-{
-  "name": "get_semi_document",
-  "arguments": {
-    "componentName": "Button",
-    "version": "2.89.2"
-  }
-}
-```
-
-### 2. 获取组件文件列表
-
-获取组件的所有文件路径：
-
-```json
-{
-  "name": "get_component_file_list",
-  "arguments": {
-    "componentName": "Table"
-  }
-}
-```
-
-### 3. 查看完整代码（不截断）
-
-```json
-{
-  "name": "get_file_code",
-  "arguments": {
-    "filePath": "@douyinfe/semi-ui/button/Button.tsx",
-    "fullCode": true
-  }
-}
-```
-
-## 错误排查流程
-
-当遇到问题时，按以下步骤排查：
-
-1. **确认组件名称正确**（大小写不敏感）
-2. **确认文件路径正确**（参考 `get_path` 返回的路径）
-3. **确认函数名称存在**（可在源码中搜索）
-4. **查看错误信息**（通常会指明问题所在）
-
-### 常见错误及解决
-
-**错误 1：组件未找到**
-- 确认组件名称拼写正确
-- 使用 `get_semi_document` 获取完整列表
-
-**错误 2：文件路径错误**
-- 使用 `get_component_file_list` 获取正确路径
-- 注意大小写和路径分隔符
-
-**错误 3：函数不存在**
-- 确认函数名称准确
-- 使用 `get_file_code` 查看文件内容确认函数名
+交付时注明查询版本，区分公开契约、源码观察和仍未验证的推断。

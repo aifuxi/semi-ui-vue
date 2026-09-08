@@ -1,199 +1,24 @@
-# 最佳实践
+# 业务集成实践
 
-本文件提供使用 Semi Design 组件的最佳实践。
+以下建议用于上游 Semi React。所有文档和源码查询遵循 [WORKFLOWS.md](WORKFLOWS.md) 的版本一致性要求，以消费项目的精确版本为准。
 
-## 组件引入
+## 引入与专题查询
 
-### 推荐方式
+沿用消费项目已有的组件、图标与样式引入方式。新增接入时，查询该版本的 `getting-started` 和组件文档，结合项目构建配置确认样式入口与按需加载效果，不仅凭 import 写法判断。
 
-直接按需引入组件，无需额外配置：
+按实际需求调用 `get_semi_document`，传入对应 `componentName` 和同一 `version`：
 
-```jsx
-import { Button, Input, Table, Form, Modal } from '@douyinfe/semi-ui';
-```
+| 需求               | 文档名称                            |
+| ------------------ | ----------------------------------- |
+| 组件 API、图标使用 | 实际组件名称，例如 `Button`、`Icon` |
+| 主题与暗色模式     | `customize-theme`、`dark-mode`      |
+| 项目使用 React 19  | `react19`                           |
+| 项目集成 Tailwind  | `tailwind`                          |
 
-Semi Design 的构建产物已内置按需加载支持，无需配置 babel-plugin-import 或其他插件。
-
-### 图标引入
-
-```jsx
-import { IconUser, IconHome, IconSearch } from '@douyinfe/semi-icons';
-```
-
-使用 tool  get_semi_document 传入 Icon 来查看所有可用的 icon
-
-## 主题定制
-
-如果需要自定义主题（如 Design Token、颜色、字体等），请参考官方定制文档：
-
-文档中包含：
-- 主题变量配置方法
-- 暗黑模式支持
-
-使用 MCP 工具获取相关文档：
-
-```json
-{
-  "name": "get_semi_document",
-  "arguments": {
-    "componentName": "customize-theme"
-  }
-}
-```
-
-## React 19 兼容
-
-如果项目使用 React 19，部分组件可能有特殊的用法或注意事项。
-
-使用 MCP 工具获取 React 19 相关文档：
-
-```json
-{
-  "name": "get_semi_document",
-  "arguments": {
-    "componentName": "react19"
-  }
-}
-```
-
-文档中包含：
-- React 19 新特性使用示例
-- 已知兼容性问题及解决方案
-- 性能优化建议
+文档名称和参数先核对当前工具 schema。若目标版本没有专题文档，说明信息缺口，不把其他版本的说明直接当作该版本支持证据。
 
 ## 扩展组件
 
-如果通过传入 Props 或者 ref 的方法不能实现需求的时候，当 Semi Design 的默认功能不满足需求，或需要修改组件内部逻辑/样式时，推荐通过继承来扩展组件。
+优先使用该版本公开的 props、事件回调、受控状态、render props 或其他公开渲染接口；外围布局和业务逻辑可通过组合或包装组件实现。只有公开文档或类型声明支持的 ref 方法才作为业务接口使用。
 
-### 步骤 1：读取组件源码
-
-使用 MCP 工具获取目标组件的源码：
-
-```json
-{
-  "name": "get_component_file_list",
-  "arguments": {
-    "componentName": "Select"
-  }
-}
-```
-
-获取文件列表后，查看具体实现：
-
-```json
-{
-  "name": "get_file_code",
-  "arguments": {
-    "filePath": "@douyinfe/semi-ui/select/index.tsx"
-  }
-}
-```
-
-### 步骤 2：创建扩展组件
-
-使用 class 组件继承 Semi 组件，覆盖相应方法：
-
-```jsx
-import { Select } from '@douyinfe/semi-ui';
-
-class CustomSelect extends Select {
-  // 覆盖渲染方法，修改 UI
-  render() {
-    const original = super.render();
-    // 在原 Select 前后添加自定义内容
-    return (
-      <div className="custom-select-wrapper">
-        <span className="label">{this.props.label}</span>
-        {original}
-      </div>
-    );
-  }
-  
-  // 覆盖选项选择处理，添加额外逻辑
-  onSelect(option, optionIndex, e) {
-    console.log('自定义选择逻辑', option);
-    // 调用原始逻辑
-    super.onSelect(option, optionIndex, e);
-  }
-  
-  // 覆盖生命周期方法
-  componentDidMount() {
-    super.componentDidMount();
-    console.log('Select 已挂载');
-  }
-}
-```
-
-### 步骤 3：使用扩展组件
-
-```jsx
-import { CustomSelect } from './components';
-
-<CustomSelect 
-  label="请选择"
-  dataSource={[
-    { value: 'apple', label: '苹果' },
-    { value: 'banana', label: '香蕉' }
-  ]}
-  onChange={value => console.log('选择了', value)}
-/>
-```
-
-### 覆盖内部逻辑示例
-
-修改 Table 的排序行为：
-
-```jsx
-import { Table } from '@douyinfe/semi-ui';
-
-class CustomTable extends Table {
-  handleSorterChange = (column, order) => {
-    // 添加自定义排序逻辑
-    if (this.props.onCustomSort) {
-      this.props.onCustomSort(column, order);
-    }
-    // 调用原始逻辑
-    super.handleSorterChange(column, order);
-  }
-}
-```
-
-### 注意事项
-
-- 只覆盖必要的方法，避免破坏组件封装
-- 调用 `super.xxx()` 保留原始逻辑
-
-### 使用场景
-
-继承扩展是一种较重的方案，应优先尝试通过 props 实现：
-
-**优先使用 props**：
-```jsx
-// 大多数需求可以通过 props 满足
-<Button type="primary" loading={loading} onClick={handleClick}>
-  按钮
-</Button>
-```
-
-**当 props 无法满足时**，才考虑扩展：
-- 需要修改组件内部方法的默认行为
-- 需要劫持组件的生命周期逻辑
-- 需要在渲染流程中插入自定义逻辑，或修改组件内部 UI
-
-例如：需要修改 Table 排序的默认算法、覆盖 Modal 的某些默认配置等。
-
-
-# tailwind
-如果项目使用 tailwind, 请使用 MCP 工具获取相关文档：
-
-```json
-{
-  "name": "get_semi_document",
-  "arguments": {
-    "componentName": "tailwind"
-  }
-}
-```
-
-
-
+只有用户明确需要讨论内部覆盖，且同版本源码证据支持时，才评估继承或覆盖内部方法。先确认组件的实际导出形式、方法定义与调用关系，并说明对升级兼容性的影响。不要把未核实的内部方法名、生命周期调用或 `super` 示例当作通用扩展方式。

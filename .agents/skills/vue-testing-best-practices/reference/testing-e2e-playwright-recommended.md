@@ -1,242 +1,45 @@
 ---
-title: Use Playwright for E2E Testing - Cross-Browser Support and Better DX
+title: 复用仓库 Playwright 配置验证真实浏览器行为
 impact: MEDIUM
-impactDescription: Cypress has browser limitations and some features require paid subscriptions
+impactDescription: 另建浏览器配置会偏离锁定 Chromium、场景环境与视觉门禁，降低对照证据的可比性
 type: best-practice
-tags: [vue3, testing, e2e, playwright, cypress, end-to-end]
+tags: [vue3, testing, e2e, playwright, chromium, end-to-end]
 ---
 
-# Use Playwright for E2E Testing - Cross-Browser Support and Better DX
+# 复用仓库 Playwright 配置验证真实浏览器行为
 
-**Impact: MEDIUM** - Playwright offers superior cross-browser testing (Chromium, WebKit, Firefox), excellent debugging tools, and is fully open source. Cypress has limitations with WebKit support and requires paid subscriptions for some features.
+本仓库已经采用 Playwright。扩展测试时读取相关配置和相邻 spec，复用 pnpm lockfile 指定的版本与浏览器构建；不运行 `npm init playwright@latest`，不另建三浏览器或 mobile 项目模板。其他项目应先确认其已有工具和支持范围，再决定是否需要搭建基础设施。
 
-Use Playwright for new E2E testing setups. Consider Cypress if team already has expertise or for its visual debugging UI.
+## 选择已有入口
 
-## Task Checklist
+| 验证目标                                | 入口                                                                                                                                                                    |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| React/Vue 组件行为和视觉对照            | [根 Playwright 配置](../../../../playwright.config.ts)、[组件 spec](../../../../tests/browser/components)、[测试基础设施](../../../../packages/test-infra/src/index.ts) |
+| Nuxt 文档站、SSR 输出后的交互和文档示例 | [文档站配置](../../../../apps/docs/playwright.config.ts)、[文档工作流](../../../../docs/documentation/workflow.md)                                                      |
+| 测试命令、构建前置条件和版本            | [根脚本](../../../../package.json)、[文档站脚本](../../../../apps/docs/package.json)、[pnpm lockfile](../../../../pnpm-lock.yaml)                                       |
 
-- [ ] Install Playwright with browsers for your target platforms
-- [ ] Configure for Vue dev server integration
-- [ ] Set up projects for different browsers
-- [ ] Use locator strategies that match component test patterns
-- [ ] Configure CI for parallel test execution
-- [ ] Use trace and screenshot features for debugging
-
-## Quick Setup
+从仓库根目录运行受影响的 spec，例如已有 Button 场景：
 
 ```bash
-# Install Playwright
-npm init playwright@latest
-
-# This will create:
-# - playwright.config.ts
-# - tests/ directory
-# - tests-examples/ directory
+pnpm exec playwright test tests/browser/components/button.spec.ts --project=chromium
 ```
 
-**playwright.config.ts:**
-```typescript
-import { defineConfig, devices } from '@playwright/test'
+文档站使用 `pnpm --filter @workspace/docs test:nuxt`，其配置启动静态预览；先按文档工作流准备构建和证据，再缩小到受影响的测试文件。不要用开发服务器通过来代替所要求的生产静态验收。
 
-export default defineConfig({
-  testDir: './e2e',
-  fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
+## 场景与断言
 
-  use: {
-    // Base URL for navigation
-    baseURL: 'http://localhost:5173',
-    // Capture trace on first retry
-    trace: 'on-first-retry',
-    // Screenshot on failure
-    screenshot: 'only-on-failure',
-  },
+- 先观察实际 DOM、ARIA、Portal 和 iframe 视口，再选择 role、label 或稳定场景标识；Portal 内容应在真实容器中查询。
+- 从用户交互出发断言公开输出、事件顺序、键盘与焦点结果。只检查节点存在、截图或私有方法调用都不足以证明行为正确。
+- 保留触发缺陷的首次挂载、SSR hydration、退出动画、重开或卸载条件。测试隔离应清理自身创建的 DOM、监听器、Observer、时钟与网络替身。
+- 优先使用 locator 的可等待断言和确定性 fixture。单独运行通过、联合运行失败时定位共享状态或异步竞争，不能靠增加 retries、随意固定等待或更新截图掩盖问题。
 
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-    // Mobile viewports
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-  ],
+## 视觉证据
 
-  // Run local dev server before tests
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:5173',
-    reuseExistingServer: !process.env.CI,
-  },
-})
-```
+以 [AGENTS.md](../../../../AGENTS.md) 和现有 fixture 为准：同一 Chromium 进程内对照 React/Vue，固定字体、viewport、DPR、Locale、主题、数据与动画时刻。默认桌面 `1440×900`、DPR 1，覆盖 light/dark；窄视口、触摸、RTL 与国际化场景按固定上游契约补充，不自动扩成全量移动端矩阵。
 
-## E2E Test Example
+裁剪组件、Portal 弹层或最小完整场景，结合关键 computed style 和 bounding rect 比较。复用现有阈值与截图策略，不用整页面积、扩大 mask 或放宽阈值稀释局部差异。保留 CI 的 `failOnFlakyTests` 与既有 retries 配置。
 
-```typescript
-// e2e/user-flow.spec.ts
-import { test, expect } from '@playwright/test'
+## 参考
 
-test.describe('User Authentication', () => {
-  test('user can log in and see dashboard', async ({ page }) => {
-    // Navigate to login
-    await page.goto('/login')
-
-    // Fill login form
-    await page.getByLabel('Email').fill('user@example.com')
-    await page.getByLabel('Password').fill('password123')
-    await page.getByRole('button', { name: 'Sign In' }).click()
-
-    // Verify redirect to dashboard
-    await expect(page).toHaveURL('/dashboard')
-    await expect(page.getByRole('heading', { name: 'Welcome' })).toBeVisible()
-  })
-
-  test('shows error for invalid credentials', async ({ page }) => {
-    await page.goto('/login')
-
-    await page.getByLabel('Email').fill('wrong@example.com')
-    await page.getByLabel('Password').fill('wrongpassword')
-    await page.getByRole('button', { name: 'Sign In' }).click()
-
-    await expect(page.getByRole('alert')).toContainText('Invalid credentials')
-    await expect(page).toHaveURL('/login')
-  })
-})
-```
-
-## Playwright vs Cypress Comparison
-
-| Feature | Playwright | Cypress |
-|---------|------------|---------|
-| Browsers | Chromium, Firefox, WebKit | Chromium, Firefox, Electron (WebKit experimental) |
-| Cross-browser | Full support | Limited |
-| Parallelization | Built-in | Requires Cypress Cloud |
-| Open source | Fully | Core only |
-| Mobile testing | Device emulation | Limited |
-| Debugging | Inspector, trace viewer | Time-travel UI |
-| API testing | Built-in | Plugin required |
-| Iframes | Full support | Limited |
-
-## Testing Vue Components with Data-Testid
-
-```typescript
-// e2e/product-list.spec.ts
-import { test, expect } from '@playwright/test'
-
-test('user can add product to cart', async ({ page }) => {
-  await page.goto('/products')
-
-  // Use data-testid for reliable selectors
-  await page.getByTestId('product-card').first().click()
-
-  // Verify product detail page
-  await expect(page.getByTestId('product-title')).toBeVisible()
-
-  // Add to cart
-  await page.getByTestId('add-to-cart-button').click()
-
-  // Verify cart updated
-  await expect(page.getByTestId('cart-count')).toHaveText('1')
-})
-```
-
-## Page Object Pattern for Vue Apps
-
-```typescript
-// e2e/pages/LoginPage.ts
-import { Page, Locator } from '@playwright/test'
-
-export class LoginPage {
-  readonly page: Page
-  readonly emailInput: Locator
-  readonly passwordInput: Locator
-  readonly submitButton: Locator
-  readonly errorMessage: Locator
-
-  constructor(page: Page) {
-    this.page = page
-    this.emailInput = page.getByLabel('Email')
-    this.passwordInput = page.getByLabel('Password')
-    this.submitButton = page.getByRole('button', { name: 'Sign In' })
-    this.errorMessage = page.getByRole('alert')
-  }
-
-  async goto() {
-    await this.page.goto('/login')
-  }
-
-  async login(email: string, password: string) {
-    await this.emailInput.fill(email)
-    await this.passwordInput.fill(password)
-    await this.submitButton.click()
-  }
-}
-```
-
-```typescript
-// e2e/auth.spec.ts
-import { test, expect } from '@playwright/test'
-import { LoginPage } from './pages/LoginPage'
-
-test('successful login', async ({ page }) => {
-  const loginPage = new LoginPage(page)
-  await loginPage.goto()
-  await loginPage.login('user@example.com', 'password123')
-
-  await expect(page).toHaveURL('/dashboard')
-})
-```
-
-## Visual Regression Testing
-
-```typescript
-test('homepage visual regression', async ({ page }) => {
-  await page.goto('/')
-
-  // Full page screenshot comparison
-  await expect(page).toHaveScreenshot('homepage.png')
-
-  // Element-specific screenshot
-  await expect(page.getByTestId('hero-section')).toHaveScreenshot('hero.png')
-})
-```
-
-## Running Tests
-
-```bash
-# Run all tests
-npx playwright test
-
-# Run in headed mode (see browser)
-npx playwright test --headed
-
-# Run specific file
-npx playwright test e2e/auth.spec.ts
-
-# Run in specific browser
-npx playwright test --project=chromium
-
-# Debug mode
-npx playwright test --debug
-
-# Generate test from actions
-npx playwright codegen localhost:5173
-```
-
-## Reference
-- [Playwright Documentation](https://playwright.dev/)
-- [Vue.js E2E Testing Recommendations](https://vuejs.org/guide/scaling-up/testing#e2e-testing)
 - [Playwright Best Practices](https://playwright.dev/docs/best-practices)
+- [Vue.js E2E Testing](https://vuejs.org/guide/scaling-up/testing#e2e-testing)

@@ -97,15 +97,10 @@ git -C vendor/semi-design describe --tags --exact-match
 
 ## 测试与门禁
 
-- 后续所有示例补齐、文档示例修复和严格视觉验收，先读并按 [`docs/documentation/workflow.md`](docs/documentation/workflow.md) 执行。补齐线按风险完成双语代表路径与必要的生产预检后再扩展；最终 diff 自审和低成本检查前置，冻结输入后完成联合检查与静态运行，再做受影响矩阵及发布包验证，最后刷新证据，不为提交重复验证。
-- 烟测先观察实际 DOM、ARIA、Portal 和 iframe 视口再写定位器；真实复现不得丢掉 SSR、退出动画或重开条件。批量断言使用仓库 Node + Playwright，编辑器与模拟时钟分开运行。
-- 临时烟测结果存入 `apps/docs/.data/documentation-smoke/<批次>/<运行标识>/`，不得放在后续 Playwright 默认会清空的 `test-results` 根目录中；清理脚本前先保存运行摘要和必要截图，清理构建前按文档流程归档证据。
-
+- 示例补齐、文档示例修复和严格视觉验收按 [`docs/documentation/workflow.md`](docs/documentation/workflow.md) 的任务入口执行；代表预检、验证顺序、真实浏览器时序与烟测证据归档统一在该流程维护。
 - `failOnFlakyTests`（CI 环境已启用）和 `retries: 2` 是防抖基础配置。一个只在单独运行时通过的 spec 是 spec 的缺陷，不是 runner 不稳定——修复 spec 或添加确定性 fixture，而非增加 retries。
-- 每个组件完成 = 对齐矩阵 + Vue 源码/类型 + 中英文文档与迁移表 + 黑盒单测 + Chromium 行为/键盘/焦点/ARIA/Portal/动效测试 + SSR 证据 + React/Vue computed style 与截图对照 + npm pack 验证。
-- 测试优先公开行为，不把私有 state/method 或 Foundation spy 当主证据；快照必须与行为断言配对。
+- 组件完成产物、黑盒断言与桌面优先矩阵统一遵守上文“复刻工作约束”。
 - Teleport/真实焦点/拖拽/ResizeObserver/computed style/动画不能用 jsdom 结果代替 Chromium 证据。
-- 桌面优先矩阵（ADR 0013）：默认 1440×900 DPR1 light/dark；仅上游契约明确依赖时才加 390×844 narrow/触摸专项。
 
 ## Git
 

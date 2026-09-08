@@ -1,184 +1,52 @@
 ---
-title: SFC Script Block Must Use Default Export Only
+title: Distinguish Normal Script Exports from Script Setup Exports
 impact: HIGH
-impactDescription: Named exports in SFC script blocks will fail silently or cause build errors - Vue expects exactly one default export
+impactDescription: Normal script supports auxiliary named exports; script setup generates the component export and rejects runtime value exports
 type: gotcha
 tags: [vue3, sfc, export, script-block, composition-api]
 ---
 
-# SFC Script Block Must Use Default Export Only
+# 区分普通 script 与 script setup 的导出
 
-**Impact: HIGH** - Vue Single-File Components expect exactly one default export from the `<script>` block. Using named exports for your component will cause build failures or runtime errors because Vue's tooling is designed to process a single default-exported component definition per `.vue` file.
+普通 `<script>` 使用 ES module 语义，可以在组件的 default export 之外提供辅助 named exports。`<script setup>` 由编译器生成组件导出，不允许直接写运行时 `export const`、`export function` 或 `export default`。不能把后者的限制扩大为“所有 SFC 禁止 named exports”。
 
-## Task Checklist
+## 定位与修复
 
-- [ ] Always use `export default` in `<script>` blocks (Options API)
-- [ ] Use `<script setup>` which handles exports automatically (Composition API)
-- [ ] Move shared utilities to separate `.js`/`.ts` files, not the component's script block
-- [ ] If you need to export types, use a separate `<script>` block alongside `<script setup>`
+- 先看报错所属的是普通 `<script>` 还是 `<script setup>`，以及导出是运行时值还是纯 TypeScript 类型。
+- 需要从同一个 SFC 导出辅助常量或函数时，可用普通 `<script>`；跨组件共享逻辑通常放独立 `.ts` 文件更易复用，但这是组织建议，不是编译限制。
+- 纯类型导出与运行时值导出不同；以本项目锁定的 Vue 编译器和 TypeScript 工具链验证，不按“出现 export 关键字”直接判错。
+- 普通 `<script>` 在模块作用域执行，不能借辅助导出暴露某个 `<script setup>` 实例的局部状态；公开实例能力使用 `defineExpose`。
 
-**Problematic Code:**
-```vue
-<!-- MyComponent.vue -->
-<script>
-// BAD: Named exports don't work for the component itself
-export const MyComponent = {
-  data() {
-    return { count: 0 }
-  }
-}
-
-// BAD: Exporting multiple things from component script
-export const CONSTANT = 42
-export function helper() { }
-</script>
-
-<template>
-  <div>{{ count }}</div>
-</template>
-```
-
-**Correct Code:**
-```vue
-<!-- MyComponent.vue - Options API -->
-<script>
-// GOOD: Single default export
-export default {
-  data() {
-    return { count: 0 }
-  }
-}
-</script>
-
-<template>
-  <div>{{ count }}</div>
-</template>
-```
-
-```vue
-<!-- MyComponent.vue - Composition API with script setup -->
-<script setup>
-// GOOD: No export needed, component is auto-exported
-import { ref } from 'vue'
-
-const count = ref(0)
-</script>
-
-<template>
-  <div>{{ count }}</div>
-</template>
-```
-
-## Exporting Types Alongside Script Setup
-
-For TypeScript, use a separate regular script block for type exports:
+以下组合合法，组件 default export 由 `<script setup>` 生成：
 
 ```vue
 <script lang="ts">
-// Regular script block for exports
-export interface User {
-  id: number
-  name: string
+export const DEFAULT_COUNT = 0;
+export interface CounterOptions {
+  initial: number;
 }
-
-export type Status = 'pending' | 'active' | 'inactive'
 </script>
 
 <script setup lang="ts">
-// Setup script for component logic
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const users = ref<User[]>([])
+const count = ref(DEFAULT_COUNT);
 </script>
 
 <template>
-  <ul>
-    <li v-for="user in users" :key="user.id">{{ user.name }}</li>
-  </ul>
+  <button @click="count++">{{ count }}</button>
 </template>
 ```
 
-## Sharing Utilities Across Components
-
-Don't put shared code in component script blocks. Create separate files:
-
-```typescript
-// utils/constants.ts
-export const ITEMS_PER_PAGE = 20
-export const API_BASE_URL = '/api/v1'
-
-// utils/helpers.ts
-export function formatDate(date: Date): string {
-  return date.toLocaleDateString()
-}
-
-export function formatCurrency(amount: number): string {
-  return `$${amount.toFixed(2)}`
-}
-```
+以下运行时值导出会被 `<script setup>` 编译器拒绝：
 
 ```vue
-<!-- ProductList.vue -->
-<script setup>
-// GOOD: Import shared utilities from external files
-import { ITEMS_PER_PAGE } from '@/utils/constants'
-import { formatCurrency } from '@/utils/helpers'
-import { ref } from 'vue'
-
-const products = ref([])
+<script setup lang="ts">
+export const DEFAULT_COUNT = 0;
 </script>
 ```
 
-## Why This Restriction Exists
+## 参考
 
-Vue's SFC compiler and build tools expect:
-
-1. **One component per file**: The `.vue` file format is designed for single-component definitions
-2. **Predictable structure**: Tools like Volar, vue-tsc, and bundler plugins assume default export
-3. **Hot Module Replacement**: HMR relies on the single-component-per-file convention
-
-```javascript
-// How Vue tooling processes SFCs internally
-import MyComponent from './MyComponent.vue'
-// ^ Always expects the default export to be the component
-```
-
-## Common Mistake: Reusing Code via SFC Exports
-
-```vue
-<!-- BAD PATTERN: Trying to reuse code from components -->
-<script>
-// This won't work as expected
-export const sharedLogic = () => { ... }
-
-export default {
-  // component definition
-}
-</script>
-```
-
-Instead, use composables:
-
-```typescript
-// composables/useSharedLogic.ts
-export function useSharedLogic() {
-  // Shared reactive logic
-  const state = ref(0)
-  const increment = () => state.value++
-
-  return { state, increment }
-}
-```
-
-```vue
-<!-- ComponentA.vue -->
-<script setup>
-import { useSharedLogic } from '@/composables/useSharedLogic'
-
-const { state, increment } = useSharedLogic()
-</script>
-```
-
-## Reference
-- [Vue.js SFC Specification](https://vuejs.org/api/sfc-spec.html)
-- [Vue.js Composition API - Composables](https://vuejs.org/guide/reusability/composables.html)
+- [Vue：与普通 script 一起使用](https://vuejs.org/api/sfc-script-setup.html#usage-alongside-normal-script)
+- [Vue：SFC script 规范](https://vuejs.org/api/sfc-spec.html#script)

@@ -1,208 +1,36 @@
 ---
-title: Choose Browser-Based Runner for Style and DOM Event Testing
+title: 按验证能力选择已有 Node 与浏览器测试入口
 impact: MEDIUM
-impactDescription: Node-based runners cannot test real CSS behavior, native DOM events, cookies, or computed styles
+impactDescription: jsdom 的 DOM 模拟不能代替浏览器布局、原生交互或 SSR hydration 证据
 type: capability
 tags: [vue3, testing, component-testing, vitest, browser, jsdom]
 ---
 
-# Choose Browser-Based Runner for Style and DOM Event Testing
+# 按验证能力选择已有 Node 与浏览器测试入口
 
-**Impact: MEDIUM** - Node-based test runners (Vitest with jsdom/happy-dom) simulate the DOM but cannot test real CSS rendering, native browser events, cookies, computed styles, or cross-browser behavior. Use browser-based runners when these matter.
+本仓库使用 [Vitest + jsdom](../../../../vitest.config.ts) 完成适合模拟环境的单测，使用 [Playwright Chromium](../../../../playwright.config.ts) 验证真实浏览器行为。需要浏览器证据不等于需要 Vitest Browser Mode；不要为本技能另装 `@vitest/browser`、浏览器 provider 或创建第二套 runner。
 
-Use Vitest for most component tests (fast), but use Vitest Browser Mode when testing visual/DOM-dependent features.
+## 选择能证明目标行为的环境
 
-## Task Checklist
+| 目标                                               | 适用证据                                                 | 边界                                                                 |
+| -------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------------------- |
+| 纯逻辑、公开 props/emits/slots/v-model、异步结果   | 已有 Vitest 与 Vue Test Utils 黑盒单测                   | 驱动公开输入，断言用户可观察输出；不依赖私有 state 或 Foundation spy |
+| DOM/class 兼容结构                                 | 单测可检查公开结构；必要时在浏览器复核                   | class 存在不能证明样式、几何或视觉正确                               |
+| computed style、bounding rect、hover、布局与滚动   | 已有 Playwright Chromium 场景                            | jsdom 支持部分样式解析，但没有真实布局与绘制结果                     |
+| 真实焦点、键盘默认行为、拖拽、ResizeObserver、动效 | 已有 Playwright 用户交互与可观察结果                     | 合成事件、手工 Observer 回调或模拟时钟不能单独证明浏览器行为         |
+| Portal 容器、浮层定位、关闭/重开与卸载             | 浏览器中挂载真实 Portal，并覆盖相关生命周期              | Teleport stub 只验证被隔离的单测目标，不能证明真实容器和焦点契约     |
+| SSR-safe import、SSR render                        | 已有无浏览器全局对象的 import 检查及适用的服务端渲染测试 | jsdom 自带 DOM，不能证明代码在无 DOM 环境可导入                      |
+| SSR hydration 与客户端生命周期衔接                 | 在 Chromium 中激活真实 SSR 输出                          | 客户端从空容器 mount 不能复现 hydration 差异                         |
 
-- [ ] Use Vitest (node) for logic-focused component tests
-- [ ] Use Vitest Browser Mode for style-dependent tests
-- [ ] Use Vitest Browser Mode for native events (focus, drag, resize)
-- [ ] Use Vitest Browser Mode for cookies and computed CSS styles
-- [ ] Accept slower speed tradeoff for browser accuracy
+Cookie API 的模拟测试可以验证调用逻辑；若目标涉及实际浏览器存储策略、请求携带或同源边界，使用已有浏览器 fixture，不把模拟结果当作浏览器保证。
 
-## When to Use Each Approach
+## 生命周期与测试隔离
 
-### Node-Based Runner (Vitest + happy-dom/jsdom)
-Best for:
-- Pure logic testing
-- State management
-- Event emission
-- Props/slots behavior
-- Most component interactions
-- Fast CI/CD pipelines
+只使用响应式 API 的 composable 可直接测试；依赖 inject 或组件生命周期时，使用宿主组件，在 mount 前设置 provider，结束后 unmount。涉及 DOM、Observer、全局事件或 Portal 的行为，还需要客户端挂载与清理证据；按缺陷触发条件保留 SSR、退出动画和再次打开的路径。
 
-```javascript
-// vitest.config.js
-export default defineConfig({
-  test: {
-    environment: 'happy-dom',  // or 'jsdom'
-  }
-})
-```
+异步更新先等待对应 Promise、Vue 更新或可观察 UI 状态。布局、真实动画与焦点测试按已有 Chromium fixture 执行；不能只让 jsdom 用例通过，也不要把所有单测迁到浏览器。具体场景、环境锁定与执行入口见 [Playwright 指南](testing-e2e-playwright-recommended.md)。
 
-```javascript
-// Fast but limited - fine for most tests
-test('button emits click event', async () => {
-  const wrapper = mount(Button)
-  await wrapper.trigger('click')
-  expect(wrapper.emitted('click')).toBeTruthy()
-})
-```
+## 参考
 
-### Vitest Browser Mode
-Required for:
-- CSS computed styles verification
-- CSS transitions/animations
-- Real focus/blur behavior
-- Drag and drop
-- Cookie operations
-- Viewport-dependent behavior
-- Cross-browser validation
-
-## Vitest Browser Mode Setup
-
-```bash
-npm install -D @vitest/browser playwright
-```
-
-```javascript
-// vitest.config.js
-import { defineConfig } from 'vitest/config'
-
-export default defineConfig({
-  test: {
-    browser: {
-      enabled: true,
-      name: 'chromium',
-      provider: 'playwright',
-    },
-  },
-})
-```
-
-```javascript
-// Button.browser.test.js
-import { render } from 'vitest-browser-vue'
-import Button from './Button.vue'
-
-test('has correct hover styling', async () => {
-  const { getByRole } = render(Button, { props: { label: 'Click me' } })
-
-  const button = getByRole('button')
-
-  // Check initial style
-  await expect.element(button).toHaveStyle({
-    backgroundColor: 'rgb(59, 130, 246)'  // blue
-  })
-})
-
-test('maintains focus after click', async () => {
-  const { getByRole } = render(Button)
-
-  const button = getByRole('button')
-  await button.click()
-
-  await expect.element(button).toHaveFocus()
-})
-```
-
-## Examples: What Each Runner Can/Cannot Test
-
-### Styles - Browser Required
-```javascript
-// Node runner: CANNOT verify actual CSS
-test('danger button has red background', () => {
-  const wrapper = mount(Button, { props: { variant: 'danger' } })
-  // This only checks class exists, not actual color
-  expect(wrapper.classes()).toContain('bg-red-500')
-})
-
-// Vitest Browser Mode: CAN verify computed styles
-test('danger button renders red', async () => {
-  const { getByRole } = render(Button, { props: { variant: 'danger' } })
-  await expect.element(getByRole('button')).toHaveStyle({
-    backgroundColor: 'rgb(239, 68, 68)'
-  })
-})
-```
-
-### Computed CSS Styles - Browser Required
-```javascript
-// Node runner: CANNOT get real computed styles
-test('button has correct padding', () => {
-  const wrapper = mount(Button)
-  // getComputedStyle returns empty/default values in jsdom
-  const style = window.getComputedStyle(wrapper.element)
-  // style.padding will be empty string, not actual computed value
-})
-
-// Vitest Browser Mode: Real computed styles
-test('button has correct padding', async () => {
-  const { getByRole } = render(Button)
-  const button = getByRole('button')
-
-  await expect.element(button).toHaveStyle({
-    padding: '12px 24px'
-  })
-})
-```
-
-### Native Events - Browser Required
-```javascript
-// Node runner: Synthetic events only
-test('handles drag and drop', async () => {
-  const wrapper = mount(DraggableList)
-  // trigger('dragstart') is synthetic - may not work as expected
-  await wrapper.find('.item').trigger('dragstart')
-})
-
-// Vitest Browser Mode: Real native events via userEvent
-import { userEvent } from '@vitest/browser/context'
-
-test('reorders items on drag', async () => {
-  const { getByTestId } = render(DraggableList)
-
-  const item = getByTestId('item-1')
-  const target = getByTestId('item-3')
-
-  await userEvent.dragAndDrop(item, target)
-
-  // Assert reordering
-})
-```
-
-## Recommended Testing Strategy
-
-```javascript
-// vitest.config.js - Separate test configurations
-
-export default defineConfig({
-  test: {
-    // Default: Node environment for speed
-    environment: 'happy-dom',
-
-    // Browser tests in separate directory
-    include: ['src/**/*.test.{js,ts}'],
-  },
-})
-
-// Run browser tests separately
-// npx vitest --browser.enabled
-```
-
-### Directory Structure
-```
-tests/
-├── unit/              # Fast node-based tests
-│   ├── Button.test.js
-│   └── useCounter.test.js
-├── component/         # Slower browser-based tests
-│   ├── Button.browser.test.js
-│   └── DragDrop.browser.test.js
-└── e2e/               # Full E2E tests (Playwright)
-    └── user-flow.spec.ts
-```
-
-## Reference
-- [Vue.js Testing - Component Testing](https://vuejs.org/guide/scaling-up/testing#component-testing)
-- [Vitest Browser Mode](https://vitest.dev/guide/browser.html)
+- [Vue.js Component Testing](https://vuejs.org/guide/scaling-up/testing#component-testing)
+- [Playwright Best Practices](https://playwright.dev/docs/best-practices)
