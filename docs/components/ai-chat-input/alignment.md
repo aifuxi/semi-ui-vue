@@ -97,3 +97,5 @@ Vue render prop 使用 scoped slots；同时保留函数 prop 作为迁移兼容
 ## 文档补齐：任意配置控件
 
 固定 `configure/getConfigureItem.tsx` 的字段注册、初始化、变更和卸载由 Vue `Configure.Item` scoped slot 表达；`field`/`initValue` 不变，默认插槽提供 `value`/`onChange`，支持 Cascader 等公开控件。黑盒单测验证初值、双实例隔离及 messageSend.setup；文档 Chromium 验证 Cascader 选择与发送，真实包验证公开导出和类型。无新增第三方依赖或资产。
+
+默认上传按钮由外层 Upload trigger 统一打开文件选择器，一次点击只触发一次；自定义上传插槽仍可使用公开 `openFileDialog` 回调。固定依据：`aiChatInput/index.tsx:528` 的默认按钮没有额外 click 回调。

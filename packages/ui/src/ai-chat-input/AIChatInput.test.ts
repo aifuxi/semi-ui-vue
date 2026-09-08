@@ -40,6 +40,13 @@ afterEach(() => {
 enableAutoUnmount(afterEach);
 
 describe('AIChatInput', () => {
+  it('默认上传按钮一次点击只打开一次文件选择器', async () => {
+    const open = vi.spyOn(HTMLInputElement.prototype, 'click');
+    const wrapper = await mountInput({ uploadProps: { action: '' } });
+    await wrapper.get('button[aria-label="Upload"]').trigger('click');
+    expect(open.mock.contexts.filter((input) => input.type === 'file')).toHaveLength(1);
+  });
+
   it('custom configure slots contribute setup values with provider isolation', async () => {
     const custom = (initial: string) =>
       mount(AIChatInput, {

@@ -145,3 +145,5 @@ See the [React-to-Vue guide](#react-vue) and the [alignment matrix](https://gith
 所有默认值为 `true` 的 Boolean prop 都区分缺省与显式 `false`；模板中的裸属性、`:prop="false"` 与 render function 输入均遵循 Vue 原生语义。Tiptap 扩展继续通过 `extensions` 追加，公开 Tiptap 类型来自已声明的运行时依赖，不需要消费方初始化 `vendor/semi-design`。
 
 `Configure.Item` connects arbitrary controls through `field`, `initValue`, and the default slot `{ value, onChange }`. Changes update `configureChange` and the sent `setup`; unmounting removes the field.
+
+The default upload button relies on its enclosing Upload trigger to open the file chooser once per click. Custom upload slots can use the public `openFileDialog` callback.

@@ -27,3 +27,5 @@ Vue 不接受 ReactNode；头像、render 配置和内容 renderer 返回 Vue `V
 ```
 
 数据转换函数保持名称不变：`chatCompletionToMessage`、`streamingChatCompletionToMessage`、`responseToMessage`、`streamingResponseToMessage`、`chatInputToMessage`、`chatInputToChatCompletion` 和 `messageToChatInput`。
+
+`message-edit` 插槽的 `{ value }` 为公开 `messageToChatInput(message)` 的返回值，包含 `inputContents`、`attachments` 和 `references`；消息编辑保留文本、附件与引用。固定依据：`aiChatDialogue/widgets/dialogueContent.tsx:342`。

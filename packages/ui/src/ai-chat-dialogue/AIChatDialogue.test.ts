@@ -24,6 +24,43 @@ const plainRender = {
 };
 
 describe('AIChatDialogue', () => {
+  it('消息编辑回调保留文本、附件和引用', async () => {
+    const message: Message = {
+      id: 'edit',
+      role: 'user',
+      editing: true,
+      references: [{ id: 'ref', type: 'text', content: 'Reference' }],
+      content: [
+        {
+          type: 'message',
+          content: [
+            { type: 'input_text', text: 'Original question' },
+            { type: 'input_file', filename: 'notes.txt', file_url: '/notes.txt' },
+          ],
+        },
+      ],
+    };
+    const wrapper = mount(AIChatDialogue, {
+      props: {
+        chats: [message],
+        roleConfig,
+        messageEditRender: (value: unknown) => h('output', JSON.stringify(value)),
+      },
+    });
+    expect(JSON.parse(wrapper.get('output').text())).toMatchObject({
+      inputContents: [{ type: 'text', text: 'Original question' }],
+      attachments: [{ name: 'notes.txt', url: '/notes.txt', status: 'success' }],
+      references: [{ id: 'ref', content: 'Reference' }],
+    });
+    await wrapper.setProps({ chats: [{ ...message, content: 'Plain question' }] });
+    expect(JSON.parse(wrapper.get('output').text())).toMatchObject({
+      inputContents: [{ type: 'text', text: 'Plain question' }],
+      attachments: [],
+      references: [{ id: 'ref' }],
+    });
+    wrapper.unmount();
+  });
+
   it('复制消息使用用户激活路径并清理临时文本域', async () => {
     let copied = '';
     const previous = document.execCommand;

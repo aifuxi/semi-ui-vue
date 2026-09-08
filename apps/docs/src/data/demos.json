@@ -972,6 +972,116 @@
     "upstream": "ai/aiChatInput"
   },
   {
+    "id": "ai-component/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "ai-component/en-US/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue/icons/IconAIBellLevel1",
+      "@aifuxi/semi-icons-vue/icons/IconAIEditLevel1",
+      "@aifuxi/semi-icons-vue/icons/IconAIEditLevel2",
+      "@aifuxi/semi-icons-vue/icons/IconAIFileLevel3",
+      "@aifuxi/semi-icons-vue/icons/IconAIFilledLevel1",
+      "@aifuxi/semi-icons-vue/icons/IconAIFilledLevel3",
+      "@aifuxi/semi-icons-vue/icons/IconAIImageLevel3",
+      "@aifuxi/semi-icons-vue/icons/IconAILoading",
+      "@aifuxi/semi-icons-vue/icons/IconAISearchLevel3",
+      "@aifuxi/semi-icons-vue/icons/IconAIStrokedLevel3",
+      "@aifuxi/semi-icons-vue/icons/IconAIWandLevel3",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/float-button.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/float-button",
+      "@aifuxi/semi-ui-vue/tag",
+      "@aifuxi/semi-ui-vue/typography"
+    ],
+    "pages": ["/en-us/components/ai-component/"],
+    "upstream": "ai/aiComponent"
+  },
+  {
+    "id": "ai-component/en-US/Conversation",
+    "entry": "Conversation.vue",
+    "files": {
+      "Conversation.vue": "ai-component/en-US/Conversation.vue",
+      "messages.ts": "ai-component/en-US/messages.ts",
+      "mockUpload.ts": "ai-component/en-US/mockUpload.ts",
+      "ConfigurationControls.vue": "ai-component/en-US/ConfigurationControls.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-theme-default/ai-chat-input.css",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/ai-chat-input",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/typography",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/en-us/components/ai-component/"],
+    "upstream": "ai/aiComponent"
+  },
+  {
+    "id": "ai-component/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "ai-component/zh-CN/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue/icons/IconAIBellLevel1",
+      "@aifuxi/semi-icons-vue/icons/IconAIEditLevel1",
+      "@aifuxi/semi-icons-vue/icons/IconAIEditLevel2",
+      "@aifuxi/semi-icons-vue/icons/IconAIFileLevel3",
+      "@aifuxi/semi-icons-vue/icons/IconAIFilledLevel1",
+      "@aifuxi/semi-icons-vue/icons/IconAIFilledLevel3",
+      "@aifuxi/semi-icons-vue/icons/IconAIImageLevel3",
+      "@aifuxi/semi-icons-vue/icons/IconAILoading",
+      "@aifuxi/semi-icons-vue/icons/IconAISearchLevel3",
+      "@aifuxi/semi-icons-vue/icons/IconAIStrokedLevel3",
+      "@aifuxi/semi-icons-vue/icons/IconAIWandLevel3",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/float-button.css",
+      "@aifuxi/semi-theme-default/tag.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/float-button",
+      "@aifuxi/semi-ui-vue/tag",
+      "@aifuxi/semi-ui-vue/typography"
+    ],
+    "pages": ["/zh-cn/components/ai-component/"],
+    "upstream": "ai/aiComponent"
+  },
+  {
+    "id": "ai-component/zh-CN/Conversation",
+    "entry": "Conversation.vue",
+    "files": {
+      "Conversation.vue": "ai-component/zh-CN/Conversation.vue",
+      "messages.ts": "ai-component/zh-CN/messages.ts",
+      "mockUpload.ts": "ai-component/zh-CN/mockUpload.ts",
+      "ConfigurationControls.vue": "ai-component/zh-CN/ConfigurationControls.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-theme-default/ai-chat-input.css",
+      "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/typography.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/ai-chat-input",
+      "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/typography",
+      "@aifuxi/semi-ui-vue/upload",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/ai-component/"],
+    "upstream": "ai/aiComponent"
+  },
+  {
     "id": "anchor/en-us/AutoCollapse",
     "entry": "AutoCollapse.vue",
     "files": { "AutoCollapse.vue": "anchor/en-us/AutoCollapse.vue" },

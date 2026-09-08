@@ -1,0 +1,17 @@
+{
+  "upstream": "ai/aiComponent",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "ai-component/zh-CN/Basic",
+      "enUS": "ai-component/en-US/Basic",
+      "notes": "双语顺序一致；基础展示保留Token/图标/状态；对话保留语言数据和多文件依赖，使用Vue技术栈、本地头像/来源图片和模拟上传；模拟回复定时器卸载清理。"
+    },
+    {
+      "index": 2,
+      "zhCN": "ai-component/zh-CN/Conversation",
+      "enUS": "ai-component/en-US/Conversation",
+      "notes": "双语顺序一致；基础展示保留Token/图标/状态；对话保留语言数据和多文件依赖，使用Vue技术栈、本地头像/来源图片和模拟上传；模拟回复定时器卸载清理。"
+    }
+  ]
+}

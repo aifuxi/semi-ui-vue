@@ -115,3 +115,5 @@ SSR 导入和渲染不会创建 EditorView、Portal 或 document 监听器；客
 逐项迁移见 [React → Vue 指南](#react-vue)，固定源码证据与完整矩阵见 [对齐矩阵](https://github.com/aifuxi/semi-ui-vue/blob/master/docs/components/ai-chat-input/alignment.md)。
 
 `Configure.Item` 通过 `field`、`initValue` 和默认插槽 `{ value, onChange }` 接入任意配置控件；变更同步到 `configureChange` 和发送数据的 `setup`，卸载时移除字段。
+
+默认上传按钮由外层 Upload trigger 统一打开文件选择器，一次点击只触发一次；自定义上传插槽仍可使用公开 `openFileDialog` 回调。固定依据：`aiChatInput/index.tsx:528` 的默认按钮没有额外 click 回调。

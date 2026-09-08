@@ -84,3 +84,5 @@
 `streamingResponseToMessage` 的固定 Foundation 返回 `{ message, nextState } | null`：无分片返回 null，完成分片返回 nextState=null。公开声明同步此形状，避免文档消费者按旧的 messages/state 读取不存在字段；不改变运行时转换逻辑。文档包含重复、乱序和延迟分片。
 
 消息复制优先使用用户激活下的同步复制，符合固定 dialogueAction.tsx 的 copy-text-to-clipboard 路径；临时textarea始终清理并恢复焦点。同步复制不可用时尝试Clipboard API，拒绝后不抛未处理异常或显示虚假成功提示。该失败处理是Vue适配的显式改进，不改变message-copy事件顺序。
+
+`message-edit` 插槽的 `{ value }` 为公开 `messageToChatInput(message)` 的返回值，包含 `inputContents`、`attachments` 和 `references`；消息编辑保留文本、附件与引用。固定依据：`aiChatDialogue/widgets/dialogueContent.tsx:342`。

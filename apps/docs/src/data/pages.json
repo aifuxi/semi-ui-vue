@@ -79,6 +79,18 @@
     "path": "/en-us/components/ai-chat-input/"
   },
   {
+    "title": "AIComponent overview",
+    "description": "AI styles and a multi-agent conversation example",
+    "locale": "en-US",
+    "slug": "ai-component",
+    "category": "ai",
+    "order": 100,
+    "englishTitle": "AIComponent",
+    "icon": "doc-aiComponent",
+    "upstream": "ai/aiComponent",
+    "path": "/en-us/components/ai-component/"
+  },
+  {
     "title": "Anchor",
     "description": "The Anchor component is used to create a hyper Link navigation bar.",
     "locale": "en-US",
@@ -1245,6 +1257,18 @@
     "icon": "doc-aiInput",
     "upstream": "ai/aiChatInput",
     "path": "/zh-cn/components/ai-chat-input/"
+  },
+  {
+    "title": "AIComponent 能力介绍",
+    "description": "AI 基础样式与多 Agent 对话组合示例",
+    "locale": "zh-CN",
+    "slug": "ai-component",
+    "category": "ai",
+    "order": 100,
+    "englishTitle": "AIComponent",
+    "icon": "doc-aiComponent",
+    "upstream": "ai/aiComponent",
+    "path": "/zh-cn/components/ai-component/"
   },
   {
     "title": "锚点",

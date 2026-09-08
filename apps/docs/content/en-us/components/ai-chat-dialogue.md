@@ -141,3 +141,5 @@ Vue 不接受 ReactNode；头像、render 配置和内容 renderer 返回 Vue `V
 ```
 
 数据转换函数保持名称不变：`chatCompletionToMessage`、`streamingChatCompletionToMessage`、`responseToMessage`、`streamingResponseToMessage`、`chatInputToMessage`、`chatInputToChatCompletion` 和 `messageToChatInput`。
+
+The `message-edit` slot receives `{ value }`, where `value` is the public `messageToChatInput(message)` result: `inputContents`, `attachments`, and `references`. This preserves rich message data when editing.
