@@ -97,7 +97,7 @@ git -C vendor/semi-design describe --tags --exact-match
 
 ## 测试与门禁
 
-- 后续所有示例补齐、文档示例修复和严格视觉验收，先读并按 [`docs/documentation/workflow.md`](docs/documentation/workflow.md) 执行。补齐线也先验证最简单与最高风险示例的双语代表路径，再铺开本批；修复稳定后集中跑联合检查、受影响矩阵与发布包验证，最后刷新证据，不为提交重复验证。
+- 后续所有示例补齐、文档示例修复和严格视觉验收，先读并按 [`docs/documentation/workflow.md`](docs/documentation/workflow.md) 执行。补齐线按风险完成双语代表路径与必要的生产预检后再扩展；最终 diff 自审和低成本检查前置，冻结输入后完成联合检查与静态运行，再做受影响矩阵及发布包验证，最后刷新证据，不为提交重复验证。
 - 烟测先观察实际 DOM、ARIA、Portal 和 iframe 视口再写定位器；真实复现不得丢掉 SSR、退出动画或重开条件。批量断言使用仓库 Node + Playwright，编辑器与模拟时钟分开运行。
 - 临时烟测结果存入 `apps/docs/.data/documentation-smoke/<批次>/<运行标识>/`，不得放在后续 Playwright 默认会清空的 `test-results` 根目录中；清理脚本前先保存运行摘要和必要截图，清理构建前按文档流程归档证据。
 
