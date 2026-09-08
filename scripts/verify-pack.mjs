@@ -984,7 +984,7 @@ for (const Component of [root.DatePicker, DatePicker]) {
 		import { VideoPlayer, formatVideoTime, type VideoPlayerMarker, type VideoPlayerProps, type VideoPlayerTheme } from '@aifuxi/semi-ui-vue/video-player';
 		import { UserGuide, type UserGuideMode, type UserGuideProps, type UserGuideStepItem } from '@aifuxi/semi-ui-vue/user-guide';
 		import { JsonViewer, type JsonViewerOptions, type JsonViewerProps, type JsonViewerSearchControls } from '@aifuxi/semi-ui-vue/json-viewer';
-		import { AIChatInput, type AIChatInputProps, type Attachment, type MessageContent } from '@aifuxi/semi-ui-vue/ai-chat-input';
+		import { AIChatInput, AIChatInputConfigure, AIChatInputConfigureItem, type AIChatInputProps, type Attachment, type MessageContent } from '@aifuxi/semi-ui-vue/ai-chat-input';
 		import { AIChatDialogue, AIChatDialogueReasoning, type AIChatDialogueMessage, type AIChatDialogueProps } from '@aifuxi/semi-ui-vue/ai-chat-dialogue';
 		import { chatCompletionToMessage, streamingChatCompletionToMessage, type ChatCompletion, type StreamingChatState } from '@aifuxi/semi-ui-vue/ai-chat-dialogue/data-adapter';
 		import { Sidebar, type SidebarMode, type SidebarOption, type SidebarProps } from '@aifuxi/semi-ui-vue/sidebar';
@@ -1219,6 +1219,8 @@ h(Button, { type, htmlType: 'submit' });
 		const aiChatInputProps: AIChatInputProps = { defaultContent: '<p>Consumer</p>', uploadProps: { action: '', defaultFileList: [aiAttachment] } };
 		const aiMessage: MessageContent = { attachments: [aiAttachment], inputContents: [{ type: 'text', text: 'Consumer' }] };
 		h(AIChatInput, aiChatInputProps);
+		h(AIChatInputConfigure.Item, { field: "model", initValue: ["GPT", "GPT-4o"] });
+		h(AIChatInputConfigureItem, { field: "custom", initValue: false });
 		void aiMessage;
 		const aiDialogueMessages: AIChatDialogueMessage[] = [{ id: 'consumer-dialogue', role: 'assistant', content: 'Ready', status: 'completed' }];
 		const aiDialogueProps: AIChatDialogueProps = { chats: aiDialogueMessages, hints: ['Continue'], roleConfig: { assistant: { name: 'Assistant' } } };

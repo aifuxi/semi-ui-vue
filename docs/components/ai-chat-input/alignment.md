@@ -93,3 +93,7 @@ Vue render prop 使用 scoped slots；同时保留函数 prop 作为迁移兼容
 - 源码证据：固定 React `richTextInput.tsx` 将该值交给 `@tiptap/react` 的 `useEditor`，用于避免 React SSR 立即创建 Editor；`@tiptap/vue-3@3.10.7` 的 `useEditor` 在 `onMounted` 创建实例，并不接受该选项。
 - Vue 处理：保留同名公开 prop 和类型，但不把它传给 Vue adapter；SSR 导入与 render 均不创建 EditorView，客户端统一在 mount 后创建。
 - 用户影响：服务端安全结果与 `immediatelyRender=false` 等价；在纯客户端传 true/false 不改变首帧编辑器时机。该差异来自 adapter 生命周期，不影响内容、事件、DOM/class 或水合结果，验收为 accepted deviation。
+
+## 文档补齐：任意配置控件
+
+固定 `configure/getConfigureItem.tsx` 的字段注册、初始化、变更和卸载由 Vue `Configure.Item` scoped slot 表达；`field`/`initValue` 不变，默认插槽提供 `value`/`onChange`，支持 Cascader 等公开控件。黑盒单测验证初值、双实例隔离及 messageSend.setup；文档 Chromium 验证 Cascader 选择与发送，真实包验证公开导出和类型。无新增第三方依赖或资产。

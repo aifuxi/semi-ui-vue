@@ -54,3 +54,17 @@ AIChatDialogue full-dev-final双语全批通过，初次联合门禁通过（171
 AIChatDialogue最终联合门禁通过（/tmp/semi-dialogue-final-check.log，196页/1715注册Demo/6149静态文件）；复制定点full-static-copy双语通过且无Clipboard权限错误。固定资源下组件Chromium5/5、真实tarball安装/类型/样式/SSR通过。AIChatDialogue运行时仅新增复制兼容路径，类型修正未改转换执行逻辑。
 
 最终full-static-final双语各20阶段通过、issues为空，涵盖13例操作/源码/重置及6条编辑器路径。复杂消息初始长图被站点fixed header遮挡，额外截图types-en-US-isolated.png仅用截图style隐藏非组件.site-header，未遮盖组件内容；截图复核完成。六批历史正式证据有效，836/859 mapped、43 accepted，README/队列同步。
+
+## AIChatInput 代表与扩展
+
+按固定 Adapter/interface、Foundation、SCSS/theme、双语13例与公开扩展核查。Basic(1)与Extensions(13)先验证本地上传/发送、@两级菜单、Enter/Escape、引用/节点删除及transformer。representatives页面与representatives-editors双语通过后扩展其余11例；所有上传为本地customRequest，示例不发往上游接口，NodeView复用公开SkillSlot.extend，不新增Tiptap运行时或第三方资产。REPL helper采用局部类型，避免外部defineProps解析；编辑器placeholder位于p节点，修正烟测定位。
+
+固定getConfigureItem没有现成Vue公开入口，新增Configure.Item scoped slot（field/initValue、value/onChange），注册/变更/卸载沿用实例provider。新增黑盒双实例隔离与发送setup测试，AIChatInput单元/SSR9项通过（/tmp/semi-input-configure-unit2.log）。双语API、迁移与对齐矩阵同步，真实包类型consumer增加compound和独立导出验证。
+
+扩展采用13个入口与同语言helper：配置控件、模板面板、引用项、NodeContent、mockUpload与自定义扩展。模板使用setContentWhileSaveTool保留技能；英文富文本原例缺data-label，补为AI Coding使技能可见；原模板缺失input-slot闭合属性已修正。slot名称使用公开#uploadButton。SendMessage status先收窄success字面量，但第二个预置附件仍缺必填status，Nuxt类型未通过（/tmp/semi-input-full-types2.log）；联合检查再次指出该遗漏，现将两张本地已有图片均标为success，保留文件名/尺寸/percent数据与发送链路。开发热更新状态不作最终证据；最终整批在固定静态产物验证。
+
+模板快速切换调查：固定Tooltip Foundation.show()在getAnimatingState()为真时直接return；技能菜单尚在入场或退出期间重开模板会被忽略。500ms诊断间隔可成功，最终烟测改为断言真实semi-tooltip-animation-*类消失后再关闭/重开，不用固定睡眠、force点击或重试。保持与固定基线相同的动画边界，此补齐不新增严格accepted；快速反向切换仍需严格矩阵同环境审阅。仅toBeHidden不足以代表动画完成，失败证据保留在full-dev-editors。
+
+AIChatInput收尾：新增Item导出最初导致tarball消费方GlobalComponents泛型约束错误；改显式公共组件声明后真实包通过（/tmp/semi-input-final-pack2.log）。Nuxt类型最终/tmp/semi-input-full-types3.log退出0，联合门禁/tmp/semi-input-final-check2.log退出0（196页/1741注册Demo）；单元SSR9/9、Chromium5/5、ESLint通过。最终仅类型声明收窄，不重复运行已通过且运行代码未变化的浏览器矩阵。
+
+full-static-final双语各32阶段通过，issues为空，覆盖13例全部主要操作/源码/重置及7条编辑器路径。扩展局部截图复核，六批历史证据有效；849/859映射、43 accepted，README和队列更新，下一批Sidebar。临时脚本与摘要保存在apps/docs/.data/documentation-smoke/ai-chat-input/。

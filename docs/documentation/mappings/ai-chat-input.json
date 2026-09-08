@@ -1,0 +1,83 @@
+{
+  "upstream": "ai/aiChatInput",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "ai-chat-input/zh-CN/Basic",
+      "enUS": "ai-chat-input/en-US/Basic",
+      "notes": "双语顺序一致；本地模拟上传/素材；React render props转slots，getConfigureItem转Configure.Item；自定义扩展共用Tiptap运行时，补全键盘/删除/发送闭环；模板HTML修正已说明。"
+    },
+    {
+      "index": 2,
+      "zhCN": "ai-chat-input/zh-CN/SendMessage",
+      "enUS": "ai-chat-input/en-US/SendMessage",
+      "notes": "双语顺序一致；本地模拟上传/素材；React render props转slots，getConfigureItem转Configure.Item；自定义扩展共用Tiptap运行时，补全键盘/删除/发送闭环；模板HTML修正已说明。"
+    },
+    {
+      "index": 3,
+      "zhCN": "ai-chat-input/zh-CN/RichText",
+      "enUS": "ai-chat-input/en-US/RichText",
+      "notes": "双语顺序一致；本地模拟上传/素材；React render props转slots，getConfigureItem转Configure.Item；自定义扩展共用Tiptap运行时，补全键盘/删除/发送闭环；模板HTML修正已说明。"
+    },
+    {
+      "index": 4,
+      "zhCN": "ai-chat-input/zh-CN/References",
+      "enUS": "ai-chat-input/en-US/References",
+      "notes": "双语顺序一致；本地模拟上传/素材；React render props转slots，getConfigureItem转Configure.Item；自定义扩展共用Tiptap运行时，补全键盘/删除/发送闭环；模板HTML修正已说明。"
+    },
+    {
+      "index": 5,
+      "zhCN": "ai-chat-input/zh-CN/Configure",
+      "enUS": "ai-chat-input/en-US/Configure",
+      "notes": "双语顺序一致；本地模拟上传/素材；React render props转slots，getConfigureItem转Configure.Item；自定义扩展共用Tiptap运行时，补全键盘/删除/发送闭环；模板HTML修正已说明。"
+    },
+    {
+      "index": 6,
+      "zhCN": "ai-chat-input/zh-CN/CustomConfigure",
+      "enUS": "ai-chat-input/en-US/CustomConfigure",
+      "notes": "双语顺序一致；本地模拟上传/素材；React render props转slots，getConfigureItem转Configure.Item；自定义扩展共用Tiptap运行时，补全键盘/删除/发送闭环；模板HTML修正已说明。"
+    },
+    {
+      "index": 7,
+      "zhCN": "ai-chat-input/zh-CN/Actions",
+      "enUS": "ai-chat-input/en-US/Actions",
+      "notes": "双语顺序一致；本地模拟上传/素材；React render props转slots，getConfigureItem转Configure.Item；自定义扩展共用Tiptap运行时，补全键盘/删除/发送闭环；模板HTML修正已说明。"
+    },
+    {
+      "index": 8,
+      "zhCN": "ai-chat-input/zh-CN/UploadButton",
+      "enUS": "ai-chat-input/en-US/UploadButton",
+      "notes": "双语顺序一致；本地模拟上传/素材；React render props转slots，getConfigureItem转Configure.Item；自定义扩展共用Tiptap运行时，补全键盘/删除/发送闭环；模板HTML修正已说明。"
+    },
+    {
+      "index": 9,
+      "zhCN": "ai-chat-input/zh-CN/Shape",
+      "enUS": "ai-chat-input/en-US/Shape",
+      "notes": "双语顺序一致；本地模拟上传/素材；React render props转slots，getConfigureItem转Configure.Item；自定义扩展共用Tiptap运行时，补全键盘/删除/发送闭环；模板HTML修正已说明。"
+    },
+    {
+      "index": 10,
+      "zhCN": "ai-chat-input/zh-CN/Suggestions",
+      "enUS": "ai-chat-input/en-US/Suggestions",
+      "notes": "双语顺序一致；本地模拟上传/素材；React render props转slots，getConfigureItem转Configure.Item；自定义扩展共用Tiptap运行时，补全键盘/删除/发送闭环；模板HTML修正已说明。"
+    },
+    {
+      "index": 11,
+      "zhCN": "ai-chat-input/zh-CN/Skills",
+      "enUS": "ai-chat-input/en-US/Skills",
+      "notes": "双语顺序一致；本地模拟上传/素材；React render props转slots，getConfigureItem转Configure.Item；自定义扩展共用Tiptap运行时，补全键盘/删除/发送闭环；模板HTML修正已说明。"
+    },
+    {
+      "index": 12,
+      "zhCN": "ai-chat-input/zh-CN/TopSlot",
+      "enUS": "ai-chat-input/en-US/TopSlot",
+      "notes": "双语顺序一致；本地模拟上传/素材；React render props转slots，getConfigureItem转Configure.Item；自定义扩展共用Tiptap运行时，补全键盘/删除/发送闭环；模板HTML修正已说明。"
+    },
+    {
+      "index": 13,
+      "zhCN": "ai-chat-input/zh-CN/Extensions",
+      "enUS": "ai-chat-input/en-US/Extensions",
+      "notes": "双语顺序一致；本地模拟上传/素材；React render props转slots，getConfigureItem转Configure.Item；自定义扩展共用Tiptap运行时，补全键盘/删除/发送闭环；模板HTML修正已说明。"
+    }
+  ]
+}

@@ -20,6 +20,75 @@ import '@aifuxi/semi-theme-default/ai-chat-input.css';
 ::demo-block{demo="ai-chat-input/en-US/Example1" title="AIChatInput"}
 ::
 
+## Upstream examples
+
+Uploads use local customRequest mocks. Configure.Item slots replace React getConfigureItem while preserving field/initValue and message setup. Custom extensions reuse SkillSlot.extend, with a Vue panel for two-level @ selection, keyboard navigation and transformers, sharing the editor runtime. Actions adds a clear-input handler, and malformed upstream input-slot attributes are closed; language-specific data is preserved.
+
+### Basic usage
+
+::demo-block{demo="ai-chat-input/en-US/Basic" title="Basic usage"}
+::
+
+### Message sending
+
+::demo-block{demo="ai-chat-input/en-US/SendMessage" title="Message sending"}
+::
+
+### Rich text input
+
+::demo-block{demo="ai-chat-input/en-US/RichText" title="Rich text input"}
+::
+
+### References
+
+::demo-block{demo="ai-chat-input/en-US/References" title="References"}
+::
+
+### Configuration
+
+::demo-block{demo="ai-chat-input/en-US/Configure" title="Configuration"}
+::
+
+### Custom configuration
+
+::demo-block{demo="ai-chat-input/en-US/CustomConfigure" title="Custom configuration"}
+::
+
+### Action area
+
+::demo-block{demo="ai-chat-input/en-US/Actions" title="Action area"}
+::
+
+### Custom upload button
+
+::demo-block{demo="ai-chat-input/en-US/UploadButton" title="Custom upload button"}
+::
+
+### Button shape
+
+::demo-block{demo="ai-chat-input/en-US/Shape" title="Button shape"}
+::
+
+### Suggestions
+
+::demo-block{demo="ai-chat-input/en-US/Suggestions" title="Suggestions"}
+::
+
+### Skills and templates
+
+::demo-block{demo="ai-chat-input/en-US/Skills" title="Skills and templates"}
+::
+
+### Custom top slot
+
+::demo-block{demo="ai-chat-input/en-US/TopSlot" title="Custom top slot"}
+::
+
+### Custom extensions
+
+::demo-block{demo="ai-chat-input/en-US/Extensions" title="Custom extensions"}
+::
+
 ## Core API
 
 | Prop                                                    | Description                                               | Default            |
@@ -37,7 +106,7 @@ Emits include `contentChange`, `messageSend`, `stopGenerate`, `focus`, `blur`, `
 
 ## Slots and Configure
 
-`#reference`, `#uploadButton`, `#top`, `#configure`, `#action`, `#suggestion`, `#skill`, and `#template` replace React render props. `AIChatInput.Configure` supplies `Button`, `Select`, `RadioButton`, and `Mcp` items with per-instance provider state.
+`#reference`, `#uploadButton`, `#top`, `#configure`, `#action`, `#suggestion`, `#skill`, and `#template` replace React render props. `AIChatInput.Configure` supplies `Button`, `Select`, `RadioButton`, `Mcp`, and `Item` items with per-instance provider state.
 
 ## SSR and accessibility
 
@@ -74,3 +143,5 @@ See the [React-to-Vue guide](#react-vue) and the [alignment matrix](https://gith
 ```
 
 所有默认值为 `true` 的 Boolean prop 都区分缺省与显式 `false`；模板中的裸属性、`:prop="false"` 与 render function 输入均遵循 Vue 原生语义。Tiptap 扩展继续通过 `extensions` 追加，公开 Tiptap 类型来自已声明的运行时依赖，不需要消费方初始化 `vendor/semi-design`。
+
+`Configure.Item` connects arbitrary controls through `field`, `initValue`, and the default slot `{ value, onChange }`. Changes update `configureChange` and the sent `setup`; unmounting removes the field.

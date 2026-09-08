@@ -20,6 +20,75 @@ import '@aifuxi/semi-theme-default/ai-chat-input.css';
 ::demo-block{demo="ai-chat-input/zh-CN/Example1" title="聊天输入框"}
 ::
 
+## 固定上游示例
+
+上传均使用本地customRequest模拟，不发往上游接口。公开配置适配使用Configure.Item插槽替代React getConfigureItem，保留field/initValue与发送setup。自定义扩展复用公开SkillSlot.extend，Vue面板提供@两级选择、键盘导航和transformer；不引入第二份编辑器运行时。Actions补充清空输入行为；模板修正上游未闭合的input-slot属性，双语数据差异保留。
+
+### 基本用法
+
+::demo-block{demo="ai-chat-input/zh-CN/Basic" title="基本用法"}
+::
+
+### 消息发送
+
+::demo-block{demo="ai-chat-input/zh-CN/SendMessage" title="消息发送"}
+::
+
+### 富文本输入区
+
+::demo-block{demo="ai-chat-input/zh-CN/RichText" title="富文本输入区"}
+::
+
+### 引用
+
+::demo-block{demo="ai-chat-input/zh-CN/References" title="引用"}
+::
+
+### 配置区域
+
+::demo-block{demo="ai-chat-input/zh-CN/Configure" title="配置区域"}
+::
+
+### 自定义配置
+
+::demo-block{demo="ai-chat-input/zh-CN/CustomConfigure" title="自定义配置"}
+::
+
+### 操作区域
+
+::demo-block{demo="ai-chat-input/zh-CN/Actions" title="操作区域"}
+::
+
+### 自定义上传按钮
+
+::demo-block{demo="ai-chat-input/zh-CN/UploadButton" title="自定义上传按钮"}
+::
+
+### 底部按钮形状
+
+::demo-block{demo="ai-chat-input/zh-CN/Shape" title="底部按钮形状"}
+::
+
+### 建议
+
+::demo-block{demo="ai-chat-input/zh-CN/Suggestions" title="建议"}
+::
+
+### 技能及模版
+
+::demo-block{demo="ai-chat-input/zh-CN/Skills" title="技能及模版"}
+::
+
+### 自定义顶部区域
+
+::demo-block{demo="ai-chat-input/zh-CN/TopSlot" title="自定义顶部区域"}
+::
+
+### 自定义扩展
+
+::demo-block{demo="ai-chat-input/zh-CN/Extensions" title="自定义扩展"}
+::
+
 ## 核心 API
 
 | 属性                                                    | 说明                               | 默认值             |
@@ -37,10 +106,12 @@ import '@aifuxi/semi-theme-default/ai-chat-input.css';
 
 ## 插槽与 Configure
 
-`#reference`、`#uploadButton`、`#top`、`#configure`、`#action`、`#suggestion`、`#skill`、`#template` 分别替代 React render props。`AIChatInput.Configure` 提供 `Button`、`Select`、`RadioButton` 与 `Mcp` 配置项，provider 按组件实例隔离。
+`#reference`、`#uploadButton`、`#top`、`#configure`、`#action`、`#suggestion`、`#skill`、`#template` 分别替代 React render props。`AIChatInput.Configure` 提供 `Button`、`Select`、`RadioButton`、`Mcp` 与 `Item` 配置项，provider 按组件实例隔离。
 
 ## SSR 与无障碍
 
 SSR 导入和渲染不会创建 EditorView、Portal 或 document 监听器；客户端挂载后创建 Tiptap 并在卸载时销毁。编辑器为真实 `contenteditable`，建议和技能使用 listbox/option 语义，发送、停止、上传和删除操作均提供可访问名称。
 
 逐项迁移见 [React → Vue 指南](#react-vue)，固定源码证据与完整矩阵见 [对齐矩阵](https://github.com/aifuxi/semi-ui-vue/blob/master/docs/components/ai-chat-input/alignment.md)。
+
+`Configure.Item` 通过 `field`、`initValue` 和默认插槽 `{ value, onChange }` 接入任意配置控件；变更同步到 `configureChange` 和发送数据的 `setup`，卸载时移除字段。
