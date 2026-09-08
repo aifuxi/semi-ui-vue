@@ -78,3 +78,9 @@
 - React 静态子组件同时提供 Vue 命名导出，避免模板无法自然访问构造函数静态属性。
 - 上游 hint 与部分图标入口使用 clickable div；Vue 保留固定 DOM/class，并补齐可聚焦、可访问名称与 Enter/Space 键盘处理。
 - Markdown/MDX 中的 React 组件不能跨框架复用；自定义映射接受 Vue 组件或 VNode renderer。
+
+### 文档补齐核验（2026-09-08）
+
+`streamingResponseToMessage` 的固定 Foundation 返回 `{ message, nextState } | null`：无分片返回 null，完成分片返回 nextState=null。公开声明同步此形状，避免文档消费者按旧的 messages/state 读取不存在字段；不改变运行时转换逻辑。文档包含重复、乱序和延迟分片。
+
+消息复制优先使用用户激活下的同步复制，符合固定 dialogueAction.tsx 的 copy-text-to-clipboard 路径；临时textarea始终清理并恢复焦点。同步复制不可用时尝试Clipboard API，拒绝后不抛未处理异常或显示虚假成功提示。该失败处理是Vue适配的显式改进，不改变message-copy事件顺序。

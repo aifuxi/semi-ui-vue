@@ -1,0 +1,83 @@
+{
+  "upstream": "ai/aiChatDialogue",
+  "demos": [
+    {
+      "index": 1,
+      "zhCN": "ai-chat-dialogue/zh-CN/Basic",
+      "enUS": "ai-chat-dialogue/en-US/Basic",
+      "notes": "保留双语数据差异；React代码文本迁移Vue、本地素材替代CDN；render props转slots/局部SFC，补上游遗漏导入；流式示例修正闭包与返回结构并清理定时器。"
+    },
+    {
+      "index": 2,
+      "zhCN": "ai-chat-dialogue/zh-CN/Status",
+      "enUS": "ai-chat-dialogue/en-US/Status",
+      "notes": "保留双语数据差异；React代码文本迁移Vue、本地素材替代CDN；render props转slots/局部SFC，补上游遗漏导入；流式示例修正闭包与返回结构并清理定时器。"
+    },
+    {
+      "index": 3,
+      "zhCN": "ai-chat-dialogue/zh-CN/MessageTypes",
+      "enUS": "ai-chat-dialogue/en-US/MessageTypes",
+      "notes": "保留双语数据差异；React代码文本迁移Vue、本地素材替代CDN；render props转slots/局部SFC，补上游遗漏导入；流式示例修正闭包与返回结构并清理定时器。"
+    },
+    {
+      "index": 4,
+      "zhCN": "ai-chat-dialogue/zh-CN/References",
+      "enUS": "ai-chat-dialogue/en-US/References",
+      "notes": "保留双语数据差异；React代码文本迁移Vue、本地素材替代CDN；render props转slots/局部SFC，补上游遗漏导入；流式示例修正闭包与返回结构并清理定时器。"
+    },
+    {
+      "index": 5,
+      "zhCN": "ai-chat-dialogue/zh-CN/Selecting",
+      "enUS": "ai-chat-dialogue/en-US/Selecting",
+      "notes": "保留双语数据差异；React代码文本迁移Vue、本地素材替代CDN；render props转slots/局部SFC，补上游遗漏导入；流式示例修正闭包与返回结构并清理定时器。"
+    },
+    {
+      "index": 6,
+      "zhCN": "ai-chat-dialogue/zh-CN/Hints",
+      "enUS": "ai-chat-dialogue/en-US/Hints",
+      "notes": "保留双语数据差异；React代码文本迁移Vue、本地素材替代CDN；render props转slots/局部SFC，补上游遗漏导入；流式示例修正闭包与返回结构并清理定时器。"
+    },
+    {
+      "index": 7,
+      "zhCN": "ai-chat-dialogue/zh-CN/CustomHints",
+      "enUS": "ai-chat-dialogue/en-US/CustomHints",
+      "notes": "保留双语数据差异；React代码文本迁移Vue、本地素材替代CDN；render props转slots/局部SFC，补上游遗漏导入；流式示例修正闭包与返回结构并清理定时器。"
+    },
+    {
+      "index": 8,
+      "zhCN": "ai-chat-dialogue/zh-CN/CustomBox",
+      "enUS": "ai-chat-dialogue/en-US/CustomBox",
+      "notes": "保留双语数据差异；React代码文本迁移Vue、本地素材替代CDN；render props转slots/局部SFC，补上游遗漏导入；流式示例修正闭包与返回结构并清理定时器。"
+    },
+    {
+      "index": 9,
+      "zhCN": "ai-chat-dialogue/zh-CN/CustomContent",
+      "enUS": "ai-chat-dialogue/en-US/CustomContent",
+      "notes": "保留双语数据差异；React代码文本迁移Vue、本地素材替代CDN；render props转slots/局部SFC，补上游遗漏导入；流式示例修正闭包与返回结构并清理定时器。"
+    },
+    {
+      "index": 10,
+      "zhCN": "ai-chat-dialogue/zh-CN/ChatCompletion",
+      "enUS": "ai-chat-dialogue/en-US/ChatCompletion",
+      "notes": "保留双语数据差异；React代码文本迁移Vue、本地素材替代CDN；render props转slots/局部SFC，补上游遗漏导入；流式示例修正闭包与返回结构并清理定时器。"
+    },
+    {
+      "index": 11,
+      "zhCN": "ai-chat-dialogue/zh-CN/StreamingChatCompletion",
+      "enUS": "ai-chat-dialogue/en-US/StreamingChatCompletion",
+      "notes": "保留双语数据差异；React代码文本迁移Vue、本地素材替代CDN；render props转slots/局部SFC，补上游遗漏导入；流式示例修正闭包与返回结构并清理定时器。"
+    },
+    {
+      "index": 12,
+      "zhCN": "ai-chat-dialogue/zh-CN/Response",
+      "enUS": "ai-chat-dialogue/en-US/Response",
+      "notes": "保留双语数据差异；React代码文本迁移Vue、本地素材替代CDN；render props转slots/局部SFC，补上游遗漏导入；流式示例修正闭包与返回结构并清理定时器。"
+    },
+    {
+      "index": 13,
+      "zhCN": "ai-chat-dialogue/zh-CN/StreamingResponse",
+      "enUS": "ai-chat-dialogue/en-US/StreamingResponse",
+      "notes": "保留双语数据差异；React代码文本迁移Vue、本地素材替代CDN；render props转slots/局部SFC，补上游遗漏导入；流式示例修正闭包与返回结构并清理定时器。"
+    }
+  ]
+}

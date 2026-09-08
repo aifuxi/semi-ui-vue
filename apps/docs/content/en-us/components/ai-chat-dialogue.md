@@ -15,6 +15,77 @@ upstream: 'ai/aiChatDialogue'
 ::demo-block{demo="ai-chat-dialogue/en-US/Example1" title="AIChatDialogue"}
 ::
 
+## Upstream examples
+
+React code text is adapted to Vue, with local avatars/images and slots/local SFCs for render props. Missing upstream hook, Toast and adapter imports are resolved or replaced with visible event output. Streaming Chat Completion replays each prefix independently to avoid stale closures or repeated deltas; Response retains shuffled, duplicate and delayed sequences with nextState.
+
+### Basic usage
+
+::demo-block{demo="ai-chat-dialogue/en-US/Basic" title="Basic usage"}
+::
+
+### Message status
+
+::demo-block{demo="ai-chat-dialogue/en-US/Status" title="Message status"}
+::
+
+### Message types
+
+::demo-block{demo="ai-chat-dialogue/en-US/MessageTypes" title="Message types"}
+::
+
+### References
+
+::demo-block{demo="ai-chat-dialogue/en-US/References" title="References"}
+::
+
+### Selection
+
+::demo-block{demo="ai-chat-dialogue/en-US/Selecting" title="Selection"}
+::
+
+### Hints
+
+::demo-block{demo="ai-chat-dialogue/en-US/Hints" title="Hints"}
+::
+
+### Custom hints
+
+::demo-block{demo="ai-chat-dialogue/en-US/CustomHints" title="Custom hints"}
+::
+
+### Custom chat box
+
+::demo-block{demo="ai-chat-dialogue/en-US/CustomBox" title="Custom chat box"}
+::
+
+### Custom message content
+
+::demo-block{demo="ai-chat-dialogue/en-US/CustomContent" title="Custom message content"}
+::
+
+### Chat Completion adapter
+
+::demo-block{demo="ai-chat-dialogue/en-US/ChatCompletion" title="Chat Completion adapter"}
+::
+
+### Streaming Chat Completion adapter
+
+::demo-block{demo="ai-chat-dialogue/en-US/StreamingChatCompletion" title="Streaming Chat Completion adapter"}
+::
+
+### Response adapter
+
+::demo-block{demo="ai-chat-dialogue/en-US/Response" title="Response adapter"}
+::
+
+### Streaming Response adapter
+
+The fixed upstream example uses English deltas but keeps Chinese text in its final completed response; this data difference is preserved.
+
+::demo-block{demo="ai-chat-dialogue/en-US/StreamingResponse" title="Streaming Response adapter"}
+::
+
 ## Main API
 
 | Prop                        | Type                                     | Default       | Description                                                |

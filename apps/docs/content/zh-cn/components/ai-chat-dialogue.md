@@ -15,6 +15,77 @@ upstream: 'ai/aiChatDialogue'
 ::demo-block{demo="ai-chat-dialogue/zh-CN/Example1" title="AI对话"}
 ::
 
+## 固定上游示例
+
+React代码文本迁移Vue，头像/图片本地化；render props迁移为插槽和局部SFC。上游遗漏的hooks/Toast/适配器导入已补齐或替换为可见事件输出。流式Chat Completion按前缀独立转换，避免闭包状态与重复增量；Response保留乱序、重复和延迟序列并使用返回的nextState。
+
+### 基本用法
+
+::demo-block{demo="ai-chat-dialogue/zh-CN/Basic" title="基本用法"}
+::
+
+### 消息状态
+
+::demo-block{demo="ai-chat-dialogue/zh-CN/Status" title="消息状态"}
+::
+
+### 消息展示
+
+::demo-block{demo="ai-chat-dialogue/zh-CN/MessageTypes" title="消息展示"}
+::
+
+### 引用
+
+::demo-block{demo="ai-chat-dialogue/zh-CN/References" title="引用"}
+::
+
+### 选择
+
+::demo-block{demo="ai-chat-dialogue/zh-CN/Selecting" title="选择"}
+::
+
+### 提示
+
+::demo-block{demo="ai-chat-dialogue/zh-CN/Hints" title="提示"}
+::
+
+### 自定义渲染提示
+
+::demo-block{demo="ai-chat-dialogue/zh-CN/CustomHints" title="自定义渲染提示"}
+::
+
+### 自定义渲染会话框
+
+::demo-block{demo="ai-chat-dialogue/zh-CN/CustomBox" title="自定义渲染会话框"}
+::
+
+### 自定义渲染消息内容
+
+::demo-block{demo="ai-chat-dialogue/zh-CN/CustomContent" title="自定义渲染消息内容"}
+::
+
+### Chat Completion 数据转换
+
+::demo-block{demo="ai-chat-dialogue/zh-CN/ChatCompletion" title="Chat Completion 数据转换"}
+::
+
+### 流式 Chat Completion 转换
+
+::demo-block{demo="ai-chat-dialogue/zh-CN/StreamingChatCompletion" title="流式 Chat Completion 转换"}
+::
+
+### Response 数据转换
+
+::demo-block{demo="ai-chat-dialogue/zh-CN/Response" title="Response 数据转换"}
+::
+
+### 流式 Response 转换
+
+固定上游英文的增量文本为英文，但最终完成响应仍为中文；本例保留这一数据差异。
+
+::demo-block{demo="ai-chat-dialogue/zh-CN/StreamingResponse" title="流式 Response 转换"}
+::
+
 ## 主要 API
 
 | 属性                        | 类型                                     | 默认值        | 说明                                                                                   |

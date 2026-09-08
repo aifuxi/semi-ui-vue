@@ -38,3 +38,19 @@ Chat静态full-static-ready双语各30阶段通过、issues为空，但截图揭
 Chat代码块开发定点双语通过，computed style确认为前景rgb(249,249,249)、背景rgb(22,22,26)，区别于原来的白字浅底。最终Chat单元/SSR 16/16、Chromium对照5/5和真实tarball验证均通过（/tmp/semi-chat-code-final-unit.log、/tmp/semi-chat-final-browser.log、/tmp/semi-chat-final-pack.log）。联合门禁/tmp/semi-chat-final-check.log通过；未新增第三方代码/素材，CodeHighlight复用现有公开组件与许可链。
 
 Chat最终证据为apps/docs/.data/documentation-smoke/chat/full-static-final/summary.json：双语各31阶段通过、issues为空，代码块截图已复核可读。先前full-static连接拒绝是预览启动竞态，保留失败结果，不作为证据。affected plan六批有效；823/859已映射、accepted43不变，README与队列同步，下一批AIChatDialogue。
+
+## AIChatDialogue 代表
+
+按固定Adapter/interface/dialogue→Foundation/SCSS/token→双语13例和本地图标核查，选择Basic(1)与MessageTypes(3)。复杂消息包含文本、图像、三个文件、推理、function_call、annotation与自定义plan/Step，PlanContent为同语言多文件依赖。先保留完整数据和语言差异，React代码文本迁移Vue，头像/图像本地化，文件点击使用disabledFileItemClick配合事件状态避免虚构链接导航。representatives-icon证明Basic模式/布局/反馈；representatives-collapse证明MessageTypes交互。烟测分别修正aria-pressed不存在、Collapsible关闭通过高度0而非子节点visibility、嵌套pre选择器和Radio label点击，未为烟测修改组件。
+
+representatives-editor-labels双语两个源码/重置/真实编辑器路径通过后，才生成剩余11例。多文件数据adapterData保留固定双语4种转换数据；StreamingChatCompletion从头转换当前前缀，避免上游闭包/重复增量，沿用上游仅显示首个choice；StreamingResponse保留固定乱序重复延迟索引和nextState，所有定时器卸载清理。上游渲染遗漏hook/Toast导入以Vue生命周期和可见事件状态补齐。
+
+公开streamingResponseToMessage原声明messages/state与运行时message/nextState不一致，已按固定Foundation返回结构修正为可null的message/nextState；空输入null、进行中state、完成nextState=null的公开测试通过。仅修正类型断言，不改Foundation或运行时逻辑。AIChatDialogue单元/SSR 9项通过（/tmp/semi-dialogue-unit.log）；将在最终docs类型与真实包消费验证声明。Step的action.icon目前未渲染，属于不阻断本批演示的精细差异，严格验收需审阅，不计accepted。
+
+AIChatDialogue full-dev-final双语全批通过，初次联合门禁通过（1715注册Demo、836/859映射、43 accepted），真实包通过。首次full-static通过全部页面操作，但CustomBox-editor复制被iframe Permissions Policy阻断：console-error与NotAllowedError均记录，未过滤。固定上游使用copy-text-to-clipboard同步复制；改为用户激活下execCommand优先，临时textarea finally清理/恢复焦点，必要时Clipboard API回退并捕获拒绝；失败不显示虚假成功。需刷新此运行时改动的组件/发布与静态证据。
+
+复制修正后CustomBox-editor开发定点通过。初步组件对照与resources准备时间重叠，不能作为最终固定资源证据；资源与site生成结束后重新运行组件Chromium与真实包验证，最终日志以semi-dialogue-final-browser.log和semi-dialogue-final-pack.log为准。
+
+AIChatDialogue最终联合门禁通过（/tmp/semi-dialogue-final-check.log，196页/1715注册Demo/6149静态文件）；复制定点full-static-copy双语通过且无Clipboard权限错误。固定资源下组件Chromium5/5、真实tarball安装/类型/样式/SSR通过。AIChatDialogue运行时仅新增复制兼容路径，类型修正未改转换执行逻辑。
+
+最终full-static-final双语各20阶段通过、issues为空，涵盖13例操作/源码/重置及6条编辑器路径。复杂消息初始长图被站点fixed header遮挡，额外截图types-en-US-isolated.png仅用截图style隐藏非组件.site-header，未遮盖组件内容；截图复核完成。六批历史正式证据有效，836/859 mapped、43 accepted，README/队列同步。

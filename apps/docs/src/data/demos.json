@@ -1,5 +1,88 @@
 [
   {
+    "id": "ai-chat-dialogue/en-US/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "ai-chat-dialogue/en-US/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/radio",
+      "vue"
+    ],
+    "pages": ["/en-us/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/en-US/ChatCompletion",
+    "entry": "ChatCompletion.vue",
+    "files": {
+      "ChatCompletion.vue": "ai-chat-dialogue/en-US/ChatCompletion.vue",
+      "adapterData.ts": "ai-chat-dialogue/en-US/adapterData.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/en-US/CustomBox",
+    "entry": "CustomBox.vue",
+    "files": {
+      "CustomBox.vue": "ai-chat-dialogue/en-US/CustomBox.vue",
+      "NodeContent.ts": "ai-chat-dialogue/en-US/NodeContent.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/en-US/CustomContent",
+    "entry": "CustomContent.vue",
+    "files": {
+      "CustomContent.vue": "ai-chat-dialogue/en-US/CustomContent.vue",
+      "ReasoningContent.vue": "ai-chat-dialogue/en-US/ReasoningContent.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/markdown-render",
+      "vue"
+    ],
+    "pages": ["/en-us/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/en-US/CustomHints",
+    "entry": "CustomHints.vue",
+    "files": { "CustomHints.vue": "ai-chat-dialogue/en-US/CustomHints.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
     "id": "ai-chat-dialogue/en-US/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "ai-chat-dialogue/en-US/Example1.vue" },
@@ -12,12 +95,347 @@
     "upstream": "ai/aiChatDialogue"
   },
   {
+    "id": "ai-chat-dialogue/en-US/Hints",
+    "entry": "Hints.vue",
+    "files": { "Hints.vue": "ai-chat-dialogue/en-US/Hints.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/en-US/MessageTypes",
+    "entry": "MessageTypes.vue",
+    "files": {
+      "MessageTypes.vue": "ai-chat-dialogue/en-US/MessageTypes.vue",
+      "PlanContent.vue": "ai-chat-dialogue/en-US/PlanContent.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/en-US/References",
+    "entry": "References.vue",
+    "files": { "References.vue": "ai-chat-dialogue/en-US/References.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/en-US/Response",
+    "entry": "Response.vue",
+    "files": {
+      "Response.vue": "ai-chat-dialogue/en-US/Response.vue",
+      "adapterData.ts": "ai-chat-dialogue/en-US/adapterData.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/en-US/Selecting",
+    "entry": "Selecting.vue",
+    "files": { "Selecting.vue": "ai-chat-dialogue/en-US/Selecting.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "@aifuxi/semi-ui-vue/radio",
+      "vue"
+    ],
+    "pages": ["/en-us/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/en-US/Status",
+    "entry": "Status.vue",
+    "files": { "Status.vue": "ai-chat-dialogue/en-US/Status.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/en-US/StreamingChatCompletion",
+    "entry": "StreamingChatCompletion.vue",
+    "files": {
+      "StreamingChatCompletion.vue": "ai-chat-dialogue/en-US/StreamingChatCompletion.vue",
+      "adapterData.ts": "ai-chat-dialogue/en-US/adapterData.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/en-US/StreamingResponse",
+    "entry": "StreamingResponse.vue",
+    "files": {
+      "StreamingResponse.vue": "ai-chat-dialogue/en-US/StreamingResponse.vue",
+      "adapterData.ts": "ai-chat-dialogue/en-US/adapterData.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
+      "vue"
+    ],
+    "pages": ["/en-us/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/zh-CN/Basic",
+    "entry": "Basic.vue",
+    "files": { "Basic.vue": "ai-chat-dialogue/zh-CN/Basic.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/radio",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/zh-CN/ChatCompletion",
+    "entry": "ChatCompletion.vue",
+    "files": {
+      "ChatCompletion.vue": "ai-chat-dialogue/zh-CN/ChatCompletion.vue",
+      "adapterData.ts": "ai-chat-dialogue/zh-CN/adapterData.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/zh-CN/CustomBox",
+    "entry": "CustomBox.vue",
+    "files": {
+      "CustomBox.vue": "ai-chat-dialogue/zh-CN/CustomBox.vue",
+      "NodeContent.ts": "ai-chat-dialogue/zh-CN/NodeContent.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/zh-CN/CustomContent",
+    "entry": "CustomContent.vue",
+    "files": {
+      "CustomContent.vue": "ai-chat-dialogue/zh-CN/CustomContent.vue",
+      "ReasoningContent.vue": "ai-chat-dialogue/zh-CN/ReasoningContent.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/markdown-render",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/zh-CN/CustomHints",
+    "entry": "CustomHints.vue",
+    "files": { "CustomHints.vue": "ai-chat-dialogue/zh-CN/CustomHints.vue" },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
     "id": "ai-chat-dialogue/zh-CN/Example1",
     "entry": "Example1.vue",
     "files": { "Example1.vue": "ai-chat-dialogue/zh-CN/Example1.vue" },
     "dependencies": [
       "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
       "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/zh-CN/Hints",
+    "entry": "Hints.vue",
+    "files": { "Hints.vue": "ai-chat-dialogue/zh-CN/Hints.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/zh-CN/MessageTypes",
+    "entry": "MessageTypes.vue",
+    "files": {
+      "MessageTypes.vue": "ai-chat-dialogue/zh-CN/MessageTypes.vue",
+      "PlanContent.vue": "ai-chat-dialogue/zh-CN/PlanContent.vue"
+    },
+    "dependencies": [
+      "@aifuxi/semi-icons-vue",
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/zh-CN/References",
+    "entry": "References.vue",
+    "files": { "References.vue": "ai-chat-dialogue/zh-CN/References.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/zh-CN/Response",
+    "entry": "Response.vue",
+    "files": {
+      "Response.vue": "ai-chat-dialogue/zh-CN/Response.vue",
+      "adapterData.ts": "ai-chat-dialogue/zh-CN/adapterData.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/zh-CN/Selecting",
+    "entry": "Selecting.vue",
+    "files": { "Selecting.vue": "ai-chat-dialogue/zh-CN/Selecting.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "@aifuxi/semi-ui-vue/radio",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/zh-CN/Status",
+    "entry": "Status.vue",
+    "files": { "Status.vue": "ai-chat-dialogue/zh-CN/Status.vue" },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/zh-CN/StreamingChatCompletion",
+    "entry": "StreamingChatCompletion.vue",
+    "files": {
+      "StreamingChatCompletion.vue": "ai-chat-dialogue/zh-CN/StreamingChatCompletion.vue",
+      "adapterData.ts": "ai-chat-dialogue/zh-CN/adapterData.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
+      "vue"
+    ],
+    "pages": ["/zh-cn/components/ai-chat-dialogue/"],
+    "upstream": "ai/aiChatDialogue"
+  },
+  {
+    "id": "ai-chat-dialogue/zh-CN/StreamingResponse",
+    "entry": "StreamingResponse.vue",
+    "files": {
+      "StreamingResponse.vue": "ai-chat-dialogue/zh-CN/StreamingResponse.vue",
+      "adapterData.ts": "ai-chat-dialogue/zh-CN/adapterData.ts"
+    },
+    "dependencies": [
+      "@aifuxi/semi-theme-default/ai-chat-dialogue.css",
+      "@aifuxi/semi-ui-vue/ai-chat-dialogue",
+      "@aifuxi/semi-ui-vue/config-provider",
+      "@aifuxi/semi-ui-vue/locale/source/zh_CN",
       "vue"
     ],
     "pages": ["/zh-cn/components/ai-chat-dialogue/"],
