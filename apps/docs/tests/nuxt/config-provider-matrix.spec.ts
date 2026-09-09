@@ -313,6 +313,21 @@ for (const locale of ['zh-cn', 'en-us'])
                   await root.page().clock.runFor(300);
                   await expect(root.page().locator(popup)).toBeVisible();
                 }
+                if (popup === '.semi-modal-content') {
+                  // CSS animationend removes the entry classes independently of the mocked
+                  // JS clock. Compare the settled modal only after both hosts handle it.
+                  for (const page of [reference, vue]) {
+                    await page.locator('.semi-modal').evaluate((element) => {
+                      for (const animation of element.getAnimations({ subtree: true }))
+                        animation.finish();
+                    });
+                    await expect(
+                      page.locator(
+                        '.semi-modal-content-animate-show, .semi-modal-mask-animate-show',
+                      ),
+                    ).toHaveCount(0);
+                  }
+                }
                 await freezeAnimations([reference, vue], 300);
                 const [referenceBox, vueBox] = await Promise.all([
                   reference.locator(popup).boundingBox(),

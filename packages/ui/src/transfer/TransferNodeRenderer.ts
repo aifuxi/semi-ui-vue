@@ -30,7 +30,7 @@ export default defineComponent({
                 emit('drop');
               },
             },
-            content,
+            [content],
           )
         : content;
     };

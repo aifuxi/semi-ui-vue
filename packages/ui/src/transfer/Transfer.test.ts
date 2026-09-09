@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { defineComponent, h, nextTick } from 'vue';
+import { defineComponent, h, nextTick, type VNodeChild } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider } from '../config-provider';
@@ -229,6 +229,29 @@ describe('Transfer', () => {
       await wrapper.get('[draggable="true"]').trigger('dragend');
       await wrapper.findAll('.custom-label')[1]!.trigger('drop');
       expect(wrapper.emitted('change')).toHaveLength(1);
+      wrapper.unmount();
+    },
+  );
+
+  it.each([
+    ['null', () => null, ''],
+    ['false', () => false, ''],
+    ['number', () => 0, '0'],
+    ['text', () => 'Move', 'Move'],
+    ['nodes', () => [h('b', 'Move'), h('span', 'item')], 'Moveitem'],
+  ] satisfies [string, () => VNodeChild, string][])(
+    'sortableHandle 接受 %s 内容并保留可拖拽包装',
+    (_name, render, text) => {
+      const wrapper = mount(Transfer, {
+        props: {
+          dataSource: items,
+          defaultValue: ['alpha'],
+          draggable: true,
+          renderSelectedItem: (item) => item.sortableHandle?.(render),
+        },
+      });
+      expect(wrapper.get('[draggable="true"]').text()).toBe(text);
+      expect(wrapper.findAll('.semi-transfer-right-item-sortable-item')).toHaveLength(1);
       wrapper.unmount();
     },
   );

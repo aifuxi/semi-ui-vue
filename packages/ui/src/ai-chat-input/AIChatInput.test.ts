@@ -44,7 +44,11 @@ describe('AIChatInput', () => {
     const open = vi.spyOn(HTMLInputElement.prototype, 'click');
     const wrapper = await mountInput({ uploadProps: { action: '' } });
     await wrapper.get('button[aria-label="Upload"]').trigger('click');
-    expect(open.mock.contexts.filter((input) => input.type === 'file')).toHaveLength(1);
+    expect(
+      open.mock.contexts.filter(
+        (input) => input instanceof HTMLInputElement && input.type === 'file',
+      ),
+    ).toHaveLength(1);
   });
 
   it('custom configure slots contribute setup values with provider isolation', async () => {

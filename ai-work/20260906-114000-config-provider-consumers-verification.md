@@ -22,11 +22,11 @@
 
 最终 16 项用例均未通过，失败原因已稳定区分：
 
-| 示例 | 范围 | 尚未解决的问题 |
-| --- | --- | --- |
-| TimeZone | 双语 × light/dark，4 项 | 切换 GMT+00:00 后，React 日期输入为 2020-02-13 13:08:25，Vue 仍为 21:08:25；DatePicker 非受控值未响应时区变更。后续 TimePicker 输入断言未到达。 |
-| Consumer | 双语 × light/dark，4 项 | 完整 Tooltip 结构缺少箭头；此前定格对照同时记录了 24px 内容宽度与定位差异。 |
-| Direction | 双语 × light/dark × LTR/RTL，8 项 | 默认样式、几何、逐控件截图、输入/开关及 Notification 检查通过；Modal 显示结束后仍保留 animate-show class 和 transform，而 React 已清除。 |
+| 示例      | 范围                              | 尚未解决的问题                                                                                                                                  |
+| --------- | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| TimeZone  | 双语 × light/dark，4 项           | 切换 GMT+00:00 后，React 日期输入为 2020-02-13 13:08:25，Vue 仍为 21:08:25；DatePicker 非受控值未响应时区变更。后续 TimePicker 输入断言未到达。 |
+| Consumer  | 双语 × light/dark，4 项           | 完整 Tooltip 结构缺少箭头；此前定格对照同时记录了 24px 内容宽度与定位差异。                                                                     |
+| Direction | 双语 × light/dark × LTR/RTL，8 项 | 默认样式、几何、逐控件截图、输入/开关及 Notification 检查通过；Modal 显示结束后仍保留 animate-show class 和 transform，而 React 已清除。        |
 
 证据：`20260906-114000-config-provider-strict.report.json.gz`，包含样式、位置、逐控件截图及嵌入的失败截图。Toast、Modal 关闭及后续在线编辑器路径因前置失败未全部执行，不描述为通过。所有门禁保持 computed style 精确相等、rect ≤0.5 CSS px、截图 threshold ≤0.1 / ratio ≤0.001；无 mask。
 

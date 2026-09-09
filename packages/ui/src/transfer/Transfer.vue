@@ -372,7 +372,7 @@ function selectedItemProps(
   if (fullPath) output.fullPath = fullPath;
   if (handleProps) {
     output.dragHandleProps = handleProps;
-    output.sortableHandle = (render) => h('span', handleProps, render());
+    output.sortableHandle = (render) => h('span', handleProps, [render()]);
   }
   return output;
 }
