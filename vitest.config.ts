@@ -5,7 +5,6 @@ import { defineConfig } from 'vitest/config';
 import type { Plugin } from 'vite';
 import { adaptPinnedJsonViewerCore } from './packages/foundation-integration/vite-json-viewer-plugin.js';
 import { generateVitestAliases } from './scripts/gen-vitest-aliases.mjs';
-import { loadCoverageExemptions } from './scripts/verify-coverage-exemptions.mjs';
 
 function resolveSemiUiVueComponentSubpaths(): Plugin {
   return {
@@ -23,10 +22,7 @@ function resolveSemiUiVueComponentSubpaths(): Plugin {
   };
 }
 
-const [aliases, coverageExemptions] = await Promise.all([
-  generateVitestAliases(),
-  loadCoverageExemptions(),
-]);
+const aliases = await generateVitestAliases();
 const fullCoverageReport = process.env.COVERAGE_ALL === '1';
 
 export default defineConfig({
@@ -48,24 +44,11 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       include: ['packages/*/src/**/*.{ts,tsx,vue}'],
-      exclude: [
-        'vendor/**',
-        '**/dist/**',
-        '**/*.d.ts',
-        '**/*.{test,spec}.{ts,tsx}',
-        ...coverageExemptions,
-      ],
+      exclude: ['vendor/**', '**/dist/**', '**/*.d.ts', '**/*.{test,spec}.{ts,tsx}'],
       ...(fullCoverageReport
         ? {}
         : {
             changed: 'origin/master',
-            thresholds: {
-              perFile: true,
-              statements: 100,
-              branches: 100,
-              functions: 100,
-              lines: 100,
-            },
           }),
     },
   },

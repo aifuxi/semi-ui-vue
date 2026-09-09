@@ -18,6 +18,28 @@ async function fixture(t, sources) {
   return root;
 }
 const demo = 'apps/docs/src/demos/example/zh-cn/Basic.vue';
+test('正式批次追踪产物和验收逻辑，不因诊断工具及其测试变化失效', async () => {
+  for (const batch of await loadBatches()) {
+    const { files } = await batchInputs(batch);
+    for (const file of [
+      'prepare-content.mjs',
+      'documentation-evidence.mjs',
+      'documentation-inputs.mjs',
+      'accept-documentation-batch.mjs',
+      'static-file-response.mjs',
+    ]) {
+      assert.ok(files.includes(`apps/docs/scripts/${file}`), `${batch.id}: ${file}`);
+    }
+    assert.ok(
+      !files.some((file) =>
+        /apps\/docs\/scripts\/(?:diagnose-|documentation-diagnostics)/.test(file),
+      ),
+    );
+    assert.ok(
+      !files.some((file) => file.startsWith('apps/docs/scripts/') && file.endsWith('.test.mjs')),
+    );
+  }
+});
 const button = 'packages/ui/src/button/index.ts';
 const tooltip = 'packages/ui/src/tooltip/index.ts';
 const locale = 'packages/ui/src/locale/index.ts';

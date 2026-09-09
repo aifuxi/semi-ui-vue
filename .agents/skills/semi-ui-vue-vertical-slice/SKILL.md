@@ -22,7 +22,7 @@ metadata:
 ## 完整切片流程
 
 1. 检查工作区状态与指定组件的现状。仅在用户要求“下一个组件”而未指定目标时，从当前 inventory、README 进度及 `docs/research/` 路线判断候选，必要时查架构、最近组件和提交历史；已有公开模块全部 ready 时说明现状，不虚构新切片。
-2. 核验固定基线：`git submodule status vendor/semi-design` 与 `git -C vendor/semi-design describe --tags --exact-match`。按 `AGENTS.md` 的顺序读取该组件的 Adapter、Foundation、SCSS/主题、文档及相关资产。只有固定源码缺失所需信息或用户明确要求时才查询线上资料，并注明版本差异。
+2. 核验固定基线：`git submodule status vendor/semi-design` 与 `git -C vendor/semi-design describe --tags --exact-match`。按 [组件契约](../../../docs/testing/component-contract.md) 的顺序读取该组件的 Adapter、Foundation、SCSS/主题、文档及相关资产。只有固定源码缺失所需信息或用户明确要求时才查询线上资料，并注明版本差异。
 3. 创建或更新 `docs/components/<component>/alignment.md`，覆盖根规范规定的 API、状态、事件序、Vue 映射、DOM/class、视觉、键盘/ARIA、Portal、动效、暗色、RTL、国际化、SSR 与 deviation。
 4. 沿用已有工程接线方式，独立验证固定源码的行为，不复制其他组件的正确性假设。
 
@@ -38,7 +38,7 @@ metadata:
 
 - 开发或定点修复先运行当前行为的单元/SSR、受影响包类型检查及筛选后的 Chromium 场景。视觉基线有依据地更新后，须再无更新参数运行相同场景。
 - 稳定后按实际改动验证共享边界、主题、SSR dist 与真实 tarball；无关链路不为形式重复运行。既有组件修复只刷新受影响证据，不以全新切片合同扩大任务。
-- 完整切片准备 ready 时，在定向检查通过后运行仓库 `pnpm check`，默认集中一轮。后置阶段失败时修复并定向续跑；共享边界改变、无法证明前序结果有效或用户要求时再重跑完整检查。提交本身不触发重复检查。
+- 完整切片准备 ready 时，在定向检查通过后运行仓库 `pnpm check` 与 `pnpm check:artifacts`，默认集中一轮。后置阶段失败时修复并定向续跑；共享边界改变、无法证明前序结果有效或用户要求时再重跑完整检查。提交本身不触发重复检查。
 - 默认浏览器验收为当前组件受影响的完整场景与工作台 smoke。共享运行时/全局主题、比较算法、Playwright/webServer、字体/viewport/动画归一化变化、发布或周期性全量审计及用户要求才触发全仓浏览器回归；单纯新增当前组件的注册、harness 接线或快照目录不构成全量触发条件。
 - 先验证行为和 computed style，再接受截图；阈值通过不代表图片字节一致。报告区分定向、受影响链路与全仓结果，不写死测试数量或耗时。
 - 避免并行争用固定 webServer 端口或构建输入。端口、权限和浏览器启动失败先诊断环境；验证后只清理本次启动的服务并复查工作区范围。

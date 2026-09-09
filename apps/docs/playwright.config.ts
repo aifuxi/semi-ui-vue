@@ -7,7 +7,7 @@ export default defineConfig({
   testDir: './tests/nuxt',
   fullyParallel: false,
   workers: 1,
-  retries: 2,
+  retries: process.env.CI ? 2 : 0,
   forbidOnly: Boolean(process.env.CI),
   failOnFlakyTests: Boolean(process.env.CI),
   reporter: [['list'], ['html', { open: 'never', outputFolder: 'playwright-report' }]],

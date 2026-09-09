@@ -79,7 +79,8 @@ Linux CI 需要在镜像准备阶段执行 `pnpm exec playwright install --with-
 pnpm dev             # Vue 文档/对照应用
 pnpm dev:reference   # React 参考应用
 pnpm inventory:generate # 从固定 vendor 重建组件/API/文档/依赖 inventory
-pnpm check           # 格式、lint、类型、单测、构建、SSR 与真实包安装
+pnpm check           # 日常静态检查、源码类型、单测与工具测试
+pnpm check:artifacts # 构建、文档检查、主题、SSR 与真实包安装
 pnpm test:browser    # 受控并发的 Chromium React/Vue 对照基础设施
 pnpm test:browser:built # 与 CI 一致的预构建开发环境对照，保留全部门禁
 ```

@@ -1,125 +1,40 @@
 # 项目协作约束
 
-本文件保留所有任务都应遵守的项目约束。代码新增、修改、修复、重构或测试使用
-[`ai-change-workflow`](.agents/skills/ai-change-workflow/SKILL.md) Skill；团队层面的 Ownership、
-Intent Review 与理解预算见 [`docs/ai-governance.md`](docs/ai-governance.md)。
+## 协作与任务范围
 
-## 通用 AI 协作约束
+- 回复、报告和说明使用中文；直接说明结果、依据和必要取舍。保护用户已有修改，只处理已授权目标和必要依赖。
+- 信息足够时直接推进实现、修复与验证；公共 API、依赖或架构变更本身不要求再次审批。仅在目标不明确、超出授权或存在未授权的不可逆操作时询问。
+- 选择满足目标的最小实现，保持现有风格；注释解释意图、边界和非显然取舍。只报告实际执行的验证，区分事实、推断与未验证事项。
+- 代码或规则变更使用 [ai-change-workflow](.agents/skills/ai-change-workflow/SKILL.md)。低风险修改、纯问答和只读调查不强制建报告；团队治理见 [ai-governance](docs/ai-governance.md)。
 
-- 以用户目标和明确的验收标准为完成依据，不为未定义的“完美”扩大范围；步骤与目标冲突时先回到目标。
-- 不把当前任务授权扩展到无关文件、外部系统、生产环境或其他人员。信息足以安全推进时作合理假设；会显著改变结果或外部状态时再请求确认。
-- 对环境、依赖、源码和运行行为的结论给出可复核证据，并明确区分已验证事实、推断和未验证假设。
-- 只有实际执行相应验证，才能声称“能运行”“测试通过”或“已修复”。
-- 回复、报告和说明使用中文；代码标识符、日志及约定俗成的技术术语保留英文。
-- 直接给出结果和必要依据，避免客套、逐文件复述和冗长总结；重要取舍给出推荐方案、理由和可行备选。
-- 优先选择满足需求的最小实现，保持现有风格并保护用户已有修改。
-- 注释解释意图、约束、边界或非显然取舍；保留仍然有效的注释，并随代码变化更新或删除失效注释。
-- 已授权任务内的实现、缺陷修复、基线对齐和必要验证直接推进，不因涉及公共 API、生产行为、依赖或架构而自动追加确认。重要取舍说明影响与回退方式；只有超出当前授权、需要用户决定目标或存在未获授权的不可逆操作时才请求确认。
-- 纯问答、只读调查和不产生交付物的讨论不强制生成工作报告。
+## 工具与工作区
 
-## WebStorm MCP 优先工作流
+- 优先使用 WebStorm MCP 对应能力，并用只读调用确认目标项目；支持 `projectPath` 时传实际仓库或 worktree 的绝对路径，不操作其他项目。
+- 运行前查找现有 Run Configuration，无合适配置时用 IDE 终端执行仓库 pnpm 命令。IDE 不可用、能力不支持或失败时说明原因，使用 CLI/文件补丁继续；权限拒绝不得绕过。
+- 搜索须限定范围；空结果、截断或索引未就绪不能证明没有引用。修改后按需获取 IDE 诊断，但它不能替代实际类型、测试或构建检查。
+- 核对命令退出码与超时；启动服务前检查端口，避免干扰现有服务或并行重建浏览器正在消费的产物。不把个人连接配置写入仓库。
 
-本项目使用 WebStorm 开发。代码阅读、修改、重构、运行和调试优先通过 JetBrains IDE 内置 MCP Server 复用 IDE 的项目索引、代码分析和运行环境。参考 [JetBrains MCP Server 文档（IntelliJ IDEA 2026.2）](https://www.jetbrains.com/help/idea/2026.2/mcp-server.html)；WebStorm 的实际能力以当前连接暴露的工具及参数 schema 为准，不假定文章列出的所有工具均可用。
+## 产品与源码契约
 
-- 开始代码任务时先发现 WebStorm MCP 工具，并用只读调用确认目标项目可访问；支持 `projectPath` 的调用始终传入当前仓库或 worktree 的实际绝对路径。IDE 未打开目标 worktree 时不得改用另一个已打开项目执行修改。
-- 工具选择顺序为：WebStorm MCP 对应能力 → 适用的专用工具或 CLI。本节优先于项目 Skill 中的 CodeGraph 优先约定；跨模块符号与调用分析先使用 IDE，CodeGraph 用于补充或回退。上层指令指定工具时遵守上层指令。
-- 阅读与定位优先使用 `list_directory_tree`、`search_file`、`read_file`、`search_text` / `search_regex`；符号语义使用 `search_symbol`、`get_symbol_info`，实际调用关系使用 `analyze_calls`（语言支持时）。查询须限定目录和结果数量；空结果、索引未就绪或截断结果不能证明不存在引用，Vue 模板、动态调用和自动导入仍需源码核对。
-- 修改文件优先使用 IDE 的 `apply_patch`、`create_new_file`；符号重命名使用 `rename_refactoring`，避免文本替换遗漏引用。按需使用 `reformat_file`，仅格式化本次涉及的文件，并检查最终 diff，保护已有修改及只读 `vendor/**`。
-- 修改后优先使用 `get_file_problems` 或 `lint_files` 获取 IDE 诊断；超时、未分析或部分结果必须说明。代码构建使用适用的 `build_project` 或项目 pnpm 构建入口；IDE 检查不能替代本仓库要求的 typecheck、lint、单测、Chromium、SSR 和真实发布包验证。纯文档变更按影响检查，无需启动无关构建。
-- 运行、测试和故障复现先用 `get_run_configurations` 查找已有配置或可运行位置，再用 `execute_run_configuration` 执行，复用其工作目录、运行时与环境。缺少合适配置时，通过 `execute_terminal_command` 执行仓库既有 pnpm 脚本，不擅自改写共享运行配置。
-- 调试先确认当前 MCP 是否提供适用的调试会话、断点、调用栈及变量检查能力，有则优先复用；未直接列出的能力检查是否经 `execute_tool` 路由暴露，按已发现的工具说明调用。普通运行配置执行不等于断点调试；缺少调试接口时使用 IDE 运行输出和适用的浏览器/终端工具补足证据，不宣称已完成断点调试。
-- 运行结果必须核对退出码、超时和完整输出；进程已启动或调用返回不代表验证通过。长驻服务启动前检查已有实例，避免重复占用端口或干扰用户的运行/调试会话；保留本项目锁定的 Playwright Chromium 环境。
-- MCP 未连接、项目不匹配、工具不支持或调用失败时，简要说明具体原因，再使用 `rg`、文件补丁、CodeGraph 或终端等适用方式继续；已确认不可用的能力不反复探测，也不因 MCP 不可用停止已授权任务。权限拒绝不得通过更换工具绕过。
-- 连接缺失时，按 IDE 的 `Settings | Tools | MCP Server` 检查启用状态和客户端配置；工具可见性在 `Exposed Tools` 管理，必要时按文档重启客户端。`AGENTS.md` 只约定工作方式，不会自动建立 MCP 连接；不把本机端口、绝对安装路径或个人配置写入仓库，也不擅自开启免确认执行模式。
+- 唯一 Semi 参考是只读 submodule `vendor/semi-design`，固定 `v2.102.0` / `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`。仅固定源码缺少信息或用户要求检查上游时查在线资料，并标明版本差异。
+- 不修改、格式化或复制 vendor 源码后独立维护；项目扫描与检查排除 `vendor/**`。Foundation 通过私有集成边界编译，发布包内联所需逻辑和编译样式，消费者无需 submodule。
+- 目标覆盖固定版本全部公开组件与资产；视觉、行为、可访问性、主题和 `.semi-*` / `--semi-*` 兼容契约不因流程精简而缩减。
+- 公开 API 使用 Vue 原生 props/emits/slots/v-model；源码使用 TypeScript、Composition API、`<script setup lang="ts">`，默认不用 Options API/JSX，必要的 DOM/VNode 适配允许局部 render function。
+- 所有公开包 SSR-safe import；provider 实例隔离，DOM/Observer/事件在客户端创建并清理，身份敏感对象避免深层代理。具体 Adapter 边界按任务读取 [组件验收契约](docs/testing/component-contract.md)。
+- 保持 pnpm workspace、统一 lockfile 和既有分包依赖方向，见 [架构](docs/architecture/workspace.md)。公开包提供 ESM、类型、根及逐组件 CSS、明确 exports、tree-shaking；不新增 CJS/UMD。
+- 对外使用独立品牌；保留 Semi MIT 与适用第三方声明，新增资产时同步归属及 SBOM。文档页头保留现有 IconSemiLogo 的限定例外，见 [页头记录](docs/documentation/site-header.md)。
 
-## Semi Design 参考基线
+## 按影响验证
 
-- Semi Design 唯一参考基线是只读 Git submodule：`vendor/semi-design`。
-- 参考版本固定为 `v2.102.0`，提交为 `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`；不得用 `main`、在线最新文档或其他版本覆盖该基线。
-- 开始任何 Semi 对齐实现前，按以下顺序检查本地源码：
-  1. `vendor/semi-design/packages/semi-ui/<component>/`：React Adapter、公开类型、DOM 和 class 结构。
-  2. `vendor/semi-design/packages/semi-foundation/<component>/`：Foundation、常量、SCSS、动效与 RTL。
-  3. `vendor/semi-design/packages/semi-theme-default/scss/`：默认主题与全局 Token。
-  4. `vendor/semi-design/content/`：中英文文档、演示、API 与无障碍说明。
-  5. `vendor/semi-design/packages/semi-icons*` 与 `packages/semi-illustrations/`：图标和插画资源。
-- 只有固定源码中不存在所需信息，或任务明确要求检查当前上游时，才查询在线资料；在线资料比 `v2.102.0` 更新时必须明确标注，不能作为复刻基线。
-- `vendor/semi-design` 只用于阅读和验证，不得在其中修改、格式化或生成文件。
-- 应在本项目的 lint、typecheck、test、build 和文件扫描配置中排除 `vendor/**`，避免把上游仓库当成本项目源码处理。
-- Foundation、SCSS 与相关资产只从固定 submodule 读取；不得将上游源码复制到项目目录后独立修改。
-- 项目通过自有的 Foundation 集成/隔离边界选择性编译上游逻辑；Vue 组件不应散落地跨目录依赖 `vendor/**`。
-- 发布产物应内联所需 Foundation 逻辑并包含编译后样式；组件库使用者不需要初始化 submodule。
+- 普通维护从当前缺陷和受影响契约开始，不重新套用组件从零建设流程。完整组件验收使用 [垂直切片 Skill](.agents/skills/semi-ui-vue-vertical-slice/SKILL.md) 和 [组件契约](docs/testing/component-contract.md)；文档示例使用 [文档流程](docs/documentation/workflow.md)。
+- 日常 `pnpm check` 执行静态检查、源码类型、单测和工具测试，不清理工作区或构建全站。产物检查用 `pnpm check:artifacts`，全量回归用 `pnpm check:full`，发布用 `pnpm release:check`；选择规则见 [验证入口](docs/testing/validation.md)。
+- 测试证明公开行为和关键不变量；覆盖率用于发现缺口，不统一要求每文件四项 100%，不为指标编写低价值测试或维护人工豁免表。
+- 浏览器只承诺锁定的 Playwright Chromium；保持同环境 React/Vue 对照、关键样式/几何和局部像素门槛。真实焦点、Portal、拖拽、动效不能用 jsdom 代替。
+- 先做定点验证，稳定后集中执行受影响的昂贵检查。已通过且输入未变的检查不因提交重跑；共享运行时、主题、测试基础设施或发布变更才按影响扩大范围。
+- 本地定位默认不重试；CI 可保留两次重试用于诊断，并以 `failOnFlakyTests` 阻止 flaky 通过。单独运行才成功时先定位共享状态、资源或环境原因，不预先归咎 runner 或 spec，不靠增加重试掩盖失败。
+- 新标记 ready 的切片同步 README；维护已完成组件无需重写进度。历史证据失效时如实标记，仅用户目标要求恢复 accepted 时运行相应完整矩阵，不修改旧指纹伪造有效性。
 
-初始化与核验：
+## 提交
 
-```bash
-git submodule update --init --depth 1 vendor/semi-design
-git submodule status vendor/semi-design
-git -C vendor/semi-design describe --tags --exact-match
-```
-
-预期结果分别包含上述提交 SHA 和 `v2.102.0`。
-
-## 复刻工作约束
-
-- 公开 API 使用 Vue 原生 `props` / `emits` / `slots` / `v-model`；同时尽量保留 Semi 的组件名、枚举值和可自然保留的 prop 名，并为 React 专属语义提供逐项迁移表。
-- “完全复刻”指视觉、行为、状态、可访问性和主题与参考基线对齐，不指在 Vue 中字面复制 `ReactNode`、render props、children 或 React ref 用法。
-- 最终范围覆盖 v2.102.0 的全部公开组件与资产；先交付核心组件，再交付 AIChat、Markdown、音视频、Lottie、Cropper、JsonViewer 等长尾能力。分阶段只改变交付顺序，不缩小最终完成定义。
-- “全部公开”以固定源码的公开导出、文档 API 和发布资产为准；内部模块只在公开能力依赖时纳入。
-- 首个完整版本保留上游 `.semi-*` DOM class、状态 class、placement 属性和 `--semi-*` CSS Token，并将它们视为样式兼容契约。
-- 不得为了“Vue 命名风格”更名 class/Token 或简化 SCSS 依赖的 DOM 结构；项目 npm 包名和品牌名可与 Semi 独立。
-- 浏览器实现、验收和回归只覆盖项目锁定的 Playwright Chromium 构建；Firefox、WebKit 及其它 Chromium 衍生浏览器不在兼容性承诺内。
-- 主视觉证据必须在同一 Chromium 进程环境中对照 React 参考场景与 Vue 场景，并固定浏览器构建、字体、viewport、DPR、Locale、主题、数据和动画时刻。
-- 每个组件编码前必须建立基于本地源码的对齐矩阵，至少覆盖公开 API、默认值、受控/非受控状态、事件顺序、插槽或 render prop 映射、DOM/class、计算样式、键盘与焦点、ARIA、Portal、动效、暗色、RTL、国际化和 SSR（适用时）。
-- 现有 Vue 实现、测试、快照和截图都不是正确性来源；它们必须独立对照固定源码和同环境浏览器结果。
-- 未解释的 API、行为或视觉差异存在时，不得宣称组件完成像素级复刻。
-- 每个组件只有在以下产物同时完成后才能标记完成：对齐矩阵、Vue 源码、中英文文档与 React→Vue 迁移表、类型验证、单元测试、Chromium 行为/无障碍/适用时 SSR 测试、React/Vue 计算样式与截图对照、真实发布包安装验证。
-- 每完成一个 `ready` 垂直切片，必须在同一次提交中同步更新 `README.md` 的完成数量、完成列表和下一组件；README 未更新时不得提交该切片。
-- 测试优先验证公开行为，不依赖私有 state/method 或 Foundation spy 证明正确性；结构快照和视觉截图不得是唯一断言。
-- `apps/parity-vue` 的组件场景必须从公开组件子路径导入，不得从 `@aifuxi/semi-ui-vue` 根入口导入；浏览器工作台应只加载当前场景依赖，并以简单场景不超过 200 个请求作为回归门禁。
-- 任何无法等价的差异必须在 deviation 记录中说明源码证据、原因、用户影响和验收结论；“暂未实现”不是可接受 deviation。
-- 视觉回归对组件、Portal 弹层或最小完整场景单独裁剪，不用大页面面积稀释组件差异。
-- 关键 computed style 逐项精确相等；对应节点的 bounding rect 各轴差值不超过 `0.5 CSS px`。
-- Playwright 截图 `threshold` 不高于 `0.1`，`maxDiffPixelRatio` 不高于 `0.001`（0.1%）。数值通过不代表可见或局部集中差异可被接受，此类差异仍必须定位并消除或记录为 accepted deviation。
-- 截图 mask 只能用于有源码/运行时证据的非确定内容，且必须使用最小范围并在测试中注明原因；禁止为让测试通过而扩大 mask 或盲目更新基线。
-- 所有组件的默认视觉矩阵包含桌面 viewport `1440×900`、DPR 1、light/dark；不得因组件“看起来与主题无关”而跳过 dark。
-- 项目定位为桌面端组件库，不作移动端兼容承诺。只有固定源码的公开 API、文档或实现明确依赖响应式断点、触摸输入或可视区域边界时，才增加窄视口 `390×844`、DPR 1 或触摸专项；窄视口只验证对应公开行为，不为所有组件复制完整 light/dark 视觉矩阵，也不构成移动端兼容承诺。方向敏感组件增加 RTL 场景。
-- 国际化敏感组件对 zh-CN/en-US 执行视觉与行为对照；全部 57 个 Locale 必须通过数据完整性、公开导出和可渲染验证。
-- 默认场景矩阵是最低门槛；每个组件仍须按对齐矩阵增加适用的 hover、active、focus-visible、disabled、loading、validation、open/close、键盘、Portal 和动画场景。
-
-## 仓库与发布边界
-
-- 项目使用 pnpm workspace 单仓库，统一 lockfile、脚本入口和内部包版本策略。
-- Vue 组件、Foundation 集成层、默认主题、图标、插画与测试基础设施分包管理；参考 React 应用与 Vue 文档应用放在 `apps/` 下。
-- 固定目录分别是：`apps/reference-react`、`apps/docs`、`apps/parity-vue`、`packages/ui`、`packages/foundation-integration`、`packages/theme-default`、`packages/icons`、`packages/icons-lab`、`packages/illustrations` 和 `packages/test-infra`；详细依赖方向见 `docs/architecture/workspace.md`。
-- 对外发布主组件包和独立的默认主题、图标、插画包；Foundation 集成层和测试基础设施保持私有。
-- 内部包的目录名不得被当成尚未确认的 npm scope 或品牌承诺。
-- 首版发布契约是 ESM、TypeScript 声明、根 CSS 入口、逐组件样式入口和明确的 `exports`，并必须支持 tree-shaking 与 SSR-safe import。
-- 暂不生成或发布 CJS/UMD；只有经真实消费环境证明必需时，才通过新的发布决策纳入。
-- 每个发布包必须对 `npm pack` 结果执行安装、导入、类型、样式入口与 SSR import 验证，不得只验证 workspace 源码。
-- 项目从首版起按可公开发布标准处理：保留 Semi Design MIT License 与适用的第三方声明，并对实际 `npm pack` 产物生成 SBOM/许可清单。
-- 不复用 Semi Logo；对外品牌与 npm scope 使用独立名称。`.semi-*` / `--semi-*` 只是技术兼容契约，不得被表述为官方授权、合作或品牌身份。
-- 文档站页头是经用户明确选择的品牌例外：允许使用现有 `IconSemiLogo`，保留 `Semi UI Vue` 名称及独立项目身份；不扩展至其他品牌或发布资产。依据与边界见 [`页头对齐记录`](docs/documentation/site-header.md)。
-- 新增、替换或内联任何第三方代码/资产时，必须同步更新归属、许可和 SBOM 证据，不得留到发布前补录。
-
-## Vue 运行时与编码基线
-
-- `vue >= 3.5` 是主组件包的 peer dependency；源码统一使用 TypeScript、Composition API 和 `<script setup lang="ts">`。
-- 内部默认不使用 Options API 或 JSX；只在模板无法精确表达必需 DOM/VNode 行为时，才允许范围受限的 render function。
-- 公开契约使用类型化 props/emits/slots、`v-model` 与 `InjectionKey`；props 不得由子组件修改，跨层状态必须保持 provider 实例隔离。
-- React→Vue API 适配不得用普通 truthiness 代替“prop 是否显式传入”。默认值为 `true` 的 Boolean prop 必须分别验证缺省、显式 `false`、显式 `true`；读取子 VNode prop 时还必须同时覆盖 SFC 模板裸属性与 render function 输入。
-- Foundation 实例、DOM、Observer、Map/Set 等外部或身份敏感对象不得被无意深层代理；根据契约使用 `shallowRef` / `shallowReactive` / `markRaw`。
-- 所有公开包必须 SSR-safe import；适用组件必须验证 SSR render/hydration，DOM 查询、Portal、Observer 和全局事件只能在客户端生命周期内创建并完整清理。
-- Portal、浮层和定位组件必须验证自定义容器首次挂载、Element/Document capture scroll 后重定位与卸载清理；不得在缺少上游证据时把事件目标收窄为 `Element`。
-
-## 测试与门禁
-
-- 示例补齐、文档示例修复和严格视觉验收按 [`docs/documentation/workflow.md`](docs/documentation/workflow.md) 的任务入口执行；代表预检、验证顺序、真实浏览器时序与烟测证据归档统一在该流程维护。
-- `failOnFlakyTests`（CI 环境已启用）和 `retries: 2` 是防抖基础配置。一个只在单独运行时通过的 spec 是 spec 的缺陷，不是 runner 不稳定——修复 spec 或添加确定性 fixture，而非增加 retries。
-- 组件完成产物、黑盒断言与桌面优先矩阵统一遵守上文“复刻工作约束”。
-- Teleport/真实焦点/拖拽/ResizeObserver/computed style/动画不能用 jsdom 结果代替 Chromium 证据。
-
-## Git
-
-- 每完成一项任务并通过对应验收后，自动创建独立 commit，无需再次询问；组件补齐以一个组件批次为一项，不将多个已完成批次累积到最后提交。提交应包含该项源码、文档、映射和必要进度/证据更新；已验证且未变化的内容不为提交重复运行检查。
-- 提交前检查工作区状态与最终 diff，只暂存本次任务相关文件，不覆盖或提交用户的无关修改。
-- commit 信息应准确描述本次变更；没有实际提交成功时不得声称已经提交。
+- 每项已完成并通过对应验收的任务自动创建独立 commit，无需再次询问。提交前检查最终 diff，仅暂存本次文件；未经验证的结果和无关修改不混入提交。
+- 提交说明包含结果、实际验证及剩余问题；没有提交成功不得声称已提交。

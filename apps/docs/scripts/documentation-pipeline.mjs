@@ -71,7 +71,9 @@ export function preparationStages(root = workspace) {
           [
             ...sharedInputs,
             ...packages.map((name) => `packages/${name}`),
-            'scripts',
+            'scripts/generate-*.mjs',
+            'scripts/write-compliance-artifacts.mjs',
+            'scripts/upstream-markdown.mjs',
             ...['assets', 'tokens', 'repl'].map((name) => `apps/docs/scripts/prepare-${name}.mjs`),
             'apps/docs/scripts/repl-module-bundles.mjs',
           ],

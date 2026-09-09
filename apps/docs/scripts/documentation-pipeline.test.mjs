@@ -211,6 +211,8 @@ test('真实准备输入分离文档、测试与验收账本，新增和删除�
     'apps/docs/playwright.nuxt.config.ts',
     'packages/test-infra/src/index.ts',
     'apps/docs/scripts/repl-module-bundles.mjs',
+    'scripts/verify-theme.mjs',
+    'scripts/theme-contracts.json',
   ];
   for (const file of files) await f.write(file, 'source');
   const [resources, site, checks] = preparationStages(f.root);
@@ -218,6 +220,8 @@ test('真实准备输入分离文档、测试与验收账本，新增和删除�
   assert.ok(resources.inputs().includes('apps/docs/scripts/prepare-assets.mjs'));
   assert.ok(resources.inputs().includes('apps/docs/scripts/repl-module-bundles.mjs'));
   assert.ok(resources.inputs().includes('scripts/generate-icons.mjs'));
+  assert.ok(!resources.inputs().includes('scripts/verify-theme.mjs'));
+  assert.ok(!resources.inputs().includes('scripts/theme-contracts.json'));
   assert.ok(!resources.inputs().includes('packages/ui/src/button.test.ts'));
   assert.ok(resources.inputs().includes('packages/icons/src/Icon.test.ts'));
   assert.ok(!resources.inputs().includes(files[0]));

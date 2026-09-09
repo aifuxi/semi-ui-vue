@@ -27,6 +27,10 @@ jobs:
       - run: mise exec -- pnpm install --frozen-lockfile
       - run: mise exec -- pnpm audit:prod
       - run: mise exec -- pnpm check
+      - run: mise exec -- pnpm check:artifacts
+        if: github.ref_name == 'v0.1.0-alpha.0'
+        env:
+          PACK_ISOLATED: '1'
 
   browser:
     name: Chromium parity on Darwin
@@ -78,9 +82,8 @@ jobs:
           version: 2026.9.3
       - run: mise exec -- npm install --global npm@11.16.0 --registry=https://registry.npmjs.org/
       - run: mise exec -- pnpm install --frozen-lockfile
-      - run: mise exec -- pnpm build
-      - run: mise exec -- pnpm verify:theme-dist
-      - run: mise exec -- pnpm verify:ssr-dist
-      - run: mise exec -- pnpm verify:pack-dist
+      - run: mise exec -- pnpm check:artifacts
+        env:
+          PACK_ISOLATED: '1'
       - run: mise exec -- pnpm release:verify
       - run: mise exec -- pnpm release:publish

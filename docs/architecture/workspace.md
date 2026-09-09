@@ -152,16 +152,16 @@ Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select
 - `pnpm check:vendor`：确认 submodule 的 tag 和 SHA。
 - `pnpm check:inventory`：重建并逐字核对固定上游的组件、API、文档、依赖与资产 inventory，防止生成物漂移。
 - `pnpm check:boundaries`：阻止 Vue 运行时源码通过静态、动态、require 或样式导入绕过上游边界。
-- React 参考应用的依赖清单同样被精确锁定；真实场景接通后还必须断言模块解析结果来自本地 `vendor/semi-design`，不能安装线上 `@douyinfe/semi-ui` 替代。
+- 依赖版本以 package.json 与 lockfile 为准，边界脚本只约束依赖方向；参考场景仍须证明模块来自本地 `vendor/semi-design`，不能安装线上 `@douyinfe/semi-ui` 替代。
 - `pnpm format:check`：检查仓库自有文件格式，跳过 `vendor/**`。
 - `pnpm lint`：检查自有 JavaScript、TypeScript、TSX 和 Vue 文件。
 - `pnpm typecheck`：逐 workspace 执行 TypeScript/Vue 类型检查。
 - `pnpm test:unit`：Vitest + jsdom 的公开行为单测入口。
-- `pnpm build`：构建两个应用、ESM/声明包和默认主题 CSS。
+- `pnpm build`：通过缓存准备一次公开包/主题与文档站，再构建两个对照工作台。
 - `pnpm test:theme`：从只读上游重建完整根 CSS，并核对 v2.102.0 的组件导入顺序与代表性选择器。
 - `pnpm test:ssr`：先重建拟公开 JavaScript 包，再在无 DOM 的 Node 环境导入并扫描私有边界泄漏。
 - `pnpm test:pack`：构建真实 tarball，在临时消费者中离线安装并验证 exports、ESM、类型、样式和 SSR import。
 - 每个公开包的构建都会写入 Semi Design 完整许可证、第三方声明和 SPDX 2.3 SBOM；项目自身使用 MIT License，并在包根携带 LICENSE。
 - SBOM 默认记录实际构建时间；可复现发布必须传入标准的 `SOURCE_DATE_EPOCH`，该值也参与文档命名空间指纹。
-- `pnpm test:browser`：启动 React/Vue 两个服务，按组件 spec 受控并发；每个测试仍在同一 BrowserContext 中执行 React/Vue 来源、行为、计算样式、几何与视觉对照。默认本地 4 个 worker、CI 2 个，可通过 `PARITY_WORKERS` 覆盖。
-- `pnpm check:full`：执行以上完整本地门禁。
+- `pnpm test:browser`：启动 React/Vue 两个服务，按组件 spec 受控并发；每个测试仍在同一 BrowserContext 中执行 React/Vue 来源、行为、计算样式、几何与视觉对照。默认本地与 CI 均为 3 个 worker，可通过 `PARITY_WORKERS` 覆盖。
+- `pnpm check`：日常静态检查、源码类型、单测与工具测试；`pnpm check:artifacts` 验证构建和真实包；`pnpm check:full` 再加完整浏览器回归。详见 [验证入口](../testing/validation.md)。

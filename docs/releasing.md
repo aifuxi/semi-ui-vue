@@ -56,6 +56,8 @@ pnpm release:check
 
 `release:check` 先固定到官方 npm registry 审计全部 production 依赖，并阻止 moderate、high 或 critical 已知漏洞；随后执行边界、格式、lint、类型、单元/SSR、构建、主题、真实 tarball 消费和完整 Chromium 回归。发布验证还会扫描公开 manifest、README 和 `dist`，阻止 `@workspace/*`、`vendor/**`、私有 Foundation 类型及本机绝对路径进入产物。显式使用官方 registry 是为了避免本地镜像未实现 npm audit API 时产生错误结论。
 
+`release:check` 使用 `PACK_ISOLATED=1`：临时消费者从官方 registry 解析运行时依赖并严格验证 peer，不链接本仓库依赖。日常离线检查与完整发布入口的区别见 [验证入口](./testing/validation.md)。
+
 Linux 截图不能覆盖 Darwin 基线。首次启用 Linux CI 前，手动运行 `visual-linux.yml`，下载生成的 `linux-snapshots` artifact，人工审核后再把 Linux 基线纳入仓库。
 
 ## 首次人工引导发布

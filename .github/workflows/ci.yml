@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   quality:
-    name: Quality and package verification
+    name: Source quality and tooling
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -24,6 +24,15 @@ jobs:
           version: 2026.9.3
       - run: mise exec -- pnpm install --frozen-lockfile
       - run: mise exec -- pnpm check
+      - name: Verify affected build and package contracts
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
+          if rg -q '^(packages/|apps/|scripts/|tests/|vendor/|package.json$|pnpm-|tsconfig|vite|mise.toml$|\.npmrc$|\.github/workflows/)' <<< "$changed"; then
+            mise exec -- pnpm check:artifacts
+          fi
 
   browser:
     name: Chromium parity on Linux
