@@ -140,6 +140,9 @@ describe('ConfigProvider', () => {
       },
     });
     expect(wrapper.text()).toContain('已复制');
+    await wrapper.setProps({ locale: { code: 'partial' } });
+    expect(wrapper.text()).toContain('复制成功');
+    wrapper.unmount();
   });
 
   it('首次订阅时读取断点，过滤变更回调并在最后取消订阅时清理', async () => {
