@@ -17,6 +17,21 @@ Intent Review 与理解预算见 [`docs/ai-governance.md`](docs/ai-governance.md
 - 已授权任务内的实现、缺陷修复、基线对齐和必要验证直接推进，不因涉及公共 API、生产行为、依赖或架构而自动追加确认。重要取舍说明影响与回退方式；只有超出当前授权、需要用户决定目标或存在未获授权的不可逆操作时才请求确认。
 - 纯问答、只读调查和不产生交付物的讨论不强制生成工作报告。
 
+## WebStorm MCP 优先工作流
+
+本项目使用 WebStorm 开发。代码阅读、修改、重构、运行和调试优先通过 JetBrains IDE 内置 MCP Server 复用 IDE 的项目索引、代码分析和运行环境。参考 [JetBrains MCP Server 文档（IntelliJ IDEA 2026.2）](https://www.jetbrains.com/help/idea/2026.2/mcp-server.html)；WebStorm 的实际能力以当前连接暴露的工具及参数 schema 为准，不假定文章列出的所有工具均可用。
+
+- 开始代码任务时先发现 WebStorm MCP 工具，并用只读调用确认目标项目可访问；支持 `projectPath` 的调用始终传入当前仓库或 worktree 的实际绝对路径。IDE 未打开目标 worktree 时不得改用另一个已打开项目执行修改。
+- 工具选择顺序为：WebStorm MCP 对应能力 → 适用的专用工具或 CLI。本节优先于项目 Skill 中的 CodeGraph 优先约定；跨模块符号与调用分析先使用 IDE，CodeGraph 用于补充或回退。上层指令指定工具时遵守上层指令。
+- 阅读与定位优先使用 `list_directory_tree`、`search_file`、`read_file`、`search_text` / `search_regex`；符号语义使用 `search_symbol`、`get_symbol_info`，实际调用关系使用 `analyze_calls`（语言支持时）。查询须限定目录和结果数量；空结果、索引未就绪或截断结果不能证明不存在引用，Vue 模板、动态调用和自动导入仍需源码核对。
+- 修改文件优先使用 IDE 的 `apply_patch`、`create_new_file`；符号重命名使用 `rename_refactoring`，避免文本替换遗漏引用。按需使用 `reformat_file`，仅格式化本次涉及的文件，并检查最终 diff，保护已有修改及只读 `vendor/**`。
+- 修改后优先使用 `get_file_problems` 或 `lint_files` 获取 IDE 诊断；超时、未分析或部分结果必须说明。代码构建使用适用的 `build_project` 或项目 pnpm 构建入口；IDE 检查不能替代本仓库要求的 typecheck、lint、单测、Chromium、SSR 和真实发布包验证。纯文档变更按影响检查，无需启动无关构建。
+- 运行、测试和故障复现先用 `get_run_configurations` 查找已有配置或可运行位置，再用 `execute_run_configuration` 执行，复用其工作目录、运行时与环境。缺少合适配置时，通过 `execute_terminal_command` 执行仓库既有 pnpm 脚本，不擅自改写共享运行配置。
+- 调试先确认当前 MCP 是否提供适用的调试会话、断点、调用栈及变量检查能力，有则优先复用；未直接列出的能力检查是否经 `execute_tool` 路由暴露，按已发现的工具说明调用。普通运行配置执行不等于断点调试；缺少调试接口时使用 IDE 运行输出和适用的浏览器/终端工具补足证据，不宣称已完成断点调试。
+- 运行结果必须核对退出码、超时和完整输出；进程已启动或调用返回不代表验证通过。长驻服务启动前检查已有实例，避免重复占用端口或干扰用户的运行/调试会话；保留本项目锁定的 Playwright Chromium 环境。
+- MCP 未连接、项目不匹配、工具不支持或调用失败时，简要说明具体原因，再使用 `rg`、文件补丁、CodeGraph 或终端等适用方式继续；已确认不可用的能力不反复探测，也不因 MCP 不可用停止已授权任务。权限拒绝不得通过更换工具绕过。
+- 连接缺失时，按 IDE 的 `Settings | Tools | MCP Server` 检查启用状态和客户端配置；工具可见性在 `Exposed Tools` 管理，必要时按文档重启客户端。`AGENTS.md` 只约定工作方式，不会自动建立 MCP 连接；不把本机端口、绝对安装路径或个人配置写入仓库，也不擅自开启免确认执行模式。
+
 ## Semi Design 参考基线
 
 - Semi Design 唯一参考基线是只读 Git submodule：`vendor/semi-design`。
