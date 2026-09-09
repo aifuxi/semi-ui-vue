@@ -469,11 +469,12 @@ for (const [index, name] of examples.entries())
               info,
               'sizes',
             );
-            for (const page of pages)
-              await page.locator('.semi-select-option').filter({ hasText: /20/ }).click();
-            await snapshot('size-20');
-            for (const root of roots)
+            for (const root of roots) {
+              await root.page().locator('.semi-select-option').filter({ hasText: /20/ }).click();
               await expect(root.locator('.semi-page .semi-select')).toContainText('20');
+              await expect(root.page().locator('.semi-select-option-list')).toHaveCount(0);
+            }
+            await snapshot('size-20');
           }
           if (theme === 'light') {
             await demo

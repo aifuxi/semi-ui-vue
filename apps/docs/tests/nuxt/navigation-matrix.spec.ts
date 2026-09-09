@@ -286,11 +286,14 @@ for (const [index, name] of examples.entries())
                 await waitForVisualAssets(roots);
                 async function settle() {
                   await freezeAnimations(pages, 300);
-                  for (const page of pages) {
+                  for (const [i, page] of pages.entries()) {
                     await page.evaluate(() =>
                       document.getAnimations().forEach((animation) => animation.finish()),
                     );
                     await page.clock.runFor(32);
+                    // aria-expanded changes before Collapsible removes closing content.
+                    // Sample only after the real transitionend has cleared its public class.
+                    await expect(roots[i]!.locator('.semi-collapsible-transition')).toHaveCount(0);
                   }
                 }
                 async function snapshot(state: string) {

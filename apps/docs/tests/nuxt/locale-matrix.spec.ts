@@ -4,6 +4,38 @@ import { visualContext, waitForVisualAssets } from './visual-context';
 import { freezeAnimations } from './demo-parity';
 import { expectScreenshotPixelsToMatch } from '../../../../tests/browser/parity-harness';
 
+async function waitForCollapsedTypography(reference: Locator, vue: Locator) {
+  // Locale changes remount the paragraph and measure the expand label on a later frame.
+  // Match stable text/geometry to the pinned reference; RTL can wrap its label to a fourth row.
+  const roots = [reference, vue];
+  for (const root of roots)
+    await expect(root.locator('.semi-typography-ellipsis-expand')).toBeVisible();
+  let previous: string | undefined;
+  await expect
+    .poll(
+      async () => {
+        const states = await Promise.all(
+          roots.map((root) =>
+            root.locator('.semi-typography-ellipsis').evaluate((element) => ({
+              text: element.textContent,
+              height: element.getBoundingClientRect().height,
+              hasExpand: Boolean(element.querySelector('.semi-typography-ellipsis-expand')),
+            })),
+          ),
+        );
+        const snapshot = JSON.stringify(states);
+        const settled =
+          states.every((state) => state.hasExpand) &&
+          JSON.stringify(states[0]) === JSON.stringify(states[1]) &&
+          snapshot === previous;
+        previous = snapshot;
+        return settled;
+      },
+      { message: 'Typography must finish locale-dependent ellipsis measurement on both sides' },
+    )
+    .toBe(true);
+}
+
 async function measure(root: Locator) {
   return root.evaluate((element) => {
     const origin = element.getBoundingClientRect();
@@ -217,6 +249,9 @@ for (const [index, name] of examples.entries())
                   .locator('.semi-select-option')
                   .filter({ hasText: locale === 'zh-cn' ? '阿拉伯语' : 'Arabic' })
                   .click();
+                await expect(root.locator('.semi-select').first()).toContainText(
+                  locale === 'zh-cn' ? '阿拉伯语' : 'Arabic',
+                );
               }
             }
             await align(expected, actual);
@@ -224,9 +259,7 @@ for (const [index, name] of examples.entries())
             await freezeAnimations([reference, vue], 300);
             // Language changes remount consumers; scrolling may schedule another resize measurement.
             // Wait for the public collapsed state after alignment, rather than sampling a transient full text.
-            if (name === 'Components')
-              for (const root of [expected, actual])
-                await expect(root.locator('.semi-typography-ellipsis-expand')).toBeVisible();
+            if (name === 'Components') await waitForCollapsedTypography(expected, actual);
             const editorSelector =
               name === 'Custom' ? ':scope > div' : '.semi-page, .semi-list, h5, .semi-navigation';
             const initialTexts = await actual.locator(editorSelector).allTextContents();
@@ -334,6 +367,9 @@ for (const [index, name] of examples.entries())
                     hasText: locale === 'zh-cn' ? /^日语$/ : /^Japanese$/,
                   })
                   .click();
+                await expect(root.locator('.semi-select').first()).toContainText(
+                  locale === 'zh-cn' ? '日语' : 'Japanese',
+                );
                 await expect(
                   root.locator('.semi-page').first().locator('.semi-page-item-active'),
                 ).toHaveText('1');
@@ -341,8 +377,7 @@ for (const [index, name] of examples.entries())
               await align(expected, actual);
               await Promise.all([reference, vue].map((page) => page.mouse.move(1400, 880)));
               await freezeAnimations([reference, vue], 300);
-              for (const root of [expected, actual])
-                await expect(root.locator('.semi-typography-ellipsis-expand')).toBeVisible();
+              await waitForCollapsedTypography(expected, actual);
               await compare(expected, actual, info, 'japanese-consumers');
               for (const selector of [
                 '.semi-page',
