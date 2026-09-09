@@ -1,6 +1,6 @@
 # AIChatInput
 
-AIChatInput matches Semi Design v2.102.0 for rich-text input, skills, suggestions, templates, references, attachments, and generating state. It uses Tiptap 3.10.7 and maps the React contract to Vue props, emits, scoped slots, and exposed methods.
+AIChatInput matches Semi Design v2.102.0 for rich-text input, skills, suggestions, templates, references, attachments, and generating state. It uses Tiptap `^3.31.3` (compatible upgrades within major version 3, with the workspace resolution recorded in the lockfile) and maps the React contract to Vue props, emits, scoped slots, and exposed methods.
 
 ```ts
 import { AIChatInput } from '@aifuxi/semi-ui-vue';

@@ -1,6 +1,6 @@
 # AIChatInput 智能输入框
 
-AIChatInput 对齐 Semi Design v2.102.0 的富文本输入、技能、建议、模板、引用、附件和生成态。组件使用 Tiptap 3.10.7，并在 Vue 中以 props、emits、scoped slots 与公开实例方法表达原 React 契约。
+AIChatInput 对齐 Semi Design v2.102.0 的富文本输入、技能、建议、模板、引用、附件和生成态。组件使用 Tiptap `^3.31.3`（允许同主版本兼容升级，仓库实际版本由 lockfile 固定），并在 Vue 中以 props、emits、scoped slots 与公开实例方法表达原 React 契约。
 
 ```ts
 import { AIChatInput } from '@aifuxi/semi-ui-vue';
