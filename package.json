@@ -8,10 +8,10 @@
     "url": "git+https://github.com/aifuxi/semi-ui-vue.git"
   },
   "type": "module",
-  "packageManager": "pnpm@11.19.0",
+  "packageManager": "pnpm@12.3.4",
   "engines": {
     "node": "^20.19.0 || ^22.13.0 || ^24.0.0",
-    "pnpm": "11.19.0"
+    "pnpm": "12.3.4"
   },
   "scripts": {
     "dev": "pnpm dev:docs",
@@ -62,8 +62,9 @@
     "release:preflight": "pnpm release:verify && node scripts/release-preflight.mjs",
     "release:publish": "node scripts/publish-packages.mjs",
     "release:check": "pnpm audit:prod && pnpm check:full && pnpm release:verify",
-    "check": "pnpm check:vendor && pnpm check:inventory && pnpm check:icons && pnpm check:illustrations && pnpm check:locales && pnpm check:boundaries && pnpm check:vitest-aliases && pnpm check:coverage-exemptions && pnpm format:check && pnpm lint && pnpm typecheck:clean && pnpm test:coverage && pnpm build && pnpm --filter @workspace/docs check:content && pnpm --filter @workspace/docs check:dist && pnpm verify:theme-dist && pnpm verify:ssr-dist && pnpm verify:pack-dist",
-    "check:full": "pnpm check && pnpm test:browser && pnpm test:browser:docs"
+    "check": "pnpm check:toolchain && pnpm check:vendor && pnpm check:inventory && pnpm check:icons && pnpm check:illustrations && pnpm check:locales && pnpm check:boundaries && pnpm check:vitest-aliases && pnpm check:coverage-exemptions && pnpm format:check && pnpm lint && pnpm typecheck:clean && pnpm test:coverage && pnpm build && pnpm --filter @workspace/docs check:content && pnpm --filter @workspace/docs check:dist && pnpm verify:theme-dist && pnpm verify:ssr-dist && pnpm verify:pack-dist",
+    "check:full": "pnpm check && pnpm test:browser && pnpm test:browser:docs",
+    "check:toolchain": "node scripts/verify-toolchain.mjs"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

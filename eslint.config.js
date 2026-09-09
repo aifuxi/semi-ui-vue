@@ -8,6 +8,7 @@ export default tseslint.config(
   {
     ignores: [
       'vendor/**',
+      '.worktrees/**',
       '.agents/**',
       '.codex/**',
       '**/.nuxt/**',

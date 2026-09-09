@@ -19,20 +19,21 @@ test('导航、搜索、语言与主题切换', async ({ page }) => {
   await expect(page.locator('body')).toHaveAttribute('theme-mode', 'dark');
 });
 
-test('正文与 API 在没有 JavaScript 时仍可阅读', async ({ browser }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false });
+test('正文与 API 在没有 JavaScript 时仍可阅读', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
   const page = await context.newPage();
-  await page.goto('http://127.0.0.1:4321/zh-cn/components/button/');
+  await page.goto('/zh-cn/components/button/');
   await expect(page.locator('h1')).toHaveText('按钮');
   await expect(page.locator('[data-api-kind="props"]').first()).toContainText('disabled');
   expect(await page.locator('[data-demo-source]').first().textContent()).toContain('script setup');
   await context.close();
 });
 
-test('示例交互与在线编辑使用本地资源', async ({ page }) => {
+test('示例交互与在线编辑使用本地资源', async ({ page, baseURL }) => {
+  const docsOrigin = new URL(baseURL!).origin;
   const external: string[] = [];
   page.on('request', (request) => {
-    if (/^https?:/.test(request.url()) && !request.url().startsWith('http://127.0.0.1:4321/'))
+    if (/^https?:/.test(request.url()) && new URL(request.url()).origin !== docsOrigin)
       external.push(request.url());
   });
   await page.goto('/en-us/components/button/');

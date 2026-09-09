@@ -2,7 +2,8 @@ import { expect, test, type Locator, type Page } from '@playwright/test';
 import { expectScreenshotPixelsToMatch } from '../../../../tests/browser/parity-harness';
 import { visualContext, waitForVisualAssets } from './visual-context';
 
-const docsOrigin = process.env.DOCS_HEADER_ORIGIN ?? 'http://127.0.0.1:4321';
+const docsOrigin =
+  process.env.DOCS_HEADER_ORIGIN ?? `http://127.0.0.1:${process.env.DOCS_PORT ?? 4321}`;
 const styleKeys = [
   'color',
   'background-color',
