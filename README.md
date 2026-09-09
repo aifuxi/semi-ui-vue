@@ -57,16 +57,19 @@ Feedback 7 项双语示例已补齐，14 个示例的主要操作、源码及编
 文档验收已完成一次端到端提速：同一六批 224 项冷启动从 17 分 49 秒降至 9 分 03 秒（减少 49.24%），全部一次通过；准备复用命令实测 9.5 秒。默认使用 3 workers、按实际依赖判定失效，并限制 REPL 模块请求，后续有效批次直接跳过。详见 [性能工作记录](ai-work/20260906-211800-documentation-performance.md)。
 
 - Node.js `24.18.0`（支持 `20.19+`、`22.13+` 和 `24.x`）
-- pnpm `11.19.0`
+- pnpm `12.3.4`；Node 与 pnpm 由根 `mise.toml` 统一管理
 - Playwright 固定 Chromium 构建
 
 ```bash
-corepack enable
-pnpm install
-pnpm playwright:install
-pnpm check:vendor
-pnpm check:full
+mise trust
+mise install
+mise exec -- pnpm install --frozen-lockfile
+mise exec -- pnpm playwright:install
+mise exec -- pnpm check:vendor
+mise exec -- pnpm check:full
 ```
+
+终端启用 `mise activate zsh` 后可直接使用下列 pnpm 命令；自动化和未激活的终端使用 `mise exec -- pnpm …`。WebStorm 解释器与包管理器分别选用 `mise which node`、`mise which pnpm` 返回的路径，个人路径不提交。详见 [工具链管理](docs/architecture/toolchain.md)。
 
 Linux CI 需要在镜像准备阶段执行 `pnpm exec playwright install --with-deps chromium`；普通 `pnpm install` 不会下载浏览器。当前首份截图校准基线生成于 macOS（Darwin），Linux 在纳入 `check:full` 前必须单独生成并人工审核对应平台基线，不能自动更新覆盖。
 

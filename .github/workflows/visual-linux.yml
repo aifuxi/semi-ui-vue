@@ -14,14 +14,12 @@ jobs:
       - uses: actions/checkout@v6
         with:
           submodules: recursive
-      - uses: actions/setup-node@v6
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
         with:
-          node-version: 24.18.0
-          package-manager-cache: false
-      - run: corepack enable
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium
-      - run: pnpm test:browser --update-snapshots
+          version: 2026.9.3
+      - run: mise exec -- pnpm install --frozen-lockfile
+      - run: mise exec -- pnpm exec playwright install --with-deps chromium
+      - run: mise exec -- pnpm test:browser --update-snapshots
       - uses: actions/upload-artifact@v4
         with:
           name: linux-snapshots

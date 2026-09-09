@@ -19,13 +19,11 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-      - uses: actions/setup-node@v6
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
         with:
-          node-version: 24.18.0
-          package-manager-cache: false
-      - run: corepack enable
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm check
+          version: 2026.9.3
+      - run: mise exec -- pnpm install --frozen-lockfile
+      - run: mise exec -- pnpm check
 
   browser:
     name: Chromium parity on Linux
@@ -35,14 +33,12 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-      - uses: actions/setup-node@v6
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
         with:
-          node-version: 24.18.0
-          package-manager-cache: false
-      - run: corepack enable
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium
-      - run: pnpm test:browser
+          version: 2026.9.3
+      - run: mise exec -- pnpm install --frozen-lockfile
+      - run: mise exec -- pnpm exec playwright install --with-deps chromium
+      - run: mise exec -- pnpm test:browser
         env:
           PARITY_SERVER_MODE: build
           PARITY_IGNORE_HOST_BASELINES: '1'

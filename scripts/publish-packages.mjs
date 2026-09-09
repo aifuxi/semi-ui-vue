@@ -24,8 +24,8 @@ try {
     const packageRoot = path.join(workspaceRoot, 'packages', packageInfo.directory);
     const manifest = JSON.parse(await readFile(path.join(packageRoot, 'package.json'), 'utf8'));
     const packOutput = execFileSync(
-      process.execPath,
-      [pnpmExecPath, 'pack', '--json', `--pack-destination=${artifactsRoot}`],
+      pnpmExecPath,
+      ['pack', '--json', `--pack-destination=${artifactsRoot}`],
       { cwd: packageRoot, encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] },
     ).trim();
     const parsedPackOutput = JSON.parse(packOutput);

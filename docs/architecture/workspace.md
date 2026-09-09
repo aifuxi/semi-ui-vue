@@ -131,7 +131,7 @@ Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select
 ## 固定运行环境
 
 - Node.js 开发版本：`24.18.0`；支持范围：`^20.19.0 || ^22.13.0 || ^24.0.0`。
-- pnpm：`11.19.0`，统一 lockfile，依赖精确锁定。
+- pnpm：`12.3.4`，与 Node 一起由根 `mise.toml` 管理；统一 lockfile，依赖精确锁定。详见 [工具链管理](toolchain.md)。
 - Vue：`3.5.41`，主包 peer 范围 `>=3.5.0`。
 - React 参考运行时：`16.14.0`，与上游固定版本保持一致。
 - Sass：主题包独占 `1.54.9`，避免新版 Sass 改变上游旧 SCSS 的编译行为。

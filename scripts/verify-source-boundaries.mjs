@@ -109,6 +109,8 @@ const referenceApplicationPolicy = {
   optionalDependencies: {},
   peerDependencies: {},
   devDependencies: {
+    // Fixed reference-only header dependency; see docs/documentation/site-header.md.
+    '@douyinfe/semi-site-header': '0.0.29',
     '@types/lodash': '4.17.20',
     '@types/react': '18.0.5',
     '@types/react-dom': '18.0.1',

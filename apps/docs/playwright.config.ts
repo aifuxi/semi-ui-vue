@@ -1,5 +1,8 @@
 import { defineConfig } from '@playwright/test';
 
+const docsPort = Number(process.env.DOCS_PORT ?? 4321);
+const docsOrigin = `http://127.0.0.1:${docsPort}`;
+
 export default defineConfig({
   testDir: './tests/nuxt',
   fullyParallel: false,
@@ -9,7 +12,7 @@ export default defineConfig({
   failOnFlakyTests: Boolean(process.env.CI),
   reporter: [['list'], ['html', { open: 'never', outputFolder: 'playwright-report' }]],
   use: {
-    baseURL: 'http://127.0.0.1:4321',
+    baseURL: docsOrigin,
     browserName: 'chromium',
     locale: 'zh-CN',
     timezoneId: 'Asia/Shanghai',
@@ -22,7 +25,8 @@ export default defineConfig({
   webServer: [
     {
       command: 'node scripts/preview-static.mjs',
-      url: 'http://127.0.0.1:4321/zh-cn/start/introduction/',
+      env: { PORT: String(docsPort) },
+      url: `${docsOrigin}/zh-cn/start/introduction/`,
       reuseExistingServer: !process.env.CI && !process.env.DOCS_ACCEPTANCE,
       timeout: 120_000,
     },
