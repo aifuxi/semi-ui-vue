@@ -1,7 +1,7 @@
 # AI 工作记录：Rstack 工具链迁移
 
 - 日期：2026-09-10
-- 状态：第八阶段完成；整体迁移进行中
+- 状态：第九阶段评估完成；保留 ESLint 与 Playwright Test
 - 分支：`codex/rstack-migration`
 - 基线：`e6a5f0d`
 
@@ -224,3 +224,26 @@
 - 本阶段没有改动组件运行时，没有重复完整组件对照矩阵或更新历史 accepted 指纹。后续阶段仍需评估 Rslint 与浏览器 runner。
 
 - 最终 `pnpm install --frozen-lockfile`、本次文件格式检查和 `git diff --check` 均通过。
+
+## 第九阶段：浏览器 runner 兼容性评估
+
+### 范围与版本
+
+- 用户明确跳过 Rslint 调整，继续下一阶段。Rslint 试装已全部撤回；继续使用原 ESLint 配置和依赖。
+- 浏览器测试分为根组件对照、文档静态站矩阵、独立开发 HMR 三组。选取最小独立组 `apps/docs/tests/nuxt-dev/hmr.spec.ts` 作为候选，不修改用例正文、超时、浏览器版本或生产源码。
+- 原命令为文档包内 `pnpm exec playwright test -c playwright.dev.config.ts`。Node 24.18.0、Playwright Test / Chromium 运行库 1.62.1，单 worker、零重试、180 秒用例超时；迁移前 JSON 清单为 1 文件 / 1 用例 / 0 跳过 / 0 快照。原用例本轮通过（测试 51.7 秒，总计 1.6 分钟），覆盖 Vue 模板更新及还原保留计数，以及 Markdown 自动更新及还原。
+- 临时安装与已有核心相同版本的 `@rstest/playwright` / `@rstest/core` 0.11.12，沿用 `playwright` 1.62.1；registry 查询确认当时 `@rstest/playwright` 最新版本也为 0.11.12。核对已安装声明和实现，不将在线文档中的能力视为本地可用。
+
+### 最小真实 Chromium 探针
+
+- 页面创建、Locator 自动等待断言与失败 trace 可用；故意失败时生成 `trace.zip` 与摘要，两份 trace 的 ZIP 完整性检查通过。
+- 访问 `expect(page).toHaveScreenshot` 抛出 `Invalid Chai property: toHaveScreenshot`。现有组件/文档测试中 85 个文件使用截图或快照断言；另有 6 个测试或共享文件使用 `TestInfo` / `testInfo`，依赖附件和输出路径。不能用普通截图取代基线断言，也不能移除证据归档。
+- 将截图能力检查从独立 `.only` 探针中移开后，在 `CI=1` 下实际得到 1 passed / 1 skipped、退出 0。已安装配置没有 `forbidOnly` 对应选项；默认 CI 行为不会阻止误提交的聚焦用例。
+- 独立设置 `CI=1`、`retry: 1`，令同一用例首次故意失败、第二次成功，实际得到 1 passed / retry x1、退出 0。已安装配置没有 `failOnFlakyTests` 对应选项，不能保留当前“CI 重试用于诊断但 flaky 必须失败”的门禁。这是故意构造的能力探针，不是给项目测试增加重试。
+- `@rstest/playwright` 的 `serve` 仅提供静态文件服务；原 HMR 使用的 Nuxt 子进程启动、就绪检测、端口占用拒绝、退出清理仍需额外实现。单个 HMR 用例虽然不依赖截图基线，也仍需要服务生命周期和 `.only` 保护，不能按等价迁移处理。
+
+### 决策与清理
+
+保留三组现有 Playwright Test 配置、命令和验收契约。本阶段完成兼容性评估，**没有迁移浏览器 runner**；不为替换工具名额外维护截图匹配器、测试信息适配及 CI 门禁。后续仅在发布版本补齐上述能力，或另行明确实施这些兼容能力时重新评估。
+
+试装依赖、锁文件变更、临时 Rstest 配置和探针源码全部撤回。已完成的 Rslib、Rsbuild、Rstest 单测、Nuxt Rspack、REPL 和 SWC 迁移保留；ESLint 按用户要求保留，Playwright Test 因当前验收能力缺口保留。不将本次诊断结果计入生产测试通过数量，也不更新任何历史 accepted 指纹。
