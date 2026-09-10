@@ -4,7 +4,12 @@ import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { uiDependencies, batchInputs, preflightBatch } from './documentation-inputs.mjs';
+import {
+  assertExactPath,
+  uiDependencies,
+  batchInputs,
+  preflightBatch,
+} from './documentation-inputs.mjs';
 import { loadBatches } from './documentation-evidence.mjs';
 
 async function fixture(t, sources) {
@@ -78,6 +83,8 @@ test('入口使用根导出时保守追踪所有导出', async (t) => {
 test('预检在构建前拒绝 Git 大小写路径不匹配与缺失示例', async (t) => {
   const wrong = demo.replace('zh-cn', 'zh-CN');
   const root = await fixture(t, { [wrong]: '<template />' });
+  await assertExactPath(wrong, root);
+  await assert.rejects(assertExactPath(demo, root), /大小写/);
   execFileSync('git', ['add', '.'], { cwd: root });
   const batch = {
     inputs: ['apps/docs/src/demos'],

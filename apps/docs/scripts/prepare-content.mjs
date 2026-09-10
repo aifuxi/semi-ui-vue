@@ -3,6 +3,7 @@ import { dirname, relative, resolve } from 'node:path';
 import { parse } from 'yaml';
 import ts from 'typescript';
 import { format, resolveConfig } from 'prettier';
+import { assertExactPath } from './documentation-inputs.mjs';
 
 const app = resolve(import.meta.dirname, '..');
 const prettierConfig = (await resolveConfig(import.meta.filename)) ?? {};
@@ -10,6 +11,7 @@ const pages = [];
 const search = [];
 const demos = new Map();
 const demoRoot = resolve(app, 'src/demos');
+const checkedPaths = new Set();
 async function registerDemo(id, page) {
   if (demos.has(id)) {
     demos.get(id).pages.push(page.path);
@@ -22,6 +24,7 @@ async function registerDemo(id, page) {
   async function visit(file) {
     if (visited.has(file)) return;
     visited.add(file);
+    await assertExactPath(relative(demoRoot, file), demoRoot, checkedPaths);
     const source = await readFile(file, 'utf8');
     const script = file.endsWith('.vue')
       ? [...source.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)]

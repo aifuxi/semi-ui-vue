@@ -336,6 +336,20 @@ export async function batchInputs(batch, root = workspace) {
   };
 }
 
+/** Validate path spelling using directory entries, including on case-insensitive volumes. */
+export async function assertExactPath(file, root, checked = new Set()) {
+  let parent = root;
+  for (const part of file.split('/')) {
+    const path = resolve(parent, part);
+    if (!checked.has(path)) {
+      if (!(await readdir(parent)).includes(part))
+        throw new Error(`文件路径大小写不一致或文件缺失：${file}`);
+      checked.add(path);
+    }
+    parent = path;
+  }
+}
+
 /** Check the index AND real directory entries, even on case-insensitive macOS volumes. */
 export async function preflightBatch(batch, root = workspace) {
   const files = sourceFiles(['apps/docs/src/demos'], root);
@@ -348,15 +362,6 @@ export async function preflightBatch(batch, root = workspace) {
   const { files: inputs } = await batchInputs(batch, root);
   const checked = new Set();
   for (const file of inputs.filter((file) => file.startsWith('apps/docs/src/demos/'))) {
-    let parent = root;
-    for (const part of file.split('/')) {
-      const path = resolve(parent, part);
-      if (!checked.has(path)) {
-        if (!(await readdir(parent)).includes(part))
-          throw new Error(`Git 路径与磁盘大小写不一致或文件缺失：${file}`);
-        checked.add(path);
-      }
-      parent = path;
-    }
+    await assertExactPath(file, root, checked);
   }
 }
