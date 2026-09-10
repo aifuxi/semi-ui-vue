@@ -81,6 +81,7 @@ export function preparationStages(root = workspace) {
             'scripts/upstream-markdown.mjs',
             ...['assets', 'tokens', 'repl'].map((name) => `apps/docs/scripts/prepare-${name}.mjs`),
             'apps/docs/scripts/repl-module-bundles.mjs',
+            'apps/docs/scripts/repl-rslib-factories.mjs',
           ],
           root,
         ).filter((file) => {

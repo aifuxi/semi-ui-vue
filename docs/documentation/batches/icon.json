@@ -69,6 +69,7 @@
     "apps/docs/src/components",
     "apps/docs/scripts/prepare-*.mjs",
     "apps/docs/scripts/repl-module-bundles.mjs",
+    "apps/docs/scripts/repl-rslib-factories.mjs",
     "apps/docs/scripts/*-loader.mjs",
     "apps/docs/scripts/static-file-response.mjs",
     "apps/docs/scripts/preview-static.mjs",

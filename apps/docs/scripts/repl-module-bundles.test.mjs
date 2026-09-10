@@ -133,3 +133,59 @@ test('UI infrastructure facades share live bindings with root and component entr
   assert(graph['ui/_utils'].includes('_infrastructure/ui.js'));
   assert(graph['ui/config-provider'].includes('_infrastructure/ui.js'));
 });
+
+test('Rslib factory cycles register once and preserve identity across REPL entries', async (t) => {
+  const root = await mkdtemp(join(tmpdir(), 'repl-factories-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const sources = {
+    'package.json': '{"type":"module","sideEffects":["./_runtime/**"]}',
+    'runtime.js': `
+      const factories = {}, cache = {};
+      export const registrations = {};
+      export function require(id) {
+        if (!cache[id]) { const module = cache[id] = { exports: {} }; factories[id](module, require); }
+        return cache[id].exports;
+      }
+      require.add = (entries) => {
+        for (const [id, factory] of Object.entries(entries)) {
+          registrations[id] = (registrations[id] ?? 0) + 1;
+          factories[id] = factory;
+        }
+      };
+    `,
+    '_runtime/a.js': `
+      import './b.js'; import { require } from '../runtime.js';
+      require.add({ a(module, require) { module.exports = { child: require('b') }; } });
+    `,
+    '_runtime/b.js': `
+      import './a.js'; import { require } from '../runtime.js';
+      require.add({ b(module) { module.exports = { value: 42 }; } });
+    `,
+    'a.js':
+      "import './_runtime/a.js'; import { require } from './runtime.js'; export const a = require('a');",
+    'b.js':
+      "import './_runtime/b.js'; import { require } from './runtime.js'; export const b = require('b');",
+    'index.js':
+      "export { a } from './a.js'; export { b } from './b.js'; export { registrations } from './runtime.js';",
+  };
+  for (const [file, source] of Object.entries(sources)) {
+    await mkdir(dirname(join(root, file)), { recursive: true });
+    await writeFile(join(root, file), source);
+  }
+  const outdir = join(root, 'modules');
+  await buildReplModules({
+    entryPoints: Object.fromEntries(
+      ['index', 'a', 'b'].map((name) => [`ui/${name}`, join(root, `${name}.js`)]),
+    ),
+    packageSpecifiers: { ui: '@fixture/ui' },
+    outdir,
+  });
+  const a = await import(pathToFileURL(join(outdir, 'ui/a.js')).href);
+  const b = await import(pathToFileURL(join(outdir, 'ui/b.js')).href);
+  const index = await import(pathToFileURL(join(outdir, 'ui/index.js')).href);
+  assert.equal(a.a.child.value, 42);
+  assert.equal(a.a.child, b.b);
+  assert.equal(index.a, a.a);
+  assert.equal(index.b, b.b);
+  assert.deepEqual(index.registrations, { a: 1, b: 1 });
+});

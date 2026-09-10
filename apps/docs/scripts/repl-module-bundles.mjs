@@ -2,6 +2,7 @@ import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, relative, resolve } from 'node:path';
 import { build } from 'esbuild';
 import ts from 'typescript';
+import { replRslibFactories } from './repl-rslib-factories.mjs';
 
 const aggregatePrefix = 'repl-aggregate:';
 
@@ -121,6 +122,7 @@ export async function buildReplModules({
     write: false,
     logLevel: 'warning',
     plugins: [
+      replRslibFactories(entryPoints),
       {
         name: 'repl-asset-groups',
         setup(plugin) {

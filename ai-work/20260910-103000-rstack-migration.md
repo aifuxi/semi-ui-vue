@@ -184,3 +184,10 @@
 - 将 TreeSelect 与扫描发现的同类 14 个组件的双语目录统一为注册表和 URL 已使用的小写 locale。共 295 个文件仅重命名，内容完全不变，保留原有公开 Demo ID。
 - 提取已有逐级目录名称校验，并在内容生成访问每个 Demo 前执行，让 macOS 也能发现 Linux/glob 会拒绝的大小写差异。补充正确路径及错误大小写的工具回归。
 - 全部 1761 Demo 的内容生成和全站检查通过；TreeSelect 八项真实 Chromium 交互通过，覆盖受控键盘、明暗主题、异步与自定义内容。完整单测和工具验证见本阶段记录。
+
+### REPL 的工厂注册顺序
+
+- 在不加载 Nuxt 的 Node 独立导入中复现完整 REPL Typography 的 `undefined.call`。原因是二次拆包形成共享 chunk 循环，消费者在 CommonJS 工厂注册前执行。
+- 在 REPL 打包边界将 UI `_runtime` 的注册包装为幂等、可提前调用的函数，消费者显式先完成依赖注册。使用提升的 var/function 避免循环中 TDZ 或重复重置；保留原有 CommonJS 延迟执行和缓存。
+- 新增循环工厂与多入口对象身份回归，REPL 四项工具测试全部通过；完整资源生成和 Typography 独立导入通过。780 个 JS 公开入口全部保持 exports，最大静态请求仍为 200（Typography 39），未放宽预算。输入缓存与六批清单同步纳入新转换器。
+- 双语 Button Links、编辑器多文件运行/错误恢复/重置隔离的 Chromium 验证通过；与 Chat、TreeSelect 合计 13 项定点浏览器测试通过。完整浏览器矩阵仍在运行，资源构建仍保留既有第三方 direct-eval 与 bare-import 警告。
