@@ -6,6 +6,7 @@
 | ----------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------- |
 | `pnpm check`                                    | 固定基线/生成漂移/源码边界、格式、lint、源码类型、单测、工具测试 | 日常集成；局部修改可先跑对应检查         |
 | `pnpm check:docs`                               | 缓存校验后的公开包/资源、静态站、Nuxt 类型、内容与产物           | 文档或构建输入变化                       |
+| `pnpm --filter @workspace/docs test:dev`        | Rspack 开发服务、Vue 状态保持与 Markdown 自动更新                | 文档构建器或开发更新链路变化             |
 | `pnpm check:artifacts`                          | 一次准备公开包/文档，构建工作台；主题、SSR、tarball 消费         | 公开 API、样式、依赖、构建与发布脚本变化 |
 | `pnpm check:full`                               | 日常检查、产物检查、组件与文档 Chromium 回归                     | 共享变更、全量审计                       |
 | `pnpm release:check`                            | 依赖审计、全量回归、隔离 tarball 安装、发布元数据                | 发布前                                   |
@@ -13,6 +14,8 @@
 | `pnpm --filter @workspace/docs check:links`     | 已构建静态站的正文、链接与锚点诊断                               | 文档链接审计；既有断链不自动扩展当前任务 |
 
 `check` 不包括 Nuxt 类型与完整生产构建；需要这些证据时显式执行 `check:docs` 或 `check:artifacts`。`typecheck` 保留全 workspace 的独立准备语义，`typecheck:source` 用于避免日常检查隐式构建文档。`typecheck:clean` 只用于排查缓存或验证干净构建，会清理临时证据，不作为日常入口。
+
+文档站使用 Nuxt 的 Rspack builder。`test:dev` 在默认 4332 端口启动独立开发服务，使用锁定 Chromium 临时修改并恢复 Counter 示例与 Introduction 正文；Vue 模板更新保留组件状态，Content 更新在数据库与 Nitro 完成更新后自动刷新页面。此开发检查不替代静态站的浏览器矩阵。
 
 `build` 复用文档三阶段准备，再构建两个工作台，公开包和主题只由 resources 阶段准备一次。缓存按输入和输出内容校验；丢失或过期时重建，不提供跳过新鲜度检查的开关。`check:full` 在产物检查后直接运行文档测试，不再次构建文档站。独立 `test:browser:docs` 自行准备。
 

@@ -57,6 +57,8 @@ const siteInputs = [
   'apps/docs/layers',
   'apps/docs/server',
   'apps/docs/shared',
+  'apps/docs/scripts/*-loader.mjs',
+  'patches/@nuxt__rspack-builder@4.5.2.patch',
   ...['content', 'static', 'notices'].map((name) => `apps/docs/scripts/prepare-${name}.mjs`),
   ...generatedRegistries.map((file) => `:(exclude)${file}`),
   ':(exclude)apps/docs/playwright*.config.*',

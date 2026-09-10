@@ -19,7 +19,8 @@ const sources = import.meta.glob('../../demos/**/*.{vue,ts,js,css,json}', {
   query: '?raw',
   import: 'default',
 });
-const components = import.meta.glob('../../demos/**/*.vue');
+// The preview is ClientOnly; keep its runtime and editor out of the SSR bundle too.
+const components = import.meta.client ? import.meta.glob('../../demos/**/*.vue') : {};
 const path = `../../demos/${props.demo}.vue`;
 const definition = demoRegistry.get(props.demo);
 if (!definition) throw new Error(`Demo not registered: ${props.demo}`);
@@ -45,7 +46,9 @@ const editorOpen = shallowRef(false);
 const copied = shallowRef(false);
 const error = shallowRef('');
 const key = shallowRef(0);
-const editor = defineAsyncComponent(() => import('../demo/DemoEditor.client.vue'));
+const editor = import.meta.client
+  ? defineAsyncComponent(() => import('../demo/DemoEditor.client.vue'))
+  : null;
 const title = computed(() => props.title ?? props.demo);
 onErrorCaptured((cause) => {
   error.value = cause instanceof Error ? cause.message : String(cause);

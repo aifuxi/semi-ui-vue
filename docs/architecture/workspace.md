@@ -9,7 +9,7 @@
 ```text
 apps/
   reference-react/       承载固定 v2.102.0 React 参考场景的工作台
-  docs/                  公开双语文档门户，使用 Nuxt + Nuxt Content（ADR 0015）
+  docs/                  公开双语文档门户，使用 Nuxt Rspack builder + Nuxt Content（ADR 0015）
   parity-vue/            Vue 固定场景与对照工作台
 packages/
   ui/                    Vue 主组件包（@aifuxi/semi-ui-vue）

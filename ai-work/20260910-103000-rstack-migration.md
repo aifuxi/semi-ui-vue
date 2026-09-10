@@ -138,3 +138,33 @@
 ### 第四阶段边界
 
 本阶段仅迁移单测及覆盖率，Playwright 继续作为 Chromium runner；没有重跑组件或全文档浏览器矩阵。下一阶段是 Nuxt Rspack builder，随后处理 REPL 和剩余工具链。Vite 仍用于这些尚未迁移的环节和消费兼容验证。
+
+## 第五阶段：Nuxt 文档站迁移到 Rspack
+
+- 基线提交 `5380d85`，继续在独立 worktree 工作。Nuxt 保持 4.5.2，使用同版本官方 `@nuxt/rspack-builder`，移除文档站 Vite 专用配置。严格 peer 要求额外声明 webpack 5.110.3 与 pug 3.0.4；webpack 用于官方 builder 的兼容 loader 依赖，实际编译器为 Rspack。builder 私有依赖解析到 Rsbuild 2.1.13 / Rspack 2.1.10，未强制覆盖为根版本。
+- 将原始 Demo 源码、Nuxt 虚拟 TypeScript 模板与 REPL 隔离改写移入三个定向 loader。虚拟模板的相对导入恢复原目录，MDC 生成的依赖按所属包解析；Monaco Worker 保持本地 URL。保留 iframe 不透明 origin、运行重建与主题消息机制。
+- SSR 保持 Vue 和公开包根/子路径 external，避免 Vue 实例分裂与 Rslib 模块注册被二次打包破坏。显式通过 `import.meta.client` 排除只在客户端运行的 Demo 与编辑器，SSR JS 从最初错误打包时的约 1.24 GB 降至约 8 MB，未提高 Node 堆上限。Content SQLite WASM 仍由资源 loader 处理。
+- Nuxt Content 3.16 的数据库更新已有文件监听，但浏览器通知仅实现 Vite 通道。新增仅开发态启用的 SSE 模块：数据库模板更新后重建 Nitro，待新 worker 就绪再刷新页面；关闭连接与应用时清理资源。Vue 模板 HMR 保留状态，Markdown 正文修改采用页面刷新。
+- 两项生产构建兼容处理均来自实际浏览器失败：`@nuxt/rspack-builder@4.5.2` 的 SSR 样式改写丢失 `url(...)`，用版本锁定的两处 pnpm 补丁保留括号与引号；Rspack inner-graph 分析将 Monaco 仍被读取的 `undefined` 初始化改为 `null`，客户端关闭该细粒度变量分析，保留 export tree-shaking 和压缩。后者也由独立 Monaco 构建复现。上游修复后，分别移除补丁/配置并重跑字体、背景资源与在线编辑矩阵，再升级。
+- 资源缓存与六批输入清单纳入 loader、开发模块和 Nuxt 补丁；保留旧 accepted 证据为 stale，没有重写历史指纹。
+
+### 第五阶段验证
+
+- 迁移前 `pnpm check:docs` 通过；迁移后全站构建、Nuxt 类型、内容和静态门禁通过：198 页、1761 个注册 Demo、399 个预渲染路由、203 个兼容入口。
+- `pnpm check` 退出 0：静态约束、格式、lint、源码类型、178 文件 / 1218 项单测、70 + 6 项工具测试通过。新增工具测试使用真实 Rsbuild 构建验证原始 Vue 源码、虚拟 TS 模板相对导入与 MDC 所属依赖。
+- 新增开发态 Chromium 测试通过：Counter 模板修改和恢复均保留点击状态；Markdown 正文修改和恢复均自动显示，无控制台或页面错误。测试最后恢复源文件，使用独立端口且没有重试。
+- 完整浏览器矩阵初次因 SSR 字体 URL 失败；修复后下一次在在线编辑挂载阶段暴露 Monaco 初始化错误，均以首个失败停止，未计为全量通过。对应问题修复后继续验证。
+- 最终文档集成范围共 252 项，分两次完成：先通过编辑器、Form、页头、导航加载和站点功能的 22 项，再执行剩余 230 项，220 通过、10 失败。合计 242 通过、10 失败；后者是双语 Chat 2 项与 TreeSelect 8 项，原因如下。Button 矩阵另有前 10 项通过，Links 的 REPL 预览失败后停止；未完成全部 476 项，不声称全量文档验收通过。
+- 最终全仓格式、lint、76 项工具测试及 frozen-lockfile 安装通过；所有浏览器检查均未启用重试或降低断言。
+
+### 本次发现的既有问题
+
+以下问题保留原有实现和失败证据，未混入 Nuxt builder 迁移提交。后续应先修复这些问题，再继续 REPL 迁移及全量验收：
+
+- **Chat / Markdown 的公开 UI 产物**：`packages/ui/dist/_shared/a6bd74ca1e0c.js` 的 namespace getter 引用了未声明的 `parseLinkDestination` 等绑定。直接在 Node 中导入该文件并读取 getter 即可复现，不经过 Nuxt。UI 源码与 Rslib 配置未在本阶段修改；仅 SSR import 的检查无法发现延迟 getter 的错误。
+- **Typography 的 REPL 产物**：`/repl/modules/ui/typography.js` 在 CommonJS 工厂注册完成前执行了依赖，报 `Cannot read properties of undefined (reading 'call')`。在不加载 Nuxt 的空白 HTML 中，仅设置本地 import map 并导入 Typography，即可复现。REPL 打包脚本与基线 `5380d85` 字节一致；完整 REPL 构建器迁移仍未实施。
+- **TreeSelect 示例路径大小写**：Git 跟踪目录为 `tree-select/zh-CN` 与 `tree-select/en-US`，基线注册表、正文和 glob 查找使用小写 `zh-cn/en-us`。macOS 文件存在性检查容忍大小写差异，但 glob 对象键严格区分大小写，导致预览为空、源码为空。当前与基线使用相同的注册表和查找逻辑，需统一真实目录与注册路径，并增加大小写一致性检查。
+
+### 第五阶段边界
+
+本阶段迁移 Nuxt builder 及必要的运行时集成；REPL 资源打包、虚拟 TS loader 的 esbuild 转换和剩余工具链留待下一阶段。没有迁移 Playwright、修改组件公开契约或 vendor，没有恢复历史文档批次 accepted。

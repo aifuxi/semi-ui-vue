@@ -15,6 +15,7 @@
     "check:links": "node scripts/verify-static.mjs",
     "typecheck": "pnpm prepare:site && nuxt typecheck",
     "test:browser": "pnpm check && playwright test -c playwright.config.ts",
+    "test:dev": "pnpm check && playwright test -c playwright.dev.config.ts",
     "check": "node scripts/documentation-pipeline.mjs",
     "clean": "rimraf .nuxt .output .data dist public/upstream public/repl public/search-index.json public/sitemap.xml",
     "prepare:nuxt": "pnpm prepare:site",
@@ -43,13 +44,17 @@
   },
   "devDependencies": {
     "@douyinfe/semi-site-doc-style": "0.0.5",
+    "@nuxt/rspack-builder": "4.5.2",
     "@playwright/test": "1.62.1",
     "es-module-shims": "2.8.4",
     "esbuild": "0.28.1",
+    "h3": "1.15.11",
+    "pug": "3.0.4",
+    "sass": "1.104.0",
     "sass-legacy": "npm:sass@1.54.9",
     "typeface-inconsolata": "1.1.13",
     "typescript": "5.9.3",
-    "yaml": "2.9.0",
-    "sass": "1.104.0"
+    "webpack": "5.110.3",
+    "yaml": "2.9.0"
   }
 }

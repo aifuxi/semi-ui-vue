@@ -27,6 +27,9 @@ test('正式批次追踪产物和验收逻辑，不因诊断工具及其测试�
       'documentation-inputs.mjs',
       'accept-documentation-batch.mjs',
       'static-file-response.mjs',
+      'nuxt-template-loader.mjs',
+      'raw-source-loader.mjs',
+      'repl-isolation-loader.mjs',
     ]) {
       assert.ok(files.includes(`apps/docs/scripts/${file}`), `${batch.id}: ${file}`);
     }
