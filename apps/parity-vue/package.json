@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --port 4174 --strictPort",
-    "build": "vue-tsc --noEmit && vite build",
+    "dev": "rsbuild dev",
+    "build": "vue-tsc --noEmit && rsbuild build",
     "typecheck": "vue-tsc --noEmit",
     "clean": "rimraf dist"
   },

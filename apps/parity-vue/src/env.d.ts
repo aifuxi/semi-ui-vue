@@ -1,4 +1,4 @@
-/// <reference types="vite/client" />
+/// <reference types="@rsbuild/core/types" />
 
 declare module 'virtual:workspace-anchor-styles.css';
 declare module 'virtual:workspace-avatar-styles.css';

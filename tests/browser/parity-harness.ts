@@ -324,12 +324,8 @@ export async function requestedSourcePaths(
   requestedUrls: readonly string[],
   baseUrl: string,
 ): Promise<string[]> {
-  if (process.env.PARITY_SERVER_MODE !== 'build') {
-    return requestedUrls
-      .filter((url) => new URL(url).origin === new URL(baseUrl).origin)
-      .map((url) => decodeURIComponent(new URL(url).pathname));
-  }
-  let manifest = buildManifests.get(baseUrl);
+  let manifest =
+    process.env.PARITY_SERVER_MODE === 'build' ? buildManifests.get(baseUrl) : undefined;
   if (!manifest) {
     manifest = fetch(new URL('/parity-provenance.json', baseUrl), {
       signal: AbortSignal.timeout(5000),

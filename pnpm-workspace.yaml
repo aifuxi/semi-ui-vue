@@ -39,3 +39,5 @@ packageExtensions:
     dependencies:
       oxc-parser: 0.149.0
       unplugin: 3.3.0
+minimumReleaseAgeExclude:
+  - '@rsbuild/core@2.2.5'

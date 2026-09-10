@@ -4,7 +4,7 @@ import { cpus, platform, arch, tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
-import { build, createServer, preview } from 'vite';
+import { startParityServer } from './parity-server.mjs';
 
 // Loading experiment only: this does not replace visual/behavior parity gates.
 const mode = process.argv[2] ?? 'dev';
@@ -107,28 +107,12 @@ try {
   // Keep fresh caches/builds away from normal dev caches and package output.
   const preparations = await Promise.allSettled(
     apps.map(async (app, index) => {
-      const appRoot = path.join(root, 'apps', app);
-      const config = {
-        root: appRoot,
-        configFile: path.join(appRoot, 'vite.config.ts'),
-        cacheDir: path.join(output, app, 'cache'),
-        logLevel: 'error',
-        build: { outDir: path.join(output, app, 'dist'), emptyOutDir: false },
-      };
-      if (mode === 'build') {
-        await build(config);
-        servers[index] = await preview({
-          ...config,
-          preview: { host: '127.0.0.1', port: 4273 + index, strictPort: true },
-        });
-      } else {
-        const server = await createServer({
-          ...config,
-          server: { host: '127.0.0.1', port: 4273 + index, strictPort: true },
-        });
-        servers[index] = server;
-        await server.listen();
-      }
+      servers[index] = await startParityServer(app, {
+        runtimeMode: mode === 'build' ? 'production' : 'development',
+        mode,
+        port: 4273 + index,
+        output: path.join(output, app),
+      });
     }),
   );
   const failedPreparation = preparations.find((result) => result.status === 'rejected');

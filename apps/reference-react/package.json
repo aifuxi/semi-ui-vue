@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --port 4173 --strictPort",
-    "build": "tsc --noEmit && vite build",
+    "dev": "rsbuild dev",
+    "build": "tsc --noEmit && rsbuild build",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf dist"
   },

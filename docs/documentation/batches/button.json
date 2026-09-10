@@ -154,7 +154,7 @@
     "apps/docs/src/data/docs.ts",
     "apps/docs/src/data/demos.ts",
     "apps/reference-react/package.json",
-    "apps/reference-react/vite.config.ts",
+    "apps/reference-react/rsbuild.config.ts",
     "apps/reference-react/docs-reference-plugin.ts",
     "apps/reference-react/docs.html",
     "apps/reference-react/src/docs-reference.tsx",
@@ -165,7 +165,7 @@
     "packages/ui/vite.config.ts",
     "packages/ui/tsconfig.json",
     "packages/icons/package.json",
-    "packages/icons/vite.config.ts",
+    "packages/icons/rslib.config.ts",
     "packages/icons-lab",
     "packages/illustrations",
     "apps/reference-react/src/semi-reference-theme.scss",
@@ -173,7 +173,11 @@
     "pnpm-workspace.yaml",
     "tsconfig.base.json",
     "apps/reference-react/docs-adapters/button.mjs",
-    "apps/reference-react/src/docs-virtual-modules.d.ts"
+    "apps/reference-react/src/docs-virtual-modules.d.ts",
+    "scripts/parity-rsbuild.ts",
+    "scripts/parity-build-runtime.mjs",
+    "scripts/parity-build-provenance.mjs",
+    "packages/icons/tsconfig.build.json"
   ],
   "rtlExamples": ["Icons", "GroupSizes", "GroupDisabled", "GroupTypes"],
   "dependencyMode": "imports-v2"

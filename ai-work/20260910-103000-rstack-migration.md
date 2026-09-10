@@ -1,7 +1,7 @@
 # AI 工作记录：Rstack 工具链迁移
 
 - 日期：2026-09-10
-- 状态：第一阶段完成；整体迁移进行中
+- 状态：第二阶段完成；整体迁移进行中
 - 分支：`codex/rstack-migration`
 - 基线：`e6a5f0d`
 
@@ -62,3 +62,30 @@
 - 尚未完成后续各阶段，不能称整个项目已脱离 Vite。
 - 不重写历史 accepted 指纹；构建输入变化造成旧证据失效由账本反映。
 - 未执行全组件/全文档 Chromium 矩阵；不宣称性能提升。
+
+## 第二阶段：两个对照应用迁移到 Rsbuild
+
+- 基线提交：`b149f16`；仅在 `/Users/chen/fc-studio/semi-ui-vue-rstack` 工作。
+- `reference-react` 与 `parity-vue` 使用 Rsbuild 2.2.5；React/Vue 插件分别固定 2.1.0 / 2.0.1。原端口、查询参数、类型检查和动态场景注册保持。
+- React 显式提供 `index.html`、`docs.html` 两个入口，采用 classic JSX，保留 React 16 原有子节点语义。初次 automatic JSX 回归产生 Cascader key 警告；明确编译模式后定点和完整矩阵均通过，没有屏蔽运行时警告。
+- `scripts/parity-rsbuild.ts` 通过 unplugin 3.3.0 复用既有固定样式和 JsonViewer 解析钩子，保留 UI/Nuxt/Vitest 仍需使用的 Vite 集成。Rspack Worker 子编译单独裁剪主线程管理器，保留消息入口的 sideEffects，防止递归生成内联 Worker。
+- 文档示例不再调用 Vite SSR 求值或 esbuild 转换。TypeScript 编译 JSX；jiti 2.6.1 的独立同步求值实例避免 Node ESM 缓存，递归文件依赖与适配器目录直接接入 Rspack watch。真实 watch 测试覆盖两跳 helper、adapter 修改和批次增删。
+- 开发与预构建模式均从实际 Rspack chunk/module graph 生成来源证明，包含静态转导出入口，排除未请求的动态块。浏览器开发态每次获取最新映射；缺失或损坏映射仍失败。
+- 预构建脚本与加载实验已改用 Rsbuild API，独立临时目录和严格端口；正式预构建保持 development 诊断，benchmark build 保持原有 production 语义。
+- 保留严格 peer 校验；pnpm 为精确选择的 `@rsbuild/core@2.2.5` 记录单版本发布时间例外，没有关闭全局依赖校验。
+
+### 第二阶段验证
+
+- 迁移前：两个 Vite 生产构建通过；Playwright 清单为 442 项 / 87 文件，迁移后保持相同范围。
+- `pnpm check` 通过：静态约束、格式、lint、源码类型、1,218 项单测 / 178 文件、74 项工具测试（包含真实 Rspack watch 测试）。最后的类型声明调整另经 `pnpm typecheck:source` 验证。
+- `pnpm check:docs` 通过，生成并验证 198 页、1,761 个注册 Demo 与静态资源；历史验收仍为 stale，未伪造 accepted。
+- 六批文档当前输入清单已指向 Rsbuild/Rslib 配置，并纳入新增共享编译插件；现有工具测试验证这些输入影响全部六批。
+- 两个应用最终生产构建通过；源码来源与运行时插件的 5 项定点测试通过，测试使用真实 Rsbuild 编译而非模拟钩子。
+- 最终开发态 Playwright：442/442，约 2.0 分钟，退出 0；预构建完整矩阵：442/442，约 2.1 分钟，退出 0。均使用锁定 Chromium，未启用重试，未更新基线或降低阈值。
+- 文档代表场景最终 16/16，退出 0：Button Types、Navigation Basic、Icon Basic 的双语言/主题，以及四组页头对照。使用 worktree 的独立 4331 预览，原工作区的 4321 预览未停止或修改。
+- 初次中文深色页头 focus 裁剪底部有 4 个 Tooltip 箭头像素差异。两端样式/几何相同，实际像素定位证明截图跨越延迟 Portal 出现时刻。测试改为等待两端 Tooltip 可见及入场动效结束；保持完整焦点轮廓裁剪和原像素门槛。
+- 加载实验 `benchmark:parity build` 与 `benchmark:parity warm` 均退出 0，六场景双应用采样无运行时错误；未把缺少同环境迁移前数据的单次实验当作性能提升结论。
+
+### 第二阶段边界
+
+本阶段不迁移 UI 包、Vitest、Nuxt builder 或 REPL。历史文档 accepted 证据不因本次回归恢复；没有执行全部文档批次验收，也没有修改历史指纹。后续阶段按原顺序继续。

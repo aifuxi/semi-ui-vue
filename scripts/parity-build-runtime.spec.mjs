@@ -1,9 +1,9 @@
 // @vitest-environment node
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm, writeFile, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { runInNewContext } from 'node:vm';
-import { build } from 'vite';
+import { createRsbuild } from '@rsbuild/core';
 import { describe, expect, it } from 'vitest';
 import { parityPrismOrder, parityWorkerEntry } from './parity-build-runtime.mjs';
 
@@ -21,17 +21,23 @@ async function withFixture(files, run) {
 }
 
 async function compile(root, plugins) {
-  const result = await build({
-    root,
-    configFile: false,
-    logLevel: 'silent',
-    plugins,
-    build: {
-      write: false,
-      rolldownOptions: { input: path.join(root, 'entry.js'), output: { format: 'iife' } },
+  const rsbuild = await createRsbuild({
+    cwd: root,
+    config: {
+      plugins,
+      source: { entry: { index: './entry.js' } },
+      tools: { htmlPlugin: false },
+      output: { filename: { js: '[name].js' }, minify: false },
+      performance: {
+        buildCache: false,
+        printFileSize: false,
+        chunkSplit: { strategy: 'all-in-one' },
+      },
     },
   });
-  return result.output.find((item) => item.type === 'chunk').code;
+  const result = await rsbuild.build();
+  await result.close();
+  return readFile(path.join(root, 'dist/static/js/index.js'), 'utf8');
 }
 
 describe('prebuilt parity runtime compatibility', () => {

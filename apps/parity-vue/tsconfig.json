@@ -11,7 +11,7 @@
       "@aifuxi/semi-ui-vue/*": ["packages/ui/src/*/index.ts"],
       "@aifuxi/semi-ui-vue": ["packages/ui/src/index.ts"]
     },
-    "types": ["vite/client"]
+    "types": ["@rsbuild/core/types"]
   },
-  "include": ["src/**/*.ts", "src/**/*.vue", "vite.config.ts"]
+  "include": ["src/**/*.ts", "src/**/*.vue", "rsbuild.config.ts"]
 }

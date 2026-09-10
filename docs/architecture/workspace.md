@@ -38,7 +38,7 @@ vendor/semi-design/      唯一、只读的 v2.102.0 参考源码
 - `packages/foundation-integration` 和 `packages/test-infra` 永不发布；公开包构建后不能留下对它们或 `vendor/` 的运行时引用。
 - `vendor/**` 必须始终排除在格式化、lint、类型检查、单测和项目构建扫描之外。
 
-`apps/reference-react` 已建立只读源码解析/构建适配器，并以 Button 公开入口作为首个真实运行场景。Vite 直接编译固定 submodule 的 TSX；Sass 1.54.9 通过应用内构建插件生成虚拟 CSS，避免由 Vite 8 改用新版 Sass。浏览器测试还会核对真实模块请求来自 `vendor/semi-design`，不能只依赖页面中的版本文字。
+`apps/reference-react` 已建立只读源码解析/构建适配器，并以 Button 公开入口作为首个真实运行场景。Rsbuild 直接编译固定 submodule 的 TSX；Sass 1.54.9 通过共享解析插件生成虚拟 CSS。浏览器测试还会核对已请求代码块的实际来源包含 `vendor/semi-design`，不能只依赖页面中的版本文字。
 
 React/Vue 两端通过 `packages/test-infra` 的共享场景契约接收相同 URL 参数、数据与目标定义。未完成的 Vue 场景保持 `pending`，`assertScenarioComparable` 会阻止其进入样式、几何和截图对照。详细扩展流程见 `docs/testing/react-vue-parity.md`。
 
@@ -130,7 +130,7 @@ Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select
 
 ## 资产包构建
 
-`icons`、`icons-lab` 和 `illustrations` 使用 Rslib 1.0.0 的显式多入口 ESM 构建。入口延续原有根入口、组件工厂和逐资产子路径，Vue 保持 external；独立 `tsconfig.build.json` 将测试排除在声明产物之外，开发类型检查仍覆盖测试。Rslib 会为跨入口共享组件增加同名具名导出，原有 default 导出和组件身份保持不变。UI 包及对照应用仍使用 Vite，按后续迁移阶段替换。
+`icons`、`icons-lab` 和 `illustrations` 使用 Rslib 1.0.0 的显式多入口 ESM 构建。入口延续原有根入口、组件工厂和逐资产子路径，Vue 保持 external；独立 `tsconfig.build.json` 将测试排除在声明产物之外，开发类型检查仍覆盖测试。Rslib 会为跨入口共享组件增加同名具名导出，原有 default 导出和组件身份保持不变。两个对照应用使用 Rsbuild 2.2.5；UI 包仍使用 Vite，按后续迁移阶段替换。
 
 应用内固定上游样式通过 `sass-legacy` 别名使用 Sass 1.54.9；主题包继续直接使用 1.54.9。Vite 的可选 Sass peer 使用满足其要求的新版编译器，两者用途分开。
 

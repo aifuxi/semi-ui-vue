@@ -3,9 +3,7 @@ import { mkdtemp } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { build, preview } from 'vite';
-import { parityBuildProvenance } from './parity-build-provenance.mjs';
-import { parityPrismOrder, parityWorkerEntry } from './parity-build-runtime.mjs';
+import { startParityServer } from './parity-server.mjs';
 
 const app = process.argv[2];
 if (!['reference-react', 'parity-vue'].includes(app)) throw new Error('Unknown parity app');
@@ -19,23 +17,7 @@ const output = await mkdtemp(path.join(tmpdir(), `semi-parity-${app}-`));
 // still verified separately by pnpm check. Keep React diagnostics as part of parity.
 process.env.NODE_ENV = 'development';
 const started = performance.now();
-const config = {
-  root: path.join(root, 'apps', app),
-  configFile: path.join(root, 'apps', app, 'vite.config.ts'),
-  mode: 'development',
-  logLevel: 'warn',
-  cacheDir: path.join(output, 'cache'),
-  build: { outDir: path.join(output, 'dist'), emptyOutDir: false, minify: false },
-  plugins: [parityPrismOrder(), parityBuildProvenance(root)],
-  worker: {
-    plugins: () => [parityWorkerEntry()],
-  },
-};
-await build(config);
-const server = await preview({
-  ...config,
-  preview: { host: '127.0.0.1', port, strictPort: true },
-});
+const server = await startParityServer(app, { mode: 'build', port, output });
 console.log(
   `${app}: fresh build ready in ${Math.round(performance.now() - started)}ms (${output})`,
 );

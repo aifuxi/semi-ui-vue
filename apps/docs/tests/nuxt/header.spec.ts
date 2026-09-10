@@ -1,5 +1,8 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
-import { expectScreenshotPixelsToMatch } from '../../../../tests/browser/parity-harness';
+import {
+  expectScreenshotPixelsToMatch,
+  waitForTargetStable,
+} from '../../../../tests/browser/parity-harness';
 import { visualContext, waitForVisualAssets } from './visual-context';
 
 const docsOrigin =
@@ -119,6 +122,17 @@ for (const locale of ['zh-cn', 'en-us']) {
             // Keyboard modality is required for :focus-visible; focus() alone is insufficient.
             await Promise.all([reference.keyboard.press('Tab'), vue.keyboard.press('Tab')]);
             await Promise.all([expected.focus(), actual.focus()]);
+          }
+          if (state !== 'default') {
+            // The focus crop includes the Tooltip arrow's top pixels. Wait for both
+            // delayed Portals and their entrance animations before comparing that crop.
+            await Promise.all(
+              [reference, vue].map(async (page) => {
+                const tooltip = page.getByRole('tooltip');
+                await expect(tooltip).toBeVisible();
+                await waitForTargetStable(tooltip);
+              }),
+            );
           }
           const expectedData = await measure(expected);
           await expect

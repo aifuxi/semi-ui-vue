@@ -268,7 +268,18 @@ test('实际六批仅纳入自身 React 适配器；Table 仅影响 Locale，Too
     inputs.filter((result) => result.files.includes(file)).map(({ batch }) => batch.id);
   assert.deepEqual(affected(foundationTable), ['locale']);
   assert.deepEqual(affected('packages/foundation-integration/src/audio-player.js'), []);
-  for (const file of [foundationTooltip, foundationHelper, sharedStyle, referenceCompiler])
+  for (const file of [
+    foundationTooltip,
+    foundationHelper,
+    sharedStyle,
+    referenceCompiler,
+    'apps/reference-react/rsbuild.config.ts',
+    'scripts/parity-rsbuild.ts',
+    'scripts/parity-build-runtime.mjs',
+    'scripts/parity-build-provenance.mjs',
+    'packages/icons/rslib.config.ts',
+    'packages/icons/tsconfig.build.json',
+  ])
     assert.equal(affected(file).length, 6, file);
   assert.deepEqual(affected('apps/reference-react/docs-adapters/navigation.mjs'), ['navigation']);
 });

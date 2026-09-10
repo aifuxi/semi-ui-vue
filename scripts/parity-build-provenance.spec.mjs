@@ -1,8 +1,8 @@
 // @vitest-environment node
-import { mkdtemp, realpath, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, realpath, rm, writeFile, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { build } from 'vite';
+import { createRsbuild } from '@rsbuild/core';
 import { describe, expect, it } from 'vitest';
 import { parityBuildProvenance, requestedBuildSources } from './parity-build-provenance.mjs';
 
@@ -51,16 +51,20 @@ describe('built parity source evidence', () => {
       await writeFile(path.join(root, 'public.js'), "export { value } from './implementation.js';");
       await writeFile(path.join(root, 'implementation.js'), 'export const value = 42;');
       await writeFile(path.join(root, 'lazy.js'), 'export const other = 7;');
-      const result = await build({
-        root,
-        configFile: false,
-        logLevel: 'silent',
-        plugins: [parityBuildProvenance(root)],
-        build: { write: false, lib: { entry: path.join(root, 'entry.js'), formats: ['es'] } },
+      const rsbuild = await createRsbuild({
+        cwd: root,
+        config: {
+          plugins: [parityBuildProvenance(root)],
+          source: { entry: { index: './entry.js' } },
+          tools: { htmlPlugin: false, rspack: { output: { library: { type: 'commonjs2' } } } },
+          output: { filename: { js: '[name].js' } },
+          performance: { buildCache: false, printFileSize: false },
+        },
       });
-      const output = Array.isArray(result) ? result.flatMap((item) => item.output) : result.output;
+      const result = await rsbuild.build();
+      await result.close();
       const manifest = JSON.parse(
-        output.find((item) => item.fileName === 'parity-provenance.json').source,
+        await readFile(path.join(root, 'dist/parity-provenance.json'), 'utf8'),
       );
       const sources = requestedBuildSources(
         Object.keys(manifest.chunks).map((file) => `http://localhost:4174${file}`),
@@ -71,10 +75,10 @@ describe('built parity source evidence', () => {
         expect.arrayContaining(['entry.js', 'public.js', 'implementation.js']),
       );
       expect(sources.every((source) => !path.isAbsolute(source))).toBe(true);
-      const entry = output.find((item) => item.type === 'chunk' && item.isEntry);
+
       expect(
         requestedBuildSources(
-          [`http://localhost:4174/${entry.fileName}`],
+          ['http://localhost:4174/static/js/index.js'],
           'http://localhost:4174',
           manifest,
         ),
