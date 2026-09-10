@@ -1,23 +1,23 @@
 import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
 import AudioPlayer from './AudioPlayer.vue';
 
 beforeEach(() => {
-  vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined);
-  vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => undefined);
-  vi.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => undefined);
+  rs.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined);
+  rs.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => undefined);
+  rs.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => undefined);
 });
 
 afterEach(() => {
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
   document.body.innerHTML = '';
 });
 
 describe('AudioPlayer SSR', () => {
   it('服务端渲染静态 audio/control/info/toolbar 且无媒体副作用', async () => {
-    const add = vi.spyOn(HTMLMediaElement.prototype, 'addEventListener');
+    const add = rs.spyOn(HTMLMediaElement.prototype, 'addEventListener');
     const html = await renderToString(
       h(AudioPlayer, {
         audioUrl: { src: '/audio.mp3', title: 'SSR track' },
@@ -44,8 +44,8 @@ describe('AudioPlayer SSR', () => {
   });
 
   it('hydration 后注册一组监听并在卸载时以相同引用清理', async () => {
-    const add = vi.spyOn(HTMLMediaElement.prototype, 'addEventListener');
-    const remove = vi.spyOn(HTMLMediaElement.prototype, 'removeEventListener');
+    const add = rs.spyOn(HTMLMediaElement.prototype, 'addEventListener');
+    const remove = rs.spyOn(HTMLMediaElement.prototype, 'removeEventListener');
     const Host = { render: () => h(AudioPlayer, { audioUrl: '/audio.mp3' }) };
     const container = document.createElement('div');
     container.innerHTML = await renderToString(h(Host));

@@ -2,7 +2,7 @@
 
 import { mount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import { ConfigProvider } from '../config-provider';
 import { List, ListItem } from './index';
@@ -76,8 +76,8 @@ describe('List', () => {
   });
 
   it('ListItem 本地事件覆盖 List 上下文事件', async () => {
-    const parentClick = vi.fn();
-    const localClick = vi.fn();
+    const parentClick = rs.fn();
+    const localClick = rs.fn();
     const wrapper = mount(List, {
       props: { onClick: parentClick },
       slots: {
@@ -121,9 +121,9 @@ describe('List', () => {
   });
 
   it('ListItem 渲染 header/main/default/extra、align、attrs 与 mouse events', async () => {
-    const enter = vi.fn();
-    const leave = vi.fn();
-    const rightClick = vi.fn();
+    const enter = rs.fn();
+    const leave = rs.fn();
+    const rightClick = rs.fn();
     const wrapper = mount(ListItem, {
       props: {
         align: 'baseline',
@@ -163,7 +163,7 @@ describe('List', () => {
   });
 
   it('item slot 优先于 renderItem，custom empty slot 保留来源标记', () => {
-    const renderItem = vi.fn(() => h(ListItem, null, () => 'render'));
+    const renderItem = rs.fn(() => h(ListItem, null, () => 'render'));
     const withSlot = mount(List, {
       props: { dataSource: ['A'], renderItem },
       slots: { item: ({ item }) => h(ListItem, null, () => `slot-${String(item)}`) },

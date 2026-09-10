@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
 import { Resizable, ResizeGroup, ResizeHandler, ResizeItem } from './index';
 
@@ -42,7 +42,7 @@ beforeEach(() => {
 afterEach(() => {
   restoreDescriptor('offsetWidth', widthDescriptor);
   restoreDescriptor('offsetHeight', heightDescriptor);
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
 });
 
 describe('Resizable', () => {
@@ -124,7 +124,7 @@ describe('Resizable', () => {
   });
 
   it('通过 beforeResizeStart 等价保留 React 返回 false 取消能力', async () => {
-    const guard = vi.fn(() => false);
+    const guard = rs.fn(() => false);
     const wrapper = mount(Resizable, { props: { beforeResizeStart: guard } });
     await wrapper.get('.semi-resizable-resizableHandler-bottom').trigger('mousedown');
     expect(guard).toHaveBeenCalledOnce();
@@ -246,8 +246,8 @@ describe('ResizeGroup', () => {
   });
 
   it('拖动 group handler 时向相邻面板派发成对方向与尺寸事件', async () => {
-    const previousChange = vi.fn();
-    const nextChange = vi.fn();
+    const previousChange = rs.fn();
+    const nextChange = rs.fn();
     const wrapper = mount(ResizeGroup, {
       attachTo: document.body,
       slots: {

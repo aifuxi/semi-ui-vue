@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import Image, { ImagePreview } from './index';
 
@@ -12,14 +12,14 @@ const PIXEL_TWO =
 afterEach(() => {
   document.body.innerHTML = '';
   document.body.removeAttribute('style');
-  vi.restoreAllMocks();
-  vi.unstubAllGlobals();
+  rs.restoreAllMocks();
+  rs.unstubAllGlobals();
 });
 
 describe('Image', () => {
   it('按固定顺序处理 loading、load、src 重置和 error/fallback', async () => {
-    const onLoad = vi.fn();
-    const onError = vi.fn();
+    const onLoad = rs.fn();
+    const onError = rs.fn();
     const wrapper = mount(Image, {
       props: { fallback: '/fallback.png', height: 60, onError, onLoad, src: PIXEL, width: 80 },
     });
@@ -95,7 +95,7 @@ describe('Image', () => {
   });
 
   it('preview.visible 受控时只通知，不自行关闭', async () => {
-    const onVisibleChange = vi.fn();
+    const onVisibleChange = rs.fn();
     const wrapper = mount(Image, {
       attachTo: document.body,
       props: { preview: { onVisibleChange, visible: true }, src: PIXEL },
@@ -115,7 +115,7 @@ describe('Image', () => {
 
 describe('ImagePreview', () => {
   it('递归收集 group Image，按点击索引打开并切换图片', async () => {
-    const onChange = vi.fn();
+    const onChange = rs.fn();
     const wrapper = mount(ImagePreview, {
       attachTo: document.body,
       props: { lazyLoad: false, onChange },
@@ -228,10 +228,10 @@ describe('ImagePreview', () => {
 
   it('lazyLoad 使用 group root/margin 并在命中与卸载时清理 observer', async () => {
     let callback: IntersectionObserverCallback | undefined;
-    const observe = vi.fn();
-    const unobserve = vi.fn();
-    const disconnect = vi.fn();
-    const observer = vi.fn(function MockObserver(
+    const observe = rs.fn();
+    const unobserve = rs.fn();
+    const disconnect = rs.fn();
+    const observer = rs.fn(function MockObserver(
       this: IntersectionObserver,
       nextCallback: IntersectionObserverCallback,
       options?: IntersectionObserverInit,
@@ -245,7 +245,7 @@ describe('ImagePreview', () => {
         unobserve,
       });
     });
-    vi.stubGlobal('IntersectionObserver', observer);
+    rs.stubGlobal('IntersectionObserver', observer);
     const wrapper = mount(ImagePreview, {
       props: { lazyLoadMargin: '10px' },
       slots: { default: () => h(Image, { src: PIXEL }) },
@@ -265,7 +265,7 @@ describe('ImagePreview', () => {
     expect(unobserve).toHaveBeenCalledWith(image);
     wrapper.unmount();
     expect(disconnect).toHaveBeenCalled();
-    vi.unstubAllGlobals();
+    rs.unstubAllGlobals();
   });
 
   it('首次可见时直接挂载到稳定自定义容器且不锁 body', async () => {
@@ -282,10 +282,10 @@ describe('ImagePreview', () => {
   });
 
   it('maskClosable、缩放、比例、旋转与 disableDownload 保持公开行为', async () => {
-    const onVisibleChange = vi.fn();
-    const onZoomIn = vi.fn();
-    const onRatioChange = vi.fn();
-    const onRotateLeft = vi.fn();
+    const onVisibleChange = rs.fn();
+    const onZoomIn = rs.fn();
+    const onRatioChange = rs.fn();
+    const onRotateLeft = rs.fn();
     const wrapper = mount(ImagePreview, {
       attachTo: document.body,
       props: {

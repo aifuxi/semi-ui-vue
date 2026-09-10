@@ -1,6 +1,6 @@
 import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, defineComponent, h } from 'vue';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from '@rstest/core';
 
 import Step from './Step.vue';
 import Steps from './Steps.vue';

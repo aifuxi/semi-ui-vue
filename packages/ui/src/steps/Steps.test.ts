@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { Comment, Fragment, defineComponent, h } from 'vue';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import Step from './Step.vue';
 import Steps from './Steps.vue';
@@ -24,7 +24,7 @@ function mountSteps(props: Record<string, unknown> = {}, slot = children) {
 afterEach(() => {
   for (const wrapper of wrappers.splice(0)) wrapper.unmount();
   document.body.replaceChildren();
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
 });
 
 describe('Steps', () => {

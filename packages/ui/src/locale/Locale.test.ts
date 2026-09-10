@@ -1,7 +1,7 @@
 /* eslint-disable vue/one-component-per-file */
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, shallowRef, type Component } from 'vue';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from '@rstest/core';
 
 import { ConfigProvider, type SemiLocale } from '../config-provider';
 import LocaleConsumer from './LocaleConsumer.vue';

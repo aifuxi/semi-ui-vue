@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import { ConfigProvider, semiGlobal } from '../config-provider';
 import { resetNotificationForTests } from './imperative';
@@ -10,7 +10,7 @@ afterEach(async () => {
   Notification.destroyAll();
   resetNotificationForTests();
   semiGlobal.config = {};
-  vi.useRealTimers();
+  rs.useRealTimers();
   document.body.replaceChildren();
   await nextTick();
 });
@@ -33,14 +33,14 @@ describe('Notification', () => {
   });
 
   it('同 id 更新而非新增，并重启 duration timer', async () => {
-    vi.useFakeTimers();
+    rs.useFakeTimers();
     const id = Notification.info({ content: 'old', duration: 1, id: 'stable' });
-    await vi.advanceTimersByTimeAsync(800);
+    await rs.advanceTimersByTimeAsync(800);
     expect(Notification.open({ content: 'new', duration: 1, id })).toBe(id);
     await nextTick();
     expect(document.querySelectorAll('[role="alert"]')).toHaveLength(1);
     expect(document.querySelector('[role="alert"]')?.textContent).toContain('new');
-    await vi.advanceTimersByTimeAsync(800);
+    await rs.advanceTimersByTimeAsync(800);
     expect(document.querySelector('[role="alert"]')).not.toBeNull();
   });
 
@@ -70,19 +70,19 @@ describe('Notification', () => {
   });
 
   it('hover 暂停 timer，mouseleave 重新计算完整 duration，自动关闭触发 onClose', async () => {
-    vi.useFakeTimers();
-    const onClose = vi.fn();
+    rs.useFakeTimers();
+    const onClose = rs.fn();
     Notification.info({ content: 'timed', duration: 1, onClose });
     await nextTick();
     const notice = document.querySelector('[role="alert"]') as HTMLElement;
-    await vi.advanceTimersByTimeAsync(800);
+    await rs.advanceTimersByTimeAsync(800);
     notice.dispatchEvent(new MouseEvent('mouseenter'));
-    await vi.advanceTimersByTimeAsync(800);
+    await rs.advanceTimersByTimeAsync(800);
     expect(document.querySelector('[role="alert"]')).not.toBeNull();
     notice.dispatchEvent(new MouseEvent('mouseleave'));
-    await vi.advanceTimersByTimeAsync(1000);
+    await rs.advanceTimersByTimeAsync(1000);
     expect(onClose).toHaveBeenCalledTimes(1);
-    await vi.advanceTimersByTimeAsync(350);
+    await rs.advanceTimersByTimeAsync(350);
     expect(document.querySelector('[role="alert"]')).toBeNull();
   });
 

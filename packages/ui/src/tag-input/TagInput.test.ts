@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 import { h, nextTick } from 'vue';
 
 import TagInput from './index';
@@ -21,15 +21,15 @@ async function pressInput(
 async function flushPortal(): Promise<void> {
   for (let index = 0; index < 5; index += 1) {
     await nextTick();
-    await vi.runOnlyPendingTimersAsync();
+    await rs.runOnlyPendingTimersAsync();
   }
 }
 
 describe('TagInput', () => {
   beforeEach(() => document.body.replaceChildren());
   afterEach(() => {
-    vi.useRealTimers();
-    vi.restoreAllMocks();
+    rs.useRealTimers();
+    rs.restoreAllMocks();
     document.body.replaceChildren();
   });
 
@@ -290,7 +290,7 @@ describe('TagInput', () => {
   });
 
   it('剩余标签 Portal 首次进入稳定自定义容器并在卸载时清理', async () => {
-    vi.useFakeTimers();
+    rs.useFakeTimers();
     const popupRoot = document.createElement('div');
     document.body.append(popupRoot);
     const wrapper = mount(TagInput, {
@@ -302,7 +302,7 @@ describe('TagInput', () => {
       },
     });
     const trigger = wrapper.get('.semi-tagInput-wrapper-n');
-    vi.spyOn(trigger.element, 'matches').mockImplementation((selector) => selector === ':hover');
+    rs.spyOn(trigger.element, 'matches').mockImplementation((selector) => selector === ':hover');
     await trigger.trigger('mouseenter');
     await flushPortal();
     expect(popupRoot.querySelector('.semi-portal')).not.toBeNull();

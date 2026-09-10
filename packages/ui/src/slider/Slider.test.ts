@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 import { computed, nextTick } from 'vue';
 
 import { configContextKey, type ConfigContextValue } from '../config-provider';
@@ -12,7 +12,7 @@ function mockSliderGeometry(element: Element, left = 10, top = 20, width = 200, 
     offsetTop: { configurable: true, value: top },
     offsetWidth: { configurable: true, value: width },
   });
-  vi.spyOn(element, 'getBoundingClientRect').mockReturnValue({
+  rs.spyOn(element, 'getBoundingClientRect').mockReturnValue({
     bottom: top + height,
     height,
     left,
@@ -28,7 +28,7 @@ function mockSliderGeometry(element: Element, left = 10, top = 20, width = 200, 
 describe('Slider', () => {
   beforeEach(() => document.body.replaceChildren());
   afterEach(() => {
-    vi.restoreAllMocks();
+    rs.restoreAllMocks();
     document.body.replaceChildren();
   });
 
@@ -191,10 +191,10 @@ describe('Slider', () => {
   });
 
   it('拖拽按 mouseUp/afterChange 顺序结束并在卸载后清理全局监听', async () => {
-    const addBody = vi.spyOn(document.body, 'addEventListener');
-    const removeBody = vi.spyOn(document.body, 'removeEventListener');
-    const addWindow = vi.spyOn(window, 'addEventListener');
-    const removeWindow = vi.spyOn(window, 'removeEventListener');
+    const addBody = rs.spyOn(document.body, 'addEventListener');
+    const removeBody = rs.spyOn(document.body, 'removeEventListener');
+    const addWindow = rs.spyOn(window, 'addEventListener');
+    const removeWindow = rs.spyOn(window, 'removeEventListener');
     const order: string[] = [];
     const wrapper = mount(Slider, {
       attachTo: document.body,

@@ -1,6 +1,6 @@
 /* eslint-disable vue/one-component-per-file -- local hosts exercise external form and Boolean VNode contracts. */
 import { flushPromises, mount } from '@vue/test-utils';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 import { defineComponent, h, nextTick, ref } from 'vue';
 
 import {
@@ -14,7 +14,7 @@ import {
 
 afterEach(() => {
   document.body.innerHTML = '';
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
 });
 
 async function settle(): Promise<void> {

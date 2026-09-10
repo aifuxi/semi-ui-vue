@@ -2,7 +2,7 @@
 
 import { mount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import { Button } from '../button';
 import { Card, CardGroup, CardMeta } from './index';
@@ -76,7 +76,7 @@ describe('Card', () => {
   });
 
   it('渲染 cover、body/footer style、阴影与根 attrs/listener', async () => {
-    const click = vi.fn();
+    const click = rs.fn();
     const wrapper = mount(Card, {
       props: {
         bodyStyle: { padding: '8px' },

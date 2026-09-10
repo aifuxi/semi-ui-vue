@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import { Table } from './index';
 
@@ -42,8 +42,8 @@ describe('Table SSR', () => {
   });
 
   it('hydration 后无 warning 并初始化虚拟列表 ref', async () => {
-    const getVirtualizedListRef = vi.fn();
-    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const getVirtualizedListRef = rs.fn();
+    const consoleError = rs.spyOn(console, 'error').mockImplementation(() => undefined);
     const wrapper = mount(Table, {
       props: {
         ...props,

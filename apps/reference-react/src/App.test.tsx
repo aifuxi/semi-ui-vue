@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from '@rstest/core';
 import { DEFAULT_SCENARIO_ID } from '@workspace/test-infra';
 
 import { App, type AppProps } from './App';

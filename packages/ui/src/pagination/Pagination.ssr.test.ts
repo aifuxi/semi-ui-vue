@@ -1,8 +1,8 @@
-// @vitest-environment node
+// @rstest-environment node
 
 import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, h } from 'vue';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from '@rstest/core';
 
 import { ConfigProvider, Pagination } from '../index';
 

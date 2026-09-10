@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import TabPane from './TabPane.vue';
 import Tabs from './Tabs.vue';
@@ -31,7 +31,7 @@ describe('Tabs SSR', () => {
   });
 
   it('keepDOM=false、lazyRender、left 与 collapsible 不在 SSR 创建 Observer/Portal', async () => {
-    vi.stubGlobal('ResizeObserver', undefined);
+    rs.stubGlobal('ResizeObserver', undefined);
     const html = await renderTabs({
       collapsible: 'auto',
       keepDOM: false,
@@ -43,11 +43,11 @@ describe('Tabs SSR', () => {
     expect(html).toContain('Panel A');
     expect(html).not.toContain('Panel B');
     expect(html).not.toContain('semi-portal');
-    vi.unstubAllGlobals();
+    rs.unstubAllGlobals();
   });
 
   it('SSR markup 可 hydration 且无 mismatch warning', async () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const warn = rs.spyOn(console, 'warn').mockImplementation(() => undefined);
     const wrapper = mount(Tabs, {
       attachTo: document.body,
       props: { defaultActiveKey: 'a' },

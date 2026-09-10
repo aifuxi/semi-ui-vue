@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import Tree from './Tree.vue';
 
@@ -30,7 +30,7 @@ describe('Tree SSR', () => {
   });
 
   it('客户端挂载无 hydration 警告', () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const warn = rs.spyOn(console, 'warn').mockImplementation(() => undefined);
     const wrapper = mount(Tree, { props: { defaultExpandAll: true, treeData } });
     expect(wrapper.findAll('[role="treeitem"]')).toHaveLength(2);
     expect(warn.mock.calls.flat().join(' ')).not.toContain('Hydration');

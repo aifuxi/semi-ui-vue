@@ -1,12 +1,12 @@
 import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import Collapsible from './Collapsible.vue';
 
 describe('Collapsible SSR', () => {
   it('默认关闭时输出固定空内容结构且不访问 browser global', async () => {
-    vi.stubGlobal('ResizeObserver', undefined);
+    rs.stubGlobal('ResizeObserver', undefined);
     const html = await renderToString(
       h(
         Collapsible,
@@ -24,7 +24,7 @@ describe('Collapsible SSR', () => {
     expect(html).toContain('transition-duration:0ms');
     expect(html).toContain('id="ssr-content"');
     expect(html).not.toContain('<p>hidden</p>');
-    vi.unstubAllGlobals();
+    rs.unstubAllGlobals();
   });
 
   it('打开、keepDOM 与非零折叠高度按固定条件服务端渲染 slot', async () => {
@@ -52,7 +52,7 @@ describe('Collapsible SSR', () => {
   });
 
   it('hydration 后无警告并在无 ResizeObserver 环境继续响应开关', async () => {
-    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const error = rs.spyOn(console, 'error').mockImplementation(() => undefined);
     const Host = {
       data: () => ({ open: false }),
       render(this: { open: boolean }) {
@@ -66,7 +66,7 @@ describe('Collapsible SSR', () => {
     const html = await renderToString(h(Host));
     const container = document.createElement('div');
     container.innerHTML = html;
-    vi.stubGlobal('ResizeObserver', undefined);
+    rs.stubGlobal('ResizeObserver', undefined);
     const app = createSSRApp(Host);
     const vm = app.mount(container) as unknown as { open: boolean };
     vm.open = true;
@@ -75,6 +75,6 @@ describe('Collapsible SSR', () => {
     expect(error).not.toHaveBeenCalled();
     app.unmount();
     error.mockRestore();
-    vi.unstubAllGlobals();
+    rs.unstubAllGlobals();
   });
 });

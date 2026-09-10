@@ -2,7 +2,7 @@
 
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import Carousel from './Carousel.vue';
 import type { CarouselMethods } from './types';
@@ -20,7 +20,7 @@ function methods(wrapper: ReturnType<typeof mount>): CarouselMethods {
 }
 
 afterEach(() => {
-  vi.useRealTimers();
+  rs.useRealTimers();
 });
 
 describe('Carousel', () => {
@@ -63,7 +63,7 @@ describe('Carousel', () => {
   });
 
   it('缺省、显式 false、显式 true 与模板裸 Boolean 保持独立', async () => {
-    vi.useFakeTimers();
+    rs.useFakeTimers();
     const host = mount(
       defineComponent({
         components: { Carousel },
@@ -80,17 +80,17 @@ describe('Carousel', () => {
     expect(host.find('[data-kind="false"] .semi-carousel-arrow').exists()).toBe(false);
     expect(host.find('[data-kind="false"] .semi-carousel-indicator').exists()).toBe(false);
     expect(host.find('[data-kind="true"] .semi-carousel-arrow').exists()).toBe(true);
-    await vi.advanceTimersByTimeAsync(2300);
+    await rs.advanceTimersByTimeAsync(2300);
     await nextTick();
     expect(host.get('[data-kind="default"] .semi-carousel-content-item-active').text()).toBe('B');
     expect(host.get('[data-kind="false"] .semi-carousel-content-item-active').text()).toBe('A');
     expect(host.get('[data-kind="true"] .semi-carousel-content-item-active').text()).toBe('B');
     host.unmount();
-    expect(vi.getTimerCount()).toBe(0);
+    expect(rs.getTimerCount()).toBe(0);
   });
 
   it('箭头循环切换并按 previous -> change -> active 的公开顺序更新', async () => {
-    const change = vi.fn();
+    const change = rs.fn();
     const wrapper = mount(Carousel, {
       props: { autoPlay: false, onChange: change },
       slots: slides,
@@ -109,7 +109,7 @@ describe('Carousel', () => {
   });
 
   it('受控 activeIndex 只通知，等待父级更新后才改变可见项', async () => {
-    const change = vi.fn();
+    const change = rs.fn();
     const wrapper = mount(Carousel, {
       props: { activeIndex: 1, autoPlay: false, onChange: change },
       slots: slides,
@@ -153,7 +153,7 @@ describe('Carousel', () => {
   });
 
   it('自定义箭头 prop/slot 保留 attrs，且调用方 onClick 按固定 Adapter 覆盖内部切换', async () => {
-    const customClick = vi.fn();
+    const customClick = rs.fn();
     const wrapper = mount(Carousel, {
       props: {
         autoPlay: false,
@@ -185,8 +185,8 @@ describe('Carousel', () => {
   });
 
   it('公开方法覆盖 goTo/prev/next/play/stop，并规范化越界索引', async () => {
-    vi.useFakeTimers();
-    const change = vi.fn();
+    rs.useFakeTimers();
+    const change = rs.fn();
     const wrapper = mount(Carousel, {
       props: { autoPlay: false, speed: 0, onChange: change },
       slots: slides,
@@ -202,37 +202,37 @@ describe('Carousel', () => {
     await nextTick();
     expect(wrapper.get('.semi-carousel-content-item-active').text()).toBe('two');
     methods(wrapper).play();
-    await vi.advanceTimersByTimeAsync(2000);
+    await rs.advanceTimersByTimeAsync(2000);
     await nextTick();
     expect(wrapper.get('.semi-carousel-content-item-active').text()).toBe('three');
     methods(wrapper).stop();
-    await vi.advanceTimersByTimeAsync(4000);
+    await rs.advanceTimersByTimeAsync(4000);
     expect(wrapper.get('.semi-carousel-content-item-active').text()).toBe('three');
     expect(change).toHaveBeenCalled();
     wrapper.unmount();
   });
 
   it('hoverToPause=true 经 400ms 暂停并在离开后恢复，卸载清理 debounce/interval', async () => {
-    vi.useFakeTimers();
+    rs.useFakeTimers();
     const wrapper = mount(Carousel, {
       props: { autoPlay: { interval: 1000, hoverToPause: true }, speed: 0 },
       slots: slides,
     });
     await wrapper.get('.semi-carousel').trigger('mouseenter');
-    await vi.advanceTimersByTimeAsync(400);
-    await vi.advanceTimersByTimeAsync(1200);
+    await rs.advanceTimersByTimeAsync(400);
+    await rs.advanceTimersByTimeAsync(1200);
     expect(wrapper.get('.semi-carousel-content-item-active').text()).toBe('one');
     await wrapper.get('.semi-carousel').trigger('mouseleave');
-    await vi.advanceTimersByTimeAsync(400);
-    await vi.advanceTimersByTimeAsync(1000);
+    await rs.advanceTimersByTimeAsync(400);
+    await rs.advanceTimersByTimeAsync(1000);
     await nextTick();
     expect(wrapper.get('.semi-carousel-content-item-active').text()).toBe('two');
     wrapper.unmount();
-    expect(vi.getTimerCount()).toBe(0);
+    expect(rs.getTimerCount()).toBe(0);
   });
 
   it('单项/非元素 slot 不创建箭头、指示器或自动播放 timer', () => {
-    vi.useFakeTimers();
+    rs.useFakeTimers();
     const templateHost = mount(
       defineComponent({
         components: { Carousel },
@@ -242,7 +242,7 @@ describe('Carousel', () => {
     expect(templateHost.findAll('.semi-carousel-content-item')).toHaveLength(1);
     expect(templateHost.find('.semi-carousel-arrow').exists()).toBe(false);
     expect(templateHost.find('.semi-carousel-indicator').exists()).toBe(false);
-    expect(vi.getTimerCount()).toBe(0);
+    expect(rs.getTimerCount()).toBe(0);
 
     const renderHost = mount(
       defineComponent({

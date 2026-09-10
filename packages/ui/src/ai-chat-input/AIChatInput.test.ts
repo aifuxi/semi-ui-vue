@@ -1,7 +1,7 @@
 import { enableAutoUnmount, flushPromises, mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
 import { AIChatInputConfigureItem } from './index';
-import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, describe, expect, it, rs } from '@rstest/core';
 
 import AIChatInput from './AIChatInput.vue';
 import type { AIChatInputExposed, Attachment, Skill } from './types';
@@ -35,13 +35,13 @@ async function mountInput(props: Record<string, unknown> = {}) {
 
 afterEach(() => {
   document.body.innerHTML = '';
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
 });
 enableAutoUnmount(afterEach);
 
 describe('AIChatInput', () => {
   it('默认上传按钮一次点击只打开一次文件选择器', async () => {
-    const open = vi.spyOn(HTMLInputElement.prototype, 'click');
+    const open = rs.spyOn(HTMLInputElement.prototype, 'click');
     const wrapper = await mountInput({ uploadProps: { action: '' } });
     await wrapper.get('button[aria-label="Upload"]').trigger('click');
     expect(
@@ -85,7 +85,7 @@ describe('AIChatInput', () => {
     expect(second.get<HTMLInputElement>('input[aria-label="custom model"]').element.value).toBe(
       'second',
     );
-    await vi.waitFor(() =>
+    await rs.waitFor(() =>
       expect(first.get<HTMLButtonElement>('button[aria-label="Send"]').element.disabled).toBe(
         false,
       ),

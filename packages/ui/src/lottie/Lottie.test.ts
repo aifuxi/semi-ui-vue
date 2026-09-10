@@ -1,19 +1,19 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
-const lottieMock = vi.hoisted(() => ({
-  loadAnimation: vi.fn(),
+const lottieMock = rs.hoisted(() => ({
+  loadAnimation: rs.fn(),
 }));
 
-vi.mock('lottie-web', () => ({ default: lottieMock }));
+rs.mock('lottie-web', () => ({ default: lottieMock }));
 
 import { semiGlobal } from '../config-provider';
 import LottieBase from './Lottie.vue';
 import { Lottie } from './index';
 
 function createAnimation() {
-  return { destroy: vi.fn(), goToAndStop: vi.fn(), play: vi.fn() };
+  return { destroy: rs.fn(), goToAndStop: rs.fn(), play: rs.fn() };
 }
 
 beforeEach(() => {
@@ -24,7 +24,7 @@ beforeEach(() => {
 
 afterEach(() => {
   semiGlobal.config = {};
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
   document.body.innerHTML = '';
 });
 
@@ -64,8 +64,8 @@ describe('Lottie', () => {
   });
 
   it('保留初次实例双回调、全局包回调与静态 getLottie', () => {
-    const getAnimationInstance = vi.fn();
-    const getLottie = vi.fn();
+    const getAnimationInstance = rs.fn();
+    const getLottie = rs.fn();
     const wrapper = mount(LottieBase, {
       props: { getAnimationInstance, getLottie, params: { animationData: {} } },
     });
@@ -96,7 +96,7 @@ describe('Lottie', () => {
   });
 
   it('深度等价 params 不重建，变化时先销毁旧实例再创建新实例', async () => {
-    const getAnimationInstance = vi.fn();
+    const getAnimationInstance = rs.fn();
     const firstParams = { animationData: { layers: [{ id: 1 }] }, autoplay: false };
     const wrapper = mount(LottieBase, { props: { getAnimationInstance, params: firstParams } });
     const firstAnimation = lottieMock.loadAnimation.mock.results[0]?.value;
@@ -120,8 +120,8 @@ describe('Lottie', () => {
   });
 
   it('更新回调不重建动画，后续 params 更新读取最新回调', async () => {
-    const original = vi.fn();
-    const updated = vi.fn();
+    const original = rs.fn();
+    const updated = rs.fn();
     const wrapper = mount(LottieBase, {
       props: { getAnimationInstance: original, params: { animationData: { id: 1 } } },
     });

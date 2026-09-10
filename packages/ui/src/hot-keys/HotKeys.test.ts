@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
 import { semiGlobal } from '../config-provider';
 import HotKeysBase from './HotKeys.vue';
@@ -28,7 +28,7 @@ beforeEach(() => {
 
 afterEach(() => {
   semiGlobal.config = {};
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
   document.body.innerHTML = '';
 });
 
@@ -70,7 +70,7 @@ describe('HotKeys', () => {
   });
 
   it('合并 class/style/attrs，并发出带原生事件的 click', async () => {
-    const onClick = vi.fn();
+    const onClick = rs.fn();
     const wrapper = mount(HotKeysBase, {
       attrs: { 'aria-label': 'Save shortcut', 'data-hot-key': 'save', role: 'note' },
       props: {
@@ -104,7 +104,7 @@ describe('HotKeys', () => {
   });
 
   it('严格匹配普通键 code 与全部修饰键，并在命中后通知', () => {
-    const onHotKey = vi.fn();
+    const onHotKey = rs.fn();
     const wrapper = mount(HotKeysBase, {
       props: { hotKeys: ['Control', 'Shift', 'K'], onHotKey },
     });
@@ -122,7 +122,7 @@ describe('HotKeys', () => {
   });
 
   it('只在成功命中时 preventDefault，并在下一次事件读取更新后的 props', async () => {
-    const onHotKey = vi.fn();
+    const onHotKey = rs.fn();
     const wrapper = mount(HotKeysBase, {
       props: { hotKeys: ['r'], onHotKey, preventDefault: true },
     });
@@ -146,7 +146,7 @@ describe('HotKeys', () => {
   it('getListenerTarget 限定作用域，卸载从实际目标清理', () => {
     const target = document.createElement('section');
     document.body.append(target);
-    const onHotKey = vi.fn();
+    const onHotKey = rs.fn();
     const wrapper = mount(HotKeysBase, {
       props: { getListenerTarget: () => target, hotKeys: ['enter'], onHotKey },
     });
@@ -161,7 +161,7 @@ describe('HotKeys', () => {
   });
 
   it('mergeMetaCtrl 在固定 v2.102.0 Foundation 中保持 no-op', () => {
-    const onHotKey = vi.fn();
+    const onHotKey = rs.fn();
     const wrapper = mount(HotKeysBase, {
       props: { hotKeys: ['control', 'k'], mergeMetaCtrl: true, onHotKey },
     });

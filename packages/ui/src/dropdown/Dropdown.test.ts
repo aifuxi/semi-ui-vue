@@ -1,6 +1,6 @@
 /* eslint-disable vue/one-component-per-file -- public template and render-function hosts are parity fixtures. */
 import { mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
 
 import { semiGlobal } from '../config-provider';
@@ -9,7 +9,7 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownTitle } from './index';
 async function flushDropdown(): Promise<void> {
   for (let index = 0; index < 6; index += 1) {
     await nextTick();
-    await vi.runOnlyPendingTimersAsync();
+    await rs.runOnlyPendingTimersAsync();
   }
 }
 
@@ -18,10 +18,10 @@ let pointerOverTrigger = true;
 
 describe('Dropdown', () => {
   beforeEach(() => {
-    vi.useFakeTimers();
+    rs.useFakeTimers();
     pointerOverTrigger = true;
     // jsdom does not update :hover when dispatching mouse events; model the real pointer.
-    vi.spyOn(Element.prototype, 'matches').mockImplementation(function (
+    rs.spyOn(Element.prototype, 'matches').mockImplementation(function (
       this: Element,
       selector: string,
     ) {
@@ -32,11 +32,11 @@ describe('Dropdown', () => {
   });
 
   afterEach(() => {
-    vi.runOnlyPendingTimers();
-    vi.useRealTimers();
+    rs.runOnlyPendingTimers();
+    rs.useRealTimers();
     document.body.replaceChildren();
     semiGlobal.config = {};
-    vi.restoreAllMocks();
+    rs.restoreAllMocks();
   });
 
   it('hover 仅由焦点打开且指针不在触发器上时遵守上游插入后关闭规则', async () => {
@@ -133,8 +133,8 @@ describe('Dropdown', () => {
   });
 
   it('menu 数组渲染 title/item/divider、类型、图标、active tick 与 disabled 事件', async () => {
-    const activeClick = vi.fn();
-    const disabledClick = vi.fn();
+    const activeClick = rs.fn();
+    const disabledClick = rs.fn();
     const arrayWrapper = mount(Dropdown, {
       props: {
         menu: [
@@ -265,7 +265,7 @@ describe('Dropdown', () => {
   it('hover/focus/contextMenu/custom trigger 与 outside click 保持公开可见性语义', async () => {
     async function mountTrigger(trigger: 'hover' | 'focus' | 'contextMenu' | 'custom') {
       const changes: boolean[] = [];
-      const clickOutside = vi.fn();
+      const clickOutside = rs.fn();
       const wrapper = mount(Dropdown, {
         props: {
           menu: [{ name: trigger, node: 'item' }],
@@ -353,7 +353,7 @@ describe('Dropdown', () => {
   });
 
   it('嵌套层级使用 2px spacing，并在 mousedown 先触发子 Item 回调', async () => {
-    const nestedClick = vi.fn();
+    const nestedClick = rs.fn();
     const Host = defineComponent({
       setup() {
         return () =>
@@ -388,9 +388,9 @@ describe('Dropdown', () => {
   });
 
   it('独立导出的 Menu/Title/Item 保留原生 attrs、ARIA 与鼠标事件', async () => {
-    const enter = vi.fn();
-    const leave = vi.fn();
-    const contextmenu = vi.fn();
+    const enter = rs.fn();
+    const leave = rs.fn();
+    const contextmenu = rs.fn();
     const wrapper = mount(DropdownMenu, {
       attrs: { 'data-menu': 'standalone' },
       slots: {

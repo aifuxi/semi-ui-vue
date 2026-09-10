@@ -1,6 +1,6 @@
 import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, defineComponent, h, nextTick, ref } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import UserGuide from './UserGuide.vue';
 
@@ -37,7 +37,7 @@ describe('UserGuide SSR', () => {
     const container = document.createElement('div');
     container.innerHTML = serverHtml;
     document.body.append(container);
-    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const consoleError = rs.spyOn(console, 'error').mockImplementation(() => undefined);
     const app = createSSRApp(Host);
     app.mount(container);
     await nextTick();

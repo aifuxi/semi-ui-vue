@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import { IconHome } from '@aifuxi/semi-icons-vue';
 import { semiGlobal as configSemiGlobal } from '../config-provider';
@@ -22,16 +22,16 @@ import { getRef, render, resolveDOM, unmount } from './vue-render';
 
 afterEach(() => {
   semiGlobal.config = {};
-  vi.useRealTimers();
-  vi.unstubAllGlobals();
-  vi.restoreAllMocks();
+  rs.useRealTimers();
+  rs.unstubAllGlobals();
+  rs.restoreAllMocks();
   document.body.innerHTML = '';
 });
 
 describe('_utils', () => {
   it('stopPropagation 支持 immediate stop 与 noImmediate', () => {
-    const stop = vi.fn();
-    const immediate = vi.fn();
+    const stop = rs.fn();
+    const immediate = rs.fn();
     stopPropagation({
       stopPropagation: stop,
       nativeEvent: { stopImmediatePropagation: immediate },
@@ -65,10 +65,10 @@ describe('_utils', () => {
 
   it('registerMediaQuery 调用初值、变更回调并清理现代监听', () => {
     let listener: ((event: MediaQueryListEvent) => void) | undefined;
-    const remove = vi.fn();
-    vi.stubGlobal(
+    const remove = rs.fn();
+    rs.stubGlobal(
       'matchMedia',
-      vi.fn(() => ({
+      rs.fn(() => ({
         matches: true,
         media: '(min-width: 1px)',
         onchange: null,
@@ -76,13 +76,13 @@ describe('_utils', () => {
           listener = next;
         },
         removeEventListener: remove,
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        dispatchEvent: vi.fn(),
+        addListener: rs.fn(),
+        removeListener: rs.fn(),
+        dispatchEvent: rs.fn(),
       })),
     );
-    const match = vi.fn();
-    const unmatch = vi.fn();
+    const match = rs.fn();
+    const unmatch = rs.fn();
     const unregister = registerMediaQuery('(min-width: 1px)', { match, unmatch });
     expect(match).toHaveBeenCalledOnce();
     listener?.({ matches: false } as MediaQueryListEvent);
@@ -92,11 +92,11 @@ describe('_utils', () => {
   });
 
   it('registerMediaQuery 支持 legacy listener 且可跳过初值', () => {
-    const addListener = vi.fn();
-    const removeListener = vi.fn();
-    vi.stubGlobal(
+    const addListener = rs.fn();
+    const removeListener = rs.fn();
+    rs.stubGlobal(
       'matchMedia',
-      vi.fn(
+      rs.fn(
         () =>
           ({
             matches: false,
@@ -105,7 +105,7 @@ describe('_utils', () => {
           }) as unknown as MediaQueryList,
       ),
     );
-    const unmatch = vi.fn();
+    const unmatch = rs.fn();
     const unregister = registerMediaQuery('(legacy)', { unmatch, callInInit: false });
     expect(unmatch).not.toHaveBeenCalled();
     expect(addListener).toHaveBeenCalledOnce();
@@ -130,15 +130,15 @@ describe('_utils', () => {
   });
 
   it('runAfterTicks 等待指定 macrotask，滚动条宽度按 viewport 计算', async () => {
-    vi.useFakeTimers();
-    const callback = vi.fn();
+    rs.useFakeTimers();
+    const callback = rs.fn();
     const pending = runAfterTicks(callback, 2);
     expect(callback).not.toHaveBeenCalled();
-    await vi.runAllTimersAsync();
+    await rs.runAllTimersAsync();
     await pending;
     expect(callback).toHaveBeenCalledOnce();
 
-    vi.stubGlobal('innerWidth', 1200);
+    rs.stubGlobal('innerWidth', 1200);
     Object.defineProperty(document.documentElement, 'clientWidth', {
       configurable: true,
       value: 1184,
@@ -162,8 +162,8 @@ describe('_utils', () => {
     const second = document.createElement('input');
     document.body.append(first, second);
     first.focus();
-    const firstBlur = vi.spyOn(first, 'blur');
-    const secondBlur = vi.spyOn(second, 'blur');
+    const firstBlur = rs.spyOn(first, 'blur');
+    const secondBlur = rs.spyOn(second, 'blur');
     let setPreviousFocus: ((element: HTMLElement | null) => void) | undefined;
     const Host = defineComponent({
       setup() {

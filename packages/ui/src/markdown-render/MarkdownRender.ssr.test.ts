@@ -1,7 +1,7 @@
-// @vitest-environment node
+// @rstest-environment node
 import { createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from '@rstest/core';
 
 import MarkdownRender from './MarkdownRender.vue';
 

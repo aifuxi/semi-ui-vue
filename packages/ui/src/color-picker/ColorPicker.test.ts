@@ -1,5 +1,5 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 import { defineComponent, nextTick } from 'vue';
 
 import { InputNumber } from '../input-number';
@@ -7,7 +7,7 @@ import { ColorPicker, colorStringToValue } from './index';
 
 afterEach(() => {
   document.body.innerHTML = '';
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
   delete (window as Window & { EyeDropper?: unknown }).EyeDropper;
 });
 
@@ -96,7 +96,7 @@ describe('ColorPicker', () => {
       },
     });
     const slider = wrapper.get('.semi-colorPicker-colorSlider');
-    vi.spyOn(slider.element, 'getBoundingClientRect').mockReturnValue({
+    rs.spyOn(slider.element, 'getBoundingClientRect').mockReturnValue({
       x: 0,
       y: 0,
       left: 0,
@@ -121,7 +121,7 @@ describe('ColorPicker', () => {
     const controlled = colorStringToValue('#ff0000');
     const wrapper = mount(ColorPicker, { props: { modelValue: controlled } });
     const slider = wrapper.get('.semi-colorPicker-colorSlider');
-    vi.spyOn(slider.element, 'getBoundingClientRect').mockReturnValue({
+    rs.spyOn(slider.element, 'getBoundingClientRect').mockReturnValue({
       x: 0,
       y: 0,
       left: 0,
@@ -164,7 +164,7 @@ describe('ColorPicker', () => {
   });
 
   it('uses EyeDropper when available and silently ignores cancellation', async () => {
-    const open = vi.fn().mockResolvedValue({ sRGBHex: '#123456' });
+    const open = rs.fn().mockResolvedValue({ sRGBHex: '#123456' });
     (window as Window & { EyeDropper?: unknown }).EyeDropper = class {
       open = open;
     };
@@ -205,11 +205,11 @@ describe('ColorPicker', () => {
   });
 
   it('removes drag listeners when the component unmounts', async () => {
-    const add = vi.spyOn(window, 'addEventListener');
-    const remove = vi.spyOn(window, 'removeEventListener');
+    const add = rs.spyOn(window, 'addEventListener');
+    const remove = rs.spyOn(window, 'removeEventListener');
     const wrapper = mount(ColorPicker);
     const slider = wrapper.get('.semi-colorPicker-colorSlider');
-    vi.spyOn(slider.element, 'getBoundingClientRect').mockReturnValue({
+    rs.spyOn(slider.element, 'getBoundingClientRect').mockReturnValue({
       x: 0,
       y: 0,
       left: 0,

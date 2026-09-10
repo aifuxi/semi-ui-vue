@@ -3,7 +3,7 @@
 import { mount } from '@vue/test-utils';
 import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, defineComponent, h, nextTick, shallowRef } from 'vue';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import { ConfigProvider } from '../config-provider';
 import { Text } from '../typography';
@@ -27,9 +27,9 @@ function mountAnchor(
 afterEach(() => {
   for (const wrapper of mountedWrappers.splice(0)) wrapper.unmount();
   document.body.replaceChildren();
-  vi.useRealTimers();
-  vi.unstubAllGlobals();
-  vi.restoreAllMocks();
+  rs.useRealTimers();
+  rs.unstubAllGlobals();
+  rs.restoreAllMocks();
 });
 
 describe('Anchor', () => {
@@ -205,23 +205,23 @@ describe('Anchor', () => {
   });
 
   it('scroll 按 Element 容器几何激活链接，卸载清理监听、timer 与 ResizeObserver', async () => {
-    vi.useFakeTimers();
+    rs.useFakeTimers();
     const container = document.createElement('div');
     const first = document.createElement('section');
     const second = document.createElement('section');
     first.id = 'first';
     second.id = 'second';
     document.body.append(container, first, second);
-    vi.spyOn(container, 'getBoundingClientRect').mockReturnValue({ top: 20 } as DOMRect);
-    vi.spyOn(first, 'getBoundingClientRect').mockReturnValue({ top: 10 } as DOMRect);
-    vi.spyOn(second, 'getBoundingClientRect').mockReturnValue({ top: 80 } as DOMRect);
-    const add = vi.spyOn(container, 'addEventListener');
-    const remove = vi.spyOn(container, 'removeEventListener');
-    const disconnect = vi.fn();
-    vi.stubGlobal(
+    rs.spyOn(container, 'getBoundingClientRect').mockReturnValue({ top: 20 } as DOMRect);
+    rs.spyOn(first, 'getBoundingClientRect').mockReturnValue({ top: 10 } as DOMRect);
+    rs.spyOn(second, 'getBoundingClientRect').mockReturnValue({ top: 80 } as DOMRect);
+    const add = rs.spyOn(container, 'addEventListener');
+    const remove = rs.spyOn(container, 'removeEventListener');
+    const disconnect = rs.fn();
+    rs.stubGlobal(
       'ResizeObserver',
       class {
-        observe = vi.fn();
+        observe = rs.fn();
         disconnect = disconnect;
       },
     );
@@ -237,7 +237,7 @@ describe('Anchor', () => {
     expect(add.mock.calls.filter(([event]) => event === 'scroll')).toHaveLength(2);
 
     container.dispatchEvent(new Event('scroll'));
-    await vi.advanceTimersByTimeAsync(101);
+    await rs.advanceTimersByTimeAsync(101);
     await nextTick();
     expect(changes).toEqual(['#first']);
     expect(wrapper.findAll('.semi-anchor-link-title')[0]!.classes()).toContain(
@@ -250,8 +250,8 @@ describe('Anchor', () => {
   });
 
   it('defaultAnchor 在挂载时激活但不发出 change/click', async () => {
-    const change = vi.fn();
-    const click = vi.fn();
+    const change = rs.fn();
+    const click = rs.fn();
     const wrapper = mountAnchor({ defaultAnchor: '#api', onChange: change, onClick: click });
     await nextTick();
     await nextTick();

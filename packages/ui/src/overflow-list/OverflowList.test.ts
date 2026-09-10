@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
 import { semiGlobal } from '../config-provider';
 import OverflowList from './OverflowList.vue';
@@ -8,9 +8,9 @@ import type { OverflowItem } from './types';
 
 class TestResizeObserver {
   static instances: TestResizeObserver[] = [];
-  readonly observe = vi.fn();
-  readonly unobserve = vi.fn();
-  readonly disconnect = vi.fn();
+  readonly observe = rs.fn();
+  readonly unobserve = rs.fn();
+  readonly disconnect = rs.fn();
 
   constructor(readonly callback: ResizeObserverCallback) {
     TestResizeObserver.instances.push(this);
@@ -23,9 +23,9 @@ class TestResizeObserver {
 
 class TestIntersectionObserver {
   static instances: TestIntersectionObserver[] = [];
-  readonly observe = vi.fn();
-  readonly unobserve = vi.fn();
-  readonly disconnect = vi.fn();
+  readonly observe = rs.fn();
+  readonly unobserve = rs.fn();
+  readonly disconnect = rs.fn();
 
   constructor(
     readonly callback: IntersectionObserverCallback,
@@ -49,7 +49,7 @@ function mountList(
     overflow: 20,
   },
 ) {
-  vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockImplementation(function (
+  rs.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockImplementation(function (
     this: HTMLElement,
   ) {
     if (this.classList.contains('semi-overflow-list-overflow')) return width.overflow;
@@ -77,14 +77,14 @@ async function settleMeasurement(): Promise<void> {
 beforeEach(() => {
   TestResizeObserver.instances = [];
   TestIntersectionObserver.instances = [];
-  vi.stubGlobal('ResizeObserver', TestResizeObserver);
-  vi.stubGlobal('IntersectionObserver', TestIntersectionObserver);
+  rs.stubGlobal('ResizeObserver', TestResizeObserver);
+  rs.stubGlobal('IntersectionObserver', TestIntersectionObserver);
 });
 
 afterEach(() => {
   delete semiGlobal.config.overrideDefaultProps;
-  vi.restoreAllMocks();
-  vi.unstubAllGlobals();
+  rs.restoreAllMocks();
+  rs.unstubAllGlobals();
 });
 
 describe('OverflowList', () => {

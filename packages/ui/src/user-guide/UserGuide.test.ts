@@ -1,5 +1,5 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 import { defineComponent, h, nextTick, type VNodeChild } from 'vue';
 
 import UserGuide from './UserGuide.vue';
@@ -30,11 +30,11 @@ function buttonWithText(text: string): HTMLButtonElement | undefined {
 }
 
 beforeEach(() => {
-  globalThis.requestAnimationFrame = vi.fn((callback: FrameRequestCallback) => {
+  globalThis.requestAnimationFrame = rs.fn((callback: FrameRequestCallback) => {
     callback(0);
     return 1;
   });
-  globalThis.cancelAnimationFrame = vi.fn();
+  globalThis.cancelAnimationFrame = rs.fn();
 });
 
 afterEach(() => {
@@ -158,7 +158,7 @@ describe('UserGuide', () => {
   });
 
   it('renders modal cover, indicator and button overrides through the existing Modal', async () => {
-    const onClick = vi.fn();
+    const onClick = rs.fn();
     const wrapper = mount(UserGuide, {
       attachTo: document.body,
       props: {

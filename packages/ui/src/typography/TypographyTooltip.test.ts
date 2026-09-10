@@ -1,23 +1,23 @@
 import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 import { Text } from './index';
 
 beforeEach(() => {
-  vi.useFakeTimers();
+  rs.useFakeTimers();
   // jsdom cannot measure ellipsis: force only the text's overflow branch. Geometry is tested in Chromium.
-  vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(80);
-  vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(400);
+  rs.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(80);
+  rs.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(400);
 });
 afterEach(() => {
-  vi.useRealTimers();
-  vi.restoreAllMocks();
+  rs.useRealTimers();
+  rs.restoreAllMocks();
   document.body.replaceChildren();
 });
 async function settle() {
   for (let index = 0; index < 5; index++) {
     await nextTick();
-    await vi.advanceTimersByTimeAsync(20);
+    await rs.advanceTimersByTimeAsync(20);
   }
 }
 

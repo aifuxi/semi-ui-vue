@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
 
 import { ConfigProvider, semiGlobal } from '../config-provider';
@@ -8,20 +8,20 @@ import TimePicker from './index';
 async function flushPortal(): Promise<void> {
   for (let index = 0; index < 5; index += 1) {
     await nextTick();
-    await vi.runOnlyPendingTimersAsync();
+    await rs.runOnlyPendingTimersAsync();
   }
 }
 
 describe('TimePicker', () => {
   beforeEach(() => {
     document.body.replaceChildren();
-    vi.useFakeTimers();
+    rs.useFakeTimers();
     semiGlobal.config = {};
   });
 
   afterEach(() => {
-    vi.useRealTimers();
-    vi.restoreAllMocks();
+    rs.useRealTimers();
+    rs.restoreAllMocks();
     document.body.replaceChildren();
     semiGlobal.config = {};
   });
@@ -130,7 +130,7 @@ describe('TimePicker', () => {
   });
 
   it('range 使用左右 disabledTime、默认 header、step 与 hideDisabledOptions', async () => {
-    const disabledTime = vi.fn((_value: Date[], side: 'left' | 'right') => ({
+    const disabledTime = rs.fn((_value: Date[], side: 'left' | 'right') => ({
       disabledHours: () => (side === 'left' ? [1] : [2]),
     }));
     mount(TimePicker, {
@@ -168,7 +168,7 @@ describe('TimePicker', () => {
   });
 
   it('单值模式不调用 disabledTime，12 小时制输出 AM/PM 与缺省格式', async () => {
-    const disabledTime = vi.fn(() => ({ disabledHours: () => [10] }));
+    const disabledTime = rs.fn(() => ({ disabledHours: () => [10] }));
     mount(TimePicker, {
       props: {
         defaultOpen: true,
@@ -206,7 +206,7 @@ describe('TimePicker', () => {
     expect(hourOuter.querySelectorAll('li')).toHaveLength(72);
     const items = [...hourOuter.querySelectorAll<HTMLElement>('li')];
     items.forEach((item, index) => {
-      vi.spyOn(item, 'getBoundingClientRect').mockReturnValue({
+      rs.spyOn(item, 'getBoundingClientRect').mockReturnValue({
         bottom: index * 36 + 36,
         height: 36,
         left: 0,
@@ -218,7 +218,7 @@ describe('TimePicker', () => {
         toJSON: () => ({}),
       });
     });
-    vi.spyOn(hourOuter, 'getBoundingClientRect').mockReturnValue({
+    rs.spyOn(hourOuter, 'getBoundingClientRect').mockReturnValue({
       bottom: 1260,
       height: 252,
       left: 0,
@@ -230,7 +230,7 @@ describe('TimePicker', () => {
       toJSON: () => ({}),
     });
     await hourOuter.dispatchEvent(new Event('scroll'));
-    await vi.advanceTimersByTimeAsync(34);
+    await rs.advanceTimersByTimeAsync(34);
     await nextTick();
     const next = wrapper.emitted('change')?.at(-1);
     expect((next?.[0] as Date).getHours()).toBe(7);

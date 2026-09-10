@@ -1,23 +1,23 @@
 import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
 import VideoPlayer from './VideoPlayer.vue';
 
 beforeEach(() => {
-  vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined);
-  vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => undefined);
+  rs.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined);
+  rs.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => undefined);
 });
 
 afterEach(() => {
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
   document.body.innerHTML = '';
 });
 
 describe('VideoPlayer SSR', () => {
   it('服务端渲染静态 video/poster/progress/controls 且无媒体或全局副作用', async () => {
-    const documentAdd = vi.spyOn(document, 'addEventListener');
-    const mediaAdd = vi.spyOn(HTMLMediaElement.prototype, 'addEventListener');
+    const documentAdd = rs.spyOn(document, 'addEventListener');
+    const mediaAdd = rs.spyOn(HTMLMediaElement.prototype, 'addEventListener');
     const html = await renderToString(
       h(VideoPlayer, {
         src: '/video.mp4',
@@ -49,10 +49,10 @@ describe('VideoPlayer SSR', () => {
   });
 
   it('hydration 后注册一组监听并在卸载时以相同引用清理', async () => {
-    const documentAdd = vi.spyOn(document, 'addEventListener');
-    const documentRemove = vi.spyOn(document, 'removeEventListener');
-    const mediaAdd = vi.spyOn(HTMLMediaElement.prototype, 'addEventListener');
-    const mediaRemove = vi.spyOn(HTMLMediaElement.prototype, 'removeEventListener');
+    const documentAdd = rs.spyOn(document, 'addEventListener');
+    const documentRemove = rs.spyOn(document, 'removeEventListener');
+    const mediaAdd = rs.spyOn(HTMLMediaElement.prototype, 'addEventListener');
+    const mediaRemove = rs.spyOn(HTMLMediaElement.prototype, 'removeEventListener');
     const Host = { render: () => h(VideoPlayer, { src: '/video.mp4' }) };
     const container = document.createElement('div');
     container.innerHTML = await renderToString(h(Host));

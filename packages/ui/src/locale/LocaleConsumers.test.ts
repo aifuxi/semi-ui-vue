@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { createSSRApp, h, nextTick, shallowRef } from 'vue';
 import { renderToString } from '@vue/server-renderer';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from '@rstest/core';
 import { ConfigProvider } from '../config-provider';
 import { Pagination } from '../pagination';
 import { Table } from '../table';

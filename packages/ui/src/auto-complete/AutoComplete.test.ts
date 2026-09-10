@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import { semiGlobal } from '../config-provider';
 import AutoComplete from './AutoComplete.vue';
@@ -83,7 +83,7 @@ describe('AutoComplete', () => {
   });
 
   it('清除、loading、empty、尺寸、校验和 disabled 走最终 DOM', async () => {
-    const onClear = vi.fn();
+    const onClear = rs.fn();
     const wrapper = mount(AutoComplete, {
       attachTo: document.body,
       props: {

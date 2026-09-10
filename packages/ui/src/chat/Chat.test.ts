@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 import { defineComponent, h, nextTick } from 'vue';
 
 import { semiGlobal } from '../config-provider';
@@ -12,7 +12,7 @@ const messages: ChatMessage[] = [
 
 afterEach(() => {
   delete semiGlobal.config.overrideDefaultProps;
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
 });
 
 describe('Chat', () => {
@@ -251,9 +251,9 @@ describe('Chat', () => {
   });
 
   it('卸载时清理 ResizeObserver 与滚动监听', async () => {
-    const disconnect = vi.fn();
-    const observe = vi.fn();
-    vi.stubGlobal(
+    const disconnect = rs.fn();
+    const observe = rs.fn();
+    rs.stubGlobal(
       'ResizeObserver',
       class {
         observe = observe;
@@ -265,6 +265,6 @@ describe('Chat', () => {
     expect(observe).toHaveBeenCalled();
     wrapper.unmount();
     expect(disconnect).toHaveBeenCalled();
-    vi.unstubAllGlobals();
+    rs.unstubAllGlobals();
   });
 });

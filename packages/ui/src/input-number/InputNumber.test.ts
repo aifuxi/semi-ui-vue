@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import InputNumber from './InputNumber.vue';
 import type { InputNumberExposed, InputNumberValue } from './types';
@@ -138,9 +138,9 @@ describe('InputNumber', () => {
   });
 
   it('长按离开后注册 document mouseup，并在卸载时清理', async () => {
-    vi.useFakeTimers();
-    const add = vi.spyOn(document, 'addEventListener');
-    const remove = vi.spyOn(document, 'removeEventListener');
+    rs.useFakeTimers();
+    const add = rs.spyOn(document, 'addEventListener');
+    const remove = rs.spyOn(document, 'removeEventListener');
     const wrapper = mount(InputNumber, { props: { defaultValue: 1 } });
     const up = wrapper.get('.semi-input-number-button-up');
 
@@ -149,7 +149,7 @@ describe('InputNumber', () => {
     expect(add).toHaveBeenCalledWith('mouseup', expect.any(Function));
     wrapper.unmount();
     expect(remove).toHaveBeenCalledWith('mouseup', expect.any(Function));
-    vi.useRealTimers();
+    rs.useRealTimers();
   });
 
   it('暴露 input/focus/blur/select 且透传 spinbutton ARIA', async () => {

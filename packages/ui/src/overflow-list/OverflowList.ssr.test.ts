@@ -1,20 +1,20 @@
 import { mount } from '@vue/test-utils';
 import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import OverflowList from './OverflowList.vue';
 import type { OverflowItem } from './types';
 
 afterEach(() => {
-  vi.restoreAllMocks();
-  vi.unstubAllGlobals();
+  rs.restoreAllMocks();
+  rs.unstubAllGlobals();
 });
 
 describe('OverflowList SSR', () => {
   it('无 DOM observer 时可导入并渲染稳定 collapse 结构', async () => {
-    vi.stubGlobal('ResizeObserver', undefined);
-    vi.stubGlobal('IntersectionObserver', undefined);
+    rs.stubGlobal('ResizeObserver', undefined);
+    rs.stubGlobal('IntersectionObserver', undefined);
     const html = await renderToString(
       createSSRApp({
         render: () =>
@@ -35,8 +35,8 @@ describe('OverflowList SSR', () => {
   });
 
   it('observer 不可用时客户端挂载安全降级并保持 slot 内容', async () => {
-    vi.stubGlobal('ResizeObserver', undefined);
-    vi.stubGlobal('IntersectionObserver', undefined);
+    rs.stubGlobal('ResizeObserver', undefined);
+    rs.stubGlobal('IntersectionObserver', undefined);
     const wrapper = mount(OverflowList, {
       props: { items: [{ key: 'a' }], renderMode: 'scroll' },
       slots: {

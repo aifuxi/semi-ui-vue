@@ -1,7 +1,7 @@
 import { renderToString } from '@vue/server-renderer';
 import { mount } from '@vue/test-utils';
 import { createSSRApp, h, type Component } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import * as illustrations from './index';
 import {
@@ -41,7 +41,7 @@ describe('Semi Illustrations', () => {
   });
 
   it('把 class/style/ARIA/data 与原生事件透传到根 SVG并允许覆盖默认值', async () => {
-    const click = vi.fn();
+    const click = rs.fn();
     const wrapper = mount(IllustrationNoContent, {
       attrs: {
         'aria-hidden': 'false',

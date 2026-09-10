@@ -1,14 +1,14 @@
 import { mount } from '@vue/test-utils';
 import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import ScrollItem from './ScrollItem.vue';
 import ScrollList from './ScrollList.vue';
 
 afterEach(() => {
-  vi.restoreAllMocks();
-  vi.unstubAllGlobals();
+  rs.restoreAllMocks();
+  rs.unstubAllGlobals();
 });
 
 describe('ScrollList SSR', () => {

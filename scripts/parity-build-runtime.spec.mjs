@@ -1,10 +1,10 @@
-// @vitest-environment node
+// @rstest-environment node
 import { mkdir, mkdtemp, rm, writeFile, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { runInNewContext } from 'node:vm';
 import { createRsbuild } from '@rsbuild/core';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from '@rstest/core';
 import { parityPrismOrder, parityWorkerEntry } from './parity-build-runtime.mjs';
 
 async function withFixture(files, run) {

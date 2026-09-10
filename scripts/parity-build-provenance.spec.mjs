@@ -1,9 +1,9 @@
-// @vitest-environment node
+// @rstest-environment node
 import { mkdtemp, realpath, rm, writeFile, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { createRsbuild } from '@rsbuild/core';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from '@rstest/core';
 import { parityBuildProvenance, requestedBuildSources } from './parity-build-provenance.mjs';
 
 describe('built parity source evidence', () => {

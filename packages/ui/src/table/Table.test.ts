@@ -1,7 +1,7 @@
 /* eslint-disable vue/one-component-per-file -- test hosts cover template Column syntax, controlled props, and custom render inputs. */
 import { flushPromises, mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import ConfigProvider from '../config-provider/ConfigProvider.vue';
 import { Table, TableColumn, type TableColumnProps as TableColumnConfig } from './index';
@@ -22,7 +22,7 @@ const data = [
 
 afterEach(() => {
   document.body.innerHTML = '';
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
 });
 
 describe('Table', () => {
@@ -85,7 +85,7 @@ describe('Table', () => {
 
   it('执行 render/onCell/span，排序不修改调用方数据并按事件顺序通知', async () => {
     const source = data.map((item) => ({ ...item }));
-    const onChange = vi.fn();
+    const onChange = rs.fn();
     const renderColumns: TableColumnConfig[] = [
       {
         dataIndex: 'name',
@@ -113,9 +113,9 @@ describe('Table', () => {
   });
 
   it('展示非受控排序提示，并由 shouldCellUpdate 接管单元格更新', async () => {
-    vi.useFakeTimers();
+    rs.useFakeTimers();
     try {
-      const shouldCellUpdate = vi.fn(() => false);
+      const shouldCellUpdate = rs.fn(() => false);
       const wrapper = mount(Table, {
         attachTo: document.body,
         props: {
@@ -135,9 +135,9 @@ describe('Table', () => {
       });
 
       const sorter = wrapper.find('.semi-table-column-sorter-wrapper');
-      vi.spyOn(sorter.element, 'matches').mockImplementation((selector) => selector === ':hover');
+      rs.spyOn(sorter.element, 'matches').mockImplementation((selector) => selector === ':hover');
       await sorter.trigger('mouseenter');
-      await vi.advanceTimersByTimeAsync(100);
+      await rs.advanceTimersByTimeAsync(100);
       await flushPromises();
       expect(document.body.textContent).toContain('点击升序');
 
@@ -149,14 +149,14 @@ describe('Table', () => {
       );
       expect(wrapper.find('td').text()).toBe('Alpha');
     } finally {
-      vi.useRealTimers();
+      rs.useRealTimers();
     }
   });
 
   it('覆盖 checkbox/radio 选择、disabled 全选与受控 keys', async () => {
-    const onSelect = vi.fn();
-    const onSelectAll = vi.fn();
-    const onChange = vi.fn();
+    const onSelect = rs.fn();
+    const onSelectAll = rs.fn();
+    const onChange = rs.fn();
     const wrapper = mount(Table, {
       props: {
         columns,
@@ -193,8 +193,8 @@ describe('Table', () => {
   });
 
   it('覆盖树展开、expandedRow、keepDOM 与事件顺序', async () => {
-    const onExpand = vi.fn();
-    const onExpandedRowsChange = vi.fn();
+    const onExpand = rs.fn();
+    const onExpandedRowsChange = rs.fn();
     const tree = [
       { key: 'p', name: 'Parent', score: 1, children: [{ key: 'c', name: 'Child', score: 2 }] },
     ];
@@ -219,10 +219,10 @@ describe('Table', () => {
   });
 
   it('覆盖分页、fixed/scroll、virtualized ref 与 resize 回调', async () => {
-    const virtualRef = vi.fn();
-    const onResizeStart = vi.fn((column) => column);
-    const onResize = vi.fn((column) => column);
-    const onResizeStop = vi.fn((column) => column);
+    const virtualRef = rs.fn();
+    const onResizeStart = rs.fn((column) => column);
+    const onResize = rs.fn((column) => column);
+    const onResizeStop = rs.fn((column) => column);
     const many = Array.from({ length: 30 }, (_, index) => ({
       key: index,
       name: `row-${index}`,
@@ -393,7 +393,7 @@ describe('Table', () => {
   });
 
   it('related 选择级联子节点并为部分选择输出 indeterminate', async () => {
-    const onChange = vi.fn();
+    const onChange = rs.fn();
     const tree = [
       {
         children: [

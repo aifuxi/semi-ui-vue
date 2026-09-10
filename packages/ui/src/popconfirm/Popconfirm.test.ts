@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
 import { Button } from '../button';
 import { ConfigProvider, semiGlobal } from '../config-provider';
@@ -10,7 +10,7 @@ import Popconfirm from './Popconfirm.vue';
 async function flushPopconfirm(): Promise<void> {
   for (let index = 0; index < 5; index += 1) {
     await nextTick();
-    await vi.runOnlyPendingTimersAsync();
+    await rs.runOnlyPendingTimersAsync();
   }
 }
 
@@ -24,17 +24,17 @@ function action(kind: 'cancel' | 'ok'): HTMLButtonElement {
 
 describe('Popconfirm', () => {
   beforeEach(() => {
-    vi.useFakeTimers();
+    rs.useFakeTimers();
     document.body.replaceChildren();
     delete semiGlobal.config.overrideDefaultProps;
   });
 
   afterEach(() => {
-    vi.runOnlyPendingTimers();
-    vi.useRealTimers();
+    rs.runOnlyPendingTimers();
+    rs.useRealTimers();
     document.body.replaceChildren();
     delete semiGlobal.config.overrideDefaultProps;
-    vi.restoreAllMocks();
+    rs.restoreAllMocks();
   });
 
   it('点击 trigger 打开固定 DOM，取消按钮先回调再关闭并恢复焦点', async () => {
@@ -204,7 +204,7 @@ describe('Popconfirm', () => {
   });
 
   it('Button props 可覆盖类型/loading/onClick，autoFocus 不落到 DOM', async () => {
-    const customClick = vi.fn();
+    const customClick = rs.fn();
     mount(Popconfirm, {
       attachTo: document.body,
       props: {
@@ -287,7 +287,7 @@ describe('Popconfirm', () => {
   });
 
   it('点击卡片内部不触发 outside，外部点击转发 clickOutside', async () => {
-    const outside = vi.fn();
+    const outside = rs.fn();
     mount(Popconfirm, {
       props: {
         content: '内部',

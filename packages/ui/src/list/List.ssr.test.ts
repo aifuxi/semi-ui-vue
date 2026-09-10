@@ -1,6 +1,6 @@
 import { createSSRApp, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import List from './List.vue';
 import ListItem from './ListItem.vue';
@@ -42,7 +42,7 @@ describe('List SSR', () => {
   });
 
   it('hydration 无警告并保留语义 ul/li', async () => {
-    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const error = rs.spyOn(console, 'error').mockImplementation(() => undefined);
     const Host = {
       render: () => h(List, null, () => h(ListItem, null, () => 'Hydrate')),
     };

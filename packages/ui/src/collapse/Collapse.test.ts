@@ -1,7 +1,7 @@
 /* eslint-disable vue/one-component-per-file -- template and render hosts verify Boolean and compound inputs. */
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
 import { semiGlobal } from '../config-provider';
 import { Collapse, CollapsePanel } from './index';
@@ -20,7 +20,7 @@ beforeEach(() => {
 
 afterEach(() => {
   semiGlobal.config = {};
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
 });
 
 describe('Collapse', () => {
@@ -104,7 +104,7 @@ describe('Collapse', () => {
   });
 
   it('受控模式只通知，父级回传 activeKey 后才更新 DOM', async () => {
-    const onChange = vi.fn();
+    const onChange = rs.fn();
     const wrapper = mount(Collapse, {
       props: { activeKey: ['1'], motion: false, onChange },
       slots: panels(),
@@ -274,7 +274,7 @@ describe('Collapse', () => {
   });
 
   it('keepDOM/lazyRender/motion/onMotionEnd/reCalcKey 透传给公共 Collapsible', async () => {
-    const onMotionEnd = vi.fn();
+    const onMotionEnd = rs.fn();
     const wrapper = mount(Collapse, {
       props: { keepDOM: true, lazyRender: true, motion: true },
       slots: {

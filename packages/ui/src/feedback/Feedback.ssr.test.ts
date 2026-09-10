@@ -1,6 +1,6 @@
 import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, defineComponent, h, nextTick, ref } from 'vue';
-import { describe, expect, it, onTestFinished, vi } from 'vitest';
+import { describe, expect, it, onTestFinished, rs } from '@rstest/core';
 
 import Feedback from './Feedback.vue';
 
@@ -41,7 +41,7 @@ describe('Feedback SSR', () => {
     const container = document.createElement('div');
     container.innerHTML = serverHtml;
     document.body.appendChild(container);
-    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const consoleError = rs.spyOn(console, 'error').mockImplementation(() => undefined);
     const app = createSSRApp(Host);
     onTestFinished(async () => {
       app.unmount();

@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import PinCode from './PinCode.vue';
 import type { PinCodeExposed } from './types';
@@ -235,7 +235,7 @@ describe('PinCode', () => {
   });
 
   it('卸载后不留下文档级监听或可触发副作用', () => {
-    const addEventListener = vi.spyOn(document, 'addEventListener');
+    const addEventListener = rs.spyOn(document, 'addEventListener');
     const wrapper = mount(PinCode, { props: { autoFocus: false } });
     wrapper.unmount();
     expect(addEventListener).not.toHaveBeenCalled();
@@ -243,7 +243,7 @@ describe('PinCode', () => {
   });
 
   it('预留 complete 公开事件门禁', () => {
-    const complete = vi.fn();
+    const complete = rs.fn();
     const wrapper = mount(PinCode, { props: { count: 3, onComplete: complete } });
     expect(inputs(wrapper)).toHaveLength(3);
     expect(complete).not.toHaveBeenCalled();

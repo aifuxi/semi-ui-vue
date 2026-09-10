@@ -1,14 +1,14 @@
 import { mount, type VueWrapper } from '@vue/test-utils';
 import { defineComponent, nextTick } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
 import { semiGlobal } from '../config-provider';
 import Collapsible from './Collapsible.vue';
 
 class TestResizeObserver {
   static instances: TestResizeObserver[] = [];
-  readonly observe = vi.fn();
-  readonly disconnect = vi.fn();
+  readonly observe = rs.fn();
+  readonly disconnect = rs.fn();
 
   constructor(readonly callback: ResizeObserverCallback) {
     TestResizeObserver.instances.push(this);
@@ -42,20 +42,20 @@ function setElementHeight(element: HTMLElement, height: number): void {
 
 beforeEach(() => {
   TestResizeObserver.instances = [];
-  vi.stubGlobal('ResizeObserver', TestResizeObserver);
+  rs.stubGlobal('ResizeObserver', TestResizeObserver);
   semiGlobal.config = {};
 });
 
 afterEach(() => {
   semiGlobal.config = {};
-  vi.unstubAllGlobals();
+  rs.unstubAllGlobals();
   if (offsetHeightDescriptor) {
     Object.defineProperty(HTMLElement.prototype, 'offsetHeight', offsetHeightDescriptor);
   }
   if (scrollHeightDescriptor) {
     Object.defineProperty(HTMLElement.prototype, 'scrollHeight', scrollHeightDescriptor);
   }
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
 });
 
 describe('Collapsible', () => {
@@ -135,7 +135,7 @@ describe('Collapsible', () => {
   });
 
   it('motion=true 关闭时保留内容至 transitionend，再隐藏并通知', async () => {
-    const onMotionEnd = vi.fn();
+    const onMotionEnd = rs.fn();
     const wrapper = mount(Collapsible, {
       props: { isOpen: true, onMotionEnd },
       slots: { default: () => '<visible>' },
@@ -249,7 +249,7 @@ describe('Collapsible', () => {
   });
 
   it('ResizeObserver 不可用时 mount 测量安全降级', async () => {
-    vi.stubGlobal('ResizeObserver', undefined);
+    rs.stubGlobal('ResizeObserver', undefined);
     Object.defineProperties(HTMLElement.prototype, {
       offsetHeight: { configurable: true, get: () => 48 },
       scrollHeight: { configurable: true, get: () => 48 },

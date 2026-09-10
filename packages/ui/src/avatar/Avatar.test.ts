@@ -2,7 +2,7 @@
 
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import Avatar, { AvatarGroup } from './index';
 
@@ -46,7 +46,7 @@ describe('Avatar', () => {
   });
 
   it('图片成功时使用 img class/attrs，失败后回退；返回 false 可保留图片', async () => {
-    const onError = vi.fn();
+    const onError = rs.fn();
     const wrapper = mount(Avatar, {
       props: {
         src: '/avatar.png',
@@ -79,8 +79,8 @@ describe('Avatar', () => {
   });
 
   it('按固定 Adapter 顺序合并 imgAttr，并只在可点击时覆盖键盘焦点事件', async () => {
-    const configuredError = vi.fn();
-    const configuredFocus = vi.fn();
+    const configuredError = rs.fn();
+    const configuredFocus = rs.fn();
     const wrapper = mount(Avatar, {
       props: {
         src: '/avatar.png',
@@ -106,11 +106,11 @@ describe('Avatar', () => {
     expect(configuredError).toHaveBeenCalledTimes(1);
     expect(wrapper.find('img').exists()).toBe(true);
 
-    const clickableFocus = vi.fn();
+    const clickableFocus = rs.fn();
     const clickable = mount(Avatar, {
       props: {
         src: '/clickable.png',
-        onClick: vi.fn(),
+        onClick: rs.fn(),
         imgAttr: { alt: 'override', tabindex: 4, onFocus: clickableFocus },
       },
     });
@@ -120,7 +120,7 @@ describe('Avatar', () => {
   });
 
   it('可点击头像支持鼠标、Enter、Escape、focus-visible 与固定 alt 前缀', async () => {
-    const click = vi.fn();
+    const click = rs.fn();
     const wrapper = mount(Avatar, {
       props: { alt: 'Alice', onClick: click },
       slots: { default: 'AS' },
@@ -144,10 +144,10 @@ describe('Avatar', () => {
   });
 
   it('hover mask 先更新 DOM 后派发事件，leave 后清理', async () => {
-    const enter = vi.fn(() => {
+    const enter = rs.fn(() => {
       expect(wrapper.find('.semi-avatar-hover').exists()).toBe(true);
     });
-    const leave = vi.fn();
+    const leave = rs.fn();
     const wrapper = mount(Avatar, {
       props: { onMouseenter: enter, onMouseleave: leave },
       slots: { default: 'A', hoverMask: '<span class="mask">camera</span>' },
@@ -163,7 +163,7 @@ describe('Avatar', () => {
   });
 
   it('渲染顶部/底部 slot、附加边框和动效，同时把样式与事件移到 wrapper', async () => {
-    const click = vi.fn();
+    const click = rs.fn();
     const wrapper = mount(Avatar, {
       props: {
         border: { color: 'rgb(255, 0, 0)', motion: true },

@@ -1,7 +1,7 @@
 /* eslint-disable vue/one-component-per-file -- lifecycle probes are local test fixtures. */
 import { mount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import BaseComponent, { useBaseComponent } from './base-component';
 import {
@@ -29,8 +29,8 @@ describe('_base', () => {
       state: { count: 0 },
       context: { locale: 'zh-CN' },
     });
-    const init = vi.fn();
-    const destroy = vi.fn();
+    const init = rs.fn();
+    const destroy = rs.fn();
     controller.foundation = { init, destroy };
 
     controller.mount();
@@ -40,7 +40,7 @@ describe('_base', () => {
     expect(controller.getDataAttr()).toEqual({ 'data-probe': 'base' });
     expect(controller.adapter.getContext('locale')).toBe('zh-CN');
 
-    const stateCallback = vi.fn();
+    const stateCallback = rs.fn();
     controller.adapter.setState({ count: 1 }, stateCallback);
     expect(controller.state.count).toBe(1);
     expect(stateCallback).toHaveBeenCalledOnce();
@@ -56,8 +56,8 @@ describe('_base', () => {
 
   it('adapter 停止包装事件传播并保留无操作 persistEvent', () => {
     const controller = new BaseComponent({ props: {} });
-    const stop = vi.fn();
-    const immediate = vi.fn();
+    const stop = rs.fn();
+    const immediate = rs.fn();
     controller.adapter.stopPropagation({
       stopPropagation: stop,
       nativeEvent: { stopImmediatePropagation: immediate },
@@ -68,8 +68,8 @@ describe('_base', () => {
   });
 
   it('useBaseComponent 将 init/destroy 接到 Vue 生命周期', () => {
-    const init = vi.fn();
-    const destroy = vi.fn();
+    const init = rs.fn();
+    const destroy = rs.fn();
     const Host = defineComponent({
       setup() {
         const controller = useBaseComponent({ props: {} });

@@ -1,6 +1,6 @@
 /* eslint-disable vue/one-component-per-file -- template and render hosts verify Boolean prop presence. */
 import { mount } from '@vue/test-utils';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from '@rstest/core';
 import { defineComponent, h } from 'vue';
 
 import { semiGlobal } from '../config-provider';

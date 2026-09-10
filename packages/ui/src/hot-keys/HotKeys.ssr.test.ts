@@ -1,18 +1,18 @@
 import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import HotKeys from './HotKeys.vue';
 
 afterEach(() => {
-  vi.unstubAllGlobals();
-  vi.restoreAllMocks();
+  rs.unstubAllGlobals();
+  rs.restoreAllMocks();
   document.body.innerHTML = '';
 });
 
 describe('HotKeys SSR', () => {
   it('服务端输出固定键帽 DOM 且不访问 browser global', async () => {
-    vi.stubGlobal('document', undefined);
+    rs.stubGlobal('document', undefined);
     const html = await renderToString(
       h(HotKeys, {
         'aria-label': 'Shortcut',
@@ -38,8 +38,8 @@ describe('HotKeys SSR', () => {
   });
 
   it('hydration 后注册 body 监听，卸载后完整清理且无 warning', async () => {
-    const onHotKey = vi.fn();
-    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const onHotKey = rs.fn();
+    const error = rs.spyOn(console, 'error').mockImplementation(() => undefined);
     const Host = {
       render: () => h(HotKeys, { hotKeys: ['control', 'k'], onHotKey }),
     };

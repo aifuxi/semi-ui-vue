@@ -1,7 +1,7 @@
 # AI 工作记录：Rstack 工具链迁移
 
 - 日期：2026-09-10
-- 状态：第三阶段完成；整体迁移进行中
+- 状态：第四阶段完成；整体迁移进行中
 - 分支：`codex/rstack-migration`
 - 基线：`e6a5f0d`
 
@@ -115,3 +115,26 @@
 ### 第三阶段边界
 
 本阶段未替换 Vitest、Nuxt builder 或 REPL 构建器；Vite 还用于这些既有环节和真实消费者兼容验证。没有恢复历史文档 accepted 指纹，也没有降低像素、请求数或 flaky 门槛。
+
+## 第四阶段：单测迁移到 Rstest
+
+- 基线提交 `c1893fe`，仍在独立 worktree 工作。使用 Rstest / V8 coverage 0.11.12，复用 Rsbuild Vue 插件、固定源码解析与 Prism/Worker 适配。移除 Vitest 4.1.11、旧配置、旧 V8 provider，以及仅旧测试配置使用的 Vite React 插件。
+- 178 个测试文件改用 `@rstest/core` 与 `rs`，保留五组发现规则、原 exclude、jsdom 默认环境与 15 个 Node 注解。Vue Node 测试使用 SSR 模板编译，开发环境检查继续启用。未改组件运行时代码、vendor、断言、场景、测试名称或快照；原来没有快照和跳过项。
+- JsonViewer 的 Worker 替身补齐 `addEventListener`：Rsbuild 内联 Worker 注册 error 监听器后才返回，旧替身缺少该接口会进入备用创建路径。Upload 的清理钩子改为显式 void 返回以满足 Rstest 类型；另补齐 ConfigProvider 的 mock 类型引用迁移。实例数量、重建、销毁断言全部保留。
+- Node 与 jsdom 均打包运行时依赖，以保留固定别名、Prism 初始化和 CommonJS 具名导出。单独将 Node Vue 编译器解析到 `vue/compiler-sfc`，避免打包其未安装的可选模板引擎；临时编译诊断确认 errors 清单为空。Rstest 本身会在编译结束时过滤模块找不到的错误，因此未仅凭退出 0 忽略最初的 `build failed` 日志。
+- `@rstest/coverage-v8@0.11.12` 使用版本锁定的 pnpm 补丁：同一 Vue 源文件的 script/template 或 client/SSR 编译模块有不同分支索引，原实现复用首个模块的索引会崩溃。改为先各自统计，再由 Istanbul 按源码位置合并；不替换 V8 provider、不增排除项或忽略标记、不降低门槛。将来上游修复后，需在移除补丁的状态下重跑默认和全量覆盖率再升级。
+- `test:unit:watch` 显式使用 `rstest watch`。更新源码类型入口与仓库 Vue 测试技能的配置链接。`gen-vitest-aliases` 工具和少数历史测试标题保留原名称，以保持命令兼容和测试清单；该别名工具不依赖 Vitest。
+
+### 第四阶段验证
+
+- 迁移前 Vitest 实跑 178 文件 / 1218 项全部通过；迁移后文件与完整测试名称逐项比较完全一致，新增、删除、跳过均为 0。另将 178 个文件的 runner/API 改写反向归一化，与基线源码比较，确认只有上述替身接口和钩子返回类型适配。
+- `pnpm check` 退出 0：静态约束、格式、lint、源码类型、1218 项单测，以及 69 + 6 项工具测试通过。最终 Vue 编译器 external 调整后，重新执行配置 lint、根类型检查与全量单测，仍为 178 / 1218 全部通过。
+- 最终 `pnpm test:coverage`、`pnpm test:coverage:all` 均退出 0，均执行原 1218 项测试；默认相对 `origin/master` 的 changed 范围和全量 include 保持。全量报告包含 1265 个包内源码文件，其中 239 个 Vue 文件；无 vendor/dist 文件，计数为非负有限值。报告用于定位缺口，不将不同编译器的百分比强行视为等价。
+- `pnpm install --frozen-lockfile` 通过，严格 peer 与版本锁定补丁可复现。WebStorm 对 Rstest 配置、JsonViewer/Upload 测试的错误诊断为空，源码类型检查单独通过。
+- watch 冒烟：Button 的 10 项测试通过后进程保持等待文件变化，随后向本次启动的进程发送 SIGINT 并完成清理。
+- 同 Node 24.18、3 个 worker、178 文件 / 1218 项、无覆盖率的单次对照：Vitest 51.67 秒，最终 Rstest 35.1 秒（此前测得 34.7 秒）。Vitest 使用基线提交的临时副本、相同依赖，并只适配临时 vendor 符号链接的真实路径；最初未适配时的 8 项失败不计入性能对照。该观察不作为跨机器性能承诺。
+- 临时诊断配置与 watch 进程已移除；无重试、无断言放宽、无历史 accepted 指纹更新。
+
+### 第四阶段边界
+
+本阶段仅迁移单测及覆盖率，Playwright 继续作为 Chromium runner；没有重跑组件或全文档浏览器矩阵。下一阶段是 Nuxt Rspack builder，随后处理 REPL 和剩余工具链。Vite 仍用于这些尚未迁移的环节和消费兼容验证。

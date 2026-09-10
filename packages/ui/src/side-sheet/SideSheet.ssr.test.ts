@@ -1,6 +1,6 @@
 import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import { SideSheet } from './index';
 
@@ -21,7 +21,7 @@ describe('SideSheet SSR', () => {
   });
 
   it('visible hydration 无 mismatch，并在挂载后迁移到 body Portal', async () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const warn = rs.spyOn(console, 'warn').mockImplementation(() => undefined);
     const Host = {
       render: () => h(SideSheet, { motion: false, title: 'Hydrate', visible: true }, () => 'Body'),
     };

@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 import { ConfigProvider } from './index';
 import { DatePicker } from '../date-picker';
 import { TimePicker } from '../time-picker';
@@ -60,7 +60,7 @@ describe('ConfigProvider pending consumers', () => {
       }
     });
   it('clears each Modal enter class on its own animation end and restarts on reopen', async () => {
-    const afterClose = vi.fn();
+    const afterClose = rs.fn();
     const wrapper = mount(Modal, {
       attachTo: document.body,
       props: { visible: true, title: 'Dialog', motion: true, onAfterClose: afterClose },

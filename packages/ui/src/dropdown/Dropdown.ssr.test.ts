@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 import { createSSRApp, defineComponent, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
@@ -8,21 +8,21 @@ import { Dropdown, DropdownItem, DropdownMenu } from './index';
 async function flushDropdown(): Promise<void> {
   for (let index = 0; index < 6; index += 1) {
     await nextTick();
-    await vi.runOnlyPendingTimersAsync();
+    await rs.runOnlyPendingTimersAsync();
   }
 }
 
 describe('Dropdown SSR', () => {
   beforeEach(() => {
-    vi.useFakeTimers();
+    rs.useFakeTimers();
     document.body.replaceChildren();
   });
 
   afterEach(() => {
-    vi.runOnlyPendingTimers();
-    vi.useRealTimers();
+    rs.runOnlyPendingTimers();
+    rs.useRealTimers();
     document.body.replaceChildren();
-    vi.restoreAllMocks();
+    rs.restoreAllMocks();
   });
 
   it('SSR 只输出稳定 trigger ARIA，不访问 DOM 或输出 Portal', async () => {
@@ -76,7 +76,7 @@ describe('Dropdown SSR', () => {
     const container = document.createElement('div');
     container.innerHTML = serverHtml;
     document.body.appendChild(container);
-    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const consoleError = rs.spyOn(console, 'error').mockImplementation(() => undefined);
 
     const app = createSSRApp(Host);
     app.mount(container);

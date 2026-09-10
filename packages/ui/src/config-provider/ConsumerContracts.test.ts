@@ -1,6 +1,6 @@
 import { mount, type VueWrapper } from '@vue/test-utils';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
-import { afterEach, expect, it, vi } from 'vitest';
+import { afterEach, expect, it, rs } from '@rstest/core';
 import { DatePicker } from '../date-picker';
 import { TimePicker } from '../time-picker';
 import { TextArea } from '../input';
@@ -60,7 +60,7 @@ it('Steps is only clickable when a change listener is provided', async () => {
   const passive = mount(Steps, { slots: { default: children } });
   wrappers.push(passive);
   expect(passive.findAll('.semi-steps-item-clickable')).toHaveLength(0);
-  const onChange = vi.fn();
+  const onChange = rs.fn();
   const active = mount(Steps, { props: { onChange }, slots: { default: children } });
   wrappers.push(active);
   expect(active.findAll('.semi-steps-item-clickable')).toHaveLength(2);

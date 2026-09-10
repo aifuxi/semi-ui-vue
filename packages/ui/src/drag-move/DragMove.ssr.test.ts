@@ -1,17 +1,17 @@
 import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import DragMove from './DragMove.vue';
 
 afterEach(() => {
-  vi.unstubAllGlobals();
-  vi.restoreAllMocks();
+  rs.unstubAllGlobals();
+  rs.restoreAllMocks();
 });
 
 describe('DragMove SSR', () => {
   it('服务端只输出唯一 slot 根节点且不访问 browser global', async () => {
-    vi.stubGlobal('requestAnimationFrame', undefined);
+    rs.stubGlobal('requestAnimationFrame', undefined);
     const html = await renderToString(
       h(
         DragMove,
@@ -33,8 +33,8 @@ describe('DragMove SSR', () => {
   });
 
   it('hydration 后初始化 Foundation、支持拖动且无 warning', async () => {
-    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
-    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+    const error = rs.spyOn(console, 'error').mockImplementation(() => undefined);
+    rs.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
       callback(0);
       return 1;
     });

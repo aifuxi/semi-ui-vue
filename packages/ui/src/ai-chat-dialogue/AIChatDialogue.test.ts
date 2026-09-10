@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 import { defineComponent, h, nextTick } from 'vue';
 
 import { semiGlobal } from '../config-provider';
@@ -64,7 +64,7 @@ describe('AIChatDialogue', () => {
   it('复制消息使用用户激活路径并清理临时文本域', async () => {
     let copied = '';
     const previous = document.execCommand;
-    document.execCommand = vi.fn(() => {
+    document.execCommand = rs.fn(() => {
       copied = document.querySelector('textarea')?.value ?? '';
       return true;
     });
@@ -113,19 +113,19 @@ describe('AIChatDialogue', () => {
   });
   beforeEach(() => {
     semiGlobal.config = {};
-    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+    rs.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
       callback(performance.now());
       return 1;
     });
-    vi.stubGlobal('cancelAnimationFrame', vi.fn());
+    rs.stubGlobal('cancelAnimationFrame', rs.fn());
     Object.defineProperty(navigator, 'clipboard', {
       configurable: true,
-      value: { writeText: vi.fn().mockResolvedValue(undefined) },
+      value: { writeText: rs.fn().mockResolvedValue(undefined) },
     });
   });
 
   afterEach(() => {
-    vi.unstubAllGlobals();
+    rs.unstubAllGlobals();
     semiGlobal.config = {};
     document.body.replaceChildren();
   });

@@ -126,7 +126,7 @@ Popconfirm 是第五十三个进入 `ready` 的 Vue 垂直切片：`packages/ui/
 
 Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select、AutoComplete、Checkbox、Input、Rating、Slider、TagInput、TimePicker、Anchor、BackTop、Breadcrumb、Pagination、Tabs、Table、Banner、Notification、Popconfirm、JsonViewer、AIChatInput 与 AIChatDialogue 入口，并通过独立 declaration facade 隔离固定上游较旧的 TypeScript 编译设置。Anchor 精确锁定并内联 `scroll-into-view-if-needed@2.2.31`；BackTop 首次接通固定 `semi-animation` 并精确锁定 `bezier-easing@2.1.0`；JsonViewer 将固定 core 与 `jsonc-parser@3.3.1` 编入 SSR-safe 内联 Worker；AIChatInput 使用 Tiptap `^3.31.3` 富文本链，允许同主版本升级；AIChatDialogue 复用已归属的 lodash 并内联固定消息/流式响应适配逻辑。相关第三方依赖均纳入许可与 SBOM 验证。后续仍必须逐组件处理第三方依赖与 SSR 延迟加载；公开类型若引用 Foundation 符号，应由 `ui` 提供自包含 facade，发布声明不得泄漏私有包路径。
 
-单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。
+单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Rstest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。
 
 ## 资产包构建
 
@@ -162,7 +162,7 @@ Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select
 - `pnpm format:check`：检查仓库自有文件格式，跳过 `vendor/**`。
 - `pnpm lint`：检查自有 JavaScript、TypeScript、TSX 和 Vue 文件。
 - `pnpm typecheck`：逐 workspace 执行 TypeScript/Vue 类型检查。
-- `pnpm test:unit`：Vitest + jsdom 的公开行为单测入口。
+- `pnpm test:unit`：Rstest + jsdom 的公开行为单测入口，Node 注解测试保留独立环境与 Vue SSR 编译；`pnpm test:unit:watch` 显式进入 watch 模式。
 - `pnpm build`：通过缓存准备一次公开包/主题与文档站，再构建两个对照工作台。
 - `pnpm test:theme`：从只读上游重建完整根 CSS，并核对 v2.102.0 的组件导入顺序与代表性选择器。
 - `pnpm test:ssr`：先重建拟公开 JavaScript 包，再在无 DOM 的 Node 环境导入并扫描私有边界泄漏。

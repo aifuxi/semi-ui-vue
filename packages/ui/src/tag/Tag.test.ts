@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import { Popover } from '../popover';
 import Tag, { SplitTagGroup, TagGroup } from './index';
@@ -59,11 +59,11 @@ describe('Tag', () => {
 
   it('按顺序处理关闭、preventDefault、点击与键盘', async () => {
     const order: string[] = [];
-    const onClose = vi.fn((_content, event: MouseEvent) => {
+    const onClose = rs.fn((_content, event: MouseEvent) => {
       order.push('close');
       event.preventDefault();
     });
-    const onClick = vi.fn(() => order.push('click'));
+    const onClick = rs.fn(() => order.push('click'));
     const wrapper = mount(Tag, {
       props: { closable: true, onClick, onClose, tagKey: 'alpha' },
       slots: { default: 'Alpha' },

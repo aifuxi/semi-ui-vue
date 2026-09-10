@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { createSSRApp, h, nextTick, shallowRef } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import {
   LAYOUT_RESPONSIVE_MAP,
@@ -19,7 +19,7 @@ afterEach(() => {
     configurable: true,
     value: originalMatchMedia,
   });
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
 });
 
 describe('Layout', () => {
@@ -120,10 +120,10 @@ describe('Layout', () => {
 
   it('按固定顺序注册断点、立即回调并在卸载时移除监听', () => {
     const listeners = new Map<string, (event: MediaQueryListEvent) => void>();
-    const removeEventListener = vi.fn();
+    const removeEventListener = rs.fn();
     Object.defineProperty(window, 'matchMedia', {
       configurable: true,
-      value: vi.fn((query: string) => ({
+      value: rs.fn((query: string) => ({
         matches: query === LAYOUT_RESPONSIVE_MAP.md,
         media: query,
         onchange: null,
@@ -131,9 +131,9 @@ describe('Layout', () => {
           listeners.set(query, listener);
         },
         removeEventListener,
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        dispatchEvent: vi.fn(),
+        addListener: rs.fn(),
+        removeListener: rs.fn(),
+        dispatchEvent: rs.fn(),
       })),
     });
 
@@ -178,7 +178,7 @@ describe('Layout', () => {
 
     const container = document.createElement('div');
     container.innerHTML = html;
-    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const consoleError = rs.spyOn(console, 'error').mockImplementation(() => undefined);
     const app = createSSRApp(Root);
     app.mount(container);
     await nextTick();

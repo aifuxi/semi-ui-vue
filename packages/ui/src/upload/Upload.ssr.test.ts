@@ -1,6 +1,6 @@
 import { createSSRApp, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import { ConfigProvider } from '../config-provider';
 import Upload from './Upload.vue';
@@ -81,7 +81,7 @@ describe('Upload SSR', () => {
   });
 
   it('hydration 无警告并保留受控 DOM', async () => {
-    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const error = rs.spyOn(console, 'error').mockImplementation(() => undefined);
     const Host = { render: () => h(Upload, { action: '/upload', fileList: files }) };
     const html = await renderToString(h(Host));
     const container = document.createElement('div');

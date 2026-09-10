@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { renderToString } from '@vue/server-renderer';
 import { h, nextTick } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import { IconDelete } from '@aifuxi/semi-icons-vue';
 import Button from './Button.vue';
@@ -139,7 +139,7 @@ describe('Button', () => {
   });
 
   it('exposes the colorful icon fill contract through the Vue icon slot', () => {
-    const iconSlot = vi.fn(({ fill }) =>
+    const iconSlot = rs.fn(({ fill }) =>
       h('span', { 'data-testid': 'colorful-icon', 'data-fill': JSON.stringify(fill) }),
     );
     const wrapper = mount(Button, {

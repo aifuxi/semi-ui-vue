@@ -1,12 +1,12 @@
 import { mount } from '@vue/test-utils';
 import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, defineComponent, h, nextTick, shallowRef } from 'vue';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import Switch, { SWITCH_SIZES } from './index';
 
 afterEach(() => {
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
 });
 
 describe('Switch', () => {
@@ -137,7 +137,7 @@ describe('Switch', () => {
   it('仅键盘 focus-visible 增加 focus class，blur 后清理', async () => {
     const wrapper = mount(Switch);
     const input = wrapper.get('input');
-    vi.spyOn(input.element, 'matches').mockReturnValue(true);
+    rs.spyOn(input.element, 'matches').mockReturnValue(true);
     await input.trigger('focus');
     expect(wrapper.classes()).toContain('semi-switch-focus');
     await input.trigger('blur');
@@ -145,8 +145,8 @@ describe('Switch', () => {
   });
 
   it('鼠标进入/离开监听绑定 wrapper', async () => {
-    const enter = vi.fn();
-    const leave = vi.fn();
+    const enter = rs.fn();
+    const leave = rs.fn();
     const wrapper = mount(Switch, {
       attrs: { onMouseenter: enter, onMouseleave: leave },
     });

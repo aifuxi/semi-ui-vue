@@ -2,7 +2,7 @@
 import { mount } from '@vue/test-utils';
 import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, defineComponent, h, inject, nextTick, onMounted, shallowRef } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
 import { Text } from '../typography';
 
@@ -18,19 +18,19 @@ import ConfigProvider, {
 interface MatchMediaController {
   emit(media: string, matches: boolean): void;
   listeners: Map<string, Set<(event: MediaQueryListEvent) => void>>;
-  removeEventListener: ReturnType<typeof vi.fn>;
+  removeEventListener: ReturnType<typeof rs.fn>;
 }
 
 function installMatchMedia(matches: Record<string, boolean>): MatchMediaController {
   const listeners = new Map<string, Set<(event: MediaQueryListEvent) => void>>();
-  const removeEventListener = vi.fn(
+  const removeEventListener = rs.fn(
     (media: string, listener: (event: MediaQueryListEvent) => void) => {
       listeners.get(media)?.delete(listener);
     },
   );
-  vi.stubGlobal(
+  rs.stubGlobal(
     'matchMedia',
-    vi.fn((media: string) => ({
+    rs.fn((media: string) => ({
       media,
       matches: matches[media] ?? false,
       onchange: null,
@@ -41,9 +41,9 @@ function installMatchMedia(matches: Record<string, boolean>): MatchMediaControll
       },
       removeEventListener: (_type: string, listener: (event: MediaQueryListEvent) => void) =>
         removeEventListener(media, listener),
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      dispatchEvent: vi.fn(),
+      addListener: rs.fn(),
+      removeListener: rs.fn(),
+      dispatchEvent: rs.fn(),
     })),
   );
   return {
@@ -64,8 +64,8 @@ describe('ConfigProvider', () => {
   });
 
   afterEach(() => {
-    vi.unstubAllGlobals();
-    vi.restoreAllMocks();
+    rs.unstubAllGlobals();
+    rs.restoreAllMocks();
   });
 
   it('默认不增加 DOM，RTL 时增加固定 semi-rtl 包装', async () => {
@@ -192,7 +192,7 @@ describe('ConfigProvider', () => {
 
   it('默认关闭断点观察，订阅只返回全 false 且不会访问 matchMedia', () => {
     installMatchMedia({});
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const warn = rs.spyOn(console, 'warn').mockImplementation(() => undefined);
     const snapshot = shallowRef<Readonly<Record<string, boolean>>>();
     const Probe = defineComponent({
       setup() {

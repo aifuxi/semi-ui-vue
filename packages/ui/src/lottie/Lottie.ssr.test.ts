@@ -1,15 +1,15 @@
 import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
-const lottieMock = vi.hoisted(() => ({ loadAnimation: vi.fn() }));
+const lottieMock = rs.hoisted(() => ({ loadAnimation: rs.fn() }));
 
-vi.mock('lottie-web', () => ({ default: lottieMock }));
+rs.mock('lottie-web', () => ({ default: lottieMock }));
 
 import Lottie from './Lottie.vue';
 
 function createAnimation() {
-  return { destroy: vi.fn(), goToAndStop: vi.fn(), play: vi.fn() };
+  return { destroy: rs.fn(), goToAndStop: rs.fn(), play: rs.fn() };
 }
 
 beforeEach(() => {
@@ -18,7 +18,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
   document.body.innerHTML = '';
 });
 
@@ -48,8 +48,8 @@ describe('Lottie SSR', () => {
   });
 
   it('hydration 后创建实例，卸载完整销毁且无 warning', async () => {
-    const getAnimationInstance = vi.fn();
-    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const getAnimationInstance = rs.fn();
+    const error = rs.spyOn(console, 'error').mockImplementation(() => undefined);
     const Host = {
       render: () => h(Lottie, { getAnimationInstance, params: { animationData: {} } }),
     };

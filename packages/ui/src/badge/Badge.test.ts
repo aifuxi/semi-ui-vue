@@ -2,7 +2,7 @@
 
 import { mount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import { ConfigProvider } from '../config-provider';
 import Badge, { BADGE_POSITIONS, BADGE_THEMES, BADGE_TYPES } from './index';
@@ -127,9 +127,9 @@ describe('Badge', () => {
   });
 
   it('从根节点各派发一次原生鼠标事件', async () => {
-    const click = vi.fn();
-    const enter = vi.fn();
-    const leave = vi.fn();
+    const click = rs.fn();
+    const enter = rs.fn();
+    const leave = rs.fn();
     const wrapper = mount(Badge, {
       props: { count: 1, onClick: click, onMouseenter: enter, onMouseleave: leave },
       slots: { default: 'base' },

@@ -1,7 +1,7 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, defineComponent, h, nextTick, provide } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
 import Typography, {
   EN_US_TYPOGRAPHY_LOCALE,
@@ -14,20 +14,20 @@ import Typography, {
 
 describe('Typography', () => {
   beforeEach(() => {
-    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+    rs.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
       callback(0);
       return 1;
     });
-    vi.stubGlobal('cancelAnimationFrame', vi.fn());
+    rs.stubGlobal('cancelAnimationFrame', rs.fn());
     Object.defineProperty(document, 'execCommand', {
       configurable: true,
-      value: vi.fn(() => true),
+      value: rs.fn(() => true),
     });
   });
 
   afterEach(() => {
-    vi.useRealTimers();
-    vi.unstubAllGlobals();
+    rs.useRealTimers();
+    rs.unstubAllGlobals();
   });
 
   it('渲染聚合根节点并透传原生 attrs', () => {
@@ -163,8 +163,8 @@ describe('Typography', () => {
   });
 
   it('copyable 复制显式内容、回调、成功状态和计时复位', async () => {
-    vi.useFakeTimers();
-    const onCopy = vi.fn();
+    rs.useFakeTimers();
+    const onCopy = rs.fn();
     const wrapper = mount(Text, {
       props: { copyable: { content: 'copy me', duration: 1, onCopy } },
       slots: { default: 'Visible text' },
@@ -174,7 +174,7 @@ describe('Typography', () => {
     expect(onCopy).toHaveBeenCalledWith(expect.any(MouseEvent), 'copy me', true);
     expect(wrapper.emitted('copy')?.[0]?.slice(1)).toEqual(['copy me', true]);
     expect(wrapper.find('.semi-typography-action-copied').text()).toContain('复制成功');
-    vi.advanceTimersByTime(1000);
+    rs.advanceTimersByTime(1000);
     await nextTick();
     expect(wrapper.find('.semi-typography-action-copy').exists()).toBe(true);
   });

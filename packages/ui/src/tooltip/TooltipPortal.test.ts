@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from '@rstest/core';
 import { Text, h, nextTick } from 'vue';
 
 import TooltipPortal from './TooltipPortal.vue';

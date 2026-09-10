@@ -1,5 +1,5 @@
 import { renderToString } from '@vue/server-renderer';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from '@rstest/core';
 import { createSSRApp, h } from 'vue';
 
 import { TreeSelect } from './index';

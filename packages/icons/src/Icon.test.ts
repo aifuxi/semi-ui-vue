@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, h, type Component } from 'vue';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from '@rstest/core';
 
 import Icon, * as iconPackage from './index';
 import {

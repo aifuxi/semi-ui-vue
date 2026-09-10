@@ -1,12 +1,12 @@
 import { renderToString } from '@vue/server-renderer';
 import { h } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import Carousel from './Carousel.vue';
 
 describe('Carousel SSR', () => {
   it('服务端渲染基础 DOM、默认箭头/指示器、动画 style 与原生 attrs，不创建 timer', async () => {
-    const interval = vi.spyOn(globalThis, 'setInterval');
+    const interval = rs.spyOn(globalThis, 'setInterval');
     const html = await renderToString(
       h(
         Carousel,

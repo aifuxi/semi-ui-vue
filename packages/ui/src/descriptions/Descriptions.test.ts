@@ -1,7 +1,7 @@
 /* eslint-disable vue/one-component-per-file -- test hosts cover template and render VNode inputs. */
 import { mount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from '@rstest/core';
 
 import { semiGlobal } from '../config-provider';
 import Descriptions from './Descriptions.vue';

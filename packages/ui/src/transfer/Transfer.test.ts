@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, type VNodeChild } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import { ConfigProvider } from '../config-provider';
 import Tree from '../tree/Tree.vue';
@@ -71,8 +71,8 @@ describe('Transfer', () => {
   });
 
   it('输入搜索通知并重置分页，暴露 search 不通知，数据更新会重算结果', async () => {
-    const onSearch = vi.fn();
-    const onPageChange = vi.fn();
+    const onSearch = rs.fn();
+    const onPageChange = rs.fn();
     const wrapper = mount(Transfer, {
       props: {
         dataSource: Array.from({ length: 12 }, (_, index) => ({
@@ -119,7 +119,7 @@ describe('Transfer', () => {
   });
 
   it('groupList 保持组顺序，pagination 支持受控页码', async () => {
-    const onPageChange = vi.fn();
+    const onPageChange = rs.fn();
     const wrapper = mount(Transfer, {
       props: {
         type: 'groupList',
@@ -166,10 +166,10 @@ describe('Transfer', () => {
   });
 
   it('函数 render 与 scoped slots 均获得公开 actions，自定义双面板应用 class', async () => {
-    const renderSourcePanel = vi.fn((panel) =>
+    const renderSourcePanel = rs.fn((panel) =>
       h('button', { class: 'render-source', onClick: panel.onAllClick }, 'source'),
     );
-    const renderSelectedPanel = vi.fn((panel) =>
+    const renderSelectedPanel = rs.fn((panel) =>
       h('button', { class: 'render-selected', onClick: panel.onClear }, 'selected'),
     );
     const rendered = mount(Transfer, {
@@ -216,7 +216,7 @@ describe('Transfer', () => {
       });
       const handle = wrapper.get('[draggable="true"]');
       expect(handle.text()).toBe('Move');
-      await handle.trigger('dragstart', { dataTransfer: { setData: vi.fn() } });
+      await handle.trigger('dragstart', { dataTransfer: { setData: rs.fn() } });
       await wrapper.findAll('.custom-label')[1]!.trigger('drop');
       expect(wrapper.emitted('change')?.[0]?.[0]).toEqual(['beta', 'alpha']);
       expect(wrapper.findAll('.custom-label').map((node) => node.text())).toEqual([
@@ -224,7 +224,7 @@ describe('Transfer', () => {
         'Alpha',
       ]);
       await wrapper.get('[draggable="true"]').trigger('dragstart', {
-        dataTransfer: { setData: vi.fn() },
+        dataTransfer: { setData: rs.fn() },
       });
       await wrapper.get('[draggable="true"]').trigger('dragend');
       await wrapper.findAll('.custom-label')[1]!.trigger('drop');
@@ -262,7 +262,7 @@ describe('Transfer', () => {
     });
     const handles = draggable.findAll('.semi-transfer-right-item-drag-handler');
     await handles[0]!.trigger('dragstart', {
-      dataTransfer: { effectAllowed: '', setData: vi.fn() },
+      dataTransfer: { effectAllowed: '', setData: rs.fn() },
     });
     await draggable.findAll('.semi-transfer-right-item')[1]!.trigger('drop');
     expect(draggable.emitted('change')?.[0]?.[0]).toEqual(['beta', 'alpha']);

@@ -1,6 +1,6 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils';
 import { defineComponent, h, nextTick, onMounted } from 'vue';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import { ConfigProvider, semiGlobal } from '../config-provider';
 import { Modal } from './index';
@@ -120,7 +120,7 @@ describe('Modal', () => {
   });
 
   it('keepDOM/lazyRender/motion 收敛到正确 DOM 和 afterClose 终态', async () => {
-    const afterClose = vi.fn();
+    const afterClose = rs.fn();
     const wrapper = mount(Modal, {
       attachTo: document.body,
       props: {

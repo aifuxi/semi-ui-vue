@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { createSSRApp, defineComponent, h, nextTick, shallowRef } from 'vue';
 import { renderToString } from '@vue/server-renderer';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import { ConfigProvider } from '../config-provider';
 import { Select } from '../select';
@@ -22,8 +22,8 @@ function mountPagination(
 afterEach(() => {
   for (const wrapper of wrappers.splice(0)) wrapper.unmount();
   document.body.replaceChildren();
-  vi.useRealTimers();
-  vi.restoreAllMocks();
+  rs.useRealTimers();
+  rs.restoreAllMocks();
 });
 
 describe('Pagination', () => {
@@ -222,7 +222,7 @@ describe('Pagination', () => {
   });
 
   it('省略页与 small hover 首次挂载到稳定自定义 Portal 并窗口化列表', async () => {
-    vi.useFakeTimers();
+    rs.useFakeTimers();
     const popupContainer = document.createElement('div');
     document.body.append(popupContainer);
     const wrapper = mount(ConfigProvider, {
@@ -233,8 +233,8 @@ describe('Pagination', () => {
     wrappers.push(wrapper);
     await nextTick();
     await wrapper.get('[aria-label="More"]').trigger('mouseenter');
-    await vi.advanceTimersByTimeAsync(500);
-    await vi.runAllTimersAsync();
+    await rs.advanceTimersByTimeAsync(500);
+    await rs.runAllTimersAsync();
     await nextTick();
     await nextTick();
     const list = popupContainer.querySelector<HTMLElement>('.semi-page-rest-list');

@@ -1,7 +1,7 @@
 /* eslint-disable vue/one-component-per-file -- local passthrough hosts expose Portal slot contracts. */
 import { mount, type VueWrapper } from '@vue/test-utils';
 import { computed, defineComponent, nextTick } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
 import { configContextKey, semiGlobal, type ConfigContextValue } from '../config-provider';
 import enUS from '../locale/source/en_US';
@@ -47,13 +47,13 @@ function defineMediaNumber(video: HTMLVideoElement, name: string, value: number)
 
 beforeEach(() => {
   semiGlobal.config = {};
-  vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined);
-  vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => undefined);
+  rs.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined);
+  rs.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => undefined);
 });
 
 afterEach(() => {
   semiGlobal.config = {};
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
   document.body.innerHTML = '';
 });
 
@@ -138,7 +138,7 @@ describe('VideoPlayer', () => {
     video.dispatchEvent(new Event('durationchange'));
     await nextTick();
     const progress = wrapper.get('.semi-videoPlayer-progress');
-    vi.spyOn(progress.element, 'getBoundingClientRect').mockReturnValue({
+    rs.spyOn(progress.element, 'getBoundingClientRect').mockReturnValue({
       bottom: 20,
       height: 20,
       left: 0,
@@ -165,7 +165,7 @@ describe('VideoPlayer', () => {
   });
 
   it('同步音量、静音、倍速、清晰度、线路、镜像与临时通知', async () => {
-    vi.useFakeTimers();
+    rs.useFakeTimers();
     const wrapper = mountPlayer(
       {
         defaultQuality: '1080p',
@@ -213,11 +213,11 @@ describe('VideoPlayer', () => {
     expect(wrapper.emitted('volumeChange')?.at(-1)).toEqual([0]);
     expect(wrapper.find('.semi-icon-mute').exists()).toBe(true);
 
-    vi.advanceTimersByTime(1000);
+    rs.advanceTimersByTime(1000);
     await nextTick();
     expect(wrapper.find('.semi-videoPlayer-notification').exists()).toBe(false);
     wrapper.unmount();
-    vi.useRealTimers();
+    rs.useRealTimers();
   });
 
   it('处理 waiting/canplay、无资源与 en-US 错误文案', async () => {
@@ -237,10 +237,10 @@ describe('VideoPlayer', () => {
   });
 
   it('使用相同全局与媒体监听引用初始化和销毁', () => {
-    const documentAdd = vi.spyOn(document, 'addEventListener');
-    const documentRemove = vi.spyOn(document, 'removeEventListener');
-    const mediaAdd = vi.spyOn(HTMLMediaElement.prototype, 'addEventListener');
-    const mediaRemove = vi.spyOn(HTMLMediaElement.prototype, 'removeEventListener');
+    const documentAdd = rs.spyOn(document, 'addEventListener');
+    const documentRemove = rs.spyOn(document, 'removeEventListener');
+    const mediaAdd = rs.spyOn(HTMLMediaElement.prototype, 'addEventListener');
+    const mediaRemove = rs.spyOn(HTMLMediaElement.prototype, 'removeEventListener');
     const wrapper = mountPlayer();
     const keydownAdd = documentAdd.mock.calls.find(([name]) => name === 'keydown');
     const fullscreenAdd = documentAdd.mock.calls.find(([name]) => name === 'fullscreenchange');

@@ -1,6 +1,6 @@
 import { mount, type VueWrapper } from '@vue/test-utils';
 import { defineComponent, h, nextTick, ref } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
 import { ConfigProvider, semiGlobal } from '../config-provider';
 import { SideSheet } from './index';
@@ -22,7 +22,7 @@ async function mountVisible(props: Record<string, unknown> = {}): Promise<VueWra
 
 describe('SideSheet', () => {
   beforeEach(() => {
-    vi.useFakeTimers();
+    rs.useFakeTimers();
     document.body.replaceChildren();
     document.body.style.overflow = '';
     document.body.style.width = '';
@@ -30,13 +30,13 @@ describe('SideSheet', () => {
   });
 
   afterEach(() => {
-    vi.runOnlyPendingTimers();
-    vi.useRealTimers();
+    rs.runOnlyPendingTimers();
+    rs.useRealTimers();
     document.body.replaceChildren();
     document.body.style.overflow = '';
     document.body.style.width = '';
     delete semiGlobal.config.overrideDefaultProps;
-    vi.restoreAllMocks();
+    rs.restoreAllMocks();
   });
 
   it('渲染固定 dialog/header/body/footer DOM、样式、data 与默认尺寸', async () => {
@@ -215,7 +215,7 @@ describe('SideSheet', () => {
     expect(order.slice(-2)).toEqual(['update:false', 'cancel']);
     wrapper.unmount();
 
-    const onDisabledCancel = vi.fn();
+    const onDisabledCancel = rs.fn();
     const disabled = await mountVisible({ closeOnEsc: false, onCancel: onDisabledCancel });
     window.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, keyCode: 27 }));
     expect(onDisabledCancel).not.toHaveBeenCalled();
@@ -279,7 +279,7 @@ describe('SideSheet', () => {
       'stable',
     );
 
-    await vi.advanceTimersByTimeAsync(180);
+    await rs.advanceTimersByTimeAsync(180);
     expect(changes).toEqual([true, false]);
     wrapper.unmount();
     expect(document.body.style.overflow).toBe('');

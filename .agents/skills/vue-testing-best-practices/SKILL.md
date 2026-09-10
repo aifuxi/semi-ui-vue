@@ -3,14 +3,14 @@ name: vue-testing-best-practices
 version: 1.0.0
 license: MIT
 author: github.com/vuejs-ai
-description: 编写或排查 Vue 测试时使用，按公开行为选择 Vitest、Vue Test Utils 与真实浏览器证据；在本仓库复用已有 pnpm 和 Playwright Chromium 配置。
+description: 编写或排查 Vue 测试时使用，按公开行为选择 Rstest、Vue Test Utils 与真实浏览器证据；在本仓库复用已有 pnpm 和 Playwright Chromium 配置。
 ---
 
 依据待验证的公开行为选择测试层级，按症状读取相关参考，不默认加载全部文件。
 
 ## 本仓库的测试边界
 
-- 先读已有 [Vitest 配置](../../../vitest.config.ts)、[Playwright 配置](../../../playwright.config.ts) 和 [pnpm 脚本](../../../package.json)。复用锁定依赖、fixture 与命令；参考中的安装示例不是新增依赖或替换 runner 的指令。
+- 先读已有 [Rstest 配置](../../../rstest.config.ts)、[Playwright 配置](../../../playwright.config.ts) 和 [pnpm 脚本](../../../package.json)。复用锁定依赖、fixture 与命令；参考中的安装示例不是新增依赖或替换 runner 的指令。通用参考中的 Vitest 示例需使用本仓库的 `@rstest/core` 与 `rs` API。
 - 黑盒单测验证 props、emits、slots、v-model 与可观察输出；公开 DOM/class 兼容契约也应直接验证。私有 state/method、Foundation spy 和结构快照不能替代公开行为证据。
 - 样式、布局、真实焦点、拖拽、ResizeObserver、Portal 与动效复用 Playwright Chromium。Vitest Browser Mode 不是额外前置条件，不因参考示例新增第二套浏览器 runner。
 - Composable 依赖生命周期或 inject 时，用宿主组件建立上下文，在 mount 前设置 provider，并在结束时 unmount。Teleport stub 只适合隔离不涉及 Portal 的单测，不能证明容器、焦点或卸载行为。

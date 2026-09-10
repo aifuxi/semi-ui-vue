@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, type VNodeChild } from 'vue';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import Tree, { type TreeExposed, type TreeNodeData, type TreeSlots } from './index';
 
@@ -39,7 +39,7 @@ function mountTree(props: Record<string, unknown> = {}, slots: TreeSlots = {}) {
 afterEach(() => {
   for (const wrapper of wrappers.splice(0)) wrapper.unmount();
   document.body.replaceChildren();
-  vi.restoreAllMocks();
+  rs.restoreAllMocks();
 });
 
 describe('Tree', () => {
@@ -206,7 +206,7 @@ describe('Tree', () => {
     expect((asia.element as HTMLElement).draggable).toBe(true);
     await asia.trigger('click');
     expect(wrapper.emitted('change')?.at(-1)?.[0]).toBe('Asia');
-    const dataTransfer = { setData: vi.fn(), setDragImage: vi.fn() };
+    const dataTransfer = { setData: rs.fn(), setDragImage: rs.fn() };
     await asia.trigger('dragstart', { dataTransfer });
     expect(wrapper.emitted('dragStart')?.[0]?.[0]).toMatchObject({ node: { key: 'asia' } });
   });
@@ -249,7 +249,7 @@ describe('Tree', () => {
     const order: string[] = [];
     const wrapper = mountTree({
       treeData: [{ key: 'lazy', label: 'Lazy', value: 'Lazy', isLeaf: false }],
-      loadData: vi.fn(async () => {
+      loadData: rs.fn(async () => {
         order.push('loadData');
       }),
       onExpand: () => order.push('expand'),
@@ -286,9 +286,9 @@ describe('Tree', () => {
     const wrapper = mountTree({ defaultExpandAll: true, draggable: true });
     const source = wrapper.get('[data-key="asia"]');
     const target = wrapper.get('[data-key="america"]');
-    const dataTransfer = { setData: vi.fn(), setDragImage: vi.fn() };
+    const dataTransfer = { setData: rs.fn(), setDragImage: rs.fn() };
     await source.trigger('dragstart', { dataTransfer });
-    vi.spyOn(target.element as HTMLElement, 'getBoundingClientRect').mockReturnValue({
+    rs.spyOn(target.element as HTMLElement, 'getBoundingClientRect').mockReturnValue({
       top: 0,
       bottom: 32,
       height: 32,

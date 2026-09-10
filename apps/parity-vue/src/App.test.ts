@@ -1,5 +1,5 @@
 import { mount, type ComponentMountingOptions } from '@vue/test-utils';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, rs } from '@rstest/core';
 import { DEFAULT_SCENARIO_ID } from '@workspace/test-infra';
 
 import App from './App.vue';
@@ -1044,15 +1044,15 @@ describe('Vue 对照工作台', () => {
 
   it('通过公共 BackTop 响应 Element 滚动阈值、默认/自定义内容与回顶点击', async () => {
     let now = 0;
-    vi.spyOn(Date, 'now').mockImplementation(() => {
+    rs.spyOn(Date, 'now').mockImplementation(() => {
       now += 16;
       return now;
     });
-    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+    rs.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
       callback(now);
       return 1;
     });
-    vi.stubGlobal('cancelAnimationFrame', vi.fn());
+    rs.stubGlobal('cancelAnimationFrame', rs.fn());
     const wrapper = mountApp({ props: { scenarioId: 'back-top' } });
     const scenario = wrapper.get('[data-testid="back-top-vue"]');
     const scrollTarget = scenario.get('.back-top-scenario__scroll');
@@ -1072,7 +1072,7 @@ describe('Vue 对照工作台', () => {
     expect(scenario.get('output').text()).toBe('点击：默认回顶');
 
     wrapper.unmount();
-    vi.unstubAllGlobals();
+    rs.unstubAllGlobals();
   });
 
   it('通过公共 Breadcrumb 渲染图标、链接、折叠与受控激活场景', () => {
