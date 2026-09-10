@@ -1,10 +1,10 @@
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
-import { dirname, relative, resolve } from 'node:path';
-import { build } from 'esbuild';
+import { mkdir, mkdtemp, readFile, readdir, realpath, rm, stat, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { createHash } from 'node:crypto';
+import { dirname, isAbsolute, matchesGlob, relative, resolve, sep } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createRslib } from '@rslib/core';
 import ts from 'typescript';
-import { replRslibFactories } from './repl-rslib-factories.mjs';
-
-const aggregatePrefix = 'repl-aggregate:';
 
 async function exportedNames(file) {
   const source = await readFile(file, 'utf8');
@@ -100,47 +100,225 @@ export async function buildReplModules({
     aggregates.set(aggregate, exports);
     facades.set(key, { aggregate, symbols });
   }
-  for (const key of aggregates.keys()) groupedEntries[key] = `${aggregatePrefix}${key}`;
   const assetSpecifiers = assetDirectories.flatMap((directory) =>
     packageSpecifiers[directory]
       ? [packageSpecifiers[directory], `${packageSpecifiers[directory]}/*`]
       : [],
   );
-  const result = await build({
-    entryPoints: groupedEntries,
-    outdir,
-    bundle: true,
-    splitting: true,
-    format: 'esm',
-    platform: 'browser',
-    target: 'es2022',
-    external: ['vue', ...assetSpecifiers],
-    define: { 'process.env.NODE_ENV': '"production"' },
-    minify: true,
-    chunkNames: 'chunks/[name]-[hash]',
-    metafile: true,
-    write: false,
-    logLevel: 'warning',
-    plugins: [
-      replRslibFactories(entryPoints),
-      {
-        name: 'repl-asset-groups',
-        setup(plugin) {
-          plugin.onResolve({ filter: /^repl-aggregate:/ }, ({ path }) => ({
-            path,
-            namespace: 'repl-aggregate',
-          }));
-          plugin.onLoad({ filter: /.*/, namespace: 'repl-aggregate' }, ({ path }) => ({
-            contents: aggregates.get(path.slice(aggregatePrefix.length)).join('\n'),
-            loader: 'js',
-            resolveDir: process.cwd(),
-          }));
+  const staging = await mkdtemp(resolve(tmpdir(), 'repl-rslib-'));
+  const outputFiles = new Map();
+  const outputs = {};
+  try {
+    await writeFile(resolve(staging, 'package.json'), '{"type":"module"}');
+    for (const [key, declarations] of aggregates) {
+      const file = resolve(staging, 'entries', `${key}.js`);
+      await mkdir(dirname(file), { recursive: true });
+      await writeFile(file, declarations.join('\n'));
+      groupedEntries[key] = file;
+    }
+    const uiRoot =
+      entryPoints['ui/index'] && (await realpath(dirname(resolve(entryPoints['ui/index']))));
+    const uiPackageRoot = uiRoot && dirname(uiRoot);
+    const uiSideEffects =
+      uiPackageRoot &&
+      JSON.parse(
+        await readFile(resolve(uiPackageRoot, 'package.json'), 'utf8').catch((error) => {
+          if (error.code === 'ENOENT') return '{}';
+          throw error;
+        }),
+      ).sideEffects;
+    function canOmitBareImport(file) {
+      if (!uiRoot || !file.startsWith(uiRoot + sep)) return false;
+      if (uiSideEffects === false) return true;
+      if (!Array.isArray(uiSideEffects)) return false;
+      const path = `./${relative(uiPackageRoot, file).replaceAll('\\', '/')}`;
+      return !uiSideEffects.some((pattern) => matchesGlob(path, pattern));
+    }
+    // Rslib moves shared modules into an unnamed chunk before splitChunks runs.
+    // Derive sharing from the input graph so unrelated public entries stay separate.
+    const owners = new Map();
+    const dependencies = new Map();
+    const canonicalPaths = new Map();
+    const primitives = new Set();
+    async function collect(file, owner, visited) {
+      if (!canonicalPaths.has(file)) canonicalPaths.set(file, await realpath(file));
+      file = canonicalPaths.get(file);
+      if (visited.has(file)) return;
+      visited.add(file);
+      const usedBy = owners.get(file) ?? new Set();
+      usedBy.add(owner);
+      owners.set(file, usedBy);
+      if (!dependencies.has(file)) {
+        const source = await readFile(file, 'utf8');
+        const ast = ts.createSourceFile(
+          file,
+          source,
+          ts.ScriptTarget.Latest,
+          true,
+          ts.ScriptKind.JS,
+        );
+        if (
+          Buffer.byteLength(source) <= 1024 &&
+          canOmitBareImport(file) &&
+          !ast.statements.some(
+            (node) =>
+              (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
+              node.moduleSpecifier,
+          )
+        )
+          primitives.add(file);
+        dependencies.set(
+          file,
+          ast.statements.flatMap((node) => {
+            const specifier =
+              (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
+              node.moduleSpecifier;
+            if (!(
+              specifier &&
+              ts.isStringLiteral(specifier) &&
+              (specifier.text.startsWith('.') || isAbsolute(specifier.text))
+            ))
+              return [];
+            const dependency = resolve(dirname(file), specifier.text);
+            // The published UI marks pure ESM facades as side-effect-free. Following
+            // their ignored bare imports would incorrectly group most of the library.
+            if (ts.isImportDeclaration(node) && !node.importClause && canOmitBareImport(dependency))
+              return [];
+            return [dependency];
+          }),
+        );
+      }
+      for (const dependency of dependencies.get(file)) await collect(dependency, owner, visited);
+    }
+    for (const [owner, file] of Object.entries(groupedEntries))
+      await collect(file, owner, new Set());
+    const sharedNames = new Map(
+      [...owners].map(([file, usedBy]) => [
+        file,
+        `chunks/shared-${createHash('sha256')
+          .update([...usedBy].sort().join('\n'))
+          .digest('hex')
+          .slice(0, 12)}`,
+      ]),
+    );
+    // Bound tiny dependency-free helpers to 32 KiB of source per group. Their
+    // per-component ownership would otherwise create dozens of 50–100 byte requests.
+    [...primitives]
+      .filter((file) => owners.get(file).size > 1)
+      .sort()
+      .forEach((file, index) => {
+        sharedNames.set(file, `chunks/primitives-${Math.floor(index / 32)}`);
+      });
+    const compiled = resolve(staging, 'output');
+    const rslib = await createRslib({
+      config: {
+        lib: [{ format: 'esm', syntax: 'es2022' }],
+        source: {
+          entry: groupedEntries,
+          define: { 'process.env.NODE_ENV': '"production"' },
+        },
+        output: {
+          target: 'web',
+          distPath: { root: compiled },
+          minify: true,
+          autoExternal: false,
+          cleanDistPath: false,
+        },
+        performance: { buildCache: false, printFileSize: false },
+        tools: {
+          rspack: {
+            externals: [
+              ({ request }, callback) => {
+                if (
+                  request === 'vue' ||
+                  assetSpecifiers.some((name) =>
+                    name.endsWith('/*') ? request?.startsWith(name.slice(0, -1)) : request === name,
+                  )
+                )
+                  callback(null, `module ${request}`);
+                else callback();
+              },
+            ],
+            module: {
+              parser: { javascript: { importDynamic: true } },
+              rules: uiRoot
+                ? [
+                    {
+                      test: /\.js$/,
+                      include: uiRoot,
+                      use: [
+                        {
+                          loader: fileURLToPath(
+                            new URL('./repl-rslib-factories.mjs', import.meta.url),
+                          ),
+                          options: { root: uiRoot },
+                        },
+                      ],
+                    },
+                  ]
+                : [],
+            },
+            output: { chunkFilename: 'chunks/[name]-[contenthash:8].js' },
+            optimization: {
+              concatenateModules: false,
+              splitChunks: {
+                chunks: 'all',
+                minSize: 0,
+                minChunks: 2,
+                cacheGroups: {
+                  default: false,
+                  defaultVendors: false,
+                  shared: {
+                    test: (module) => (owners.get(module.resource)?.size ?? 0) > 1,
+                    chunks: 'all',
+                    minChunks: 2,
+                    minSize: 0,
+                    enforce: true,
+                    name: (module) => sharedNames.get(module.resource),
+                  },
+                },
+              },
+            },
+          },
         },
       },
-    ],
-  });
-  const outputFiles = new Map(result.outputFiles.map((file) => [file.path, file.contents]));
-  const outputs = result.metafile.outputs;
+    });
+    await rslib.build();
+    for (const name of await readdir(compiled, { recursive: true })) {
+      if (!(await stat(resolve(compiled, name))).isFile()) continue;
+      const file = resolve(outdir, name);
+      // Preserve compiler-emitted assets, including third-party LICENSE companions.
+      if (!name.endsWith('.js')) {
+        outputFiles.set(file, await readFile(resolve(compiled, name)));
+        continue;
+      }
+      const source = await readFile(resolve(compiled, name), 'utf8');
+      const ast = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.JS);
+      const imports = [];
+      function visit(node) {
+        const specifier =
+          ts.isImportDeclaration(node) || ts.isExportDeclaration(node)
+            ? node.moduleSpecifier
+            : ts.isCallExpression(node) && node.expression.kind === ts.SyntaxKind.ImportKeyword
+              ? node.arguments[0]
+              : undefined;
+        if (specifier && ts.isStringLiteral(specifier)) {
+          const external = !specifier.text.startsWith('.');
+          imports.push({
+            path: external ? specifier.text : resolve(dirname(file), specifier.text),
+            external,
+            kind: ts.isCallExpression(node) ? 'dynamic-import' : 'import-statement',
+          });
+        }
+        ts.forEachChild(node, visit);
+      }
+      visit(ast);
+      outputFiles.set(file, source);
+      outputs[file] = { imports, exports: await exportedNames(resolve(compiled, name)) };
+    }
+  } finally {
+    await rm(staging, { recursive: true, force: true });
+  }
   for (const [key, { aggregate, symbols }] of facades) {
     const file = resolve(outdir, `${key}.js`);
     const target = resolve(outdir, `${aggregate}.js`);

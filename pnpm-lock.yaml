@@ -298,6 +298,9 @@ importers:
       '@playwright/test':
         specifier: 1.62.1
         version: 1.62.1
+      '@rslib/core':
+        specifier: 1.0.0
+        version: 1.0.0
       es-module-shims:
         specifier: 2.8.4
         version: 2.8.4

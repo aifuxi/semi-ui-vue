@@ -191,3 +191,24 @@
 - 在 REPL 打包边界将 UI `_runtime` 的注册包装为幂等、可提前调用的函数，消费者显式先完成依赖注册。使用提升的 var/function 避免循环中 TDZ 或重复重置；保留原有 CommonJS 延迟执行和缓存。
 - 新增循环工厂与多入口对象身份回归，REPL 四项工具测试全部通过；完整资源生成和 Typography 独立导入通过。780 个 JS 公开入口全部保持 exports，最大静态请求仍为 200（Typography 39），未放宽预算。输入缓存与六批清单同步纳入新转换器。
 - 双语 Button Links、编辑器多文件运行/错误恢复/重置隔离的 Chromium 验证通过；与 Chat、TreeSelect 合计 13 项定点浏览器测试通过。完整浏览器矩阵仍在运行，资源构建仍保留既有第三方 direct-eval 与 bare-import 警告。
+
+### 三项修复的完整回归
+
+唤醒后的完整 476 项 Chromium 文档测试一次通过，耗时 14.0 分钟，未增加超时、启用重试或改变断言。覆盖 Button/ConfigProvider/Locale/Icon/Dark Mode/Navigation 对照、全部页面加载、编辑器、Tree/TreeSelect、表单和页头。三项修复分别提交为 `9a5e21e`、`5487986`、`b0ca4e6`。
+
+## 第七阶段：REPL 资源打包迁移到 Rslib
+
+- 将 REPL 的 esbuild 多入口打包替换为 Rslib 1.0 浏览器 ESM 构建。保留资产每组 32 个入口、UI 基础设施分组、公开 facade、Vue/跨包资产 external 与现有 import map。工厂注册转换改为 Rspack loader，不改变原有幂等注册和 CommonJS 缓存语义。
+- 在独立临时目录生成聚合入口与产物，从实际输出解析导出和静态/动态依赖；全部导出和 200 请求预算通过后才替换现有资源。失败清理临时目录并保留旧产物；保留 Rslib 输出的 LICENSE 附属文件和其它资产。
+- Rslib 在 splitChunks 前创建匿名共享 chunk，因此按输入图中的入口使用关系分组，并遵循公开 UI 的 sideEffects 声明，忽略本应被删除的纯 ESM 空导入。初次未区分它们时 Typography 错误加载约 3 MB，已定位并修复，新增真实打包回归防止小入口重新携带全库。
+- 将无依赖、无副作用且不超过 1 KiB 的小模块每 32 个合并，限定每组源文本至多 32 KiB，减少数十字节模块的额外请求。最终独立完整探针覆盖 780 个 JS 入口，最大静态请求 193，未放宽 200 门槛。与修复后的 esbuild 产物比较：UI 根入口 200 → 193 请求、3,902,759 → 3,807,837 字节；Button 5 → 6 请求、10,067 → 15,166 字节；Typography 39 → 40 请求、470,241 → 487,158 字节。字节统计为传递静态 JS 总量、不含 Vue、未压缩传输；少量小工具共享造成的按需增量是当前取舍，没有引入全库 chunk。
+- 新增动态导入可运行且预算失败不覆盖旧产物的工具测试，以及基于实际站点 import map 的 Chromium 根/子入口对象身份和 Chat Markdown 渲染回归。独立 Chromium 探针已通过，最终生产站点检查与浏览器矩阵待下文记录。
+- 文档包显式声明已有的 Rslib 版本，lockfile 仅增加对应 importer。esbuild 仍用于 Nuxt 虚拟 TypeScript loader，本阶段只迁移 REPL 资源构建，不声称剩余工具链全部迁移完成。
+
+### 第七阶段验证与对照状态修正
+
+- 最终 `pnpm check:docs` 退出 0，公开资源、Nuxt 生成/类型和内容/静态门禁通过。lint、格式及 73 + 6 项工具测试通过；生产站点三项定点 Chromium（多文件编辑与错误恢复、上传本地模拟、公开模块身份/Chat 渲染）通过。
+- 首轮完整矩阵在 183 项通过后停止于 Locale Components 英文亮色 RTL 的语言菜单。trace 显示重新打开菜单前 React 的 `aria-activedescendant` 已指向第 5 项越南语，Vue 指向第 4 项阿拉伯语；两侧对应的选项几何相同，该用例没有 REPL 模块请求。两端固定 Foundation 都在鼠标进入时保留选项焦点，测试却直接比较上次菜单交互留下的不同状态。
+- 仅修改 Locale 对照测试：菜单打开并稳定动效后，用真实鼠标悬停当前选中项，先断言焦点类，再保留原有全部类名、样式和几何比较。没有修改 Select 源码、屏蔽焦点样式、增加超时或启用重试。原失败用例定点通过。再次 `check:docs` 确认 resources/site 输入及全部产物内容一致，仅重跑 checks。
+- 保留输入未变的前 170 项通过结果，重新执行受影响的全部 Locale 用例及后续未运行的 307 项矩阵，307 项一次通过（5.4 分钟）。最终 477 个用例都有对应当前输入的通过结果，分两组取得，不声称单次 477 全过；首轮已失效的 13 项 Locale 结果未重复计入。历史 accepted 指纹没有重写。
+- 额外在真实 Chromium 中直接使用生产 REPL import map 加载 JsonViewer，确认启动一个真实 Worker，完成搜索、替换且无页面错误；生产资源的两个 LICENSE 引用均存在对应文件。`pnpm install --frozen-lockfile` 退出 0，最终 diff 与格式检查通过。三项修复阶段的 1218 项单测及真实包验证所覆盖的组件/公开包输入没有再修改，未为提交重复执行。

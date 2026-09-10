@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -93,6 +93,64 @@ test('static request budget follows public external facades, shares Vue and excl
     () => staticModuleRequests(outputs, '/out/ui/button.js', {}),
     /Unmapped REPL external/,
   );
+});
+
+test('deferred modules remain runnable and a rejected build preserves the previous output', async (t) => {
+  const root = await mkdtemp(join(tmpdir(), 'repl-deferred-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  await writeFile(join(root, 'package.json'), '{"type":"module"}');
+  await writeFile(join(root, 'entry.js'), 'export const load = () => import("./lazy.js");');
+  await writeFile(join(root, 'lazy.js'), 'export const value = 42;');
+  const options = {
+    entryPoints: { 'ui/deferred': join(root, 'entry.js') },
+    packageSpecifiers: { ui: '@fixture/ui' },
+    outdir: join(root, 'modules'),
+  };
+  const { graph, outputs } = await buildReplModules(options);
+  const entry = join(options.outdir, 'ui/deferred.js');
+  const source = await readFile(entry, 'utf8');
+  const module = await import(pathToFileURL(entry).href);
+  assert.equal((await module.load()).value, 42);
+  assert.ok(graph['ui/deferred'].length < Object.keys(outputs).length);
+  await assert.rejects(buildReplModules({ ...options, maxStaticRequests: 0 }), /budget 0/);
+  assert.equal(await readFile(entry, 'utf8'), source);
+  assert.equal((await module.load()).value, 42);
+});
+
+test('side-effect-free bare facades do not make a small entry load the full library', async (t) => {
+  const root = await mkdtemp(join(tmpdir(), 'repl-pure-facades-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  await writeFile(
+    join(root, 'package.json'),
+    '{"type":"module","sideEffects":["./dist/_runtime/**"]}',
+  );
+  await mkdir(join(root, 'dist'));
+  await writeFile(
+    join(root, 'dist/index.js'),
+    'export { state } from "./tiny.js"; export { heavy } from "./heavy.js";',
+  );
+  await writeFile(join(root, 'dist/tiny.js'), 'import "./barrel.js"; export const state = {};');
+  await writeFile(join(root, 'dist/barrel.js'), 'import "./heavy.js";');
+  await writeFile(
+    join(root, 'dist/heavy.js'),
+    `export const heavy = ${JSON.stringify('heavy-payload'.repeat(4000))};`,
+  );
+  const outdir = join(root, 'modules');
+  const { graph } = await buildReplModules({
+    entryPoints: { 'ui/index': join(root, 'dist/index.js'), 'ui/tiny': join(root, 'dist/tiny.js') },
+    packageSpecifiers: { ui: '@fixture/ui' },
+    outdir,
+  });
+  const tinyBytes = (
+    await Promise.all(
+      graph['ui/tiny'].map(async (file) => (await readFile(join(outdir, file))).length),
+    )
+  ).reduce((a, b) => a + b, 0);
+  assert.ok(tinyBytes < 1000, `Small entry loaded ${tinyBytes} bytes`);
+  const tiny = await import(pathToFileURL(join(outdir, 'ui/tiny.js')).href);
+  const index = await import(pathToFileURL(join(outdir, 'ui/index.js')).href);
+  assert.equal(tiny.state, index.state);
+  assert.equal(index.heavy.length, 'heavy-payload'.length * 4000);
 });
 
 test('UI infrastructure facades share live bindings with root and component entries', async (t) => {

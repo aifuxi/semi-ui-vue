@@ -353,6 +353,14 @@ for (const [index, name] of examples.entries())
               }
               await Promise.all([reference, vue].map((page) => page.mouse.move(1400, 880)));
               await freezeAnimations([reference, vue], 300);
+              // Closing the previous menu can move another row under the pointer.
+              // Establish the same public hover state before comparing retained focus.
+              for (const page of [reference, vue]) {
+                const selected = page.locator('.semi-select-option-selected');
+                await selected.hover();
+                await expect(selected).toHaveClass(/semi-select-option-focused/);
+                await page.mouse.move(1400, 880);
+              }
               await compare(
                 reference.locator('.semi-select-option-list'),
                 vue.locator('.semi-select-option-list'),
