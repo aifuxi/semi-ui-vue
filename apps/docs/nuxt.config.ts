@@ -2,6 +2,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { defineNuxtConfig } from 'nuxt/config';
 import pages from './src/data/pages.json';
+import { nuxtTemplateLoaders } from './scripts/nuxt-template-loader.mjs';
 
 const vueRequire = createRequire(createRequire(import.meta.url).resolve('vue'));
 
@@ -38,12 +39,7 @@ export default defineNuxtConfig({
         config.module.rules.push({
           test: /[\\/]\.virtual[\\/].*(?:\.ts|mdc-(?:imports|highlighter)\.mjs)$/,
           enforce: 'post',
-          use: [
-            {
-              loader: fileURLToPath(new URL('./scripts/nuxt-template-loader.mjs', import.meta.url)),
-              options: { root: fileURLToPath(new URL('.', import.meta.url)) },
-            },
-          ],
+          use: nuxtTemplateLoaders(fileURLToPath(new URL('.', import.meta.url))),
         });
         config.module.rules.unshift({
           test: /[\\/]@vue[\\/]repl[\\/]dist[\\/](?:monaco-editor|vue-repl)\.js$/,

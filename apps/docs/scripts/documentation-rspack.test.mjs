@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createRsbuild } from '@rsbuild/core';
+import { nuxtTemplateLoaders } from './nuxt-template-loader.mjs';
 
 test('Rspack 保留编辑器原始源码，并解析 Nuxt 虚拟模板的类型、相对模块与 MDC 依赖', async () => {
   const root = await mkdtemp(join(tmpdir(), 'docs-rspack-'));
@@ -22,8 +23,16 @@ test('Rspack 保留编辑器原始源码，并解析 Nuxt 虚拟模板的类型�
     await write('src/example.vue', source);
     await write('src/child.ts', 'export default "resolved component";');
     await write(
+      'src/contracts.ts',
+      'export interface TemplateState { name: string }; throw new Error("type-only import executed");',
+    );
+    await write(
       components,
-      'export const names: string[] = ["example"]; export const load = () => import("../../src/child.ts");',
+      `import type { TemplateState } from "../../src/contracts.ts";
+      const identity = <T>(value: T): T => value;
+      export const names = [identity("example")] satisfies TemplateState['name'][];
+      export { default as directChild } from "../../src/child.ts";
+      export const load = () => import("../../src/child.ts");`,
     );
     await write(
       mdc,
@@ -33,9 +42,9 @@ test('Rspack 保留编辑器原始源码，并解析 Nuxt 虚拟模板的类型�
       'entry.ts',
       `
       import raw from './src/example.vue?raw';
-      import { names, load } from './${components}';
+      import { names, load, directChild } from './${components}';
       import { ownerDependency } from './${mdc}';
-      export async function inspect() { return { raw, names, child: (await load()).default, ownerDependency }; }
+      export async function inspect() { return { raw, names, child: (await load()).default, directChild, ownerDependency }; }
     `,
     );
     const rsbuild = await createRsbuild({
@@ -60,12 +69,7 @@ test('Rspack 保留编辑器原始源码，并解析 Nuxt 虚拟模板的类型�
                 {
                   test: /[\\/]\.virtual[\\/]/,
                   enforce: 'post',
-                  use: [
-                    {
-                      loader: fileURLToPath(new URL('./nuxt-template-loader.mjs', import.meta.url)),
-                      options: { root },
-                    },
-                  ],
+                  use: nuxtTemplateLoaders(root),
                 },
               ],
             },
@@ -85,6 +89,7 @@ test('Rspack 保留编辑器原始源码，并解析 Nuxt 虚拟模板的类型�
       raw: source,
       names: ['example'],
       child: 'resolved component',
+      directChild: 'resolved component',
       ownerDependency: 'function',
     });
   } finally {

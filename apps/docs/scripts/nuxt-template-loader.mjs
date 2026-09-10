@@ -1,6 +1,6 @@
 import { createRequire } from 'node:module';
 import { basename, dirname, isAbsolute, resolve } from 'node:path';
-import { transformSync } from 'esbuild';
+import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 
 const require = createRequire(import.meta.url);
@@ -8,7 +8,18 @@ const contentRequire = createRequire(require.resolve('@nuxt/content'));
 const mdcRequire = createRequire(contentRequire.resolve('@nuxtjs/mdc'));
 const shikiRequire = createRequire(mdcRequire.resolve('shiki'));
 
-export default function compileTemplate(code) {
+// Rspack executes loaders right to left: resolve the generated imports before SWC.
+export function nuxtTemplateLoaders(root) {
+  return [
+    {
+      loader: 'builtin:swc-loader',
+      options: { jsc: { parser: { syntax: 'typescript' }, target: 'es2022' } },
+    },
+    { loader: fileURLToPath(import.meta.url), options: { root } },
+  ];
+}
+
+export default function resolveTemplateImports(code) {
   let template = this.resourcePath.split('/.virtual/')[1];
   while (template.includes('%')) template = decodeURIComponent(template);
   template = resolve(this.getOptions().root, template.replace(/^virtual:nuxt:/, ''));
@@ -43,5 +54,5 @@ export default function compileTemplate(code) {
   for (const [start, end, value] of edits.sort((a, b) => b[0] - a[0])) {
     resolved = resolved.slice(0, start) + value + resolved.slice(end);
   }
-  return transformSync(resolved, { loader: 'ts', target: 'es2022' }).code;
+  return resolved;
 }

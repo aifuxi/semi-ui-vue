@@ -1,7 +1,7 @@
 # AI 工作记录：Rstack 工具链迁移
 
 - 日期：2026-09-10
-- 状态：第四阶段完成；整体迁移进行中
+- 状态：第八阶段完成；整体迁移进行中
 - 分支：`codex/rstack-migration`
 - 基线：`e6a5f0d`
 
@@ -212,3 +212,15 @@
 - 仅修改 Locale 对照测试：菜单打开并稳定动效后，用真实鼠标悬停当前选中项，先断言焦点类，再保留原有全部类名、样式和几何比较。没有修改 Select 源码、屏蔽焦点样式、增加超时或启用重试。原失败用例定点通过。再次 `check:docs` 确认 resources/site 输入及全部产物内容一致，仅重跑 checks。
 - 保留输入未变的前 170 项通过结果，重新执行受影响的全部 Locale 用例及后续未运行的 307 项矩阵，307 项一次通过（5.4 分钟）。最终 477 个用例都有对应当前输入的通过结果，分两组取得，不声称单次 477 全过；首轮已失效的 13 项 Locale 结果未重复计入。历史 accepted 指纹没有重写。
 - 额外在真实 Chromium 中直接使用生产 REPL import map 加载 JsonViewer，确认启动一个真实 Worker，完成搜索、替换且无页面错误；生产资源的两个 LICENSE 引用均存在对应文件。`pnpm install --frozen-lockfile` 退出 0，最终 diff 与格式检查通过。三项修复阶段的 1218 项单测及真实包验证所覆盖的组件/公开包输入没有再修改，未为提交重复执行。
+
+## 第八阶段：虚拟模板转用 SWC，清理旧构建依赖
+
+- Nuxt 虚拟模板保留定向 post-loader 和原有相对路径、MDC/Shiki 所属依赖解析，将 TypeScript 转换改由 `builtin:swc-loader` 执行，目标保持 ES2022。共享 `nuxtTemplateLoaders` 工厂用于 Nuxt 配置和真实构建测试，确保先解析导入再移除类型。
+- 扩展现有 Rspack 构建测试，验证泛型、`satisfies`、类型导入不执行、静态再导出、动态相对导入、原始 Vue 源码和 MDC 包依赖均保持；该测试通过。
+- 移除文档包直接 esbuild 依赖，以及已无调用方的根 `@vitejs/plugin-vue`、`vite-plugin-dts`。pnpm 同时清理旧声明插件的依赖，并为现有插件补齐可选的 Rspack 2.2.3 peer 绑定；未升级编译器版本。Vite 消费兼容验证及 Vite 类型适配边界仍保留，传递依赖中的 Vite/esbuild 不属于本阶段的移除目标。
+- 完整 `check:docs` 通过：198 页、1761 Demo、399 预渲染路由、203 兼容入口、Nuxt 类型和静态产物检查正常。完整 `pnpm check` 通过：178 个文件 / 1218 项单测、73 + 6 项工具测试，以及格式、lint、源码类型检查。
+- 生产 Chromium 的全页加载、编辑器、页头、导航和 REPL 模块共 215 项通过。真实 tarball 安装、exports、类型、SSR、JsonViewer Worker 搜索替换通过；Button 根/子路径 9010/9010 bytes，Input 68389/68401，Select 151728/151747，tree-shaking 门禁通过。
+- 开发 HMR 首轮在立即还原模板时失败：首次热更新保留了计数 1，随后 30 秒内未收到还原结果；trace 只有首次 hot-update 请求。为定位而开启 `DEBUG=pw:webserver` 后，同一零重试用例完整通过（1.6 分钟），覆盖模板更新/还原保留计数，以及 Markdown 正文更新/还原。没有修改测试断言、超时或产品逻辑；第二次更新缺失的根因尚未确认，因此不能声称 HMR 偶发问题已修复。保留首轮失败和诊断通过的事实。
+- 本阶段没有改动组件运行时，没有重复完整组件对照矩阵或更新历史 accepted 指纹。后续阶段仍需评估 Rslint 与浏览器 runner。
+
+- 最终 `pnpm install --frozen-lockfile`、本次文件格式检查和 `git diff --check` 均通过。
