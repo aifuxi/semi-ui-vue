@@ -1,32 +1,48 @@
 // @vitest-environment node
 import { fileURLToPath } from 'node:url';
 import { runInNewContext } from 'node:vm';
-import { build } from 'vite';
+import { createRsbuild } from '@rsbuild/core';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import { expect, it } from 'vitest';
-import uiConfig from '../packages/ui/vite.config.ts';
-import { adaptPinnedJsonViewerCore } from '../packages/foundation-integration/vite-json-viewer-plugin.ts';
+import uiConfig from '../packages/ui/rslib.config.ts';
 
 it('公开包 Worker 构建保留固定 JSON 协议并返回格式化和折叠结果', async () => {
-  const result = await build({
-    configFile: false,
-    logLevel: 'silent',
-    plugins: [...uiConfig.worker.plugins()],
-    ...adaptPinnedJsonViewerCore().config(),
-    build: {
-      write: false,
-      rolldownOptions: {
-        input: fileURLToPath(
-          new URL(
-            '../packages/foundation-integration/src/json-viewer-worker-entry.ts',
-            import.meta.url,
-          ),
-        ),
-        output: { format: 'iife' },
+  const root = await mkdtemp(path.join(tmpdir(), 'semi-json-worker-rsbuild-'));
+  let code;
+  try {
+    const rsbuild = await createRsbuild({
+      cwd: root,
+      config: {
+        plugins: uiConfig.plugins,
+        source: {
+          entry: {
+            index: fileURLToPath(
+              new URL(
+                '../packages/foundation-integration/src/json-viewer-worker-entry.ts',
+                import.meta.url,
+              ),
+            ),
+          },
+          include: [/vendor\/semi-design/],
+        },
+        tools: { htmlPlugin: false, rspack: { name: 'rsbuild-worker protocol-test' } },
+        output: { filename: { js: '[name].js' }, minify: false },
+        performance: {
+          buildCache: false,
+          printFileSize: false,
+          chunkSplit: { strategy: 'all-in-one' },
+        },
       },
-    },
-  });
+    });
+    const result = await rsbuild.build();
+    await result.close();
+    code = await readFile(path.join(root, 'dist/static/js/index.js'), 'utf8');
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
   const replies = [];
-  const code = result.output.find((item) => item.type === 'chunk').code;
   expect(code).not.toContain('%WORKER_RAW%');
   class DedicatedWorkerGlobalScope {
     postMessage(message) {

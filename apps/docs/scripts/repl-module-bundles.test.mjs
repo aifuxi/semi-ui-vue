@@ -94,3 +94,42 @@ test('static request budget follows public external facades, shares Vue and excl
     /Unmapped REPL external/,
   );
 });
+
+test('UI infrastructure facades share live bindings with root and component entries', async (t) => {
+  const root = await mkdtemp(join(tmpdir(), 'repl-ui-infrastructure-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const sources = {
+    'package.json': '{"type":"module"}',
+    'state.js':
+      'export const state = {}; export let count = 0; export function increment() { count++; }',
+    'provider.js': 'export { state as context } from "./state.js";',
+    'component.js': 'export { state as componentContext } from "./state.js";',
+    'index.js':
+      'export { state, count, increment } from "./state.js"; export { context } from "./provider.js";',
+  };
+  for (const [file, source] of Object.entries(sources)) await writeFile(join(root, file), source);
+  const outdir = join(root, 'modules');
+  const { graph } = await buildReplModules({
+    entryPoints: {
+      'ui/index': join(root, 'index.js'),
+      'ui/_utils': join(root, 'state.js'),
+      'ui/config-provider': join(root, 'provider.js'),
+      'ui/button': join(root, 'component.js'),
+    },
+    packageSpecifiers: { ui: '@fixture/ui' },
+    outdir,
+  });
+  const [index, utils, provider, component] = await Promise.all(
+    ['index', '_utils', 'config-provider', 'button'].map(
+      (name) => import(pathToFileURL(join(outdir, `ui/${name}.js`)).href),
+    ),
+  );
+  assert.equal(index.state, utils.state);
+  assert.equal(index.state, provider.context);
+  assert.equal(index.state, component.componentContext);
+  utils.increment();
+  assert.equal(index.count, 1);
+  assert.equal(utils.count, 1);
+  assert(graph['ui/_utils'].includes('_infrastructure/ui.js'));
+  assert(graph['ui/config-provider'].includes('_infrastructure/ui.js'));
+});

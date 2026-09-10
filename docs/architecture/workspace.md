@@ -130,7 +130,7 @@ Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select
 
 ## 资产包构建
 
-`icons`、`icons-lab` 和 `illustrations` 使用 Rslib 1.0.0 的显式多入口 ESM 构建。入口延续原有根入口、组件工厂和逐资产子路径，Vue 保持 external；独立 `tsconfig.build.json` 将测试排除在声明产物之外，开发类型检查仍覆盖测试。Rslib 会为跨入口共享组件增加同名具名导出，原有 default 导出和组件身份保持不变。两个对照应用使用 Rsbuild 2.2.5；UI 包仍使用 Vite，按后续迁移阶段替换。
+`icons`、`icons-lab` 和 `illustrations` 使用 Rslib 1.0.0 的显式多入口 ESM 构建。入口延续原有根入口、组件工厂和逐资产子路径，Vue 保持 external；独立 `tsconfig.build.json` 将测试排除在声明产物之外，开发类型检查仍覆盖测试。Rslib 会为跨入口共享组件增加同名具名导出，原有 default 导出和组件身份保持不变。两个对照应用使用 Rsbuild 2.2.5；UI 包同样使用 Rslib 多入口构建，内联固定 Foundation 与原有运行时依赖；Vue SFC 声明由 `vue-tsc` 生成，仅发布公开 exports 可达的声明。共享 ESM 模块独立拆分，CommonJS 工厂与 Prism 插件注册块集中在 `dist/_runtime/` 并精确声明副作用，避免下游 tree-shaking 丢失注册或保留无关组件。
 
 应用内固定上游样式通过 `sass-legacy` 别名使用 Sass 1.54.9；主题包继续直接使用 1.54.9。Vite 的可选 Sass peer 使用满足其要求的新版编译器，两者用途分开。
 

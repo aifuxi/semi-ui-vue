@@ -1,7 +1,7 @@
 # AI 工作记录：Rstack 工具链迁移
 
 - 日期：2026-09-10
-- 状态：第二阶段完成；整体迁移进行中
+- 状态：第三阶段完成；整体迁移进行中
 - 分支：`codex/rstack-migration`
 - 基线：`e6a5f0d`
 
@@ -89,3 +89,29 @@
 ### 第二阶段边界
 
 本阶段不迁移 UI 包、Vitest、Nuxt builder 或 REPL。历史文档 accepted 证据不因本次回归恢复；没有执行全部文档批次验收，也没有修改历史指纹。后续阶段按原顺序继续。
+
+## 第三阶段：UI 包迁移到 Rslib
+
+- UI 的 151 个显式入口改用 Rslib 1.0.0 / Vue 插件构建；保留 Vue、图标和插画包 external，固定 Foundation 与原有第三方运行时继续内联。未修改组件源码、vendor、公开 exports 或依赖版本。
+- Vue SFC 声明遵循 [Rslib Vue 指南](https://rslib.rs/guide/solution/vue)，单独运行 `vue-tsc`。从公开 exports 追踪声明引用图并裁掉不可达私有声明；真实安装的 `skipLibCheck: false` 类型消费验证通过。
+- 共享 ESM 模块独立拆分，CommonJS 工厂和 Prism 插件注册放在 `dist/_runtime/`，只对该目录声明副作用。输出共 2765 个 JS 文件；碎片数增加用于保持跨入口身份和消费端 tree-shaking，不直接作为浏览器请求布局。
+- Prism 的 JSX、TSX 和行号扩展显式依赖核心初始化。产物矩阵发现行号扩展先于 CommonJS 核心执行，影响 CodeHighlight 和 Sidebar；修复后定点与整轮组件对照均通过。
+- JsonViewer Worker 协议测试改用实际 Rsbuild 编译，保留初始化、格式化、折叠和校验断言；tarball 检查通过静态引用图查找 Worker，不再依赖 Vite 的 chunk 文件名。
+- 文档资源缓存和六批输入清单纳入 Rslib 配置、声明配置及共享编译辅助文件。REPL 将 `_base`、`_utils`、ConfigProvider、Locale 的公共 facade 指向同一基础设施实现组，保留组件和语言源入口；根 UI 静态请求数为 200，未放宽原有 200 门槛。
+- Nuxt 文档站的 workspace 链接在 Vite SSR 阶段保持 UI 包 external，避免 Nitro 二次打包抹掉模块注册副作用。浏览器仍正常打包消费；Nuxt builder 和 REPL 构建器的整体迁移留待后续阶段。
+
+### 第三阶段验证
+
+- 与 `74120d0` 的新鲜 Vite UI 产物对比：151 个入口导出名称和类型未增减，335 项根入口/子路径身份关系一致。
+- Rslib UI 构建、151 个 UI 入口及全部资产入口的 SSR import、产物私有依赖扫描通过。
+- 隔离 store 的真实 tarball 安装、exports、ESM、类型、主题与浏览器消费通过；新增 Button 点击、Input 受控回写、Select Portal 选择、CodeHighlight 行号/关键字验证，保留 JsonViewer Worker 搜索替换验证。
+- 按需消费以 Vue external、Vite 生产构建计量 UTF-8 字节：Button 根/子路径 9010/9010，Input 68389/68401，Select 151728/151747；保持 20/125/200 KB 门槛，根入口没有额外拉入无关组件。
+- `pnpm check` 的静态检查、格式、lint、源码类型及 1218 项单测通过。首次工具阶段遇到文档资源同时准备时 `tokens.json` 暂缺；准备完成后串行运行工具测试，69 + 6 项通过。最终受影响配置的 lint、UI typecheck 与 Worker 协议测试也通过。
+- 直接消费 Rslib UI 产物的 Chromium 组件矩阵：433/433 通过，无重试，包含 React/Vue 行为、样式、几何、局部像素及明暗色/RTL。使用临时 Rsbuild 配置在原插件之前将 UI 请求解析到 `packages/ui/dist`；实际请求的 provenance 确认 Divider 来自 dist 且无 UI src。只执行 `tests/browser/components`，未将默认工作台的源码路径断言伪称为产物验收。临时配置与服务已移除。
+- 最终 `pnpm check:docs` 通过：SSR 预渲染 399 路由，静态兼容入口 203 个；内容/类型/静态门禁通过。文档 Chromium 22/22 通过：Button、Icon、Navigation、页头的双语明暗色代表矩阵，加上导航加载、无 JS 阅读、交互与本地多文件编辑/错误恢复/实例隔离。
+- 一次误启动的全量文档矩阵因参考页固定依赖的 4321 字体服务已停止而出现网络错误，已中断；确认端口空闲后使用工作区临时服务完成上述 22 项目标检查。未将该中断运行计为全量文档验收通过。
+- 最终全仓 `pnpm format:check`、`pnpm lint` 与 `git diff --check` 通过；Rslib 配置、共享运行时、声明裁剪及 Nuxt/REPL 配置的 WebStorm 错误诊断为空。
+
+### 第三阶段边界
+
+本阶段未替换 Vitest、Nuxt builder 或 REPL 构建器；Vite 还用于这些既有环节和真实消费者兼容验证。没有恢复历史文档 accepted 指纹，也没有降低像素、请求数或 flaky 门槛。

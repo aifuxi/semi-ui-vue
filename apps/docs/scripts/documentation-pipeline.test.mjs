@@ -206,6 +206,9 @@ test('真实准备输入分离文档、测试与验收账本，新增和删除�
     'apps/docs/scripts/prepare-assets.mjs',
     'packages/ui/src/button.ts',
     'scripts/generate-icons.mjs',
+    'scripts/prune-ui-declarations.mjs',
+    'scripts/parity-rsbuild.ts',
+    'scripts/parity-build-runtime.mjs',
     'packages/ui/src/button.test.ts',
     'packages/icons/src/Icon.test.ts',
     'apps/docs/playwright.nuxt.config.ts',
@@ -220,6 +223,12 @@ test('真实准备输入分离文档、测试与验收账本，新增和删除�
   assert.ok(resources.inputs().includes('apps/docs/scripts/prepare-assets.mjs'));
   assert.ok(resources.inputs().includes('apps/docs/scripts/repl-module-bundles.mjs'));
   assert.ok(resources.inputs().includes('scripts/generate-icons.mjs'));
+  for (const file of [
+    'scripts/prune-ui-declarations.mjs',
+    'scripts/parity-rsbuild.ts',
+    'scripts/parity-build-runtime.mjs',
+  ])
+    assert.ok(resources.inputs().includes(file), file);
   assert.ok(!resources.inputs().includes('scripts/verify-theme.mjs'));
   assert.ok(!resources.inputs().includes('scripts/theme-contracts.json'));
   assert.ok(!resources.inputs().includes('packages/ui/src/button.test.ts'));

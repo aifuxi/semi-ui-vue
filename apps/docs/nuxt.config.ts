@@ -50,6 +50,9 @@ export default defineNuxtConfig({
     },
   },
   vite: {
+    // Workspace-linked libraries are otherwise inlined by Vite SSR. Keep the
+    // published ESM boundary so Nitro does not discard Rslib's CJS registrations.
+    ssr: { external: ['@aifuxi/semi-ui-vue'] },
     optimizeDeps: { exclude: ['@vue/repl'] },
     plugins: [
       {

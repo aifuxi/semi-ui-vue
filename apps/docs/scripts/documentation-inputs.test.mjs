@@ -277,6 +277,9 @@ test('实际六批仅纳入自身 React 适配器；Table 仅影响 Locale，Too
     'scripts/parity-rsbuild.ts',
     'scripts/parity-build-runtime.mjs',
     'scripts/parity-build-provenance.mjs',
+    'packages/ui/rslib.config.ts',
+    'packages/ui/tsconfig.build.json',
+    'scripts/prune-ui-declarations.mjs',
     'packages/icons/rslib.config.ts',
     'packages/icons/tsconfig.build.json',
   ])

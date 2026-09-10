@@ -15,6 +15,8 @@ import { fileURLToPath } from 'node:url';
 import { publicPackages as packages } from './release-packages.mjs';
 import { verifyThemeCss } from './theme-contracts.mjs';
 import { verifyJsonViewerPackedWorker } from './verify-json-viewer-pack.mjs';
+import ts from 'typescript';
+import { verifyUiTreeshaking } from './verify-ui-treeshaking.mjs';
 
 const workspaceRoot = fileURLToPath(new URL('..', import.meta.url));
 const pnpmExecPath = process.env.npm_execpath;
@@ -375,8 +377,8 @@ try {
     }
     if (packageInfo.name === '@aifuxi/semi-ui-vue') {
       const uiDistRoot = path.join(installedRoot, 'dist');
-      const uiRootJavaScriptNames = (await readdir(uiDistRoot)).filter((fileName) =>
-        fileName.endsWith('.js'),
+      const uiRootJavaScriptNames = (await readdir(uiDistRoot, { recursive: true })).filter(
+        (fileName) => fileName.endsWith('.js'),
       );
       const uiRootJavaScript = (
         await Promise.all(
@@ -392,17 +394,23 @@ try {
       ) {
         throw new Error('@aifuxi/semi-ui-vue 未保留独立插画包边界');
       }
-      const jsonViewerChunkNames = (await readdir(uiDistRoot)).filter((fileName) =>
-        /^json-viewer-.*\.js$/.test(fileName),
-      );
-      const jsonViewerDist = (
-        await Promise.all([
-          readFile(path.join(uiDistRoot, 'json-viewer', 'index.js'), 'utf8'),
-          ...jsonViewerChunkNames.map((fileName) =>
-            readFile(path.join(uiDistRoot, fileName), 'utf8'),
+      const visited = new Set();
+      async function readStaticGraph(file) {
+        if (visited.has(file)) return '';
+        visited.add(file);
+        const code = await readFile(file, 'utf8');
+        const dependencies = ts
+          .preProcessFile(code, true, true)
+          .importedFiles.map(({ fileName }) => fileName)
+          .filter((imported) => imported.startsWith('.'));
+        const parts = await Promise.all(
+          dependencies.map((imported) =>
+            readStaticGraph(path.resolve(path.dirname(file), imported)),
           ),
-        ])
-      ).join('\n');
+        );
+        return [code, ...parts].join('\n');
+      }
+      const jsonViewerDist = await readStaticGraph(path.join(uiDistRoot, 'json-viewer/index.js'));
       if (
         jsonViewerDist.includes('%WORKER_RAW%') ||
         jsonViewerDist.includes('vendor/semi-design') ||
@@ -1445,6 +1453,7 @@ h(Button, { type, htmlType: 'submit' });
 
   await verifyThemeCss(path.join(consumerRoot, 'node_modules/@aifuxi/semi-theme-default/dist'));
 
+  await verifyUiTreeshaking(consumerRoot);
   await verifyJsonViewerPackedWorker(consumerRoot);
   process.stdout.write(
     '真实 tarball 的安装、exports、ESM、类型、样式、SSR import 与 JsonViewer Worker 搜索替换均通过\n',

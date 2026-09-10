@@ -62,6 +62,8 @@ export async function buildReplModules({
   outdir,
   assetDirectories = ['icons', 'icons-lab', 'illustrations'],
   assetGroupSize = 32,
+  infrastructurePrefixes = ['ui/_base', 'ui/_utils'],
+  infrastructureEntries = ['ui/config-provider', 'ui/locale'],
   maxStaticRequests = 200,
 }) {
   const entries = Object.entries(entryPoints).sort(([a], [b]) => a.localeCompare(b));
@@ -74,7 +76,10 @@ export async function buildReplModules({
     const names = await exportedNames(source);
     contracts.set(key, names);
     const directory = key.split('/')[0];
-    if (!assetDirectories.includes(directory)) {
+    const infrastructure =
+      infrastructureEntries.includes(key) ||
+      infrastructurePrefixes.some((prefix) => key === prefix || key.startsWith(`${prefix}/`));
+    if (!assetDirectories.includes(directory) && !infrastructure) {
       groupedEntries[key] = source;
       continue;
     }
@@ -82,7 +87,9 @@ export async function buildReplModules({
     const group =
       key === `${directory}/index` ? 'root' : `group-${Math.floor(position / assetGroupSize)}`;
     if (group !== 'root') groupCounts.set(directory, position + 1);
-    const aggregate = `_assets/${directory}/${group}`;
+    // Shared UI infrastructure is tiny and co-used. One implementation group
+    // avoids extra browser requests while the original public facades stay intact.
+    const aggregate = infrastructure ? '_infrastructure/ui' : `_assets/${directory}/${group}`;
     const symbols = names.map((name, item) => ({ name, symbol: `entry_${index}_${item}` }));
     const declarations = symbols
       .map(({ name, symbol }) => `${JSON.stringify(name)} as ${symbol}`)
