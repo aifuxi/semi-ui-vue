@@ -128,6 +128,12 @@ Foundation 集成包已建立 Resizable、Typography、Switch、Tooltip、Select
 
 单元测试与源码共置在各 workspace 的 `src/` 下；Vue 包使用 `.test.ts` / `.spec.ts`，React 参考应用额外允许 `.test.tsx` / `.spec.tsx`。该约定保证 Vitest 能发现的测试同时纳入对应 workspace 的 TypeScript 检查。
 
+## 资产包构建
+
+`icons`、`icons-lab` 和 `illustrations` 使用 Rslib 1.0.0 的显式多入口 ESM 构建。入口延续原有根入口、组件工厂和逐资产子路径，Vue 保持 external；独立 `tsconfig.build.json` 将测试排除在声明产物之外，开发类型检查仍覆盖测试。Rslib 会为跨入口共享组件增加同名具名导出，原有 default 导出和组件身份保持不变。UI 包及对照应用仍使用 Vite，按后续迁移阶段替换。
+
+应用内固定上游样式通过 `sass-legacy` 别名使用 Sass 1.54.9；主题包继续直接使用 1.54.9。Vite 的可选 Sass peer 使用满足其要求的新版编译器，两者用途分开。
+
 ## 固定运行环境
 
 - Node.js 开发版本：`24.18.0`；支持范围：`^20.19.0 || ^22.13.0 || ^24.0.0`。

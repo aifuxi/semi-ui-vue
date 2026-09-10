@@ -46,9 +46,10 @@
     "@playwright/test": "1.62.1",
     "es-module-shims": "2.8.4",
     "esbuild": "0.28.1",
-    "sass": "1.54.9",
+    "sass-legacy": "npm:sass@1.54.9",
     "typeface-inconsolata": "1.1.13",
     "typescript": "5.9.3",
-    "yaml": "2.9.0"
+    "yaml": "2.9.0",
+    "sass": "1.104.0"
   }
 }

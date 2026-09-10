@@ -223,7 +223,7 @@ test('真实准备输入分离文档、测试与验收账本，新增和删除�
   assert.ok(!resources.inputs().includes('scripts/verify-theme.mjs'));
   assert.ok(!resources.inputs().includes('scripts/theme-contracts.json'));
   assert.ok(!resources.inputs().includes('packages/ui/src/button.test.ts'));
-  assert.ok(resources.inputs().includes('packages/icons/src/Icon.test.ts'));
+  assert.ok(!resources.inputs().includes('packages/icons/src/Icon.test.ts'));
   assert.ok(!resources.inputs().includes(files[0]));
   assert.deepEqual(site.inputs(), [files[3], files[2], files[0]].sort());
   assert.ok(checks.inputs().includes(files[1]));

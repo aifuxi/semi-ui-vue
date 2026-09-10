@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
-import sass from 'sass';
+import sass from 'sass-legacy';
 import { adaptPinnedJsonViewerCore } from '../../packages/foundation-integration/vite-json-viewer-plugin.js';
 import { pinnedButtonDocumentation } from './docs-reference-plugin.js';
 

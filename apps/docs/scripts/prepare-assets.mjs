@@ -2,7 +2,7 @@ import { cp, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { dirname, resolve } from 'node:path';
 import { createHash } from 'node:crypto';
-import sass from 'sass';
+import sass from 'sass-legacy';
 
 const require = createRequire(import.meta.url);
 const root = resolve(import.meta.dirname, '../../..');

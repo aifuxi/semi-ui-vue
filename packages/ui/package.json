@@ -428,7 +428,8 @@
   },
   "devDependencies": {
     "@types/lodash": "4.17.20",
-    "@types/markdown-it": "14.2.0"
+    "@types/markdown-it": "14.2.0",
+    "vue": "catalog:"
   },
   "dependencies": {
     "@aifuxi/semi-icons-vue": "workspace:*",

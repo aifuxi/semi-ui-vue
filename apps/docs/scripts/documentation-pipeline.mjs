@@ -80,9 +80,12 @@ export function preparationStages(root = workspace) {
           root,
         ).filter((file) => {
           if (/\/README(?:\.[^/]+)?$/.test(file)) return false;
-          // UI explicitly excludes *.test.ts from declarations. The icon and
-          // illustration builds currently emit test declarations, so retain theirs.
+          // Match each public package's declaration exclusions.
           if (file.startsWith('packages/ui/src/') && file.endsWith('.test.ts')) return false;
+          if (
+            /^packages\/(?:icons|icons-lab|illustrations)\/src\/.*\.(?:test|spec)\.ts$/.test(file)
+          )
+            return false;
           if (file.startsWith('scripts/') || file.startsWith('packages/foundation-integration/'))
             return !/(?:\.(?:test|spec)\.[^/]+$|\/(?:tests|__tests__)\/)/.test(file);
           return true;

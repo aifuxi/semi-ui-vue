@@ -29,4 +29,13 @@ overrides:
   '@types/react': 18.0.5
 
 allowBuilds:
+  '@parcel/watcher': true
   esbuild: true
+
+# Nuxt Content's metadata tool supplies older optional peers to unctx 3.
+# Give the transform its own compatible parser/plugin dependencies.
+packageExtensions:
+  'unctx@3.0.1':
+    dependencies:
+      oxc-parser: 0.149.0
+      unplugin: 3.3.0
