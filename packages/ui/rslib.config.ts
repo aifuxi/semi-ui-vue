@@ -233,7 +233,14 @@ export default defineConfig({
               chunks: 'all',
               enforce: true,
               priority: 10,
-              name: (module) => `_shared/${chunkId(module.identifier())}`,
+              name: (module) => {
+                // Native ESM namespace re-exports lose imported bindings when split
+                // across chunks in Rslib 1.0. Keep these small namespace-based packages together.
+                const namespacePackage = module
+                  .identifier()
+                  .match(/[\\/]node_modules[\\/](markdown-it|mdurl|uc\.micro)[\\/]/)?.[1];
+                return `_shared/${namespacePackage ?? chunkId(module.identifier())}`;
+              },
             },
             // These factory registrations are side effects, declared by the
             // package's dist/_runtime/** glob. Pure ESM chunks remain tree-shakeable.

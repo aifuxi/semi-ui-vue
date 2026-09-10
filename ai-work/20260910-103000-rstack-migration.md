@@ -168,3 +168,13 @@
 ### 第五阶段边界
 
 本阶段迁移 Nuxt builder 及必要的运行时集成；REPL 资源打包、虚拟 TS loader 的 esbuild 转换和剩余工具链留待下一阶段。没有迁移 Playwright、修改组件公开契约或 vendor，没有恢复历史文档批次 accepted。
+
+## 第六阶段：先修复三项已知问题
+
+### Chat 的 Markdown 产物
+
+- 用三个 ESM 文件独立复现 Rslib 1.0 的 namespace re-export 跨 chunk 绑定丢失。关闭 innerGraph、模块拼接或 usedExports 均不能解决；将同包 namespace 模块合并后可正常读取和调用。
+- 仅将 markdown-it、mdurl、uc.micro 各自的内部模块按包分组，保留其余 UI chunk 与 CommonJS 工厂策略。没有修改组件源码、vendor 或公开 API。
+- 扩展产物 SSR 检查，实际渲染 Chat 的带标题链接、粗体和自动链接，覆盖只导入模块无法触发的延迟 getter。
+- UI 构建、所有公开入口 SSR import、Chat SSR 渲染、双语 Chat Chromium 用例通过。真实 tarball 安装、exports、类型、CSS、SSR、JsonViewer Worker 验证通过；Button 根/子路径 9010/9010 bytes，Input 68389/68401，Select 151728/151747，tree-shaking 门禁通过。
+- 全站 check:docs 通过（198 页、1761 Demo、399 预渲染路由、203 兼容入口）。静态、lint、源码类型检查通过；初次测试期间系统 17:59 合盖、18:00–18:17 休眠 1025 秒，造成单测和浏览器超时，已用 macOS powerd 日志确认。唤醒后原参数、零重试重新执行，178 文件 / 1218 单测和 71 + 6 工具测试全部通过。完整 476 项浏览器矩阵仍在执行，尚不计为通过。
