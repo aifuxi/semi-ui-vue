@@ -38,34 +38,39 @@ onBeforeUnmount(() => clearTimeout(timer));
 <template>
   <div>
     <Space :spacing="20">
+      <div>
+        <Progress
+          :percent="automaticPercent"
+          :stroke="stroke"
+          stroke-gradient
+          show-info
+          type="circle"
+          :width="100"
+          aria-label="File download speed"
+        />
+      </div>
+      <div>
+        <Progress
+          :percent="automaticPercent"
+          :stroke="reverseStroke"
+          stroke-gradient
+          show-info
+          type="circle"
+          :width="100"
+          aria-label="File download speed"
+        />
+      </div>
+    </Space>
+    <div style="width: 100%; margin: 20px 0 10px">
       <Progress
-        :percent="automaticPercent"
+        :percent="percent"
         :stroke="stroke"
         stroke-gradient
         show-info
-        type="circle"
-        :width="100"
+        size="large"
         aria-label="File download speed"
       />
-      <Progress
-        :percent="automaticPercent"
-        :stroke="reverseStroke"
-        stroke-gradient
-        show-info
-        type="circle"
-        :width="100"
-        aria-label="File download speed"
-      />
-    </Space>
-    <Progress
-      :percent="percent"
-      :stroke="stroke"
-      stroke-gradient
-      show-info
-      size="large"
-      style="width: 100%; margin: 20px 0 10px"
-      aria-label="File download speed"
-    />
+    </div>
     <Button
       theme="light"
       aria-label="Decrease progress"

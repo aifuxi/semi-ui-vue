@@ -6,10 +6,10 @@ import '@aifuxi/semi-theme-default/progress.css';
 <template>
   <div>
     <Progress :percent="75" show-info type="circle" style="margin: 10px" aria-label="磁盘使用量"
-      ><template #format="{ percent }">{{ percent }}天</template></Progress
+      ><template #format="{ percent }">{{ percent }}Days</template></Progress
     >
     <Progress :percent="100" show-info type="circle" style="margin: 10px" aria-label="磁盘使用量"
-      ><template #format>完成</template></Progress
+      ><template #format>Done</template></Progress
     >
     <Progress
       :percent="50"

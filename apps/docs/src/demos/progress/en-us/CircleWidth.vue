@@ -19,7 +19,7 @@ import '@aifuxi/semi-theme-default/progress.css';
         :percent="100"
         type="circle"
         :width="100"
-        stroke="var(--semi-color-danger)"
+        stroke="#f93920"
         style="margin: 5px"
         aria-label="Disk usage"
       />

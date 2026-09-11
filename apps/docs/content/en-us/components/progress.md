@@ -14,8 +14,9 @@ upstream: 'feedback/progress'
 
 ### How to import
 
-```jsx
-import { Progress } from '@douyinfe/semi-ui';
+```ts
+import { Progress } from '@aifuxi/semi-ui-vue/progress';
+import '@aifuxi/semi-theme-default/progress.css';
 ```
 
 ### Standard progress bar
@@ -164,7 +165,7 @@ The `#format="{ percent }"` scoped slot takes precedence over the `format` prop.
 | React                                           | Vue                                                    |
 | ----------------------------------------------- | ------------------------------------------------------ |
 | `format(percent) => ReactNode`                  | format(percent) => VNodeChild or #format="{ percent }" |
-| `useState + setPercent`                         | shallowRef + :percent                                  |
+| `useState + setPercent`                         | `shallowRef + :percent`                                |
 | `useEffect + setTimeout`                        | Start in onMounted; clean up in onBeforeUnmount        |
 | `aria-label / aria-labelledby / aria-valuetext` | Original ARIA attributes or camelCase props            |
 | `className / CSSProperties`                     | class (className alias retained) / StyleValue          |

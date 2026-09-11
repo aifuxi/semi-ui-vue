@@ -167,7 +167,7 @@ import '@aifuxi/semi-theme-default/progress.css';
 | React                                           | Vue                                                    |
 | ----------------------------------------------- | ------------------------------------------------------ |
 | `format(percent) => ReactNode`                  | format(percent) => VNodeChild 或 #format="{ percent }" |
-| `useState + setPercent`                         | shallowRef + :percent                                  |
+| `useState + setPercent`                         | `shallowRef + :percent`                                |
 | `useEffect + setTimeout`                        | onMounted 启动、onBeforeUnmount 清理                   |
 | `aria-label / aria-labelledby / aria-valuetext` | 保留同名 ARIA 属性，也支持 camelCase props             |
 | `className / CSSProperties`                     | class（兼容 className）/ StyleValue                    |

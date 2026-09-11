@@ -124,5 +124,16 @@
       "notes": "保留固定上游章节顺序；代码改为 Vue SFC，API 改为实际公开 Vue 类型，附补充 Accessibility/FAQ/迁移说明"
     }
   ],
-  "exclusions": []
+  "exclusions": [],
+  "review": {
+    "fingerprint": "c87c9aa75699d33cf595d3d373993a7712859ecea05cefabd61f502e6c961f1d",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "逐项核对固定中英文十二例、全部章节、公开 ProgressProps 与 format 作用域插槽；正文及迁移说明均使用 Vue API。",
+      "保留中英文 Basic 名称与 CircleWidth 颜色差异；参考补齐英文动态例缺失的 hook 导入，并与 Vue 示例一致提供本地化可访问名称。",
+      "恢复固定上游 Days/Done 与布局容器；迁移表的 :percent 使用代码标记防止 MDC 吞掉；自动计时在客户端启动并在卸载时清理。详见 progress-acceptance.md。"
+    ]
+  }
 }

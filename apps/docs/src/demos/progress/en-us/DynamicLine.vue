@@ -11,7 +11,7 @@ const percent = shallowRef(40);
 
 <template>
   <div>
-    <div><Progress :percent="percent" show-info aria-label="Disk usage" /></div>
+    <Progress :percent="percent" show-info aria-label="Disk usage" />
     <Button
       theme="light"
       aria-label="Decrease progress"
