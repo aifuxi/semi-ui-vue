@@ -59,7 +59,7 @@
       "index": 10,
       "zhCN": "resizable/zh-cn/Grid",
       "enUS": "resizable/en-us/Grid",
-      "notes": "修正英文固定源码Grid演示缺失Resizable与div闭合标签，保留grid=100、snapGap=20及原布局。"
+      "notes": "固定英文源码已有完整闭合标签；保留grid=100、snapGap=20及原布局，无需修补。"
     },
     {
       "index": 11,
@@ -144,5 +144,17 @@
       "notes": "保留章节顺序、说明及非live类型示例；API按实际公开Vue类型生成，补足slots/emits、FAQ、无障碍与迁移。"
     }
   ],
-  "exclusions": []
+  "exclusions": [],
+  "review": {
+    "fingerprint": "c4adb4e1167c173201a28a97deaa0b728fe7f04847a902fc7213524cd4b7e950",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "核对固定双语14例及全部章节、Resizable/ResizeGroup Adapter/Foundation、Vue公开类型与指针事件；无独立locale表依赖。",
+      "修正双语Direction数值margin的Vue单位迁移；完整snap类型、英文change回调及ResizeItem的固定尺寸/数字权重说明。",
+      "React参考补遗漏导入和命名导出入口；IconTransfer改公开IconHandle；grid=100按Foundation等价双轴元组规避固定PropTypes错误，不过滤控制台错误。",
+      "英文Grid原本已有闭合标签，纠正旧映射记录；保留嵌套布局、原文案与指针语义，无accepted deviation。"
+    ]
+  }
 }

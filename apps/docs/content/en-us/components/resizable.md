@@ -26,7 +26,7 @@ import '@aifuxi/semi-theme-default/resizable.css';
 ### Single Component
 
 Basic Usage and Callbacks
-You can set the initial size using defaultSize, and set drag callbacks with `@resize-start`, `onResize`, and `@resize-end`.
+You can set the initial size using defaultSize, and set drag callbacks with `@resize-start`, `@change`, and `@resize-end`.
 
 ```ts
 interface Size {
@@ -165,7 +165,7 @@ interface Snap {
 >
 > It's best not to set padding for ResizeItem, as it may cause the minimum size to not match the expected value. You can set padding for child elements instead.
 
-Use the direction prop to set the resizing direction. Options are `horizontal` and `vertical`. Supports `@resize-start`, `onResize`, and `@resize-end` callbacks, as well as setting `min` and `max` to control the maximum and minimum width/height.
+Use the direction prop to set the resizing direction. Options are `horizontal` and `vertical`. Supports `@resize-start`, `@change`, and `@resize-end` callbacks, as well as setting `min` and `max` to control the maximum and minimum width/height.
 
 ::demo-block{demo="resizable/en-us/Group" title="Group Component "}
 ::
@@ -189,31 +189,31 @@ Set the resizing direction using the direction prop. Options are horizontal and 
 
 ### Resizable
 
-| Property                     | Description                                                                                                                            | Type                                  | Default  |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | -------- |
-| `size`                       | Controls the size of the resizable box, supports both numeric and string (px/vw/vh/%) formats                                          | `ResizeSize`                          | `—`      |
-| `defaultSize`                | Sets the initial width and height, supports both numeric and string (px/vw/vh/%) formats                                               | `ResizeSize`                          | `—`      |
-| `minWidth`                   | Specifies the minimum width of the resizable box                                                                                       | `string \| number`                    | `—`      |
-| `minHeight`                  | Specifies the minimum height of the resizable box                                                                                      | `string \| number`                    | `—`      |
-| `maxWidth`                   | Specifies the maximum width of the resizable box                                                                                       | `string \| number`                    | `—`      |
-| `maxHeight`                  | Specifies the maximum height of the resizable box                                                                                      | `string \| number`                    | `—`      |
-| `grid`                       | Specifies the increment to align to when resizing                                                                                      | `number \| readonly [number, number]` | `[1, 1]` |
-| `snap`                       | Specifies the pixel values to snap to during resizing. Both x and y are optional, allowing the definition of specific axes only        | `{ x?: readonly number[]`             | `—`      |
-| `snapGap`                    | Specifies the minimum gap required to snap to the next target                                                                          | `number`                              | `0`      |
-| `boundElement`               | Restricts the size of the resizable element within a specific element. Pass "parent" to set the parent element as the bounding element | `'parent' \| 'window' \| HTMLElement` | `—`      |
-| `boundsByDirection`          | Apply bounds according to resize direction                                                                                             | `boolean`                             | `false`  |
-| `lockAspectRatio`            | Locks the aspect ratio of the resizable box when true, using the initial width and height as the ratio                                 | `boolean \| number`                   | `false`  |
-| `lockAspectRatioExtraWidth`  | Extra width outside the locked ratio                                                                                                   | `number`                              | `0`      |
-| `lockAspectRatioExtraHeight` | Extra height outside the locked ratio                                                                                                  | `number`                              | `0`      |
-| `enable`                     | Specifies the directions in which the resizable box can be resized. If not set, all directions are enabled by default                  | `ResizeEnable \| false`               | `{}`     |
-| `handleStyle`                | Styles for the drag handles in each direction                                                                                          | `ResizeHandleStyle`                   | `—`      |
-| `handleClass`                | Class names for the drag handles in each direction                                                                                     | `ResizeHandleClass`                   | `—`      |
-| `handleWrapperStyle`         | Resize-handle wrapper style                                                                                                            | `CSSProperties`                       | `—`      |
-| `handleWrapperClass`         | Resize-handle wrapper class                                                                                                            | `string`                              | `—`      |
-| `handleNode`                 | Custom nodes for the drag handles in each direction                                                                                    | `ResizeHandleNode`                    | `—`      |
-| `scale`                      | The scale ratio of the resizable element                                                                                               | `number`                              | `1`      |
-| `ratio`                      | Ratio of pointer motion to size change; an array sets each axis                                                                        | `number \| readonly [number, number]` | `1`      |
-| `beforeResizeStart`          | Start guard; return false to cancel resizing                                                                                           | `ResizeStartGuard`                    | `—`      |
+| Property                     | Description                                                                                                                            | Type                                               | Default  |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | -------- |
+| `size`                       | Controls the size of the resizable box, supports both numeric and string (px/vw/vh/%) formats                                          | `ResizeSize`                                       | `—`      |
+| `defaultSize`                | Sets the initial width and height, supports both numeric and string (px/vw/vh/%) formats                                               | `ResizeSize`                                       | `—`      |
+| `minWidth`                   | Specifies the minimum width of the resizable box                                                                                       | `string \| number`                                 | `—`      |
+| `minHeight`                  | Specifies the minimum height of the resizable box                                                                                      | `string \| number`                                 | `—`      |
+| `maxWidth`                   | Specifies the maximum width of the resizable box                                                                                       | `string \| number`                                 | `—`      |
+| `maxHeight`                  | Specifies the maximum height of the resizable box                                                                                      | `string \| number`                                 | `—`      |
+| `grid`                       | Specifies the increment to align to when resizing                                                                                      | `number \| readonly [number, number]`              | `[1, 1]` |
+| `snap`                       | Specifies the pixel values to snap to during resizing. Both x and y are optional, allowing the definition of specific axes only        | `{ x?: readonly number[]; y?: readonly number[] }` | `—`      |
+| `snapGap`                    | Specifies the minimum gap required to snap to the next target                                                                          | `number`                                           | `0`      |
+| `boundElement`               | Restricts the size of the resizable element within a specific element. Pass "parent" to set the parent element as the bounding element | `'parent' \| 'window' \| HTMLElement`              | `—`      |
+| `boundsByDirection`          | Apply bounds according to resize direction                                                                                             | `boolean`                                          | `false`  |
+| `lockAspectRatio`            | Locks the aspect ratio of the resizable box when true, using the initial width and height as the ratio                                 | `boolean \| number`                                | `false`  |
+| `lockAspectRatioExtraWidth`  | Extra width outside the locked ratio                                                                                                   | `number`                                           | `0`      |
+| `lockAspectRatioExtraHeight` | Extra height outside the locked ratio                                                                                                  | `number`                                           | `0`      |
+| `enable`                     | Specifies the directions in which the resizable box can be resized. If not set, all directions are enabled by default                  | `ResizeEnable \| false`                            | `{}`     |
+| `handleStyle`                | Styles for the drag handles in each direction                                                                                          | `ResizeHandleStyle`                                | `—`      |
+| `handleClass`                | Class names for the drag handles in each direction                                                                                     | `ResizeHandleClass`                                | `—`      |
+| `handleWrapperStyle`         | Resize-handle wrapper style                                                                                                            | `CSSProperties`                                    | `—`      |
+| `handleWrapperClass`         | Resize-handle wrapper class                                                                                                            | `string`                                           | `—`      |
+| `handleNode`                 | Custom nodes for the drag handles in each direction                                                                                    | `ResizeHandleNode`                                 | `—`      |
+| `scale`                      | The scale ratio of the resizable element                                                                                               | `number`                                           | `1`      |
+| `ratio`                      | Ratio of pointer motion to size change; an array sets each axis                                                                        | `number \| readonly [number, number]`              | `1`      |
+| `beforeResizeStart`          | Start guard; return false to cancel resizing                                                                                           | `ResizeStartGuard`                                 | `—`      |
 
 ### ResizeSize
 
@@ -234,11 +234,11 @@ Use class and style attributes and the default slot to customize the divider.
 
 ### ResizeItem
 
-| Property      | Description                                                                              | Type               | Default |
-| ------------- | ---------------------------------------------------------------------------------------- | ------------------ | ------- |
-| `min`         | Specifies the minimum size of the resizable box (as percentage or pixel)                 | `string`           | `—`     |
-| `max`         | Specifies the maximum size of the resizable box (as percentage or pixel)                 | `string`           | `—`     |
-| `defaultSize` | Sets the initial width and height, supports both numeric and string (px/vw/vh/%) formats | `string \| number` | `—`     |
+| Property      | Description                                                                       | Type               | Default |
+| ------------- | --------------------------------------------------------------------------------- | ------------------ | ------- |
+| `min`         | Specifies the minimum size of the resizable box (as percentage or pixel)          | `string`           | `—`     |
+| `max`         | Specifies the maximum size of the resizable box (as percentage or pixel)          | `string`           | `—`     |
+| `defaultSize` | % or px sets a fixed size; numbers and numeric strings weight the remaining space | `string \| number` | `—`     |
 
 Resizable supports `v-model:size` and the default slot. Its directional slots are `#handle-top`, `#handle-right`, `#handle-bottom`, `#handle-left`, `#handle-topRight`, `#handle-bottomRight`, `#handle-bottomLeft`, and `#handle-topLeft`. handleNode functions are not required: pass Vue nodes or slots.
 

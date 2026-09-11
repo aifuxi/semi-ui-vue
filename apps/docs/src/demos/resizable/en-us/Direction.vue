@@ -10,9 +10,9 @@ const b = shallowRef(false);
 </script>
 <template>
   <div :style="{ width: '500px', height: '60%' }">
-    <div :style="{ display: 'flex', alignItems: 'center', margin: 8 }">
+    <div :style="{ display: 'flex', alignItems: 'center', margin: '8px' }">
       <Switch v-model="b"></Switch>
-      <Title :heading="6" :style="{ margin: 8 }">
+      <Title :heading="6" :style="{ margin: '8px' }">
         {{ b ? 'able' : 'disable' }}
       </Title>
     </div>

@@ -188,31 +188,31 @@ interface Snap {
 
 ### Resizable
 
-| 属性                         | 说明                                                                       | 类型                                  | 默认值   |
-| ---------------------------- | -------------------------------------------------------------------------- | ------------------------------------- | -------- |
-| `size`                       | 控制伸缩框的大小，支持数字和字符串（px/vw/vh/%）两种格式                   | `ResizeSize`                          | `—`      |
-| `defaultSize`                | 用于设置初始宽高，支持数字和字符串（px/vw/vh/%）两种格式                   | `ResizeSize`                          | `—`      |
-| `minWidth`                   | 指定伸缩框最小宽度                                                         | `string \| number`                    | `—`      |
-| `minHeight`                  | 指定伸缩框最小高度                                                         | `string \| number`                    | `—`      |
-| `maxWidth`                   | 指定伸缩框最大宽度                                                         | `string \| number`                    | `—`      |
-| `maxHeight`                  | 指定伸缩框最大高度                                                         | `string \| number`                    | `—`      |
-| `grid`                       | 指定调整大小应对齐的增量                                                   | `number \| readonly [number, number]` | `[1, 1]` |
-| `snap`                       | 指定调整大小时应对齐的绝对像素值。 x 和 y 都是可选的，允许仅包含要定义的轴 | `{ x?: readonly number[]`             | `—`      |
-| `snapGap`                    | 用于指定移动到下一个目标所需的最小间隙。                                   | `number`                              | `0`      |
-| `boundElement`               | 用于限制可伸缩元素宽高的元素,传入 `parent` 设置父节点为限制节点            | `'parent' \| 'window' \| HTMLElement` | `—`      |
-| `boundsByDirection`          | 按拖动方向应用边界限制                                                     | `boolean`                             | `false`  |
-| `lockAspectRatio`            | 设置伸缩框横纵比，当为`true`时按照初始宽高锁定                             | `boolean \| number`                   | `false`  |
-| `lockAspectRatioExtraWidth`  | 锁定比例之外的额外宽度                                                     | `number`                              | `0`      |
-| `lockAspectRatioExtraHeight` | 锁定比例之外的额外高度                                                     | `number`                              | `0`      |
-| `enable`                     | 指定伸缩框可以伸缩的方向，没有设置为 false，则默认允许该方向的拖动         | `ResizeEnable \| false`               | `{}`     |
-| `handleStyle`                | 用于设置拖拽处理元素各个方向的样式                                         | `ResizeHandleStyle`                   | `—`      |
-| `handleClass`                | 用于设置拖拽处理元素各个方向的类名称                                       | `ResizeHandleClass`                   | `—`      |
-| `handleWrapperStyle`         | 拖动手柄容器样式                                                           | `CSSProperties`                       | `—`      |
-| `handleWrapperClass`         | 拖动手柄容器类名                                                           | `string`                              | `—`      |
-| `handleNode`                 | 用于设置拖拽处理元素各个方向的自定义节点                                   | `ResizeHandleNode`                    | `—`      |
-| `scale`                      | 可伸缩元素被缩放的比例                                                     | `number`                              | `1`      |
-| `ratio`                      | 拖动距离与尺寸变化的比例；数组分别指定横纵轴                               | `number \| readonly [number, number]` | `1`      |
-| `beforeResizeStart`          | 开始前守卫；返回 false 取消本次拖动                                        | `ResizeStartGuard`                    | `—`      |
+| 属性                         | 说明                                                                       | 类型                                               | 默认值   |
+| ---------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------- | -------- |
+| `size`                       | 控制伸缩框的大小，支持数字和字符串（px/vw/vh/%）两种格式                   | `ResizeSize`                                       | `—`      |
+| `defaultSize`                | 用于设置初始宽高，支持数字和字符串（px/vw/vh/%）两种格式                   | `ResizeSize`                                       | `—`      |
+| `minWidth`                   | 指定伸缩框最小宽度                                                         | `string \| number`                                 | `—`      |
+| `minHeight`                  | 指定伸缩框最小高度                                                         | `string \| number`                                 | `—`      |
+| `maxWidth`                   | 指定伸缩框最大宽度                                                         | `string \| number`                                 | `—`      |
+| `maxHeight`                  | 指定伸缩框最大高度                                                         | `string \| number`                                 | `—`      |
+| `grid`                       | 指定调整大小应对齐的增量                                                   | `number \| readonly [number, number]`              | `[1, 1]` |
+| `snap`                       | 指定调整大小时应对齐的绝对像素值。 x 和 y 都是可选的，允许仅包含要定义的轴 | `{ x?: readonly number[]; y?: readonly number[] }` | `—`      |
+| `snapGap`                    | 用于指定移动到下一个目标所需的最小间隙。                                   | `number`                                           | `0`      |
+| `boundElement`               | 用于限制可伸缩元素宽高的元素,传入 `parent` 设置父节点为限制节点            | `'parent' \| 'window' \| HTMLElement`              | `—`      |
+| `boundsByDirection`          | 按拖动方向应用边界限制                                                     | `boolean`                                          | `false`  |
+| `lockAspectRatio`            | 设置伸缩框横纵比，当为`true`时按照初始宽高锁定                             | `boolean \| number`                                | `false`  |
+| `lockAspectRatioExtraWidth`  | 锁定比例之外的额外宽度                                                     | `number`                                           | `0`      |
+| `lockAspectRatioExtraHeight` | 锁定比例之外的额外高度                                                     | `number`                                           | `0`      |
+| `enable`                     | 指定伸缩框可以伸缩的方向，没有设置为 false，则默认允许该方向的拖动         | `ResizeEnable \| false`                            | `{}`     |
+| `handleStyle`                | 用于设置拖拽处理元素各个方向的样式                                         | `ResizeHandleStyle`                                | `—`      |
+| `handleClass`                | 用于设置拖拽处理元素各个方向的类名称                                       | `ResizeHandleClass`                                | `—`      |
+| `handleWrapperStyle`         | 拖动手柄容器样式                                                           | `CSSProperties`                                    | `—`      |
+| `handleWrapperClass`         | 拖动手柄容器类名                                                           | `string`                                           | `—`      |
+| `handleNode`                 | 用于设置拖拽处理元素各个方向的自定义节点                                   | `ResizeHandleNode`                                 | `—`      |
+| `scale`                      | 可伸缩元素被缩放的比例                                                     | `number`                                           | `1`      |
+| `ratio`                      | 拖动距离与尺寸变化的比例；数组分别指定横纵轴                               | `number \| readonly [number, number]`              | `1`      |
+| `beforeResizeStart`          | 开始前守卫；返回 false 取消本次拖动                                        | `ResizeStartGuard`                                 | `—`      |
 
 ### ResizeSize
 
@@ -233,11 +233,11 @@ interface Snap {
 
 ### ResizeItem
 
-| 属性          | 说明                                                     | 类型               | 默认值 |
-| ------------- | -------------------------------------------------------- | ------------------ | ------ |
-| `min`         | 指定伸缩框最小尺寸（百分比或像素值）                     | `string`           | `—`    |
-| `max`         | 指定伸缩框最大尺寸（百分比或像素值）                     | `string`           | `—`    |
-| `defaultSize` | 用于设置初始宽高，支持数字和字符串（px/vw/vh/%）两种格式 | `string \| number` | `—`    |
+| 属性          | 说明                                                       | 类型               | 默认值 |
+| ------------- | ---------------------------------------------------------- | ------------------ | ------ |
+| `min`         | 指定伸缩框最小尺寸（百分比或像素值）                       | `string`           | `—`    |
+| `max`         | 指定伸缩框最大尺寸（百分比或像素值）                       | `string`           | `—`    |
+| `defaultSize` | % 或 px 表示固定尺寸；数字或纯数字字符串按权重分配剩余空间 | `string \| number` | `—`    |
 
 Resizable 支持 v-model:size 与默认插槽，方向插槽为 #handle-top、#handle-right、#handle-bottom、#handle-left、#handle-topRight、#handle-bottomRight、#handle-bottomLeft、#handle-topLeft。handleNode 接收 Vue 节点，也可使用对应插槽。
 
