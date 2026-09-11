@@ -72,7 +72,7 @@ Popup and Modal have independent state. Submission shows the success illustratio
 
 Both languages follow the same seven upstream examples, without language-only examples or additional source files. The Chinese Modal title and completion buttons/titles also retain the upstream English text. Each English example passes the complete `locale/source/en_US` data to `ConfigProvider` for English labels on the page and in the online editor; `{ code: 'en-US' }` alone does not supply the `Feedback` labels.
 
-The custom example initializes its value to an empty string instead of the upstream self-reference `useState(value)`. Its controlled input uses `v-model`, avoiding the stale closure caused by the upstream missing `value` dependency. Completion uses the existing Vue `footer: null` hiding behavior. These examples have basic runtime coverage, not strict React/Vue visual or behavioral acceptance.
+The custom example initializes its value to an empty string instead of the upstream self-reference `useState(value)`. Its controlled input uses `v-model`, avoiding the stale closure caused by the upstream missing `value` dependency. Completion uses the existing Vue `footer: null` hiding behavior. The strict acceptance scope and pinned-source repairs are recorded in `docs/documentation/feedback-acceptance.md` in the repository; generated evidence determines the current acceptance status.
 
 ## Content types
 
@@ -81,7 +81,9 @@ The custom example initializes its value to an empty string instead of the upstr
 - `radio` / `checkbox`: provide options through `radioGroupProps` / `checkboxGroupProps`.
 - `custom`: renders the default slot. Use `#content="{ content }"` or `renderContent` to wrap generated content.
 
-## API
+## API reference
+
+In addition to feedback-specific options, `mode="modal"` accepts [Modal props](/en-us/components/modal/), and `mode="popup"` accepts [SideSheet props](/en-us/components/side-sheet/), including title, width, close controls, mask, and Portal container. Pass these props directly; there is no separate `ModalProps` or `SideSheetProps` wrapper object.
 
 | Prop                                  | Type                                                     | Default         | Description                                    |
 | ------------------------------------- | -------------------------------------------------------- | --------------- | ---------------------------------------------- |

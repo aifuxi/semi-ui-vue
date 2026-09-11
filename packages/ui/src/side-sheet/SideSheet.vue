@@ -34,9 +34,10 @@ const instance = getCurrentInstance();
 const injectedConfig = inject(configContextKey, undefined);
 const teleportTarget = shallowRef<HTMLElement | null>(null);
 const mounted = shallowRef(false);
+const contentAnimating = shallowRef(false);
+const maskAnimating = shallowRef(false);
 const cache = new Map<unknown, unknown>();
 let activeCycle = false;
-let hideTimer: ReturnType<typeof setTimeout> | undefined;
 let originalBodyOverflow: string | null = null;
 let originalBodyWidth = '';
 
@@ -177,14 +178,14 @@ const contentHeight = computed(() =>
   isHorizontal.value ? resolveOptional('height') || sideSheetStrings.HEIGHT : '100%',
 );
 const maskClass = computed(() =>
-  runtimeProps.value.motion
+  runtimeProps.value.motion && maskAnimating.value
     ? runtimeVisible.value
       ? 'semi-sidesheet-animation-mask_show'
       : 'semi-sidesheet-animation-mask_hide'
     : undefined,
 );
 const dialogClass = computed(() =>
-  runtimeProps.value.motion
+  runtimeProps.value.motion && contentAnimating.value
     ? runtimeVisible.value
       ? `semi-sidesheet-animation-content_show_${runtimeProps.value.placement}`
       : `semi-sidesheet-animation-content_hide_${runtimeProps.value.placement}`
@@ -213,10 +214,11 @@ function handleKeyDown(event: KeyboardEvent): void {
 }
 
 function beginShow(): void {
-  clearTimeout(hideTimer);
   const wasHidden = state.displayNone;
   resolveContainer();
   state.displayNone = false;
+  contentAnimating.value = runtimeProps.value.motion;
+  maskAnimating.value = runtimeProps.value.motion;
   activeCycle = true;
   foundation.beforeShow();
   if (wasHidden) foundation.onVisibleChange(true);
@@ -224,7 +226,6 @@ function beginShow(): void {
 
 function finishHide(): void {
   if (!activeCycle || runtimeVisible.value || state.displayNone) return;
-  clearTimeout(hideTimer);
   foundation.toggleDisplayNone(true);
   activeCycle = false;
   foundation.onVisibleChange(false);
@@ -232,16 +233,22 @@ function finishHide(): void {
 
 function beginHide(): void {
   if (!activeCycle) return;
+  contentAnimating.value = runtimeProps.value.motion;
+  maskAnimating.value = runtimeProps.value.motion;
   foundation.afterHide();
   if (!runtimeProps.value.motion) {
     finishHide();
     return;
   }
-  clearTimeout(hideTimer);
-  hideTimer = setTimeout(finishHide, 180);
+  // CSS starts on a later frame; a JS timer using the CSS duration truncates the last frame.
+  // Match the pinned adapter by finishing when the actual container animation ends.
 }
 
-function handleAnimationEnd(): void {
+function handleAnimationEnd(event: AnimationEvent): void {
+  // The pinned CSSAnimation wrappers track mask and content independently.
+  const target = event.currentTarget as HTMLElement;
+  if (target.classList.contains('semi-sidesheet-mask')) maskAnimating.value = false;
+  else contentAnimating.value = false;
   if (!runtimeVisible.value) finishHide();
 }
 
@@ -255,11 +262,23 @@ watch(runtimeVisible, (visible, previous) => {
   if (visible) beginShow();
   else beginHide();
 });
+watch(
+  () => [runtimeProps.value.motion, runtimeProps.value.placement] as const,
+  ([motion, placement], [previousMotion, previousPlacement]) => {
+    if (!mounted.value || !activeCycle) return;
+    if (motion !== previousMotion) {
+      contentAnimating.value = motion;
+      maskAnimating.value = motion;
+      if (!motion && !runtimeVisible.value) finishHide();
+    } else if (motion && placement !== previousPlacement) {
+      contentAnimating.value = true;
+    }
+  },
+);
 watch(popupGetter, () => {
   if (mounted.value) resolveContainer();
 });
 onBeforeUnmount(() => {
-  clearTimeout(hideTimer);
   if (activeCycle) foundation.destroy();
   else enableBodyScroll();
 });

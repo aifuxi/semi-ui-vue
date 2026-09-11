@@ -72,7 +72,7 @@ Popup 与 Modal 各有独立状态。提交后展示成功插画与感谢信息�
 
 双语示例与固定上游七项顺序一致，无独有示例或额外文件依赖。完成提示的触发按钮、标题保留上游英文；英文示例通过 `ConfigProvider` 传入完整的 `locale/source/en_US` 数据，使内置按钮在页面与在线编辑器都使用英文；只传 `{ code: 'en-US' }` 不会自动补齐 `Feedback` 文案。
 
-自定义示例将上游 `useState(value)` 自引用初始化修正为空字符串；英文受控输入使用 `v-model`，不沿用上游 `useCallback` 遗漏 `value` 依赖的旧值闭包。完成提示沿用现有 Vue 的 `footer: null` 隐藏语义；本批仅验证基础运行，不代表严格 React/Vue 视觉与行为验收。
+自定义示例将上游 `useState(value)` 自引用初始化修正为空字符串；英文受控输入使用 `v-model`，不沿用上游 `useCallback` 遗漏 `value` 依赖的旧值闭包。完成提示沿用现有 Vue 的 `footer: null` 隐藏语义；严格验收范围及固定源码修正见仓库中的 `docs/documentation/feedback-acceptance.md`，正式状态以自动生成的证据为准。
 
 ## 内容类型
 
@@ -98,7 +98,11 @@ Popup 与 Modal 各有独立状态。提交后展示成功插画与感谢信息�
 />
 ```
 
-## API
+## API 参考
+
+### FeedbackProps
+
+除反馈专用参数外，`mode="modal"` 支持 [Modal 参数](/zh-cn/components/modal/)，`mode="popup"` 支持 [SideSheet 参数](/zh-cn/components/side-sheet/)，例如标题、宽度、关闭按钮、遮罩及 Portal 容器。直接传入对应 props，不使用额外的 `ModalProps` 或 `SideSheetProps` 包装对象。
 
 | Prop                                  | 类型                                                     | 默认值    | 说明                                      |
 | ------------------------------------- | -------------------------------------------------------- | --------- | ----------------------------------------- |

@@ -46,10 +46,12 @@
 - 初始 `visible=false` 不渲染；初始 `visible=true` 挂载后执行 `beforeShow`，但不伪造一次 React 未产生的 prop-transition 回调。
 - `false -> true`：先解除 `displayNone`、解析稳定容器并执行 Foundation `beforeShow`，随后触发 `afterVisibleChange(true)`。
 - close/mask/Escape：Foundation `notifyCancel` -> `update:visible(false)` -> `cancel(event)`；受控父级决定实际关闭。
-- `true -> false`：立即执行 Foundation `afterHide`（恢复 body 与移除 keydown）；`motion=false` 立即隐藏，`motion=true` 在 mask/content animationend 或 180ms 兜底后隐藏；只触发一次 `afterVisibleChange(false)`。
+- `true -> false`：立即执行 Foundation `afterHide`（恢复 body 与移除 keydown）；`motion=false` 立即隐藏，`motion=true` 在 mask/content animationend 后隐藏；只触发一次 `afterVisibleChange(false)`。
 - `keepDOM=true` 时关闭后 DOM 保留但 `.semi-sidesheet-hidden { display:none }`；再次打开复用内容。
 
 ## DOM、样式、主题、RTL 与动效
+
+- 进入动效的 mask/content class 在各自 animationend 后独立移除，重新打开重新进入动效。退出等待真实 animationend；移除从状态更新起算的 180ms JS 兜底，避免 CSS 在下一帧才开始时被提前截断。Feedback 文档严格对照覆盖这一生命周期。
 
 - Portal -> `.semi-sidesheet` -> mask + `.semi-sidesheet-inner.semi-sidesheet-inner-wrap` -> content -> header/body/footer；不引入额外布局 wrapper。
 - header 恒存在并有 `role=heading aria-level=1`；inner 有 `role=dialog tabindex=-1`。上游未设置 `aria-modal`、自动焦点或 focus trap，Vue 侧不借用 Modal 的额外语义。

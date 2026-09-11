@@ -245,6 +245,42 @@ describe('SideSheet', () => {
     expect(target.querySelector('.semi-portal')).toBeNull();
   });
 
+  it('进入动效分别清理状态 class，退出等待真实结束并在重开时恢复', async () => {
+    const wrapper = await mountVisible({ motion: true });
+    const content = () => document.querySelector<HTMLElement>('.semi-sidesheet-inner')!;
+    const mask = () => document.querySelector<HTMLElement>('.semi-sidesheet-mask')!;
+    const end = (node: HTMLElement) =>
+      node.dispatchEvent(new Event('animationend', { bubbles: true }));
+    expect(content().className).toContain('semi-sidesheet-animation-content_show_right');
+    end(mask());
+    await settle();
+    expect(mask().className).not.toContain('semi-sidesheet-animation-mask_show');
+    expect(content().className).toContain('semi-sidesheet-animation-content_show_right');
+    end(content());
+    await settle();
+    expect(content().className).not.toContain('semi-sidesheet-animation-content_show_right');
+    await wrapper.setProps({ placement: 'left' });
+    await settle();
+    expect(content().className).toContain('semi-sidesheet-animation-content_show_left');
+    expect(mask().className).not.toContain('semi-sidesheet-animation-mask_show');
+    end(content());
+    await wrapper.setProps({ visible: false });
+    await rs.advanceTimersByTimeAsync(500);
+    expect(document.querySelector('.semi-sidesheet')).not.toBeNull();
+    expect(content().className).toContain('semi-sidesheet-animation-content_hide_left');
+    end(content());
+    await settle();
+    expect(document.querySelector('.semi-sidesheet')).toBeNull();
+    await wrapper.setProps({ visible: true });
+    await settle();
+    expect(content().className).toContain('semi-sidesheet-animation-content_show_left');
+    await wrapper.setProps({ visible: false });
+    await wrapper.setProps({ motion: false });
+    await settle();
+    expect(document.querySelector('.semi-sidesheet')).toBeNull();
+    wrapper.unmount();
+  });
+
   it('keepDOM 与 motion 生命周期只触发一次可见回调并完整清理 body', async () => {
     const changes: boolean[] = [];
     const wrapper = mount(SideSheet, {

@@ -5,7 +5,7 @@
       "index": 1,
       "zhCN": "feedback/zh-CN/Basic",
       "enUS": "feedback/en-US/Basic",
-      "notes": "中英文上游索引均为1，无独有示例或外部文件依赖。默认关闭、popup/emoji、value-change日志；保留双语标题与触发按钮。英文全体示例自包含ConfigProvider和完整locale/source/en_US数据，覆盖站点和REPL按钮语言；仅传code不会自动补齐Feedback文案。"
+      "notes": "中英文上游索引均为1，无独有示例或外部文件依赖。默认关闭、popup/emoji、value-change日志；保留双语标题与触发按钮。英文全体示例自包含ConfigProvider和完整locale/source/en_US数据，覆盖站点和REPL按钮语言；仅传code不会自动补齐Feedback文案。 严格参考按固定公开入口顺序补载只读Feedback SCSS，避免聚合SideSheet覆盖bottom与动效。"
     },
     {
       "index": 2,
@@ -41,7 +41,7 @@
       "index": 7,
       "zhCN": "feedback/zh-CN/Completion",
       "enUS": "feedback/en-US/Completion",
-      "notes": "中英文上游索引均为7，无独有示例或外部文件依赖。独立Popup/Modal自定义反馈、Empty及150px明暗成功插画、padding30；提交后title空格/footer=null，1500ms关闭再200ms复原提示，卸载清理timer。保留双语共同英文按钮/标题，正文与感谢文字分语言。成功状态与父级value按上游保留；现有Vue footer=null可隐藏，精细差异待严格验收。"
+      "notes": "中英文上游索引均为7，无独有示例或外部文件依赖。独立Popup/Modal自定义反馈、Empty及150px明暗成功插画、padding30；提交后title空格/footer=null，1500ms关闭再200ms复原提示，卸载清理timer。保留双语共同英文按钮/标题，正文与感谢文字分语言。成功状态与父级value按上游保留；footer=null隐藏；严格矩阵覆盖真实进出动效与独立页面1499/1500ms关闭边界、200ms提示复原。"
     }
   ],
   "chapters": [
@@ -57,5 +57,15 @@
     "API 参考",
     "FeedbackProps"
   ],
-  "exclusions": []
+  "exclusions": [],
+  "review": {
+    "fingerprint": "4f176f1c57a2b0c3fcbed67109b37fa5a0aa29bd2611596fff2295b2b9383267",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "完整审阅固定双语章节、FeedbackProps/Emits/Slots 和迁移说明；恢复 Modal/SideSheet 参数透传说明，事件签名与公开 Vue 类型一致。",
+      "Custom 最小修正在双方对应；Completion 保留父级值及原始关闭/提示复原时序。"
+    ]
+  }
 }
