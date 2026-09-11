@@ -61,5 +61,16 @@
     "Col",
     "设计变量"
   ],
-  "exclusions": []
+  "exclusions": [],
+  "review": {
+    "fingerprint": "ffd7c2aaa37b218a24e3c0504173bdeca5311d6642a31cdd37cbd329e5752267",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "双语七项代码与固定 Markdown 核对；示例定制样式对照 docDemo.scss，VerticalAlign 保留普通 div value 属性及 50px 行高。",
+      "核对 Row/Col Adapter 和公开 Vue 类型：gutter 默认 0，其余 justify/order/offset/push/pull 默认未设置；API 表与迁移说明统一。",
+      "Vue 使用 type=\"flex\"、默认 slot 与原生 class/style，响应式支持数值或 ColSize 对象；sm 实际为 576px，英文 gutter/xl 大小写已纠正。"
+    ]
+  }
 }

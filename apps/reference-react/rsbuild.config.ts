@@ -732,5 +732,8 @@ export default defineConfig({
   // Parallel comparisons must keep their DOM/state while another page loads a cold example.
   // Rsbuild's lazy compilation can broadcast hot updates that reload already-ready pages.
   dev: { lazyCompilation: false },
-  output: { distPath: { root: 'dist' } },
+  // Lightning CSS shortens fractional grid percentages (20.8333333333% → 20.8333%),
+  // changing Chromium's subpixel layout. Compare the pinned Sass output unchanged.
+  tools: { lightningcssLoader: false },
+  output: { distPath: { root: 'dist' }, minify: { css: false } },
 });

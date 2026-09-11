@@ -32,14 +32,14 @@ pnpm --filter @workspace/docs test:nuxt
 
 ## 覆盖与剩余工作
 
-[coverage.json](./coverage.json) 记录 102 组固定上游文档及每个中文 live Demo 的章节和源码行号。当前 859 个中文上游 Demo 中，859 个已建立双语内容与示例映射，有效严格验收为 45 个（Button 17 项、Icon 8 项、ConfigProvider 3 项、Locale 3 项、Dark Mode 2 项、Navigation 10 项、Divider 2 项，分别通过 84 条、48 条、16 条、16 条、8 条、52 条和 16 条双语/明暗/适用 RTL 用例）。Icon 短 fill 调色板顺序缺陷已修复，并通过全仓 Chromium 与真实发布包回归。此前补齐 Form（39）、Table（37）、Upload（42）、TreeSelect（19）、Tree（27），共新增 164 个上游 Demo 的双语映射。中英文上游章节数量与顺序不同的条目已在各组件 mapping 中注明；映射数量不代表逐项视觉验收完成。总数 859 来自固定源码的 live Demo 解析，修正了旧统计遗漏的 4 个示例。
+[coverage.json](./coverage.json) 记录 102 组固定上游文档及每个中文 live Demo 的章节和源码行号。当前 859 个中文上游 Demo 中，859 个已建立双语内容与示例映射，有效严格验收为 59 个（Button 17 项、Icon 8 项、ConfigProvider 3 项、Locale 3 项、Dark Mode 2 项、Navigation 10 项、Divider 2 项、FloatButton 7 项、Grid 7 项，九批共通过 352 条双语/明暗/适用 RTL 用例）。Icon 短 fill 调色板顺序缺陷已修复，并通过全仓 Chromium 与真实发布包回归。此前补齐 Form（39）、Table（37）、Upload（42）、TreeSelect（19）、Tree（27），共新增 164 个上游 Demo 的双语映射。中英文上游章节数量与顺序不同的条目已在各组件 mapping 中注明；映射数量不代表逐项视觉验收完成。总数 859 来自固定源码的 live Demo 解析，修正了旧统计遗漏的 4 个示例。
 
 补齐与严格验收按 [双线计划](./batch-plan.md) 独立推进，不再要求同一批同时完成：
 
 | 工作线             | 当前统计                            | 下一批                   |
 | ------------------ | ----------------------------------- | ------------------------ |
 | 双语示例补齐       | 859/859 已映射，0 项待映射          | 补齐已完成，进入内容审阅 |
-| 严格视觉与行为验收 | 52/859 有效验收，807 项已映射待验收 | Grid 7 项                |
+| 严格视觉与行为验收 | 59/859 有效验收，800 项已映射待验收 | Layout 8 项              |
 
 映射计数不追认为全部通过统一运行检查；后续补齐批次须提供内容、类型及实际站点加载运行证据，但无需等待严格矩阵即可交付。验收线独立处理已补齐示例；最终所有示例仍须严格验收，证据仍随真实依赖变化失效。完成标准与命令见 [工作流](./workflow.md)。
 
@@ -90,3 +90,5 @@ node apps/docs/scripts/prepare-coverage.mjs --batch=button
 文档验收性能实测：同一六批 224 项完整冷启动 17 分 49 秒 → 9 分 03 秒，减少 49.24%，全部一次通过；准备复用命令墙钟 9.5 秒（不运行浏览器）。REPL 图标根入口静态请求从 526 降至 21，全部 780 个 JS 入口受 200 请求预算约束。详见 [性能记录](../../ai-work/20260906-211800-documentation-performance.md)。
 
 2026-09-11 完成 FloatButton 七项严格验收：56/56 双语、明暗、LTR/RTL 正式矩阵通过，既有七批证据保持有效，覆盖计数为 52/859。修复示例 fixed 定位叠加及 Badge 样式单位，审阅形状、徽章默认值与 Group 点击边界。见 [本轮记录](../../ai-work/20260911-150300-float-button-documentation-acceptance.md)与 [FloatButton 审阅矩阵](float-button-acceptance.md)。
+
+2026-09-11 完成 Grid 七项严格验收，并联合重验受对照应用 CSS 精度修复影响的历史八批：352/352 正式矩阵通过，无重试、跳过或失败；442 项组件 Chromium 回归通过，覆盖计数为 59/859。真实断点往返、逐行像素与编辑运行均纳入。见 [本轮记录](../../ai-work/20260911-160000-grid-documentation-acceptance.md)与 [Grid 审阅矩阵](grid-acceptance.md)。

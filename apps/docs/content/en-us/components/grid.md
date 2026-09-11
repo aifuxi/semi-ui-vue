@@ -40,7 +40,7 @@ Using a single set of Row and Col grid components, you can create a basic grid s
 
 ### Gutter interval
 
-The grid often needs to work with the interval. You can use Row's `Gutter` Properties, we recommend using (16 + 8n) px as a grid interval. (n is a natural number)
+The grid often needs to work with the interval. You can use Row's `gutter` Properties, we recommend using (16 + 8n) px as a grid interval. (n is a natural number)
 
 Vertical gutter can be in the form of an array. The first item of the array is horizontal gutter and the second item is vertical gutter.<br/>
 
@@ -60,7 +60,7 @@ Dark for content area, light for spacing
 
 ### Use Flex layout
 
-Use `row-flex` to define a Flex layout whose child elements are based on different values `start`,`center`,`end`,`space-between`,`space-around`, define their typesetting methods in the parent node respectively.
+Use `<Row type="flex">` to define a Flex layout whose child elements are based on different values `start`,`center`,`end`,`space-between`,`space-around`, define their typesetting methods in the parent node respectively.
 
 ::demo-block{demo="grid/en-us/Flex" title="Use Flex layout"}
 ::
@@ -79,7 +79,7 @@ Change the sorting of elements through `order` of the Col.
 
 ### Responsive
 
-Referring to Bootstrap's responsive design, preset six response sizes:`xs`, `sm`, `md`, `lg`, `Xl`, `xxl`.
+Referring to Bootstrap's responsive design, preset six response sizes:`xs`, `sm`, `md`, `lg`, `xl`, `xxl`.
 
 ::demo-block{demo="grid/en-us/Responsive" title="Responsive"}
 ::
@@ -92,8 +92,8 @@ Referring to Bootstrap's responsive design, preset six response sizes:`xs`, `sm`
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | ------- |
 | align      | Vertical alignment under flex layout: `top` `middle` `bottom`                                                                                                 | string                  |         |
 | class      | Class name                                                                                                                                                    | string                  |         |
-| gutter     | Grid interval, can be written as pixel value or support responsive object writing `{ xs: 8, sm: 16, md: 24}`, Vertical gutter support from version **1.11.0** | number / object / array |         |
-| justify    | Horizontal arrangement under flex layout: `start` `end` `center` `space-around` `space-between`                                                               | string                  | `start` |
+| gutter     | Grid interval, can be written as pixel value or support responsive object writing `{ xs: 8, sm: 16, md: 24}`, Vertical gutter support from version **1.11.0** | number / object / array | `0`     |
+| justify    | Horizontal arrangement under flex layout: `start` `end` `center` `space-around` `space-between`                                                               | string                  | —       |
 | style      | style                                                                                                                                                         | CSSProperties           |         |
 | type       | Layout mode, optional `flex`, valid under [Modern Browser](http://caniuse.com/#search=flex)                                                                   | string                  |         |
 
@@ -103,10 +103,10 @@ Referring to Bootstrap's responsive design, preset six response sizes:`xs`, `sm`
 | ---------- | --------------------------------------------------------------------------------------------------- | -------------- | ------- |
 | lg         | `≥ 992px` responsive grid, which can be a number of grids or an object containing other properties  | number\|object | -       |
 | md         | `≥ 768px` responsive grid, which can be a number of grids or an object containing other properties  | number\|object | -       |
-| offset     | The number of interval cells on the left side of a grid. There can be no grid in the interval.      | number         | 0       |
-| order      | Grid order, effective in `flex` layout mode                                                         | number         | 0       |
-| pull       | The grid moves to the left.                                                                         | number         | 0       |
-| push       | The grid moves to the right.                                                                        | number         | 0       |
+| offset     | The number of interval cells on the left side of a grid. There can be no grid in the interval.      | number         | —       |
+| order      | Grid order, effective in `flex` layout mode                                                         | number         | —       |
+| pull       | The grid moves to the left.                                                                         | number         | —       |
+| push       | The grid moves to the right.                                                                        | number         | —       |
 | sm         | `≥ 576px` responsive grid, which can be a number of grids or an object containing other properties  | number\|object | -       |
 | span       | The number of grid spaces is equivalent to `display: none` when it is 0                             | number         | -       |
 | xl         | `≥ 1200px` responsive grid, which can be a number of grids or an object containing other properties | number\|object | -       |

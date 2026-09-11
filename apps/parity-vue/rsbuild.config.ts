@@ -81,5 +81,7 @@ export default defineConfig({
   source: { entry: { index: './src/main.ts' }, include: [/vendor\/semi-design/] },
   html: { template: './index.html' },
   server: { port: 4174, strictPort: true },
-  output: { distPath: { root: 'dist' } },
+  // Keep the same Sass precision as the React reference and published theme CSS.
+  tools: { lightningcssLoader: false },
+  output: { distPath: { root: 'dist' }, minify: { css: false } },
 });
