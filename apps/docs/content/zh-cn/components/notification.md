@@ -77,7 +77,7 @@ import '@aifuxi/semi-theme-default/notification.css';
 ::demo-block{demo="notification/zh-CN/Update" title="更新内容"}
 ::
 
-中英文固定上游均有八项 live 示例，顺序一致，没有语言独有示例或多文件依赖。英文上游前两项误写了 `with` 与 `Position`；Vue 示例按实际公开 API 修正为 `duration` 与 `position`。按照仓库独立品牌约束，示例中的 Bytedance 文案与 Toutiao/Vigo 品牌图标替换为 AIFUXI 文案和通用 Bell/Star 图标，同时保留自定义图标与颜色的演示意图。更新示例会在卸载时清理尚未触发的定时器。本批只验证基础运行，不代表严格 React/Vue 视觉与行为验收。
+中英文固定上游均有八项 live 示例，顺序一致，没有语言独有示例或多文件依赖。英文上游前两项误写了 `with` 与 `Position`；Vue 示例按实际公开 API 修正为 `duration` 与 `position`。按照仓库独立品牌约束，示例中的 Bytedance 文案与 Toutiao/Vigo 品牌图标替换为 AIFUXI 文案和通用 Bell/Star 图标，同时保留自定义图标与颜色的演示意图；其余按钮与正文字面沿用固定源码英文原文。链接示例保留固定示例的 fragment 结构，纯图标按钮补充双语 `aria-label`。更新示例会在卸载时清理尚未触发的定时器。八项示例已完成双语、明暗与适用 RTL 的严格 React/Vue 视觉与行为验收。
 
 ## API 参考
 

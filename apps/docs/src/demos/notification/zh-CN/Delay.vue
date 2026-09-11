@@ -10,5 +10,5 @@ function show() {
 </script>
 
 <template>
-  <Button @click="show">10 秒后关闭</Button>
+  <Button @click="show">Close After 10s</Button>
 </template>

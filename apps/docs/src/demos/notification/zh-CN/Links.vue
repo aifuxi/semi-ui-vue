@@ -10,18 +10,20 @@ import '@aifuxi/semi-theme-default/typography.css';
 function show() {
   Notification.info({
     title: 'This is a title',
-    content: h('div', [
+    // The pinned example renders a fragment; an array keeps the two blocks as direct
+    // children of the notice content instead of adding a wrapper div.
+    content: [
       h('div', 'AIFUXI design notification'),
       h('div', { style: { marginTop: '8px' } }, [
         h(Text, { link: true }, () => '查看详情'),
         h(Text, { link: true, style: { marginLeft: '20px' } }, () => '一会再看'),
       ]),
-    ]),
+    ],
     duration: 3,
   });
 }
 </script>
 
 <template>
-  <Button @click="show">展示通知</Button>
+  <Button @click="show">Display Notification</Button>
 </template>

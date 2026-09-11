@@ -5,7 +5,7 @@
       "index": 1,
       "zhCN": "notification/zh-CN/Basic",
       "enUS": "notification/en-US/Basic",
-      "notes": "中英文上游索引均为1，无独有示例或外部文件依赖。保留open、title/content与3秒自动关闭；英文上游with误写修正为duration。按独立品牌约束将Bytedance文案替换为AIFUXI。"
+      "notes": "中英文上游索引均为1，无独有示例或外部文件依赖。保留open、title/content与3秒自动关闭；英文上游with误写修正为duration。示例按钮与正文字面沿用固定源码英文文案，仅按独立品牌约束将Bytedance文案替换为AIFUXI。"
     },
     {
       "index": 2,
@@ -17,7 +17,7 @@
       "index": 3,
       "zhCN": "notification/zh-CN/Icons",
       "enUS": "notification/en-US/Icons",
-      "notes": "中英文上游索引均为3。保留四种默认状态图标与三个自定义图标/颜色按钮；按独立品牌约束将Toutiao/Vigo Logo替换为通用Bell/Star，并为纯图标按钮补充双语aria-label。"
+      "notes": "中英文上游索引均为3。保留四种默认状态图标与三个自定义图标/颜色按钮；标题文字与固定源码一致。按独立品牌约束将Toutiao/Vigo Logo替换为通用Bell/Star，并为纯图标按钮补充双语aria-label。"
     },
     {
       "index": 4,
@@ -29,25 +29,25 @@
       "index": 5,
       "zhCN": "notification/zh-CN/Links",
       "enUS": "notification/en-US/Links",
-      "notes": "中英文上游索引均为5。React Fragment/Typography.Text节点迁移为h生成的Vue VNodeChild，保留8px/20px间距与双语链接文案。"
+      "notes": "中英文上游索引均为5。React Fragment/Typography.Text节点迁移为h生成的Vue VNodeChild，保留8px/20px间距与双语链接文案；内容用数组VNode保持fragment结构，两个内容块直接挂在notice content下，触发按钮沿用固定源码英文文案。"
     },
     {
       "index": 6,
       "zhCN": "notification/zh-CN/Delay",
       "enUS": "notification/en-US/Delay",
-      "notes": "中英文上游索引均为6。保留无标题正文、duration=10和双语触发按钮。"
+      "notes": "中英文上游索引均为6。保留无标题正文、duration=10与固定源码的英文触发按钮。"
     },
     {
       "index": 7,
       "zhCN": "notification/zh-CN/ManualClose",
       "enUS": "notification/en-US/ManualClose",
-      "notes": "中英文上游索引均为7。React useState数组迁移为shallowRef，保留duration=0、返回id队列及按创建顺序close；空队列安全忽略。"
+      "notes": "中英文上游索引均为7。React useState数组迁移为shallowRef，保留duration=0、返回id队列及按创建顺序close；空队列安全忽略。正文与按钮沿用固定源码英文文案。"
     },
     {
       "index": 8,
       "zhCN": "notification/zh-CN/Update",
       "enUS": "notification/en-US/Update",
-      "notes": "中英文上游索引均为8。保留首次3秒、1秒后复用id更新内容与10秒延时；Vue卸载时清理所有未触发timer，避免页面切换后写入全局通知。"
+      "notes": "中英文上游索引均为8。保留首次3秒、1秒后复用id更新内容与10秒延时，更新文案沿用固定源码的updated；Vue卸载时清理所有未触发timer，避免页面切换后写入全局通知。"
     }
   ],
   "chapters": [

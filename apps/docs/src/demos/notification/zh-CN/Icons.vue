@@ -14,7 +14,7 @@ const options = {
 </script>
 
 <template>
-  <h5>默认图标</h5>
+  <h5>默认的图标</h5>
   <Button type="primary" style="margin: 4px" @click="Notification.success(options)">
     Success
   </Button>

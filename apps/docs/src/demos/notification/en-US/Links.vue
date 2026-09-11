@@ -10,13 +10,15 @@ import '@aifuxi/semi-theme-default/typography.css';
 function show() {
   Notification.info({
     title: 'This is a title',
-    content: h('div', [
+    // The pinned example renders a fragment; an array keeps the two blocks as direct
+    // children of the notice content instead of adding a wrapper div.
+    content: [
       h('div', 'AIFUXI design notification'),
       h('div', { style: { marginTop: '8px' } }, [
         h(Text, { link: true }, () => 'More Info'),
         h(Text, { link: true, style: { marginLeft: '20px' } }, () => 'Show Later'),
       ]),
-    ]),
+    ],
     duration: 3,
   });
 }

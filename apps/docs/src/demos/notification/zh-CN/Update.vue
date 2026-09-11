@@ -15,7 +15,7 @@ function show() {
   });
   const timer = setTimeout(() => {
     timers.delete(timer);
-    Notification.open({ title: 'Hi, AIFUXI', content: '内容已更新', duration: 10, id });
+    Notification.open({ title: 'Hi, AIFUXI', content: 'updated', duration: 10, id });
   }, 1000);
   timers.add(timer);
 }
@@ -26,5 +26,5 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <Button @click="show">展示通知</Button>
+  <Button @click="show">Display Notification</Button>
 </template>

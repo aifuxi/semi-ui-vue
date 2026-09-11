@@ -14,5 +14,5 @@ function show() {
 </script>
 
 <template>
-  <Button @click="show">展示通知</Button>
+  <Button @click="show">Display Notification</Button>
 </template>

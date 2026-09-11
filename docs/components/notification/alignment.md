@@ -80,6 +80,15 @@
 - ReactNode 改为 Vue `VNodeChild`；callback 名称保留，不增加 slots 或 `v-model`。
 - 当前无 accepted visual/behavior deviation。
 
+## 文档严格验收补充（2026-09-11）
+
+固定文档示例严格验收定位并修复两处内部表示差异，公开 API、类型与默认值不变：
+
+1. `-icon-show` class 原先按“是否真的渲染图标”判断，固定 Notice 按 `types.includes(type)` 判断，因此 `default` 类型也应带该类。改为按合法 type 列表判断；`default` 仍不渲染图标节点。
+2. 自定义 `icon` 原先直接渲染 VNode，固定 Notice 会把 Semi 图标按显式 `size` 或 `large` 克隆。`NotificationNodeRenderer` 新增仅用于图标位置的 `iconSize`，非 Semi 图标节点原样渲染，与 Toast/Navigation 的既有图标适配一致。
+
+同时修正中文 `Links` 示例内容结构：固定示例使用 fragment，两个内容块应作为 `.semi-notification-notice-content` 的直接子节点，Vue 示例改为数组 VNode 而不是额外包一层 `div`；中文示例的按钮与正文文案回退为固定源码英文原文，仅保留 Bytedance→AIFUXI 与 Toutiao/Vigo→Bell/Star 的独立品牌替换，图标按钮的双语 `aria-label` 为可访问性补充。
+
 ## 验收结论
 
 - `pnpm check` 通过：98 个测试文件、711 项单元/SSR/基础设施测试，以及全仓构建、主题产物、SSR import 与真实 tarball 消费验证。

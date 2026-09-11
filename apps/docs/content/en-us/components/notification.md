@@ -77,7 +77,7 @@ Opening an existing id updates the current notification instead of adding anothe
 ::demo-block{demo="notification/en-US/Update" title="Update content"}
 ::
 
-Both pinned upstream languages contain the same eight live examples in the same order, with no language-only or multi-file examples. The first two English snippets misspell `duration` and `position` as `with` and `Position`; the Vue examples use the real public API. To preserve this repository's independent branding, Bytedance copy and Toutiao/Vigo brand icons are replaced with AIFUXI copy and generic Bell/Star icons while retaining the custom-icon and color behavior. The update example clears pending timers on unmount. This batch establishes basic runtime coverage, not strict React/Vue visual or behavioral acceptance.
+Both pinned upstream languages contain the same eight live examples in the same order, with no language-only or multi-file examples. The first two English snippets misspell `duration` and `position` as `with` and `Position`; the Vue examples use the real public API. To preserve this repository's independent branding, Bytedance copy and Toutiao/Vigo brand icons are replaced with AIFUXI copy and generic Bell/Star icons while retaining the custom-icon and color behavior; every other button and body string stays identical to the pinned source. The link example keeps the pinned fragment structure, and icon-only buttons carry a bilingual `aria-label`. The update example clears pending timers on unmount. All eight examples have passed strict React/Vue visual and behavioral acceptance across both languages, light/dark, and the applicable RTL cases.
 
 ## API Reference
 

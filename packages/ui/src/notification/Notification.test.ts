@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils';
+import { IconBell } from '@aifuxi/semi-icons-vue';
 import { defineComponent, h, nextTick } from 'vue';
 import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
@@ -136,6 +137,27 @@ describe('Notification', () => {
     expect(notice.querySelector('.semi-notification-notice-content strong')?.textContent).toBe(
       '内容',
     );
+  });
+
+  it('默认类型也带 icon-show；Semi 自定义图标按 large 克隆并保留显式尺寸', async () => {
+    Notification.open({ content: 'plain', duration: 0 });
+    Notification.info({ content: 'cloned', duration: 0, icon: h(IconBell) });
+    Notification.info({ content: 'sized', duration: 0, icon: h(IconBell, { size: 'small' }) });
+    await nextTick();
+    const notice = (text: string) =>
+      [...document.querySelectorAll<HTMLElement>('[role="alert"]')].find(
+        (node) => node.textContent === text,
+      )!;
+    const plain = notice('plain');
+    // The pinned Notice keys the class off the type list, even without a rendered icon.
+    expect(plain.classList).toContain('semi-notification-notice-icon-show');
+    expect(plain.querySelector('.semi-notification-notice-icon')).toBeNull();
+    expect(
+      notice('cloned').querySelector('.semi-notification-notice-icon .semi-icon-large'),
+    ).not.toBeNull();
+    expect(
+      notice('sized').querySelector('.semi-notification-notice-icon .semi-icon-small'),
+    ).not.toBeNull();
   });
 
   it('关闭按钮保持 onCloseClick → onClose 顺序并阻止 notice click', async () => {

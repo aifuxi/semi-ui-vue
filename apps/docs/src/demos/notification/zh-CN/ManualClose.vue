@@ -10,7 +10,7 @@ import '@aifuxi/semi-theme-default/button.css';
 import '@aifuxi/semi-theme-default/notification.css';
 
 const options: NotificationOptions = {
-  content: '不会自动关闭',
+  content: 'Not auto close',
   title: 'Hi',
   duration: 0,
 };
@@ -28,8 +28,8 @@ function hide() {
 </script>
 
 <template>
-  <Button type="primary" @click="show">展示通知</Button>
+  <Button type="primary" @click="show">Show Notification</Button>
   <br />
   <br />
-  <Button type="primary" @click="hide">关闭最早的通知</Button>
+  <Button type="primary" @click="hide">Hide Notification</Button>
 </template>
