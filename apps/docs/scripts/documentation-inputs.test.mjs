@@ -262,7 +262,7 @@ test('批次适配器的本地共享 helper 被递归追踪，未知动态导入
   assert.ok(result.files.includes(foundationTable));
 });
 
-test('实际六批仅纳入自身 React 适配器；Table 仅影响 Locale，Tooltip 和共享样式影响全部六批', async () => {
+test('实际批次仅纳入自身 React 适配器；Table 仅影响 Locale，Tooltip 和共享样式影响全部批次', async () => {
   const batches = await loadBatches();
   const inputs = await Promise.all(
     batches.map(async (batch) => ({ batch, ...(await batchInputs(batch)) })),
@@ -293,7 +293,11 @@ test('实际六批仅纳入自身 React 适配器；Table 仅影响 Locale，Too
     'packages/icons/rslib.config.ts',
     'packages/icons/tsconfig.build.json',
   ])
-    assert.equal(affected(file).length, 6, file);
+    assert.deepEqual(
+      affected(file),
+      batches.map((batch) => batch.id),
+      file,
+    );
   assert.deepEqual(affected('apps/reference-react/docs-adapters/navigation.mjs'), ['navigation']);
 });
 

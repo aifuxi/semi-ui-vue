@@ -6,11 +6,11 @@ import { IconInfoCircle } from '@aifuxi/semi-icons-vue';
 
 <template>
   <div>
-    <Divider margin="12px" align="left"> Left Text </Divider>
+    <Divider margin="12px" align="left">Left Text</Divider>
 
-    <Divider margin="12px" align="center"> Center Text </Divider>
+    <Divider margin="12px" align="center">Center Text</Divider>
 
-    <Divider margin="12px" align="right"> Right Text </Divider>
+    <Divider margin="12px" align="right">Right Text</Divider>
 
     <Divider margin="12px">
       <IconInfoCircle />

@@ -31,4 +31,6 @@ CI 的 PR 源码检查包含工具测试与 `check:changesets` 变更意图检�
 
 ## 浏览器 runner 的迁移边界
 
+React 参考服务显式关闭 Rsbuild 按需编译，仍保留开发模式和正常源码热更新。多个对照页面共享服务时，冷示例触发的惰性编译热更新曾重载已就绪页面，清除方向、几何定位和交互状态；不能通过重试、放宽像素门槛或只跑单例消除该故障。`reference-stability.spec.ts` 保留跨示例冷加载时已有页面不重载的浏览器回归。
+
 源码单测使用 Rstest；组件对照、文档站矩阵和开发 HMR 继续使用 Playwright Test。2026-09-10 对 `@rstest/playwright` 0.11.12 的真实 Chromium 评估确认：截图基线断言、CI 的 `forbidOnly` / `failOnFlakyTests` 尚无等价能力，Nuxt 开发服务生命周期也需额外适配，因此本轮不迁移浏览器 runner。失败 trace 可用不能替代这些验收门禁。版本和实测依据见 [迁移记录](../../ai-work/20260910-103000-rstack-migration.md#第九阶段浏览器-runner-兼容性评估)。

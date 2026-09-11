@@ -729,5 +729,8 @@ export default defineConfig({
   },
   html: { template: ({ entryName }) => (entryName === 'docs' ? './docs.html' : './index.html') },
   server: { port: 4173, strictPort: true },
+  // Parallel comparisons must keep their DOM/state while another page loads a cold example.
+  // Rsbuild's lazy compilation can broadcast hot updates that reload already-ready pages.
+  dev: { lazyCompilation: false },
   output: { distPath: { root: 'dist' } },
 });

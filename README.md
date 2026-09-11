@@ -42,9 +42,11 @@ pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
 文档示例按 [双线计划](docs/documentation/batch-plan.md) 独立推进：
 
 - **双语示例补齐：859/859 已映射**，剩余 0 项；AIComponent 最后 2 项双语示例已补齐，进入内容审阅与严格验收收尾。映射数不代表全部通过统一运行检查，补齐交付须包含实际加载运行证据。
-- **严格视觉与行为验收：43/859 有效验收**（Button、Icon、ConfigProvider、Locale、Dark Mode、Navigation），当前有 816 项已映射待验收；下一批为 **Divider（2 项）**，随后 FloatButton、Grid，不等待补齐线完成。
+- **严格视觉与行为验收：45/859 有效验收**（Button、Icon、ConfigProvider、Locale、Dark Mode、Navigation、Divider），当前有 814 项已映射待验收；下一批为 **FloatButton（7 项）**，随后 Grid。
 
 两条线只拆分交付顺序，不降低最终验收标准；批次入口与证据失效规则见 [分批验收说明](docs/documentation/README.md#分批验收)。Navigation 中文 10 个、英文 12 个示例已补齐，52 项双语明暗及适用 RTL 验收全部通过；导航、浮层与 Worker 请求隔离差异已修复，六批共 224 项正式矩阵已于 2026-09-10 完成重验并恢复当前有效证据，无重试、跳过或失败，见 [恢复验收记录](ai-work/20260910-002700-restore-six-documentation-batches.md)。
+
+2026-09-11 完成 Divider 2 项严格验收，并恢复工具链迁移后失效的历史六批：240/240 正式矩阵通过。修复双语文字插槽空格和英文 margin 说明；定位并修复 React 参考服务按需编译导致的跨页面重载，独立回归及 442 项组件 Chromium 对照通过。见 [本轮工作记录](ai-work/20260911-142100-divider-release-readiness.md)。稳定发布仍需剩余文档、站点/许可审计和外部发布接入闭环，见 [发布审计](docs/release-audit-1.0.md)。
 
 OverflowList 四项双语示例已补齐，内容/类型/静态产物检查与八个示例的实际加载、宽度调整、恢复、源码和编辑器运行检查已完成。发现 collapse 与 scroll 的溢出标签计数未同步更新，已记录待对齐问题；本轮未执行严格视觉验收，也未增加 accepted。见 [补齐工作记录](ai-work/20260907-103119-overflow-list-documentation-content.md)。
 

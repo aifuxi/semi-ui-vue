@@ -32,15 +32,15 @@ import '@aifuxi/semi-theme-default/divider.css';
 
 ## API Reference
 
-| Properties   | Instructions                                                  | Type                    | Default    | Version |
-| ------------ | ------------------------------------------------------------- | ----------------------- | ---------- | ------- |
-| align        | Content Align Mode                                            | left \| center \| right | center     | 2.9.0   |
-| default slot | Content                                                       | VNodeChild              | -          | 2.9.0   |
-| class        | ClassName                                                     | string                  | -          | 2.9.0   |
-| dashed       | Whether is dashed                                             | boolean                 | false      | 2.9.0   |
-| layout       | Divider Direction                                             | horizontal \| vertical  | horizontal | 2.9.0   |
-| margin       | Vertical (Horizontal if in horizontal mode) margin of divider | number \| string        | -          | 2.9.0   |
-| style        | Custom Style                                                  | CSSProperties           | -          | 2.9.0   |
+| Properties   | Instructions                                                 | Type                    | Default    | Version |
+| ------------ | ------------------------------------------------------------ | ----------------------- | ---------- | ------- |
+| align        | Content Align Mode                                           | left \| center \| right | center     | 2.9.0   |
+| default slot | Content                                                      | VNodeChild              | -          | 2.9.0   |
+| class        | ClassName                                                    | string                  | -          | 2.9.0   |
+| dashed       | Whether is dashed                                            | boolean                 | false      | 2.9.0   |
+| layout       | Divider Direction                                            | horizontal \| vertical  | horizontal | 2.9.0   |
+| margin       | Top/bottom margins; left/right margins for vertical dividers | number \| string        | -          | 2.9.0   |
+| style        | Custom Style                                                 | CSSProperties           | -          | 2.9.0   |
 
 ## Design Tokens
 

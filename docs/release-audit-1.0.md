@@ -26,10 +26,18 @@
 - Lottie 构建仍会报告第三方 `lottie-web` direct-eval 警告，应用构建还会报告大 chunk 提示；真实 tarball、公开子路径、tree-shaking 边界和 SSR 门禁均通过，当前记录为后续体积与供应链观察项。
 - React v2.102.0 参考场景会把 `InputNumber.scientificNotation` 透传到 DOM 并产生开发警告；对应 React/Vue 行为、样式、几何和像素门禁通过，属于固定上游参考噪声。
 
-## 候选发布前下一步
+## 2026-09-11 后续阶段
 
-1. 评审并提交本轮审计修复，保持工作树干净。
-2. 明确首个稳定版本号；仅在显式授权后运行会自动提交和打标签的 `release:bump`。
-3. 在精确标签提交上再次运行 `pnpm release:check`，分别推送提交与标签。
-4. 等待 GitHub 发布工作流完成，核对 provenance、五包版本与依赖关系。
-5. 从空目录安装稳定版本，验证类型、样式、SSR、浏览器消费与 `latest` dist-tag。
+以上第一轮内容保留为历史证据，其中版本号、未提交状态和旧标签阻断项不描述当前候选。Changesets 已在 `6302448` 接管发布，旧 `release:bump` 已删除，发布不再要求预先存在精确版本标签。迁移的本地验证见 [工作记录](../ai-work/20260911-125341-changesets-migration.md)，现行操作以 [发布手册](releasing.md) 为准。
+
+当前五包 `0.1.0` 是未发布迁移基线；待处理 major changeset 与 next 状态使首个机器人版本 PR 目标为 `1.0.0-next.0`。该基线不得直接发布，也不能因 85/85 组件 ready 或本地迁移门禁通过，就视为稳定版产品验收完成。
+
+### 候选发布前下一步
+
+1. 按 [文档双线计划](documentation/batch-plan.md) 推进严格验收；859 项已映射不等于完成视觉和行为验收。有效数量以当前源码的覆盖账本为准，历史证据失效时必须完整重验对应批次。
+2. 完成文档章节/API/迁移审阅、站点壳与搜索/链接/编辑器回归，以及 Nuxt/REPL 依赖许可审计。
+3. 完成 GitHub App 和仓库变量/secret、master 保护、五包 Trusted Publisher 配置核对，并实证机器人 PR 创建/更新能触发 CI。迁移记录中这些外部项尚未完成；本次本地工作不能证明它们已就绪。
+4. 由机器人维护 next 版本 PR，在合并后的准确候选上完成质量、Chromium、原始 pack artifact 隔离消费门禁，再经 npm Environment 审核发布；复核 provenance、五包版本/精确依赖、包级标签与 Release、registry 安装及渠道。
+5. 产品验收闭环后通过官方 `changeset pre exit` 退出预发布，由机器人生成稳定版本 PR。稳定候选同样通过完整门禁后才能发布到 latest，不手改版本或手工触发旧标签发布。
+
+本轮未执行远端配置、推送、npm 发布或稳定版切换。
