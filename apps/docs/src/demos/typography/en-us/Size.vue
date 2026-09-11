@@ -23,8 +23,9 @@ provide(typographyLocaleKey, EN_US_TYPOGRAPHY_LOCALE);
     </Paragraph>
     <br />
     <Text size="small"
-      >This is a Text, size is small
-      <Text link size="inherit">This is a Text，size is inherit, inherit parent's size</Text>
+      >This is a Text, size is small<Text link size="inherit"
+        >This is a Text，size is inherit, inherit parent's size</Text
+      >
     </Text>
   </div>
 </template>

@@ -21,7 +21,7 @@ const data = [
 <template>
   <div>
     <Numeral :parser="parserTCH" component="div">
-      Semi Design values our users; any kind of contribution is welcome
+      Semi Design value our users, any kind of contribution is welcome
       <p v-for="item in data" :key="item.type">
         {{ item.type }}：<b style="color: rgba(var(--semi-violet-5), 1)">{{ item.min }}</b>
       </p>
@@ -31,7 +31,7 @@ const data = [
       :link="{ href: 'https://semi.design', target: '_blank', rel: 'noopener noreferrer' }"
       :parser="parserTCH"
     >
-      Trusted by {{ 1e5 }} users, go to website &gt;&gt;
+      Trusted by {{ 1e5 }} users, Go to website &gt;&gt;
     </Numeral>
   </div>
 </template>

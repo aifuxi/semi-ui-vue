@@ -5,39 +5,31 @@ import '@aifuxi/semi-theme-default/typography.css';
 
 <template>
   <div>
-    <Text :ellipsis="{ showTooltip: true }" style="width: 150px">
-      有问题的超长文本发生截断时可按需进行自定义配置
-      <template #tooltip
-        ><div class="semi-tooltip-wrapper semi-tooltip-wrapper-show" role="tooltip">
-          <div><span class="semi-tooltip-content">架构|Semi-inf|graph.cheet.relation</span></div>
-        </div></template
-      > </Text
+    <Text :ellipsis="{ showTooltip: true }" style="width: 150px"
+      >有问题的超长文本发生截断时可按需进行自定义配置<template #tooltip
+        >架构|Semi-inf|graph.cheet.relation</template
+      ></Text
     ><br />
-    <Text :ellipsis="{ showTooltip: true }" style="width: 150px">
-      覆盖类名超长文本发生截断时可使用类名覆盖进行自定义配置
-      <template #tooltip
-        ><div class="semi-tooltip-wrapper semi-tooltip-wrapper-show" role="tooltip">
-          <div class="wrapping-tooltip">
-            <span class="semi-tooltip-content">架构|Semi-inf|graph.cheet.relation</span>
-          </div>
-        </div></template
-      > </Text
+    <Text
+      :ellipsis="{ showTooltip: { opts: { className: 'components-typography-demo' } } }"
+      style="width: 150px"
+      >覆盖类名超长文本发生截断时可使用类名覆盖进行自定义配置<template #tooltip
+        >架构|Semi-inf|graph.cheet.relation</template
+      ></Text
     ><br />
-    <Text :ellipsis="{ showTooltip: true }" style="width: 150px">
-      覆盖 style 超长文本发生截断时可使用 style 进行自定义配置
-      <template #tooltip
-        ><div class="semi-tooltip-wrapper semi-tooltip-wrapper-show" role="tooltip">
-          <div style="word-break: break-all">
-            <span class="semi-tooltip-content">架构|Semi-inf|graph.cheet.relation</span>
-          </div>
-        </div></template
-      > </Text
+    <Text
+      :ellipsis="{ showTooltip: { opts: { style: { wordBreak: 'break-all' } } } }"
+      style="width: 150px"
+      >覆盖style超长文本发生截断时可使用style进行自定义配置<template #tooltip
+        >架构|Semi-inf|graph.cheet.relation</template
+      ></Text
     ><br />
   </div>
 </template>
 
 <style scoped>
-.wrapping-tooltip {
+/* The popup is teleported outside the scoped preview subtree. */
+:global(.components-typography-demo) {
   word-break: break-word;
 }
 </style>

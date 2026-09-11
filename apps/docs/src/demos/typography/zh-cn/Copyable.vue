@@ -23,7 +23,7 @@ const customCopy: TypographyCopyableConfig = {
   content: 'Custom render!',
   render: (copied, copy, config) =>
     h(Button, { size: 'small', onClick: copy }, () =>
-      copied ? '复制成功' : '点击复制：' + config.content,
+      h('span', copied ? '复制成功' : '点击复制:' + config.content),
     ),
 };
 </script>
@@ -33,13 +33,13 @@ const customCopy: TypographyCopyableConfig = {
     <Paragraph copyable>点击右边的图标复制文本。</Paragraph>
     <Paragraph :copyable="{ content: 'Hello, Semi Design!' }">点击复制文本。</Paragraph>
     <Paragraph copyable @copy="notifyCopy">点击右边的图标复制文本。</Paragraph>
-    时间戳：<Numeral v-if="timestamp !== undefined" truncate="ceil" copyable underline
+    时间戳:
+    <Numeral v-if="timestamp !== undefined" truncate="ceil" copyable underline
       >{{ timestamp }}s</Numeral
     >
-    <Paragraph copyable>
-      自定义复制节点
-      <template #copyIcon><IconSetting style="color: var(--semi-color-link)" /></template>
-    </Paragraph>
+    <Paragraph :copyable="{ icon: h(IconSetting, { style: { color: 'var(--semi-color-link)' } }) }"
+      >自定义复制节点</Paragraph
+    >
     <Paragraph :copyable="customCopy">自定义复制渲染</Paragraph>
     <br /><br />
     <Text type="secondary">粘贴区域：</Text><br />

@@ -21227,11 +21227,7 @@
     "id": "typography/en-us/TooltipWrapping",
     "entry": "TooltipWrapping.vue",
     "files": { "TooltipWrapping.vue": "typography/en-us/TooltipWrapping.vue" },
-    "dependencies": [
-      "@aifuxi/semi-theme-default/typography.css",
-      "@aifuxi/semi-ui-vue/typography",
-      "vue"
-    ],
+    "dependencies": ["@aifuxi/semi-theme-default/typography.css", "@aifuxi/semi-ui-vue/typography"],
     "pages": ["/en-us/components/typography/"],
     "upstream": "basic/typography"
   },
@@ -21258,11 +21254,7 @@
     "id": "typography/zh-cn/Ellipsis",
     "entry": "Ellipsis.vue",
     "files": { "Ellipsis.vue": "typography/zh-cn/Ellipsis.vue" },
-    "dependencies": [
-      "@aifuxi/semi-theme-default/typography.css",
-      "@aifuxi/semi-ui-vue/typography",
-      "vue"
-    ],
+    "dependencies": ["@aifuxi/semi-theme-default/typography.css", "@aifuxi/semi-ui-vue/typography"],
     "pages": ["/zh-cn/components/typography/"],
     "upstream": "basic/typography"
   },

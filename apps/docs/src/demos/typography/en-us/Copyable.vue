@@ -26,7 +26,7 @@ const customCopy: TypographyCopyableConfig = {
   content: 'Custom render!',
   render: (copied, copy, config) =>
     h(Button, { size: 'small', onClick: copy }, () =>
-      copied ? 'Copy success' : 'Click to copy: ' + config.content,
+      h('span', copied ? 'Copy success' : 'Click to copy: ' + config.content),
     ),
 };
 </script>
@@ -40,13 +40,12 @@ const customCopy: TypographyCopyableConfig = {
     <Numeral v-if="timestamp !== undefined" truncate="ceil" copyable underline
       >{{ timestamp }}s</Numeral
     >
-    <Paragraph copyable>
-      Custom Copy Node
-      <template #copyIcon><IconSetting style="color: var(--semi-color-link)" /></template>
-    </Paragraph>
+    <Paragraph :copyable="{ icon: h(IconSetting, { style: { color: 'var(--semi-color-link)' } }) }"
+      >Custom Copy Node</Paragraph
+    >
     <Paragraph :copyable="customCopy">Custom Copy Render</Paragraph>
     <br /><br />
-    <Text type="secondary">Paste here:</Text><br />
+    <Text type="secondary">Paste here: </Text><br />
     <TextArea autosize style="width: 320px; margin-top: 4px" :rows="3" aria-label="Paste here" />
   </div>
 </template>
