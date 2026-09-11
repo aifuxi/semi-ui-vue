@@ -7,7 +7,7 @@ function onClick() {
 }
 </script>
 <template>
-  <div style="min-height: 340px">
+  <div style="min-height: 340px; transform: translateZ(0)">
     <span>Large size: Row two, third column at the bottom right of the page </span>
     <FloatButton size="large" :style="{ bottom: '200px' }" @click="onClick"
       ><template #icon><IconAIEditLevel1 /></template

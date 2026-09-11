@@ -7,7 +7,7 @@ function onClick() {
 }
 </script>
 <template>
-  <div style="min-height: 340px">
+  <div style="min-height: 340px; transform: translateZ(0)">
     <span>方形：页面右下第三列 3</span>
     <FloatButton shape="square" :style="{ bottom: '150px' }" @click="onClick"
       ><template #icon><IconAIEditLevel1 /></template

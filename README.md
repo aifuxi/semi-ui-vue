@@ -42,7 +42,7 @@ pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
 文档示例按 [双线计划](docs/documentation/batch-plan.md) 独立推进：
 
 - **双语示例补齐：859/859 已映射**，剩余 0 项；AIComponent 最后 2 项双语示例已补齐，进入内容审阅与严格验收收尾。映射数不代表全部通过统一运行检查，补齐交付须包含实际加载运行证据。
-- **严格视觉与行为验收：45/859 有效验收**（Button、Icon、ConfigProvider、Locale、Dark Mode、Navigation、Divider），当前有 814 项已映射待验收；下一批为 **FloatButton（7 项）**，随后 Grid。
+- **严格视觉与行为验收：52/859 有效验收**（Button、Icon、ConfigProvider、Locale、Dark Mode、Navigation、Divider、FloatButton），当前有 807 项已映射待验收；下一批为 **Grid（7 项）**。
 
 两条线只拆分交付顺序，不降低最终验收标准；批次入口与证据失效规则见 [分批验收说明](docs/documentation/README.md#分批验收)。Navigation 中文 10 个、英文 12 个示例已补齐，52 项双语明暗及适用 RTL 验收全部通过；导航、浮层与 Worker 请求隔离差异已修复，六批共 224 项正式矩阵已于 2026-09-10 完成重验并恢复当前有效证据，无重试、跳过或失败，见 [恢复验收记录](ai-work/20260910-002700-restore-six-documentation-batches.md)。
 

@@ -87,5 +87,16 @@
     }
   ],
   "exclusions": [],
-  "previewAdaptation": "各独立SFC添加340px演示容器以容纳原fixed按钮位置；保留原bottom/insetInlineEnd及文字。按钮相对独立预览视口固定。"
+  "previewAdaptation": "双侧独立示例添加 min-height:340px、transform:translateZ(0) 容器，隔离 fixed 定位；保留原 bottom/insetInlineEnd 与本语言文字，Vue 数值 DOM 样式显式添加 px。Group 保留上游双语反向描述。",
+  "review": {
+    "fingerprint": "c8cafac8215ed5002789a37da05435ad8a2336878df7bdec44a65ac8e72a523d",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "双语章节逐项核对固定 Markdown，形状说明按实际 round/square 契约修正；保留 Group 上游双语反向描述。",
+      "API 已核对公开 types.ts、FloatButton、FloatButtonGroup 与内部徽章 Adapter；修正 dot/overflowCount 默认值，明确 Group 点击后代节点时 value 可为 undefined。双语 API 说明仅 _blank 新窗口、Group item 实际读取字段及组 disabled 不拦截回调。",
+      "React icon/children、onClick 与 className 迁移为 Vue slots/VNodeChild、emits 与原生 class；fixed 容器和 DOM 数值样式单位适配见 float-button-acceptance.md。"
+    ]
+  }
 }

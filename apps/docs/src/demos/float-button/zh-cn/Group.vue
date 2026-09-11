@@ -27,7 +27,7 @@ function click(value: string) {
 }
 </script>
 <template>
-  <div style="min-height: 340px">
+  <div style="min-height: 340px; transform: translateZ(0)">
     <span>The last row at the bottom right of the page</span
     ><FloatButtonGroup style="inset-inline-end: 24px; bottom: 50px" :items="items" @click="click" />
   </div>

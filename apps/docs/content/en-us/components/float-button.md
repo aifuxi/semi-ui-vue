@@ -37,14 +37,14 @@ Three sizes are supported: default, small, large.
 
 ### Shape
 
-Two shapes are defined by default: square (default) and circle.
+Supports two shapes: round (default) and square.
 
 ::demo-block{demo="float-button/en-us/Shape" title="Shape"}
 ::
 
 ### Click to jump
 
-You can set the jump address through `href`, and `target` specifies the window or frame in which the target web page should be opened.
+Set the destination with `href`. The fixed implementation opens a new window only for `target="_blank"`; every other value, including an omitted target, navigates the current page.
 
 ::demo-block{demo="float-button/en-us/Link" title="Click to jump"}
 ::
@@ -72,27 +72,27 @@ Subitems can be passed in via `items`.
 
 ### FloatButton
 
-| Property   | Description                                                                                                                                     | Type                    | Default   |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | --------- |
-| `shape`    | Shape, supports round, square                                                                                                                   | `FloatButtonShape`      | `round`   |
-| `colorful` | Use colorful floating buttons                                                                                                                   | `boolean`               | `false`   |
-| `icon`     | Icon                                                                                                                                            | `VNodeChild`            | `—`       |
-| `href`     | Click the jump link, the same as [href](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/href)                                         | `string`                | `—`       |
-| `target`   | Specifies where to display the URL of the link, same as [target](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Reference/Elements/a#target) | `string`                | `—`       |
-| `disabled` | Disabled state                                                                                                                                  | `boolean`               | `false`   |
-| `size`     | Size, supports default, small, large                                                                                                            | `FloatButtonSize`       | `default` |
-| `badge`    | Badge parameters                                                                                                                                | `FloatButtonBadgeProps` | `—`       |
+| Property   | Description                                                                                             | Type                    | Default   |
+| ---------- | ------------------------------------------------------------------------------------------------------- | ----------------------- | --------- |
+| `shape`    | Shape, supports round, square                                                                           | `FloatButtonShape`      | `round`   |
+| `colorful` | Use colorful floating buttons                                                                           | `boolean`               | `false`   |
+| `icon`     | Icon                                                                                                    | `VNodeChild`            | `—`       |
+| `href`     | Click the jump link, the same as [href](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/href) | `string`                | `—`       |
+| `target`   | `_blank` opens a new window; other values navigate the current page                                     | `string`                | `—`       |
+| `disabled` | Disabled state                                                                                          | `boolean`               | `false`   |
+| `size`     | Size, supports default, small, large                                                                    | `FloatButtonSize`       | `default` |
+| `badge`    | Badge parameters                                                                                        | `FloatButtonBadgeProps` | `—`       |
 
 ### FloatButtonBadge
 
 | Property         | Description                         | Type                             | Default    |
 | ---------------- | ----------------------------------- | -------------------------------- | ---------- |
 | `count`          | Badge content                       | `VNodeChild`                     | `—`        |
-| `dot`            | Use a dot badge                     | `boolean`                        | `—`        |
+| `dot`            | Use a dot badge                     | `boolean`                        | `false`    |
 | `type`           | Badge semantic color                | `FloatButtonBadgeType`           | `primary`  |
 | `theme`          | Badge theme: solid, light, inverted | `FloatButtonBadgeTheme`          | `solid`    |
 | `position`       | Badge position                      | `FloatButtonBadgePosition`       | `rightTop` |
-| `overflowCount`  | Maximum displayed badge count       | `number`                         | `99`       |
+| `overflowCount`  | Maximum displayed badge count       | `number`                         | `—`        |
 | `style`          | Style                               | `CSSProperties`                  | `—`        |
 | `className`      | Style class name                    | `string`                         | `—`        |
 | `countClassName` | Count-node class                    | `string`                         | `—`        |
@@ -119,6 +119,8 @@ Extends FloatButtonProps with the following fields.
 
 FloatButton accepts an `#icon` slot and emits `@click(event: MouseEvent)`. FloatButtonGroup accepts required items, supports `#item="{ item, index }"`, and emits `@click(value, event: MouseEvent)`. Group item content accepts Vue nodes. Use class/style as native attributes; className is not a Vue styling prop. Badge callbacks remain function fields of badge, and badge uses FloatButtonBadgeProps rather than every Badge prop.
 
+The Group item type extends FloatButtonProps, but the fixed implementation only reads icon, content, badge, and value. It does not execute item href, target, or disabled. The Group disabled prop only adds a state class and does not block click callbacks.
+
 ## Accessibility
 
 Provide accessible names for icon-only actions. The fixed-source button uses pointer-click semantics; adding aria-label alone does not create native button keyboard behavior. Use an accessible surrounding workflow when keyboard activation is required.
@@ -136,9 +138,9 @@ Use concise action names and keep group labels easy to distinguish.
 
 **Where is the button positioned?** It is fixed to the viewport by default; use style to adjust bottom and insetInlineEnd.
 
-**Why does a disabled action not navigate?** Disabled buttons intentionally ignore click and href navigation.
+**Why does a disabled action not navigate?** An individual FloatButton ignores click and href navigation when disabled; Group disabled does not provide this guard.
 
-**What does group click return?** The configured item value and MouseEvent.
+**What does group click return?** The event target’s `data-value` and MouseEvent. Clicking the item itself returns its configured value; clicking descendants such as icons may return undefined.
 
 ## React → Vue
 
