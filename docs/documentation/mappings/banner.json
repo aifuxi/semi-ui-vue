@@ -23,7 +23,7 @@
       "index": 4,
       "zhCN": "banner/zh-cn/Custom",
       "enUS": "banner/en-us/Custom",
-      "notes": "独立 Vue SFC 保留上游本语言示例意图、数据、文案和样式；状态、事件和节点适配到 Composition API/props/slots。"
+      "notes": "保留自定义内容与两个无业务回调的原生按钮；将 React 数值宽度/内边距转换为 Vue CSS 单位字符串，恢复 500px 内容宽度与 20px 内边距。"
     }
   ],
   "chapters": [
@@ -66,5 +66,15 @@
       "notes": "保留固定版本原有章节顺序与非live示例，API 按公开 Vue 类型替换，补充 FAQ/无障碍/React→Vue 迁移。"
     }
   ],
-  "exclusions": []
+  "exclusions": [],
+  "review": {
+    "fingerprint": "c74160cda614ec3584ae916e1b24686d771a5bfa6d293dab5184741a0c4bc157",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "核对固定双语完整章节和本地 BannerProps/Emits/Slots；保留英文 type 默认值的 info 校正。",
+      "关闭回调先通知后隐藏；使用父级 v-if 重挂载，不新增 visible/v-model；保留默认和命名插槽契约。"
+    ]
+  }
 }

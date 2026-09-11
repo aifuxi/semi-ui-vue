@@ -6,7 +6,7 @@ import '@aifuxi/semi-theme-default/modal.css';
 </script>
 
 <template>
-  <div :style="{ width: 500, padding: 20, border: '1px solid var(--semi-color-border)' }">
+  <div :style="{ width: '500px', padding: '20px', border: '1px solid var(--semi-color-border)' }">
     <Banner
       :full-mode="false"
       title="Title"
