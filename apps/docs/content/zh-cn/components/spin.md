@@ -14,11 +14,9 @@ upstream: 'feedback/spin'
 
 ### 如何引入
 
-```vue
-<script setup lang="ts">
+```ts
 import { Spin } from '@aifuxi/semi-ui-vue/spin';
 import '@aifuxi/semi-theme-default/spin.css';
-</script>
 ```
 
 ### 基本用法

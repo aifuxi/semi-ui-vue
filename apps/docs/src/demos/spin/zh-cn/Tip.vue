@@ -4,10 +4,10 @@ import '@aifuxi/semi-theme-default/spin.css';
 </script>
 
 <template>
-  <Spin tip="正在加载…">
+  <Spin tip="I am loading...">
     <div style="border: 1px solid var(--semi-color-primary); border-radius: 4px; padding-left: 8px">
-      <p>这里是一些文字。</p>
-      <p>更多文字正在加载。</p>
+      <p>Here are some texts.</p>
+      <p>And more texts on the way.</p>
     </div>
   </Spin>
 </template>

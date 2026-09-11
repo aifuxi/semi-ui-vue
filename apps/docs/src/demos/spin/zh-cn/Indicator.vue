@@ -6,7 +6,7 @@ import IconLoading from '@aifuxi/semi-icons-vue/icons/IconLoading';
 
 <template>
   <div style="margin-left: 30px">
-    <div>自定义加载指示符。</div>
+    <div>A spin with customized indicator.</div>
     <Spin
       ><template #indicator><IconLoading /></template
     ></Spin>

@@ -14,8 +14,9 @@ upstream: 'feedback/spin'
 
 ### How to import
 
-```jsx
-import { Spin } from '@douyinfe/semi-ui';
+```ts
+import { Spin } from '@aifuxi/semi-ui-vue/spin';
+import '@aifuxi/semi-theme-default/spin.css';
 ```
 
 ### Basic usage

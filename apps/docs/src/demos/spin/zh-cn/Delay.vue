@@ -9,7 +9,7 @@ const loading = shallowRef(false);
 
 <template>
   <div>
-    <Button style="margin-right: 20px" @click="loading = !loading">延迟显示的加载器</Button>
+    <Button style="margin-right: 20px" @click="loading = !loading">延迟显示的spin</Button>
     <Spin :delay="1000" :spinning="loading" />
   </div>
 </template>

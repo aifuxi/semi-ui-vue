@@ -79,5 +79,17 @@
       "enUS": "spin/en-us/Controlled",
       "notes": "保留英文上游独立 Controlled 示例；中文上游该行为包含在 Delay 示例中"
     }
-  ]
+  ],
+  "review": {
+    "fingerprint": "2735e3b3f27463d74148f6d0b6a5670e7f563eb1a34d1f88980e7438e4189a63",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "逐项核对固定中英文五例（中文 1-5、英文 1-5）、全部章节、公开 SpinProps 与三个插槽；正文与迁移表均使用 Vue 公开子路径与类型。",
+      "中文示例恢复固定上游文案（A basic spin.、I am loading...、Here are some texts.、And more texts on the way.、A spin with customized indicator.、延迟显示的spin），与同批其它组件保留上游 copy 的做法一致；双语引入统一为 @aifuxi/semi-ui-vue/spin 与 @aifuxi/semi-theme-default/spin.css。",
+      "英文独有 Controlled（英文索引 6）在 Delay 示例的 en-us 用例内覆盖；中文上游把受控切换合并在 Delay 示例中，无对应中文示例。",
+      "默认指示符的线性渐变 id 为实例唯一值，矩阵按 SVG 内定义顺序解析 paint server 后比较，不忽略未解析引用；详见 spin-acceptance.md。"
+    ]
+  }
 }
