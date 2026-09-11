@@ -5,10 +5,25 @@
       "index": 1,
       "zhCN": "guides/accessibility/zh-cn/ImageAlt",
       "enUS": "guides/accessibility/en-us/ImageAlt",
-      "notes": "固定本地图像代替上游远程头像，保留 alt 可访问名称；尚未视觉验收。"
+      "notes": "沿用固定本地图像替换远程头像；双方同资源对照 Avatar 样式、几何、像素、alt 可访问名称、非交互 Tab 顺序和编辑器图片解码。资源替换不声称与原远程照片像素等价。"
     }
   ],
-  "chapters": [],
+  "chapters": [
+    "无障碍专用主题",
+    "了解用户需求",
+    "视觉障碍",
+    "设备依赖",
+    "认知障碍",
+    "键盘和焦点",
+    "键盘快捷键",
+    "焦点原则",
+    "颜色和对比度",
+    "多种提示方式",
+    "文字元素对比",
+    "组件状态和对比",
+    "例外情况",
+    "图片和视频"
+  ],
   "exclusions": [
     {
       "source": "@semi-bot/semi-theme-a11y / DSM",
@@ -23,5 +38,15 @@
       "reason": "依据 W3C WCAG 2.2 校正单位与例外范围；这属于文档事实校正，不改变固定组件基线。",
       "evidence": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
     }
-  ]
+  ],
+  "review": {
+    "fingerprint": "e285d33b6721527d56acbe63b28b2fe7088c97b0ec5659353e7a9d95756ca043",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "核对双语指南与 Avatar alt/src/style 原生 Vue 映射；本指南无独立 API 表。",
+      "保留既有 DSM 主题、ImageBox 语义 HTML 替换及 WCAG 单位/例外校正的边界；本批不作为整站合规声明。"
+    ]
+  }
 }
