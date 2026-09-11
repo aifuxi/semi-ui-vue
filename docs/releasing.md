@@ -1,5 +1,7 @@
 # npm 发布手册
 
+后续完整切换 Changesets 的文件改动、工作流与验收安排见 [Changesets 迁移计划](./changesets-migration-plan.md)。该计划尚未实施，本文仍描述当前生效流程。
+
 本仓库发布五个统一版本的公共包：
 
 1. `@aifuxi/semi-theme-default`
