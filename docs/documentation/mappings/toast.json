@@ -5,13 +5,13 @@
       "index": 1,
       "zhCN": "toast/zh-CN/Basic",
       "enUS": "toast/en-US/Basic",
-      "notes": "中文索引1，英文索引1。普通3秒与10秒leading-only节流、stack hover展开、onClose取消节流；本地时间戳避免引入第三方REPL依赖。"
+      "notes": "中文索引1，英文索引1。普通3秒与10秒leading-only节流、stack hover展开、onClose取消节流；本地时间戳避免引入第三方REPL依赖。英文独有Stacking（英文索引4）在本例的en-us验收内额外覆盖。"
     },
     {
       "index": 2,
       "zhCN": "toast/zh-CN/Types",
       "enUS": "toast/en-US/Types",
-      "notes": "中文索引2，英文索引2。success字符串简写与warning/error对象输入，保留纵向布局及颜色。"
+      "notes": "中文索引2，英文索引2。success字符串简写与warning/error对象输入，保留纵向布局及颜色。英文上游成功串缺一个空格，按修正后的示例文案统一为Hi, AIFUXI。"
     },
     {
       "index": 3,
@@ -47,7 +47,7 @@
       "index": 8,
       "zhCN": "toast/zh-CN/Context",
       "enUS": "toast/en-US/Context",
-      "notes": "中文索引8，英文索引9。provide/inject+InjectionKey及独立ContextContent组件真实消费Light；holder在原地渲染，duration=0；移除未支持的title。多文件依赖同语言目录./ContextContent.vue与./context-key.ts（REPL不处理跨父目录依赖）。"
+      "notes": "中文索引8，英文索引9。provide/inject+InjectionKey及独立ContextContent组件真实消费Light；holder就地渲染裸Toast（不产生命令式innerWrapper），duration=0；移除未支持的title。多文件依赖同语言目录./ContextContent.vue与./context-key.ts（REPL不处理跨父目录依赖）。"
     },
     {
       "index": 9,
@@ -61,7 +61,7 @@
       "sourceLocale": "en-US",
       "index": 4,
       "enUS": "toast/en-US/Stacking",
-      "notes": "英文独有堆叠示例，duration=10、stack=true与连续点击/hover展开；中文对应能力在Basic。"
+      "notes": "英文独有堆叠示例，duration=10、stack=true与连续点击/hover展开；中文对应能力在Basic。参考侧按固定源码的隐式JSX作用域补齐React导入，本批在Basic的en-us用例内严格验收。"
     }
   ],
   "chapters": [

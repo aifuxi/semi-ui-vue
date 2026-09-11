@@ -102,3 +102,11 @@
 ## ConfigProvider 反馈文档续验
 
 固定 `toast/toast.tsx:159` 的关闭 Button 不设置 aria-label，名称由 IconClose 提供。移除 Vue 两种 stack 渲染分支额外注入的 `aria-label="Close"`；保留图标和原生 Button 键盘关闭行为，新增属性回归并运行 Toast 定向 Chromium。
+
+## 文档严格验收补充（2026-09-11）
+
+固定文档示例严格验收定位到 hook holder 的结构差异：固定 `useToast` 渲染的是 `HookToast`，即一条裸 `Toast`（`stack` 为真时包 `.semi-toast-zero-height-wrapper`），空 holder 渲染 `null`，且不传 `positionInList`（`reservedIndex` 为 0）。Vue 原先复用命令式 `ToastHost`，因此空 holder 会常驻一个 `.semi-toast-innerWrapper`，弹层也被包进该 `width/height: fit-content` 的祖先，使 hook Toast 的宽度与固定实现不同。
+
+修复：`useToast` 改为渲染内部 `ToastContextList`，逐条就地渲染 `ToastNotice`，空列表返回 `null`；`ToastNotice.positionInList` 改为可选，缺省时 `reservedIndex` 为 0。命令式路径继续使用 `ToastHost` 的 wrapper/innerWrapper，公开 API 与类型不变。
+
+同时补充：英文独有 Stacking 示例纳入本批严格验收；参考适配器补齐固定源码省略的 `React`/`lodash-es` 依赖，并把 `Toast`/`ToastFactory` 改走已公开的 `@semi-v2.102.0/toast` 别名（固定 `semi-ui/index.ts` 的组合导出形态超出共享参考导入映射）。

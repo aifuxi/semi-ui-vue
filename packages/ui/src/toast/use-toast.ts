@@ -1,6 +1,6 @@
 import { defineComponent, h, markRaw, onBeforeUnmount, type Component } from 'vue';
 
-import ToastHost from './ToastHost.vue';
+import ToastContextList from './ToastContextList.vue';
 import { ToastStore } from './toast-store';
 import type {
   ToastEntry,
@@ -59,7 +59,7 @@ export function useToast(): ToastUseResult {
       name: 'ToastContextHolder',
       setup: () => {
         onBeforeUnmount(() => store.destroy());
-        return () => h(ToastHost, { store });
+        return () => h(ToastContextList, { store });
       },
     }) as Component,
   );

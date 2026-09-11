@@ -32,14 +32,14 @@ pnpm --filter @workspace/docs test:nuxt
 
 ## 覆盖与剩余工作
 
-[coverage.json](./coverage.json) 记录 102 组固定上游文档及每个中文 live Demo 的章节和源码行号。当前 859 个中文上游 Demo 中，859 个已建立双语内容与示例映射，有效严格验收为 116 个（Button 17 项、Icon 8 项、ConfigProvider 3 项、Locale 3 项、Dark Mode 2 项、Navigation 10 项、Divider 2 项、FloatButton 7 项、Grid 7 项、Layout 8 项、Resizable 14 项、Space 5 项、Typography 10 项、Accessibility 1 项、Banner 4 项、Feedback 7 项、Notification 8 项，十七批共通过 808 条双语/明暗/适用 RTL 用例）。Icon 短 fill 调色板顺序缺陷已修复，并通过全仓 Chromium 与真实发布包回归。此前补齐 Form（39）、Table（37）、Upload（42）、TreeSelect（19）、Tree（27），共新增 164 个上游 Demo 的双语映射。中英文上游章节数量与顺序不同的条目已在各组件 mapping 中注明；映射数量不代表逐项视觉验收完成。总数 859 来自固定源码的 live Demo 解析，修正了旧统计遗漏的 4 个示例。
+[coverage.json](./coverage.json) 记录 102 组固定上游文档及每个中文 live Demo 的章节和源码行号。当前 859 个中文上游 Demo 中，859 个已建立双语内容与示例映射，有效严格验收为 125 个（Button 17 项、Icon 8 项、ConfigProvider 3 项、Locale 3 项、Dark Mode 2 项、Navigation 10 项、Divider 2 项、FloatButton 7 项、Grid 7 项、Layout 8 项、Resizable 14 项、Space 5 项、Typography 10 项、Accessibility 1 项、Banner 4 项、Feedback 7 项、Notification 8 项、Toast 9 项，十八批共通过 880 条双语/明暗/适用 RTL 用例）。Icon 短 fill 调色板顺序缺陷已修复，并通过全仓 Chromium 与真实发布包回归。此前补齐 Form（39）、Table（37）、Upload（42）、TreeSelect（19）、Tree（27），共新增 164 个上游 Demo 的双语映射。中英文上游章节数量与顺序不同的条目已在各组件 mapping 中注明；映射数量不代表逐项视觉验收完成。总数 859 来自固定源码的 live Demo 解析，修正了旧统计遗漏的 4 个示例。
 
 补齐与严格验收按 [双线计划](./batch-plan.md) 独立推进，不再要求同一批同时完成：
 
-| 工作线             | 当前统计                            | 下一批                   |
-| ------------------ | ----------------------------------- | ------------------------ |
-| 双语示例补齐       | 859/859 已映射，0 项待映射          | 补齐已完成，进入内容审阅 |
-| 严格视觉与行为验收 | 116/859 有效验收，743 项已映射待验收 | Toast 9 项               |
+| 工作线             | 当前统计                             | 下一批                   |
+| ------------------ | ------------------------------------ | ------------------------ |
+| 双语示例补齐       | 859/859 已映射，0 项待映射           | 补齐已完成，进入内容审阅 |
+| 严格视觉与行为验收 | 125/859 有效验收，734 项已映射待验收 | Popconfirm 4 项          |
 
 映射计数不追认为全部通过统一运行检查；后续补齐批次须提供内容、类型及实际站点加载运行证据，但无需等待严格矩阵即可交付。验收线独立处理已补齐示例；最终所有示例仍须严格验收，证据仍随真实依赖变化失效。完成标准与命令见 [工作流](./workflow.md)。
 
@@ -98,3 +98,5 @@ node apps/docs/scripts/prepare-coverage.mjs --batch=button
 2026-09-11 完成 Resizable 14 项严格验收：112/112 双语、明暗、LTR/RTL 正式矩阵通过，无重试、跳过或失败；历史十批保持有效，覆盖计数为 81/859。修复 Direction 的 Vue 间距单位和 API 文档错误，验证尺寸约束、嵌套拖拽、动态方向、独立时钟下的 Toast 及真实编辑运行。见 [本轮记录](../../ai-work/20260911-163940-resizable-documentation-acceptance.md)与 [Resizable 审阅矩阵](resizable-acceptance.md)。
 
 2026-09-11 完成 Notification 八项严格验收：64/64 双语、明暗、LTR/RTL 正式矩阵通过；组件内部对齐修复使 ConfigProvider 证据失效，两者共享一次构建重验 80/80，无重试、跳过或失败，覆盖计数为 116/859。修复 `default` 类型缺失 `-icon-show`、自定义 Semi 图标未按 `large` 克隆，以及中文 Links 示例多包一层 `div` 的结构差异；中文示例按钮与正文回退为固定源码英文原文，仅保留独立品牌替换。验证六种位置真实贴边/居中、受控时钟下的 3s/10s/同 id 更新重启/`duration: 0` 计时、完整进出动效及真实编辑运行。见 [本轮记录](../../ai-work/20260911-230221-notification-documentation-acceptance.md)与 [Notification 审阅矩阵](notification-acceptance.md)。
+
+2026-09-11 完成 Toast 九项严格验收（含英文独有 Stacking）：72/72 双语、明暗、LTR/RTL 正式矩阵通过；hook holder 结构修复使 ConfigProvider、Resizable、Typography 证据失效，四批共享一次构建重验，无重试、跳过或失败，覆盖计数为 125/859。修复 `useToast` 复用命令式 host 导致空 holder 常驻 innerWrapper、hook 弹层多一层 fit-content 祖先的问题，并让 `positionInList` 缺省时位移为 0；验证 3s/10s 边界、同 id 更新重启、leading-only 节流、堆叠 hover 展开与 3D 缩放、自定义容器、进出动效与真实编辑运行。见 [本轮记录](../../ai-work/20260911-234654-toast-documentation-acceptance.md)与 [Toast 审阅矩阵](toast-acceptance.md)。

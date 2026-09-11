@@ -90,7 +90,7 @@ import '@aifuxi/semi-theme-default/toast.css';
 
 自定义容器改变 DOM 父节点，并不自动改变 fixed 定位；如需局部排版，同时为容器和其 `.semi-toast-wrapper` 设置 `position: relative`。
 
-中文上游有九项 live 示例，英文有十项，英文第 4 项为独立堆叠演示。示例保留上游共同的英文按钮文案；链接按语言显示。Bytedance 文案按独立品牌约束替换为 AIFUXI。工厂示例补充上游遗漏的 Toast 导入；Context 示例移除非公开的 `title` 字段。Context 的两个依赖文件会随在线编辑器加载。
+中文上游有九项 live 示例，英文有十项，英文第 4 项为独立堆叠演示。示例保留上游共同的英文按钮文案；链接按语言显示。Bytedance 文案按独立品牌约束替换为 AIFUXI。工厂示例补充上游遗漏的 Toast 导入；Context 示例移除非公开的 `title` 字段，hook holder 就地渲染裸 Toast、不产生命令式 `innerWrapper`。Context 的两个依赖文件会随在线编辑器加载。九项示例与英文独有 Stacking 已完成双语、明暗与适用 RTL 的严格 React/Vue 视觉与行为验收。
 
 ## API
 

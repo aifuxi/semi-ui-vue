@@ -97,7 +97,7 @@ Use `ToastFactory.create(config)` for different defaults or containers. This exa
 
 A custom container changes the DOM parent, not the fixed positioning. For local layout, set both the container and its `.semi-toast-wrapper` to `position: relative`.
 
-The fixed Chinese reference has nine live demos; English has ten, including Stacking styles at index 4. Shared English button labels are preserved, while links are localized. Bytedance text is replaced with AIFUXI under the independent branding policy. The factory example adds the Toast import missing upstream. The context example omits the unsupported title field and includes its two dependency files in the online editor.
+The fixed Chinese reference has nine live demos; English has ten, including Stacking styles at index 4. Shared English button labels are preserved, while links are localized. Bytedance text is replaced with AIFUXI under the independent branding policy. The factory example adds the Toast import missing upstream. The context example omits the unsupported title field and includes its two dependency files in the online editor. All nine demos, plus the English-only Stacking demo, have passed strict React/Vue visual and behavioral acceptance across both languages, light/dark, and the applicable RTL cases.
 
 ## API
 

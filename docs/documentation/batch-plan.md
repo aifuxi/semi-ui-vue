@@ -7,11 +7,11 @@
 | 工作线             | 当前进度         | 剩余范围           | 下一批                     |
 | ------------------ | ---------------- | ------------------ | -------------------------- |
 | 双语示例补齐       | 859/859 已映射   | 0 项待映射         | 补齐队列清零，进入收尾审阅 |
-| 严格视觉与行为验收 | 116/859 有效验收 | 743 项已映射待验收 | Toast 9 项                 |
+| 严格视觉与行为验收 | 125/859 有效验收 | 734 项已映射待验收 | Popconfirm 4 项            |
 
 复用 `coverage.json` 的 `unmapped`、`implemented-awaiting-parity`、`accepted` 状态，不新增状态系统。已映射数量不追认为全部通过统一运行检查；补齐批次的加载、运行和内容检查证据随交付记录，不能仅凭映射声明补齐完成。有效验收数量以当前源码对应的证据为准。
 
-Button 17 项试点已建立独立、可追溯且随源码变化失效的验收流程。2026-09-11 的九批 352 项正式矩阵已联合通过，覆盖 Grid 新增 56 项及受 CSS 精度修复影响的历史八批，Layout 八项随后通过 64 项正式矩阵，Resizable 14 项再通过 112 项正式矩阵，Space 5 项再通过 40 项正式矩阵，Typography 10 项再通过 80 项正式矩阵，Accessibility 1 项再通过 8 项正式矩阵，Banner 4 项再通过 32 项正式矩阵，Feedback 7 项再通过 56 项正式矩阵，Notification 8 项再通过 64 项正式矩阵，并因组件内部对齐修复重验 ConfigProvider 16 项；当前十七批均有效（共 808 项用例）；只有正式验收成功才能增加 `accepted`。Typography 英文省略在宽度恢复时保留 Vue 三行布局、与固定 React 四行不同，这是用户明确确认的限定差异；断言与范围见 [Typography 验收记录](./typography-acceptance.md)。
+Button 17 项试点已建立独立、可追溯且随源码变化失效的验收流程。2026-09-11 的九批 352 项正式矩阵已联合通过，覆盖 Grid 新增 56 项及受 CSS 精度修复影响的历史八批，Layout 八项随后通过 64 项正式矩阵，Resizable 14 项再通过 112 项正式矩阵，Space 5 项再通过 40 项正式矩阵，Typography 10 项再通过 80 项正式矩阵，Accessibility 1 项再通过 8 项正式矩阵，Banner 4 项再通过 32 项正式矩阵，Feedback 7 项再通过 56 项正式矩阵，Notification 8 项再通过 64 项正式矩阵，并因组件内部对齐修复重验 ConfigProvider 16 项；Toast 9 项再通过 72 项正式矩阵（含英文独有 Stacking），并因 hook holder 结构修复重验 ConfigProvider、Resizable、Typography；当前十八批均有效（共 880 项用例）；只有正式验收成功才能增加 `accepted`。Typography 英文省略在宽度恢复时保留 Vue 三行布局、与固定 React 四行不同，这是用户明确确认的限定差异；断言与范围见 [Typography 验收记录](./typography-acceptance.md)。
 
 ## 补齐线：剩余 0 项待映射
 
@@ -39,14 +39,14 @@ Button 17 项试点已建立独立、可追溯且随源码变化失效的验收�
 
 ## 验收线：751 项已映射待验收及后续入队示例
 
-现有 743 项队列现在即可推进，不以补齐线完成为前提。按下表分类顺序、每类内部按 `coverage.json` 固定文档顺序选择尚未有效验收的示例；Divider 2 项、FloatButton 7 项、Grid 7 项、Layout 8 项、Resizable 14 项、Space 5 项、Typography 10 项、Accessibility 1 项、Banner 4 项、Feedback 7 项与 Notification 8 项已完成，下一批为 Toast 9 项。同样按组件拆批，超过 20 项时按上游索引每 15 项拆分。展示类把动态浮层、图片、轮播和 Table 放在静态展示之后，输入类把选择器、日期时间、TreeSelect、Form、Upload 放在基础输入之后。
+现有 734 项队列现在即可推进，不以补齐线完成为前提。按下表分类顺序、每类内部按 `coverage.json` 固定文档顺序选择尚未有效验收的示例；Divider 2 项、FloatButton 7 项、Grid 7 项、Layout 8 项、Resizable 14 项、Space 5 项、Typography 10 项、Accessibility 1 项、Banner 4 项、Feedback 7 项、Notification 8 项与 Toast 9 项已完成，下一批为 Popconfirm 4 项。同样按组件拆批，超过 20 项时按上游索引每 15 项拆分。展示类把动态浮层、图片、轮播和 Table 放在静态展示之后，输入类把选择器、日期时间、TreeSelect、Form、Upload 放在基础输入之后。
 
-补齐线交付的新示例按所属分类加入验收队列，在下一次选批时纳入，不中断正在验收的批次；不属于下表分类的指南、工具、媒体与 AI 示例按补齐线表格顺序接续。下表列当前 743 项，包含新入队的 OverflowList 4 项、ScrollList 1 项、Transfer 14 项、Toast 9 项、UserGuide 8 项、DragMove 4 项和 HotKeys 5 项，不是最终验收范围。选定批次仍需确认示例可运行，并完成章节/API/迁移审阅及完整严格矩阵；已有映射不代替这些检查。OverflowList 验收前需定位并修复已记录的 collapse/scroll 计数更新问题；ScrollList 须统一双侧分钟禁用数据；Transfer 须审阅原生拖放、删除按钮和自定义面板空态适配差异；Toast 须审阅节流适配、同 id 更新计时、stack hover、holder 上下文、自定义容器与完整关闭动效（英文独有堆叠示例亦纳入）；UserGuide 须对照本地封面替换、完整位置/高亮/受控/动效矩阵；DragMove 须对照双语小宽度及自定义 right 定位；HotKeys 须对照默认快捷键动作和局部监听边界。
+补齐线交付的新示例按所属分类加入验收队列，在下一次选批时纳入，不中断正在验收的批次；不属于下表分类的指南、工具、媒体与 AI 示例按补齐线表格顺序接续。下表列当前 734 项，包含新入队的 OverflowList 4 项、ScrollList 1 项、Transfer 14 项、UserGuide 8 项、DragMove 4 项和 HotKeys 5 项，不是最终验收范围。选定批次仍需确认示例可运行，并完成章节/API/迁移审阅及完整严格矩阵；已有映射不代替这些检查。OverflowList 验收前需定位并修复已记录的 collapse/scroll 计数更新问题；ScrollList 须统一双侧分钟禁用数据；Transfer 须审阅原生拖放、删除按钮和自定义面板空态适配差异；UserGuide 须对照本地封面替换、完整位置/高亮/受控/动效矩阵；DragMove 须对照双语小宽度及自定义 right 定位；HotKeys 须对照默认快捷键动作和局部监听边界。
 
 | 分类                                                                                           | 数量 |
 | ---------------------------------------------------------------------------------------------- | ---: |
 | 其余基础组件及 Accessibility                                                                   |    0 |
-| Banner、Notification、Toast、Popconfirm、Progress、Skeleton、Spin、Feedback                    |   38 |
+| Banner、Notification、Toast、Popconfirm、Progress、Skeleton、Spin、Feedback                    |   29 |
 | 展示类（含 OverflowList 4 项、ScrollList 1 项）                                                |  220 |
 | 导航类                                                                                         |   87 |
 | 输入类（含 Transfer 14 项）                                                                    |  312 |

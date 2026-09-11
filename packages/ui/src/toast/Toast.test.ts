@@ -243,6 +243,12 @@ describe('Toast', () => {
     expect(alert.classes()).toContain('semi-toast-default');
     expect(alert.classes()).toContain('semi-toast-rtl');
     expect(alert.attributes('aria-label')).toBe('default type');
+    // The pinned HookToast renders a bare Toast in place: no imperative innerWrapper
+    // and no list-position transform.
+    expect(wrapper.find('.semi-toast-innerWrapper').exists()).toBe(false);
+    expect((alert.element as HTMLElement).style.transform.replace(/\s+/g, '')).toBe(
+      'translate3d(0,0,0px)',
+    );
     wrapper.unmount();
   });
 });

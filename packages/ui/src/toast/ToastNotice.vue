@@ -30,7 +30,9 @@ defineOptions({ name: 'ToastNotice' });
 const props = defineProps<{
   animationClass?: string | undefined;
   entry: ToastEntry;
-  positionInList: { index: number; length: number };
+  // The imperative host always passes the list position; the hook holder omits it,
+  // which matches the pinned HookToast's unset positionInList (reservedIndex 0).
+  positionInList?: { index: number; length: number };
   stack: boolean;
   stackExpanded: boolean;
 }>();
@@ -91,7 +93,9 @@ const textStyle = computed(() => ({
       ? `${props.entry.textMaxWidth}px`
       : props.entry.textMaxWidth,
 }));
-const reservedIndex = computed(() => props.positionInList.length - props.positionInList.index - 1);
+const reservedIndex = computed(() =>
+  props.positionInList ? props.positionInList.length - props.positionInList.index - 1 : 0,
+);
 const noticeStyle = computed(() => [
   props.entry.style,
   { transform: `translate3d(0,0,${reservedIndex.value * -10}px)` },
