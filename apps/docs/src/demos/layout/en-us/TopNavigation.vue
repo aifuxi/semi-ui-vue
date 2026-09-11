@@ -11,6 +11,7 @@ import { Skeleton, SkeletonParagraph } from '@aifuxi/semi-ui-vue/skeleton';
 import '@aifuxi/semi-theme-default/skeleton.css';
 import { Avatar } from '@aifuxi/semi-ui-vue/avatar';
 import '@aifuxi/semi-theme-default/avatar.css';
+import enUS from '@aifuxi/semi-ui-vue/locale/source/en_US';
 import { ConfigProvider } from '@aifuxi/semi-ui-vue/config-provider';
 import '@aifuxi/semi-theme-default/config-provider.css';
 import {
@@ -21,16 +22,11 @@ import {
   IconLive,
   IconSetting,
 } from '@aifuxi/semi-icons-vue';
-const routes = [
-  'Home',
-  'This page title is long enough to be truncated',
-  'Previous page',
-  'Details',
-];
+const routes = ['Home', 'Page Section', 'Pagge Ssection', 'Detail'];
 </script>
 
 <template>
-  <ConfigProvider :locale="{ code: 'en-US' }">
+  <ConfigProvider :locale="enUS">
     <Layout style="border: 1px solid var(--semi-color-border)">
       <LayoutHeader class="layout-header"
         ><div>
@@ -42,7 +38,7 @@ const routes = [
             <NavItem item-key="Live" text="Live"
               ><template #icon><IconLive size="large" /></template
             ></NavItem>
-            <NavItem item-key="Setting" text="Settings"
+            <NavItem item-key="Setting" text="Setting"
               ><template #icon><IconSetting size="large" /></template
             ></NavItem>
 
@@ -72,7 +68,7 @@ const routes = [
             >Copyright © aifuxi. All Rights Reserved.</span
           ></span
         >
-        <span><span style="margin-right: 24px">Customer service</span><span>Feedback</span></span>
+        <span><span style="margin-right: 24px">Customer Service</span><span>Feedback</span></span>
       </LayoutFooter>
     </Layout>
   </ConfigProvider>

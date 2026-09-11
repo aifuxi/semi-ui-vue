@@ -58,7 +58,7 @@ import '@aifuxi/semi-theme-default/layout.css';
 
 ### Responsive Layout
 
-Six response sizes are preset in the sidebar: `xs`,`sm`,`md`,`lg`,`xl`,`xxl`. You can use `breakpoint` to set breakpoints, and use `onBreakpoint` to call callback functions.
+Six response sizes are preset in the sidebar: `xs`,`sm`,`md`,`lg`,`xl`,`xxl`. You can use `breakpoint` to set breakpoints, and use `@breakpoint` to receive callback notifications.
 
 ::demo-block{demo="layout/en-us/Responsive" title="Responsive Layout"}
 ::
@@ -91,18 +91,18 @@ Six response sizes are preset in the sidebar: `xs`,`sm`,`md`,`lg`,`xl`,`xxl`. Yo
 | class      | Class name                                                                                                                                                                                                   | string        | -       |
 | hasSider   | Indicates that there is a Sider in the child element, which is generally not specified. It can be used to avoid style flashing during SSR.                                                                   | boolean       | -       |
 | style      | Style                                                                                                                                                                                                        | CSSProperties | -       |
-| aria-label | [aria-label](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) attribute, used to label the current element Description, improve accessibility | string        |         | 2.2.0 |
-| role       | [role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles) attribute to improve accessibility                                                                                             | string        |         | 2.2.0 |
+| aria-label | [aria-label](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) attribute, used to label the current element Description, improve accessibility | string        | -       |
+| role       | [role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles) attribute to improve accessibility                                                                                             | string        | -       |
 
 ### Layout.Sider
 
-| Properties  | Instructions                                                                                                                                                                                                 | type                                   | Default |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------- | ------- |
-| breakpoint  | Breakpoints that trigger responsive layout, one of 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'                                                                                                                       | String[]                               | -       |
-| class       | Class name                                                                                                                                                                                                   | string                                 | -       |
-| style       | Style                                                                                                                                                                                                        | CSSProperties                          | -       |
-| @breakpoint | Callback function when triggering a responsive layout breakpoint                                                                                                                                             | (screen: string, broken: bool) => void | -       |
-| aria-label  | [aria-label](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) attribute, used to label the current element Description, improve accessibility | string                                 |         | 2.2.0 |
+| Properties  | Instructions                                                                                                                                                                                                 | type                                                 | Default |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------- | ------- |
+| breakpoint  | Breakpoints that trigger responsive layout, one of 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'                                                                                                                       | `LayoutBreakpoint[]`                                 | -       |
+| class       | Class name                                                                                                                                                                                                   | string                                               | -       |
+| style       | Style                                                                                                                                                                                                        | CSSProperties                                        | -       |
+| @breakpoint | Callback function when triggering a responsive layout breakpoint                                                                                                                                             | (screen: LayoutBreakpoint, matches: boolean) => void | -       |
+| aria-label  | [aria-label](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) attribute, used to label the current element Description, improve accessibility | string                                               | -       |
 
 ### responsive map
 

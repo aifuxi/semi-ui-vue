@@ -36,7 +36,8 @@ const routes = ['首页', '当这个页面标题很长时需要省略', '上一�
         style="max-width: 220px; height: 100%"
         :default-selected-keys="['Home']"
         :footer="{ collapseButton: true }"
-        ><template #header><IconInfoCircle style="font-size: 36px" /><span>aifuxi</span></template
+        ><Nav.Header text="aifuxi"
+          ><template #logo><IconInfoCircle style="font-size: 36px" /></template></Nav.Header
         ><NavItem item-key="Home" text="首页"
           ><template #icon><IconHome size="large" /></template
         ></NavItem>

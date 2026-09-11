@@ -17,6 +17,7 @@ import { Skeleton, SkeletonParagraph } from '@aifuxi/semi-ui-vue/skeleton';
 import '@aifuxi/semi-theme-default/skeleton.css';
 import { Avatar } from '@aifuxi/semi-ui-vue/avatar';
 import '@aifuxi/semi-theme-default/avatar.css';
+import enUS from '@aifuxi/semi-ui-vue/locale/source/en_US';
 import { ConfigProvider } from '@aifuxi/semi-ui-vue/config-provider';
 import '@aifuxi/semi-theme-default/config-provider.css';
 import {
@@ -28,25 +29,20 @@ import {
   IconLive,
   IconSetting,
 } from '@aifuxi/semi-icons-vue';
-const routes = [
-  'Home',
-  'This page title is long enough to be truncated',
-  'Previous page',
-  'Details',
-];
+const routes = ['Home', 'Page Section', 'Ppage Ssection', 'Detail'];
 </script>
 
 <template>
-  <ConfigProvider :locale="{ code: 'en-US' }">
+  <ConfigProvider :locale="enUS">
     <Layout style="border: 1px solid var(--semi-color-border)">
       <LayoutHeader class="layout-header"
         ><div>
           <Nav mode="horizontal" :default-selected-keys="['Home']">
-            <template #header><IconInfoCircle style="height: 36px; font-size: 36px" /></template>
+            <template #header><IconInfoCircle style="font-size: 36px" /></template>
             <span style="color: var(--semi-color-text-2)"
               ><span style="margin-right: 24px; color: var(--semi-color-text-0); font-weight: 600"
-                >Recommended templates</span
-              ><span style="margin-right: 24px">All templates</span><span>My templates</span></span
+                >aifuxi</span
+              ><span style="margin-right: 24px">aifuxi Theme</span><span>aifuxi Blocks</span></span
             >
             <template #footer
               ><Button theme="borderless" class="header-action" aria-label="Notifications"
@@ -68,13 +64,13 @@ const routes = [
             ><NavItem item-key="Home" text="Home"
               ><template #icon><IconHome size="large" /></template
             ></NavItem>
-            <NavItem item-key="Histogram" text="Basic data"
+            <NavItem item-key="Histogram" text="Histogram"
               ><template #icon><IconHistogram size="large" /></template
             ></NavItem>
-            <NavItem item-key="Live" text="Test features"
+            <NavItem item-key="Live" text="Live"
               ><template #icon><IconLive size="large" /></template
             ></NavItem>
-            <NavItem item-key="Setting" text="Settings"
+            <NavItem item-key="Setting" text="Setting"
               ><template #icon><IconSetting size="large" /></template
             ></NavItem> </Nav></LayoutSider
         ><LayoutContent class="layout-content">
@@ -93,7 +89,7 @@ const routes = [
             >Copyright © aifuxi. All Rights Reserved.</span
           ></span
         >
-        <span><span style="margin-right: 24px">Customer service</span><span>Feedback</span></span>
+        <span><span style="margin-right: 24px">Customer Service</span><span>Feedback</span></span>
       </LayoutFooter>
     </Layout>
   </ConfigProvider>

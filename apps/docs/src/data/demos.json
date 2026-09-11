@@ -10458,6 +10458,7 @@
       "@aifuxi/semi-ui-vue/button",
       "@aifuxi/semi-ui-vue/config-provider",
       "@aifuxi/semi-ui-vue/layout",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
       "@aifuxi/semi-ui-vue/navigation",
       "@aifuxi/semi-ui-vue/skeleton"
     ],
@@ -10495,6 +10496,7 @@
       "@aifuxi/semi-ui-vue/button",
       "@aifuxi/semi-ui-vue/config-provider",
       "@aifuxi/semi-ui-vue/layout",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
       "@aifuxi/semi-ui-vue/navigation",
       "@aifuxi/semi-ui-vue/skeleton"
     ],
@@ -10519,6 +10521,7 @@
       "@aifuxi/semi-ui-vue/button",
       "@aifuxi/semi-ui-vue/config-provider",
       "@aifuxi/semi-ui-vue/layout",
+      "@aifuxi/semi-ui-vue/locale/source/en_US",
       "@aifuxi/semi-ui-vue/navigation",
       "@aifuxi/semi-ui-vue/skeleton"
     ],

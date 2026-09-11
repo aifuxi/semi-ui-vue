@@ -35,19 +35,19 @@
       "index": 6,
       "zhCN": "layout/zh-cn/TopNavigation",
       "enUS": "layout/en-us/TopNavigation",
-      "notes": "保留顶部导航、三个 NavItem、通知/帮助按钮、Avatar、Breadcrumb、两行 Skeleton 与 Footer；品牌 Logo 替换为 IconInfoCircle。"
+      "notes": "保留顶部导航、三个 NavItem、通知/帮助按钮、Avatar、Breadcrumb、两行 Skeleton 与 Footer；品牌 Logo 替换为 IconInfoCircle。 英文保留 Home/Live/Setting、Page Section/Pagge Ssection/Detail。"
     },
     {
       "index": 7,
       "zhCN": "layout/zh-cn/TopSidebar",
       "enUS": "layout/en-us/TopSidebar",
-      "notes": "保留模板顶部导航、四项侧边导航及真实折叠按钮、内容和 Footer；ReactNode 改命名插槽。"
+      "notes": "保留模板顶部导航、四项侧边导航及真实折叠按钮、内容和 Footer；ReactNode 改命名插槽。 英文保留 Ppage Ssection，顶部品牌栏目改为 aifuxi/aifuxi Theme/aifuxi Blocks。"
     },
     {
       "index": 8,
       "zhCN": "layout/zh-cn/SideNavigation",
       "enUS": "layout/en-us/SideNavigation",
-      "notes": "保留全高侧边导航、顶部操作区与内部三行内容；品牌使用独立 aifuxi 名称，保留折叠交互。"
+      "notes": "保留全高侧边导航、顶部操作区与内部三行内容；品牌使用独立 aifuxi 名称，保留折叠交互。 英文保留 Webcast 标题与 Histogram/Live/Setting；Nav.Header 标题随折叠隐藏恢复，图标保留。"
     }
   ],
   "chapters": [
@@ -80,5 +80,17 @@
       "item": "Semi / ByteDance 品牌 Logo",
       "reason": "按仓库独立品牌约束替换为通用图标与 aifuxi 名称；保留全部 8 个布局示例。"
     }
-  ]
+  ],
+  "review": {
+    "fingerprint": "fbd2144f536eec9c23befcccce48530698a88ecb46f86580416e78d7a2d70c59",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "核对固定双语八例、Layout/Sider Adapter、docDemo.scss 及 Vue 公开类型；原生 section/header/main/footer/aside、prefixCls 和 attrs 边界保持。",
+      "断点类型使用 LayoutBreakpoint，回调 matches 为 boolean；md 媒体查询是 min-width:768px，不自动折叠；Sider 不转发 role。",
+      "英文原始文案和拼写差异保留，侧边标题采用 Nav.Header，英文复合例使用完整 locale；通知/帮助按钮保留本地可访问名称。",
+      "仅替换 Semi/ByteDance 品牌 Logo 与名称；外部物料平台保持既有排除说明，无 accepted deviation。"
+    ]
+  }
 }

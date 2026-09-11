@@ -96,13 +96,13 @@ import '@aifuxi/semi-theme-default/layout.css';
 
 ### Layout.Sider
 
-| 属性        | 说明                                                                                                                                                                                 | 类型                                   | 默认值 |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------- | ------ |
-| breakpoint  | 触发响应式布局的断点，可选值'xs', 'sm', 'md', 'lg', 'xl', 'xxl'                                                                                                                      | string[]                               | -      |
-| class       | 类名                                                                                                                                                                                 | string                                 | -      |
-| style       | 样式                                                                                                                                                                                 | CSSProperties                          | -      |
-| @breakpoint | 触发响应式布局断点时的回调                                                                                                                                                           | (screen: string, broken: bool) => void | -      |
-| aria-label  | [aria-label](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute)属性，用来给当前元素加上的标签描述, 提升可访问性 >=2.3.0 | string                                 | -      |
+| 属性        | 说明                                                                                                                                                                                 | 类型                                                 | 默认值 |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------- | ------ |
+| breakpoint  | 触发响应式布局的断点，可选值'xs', 'sm', 'md', 'lg', 'xl', 'xxl'                                                                                                                      | `LayoutBreakpoint[]`                                 | -      |
+| class       | 类名                                                                                                                                                                                 | string                                               | -      |
+| style       | 样式                                                                                                                                                                                 | CSSProperties                                        | -      |
+| @breakpoint | 触发响应式布局断点时的回调                                                                                                                                                           | (screen: LayoutBreakpoint, matches: boolean) => void | -      |
+| aria-label  | [aria-label](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute)属性，用来给当前元素加上的标签描述, 提升可访问性 >=2.3.0 | string                                               | -      |
 
 ### responsive map
 
