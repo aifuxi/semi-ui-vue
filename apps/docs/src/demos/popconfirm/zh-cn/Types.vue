@@ -7,10 +7,6 @@ import { Radio, RadioGroup } from '@aifuxi/semi-ui-vue/radio';
 import '@aifuxi/semi-theme-default/radio.css';
 import { IconAlertTriangle } from '@aifuxi/semi-icons-vue';
 import { shallowRef } from 'vue';
-const container = shallowRef<HTMLElement | null>(null);
-function getPopupContainer() {
-  return container.value!;
-}
 import type { RadioChangeEvent } from '@aifuxi/semi-ui-vue/radio';
 const types = ['default', 'warning', 'danger', 'tertiary'] as const;
 type ConfirmType = (typeof types)[number];
@@ -22,7 +18,7 @@ function changeType(event: RadioChangeEvent) {
 }
 </script>
 <template>
-  <div ref="container" style="position: relative; min-height: 340px; overflow: hidden">
+  <div>
     <RadioGroup
       type="button"
       :value="type"
@@ -39,9 +35,7 @@ function changeType(event: RadioChangeEvent) {
     >
     <div>
       <Popconfirm
-        v-if="container"
         v-model:visible="visible"
-        :get-popup-container="getPopupContainer"
         trigger="custom"
         title="确定是否要保存此修改？"
         content="此修改将不可逆"

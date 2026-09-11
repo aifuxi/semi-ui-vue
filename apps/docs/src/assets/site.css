@@ -63,8 +63,15 @@ button {
 button:disabled:not([data-demo-preview] *, [class*='semi-']) {
   cursor: default;
 }
-/* Site controls own this ring; demos and Semi components keep their upstream focus styles. */
-:is(button, a, input):focus-visible:not([data-demo-preview] *, [class*='semi-']) {
+/* Site controls own this ring; demos and Semi components keep their upstream focus
+   styles. Demo content that renders through a portal leaves `[data-demo-preview]`,
+   so exclude the portal hosts as well. */
+:is(button, a, input):focus-visible:not(
+    [data-demo-preview] *,
+    [class*='semi-'],
+    .semi-portal *,
+    .semi-portal-inner *
+  ) {
   outline: 2px solid var(--semi-color-primary);
   outline-offset: 2px;
 }

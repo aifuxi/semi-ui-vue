@@ -10,10 +10,6 @@ import { ConfigProvider } from '@aifuxi/semi-ui-vue/config-provider';
 import '@aifuxi/semi-theme-default/config-provider.css';
 import { IconAlertTriangle } from '@aifuxi/semi-icons-vue';
 import { shallowRef } from 'vue';
-const container = shallowRef<HTMLElement | null>(null);
-function getPopupContainer() {
-  return container.value!;
-}
 import type { RadioChangeEvent } from '@aifuxi/semi-ui-vue/radio';
 const types = ['default', 'warning', 'danger', 'tertiary'] as const;
 type ConfirmType = (typeof types)[number];
@@ -26,7 +22,7 @@ function changeType(event: RadioChangeEvent) {
 </script>
 <template>
   <ConfigProvider :locale="enUS"
-    ><div ref="container" style="position: relative; min-height: 340px; overflow: hidden">
+    ><div>
       <RadioGroup :value="type" style="margin-top: 14px; margin-bottom: 14px" @change="changeType"
         ><Radio v-for="key in types" :key="key" :value="key"
           ><strong
@@ -39,9 +35,7 @@ function changeType(event: RadioChangeEvent) {
       >
       <div>
         <Popconfirm
-          v-if="container"
           v-model:visible="visible"
-          :get-popup-container="getPopupContainer"
           trigger="custom"
           title="Are you sure to save this modification?"
           content="This modification will be irreversible"

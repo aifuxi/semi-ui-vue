@@ -11,7 +11,7 @@
       "index": 2,
       "zhCN": "popconfirm/zh-cn/Types",
       "enUS": "popconfirm/en-us/Types",
-      "notes": "保留四种图标/确认按钮类型以及默认visible=true；实例局部容器限制弹层区域；各语言Radio样式保持原样。"
+      "notes": "保留四种图标/确认按钮类型以及默认visible=true；浮层与固定基线一致渲染到 body，不额外设置局部容器；各语言Radio样式保持原样。"
     },
     {
       "index": 3,
