@@ -12,11 +12,11 @@ upstream: 'feedback/skeleton'
 
 ## Overview
 
-- `Avatar`: Avatar placeholder, by default uses Avatar medium sizing: `width: 48px`, `height: 48px`. Supports Avatar's size and shape attributes (after v2.20)
-- `Image`: Image placeholder, default size: `width: 100%`, `height: 100%`.
-- `Title`: Title placeholder, default size: `width: 100%`, `height: 24px`.
-- `Paragraph`: Content part placeholder, default size: `width: 100%`, `height: 16px`, `margin-bottom: 10px`.
-- `Button`: Button placeholder, default size: `width: 115px`, `height: 32px`.
+- `SkeletonAvatar`: Avatar placeholder, by default uses Avatar medium sizing: `width: 48px`, `height: 48px`. Supports Avatar's size and shape attributes (after v2.20)
+- `SkeletonImage`: Image placeholder, default size: `width: 100%`, `height: 100%`.
+- `SkeletonTitle`: Title placeholder, default size: `width: 100%`, `height: 24px`.
+- `SkeletonParagraph`: Content part placeholder, default size: `width: 100%`, `height: 16px`, `margin-bottom: 10px`.
+- `SkeletonButton`: Button placeholder, default size: `width: 115px`, `height: 32px`.
 
 > Note: Default styles could by overwritten through `className` or `style`.
 
@@ -24,8 +24,9 @@ upstream: 'feedback/skeleton'
 
 ### How to import
 
-```jsx
-import { Skeleton } from '@douyinfe/semi-ui';
+```ts
+import { Skeleton } from '@aifuxi/semi-ui-vue/skeleton';
+import '@aifuxi/semi-theme-default/skeleton.css';
 ```
 
 ### Basic Usage

@@ -24,11 +24,9 @@ upstream: 'feedback/skeleton'
 
 ### 如何引入
 
-```vue
-<script setup lang="ts">
+```ts
 import { Skeleton } from '@aifuxi/semi-ui-vue/skeleton';
 import '@aifuxi/semi-theme-default/skeleton.css';
-</script>
 ```
 
 ### 基本使用
