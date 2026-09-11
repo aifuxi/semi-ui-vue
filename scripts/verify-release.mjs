@@ -1,13 +1,7 @@
 import { access, readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import {
-  distTagForVersion,
-  NPM_REGISTRY,
-  NPM_USERNAME,
-  publicPackages,
-  REPOSITORY,
-} from './release-packages.mjs';
+import { NPM_REGISTRY, NPM_USERNAME, publicPackages, REPOSITORY } from './public-packages.mjs';
 
 const workspaceRoot = fileURLToPath(new URL('..', import.meta.url));
 let expectedVersion;
@@ -48,7 +42,6 @@ for (const packageInfo of publicPackages) {
   const packageRoot = path.join(workspaceRoot, 'packages', packageInfo.directory);
   const manifestPath = path.join(packageRoot, 'package.json');
   const manifest = await readJson(manifestPath);
-  const expectedTag = distTagForVersion(manifest.version);
 
   expectedVersion ??= manifest.version;
   versions.add(manifest.version);
@@ -76,9 +69,12 @@ for (const packageInfo of publicPackages) {
     manifest.publishConfig?.registry === NPM_REGISTRY,
     `${manifest.name} 必须固定官方 npm registry`,
   );
-  assert(manifest.publishConfig?.tag === expectedTag, `${manifest.name} 的 dist-tag 不正确`);
+  assert(
+    !Object.hasOwn(manifest.publishConfig, 'tag'),
+    `${manifest.name} 的渠道必须由 Changesets 管理`,
+  );
 
-  for (const requiredFile of ['dist', 'LICENSE', 'README.md']) {
+  for (const requiredFile of ['dist', 'LICENSE', 'README.md', 'CHANGELOG.md']) {
     assert(
       manifest.files?.includes(requiredFile),
       `${manifest.name} 的 files 缺少 ${requiredFile}`,
@@ -142,5 +138,5 @@ for (const [directory, name] of [
 }
 
 process.stdout.write(
-  `发布身份通过：${publicPackages.length} 个公开包统一为 ${expectedVersion}，dist-tag 为 ${distTagForVersion(expectedVersion)}\n`,
+  `发布身份通过：${publicPackages.length} 个公开包统一为 ${expectedVersion}，渠道由 Changesets 管理\n`,
 );

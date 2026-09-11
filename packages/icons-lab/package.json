@@ -1,6 +1,6 @@
 {
   "name": "@aifuxi/semi-icons-lab-vue",
-  "version": "0.1.0-alpha.8",
+  "version": "0.1.0",
   "description": "Experimental Semi Design v2.102.0 icons generated as Vue 3 components.",
   "license": "MIT",
   "author": "aifuxi",
@@ -22,8 +22,7 @@
   },
   "publishConfig": {
     "access": "public",
-    "registry": "https://registry.npmjs.org/",
-    "tag": "next"
+    "registry": "https://registry.npmjs.org/"
   },
   "type": "module",
   "main": "./dist/index.js",
@@ -32,6 +31,7 @@
   "files": [
     "LICENSE",
     "README.md",
+    "CHANGELOG.md",
     "dist"
   ],
   "sideEffects": false,

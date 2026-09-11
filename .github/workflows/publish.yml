@@ -2,23 +2,105 @@ name: Publish npm packages
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      candidate-sha:
+        description: Exact verified master SHA (required for recovery)
+        type: string
+        required: true
+      recover-run-id:
+        description: Original run with successful quality, browser and pack verification
+        type: string
+        required: true
 
 concurrency:
-  group: npm-publish-${{ github.ref }}
+  group: npm-publish-master
   cancel-in-progress: false
 
 permissions:
   contents: read
 
+env:
+  CANDIDATE_SHA: ${{ inputs.candidate-sha || github.sha }}
+  npm_config_registry: https://registry.npmjs.org/
+
 jobs:
-  quality:
-    name: Quality and package verification
+  select-mode:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      mode: ${{ steps.recovery.outputs.pack && 'publish' || steps.select.outputs.mode }}
+      plan: ${{ steps.recovery.outputs.plan || steps.select.outputs.publish-plan-artifact-id }}
+      original-pack: ${{ steps.recovery.outputs.pack }}
+      original-evidence: ${{ steps.recovery.outputs.evidence }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ env.CANDIDATE_SHA }}
+          fetch-depth: 0
+      - name: Reject stale or unrelated candidates
+        run: |
+          test "$GITHUB_REF" = refs/heads/master
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          git fetch origin master
+          test "$(git rev-parse origin/master)" = "$CANDIDATE_SHA"
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
+        with:
+          version: 2026.9.3
+      - run: mise exec -- pnpm install --frozen-lockfile --ignore-scripts
+      - id: recovery
+        if: github.event_name == 'workflow_dispatch'
+        run: mise exec -- node scripts/resolve-release-recovery.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RECOVERY_RUN_ID: ${{ inputs.recover-run-id }}
+      - id: select
+        if: github.event_name != 'workflow_dispatch'
+        uses: changesets/action/select-mode@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+
+  version:
+    needs: select-mode
+    if: needs.select-mode.outputs.mode == 'version'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
+          ref: ${{ env.CANDIDATE_SHA }}
+          fetch-depth: 0
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
+        with:
+          version: 2026.9.3
+      - run: mise exec -- pnpm install --frozen-lockfile --ignore-scripts
+      - uses: actions/create-github-app-token@v2
+        id: app
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: semi-ui-vue
+          permission-contents: write
+          permission-pull-requests: write
+      - uses: changesets/action/version@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          github-token: ${{ steps.app.outputs.token }}
+          script: pnpm release:version
+          pr-base-branch: master
+          pr-title: 'Release: version the five public packages'
+        env:
+          GITHUB_TOKEN: ${{ steps.app.outputs.token }}
+
+  quality:
+    name: Quality and package verification
+    needs: select-mode
+    if: needs.select-mode.outputs.mode == 'publish'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ env.CANDIDATE_SHA }}
           fetch-depth: 0
           submodules: recursive
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
@@ -27,17 +109,27 @@ jobs:
       - run: mise exec -- pnpm install --frozen-lockfile
       - run: mise exec -- pnpm audit:prod
       - run: mise exec -- pnpm check
-      - run: mise exec -- pnpm check:artifacts
-        if: github.ref_name == 'v0.1.0-alpha.0'
-        env:
-          PACK_ISOLATED: '1'
+      - run: mise exec -- pnpm test:changesets
+      - run: mise exec -- pnpm build
+      - run: mise exec -- pnpm verify:theme-dist
+      - run: mise exec -- pnpm verify:ssr-dist
+      - run: mise exec -- pnpm release:verify
+      - uses: actions/upload-artifact@v4
+        with:
+          name: public-dist
+          path: packages/*/dist
+          if-no-files-found: error
+          retention-days: 30
 
   browser:
     name: Chromium parity on Darwin
+    needs: select-mode
+    if: needs.select-mode.outputs.mode == 'publish'
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v6
         with:
+          ref: ${{ env.CANDIDATE_SHA }}
           fetch-depth: 0
           submodules: recursive
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
@@ -61,29 +153,138 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
-  publish:
-    name: Publish with npm OIDC
-    if: github.ref_name != 'v0.1.0-alpha.0'
-    needs:
-      - quality
-      - browser
+  pack-verify:
+    name: Pack and verify original tarballs
+    needs: [select-mode, quality]
     runs-on: ubuntu-latest
-    environment: npm
-    permissions:
-      contents: read
-      id-token: write
+    outputs:
+      pack: ${{ steps.recovery-pack.outputs.artifact-id || steps.pack.outputs.pack-dir-artifact-id }}
+      original-pack: ${{ steps.pack.outputs.pack-dir-artifact-id || needs.select-mode.outputs.original-pack }}
+      evidence: ${{ steps.evidence.outputs.artifact-id }}
     steps:
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 0
+          ref: ${{ env.CANDIDATE_SHA }}
           submodules: recursive
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
         with:
           version: 2026.9.3
-      - run: mise exec -- npm install --global npm@11.16.0 --registry=https://registry.npmjs.org/
-      - run: mise exec -- pnpm install --frozen-lockfile
-      - run: mise exec -- pnpm check:artifacts
+      - run: mise exec -- pnpm install --frozen-lockfile --ignore-scripts
+      - uses: actions/download-artifact@v4
+        with:
+          name: public-dist
+          path: packages
+      - id: pack
+        if: github.event_name != 'workflow_dispatch'
+        uses: changesets/action/pack@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          publish-plan-artifact-id: ${{ needs.select-mode.outputs.plan }}
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ steps.pack.outputs.pack-dir-artifact-id || needs.select-mode.outputs.original-pack }}
+          path: verified-pack
+          merge-multiple: true
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.recover-run-id || github.run_id }}
+      - uses: actions/download-artifact@v4
+        if: github.event_name == 'workflow_dispatch'
+        with:
+          artifact-ids: ${{ needs.select-mode.outputs.original-evidence }}
+          path: original-evidence
+          merge-multiple: true
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.recover-run-id }}
+      - if: github.event_name == 'workflow_dispatch'
+        run: mise exec -- node scripts/release-evidence.mjs guard verified-pack original-evidence/release-evidence.json
+      - run: mise exec -- pnpm verify:pack-isolated
         env:
-          PACK_ISOLATED: '1'
-      - run: mise exec -- pnpm release:verify
-      - run: mise exec -- pnpm release:publish
+          PACK_DIR: verified-pack
+      - run: mise exec -- node scripts/release-evidence.mjs capture verified-pack release-evidence.json
+      - if: github.event_name == 'workflow_dispatch'
+        run: mise exec -- node scripts/prepare-release-recovery.mjs verified-pack recovery-pack
+      - id: recovery-pack
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: recovery-pack
+          path: recovery-pack
+          retention-days: 30
+      - run: cat release-evidence.json >> "$GITHUB_STEP_SUMMARY"
+      - id: evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-evidence
+          path: release-evidence.json
+          retention-days: 30
+
+  publish:
+    name: Publish with npm OIDC
+    needs: [select-mode, quality, browser, pack-verify]
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: write
+      actions: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ env.CANDIDATE_SHA }}
+          fetch-depth: 0
+      - name: Recheck candidate after environment approval
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git fetch origin master
+          test "$(git rev-parse origin/master)" = "$CANDIDATE_SHA"
+          test "$(gh api repos/$GITHUB_REPOSITORY/branches/master --jq .protected)" = true
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
+        with:
+          version: 2026.9.3
+      - run: mise exec -- pnpm install --frozen-lockfile --ignore-scripts
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ needs.pack-verify.outputs.evidence }}
+          path: evidence
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ needs.pack-verify.outputs.original-pack }}
+          path: verified-pack
+          merge-multiple: true
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.recover-run-id || github.run_id }}
+      - run: mise exec -- node scripts/release-evidence.mjs guard verified-pack evidence/release-evidence.json
+      - uses: changesets/action/publish@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          pack-dir-artifact-id: ${{ needs.pack-verify.outputs.pack }}
+        env:
+          npm_config_provenance: 'true'
+          npm_config_ignore_scripts: 'true'
+
+  postcheck:
+    needs: [publish, pack-verify]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ env.CANDIDATE_SHA }}
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
+        with:
+          version: 2026.9.3
+      - run: mise exec -- pnpm install --frozen-lockfile --ignore-scripts
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ needs.pack-verify.outputs.evidence }}
+          path: evidence
+          merge-multiple: true
+      - run: mise exec -- pnpm release:postcheck evidence/release-evidence.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: release-postcheck
+          path: release-postcheck.json
+          if-no-files-found: warn
+          retention-days: 30

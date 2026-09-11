@@ -12,7 +12,8 @@ import {
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { publicPackages as packages } from './release-packages.mjs';
+import { publicPackages as packages } from './public-packages.mjs';
+import { inspectPackedRelease } from './packed-release.mjs';
 import { verifyThemeCss } from './theme-contracts.mjs';
 import { verifyJsonViewerPackedWorker } from './verify-json-viewer-pack.mjs';
 import ts from 'typescript';
@@ -21,6 +22,9 @@ import { verifyUiTreeshaking } from './verify-ui-treeshaking.mjs';
 const workspaceRoot = fileURLToPath(new URL('..', import.meta.url));
 const pnpmExecPath = process.env.npm_execpath;
 const isolated = process.env.PACK_ISOLATED === '1';
+const suppliedTarballs = process.env.PACK_DIR
+  ? await inspectPackedRelease(process.env.PACK_DIR)
+  : undefined;
 
 const sourceVersions = new Set(
   await Promise.all(
@@ -100,12 +104,15 @@ try {
 
   for (const packageInfo of packages) {
     const packageRoot = path.join(workspaceRoot, 'packages', packageInfo.directory);
-    const packOutput = runPnpm(
-      ['pack', '--json', `--pack-destination=${artifactsRoot}`],
-      packageRoot,
-    );
-    const parsedPackOutput = JSON.parse(packOutput);
-    const packResult = Array.isArray(parsedPackOutput) ? parsedPackOutput[0] : parsedPackOutput;
+    let packResult = suppliedTarballs?.get(packageInfo.name);
+    if (!packResult) {
+      const packOutput = runPnpm(
+        ['pack', '--json', `--pack-destination=${artifactsRoot}`],
+        packageRoot,
+      );
+      const parsedPackOutput = JSON.parse(packOutput);
+      packResult = Array.isArray(parsedPackOutput) ? parsedPackOutput[0] : parsedPackOutput;
+    }
 
     if (!packResult?.filename || !Array.isArray(packResult.files)) {
       throw new Error(`${packageInfo.name} 的 pnpm pack 输出无效`);
@@ -119,7 +126,7 @@ try {
     }
 
     const packedFiles = new Set(packResult.files.map(({ path: filePath }) => filePath));
-    for (const publicMetadataPath of ['package.json', 'README.md', 'LICENSE']) {
+    for (const publicMetadataPath of ['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md']) {
       if (!packedFiles.has(publicMetadataPath)) {
         throw new Error(`${packageInfo.name} 的 tarball 缺少 ${publicMetadataPath}`);
       }

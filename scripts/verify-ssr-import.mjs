@@ -2,7 +2,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
 import { publicJavaScriptEntries } from './public-export-entries.mjs';
-import { publicPackages } from './release-packages.mjs';
+import { publicPackages } from './public-packages.mjs';
 import assert from 'node:assert/strict';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';

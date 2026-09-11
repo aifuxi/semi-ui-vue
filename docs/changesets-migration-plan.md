@@ -1,6 +1,6 @@
 # Changesets 完整迁移计划
 
-状态：待实施。更新日期：2026-09-11。本文是本地实施方案，不代表工作流已切换或允许发布 npm 包。现行操作仍以 [发布手册](./releasing.md) 为准；实施完成后由新版手册承接日常操作。
+状态：本地迁移完成，外部发布待验证。更新日期：2026-09-11。现行操作见新版 [发布手册](./releasing.md)，原始设计与验收要求保留在本文；实测修订见文末。
 
 ## 目标与完成定义
 
@@ -22,7 +22,7 @@
 
 现有 `release-bump.mjs` 只修改版本，不同步 `publishConfig.tag`，稳定版会与发布验证冲突；现有预检拒绝任一已存在版本，使部分发布后的直接重跑受阻。现有工作流由 `v*` 标签触发，标签先于完整发布验证创建。
 
-本次方案只落地文档。后续实施可在本地完成配置、测试、工作流和手册变更；GitHub App、Environment、npm Trusted Publisher 的外部配置及真实发布分别记录完成证据，不把本地测试当作外部成功。
+原方案提交仅落地文档，本轮已完成本地配置、测试、工作流和手册变更。GitHub App、Environment、npm Trusted Publisher 的外部配置及真实发布分别记录完成证据，不把本地测试当作外部成功。
 
 ## 版本与包配置
 
@@ -203,6 +203,18 @@ registry 查询可对传播延迟做有限重试并记录等待原因；不得�
 - [Action v2.1.2 pack](https://github.com/changesets/action/blob/v2.1.2/pack/README.md)：发布计划输入与打包 artifact 输出。
 - [Action v2.1.2 publish](https://github.com/changesets/action/blob/v2.1.2/publish/README.md)：发布 artifact、OIDC、标签与 Release。
 
-## 本次文档交付证据
+## 原文档交付证据
 
 本次仅新增迁移计划并在发布手册增加入口；核对了现有脚本、CI 和官方固定版本 Action 接口。格式及 diff 检查结果以本次提交交付为准。未安装 Changesets、未执行上述演练、未修改外部配置、未发布 npm 包。
+
+## 2026-09-11 实施修订
+
+- 已核实 CLI 3.0.2、CHANGELOG 插件 1.0.1 和 Action v2.1.2 peeled commit；固定分组及预发布由官方命令维护。
+- 真实演练证明，从 alpha.8 直接进入 next 会得到 next.9。接入改为官方 patch version 生成未发布的 0.1.0 迁移基线，再进入 next 并保留 major changeset，首个版本 PR 才生成 1.0.0-next.0。没有手改最终版本或 pre.json；CHANGELOG 明确标注中间基线未发布。
+- CLI 3.0.2 无待处理 changeset 时，version 返回退出码 1，文件保持不变；不把它误判为成功的空升版。
+- 原 pack 计划重跑时，CLI 无法识别 Verdaccio / pnpm 返回的重复版本 409。恢复使用官方重新生成的 publish-plan，增加仅绑定原 tarball 的适配；不自研版本、依赖顺序、发布包选择或 npm publish 实现。这个必要适配修订了原方案“不读取计划格式”的假设，输入 schema 固定为 v1，并校验原版本、渠道与 access。
+- 原始失败、补发、重复执行、五包精确 workspace 依赖和本地标签补建均由真实 CLI 加独立 registry 演练。GitHub Release 补建、OIDC、版本 PR 触发 CI 仍属于外部待验事项。
+- Git 签名失败注入证明 CLI 3.0.2 的 git-tag 命令可能成功退出但没有创建标签；后验增加对实际 GitHub refs、候选 SHA 和 Release 的检查，不依赖 CLI 成功消息。
+- 仓库安装保留统一 lockfile；发布 job 使用 frozen-lockfile 与 ignore-scripts 安装锁定工具环境。它会安装根开发依赖，不另造一份会漂移的工具锁文件，也不运行 workspace 生命周期或重新构建。
+- 最新五包 registry 与远端 refs 已保存到 [快照](../ai-work/20260911-changesets-registry.json)。master 未受保护，仓库 Actions variables/secrets 为空；npm Environment 已有 required reviewer。未修改外部配置或发布包。
+- 完整本地分阶段门禁已通过：1,206 项单测、442 项组件 Chromium、477 项文档 Chromium，以及审计、构建、主题、SSR、官方 tarball 隔离消费。详细命令、故障与取舍见 [实施记录](../ai-work/20260911-125341-changesets-migration.md)。

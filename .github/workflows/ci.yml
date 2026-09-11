@@ -23,6 +23,15 @@ jobs:
         with:
           version: 2026.9.3
       - run: mise exec -- pnpm install --frozen-lockfile
+      - run: mise exec -- pnpm check:changesets
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_HEAD_REF: ${{ github.head_ref }}
+          PR_HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          RELEASE_BOT_LOGIN: ${{ vars.RELEASE_BOT_LOGIN }}
+      - run: mise exec -- pnpm test:changesets
       - run: mise exec -- pnpm check
       - name: Verify affected build and package contracts
         env:

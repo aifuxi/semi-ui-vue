@@ -27,7 +27,7 @@ CSS 产物和安装包共用 `scripts/theme-contracts.json`；条目来自原主
 
 单测配置位于 `rstest.config.ts`；默认 jsdom，Node 注解保留 SSR 模板编译。`test:coverage` 使用 V8 并统计相对 `origin/master` 的改动文件，`test:coverage:all` 统计完整包源码范围。当前 V8 provider 的版本锁定补丁修复 Vue 多编译模块的覆盖率合并，背景及移除条件见 [Rstack 迁移记录](../../ai-work/20260910-103000-rstack-migration.md#第四阶段单测迁移到-rstest)。
 
-CI 的 PR 源码检查包含工具测试；相关构建输入变化时才执行产物检查。发布 job 在其独立环境验证将要发布的产物，因此不能直接借用另一 job 的未传递构建结果。视觉矩阵与阈值本轮保持不变；后续按实际耗时和故障证据决定是否收敛历史快照。
+CI 的 PR 源码检查包含工具测试与 `check:changesets` 变更意图检查；相关构建输入变化时才执行产物检查。`test:changesets` 使用真实 CLI 和独立本地 registry 验证五包升版、预发布退出及恢复。发布流程由 quality 传递构建产物，官方 pack 创建 artifact，pack-verify 对下载的准确 tarball 执行隔离消费验证，再把相同 artifact ID 交给 publish。`PACK_DIR` 可指定官方 pack 输出目录；publish 不重建。视觉矩阵与阈值保持不变。
 
 ## 浏览器 runner 的迁移边界
 

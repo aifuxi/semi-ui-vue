@@ -1,6 +1,6 @@
 {
   "name": "@aifuxi/semi-theme-default",
-  "version": "0.1.0-alpha.8",
+  "version": "0.1.0",
   "description": "Compiled Semi Design v2.102.0 default theme CSS for @aifuxi/semi-ui-vue.",
   "license": "MIT",
   "author": "aifuxi",
@@ -22,8 +22,7 @@
   },
   "publishConfig": {
     "access": "public",
-    "registry": "https://registry.npmjs.org/",
-    "tag": "next"
+    "registry": "https://registry.npmjs.org/"
   },
   "type": "module",
   "sideEffects": [
@@ -34,6 +33,7 @@
   "files": [
     "LICENSE",
     "README.md",
+    "CHANGELOG.md",
     "dist"
   ],
   "exports": {

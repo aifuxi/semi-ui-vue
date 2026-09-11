@@ -2,7 +2,7 @@
 
 这是一个以 Semi Design `v2.102.0` 为固定参考基线、面向 Vue 3.5+ 的像素级复刻工程。
 
-> 本项目是独立的 Vue 实现，不是 Semi Design 官方 Vue 版本，也不代表 DouyinFE 的授权、合作或品牌身份。当前发布线为 `0.1.0-alpha` 预览版，未完成组件和 API 在 `1.0.0` 前仍可能调整。
+> 本项目是独立的 Vue 实现，不是 Semi Design 官方 Vue 版本，也不代表 DouyinFE 的授权、合作或品牌身份。当前通过 `next` 渠道提供预览版，未完成组件和 API 在稳定版验收前仍可能调整。
 
 ## npm 预览包
 
@@ -18,7 +18,7 @@
 pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
 ```
 
-发布准备、首次人工引导和后续 GitHub OIDC 可信发布流程见 `docs/releasing.md`。
+提交变更时使用 `pnpm changeset`，由机器人维护五包版本 PR；预发布、GitHub OIDC 与恢复流程见 [发布手册](docs/releasing.md)。
 
 ## 复刻进度
 
@@ -56,7 +56,7 @@ Feedback 7 项双语示例已补齐，14 个示例的主要操作、源码及编
 
 文档验收已完成一次端到端提速：同一六批 224 项冷启动从 17 分 49 秒降至 9 分 03 秒（减少 49.24%），全部一次通过；准备复用命令实测 9.5 秒。默认使用 3 workers、按实际依赖判定失效，并限制 REPL 模块请求，后续有效批次直接跳过。详见 [性能工作记录](ai-work/20260906-211800-documentation-performance.md)。
 
-- Node.js `24.18.0`（支持 `20.19+`、`22.13+` 和 `24.x`）
+- Node.js `24.18.0`（仓库维护环境；不改变公开包消费者兼容承诺）
 - pnpm `12.3.4`；Node 与 pnpm 由根 `mise.toml` 统一管理
 - Playwright 固定 Chromium 构建
 

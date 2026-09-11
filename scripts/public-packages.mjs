@@ -33,7 +33,3 @@ export const publicPackages = Object.freeze([
     type: 'javascript',
   }),
 ]);
-
-export function distTagForVersion(version) {
-  return version.includes('-') ? 'next' : 'latest';
-}
