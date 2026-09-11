@@ -43,5 +43,16 @@
     "API参考",
     "设计变量"
   ],
-  "exclusions": []
+  "exclusions": [],
+  "review": {
+    "fingerprint": "a2407214c24c7fccdcdb411b64994053242bd304525d011671174e75fdb3089a",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "逐项核对固定中英文五例、全部章节、Space Adapter/children 展平与 Foundation SCSS/RTL，以及 Vue 类型、实现和迁移。",
+      "六项 API 完整保留；children/className 使用 Vue 原生映射；英文 spacing 默认值按源码更正为 tight。",
+      "Alignment 的无效 lineHight 拼写已移除；独立 flex 子节点的边缘空白不改变内容、几何或像素。无新增资产与品牌替换。"
+    ]
+  }
 }
