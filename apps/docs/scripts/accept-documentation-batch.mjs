@@ -9,6 +9,7 @@ import {
   reportCases,
   sha256,
   acceptedBatch,
+  loadBatchReviews,
 } from './documentation-evidence.mjs';
 import { batchInputs, preflightBatch } from './documentation-inputs.mjs';
 import {
@@ -22,19 +23,38 @@ const args = process.argv.slice(2);
 const all = await loadBatches();
 const ids = args.filter((arg) => !arg.startsWith('--'));
 if (
-  args.some((arg) => arg.startsWith('--') && !['--affected', '--plan'].includes(arg)) ||
+  args.some(
+    (arg) => arg.startsWith('--') && !['--affected', '--plan', '--preflight'].includes(arg),
+  ) ||
+  (args.includes('--plan') && args.includes('--preflight')) ||
   ids.some((id) => !all.some((batch) => batch.id === id)) ||
   (!ids.length && !args.includes('--affected'))
 )
   throw new Error(
-    '用法：accept:nuxt:batch <批次...> [--affected] [--plan]。--affected 追加所有证据失效的批次。',
+    '用法：accept:nuxt:batch <批次...> [--affected] [--plan | --preflight]。--preflight 只检查路径与审阅，不要求已有浏览器证据；--affected 追加所有证据失效的批次。',
   );
-const selected = [];
-for (const batch of all) {
-  if (!ids.includes(batch.id) && !args.includes('--affected')) continue;
+const requested = all.filter((batch) => ids.includes(batch.id) || args.includes('--affected'));
+const reviews = await loadBatchReviews(requested);
+const unreviewed = [];
+for (const batch of requested) {
   await preflightBatch(batch);
+  const review = reviews.get(batch.id);
+  console.log(
+    `${batch.id}: ${review.reviewed ? '审阅有效' : `审阅待完成：${review.issues.join('；')}`}`,
+  );
+  if (!review.reviewed) unreviewed.push(batch.id);
+}
+// Even an otherwise current browser report cannot bypass stale editorial review.
+// Reject the whole requested set before any build or browser side effects.
+if (unreviewed.length && !args.includes('--plan'))
+  throw new Error(
+    `正式验收前置审阅未通过：${unreviewed.join('、')}。先完成最终正文/API/迁移复核并更新审阅指纹；未启动构建或浏览器。`,
+  );
+if (args.includes('--preflight')) process.exit(0);
+const selected = [];
+for (const batch of requested) {
   if (await acceptedBatch(batch)) {
-    console.log(`${batch.id}: 证据有效，跳过构建和浏览器验收。`);
+    console.log(`${batch.id}: 浏览器证据有效，跳过构建和浏览器验收。`);
     continue;
   }
   const inputs = await batchInputs(batch);

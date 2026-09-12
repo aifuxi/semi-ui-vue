@@ -3,7 +3,9 @@ import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, readFile, rm, stat, utimes, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
+import { createRequire } from 'node:module';
+import { reportCases } from './documentation-evidence.mjs';
 import { preparationStages, timedRunner, runBrowserMatrices } from './documentation-pipeline.mjs';
 import {
   assertPreparationProof,
@@ -274,7 +276,7 @@ test('计时记录命令成功和失败并原样抛出错误', () => {
   ]);
 });
 
-test('多个批次只启动一次 Playwright，保留正式隔离和默认重试配置', () => {
+test('多个批次只启动一次 Playwright，首次失败停止且禁止重试', () => {
   const calls = [];
   runBrowserMatrices(
     [{ spec: 'one.spec.ts' }, { spec: 'two.spec.ts' }],
@@ -292,7 +294,9 @@ test('多个批次只启动一次 Playwright，保留正式隔离和默认重试
       'playwright.nuxt.config.ts',
       '(?:^|/)one\\.spec\\.ts$',
       '(?:^|/)two\\.spec\\.ts$',
-      '--reporter=json',
+      '--retries=0',
+      '--max-failures=1',
+      '--reporter=line,json',
       '--output=/tmp/output',
     ],
     env: { DOCS_ACCEPTANCE: '1', PLAYWRIGHT_JSON_OUTPUT_NAME: '/tmp/report.json' },
@@ -306,7 +310,10 @@ test('正式文件筛选精确匹配文件名，不带入后缀相同或正则�
     '/tmp/report.json',
     '/tmp/output',
     (args) => {
-      filters = args.slice(5, -2).map((filter) => new RegExp(filter));
+      filters = args
+        .slice(5)
+        .filter((arg) => !arg.startsWith('--'))
+        .map((filter) => new RegExp(filter));
     },
   );
   assert.equal(filters.length, 1);
@@ -316,3 +323,52 @@ test('正式文件筛选精确匹配文件名，不带入后缀相同或正则�
   assert.ok(!filters[0].test('/workspace/tests/nuxt/button-matrixXspecYts'));
   assert.ok(!filters[0].test('/workspace/tests/nuxt/button-matrix.spec.ts.backup'));
 });
+
+for (const failure of [false, true]) {
+  test(`真实 Playwright 调度${failure ? '首次失败后停止且不重试' : '成功时执行全部用例'}，不启动浏览器`, async (t) => {
+    const root = await mkdtemp(resolve(tmpdir(), 'documentation-stop-'));
+    t.after(() => rm(root, { recursive: true, force: true }));
+    const require = createRequire(import.meta.url);
+    await writeFile(resolve(root, 'package.json'), '{"type":"module"}');
+    await writeFile(
+      resolve(root, 'playwright.nuxt.config.ts'),
+      'export default { workers: 1, retries: 2, testMatch: "*.spec.js" };',
+    );
+    await writeFile(
+      resolve(root, 'stop.spec.js'),
+      `
+      import playwright from ${JSON.stringify(require.resolve('@playwright/test'))};
+      const { test, expect } = playwright;
+      import { writeFileSync } from 'node:fs';
+      test('first', () => { expect(${!failure}).toBe(true); });
+      test('later', () => { writeFileSync(${JSON.stringify(resolve(root, 'later'))}, 'ran'); });
+    `,
+    );
+    const report = resolve(root, 'report.json');
+    let result;
+    runBrowserMatrices([{ spec: 'stop.spec.js' }], report, resolve(root, 'output'), (args, env) => {
+      result = spawnSync(
+        process.execPath,
+        [require.resolve('@playwright/test/cli'), ...args.slice(2)],
+        {
+          cwd: root,
+          env: { ...process.env, ...env },
+          encoding: 'utf8',
+          timeout: 30000,
+        },
+      );
+    });
+    assert.equal(result.error, undefined);
+    assert.equal(result.status, failure ? 1 : 0, result.stdout + result.stderr);
+    const cases = reportCases(JSON.parse(await readFile(report, 'utf8')));
+    const first = cases.find((entry) => entry.title === 'first');
+    assert.ok(first, result.stdout + result.stderr);
+    assert.equal(first.results.length, 1);
+    assert.equal(first.results[0].status, failure ? 'failed' : 'passed');
+    if (failure) await assert.rejects(stat(resolve(root, 'later')), { code: 'ENOENT' });
+    else {
+      assert.equal(await readFile(resolve(root, 'later'), 'utf8'), 'ran');
+      assert.equal(cases.filter((entry) => entry.status === 'expected').length, 2);
+    }
+  });
+}

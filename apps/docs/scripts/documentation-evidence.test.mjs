@@ -71,6 +71,7 @@ for (const [name, mutate] of [
   ['漏掉主题', (report) => report.suites[0].specs.pop()],
   ['重复用例', (report) => (report.suites[0].specs[1] = report.suites[0].specs[0])],
   ['失败', (report) => (report.suites[0].specs[0].tests[0].results[0].status = 'failed')],
+  ['中断', (report) => (report.suites[0].specs[0].tests[0].results[0].status = 'interrupted')],
   ['跳过', (report) => (report.suites[0].specs[0].tests[0].status = 'skipped')],
   [
     '重试通过',

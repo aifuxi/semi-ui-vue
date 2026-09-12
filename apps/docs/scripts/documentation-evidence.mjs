@@ -21,6 +21,80 @@ export async function loadBatches() {
   );
 }
 
+/** Keep preflight and coverage on the same review bytes, independently of browser evidence. */
+export async function documentReview(doc, pages, mapping, workspace = root) {
+  // Some pages keep their API tables inline. Preserve their signed missing-API marker;
+  // deleting a previously present API module still changes the review fingerprint.
+  const optionalApi = pages[0]?.slug ? `apps/docs/src/data/api/${pages[0].slug}.ts` : null;
+  const files = [
+    ...new Set([
+      doc.zhCN.path,
+      doc.enUS.path,
+      ...(pages[0]?.slug ? [`apps/docs/src/data/api/${pages[0].slug}.ts`] : []),
+      ...pages.map((page) => `apps/docs/content${page.path.replace(/\/$/, '')}.md`),
+    ]),
+  ];
+  const missing = [];
+  const bytes = await Promise.all(
+    files.map(async (file) => {
+      try {
+        return Buffer.concat([Buffer.from(file + '\0'), await readFile(resolve(workspace, file))]);
+      } catch (error) {
+        if (error.code !== 'ENOENT') throw error;
+        if (file !== optionalApi) missing.push(file);
+        return Buffer.from(file + '\0missing');
+      }
+    }),
+  );
+  const fingerprint = sha256(Buffer.concat(bytes));
+  const issues = [];
+  if (
+    pages.length !== 2 ||
+    !['/zh-cn/', '/en-us/'].every((locale) => pages.some((page) => page.path.startsWith(locale)))
+  )
+    issues.push('缺少完整双语页面登记');
+  if (missing.length) issues.push(`审阅输入缺失：${missing.sort().join('、')}`);
+  for (const field of ['chapters', 'api', 'migration'])
+    if (mapping?.review?.[field] !== true) issues.push(`${field} 尚未审阅`);
+  if (mapping?.review?.fingerprint !== fingerprint) issues.push('审阅指纹缺失或已过期');
+  return { fingerprint, reviewed: issues.length === 0, issues };
+}
+
+export async function loadBatchReviews(batches, workspace = root) {
+  const read = async (file) => JSON.parse(await readFile(resolve(workspace, file), 'utf8'));
+  const inventory = await read('docs/inventory/semi-v2.102.0.json');
+  const pages = await read('apps/docs/src/data/pages.json');
+  const directory = 'docs/documentation/mappings';
+  const mappings = new Map();
+  for (const file of await readdir(resolve(workspace, directory))) {
+    if (!file.endsWith('.json')) continue;
+    const mapping = await read(`${directory}/${file}`);
+    if (mappings.has(mapping.upstream)) throw new Error(`Duplicate mapping: ${mapping.upstream}`);
+    mappings.set(mapping.upstream, mapping);
+  }
+  const bySource = new Map();
+  const reviews = new Map();
+  for (const batch of batches) {
+    if (!bySource.has(batch.upstream)) {
+      const doc = inventory.documentation.find(
+        (doc) => `${doc.category}/${doc.slug}` === batch.upstream,
+      );
+      if (!doc) throw new Error(`${batch.id}: 找不到固定文档来源 ${batch.upstream}`);
+      bySource.set(
+        batch.upstream,
+        await documentReview(
+          doc,
+          pages.filter((page) => page.upstream === batch.upstream),
+          mappings.get(batch.upstream),
+          workspace,
+        ),
+      );
+    }
+    reviews.set(batch.id, bySource.get(batch.upstream));
+  }
+  return reviews;
+}
+
 /** Include uncommitted edits and new source files; never fingerprint dist or the evidence itself. */
 export async function fingerprint(batch) {
   const { files } = await batchInputs(batch);

@@ -1,7 +1,7 @@
 import { readFile, readdir, writeFile, mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { format, resolveConfig } from 'prettier';
-import { loadBatches, acceptedBatch, sha256 } from './documentation-evidence.mjs';
+import { loadBatches, acceptedBatch, documentReview } from './documentation-evidence.mjs';
 import { upstreamLiveDemos } from '../../../scripts/upstream-markdown.mjs';
 
 const root = resolve(import.meta.dirname, '../../..');
@@ -108,30 +108,7 @@ for (const doc of inventory.documentation) {
       ...(verified ? { evidence: proof.evidence } : {}),
     };
   });
-  const reviewFiles = [
-    doc.zhCN.path,
-    doc.enUS.path,
-    ...(assigned[0]?.slug ? [`apps/docs/src/data/api/${assigned[0].slug}.ts`] : []),
-  ];
-  // Review binds to the actual source and both published pages, not a hand-edited status counter.
-  const pagePaths = assigned.map((page) => `apps/docs/content${page.path.replace(/\/$/, '')}.md`);
-  const reviewHash = sha256(
-    Buffer.concat(
-      await Promise.all(
-        [...new Set([...reviewFiles, ...pagePaths])].map(async (file) => {
-          try {
-            return Buffer.concat([Buffer.from(file + '\0'), await readFile(resolve(root, file))]);
-          } catch (error) {
-            if (error.code !== 'ENOENT') throw error;
-            return Buffer.from(file + '\0missing');
-          }
-        }),
-      ),
-    ),
-  );
-  const reviewed =
-    mapping?.review?.fingerprint === reviewHash &&
-    ['chapters', 'api', 'migration'].every((key) => mapping.review[key] === true);
+  const { fingerprint: reviewHash, reviewed } = await documentReview(doc, assigned, mapping);
   documents.push({
     source,
     sourceFiles: { 'zh-CN': doc.zhCN.path, 'en-US': doc.enUS.path },

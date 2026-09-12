@@ -261,7 +261,9 @@ export function runBrowserMatrices(batches, reportFile, outputDirectory, run = r
       // Playwright treats positional file filters as regexes over absolute paths.
       // Anchor the basename so Button cannot also select FloatButton.
       ...batches.map((batch) => `(?:^|/)${batch.spec.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`),
-      '--reporter=json',
+      '--retries=0',
+      '--max-failures=1',
+      '--reporter=line,json',
       `--output=${outputDirectory}`,
     ],
     { DOCS_ACCEPTANCE: '1', PLAYWRIGHT_JSON_OUTPUT_NAME: reportFile },
