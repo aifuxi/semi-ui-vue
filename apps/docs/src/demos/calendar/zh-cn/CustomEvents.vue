@@ -17,7 +17,7 @@ const dailyEventStyle: CSSProperties = {
 };
 </script>
 <template>
-  <Calendar :height="700" mode="week" :display-value="displayValue" :show-curr-time="false"
+  <Calendar :height="700" mode="week" :display-value="displayValue"
     ><template #dateGrid="{ dateString }"
       ><template v-if="dateString === target"
         ><div :style="{ ...dailyEventStyle, top: '500px', height: '50px' }">吃饭 🍰</div>

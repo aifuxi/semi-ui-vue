@@ -106,6 +106,5 @@ function changeDate(value: DatePickerValue) {
     :events="events"
     :min-event-height="40"
     :range="mode === 'range' ? [new Date(2019, 6, 23), new Date(2019, 6, 26)] : []"
-    :show-curr-time="false"
   />
 </template>

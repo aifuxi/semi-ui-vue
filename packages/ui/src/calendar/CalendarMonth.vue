@@ -237,13 +237,9 @@ watch(
                       </div>
                     </div>
                   </template>
-                  <li
-                    role="gridcell"
-                    :aria-label="day.date.toLocaleDateString()"
-                    :aria-current="day.isToday ? 'date' : undefined"
-                    :class="dayClasses(day)"
-                    @click="clickDay($event, day)"
-                  >
+                  <!-- The fixed Popover trigger cell carries only the cell class and click; it is
+                  not exposed as a gridcell, so keep the pinned DOM instead of adding role/aria. -->
+                  <li :class="dayClasses(day)" @click="clickDay($event, day)">
                     <CalendarNodeRenderer
                       v-if="runtime.slots.dateDisplay"
                       :content="runtime.slots.dateDisplay({ date: day.date })"
@@ -275,7 +271,7 @@ watch(
                   v-else
                   role="gridcell"
                   :aria-label="day.date.toLocaleDateString()"
-                  :aria-current="day.isToday ? 'date' : undefined"
+                  :aria-current="day.isToday ? 'date' : 'false'"
                   :class="dayClasses(day)"
                   @click="clickDay($event, day)"
                 >

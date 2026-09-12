@@ -119,7 +119,7 @@ You could use `dateDisplay slot` to customize the display of date
 
 Slots: `#header`, `#dateGrid="{ dateString, date }"`, `#dateDisplay="{ date }"`, `#timeDisplay="{ time }"`, `#allDayEvents="{ events }"`, and `#event="{ event }"`. Render-prop names from React are replaced by these slots. Events: `@click(event: MouseEvent, date)`, `@close(event: MouseEvent)`, and `@more-click(event: MouseEvent, date, remaining)`. There is no date-selection v-model.
 
-CalendarEvent.key is required and unique. Use content for a Vue node. All-day events without start/end attach to displayValue; a timed event requires at least start or end. Range mode uses an inclusive start and exclusive end. Demos use explicit historical dates and disable the moving current-time line for deterministic examples.
+CalendarEvent.key is required and unique. Use content for a Vue node. All-day events without start/end attach to displayValue; a timed event requires at least start or end. Range mode uses an inclusive start and exclusive end. Demos keep the pinned upstream props, including the default displayValue and the current-time line; the acceptance matrix fixes the browser Date on both hosts so those defaults stay deterministic.
 
 ## Content Guidelines
 

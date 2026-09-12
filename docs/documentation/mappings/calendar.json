@@ -5,55 +5,55 @@
       "index": 1,
       "zhCN": "calendar/zh-cn/Day",
       "enUS": "calendar/en-us/Day",
-      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+      "notes": "保留上游只传 mode 的日视图；缺省 displayValue 与 showCurrTime 保持开启，矩阵两侧固定 Date 后比较默认视图与当前时间线。"
     },
     {
       "index": 2,
       "zhCN": "calendar/zh-cn/Week",
       "enUS": "calendar/en-us/Week",
-      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+      "notes": "保留上游只传 mode 的周视图；缺省 displayValue 与 showCurrTime 保持开启。"
     },
     {
       "index": 3,
       "zhCN": "calendar/zh-cn/Month",
       "enUS": "calendar/en-us/Month",
-      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+      "notes": "保留上游只传 mode 的月视图；缺省 displayValue 保持开启。"
     },
     {
       "index": 4,
       "zhCN": "calendar/zh-cn/WeekStart",
       "enUS": "calendar/en-us/WeekStart",
-      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+      "notes": "保留上游七个周起始日单选、aria-label 与 name；React onChange 迁移为 v-model，缺省 displayValue 保持开启，交互验证切换后的首列表头。"
     },
     {
       "index": 5,
       "zhCN": "calendar/zh-cn/Range",
       "enUS": "calendar/en-us/Range",
-      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+      "notes": "保留上游多日视图只传 range 的写法，不额外注入 displayValue。"
     },
     {
       "index": 6,
       "zhCN": "calendar/zh-cn/Events",
       "enUS": "calendar/en-us/Events",
-      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+      "notes": "保留上游事件数组、四种 mode 单选与 DatePicker；React children 迁移为 Vue content，交互验证月视图与多日视图切换。"
     },
     {
       "index": 7,
       "zhCN": "calendar/zh-cn/CustomEvents",
       "enUS": "calendar/en-us/CustomEvents",
-      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+      "notes": "dateGridRender 迁移为 #dateGrid 作用域插槽，保留绝对定位事件与 2019-07-23 展示日期。"
     },
     {
       "index": 8,
       "zhCN": "calendar/zh-cn/CellStyle",
       "enUS": "calendar/en-us/CellStyle",
-      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+      "notes": "保留上游四个高亮日期与月视图单元格覆盖。"
     },
     {
       "index": 9,
       "zhCN": "calendar/zh-cn/DateDisplay",
       "enUS": "calendar/en-us/DateDisplay",
-      "notes": "一项固定上游 live Demo 对应一个独立 Vue Composition API SFC；保留本语言文案、参数与交互意图。"
+      "notes": "renderDateDisplay 迁移为 #dateDisplay 作用域插槽，保留七色小头像与 2023-05-14 展示日期。"
     }
   ],
   "chapters": [
@@ -77,9 +77,12 @@
         "### Calendar",
         "### Event Object",
         "## 文案规范",
-        "## 设计变量"
+        "## 设计变量",
+        "## Accessibility",
+        "## FAQ",
+        "## React → Vue"
       ],
-      "notes": "保留章节顺序、说明及非live类型示例；API按实际公开Vue类型生成，补足slots/emits、FAQ、无障碍与迁移。"
+      "notes": "保留章节顺序、说明及非 live 类型示例；API 按实际公开 Vue 类型生成，补足 slots/emits、FAQ、无障碍与迁移。"
     },
     {
       "locale": "en-us",
@@ -101,15 +104,31 @@
         "### Calendar",
         "### Event Object",
         "## Content Guidelines",
-        "## Design Tokens"
+        "## Design Tokens",
+        "## Accessibility",
+        "## FAQ",
+        "## React → Vue"
       ],
-      "notes": "保留章节顺序、说明及非live类型示例；API按实际公开Vue类型生成，补足slots/emits、FAQ、无障碍与迁移。"
+      "notes": "保留章节顺序、说明及非 live 类型示例；API 按实际公开 Vue 类型生成，补足 slots/emits、FAQ、无障碍与迁移。"
     }
   ],
   "exclusions": [],
-  "clockAdaptation": {
-    "date": "基础视图固定2019-07-23；保留原有2019事件、2020范围、2023日期文案示例的日期。",
-    "showCurrTime": false,
-    "reason": "明确日期并关闭运行时当前时间线，避免日期与时钟漂移。"
+  "clockPolicy": {
+    "scope": "验收矩阵",
+    "date": "两侧页面在导航前调用 clock.setFixedTime(2024-08-15T10:24:30+08:00)，仅固定 Date，计时器与编辑器仍使用真实时钟。",
+    "reason": "示例沿用固定上游参数（缺省 displayValue 与 showCurrTime），需要固定日期与当前时间线位置才能得到确定性对照；此前示例自行注入 displayValue 并关闭 showCurrTime，已按固定上游恢复。"
+  },
+  "review": {
+    "fingerprint": "217c5b30e780690b97604610b22688520d8dbd40cb196b466e7405d6a36f83e1",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "逐项核对固定中英文九例与全部章节：日/周/月/多日视图、weekStartsOn、事件渲染、dateGrid/dateDisplay 自定义渲染；事件数组、四角语义与 list 结构按固定实现核对。",
+      "API 以真实公开 Vue 类型为准：displayValue 缺省为当前日期、height 600、mode week、range 左闭右开、scrollTop 400、showCurrTime true、weekStartsOn 0、markWeekend false、minEventHeight 为 Number.MIN_SAFE_INTEGER；React render prop 映射为 #dateGrid/#dateDisplay/#timeDisplay/#allDayEvents/#event 插槽，events[].children 映射为 events[].content，onClick/onClose/onMoreClick 映射为 @click/@close/@more-click。",
+      "示例按固定上游逐字对齐：日/周/月/多日视图恢复缺省 displayValue 与 showCurrTime；WeekStart 补回上游的 name 与 aria-label（英文为 StartOfWeek），并去掉中文示例独有的 margin-top；其余示例保留上游显式日期。文档正文同步说明确定性由验收矩阵固定 Date 提供。",
+      "月视图逐节点比较后修正两处组件 DOM：普通 gridcell 始终输出 aria-current（当天 date、其余 false），折叠单元格的 Popover 触发器不再重复 role/aria-label/aria-current，与固定 renderCollapsed 输出一致。",
+      "参考适配器直接编译固定 Markdown，只把匿名箭头示例命名为默认导出，不复制上游实现；另把“自定义日期文案”示例的 {date.getDate()} 写成 {String(date.getDate())}，因为 Vue 模板插值必然字符串化，固定片段里的数字子节点在 React 下走不到 Avatar 的字符串 label 分支。"
+    ]
   }
 }

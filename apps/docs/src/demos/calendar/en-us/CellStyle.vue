@@ -5,7 +5,7 @@ const displayValue = new Date(2019, 6, 23, 8, 32, 0);
 const importantDates = [2, 8, 19, 23].map((day) => new Date(2019, 6, day).toString());
 </script>
 <template>
-  <Calendar :height="700" mode="month" :display-value="displayValue" :show-curr-time="false"
+  <Calendar :height="700" mode="month" :display-value="displayValue"
     ><template #dateGrid="{ dateString }"
       ><div
         v-if="importantDates.includes(dateString)"

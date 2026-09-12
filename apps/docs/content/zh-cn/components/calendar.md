@@ -118,7 +118,7 @@ import '@aifuxi/semi-theme-default/calendar.css';
 
 插槽：#header、`#dateGrid="{ dateString, date }"`、`#dateDisplay="{ date }"`、`#timeDisplay="{ time }"`、`#allDayEvents="{ events }"`、`#event="{ event }"`；React render prop 改为这些插槽。事件：`@click(event: MouseEvent, date)`、`@close(event: MouseEvent)`、`@more-click(event: MouseEvent, date, remaining)`。没有日期选择 v-model。
 
-CalendarEvent.key 必填且唯一，content 接受 Vue 节点。全天事件缺省起止时间时归到 displayValue；普通事件至少需要 start 或 end。range 为左闭右开区间。示例使用明确的历史日期，并关闭动态当前时间线以保持演示确定性。
+CalendarEvent.key 必填且唯一，content 接受 Vue 节点。全天事件缺省起止时间时归到 displayValue；普通事件至少需要 start 或 end。range 为左闭右开区间。示例沿用固定上游参数，缺省 displayValue 与 `showCurrTime` 保持开启；验收矩阵在两侧固定浏览器 Date，使缺省日期与当前时间线保持确定性。
 
 ## 文案规范
 
