@@ -42,19 +42,19 @@ pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
 文档示例按 [双线计划](docs/documentation/batch-plan.md) 独立推进：
 
 - **双语示例补齐：859/859 已映射**，剩余 0 项；AIComponent 最后 2 项双语示例已补齐，进入内容审阅与严格验收收尾。映射数不代表全部通过统一运行检查，补齐交付须包含实际加载运行证据。
-- **严格视觉与行为验收：81/859 有效验收**（Button、Icon、ConfigProvider、Locale、Dark Mode、Navigation、Divider、FloatButton、Grid、Layout、Resizable），当前有 778 项已映射待验收；下一批为 **Space（5 项）**。
+- **严格视觉与行为验收：240/859 有效验收**（27.9%），当前 33 批有效证据共覆盖 1796 项正式矩阵用例，还有 619 项已映射待验收；最新完成 **OverflowList（4 项）**，下一批为 **ScrollList（1 项）**。有效计数以 [覆盖账本](docs/documentation/coverage.json) 为准，批次及剩余分类见 [双线计划](docs/documentation/batch-plan.md)。
 
 两条线只拆分交付顺序，不降低最终验收标准；批次入口与证据失效规则见 [分批验收说明](docs/documentation/README.md#分批验收)。Navigation 中文 10 个、英文 12 个示例已补齐，52 项双语明暗及适用 RTL 验收全部通过；导航、浮层与 Worker 请求隔离差异已修复，六批共 224 项正式矩阵已于 2026-09-10 完成重验并恢复当前有效证据，无重试、跳过或失败，见 [恢复验收记录](ai-work/20260910-002700-restore-six-documentation-batches.md)。
 
 2026-09-11 完成 Divider 2 项严格验收，并恢复工具链迁移后失效的历史六批：240/240 正式矩阵通过。修复双语文字插槽空格和英文 margin 说明；定位并修复 React 参考服务按需编译导致的跨页面重载，独立回归及 442 项组件 Chromium 对照通过。见 [本轮工作记录](ai-work/20260911-142100-divider-release-readiness.md)。稳定发布仍需剩余文档、站点/许可审计和外部发布接入闭环，见 [发布审计](docs/release-audit-1.0.md)。
 
-OverflowList 四项双语示例已补齐，内容/类型/静态产物检查与八个示例的实际加载、宽度调整、恢复、源码和编辑器运行检查已完成。发现 collapse 与 scroll 的溢出标签计数未同步更新，已记录待对齐问题；本轮未执行严格视觉验收，也未增加 accepted。见 [补齐工作记录](ai-work/20260907-103119-overflow-list-documentation-content.md)。
+OverflowList 四项双语示例已完成严格验收，32 项正式矩阵通过；折叠与滚动模式的隐藏项计数滞后问题已修复，历史 32 批证据未失效。覆盖容器收窄与恢复、边缘计数、源码/重置及在线编辑，见 [验收记录](docs/documentation/overflow-list-acceptance.md)。
 
 ScrollList 一项双语示例已恢复三列滚轮、循环选择、禁用分钟和底部按钮，文档联合检查及双语页面/编辑器运行检查通过。分钟随机禁用改为固定交替序列；编辑器 Emmet/Pug Web 支持警告已记录，无页面异常或 console error。本批未执行严格验收，见 [ScrollList 补齐记录](ai-work/20260907-110551-scroll-list-documentation-content.md)。
 
-Transfer 14 项双语示例已补齐，28 个示例均完成主要操作、源码及编辑器修改运行检查。修复自定义已选项的拖放接收边界与函数式把手内容，补齐英文 Provider；14 项单元/SSR、5 项组件 Chromium 对照、真实 tarball 和 SSR import 通过。受影响 Locale 16 项正式矩阵重验通过，43 项有效验收保持不变；本批不计入严格文档验收。见 [Transfer 补齐记录](ai-work/20260907-113702-transfer-documentation-content.md)。
+Transfer 14 项双语示例已补齐，28 个示例均完成主要操作、源码及编辑器修改运行检查。修复自定义已选项的拖放接收边界与函数式把手内容，补齐英文 Provider；14 项单元/SSR、5 项组件 Chromium 对照、真实 tarball 和 SSR import 通过。补齐时受影响 Locale 16 项正式矩阵重验通过；Transfer 仍待严格文档验收。见 [Transfer 补齐记录](ai-work/20260907-113702-transfer-documentation-content.md)。
 
-Feedback 7 项双语示例已补齐，14 个示例的主要操作、源码及编辑器修改运行检查通过。修复 SSR 动画关闭后重开丢失内容、Modal 动态空 footer 未隐藏的问题，英文示例使用完整 locale；69 项单元/SSR、15 项组件 Chromium 对照和真实包验证通过。ConfigProvider、Locale 共 32 项正式矩阵重验通过，43 项有效验收保持不变；本批不计入严格文档验收。见 [Feedback 补齐记录](ai-work/20260907-161013-feedback-documentation-content.md)。
+Feedback 7 项双语示例已完成严格验收，56 项正式矩阵通过，章节/API/迁移审阅已完成，见 [验收记录](docs/documentation/feedback-acceptance.md)。此前补齐阶段的 SSR 动画重开、Modal 动态空 footer 修复与回归证据保留在 [补齐记录](ai-work/20260907-161013-feedback-documentation-content.md)。
 
 文档验收已完成一次端到端提速：同一六批 224 项冷启动从 17 分 49 秒降至 9 分 03 秒（减少 49.24%），全部一次通过；准备复用命令实测 9.5 秒。默认使用 3 workers、按实际依赖判定失效，并限制 REPL 模块请求，后续有效批次直接跳过。详见 [性能工作记录](ai-work/20260906-211800-documentation-performance.md)。
 
