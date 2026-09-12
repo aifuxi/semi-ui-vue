@@ -8,10 +8,10 @@ import '@aifuxi/semi-theme-default/badge.css';
     <Badge :count="5" /><br /><br />
     <Badge count="NEW" theme="light" /><br /><br />
     <Badge :count="99" :overflow-count="10" type="danger" /><br /><br />
-    <span><Badge dot type="primary" /> Processing</span><br />
-    <span><Badge dot type="tertiary" /> Info</span><br />
-    <span><Badge dot type="success" /> Success</span><br />
-    <span><Badge dot type="warning" /> Warning</span><br />
-    <span><Badge dot type="danger" /> Error</span>
+    <span><Badge dot type="primary" /> processing</span><br />
+    <span><Badge dot type="tertiary" /> info</span><br />
+    <span><Badge dot type="success" /> success</span><br />
+    <span><Badge dot type="warning" /> warning</span><br />
+    <span><Badge dot type="danger" /> error</span>
   </div>
 </template>
