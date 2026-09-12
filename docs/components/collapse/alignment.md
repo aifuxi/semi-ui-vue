@@ -44,7 +44,7 @@
 
 - 根固定为 `div.semi-collapse`，只转发 `data-*`；Panel 根为 `.semi-collapse-item`，展开时增加 `-active`，并保留 Panel 的 class/style/rest attrs。
 - header 固定 `role="button"`、`tabindex="0"`、`.semi-collapse-header`；disabled 增加 `-disabled` 并阻止切换。固定上游没有 Enter/Space handler，因此键盘聚焦可用但按键不切换，此行为如实记录而不私自扩展。
-- `aria-disabled`、`aria-expanded` 与状态同步；`aria-owns` 与内容 `id` 沿用固定 Adapter 的 mounted 后短 id 时序，内容同步 `aria-hidden`。
+- `aria-disabled`、`aria-expanded` 与状态同步；`aria-owns` 与内容 `id` 沿用固定 Adapter 的 mounted 后短 id 时序，内容同步 `aria-hidden`。固定 Adapter 在 `componentDidMount` 赋值 id 且不触发渲染，首屏所有面板保持 `aria-owns=""`；React 在展开集变化时重渲染全部 context 消费者，所有面板从那次渲染起输出 id，Vue 以同一传播时机（读取共享 `activeSet`）对齐，避免只有自身重渲染过的面板拿到 id。
 - string header 的 DOM 为可选左图标 + 文本 span + `.semi-collapse-header-right`（extra + 可选右图标）；VNode/slot header 直接占据中间区域，extra 不自动插入。
 - 无内容或 disabled 时图标增加 `.semi-collapse-header-iconDisabled`；`showArrow=false` 不创建图标。`clickHeaderToExpand=false` 时正文点击无效但 icon span 点击有效。
 - 内容固定为公共 Collapsible > `.semi-collapse-content` > `.semi-collapse-content-wrapper`；motion、keepDOM、lazyRender、reCalcKey 和 motionEnd 直接复用已验收的 Collapsible 状态机。
@@ -76,5 +76,6 @@
 - 当前状态：`ready`。
 - 固定 vendor 已核验为 `v2.102.0` / `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`，工作区开始时干净。
 - Collapse 定向单元/SSR/入口回归为 5 files / 177 tests；仓库单元门禁为 126 files / 902 tests，类型、lint、format、源码边界和全 workspace build 均通过。
+- 后续文档验收补充：`aria-owns` 的渲染传播按固定 Adapter 时序对齐，Collapse 单元/SSR 14 项与组件级 Chromium 5/5（含 desktop light/dark 与 RTL）在本仓库重新通过。
 - Collapse Chromium 对照为 7 / 7，工作台 smoke 为 2 / 2；桌面/移动 light/dark 与 RTL 的 React/Vue 对应截图独立生成且直接字节相等，无 mask、无 accepted visual deviation。
 - 根入口、`@aifuxi/semi-ui-vue/collapse`、`@aifuxi/semi-theme-default/collapse.css`、SSR-safe import、许可证/SBOM 与真实 tarball consumer 已通过。

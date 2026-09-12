@@ -95,6 +95,16 @@ onMounted(() => {
   ariaId = createCollapsePanelId({});
 });
 
+// The fixed Adapter assigns the id in componentDidMount without scheduling a render, so the first
+// paint keeps aria-owns="". React re-renders every context consumer whenever the active set
+// changes, which is why all headers expose their id from that render on. Reading the shared set
+// here reproduces that propagation instead of leaving panels that were never re-rendered with an
+// empty aria-owns forever.
+const ariaOwner = computed(() => {
+  void context.activeSet.value;
+  return ariaId;
+});
+
 function handleHeaderClick(event: MouseEvent): void {
   if (props.disabled) return;
   const target = event.target;
@@ -115,7 +125,7 @@ function handleHeaderClick(event: MouseEvent): void {
       :class="headerClasses"
       :aria-disabled="props.disabled"
       :aria-expanded="active"
-      :aria-owns="ariaId"
+      :aria-owns="ariaOwner"
       @click="handleHeaderClick"
     >
       <template v-if="stringHeader">
