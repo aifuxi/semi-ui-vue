@@ -36,5 +36,18 @@
     "API 参考",
     "Highlight"
   ],
-  "exclusions": []
+  "exclusions": [],
+  "review": {
+    "fingerprint": "42f0a26414eb9b73c618dc319d2e7d94395995bb9cdcee5195bde7638a8c4e9e",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "逐项核对固定中英文 4 例与全部章节：基本用法（h2 + 默认 mark）、指定高亮样式（中文两段、英文一段的自定义 highlightStyle）、不同文本使用差异化样式（component=span 与三个带 className/style 的关键词）、指定高亮标签（component=strong）。",
+      "API 以真实公开 Vue 类型为准：sourceString/searchWords/highlightClassName/highlightStyle/component/autoEscape/caseSensitive 与固定 Adapter 一致，searchWords 支持字符串数组与 v2.71.0 的对象数组（text/style/className），命中片段带 semi-highlight-tag 类，默认标签为 mark。",
+      "示例按固定上游逐字保留中英文 sourceString/searchWords 与内联样式；数字尺寸按迁移表写成带单位 CSS 字符串，计算样式一致。",
+      "参考适配器只把匿名箭头示例命名为默认导出；固定 Adapter 的 searchWords propTypes 仍按字符串数组声明，对象数组写法会在参考侧产生 propTypes 告警，矩阵按精确匹配单独豁免该上游告警，其它 console error 仍会使用例失败。",
+      "英文页 Style 片段只包含一个 Highlight（中文页为两段），矩阵的高亮片段数量以参考页实际渲染为准再要求 Vue 侧一致，避免写死语言相关的数量。"
+    ]
+  }
 }
