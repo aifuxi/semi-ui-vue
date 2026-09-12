@@ -14,6 +14,7 @@ import {
 import { renderToString } from 'vue/server-renderer';
 
 import { Button } from '../button';
+import { Input } from '../input';
 import { Tag } from '../tag';
 import { ConfigProvider } from '../config-provider';
 
@@ -513,6 +514,45 @@ describe('Tooltip', () => {
     expect(target.querySelector('.semi-portal-rtl')).not.toBeNull();
     expect(target.querySelector('.semi-tooltip-rtl')).not.toBeNull();
     expect(document.body.querySelector(':scope > .semi-portal')).toBeNull();
+  });
+
+  it('initialFocusRef 调用 Input 公开 focus 并在关闭重开后恢复输入焦点', async () => {
+    const wrapper = mount(Tooltip, {
+      attachTo: document.body,
+      props: {
+        trigger: 'click',
+        role: 'dialog',
+        motion: false,
+        closeOnEsc: true,
+        returnFocusOnClose: true,
+      },
+      slots: {
+        default: () => h(Button, { id: 'component-focus-trigger' }, () => '打开'),
+        content: ({ initialFocusRef }) =>
+          h('div', [
+            h(Button, {}, () => '前面的可聚焦按钮'),
+            h(Input, { ref: initialFocusRef, placeholder: '指定的初始焦点' }),
+          ]),
+      },
+    });
+    try {
+      await flushTooltip();
+      for (let opening = 0; opening < 2; opening++) {
+        await wrapper.get('#component-focus-trigger').trigger('click');
+        await flushTooltip();
+        const input = document.body.querySelector<HTMLInputElement>(
+          'input[placeholder="指定的初始焦点"]',
+        )!;
+        expect(input).not.toBeNull();
+        expect(document.activeElement).toBe(input);
+        input.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'Escape' }));
+        await flushTooltip();
+        expect(document.body.querySelector('.semi-tooltip-wrapper')).toBeNull();
+        expect(document.activeElement).toBe(wrapper.get('#component-focus-trigger').element);
+      }
+    } finally {
+      wrapper.unmount();
+    }
   });
 
   it('closeOnEsc、initialFocusRef、guardFocus、keepDOM 与 afterClose', async () => {

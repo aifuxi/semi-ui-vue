@@ -2,6 +2,8 @@ import { flushPromises, mount, type VueWrapper } from '@vue/test-utils';
 import { defineComponent, h, nextTick, onMounted } from 'vue';
 import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
+import { IconSend } from '@aifuxi/semi-icons-vue';
+import { DragMove } from '../drag-move';
 import { ConfigProvider, semiGlobal } from '../config-provider';
 import { Modal } from './index';
 
@@ -27,6 +29,30 @@ async function mountVisible(props: Record<string, unknown> = {}): Promise<VueWra
 }
 
 describe('Modal', () => {
+  it('modalRender 只包装内容节点，保留外层尺寸定位且 DragMove 作用于 dialog', async () => {
+    const wrapper = await mountVisible({
+      width: '600px',
+      modalRender: (dialog: import('vue').VNodeChild) =>
+        h('section', { 'data-modal-render': '' }, [
+          h(DragMove, { positionStrategy: 'relative' }, { default: () => dialog }),
+        ]),
+    });
+    const outer = document.querySelector<HTMLElement>('.semi-modal')!;
+    const content = document.querySelector<HTMLElement>('.semi-modal-content')!;
+    expect(outer.querySelector(':scope > [data-modal-render] > [role="dialog"]')).toBe(content);
+    expect(outer.style.width).toBe('600px');
+    expect(outer.style.cursor).toBe('');
+    expect(content.style.cursor).toBe('move');
+    expect(content.style.position).toBe('relative');
+    const cancel = content.querySelector<HTMLButtonElement>('[aria-label="cancel"]')!;
+    expect(cancel).not.toBeNull();
+    cancel.click();
+    await nextTick();
+    expect(wrapper.emitted('update:visible')).toEqual([[false]]);
+    wrapper.unmount();
+    expect(document.querySelector('[data-modal-render]')).toBeNull();
+  });
+
   it('区分默认 true Boolean 的缺省、显式 false、显式 true 与全局覆盖', async () => {
     const defaults = await mountVisible();
     expect(document.querySelector('.semi-modal-mask')).not.toBeNull();
@@ -183,6 +209,30 @@ describe('Modal', () => {
     await nextTick();
     expect(document.activeElement).toBe(opener);
     wrapper.unmount();
+  });
+
+  it('命令式自定义 Semi Icon 覆盖 size 和 class，普通节点与 null 保持原样', async () => {
+    const original = h(IconSend, { size: 'small', class: 'custom-original' });
+    const handle = Modal.info({ title: 'Custom', icon: original, motion: false });
+    await nextTick();
+    const icon = document.querySelector('.semi-icon-send')!;
+    expect(icon.classList).toContain('semi-icon-extra-large');
+    expect(icon.classList).toContain('semi-modal-confirm-icon');
+    expect(icon.classList).toContain('semi-modal-info-icon');
+    expect(icon.classList).not.toContain('custom-original');
+    expect(original.props?.size).toBe('small');
+    expect(original.props?.class).toBe('custom-original');
+    handle.update({ icon: h('span', { class: 'plain-icon' }, 'plain') });
+    await nextTick();
+    const plain = document.querySelector('.plain-icon')!;
+    expect(plain.textContent).toBe('plain');
+    expect(plain.getAttribute('class')).toBe('plain-icon');
+    expect(plain.hasAttribute('size')).toBe(false);
+    handle.update({ icon: null });
+    await nextTick();
+    expect(document.querySelector('.semi-modal-icon-wrapper')).toBeNull();
+    handle.destroy();
+    await nextTick();
   });
 
   it('静态五类方法支持 update/destroy/destroyAll 与 Promise rejection 保持打开', async () => {

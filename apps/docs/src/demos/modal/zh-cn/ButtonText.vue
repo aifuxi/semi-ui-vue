@@ -16,7 +16,7 @@ function handleCancel() {
 }
 </script>
 <template>
-  <Button @click="showDialog"> 自定义按钮文字</Button>
+  <Button @click="showDialog">自定义按钮文字</Button>
   <Modal
     title="自定义按钮文字"
     :visible="visible"

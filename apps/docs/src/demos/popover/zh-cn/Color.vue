@@ -10,7 +10,7 @@ function getPopupContainer() {
 }
 </script>
 <template>
-  <div ref="container" style="position: relative; min-height: 72px; overflow: hidden">
+  <div ref="container" style="position: relative">
     <Popover
       v-if="container"
       :get-popup-container="getPopupContainer"

@@ -16,7 +16,7 @@ function handleCancel() {
 }
 </script>
 <template>
-  <Button @click="showDialog"> 自定义对话框样式</Button>
+  <Button @click="showDialog">自定义对话框样式</Button>
   <Modal
     title="自定义样式"
     :visible="visible"

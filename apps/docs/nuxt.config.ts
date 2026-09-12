@@ -20,6 +20,13 @@ export default defineNuxtConfig({
     'rspack:config'(configs) {
       for (const config of configs) {
         if (config.name === 'client') {
+          if (config.mode === 'production') {
+            // Thousands of lazy demos can collide in Nuxt's seven-character hash namespace.
+            // Chunk ids ensure unique paths while the content hash preserves cache invalidation.
+            config.output ??= {};
+            config.output.filename = '[id].[contenthash:12].js';
+            config.output.chunkFilename = '[id].[contenthash:12].js';
+          }
           // Rspack's inner-graph analysis turns Monaco's live undefined initializer into null.
           // Keep export tree-shaking, but preserve variable initialization in browser dependencies.
           config.optimization ??= {};

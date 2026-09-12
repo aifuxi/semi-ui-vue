@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { defineComponent, h, nextTick } from 'vue';
+import { defineComponent, h, nextTick, shallowRef } from 'vue';
 import { afterEach, describe, expect, it, rs } from '@rstest/core';
 
 import Image, { ImagePreview } from './index';
@@ -114,6 +114,30 @@ describe('Image', () => {
 });
 
 describe('ImagePreview', () => {
+  it('group 默认 ID 多实例唯一且更新稳定，保留显式 ID', async () => {
+    const caption = shallowRef('before');
+    const Host = () =>
+      h('main', [
+        h(ImagePreview, { class: caption.value, lazyLoad: false }),
+        h(ImagePreview, { lazyLoad: false }),
+        h(ImagePreview, { id: 'explicit-image-group', lazyLoad: false }),
+      ]);
+    const wrapper = mount(Host);
+    const ids = () =>
+      wrapper.findAll('.semi-image-preview-group').map((group) => group.attributes('id'));
+    const initial = ids();
+    expect(initial).toHaveLength(3);
+    expect(initial[0]).toMatch(/^semi-image-preview-group-.+/);
+    expect(initial[1]).toMatch(/^semi-image-preview-group-.+/);
+    expect(new Set(initial).size).toBe(3);
+    expect(initial[2]).toBe('explicit-image-group');
+    caption.value = 'after';
+    await nextTick();
+    expect(wrapper.find('.semi-image-preview-group').classes()).toContain('after');
+    expect(ids()).toEqual(initial);
+    wrapper.unmount();
+  });
+
   it('递归收集 group Image，按点击索引打开并切换图片', async () => {
     const onChange = rs.fn();
     const wrapper = mount(ImagePreview, {

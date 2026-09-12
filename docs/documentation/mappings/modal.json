@@ -109,5 +109,16 @@
       "item": "Semi/Vigo品牌Logo",
       "reason": "按独立品牌约束替换为通用图标；保留自定义对话框的三项内容与布局。"
     }
-  ]
+  ],
+  "review": {
+    "fingerprint": "925115d393b858403a9f414fe3a4856a74f4b7ac0b53e0c1794682e87dbd6b24",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "逐段核对固定双语各12例及章节、完整API与迁移；前提差异详见 modal-acceptance.md。",
+      "静态Imperative双语默认中文，Context双语en_GB；英文声明式通过站点en_US Provider。控件数量、品牌图标、Draggable仅onCancel行为均显式保留。",
+      "96项矩阵覆盖双语明暗RTL、Portal几何、真实焦点/退出重开/拖动和编辑器。准备与诊断不计accepted，无视觉deviation。"
+    ]
+  }
 }

@@ -20,7 +20,7 @@ function handleCancel() {
 </script>
 <template>
   <ConfigProvider :locale="enUS">
-    <Button @click="showDialog"> Mask Not Closable</Button>
+    <Button @click="showDialog">Mask Not Closable</Button>
     <Modal
       title="Modal Title"
       :visible="visible"

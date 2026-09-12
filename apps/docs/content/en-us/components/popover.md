@@ -78,7 +78,7 @@ Under the condition of **showArrow=true**, you can pass in `arrowPointAtCenter=t
 
 If you need to customize the background color or border color of the floating layer, please **Be sure to set `backgroundColor` and `borderColor` properties in `style` separately.** This enables the "small triangle" to apply the same background color and border color.
 
-::demo-block{demo="popover/en-us/Color" title="Set Floating Layer Background Color"}
+::demo-block{demo="popover/en-us/Color" title="Set Floating Layer Background Color" overflow="visible"}
 ::
 
 ### Initialize the Focus Position of Popup Layer

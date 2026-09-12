@@ -33,7 +33,7 @@ const bottoms = [
       <div :style="{ marginLeft: '40px', whiteSpace: 'nowrap' }">
         <template v-for="(pos, index) in tops" :key="index"
           ><Popover show-arrow :position="pos[0]">
-            <Tag> {{ pos[1] }}</Tag>
+            <Tag>{{ pos[1] }}</Tag>
             <template #content
               ><article>
                 Hi ByteDancer, this is a popover.
@@ -47,7 +47,7 @@ const bottoms = [
       <div :style="{ width: '40px', float: 'left' }">
         <template v-for="(pos, index) in lefts" :key="index"
           ><Popover show-arrow :position="pos[0]">
-            <Tag> {{ pos[1] }}</Tag>
+            <Tag>{{ pos[1] }}</Tag>
             <template #content
               ><article>
                 Hi ByteDancer, this is a popover.
@@ -61,7 +61,7 @@ const bottoms = [
       <div :style="{ width: '40px', marginLeft: '180px' }">
         <template v-for="(pos, index) in rights" :key="index"
           ><Popover show-arrow :position="pos[0]">
-            <Tag> {{ pos[1] }}</Tag>
+            <Tag>{{ pos[1] }}</Tag>
             <template #content
               ><article>
                 Hi ByteDancer, this is a popover.
@@ -75,7 +75,7 @@ const bottoms = [
       <div :style="{ marginLeft: '40px', clear: 'both', whiteSpace: 'nowrap' }">
         <template v-for="(pos, index) in bottoms" :key="index"
           ><Popover show-arrow :position="pos[0]">
-            <Tag> {{ pos[1] }}</Tag>
+            <Tag>{{ pos[1] }}</Tag>
             <template #content
               ><article>
                 Hi ByteDancer, this is a popover.

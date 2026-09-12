@@ -81,7 +81,7 @@ Popover 需要将事件、ARIA 属性和焦点能力关联到触发器的真实 
 
 如果你需要定制浮层的背景色或边框颜色，请**务必单独声明 `style` 中的 `backgroundColor` 和 `borderColor` 属性**，这样能够使得“小三角”也能应用相同的背景色和边框颜色。
 
-::demo-block{demo="popover/zh-cn/Color" title="设置浮层背景色"}
+::demo-block{demo="popover/zh-cn/Color" title="设置浮层背景色" overflow="visible"}
 ::
 
 ### 初始化弹出层焦点位置

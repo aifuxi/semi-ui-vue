@@ -7,7 +7,7 @@ import IconInfoCircle from '@aifuxi/semi-icons-vue/icons/IconInfoCircle';
 import '@aifuxi/semi-theme-default/image.css';
 import '@aifuxi/semi-theme-default/divider.css';
 import '@aifuxi/semi-theme-default/tooltip.css';
-const srcList = ['/demos/photo.svg', '/demos/one.svg', '/demos/two.svg'];
+const srcList = ['/demos/image-abstract.svg', '/demos/image-sky.svg', '/demos/image-greenleaf.svg'];
 const MenuNodes = defineComponent({
   props: { nodes: { type: Array as PropType<VNodeChild[]>, required: true } },
   setup(props) {
@@ -31,7 +31,7 @@ const MenuNodes = defineComponent({
           :nodes="menuItems.slice(3, 7)"
         /><Divider layout="vertical" /><MenuNodes :nodes="menuItems.slice(7)" /><Divider
           layout="vertical"
-        /><Tooltip content="I am a custom action"
+        /><Tooltip content="I is a custom action"
           ><IconInfoCircle size="large"
         /></Tooltip></div></template
     ><Image
@@ -39,6 +39,6 @@ const MenuNodes = defineComponent({
       :key="index"
       :src="src"
       :width="200"
-      :alt="`Sample image ${index + 1}`"
+      :alt="`lamp${index + 1}`"
   /></ImagePreview>
 </template>

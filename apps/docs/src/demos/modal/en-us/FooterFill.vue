@@ -25,7 +25,7 @@ function handleAfterClose() {
 </script>
 <template>
   <ConfigProvider :locale="enUS">
-    <Button @click="showDialog"> Open Modal</Button>
+    <Button @click="showDialog">Open Modal</Button>
     <Modal
       title="Basic Modal"
       :visible="visible"

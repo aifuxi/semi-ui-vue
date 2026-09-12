@@ -20,7 +20,7 @@ function handleCancel() {
 </script>
 <template>
   <ConfigProvider :locale="enUS">
-    <Button @click="showDialog"> Custom Style</Button>
+    <Button @click="showDialog">Custom Style</Button>
     <Modal
       title="Custom Style"
       :visible="visible"

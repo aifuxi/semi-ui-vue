@@ -19,13 +19,13 @@ const content = computed(() => `condition is ${enabled.value ? 'true' : 'false'}
 <template>
   <ConfigProvider :locale="enUS"
     ><Space align="center">
-      <Text> condition</Text>
+      <Text>condition</Text>
       <Switch v-model:checked="enabled" />
       <Popover :content="content" :condition="enabled">
-        <Button> Hover me</Button>
+        <Button>Hover me</Button>
       </Popover>
       <Popover :content="content" trigger="click" :condition="enabled">
-        <Button> Click me</Button>
+        <Button>Click me</Button>
       </Popover>
     </Space></ConfigProvider
   >

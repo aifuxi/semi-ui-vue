@@ -126,3 +126,9 @@ Escape 在 `closeOnEsc=true` 时关闭并通知；ArrowDown/ArrowUp 将焦点移
 固定 `tooltip/index.tsx:927` 给子组件传递 `tabIndex`。Vue 装饰 VNode 时也必须使用组件声明的 camelCase prop，而非仅写原生 `tabindex` attribute；否则 Tag 的显式绑定会覆盖该 attribute，导致不可键盘聚焦。覆盖缺省、0、-1、2、显式 focus 打开，以及文档真实 Tab 焦点与焦点环。
 
 固定 Foundation `show` 在 `foundation.ts:348-356` 对 hover 触发器执行 `:hover` 检查；单纯键盘聚焦且指针移开时会关闭刚插入的弹层。文档测试保留这一上游行为，不把“聚焦后持续显示 hover 弹层”作为当前基线。显式 `trigger="focus"` 不走该检查，单测验证其聚焦打开。
+
+## 组件实例初始焦点
+
+Popover 文档 InitialFocus 的真实对照发现 `initialFocusRef` 绑定 Input 实例时 Vue 未聚焦。固定 React `tooltip/index.tsx:545–551` 直接调用 ref 的公开 `focus`；Vue 原先只保存组件 `$el`，Input 的根 div 无法聚焦。现在浅引用优先保存具有公开 `focus` 的组件实例并以成员调用保留 this；HTMLElement 路径不变，无公开方法才回退 HTMLElement `$el`，收到 null 时清理。公开 TooltipInitialFocusRef 类型不变。
+
+新增回归在目标 Input 前放置另一 Button，以公开 ref 绑定 Input，初次打开与关闭重开均验证实际 activeElement 是 Input 内部 input；从 input 发出 Escape 后验证销毁与触发器回焦，不由测试调用 focus。此用例在修复前于 activeElement 断言失败；修复后 Tooltip/Popover/Popconfirm 三文件共42项通过，保留原生 DOM ref 用例。jsdom 证明适配调用与公开状态，真实焦点及视觉仍以本轮完整文档 Chromium 矩阵为准，不复用失效旧证据。

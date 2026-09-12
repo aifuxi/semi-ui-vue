@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, h, nextTick, shallowRef, type Component } from 'vue';
+import { cloneVNode, computed, h, nextTick, shallowRef, type Component } from 'vue';
 import {
   IconAlertCircle,
   IconAlertTriangle,
@@ -8,6 +8,7 @@ import {
   IconTickCircle,
 } from '@aifuxi/semi-icons-vue';
 
+import { isSemiIcon } from '../_utils';
 import ModalBase from './Modal.vue';
 import ModalNodeRenderer from './ModalNodeRenderer';
 import type { ModalConfirmProps, ModalConfirmType, ModalProps } from './types';
@@ -45,7 +46,17 @@ const titleNode = computed(() =>
     : h('span', { class: 'semi-modal-confirm-title-text' }, props.config.title),
 );
 const iconNode = computed(() => {
-  if (props.config.icon !== undefined) return props.config.icon;
+  if (props.config.icon !== undefined) {
+    if (!isSemiIcon(props.config.icon)) return props.config.icon;
+    const icon = cloneVNode(props.config.icon, { size: 'extra-large' });
+    // React cloneElement replaces className; Vue cloneVNode would merge class.
+    // Replace only the clone's props so caller-owned VNodes remain unchanged.
+    icon.props = {
+      ...icon.props,
+      class: ['semi-modal-confirm-icon', `semi-modal-${confirmType.value}-icon`],
+    };
+    return icon;
+  }
   const Icon = iconByType[confirmType.value];
   return h(Icon, {
     class: ['semi-modal-confirm-icon', `semi-modal-${confirmType.value}-icon`],

@@ -20,12 +20,12 @@ function handleCancel() {
 </script>
 <template>
   <ConfigProvider :locale="enUS">
-    <Button @click="showDialog"> Customized Footer</Button>
+    <Button @click="showDialog">Customized Footer</Button>
     <Modal title="Customized Footer" :visible="visible" :on-ok="handleOk" :on-cancel="handleCancel">
       <p>This is a modal with a customized footer.</p>
       <p>More content...</p>
       <template #footer
-        ><Button type="primary" @click="handleOk"> Yes, I Understand </Button></template
+        ><Button type="primary" @click="handleOk">Yes, I Understand</Button></template
       ></Modal
     >
   </ConfigProvider>

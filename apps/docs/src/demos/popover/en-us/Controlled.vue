@@ -11,14 +11,18 @@ const visible = shallowRef(false);
 </script>
 <template>
   <ConfigProvider :locale="enUS"
-    ><Popover :visible="visible" trigger="custom"
-      ><Button @click="visible = !visible">Click me</Button
-      ><template #content
-        ><article style="padding: 12px">
-          Hi ByteDancer, this is a popover.<br />
-          We have 2 lines.
-        </article></template
-      ></Popover
-    ></ConfigProvider
+    ><div>
+      <div>
+        <Popover :visible="visible" trigger="custom"
+          ><Button @click="visible = !visible">Click me</Button
+          ><template #content
+            ><article style="padding: 12px">
+              Hi ByteDancer, this is a popover.<br />
+              We have 2 lines.
+            </article></template
+          ></Popover
+        >
+      </div>
+    </div></ConfigProvider
   >
 </template>

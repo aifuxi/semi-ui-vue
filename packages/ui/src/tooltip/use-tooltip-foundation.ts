@@ -19,6 +19,10 @@ import type { ConfigContextValue } from '../config-provider';
 
 import type { TooltipPosition, TooltipRuntimeProps, TooltipState } from './types';
 
+interface InitialFocusTarget {
+  focus: (options?: FocusOptions) => void;
+}
+
 interface TooltipFoundationOptions {
   config: ComputedRef<ConfigContextValue>;
   onAfterClose: () => void;
@@ -106,7 +110,7 @@ export function useTooltipFoundation(options: TooltipFoundationOptions) {
   const portalTarget = shallowRef<HTMLElement | null>(null);
   const portalElement = shallowRef<HTMLDivElement | null>(null);
   const triggerElement = shallowRef<HTMLElement | null>(null);
-  const initialFocusElement = shallowRef<HTMLElement | null>(null);
+  const initialFocusElement = shallowRef<InitialFocusTarget | null>(null);
   const cache = new Map<string, unknown>();
   const bus = createEventBus();
 
@@ -428,7 +432,15 @@ export function useTooltipFoundation(options: TooltipFoundationOptions) {
       initialFocusElement.value = null;
       return;
     }
-    initialFocusElement.value = element.$el instanceof HTMLElement ? element.$el : null;
+    // The pinned React adapter invokes the ref's public focus method. Components
+    // such as Input expose it while their root is a non-focusable wrapper.
+    const publicTarget = element as ComponentPublicInstance & Partial<InitialFocusTarget>;
+    initialFocusElement.value =
+      typeof publicTarget.focus === 'function'
+        ? (publicTarget as InitialFocusTarget)
+        : element.$el instanceof HTMLElement
+          ? element.$el
+          : null;
   }
 
   function animationStart(): void {

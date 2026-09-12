@@ -4,7 +4,11 @@ import { useAsyncData } from '#imports';
 import { useDocsPreferences } from '../../composables/useDocsPreferences';
 import { demoRegistry } from '../../data/demos';
 
-const props = defineProps<{ demo: string; title?: string }>();
+const props = defineProps<{
+  demo: string;
+  title?: string;
+  overflow?: 'hidden' | 'visible';
+}>();
 const { locale, theme } = useDocsPreferences();
 // Only the standalone theme example emits this optional host notification.
 const demoEvents =
@@ -69,7 +73,13 @@ function reset() {
 </script>
 
 <template>
-  <section class="demo-block" :data-demo-title="title" :data-demo-id="demo" :aria-label="title">
+  <section
+    class="demo-block"
+    :style="props.overflow ? { overflow: props.overflow } : undefined"
+    :data-demo-title="title"
+    :data-demo-id="demo"
+    :aria-label="title"
+  >
     <div v-if="!editorOpen" class="demo-preview" data-demo-preview>
       <p v-if="error" class="demo-error" role="alert">{{ error }}</p>
       <ClientOnly v-else

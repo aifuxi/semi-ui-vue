@@ -6,8 +6,7 @@ import '@aifuxi/semi-theme-default/image.css';
   <Image
     :width="300"
     :height="200"
-    src="/demos/photo.svg?preview=1"
-    :preview="{ src: '/demos/photo.svg?full=1' }"
-    alt="Sample image"
+    src="/demos/image-abstract-small.svg"
+    :preview="{ src: '/demos/image-abstract-big.svg' }"
   />
 </template>

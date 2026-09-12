@@ -16,6 +16,7 @@ import {
   provide,
   shallowReactive,
   useAttrs,
+  useId,
   useSlots,
   watch,
   type ComponentPublicInstance,
@@ -58,6 +59,7 @@ defineSlots<ImagePreviewSlots>();
 const attrs = useAttrs();
 const slots = useSlots();
 const instance = getCurrentInstance();
+const previewGroupId = `semi-image-preview-group-${useId()}`;
 
 function hasRawProp(name: string): boolean {
   const raw = instance?.vnode.props;
@@ -261,6 +263,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div
+    :id="previewGroupId"
     :ref="setGroupRoot"
     v-bind="attrs"
     :class="['semi-image-preview-group', props.class, props.className, attrs.class]"

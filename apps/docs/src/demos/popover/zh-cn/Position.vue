@@ -32,7 +32,7 @@ const bottoms = [
     <div :style="{ marginLeft: '80px', whiteSpace: 'nowrap' }">
       <template v-for="(pos, index) in tops" :key="index"
         ><Popover :position="pos[0]">
-          <Tag :style="{ margin: '8px', padding: '20px' }"> {{ pos[1] }}</Tag>
+          <Tag :style="{ margin: '8px', padding: '20px' }">{{ pos[1] }}</Tag>
           <template #content
             ><Empty
               :title="'先进的设计 / 研发协作方式'"
@@ -57,7 +57,7 @@ const bottoms = [
     <div :style="{ width: '80px', float: 'left' }">
       <template v-for="(pos, index) in lefts" :key="index"
         ><Popover :position="pos[0]">
-          <Tag :style="{ margin: '8px', padding: '20px', width: '60px' }"> {{ pos[1] }}</Tag>
+          <Tag :style="{ margin: '8px', padding: '20px', width: '60px' }">{{ pos[1] }}</Tag>
           <template #content
             ><Empty
               :title="'先进的设计 / 研发协作方式'"
@@ -82,7 +82,7 @@ const bottoms = [
     <div :style="{ width: '40px', marginLeft: '300px' }">
       <template v-for="(pos, index) in rights" :key="index"
         ><Popover :position="pos[0]">
-          <Tag :style="{ margin: '8px', padding: '20px', width: '60px' }"> {{ pos[1] }}</Tag>
+          <Tag :style="{ margin: '8px', padding: '20px', width: '60px' }">{{ pos[1] }}</Tag>
           <template #content
             ><Empty
               :title="'先进的设计 / 研发协作方式'"
@@ -107,7 +107,7 @@ const bottoms = [
     <div :style="{ marginLeft: '80px', clear: 'both', whiteSpace: 'nowrap' }">
       <template v-for="(pos, index) in bottoms" :key="index"
         ><Popover :position="pos[0]">
-          <Tag :style="{ margin: '8px', padding: '20px', width: '60px' }"> {{ pos[1] }}</Tag>
+          <Tag :style="{ margin: '8px', padding: '20px', width: '60px' }">{{ pos[1] }}</Tag>
           <template #content
             ><Empty
               :title="'先进的设计 / 研发协作方式'"

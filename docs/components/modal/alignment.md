@@ -92,3 +92,13 @@
 - SSR Portal 完成退出动画后重开，slot/default footer 不得复用带有已卸载 DOM 的 VNode。内容获取改为渲染期求值，保持组件状态、DOM、公开 API 与动效不变。
 - 动态添加 `footer: null` 必须隐藏默认按钮，移除该 prop 后恢复；raw prop 存在性在每次 footer 渲染时判断，不缓存非响应式的 VNode props 集合。
 - Feedback 单元与 SSR 回归覆盖失败前/修复后的两条路径；Modal/SideSheet/Feedback 共 30 项单元/SSR、直接消费者 39 项与三组件 15 项 Chromium 对照通过，真实发布包和 SSR import 通过。
+
+## 文档 Draggable 对齐修复（2026-09-13）
+
+固定 `ModalContent.tsx:getDialogElement` 将 `modalRender` 作用于带 `role="dialog"` 的 `.semi-modal-content`，外层 `.semi-modal` 继续负责尺寸与定位。原 Vue 将整个 `ModalInnerContent` 包装，导致 DragMove 的 ref/$el 落到外层，首次打开出现外层 cursor=move（基线 auto），拖动对象也错误。
+
+现将渲染回调传入 ModalInnerContent，在外层内用无新增 DOM 的 ModalContentRenderer 包装单个内容 VNode；默认返回原内容节点，保留原模板 ref、事件与 SSR 语义。DragMove 的定位、cursor 和事件只作用于内容节点。新增公开 DOM/回调测试先红后绿，断言外层尺寸保留、内容被包装及 DragMove 生效、取消 update:visible 和卸载；原 Modal Unit/SSR 全部通过。文档矩阵改对内容节点断言拖动位移，保留外层 Portal 绝对几何与 cursor 比较。正式 Chromium 证据由本轮调度生成，历史数字不用于证明本次输入。
+
+已知范围外问题：数字 `width=600` 在当前 outerStyle 中没有转换 CSS 单位，得到空 inline width；字符串 `width='600px'` 正常。固定本轮 12 例未用该数值尺寸，不将其并入本次 modalRender 修复，保留后续处理。
+
+同轮 diagnostic-17 的 Imperative 第六个自定义 IconSend 发现 24px→16px 及蓝色→正文色差异。固定 ConfirmModal 对 elementType=Icon 的自定义节点 cloneElement，覆盖 size=extra-large 与两项 Modal 图标 className；Vue 原直接返回自定义 icon。现复用 isSemiIcon，只克隆 Semi Icon 并覆盖 size/class，保留原 VNode、其他 props 和普通节点/null。Vue cloneVNode 的 class 合并与 React 覆盖不同，故只替换克隆的 class props。公开回归先红后绿，覆盖传入 small/custom class 仍被覆盖、原 VNode 不修改、update 为普通 span 或 null 保持对应内容。Modal Unit/SSR 最终 11 项通过；不在 Demo 添加 size/class 绕过组件契约。

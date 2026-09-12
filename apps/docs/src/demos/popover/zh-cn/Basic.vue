@@ -9,7 +9,7 @@ import { IllustrationSuccess, IllustrationSuccessDark } from '@aifuxi/semi-illus
 </script>
 <template>
   <Popover>
-    <Tag> 悬停此处</Tag>
+    <Tag>悬停此处</Tag>
     <template #content
       ><Empty
         :title="'先进的设计 / 研发协作方式'"

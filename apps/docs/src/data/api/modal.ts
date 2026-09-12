@@ -126,7 +126,18 @@ export const modalApi: readonly ApiSection[] = [
     title: { 'zh-CN': '静态方法', 'en-US': 'Static methods' },
     kind: 'methods',
     items: ['confirm', 'info', 'success', 'warning', 'error', 'destroyAll', 'useModal'].map(
-      (name) => p(name, 'ModalMethod', '—', '命令式 Modal API。', 'Imperative Modal API.'),
+      (name) =>
+        p(
+          name,
+          name === 'destroyAll'
+            ? '() => void'
+            : name === 'useModal'
+              ? '() => ModalUseModalResult'
+              : '(config: ModalProps) => ModalHandle',
+          '—',
+          '命令式 Modal API；useModal 返回方法与 ContextHolder，destroyAll 仅销毁静态实例。',
+          'Imperative API; useModal returns methods and ContextHolder, while destroyAll only closes static instances.',
+        ),
     ),
   },
 ];

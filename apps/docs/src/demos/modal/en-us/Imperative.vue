@@ -14,8 +14,6 @@ const handles = new Set<ModalHandle>();
 function open(type: ModalConfirmType, config: ModalProps) {
   let handle: ModalHandle;
   handle = Modal[type]({
-    okText: 'Confirm',
-    cancelText: 'Cancel',
     ...config,
     afterClose: () => handles.delete(handle),
   });

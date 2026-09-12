@@ -13,6 +13,7 @@ import {
 import throttle from 'lodash/throttle.js';
 import {
   computed,
+  createTextVNode,
   h,
   markRaw,
   onBeforeUnmount,
@@ -146,7 +147,11 @@ const menuItems = computed<VNodeChild[]>(() => {
       tip: props.prevTip ?? props.locale.prevTip,
     }),
     h('div', { class: 'semi-image-preview-footer-page', key: 'info' }, [
-      `${props.curPage}/${props.totalNum}`,
+      // Preserve the pinned adapter's three text runs: their intrinsic widths
+      // round independently in Chromium, affecting the centered footer geometry.
+      createTextVNode(String(props.curPage)),
+      createTextVNode('/'),
+      createTextVNode(String(props.totalNum)),
     ]),
     action(IconChevronRight, {
       disabled: props.disabledNext,

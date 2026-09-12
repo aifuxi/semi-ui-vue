@@ -10,7 +10,7 @@ import '@aifuxi/semi-theme-default/tag.css';
 <template>
   <ConfigProvider :locale="enUS"
     ><Popover>
-      <Tag> Hover here</Tag>
+      <Tag>Hover here</Tag>
       <template #content
         ><article :style="{ padding: '12px' }">
           Hi ByteDancer, this is a popover.

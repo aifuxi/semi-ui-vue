@@ -21,7 +21,7 @@ function handleAfterClose() {
 }
 </script>
 <template>
-  <Button @click="showDialog"> 打开弹窗</Button>
+  <Button @click="showDialog">打开弹窗</Button>
   <Modal
     title="基本对话框"
     :visible="visible"

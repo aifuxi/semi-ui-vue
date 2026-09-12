@@ -40,6 +40,7 @@ describe('Image SSR', () => {
       ),
     );
     expect(html).toContain('semi-image-preview-group');
+    expect(html).toMatch(/id="semi-image-preview-group-[^"]+"/);
     expect(html.match(/class="semi-image"/g)).toHaveLength(2);
     expect(html).toContain('data-src="/one.png"');
     expect(html).not.toContain('class="semi-portal');

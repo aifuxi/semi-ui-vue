@@ -11,7 +11,7 @@ import IconDownload from '@aifuxi/semi-icons-vue/icons/IconDownload';
 import IconWindowAdaptionStroked from '@aifuxi/semi-icons-vue/icons/IconWindowAdaptionStroked';
 import '@aifuxi/semi-theme-default/image.css';
 import '@aifuxi/semi-theme-default/button.css';
-const srcList = ['/demos/photo.svg', '/demos/one.svg', '/demos/two.svg'];
+const srcList = ['/demos/image-abstract.svg', '/demos/image-sky.svg', '/demos/image-greenleaf.svg'];
 </script>
 <template>
   <ImagePreview
@@ -27,38 +27,22 @@ const srcList = ['/demos/photo.svg', '/demos/one.svg', '/demos/two.svg'];
           border-radius: 3px;
         "
       >
-        <Button type="tertiary" aria-label="Prev" :disabled="menu.disabledPrev" @click="menu.onPrev"
+        <Button type="tertiary" :disabled="menu.disabledPrev" @click="menu.onPrev"
           ><template #icon><IconChevronLeft size="large" /></template></Button
-        ><Button
-          type="tertiary"
-          aria-label="Next"
-          :disabled="menu.disabledNext"
-          @click="menu.onNext"
+        ><Button type="tertiary" :disabled="menu.disabledNext" @click="menu.onNext"
           ><template #icon><IconChevronRight size="large" /></template></Button
-        ><Button
-          type="tertiary"
-          aria-label="ZoomOut"
-          :disabled="menu.disabledZoomOut"
-          @click="menu.onZoomOut"
+        ><Button type="tertiary" :disabled="menu.disabledZoomOut" @click="menu.onZoomOut"
           ><template #icon><IconMinus size="large" /></template></Button
-        ><Button
-          type="tertiary"
-          aria-label="ZoomIn"
-          :disabled="menu.disabledZoomIn"
-          @click="menu.onZoomIn"
+        ><Button type="tertiary" :disabled="menu.disabledZoomIn" @click="menu.onZoomIn"
           ><template #icon><IconPlus size="large" /></template></Button
-        ><Button type="tertiary" aria-label="RatioClick" @click="menu.onRatioClick"
+        ><Button type="tertiary" @click="menu.onRatioClick"
           ><template #icon
             ><IconRealSizeStroked
               v-if="menu.ratio === 'adaptation'"
               size="large" /><IconWindowAdaptionStroked v-else size="large" /></template></Button
-        ><Button type="tertiary" aria-label="RotateLeft" @click="menu.onRotateLeft"
+        ><Button type="tertiary" @click="menu.onRotateLeft"
           ><template #icon><IconRotate size="large" /></template></Button
-        ><Button
-          type="tertiary"
-          aria-label="Download"
-          :disabled="menu.disableDownload"
-          @click="menu.onDownload"
+        ><Button type="tertiary" :disabled="menu.disableDownload" @click="menu.onDownload"
           ><template #icon><IconDownload size="large" /></template
         ></Button></div></template
     ><Image
@@ -66,7 +50,7 @@ const srcList = ['/demos/photo.svg', '/demos/one.svg', '/demos/two.svg'];
       :key="index"
       :src="src"
       :width="200"
-      :alt="`Sample image ${index + 1}`"
+      :alt="`lamp${index + 1}`"
       style="margin-right: 5px"
   /></ImagePreview>
 </template>

@@ -16,7 +16,7 @@ function handleCancel() {
 }
 </script>
 <template>
-  <Button @click="showDialog"> 点击遮罩层不可关闭</Button>
+  <Button @click="showDialog">点击遮罩层不可关闭</Button>
   <Modal
     title="对话框标题"
     :visible="visible"

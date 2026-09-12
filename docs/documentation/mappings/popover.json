@@ -47,7 +47,7 @@
       "index": 8,
       "zhCN": "popover/zh-cn/Color",
       "enUS": "popover/en-us/Color",
-      "notes": "保留默认打开与蓝色样式，容器使用实例template ref，设置最小高度和overflow避免浮层覆盖其他示例。"
+      "notes": "保留默认打开、蓝色样式与 position:relative 局部容器；固定 id 查询改实例 template ref，移除上游没有的最小高度及 overflow 裁剪。"
     },
     {
       "index": 9,
@@ -77,5 +77,11 @@
     "设计变量",
     "FAQ"
   ],
-  "exclusions": []
+  "exclusions": [],
+  "review": {
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "fingerprint": "5de09b7fe68267c33e2cc170039d05aef1f0a265f88d8d9c7ffc63883a113e75"
+  }
 }
