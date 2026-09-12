@@ -55,7 +55,7 @@ const data = [
           ><div>
             <h3 style="color: var(--semi-color-text-0); font-weight: 500">{{ item.title }}</h3>
             <Descriptions align="center" size="small" row
-              ><DescriptionsItem item-key="用户满意度"
+              ><DescriptionsItem item-key="满意度"
                 ><Rating allow-half size="small" :value="item.rating" /></DescriptionsItem
               ><DescriptionsItem item-key="反馈数">{{
                 item.feedbacks

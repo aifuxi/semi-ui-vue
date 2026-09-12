@@ -4,7 +4,6 @@ import '@aifuxi/semi-theme-default/list.css';
 import enUS from '@aifuxi/semi-ui-vue/locale/source/en_US';
 import { ConfigProvider } from '@aifuxi/semi-ui-vue/config-provider';
 import '@aifuxi/semi-theme-default/config-provider.css';
-const sizes = ['default', 'small', 'large'] as const;
 const data = [
   'Do not go gentle into that good night,',
   'Old age should burn and rave at close of day;',
@@ -15,15 +14,38 @@ const data = [
 <template>
   <ConfigProvider :locale="enUS"
     ><div>
-      <div v-for="size in sizes" :key="size" style="margin-right: 16px">
-        <h3 style="margin: 16px 0">{{ size.charAt(0).toUpperCase() + size.slice(1) }} Size</h3>
-        <List :size="size" bordered :data-source="data"
+      <div style="margin-right: 16px">
+        <h3 style="margin-bottom: 16px">Default Size</h3>
+        <List bordered :data-source="data"
           ><template #header><div>Header</div></template
           ><template #footer><div>Footer</div></template
           ><template #item="{ item }"
             ><ListItem>{{ item }}</ListItem></template
           ></List
-        ><br />
-      </div></div
-  ></ConfigProvider>
+        >
+      </div>
+      <br />
+      <div style="margin-right: 16px">
+        <h3 style="margin: 16px 0">Small Size</h3>
+        <List size="small" bordered :data-source="data"
+          ><template #header><div>Header</div></template
+          ><template #footer><div>Footer</div></template
+          ><template #item="{ item }"
+            ><ListItem>{{ item }}</ListItem></template
+          ></List
+        >
+      </div>
+      <br />
+      <div style="margin-right: 16px">
+        <h3 style="margin: 16px 0">Large Size</h3>
+        <List size="large" bordered :data-source="data"
+          ><template #header><div>Header</div></template
+          ><template #footer><div>Footer</div></template
+          ><template #item="{ item }"
+            ><ListItem>{{ item }}</ListItem></template
+          ></List
+        >
+      </div>
+    </div></ConfigProvider
+  >
 </template>

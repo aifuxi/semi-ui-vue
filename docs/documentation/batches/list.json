@@ -1,0 +1,191 @@
+{
+  "id": "list",
+  "upstream": "show/list",
+  "title": "List 文档",
+  "spec": "list-matrix.spec.ts",
+  "locales": ["zh-cn", "en-us"],
+  "themes": ["light", "dark"],
+  "examples": [
+    {
+      "index": 1,
+      "name": "Basic",
+      "zhCN": "list/zh-cn/Basic",
+      "enUS": "list/en-us/Basic",
+      "notes": "保留各语言原诗句、三种尺寸与 Header/Footer；三段 h3 边距与英文页的 br 按固定上游。"
+    },
+    {
+      "index": 2,
+      "name": "Template",
+      "zhCN": "list/zh-cn/Template",
+      "enUS": "list/en-us/Template",
+      "notes": "renderItem 改 item 作用域插槽；保留三种正文长度与截断、header/main/extra 插槽。"
+    },
+    {
+      "index": 3,
+      "name": "Layout",
+      "zhCN": "list/zh-cn/Layout",
+      "enUS": "list/en-us/Layout",
+      "notes": "保留 horizontal 三项与各语言标题、头像颜色与正文文案。"
+    },
+    {
+      "index": 4,
+      "name": "Grid",
+      "zhCN": "list/zh-cn/Grid",
+      "enUS": "list/en-us/Grid",
+      "notes": "保留各语言原平台数据与 span6/gutter12、Descriptions/Rating/按钮。"
+    },
+    {
+      "index": 5,
+      "name": "Responsive",
+      "zhCN": "list/zh-cn/Responsive",
+      "enUS": "list/en-us/Responsive",
+      "notes": "保留六项及响应式断点；修正上游英文 Xs/Xl 为有效 xs/xl。"
+    },
+    {
+      "index": 6,
+      "name": "LoadMore",
+      "zhCN": "list/zh-cn/LoadMore",
+      "enUS": "list/en-us/LoadMore",
+      "notes": "保留 40 项、每批 3 项、一秒延迟、Skeleton 与加载更多按钮，并清理计时器。"
+    },
+    {
+      "index": 10,
+      "name": "Pagination",
+      "zhCN": "list/zh-cn/Pagination",
+      "enUS": "list/en-us/Pagination",
+      "notes": "保留各语言书单、每页 4 项与迷你受控分页。"
+    },
+    {
+      "index": 11,
+      "name": "Filter",
+      "zhCN": "list/zh-cn/Filter",
+      "enUS": "list/en-us/Filter",
+      "notes": "Input 筛选，支持中文输入法与英文输入。"
+    },
+    {
+      "index": 12,
+      "name": "AddRemove",
+      "zhCN": "list/zh-cn/AddRemove",
+      "enUS": "list/en-us/AddRemove",
+      "notes": "保留添加/删除书籍；新增按固定上游 data.slice(list.length, list.length + 1) 取下一项，删除后再新增会出现与上游一致的重复书名。"
+    },
+    {
+      "index": 13,
+      "name": "Selection",
+      "zhCN": "list/zh-cn/Selection",
+      "enUS": "list/en-us/Selection",
+      "notes": "CheckboxGroup/RadioGroup 使用 v-model；默认多选值与固定上游一致地按书名展开为字符数组，初始无勾选，单选初值为完整首本书名。"
+    },
+    {
+      "index": 14,
+      "name": "Keyboard",
+      "zhCN": "list/zh-cn/Keyboard",
+      "enUS": "list/en-us/Keyboard",
+      "notes": "保留上下方向键循环高亮；按固定上游在 window 上监听，示例不额外添加可聚焦容器。"
+    }
+  ],
+  "inputs": [
+    "pnpm-lock.yaml",
+    "package.json",
+    "apps/docs/package.json",
+    "apps/docs/nuxt.config.ts",
+    "apps/docs/modules",
+    "patches/@nuxt__rspack-builder@4.5.2.patch",
+    "apps/docs/content/zh-cn/components/list.md",
+    "apps/docs/content/en-us/components/list.md",
+    "apps/docs/src/demos/list",
+    "apps/docs/src/assets",
+    "apps/docs/src/components",
+    "apps/docs/scripts/prepare-*.mjs",
+    "apps/docs/scripts/repl-module-bundles.mjs",
+    "apps/docs/scripts/repl-rslib-factories.mjs",
+    "apps/docs/scripts/*-loader.mjs",
+    "apps/docs/scripts/static-file-response.mjs",
+    "apps/docs/scripts/preview-static.mjs",
+    "apps/docs/scripts/verify-dist.mjs",
+    "apps/docs/scripts/verify-content.mjs",
+    "apps/docs/scripts/accept-documentation-batch.mjs",
+    "apps/docs/scripts/documentation-evidence.mjs",
+    "apps/docs/scripts/documentation-inputs.mjs",
+    "apps/docs/scripts/documentation-pipeline.mjs",
+    "apps/docs/scripts/documentation-preparation-cache.mjs",
+    "apps/docs/playwright.nuxt.config.ts",
+    "apps/docs/playwright.config.ts",
+    "packages/icons/src",
+    "packages/theme-default",
+    "tests/browser/parity-harness.ts",
+    "docs/documentation/batches/list.json",
+    "docs/documentation/mappings/list.json",
+    "docs/documentation/list-acceptance.md",
+    "packages/test-infra/src",
+    "apps/docs/content.config.ts",
+    "apps/docs/tests/nuxt/list-matrix.spec.ts",
+    "apps/docs/tests/nuxt/demo-parity.ts",
+    "apps/docs/tests/nuxt/visual-context.ts",
+    "apps/docs/src/composables",
+    "apps/docs/src/layouts",
+    "apps/docs/src/pages",
+    "apps/docs/src/app.vue",
+    "apps/docs/public/theme.js",
+    "apps/docs/src/data/api/types.ts",
+    "apps/docs/src/data/docs.ts",
+    "apps/docs/src/data/demos.ts",
+    "apps/reference-react/package.json",
+    "apps/reference-react/rsbuild.config.ts",
+    "apps/reference-react/docs-reference-plugin.ts",
+    "apps/reference-react/docs.html",
+    "apps/reference-react/src/docs-reference.tsx",
+    "apps/reference-react/src/runtime",
+    "scripts/upstream-markdown.mjs",
+    "packages/ui/package.json",
+    "packages/ui/rslib.config.ts",
+    "packages/ui/tsconfig.json",
+    "packages/ui/tsconfig.build.json",
+    "scripts/prune-ui-declarations.mjs",
+    "packages/icons/package.json",
+    "packages/icons/rslib.config.ts",
+    "packages/icons-lab",
+    "packages/illustrations",
+    "apps/reference-react/src/semi-reference-theme.scss",
+    "apps/docs/src/data/api/helpers.ts",
+    "pnpm-workspace.yaml",
+    "tsconfig.base.json",
+    "apps/reference-react/docs-adapters/list.mjs",
+    "apps/reference-react/src/docs-virtual-modules.d.ts",
+    "scripts/parity-rsbuild.ts",
+    "scripts/parity-build-runtime.mjs",
+    "scripts/parity-build-provenance.mjs",
+    "packages/icons/tsconfig.build.json"
+  ],
+  "rtlExamples": [
+    "Basic",
+    "Template",
+    "Layout",
+    "Grid",
+    "Responsive",
+    "LoadMore",
+    "Pagination",
+    "Filter",
+    "AddRemove",
+    "Selection",
+    "Keyboard"
+  ],
+  "excludedExamples": [
+    {
+      "index": 7,
+      "name": "ScrollLoad",
+      "reason": "固定片段依赖 react-infinite-scroller：参考壳未内置该库，任一新增依赖都会改写 pnpm-lock.yaml 并使全部已验收批次失效。"
+    },
+    {
+      "index": 8,
+      "name": "Virtualized",
+      "reason": "固定片段依赖 react-virtualized：AutoSizer/InfiniteLoader 在参考壳中无法测量并渲染出行，固定站渲染为空框，无法与 Vue 示例逐节点对照。"
+    },
+    {
+      "index": 9,
+      "name": "DragSort",
+      "reason": "固定片段依赖 dnd-kit：参考壳只提供 no-op shim，包装节点 DOM 与 Vue 的 Pointer Events 实现不可比。"
+    }
+  ],
+  "dependencyMode": "imports-v2"
+}

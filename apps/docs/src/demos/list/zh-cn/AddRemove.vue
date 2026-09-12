@@ -25,35 +25,41 @@ function remove(item: string) {
   items.value = items.value.filter((book) => book !== item);
 }
 function add() {
-  const next = catalog.find((book) => !items.value.includes(book));
-  if (next) items.value = [...items.value, next];
+  // 固定上游按当前长度取下一项（删除后再新增会追加一条重复书名）；保持同一行为才能与参考侧一致。
+  items.value = items.value.concat(catalog.slice(items.value.length, items.value.length + 1));
 }
 </script>
 
 <template>
-  <div class="book-list" style="width: 280px; display: flex; flex-wrap: wrap; margin-right: 16px">
+  <div
+    class="book-list"
+    style="
+      width: 280px;
+      display: flex;
+      flex-wrap: wrap;
+      margin-right: 16px;
+      border: 1px solid var(--semi-color-border);
+    "
+  >
     <List
+      class="component-list-demo-booklist"
       :data-source="items"
       :split="false"
       size="small"
-      style="flex-basis: 100%; flex-shrink: 0; border: 1px solid var(--semi-color-border)"
+      style="flex-basis: 100%; flex-shrink: 0; border-bottom: 1px solid var(--semi-color-border)"
       ><template #item="{ item }"
         ><div style="margin: 4px" class="list-item">
-          <Button
-            theme="borderless"
-            type="danger"
-            style="margin-right: 4px"
-            :aria-label="'删除 ' + item"
-            @click="remove(item)"
+          <Button theme="borderless" type="danger" style="margin-right: 4px" @click="remove(item)"
             ><template #icon><IconMinusCircle /></template></Button
           >{{ item }}
         </div></template
-      ><template #footer
-        ><Button theme="borderless" :disabled="items.length === catalog.length" @click="add"
-          ><template #icon><IconPlusCircle /></template>新增书籍</Button
-        ></template
       ></List
     >
+    <div style="margin: 4px; font-size: 14px" @click="add">
+      <Button theme="borderless" style="margin-right: 4px; color: var(--semi-color-info)"
+        ><template #icon><IconPlusCircle /></template></Button
+      >新增书籍
+    </div>
   </div>
 </template>
 

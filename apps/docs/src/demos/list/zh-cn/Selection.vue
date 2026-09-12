@@ -23,15 +23,16 @@ const data = [
   '第一人称单数',
 ];
 const items = data.slice(0, 8);
-const checked = shallowRef<unknown[]>(data[0] ? [data[0]] : []);
+const checked = shallowRef<unknown[]>([...(data[0] ?? '')]);
 const selected = shallowRef<RadioValue | undefined>(data[0]);
 </script>
 
 <template>
   <div style="display: flex">
     <div class="book-list" style="width: 280px; display: flex; flex-wrap: wrap; margin-right: 16px">
-      <CheckboxGroup v-model="checked" style="width: 100%"
+      <CheckboxGroup v-model="checked"
         ><List
+          class="component-list-demo-booklist"
           :data-source="items"
           :split="false"
           size="small"
@@ -45,8 +46,9 @@ const selected = shallowRef<RadioValue | undefined>(data[0]);
       >
     </div>
     <div class="book-list" style="width: 280px; display: flex; flex-wrap: wrap; margin-right: 16px">
-      <RadioGroup v-model="selected" style="width: 100%"
+      <RadioGroup v-model="selected"
         ><List
+          class="component-list-demo-booklist"
           :data-source="items"
           :split="false"
           size="small"

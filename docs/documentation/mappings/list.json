@@ -71,19 +71,19 @@
       "index": 12,
       "zhCN": "list/zh-cn/AddRemove",
       "enUS": "list/en-us/AddRemove",
-      "notes": "保留添加/删除书籍；追加下一本未显示书籍，避免源例删除后按长度追加产生重复。"
+      "notes": "保留添加/删除书籍；新增按固定上游 data.slice(list.length, list.length + 1) 取下一项，删除后再新增会与上游一致地出现重复书名。"
     },
     {
       "index": 13,
       "zhCN": "list/zh-cn/Selection",
       "enUS": "list/en-us/Selection",
-      "notes": "CheckboxGroup/RadioGroup 使用 v-model；默认多选值为完整首本书名，修正源例将字符串展开成字符数组的问题。"
+      "notes": "CheckboxGroup/RadioGroup 使用 v-model；默认多选值与固定上游一致地按书名展开为字符数组，因此初始无勾选项，单选初值为完整首本书名。"
     },
     {
       "index": 14,
       "zhCN": "list/zh-cn/Keyboard",
       "enUS": "list/en-us/Keyboard",
-      "notes": "保留上下方向键循环高亮；监听范围限定本例可聚焦容器，避免整个文档页接管键盘。"
+      "notes": "保留上下方向键循环高亮；按固定上游在 window 上监听，示例不额外添加可聚焦容器。"
     }
   ],
   "chapters": [
@@ -110,5 +110,19 @@
     "文案规范",
     "设计变量"
   ],
-  "exclusions": []
+  "exclusions": [],
+  "review": {
+    "fingerprint": "38de20e32a83332cc6560de93b892316aa9ddf6d4bc7010c7163b314e6aa2d41",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "逐项核对固定中英文 14 例与本批选中的 11 例：基本用法、模板用法、布局、栅格列表、响应式的栅格列表、加载更多、带分页器、带筛选器、添加删除项、单选或多选、响应键盘事件；ScrollLoad（7）、Virtualized（8）、DragSort（9）依赖参考壳未内置的 react-infinite-scroller / react-virtualized / dnd-kit，任一新增依赖都会改写 lockfile 并使已验收批次失效，本批按 batches/list.json 的 excludedExamples 记录后排除，不计入 accepted。",
+      "API 以真实公开 Vue 类型与固定 Adapter 为准：List 的 dataSource/renderItem/emptyContent/header/footer/loadMore/loading/split/size/layout/grid/bordered 与 `@click`/`@right-click`；List grid props 的 span/gutter/xs…xxl；List.Item 的 align 默认 flex-start、header/main/extra/样式与鼠标事件。示例全部使用真实公开入口（List/ListItem、Button、Input、Pagination、CheckboxGroup、RadioGroup、ConfigProvider）。",
+      "迁移审阅覆盖章节顺序与内容：children→默认插槽、renderItem→item 作用域插槽（或返回 VNodeChild 的 renderItem）、header/footer/loadMore/emptyContent→具名插槽或 prop、List.Item→ListItem（保留 List.Item 组合成员）、onClick/onRightClick→@click/@right-click、ListItem onMouseEnter/onMouseLeave→@mouse-enter/@mouse-leave、className→class（兼容 className）。示例不引入 React 专属集成包：滚动加载用原生 scroll、虚拟列表示例自行计算可见窗口、拖拽用 Pointer Events。",
+      "示例按固定上游收敛：英文示例数据与文案按固定片段重写，Basic 的 h3 边距与 br 结构、Grid/Responsive 的 Descriptions 条目名、添加删除项按 list.length 追加、响应键盘事件在 window 上监听，均与固定片段一致；页面正文同步描述这两处行为。",
+      "限定等价项：CheckboxGroup/RadioGroup 用 cloneElement 给子节点传 role=\"listitem\"，固定 React List 丢弃该未知 prop，Vue List 按原生 attrs 透传到根节点；aria-disabled/aria-invalid/aria-required 显式 false 与省略按 ARIA 1.2 默认值等价；React getUuidShort 与 Vue useId 生成的 id（含 Spin 渐变与 Rating 的 url(#…) 引用）按定义位置归一；Vue SFC scoped 样式的 data-v-* 属性不参与比较，样式本身仍按计算值比较。",
+      "带筛选器的固定片段只在 compositionEnd（或清空）时筛选，Vue 示例按 v-model + computed 响应完整输入值，属于已记录的迁移改进；矩阵按 compositionstart→填值→compositionend 驱动固定片段真实路径，两侧都走该路径后再比较。"
+    ]
+  }
 }

@@ -77,9 +77,8 @@ const list = computed(() => [
                     item.title
                   }}</span>
                   <p style="color: var(--semi-color-text-2); margin: 4px 0">
-                    Life's but a walking shadow, a poor player, that struts and frets his hour upon
-                    the stage, and then is heard no more; it is a tale told by an idiot, full of
-                    sound and fury, signifying nothing.
+                    Create a consistent, good-looking, easy-to-use, and efficient user experience
+                    with a user-centric, content-first, and human-friendly design system
                   </p>
                 </div></template
               ></ListItem
@@ -91,7 +90,7 @@ const list = computed(() => [
           v-if="!loading &amp;&amp; !noMore"
           style="text-align: center; margin-top: 12px; height: 32px; line-height: 32px"
         >
-          <Button @click="fetchData">Show more</Button>
+          <Button @click="fetchData">Load More</Button>
         </div></template
       ></List
     ></ConfigProvider

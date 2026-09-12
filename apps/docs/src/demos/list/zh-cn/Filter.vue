@@ -22,12 +22,22 @@ const filtered = computed(() => data.filter((item) => item.includes(String(query
 </script>
 
 <template>
-  <div class="book-list" style="width: 280px; display: flex; flex-wrap: wrap; margin-right: 16px">
+  <div
+    class="book-list"
+    style="
+      width: 280px;
+      display: flex;
+      flex-wrap: wrap;
+      margin-right: 16px;
+      border: 1px solid var(--semi-color-border);
+    "
+  >
     <List
+      class="component-list-demo-booklist"
       :data-source="filtered"
       :split="false"
       size="small"
-      style="flex-basis: 100%; flex-shrink: 0; border: 1px solid var(--semi-color-border)"
+      style="flex-basis: 100%; flex-shrink: 0; border-bottom: 1px solid var(--semi-color-border)"
       ><template #header
         ><Input v-model="query" placeholder="搜索"
           ><template #prefix><IconSearch /></template></Input></template

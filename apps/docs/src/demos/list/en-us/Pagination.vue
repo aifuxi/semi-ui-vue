@@ -33,6 +33,7 @@ const pageData = computed(() => data.slice((page.value - 1) * 4, page.value * 4)
       style="width: 280px; display: flex; flex-wrap: wrap; margin-right: 16px"
     >
       <List
+        class="component-list-demo-booklist"
         :data-source="pageData"
         :split="false"
         size="small"

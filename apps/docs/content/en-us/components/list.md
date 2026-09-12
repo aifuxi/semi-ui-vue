@@ -202,7 +202,7 @@ Other grid properties are also supported. Refer to [Grid](/en-us/components/grid
 
 ## Accessibility
 
-List does not add keyboard selection state. Use Checkbox/Radio for selection and native buttons or links for interactive rows. Focus the keyboard example to move its highlight with arrow keys.
+List does not add keyboard selection state. Use Checkbox/Radio for selection and native buttons or links for interactive rows. The keyboard example matches the pinned upstream and listens on window for the arrow keys, cycling the highlight; scope that listener when reusing the pattern in an application.
 
 ## FAQ
 
@@ -225,4 +225,4 @@ Update dataSource or the default slot. List does not maintain paginated, filtere
 
 List does not manage pagination, filtering, selection, drag sorting or virtualization. The examples compose public components with Vue state. Infinite scrolling uses native scroll events, virtualization renders visible and overscan rows with asynchronous records, and Pointer Events implement vertical dragging, drop sorting and scrolling near the viewport edges. React-specific integration packages are not required. Timers and animation frames are cleaned up on unmount.
 
-Filtering handles both IME and plain text input. Checkbox defaults contain a full book title, and adding books avoids duplicates. Keyboard navigation is scoped to the focusable example, preserving keyboard input elsewhere on the page.
+Filtering handles both IME and plain text input. Checkbox defaults match the pinned upstream by spreading a book title into characters, so nothing is selected initially. Adding a book takes the next entry by current length, so deleting and adding again shows a duplicate title exactly like the pinned upstream. The keyboard example keeps the upstream window listener and adds no focusable container.
