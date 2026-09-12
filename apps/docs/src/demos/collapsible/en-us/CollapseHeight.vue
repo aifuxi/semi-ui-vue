@@ -3,19 +3,24 @@ import { Button } from '@aifuxi/semi-ui-vue/button';
 import '@aifuxi/semi-theme-default/button.css';
 import { Collapsible } from '@aifuxi/semi-ui-vue/collapsible';
 import '@aifuxi/semi-theme-default/collapsible.css';
-import { shallowRef, useId } from 'vue';
+import { shallowRef, type CSSProperties } from 'vue';
 const isOpen = shallowRef(false);
-const panelId = useId();
+const linkStyle: CSSProperties = {
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  textAlign: 'center',
+  bottom: '-10px',
+  fontWeight: 700,
+  cursor: 'pointer',
+};
 </script>
 
 <template>
   <div>
-    <Button :aria-expanded="isOpen" :aria-controls="panelId" @click="isOpen = !isOpen"
-      >Toggle</Button
-    ><br />
+    <Button @click="isOpen = !isOpen">Toggle</Button>
     <div style="position: relative">
       <Collapsible
-        :id="panelId"
         :is-open="isOpen"
         :collapse-height="60"
         :style="
@@ -32,32 +37,7 @@ const panelId = useId();
           <li>that we arrive here improvised</li>
           <li>and leave without the chance to practice.</li>
         </ul></Collapsible
-      ><button
-        v-if="!isOpen"
-        type="button"
-        class="show-more"
-        :aria-controls="panelId"
-        @click="isOpen = true"
-      >
-        + Show More
-      </button>
+      ><a v-if="!isOpen" :style="linkStyle" @click="isOpen = true"> + Show More </a>
     </div>
   </div>
 </template>
-
-<style scoped>
-.show-more {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -10px;
-  width: 100%;
-  text-align: center;
-  font-weight: 700;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-  color: var(--semi-color-link);
-}
-</style>

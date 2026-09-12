@@ -5,21 +5,18 @@ import { Collapsible } from '@aifuxi/semi-ui-vue/collapsible';
 import '@aifuxi/semi-theme-default/collapsible.css';
 import { InputNumber } from '@aifuxi/semi-ui-vue/input-number';
 import '@aifuxi/semi-theme-default/input-number.css';
-import { shallowRef, useId } from 'vue';
+import { shallowRef } from 'vue';
 const isOpen = shallowRef(false);
-const panelId = useId();
 const duration = shallowRef<number | string>(250);
 </script>
 
 <template>
   <div>
-    <span>Set animation duration: </span
+    <label>Set animation duration：</label
     ><InputNumber v-model="duration" :min="0" :step="10" style="width: 120px" /><br /><Button
-      :aria-expanded="isOpen"
-      :aria-controls="panelId"
       @click="isOpen = !isOpen"
       >Toggle</Button
-    ><Collapsible :id="panelId" :is-open="isOpen" :duration="Number(duration) || 0"
+    ><Collapsible :is-open="isOpen" :duration="Number(duration) || 0"
       ><ul>
         <li>Nothing can ever happen twice.</li>
         <li>In consequence, the sorry fact is</li>
