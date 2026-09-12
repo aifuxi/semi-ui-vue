@@ -22,6 +22,7 @@ import {
 
 import { semiGlobal } from '../config-provider';
 import OverflowListNodeRenderer from './OverflowListNodeRenderer';
+import OverflowListOverflow from './OverflowListOverflow';
 import type {
   OverflowItem,
   OverflowListCollapseFrom,
@@ -313,15 +314,15 @@ const overflowItems = computed(
 );
 const collapseOverflowItems = computed(() => overflowItems.value as OverflowItem[]);
 const scrollOverflowItems = computed(() => overflowItems.value as [OverflowItem[], OverflowItem[]]);
-const collapseOverflowContent = computed<VNodeChild>(() =>
-  slots.overflow?.({ items: collapseOverflowItems.value, position: runtimeCollapseFrom.value }),
-);
-const hasCollapseOverflowContent = computed(() => {
-  const value = collapseOverflowContent.value;
-  if (Array.isArray(value))
-    return value.some((node) => node !== null && node !== undefined && node !== false);
-  return value !== null && value !== undefined && value !== false;
-});
+function setOverflowElement(value: unknown): void {
+  overflowElement.value = value instanceof HTMLElement ? value : undefined;
+}
+function renderOverflow(scope: {
+  items: readonly OverflowItem[];
+  position: OverflowListCollapseFrom;
+}): VNodeChild {
+  return slots.overflow?.(scope);
+}
 const rootClasses = computed(() => [
   'semi-overflow-list',
   props.class,
@@ -387,12 +388,18 @@ onBeforeUnmount(() => {
           runtimeOverflowRenderDirection === 'both' || runtimeOverflowRenderDirection === 'start'
         "
       >
-        <slot name="overflow" :items="scrollOverflowItems[0]" position="start" />
-        <slot
+        <OverflowListOverflow
+          :items="scrollOverflowItems[0]"
+          position="start"
+          :wrapper="false"
+          :render-overflow="renderOverflow"
+        />
+        <OverflowListOverflow
           v-if="runtimeOverflowRenderDirection === 'start'"
-          name="overflow"
           :items="scrollOverflowItems[1]"
           position="end"
+          :wrapper="false"
+          :render-overflow="renderOverflow"
         />
       </template>
       <div
@@ -411,23 +418,29 @@ onBeforeUnmount(() => {
       <template
         v-if="runtimeOverflowRenderDirection === 'both' || runtimeOverflowRenderDirection === 'end'"
       >
-        <slot
+        <OverflowListOverflow
           v-if="runtimeOverflowRenderDirection === 'end'"
-          name="overflow"
           :items="scrollOverflowItems[0]"
           position="start"
+          :wrapper="false"
+          :render-overflow="renderOverflow"
         />
-        <slot name="overflow" :items="scrollOverflowItems[1]" position="end" />
+        <OverflowListOverflow
+          :items="scrollOverflowItems[1]"
+          position="end"
+          :wrapper="false"
+          :render-overflow="renderOverflow"
+        />
       </template>
     </template>
     <template v-else>
-      <div
-        v-if="runtimeCollapseFrom === 'start' && hasCollapseOverflowContent"
-        ref="overflowElement"
-        class="semi-overflow-list-overflow"
-      >
-        <OverflowListNodeRenderer :content="collapseOverflowContent" />
-      </div>
+      <OverflowListOverflow
+        v-if="runtimeCollapseFrom === 'start'"
+        :items="collapseOverflowItems"
+        :position="runtimeCollapseFrom"
+        :set-element="setOverflowElement"
+        :render-overflow="renderOverflow"
+      />
       <div
         v-for="(item, index) in state.visible"
         :key="resolveItemKey(item, index)"
@@ -436,13 +449,13 @@ onBeforeUnmount(() => {
       >
         <slot name="visibleItem" :item="item" :index="index" />
       </div>
-      <div
-        v-if="runtimeCollapseFrom === 'end' && hasCollapseOverflowContent"
-        ref="overflowElement"
-        class="semi-overflow-list-overflow"
-      >
-        <OverflowListNodeRenderer :content="collapseOverflowContent" />
-      </div>
+      <OverflowListOverflow
+        v-if="runtimeCollapseFrom === 'end'"
+        :items="collapseOverflowItems"
+        :position="runtimeCollapseFrom"
+        :set-element="setOverflowElement"
+        :render-overflow="renderOverflow"
+      />
     </template>
   </div>
 </template>

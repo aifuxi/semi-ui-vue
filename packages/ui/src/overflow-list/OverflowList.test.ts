@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { h, nextTick } from 'vue';
+import { createCommentVNode, defineComponent, h, nextTick } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
 import { semiGlobal } from '../config-provider';
@@ -41,14 +41,13 @@ class TestIntersectionObserver {
 
 const items = [{ key: 'alarm' }, { key: 'bookmark' }, { key: 'camera' }, { key: 'duration' }];
 
-function mountList(
-  props: Record<string, unknown> = {},
-  width: { root: number; item: number; overflow: number } = {
-    root: 100,
-    item: 40,
-    overflow: 20,
-  },
-) {
+interface MeasuredWidths {
+  root: number;
+  item: number;
+  overflow: number;
+}
+
+function mockWidths(width: MeasuredWidths) {
   rs.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockImplementation(function (
     this: HTMLElement,
   ) {
@@ -57,6 +56,17 @@ function mountList(
     if (this.classList.contains('semi-overflow-list')) return width.root;
     return 0;
   });
+}
+
+function mountList(
+  props: Record<string, unknown> = {},
+  width: MeasuredWidths = {
+    root: 100,
+    item: 40,
+    overflow: 20,
+  },
+) {
+  mockWidths(width);
   return mount(OverflowList, {
     props: { items, ...props },
     slots: {
@@ -100,6 +110,82 @@ describe('OverflowList', () => {
     expect(wrapper.find('.overflow-trigger').text()).toBe('+2');
     expect(wrapper.attributes('style')).toContain('visibility: visible');
     expect(wrapper.emitted('overflow')?.at(-1)?.[0]).toEqual(items.slice(2));
+  });
+
+  it('collapse 槽内容随容器宽度重新渲染', async () => {
+    const width: MeasuredWidths = { root: 100, item: 40, overflow: 20 };
+    const wrapper = mountList({}, width);
+    await settleMeasurement();
+    expect(wrapper.find('.overflow-trigger').text()).toBe('+2');
+
+    // 容器收窄后 pivot 变为 1：槽位必须重新渲染成 “+3”，不能保留上一次的 2 项。
+    width.root = 60;
+    TestResizeObserver.instances[0]!.notify(wrapper.element);
+    await settleMeasurement();
+
+    expect(wrapper.findAll('.token').map((node) => node.text())).toEqual(['alarm']);
+    expect(wrapper.find('.overflow-trigger').text()).toBe('+3');
+  });
+
+  it('collapse 槽位没有可渲染内容时不渲染溢出包装节点', async () => {
+    const width: MeasuredWidths = { root: 1000, item: 40, overflow: 20 };
+    mockWidths(width);
+    const wrapper = mount(OverflowList, {
+      props: { items },
+      slots: {
+        visibleItem: ({ item }: { item: OverflowItem }) =>
+          h('button', { class: 'token' }, String(item.key)),
+        // 模板里的 `v-if` 在为空时会留下注释节点，固定实现（返回 null）不会渲染包装节点。
+        overflow: ({ items: overflowItems }: { items: readonly OverflowItem[] }) =>
+          overflowItems.length
+            ? h('button', { class: 'overflow-trigger' }, `+${overflowItems.length}`)
+            : createCommentVNode('v-if', true),
+      },
+    });
+    await settleMeasurement();
+    expect(wrapper.find('.semi-overflow-list-overflow').exists()).toBe(false);
+    expect(wrapper.findAll('.token')).toHaveLength(4);
+
+    width.root = 100;
+    TestResizeObserver.instances[0]!.notify(wrapper.element);
+    await settleMeasurement();
+
+    expect(wrapper.findAll('.semi-overflow-list-overflow')).toHaveLength(1);
+    expect(wrapper.find('.overflow-trigger').text()).toBe('+2');
+  });
+
+  it('collapse 槽位用组件封装计数时同样随隐藏项更新', async () => {
+    // 文档示例把计数放在 Tag 组件里；Tag 的 props 不变，Vue 会跳过它的更新，
+    // 因此组件必须在隐藏项变化时让槽内容重新挂载，才能与固定实现“渲染器随渲染调用”的语义一致。
+    const Counter = defineComponent({
+      name: 'Counter',
+      props: { label: { type: String, required: true } },
+      setup:
+        (props, { slots }) =>
+        () =>
+          h('div', { class: 'counter' }, [props.label, slots.default?.()]),
+    });
+    const width: MeasuredWidths = { root: 100, item: 40, overflow: 20 };
+    mockWidths(width);
+    const wrapper = mount(OverflowList, {
+      props: { items },
+      slots: {
+        visibleItem: ({ item }: { item: OverflowItem }) =>
+          h('button', { class: 'token' }, String(item.key)),
+        overflow: ({ items: overflowItems }: { items: readonly OverflowItem[] }) =>
+          overflowItems.length
+            ? h(Counter, { label: 'hidden' }, { default: () => `+${overflowItems.length}` })
+            : null,
+      },
+    });
+    await settleMeasurement();
+    expect(wrapper.find('.counter').text()).toBe('hidden+2');
+
+    width.root = 60;
+    TestResizeObserver.instances[0]!.notify(wrapper.element);
+    await settleMeasurement();
+
+    expect(wrapper.find('.counter').text()).toBe('hidden+3');
   });
 
   it('collapseFrom=start 保留尾部且 minVisibleItems 优先', async () => {

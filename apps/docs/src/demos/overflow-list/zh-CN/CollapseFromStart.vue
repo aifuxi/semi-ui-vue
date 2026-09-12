@@ -28,7 +28,7 @@ const items = [
 
 <template>
   <div>
-    <Slider :step="1" :value="width" aria-label="列表宽度百分比" @change="width = Number($event)" />
+    <Slider :step="1" :value="width" @change="width = Number($event)" />
     <br />
     <br />
     <div :style="{ width: `${width}%` }">
