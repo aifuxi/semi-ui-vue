@@ -6414,10 +6414,8 @@
     "files": { "Vertical.vue": "descriptions/en-us/Vertical.vue" },
     "dependencies": [
       "@aifuxi/semi-theme-default/descriptions.css",
-      "@aifuxi/semi-theme-default/space.css",
       "@aifuxi/semi-theme-default/tag.css",
       "@aifuxi/semi-ui-vue/descriptions",
-      "@aifuxi/semi-ui-vue/space",
       "@aifuxi/semi-ui-vue/tag",
       "vue"
     ],

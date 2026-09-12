@@ -7,10 +7,8 @@ const keyStyle = { width: '120px', color: 'var(--semi-color-primary)' };
 
 <template>
   <Descriptions align="center">
-    <DescriptionsItem item-key="Name" :key-style="keyStyle">Lee</DescriptionsItem>
+    <DescriptionsItem item-key="Name" :key-style="keyStyle">John</DescriptionsItem>
     <DescriptionsItem item-key="Age" :key-style="keyStyle">28</DescriptionsItem>
-    <DescriptionsItem item-key="Occupation" :key-style="keyStyle"
-      >Frontend engineer</DescriptionsItem
-    >
+    <DescriptionsItem item-key="Job" :key-style="keyStyle">Frontend Engineer</DescriptionsItem>
   </Descriptions>
 </template>

@@ -6,10 +6,10 @@ import { DescriptionsItem } from '@aifuxi/semi-ui-vue/descriptions';
 
 <template>
   <Descriptions>
-    <DescriptionsItem item-key="Actual users">1,480,000</DescriptionsItem>
-    <DescriptionsItem item-key="7-day retention">98%</DescriptionsItem>
-    <DescriptionsItem item-key="Security level">Level 3</DescriptionsItem>
-    <DescriptionsItem item-key="Category tags">E-commerce</DescriptionsItem>
-    <DescriptionsItem item-key="Verification">Not verified</DescriptionsItem>
+    <DescriptionsItem item-key="Actual Users">1,480,000</DescriptionsItem>
+    <DescriptionsItem item-key="7-day Rentention">98%</DescriptionsItem>
+    <DescriptionsItem item-key="Security Level">III</DescriptionsItem>
+    <DescriptionsItem item-key="Category Tag">E-commerce</DescriptionsItem>
+    <DescriptionsItem item-key="Authorized State">Unauthorized</DescriptionsItem>
   </Descriptions>
 </template>

@@ -57,7 +57,7 @@ When horizontal is set, column can be used to specify the maximum number of colu
 ::demo-block{demo="descriptions/en-us/Horizontal" title="Set layout mode"}
 ::
 
-The Chinese reference also demonstrates vertical layout explicitly. The following translated example retains its two category tags and `column` value; `column` only controls horizontal grouping.
+The pinned English page only ships the horizontal layout snippet, and the Chinese reference also demonstrates vertical layout explicitly. The following example renders the same data with `layout="vertical"`; `column` only controls horizontal grouping.
 
 ::demo-block{demo="descriptions/en-us/Vertical" title="Vertical layout"}
 ::

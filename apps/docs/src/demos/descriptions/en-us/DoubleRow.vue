@@ -4,16 +4,16 @@ import { Descriptions } from '@aifuxi/semi-ui-vue/descriptions';
 import '@aifuxi/semi-theme-default/descriptions.css';
 import IconArrowUp from '@aifuxi/semi-icons-vue/icons/IconArrowUp';
 const data = [
-  { key: 'Actual users', value: '1,480,000' },
+  { key: 'Actual Users', value: '1,480,000' },
   {
-    key: '7-day retention',
+    key: '7-day Rentention',
     value: () =>
       h('span', [
         '98%',
         h(IconArrowUp, { size: 'small', style: { color: 'red', marginLeft: '4px' } }),
       ]),
   },
-  { key: 'Security level', value: 'Level 3' },
+  { key: 'Security Level', value: 'III' },
 ];
 const panelStyle = {
   boxShadow: 'var(--semi-shadow-elevated)',
@@ -22,7 +22,6 @@ const panelStyle = {
   padding: '10px',
   marginRight: '20px',
   width: '600px',
-  maxWidth: '100%',
 };
 </script>
 

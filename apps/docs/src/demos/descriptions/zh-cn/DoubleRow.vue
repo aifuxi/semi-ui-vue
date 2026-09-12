@@ -22,7 +22,6 @@ const panelStyle = {
   padding: '10px',
   marginRight: '20px',
   width: '600px',
-  maxWidth: '100%',
 };
 </script>
 
