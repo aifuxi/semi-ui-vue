@@ -1,54 +1,36 @@
 # 项目协作约束
 
-## 协作与任务范围
+## 协作与工具
 
-- 回复、报告和说明使用中文；直接说明结果、依据和必要取舍。保护用户已有修改，只处理已授权目标和必要依赖。
-- 信息足够时直接推进实现、修复与验证；公共 API、依赖或架构变更本身不要求再次审批。仅在目标不明确、超出授权或存在未授权的不可逆操作时询问。
-- 选择满足目标的最小实现，保持现有风格；注释解释意图、边界和非显然取舍。只报告实际执行的验证，区分事实、推断与未验证事项。
-- 代码或规则变更使用 [ai-change-workflow](.agents/skills/ai-change-workflow/SKILL.md)。低风险修改、纯问答和只读调查不强制建报告；团队治理见 [ai-governance](docs/ai-governance.md)。
-- 批量、并行或按并行模式接续文档严格验收时，使用 [parallel-documentation-acceptance](.agents/skills/parallel-documentation-acceptance/SKILL.md)：子 agent 并行准备，主 agent 统一调度共享构建与正式验收；普通示例修改和未要求并行的单批验收继续使用原文档流程。
-- 本文件适用于所有支持 `AGENTS.md` 的 agent；没有技能加载器时直接读取链接的 `SKILL.md`，按任务入口选择材料，不要求安装特定 agent 插件。详细流程在链接文档维护。
+- 使用中文；保护已有修改，只处理授权目标及必要依赖。信息足够时直接实现、验证；仅目标不明、超出授权或涉及未授权不可逆操作时询问。
+- 优先使用 WebStorm MCP，先只读确认项目，`projectPath` 传实际仓库或 worktree 的绝对路径。运行前查找 Run Configuration，无合适配置用 IDE 终端；能力不可用或失败时说明原因后用 CLI/补丁继续，权限拒绝不得绕过。
+- 搜索限定范围，空索引或截断结果须补查。运行核对退出码；超时后先确认进程、端口和日志再重跑。复用匹配的服务，避免共享输入、端口和产物争用；个人连接配置不入库。
 
-## 工具与工作区
+## 实现契约
 
-- 优先使用 WebStorm MCP 对应能力，并用只读调用确认目标项目；支持 `projectPath` 时传实际仓库或 worktree 的绝对路径，不操作其他项目。
-- 运行前查找现有 Run Configuration，无合适配置时用 IDE 终端执行仓库 pnpm 命令。IDE 不可用、能力不支持或失败时说明原因，使用 CLI/文件补丁继续；权限拒绝不得绕过。
-- 搜索须限定范围；空结果、截断或索引未就绪不能证明没有引用。修改后按需获取 IDE 诊断，但它不能替代实际类型、测试或构建检查。
-- 独立的只读查询可批量执行，返回必要片段；有依赖的操作顺序执行。独立检查仅在端口、输入与输出产物不争用时并行，不并行修改正在验收的输入。
-- 核对命令退出码与超时；工具超时不等于进程已停止，重跑前先检查进程、端口与日志。长任务保留可追踪日志和最终退出状态；IDE 终端涉及管道、重定向等 shell 语法时使用 shell 执行模式。
-- 启动服务前检查端口，复用符合当前输入和配置的服务，避免干扰现有服务或并行重建浏览器正在消费的产物。不把个人连接配置写入仓库。
+- Semi 唯一基线：只读 `vendor/semi-design`，`v2.102.0` / `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`。仅基线缺少信息或用户要求时查上游在线资料，并标明版本差异。
+- 不修改、格式化或复制 vendor 源码后独立维护；自有代码扫描排除 `vendor/**`，基线核验与生成工具按需读取。Foundation 经私有集成边界编译，公开包内联所需逻辑，消费者无需 submodule。
+- 覆盖固定基线全部公开组件与资产，保持视觉、行为、可访问性、主题及 `.semi-*` / `--semi-*` 兼容。
+- 使用 TypeScript、Composition API、`<script setup lang="ts">` 和 Vue props/emits/slots/v-model；默认不用 Options API/JSX，局部 DOM/VNode 适配可用 render function。
+- 公开 JavaScript 入口支持无 DOM 导入；provider 实例隔离，DOM/Observer/事件在客户端创建并清理，身份敏感对象避免深层代理。
+- 保持 pnpm workspace、统一 lockfile 和[依赖方向](docs/architecture/workspace.md)。JavaScript 包提供 ESM、类型和明确 exports，主题包提供根及逐组件 CSS；保留 tree-shaking，不新增 CJS/UMD。
+- 使用独立品牌，保留 MIT、第三方声明与 SBOM；新增资产同步归属。文档页头 IconSemiLogo 的限定例外见[页头记录](docs/documentation/site-header.md)。
 
-## 产品与源码契约
+## 任务入口与验证
 
-- 唯一 Semi 参考是只读 submodule `vendor/semi-design`，固定 `v2.102.0` / `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`。仅固定源码缺少信息或用户要求检查上游时查在线资料，并标明版本差异。
-- 不修改、格式化或复制 vendor 源码后独立维护；项目扫描与检查排除 `vendor/**`。Foundation 通过私有集成边界编译，发布包内联所需逻辑和编译样式，消费者无需 submodule。
-- 目标覆盖固定版本全部公开组件与资产；视觉、行为、可访问性、主题和 `.semi-*` / `--semi-*` 兼容契约不因流程精简而缩减。
-- 公开 API 使用 Vue 原生 props/emits/slots/v-model；源码使用 TypeScript、Composition API、`<script setup lang="ts">`，默认不用 Options API/JSX，必要的 DOM/VNode 适配允许局部 render function。
-- 所有公开包 SSR-safe import；provider 实例隔离，DOM/Observer/事件在客户端创建并清理，身份敏感对象避免深层代理。具体 Adapter 边界按任务读取 [组件验收契约](docs/testing/component-contract.md)。
-- 保持 pnpm workspace、统一 lockfile 和既有分包依赖方向，见 [架构](docs/architecture/workspace.md)。公开包提供 ESM、类型、根及逐组件 CSS、明确 exports、tree-shaking；不新增 CJS/UMD。
-- 对外使用独立品牌；保留 Semi MIT 与适用第三方声明，新增资产时同步归属及 SBOM。文档页头保留现有 IconSemiLogo 的限定例外，见 [页头记录](docs/documentation/site-header.md)。
+按任务读取下列流程；无技能加载器时直接读 `SKILL.md`，不重复抄写专项步骤：
 
-## 按影响验证
+- 代码或规则变更：[ai-change-workflow](.agents/skills/ai-change-workflow/SKILL.md)；低风险修改不强制建报告，团队制度见[治理文档](docs/ai-governance.md)。
+- 组件实现与对齐修复：[垂直切片技能](.agents/skills/semi-ui-vue-vertical-slice/SKILL.md)和[组件契约](docs/testing/component-contract.md)；维护从受影响契约开始。
+- 文档示例：[文档流程](docs/documentation/workflow.md)；批量或并行严格验收使用[并行验收技能](.agents/skills/parallel-documentation-acceptance/SKILL.md)，子 agent 准备，主 agent 统一构建与正式验收。
+- 检查范围：[验证入口](docs/testing/validation.md)。`pnpm check` 用于日常检查，`check:artifacts` 验证产物，`check:full` 做全量回归，`release:check` 用于发布前；纯规则/文案只做格式、链接与差异检查。
+- 浏览器验收使用锁定 Playwright Chromium 的 React/Vue 对照，保留样式、几何和像素门槛；真实焦点、Portal、拖拽和动效须有浏览器证据，手工截图不替代正式矩阵。
+- 测试断言公开行为和可观察终态，不用固定延时、增加重试或降低门槛掩盖失败，不强求逐文件 100% 覆盖率。
+- 昂贵验收前完成 diff 自审、静态检查及要求的 review/指纹，冻结输入；变更后按影响重验，复用工具核验仍有效的证据。历史证据失效须如实保留，仅任务要求恢复 accepted 时跑完整矩阵，不改旧指纹。
+- 组件完成度、文档映射与有效验收分开记录；动态批次进度维护在[文档计划](docs/documentation/batch-plan.md)与覆盖账本，README 保留概览和入口。
 
-- 普通维护从当前缺陷和受影响契约开始，不重新套用组件从零建设流程。完整组件验收使用 [垂直切片 Skill](.agents/skills/semi-ui-vue-vertical-slice/SKILL.md) 和 [组件契约](docs/testing/component-contract.md)；文档示例使用 [文档流程](docs/documentation/workflow.md)。
-- 日常 `pnpm check` 执行静态检查、源码类型、单测和工具测试，不清理工作区或构建全站。产物检查用 `pnpm check:artifacts`，全量回归用 `pnpm check:full`，发布用 `pnpm release:check`；选择规则见 [验证入口](docs/testing/validation.md)。
-- 测试证明公开行为和关键不变量；覆盖率用于发现缺口，不统一要求每文件四项 100%，不为指标编写低价值测试或维护人工豁免表。
-- 浏览器只承诺锁定的 Playwright Chromium；保持同环境 React/Vue 对照、关键样式/几何和局部像素门槛。真实焦点、Portal、拖拽、动效不能用 jsdom 代替。
-- 浏览器交互工具用于观察页面、DOM、可访问性状态及定位问题；批量验收用仓库 Playwright runner 留存可复查证据。手工观察或截图不替代正式矩阵；没有交互工具时直接使用仓库浏览器测试。
-- 断言等待可观察状态或动画终态，不猜中间帧数值、不靠固定延时碰运气；需要虚拟时钟时隔离上下文，避免影响编辑器等依赖真实时序的交互。
-- 本地定位默认不重试；CI 可保留两次重试用于诊断，并以 `failOnFlakyTests` 阻止 flaky 通过。单独运行才成功时先定位共享状态、资源或环境原因，不预先归咎 runner 或 spec，不靠增加重试掩盖失败。
-- 新标记 ready 的切片同步 README；维护已完成组件无需重写进度。历史证据失效时如实标记，仅用户目标要求恢复 accepted 时运行相应完整矩阵，不修改旧指纹伪造有效性。
+## 交付与提交
 
-## 验证执行顺序
-
-1. 检查工作区已有修改、当前目标和验收记录，明确本次完成条件与受影响契约。续做批次从维护中的队列和证据计划接续，不重复全仓摸底；工具支持 `--plan` 或用例列表时先确认实际范围。
-2. 先运行最接近缺陷的低成本检查或最小复现，再用代表性浏览器用例验证关键交互。对照任务先确认固定 React 基线可独立运行，核对语言、主题与方向差异，再扩展矩阵；代表用例通过不等于完整验收通过。
-3. 昂贵验收前完成最终 diff 自审、格式及相关静态检查，并冻结全部输入。核对输入清单的路径、glob 与实际文件，避免批次复制或全局替换误改通用路径；基于实际审阅补齐要求的 review 状态及指纹，不能等浏览器跑完再补写导致证据失效。
-4. 稳定后集中执行当前任务和实际受影响历史范围的昂贵检查。复用由仓库工具核验内容指纹的缓存与证据；已通过且输入未变的检查不因提交重跑。共享运行时、主题、测试基础设施或发布变更按影响扩大范围；失败先区分产品、基线、断言时序与环境原因，定点修复后仅重跑失效阶段。
-5. 交付前检查专项完成门禁、报告有效性和工作区 diff，不能只看测试通过数。文档批次还须通过指定批次的覆盖与审阅门禁，具体命令见文档流程。仅规则或文案变更且未影响运行行为时，做相应格式、链接和差异检查，无需例行构建全站或重跑浏览器。
-
-## 提交
-
-- 改变公开产物时提交 Changesets 记录，纯文档/测试/内部工具使用空 changeset；版本由机器人维护。流程与恢复见 [发布手册](docs/releasing.md)，不手改公开版本或手工触发旧标签发布。
-- 每项已完成并通过对应验收的任务自动创建独立 commit，无需再次询问。提交前检查最终 diff，仅暂存本次文件；未经验证的结果和无关修改不混入提交。
-- 提交说明包含结果、实际验证及剩余问题；没有提交成功不得声称已提交。
+- 公开产物变更添加 Changesets；纯文档、测试或内部工具用 `pnpm changeset --empty`。版本由机器人维护，不手改版本或手工触发旧标签发布，见[发布手册](docs/releasing.md)。
+- 每项完成且通过对应验收的任务自动创建独立 commit；提交前审阅最终 diff，仅暂存本次文件。
+- 交付和提交说明包含结果、实际验证及剩余问题；未执行的检查、未成功的提交不得声称完成。
