@@ -72,5 +72,18 @@
       "notes": "保留原有章节顺序，API 依据真实公开 Vue 类型更新；增加需要的 FAQ/无障碍与 React→Vue 映射"
     }
   ],
-  "exclusions": []
+  "exclusions": [],
+  "review": {
+    "fingerprint": "f89a0599d97b36a21641c17335ea9f30272d2f819dff0c947a6f4ee4f697f8ee",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "逐项核对固定中英文 5 例与全部章节：基本用法（construction 插画 + 暗色插画）、自定义（children 两个按钮）、不使用图片（span + Typography 文本与 link）、不同布局（layout=horizontal、宽 800 居中、长描述）、占位图插画（八张插画 + padding 30 + flex 换行）。",
+      "API 以真实公开 Vue 类型为准：image/darkModeImage/title/description/children 均支持 VNodeChild prop 与同名插槽（插槽优先），layout 默认 vertical，支持 horizontal；EmptySvgNode 渲染插画或自定义节点，未新增或遗漏公开字段。",
+      "示例按固定上游逐字保留中英文文案与内联样式（含 150x150 插画尺寸、按钮 padding 与 marginRight、Layout 的 width 800），双语插画一一对应。",
+      "参考适配器只把匿名箭头示例命名为默认导出，并把固定片段的 @douyinfe/semi-illustrations 指向同一固定 vendor 插画入口（仓库既有做法），不复制上游实现。",
+      "矩阵按 light/dark 两种主题运行，暗色下由 darkModeImage 提供对应插画；示例本身为纯展示型，没有文档化交互状态。"
+    ]
+  }
 }

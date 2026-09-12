@@ -7,11 +7,11 @@
 | 工作线             | 当前进度         | 剩余范围           | 下一批                     |
 | ------------------ | ---------------- | ------------------ | -------------------------- |
 | 双语示例补齐       | 859/859 已映射   | 0 项待映射         | 补齐队列清零，进入收尾审阅 |
-| 严格视觉与行为验收 | 216/859 有效验收 | 643 项已映射待验收 | Empty 5 项                 |
+| 严格视觉与行为验收 | 221/859 有效验收 | 638 项已映射待验收 | Highlight 4 项             |
 
 复用 `coverage.json` 的 `unmapped`、`implemented-awaiting-parity`、`accepted` 状态，不新增状态系统。已映射数量不追认为全部通过统一运行检查；补齐批次的加载、运行和内容检查证据随交付记录，不能仅凭映射声明补齐完成。有效验收数量以当前源码对应的证据为准。
 
-Button 17 项试点已建立独立、可追溯且随源码变化失效的验收流程。2026-09-11 的九批 352 项正式矩阵已联合通过，覆盖 Grid 新增 56 项及受 CSS 精度修复影响的历史八批，Layout 八项随后通过 64 项正式矩阵，Resizable 14 项再通过 112 项正式矩阵，Space 5 项再通过 40 项正式矩阵，Typography 10 项再通过 80 项正式矩阵，Accessibility 1 项再通过 8 项正式矩阵，Banner 4 项再通过 32 项正式矩阵，Feedback 7 项再通过 56 项正式矩阵，Notification 8 项再通过 64 项正式矩阵，并因组件内部对齐修复重验 ConfigProvider 16 项；Toast 9 项再通过 72 项正式矩阵（含英文独有 Stacking），并因 hook holder 结构修复重验 ConfigProvider、Resizable、Typography；Popconfirm 4 项通过 32 项正式矩阵，其 `RadioGroup` 片段修复与站点焦点环改动使全部 19 批证据失效，按完整失效集合重验 19 批共 912 项；Progress 12 项随后通过 96 项正式矩阵，章节/API/迁移审阅与本批门禁有效，历史十九批证据未失效；Skeleton 8 项再通过 60 项正式矩阵（Table 仅 LTR，理由见记录），历史二十批证据未失效；Spin 5 项再通过 40 项正式矩阵（含英文独有 Controlled），历史二十一批证据未失效；Avatar 15 项通过 120 项正式矩阵，其 slot VNode 克隆修复使 8 个真实消费批次（accessibility、config-provider、dark-mode、layout、locale、navigation、skeleton、space）按依赖重验 264 项，合计 9 批 384 项一次通过；Badge 6 项通过 48 项正式矩阵，只新增批次配置、参考适配器与矩阵，未使历史批次证据失效；Calendar 9 项通过 72 项正式矩阵，其月视图 DOM 修复按真实依赖重验 Locale 16 项，并因 Badge 验收文档在验收后补写使该批证据失效一并重验，合计 3 批 136 项一次通过；Card 14 项通过 112 项正式矩阵（封面与头像资源、英文引导文案对齐固定上游，未修改组件），未使历史批次证据失效；Collapse 6 项通过 48 项正式矩阵（修复 CollapsePanel 的 aria-owns 渲染传播，并对齐上游 ItemKey 笔误与 extra 子节点形式），未使历史批次证据失效；Collapsible 4 项通过 32 项正式矩阵（示例按固定上游恢复内联样式锚点与文案，并补上固定 Nested 片段的 useState 导入），未使历史批次证据失效；Descriptions 8 项通过 64 项正式矩阵（英文示例数据按固定上游重写，英文纵向示例复用同一份数据切换 layout），未使历史批次证据失效；当前二十九批均有效（共 1604 项用例）；只有正式验收成功才能增加 `accepted`。Typography 英文省略在宽度恢复时保留 Vue 三行布局、与固定 React 四行不同，这是用户明确确认的限定差异；断言与范围见 [Typography 验收记录](./typography-acceptance.md)。Skeleton 的 Table 示例记录固定站无 ConfigProvider 造成的 `semi-table-wrapper-undefined` 与 Vue 缺省 `ltr` 的限定差异，见 [Skeleton 验收记录](./skeleton-acceptance.md)。
+Button 17 项试点已建立独立、可追溯且随源码变化失效的验收流程。2026-09-11 的九批 352 项正式矩阵已联合通过，覆盖 Grid 新增 56 项及受 CSS 精度修复影响的历史八批，Layout 八项随后通过 64 项正式矩阵，Resizable 14 项再通过 112 项正式矩阵，Space 5 项再通过 40 项正式矩阵，Typography 10 项再通过 80 项正式矩阵，Accessibility 1 项再通过 8 项正式矩阵，Banner 4 项再通过 32 项正式矩阵，Feedback 7 项再通过 56 项正式矩阵，Notification 8 项再通过 64 项正式矩阵，并因组件内部对齐修复重验 ConfigProvider 16 项；Toast 9 项再通过 72 项正式矩阵（含英文独有 Stacking），并因 hook holder 结构修复重验 ConfigProvider、Resizable、Typography；Popconfirm 4 项通过 32 项正式矩阵，其 `RadioGroup` 片段修复与站点焦点环改动使全部 19 批证据失效，按完整失效集合重验 19 批共 912 项；Progress 12 项随后通过 96 项正式矩阵，章节/API/迁移审阅与本批门禁有效，历史十九批证据未失效；Skeleton 8 项再通过 60 项正式矩阵（Table 仅 LTR，理由见记录），历史二十批证据未失效；Spin 5 项再通过 40 项正式矩阵（含英文独有 Controlled），历史二十一批证据未失效；Avatar 15 项通过 120 项正式矩阵，其 slot VNode 克隆修复使 8 个真实消费批次（accessibility、config-provider、dark-mode、layout、locale、navigation、skeleton、space）按依赖重验 264 项，合计 9 批 384 项一次通过；Badge 6 项通过 48 项正式矩阵，只新增批次配置、参考适配器与矩阵，未使历史批次证据失效；Calendar 9 项通过 72 项正式矩阵，其月视图 DOM 修复按真实依赖重验 Locale 16 项，并因 Badge 验收文档在验收后补写使该批证据失效一并重验，合计 3 批 136 项一次通过；Card 14 项通过 112 项正式矩阵（封面与头像资源、英文引导文案对齐固定上游，未修改组件），未使历史批次证据失效；Collapse 6 项通过 48 项正式矩阵（修复 CollapsePanel 的 aria-owns 渲染传播，并对齐上游 ItemKey 笔误与 extra 子节点形式），未使历史批次证据失效；Collapsible 4 项通过 32 项正式矩阵（示例按固定上游恢复内联样式锚点与文案，并补上固定 Nested 片段的 useState 导入），未使历史批次证据失效；Descriptions 8 项通过 64 项正式矩阵（英文示例数据按固定上游重写，英文纵向示例复用同一份数据切换 layout），未使历史批次证据失效；Empty 5 项通过 40 项正式矩阵（参考适配器把插画包指向固定 vendor 入口，示例与固定片段逐字一致），未使历史批次证据失效；当前三十批均有效（共 1644 项用例）；只有正式验收成功才能增加 `accepted`。Typography 英文省略在宽度恢复时保留 Vue 三行布局、与固定 React 四行不同，这是用户明确确认的限定差异；断言与范围见 [Typography 验收记录](./typography-acceptance.md)。Skeleton 的 Table 示例记录固定站无 ConfigProvider 造成的 `semi-table-wrapper-undefined` 与 Vue 缺省 `ltr` 的限定差异，见 [Skeleton 验收记录](./skeleton-acceptance.md)。
 
 ## 补齐线：剩余 0 项待映射
 
@@ -37,17 +37,17 @@ Button 17 项试点已建立独立、可追溯且随源码变化失效的验收�
 | 8    | Chat 11、AIChatDialogue 13                      |   24 |
 | 9    | AIChatInput 13、Sidebar 8、AIComponent 2        |   23 |
 
-## 验收线：643 项已映射待验收及后续入队示例
+## 验收线：638 项已映射待验收及后续入队示例
 
-现有 643 项队列现在即可推进，不以补齐线完成为前提。按下表分类顺序、每类内部按 `coverage.json` 固定文档顺序选择尚未有效验收的示例；Divider 2 项、FloatButton 7 项、Grid 7 项、Layout 8 项、Resizable 14 项、Space 5 项、Typography 10 项、Accessibility 1 项、Banner 4 项、Feedback 7 项、Notification 8 项、Toast 9 项、Popconfirm 4 项、Progress 12 项、Skeleton 8 项、Spin 5 项与展示类静态组件 Avatar 15 项、Badge 6 项、Calendar 9 项、Card 14 项、Collapse 6 项、Collapsible 4 项、Descriptions 8 项已完成，下一批为同分类的 Empty 5 项。同样按组件拆批，超过 20 项时按上游索引每 15 项拆分。展示类把动态浮层、图片、轮播和 Table 放在静态展示之后，输入类把选择器、日期时间、TreeSelect、Form、Upload 放在基础输入之后。
+现有 638 项队列现在即可推进，不以补齐线完成为前提。按下表分类顺序、每类内部按 `coverage.json` 固定文档顺序选择尚未有效验收的示例；Divider 2 项、FloatButton 7 项、Grid 7 项、Layout 8 项、Resizable 14 项、Space 5 项、Typography 10 项、Accessibility 1 项、Banner 4 项、Feedback 7 项、Notification 8 项、Toast 9 项、Popconfirm 4 项、Progress 12 项、Skeleton 8 项、Spin 5 项与展示类静态组件 Avatar 15 项、Badge 6 项、Calendar 9 项、Card 14 项、Collapse 6 项、Collapsible 4 项、Descriptions 8 项、Empty 5 项已完成，下一批为同分类的 Highlight 4 项。同样按组件拆批，超过 20 项时按上游索引每 15 项拆分。展示类把动态浮层、图片、轮播和 Table 放在静态展示之后，输入类把选择器、日期时间、TreeSelect、Form、Upload 放在基础输入之后。
 
-补齐线交付的新示例按所属分类加入验收队列，在下一次选批时纳入，不中断正在验收的批次；不属于下表分类的指南、工具、媒体与 AI 示例按补齐线表格顺序接续。下表列当前 643 项，包含新入队的 OverflowList 4 项、ScrollList 1 项、Transfer 14 项、UserGuide 8 项、DragMove 4 项和 HotKeys 5 项，不是最终验收范围。选定批次仍需确认示例可运行，并完成章节/API/迁移审阅及完整严格矩阵；已有映射不代替这些检查。OverflowList 验收前需定位并修复已记录的 collapse/scroll 计数更新问题；ScrollList 须统一双侧分钟禁用数据；Transfer 须审阅原生拖放、删除按钮和自定义面板空态适配差异；UserGuide 须对照本地封面替换、完整位置/高亮/受控/动效矩阵；DragMove 须对照双语小宽度及自定义 right 定位；HotKeys 须对照默认快捷键动作和局部监听边界。
+补齐线交付的新示例按所属分类加入验收队列，在下一次选批时纳入，不中断正在验收的批次；不属于下表分类的指南、工具、媒体与 AI 示例按补齐线表格顺序接续。下表列当前 638 项，包含新入队的 OverflowList 4 项、ScrollList 1 项、Transfer 14 项、UserGuide 8 项、DragMove 4 项和 HotKeys 5 项，不是最终验收范围。选定批次仍需确认示例可运行，并完成章节/API/迁移审阅及完整严格矩阵；已有映射不代替这些检查。OverflowList 验收前需定位并修复已记录的 collapse/scroll 计数更新问题；ScrollList 须统一双侧分钟禁用数据；Transfer 须审阅原生拖放、删除按钮和自定义面板空态适配差异；UserGuide 须对照本地封面替换、完整位置/高亮/受控/动效矩阵；DragMove 须对照双语小宽度及自定义 right 定位；HotKeys 须对照默认快捷键动作和局部监听边界。
 
 | 分类                                                                                           | 数量 |
 | ---------------------------------------------------------------------------------------------- | ---: |
 | 其余基础组件及 Accessibility                                                                   |    0 |
 | Banner、Notification、Toast、Popconfirm、Progress、Skeleton、Spin、Feedback                    |    0 |
-| 展示类（含 OverflowList 4 项、ScrollList 1 项）                                                |  158 |
+| 展示类（含 OverflowList 4 项、ScrollList 1 项）                                                |  153 |
 | 导航类                                                                                         |   87 |
 | 输入类（含 Transfer 14 项）                                                                    |  312 |
 | 工具类（DragMove 4 项、HotKeys 5 项）                                                          |    9 |
