@@ -5,7 +5,7 @@ import '@aifuxi/semi-theme-default/avatar.css';
 
 <template>
   <div>
-    <Avatar alt="Sample image" src="/demos/photo.svg" style="margin: 4px" />
-    <Avatar alt="Sample image" size="small" src="/demos/photo.svg" style="margin: 4px" />
+    <Avatar alt="beautiful cat" src="/demos/photo.svg" style="margin: 4px" />
+    <Avatar alt="cute cat" size="small" src="/demos/photo.svg" style="margin: 4px" />
   </div>
 </template>

@@ -9,7 +9,7 @@ const bottomSlot = { shape: 'circle' as const, bgColor: '#FE2C55', text: h(IconP
 
 <template>
   <Avatar
-    alt="Sample image"
+    alt="beautiful cat"
     src="/demos/photo.svg"
     style="margin: 4px"
     size="large"

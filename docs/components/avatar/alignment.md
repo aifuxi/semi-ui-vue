@@ -80,6 +80,7 @@ Group 读取子 VNode 时以“键是否存在 + 值不为显式 `false`”解�
 ## React → Vue deviation
 
 - Accepted：React `hoverMask`/`children`/topSlot/bottomSlot 接收 ReactNode；Vue 使用 VNodeChild prop并提供同名 slot，节点结构和触发时机不变。
+- Accepted：`topSlot.text`/`bottomSlot.text`/`hoverMask` 传入的 VNode 在渲染前克隆（与 `RatingNodeRenderer` 一致）。Vue vnode 属于挂载它的树，而固定示例把同一份 slot 配置对象交给多个头像；React element 可复用，因此克隆后同一配置在每个实例上都继续渲染，不静默丢内容。
 - Accepted：React `renderMore` 映射为 `#more` scoped slot，同时保留同名函数 prop；输入仍是剩余数量与剩余 Avatar VNode。
 - Accepted：React SyntheticEvent 映射为 Vue 原生 `MouseEvent | KeyboardEvent | Event`；DOM、默认行为与回调顺序保持一致。
 

@@ -14,11 +14,9 @@ upstream: 'show/avatar'
 
 ### 如何引入
 
-```vue
-<script setup lang="ts">
+```ts
 import { Avatar, AvatarGroup } from '@aifuxi/semi-ui-vue/avatar';
 import '@aifuxi/semi-theme-default/avatar.css';
-</script>
 ```
 
 ### 尺寸

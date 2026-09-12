@@ -1,170 +1,206 @@
 {
+  "id": "avatar",
   "upstream": "show/avatar",
-  "demos": [
+  "title": "Avatar 文档",
+  "spec": "avatar-matrix.spec.ts",
+  "locales": ["zh-cn", "en-us"],
+  "themes": ["light", "dark"],
+  "examples": [
     {
       "index": 1,
+      "name": "Size",
       "zhCN": "avatar/zh-cn/Size",
       "enUS": "avatar/en-us/Size",
       "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
     },
     {
       "index": 2,
+      "name": "Color",
       "zhCN": "avatar/zh-cn/Color",
       "enUS": "avatar/en-us/Color",
       "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
     },
     {
       "index": 3,
+      "name": "Adaptive",
       "zhCN": "avatar/zh-cn/Adaptive",
       "enUS": "avatar/en-us/Adaptive",
       "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
     },
     {
       "index": 4,
+      "name": "Image",
       "zhCN": "avatar/zh-cn/Image",
       "enUS": "avatar/en-us/Image",
       "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
     },
     {
       "index": 5,
+      "name": "Shape",
       "zhCN": "avatar/zh-cn/Shape",
       "enUS": "avatar/en-us/Shape",
       "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
     },
     {
       "index": 6,
+      "name": "Hover",
       "zhCN": "avatar/zh-cn/Hover",
       "enUS": "avatar/en-us/Hover",
       "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
     },
     {
       "index": 7,
+      "name": "Slots",
       "zhCN": "avatar/zh-cn/Slots",
       "enUS": "avatar/en-us/Slots",
       "notes": "保留顶部、底部、边框及内容动效；补上上游遗漏的 IconPlus 导入；使用公开图标包与 Vue h()。"
     },
     {
       "index": 8,
+      "name": "TopSlot",
       "zhCN": "avatar/zh-cn/TopSlot",
       "enUS": "avatar/en-us/TopSlot",
       "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
     },
     {
       "index": 9,
+      "name": "BottomSlot",
       "zhCN": "avatar/zh-cn/BottomSlot",
       "enUS": "avatar/en-us/BottomSlot",
       "notes": "英文底部示例误用 content，按固定 Adapter 的 bottomSlot.text 契约修正；保留 LIVE 文案与六种形状/尺寸组合。"
     },
     {
       "index": 10,
+      "name": "Border",
       "zhCN": "avatar/zh-cn/Border",
       "enUS": "avatar/en-us/Border",
       "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
     },
     {
       "index": 11,
+      "name": "Animation",
       "zhCN": "avatar/zh-cn/Animation",
       "enUS": "avatar/en-us/Animation",
       "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
     },
     {
       "index": 12,
+      "name": "Group",
       "zhCN": "avatar/zh-cn/Group",
       "enUS": "avatar/en-us/Group",
       "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
     },
     {
       "index": 13,
+      "name": "MaxCount",
       "zhCN": "avatar/zh-cn/MaxCount",
       "enUS": "avatar/en-us/MaxCount",
       "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
     },
     {
       "index": 14,
+      "name": "More",
       "zhCN": "avatar/zh-cn/More",
       "enUS": "avatar/en-us/More",
       "notes": "renderMore 转为 #more 作用域插槽；React.cloneElement 转为 Vue cloneVNode，保留 Popover 定位/间距和本语言文字。"
     },
     {
       "index": 15,
+      "name": "Overlap",
       "zhCN": "avatar/zh-cn/Overlap",
       "enUS": "avatar/en-us/Overlap",
       "notes": "保留上游示例交互、文案和样式；React 节点/状态迁移为 Vue props、slots 与 Composition API"
     }
   ],
-  "chapters": [
-    {
-      "locale": "zh-cn",
-      "source": "vendor/semi-design/content/show/avatar/index.md",
-      "headings": [
-        "## 代码演示",
-        "### 如何引入",
-        "### 尺寸",
-        "### 颜色",
-        "### 自适应字符大小",
-        "### 图片",
-        "### 形状",
-        "### 事件",
-        "### 顶部和底部 Slot",
-        "#### 顶部",
-        "#### 底部",
-        "### 额外边框",
-        "### 额外动效",
-        "### 头像组",
-        "## API 参考",
-        "### Avatar",
-        "### AvatarGroup",
-        "## Accessibility",
-        "## 设计变量"
-      ],
-      "notes": "保留原有章节顺序，API 依据真实公开 Vue 类型更新；增加需要的 FAQ/无障碍与 React→Vue 映射"
-    },
-    {
-      "locale": "en-us",
-      "source": "vendor/semi-design/content/show/avatar/index-en-US.md",
-      "headings": [
-        "## Demos",
-        "### How to import",
-        "### Size",
-        "### Color",
-        "### Adaptive character size",
-        "### Image",
-        "### Shape",
-        "### Event",
-        "### Top and Bottom Slot",
-        "#### Top",
-        "#### Bottom",
-        "### Additional border",
-        "### Additional Animation",
-        "### AvatarGroup",
-        "## API Reference",
-        "### Avatar",
-        "### AvatarGroup",
-        "## Accessibility",
-        "## Design Tokens"
-      ],
-      "notes": "保留原有章节顺序，API 依据真实公开 Vue 类型更新；增加需要的 FAQ/无障碍与 React→Vue 映射"
-    }
+  "inputs": [
+    "pnpm-lock.yaml",
+    "package.json",
+    "apps/docs/package.json",
+    "apps/docs/nuxt.config.ts",
+    "apps/docs/modules",
+    "patches/@nuxt__rspack-builder@4.5.2.patch",
+    "apps/docs/content/zh-cn/components/avatar.md",
+    "apps/docs/content/en-us/components/avatar.md",
+    "apps/docs/src/demos/avatar",
+    "apps/docs/src/assets",
+    "apps/docs/src/components",
+    "apps/docs/scripts/prepare-*.mjs",
+    "apps/docs/scripts/repl-module-bundles.mjs",
+    "apps/docs/scripts/repl-rslib-factories.mjs",
+    "apps/docs/scripts/*-loader.mjs",
+    "apps/docs/scripts/static-file-response.mjs",
+    "apps/docs/scripts/preview-static.mjs",
+    "apps/docs/scripts/verify-dist.mjs",
+    "apps/docs/scripts/verify-content.mjs",
+    "apps/docs/scripts/accept-documentation-batch.mjs",
+    "apps/docs/scripts/documentation-evidence.mjs",
+    "apps/docs/scripts/documentation-inputs.mjs",
+    "apps/docs/scripts/documentation-pipeline.mjs",
+    "apps/docs/scripts/documentation-preparation-cache.mjs",
+    "apps/docs/playwright.nuxt.config.ts",
+    "apps/docs/playwright.config.ts",
+    "packages/icons/src",
+    "packages/theme-default",
+    "tests/browser/parity-harness.ts",
+    "docs/documentation/batches/avatar.json",
+    "docs/documentation/mappings/avatar.json",
+    "docs/documentation/avatar-acceptance.md",
+    "packages/test-infra/src",
+    "apps/docs/content.config.ts",
+    "apps/docs/tests/nuxt/avatar-matrix.spec.ts",
+    "apps/docs/tests/nuxt/demo-parity.ts",
+    "apps/docs/tests/nuxt/visual-context.ts",
+    "apps/docs/src/composables",
+    "apps/docs/src/layouts",
+    "apps/docs/src/pages",
+    "apps/docs/src/app.vue",
+    "apps/docs/public/theme.js",
+    "apps/docs/src/data/api/types.ts",
+    "apps/docs/src/data/docs.ts",
+    "apps/docs/src/data/demos.ts",
+    "apps/reference-react/package.json",
+    "apps/reference-react/rsbuild.config.ts",
+    "apps/reference-react/docs-reference-plugin.ts",
+    "apps/reference-react/docs.html",
+    "apps/reference-react/src/docs-reference.tsx",
+    "apps/reference-react/src/runtime",
+    "scripts/upstream-markdown.mjs",
+    "packages/ui/package.json",
+    "packages/ui/rslib.config.ts",
+    "packages/ui/tsconfig.json",
+    "packages/ui/tsconfig.build.json",
+    "scripts/prune-ui-declarations.mjs",
+    "packages/icons/package.json",
+    "packages/icons/rslib.config.ts",
+    "packages/icons-lab",
+    "packages/illustrations",
+    "apps/reference-react/src/semi-reference-theme.scss",
+    "apps/docs/src/data/api/helpers.ts",
+    "pnpm-workspace.yaml",
+    "tsconfig.base.json",
+    "apps/reference-react/docs-adapters/avatar.mjs",
+    "apps/reference-react/src/docs-virtual-modules.d.ts",
+    "scripts/parity-rsbuild.ts",
+    "scripts/parity-build-runtime.mjs",
+    "scripts/parity-build-provenance.mjs",
+    "packages/icons/tsconfig.build.json"
   ],
-  "exclusions": [],
-  "assetAdaptations": [
-    {
-      "source": "上游 CDN dy.png / avatarDemo.jpeg",
-      "replacement": "/demos/photo.svg",
-      "reason": "按任务使用现有确定性本地素材，不复制品牌 Logo，不依赖远程 CDN；保持图片尺寸与布局。图片视觉内容与上游不同。"
-    }
+  "rtlExamples": [
+    "Size",
+    "Color",
+    "Adaptive",
+    "Image",
+    "Shape",
+    "Hover",
+    "Slots",
+    "TopSlot",
+    "BottomSlot",
+    "Border",
+    "Animation",
+    "Group",
+    "MaxCount",
+    "More",
+    "Overlap"
   ],
-  "review": {
-    "fingerprint": "edc5c187e5d251f274b5b45ba166676742d8b0ba046a4d3b1e03e4cd93e189bf",
-    "chapters": true,
-    "api": true,
-    "migration": true,
-    "notes": [
-      "逐项核对固定中英文十五例、全部章节、公开 AvatarProps/AvatarGroupProps 与 topSlot/bottomSlot/hoverMask/#more 契约；API 章节在固定 Avatar/AvatarGroup 之外补充 Vue 的 slot 配置类型说明。",
-      "图片与 Slot 示例恢复固定上游 alt 文案（beautiful cat / cute cat），图片统一替换为本站本地 /demos/photo.svg（上游为远程 CDN），参考适配器同步替换。",
-      "全量逐项核对 15 对双语片段，仅英文 Bottom Slot 的 content 与英文动画的 borderMotion 两处陈旧 prop 偏离当前契约；参考适配器按真实 bottomSlot.text 与 border={{motion:true}} 纠正，并补上上游省略的导入与裸 JSX 片段支持。",
-      "本批修复组件缺陷：共享 slot 配置的 VNode 在渲染前克隆（同 RatingNodeRenderer），使同一配置对象可在多个头像上重复渲染，与固定 React element 语义一致；契约记录在 docs/components/avatar/alignment.md。",
-      "topSlot 渐变与 more 滤镜使用实例或生成 id，矩阵按 SVG 内定义顺序解析 paint server 后比较；Adaptive 的挂载时字体度量与 Overlap 的抗锯齿边界像素按 avatar-acceptance.md 的限定差异处理。"
-    ]
-  }
+  "dependencyMode": "imports-v2"
 }
