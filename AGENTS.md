@@ -6,6 +6,7 @@
 - 信息足够时直接推进实现、修复与验证；公共 API、依赖或架构变更本身不要求再次审批。仅在目标不明确、超出授权或存在未授权的不可逆操作时询问。
 - 选择满足目标的最小实现，保持现有风格；注释解释意图、边界和非显然取舍。只报告实际执行的验证，区分事实、推断与未验证事项。
 - 代码或规则变更使用 [ai-change-workflow](.agents/skills/ai-change-workflow/SKILL.md)。低风险修改、纯问答和只读调查不强制建报告；团队治理见 [ai-governance](docs/ai-governance.md)。
+- 批量、并行或按并行模式接续文档严格验收时，使用 [parallel-documentation-acceptance](.agents/skills/parallel-documentation-acceptance/SKILL.md)：子 agent 并行准备，主 agent 统一调度共享构建与正式验收；普通示例修改和未要求并行的单批验收继续使用原文档流程。
 - 本文件适用于所有支持 `AGENTS.md` 的 agent；没有技能加载器时直接读取链接的 `SKILL.md`，按任务入口选择材料，不要求安装特定 agent 插件。详细流程在链接文档维护。
 
 ## 工具与工作区
