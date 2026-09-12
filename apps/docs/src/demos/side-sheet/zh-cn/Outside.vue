@@ -10,7 +10,7 @@ const visible = shallowRef(false);
 const value = shallowRef('');
 </script>
 <template>
-  <Button @click="() => (visible = true)"> Open SideSheet</Button>
+  <Button @click="() => (visible = true)">Open SideSheet</Button>
   <TextArea v-model="value" placeholder="Please enter something" :style="{ marginTop: '12px' }" />
   <SideSheet
     title="可操作外部的侧边栏"

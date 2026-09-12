@@ -828,8 +828,9 @@ defineExpose<SelectExposed>({
                   v-for="(option, index) in shownTags"
                   :key="option.value ?? index"
                   :data-select-tag-index="index"
+                  style="max-width: 100%"
                   :class="[
-                    'semi-tag semi-tag-large semi-tag-light semi-tag-white-light semi-tag-closable',
+                    'semi-tag semi-tag-square semi-tag-large semi-tag-light semi-tag-white-light semi-tag-closable',
                     option.disabled || runtimeProps.disabled ? 'semi-tag-disabled' : undefined,
                   ]"
                   :aria-label="`Closable Tag: ${String(option.label ?? option.value ?? '')}`"
@@ -867,7 +868,8 @@ defineExpose<SelectExposed>({
                     <div
                       v-for="(option, index) in selectedItems.slice(shownTags.length)"
                       :key="option.value ?? index"
-                      class="semi-tag semi-tag-large semi-tag-light semi-tag-white-light"
+                      class="semi-tag semi-tag-square semi-tag-large semi-tag-light semi-tag-white-light"
+                      style="max-width: 100%"
                     >
                       <div class="semi-tag-content semi-tag-content-ellipsis">
                         <SelectNodeRenderer :content="option.label" />
@@ -877,7 +879,7 @@ defineExpose<SelectExposed>({
                 </template>
                 <div
                   :class="[
-                    'semi-tag semi-tag-large semi-tag-light semi-tag-grey-light',
+                    'semi-tag semi-tag-square semi-tag-large semi-tag-light semi-tag-grey-light',
                     renderEllipsisTags ? 'semi-select-content-wrapper-collapse-tag' : undefined,
                   ]"
                   data-select-collapse-tag
@@ -891,7 +893,7 @@ defineExpose<SelectExposed>({
               <div
                 v-if="hiddenTagCount > 0 && !runtimeProps.showRestTagsPopover"
                 :class="[
-                  'semi-tag semi-tag-large semi-tag-light semi-tag-grey-light',
+                  'semi-tag semi-tag-square semi-tag-large semi-tag-light semi-tag-grey-light',
                   renderEllipsisTags ? 'semi-select-content-wrapper-collapse-tag' : undefined,
                 ]"
                 data-select-collapse-tag

@@ -1,94 +1,38 @@
 <script setup lang="ts">
+import { Table } from '@aifuxi/semi-ui-vue/table';
+import { fileColumns, selection, type FileRow } from './first-batch-fixture';
+import { rows } from './first-batch-data';
 import { h } from 'vue';
-import { Table, type TableColumnProps } from '@aifuxi/semi-ui-vue/table';
-import { Avatar } from '@aifuxi/semi-ui-vue/avatar';
-import '@aifuxi/semi-theme-default/table.css';
-import '@aifuxi/semi-theme-default/avatar.css';
+import { Descriptions } from '@aifuxi/semi-ui-vue/descriptions';
+import { Tag } from '@aifuxi/semi-ui-vue/tag';
+import '@aifuxi/semi-theme-default/descriptions.css';
 
-const figmaIcon = '/demos/one.svg';
-type Row = Record<string, unknown>;
-function makeData(total: number): Row[] {
-  return Array.from({ length: total }, (_, index) => ({
-    key: String(index),
-    name: `${index % 2 ? 'Semi D2C' : 'Semi Design'} design${index}.fig`,
-    nameIconSrc: figmaIcon,
-    size: (index * 1000) % 199,
-    owner: index % 2 ? 'Hao Xuan' : 'Jiang Pengzhi',
-    status: index % 3 === 0 ? 'success' : index % 3 === 1 ? 'pending' : 'wait',
-    updateTime: new Date(Date.UTC(2020, 1, 2) + ((index * 1000) % 199) * 86400000)
-      .toISOString()
-      .slice(0, 10),
-    avatarBg: index % 2 ? 'red' : 'grey',
-  }));
-}
-const baseColumns: TableColumnProps[] = [
-  {
-    title: 'Title',
-    dataIndex: 'name',
-    width: 400,
-    render: (text, record) =>
-      h('span', { style: { display: 'inline-flex', alignItems: 'center' } }, [
-        h(Avatar, {
-          size: 'small',
-          shape: 'square',
-          src: String(record.nameIconSrc),
-          style: { marginRight: '12px' },
-        }),
-        String(text),
-      ]),
-  },
-  { title: 'Size', dataIndex: 'size', width: 150, render: (text) => `${text} KB` },
-  {
-    title: 'Owner',
-    dataIndex: 'owner',
-    width: 200,
-    render: (text, record) =>
-      h('span', [
-        h(
-          Avatar,
-          {
-            size: 'small',
-            color: record.avatarBg as 'red' | 'grey',
-            style: { marginRight: '4px' },
-          },
-          () => String(text).slice(0, 1),
-        ),
-        String(text),
-      ]),
-  },
-  { title: 'Updated', dataIndex: 'updateTime', width: 200 },
-];
-const nameFilters = [
-  { text: 'Semi Design design', value: 'Semi Design' },
-  { text: 'Semi D2C design', value: 'Semi D2C' },
-];
-const filterName: NonNullable<TableColumnProps['onFilter']> = (value, record) =>
-  String(record?.name).includes(String(value));
-const queryColumns: TableColumnProps[] = baseColumns.map((column) =>
-  column.dataIndex === 'name'
-    ? { ...column, filters: nameFilters, onFilter: filterName }
-    : column.dataIndex === 'size'
-      ? { ...column, sorter: (a, b) => Number(a.size) - Number(b.size) }
-      : column.dataIndex === 'updateTime'
-        ? { ...column, sorter: (a, b) => String(a.updateTime).localeCompare(String(b.updateTime)) }
-        : column,
+const columns = fileColumns('en-us', 15);
+const data: FileRow[] = rows[15]!;
+const rowSelection = selection('en-us', 15);
+const expandData = [
+  ['1,480,000', '98%', '3 级', 'Designer', 'No Verified'],
+  ['2,480,000', '90%', '1 级', 'Template', 'Verified'],
+  ['2,920,000', '98%', '2 级', 'Docs', 'Verified'],
+].map((values) =>
+  ['DAU', 'Day7 Retention Ratio', 'Security Level', 'Vertical label', 'Certification'].map(
+    (key, i) => ({
+      key,
+      value: i === 3 ? h(Tag, { style: { margin: '0px' } }, () => values[i]) : values[i],
+    }),
+  ),
 );
-
-const data = makeData(46);
-const columns = queryColumns;
 </script>
 
 <template>
-  <div>
-    <Table
-      :columns="columns"
-      :data-source="data"
-      :row-selection="{}"
-      :pagination="{ pageSize: 5 }"
-      :hide-expanded-column="false"
-      ><template #expandedRow="{ record }"
-        ><article style="padding: 20px">{{ record.name }}</article></template
-      ></Table
-    >
-  </div>
+  <Table
+    :columns="columns"
+    :data-source="data"
+    :pagination="false"
+    :row-selection="rowSelection"
+    row-key="name"
+    :hide-expanded-column="false"
+    ><template #expandedRow="{ index: rowIndex }"
+      ><Descriptions align="justify" :data="expandData[rowIndex]" /></template
+  ></Table>
 </template>

@@ -120,6 +120,12 @@ describe('Select', () => {
     });
     await nextTick();
     expect(wrapper.findAll('.semi-tag')).toHaveLength(2);
+    expect(
+      wrapper.findAll('.semi-tag').every((tag) => tag.classes().includes('semi-tag-square')),
+    ).toBe(true);
+    expect((wrapper.get('[data-select-tag-index]').element as HTMLElement).style.maxWidth).toBe(
+      '100%',
+    );
     expect(wrapper.text()).toContain('+1');
     await wrapper.get('[role="combobox"]').trigger('click');
     await nextTick();

@@ -17,6 +17,7 @@ import type { TableCellAttributes, TableDirection, TableRenderReturnObject } fro
 
 interface Props {
   column: NormalizedTableColumn<Record<string, unknown>>;
+  columnIndex: number;
   component?: Component | string | undefined;
   direction: TableDirection;
   expanded?: boolean | undefined;
@@ -62,7 +63,11 @@ watch(
   { flush: 'sync' },
 );
 
-const rawText = computed(() => getByPath(renderRecord.value, props.column.dataIndex));
+const rawText = computed(() =>
+  props.column.__kind === 'expand'
+    ? undefined
+    : getByPath(renderRecord.value, props.column.dataIndex),
+);
 const customCell = computed<TableCellAttributes>(
   () => props.column.onCell?.(renderRecord.value, props.rowIndex) ?? {},
 );
@@ -127,15 +132,31 @@ const align = computed(() => {
   }
   return props.column.align;
 });
+const physicalFixedSide = computed(() =>
+  props.fixedSide && props.direction === 'rtl'
+    ? props.fixedSide === 'left'
+      ? 'right'
+      : 'left'
+    : props.fixedSide,
+);
 const cellStyle = computed<StyleValue>(() => {
-  const fixedProperty =
-    props.direction === 'rtl' ? (props.fixedSide === 'left' ? 'right' : 'left') : props.fixedSide;
   return [
     {
-      [fixedProperty ?? 'left']: props.fixedSide ? `${props.fixedOffset}px` : undefined,
-      textAlign: align.value,
+      [physicalFixedSide.value ?? 'left']: props.fixedSide ? `${props.fixedOffset}px` : undefined,
     },
-    mergedCell.value.style,
+    customCell.value.style as StyleValue,
+    props.column.align
+      ? {
+          textAlign: align.value,
+          justifyContent:
+            align.value === 'left'
+              ? 'flex-start'
+              : align.value === 'right'
+                ? 'flex-end'
+                : align.value,
+        }
+      : undefined,
+    renderResult.value.props.style as StyleValue,
   ];
 });
 const cellClass = computed(() => [
@@ -143,20 +164,22 @@ const cellClass = computed(() => [
   props.column.className,
   mergedCell.value.class,
   props.column.ellipsis ? `${props.prefixCls}-row-cell-ellipsis` : undefined,
-  props.fixedSide ? `${props.prefixCls}-cell-fixed-${props.fixedSide}` : undefined,
-  props.fixedSide === 'left' && props.fixedEdge
+  physicalFixedSide.value ? `${props.prefixCls}-cell-fixed-${physicalFixedSide.value}` : undefined,
+  physicalFixedSide.value === 'left' && props.fixedEdge
     ? `${props.prefixCls}-cell-fixed-left-last`
     : undefined,
-  props.fixedSide === 'right' && props.fixedEdge
+  physicalFixedSide.value === 'right' && props.fixedEdge
     ? `${props.prefixCls}-cell-fixed-right-first`
     : undefined,
 ]);
 const textTitle = computed(() => {
-  const showTitle =
-    props.column.ellipsis === true ||
-    (typeof props.column.ellipsis === 'object' && props.column.ellipsis.showTitle !== false);
-  return showTitle && ['string', 'number'].includes(typeof rawText.value)
-    ? String(rawText.value)
+  if (Object.prototype.hasOwnProperty.call(mergedCell.value, 'title'))
+    return mergedCell.value.title;
+  const showTitle = !(
+    typeof props.column.ellipsis === 'object' && props.column.ellipsis.showTitle === false
+  );
+  return showTitle && typeof renderResult.value.children === 'string'
+    ? renderResult.value.children
     : undefined;
 });
 
@@ -175,6 +198,7 @@ function handleClick(event: MouseEvent): void {
     :colspan="mergedCell.colSpan"
     :rowspan="mergedCell.rowSpan"
     :title="textTitle"
+    :aria-colindex="props.columnIndex + 1"
     role="gridcell"
     @click="handleClick"
   >

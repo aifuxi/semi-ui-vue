@@ -313,6 +313,26 @@ for (const locale of ['zh-cn', 'en-us'])
                   await root.page().clock.runFor(300);
                   await expect(root.page().locator(popup)).toBeVisible();
                 }
+                if (popup === '.semi-toast' || popup === '.semi-notification-notice') {
+                  // The JS clock does not settle CSS animationend. Let both hosts finish
+                  // entering before freezeAnimations pauses the remaining page animations.
+                  for (const page of [reference, vue]) {
+                    const notice = page.locator(popup);
+                    await notice.evaluate(async (element) => {
+                      await Promise.all(
+                        element
+                          .getAnimations({ subtree: true })
+                          .filter((animation) =>
+                            Number.isFinite(animation.effect?.getComputedTiming().endTime),
+                          )
+                          .map((animation) => animation.finished.catch(() => undefined)),
+                      );
+                    });
+                    await expect(notice).not.toHaveClass(
+                      /semi-toast-animation-show|semi-notification-notice-animation-show_/,
+                    );
+                  }
+                }
                 if (popup === '.semi-modal-content') {
                   // CSS animationend removes the entry classes independently of the mocked
                   // JS clock. Compare the settled modal only after both hosts handle it.

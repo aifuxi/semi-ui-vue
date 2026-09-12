@@ -74,7 +74,7 @@ export interface TableColumn<RecordType extends Record<string, unknown> = Record
   shouldCellUpdate?: (next: Record<string, unknown>, previous: Record<string, unknown>) => boolean;
   showSortTip?: boolean;
   sortChildrenRecord?: boolean;
-  sorter?: boolean | ((a: RecordType, b: RecordType) => number);
+  sorter?: boolean | ((a: RecordType, b: RecordType, sortOrder?: 'ascend' | 'descend') => number);
   sortIcon?: (props: { sortOrder: TableSortOrder }) => VNodeChild;
   sortOrder?: TableSortOrder;
   title?: VNodeChild | ((props?: TableColumnTitleProps) => VNodeChild);

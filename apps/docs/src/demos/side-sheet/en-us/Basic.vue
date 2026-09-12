@@ -14,7 +14,7 @@ function change() {
 </script>
 <template>
   <ConfigProvider :locale="enUS">
-    <Button @click="change"> Open SideSheet</Button>
+    <Button @click="change">Open SideSheet</Button>
     <SideSheet title="Sidesheet" :visible="visible" @cancel="change">
       <p>This is the content of a basic sidesheet.</p>
       <p>Here is more content...</p>

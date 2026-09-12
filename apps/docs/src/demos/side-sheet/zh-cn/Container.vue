@@ -25,10 +25,10 @@ function getContainer() {
     }"
     class="sidesheet-container"
   >
-    <span> Render in this</span>
+    <span>Render in this</span>
     <br />
     <br />
-    <Button @click="() => (visible = true)"> Open SideSheet</Button>
+    <Button @click="() => (visible = true)">Open SideSheet</Button>
     <SideSheet
       title="渲染在指定容器内部"
       :visible="visible"

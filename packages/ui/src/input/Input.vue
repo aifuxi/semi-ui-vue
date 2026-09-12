@@ -351,8 +351,14 @@ defineExpose<InputExposed>({
       :aria-labelledby="props.ariaLabelledby"
       :aria-describedby="props.ariaDescribedby"
       :aria-errormessage="props.ariaErrormessage"
-      :aria-required="props.ariaRequired"
-      :aria-invalid="props.validateStatus === 'error' ? 'true' : props.ariaInvalid"
+      :aria-required="hasRawProp('ariaRequired') ? props.ariaRequired : undefined"
+      :aria-invalid="
+        props.validateStatus === 'error'
+          ? 'true'
+          : hasRawProp('ariaInvalid')
+            ? props.ariaInvalid
+            : undefined
+      "
       @input="handleNativeInput"
       @focus="foundation.handleFocus"
       @blur="foundation.handleBlur"

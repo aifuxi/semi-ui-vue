@@ -86,3 +86,9 @@ Select 是 Tooltip PoC 后的第二道复杂度门槛，用来验证搜索、多
 固定 Select.componentDidUpdate 仅在选项变化时调用 handleOptionListChange 并重置 focusIndex；单独 value 变化保留当前焦点。Vue 使用稳定的 optionList computed 作为深度监听源，防止 runtimeProps 因 value 更新而创建新对象时误重置焦点。补充受控值变化时悬停项保持的公开行为测试，并由 Locale 语言选择后再次打开菜单的 RTL 对照验证。
 
 打开浮层后按上游 handlePopoverVisibleChange 滚动首个已选项到列表中部；计算 offsetTop 时扣除列表 offsetTop，保留键盘焦点项滚动的相同坐标系。Locale 长语言菜单在重复打开后逐项比较位置，覆盖中文/英文与 RTL。
+
+## SideSheet 文档组合场景修复（2026-09-13）
+
+- Custom 首开附件完整比较137个节点，仅4个多选选项 Tag 缺少 `semi-tag-square` 与 `max-width:100%`，其余节点样式、属性、文本及几何一致。
+- 固定 Select `renderTag` 使用 Tag 并显式传 `style={{ maxWidth: '100%' }}`，Tag 默认 `shape: 'square'`。Vue Select 内联结构现补默认 square 类；已选选项及剩余选项标签保留100%宽度上限，+N标签不新增该限制。不修改 Tag 公共实现或选择交互。
+- 现有多选公开行为测试增加默认Tag形状和选项宽度上限断言，先红后绿；正式组合场景及历史证据由主 agent 统一重验。

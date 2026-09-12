@@ -82,3 +82,18 @@
 
 - SSR 应用中，退出动画完成后重新挂载 Portal 必须重新求值 slots，不能缓存携带旧宿主节点的 VNode。正文、标题、footer 与关闭图标改为渲染期获取；保留状态、DOM、样式与原有动画。
 - `Feedback.ssr.test.ts` 通过选择、提交、真实 `animationend` 事件和重开验证正文及按钮可再次操作；该问题在 `motion=false` 下不会复现。三组件 30 项单元/SSR、直接消费者 39 项、三组件 15 项 Chromium 对照与真实包验证通过。
+
+## 文档严格验收尺寸修复（2026-09-13）
+
+- `side-04` 的 Placement top 失败并非基线高度变化。固定 `sideSheet/constants.ts` 的 HEIGHT=448，React `index.tsx` 将该数值交给 `SideSheetContent.tsx`，React style 自动附加 px。归档 trace 中 React 是 `width:100%;height:448px`，Vue 只有 `width:100%`，高度随内容变为150px。
+- Vue 不给数字 style 自动附加 px；`SideSheetContent.vue` 现对公开数字 height、width 及无 mask 外层 wrapperWidth 显式转换 px，字符串（包括50%、40%）原样保留。未修改默认448、尺寸常量、基线、动效或布局结构。数字220的容器场景与Placement默认448都由主agent统一浏览器重验。
+- 新增公开DOM和SSR回归先失败（DOM height为空、SSR写出height:448），修复后验证默认448px、显式220px、方向切换、mask=false外层220px/内部100%、百分比原样保留；原有字符串尺寸测试继续保留。
+- 尺寸测试探索发现另一个既有边界：初始缺省mask到动态显式false时，Vue归一化值均为false，SideSheet.vue基于raw props的computed可能不重新计算，DOM仍带mask。本轮尺寸修复不改该状态逻辑；新尺寸切换测试从显式mask=true开始，SSR另覆盖初始mask=false。该独立风险已同步主agent，不能把尺寸通过当作这一路径已修复。
+- 文档正式证据与受影响历史回归由本轮主agent统一生成；旧记录中的通过结论不能代替本次输入变化后的证据。
+
+## 多实例 Portal 锚点修复（2026-09-13）
+
+- Outside 首开报 `insertBefore` 的节点不属于父节点。独立 Chromium 探针确认新内容完整渲染、目标为 body，但插入 anchor 位于后挂载 Container 示例内；与 slot 文本或尺寸无关。
+- Vue Teleport 在 target 改变时移动 targetAnchor，初始 targetStart 仍在原目标；renderer 的 getNextHostNode 遇到该 start 会跳到对应 end 后的节点。原先所有 SideSheet 未挂载时都指定 body，随后 Container 改目标，使相邻 body SideSheet 的分支替换取得容器内 anchor。
+- 客户端在 onBeforeMount 创建实例私有、离线的 DocumentFragment，供未解析目标阶段的 disabled Teleport 使用；SSR 仍保留 body selector 和可见内容。原始 VNode 及 DOM 经 Teleport 移动，不通过 key 重建；初始 start 锚点始终留在离线片段，不影响实际容器的其他 Portal。片段无全局引用，卸载时由 Teleport 清理。
+- 双实例 SFC 回归先复现相同 NotFoundError，修复后首开、外部编辑、关闭和重开通过。增加有效目标切换与 keepDOM 隐藏重开的输入节点身份和值保持断言；SSR hydration 验证挂载前已输入的值及原 DOM 节点迁移后保持。14 项单元/SSR通过，正式浏览器由主 agent 统一重验。

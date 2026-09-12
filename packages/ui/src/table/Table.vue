@@ -19,6 +19,7 @@ import { tableCssClasses, tableNumbers, tableStrings } from '@workspace/foundati
 
 import { configContextKey, DEFAULT_CONFIG_LOCALE, semiGlobal } from '../config-provider';
 import Pagination from '../pagination/Pagination.vue';
+import { localeContextKey } from '../locale/locale-context';
 import TableBody from './TableBody.vue';
 import TableHeader from './TableHeader.vue';
 import TableNativeElement from './TableNativeElement';
@@ -64,6 +65,7 @@ const attrs = useAttrs();
 const slots = useSlots();
 const instance = getCurrentInstance();
 const injectedConfig = inject(configContextKey, undefined);
+const injectedLocale = inject(localeContextKey, undefined);
 const bodyRef = useTemplateRef<HTMLElement>('body');
 const headerRef = useTemplateRef<HTMLElement>('header');
 const wrapperRef = useTemplateRef<HTMLElement>('wrapper');
@@ -72,6 +74,7 @@ const internalFilterValues = shallowRef(new Map<TableRowKey, unknown[]>());
 const internalExpandedKeys = shallowRef(new Set<TableRowKey>());
 const internalSelectedKeys = shallowRef(new Set<TableRowKey>());
 const columnWidths = shallowRef(new Map<TableRowKey, number>());
+const measuredHeaderWidths = shallowRef(new Map<TableRowKey, number>());
 const currentPage = shallowRef(1);
 const pageSize = shallowRef(tableNumbers.DEFAULT_PAGE_SIZE);
 const scrollTop = shallowRef(0);
@@ -126,7 +129,8 @@ const rowSelection = computed<false | TableRowSelection<RecordType>>(() => {
   return value === true ? {} : value;
 });
 const locale = computed<TableLocale>(() => {
-  const providerLocale = injectedConfig?.value.locale ?? DEFAULT_CONFIG_LOCALE;
+  const providerLocale =
+    injectedConfig?.value.locale ?? injectedLocale?.value ?? DEFAULT_CONFIG_LOCALE;
   const tableLocale = providerLocale.Table as TableLocale | undefined;
   return (
     tableLocale ?? {
@@ -213,7 +217,7 @@ initialSelectionState();
 const sortOrders = computed(() => {
   const output = new Map(internalSortOrders.value);
   flattenColumns(declaredColumns.value).forEach((column) => {
-    if (Object.prototype.hasOwnProperty.call(column, 'sortOrder')) {
+    if (column.sortOrder != null) {
       output.set(column.key, column.sortOrder ?? false);
     }
   });
@@ -288,7 +292,18 @@ const displayColumns = computed<NormalizedTableColumn<RecordType>[]>(() => {
 });
 const flatColumns = computed(() => flattenColumns(displayColumns.value));
 const headerRows = computed(() => buildHeaderRows(displayColumns.value));
-const fixedOffsets = computed(() => calculateFixedOffsets(flatColumns.value));
+const fixedOffsets = computed(() =>
+  calculateFixedOffsets(
+    flatColumns.value.map((column) => ({
+      ...column,
+      __width:
+        column.__width ??
+        (typeof column.width === 'number'
+          ? column.width
+          : measuredHeaderWidths.value.get(column.key)),
+    })),
+  ),
+);
 const anyFixed = computed(() => flatColumns.value.some((column) => Boolean(column.fixed)));
 
 function filterTree(records: RecordType[]): RecordType[] {
@@ -317,9 +332,10 @@ function sortTree(records: RecordType[]): RecordType[] {
   );
   const output = [...records];
   if (active && typeof active.sorter === 'function') {
-    const multiplier = sortOrders.value.get(active.key) === 'descend' ? -1 : 1;
+    const order = sortOrders.value.get(active.key) as 'ascend' | 'descend';
+    const multiplier = order === 'descend' ? -1 : 1;
     const sorter = active.sorter;
-    output.sort((a, b) => sorter(a, b) * multiplier);
+    output.sort((a, b) => sorter(a, b, order) * multiplier);
   }
   return output.map((record) => {
     const children = record[childrenRecordName.value];
@@ -343,6 +359,8 @@ const paginationConfig = computed<TablePaginationConfig | false>(() => {
 const pageData = computed(() => {
   const pagination = paginationConfig.value;
   if (!pagination) return processedData.value;
+  const source = paginationProp.value;
+  if (source && source !== true && source.currentPage != null) return processedData.value;
   const page = pagination.currentPage ?? 1;
   const size = pagination.pageSize ?? tableNumbers.DEFAULT_PAGE_SIZE;
   return processedData.value.slice((page - 1) * size, page * size);
@@ -416,7 +434,7 @@ const selectionEntities = computed(() => {
       });
       return key;
     });
-  visit(pageData.value);
+  visit(processedData.value);
   return entities;
 });
 
@@ -513,9 +531,12 @@ function changeInfo(changeType: 'sorter' | 'filter' | 'pagination'): TableChange
   };
 }
 
-function notifyChange(type: 'sorter' | 'filter' | 'pagination'): void {
+function notifyChange(
+  type: 'sorter' | 'filter' | 'pagination',
+  sorter?: TableChangeInfo<RecordType>['sorter'],
+): void {
   const info = changeInfo(type);
-  props.onChange?.(info);
+  if (sorter) info.sorter = sorter;
   emit('change', info);
 }
 
@@ -523,11 +544,15 @@ function handleSort(column: NormalizedTableColumn<RecordType>, event: Event): vo
   const current = sortOrders.value.get(column.key) || false;
   const next: TableSortOrder =
     current === false ? 'ascend' : current === 'ascend' ? 'descend' : false;
-  if (!Object.prototype.hasOwnProperty.call(column, 'sortOrder')) {
+  if (column.sortOrder == null) {
     internalSortOrders.value = new Map(next ? [[column.key, next]] : []);
   }
   currentPage.value = 1;
-  notifyChange('sorter');
+  notifyChange('sorter', {
+    ...(column.dataIndex === undefined ? {} : { dataIndex: column.dataIndex }),
+    ...(column.sorter === undefined ? {} : { sorter: column.sorter }),
+    sortOrder: next,
+  });
   resetScroll();
   event.stopPropagation?.();
 }
@@ -675,13 +700,34 @@ function resetScroll(): void {
 
 function updateScrollPosition(target = bodyRef.value): void {
   if (!target) return;
-  const max = Math.max(0, target.scrollWidth - target.clientWidth);
+  const max = Math.max(
+    0,
+    (target.firstElementChild?.getBoundingClientRect().width ?? 0) -
+      target.getBoundingClientRect().width,
+  );
   if (max <= 1) scrollPosition.value = 'both';
-  else if (target.scrollLeft <= 1)
-    scrollPosition.value = direction.value === 'rtl' ? 'right' : 'left';
-  else if (target.scrollLeft >= max - 1)
-    scrollPosition.value = direction.value === 'rtl' ? 'left' : 'right';
+  else if (target.scrollLeft === 0) scrollPosition.value = 'left';
+  else if (Math.abs(target.scrollLeft) >= max - 1) scrollPosition.value = 'right';
   else scrollPosition.value = 'middle';
+}
+
+function measureHeaderWidths(): void {
+  if (!anyFixed.value || !wrapperRef.value) return;
+  const head = wrapperRef.value.querySelector(`.${prefix.value}-thead`);
+  if (!head) return;
+  const widths = new Map<TableRowKey, number>();
+  [...head.children].forEach((row, rowIndex) => {
+    const cells = row.querySelectorAll(`.${prefix.value}-row-head`);
+    headerRows.value[rowIndex]?.forEach(({ column }, index) => {
+      const width = cells[index]?.getBoundingClientRect().width;
+      if (width) widths.set(column.key, width);
+    });
+  });
+  if (
+    widths.size !== measuredHeaderWidths.value.size ||
+    [...widths].some(([key, width]) => measuredHeaderWidths.value.get(key) !== width)
+  )
+    measuredHeaderWidths.value = widths;
 }
 
 function handleBodyScroll(event: Event): void {
@@ -721,7 +767,6 @@ const bodyStyle = computed<StyleValue>(() => ({
   overflowY: props.scroll?.y ? 'auto' : undefined,
 }));
 const tableStyle = computed<StyleValue>(() => ({
-  minWidth: toCssSize(props.scroll?.x),
   width: toCssSize(props.scroll?.x),
   tableLayout:
     anyFixed.value || props.scroll?.y || flatColumns.value.some((column) => column.ellipsis)
@@ -750,6 +795,7 @@ const tableWrapClass = computed(() => [
   ['both', 'right'].includes(scrollPosition.value)
     ? `${prefix.value}-scroll-position-right`
     : undefined,
+  scrollPosition.value === 'middle' ? `${prefix.value}-scroll-position-middle` : undefined,
 ]);
 
 const titleContent = computed<VNodeChild>(
@@ -898,6 +944,13 @@ watch(
   },
 );
 
+watch([flatColumns, direction], () => {
+  void nextTick(() => {
+    measureHeaderWidths();
+    updateScrollPosition();
+  });
+});
+
 onMounted(() => {
   props.getVirtualizedListRef?.({ current: virtualRef() });
   if (
@@ -905,10 +958,14 @@ onMounted(() => {
     bodyRef.value &&
     (anyFixed.value || (showHeader.value && Boolean(props.scroll?.y)))
   ) {
-    resizeObserver = new ResizeObserver(() => updateScrollPosition());
+    resizeObserver = new ResizeObserver(() => {
+      measureHeaderWidths();
+      updateScrollPosition();
+    });
     resizeObserver.observe(bodyRef.value);
   }
   updateScrollPosition();
+  measureHeaderWidths();
 });
 onBeforeUnmount(() => {
   resizeObserver?.disconnect();
@@ -959,6 +1016,9 @@ onBeforeUnmount(() => {
             v-if="props.scroll?.y && showHeader"
             ref="header"
             :class="[`${prefix}-header`, props.sticky ? `${prefix}-header-sticky` : undefined]"
+            :style="{
+              top: typeof props.sticky === 'object' ? `${props.sticky.top ?? 0}px` : '0px',
+            }"
           >
             <component
               :is="tableComponent('header', 'outer') || props.components?.table || 'table'"
@@ -1013,6 +1073,8 @@ onBeforeUnmount(() => {
               ]"
               :style="tableStyle"
               :role="bodyRole"
+              :aria-rowcount="pageData.length"
+              :aria-colcount="displayColumns.length"
             >
               <component :is="bodyColgroupComponent('wrapper')" :class="`${prefix}-colgroup`">
                 <component
@@ -1052,6 +1114,13 @@ onBeforeUnmount(() => {
                 @sort="handleSort"
               />
               <TableBody
+                :tree-table="
+                  dataSource.some(
+                    (record) =>
+                      Array.isArray(record[childrenRecordName]) &&
+                      (record[childrenRecordName] as unknown[]).length > 0,
+                  )
+                "
                 :columns="flatColumns"
                 :click-grouped-row-to-expand="props.clickGroupedRowToExpand"
                 :component-cell="tableComponent('body', 'cell')"

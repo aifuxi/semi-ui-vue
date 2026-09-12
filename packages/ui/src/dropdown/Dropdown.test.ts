@@ -40,6 +40,53 @@ describe('Dropdown', () => {
     rs.restoreAllMocks();
   });
 
+  it('受控请求及时回写，visibleChange 在 Portal 定位后各通知一次', async () => {
+    const visible = shallowRef(false);
+    const order: string[] = [];
+    const positioned: boolean[] = [];
+    const Host = defineComponent({
+      setup: () => () =>
+        h(
+          Dropdown,
+          {
+            trigger: 'click',
+            motion: false,
+            visible: visible.value,
+            'onUpdate:visible': (value: boolean) => {
+              order.push(`update:${value}`);
+              visible.value = value;
+            },
+            onVisibleChange: (value: boolean) => {
+              order.push(`visible:${value}`);
+              if (value) {
+                const portal = document.querySelector<HTMLElement>('.semi-portal-inner');
+                positioned.push(
+                  !!portal && portal.style.top !== '-9999px' && portal.style.left !== '-9999px',
+                );
+                portal?.querySelector('input')?.focus();
+              }
+            },
+          },
+          { default: () => h('button', 'Open'), content: () => h('input') },
+        ),
+    });
+    const wrapper = mount(Host, { attachTo: document.body });
+    await flushDropdown();
+    wrapper.get('button').element.click();
+    expect(visible.value).toBe(true);
+    expect(order).toEqual(['update:true']);
+    await flushDropdown();
+    expect(positioned).toEqual([true]);
+    expect(order).toEqual(['update:true', 'visible:true']);
+    expect(document.activeElement).toBe(document.querySelector('.semi-portal-inner input'));
+    wrapper.get('button').element.click();
+    expect(visible.value).toBe(false);
+    await flushDropdown();
+    expect(order).toEqual(['update:true', 'visible:true', 'update:false', 'visible:false']);
+    expect(document.querySelector('.semi-dropdown-wrapper')).toBeNull();
+    wrapper.unmount();
+  });
+
   it.each([undefined, -1, 2])('为组件触发器保留描述关联和显式 tabIndex=%s', async (tabIndex) => {
     const wrapper = mount(Dropdown, {
       props: { trigger: 'custom', visible: true, motion: false, wrapperId: 'tag-menu' },
@@ -144,7 +191,9 @@ describe('Dropdown', () => {
     });
     await wrapper.get('button').trigger('focus');
     await flushDropdown();
-    expect(wrapper.emitted('visibleChange')).toEqual([[true], [false]]);
+    expect(wrapper.emitted('update:visible')).toEqual([[true], [false]]);
+    // The pinned Foundation cancels on portalInserted before positionUpdated.
+    expect(wrapper.emitted('visibleChange')).toEqual([[false]]);
     expect(document.querySelector('.semi-dropdown-menu')).toBeNull();
     wrapper.unmount();
   });
@@ -328,7 +377,7 @@ describe('Dropdown', () => {
     expect(document.activeElement).toBe(trigger.element);
   });
 
-  it('trigger 键盘处理先于模板宿主原事件，并覆盖裸/显式 Boolean 与 Fragment', async () => {
+  it('键盘打开请求保留宿主事件，定位后的 visibleChange 晚于同步宿主处理', async () => {
     const order: string[] = [];
     const Host = defineComponent({
       components: { Dropdown, DropdownItem, DropdownMenu },
@@ -352,7 +401,7 @@ describe('Dropdown', () => {
     const event = new KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: 'Enter' });
     wrapper.get('#template-trigger').element.dispatchEvent(event);
     await flushDropdown();
-    expect(order).toEqual(['dropdown', 'child']);
+    expect(order).toEqual(['child', 'dropdown']);
     expect(document.body.querySelector('.semi-dropdown-wrapper-show')).not.toBeNull();
   });
 

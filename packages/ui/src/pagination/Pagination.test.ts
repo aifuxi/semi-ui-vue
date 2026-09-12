@@ -42,6 +42,7 @@ describe('Pagination', () => {
     expect(wrapper.get('[aria-label="Previous"]').attributes('aria-disabled')).toBe('true');
     expect(wrapper.get('[aria-label="Next"]').attributes('aria-disabled')).toBe('false');
     expect(wrapper.get('[aria-current="page"]').text()).toBe('1');
+    expect(wrapper.get('[aria-label="Page 2"]').attributes('aria-current')).toBe('false');
   });
 
   it('页大小变化按上游重建选择器并释放旧触发器焦点', async () => {

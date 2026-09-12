@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onErrorCaptured, shallowRef } from 'vue';
-import { useAsyncData } from '#imports';
+import { useAsyncData, useRoute } from '#imports';
+import { ConfigProvider } from '@aifuxi/semi-ui-vue/config-provider';
+import zhCN from '@aifuxi/semi-ui-vue/locale/source/zh_CN';
+import enUS from '@aifuxi/semi-ui-vue/locale/source/en_US';
 import { useDocsPreferences } from '../../composables/useDocsPreferences';
 import { demoRegistry } from '../../data/demos';
 
@@ -10,6 +13,12 @@ const props = defineProps<{
   overflow?: 'hidden' | 'visible';
 }>();
 const { locale, theme } = useDocsPreferences();
+const route = useRoute();
+const previewDirection = computed(() => {
+  const value = route.query.direction;
+  return value === 'rtl' || value === 'ltr' ? value : undefined;
+});
+const previewLocale = computed(() => (locale.value === 'zh-CN' ? zhCN : enUS));
 // Only the standalone theme example emits this optional host notification.
 const demoEvents =
   props.demo.startsWith('dark-mode/') && props.demo.endsWith('/Global')
@@ -83,7 +92,13 @@ function reset() {
     <div v-if="!editorOpen" class="demo-preview" data-demo-preview>
       <p v-if="error" class="demo-error" role="alert">{{ error }}</p>
       <ClientOnly v-else
-        ><component :is="preview" v-if="preview" :key="key" v-on="demoEvents" /><template #fallback
+        ><ConfigProvider
+          v-if="previewDirection"
+          :direction="previewDirection"
+          :locale="previewLocale"
+          ><component :is="preview" v-if="preview" :key="key" v-on="demoEvents" /></ConfigProvider
+        ><component :is="preview" v-else-if="preview" :key="key" v-on="demoEvents" /><template
+          #fallback
           ><div class="demo-loading">
             {{ locale === 'zh-CN' ? '加载交互示例…' : 'Loading interactive example…' }}
           </div></template

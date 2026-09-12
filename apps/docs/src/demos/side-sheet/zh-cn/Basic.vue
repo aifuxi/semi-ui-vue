@@ -10,7 +10,7 @@ function change() {
 }
 </script>
 <template>
-  <Button @click="change"> Open SideSheet</Button>
+  <Button @click="change">Open SideSheet</Button>
   <SideSheet title="滑动侧边栏" :visible="visible" @cancel="change">
     <p>This is the content of a basic sidesheet.</p>
     <p>Here is more content...</p>

@@ -1,4 +1,5 @@
 export default function copy<Value>(value: Value): Value {
+  if (value instanceof Date) return new Date(value.getTime()) as Value;
   if (Array.isArray(value)) return [...value] as Value;
   if (value instanceof Map) return new Map(value) as Value;
   if (value instanceof Set) return new Set(value) as Value;

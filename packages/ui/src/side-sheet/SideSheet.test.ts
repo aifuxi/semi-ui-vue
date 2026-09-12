@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 
 import { ConfigProvider, semiGlobal } from '../config-provider';
 import { SideSheet } from './index';
+import SideSheetDynamicSlot from './SideSheetDynamicSlot.fixture.vue';
 
 async function settle(): Promise<void> {
   await nextTick();
@@ -37,6 +38,59 @@ describe('SideSheet', () => {
     document.body.style.width = '';
     delete semiGlobal.config.overrideDefaultProps;
     rs.restoreAllMocks();
+  });
+
+  it('相邻自定义 Portal 挂载后，body SideSheet 首开、编辑与退出重开保持有效', async () => {
+    const wrapper = mount(SideSheetDynamicSlot, { attachTo: document.body });
+    await settle();
+    const target = document.createElement('div');
+    wrapper.get('button').element.parentElement!.appendChild(target);
+    const sibling = mount(SideSheet, {
+      attachTo: target,
+      props: { visible: false, getPopupContainer: () => target },
+    });
+    await settle();
+    await wrapper.get('button').trigger('click');
+    await settle();
+    expect(document.querySelector('.semi-sidesheet-body')?.textContent).toBe('Entered:');
+    await wrapper.get('textarea').setValue('Updated');
+    expect(document.querySelector('.semi-sidesheet-body')?.textContent).toBe('Entered:Updated');
+    (document.querySelector('.semi-sidesheet-close') as HTMLElement).click();
+    await settle();
+    document.querySelector('.semi-sidesheet-inner')!.dispatchEvent(new Event('animationend'));
+    await settle();
+    expect(document.querySelector('.semi-sidesheet')).toBeNull();
+    await wrapper.get('button').trigger('click');
+    await settle();
+    expect(document.querySelector('.semi-sidesheet-body')?.textContent).toBe('Entered:Updated');
+    sibling.unmount();
+    wrapper.unmount();
+  });
+
+  it('自定义目标变更和 keepDOM 隐藏重开保留同一个输入节点及用户值', async () => {
+    const first = document.createElement('div');
+    const second = document.createElement('div');
+    document.body.append(first, second);
+    const wrapper = mount(SideSheet, {
+      attachTo: document.body,
+      props: { visible: true, keepDOM: true, motion: false, getPopupContainer: () => first },
+      slots: { default: () => h('input', { 'data-retained-input': '' }) },
+    });
+    await settle();
+    const input = first.querySelector('input')!;
+    input.value = 'User value';
+    await wrapper.setProps({ getPopupContainer: () => second });
+    await settle();
+    expect(first.querySelector('input')).toBeNull();
+    expect(second.querySelector('input')).toBe(input);
+    expect(input.value).toBe('User value');
+    await wrapper.setProps({ visible: false });
+    await wrapper.setProps({ visible: true });
+    await settle();
+    expect(second.querySelector('input')).toBe(input);
+    expect(input.value).toBe('User value');
+    wrapper.unmount();
+    expect(second.querySelector('.semi-portal')).toBeNull();
   });
 
   it('渲染固定 dialog/header/body/footer DOM、样式、data 与默认尺寸', async () => {
@@ -144,6 +198,33 @@ describe('SideSheet', () => {
     expect(root().classList).toContain('semi-sidesheet-fixed');
     expect(root().style.width).toBe('413px');
     expect(dialog().style.width).toBe('100%');
+    wrapper.unmount();
+  });
+
+  it('数字尺寸转换为像素，切换方向和无 mask 外层后保留百分比字符串', async () => {
+    const wrapper = await mountVisible({ placement: 'top', mask: true });
+    const dialog = () => document.querySelector<HTMLElement>('.semi-sidesheet-inner')!;
+    const root = () => document.querySelector<HTMLElement>('.semi-sidesheet')!;
+    expect(dialog().style.height).toBe('448px');
+    await wrapper.setProps({ placement: 'bottom', height: 220 });
+    await settle();
+    expect(dialog().style.height).toBe('220px');
+    await wrapper.setProps({ placement: 'right', width: 220 });
+    await settle();
+    expect(dialog().style.width).toBe('220px');
+    expect(dialog().style.height).toBe('100%');
+    await wrapper.setProps({ mask: false });
+    await settle();
+    expect(root().style.width).toBe('220px');
+    expect(dialog().style.width).toBe('100%');
+    await wrapper.setProps({ width: '50%' });
+    await settle();
+    expect(root().style.width).toBe('50%');
+    expect(dialog().style.width).toBe('100%');
+    await wrapper.setProps({ mask: true, placement: 'top', height: '40%' });
+    await settle();
+    expect(dialog().style.width).toBe('100%');
+    expect(dialog().style.height).toBe('40%');
     wrapper.unmount();
   });
 

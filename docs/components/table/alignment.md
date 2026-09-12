@@ -76,3 +76,11 @@
 ## Locale 文档消费者回归（2026-09-06）
 
 固定 TablePagination 在 total <= 0 时保留外层和两个 span，省略 Pagination；Foundation.formatPaginationInfo 默认文本为空，自定义 formatPageText 仍调用。固定头表不添加显式 role，普通 body 为 grid，分组/展开/非空 children 数据为 treegrid。新增空数据→有数据、双端分页位置、自定义分页文案与表格语义回归，严格对照公开 DOM/ARIA。
+
+## Table 文档首批消费者修复（2026-09-13）
+
+固定 Foundation 以 pagination.currentPage != null 判断受控分页，此时 dataSource 已由调用方分页，不能再次 slice；移除 currentPage 后恢复内部分页。排序通知携带本次点击请求的下一方向（含 false），受控行序保持至调用方回写。sorter 的第三参数为当前 ascend/descend，返回值仍按固定 withOrderSort 做方向变换。新增公开行为测试覆盖远程页数据、受控排序往返与空值双方向置后；18项单元/SSR通过，浏览器与产物验收在本轮文档记录中核验。
+
+Basic严格属性对照暴露缺失的ARIA行列计数、头行/单元格索引与最终字符串title。计数分别使用当前页数据和顶层展示列；普通非树行不带aria-level，可展开父行保持level+1。单元格自动title来自render后的字符串，显式onCell.title优先；不是只在ellipsis启用时才生成。新增分组列计数、展开父行与自定义title回归，正式状态以本轮记录为准。
+
+首批还补齐默认筛选项与确认区结构、整表头排序热区、取消排序通知、展开图标与 synthetic cell、受控选择的跨页表头状态，以及固定列缺省宽度的实际表头测量。自定义样式依照定位、onCell/onHeaderCell、显式列对齐与render结果的顺序合并，缺省值不覆盖调用方样式。滚动中间态保留固定 `semi-table-scroll-position-middle` 类，RTL 保持固定位置语义并以真实负向scrollLeft验证。文档页真实 locale provider 参与分页文案解析，消费者无须额外重复声明 ConfigProvider。

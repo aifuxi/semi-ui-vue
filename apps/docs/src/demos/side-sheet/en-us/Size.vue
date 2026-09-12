@@ -23,13 +23,13 @@ function changeSize(event: RadioChangeEvent) {
 <template>
   <ConfigProvider :locale="enUS">
     <RadioGroup :value="size" @change="changeSize">
-      <Radio :value="'small'"> small</Radio>
-      <Radio :value="'medium'"> medium</Radio>
-      <Radio :value="'large'"> large</Radio>
+      <Radio :value="'small'">small</Radio>
+      <Radio :value="'medium'">medium</Radio>
+      <Radio :value="'large'">large</Radio>
     </RadioGroup>
     <br />
     <br />
-    <Button @click="change"> Open SideSheet</Button>
+    <Button @click="change">Open SideSheet</Button>
     <SideSheet title="SideSheet" :visible="visible" :size="size" @cancel="change">
       <p>This is the content of a basic sidesheet.</p>
       <p>Here is more content...</p>

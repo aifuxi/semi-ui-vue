@@ -42,6 +42,9 @@ const emit = defineEmits<{
 const hasTitle = computed(() => Boolean(props.title));
 const hasFooter = computed(() => Boolean(props.footer));
 const hasCustomCloseIcon = computed(() => Boolean(props.closeIcon));
+// React appends px to numeric dimensions; Vue style bindings require the unit explicitly.
+const cssSize = (value: number | string): string =>
+  typeof value === 'number' ? `${value}px` : value;
 const rootClasses = computed(() => [
   'semi-sidesheet',
   props.class,
@@ -56,7 +59,9 @@ const rootClasses = computed(() => [
   },
 ]);
 const rootStyle = computed<StyleValue>(() =>
-  !props.mask && props.wrapperWidth !== undefined ? { width: props.wrapperWidth } : undefined,
+  !props.mask && props.wrapperWidth !== undefined
+    ? { width: cssSize(props.wrapperWidth) }
+    : undefined,
 );
 const dialogClasses = computed(() => [
   'semi-sidesheet-inner',
@@ -66,8 +71,8 @@ const dialogClasses = computed(() => [
 ]);
 const dialogStyle = computed<StyleValue>(() => [
   props.outerStyle,
-  props.width === undefined ? undefined : { width: props.mask ? props.width : '100%' },
-  { height: props.height },
+  props.width === undefined ? undefined : { width: props.mask ? cssSize(props.width) : '100%' },
+  { height: cssSize(props.height) },
 ]);
 
 function handleMaskClick(event: MouseEvent): void {

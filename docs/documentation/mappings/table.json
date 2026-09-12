@@ -5,91 +5,91 @@
       "index": 1,
       "zhCN": "table/zh-cn/Basic",
       "enUS": "table/en-us/Basic",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "固定3行，中6列/英5列，英文无状态列；无列宽。 本批正式状态只以table-1完整证据为准。"
     },
     {
       "index": 2,
       "zhCN": "table/zh-cn/DeclarativeColumns",
       "enUS": "table/en-us/DeclarativeColumns",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "固定3行、5列，无列宽；中文声明式更新列为更新时间。 本批正式状态只以table-1完整证据为准。"
     },
     {
       "index": 3,
       "zhCN": "table/zh-cn/Selection",
       "enUS": "table/en-us/Selection",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "固定6记录/页3，第三条禁选，中6/英5数据列；无额外可见状态文字。 本批正式状态只以table-1完整证据为准。"
     },
     {
       "index": 4,
       "zhCN": "table/zh-cn/CustomRendering",
       "enUS": "table/en-us/CustomRendering",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "固定4行、删除图标按钮、minHeight350、长标题与Empty，中文独有状态列。 本批正式状态只以table-1完整证据为准。"
     },
     {
       "index": 5,
       "zhCN": "table/zh-cn/Pagination",
       "enUS": "table/en-us/Pagination",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "固定46条、页10、scroll.y300、行选择、标题筛选、大小日期排序；中文独有状态列。 本批正式状态只以table-1完整证据为准。"
     },
     {
       "index": 6,
       "zhCN": "table/zh-cn/RemoteData",
       "enUS": "table/en-us/RemoteData",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。 当前 Vue Table.vue 的 pageData 无条件本地切片；已切页数据搭配受控第2页会二次切片为空。本例禁用 Table 内部 pagination，组合公开 Pagination 和上游 footer class/页码文案，保留每页5条、总46条及500ms本地加载；这是文档组合适配，不声明上游内部远程分页等价。"
+      "notes": "固定46总数/当前页5、300ms本地请求，受控currentPage与Vue pagination.onChange。 本批正式状态只以table-1完整证据为准。"
     },
     {
       "index": 7,
       "zhCN": "table/zh-cn/Fixed",
       "enUS": "table/en-us/Fixed",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "46条、固定首末列与复选列、scroll x1200/y300、列宽250/200/200/200/100。 本批正式状态只以table-1完整证据为准。"
     },
     {
       "index": 8,
       "zhCN": "table/zh-cn/SortFilter",
       "enUS": "table/en-us/SortFilter",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "46条、scroll.y300、行选择、三列排序、名称筛选；中文独有状态列。 本批正式状态只以table-1完整证据为准。"
     },
     {
       "index": 9,
       "zhCN": "table/zh-cn/UndefinedSort",
       "enUS": "table/en-us/UndefinedSort",
-      "notes": "上游第三 sorter 参数不在 Vue 两参数公开类型中；使用非受控方向、sorter=true 与 change 在外部排序以保留 undefined 置后。当前 Vue 受控 sortOrder 的点击通知读取当前值，不提供下一方向，故不传该属性，正文记录此限制；不改组件。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "固定6条，size=[3,undefined,1,5,undefined,2]，第三sorter参数保证undefined末尾。 本批正式状态只以table-1完整证据为准。"
     },
     {
       "index": 10,
       "zhCN": "table/zh-cn/HeaderFilter",
       "enUS": "table/en-us/HeaderFilter",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "46条，Space包标题Input；中文日期2024-01-25/D2C首页，英文当前日期/design draft；中文独有状态列。 本批正式状态只以table-1完整证据为准。"
     },
     {
       "index": 11,
       "zhCN": "table/zh-cn/CustomFilter",
       "enUS": "table/en-us/CustomFilter",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "46条，owner默认筛选23条；标题面板关闭、owner面板不关闭，英文按钮文案仍为Filter+Close。 本批正式状态只以table-1完整证据为准。"
     },
     {
       "index": 12,
       "zhCN": "table/zh-cn/FilterConfirm",
       "enUS": "table/en-us/FilterConfirm",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "20条、Semi Pro首页、2024-01-25、名称列宽300，标题/owner均为确认模式。 本批正式状态只以table-1完整证据为准。"
     },
     {
       "index": 13,
       "zhCN": "table/zh-cn/FilterItem",
       "enUS": "table/en-us/FilterItem",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "46条、scroll.y300、行选择，自定义Dropdown.Item，showTick:true，名称/大小/日期排序。 本批正式状态只以table-1完整证据为准。"
     },
     {
       "index": 14,
       "zhCN": "table/zh-cn/Expanded",
       "enUS": "table/en-us/Expanded",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "固定3条、rowKey=name、首列宽500，选择第三条禁用，展开Descriptions五项。 本批正式状态只以table-1完整证据为准。"
     },
     {
       "index": 15,
       "zhCN": "table/zh-cn/SeparateExpand",
       "enUS": "table/en-us/SeparateExpand",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "同14并显式hideExpandedColumn=false；保留英文Security Level值中的中文级。 本批正式状态只以table-1完整证据为准。"
     },
     {
       "index": 16,
@@ -297,5 +297,22 @@
       "item": "StickyHeaderTable 上游站点专属嵌入组件",
       "reason": "保留 sticky/top 公开用法说明；该节点不是 upstreamLiveDemos 解析出的 live Demo，未伪计为迁移示例。"
     }
-  ]
+  ],
+  "localeDifferences": [
+    "中文共37个live片段，英文35个；本批仅首15项，双语索引一致，后22项中文及对应英文尚未验收。",
+    "中文独有status列的本批索引为1、3、4、5、6、8、10，英文不可增加该列。",
+    "HeaderFilter中文固定2024-01-25与D2C首页；英文使用当前日期与design draft。CustomFilter英文owner面板按钮写Filter+Close/Clear+Close，但closeDropdown仍false。",
+    "Expanded/SeparateExpand英文安全等级保留3 级/1 级/2 级；UndefinedSort英文为Jiang/Hao与专属文件名，不复用其余英文数据。"
+  ],
+  "review": {
+    "fingerprint": "d9887cd50de9d51269d2105e576daf7c80578bdf1b86957238c5e206f5124bcd",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "章节与API审阅绑定完整固定双语正文、公开table/types.ts及页面/API元数据；本批严格示例范围仅索引1–15，其余示例不追认accepted。",
+      "全部30段前提已审阅，逐项数量、语言独有status、数据/宽度/日期/过滤器及依赖见table-acceptance.md；原始参考由table-1 adapter直接编译vendor。",
+      "恢复受控当前页数据、300ms加载和第三sorter参数契约；React pagination.onPageChange迁移Vue onChange，返回VNodeChild、作用域插槽和事件说明同步。"
+    ]
+  }
 }

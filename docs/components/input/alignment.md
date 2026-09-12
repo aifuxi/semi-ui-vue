@@ -110,3 +110,9 @@ InputGroup 必须装饰直接子 VNode，模板无法准确表达 `React.Childre
 ## Deviation
 
 没有 accepted deviation。固定 React v2.102.0 与 Vue 场景已在同一 Chromium 进程中完成行为、ARIA、computed style、geometry、桌面/移动明暗主题及 RTL 对照；对应 React/Vue 截图字节一致。
+
+## 文档组合场景 ARIA 缺省修复（2026-09-13）
+
+- 固定 Input 将未指定的 `aria-invalid` / `aria-required` 保留为缺省，仅 `validateStatus=error` 强制 `aria-invalid=true`。Vue Boolean prop 转换曾让缺省值变为 false，导致 Table HeaderFilter 的输入节点多出两个属性。
+- Input 渲染期按原始 props 是否提供这两个 ARIA 值决定输出，未提供时不输出；保留用户传入 false、true、grammar/spelling 等有效取值，以及 error 状态覆盖。未修改 TextArea、InputNumber 或输入行为。
+- DOM/SSR 回归先红，修复后覆盖初始缺省、显式 false、true/grammar、error 覆盖与退出 error 后恢复显式值。正式组合和历史文档证据由主 agent 统一重验。

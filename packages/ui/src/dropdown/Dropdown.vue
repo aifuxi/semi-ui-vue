@@ -46,7 +46,8 @@ const popVisible = shallowRef<boolean | undefined>(
   hasRawProp('visible') ? props.visible : undefined,
 );
 const generatedPopupId = `semi-dropdown-${useId()}`;
-const pendingNotification = shallowRef<boolean | undefined>(undefined);
+// Requests update v-model immediately; the pinned Tooltip notifies visibleChange after positioning.
+const pendingUpdate = shallowRef<boolean | undefined>(undefined);
 let enterTimer: ReturnType<typeof setTimeout> | undefined;
 let leaveTimer: ReturnType<typeof setTimeout> | undefined;
 
@@ -108,11 +109,11 @@ const adapter: DropdownAdapter<FoundationProps, FoundationState> = {
   getProps: () => ({ trigger: runtimeTrigger.value }),
   getStates: () => ({ visible: runtimeVisible.value }),
   notifyVisibleChange: (visible) => {
-    if (pendingNotification.value === visible) {
-      pendingNotification.value = undefined;
+    emit('visibleChange', visible);
+    if (pendingUpdate.value === visible) {
+      pendingUpdate.value = undefined;
       return;
     }
-    emit('visibleChange', visible);
     emit('update:visible', visible);
   },
   setPopVisible: (visible) => {
@@ -209,8 +210,7 @@ function requestVisible(visible: boolean): void {
   if (!visible) clearEnterTimer();
   if (runtimeVisible.value === visible) return;
   popVisible.value = visible;
-  pendingNotification.value = visible;
-  emit('visibleChange', visible);
+  pendingUpdate.value = visible;
   emit('update:visible', visible);
 }
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /* eslint-disable vue/require-default-prop, vue/no-required-prop-with-default -- internal renderer preserves absent callback and VNode semantics. */
-import { IconChevronRight } from '@aifuxi/semi-icons-vue';
+import { IconChevronRight, IconTreeTriangleRight } from '@aifuxi/semi-icons-vue';
 import { Checkbox, type CheckboxChangeEvent } from '../checkbox';
 import { Radio, type RadioChangeEvent } from '../radio';
 import { computed, h, shallowRef, type Component, type StyleValue, type VNodeChild } from 'vue';
@@ -54,6 +54,7 @@ interface Props {
     | undefined;
   rowExpandable?: ((record?: Record<string, unknown>) => boolean) | undefined;
   rows: FlatTableRecord<Record<string, unknown>>[];
+  treeTable?: boolean;
   rowSelection?: false | TableRowSelection<Record<string, unknown>> | undefined;
   rowSpanHover?: boolean | undefined;
   selectedKeys: ReadonlySet<TableRowKey>;
@@ -169,7 +170,8 @@ function expandNode(row: FlatTableRecord<Record<string, unknown>>): VNodeChild {
     typeof props.expandIcon === 'function'
       ? props.expandIcon(expanded)
       : props.expandIcon ||
-        h(IconChevronRight, {
+        h(props.hideExpandedColumn ? IconTreeTriangleRight : IconChevronRight, {
+          size: props.hideExpandedColumn ? 'small' : 'default',
           class: expanded
             ? `${props.prefixCls}-expandedIcon-show`
             : `${props.prefixCls}-expandedIcon-hide`,
@@ -177,7 +179,6 @@ function expandNode(row: FlatTableRecord<Record<string, unknown>>): VNodeChild {
   return h(
     'span',
     {
-      'aria-expanded': expanded,
       'aria-label': 'Expand this row',
       class: `${props.prefixCls}-expand-icon`,
       role: 'button',
@@ -203,7 +204,7 @@ function selectionNode(row: FlatTableRecord<Record<string, unknown>>): VNodeChil
     props.rowSelection.type === 'radio'
       ? h(Radio as never, {
           ...checkboxProps(row),
-          ariaLabel: `Select row ${row.index + 1}`,
+          ariaLabel: `${selected ? 'Deselect' : 'Select'} this row`,
           checked: selected,
           disabled,
           style: { width: '16px' },
@@ -212,7 +213,7 @@ function selectionNode(row: FlatTableRecord<Record<string, unknown>>): VNodeChil
         })
       : h(Checkbox as never, {
           ...checkboxProps(row),
-          ariaLabel: `Select row ${row.index + 1}`,
+          ariaLabel: `${selected ? 'Deselect' : 'Select'} this row`,
           checked: selected,
           disabled,
           indeterminate: props.halfSelectedKeys.has(row.key),
@@ -353,7 +354,15 @@ const columnCount = computed(() => Math.max(1, props.columns.length));
         :style="rowCustom(row).style as StyleValue"
         :data-row-key="row.key"
         :aria-expanded="expandable(row) ? props.expandedKeys.has(row.key) : undefined"
-        :aria-level="row.level + 1"
+        :aria-level="
+          props.treeTable ||
+          expandable(row) ||
+          (props.hideExpandedColumn && (props.expandedRowRender || props.renderExpandedRow))
+            ? row.level + 1
+            : props.expandedKeys.has(row.key)
+              ? 2
+              : undefined
+        "
         :aria-rowindex="row.index + 1"
         role="row"
         @click="handleRowClick(row, $event)"
@@ -364,6 +373,7 @@ const columnCount = computed(() => Math.max(1, props.columns.length));
           v-for="(column, columnIndex) in props.columns"
           :key="column.key"
           :column="column"
+          :column-index="columnIndex"
           :component="props.componentCell"
           :direction="props.direction"
           :expanded="props.expandedKeys.has(row.key)"
@@ -406,12 +416,14 @@ const columnCount = computed(() => Math.max(1, props.columns.length));
           !props.expandedKeys.has(row.key) ? `${props.prefixCls}-row-hidden` : undefined,
         ]"
         aria-level="2"
+        :data-row-key="`${row.record.key}-expanded-row`"
         role="row"
       >
         <component
           :is="props.componentCell"
           :class="`${props.prefixCls}-row-cell`"
           :colspan="columnCount"
+          aria-colindex="1"
           role="gridcell"
           ><div :class="`${props.prefixCls}-expand-inner`">
             <TableNodeRenderer :content="expandedContent(row)" /></div

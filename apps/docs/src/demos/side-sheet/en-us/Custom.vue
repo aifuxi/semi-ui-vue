@@ -21,22 +21,13 @@ import '@aifuxi/semi-theme-default/banner.css';
 import { ConfigProvider } from '@aifuxi/semi-ui-vue/config-provider';
 import '@aifuxi/semi-theme-default/config-provider.css';
 import { shallowRef } from 'vue';
-import type { FormApi } from '@aifuxi/semi-ui-vue/form';
 import '@aifuxi/semi-theme-default/date-picker.css';
 import '@aifuxi/semi-theme-default/radio.css';
 const visible = shallowRef(false);
 const createdAt = shallowRef<Date>();
-const formApi = shallowRef<FormApi>();
-function setFormApi(api: FormApi) {
-  formApi.value = api;
-}
 function show() {
   createdAt.value = new Date();
   visible.value = true;
-}
-function submit(values: Record<string, unknown>) {
-  console.log(values);
-  visible.value = false;
 }
 </script>
 <template>
@@ -51,10 +42,9 @@ function submit(values: Record<string, unknown>) {
         ><template #title><Title :heading="4">Create New Package</Title></template
         ><template #footer
           ><div style="display: flex; justify-content: flex-end">
-            <Button style="margin-right: 8px" @click="formApi?.reset()">Reset</Button
-            ><Button theme="solid" @click="formApi?.submitForm()">Submit</Button>
+            <Button style="margin-right: 8px">Reset</Button><Button theme="solid">Submit</Button>
           </div></template
-        ><Form :get-form-api="setFormApi" @submit="submit"
+        ><Form
           ><FormDatePicker
             field="date"
             type="dateTime"

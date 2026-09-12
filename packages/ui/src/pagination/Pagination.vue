@@ -335,7 +335,7 @@ function handleQuickJumpKeydown(event: KeyboardEvent): void {
     <template v-else>
       <template v-for="(page, index) in state.pageList" :key="`${page}-${index}`">
         <PaginationPopover v-if="page === '...' && !props.disabled" v-bind="popoverBindings()">
-          <li class="semi-page-item" aria-label="More">...</li>
+          <li class="semi-page-item" aria-label="More" aria-current="false">...</li>
           <template #content>
             <PaginationRestList
               :direction="config.direction"
@@ -353,7 +353,7 @@ function handleQuickJumpKeydown(event: KeyboardEvent): void {
             'semi-page-item-all-disabled-active': state.currentPage === page && props.disabled,
           }"
           :aria-label="page === '...' ? 'More' : `Page ${page}`"
-          :aria-current="state.currentPage === page ? 'page' : undefined"
+          :aria-current="state.currentPage === page ? 'page' : false"
           @click="selectPage(page)"
         >
           {{ page }}

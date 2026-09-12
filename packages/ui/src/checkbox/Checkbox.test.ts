@@ -7,6 +7,22 @@ import { describe, expect, it, rs } from '@rstest/core';
 import Checkbox, { CheckboxGroup } from './index';
 
 describe('Checkbox', () => {
+  it('省略 disabled 时不输出 ARIA，显式 false 与 true 均保留', async () => {
+    const wrapper = mount(Checkbox);
+    expect(wrapper.get('input').attributes('aria-disabled')).toBeUndefined();
+    await wrapper.setProps({ disabled: false });
+    expect(wrapper.get('input').attributes('aria-disabled')).toBe('false');
+    await wrapper.setProps({ disabled: true });
+    expect(wrapper.get('input').attributes('aria-disabled')).toBe('true');
+    wrapper.unmount();
+  });
+  it('独立 name 透传原生 input，并响应移除', async () => {
+    const wrapper = mount(Checkbox, { props: { name: 'document' } });
+    expect(wrapper.get('input').attributes('name')).toBe('document');
+    await wrapper.setProps({ name: '' });
+    expect(wrapper.get('input').attributes('name')).toBeUndefined();
+    wrapper.unmount();
+  });
   it('非受控点击更新 DOM/ARIA，并发出完整 change 与 Vue update 事件', async () => {
     const wrapper = mount(Checkbox, { props: { value: 'semi' }, slots: { default: 'Semi' } });
     await wrapper.trigger('click');

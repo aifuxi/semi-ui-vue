@@ -73,3 +73,7 @@
 - `pnpm test:browser` 全量通过：固定 Chromium 中 259 项测试全部通过；Descriptions 专项 7 项覆盖真实 vendor 来源、vertical/plain/double/horizontal/Item、span/hidden、无交互语义、桌面/移动 light/dark 与 RTL。
 - 6 个专项目标的关键 computed style 精确相等、bounding rect 各轴差值不超过 `0.5 CSS px`；5 组 React/Vue 成对截图既通过 Playwright 阈值，也通过独立 Buffer 字节相等验证。未使用 mask，React/Vue 使用独立截图文件名。
 - 无 accepted visual/behavior deviation；固定 vendor 仍为 `v2.102.0` / `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21` 且未修改。
+
+## Table 展开行消费者回归（2026-09-13）
+
+调用方可以长期保存作为 data.value 的 VNode。每次 Descriptions 渲染时克隆 VNode，避免将已卸载的组件实例和 DOM 状态留在调用方数据中。生产静态站探针修复前首次展开有2个 Tag、关闭重开后为0；修复后首次与重开均为2。Table Expanded/SeparateExpand 双语及 RTL 代表路径已验证，完整正式矩阵结果见本轮文档工作记录；未将无法复现生产问题的单元测试称为红绿证据。

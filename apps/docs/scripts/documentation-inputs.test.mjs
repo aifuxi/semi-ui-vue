@@ -262,7 +262,7 @@ test('批次适配器的本地共享 helper 被递归追踪，未知动态导入
   assert.ok(result.files.includes(foundationTable));
 });
 
-test('实际批次仅纳入自身 React 适配器及固定局部依赖；Table 仅影响 Locale 与 Skeleton，Tooltip 和共享样式影响全部批次', async () => {
+test('实际批次仅纳入自身 React 适配器及固定局部依赖；Table 影响其真实消费者，Tooltip 和共享样式影响全部批次', async () => {
   const batches = await loadBatches();
   const inputs = await Promise.all(
     batches.map(async (batch) => ({ batch, ...(await batchInputs(batch)) })),
@@ -283,7 +283,7 @@ test('实际批次仅纳入自身 React 适配器及固定局部依赖；Table �
   const affected = (file) =>
     inputs.filter((result) => result.files.includes(file)).map(({ batch }) => batch.id);
   // Skeleton 的 Table 示例直接渲染 Table，因此 Table 变更必须使其批次失效。
-  assert.deepEqual(affected(foundationTable), ['locale', 'skeleton']);
+  assert.deepEqual(affected(foundationTable), ['locale', 'skeleton', 'table-1']);
   assert.deepEqual(affected('packages/foundation-integration/src/audio-player.js'), []);
   for (const file of [
     foundationTooltip,

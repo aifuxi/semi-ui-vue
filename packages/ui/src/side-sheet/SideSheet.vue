@@ -4,6 +4,7 @@ import {
   getCurrentInstance,
   inject,
   markRaw,
+  onBeforeMount,
   onBeforeUnmount,
   onMounted,
   shallowReactive,
@@ -33,6 +34,11 @@ const slots = useSlots();
 const instance = getCurrentInstance();
 const injectedConfig = inject(configContextKey, undefined);
 const teleportTarget = shallowRef<HTMLElement | null>(null);
+// Keep unresolved client Teleport anchors away from other portals without remounting content.
+const pendingTarget = shallowRef<DocumentFragment | null>(null);
+onBeforeMount(() => {
+  pendingTarget.value = document.createDocumentFragment();
+});
 const mounted = shallowRef(false);
 const contentAnimating = shallowRef(false);
 const maskAnimating = shallowRef(false);
@@ -285,7 +291,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <Teleport :to="teleportTarget ?? 'body'" :disabled="teleportTarget === null">
+  <Teleport :to="teleportTarget ?? pendingTarget ?? 'body'" :disabled="teleportTarget === null">
     <div
       v-if="shouldRender"
       class="semi-portal"

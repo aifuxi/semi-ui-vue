@@ -122,3 +122,9 @@
 新增 motion=true 的公开行为回归派发真实 wrapper animationend 出口事件，先验证 Escape 回焦及退出 class，等待可见状态通知稳定且退出 class 仍存在后再转移用户焦点，验证卸载/afterClose 后焦点不变。true/false 参数覆盖：修复前 true 分支真实失败（1 失败/17 通过），修复后单元+SSR共 21 项通过。原始红绿日志为本轮 dropdown-focus-red.log / dropdown-focus-green.log；中间仅移除 afterClose 焦点但测试未等待关闭通知稳定的失败保留为 dropdown-focus-green-failed.log，不作通过证据；真实探针在 focus-probe-original 与 focus-probe-blur-after 中。后续浏览器重新构建验证由主 agent 统一执行；不以单元模拟替代 Chromium 输入模态证据。
 
 新增 trigger Escape 隐藏前回焦保留固定 Tooltip.focusTrigger 的 custom 排除边界，不改变 custom 现有可见性逻辑。公开合成 Escape 回归先红后绿，确认外部已聚焦元素不被 custom 触发器抢回；最终专项单元+SSR 22 项通过。
+
+## Table 自定义筛选器焦点时机修复（2026-09-13）
+
+- CustomFilter 的可见回调会聚焦输入。原 Dropdown 在 requestVisible 同步通知 visibleChange，使 Vue 示例 nextTick 聚焦发生于 Tooltip 的 offscreen（-9999）定位阶段；trace 中 Vue 页面 scrollY 从7751归零，而 React仍7751，两端弹层文档top同为7905，因此不是像素阈值或容器对齐问题。
+- 固定 Tooltip Foundation 在 positionUpdated 后 togglePortalVisible 的回调中通知 visibleChange。Dropdown 现仅同步发送 update:visible 请求，让受控父级及时回写；visibleChange 由真正的 Tooltip 生命周期发送，不吞掉定位后通知。pendingUpdate 只避免重复发送已提出的 v-model 更新。
+- 新受控回归先红，修复后验证同步 update、定位后的唯一 visibleChange、回调聚焦、关闭和去重。固定 hover 在 portalInserted 即取消的分支只有 false 生命周期通知（请求仍是true/false）；同步宿主键盘处理发生在定位后通知之前。相关旧断言按该固定时序更正，未增加延迟或跳过终态验证。

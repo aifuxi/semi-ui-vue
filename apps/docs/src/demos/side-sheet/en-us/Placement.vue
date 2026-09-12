@@ -23,14 +23,14 @@ function changePlacement(event: RadioChangeEvent) {
 <template>
   <ConfigProvider :locale="enUS">
     <RadioGroup :value="placement" @change="changePlacement">
-      <Radio :value="'right'"> right</Radio>
-      <Radio :value="'left'"> left</Radio>
-      <Radio :value="'top'"> top</Radio>
-      <Radio :value="'bottom'"> bottom</Radio>
+      <Radio :value="'right'">right</Radio>
+      <Radio :value="'left'">left</Radio>
+      <Radio :value="'top'">top</Radio>
+      <Radio :value="'bottom'">bottom</Radio>
     </RadioGroup>
     <br />
     <br />
-    <Button @click="change"> Open SideSheet</Button>
+    <Button @click="change">Open SideSheet</Button>
     <SideSheet title="Sidesheet" :visible="visible" :placement="placement" @cancel="change">
       <p>This is the content of a basic sidesheet.</p>
       <p>Here is more content...</p>

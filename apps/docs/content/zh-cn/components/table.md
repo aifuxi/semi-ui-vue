@@ -21,7 +21,7 @@ import '@aifuxi/semi-theme-default/table.css';
 
 ## 代码演示
 
-本页文件图标使用已有本地示意图 `/demos/one.svg`，替代上游远程 Figma 图片，不请求第三方图片服务；图像内容差异不作为像素等价证据。
+首批 1–15 项使用固定上游的原始 Figma/Docs 图标本地副本 `/demos/table/`，保留原图像素与 64×64 固有尺寸，不请求第三方服务。其余示例仍使用原有本地示意图，尚未纳入本批严格验收。
 
 ### 基本表格
 
@@ -39,7 +39,7 @@ import '@aifuxi/semi-theme-default/table.css';
 
 ### 行选择操作
 
-通过 `rowSelection` 开启选择。`getCheckboxProps` 禁用指定记录，表头全选跳过禁用项；`onSelect` 与 `onSelectAll` 表示具体操作，`onChange` 返回选中 keys 和记录。本例每页 3 行，回写 `selectedRowKeys` 并展示操作结果。
+通过 `rowSelection` 开启选择。`getCheckboxProps` 禁用指定记录，表头全选跳过禁用项；`onSelect` 与 `onSelectAll` 表示具体操作，`onChange` 返回选中 keys 和记录。本例每页 3 行，选择操作通过回调输出到控制台。
 
 ::demo-block{demo="table/zh-cn/Selection" title="行选择操作"}
 ::
@@ -53,16 +53,16 @@ import '@aifuxi/semi-theme-default/table.css';
 
 ### 带分页组件的表格
 
-不传 `pagination.currentPage` 时，Table 管理页码并根据数据长度计算总数。传入该字段后页码受控，但当前 Vue Table 仍会按页码对 `dataSource` 做本地切片，因此此模式需要完整待分页数据。若服务返回的已经是当前页数据，请使用下节的独立 Pagination 组合。本地分页示例有 46 条记录，支持筛选、排序、选择及 300px 表体滚动。
+不传 `pagination.currentPage` 时，Table 管理页码并根据数据长度计算总数。传入该字段后页码受控，直接呈现传入的当前页数据；本地完整数据分页使用非受控页码。本例有 46 条记录，支持筛选、排序、选择及 300px 表体滚动。
 
 ::demo-block{demo="table/zh-cn/Pagination" title="带分页组件的表格"}
 ::
 
 ### 拉取远程数据
 
-实际服务通常在分页、排序或筛选后重新请求数据。本例以 500ms 本地异步操作模拟 46 条记录的分页，每页 5 条；通过 `loading` 显示等待状态，卸载时清理计时器。演示不请求业务接口，日期固定以便重现。
+实际服务通常在分页、排序或筛选后重新请求数据。本例保留固定上游的 300ms 本地异步分页，每页 5 条、总数 46；通过 `loading` 显示等待状态，卸载时清理计时器。演示不请求业务接口，日期使用当前日期加固定偏移。
 
-当前 Vue Table 会无条件按受控页码再次切片 `dataSource`。为避免已切页的响应在第 2 页起变空，本例明确设置 `:pagination="false"`，使用公开 Pagination 的 `@page-change` 请求对应页，并组合上游 `.semi-table-pagination-outer/info/wrapper` footer 样式和页码文案。这是当前 Vue 的分页组合方案，不代表上游内部远程分页行为已等价实现。
+分页配置使用 `currentPage`、`pageSize`、`total` 和公开 Vue `onChange` 回调；固定 React 示例的 `onPageChange` 在 Vue 中迁移为 `onChange`。页码受控时传入请求返回的当前页记录，不再做二次本地切片。
 
 ::demo-block{demo="table/zh-cn/RemoteData" title="拉取远程数据"}
 ::
@@ -85,7 +85,7 @@ import '@aifuxi/semi-theme-default/table.css';
 
 ### 排序中的空值与提示
 
-上游示例通过 sorter 的第三参数读取排序方向，让未知大小始终排在末尾。当前 Vue 公开类型的 sorter 只接受两个记录参数，因此此处让表格管理排序方向，通过 `sorter: true` 与 `change` 在外部重排数据，保留空值置后的意图。当前 Vue 在设置受控 `sortOrder` 后，表头点击的 `change` 仍读取当前受控值，不能据此取得下一次方向，所以本例不传该属性。`showSortTip` 默认 false，本例显式开启。
+`sorter(a, b, sortOrder)` 的第三参数提供当前排序方向，让未知大小在升序和降序中始终位于末尾。本例保留固定片段的 6 条记录与两个 undefined 大小，不在示例外部重排数据。`showSortTip` 默认 false，本例显式开启。
 
 ::demo-block{demo="table/zh-cn/UndefinedSort" title="排序中的空值与提示"}
 ::
@@ -374,7 +374,7 @@ import '@aifuxi/semi-theme-default/table.css';
 | showSortTip                   | 是否展示排序提示，如果设置了 sortOrder，排序受控，则该参数不会生效                                                                                                                  | boolean                                                                                                                                                                  | false       | **2.65.0** |
 | sortChildrenRecord            | 是否对子级数据进行本地排序                                                                                                                                                          | boolean                                                                                                                                                                  |             | -          |
 | sortOrder                     | 排序的受控属性，外界可用此控制列的排序，可设置为 'ascend'\|'descend'\|false                                                                                                         | boolean\| string                                                                                                                                                         | false       |
-| sorter                        | 本地比较函数，或设 true 在外部排序；必须指定独立 dataIndex。                                                                                                                        | boolean \| ((a: RecordType, b: RecordType) => number)                                                                                                                    | —           |
+| sorter                        | 本地比较函数，或设 true 在外部排序；必须指定独立 dataIndex。                                                                                                                        | boolean \| ((a: RecordType, b: RecordType, sortOrder?: 'ascend' \| 'descend') => number)                                                                                 | —           |
 | sortIcon                      | 自定义 sort 图标，返回的节点控制了整个排序按钮，包含升序和降序。需根据 sortOrder 控制高亮行为                                                                                       | (props: { sortOrder }) => VNodeChild                                                                                                                                     |             | **2.50.0** |
 | shouldCellUpdate              | 自定义控制单元格是否渲染。默认 cell 会深对比 props 和 nextProps 是否变化，来决定是否渲染单元格。如果你的 props 中的 record 比较复杂，建议使用 `shouldCellUpdate` 接管单元格的渲染。 | (props: TableCellProps, prevProps: TableCellProps) => boolean                                                                                                            |             | **2.71.0** |
 | title                         | 列头显示文字。传入 function 时，title 将使用函数的返回值；传入其他类型，将会和 sorter、filter 进行聚合。需要搭配 useFullRender 获取函数类型中的 filter 等参数                       | VNodeChild\|({ filter: VNodeChild, sorter: VNodeChild, selection: VNodeChild }) => VNodeChild                                                                            |             | -          |
@@ -441,7 +441,7 @@ import '@aifuxi/semi-theme-default/table.css';
 
 ### Vue 签名与受控状态
 
-- `TableColumnProps<RecordType>` 描述列回调；`sorter` 为 Boolean 或 `(a, b) => number`，依赖方向的排序使用受控方式。
+- `TableColumnProps<RecordType>` 描述列回调；`sorter` 为 Boolean 或 `(a, b, sortOrder) => number`，第三参数提供当前排序方向。
 - `rowSelection.type` 支持 `checkbox` 和 `radio`；`defaultSelectedRowKeys` 初始化，`selectedRowKeys` 控制当前值。
 - `getCurrentPageData(): RecordType[]` 返回当前页记录数组；Vue 实例不暴露 Foundation 或 react-window 内部实例。
 - `showHeader`、`hideExpandedColumn` 默认 true，缺省、显式 false、显式 true 不能混用。
@@ -477,7 +477,7 @@ import '@aifuxi/semi-theme-default/table.css';
 
 ## Accessibility
 
-自定义 components 时保留表头与单元格语义。当前 Vue 实现使用原生 table 容器与 `role="table"`、columnheader、row/gridcell、`aria-sort`、展开状态及筛选/排序/选择控件的可访问名称。固定 React 文档描述的 grid/treegrid 与额外行列数量属性不能直接当作这些 Vue 示例的保证；键盘与读屏等价仍需独立浏览器验证。
+自定义 components 时保留表头与单元格语义。当前 Vue 实现使用原生 table 容器与 `role="grid"` / `role="treegrid"`、columnheader、row/gridcell、排序按钮名称中的排序方向、展开状态及筛选/排序/选择控件的可访问名称。固定 React 文档描述的 grid/treegrid 与额外行列数量属性不能直接当作这些 Vue 示例的保证；键盘与读屏等价仍需独立浏览器验证。
 
 ## RTL/LTR
 

@@ -18,22 +18,13 @@ import '@aifuxi/semi-theme-default/select.css';
 import { Banner } from '@aifuxi/semi-ui-vue/banner';
 import '@aifuxi/semi-theme-default/banner.css';
 import { shallowRef } from 'vue';
-import type { FormApi } from '@aifuxi/semi-ui-vue/form';
 import '@aifuxi/semi-theme-default/date-picker.css';
 import '@aifuxi/semi-theme-default/radio.css';
 const visible = shallowRef(false);
 const createdAt = shallowRef<Date>();
-const formApi = shallowRef<FormApi>();
-function setFormApi(api: FormApi) {
-  formApi.value = api;
-}
 function show() {
   createdAt.value = new Date();
   visible.value = true;
-}
-function submit(values: Record<string, unknown>) {
-  console.log(values);
-  visible.value = false;
 }
 </script>
 <template>
@@ -48,10 +39,9 @@ function submit(values: Record<string, unknown>) {
       ><template #title><Title :heading="4">创建资源包</Title></template
       ><template #footer
         ><div style="display: flex; justify-content: flex-end">
-          <Button style="margin-right: 8px" @click="formApi?.reset()">重置</Button
-          ><Button theme="solid" @click="formApi?.submitForm()">提交</Button>
+          <Button style="margin-right: 8px">重置</Button><Button theme="solid">提交</Button>
         </div></template
-      ><Form :get-form-api="setFormApi" @submit="submit"
+      ><Form
         ><FormDatePicker
           field="date"
           type="dateTime"

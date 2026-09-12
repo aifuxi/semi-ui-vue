@@ -83,6 +83,25 @@ describe('Input', () => {
     });
   });
 
+  it('ARIA invalid/required 区分缺省与显式 false，并保留 error 状态覆盖', async () => {
+    const wrapper = mount(Input);
+    const input = wrapper.get('input');
+    expect(input.attributes('aria-invalid')).toBeUndefined();
+    expect(input.attributes('aria-required')).toBeUndefined();
+    await wrapper.setProps({ ariaInvalid: false, ariaRequired: false });
+    expect(input.attributes('aria-invalid')).toBe('false');
+    expect(input.attributes('aria-required')).toBe('false');
+    await wrapper.setProps({ ariaInvalid: 'grammar', ariaRequired: true });
+    expect(input.attributes('aria-invalid')).toBe('grammar');
+    expect(input.attributes('aria-required')).toBe('true');
+    await wrapper.setProps({ validateStatus: 'error', ariaInvalid: false });
+    expect(input.attributes('aria-invalid')).toBe('true');
+    await wrapper.setProps({ validateStatus: 'default' });
+    expect(input.attributes('aria-invalid')).toBe('false');
+    expect(input.attributes('aria-required')).toBe('true');
+    wrapper.unmount();
+  });
+
   it('showClear 只在有值且 hover/focus 时显示，并保持 change → clear 顺序', async () => {
     const order: string[] = [];
     const wrapper = mount(Input, {

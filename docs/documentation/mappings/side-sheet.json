@@ -35,7 +35,7 @@
       "index": 6,
       "zhCN": "side-sheet/zh-cn/Custom",
       "enUS": "side-sheet/en-us/Custom",
-      "notes": "Form复合字段改FormDatePicker/FormRadioGroup/FormRadio/FormSelect；保留各语言用户、Banner、标签与尺寸；点击打开时生成当前创建时间，页脚连接公开表单reset/submitForm。"
+      "notes": "Form复合字段改FormDatePicker/FormRadioGroup/FormRadio/FormSelect；保留双语用户、Banner、标签与尺寸；当前时间初始化；页脚与固定片段一致没有reset/submit处理器。"
     }
   ],
   "chapters": [
@@ -53,5 +53,16 @@
     "设计变量",
     "FAQ:"
   ],
-  "exclusions": []
+  "exclusions": [],
+  "review": {
+    "fingerprint": "ab79b95461c3df78bfa404e03a25acc1e871301f6b46fdb78f0309754c80fcec",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "逐段核对全部12段固定双语片段、章节、手写API及公开Props/Emits/Slots；详细前提见side-sheet-acceptance.md。",
+      "保留双语Custom的Banner和标签差异及无操作footer；默认Esc不关闭、closeIcon=null回退关闭图标；height448来自固定Foundation。",
+      "48项完整矩阵覆盖双语明暗RTL、Portal与容器、全部位置尺寸、关闭重开、外部编辑与源码/重置/REPL；准备及诊断不计accepted。"
+    ]
+  }
 }
