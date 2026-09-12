@@ -26,6 +26,12 @@
 - 滚动模式另等待两端边缘计数稳定，覆盖 IntersectionObserver 更新路径。
 - 双语 light/LTR 另执行源码展开/收起、重置与在线编辑 iframe 内的实际渲染与退出恢复。
 
+## Slider Portal 键盘锚点补充
+
+全部示例的 narrow 键盘阶段保留最终把手焦点，在根预览截图之前，等待可见 `.semi-slider-handle-tooltip` 的 top 方位及水平中心落在把手中心（误差≤0.5px）的可观察终态，不增加固定等待。随后独立比较浮层根和子孙的属性、class、关键样式、几何与截图，保存 `narrow-tooltip-anchored-geometry`：各侧水平中心须≤0.5px，浮层相对把手的 x/y/width/height 跨侧误差也须≤0.5px。实例 id 按该浮层根内定义归一，Portal 外部文档坐标不直接互比；截图门槛不变。
+
+该补充防止仅比较文档根子孙时遗漏 Portal 定位偏移，覆盖全部双语、明暗与方向 narrow 状态。历史 Scroll dark 的把手 Tooltip 曾水平偏移约9px，原根内样式和几何检查无法捕捉；完整证据以新矩阵为准。
+
 ## 章节/API/迁移审阅
 
 双语保留固定上游章节与顺序（代码演示/如何引入、折叠模式 - 默认/方向/最小展示的数目、滚动模式、API 参考），另补迁移表与滚动模式结构差异说明。API 以公开 Vue 类型与固定 Adapter 为准：`items`、`renderMode`、`collapseFrom`、`minVisibleItems`、`threshold`、`overflowRenderDirection`、`itemKey`、`class`/`className`/`style`/`wrapperClassName`/`wrapperStyle`，插槽 `#visibleItem`、`#overflow` 与事件 `@overflow`/`@intersect`/`@visibleStateChange`。审阅明细与指纹见 `mappings/overflow-list.json` 的 `review`。

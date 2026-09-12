@@ -155,7 +155,7 @@ Use `SplitTagGroup` to combine multiple tags into a single connected group. The 
 
 Slots: `default`, `prefixIcon`, `suffixIcon`. Events: `@click(event)`, `@close(content, event, tagKey)`, `@keydown(event)`, `@mouseenter(event)`, and `update:visible`. Calling `event.preventDefault()` in close prevents hiding.
 
-TagGroup emits `@tag-close(content, event, tagKey)` and `@plus-n-mouseenter(event)`. `TagData` extends TagProps with `@click`, `@close`, `onKeydown` and `onMouseenter`; use `content` instead of React children. Update tagList in the parent after closing a tag. SplitTagGroup receives direct Tag children in its default slot.
+TagGroup emits `@tag-close(content, event, tagKey)` and `@plus-n-mouseenter(event)`. `TagData` extends TagProps with `onClick`, `onClose`, `onKeydown` and `onMouseenter`; use `content` instead of React children. Update tagList in the parent after closing a tag. SplitTagGroup receives direct Tag children in its default slot.
 
 ## Accessibility
 

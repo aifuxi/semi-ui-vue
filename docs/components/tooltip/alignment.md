@@ -58,7 +58,7 @@
 4. hover/focus 使用 50ms enter/leave 延迟；移入弹层会取消 leave，`clickToHide` 可在内部点击后直接关闭。
 5. click/contextMenu 在显示期间监听 window mousedown；trigger 与 portal 内部不算 outside，关闭时注销。
 6. hide 先进入 leave；100ms 动画结束后移除 Portal，或在 `keepDOM=true` 时保留 DOM 并 `display:none`，随后发出 `afterClose`。
-7. `visible` 外部变化：hover/focus 仍走延迟，其它 trigger 立即 show/hide；`rePosKey` 变化立即重新定位。
+7. `visible` 外部变化：hover/focus 仍走延迟，其它 trigger 立即 show/hide；`rePosKey` 变化在同轮触发器 DOM 更新后重新定位，与固定 React `componentDidUpdate` 的测量时机一致。
 
 ## DOM、样式、键盘与可访问性
 
@@ -84,6 +84,8 @@ Escape 在 `closeOnEsc=true` 时关闭并通知；ArrowDown/ArrowUp 将焦点移
 - SSR import 不访问 DOM；SSR 只渲染 trigger，显式 `wrapperId` 可稳定输出 ARIA。Teleport、容器创建、Foundation、Observer 和 window 监听均只在客户端 mount 后创建。
 
 ## 验证矩阵
+
+2026-09-12 定点回归补充：调用方在同次父状态更新中移动触发器并更新 `rePosKey` 时，默认 pre watcher 会测量旧触发器 DOM，浮层保持前一个位置；固定 React 在 `componentDidUpdate` 后测量。Vue 的重定位 watcher 改为 `flush: 'post'`，未改变计算公式、公开 API 或可见状态机。新增单测从实际触发器 `style.left` 派生 jsdom 测量：触发器从 100px 移至 180px，旧实现浮层位移为 0，修复后为 80px。Tooltip 与 TooltipPortal 两个文件的 24 项单元/SSR 测试通过；真实浏览器与受影响历史批次由集中验收记录确认。
 
 - 单元/SSR：默认值、VNode/文本/多节点/disabled 包裹、五 trigger、延迟与 condition、custom visible、outside/clickToHide、ARIA、focus guard/Escape、keepDOM/afterClose、容器优先级、公开方法与 SSR import/render。
 - React/Vue 场景：top/right/bottom/left、edge placement、hover/click/focus/contextMenu/custom、无箭头、自定义样式、disabled trigger、RTL 和自定义容器。

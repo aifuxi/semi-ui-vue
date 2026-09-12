@@ -127,7 +127,79 @@ describe('TagGroup', () => {
     const popover = wrapper.getComponent(Popover);
     expect(popover.props('position')).toBe('top');
     expect(popover.props('showArrow')).toBe(true);
-    expect(popover.props('content')).toHaveLength(2);
+  });
+
+  it('折叠计数保留多文本内容的居中布局、ARIA 与更新', async () => {
+    const wrapper = mount(TagGroup, {
+      props: {
+        maxTagCount: 1,
+        tagList: [{ content: 'A' }, { content: 'B' }, { content: 'C' }],
+      },
+    });
+    const counter = () => wrapper.findAll('.semi-tag').at(-1)!;
+    expect(counter().attributes('aria-label')).toBe('');
+    expect(counter().get('.semi-tag-content-center').text()).toBe('+2');
+    expect(
+      Array.from(counter().get('.semi-tag-content-center').element.childNodes)
+        // Vue Fragment anchors are empty text nodes; retain every nonempty text verbatim.
+        .filter((node) => node.nodeType === Node.TEXT_NODE && node.textContent !== '')
+        .map((node) => node.textContent),
+    ).toEqual(['+', '2']);
+    expect(counter().find('.semi-tag-content-ellipsis').exists()).toBe(false);
+    await wrapper.setProps({ restCount: 7 });
+    expect(counter().get('.semi-tag-content-center').text()).toBe('+7');
+    await wrapper.setProps({ restCount: 0, tagList: [{ content: 'A' }, { content: 'B' }] });
+    expect(counter().get('.semi-tag-content-center').text()).toBe('+1');
+    wrapper.unmount();
+  });
+
+  it('折叠浮层关闭卸载后再次显示完整内容', async () => {
+    rs.useFakeTimers();
+    const wrapper = mount(TagGroup, {
+      props: {
+        maxTagCount: 1,
+        showPopover: true,
+        popoverProps: { motion: false },
+        tagList: [{ content: 'A' }, { content: 'B' }, { content: 'C' }],
+      },
+    });
+    const flush = async () => {
+      for (let turn = 0; turn < 5; turn++) {
+        await nextTick();
+        await rs.runOnlyPendingTimersAsync();
+      }
+    };
+    const tags = () =>
+      Array.from(document.body.querySelectorAll('.semi-tag-rest-group-popover .semi-tag')).map(
+        (node) => node.textContent,
+      );
+    try {
+      await flush();
+      rs.spyOn(wrapper.findAll('.semi-tag').at(-1)!.element, 'matches').mockImplementation(
+        (selector) => selector === ':hover',
+      );
+      await wrapper.findAll('.semi-tag').at(-1)!.trigger('mouseenter');
+      await flush();
+      expect(tags(), '首次打开').toEqual(['B', 'C']);
+      await wrapper.findAll('.semi-tag').at(-1)!.trigger('mouseleave');
+      await flush();
+      expect(tags()).toEqual([]);
+      await wrapper.findAll('.semi-tag').at(-1)!.trigger('mouseenter');
+      await flush();
+      expect(tags(), '第二次打开').toEqual(['B', 'C']);
+      for (const content of [undefined, null, false]) {
+        await wrapper.setProps({
+          popoverProps: { trigger: 'custom', visible: true, motion: false, content },
+        });
+        await flush();
+        expect(tags(), `显式 content=${String(content)} 覆盖默认内容`).toEqual([]);
+      }
+    } finally {
+      wrapper.unmount();
+      rs.runOnlyPendingTimers();
+      rs.useRealTimers();
+      rs.restoreAllMocks();
+    }
   });
 
   it('custom 模式原样渲染字符串与 VNode', () => {

@@ -441,8 +441,13 @@ for (const locale of ['zh-cn', 'en-us'])
                   await pages[0]!.clock.pauseAt(time);
                   async function toastCompare(label: string, count: number) {
                     await freezeAnimations(pages, 300);
-                    for (const page of pages)
+                    for (const page of pages) {
                       await expect(page.locator('.semi-toast')).toHaveCount(count);
+                      // The pinned entry animation lasts 300ms. Setting its currentTime to that
+                      // boundary does not await animationend or either renderer's class update.
+                      // Observe the completed entry phase before comparing the terminal sample.
+                      await expect(page.locator('.semi-toast-animation-show')).toHaveCount(0);
+                    }
                     for (let i = 0; i < count; i++) {
                       const targets = pages.map((page) => page.locator('.semi-toast').nth(i));
                       const nodes = await Promise.all(

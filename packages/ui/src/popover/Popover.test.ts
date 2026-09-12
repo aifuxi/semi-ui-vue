@@ -69,31 +69,35 @@ describe('Popover', () => {
     expect(wrapper.get('#default-trigger').attributes('aria-haspopup')).toBe('dialog');
   });
 
-  it('showArrow 渲染双层 SVG，并按箭头和浮层 style 决定颜色', async () => {
-    mount(Popover, {
-      props: {
-        arrowStyle: { backgroundColor: 'rgb(1, 2, 3)', borderOpacity: 0.5 },
-        content: '箭头内容',
-        motion: false,
-        position: 'right',
-        showArrow: true,
-        style: { borderColor: 'rgb(4, 5, 6)' },
-        trigger: 'custom',
-        visible: true,
-      },
-      slots: { default: '<button>触发</button>' },
-    });
-    await flushPopover();
+  it.each(['right', 'top'] as const)(
+    'showArrow %s 保留固定 SVG 可访问属性与双层颜色',
+    async (position) => {
+      mount(Popover, {
+        props: {
+          arrowStyle: { backgroundColor: 'rgb(1, 2, 3)', borderOpacity: 0.5 },
+          content: '箭头内容',
+          motion: false,
+          position,
+          showArrow: true,
+          style: { borderColor: 'rgb(4, 5, 6)' },
+          trigger: 'custom',
+          visible: true,
+        },
+        slots: { default: '<button>触发</button>' },
+      });
+      await flushPopover();
 
-    const arrow = document.body.querySelector<SVGElement>('.semi-popover-icon-arrow');
-    const paths = arrow?.querySelectorAll('path');
-    expect(arrow?.getAttribute('width')).toBe('24');
-    expect(arrow?.getAttribute('height')).toBe('8');
-    expect(paths).toHaveLength(2);
-    expect(paths?.[0]?.getAttribute('style')).toContain('fill: rgb(4, 5, 6)');
-    expect(paths?.[0]?.getAttribute('style')).toContain('opacity: 0.5');
-    expect(paths?.[1]?.getAttribute('style')).toContain('fill: rgb(1, 2, 3)');
-  });
+      const arrow = document.body.querySelector<SVGElement>('.semi-popover-icon-arrow');
+      const paths = arrow?.querySelectorAll('path');
+      expect(arrow?.hasAttribute('aria-hidden')).toBe(false);
+      expect(arrow?.getAttribute('width')).toBe('24');
+      expect(arrow?.getAttribute('height')).toBe('8');
+      expect(paths).toHaveLength(2);
+      expect(paths?.[0]?.getAttribute('style')).toContain('fill: rgb(4, 5, 6)');
+      expect(paths?.[0]?.getAttribute('style')).toContain('opacity: 0.5');
+      expect(paths?.[1]?.getAttribute('style')).toContain('fill: rgb(1, 2, 3)');
+    },
+  );
 
   it('content 作用域 slot 优先于 prop，并可设置初始焦点', async () => {
     const wrapper = mount(Popover, {

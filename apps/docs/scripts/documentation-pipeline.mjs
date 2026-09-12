@@ -258,7 +258,9 @@ export function runBrowserMatrices(batches, reportFile, outputDirectory, run = r
       'test',
       '-c',
       'playwright.nuxt.config.ts',
-      ...batches.map((batch) => batch.spec),
+      // Playwright treats positional file filters as regexes over absolute paths.
+      // Anchor the basename so Button cannot also select FloatButton.
+      ...batches.map((batch) => `(?:^|/)${batch.spec.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`),
       '--reporter=json',
       `--output=${outputDirectory}`,
     ],

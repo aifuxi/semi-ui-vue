@@ -43,13 +43,14 @@
 - 鼠标关闭：先 `stopPropagation/stopImmediatePropagation`，同步 emit `close`；监听器 `preventDefault()` 时不隐藏且不 emit visible update，否则再通知 false。
 - Delete/Backspace：执行同一关闭链后 preventDefault/stopPropagation；Enter 先 emit click 再阻止；Escape blur；最后仍 emit keydown。
 - `SplitTagGroup` 同时使用真实 SFC 模板宿主和 `h()` 宿主验证 Fragment、Comment/Text、动态子节点、既有 class 与单节点 first+last。
+- TagGroup 默认浮层内容在每次 content 槽位渲染时构造新 VNode，避免生产 Portal 重开复用先前挂载实例；显式 popoverProps.content 仍可覆盖。
 - `TagGroup` 不用 truthiness 解释子 Tag 的 Boolean；数据中的 `closable: false/true` 原样传递，模板裸 `closable` 在 Tag 自身按 Vue Boolean 语义工作。
 - Popover 稳定容器由既有 Popover 合同负责；本组件不增加 Observer、轮询或滚动监听。
 
 ## DOM、样式、主题、RTL、国际化与 SSR
 
 - Tag DOM 固定为 `.semi-tag`，可选 prefix wrapper、Avatar、`.semi-tag-content-*`、suffix wrapper、`.semi-tag-close`；invisible 只加 class，不卸载。
-- TagGroup 为 `.semi-tag-group`；最大数量添加 `-max` 与 size class；`+N` Tag 背景透明。SplitTagGroup 为 `.semi-tag-split[role=group]`，不增加布局 wrapper。
+- TagGroup 为 `.semi-tag-group`；最大数量添加 `-max` 与 size class；`+N` Tag 背景透明，并保留固定 `+{n}` 的两个 Text 节点：内容走 center 布局、aria-label 为空；restCount 与列表更新同步刷新数字。SplitTagGroup 为 `.semi-tag-split[role=group]`，不增加布局 wrapper。
 - 独立 `tag.css` 编译 theme/global/animation、Portal、Avatar、Popover/Tooltip、Tag 与 Icons；根 CSS 已含固定 Tag SCSS。
 - RTL 由 ConfigProvider 的 `.semi-rtl` 祖先触发固定 `rtl.scss`；关闭图标、Avatar margin、Group margin 反转。SplitTagGroup 固定源码没有独立 RTL 边角交换，按 v2.102.0 保留。
 - 组件无 Locale 文案；zh-CN/en-US 只验证 slot/data 内容可渲染。SSR import/render 不访问 window/document；Popover 未打开时无 Teleport 副作用。

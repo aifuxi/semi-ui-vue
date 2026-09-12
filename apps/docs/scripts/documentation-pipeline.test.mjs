@@ -290,11 +290,29 @@ test('多个批次只启动一次 Playwright，保留正式隔离和默认重试
       'test',
       '-c',
       'playwright.nuxt.config.ts',
-      'one.spec.ts',
-      'two.spec.ts',
+      '(?:^|/)one\\.spec\\.ts$',
+      '(?:^|/)two\\.spec\\.ts$',
       '--reporter=json',
       '--output=/tmp/output',
     ],
     env: { DOCS_ACCEPTANCE: '1', PLAYWRIGHT_JSON_OUTPUT_NAME: '/tmp/report.json' },
   });
+});
+
+test('正式文件筛选精确匹配文件名，不带入后缀相同或正则近似的矩阵', () => {
+  let filters;
+  runBrowserMatrices(
+    [{ spec: 'button-matrix.spec.ts' }],
+    '/tmp/report.json',
+    '/tmp/output',
+    (args) => {
+      filters = args.slice(5, -2).map((filter) => new RegExp(filter));
+    },
+  );
+  assert.equal(filters.length, 1);
+  assert.ok(filters[0].test('/workspace/tests/nuxt/button-matrix.spec.ts'));
+  assert.ok(filters[0].test('button-matrix.spec.ts'));
+  assert.ok(!filters[0].test('/workspace/tests/nuxt/float-button-matrix.spec.ts'));
+  assert.ok(!filters[0].test('/workspace/tests/nuxt/button-matrixXspecYts'));
+  assert.ok(!filters[0].test('/workspace/tests/nuxt/button-matrix.spec.ts.backup'));
 });

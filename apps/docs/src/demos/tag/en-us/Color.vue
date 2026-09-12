@@ -25,7 +25,7 @@ const colors = [
 </script>
 
 <template>
-  <Space wrap
-    ><Tag v-for="color in colors" :key="color" :color="color"> {{ color }} </Tag></Space
-  >
+  <Space wrap>
+    <Tag v-for="color in colors" :key="color" :color="color" :content="` ${color} `" />
+  </Space>
 </template>

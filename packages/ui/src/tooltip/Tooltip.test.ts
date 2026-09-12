@@ -40,6 +40,62 @@ describe('Tooltip', () => {
     rs.restoreAllMocks();
   });
 
+  it('rePosKey 与触发器位置同次更新后使用更新后的 DOM 定位', async () => {
+    const left = shallowRef(100);
+    const originalRect = HTMLElement.prototype.getBoundingClientRect;
+    rs.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
+      this: HTMLElement,
+    ) {
+      if (this.id === 'moving-tooltip-trigger') {
+        // jsdom has no layout: derive geometry from the actual rendered DOM, not the ref.
+        return new DOMRect(Number.parseFloat(this.style.left), 200, 20, 20);
+      }
+      return originalRect.call(this);
+    });
+    const Host = defineComponent({
+      setup: () => () =>
+        h(
+          Tooltip,
+          {
+            content: '移动提示',
+            visible: true,
+            trigger: 'custom',
+            motion: false,
+            showArrow: false,
+            autoAdjustOverflow: false,
+            position: 'top',
+            rePosKey: left.value,
+          },
+          {
+            default: () =>
+              h(
+                'button',
+                {
+                  id: 'moving-tooltip-trigger',
+                  style: { position: 'absolute', left: `${left.value}px` },
+                },
+                '移动触发器',
+              ),
+          },
+        ),
+    });
+    const wrapper = mount(Host, { attachTo: document.body });
+    try {
+      await flushTooltip();
+      const portal = document.body.querySelector<HTMLElement>('.semi-portal-inner')!;
+      const previousLeft = Number.parseFloat(portal.style.left);
+      expect(Number.isFinite(previousLeft)).toBe(true);
+      left.value = 180;
+      await flushTooltip();
+      expect((wrapper.get('#moving-tooltip-trigger').element as HTMLElement).style.left).toBe(
+        '180px',
+      );
+      expect(Number.parseFloat(portal.style.left) - previousLeft).toBe(80);
+    } finally {
+      wrapper.unmount();
+    }
+  });
+
   it.each([undefined, 0, -1, 2])(
     '向组件触发器传入 tabIndex=%s 并支持真实焦点',
     async (tabIndex) => {

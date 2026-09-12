@@ -15,7 +15,10 @@ function closeTag(
   _event: MouseEvent | KeyboardEvent,
   tagKey: string | number | undefined,
 ): void {
-  tagList.value = tagList.value.filter((tag) => tag.tagKey !== tagKey);
+  const next = [...tagList.value];
+  const index = next.findIndex((tag) => tag.tagKey === tagKey);
+  next.splice(index, 1);
+  tagList.value = next;
 }
 const divStyle = {
   backgroundColor: 'var(--semi-color-fill-0)',

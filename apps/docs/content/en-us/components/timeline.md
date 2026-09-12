@@ -26,7 +26,7 @@ import '@aifuxi/semi-theme-default/timeline.css';
 
 ### Type
 
-You can use `type` to set the type of a time node, using one of: `default`,`ongoing`, `success`, `warning`, `Error`. The corresponding dot will have a corresponding color.
+You can use `type` to set the type of a time node, using one of: `default`,`ongoing`, `success`, `warning`, `error`. The corresponding dot will have a corresponding color.
 
 ::demo-block{demo="timeline/en-us/Types" title="Type"}
 ::
@@ -88,7 +88,7 @@ Use `mode` to set the position of the timeline, using one of: `left`, `center`, 
 | extra      | Custom extra content                                     | VNodeChild                                          | -         | -       |
 | position   | Custom node location to override TimeLine's mode setting | `left`\|`right`                                     | -         | -       |
 | style      | Inline style                                             | CSSProperties                                       | -         | -       |
-| time       | Time value                                               | string                                              | -         | -       |
+| time       | Time value                                               | VNodeChild                                          | -         | -       |
 | type       | Pattern of dot                                           | `default`\|`ongoing`\|`success`\|`warning`\|`error` | `default` | -       |
 | @click     | Click event                                              | (e: MouseEvent) => void                             | -         | 2.2.0   |
 

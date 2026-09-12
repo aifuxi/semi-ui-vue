@@ -30,11 +30,13 @@ The list supports iOS-like wheel selection and clicking an option. The AM/PM col
 
 `selectedIndex` is controlled state. The component reports a choice through `select`, and the consumer updates the index. Normal mode selects on click; wheel mode settles on the nearest enabled item. `cycled` only affects wheel mode.
 
-The upstream minute list uses `Math.random()` to disable items. This demo disables even minutes instead, retaining mixed enabled/disabled options while keeping data stable across the page, resets, and editor runs. This is a demo-data adaptation, not a completed strict React/Vue comparison.
+The upstream minute list uses `Math.random()` to disable items. This demo disables even minutes instead, retaining mixed enabled/disabled options while keeping data stable across the page, resets, and editor runs. The strict reference adapter uses the same sequence. This is a deterministic demo-data adaptation; formal status is determined by the batch evidence.
 
 Hour and minute selections are logged to the browser console. As upstream, the footer's `Ok` button only logs `close`; it does not close the list. React `header` and `footer` content becomes the `#header` and `#footer` slots, `onSelect` becomes `@select`, and each controlled index is stored in a `shallowRef`.
 
-## ScrollList API
+## API reference
+
+### ScrollList
 
 | Property                        | Type                 | Default           | Description                    |
 | ------------------------------- | -------------------- | ----------------- | ------------------------------ |
@@ -45,7 +47,7 @@ Hour and minute selections are logged to the browser console. As upstream, the f
 | `class` / `className` / `style` | Vue class/style type | -                 | Root styling                   |
 | default slot                    | `VNodeChild`         | -                 | One or more ScrollItem columns |
 
-## ScrollItem API
+### ScrollItem
 
 | Property                        | Type                                        | Default   | Description                                     |
 | ------------------------------- | ------------------------------------------- | --------- | ----------------------------------------------- |
@@ -61,8 +63,27 @@ Hour and minute selections are logged to the browser console. As upstream, the f
 
 The `select` payload is a shallow copy of the source item plus `index` and `type`. Disabled items never select.
 
-## Accessibility, themes, and SSR
+#### ItemData
+
+| Property    | Type                       | Description                                                 |
+| ----------- | -------------------------- | ----------------------------------------------------------- |
+| `value`     | `unknown`                  | Option value and fallback display content                   |
+| `text`      | `string`                   | Optional display text, taking priority over value           |
+| `disabled`  | `boolean`                  | Prevents selection                                          |
+| `transform` | `(value, text) => unknown` | Transforms selected content; overrides the column transform |
+
+## Accessibility
+
+### ARIA
 
 Each column uses `role="listbox"`; options use `role="option"` and `aria-disabled`. The pinned v2.102.0 Adapter implements neither arrow-key roving focus nor `aria-selected`, so the Vue port does not invent those behaviors. Light/dark colors come from `--semi-color-*`; RTL flips separators and wheel padding. Public imports and server rendering are DOM-safe; measurement and scrolling begin only after client mount and are cleaned up on unmount.
+
+## Design tokens
+
+ScrollList uses the pinned theme's `--semi-color-*` variables for text, disabled items, separators, and shades, with sizes and spacing supplied by component SCSS. The theme entry and standalone `scroll-list.css` retain the `.semi-scrolllist-*` contract.
+
+## React → Vue
+
+`children` becomes the default slot, and `header`/`footer` become named slots. `onSelect` becomes `@select`, retaining `index`, `type`, and source option fields; consumers update `selectedIndex`. Column labels use the `aria-label` supported by the pinned upstream ARIA section.
 
 See the [alignment matrix](https://github.com/aifuxi/semi-ui-vue/blob/master/docs/components/scroll-list/alignment.md) for source evidence, event ordering, visual coverage, and deviations, and [React → Vue](#react-vue) for framework migration.

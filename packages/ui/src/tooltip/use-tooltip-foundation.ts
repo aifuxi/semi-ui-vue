@@ -485,6 +485,8 @@ export function useTooltipFoundation(options: TooltipFoundationOptions) {
     (value, previous) => {
       if (mounted && value !== previous) foundation.calcPosition();
     },
+    // Like React componentDidUpdate, measure after the trigger slot commits its new DOM.
+    { flush: 'post' },
   );
   watch(
     () => [options.config.value.direction, options.runtimeProps.value.zIndex] as const,

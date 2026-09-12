@@ -5,7 +5,7 @@
       "index": 1,
       "zhCN": "scroll-list/zh-CN/Example1",
       "enUS": "scroll-list/en-US/Example1",
-      "notes": "中英文上游索引均为 1，无独有示例或多文件依赖。保留三列 wheel、初始索引 1、时段非循环、小时/分钟循环、type=1/2/3、选择日志及 Ok 的 close 日志。中文时段为上午/下午、标题为无限滚动列表；英文为 AM/PM 与 Infinite Scroll List。上游 Math.random 禁用分钟改为固定禁用偶数分钟，避免渲染/重置数据漂移；严格验收时须统一参考侧数据。header/footer 改具名插槽，onSelect 改 @select，受控索引改 shallowRef；补充双语 aria-label，保留默认 300px body 和 unset 边框/阴影。"
+      "notes": "中英文上游索引均为 1，无独有示例或多文件依赖。保留三列 wheel、初始索引 1、时段非循环、小时/分钟循环、type=1/2/3、选择日志及 Ok 的 close 日志。中文时段为上午/下午、标题为无限滚动列表；英文为 AM/PM 与 Infinite Scroll List。上游 Math.random 禁用分钟改为固定禁用偶数分钟，避免渲染/重置数据漂移；本批参考适配器使用同一序列，偶数分布为确定性演示适配，不是固定上游指定分布。header/footer 改具名插槽，onSelect 改 @select，受控索引改 shallowRef；补充双语 aria-label，保留默认 300px body 和 unset 边框/阴影。"
     }
   ],
   "chapters": [
@@ -20,5 +20,18 @@
     "ARIA",
     "设计变量"
   ],
-  "exclusions": []
+  "exclusions": [],
+  "review": {
+    "fingerprint": "bc09fbc1daff72cc6423036d174e7aae546beff8d1a14c5ad01e1b4f17b6be5a",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "逐项核对固定中英文唯一示例及如何引入、基本使用、API 参考、ScrollList、ScrollItem、ItemData、Accessibility/ARIA、设计变量；页面补齐缺少的 ItemData 字段表与设计变量说明。",
+      "API 根据公开 ScrollListProps/Slots、ScrollItemProps/Emits、ScrollItemData 与固定 Adapter 审阅：bodyHeight、header/footer、prefixCls、class/style、mode、cycled、selectedIndex、motion、transform、type、ariaLabel、list 与 select 载荷。",
+      "迁移覆盖 children→默认 slot、header/footer→具名 slot、onSelect→@select、调用方 shallowRef 更新受控 selectedIndex，以及双语 aria-label；新增 React → Vue 段落修复既有页内锚点目标。",
+      "固定随机分钟表达式仅在批次适配器中变为偶数分钟禁用，与现有 Vue 相同；无全局 Math.random 修改，真实选择与 close 回调保留。固定 ARIA 章节支持列标签，参考补同一双语标签后逐属性比较。",
+      "固定文档 aria-selected 描述与 Adapter 注释掉该属性矛盾，页面明确以源码为准；固定实现没有方向键或 roving tabindex，矩阵不增加基线外行为，也不屏蔽 aria 属性。"
+    ]
+  }
 }

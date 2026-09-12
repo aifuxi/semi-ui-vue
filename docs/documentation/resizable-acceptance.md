@@ -10,6 +10,8 @@ Group 操作全部三个手柄，验证固定/百分比/权重布局和约束后
 
 Basic 和 Nested 的短时 Toast 使用不加载编辑器的独立 context。Playwright 时钟在 context 内共享，双侧完成操作后仅推进一次 300ms；按固定 Toast 进入与堆叠 300ms 动效采样。逐条验证开始/结束两条堆叠 Toast 的文本、样式、几何与紧裁剪像素，推进原有业务定时器并等待实际卸载，再次触发完整流程。没有延长 duration、关闭 motion 或将模拟时钟带入 Monaco。
 
+300ms 终点采样先等待两侧 `semi-toast-animation-show` 实际消失，再测量完整类名、样式、几何与像素。固定 `semi-foundation/toast/animation.scss` 定义入场时长 300ms；React `_cssAnimation.handleAnimationEnd` 与 Vue `ToastHost.handleAnimationEnd → finishEnter` 均在动画结束后清除该类。仅设置动画 `currentTime=300` 不代表浏览器已派发 `animationend` 且两种渲染器均已提交更新；本轮复核出现过 React 保留入场类、Vue 已清除的边界差异。终态等待不推进额外业务时间、不引入固定延时、不更改 duration 或过滤类名；实际修正效果由定点诊断及正式矩阵验证。
+
 双语亮色 LTR 全部验证源码、重置、编辑器首帧、退出及再次打开。Basic 实际修改提示文字并运行；DynamicDirection 修改其响应式文本并运行，随后重置恢复。编辑器使用真实时钟。手柄按上游保留指针语义，不虚构键盘缩放支持；Switch 和 Button 沿用组件公开语义。
 
 React 参考直接编译固定双语 Markdown，仅补遗漏 Toast/Button 导入、已有固定 Resizable 命名导出入口及 IconTransfer → IconHandle。固定 Foundation 将标量 grid 转成双轴元组，而 React PropTypes 只声明数组；参考使用等价 [100,100] 避免原示例警告，Vue 保留 100。英文 Grid 源码原本已有完整闭合标签，不作修补。该家族和示例 Toast 不消费需要额外注入的语言表。
