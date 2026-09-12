@@ -114,5 +114,18 @@
       "item": "相关物料 / Related Material",
       "reason": "外部 semi-material-list 营销物料平台不在本地组件文档运行范围；全部14个live Demo均保留。"
     }
-  ]
+  ],
+  "review": {
+    "fingerprint": "1a75716a13c49c2ee8a49b5b152723a9416d363825bf2b452754961008aa7e92",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "逐项核对固定中英文 14 例与全部章节：标题/正文/额外操作、Meta+Popover、封面、边线与外边框、阴影、灵活内容、内部卡片、栅格、内置与自定义预加载、页签、操作区、卡片组与网格卡片组。",
+      "API 以固定 Adapter 源码为准：bordered/headerLine 默认 true，footerLine/loading 默认 false，shadows 为 hover|always；ReactNode props 映射为 VNodeChild prop 与同名具名插槽（插槽优先），Card.Meta 映射为 CardMeta 并保留组合成员；CardGroup spacing 运行时默认 16（上游表格写 12px），type=grid 时 spacing 归零。",
+      "示例按固定上游逐字对齐：英文「卡片组」引导文案恢复为 Slide to adjust the card spacing；封面与头像远程资源替换为现有本地 poster.svg / photo.svg。",
+      "参考适配器直接编译固定 Markdown，只把命名函数示例导出为默认导出，并把两处封面文件名（card-cover-docs-demo.jpeg 与 card-cover-docs-demo2.jpeg）统一映射到本地 poster.svg。",
+      "本批未修改 Card 组件；Tabs 的随机 data-uuid、Vue 的 checked 属性双写、aria-*-false 与图片绝对地址按限定等价项在验收记录中说明。"
+    ]
+  }
 }

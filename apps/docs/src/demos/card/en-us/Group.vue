@@ -14,7 +14,7 @@ function changeSpacing(value: number | number[]) {
 
 <template>
   <div>
-    <Text>Slide to adjust Card spacing</Text
+    <Text>Slide to adjust the card spacing</Text
     ><Slider
       :default-value="12"
       :max="40"
