@@ -72,9 +72,22 @@
   "exclusions": [],
   "assetAdaptations": [
     {
-      "source": "固定上游远程照片、背景与裁切素材",
-      "replacement": "现有 /demos/photo.svg、one.svg、two.svg、poster.svg",
-      "reason": "任务要求使用确定性同源资产，避免网络/CORS依赖；保留原尺寸与操作，图像内容和视觉与上游不同。"
+      "source": "固定上游第 1–4 项 other/image.png（720×400）及第 5 项 root-web-sites/abstract.jpg（1440×800）",
+      "replacement": "/demos/cropper-image.svg（720×400）、/demos/cropper-abstract.svg（1440×800）",
+      "reason": "遵守 ADR0029，继续使用自有确定性 SVG 图案替换照片内容；两个专用素材恢复上游 intrinsic 尺寸和 1.8:1 宽高比。视觉验收使用同尺寸同源替换素材，照片本身不宣称上游像素一致；裁切框、旋转、缩放、拖拽与导出均保持固定几何。"
     }
-  ]
+  ],
+  "review": {
+    "fingerprint": "3907dce60027681330bd4fc317667b1ddb55530c7327540f40b01b56dedc8f5f",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "逐项审阅固定中英文 5 项 live 示例、全部章节和 Methods，保留英文 Preview 的原中文控件文案；参考适配仅补 Slider 导入、默认导出与明确登记的同源素材。",
+      "核对 props 默认值、update:zoom/zoomChange 事件、受控 rotate、CropperMethods 暴露和 preview 挂载容器契约；组件无内容插槽。imgProps 在基线和当前实现均仅声明不透传，双语正文如实说明。",
+      "迁移表核对 onZoomChange → @zoom-change/v-model:zoom、React ref → useTemplateRef<CropperMethods>、DOM 查询 preview → 模板 ref 回调；cropperBoxCls 的兼容别名单独记录。",
+      "修复既有素材比例从 800×450 到固定基线两图的 720×400、1440×800；素材内容差异限于 assetAdaptations，不放宽组件样式、几何、截图或导出门槛。Preview 恢复空输出图片，资源 decode 仅排除没有 src 的占位节点，节点本身仍被完整比较。",
+      "40 项完整双语明暗 LTR/RTL 矩阵覆盖真实拖拽、resize、形状、受控滑杆键盘焦点与裁切输出；双语 light/LTR 检查文档源码/重置/在线编辑恢复。正式结果待统一 runner，准备不计入 accepted。"
+    ]
+  }
 }

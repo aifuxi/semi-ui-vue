@@ -20,14 +20,13 @@ const shape = shallowRef<'rect' | 'round' | 'roundRect'>('rect');
       ><Radio value="roundRect">roundRect</Radio></RadioGroup
     ><Cropper
       ref="cropper"
-      src="/demos/photo.svg"
+      src="/demos/cropper-image.svg"
       style="width: 550px; height: 300px; margin: 20px"
       :shape="shape"
     /><Button @click="crop">裁切</Button><br /><br /><img
       v-if="cropperUrl"
       :src="cropperUrl"
       style="height: 400px"
-      alt="Cropped image"
     />
   </div>
 </template>

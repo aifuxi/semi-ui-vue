@@ -57,7 +57,7 @@ The default is the move-in Trigger, which can be expanded by getting focus, clic
 
 ### Trigger Event
 
-Click on the menu item to trigger different mouse events, support `onClick`, `onMouseEnter`, `onMouseLeave` and `onContextMenu`.
+Click on the menu item to trigger different mouse events, support `@click`, `@mouseenter`, `@mouseleave` and `@contextmenu`.
 
 ::demo-block{demo="dropdown/en-us/Events" title="Trigger Event"}
 ::
@@ -95,7 +95,7 @@ Can use the menu attribute to configure the Dropdown content menu
 | style                | Pop-up layer inline style                                                                                                                                                                                                                     | object                   |                     |            |
 | showTick             | Whether to automatically display the checked tick on the left of the active Dropdown.Item item                                                                                                                                                | boolean                  | false               | -          |
 | stopPropagation      | Whether to prevent the click event on the pop-up layer from bubbling                                                                                                                                                                          | boolean                  | false               | -          |
-| trigger              | The act of triggering a drop-down, optional 'hover', 'focus', 'click', 'custom'                                                                                                                                                               | string                   | 'hover'             |            |
+| trigger              | The act of triggering a drop-down, optional 'hover', 'focus', 'click', 'custom', 'contextMenu'                                                                                                                                                | string                   | 'hover'             |            |
 | visible              | Display the menu or not, need to be used with trigger custom                                                                                                                                                                                  | boolean                  |                     |            |
 | zIndex               | Pop-up layer z-index value                                                                                                                                                                                                                    | number                   | 1060                |            |
 | @click-outside       | Callback when the pop-up layer is in the display state and the non-Children, non-floating layer inner area is clicked (only valid when trigger is custom, click)                                                                              | (e:event) => void        |                     | **2.1.0**  |

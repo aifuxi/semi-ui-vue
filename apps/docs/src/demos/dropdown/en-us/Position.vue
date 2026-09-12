@@ -11,36 +11,36 @@ import '@aifuxi/semi-theme-default/tag.css';
   <ConfigProvider :locale="enUS"
     ><div>
       <Dropdown :position="'bottom'">
-        <Tag> Bottom</Tag>
+        <Tag>Bottom</Tag>
         <template #content
           ><DropdownMenu>
-            <DropdownItem> Menu Item 1</DropdownItem>
-            <DropdownItem> Menu Item 2</DropdownItem>
-            <DropdownItem> Menu Item 3</DropdownItem>
+            <DropdownItem>Menu Item 1</DropdownItem>
+            <DropdownItem>Menu Item 2</DropdownItem>
+            <DropdownItem>Menu Item 3</DropdownItem>
           </DropdownMenu></template
         ></Dropdown
       >
       <br />
       <br />
       <Dropdown :position="'bottomLeft'">
-        <Tag> bottomLeft</Tag>
+        <Tag>bottomLeft</Tag>
         <template #content
           ><DropdownMenu>
-            <DropdownItem> Menu Item 1</DropdownItem>
-            <DropdownItem> Menu Item 2</DropdownItem>
-            <DropdownItem> Menu Item 3</DropdownItem>
+            <DropdownItem>Menu Item 1</DropdownItem>
+            <DropdownItem>Menu Item 2</DropdownItem>
+            <DropdownItem>Menu Item 3</DropdownItem>
           </DropdownMenu></template
         ></Dropdown
       >
       <br />
       <br />
       <Dropdown :position="'bottomRight'">
-        <Tag> bottomRight</Tag>
+        <Tag>bottomRight</Tag>
         <template #content
           ><DropdownMenu>
-            <DropdownItem> Menu Item 1</DropdownItem>
-            <DropdownItem> Menu Item 2</DropdownItem>
-            <DropdownItem> Menu Item 3</DropdownItem>
+            <DropdownItem>Menu Item 1</DropdownItem>
+            <DropdownItem>Menu Item 2</DropdownItem>
+            <DropdownItem>Menu Item 3</DropdownItem>
           </DropdownMenu></template
         ></Dropdown
       >

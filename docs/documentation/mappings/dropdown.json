@@ -11,7 +11,7 @@
       "index": 2,
       "zhCN": "dropdown/zh-cn/Nested",
       "enUS": "dropdown/en-us/Nested",
-      "notes": "保留rightTop/leftTop两个嵌套菜单；useMemo节点改重复具名插槽。"
+      "notes": "保留rightTop/leftTop两个嵌套菜单；useMemo节点改重复具名插槽。中文子菜单为Nested Menu Item，英文保留固定Menu Item文案。"
     },
     {
       "index": 3,
@@ -23,7 +23,7 @@
       "index": 4,
       "zhCN": "dropdown/zh-cn/Trigger",
       "enUS": "dropdown/en-us/Trigger",
-      "notes": "保留hover/focus/click/contextMenu四种触发；菜单内容用content插槽。"
+      "notes": "中文保留hover/focus/click/contextMenu四种触发，英文按固定原块保留hover/focus/click三种。参考仅对英文第4块唯一Dropdown.Menu tabindex={-1}笔误改为React tabIndex={-1}，最终DOM属性和值不变；菜单内容用content插槽。"
     },
     {
       "index": 5,
@@ -65,5 +65,19 @@
       "item": "相关物料 / Related Material",
       "reason": "外部 semi-material-list 营销平台入口不接入本地文档；全部live Demo保留。"
     }
-  ]
+  ],
+  "review": {
+    "fingerprint": "784803d26c846305b1e324569a1ed0f82a0c76419cee34299d1b3dff6664ac72",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "核对固定双语各 6 项 live 示例及章节顺序；保留 Basic 分组语言差异、三种位置、四种触发、四种事件、JSON showTick/active。",
+      "核对 Dropdown/Item/Menu/Title/Divider 公开 props、emits、slots、ref 与运行默认值；正文事件改为 Vue 模板语法，英文 trigger API 补 contextMenu；JSON 对象事件字段保持 Vue onContextmenu/onMouseenter 等命名。",
+      "迁移表核对 render/content、children 默认插槽、组合成员、menu 判别联合、v-model:visible、浮层与 Item 事件、icon 和 class；Portal 容器与 SSR 生命周期说明保留。",
+      "48 项矩阵逐项比较双语明暗及 RTL，覆盖浮层 wrapper 根与相对 trigger 几何、嵌套左右菜单、关闭卸载重开、键盘焦点跳过禁用和事件 Toast。参考适配仅补独立 ESM 导出；不改行为。",
+      "未声明视觉 deviation。正式证据由主 agent 完整矩阵生成，准备与静态检查不计为 accepted。",
+      "英文Trigger固定JSX的Dropdown.Menu tabindex笔误由独立adapter限定en-us/example4且校验唯一命中后修为tabIndex；保持DOM tabindex=-1，不屏蔽console。Trigger中文四种/英文三种，Nested中英文子菜单文案差异均显式记录并断言。"
+    ]
+  }
 }

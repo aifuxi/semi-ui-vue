@@ -49,7 +49,6 @@ const generatedPopupId = `semi-dropdown-${useId()}`;
 const pendingNotification = shallowRef<boolean | undefined>(undefined);
 let enterTimer: ReturnType<typeof setTimeout> | undefined;
 let leaveTimer: ReturnType<typeof setTimeout> | undefined;
-let restoreFocusAfterClose = false;
 
 function hasRawProp(key: keyof DropdownProps): boolean {
   const kebabKey = String(key).replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
@@ -179,13 +178,7 @@ function handleVisibleChange(visible: boolean): void {
       const id = tooltipRef.value?.getPopupId();
       if (id) foundation.setFocusToFirstMenuItem(id);
     });
-  } else if (
-    !visible &&
-    runtimeTrigger.value !== 'custom' &&
-    resolveProp('returnFocusOnClose', true)
-  ) {
-    restoreFocusAfterClose = true;
-    resolveCurrentTrigger()?.focus();
+  } else if (!visible) {
     clearEnterTimer();
   }
 }
@@ -194,6 +187,8 @@ function handleTriggerKeydown(event: KeyboardEvent): void {
   rememberTrigger(event);
   if (event.key === 'Escape' && runtimeVisible.value && resolveProp('closeOnEsc', true)) {
     emit('escKeydown', event);
+    if (runtimeTrigger.value !== 'custom' && resolveProp('returnFocusOnClose', true))
+      resolveCurrentTrigger()?.focus();
     requestVisible(false);
     return;
   }
@@ -314,7 +309,6 @@ function handlePopupKeydown(event: KeyboardEvent): void {
   if (event.key !== 'Escape' || !resolveProp('closeOnEsc', true)) return;
   emit('escKeydown', event);
   if (resolveProp('returnFocusOnClose', true)) {
-    restoreFocusAfterClose = true;
     resolveCurrentTrigger()?.focus();
   }
   // Focus returns before hiding, matching the pinned Tooltip Escape order.
@@ -322,10 +316,8 @@ function handlePopupKeydown(event: KeyboardEvent): void {
 }
 
 function handleAfterClose(): void {
-  if (restoreFocusAfterClose) {
-    restoreFocusAfterClose = false;
-    resolveCurrentTrigger()?.focus();
-  }
+  // Focus is restored before hiding, as in the pinned Tooltip Escape path.
+  // The user may move focus during the exit animation; do not steal it back here.
   emit('afterClose');
 }
 

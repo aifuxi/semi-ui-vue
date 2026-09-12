@@ -15,7 +15,7 @@ function crop() {
     <strong>showResizeBox = false，并修改边框颜色</strong
     ><Cropper
       ref="cropper"
-      src="/demos/photo.svg"
+      src="/demos/cropper-image.svg"
       style="width: 550px; height: 300px; margin: 20px"
       :show-resize-box="false"
       :cropper-box-style="{ outlineColor: 'var(--semi-color-bg-0)' }"
@@ -23,7 +23,6 @@ function crop() {
       v-if="cropperUrl"
       :src="cropperUrl"
       style="height: 400px"
-      alt="Cropped image"
     />
   </div>
 </template>

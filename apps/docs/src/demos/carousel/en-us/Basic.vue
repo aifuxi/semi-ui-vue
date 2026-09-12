@@ -36,7 +36,7 @@ const images = ['/demos/one.svg', '/demos/two.svg', '/demos/photo.svg'];
           vertical
           align="start"
           spacing="medium"
-          :style="{ position: 'absolute', top: '100px', left: '100px' }"
+          :style="{ position: 'absolute', top: '100px', left: '100px', color: '#1C1F23' }"
           ><span
             style="width: 87px; height: 31px; display: inline-block"
             aria-hidden="true"

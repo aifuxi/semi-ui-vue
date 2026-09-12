@@ -104,5 +104,19 @@
       "replacement": "现有 /demos/photo.svg、one.svg、two.svg、poster.svg",
       "reason": "任务要求使用确定性同源资产，避免网络/CORS依赖；保留原尺寸与操作，图像内容和视觉与上游不同。"
     }
-  ]
+  ],
+  "review": {
+    "fingerprint": "12a54a98f9da08b2945de6c35b7ed14c27404fe5cb160a8b80b3c21b1654a113",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "逐项核对固定中英文8项、如何引入、API、Methods、设计变量；Basic补齐titleStyle颜色，Theme移除上游不存在的多余Space。",
+      "公开Vue类型和实现核对全部props默认值、change(index,preIndex)、default/leftArrow/rightArrow slots、CarouselMethods；arrowProps为对象而非函数、没有activeIndex v-model。",
+      "API和迁移保留Vue VNodeChild、模板ref和change回写；补充Foundation的interval+speed周期与400ms hover防抖。",
+      "参考仅补模块和hook入口，并统一已记录的背景图/Logo适配；严格64项矩阵覆盖双语明暗RTL、方向切换、控件和受控回写、自动播放暂停恢复及fade中点/终态。",
+      "文档源码/重置/编辑/退出恢复使用独立 BrowserContext 的真实时钟页面；正式有效状态必须由完整runner生成，本记录不追认accepted。",
+      "RadioGroup按示例独立显式name隔离整页其他Demo的原生单选checked干扰；参考侧同例同名，同例内部所有组仍同名，原生checked继续精确测量。ARIA引用映射至实际定义，交互操作可见标签并按可访问名称断言。"
+    ]
+  }
 }

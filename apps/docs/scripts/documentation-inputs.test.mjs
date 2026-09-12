@@ -262,7 +262,7 @@ test('批次适配器的本地共享 helper 被递归追踪，未知动态导入
   assert.ok(result.files.includes(foundationTable));
 });
 
-test('实际批次仅纳入自身 React 适配器；Table 仅影响 Locale 与 Skeleton，Tooltip 和共享样式影响全部批次', async () => {
+test('实际批次仅纳入自身 React 适配器及固定局部依赖；Table 仅影响 Locale 与 Skeleton，Tooltip 和共享样式影响全部批次', async () => {
   const batches = await loadBatches();
   const inputs = await Promise.all(
     batches.map(async (batch) => ({ batch, ...(await batchInputs(batch)) })),
@@ -271,7 +271,13 @@ test('实际批次仅纳入自身 React 适配器；Table 仅影响 Locale 与 S
     assert.deepEqual(fallback, [], batch.id);
     assert.deepEqual(
       files.filter((file) => file.startsWith('apps/reference-react/docs-adapters/')),
-      [`apps/reference-react/docs-adapters/${batch.id}.mjs`],
+      batch.id === 'descriptions'
+        ? [
+            'apps/reference-react/docs-adapters/descriptions-vertical.mjs',
+            'apps/reference-react/docs-adapters/descriptions.mjs',
+          ]
+        : [`apps/reference-react/docs-adapters/${batch.id}.mjs`],
+      batch.id,
     );
   }
   const affected = (file) =>

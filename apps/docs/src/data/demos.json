@@ -5527,6 +5527,7 @@
     "dependencies": [
       "@aifuxi/semi-theme-default/button.css",
       "@aifuxi/semi-theme-default/cropper.css",
+      "@aifuxi/semi-theme-default/image.css",
       "@aifuxi/semi-theme-default/slider.css",
       "@aifuxi/semi-ui-vue/button",
       "@aifuxi/semi-ui-vue/cropper",
@@ -5603,6 +5604,7 @@
     "dependencies": [
       "@aifuxi/semi-theme-default/button.css",
       "@aifuxi/semi-theme-default/cropper.css",
+      "@aifuxi/semi-theme-default/image.css",
       "@aifuxi/semi-theme-default/slider.css",
       "@aifuxi/semi-ui-vue/button",
       "@aifuxi/semi-ui-vue/cropper",

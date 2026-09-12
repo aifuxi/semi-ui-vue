@@ -15,26 +15,26 @@ import { IconToken } from '@aifuxi/semi-icons-lab-vue';
       <template #content
         ><DropdownMenu>
           <Dropdown :position="'rightTop'">
-            <DropdownItem> Menu Item 1</DropdownItem>
+            <DropdownItem>Menu Item 1</DropdownItem>
             <template #content
               ><DropdownMenu>
-                <DropdownItem> Nested Menu Item 1</DropdownItem>
-                <DropdownItem> Nested Menu Item 2</DropdownItem>
-                <DropdownItem> Nested Menu Item 3</DropdownItem>
+                <DropdownItem>Nested Menu Item 1</DropdownItem>
+                <DropdownItem>Nested Menu Item 2</DropdownItem>
+                <DropdownItem>Nested Menu Item 3</DropdownItem>
               </DropdownMenu></template
             ></Dropdown
           >
           <Dropdown :position="'leftTop'">
-            <DropdownItem> Menu Item 2</DropdownItem>
+            <DropdownItem>Menu Item 2</DropdownItem>
             <template #content
               ><DropdownMenu>
-                <DropdownItem> Nested Menu Item 1</DropdownItem>
-                <DropdownItem> Nested Menu Item 2</DropdownItem>
-                <DropdownItem> Nested Menu Item 3</DropdownItem>
+                <DropdownItem>Nested Menu Item 1</DropdownItem>
+                <DropdownItem>Nested Menu Item 2</DropdownItem>
+                <DropdownItem>Nested Menu Item 3</DropdownItem>
               </DropdownMenu></template
             ></Dropdown
           >
-          <DropdownItem> Menu Item 3</DropdownItem>
+          <DropdownItem>Menu Item 3</DropdownItem>
         </DropdownMenu></template
       ></Dropdown
     >

@@ -51,13 +51,11 @@ const theme = shallowRef<'primary' | 'light' | 'dark'>('primary');
           ></Space
         >
       </div></Carousel
-    ><br /><Space vertical align="start"
-      ><Space
-        ><div>Theme</div>
-        <RadioGroup v-model="theme" type="button"
-          ><Radio value="primary">primary</Radio><Radio value="light">light</Radio
-          ><Radio value="dark">dark</Radio></RadioGroup
-        ></Space
+    ><br /><Space
+      ><div>theme</div>
+      <RadioGroup v-model="theme" name="carousel-demo-2" type="button"
+        ><Radio value="primary">primary</Radio><Radio value="light">light</Radio
+        ><Radio value="dark">dark</Radio></RadioGroup
       ></Space
     >
   </div>

@@ -35,6 +35,8 @@ Three themes are defined by default: `primary`、`light`、`dark`
 ::demo-block{demo="carousel/en-us/Theme" title="Theme Switch"}
 ::
 
+RadioGroup names are scoped to each demo to avoid native checked-state interference from other demos on the page. Groups within the same demo retain their original name relationship.
+
 ### Indicators
 
 Indicators can be adjusted for type, position, size  
@@ -127,6 +129,8 @@ Control the switching time between two pictures by giving the speed attribute, t
 | `props`    | Parameters on the arrow div, including style, onClick events, etc | `HTMLAttributes & Record<string, unknown>` | `—`     |
 
 Use direct default-slot children as slides. Customize arrows using `#leftArrow` / `#rightArrow` or arrowProps containing Vue nodes. `@change(index, preIndex)` reports selection changes. Controlled activeIndex requires updating the parent state; there is no activeIndex v-model. Exposed methods use the exported CarouselMethods type with a template ref. arrowProps is an object, not a function.
+
+The actual autoplay cycle is `interval + speed`; hover enter/leave use a 400 ms debounce. The default trigger is `click`.
 
 ## Methods
 

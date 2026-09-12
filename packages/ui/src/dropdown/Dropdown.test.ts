@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
 
 import { semiGlobal } from '../config-provider';
+import { Tag } from '../tag';
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTitle } from './index';
 
 async function flushDropdown(): Promise<void> {
@@ -37,6 +38,99 @@ describe('Dropdown', () => {
     document.body.replaceChildren();
     semiGlobal.config = {};
     rs.restoreAllMocks();
+  });
+
+  it.each([undefined, -1, 2])('为组件触发器保留描述关联和显式 tabIndex=%s', async (tabIndex) => {
+    const wrapper = mount(Dropdown, {
+      props: { trigger: 'custom', visible: true, motion: false, wrapperId: 'tag-menu' },
+      slots: {
+        default: () => h(Tag, tabIndex === undefined ? {} : { tabIndex }, () => '菜单'),
+        content: () => h(DropdownMenu, null, () => h(DropdownItem, null, () => '操作')),
+      },
+    });
+    await flushDropdown();
+    const trigger = wrapper.get('.semi-tag');
+    expect(trigger.attributes('tabindex')).toBe(String(tabIndex ?? 0));
+    expect(trigger.attributes('aria-describedby')).toBe('tag-menu');
+    expect(
+      document
+        .getElementById(trigger.attributes('aria-describedby')!)
+        ?.classList.contains('semi-dropdown-wrapper'),
+    ).toBe(true);
+    wrapper.unmount();
+  });
+
+  it('模板触发器的显式描述和 tabIndex 不被默认值覆盖', async () => {
+    const host = defineComponent({
+      components: { Dropdown, Tag },
+      template:
+        '<Dropdown wrapper-id="template-menu"><Tag :tab-index="-1" aria-describedby="user-description">菜单</Tag></Dropdown>',
+    });
+    const wrapper = mount(host);
+    expect(wrapper.get('.semi-tag').attributes()).toMatchObject({
+      tabindex: '-1',
+      'aria-describedby': 'user-description',
+      'data-popupid': 'template-menu',
+    });
+    wrapper.unmount();
+  });
+
+  it.each([true, false])(
+    '退出动画结束不抢回用户焦点，returnFocusOnClose=%s',
+    async (returnFocusOnClose) => {
+      const wrapper = mount(Dropdown, {
+        attachTo: document.body,
+        props: { trigger: 'click', motion: true, returnFocusOnClose },
+        slots: {
+          default: () => h('button', { id: 'closing-trigger' }, '菜单'),
+          content: () => h(DropdownMenu, null, () => h(DropdownItem, null, () => '操作')),
+        },
+      });
+      const outside = document.createElement('button');
+      outside.textContent = '下一项操作';
+      document.body.append(outside);
+      await wrapper.get('button').trigger('click');
+      await flushDropdown();
+      const popup = document.body.querySelector<HTMLElement>('.semi-dropdown-wrapper')!;
+      popup.dispatchEvent(new Event('animationend'));
+      await nextTick();
+      const item = popup.querySelector<HTMLElement>('[role="menuitem"]')!;
+      item.focus();
+      item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'Escape' }));
+      await flushDropdown();
+      const trigger = wrapper.get('button').element;
+      expect(document.activeElement === trigger).toBe(returnFocusOnClose);
+      expect(popup.classList.contains('semi-tooltip-animation-hide')).toBe(true);
+      // User moves on while the real exit phase is still present.
+      outside.focus();
+      expect(document.activeElement).toBe(outside);
+      popup.dispatchEvent(new Event('animationend'));
+      await flushDropdown();
+      expect(document.body.querySelector('.semi-dropdown-wrapper')).toBeNull();
+      expect(wrapper.emitted('afterClose')).toHaveLength(1);
+      expect(document.activeElement).toBe(outside);
+      wrapper.unmount();
+      outside.remove();
+    },
+  );
+
+  it('custom trigger 的合成 Escape 不触发新增的回焦行为', async () => {
+    const wrapper = mount(Dropdown, {
+      attachTo: document.body,
+      props: { trigger: 'custom', visible: true, motion: false },
+      slots: {
+        default: () => h('button', '菜单'),
+        content: () => h(DropdownMenu, null, () => h(DropdownItem, null, () => '操作')),
+      },
+    });
+    await flushDropdown();
+    const outside = document.createElement('button');
+    document.body.append(outside);
+    outside.focus();
+    await wrapper.get('button').trigger('keydown', { key: 'Escape' });
+    expect(document.activeElement).toBe(outside);
+    wrapper.unmount();
+    outside.remove();
   });
 
   it('hover 仅由焦点打开且指针不在触发器上时遵守上游插入后关闭规则', async () => {
@@ -109,7 +203,7 @@ describe('Dropdown', () => {
       'aria-haspopup': 'true',
       'data-popupid': 'dropdown-fixed',
     });
-    expect(trigger.attributes('aria-describedby')).toBeUndefined();
+    expect(trigger.attributes('aria-describedby')).toBe('dropdown-fixed');
     expect(trigger.classes()).toContain('semi-dropdown-showing');
     expect(document.body.querySelector('.semi-portal')?.getAttribute('style')).toContain(
       'z-index: 2000',
@@ -382,6 +476,12 @@ describe('Dropdown', () => {
     });
     mount(Host);
     await flushDropdown();
+    const nestedTrigger = document.body.querySelector<HTMLElement>('[data-popupid="inner-menu"]')!;
+    expect(nestedTrigger.getAttribute('role')).toBe('menuitem');
+    expect(nestedTrigger.getAttribute('tabindex')).toBe('-1');
+    expect(nestedTrigger.hasAttribute('aria-haspopup')).toBe(false);
+    expect(nestedTrigger.hasAttribute('aria-describedby')).toBe(false);
+    expect(nestedTrigger.hasAttribute('aria-expanded')).toBe(false);
     const nested = document.body.querySelectorAll<HTMLElement>('.semi-dropdown-item')[1];
     nested?.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, button: 0 }));
     expect(nestedClick).toHaveBeenCalledOnce();

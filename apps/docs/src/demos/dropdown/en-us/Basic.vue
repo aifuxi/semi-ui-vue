@@ -33,7 +33,7 @@ import { IconToken } from '@aifuxi/semi-icons-lab-vue';
       ></Button>
       <template #content
         ><DropdownMenu>
-          <DropdownTitle> Group 1</DropdownTitle>
+          <DropdownTitle>Group 1</DropdownTitle>
           <DropdownItem>
             Menu Item 1
             <HotKeys
@@ -59,7 +59,7 @@ import { IconToken } from '@aifuxi/semi-icons-lab-vue';
             <template #icon><IconForward /></template
           ></DropdownItem>
           <DropdownDivider />
-          <DropdownTitle> Group 2</DropdownTitle>
+          <DropdownTitle>Group 2</DropdownTitle>
           <DropdownItem type="tertiary">
             Tertiary text<template #icon><IconRefresh /></template
           ></DropdownItem>

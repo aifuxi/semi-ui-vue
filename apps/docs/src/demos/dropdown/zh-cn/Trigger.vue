@@ -9,12 +9,12 @@ import '@aifuxi/semi-theme-default/tag.css';
 <template>
   <div>
     <Dropdown :trigger="'hover'" :position="'bottomLeft'">
-      <Tag> Hover me</Tag>
+      <Tag>Hover me</Tag>
       <template #content
         ><DropdownMenu>
-          <DropdownItem> Menu Item 1</DropdownItem>
-          <DropdownItem> Menu Item 2</DropdownItem>
-          <DropdownItem> Menu Item 3</DropdownItem>
+          <DropdownItem>Menu Item 1</DropdownItem>
+          <DropdownItem>Menu Item 2</DropdownItem>
+          <DropdownItem>Menu Item 3</DropdownItem>
         </DropdownMenu></template
       ></Dropdown
     >
@@ -33,9 +33,9 @@ import '@aifuxi/semi-theme-default/tag.css';
       </div>
       <template #content
         ><DropdownMenu :tabindex="-1">
-          <DropdownItem> Menu Item 1</DropdownItem>
-          <DropdownItem> Menu Item 2</DropdownItem>
-          <DropdownItem> Menu Item 3</DropdownItem>
+          <DropdownItem>Menu Item 1</DropdownItem>
+          <DropdownItem>Menu Item 2</DropdownItem>
+          <DropdownItem>Menu Item 3</DropdownItem>
         </DropdownMenu></template
       ></Dropdown
     >
@@ -45,9 +45,9 @@ import '@aifuxi/semi-theme-default/tag.css';
       <Button> Click me</Button>
       <template #content
         ><DropdownMenu>
-          <DropdownItem> Menu Item 1</DropdownItem>
-          <DropdownItem> Menu Item 2</DropdownItem>
-          <DropdownItem> Menu Item 3</DropdownItem>
+          <DropdownItem>Menu Item 1</DropdownItem>
+          <DropdownItem>Menu Item 2</DropdownItem>
+          <DropdownItem>Menu Item 3</DropdownItem>
         </DropdownMenu></template
       ></Dropdown
     >
@@ -59,9 +59,9 @@ import '@aifuxi/semi-theme-default/tag.css';
       </Button>
       <template #content
         ><DropdownMenu>
-          <DropdownItem> Menu Item 1</DropdownItem>
-          <DropdownItem> Menu Item 2</DropdownItem>
-          <DropdownItem> Menu Item 3</DropdownItem>
+          <DropdownItem>Menu Item 1</DropdownItem>
+          <DropdownItem>Menu Item 2</DropdownItem>
+          <DropdownItem>Menu Item 3</DropdownItem>
         </DropdownMenu></template
       ></Dropdown
     >

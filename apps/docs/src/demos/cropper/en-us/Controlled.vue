@@ -19,7 +19,7 @@ const zoom = shallowRef(1);
     <Cropper
       ref="cropper"
       v-model:zoom="zoom"
-      src="/demos/photo.svg"
+      src="/demos/cropper-image.svg"
       style="width: 550px; height: 300px; margin: 20px"
       :rotate="rotate"
     />
@@ -51,7 +51,6 @@ const zoom = shallowRef(1);
       v-if="cropperUrl"
       :src="cropperUrl"
       style="height: 400px"
-      alt="Cropped image"
     />
   </div>
 </template>

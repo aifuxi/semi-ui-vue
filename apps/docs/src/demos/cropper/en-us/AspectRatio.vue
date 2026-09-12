@@ -14,14 +14,13 @@ function crop() {
   <div>
     <Cropper
       ref="cropper"
-      src="/demos/photo.svg"
+      src="/demos/cropper-image.svg"
       style="width: 550px; height: 300px; margin: 20px"
       :aspect-ratio="3 / 4"
     /><Button @click="crop">Get Cropped Image</Button><br /><br /><img
       v-if="cropperUrl"
       :src="cropperUrl"
       style="height: 400px"
-      alt="Cropped image"
     />
   </div>
 </template>

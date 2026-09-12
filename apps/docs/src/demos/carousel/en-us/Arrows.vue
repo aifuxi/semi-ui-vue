@@ -59,13 +59,13 @@ const arrowType = shallowRef<'always' | 'hover'>('always');
       </div></Carousel
     ><br /><Space vertical align="start"
       ><Space
-        ><div>Show Arrow</div>
-        <RadioGroup v-model="show" type="button"
+        ><div>arrow</div>
+        <RadioGroup v-model="show" name="carousel-demo-4" type="button"
           ><Radio :value="true">show</Radio><Radio :value="false">hide</Radio></RadioGroup
         ></Space
       ><Space
-        ><div>Arrow Type</div>
-        <RadioGroup v-model="arrowType" type="button"
+        ><div>show time</div>
+        <RadioGroup v-model="arrowType" name="carousel-demo-4" type="button"
           ><Radio value="always">always</Radio><Radio value="hover">hover</Radio></RadioGroup
         ></Space
       ></Space

@@ -35,6 +35,8 @@ import '@aifuxi/semi-theme-default/carousel.css';
 ::demo-block{demo="carousel/zh-cn/Theme" title="主题切换"}
 ::
 
+示例中的 RadioGroup 使用每个示例独立的 name，避免同页其他示例通过原生单选组影响 checked；同一示例内部的组名关系保持不变。
+
 ### 指示器
 
 指示器可以调节类型、位置、尺寸  
@@ -127,6 +129,8 @@ import '@aifuxi/semi-theme-default/carousel.css';
 | `props`    | 箭头div上的可传参数，包括style, onClick事件等 | `HTMLAttributes & Record<string, unknown>` | `—`    |
 
 默认插槽的直接子节点作为每张轮播内容。通过 #leftArrow/#rightArrow 或包含 Vue 节点的 arrowProps 定制箭头。`@change(index, preIndex)` 通知切换；受控 activeIndex 需要父层更新，没有 activeIndex v-model。实例方法可通过 CarouselMethods 类型的模板 ref 调用。arrowProps 是对象，不是函数。
+
+自动播放相邻切换的实际周期是 `interval + speed`；悬停与离开通过 400 ms 防抖处理。默认 `trigger="click"`。
 
 ## Methods
 

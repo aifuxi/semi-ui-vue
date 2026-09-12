@@ -11,30 +11,30 @@ import '@aifuxi/semi-theme-default/tag.css';
   <ConfigProvider :locale="enUS"
     ><div :style="{ margin: '100px' }">
       <Dropdown>
-        <Tag> Hover Me</Tag>
+        <Tag>Hover Me</Tag>
         <template #content
           ><DropdownMenu>
             <Dropdown :position="'rightTop'">
-              <DropdownItem> Menu Item 1</DropdownItem>
+              <DropdownItem>Menu Item 1</DropdownItem>
               <template #content
                 ><DropdownMenu>
-                  <DropdownItem> Menu Item 1</DropdownItem>
-                  <DropdownItem> Menu Item 2</DropdownItem>
-                  <DropdownItem> Menu Item 3</DropdownItem>
+                  <DropdownItem>Menu Item 1</DropdownItem>
+                  <DropdownItem>Menu Item 2</DropdownItem>
+                  <DropdownItem>Menu Item 3</DropdownItem>
                 </DropdownMenu></template
               ></Dropdown
             >
             <Dropdown :position="'leftTop'">
-              <DropdownItem> Menu Item 2</DropdownItem>
+              <DropdownItem>Menu Item 2</DropdownItem>
               <template #content
                 ><DropdownMenu>
-                  <DropdownItem> Menu Item 1</DropdownItem>
-                  <DropdownItem> Menu Item 2</DropdownItem>
-                  <DropdownItem> Menu Item 3</DropdownItem>
+                  <DropdownItem>Menu Item 1</DropdownItem>
+                  <DropdownItem>Menu Item 2</DropdownItem>
+                  <DropdownItem>Menu Item 3</DropdownItem>
                 </DropdownMenu></template
               ></Dropdown
             >
-            <DropdownItem> Menu Item 3</DropdownItem>
+            <DropdownItem>Menu Item 3</DropdownItem>
           </DropdownMenu></template
         ></Dropdown
       >

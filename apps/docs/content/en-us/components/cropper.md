@@ -92,6 +92,8 @@ Use `preview` to specify a container that displays the crop result in real time.
 
 Use `v-model:zoom`, or :zoom with `@zoom-change(zoom)`, for controlled zoom. Rotation and aspect ratio are controlled through props. `getCropperCanvas(): HTMLCanvasElement` is exposed through a CropperMethods template ref; call it after the image has loaded. A preview callback returns a real mounted container. cropperBoxCls remains a compatibility alias for cropperBoxClassName.
 
+The component exposes no content slots. `imgProps` is declared by the pinned API, but the pinned implementation does not forward it to its internal images.
+
 ### Methods
 
 Methods bound to component instances can be called through ref to achieve certain special interactions

@@ -27,7 +27,7 @@ import '@aifuxi/semi-theme-default/dropdown.css';
 
 ### 基本用法
 
-- 在 Dropdown 的 children 中为它的 Trigger 触发器：默认为 hover 展示，可通过 props.trigger 修改为 `click`、`custom`、`contextMenu`等值指定不同触发方式
+- 在 Dropdown 的默认插槽中提供 Trigger 触发器：默认为 hover 展示，可通过 props.trigger 修改为 `click`、`custom`、`contextMenu`等值指定不同触发方式
 - 通过 content 插槽指定下拉框的具体内容：使用 `Dropdown.Menu` 作为父容器，组合使用 `Dropdown.Item`、`Dropdown.Divider`、`Dropdown.Title` 。  
   当然简单场景你也可以仅搭配 `Dropdown.Menu` 与 `Dropdown.Item`，其他元素不是必须的。
 - `Dropdown.Item` 通过设置 `disabled` 可以禁用某个选项，配置 `type`，可以展示不同颜色的文本，上设置 `icon` 可以快速配置图标。更复杂的自定义结构，你可以通过默认插槽自定义渲染
@@ -59,7 +59,7 @@ contextMenu 方式在 v2.42 后提供
 
 ### 触发事件
 
-点击菜单项后可触发不同鼠标事件，支持 `onClick`，`onMouseEnter`， `onMouseLeave` 和 `onContextMenu`。
+点击菜单项后可触发不同鼠标事件，支持 `@click`、`@mouseenter`、`@mouseleave` 和 `@contextmenu`。
 
 ::demo-block{demo="dropdown/zh-cn/Events" title="触发事件"}
 ::

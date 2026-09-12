@@ -61,20 +61,20 @@ const size = shallowRef<'small' | 'medium'>('small');
       </div></Carousel
     ><br /><Space vertical align="start"
       ><Space
-        ><div>Type</div>
-        <RadioGroup v-model="type" type="button"
+        ><div>type</div>
+        <RadioGroup v-model="type" name="carousel-demo-3" type="button"
           ><Radio value="dot">dot</Radio><Radio value="line">line</Radio
           ><Radio value="columnar">columnar</Radio></RadioGroup
         ></Space
       ><Space
-        ><div>Position</div>
-        <RadioGroup v-model="position" type="button"
+        ><div>position</div>
+        <RadioGroup v-model="position" name="carousel-demo-3" type="button"
           ><Radio value="left">left</Radio><Radio value="center">center</Radio
           ><Radio value="right">right</Radio></RadioGroup
         ></Space
       ><Space
-        ><div>Size</div>
-        <RadioGroup v-model="size" type="button"
+        ><div>size</div>
+        <RadioGroup v-model="size" name="carousel-demo-3" type="button"
           ><Radio value="small">small</Radio><Radio value="medium">medium</Radio></RadioGroup
         ></Space
       ></Space

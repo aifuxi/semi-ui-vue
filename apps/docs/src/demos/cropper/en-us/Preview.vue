@@ -4,6 +4,7 @@ import { Cropper, type CropperMethods } from '@aifuxi/semi-ui-vue/cropper';
 import { Button } from '@aifuxi/semi-ui-vue/button';
 import { Slider } from '@aifuxi/semi-ui-vue/slider';
 import '@aifuxi/semi-theme-default/cropper.css';
+import '@aifuxi/semi-theme-default/image.css';
 import '@aifuxi/semi-theme-default/button.css';
 import '@aifuxi/semi-theme-default/slider.css';
 const cropper = useTemplateRef<CropperMethods>('cropper');
@@ -21,7 +22,7 @@ const preview = () => previewContainer.value!;
     <Cropper
       ref="cropper"
       v-model:zoom="zoom"
-      src="/demos/photo.svg"
+      src="/demos/cropper-abstract.svg"
       style="width: 550px; height: 300px; margin: 20px"
       :rotate="rotate"
       :preview="preview"
@@ -57,12 +58,7 @@ const preview = () => previewContainer.value!;
         <div ref="previewContainer" style="height: 300px; margin-top: 8px" />
       </div>
       <div style="width: 50%; flex-grow: 1; padding-left: 10px">
-        <Button @click="crop">裁切</Button><br /><br /><img
-          v-if="cropperUrl"
-          :src="cropperUrl"
-          style="width: 90%"
-          alt="Cropped image"
-        />
+        <Button @click="crop">裁切</Button><br /><br /><img :src="cropperUrl" style="width: 90%" />
       </div>
     </div>
   </div>

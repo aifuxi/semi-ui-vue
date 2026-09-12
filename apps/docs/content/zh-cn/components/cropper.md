@@ -94,6 +94,8 @@ import '@aifuxi/semi-theme-default/cropper.css';
 
 使用 v-model:zoom，或 :zoom 配合 `@zoom-change(zoom)` 控制缩放。旋转与裁切比例通过 prop 控制。`getCropperCanvas(): HTMLCanvasElement` 通过 CropperMethods 模板 ref 暴露，图片加载后调用。preview 回调返回实际挂载的容器。cropperBoxCls 保留为 cropperBoxClassName 的兼容别名。
 
+组件不提供内容插槽。`imgProps` 保留固定基线的类型声明，但固定实现并未将其透传到内部图片。
+
 ### Methods
 
 绑定在组件实例上的方法，可以通过 ref 调用实现某些特殊交互

@@ -29,7 +29,7 @@ import { IconToken } from '@aifuxi/semi-icons-lab-vue';
     ></Button>
     <template #content
       ><DropdownMenu>
-        <DropdownTitle> 分组1</DropdownTitle>
+        <DropdownTitle>分组1</DropdownTitle>
         <DropdownItem>
           Menu Item 1
           <HotKeys
@@ -55,7 +55,7 @@ import { IconToken } from '@aifuxi/semi-icons-lab-vue';
           <template #icon><IconForward /></template
         ></DropdownItem>
         <DropdownDivider />
-        <DropdownTitle> 分组2</DropdownTitle>
+        <DropdownTitle>分组2</DropdownTitle>
         <DropdownItem type="tertiary">
           tertiary<template #icon><IconRefresh /></template
         ></DropdownItem>
