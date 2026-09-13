@@ -1,7 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { renderToString } from '@vue/server-renderer';
-import { createSSRApp, defineComponent, h, nextTick, provide } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { defineComponent, h, nextTick, provide } from 'vue';
 
 import Typography, {
   EN_US_TYPOGRAPHY_LOCALE,
@@ -14,20 +13,20 @@ import Typography, {
 
 describe('Typography', () => {
   beforeEach(() => {
-    rs.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
       callback(0);
       return 1;
     });
-    rs.stubGlobal('cancelAnimationFrame', rs.fn());
+    vi.stubGlobal('cancelAnimationFrame', vi.fn());
     Object.defineProperty(document, 'execCommand', {
       configurable: true,
-      value: rs.fn(() => true),
+      value: vi.fn(() => true),
     });
   });
 
   afterEach(() => {
-    rs.useRealTimers();
-    rs.unstubAllGlobals();
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
   });
 
   it('渲染聚合根节点并透传原生 attrs', () => {
@@ -163,8 +162,8 @@ describe('Typography', () => {
   });
 
   it('copyable 复制显式内容、回调、成功状态和计时复位', async () => {
-    rs.useFakeTimers();
-    const onCopy = rs.fn();
+    vi.useFakeTimers();
+    const onCopy = vi.fn();
     const wrapper = mount(Text, {
       props: { copyable: { content: 'copy me', duration: 1, onCopy } },
       slots: { default: 'Visible text' },
@@ -174,7 +173,7 @@ describe('Typography', () => {
     expect(onCopy).toHaveBeenCalledWith(expect.any(MouseEvent), 'copy me', true);
     expect(wrapper.emitted('copy')?.[0]?.slice(1)).toEqual(['copy me', true]);
     expect(wrapper.find('.semi-typography-action-copied').text()).toContain('复制成功');
-    rs.advanceTimersByTime(1000);
+    vi.advanceTimersByTime(1000);
     await nextTick();
     expect(wrapper.find('.semi-typography-action-copy').exists()).toBe(true);
   });
@@ -201,7 +200,6 @@ describe('Typography', () => {
   });
 
   it('从注入 locale 读取复制和展开文案', async () => {
-    // eslint-disable-next-line vue/one-component-per-file
     const Host = defineComponent({
       setup() {
         provide(typographyLocaleKey, EN_US_TYPOGRAPHY_LOCALE);
@@ -256,26 +254,5 @@ describe('Typography', () => {
     expect(action.text()).toBe('收起');
     await action.trigger('keydown', { key: 'Enter' });
     expect(wrapper.emitted('expand')?.[1]?.[0]).toBe(false);
-  });
-
-  it('四个公开组件均可 SSR-safe import/render', async () => {
-    const app = createSSRApp(
-      // eslint-disable-next-line vue/one-component-per-file
-      defineComponent({
-        setup: () => () =>
-          h(Typography, null, {
-            default: () => [
-              h(Title, { heading: 2 }, () => 'Title'),
-              h(Text, { strong: true }, () => 'Text'),
-              h(Paragraph, null, () => 'Paragraph'),
-              h(Numeral, { rule: 'percentages', precision: 1 }, () => '0.125'),
-            ],
-          }),
-      }),
-    );
-    const html = await renderToString(app);
-    expect(html).toContain('<article class="semi-typography">');
-    expect(html).toContain('12.5%');
-    expect(html).not.toContain('data-v-app');
   });
 });

@@ -2,7 +2,7 @@
 
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, ref, shallowRef } from 'vue';
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, vi } from 'vitest';
 
 import Radio, { RadioGroup, type RadioValue } from './index';
 
@@ -84,8 +84,8 @@ describe('Radio', () => {
   });
 
   it('disabled、focus-visible、preventScroll focus/blur 与 mouse emits 落在公开 DOM', async () => {
-    const onMouseenter = rs.fn();
-    const onMouseleave = rs.fn();
+    const onMouseenter = vi.fn();
+    const onMouseleave = vi.fn();
     const wrapper = mount(Radio, {
       attachTo: document.body,
       props: { disabled: true, preventScroll: true, onMouseenter, onMouseleave },
@@ -99,7 +99,7 @@ describe('Radio', () => {
 
     const enabled = mount(Radio, { attachTo: document.body });
     const input = enabled.get('input');
-    rs.spyOn(input.element, 'matches').mockReturnValue(true);
+    vi.spyOn(input.element, 'matches').mockReturnValue(true);
     await input.trigger('focus');
     expect(enabled.get('.semi-radio-inner-display').classes()).toContain('semi-radio-focus');
     const exposed = enabled.vm as unknown as { focus(): void; blur(): void };

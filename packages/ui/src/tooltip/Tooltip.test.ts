@@ -1,6 +1,6 @@
 /* eslint-disable vue/one-component-per-file -- test hosts exercise controlled state, template Boolean props, and hydration. */
 import { mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   Comment,
   Fragment,
@@ -24,27 +24,27 @@ import type { TooltipExposed } from './types';
 async function flushTooltip(): Promise<void> {
   for (let index = 0; index < 5; index += 1) {
     await nextTick();
-    await rs.runOnlyPendingTimersAsync();
+    await vi.runOnlyPendingTimersAsync();
   }
 }
 
 describe('Tooltip', () => {
   beforeEach(() => {
-    rs.useFakeTimers();
+    vi.useFakeTimers();
     document.body.replaceChildren();
   });
 
   afterEach(() => {
-    rs.runOnlyPendingTimers();
-    rs.useRealTimers();
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
     document.body.replaceChildren();
-    rs.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('rePosKey 与触发器位置同次更新后使用更新后的 DOM 定位', async () => {
     const left = shallowRef(100);
     const originalRect = HTMLElement.prototype.getBoundingClientRect;
-    rs.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
       this: HTMLElement,
     ) {
       if (this.id === 'moving-tooltip-trigger') {
@@ -121,7 +121,7 @@ describe('Tooltip', () => {
   it.each(['semi-tooltip', 'semi-dropdown'])(
     '前缀 %s 的自身动画结束清理 class，忽略冒泡动画，并可再次开关',
     async (prefixCls) => {
-      const afterClose = rs.fn();
+      const afterClose = vi.fn();
       const wrapper = mount(Tooltip, {
         props: {
           prefixCls,
@@ -267,7 +267,7 @@ describe('Tooltip', () => {
   });
 
   it('hover 合并用户事件，并按 enter/leave 延迟跨 trigger 与 popup 保持可见', async () => {
-    const userEnter = rs.fn();
+    const userEnter = vi.fn();
     const wrapper = mount(Tooltip, {
       props: {
         content: 'Hover 内容',
@@ -282,28 +282,28 @@ describe('Tooltip', () => {
     await flushTooltip();
 
     const hoverTrigger = wrapper.get('#hover-trigger');
-    rs.spyOn(hoverTrigger.element, 'matches').mockImplementation(
+    vi.spyOn(hoverTrigger.element, 'matches').mockImplementation(
       (selector) => selector === ':hover',
     );
     await hoverTrigger.trigger('mouseenter');
     expect(userEnter).toHaveBeenCalledOnce();
     expect(document.body.querySelector('.semi-tooltip-wrapper')).toBeNull();
-    await rs.advanceTimersByTimeAsync(20);
+    await vi.advanceTimersByTimeAsync(20);
     await flushTooltip();
     expect(document.body.querySelector('.semi-tooltip-wrapper-show')).not.toBeNull();
 
     await hoverTrigger.trigger('mouseleave');
-    await rs.advanceTimersByTimeAsync(10);
+    await vi.advanceTimersByTimeAsync(10);
     await document.body
       .querySelector<HTMLElement>('.semi-tooltip-wrapper')!
       .dispatchEvent(new MouseEvent('mouseenter', { bubbles: false }));
-    await rs.advanceTimersByTimeAsync(30);
+    await vi.advanceTimersByTimeAsync(30);
     expect(document.body.querySelector('.semi-tooltip-wrapper-show')).not.toBeNull();
   });
 
   it('click、outside、clickToHide 与 v-model:visible 通知公开行为', async () => {
     const visible = shallowRef<boolean | undefined>(undefined);
-    const outside = rs.fn();
+    const outside = vi.fn();
     const Host = defineComponent({
       setup() {
         return () =>
@@ -349,7 +349,7 @@ describe('Tooltip', () => {
       slots: { default: '<button id="blocked-trigger">Blocked</button>' },
     });
     await wrapper.get('#blocked-trigger').trigger('mouseenter');
-    await rs.advanceTimersByTimeAsync(100);
+    await vi.advanceTimersByTimeAsync(100);
     expect(document.body.querySelector('.semi-tooltip-wrapper')).toBeNull();
 
     await wrapper.setProps({ trigger: 'custom', visible: true });
@@ -364,13 +364,13 @@ describe('Tooltip', () => {
     });
     await flushTooltip();
     await focus.get('#focus-trigger').trigger('focus');
-    await rs.advanceTimersByTimeAsync(50);
+    await vi.advanceTimersByTimeAsync(50);
     await flushTooltip();
     expect(document.body.querySelector('.semi-tooltip-wrapper-show')?.textContent).toContain(
       'Focus 内容',
     );
     await focus.get('#focus-trigger').trigger('blur');
-    await rs.advanceTimersByTimeAsync(50);
+    await vi.advanceTimersByTimeAsync(50);
     await flushTooltip();
     expect(document.body.querySelector('.semi-tooltip-wrapper')).toBeNull();
     focus.unmount();
@@ -445,7 +445,7 @@ describe('Tooltip', () => {
     const container = document.createElement('div');
     container.innerHTML = serverHtml;
     document.body.appendChild(container);
-    const consoleError = rs.spyOn(console, 'error').mockImplementation(() => undefined);
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
     const app = createSSRApp(HydrationHost);
     app.mount(container);
@@ -556,8 +556,8 @@ describe('Tooltip', () => {
   });
 
   it('closeOnEsc、initialFocusRef、guardFocus、keepDOM 与 afterClose', async () => {
-    const afterClose = rs.fn();
-    const esc = rs.fn();
+    const afterClose = vi.fn();
+    const esc = vi.fn();
     const wrapper = mount(Tooltip, {
       props: {
         closeOnEsc: true,

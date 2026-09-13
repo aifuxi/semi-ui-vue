@@ -13,6 +13,8 @@ description: 对齐固定 Semi 基线的 Vue 组件，修复契约差异或完�
 
 按问题读取对应 React Adapter、Foundation、样式或文档，避免通读无关组件。默认值、受控状态、VNode、Portal 和定位差异按组件契约中的 Vue 适配规则处理。
 
-验证范围与命令见[验证入口](../../../docs/testing/validation.md)。先验证目标行为，再按改动影响验证共享边界与发布产物；复用输入未变且仍有效的结果。验收通过后更新对齐结论及必要的完成状态，按根 `AGENTS.md` 提交并说明剩余差异。
+验证范围与命令见[验证入口](../../../docs/testing/validation.md)。组件测试在本地执行：Vitest dom project 验证组件交互、hydration 与卸载，node project 验证真实无 DOM SSR 和纯工具；Storybook Vue 场景与固定 React 参考应用由 Playwright 对照，默认构建后 preview、完整 Chromium 新 headless、3 workers、0 retries。真实 tarball 浏览器消费使用独立的 `pnpm test:consumer`。探索使用项目 Playwright CLI skill 和 `pnpm playwright:cli`，操作记录不计为验收通过。
 
-Nuxt 文档站与旧逐示例验收已退役，不启动站点或恢复历史批次。测试工具的后续替代按[设计方案](../../../docs/testing/vue-testing-strategy-proposal.md)另行实施；删除旧机制不增加验收数量。
+先验证目标行为，再按影响验证共享边界与发布产物；复用输入未变且仍有效的结果。`check:source` 只做静态检查，`check` 追加单测，`check:full` 追加产物、组件浏览器与 consumer 浏览器检查。CI 仅保留静态源码、Node 产物与发布职责，不能代替本地组件结果。验收通过后更新对齐结论及必要的完成状态，按根 `AGENTS.md` 提交并说明剩余差异。
+
+Vitest/Storybook 替换已实施；Rstest、旧 Vue 工作台、App 外壳测试与专用 stubs、测试别名生成器均已移除。Nuxt 文档站与旧逐示例验收继续保持退役，不恢复历史批次或兼容入口。迁移验证证据与适用边界见[迁移方案](../../../docs/testing/vue-testing-strategy-proposal.md#当前验证状态)；工具迁移、删除旧机制或单测通过都不等于全部组件验收完成，也不承诺提速。

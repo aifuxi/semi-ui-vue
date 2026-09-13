@@ -2,6 +2,8 @@
 
 状态：本地迁移完成，外部发布待验证。更新日期：2026-09-11。现行操作见新版 [发布手册](./releasing.md)，原始设计与验收要求保留在本文；实测修订见文末。
 
+2026-09-13 执行职责修订：Vitest/Storybook 测试体系已实施，组件单测、源码 SSR、组件 Chromium 和真实 tarball consumer 浏览器测试改为本地执行；CI 保留静态源码、Node 产物与发布职责。下述工作流说明已同步该边界，文末 2026-09-11 的原始研究、演练和测试数量仍是历史证据，不能代表新测试体系的最终验证结果。
+
 ## 目标与完成定义
 
 由 Changesets 接管变更意图、SemVer 计算、包间版本传播、CHANGELOG、版本 PR、打包发布和包级 Git 标签。删除现有自研升版及逐包发布实现，避免两套入口并存。项目自己的类型、SSR、主题、许可、真实包消费和 Chromium 验证继续保留。
@@ -103,17 +105,16 @@
 
 ### Job 与交接内容
 
-| Job         | 责任                                                          | 写权限 / 交接                                                           |
-| ----------- | ------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| select-mode | 使用官方子 Action 判定维护版本 PR 或准备发布                  | 输出模式及发布计划 artifact ID                                          |
-| version     | 使用官方 version 子 Action 维护版本 PR、CHANGELOG 和 lockfile | GitHub App 的代码/PR 写权限；无 npm OIDC                                |
-| quality     | 审计、源码检查、构建、发布身份和隔离消费验证                  | 只读仓库；产物及验证证据                                                |
-| browser     | 当前候选的组件和文档 Chromium 矩阵                            | 沿用当前平台策略与全部断言                                              |
-| pack-verify | 使用官方 pack 子 Action 打包，验证所输出的实际 tarball        | 接收 publish-plan-artifact-id；输出 pack-dir-artifact-id                |
-| publish     | 所有门禁通过后发布已验证 artifact                             | npm Environment；id-token: write；创建标签/Release 所需 contents: write |
-| postcheck   | 查询五包版本、依赖、渠道、provenance 并从 registry 安装验证   | 不持有 npm 写入身份；输出最终发布证据                                   |
+| Job         | 责任                                                                 | 写权限 / 交接                                                           |
+| ----------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| select-mode | 使用官方子 Action 判定维护版本 PR 或准备发布                         | 输出模式及发布计划 artifact ID                                          |
+| version     | 使用官方 version 子 Action 维护版本 PR、CHANGELOG 和 lockfile        | GitHub App 的代码/PR 写权限；无 npm OIDC                                |
+| quality     | 审计、静态 check:source、Changesets、构建、主题、Node SSR 与发布身份 | 只读仓库；产物及验证证据                                                |
+| pack-verify | 使用官方 pack 子 Action 打包，验证所输出的实际 tarball               | 接收 publish-plan-artifact-id；输出 pack-dir-artifact-id                |
+| publish     | 所有门禁通过后发布已验证 artifact                                    | npm Environment；id-token: write；创建标签/Release 所需 contents: write |
+| postcheck   | 查询五包版本、依赖、渠道、provenance 并从 registry 安装验证          | 不持有 npm 写入身份；输出最终发布证据                                   |
 
-官方 pack 的输出 `pack-dir-artifact-id` 直接传给 publish 的同名输入。对 artifact 下载后的准确文件执行消费校验，记录 SHA-512、包名、版本、候选 SHA 与计划身份。publish job 不重新构建业务产物、不更换 tarball。
+官方 pack 的输出 `pack-dir-artifact-id` 直接传给 publish 的同名输入。对 artifact 下载后的准确文件执行 Node 隔离消费校验，记录 SHA-512、包名、版本、候选 SHA 与计划身份。publish job 不重新构建业务产物、不更换 tarball。browser CI job 已移除，组件与真实包浏览器消费在本地独立运行，不混入 pack-verify。
 
 实施前需核对 pack 产物布局及 CLI 发布计划格式；按官方 API 连接，不自建一套发布计划解释器。扩展现有 `verify-pack.mjs`，使其可验证指定 tarball 集合，保留原有日常本地生成并验证模式。
 
@@ -121,9 +122,9 @@
 
 ### PR 检查与发布检查的关系
 
-版本 PR 必须正常通过 PR 检查。发布时验证合并后的候选 SHA；发布用的完整门禁覆盖当前 `release:check` 契约，可分 job 执行，不用一条总命令重复所有已通过阶段。
+版本 PR 必须正常通过 PR 静态源码、Changesets 与按影响执行的 Node 产物检查。发布时验证合并后的候选 SHA；CI 自动门禁负责源码和产物，不包含组件单测、Storybook 交互或浏览器测试。候选所需本地组件结果另按[验证入口](testing/validation.md)执行，CI 成功不能替代它们。
 
-源码、主题、SSR、真实 tarball、浏览器和依赖审计全部通过后，发布 job 才进入 npm Environment。审核页面应能查看版本 PR、五包计划、候选 SHA、检查结果和 tarball 摘要。
+发布 job 在 CI 源码、主题、Node SSR、真实 tarball 和依赖审计门禁通过后进入 npm Environment。发布准备仍需完成本地 Vitest dom/node、Storybook/React Chromium 与 consumer 浏览器检查；`release:check` 保留完整本地契约，可分阶段复用有效结果。审核时核对版本 PR、五包计划、候选 SHA、CI 与本地检查范围和 tarball 摘要。
 
 ## 失败恢复与发布后核验
 
@@ -151,7 +152,7 @@ registry 查询可对传播延迟做有限重试并记录等待原因；不得�
 | 五个公开包的 `package.json`                              | 删除固定 tag；确保 CHANGELOG 随包分发；版本由 Changesets 生成         |
 | 五包 `CHANGELOG.md` / README                             | 生成发布记录；移除过期版本描述，更新安装渠道说明                      |
 | `.github/workflows/publish.yml`                          | 改为官方 select-mode/version/pack/publish 编排，绑定产物与候选 SHA    |
-| `.github/workflows/ci.yml`                               | changeset 意图检查；版本 PR 的例外处理；保留既有质量门禁              |
+| `.github/workflows/ci.yml`                               | changeset 意图检查；版本 PR 的例外处理；静态源码与 Node 产物门禁      |
 | `scripts/release-bump.mjs`、对应 spec                    | 删除，以真实 Changesets 集成演练替代                                  |
 | `scripts/publish-packages.mjs`、`release-preflight.mjs`  | 删除，不保留兼容别名继续触发旧逻辑                                    |
 | `scripts/release-packages.mjs`                           | 删除升版/发布策略；仅必要的包身份断言转入验证模块                     |
@@ -176,7 +177,7 @@ registry 查询可对传播延迟做有限重试并记录等待原因；不得�
 
 删除旧发布实现，接通官方子 Action 和真实 tarball 验证。检查权限、模式条件、needs、artifact ID 传递、候选 SHA、串行策略和失败恢复。以阶段 A 的产物运行相关验证，不以 YAML 能解析代替行为验证。
 
-本地运行 frozen-lockfile 安装、相关 Rstest/工具测试、格式/lint/源码类型检查。公开打包链路变更执行隔离安装、主题、SSR 与消费验证；最终候选执行完整发布门禁。已通过且输入未变的检查不为提交重复执行。
+本地运行 frozen-lockfile 安装、相关 Vitest/工具测试、格式/lint/源码类型检查。公开打包链路变更执行隔离安装、主题、Node SSR 与真实包消费验证；浏览器消费使用独立 `pnpm test:consumer`，组件对照使用 `pnpm test:browser`。两类浏览器测试默认完整 Chromium 新 headless、3 workers、0 retries，仅本地执行。最终候选执行完整本地发布门禁，CI 保留静态与 Node 产物职责。已通过且输入未变的检查不为提交重复执行。
 
 ### 阶段 C：外部配置与首个 next 发布
 

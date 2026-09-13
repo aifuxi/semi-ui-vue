@@ -1,7 +1,7 @@
 import { mkdtemp, readFile, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { expect, it } from '@rstest/core';
+import { expect, it } from 'vitest';
 import { verifyThemeCss } from './theme-contracts.mjs';
 
 it('主题与安装包共享检查拒绝缺失文件和缺失选择器', async () => {

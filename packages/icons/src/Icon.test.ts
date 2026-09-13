@@ -1,16 +1,10 @@
-import { mount } from '@vue/test-utils';
 import { renderToString } from '@vue/server-renderer';
-import { createSSRApp, h, type Component } from 'vue';
-import { describe, expect, it } from '@rstest/core';
+import { mount } from '@vue/test-utils';
+import { describe, expect, it } from 'vitest';
+import { createSSRApp, h } from 'vue';
 
-import Icon, * as iconPackage from './index';
-import {
-  IconAIFilledLevel2,
-  IconAIFilledLevel3,
-  IconAIWandLevel3,
-  IconHome,
-  IconSpin,
-} from './icons';
+import { IconAIFilledLevel2, IconAIFilledLevel3, IconAIWandLevel3, IconHome } from './icons';
+import Icon from './index';
 
 describe('Icon', () => {
   it('缺省 fill 保留 SVG 默认值，显式覆盖清除后恢复，AI 数组只应用于 path', async () => {
@@ -139,21 +133,6 @@ describe('Icon', () => {
     await wrapper.setProps({ fill });
     expect(wrapper.findAll('stop').map((stop) => stop.attributes('stop-color'))).toEqual(expected);
     wrapper.unmount();
-  });
-
-  it('完整导出并可服务端渲染 523 个固定稳定图标', async () => {
-    const components = Object.entries(iconPackage).filter(([name]) => /^Icon[A-Z]/.test(name));
-    expect(components).toHaveLength(523);
-    expect(IconSpin.elementType).toBe('Icon');
-
-    const rendered = await Promise.all(
-      components.map(async ([name, component]) => ({
-        name,
-        html: await renderToString(h(component as Component)),
-      })),
-    );
-    expect(rendered.every(({ html }) => html.includes('class="semi-icon'))).toBe(true);
-    expect(rendered.every(({ html }) => html.includes('<svg'))).toBe(true);
   });
 
   it('可用服务端 HTML 无警告 hydration', async () => {

@@ -76,7 +76,7 @@ export default tseslint.config(
   },
   {
     files: [
-      'apps/parity-vue/src/**/*.{ts,vue}',
+      'apps/storybook-vue/src/**/*.{ts,vue}',
       'packages/ui/src/**/*.{ts,vue}',
       'packages/icons/src/**/*.{ts,vue}',
       'packages/icons-lab/src/**/*.{ts,vue}',

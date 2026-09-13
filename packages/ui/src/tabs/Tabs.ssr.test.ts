@@ -1,7 +1,6 @@
-import { mount } from '@vue/test-utils';
-import { createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, vi } from 'vitest';
+import { createSSRApp, h } from 'vue';
 
 import TabPane from './TabPane.vue';
 import Tabs from './Tabs.vue';
@@ -31,7 +30,7 @@ describe('Tabs SSR', () => {
   });
 
   it('keepDOM=false、lazyRender、left 与 collapsible 不在 SSR 创建 Observer/Portal', async () => {
-    rs.stubGlobal('ResizeObserver', undefined);
+    vi.stubGlobal('ResizeObserver', undefined);
     const html = await renderTabs({
       collapsible: 'auto',
       keepDOM: false,
@@ -43,23 +42,6 @@ describe('Tabs SSR', () => {
     expect(html).toContain('Panel A');
     expect(html).not.toContain('Panel B');
     expect(html).not.toContain('semi-portal');
-    rs.unstubAllGlobals();
-  });
-
-  it('SSR markup 可 hydration 且无 mismatch warning', async () => {
-    const warn = rs.spyOn(console, 'warn').mockImplementation(() => undefined);
-    const wrapper = mount(Tabs, {
-      attachTo: document.body,
-      props: { defaultActiveKey: 'a' },
-      slots: {
-        default: () => [
-          h(TabPane, { itemKey: 'a', tab: 'A' }, () => 'Panel A'),
-          h(TabPane, { itemKey: 'b', tab: 'B' }, () => 'Panel B'),
-        ],
-      },
-    });
-    expect(wrapper.get('[role="tab"]').attributes('aria-selected')).toBe('true');
-    expect(warn.mock.calls.flat().join(' ')).not.toContain('Hydration');
-    wrapper.unmount();
+    vi.unstubAllGlobals();
   });
 });

@@ -1,7 +1,6 @@
 import { mount } from '@vue/test-utils';
-import { renderToString } from '@vue/server-renderer';
+import { describe, expect, it, vi } from 'vitest';
 import { h, nextTick } from 'vue';
-import { describe, expect, it, rs } from '@rstest/core';
 
 import { IconDelete } from '@aifuxi/semi-icons-vue';
 import Button from './Button.vue';
@@ -139,7 +138,7 @@ describe('Button', () => {
   });
 
   it('exposes the colorful icon fill contract through the Vue icon slot', () => {
-    const iconSlot = rs.fn(({ fill }) =>
+    const iconSlot = vi.fn(({ fill }) =>
       h('span', { 'data-testid': 'colorful-icon', 'data-fill': JSON.stringify(fill) }),
     );
     const wrapper = mount(Button, {
@@ -156,16 +155,6 @@ describe('Button', () => {
       'var(--semi-button-colorful-multiple-fill-2)',
       'var(--semi-button-colorful-multiple-fill-3)',
     ]);
-  });
-
-  it('is safe to render without a DOM', async () => {
-    const html = await renderToString(
-      h(Button, { type: 'warning', loading: true }, { default: () => '撤销' }),
-    );
-
-    expect(html).toContain('semi-button-warning');
-    expect(html).toContain('semi-button-loading');
-    expect(html).toContain('data-icon="spin"');
   });
 });
 

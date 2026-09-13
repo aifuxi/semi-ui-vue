@@ -69,6 +69,12 @@ test('Popover React/Vue 定位、click/Escape、焦点与 Element/Document scrol
     pages.flatMap((page) => [
       expect(page.locator('.popover-target-click')).toBeVisible(),
       expect(page.locator('.popover-target-click')).toHaveAttribute('role', 'dialog'),
+      expect(
+        page.locator('.popover-scenario > .semi-portal').filter({
+          has: page.locator('.popover-target-click'),
+        }),
+      ).toHaveCount(1),
+      expect(page.locator('body > .semi-portal')).toHaveCount(0),
       expect(page.locator('[data-parity-target="popover-trigger-click"]')).toHaveAttribute(
         'aria-haspopup',
         'dialog',

@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, vi } from 'vitest';
 import { Table } from './index';
 import ConfigProvider from '../config-provider/ConfigProvider.vue';
 
@@ -28,7 +28,7 @@ describe('Table public resizable columns', () => {
   });
   for (const direction of ['ltr', 'rtl'] as const)
     it(`retains the east resize delta and minimum width in ${direction}`, async () => {
-      const onResize = rs.fn();
+      const onResize = vi.fn();
       const wrapper = mount(() =>
         h(ConfigProvider, { direction }, () =>
           h(Table, {
@@ -140,7 +140,7 @@ describe('Table public resizable columns', () => {
     wrapper.unmount();
   });
   it('does not sort after a resize gesture even when the final click targets the header', async () => {
-    const onHeaderClick = rs.fn();
+    const onHeaderClick = vi.fn();
     const wrapper = mount(Table, {
       props: {
         pagination: false,
@@ -186,7 +186,7 @@ describe('Table public resizable columns', () => {
   });
   it('measures every move in the moving and scrolling offset parent coordinate system', async () => {
     let width = 200;
-    const onResize = rs.fn((column) => {
+    const onResize = vi.fn((column) => {
       width = column.width;
     });
     const wrapper = mount(() =>
@@ -205,7 +205,7 @@ describe('Table public resizable columns', () => {
       configurable: true,
       get: () => header.element,
     });
-    rs.spyOn(header.element, 'getBoundingClientRect').mockImplementation(() => ({
+    vi.spyOn(header.element, 'getBoundingClientRect').mockImplementation(() => ({
       left: 400 - (width - 200),
       right: 600,
       width,

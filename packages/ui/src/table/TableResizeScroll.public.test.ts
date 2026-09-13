@@ -1,11 +1,11 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Table } from './index';
 
 afterEach(() => {
-  rs.restoreAllMocks();
-  rs.unstubAllGlobals();
+  vi.restoreAllMocks();
+  vi.unstubAllGlobals();
 });
 
 describe('Table 列伸缩与滚动边界公开契约', () => {
@@ -29,12 +29,12 @@ describe('Table 列伸缩与滚动边界公开契约', () => {
     }
     const frames = new Map<number, FrameRequestCallback>();
     let frameId = 0;
-    rs.stubGlobal('ResizeObserver', TestResizeObserver);
-    rs.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+    vi.stubGlobal('ResizeObserver', TestResizeObserver);
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
       frames.set(++frameId, callback);
       return frameId;
     });
-    rs.stubGlobal('cancelAnimationFrame', (id: number) => frames.delete(id));
+    vi.stubGlobal('cancelAnimationFrame', (id: number) => frames.delete(id));
     const ordinary = mount(Table, {
       props: {
         columns: [{ title: 'Name', dataIndex: 'name', width: 120 }],
@@ -55,8 +55,8 @@ describe('Table 列伸缩与滚动边界公开契约', () => {
     });
     const body = wrapper.get('.semi-table-body');
     let tableWidth = 200;
-    rs.spyOn(body.element, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 200, 100));
-    rs.spyOn(body.get('table').element, 'getBoundingClientRect').mockImplementation(
+    vi.spyOn(body.element, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 200, 100));
+    vi.spyOn(body.get('table').element, 'getBoundingClientRect').mockImplementation(
       () => new DOMRect(0, 0, tableWidth, 100),
     );
     const boundary = wrapper.get('.semi-table-scroll-position-left');
@@ -94,10 +94,10 @@ describe('Table 列伸缩与滚动边界公开契约', () => {
     const body = wrapper.get('.semi-table-body');
     const table = body.get('table');
     let tableWidth = 200;
-    const bodyRect = rs
+    const bodyRect = vi
       .spyOn(body.element, 'getBoundingClientRect')
       .mockReturnValue(new DOMRect(0, 0, 200, 100));
-    const tableRect = rs
+    const tableRect = vi
       .spyOn(table.element, 'getBoundingClientRect')
       .mockImplementation(() => new DOMRect(0, 0, tableWidth, 100));
     await body.trigger('scroll');

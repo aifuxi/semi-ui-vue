@@ -1,18 +1,18 @@
 import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { Table } from './index';
 import TableDescriptionsExpansion from './test-fixtures/TableDescriptionsExpansion.vue';
 
 afterEach(() => {
-  rs.restoreAllMocks();
-  rs.unstubAllGlobals();
+  vi.restoreAllMocks();
+  vi.unstubAllGlobals();
 });
 
 describe('Table 公开展开列契约', () => {
   it('虚拟表格在挂载同一 tick 卸载后不发送初始滚动通知', async () => {
-    const onScroll = rs.fn();
+    const onScroll = vi.fn();
     const wrapper = mount(Table, {
       props: {
         columns: [{ dataIndex: 'name', width: 100 }],
@@ -30,9 +30,9 @@ describe('Table 公开展开列契约', () => {
   it('挂载后启用固定选择列时补装一次根观察器并测量后续展开宽度', async () => {
     let rootWidth = 750;
     let notify: (() => void) | undefined;
-    const construct = rs.fn();
-    const observe = rs.fn();
-    const disconnect = rs.fn();
+    const construct = vi.fn();
+    const observe = vi.fn();
+    const disconnect = vi.fn();
     class TestResizeObserver {
       constructor(callback: ResizeObserverCallback) {
         construct();
@@ -48,13 +48,13 @@ describe('Table 公开展开列契约', () => {
     }
     const frames = new Map<number, FrameRequestCallback>();
     let frameId = 0;
-    rs.stubGlobal('ResizeObserver', TestResizeObserver);
-    rs.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+    vi.stubGlobal('ResizeObserver', TestResizeObserver);
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
       frames.set(++frameId, callback);
       return frameId;
     });
-    rs.stubGlobal('cancelAnimationFrame', (id: number) => frames.delete(id));
-    rs.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
+    vi.stubGlobal('cancelAnimationFrame', (id: number) => frames.delete(id));
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
       this: HTMLElement,
     ) {
       return new DOMRect(
@@ -64,12 +64,12 @@ describe('Table 公开展开列契约', () => {
         100,
       );
     });
-    rs.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockImplementation(function (
+    vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockImplementation(function (
       this: HTMLElement,
     ) {
       return this.style.overflowY === 'scroll' ? 50 : 300;
     });
-    rs.spyOn(Element.prototype, 'clientWidth', 'get').mockImplementation(function (this: Element) {
+    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockImplementation(function (this: Element) {
       return this instanceof HTMLElement && this.style.overflowY === 'scroll' ? 50 : 300;
     });
     const wrapper = mount(Table, {
@@ -116,7 +116,7 @@ describe('Table 公开展开列契约', () => {
       let rootWidth = 750;
       let observed: Element | undefined;
       let notify: (() => void) | undefined;
-      const disconnect = rs.fn();
+      const disconnect = vi.fn();
       class TestResizeObserver {
         constructor(callback: ResizeObserverCallback) {
           notify = () => callback([], this);
@@ -131,13 +131,13 @@ describe('Table 公开展开列契约', () => {
       }
       const frames = new Map<number, FrameRequestCallback>();
       let frameId = 0;
-      rs.stubGlobal('ResizeObserver', TestResizeObserver);
-      rs.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      vi.stubGlobal('ResizeObserver', TestResizeObserver);
+      vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
         frames.set(++frameId, callback);
         return frameId;
       });
-      rs.stubGlobal('cancelAnimationFrame', (id: number) => frames.delete(id));
-      rs.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
+      vi.stubGlobal('cancelAnimationFrame', (id: number) => frames.delete(id));
+      vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
         this: HTMLElement,
       ) {
         return new DOMRect(
@@ -147,19 +147,19 @@ describe('Table 公开展开列契约', () => {
           100,
         );
       });
-      rs.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockImplementation(function (
+      vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockImplementation(function (
         this: HTMLElement,
       ) {
         return this.style.overflowY === 'scroll' ? 50 : 300;
       });
-      rs.spyOn(Element.prototype, 'clientWidth', 'get').mockImplementation(function (
+      vi.spyOn(Element.prototype, 'clientWidth', 'get').mockImplementation(function (
         this: Element,
       ) {
         return this instanceof HTMLElement && this.style.overflowY === 'scroll'
           ? 50 - scrollbarWidth
           : 300;
       });
-      const appended = rs.spyOn(document.body, 'appendChild');
+      const appended = vi.spyOn(document.body, 'appendChild');
       const wrapper = mount(Table, {
         props: {
           columns: [

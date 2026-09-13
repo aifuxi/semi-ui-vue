@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, vi } from 'vitest';
 
 import { Popover } from '../popover';
 import Tag, { SplitTagGroup, TagGroup } from './index';
@@ -59,11 +59,11 @@ describe('Tag', () => {
 
   it('按顺序处理关闭、preventDefault、点击与键盘', async () => {
     const order: string[] = [];
-    const onClose = rs.fn((_content, event: MouseEvent) => {
+    const onClose = vi.fn((_content, event: MouseEvent) => {
       order.push('close');
       event.preventDefault();
     });
-    const onClick = rs.fn(() => order.push('click'));
+    const onClick = vi.fn(() => order.push('click'));
     const wrapper = mount(Tag, {
       props: { closable: true, onClick, onClose, tagKey: 'alpha' },
       slots: { default: 'Alpha' },
@@ -154,7 +154,7 @@ describe('TagGroup', () => {
   });
 
   it('折叠浮层关闭卸载后再次显示完整内容', async () => {
-    rs.useFakeTimers();
+    vi.useFakeTimers();
     const wrapper = mount(TagGroup, {
       props: {
         maxTagCount: 1,
@@ -166,7 +166,7 @@ describe('TagGroup', () => {
     const flush = async () => {
       for (let turn = 0; turn < 5; turn++) {
         await nextTick();
-        await rs.runOnlyPendingTimersAsync();
+        await vi.runOnlyPendingTimersAsync();
       }
     };
     const tags = () =>
@@ -175,7 +175,7 @@ describe('TagGroup', () => {
       );
     try {
       await flush();
-      rs.spyOn(wrapper.findAll('.semi-tag').at(-1)!.element, 'matches').mockImplementation(
+      vi.spyOn(wrapper.findAll('.semi-tag').at(-1)!.element, 'matches').mockImplementation(
         (selector) => selector === ':hover',
       );
       await wrapper.findAll('.semi-tag').at(-1)!.trigger('mouseenter');
@@ -196,9 +196,9 @@ describe('TagGroup', () => {
       }
     } finally {
       wrapper.unmount();
-      rs.runOnlyPendingTimers();
-      rs.useRealTimers();
-      rs.restoreAllMocks();
+      vi.runOnlyPendingTimers();
+      vi.useRealTimers();
+      vi.restoreAllMocks();
     }
   });
 

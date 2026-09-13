@@ -1,12 +1,12 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, vi } from 'vitest';
 
 import { Table } from './index';
 
 describe('Table 分页配置回调', () => {
   for (const position of ['top', 'bottom', 'both'] as const) {
     it(`${position} 分页每次操作只通知配置回调一次`, async () => {
-      const onChange = rs.fn();
+      const onChange = vi.fn();
       const wrapper = mount(Table, {
         props: {
           columns: [{ dataIndex: 'name', title: 'Name' }],

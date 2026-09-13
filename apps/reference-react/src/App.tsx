@@ -2,7 +2,6 @@ import React, { Suspense, type ComponentType } from 'react';
 import {
   getParityScenario,
   getParityScenarioRuntimeProps,
-  REFERENCE_BASELINE,
   type ParityScenarioOptions,
   type ParityScenarioRuntimeProps,
 } from '@workspace/test-infra';
@@ -49,14 +48,6 @@ export function App(props: AppProps): React.ReactElement {
       data-vue-status={scenario.vueStatus}
       dir={options.direction}
     >
-      <header className="workspace-header">
-        <p className="workspace-shell__eyebrow">React reference target</p>
-        <h1>Semi Design React 参考工作台</h1>
-        <p>
-          当前固定参考版本为 <code>{REFERENCE_BASELINE.tag}</code>，场景直接编译本地只读源码。
-        </p>
-      </header>
-
       <section className="scenario-panel" aria-labelledby="scenario-title">
         <div className="scenario-panel__heading">
           <div>
@@ -78,16 +69,9 @@ export function App(props: AppProps): React.ReactElement {
         ) : null}
       </section>
 
-      <dl className="runtime-evidence" aria-label="参考运行时证据">
-        <div>
-          <dt>commit</dt>
-          <dd>{REFERENCE_BASELINE.commit}</dd>
-        </div>
-        <div>
-          <dt>source</dt>
-          <dd data-testid="reference-source">{scenario.referenceSource ?? 'shared harness'}</dd>
-        </div>
-      </dl>
+      <span hidden data-testid="reference-source">
+        {scenario.referenceSource ?? 'shared harness'}
+      </span>
     </main>
   );
 }

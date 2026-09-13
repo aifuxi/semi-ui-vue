@@ -1,11 +1,11 @@
 import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import Progress from './Progress.vue';
 
 afterEach(() => {
-  rs.useRealTimers();
+  vi.useRealTimers();
 });
 
 describe('Progress', () => {
@@ -156,7 +156,7 @@ describe('Progress', () => {
   });
 
   it('区分 motion 缺省、显式 false 与显式 true', async () => {
-    rs.useFakeTimers();
+    vi.useFakeTimers();
     const immediate = mount(Progress, {
       props: { motion: false, percent: 20, showInfo: true },
     });
@@ -175,7 +175,7 @@ describe('Progress', () => {
       const animated = mount(Progress, { props });
       await animated.setProps({ percent: 80 });
       expect(animated.get('.semi-progress-line-text').text()).toBe('20%');
-      await rs.advanceTimersByTimeAsync(350);
+      await vi.advanceTimersByTimeAsync(350);
       await nextTick();
       expect(animated.get('.semi-progress-line-text').text()).toBe('80%');
       animated.unmount();

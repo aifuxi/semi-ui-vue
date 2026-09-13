@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, vi } from 'vitest';
 
 import IconButton from './IconButton';
 
@@ -162,7 +162,7 @@ describe('IconButton', () => {
     expect(wrapper.emitted('mouseenter')).toHaveLength(1);
     expect(wrapper.emitted('mouseleave')).toHaveLength(1);
 
-    const onClick = rs.fn();
+    const onClick = vi.fn();
     const disabled = mount(IconButton, {
       props: { disabled: true, onClick },
       slots: { icon: ScenarioIcon },

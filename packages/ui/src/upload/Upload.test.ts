@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import Button from '../button/Button.vue';
 import { ConfigProvider } from '../config-provider';
@@ -29,16 +29,16 @@ function setInputFiles(input: HTMLInputElement, files: File[]): void {
 beforeEach(() => {
   Object.defineProperty(URL, 'createObjectURL', {
     configurable: true,
-    value: rs.fn((file: File) => `blob:${file.name}`),
+    value: vi.fn((file: File) => `blob:${file.name}`),
   });
   Object.defineProperty(URL, 'revokeObjectURL', {
     configurable: true,
-    value: rs.fn(),
+    value: vi.fn(),
   });
 });
 
 afterEach(() => {
-  rs.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 describe('Upload', () => {
@@ -106,7 +106,7 @@ describe('Upload', () => {
 
   it('选择文件按 fileChange -> change -> progress -> success 顺序走 customRequest', async () => {
     const order: string[] = [];
-    const customRequest = rs.fn((payload) => {
+    const customRequest = vi.fn((payload) => {
       payload.onProgress({ total: 100, loaded: 50 });
       payload.onSuccess({ id: 7 });
     });
@@ -135,9 +135,9 @@ describe('Upload', () => {
   });
 
   it('accept、size 与 limit 保持公开通知和列表规则', async () => {
-    const onAcceptInvalid = rs.fn();
-    const onSizeError = rs.fn();
-    const onExceed = rs.fn();
+    const onAcceptInvalid = vi.fn();
+    const onSizeError = vi.fn();
+    const onExceed = vi.fn();
     const wrapper = mount(Upload, {
       props: {
         accept: '.png,image/jpeg',
@@ -211,7 +211,7 @@ describe('Upload', () => {
   });
 
   it('拖拽状态、drop、disabled 与 picture hot spot/list 语义对齐', async () => {
-    const onDrop = rs.fn();
+    const onDrop = vi.fn();
     const wrapper = mount(Upload, {
       props: {
         action: '/upload',
@@ -252,7 +252,7 @@ describe('Upload', () => {
   });
 
   it('crop 对图片逐张排队，保留非图片，并在取消时释放 URL', async () => {
-    const toBlob = rs.fn((callback: (blob: Blob | null) => void) =>
+    const toBlob = vi.fn((callback: (blob: Blob | null) => void) =>
       callback(new Blob(['cropped'], { type: 'image/png' })),
     );
     // eslint-disable-next-line vue/one-component-per-file -- 本地 stub 仅暴露裁剪画布契约。
@@ -263,7 +263,7 @@ describe('Upload', () => {
         return () => h('div', { class: 'cropper-stub' });
       },
     });
-    const beforeCrop = rs.fn(() => true);
+    const beforeCrop = vi.fn(() => true);
     const wrapper = mount(Upload, {
       props: {
         action: '/upload',
@@ -304,8 +304,8 @@ describe('Upload', () => {
   });
 
   it('函数 render 与 scoped slots 获得 actions，公开方法支持 insert/manual upload/open', async () => {
-    const customRequest = rs.fn();
-    const renderFileItem = rs.fn((item) =>
+    const customRequest = vi.fn();
+    const renderFileItem = vi.fn((item) =>
       h('button', { class: 'custom-file', onClick: item.onRemove }, item.name),
     );
     const wrapper = mount(Upload, {
@@ -330,7 +330,7 @@ describe('Upload', () => {
     await nextTick();
     exposed.upload();
     expect(customRequest).toHaveBeenCalledTimes(1);
-    const click = rs.spyOn(
+    const click = vi.spyOn(
       wrapper.get('.semi-upload-hidden-input').element as HTMLInputElement,
       'click',
     );
@@ -345,8 +345,8 @@ describe('Upload', () => {
   });
 
   it('ConfigProvider locale/RTL 与粘贴监听注册清理可观察', async () => {
-    const add = rs.spyOn(document.body, 'addEventListener');
-    const remove = rs.spyOn(document.body, 'removeEventListener');
+    const add = vi.spyOn(document.body, 'addEventListener');
+    const remove = vi.spyOn(document.body, 'removeEventListener');
     const wrapper = mount(ConfigProvider, {
       props: {
         direction: 'rtl',

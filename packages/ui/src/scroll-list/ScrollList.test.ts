@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import ScrollItem from './ScrollItem.vue';
 import ScrollList from './ScrollList.vue';
@@ -37,17 +37,17 @@ function setGeometry(wrapper: ReturnType<typeof mount>): void {
 }
 
 beforeEach(() => {
-  rs.useFakeTimers();
-  rs.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) =>
+  vi.useFakeTimers();
+  vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) =>
     window.setTimeout(() => callback(Date.now()), 16),
   );
-  rs.stubGlobal('cancelAnimationFrame', (handle: number) => window.clearTimeout(handle));
+  vi.stubGlobal('cancelAnimationFrame', (handle: number) => window.clearTimeout(handle));
 });
 
 afterEach(() => {
-  rs.useRealTimers();
-  rs.restoreAllMocks();
-  rs.unstubAllGlobals();
+  vi.useRealTimers();
+  vi.restoreAllMocks();
+  vi.unstubAllGlobals();
 });
 
 describe('ScrollList', () => {
@@ -80,7 +80,7 @@ describe('ScrollList', () => {
 
 describe('ScrollItem', () => {
   it('normal 模式保留选中、禁用、transform、ARIA 与 select payload', async () => {
-    const commonTransform = rs.fn((value: unknown) => `common-${String(value)}`);
+    const commonTransform = vi.fn((value: unknown) => `common-${String(value)}`);
     const wrapper = mount(ScrollItem, {
       props: {
         ariaLabel: '时段',
@@ -135,7 +135,7 @@ describe('ScrollItem', () => {
     );
     expect(wrapper.findAll('li')).toHaveLength(3);
     await wrapper.findAll('li')[2]!.trigger('click');
-    await rs.advanceTimersByTimeAsync(40);
+    await vi.advanceTimersByTimeAsync(40);
     expect(wrapper.emitted('select')).toBeUndefined();
   });
 
@@ -148,7 +148,7 @@ describe('ScrollItem', () => {
 
     await wrapper.findAll('li')[1]!.trigger('click');
     expect(wrapper.emitted('select')).toBeUndefined();
-    await rs.advanceTimersByTimeAsync(40);
+    await vi.advanceTimersByTimeAsync(40);
     expect(wrapper.emitted('select')?.[0]?.[0]).toEqual({
       value: 'PM',
       type: 'period',
@@ -164,7 +164,7 @@ describe('ScrollItem', () => {
     setGeometry(wrapper);
 
     await wrapper.get('.semi-scrolllist-list-outer').trigger('scroll');
-    await rs.advanceTimersByTimeAsync(40);
+    await vi.advanceTimersByTimeAsync(40);
     expect(wrapper.emitted('select')?.[0]?.[0]).toEqual({ value: 'PM', index: 1, type: undefined });
   });
 
@@ -204,6 +204,6 @@ describe('ScrollItem', () => {
     );
     await wrapper.get('.semi-scrolllist-list-outer').trigger('scroll');
     wrapper.unmount();
-    await rs.advanceTimersByTimeAsync(100);
+    await vi.advanceTimersByTimeAsync(100);
   });
 });

@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from 'vitest';
 import { pinnedLocale_zh_CN } from '@workspace/foundation-integration';
 import { ConfigConsumer, ConfigProvider, type ConfigContextValue } from './index';
 import { DatePicker } from '../date-picker';

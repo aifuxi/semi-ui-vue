@@ -1,8 +1,6 @@
 import { mount } from '@vue/test-utils';
-import { createSSRApp, h, nextTick, shallowRef } from 'vue';
-import { renderToString } from '@vue/server-renderer';
-import { describe, expect, it } from '@rstest/core';
-import { ConfigProvider } from '../config-provider';
+import { describe, expect, it } from 'vitest';
+import { h, nextTick, shallowRef } from 'vue';
 import { Pagination } from '../pagination';
 import { Table } from '../table';
 import { LocaleProvider } from './index';
@@ -26,26 +24,6 @@ describe('Locale 文档消费者', () => {
     await nextTick();
     expect(totals()).toEqual(['合計ページ数：10', '合計ページ数：10']);
     wrapper.unmount();
-  });
-
-  it('SSR 保留 ConfigProvider 优先级与缺 code 整体回退', async () => {
-    const html = await renderToString(
-      createSSRApp(() =>
-        h('div', [
-          h(LocaleProvider, { locale: jaJP }, () =>
-            h(ConfigProvider, { locale: enGB }, pagination),
-          ),
-          h(
-            LocaleProvider,
-            { locale: { Pagination: { pageSize: '', jumpTo: '', page: '', total: 'wrong' } } },
-            pagination,
-          ),
-        ]),
-      ),
-    );
-    expect(html).toContain('Total pages: 10');
-    expect(html).toContain('总页数：10');
-    expect(html).not.toContain('wrong');
   });
 
   it('空 Table 保留分页容器与自定义说明，数据恢复后显示分页', async () => {

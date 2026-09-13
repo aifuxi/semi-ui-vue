@@ -1,7 +1,7 @@
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
-import { expect, it } from '@rstest/core';
+import { expect, it } from 'vitest';
 import { publicJavaScriptEntries } from './public-export-entries.mjs';
 
 it('SSR 枚举覆盖新增通配入口，忽略类型和 CSS，并拒绝空匹配', async () => {

@@ -2,16 +2,16 @@
 
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import Input, { InputGroup, TextArea } from './index';
 
 class ResizeObserverMock {
   static instances: ResizeObserverMock[] = [];
   callback: ResizeObserverCallback;
-  disconnect = rs.fn();
-  observe = rs.fn();
-  unobserve = rs.fn();
+  disconnect = vi.fn();
+  observe = vi.fn();
+  unobserve = vi.fn();
 
   constructor(callback: ResizeObserverCallback) {
     this.callback = callback;
@@ -21,11 +21,11 @@ class ResizeObserverMock {
 
 beforeEach(() => {
   ResizeObserverMock.instances = [];
-  rs.stubGlobal('ResizeObserver', ResizeObserverMock);
+  vi.stubGlobal('ResizeObserver', ResizeObserverMock);
 });
 
 afterEach(() => {
-  rs.unstubAllGlobals();
+  vi.unstubAllGlobals();
 });
 
 describe('Input', () => {

@@ -1,6 +1,6 @@
 import { flushPromises, mount, shallowMount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, ref } from 'vue';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import Sidebar from './Sidebar.vue';
 import SidebarAnnotation from './SidebarAnnotation.vue';
@@ -14,8 +14,8 @@ import SidebarMCPConfigureContent from './SidebarMCPConfigureContent.vue';
 import { Input } from '../input';
 
 afterEach(() => {
-  rs.restoreAllMocks();
-  rs.useRealTimers();
+  vi.restoreAllMocks();
+  vi.useRealTimers();
 });
 
 describe('Sidebar', () => {
@@ -25,7 +25,7 @@ describe('Sidebar', () => {
   ] as const) {
     it(`${name} preserves inherited container Boolean defaults and explicit overrides`, async () => {
       for (const value of [undefined, false, true]) {
-        const onCancel = rs.fn();
+        const onCancel = vi.fn();
         const wrapper = mount(Component, {
           props: {
             visible: true,
@@ -74,8 +74,8 @@ describe('Sidebar', () => {
   });
 
   it('转发关闭、Escape、可见终态并在卸载后清理监听', async () => {
-    const onCancel = rs.fn();
-    const afterVisibleChange = rs.fn();
+    const onCancel = vi.fn();
+    const afterVisibleChange = vi.fn();
     const wrapper = mount(SidebarContainer, {
       props: {
         visible: true,
@@ -97,8 +97,8 @@ describe('Sidebar', () => {
   });
 
   it('按主视图选项和详情回退事件顺序工作', async () => {
-    const onActiveOptionChange = rs.fn();
-    const onBackWard = rs.fn();
+    const onActiveOptionChange = vi.fn();
+    const onBackWard = vi.fn();
     const wrapper = mount(Sidebar, {
       props: {
         visible: true,
@@ -148,20 +148,20 @@ describe('Sidebar', () => {
   });
 
   it('MCP 搜索、模式和受控启停均返回克隆数组', async () => {
-    rs.useFakeTimers();
+    vi.useFakeTimers();
     const options = [
       { value: 'search', label: 'Search', desc: 'Web search', active: false },
       { value: 'mail', label: 'Mail', desc: 'Inbox', active: true },
     ];
-    const onStatusChange = rs.fn();
-    const onSearch = rs.fn();
+    const onStatusChange = vi.fn();
+    const onSearch = vi.fn();
     const wrapper = mount(SidebarMCPConfigureContent, {
       props: { options, customOptions: [], onStatusChange, onSearch },
     });
     wrapper.findComponent(Input).vm.$emit('input', {
       target: { value: 'web' },
     } as unknown as Event);
-    rs.advanceTimersByTime(301);
+    vi.advanceTimersByTime(301);
     await nextTick();
     expect(onSearch).toHaveBeenCalledWith('web', false);
     expect(wrapper.findAll('.semi-sidebar-mcp-configure-content-item')).toHaveLength(1);
@@ -176,8 +176,8 @@ describe('Sidebar', () => {
   });
 
   it('渲染文本/视频引用并保持自定义 item slot', async () => {
-    const onClick = rs.fn();
-    const open = rs.spyOn(window, 'open').mockImplementation(() => null);
+    const onClick = vi.fn();
+    const open = vi.spyOn(window, 'open').mockImplementation(() => null);
     const info = [
       {
         header: 'Sources',

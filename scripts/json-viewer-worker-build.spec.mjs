@@ -1,11 +1,10 @@
-// @rstest-environment node
 import { fileURLToPath } from 'node:url';
 import { runInNewContext } from 'node:vm';
 import { createRsbuild } from '@rsbuild/core';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { expect, it } from '@rstest/core';
+import { expect, it } from 'vitest';
 import uiConfig from '../packages/ui/rslib.config.ts';
 
 it('公开包 Worker 构建保留固定 JSON 协议并返回格式化和折叠结果', async () => {

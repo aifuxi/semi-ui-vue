@@ -1,8 +1,6 @@
-// @rstest-environment node
-
 import { renderToString } from '@vue/server-renderer';
 import { h } from 'vue';
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from 'vitest';
 
 import AutoComplete from './AutoComplete.vue';
 

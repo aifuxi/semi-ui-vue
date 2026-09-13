@@ -1,6 +1,6 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils';
 import { computed, h, nextTick } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { configContextKey, type ConfigContextValue } from '../config-provider';
 import enUS from '../locale/source/en_US';
@@ -10,9 +10,9 @@ import type { JsonViewerExposed } from './types';
 class TestWorker {
   static instances: TestWorker[] = [];
   onmessage: ((event: MessageEvent) => void) | null = null;
-  terminate = rs.fn();
+  terminate = vi.fn();
   // Rsbuild's inline Worker registers an error listener before returning the instance.
-  addEventListener = rs.fn();
+  addEventListener = vi.fn();
   private value = '';
 
   constructor() {
@@ -41,9 +41,9 @@ class TestWorker {
 
 class TestResizeObserver {
   static instances: TestResizeObserver[] = [];
-  disconnect = rs.fn();
-  observe = rs.fn();
-  unobserve = rs.fn();
+  disconnect = vi.fn();
+  observe = vi.fn();
+  unobserve = vi.fn();
 
   constructor(readonly callback: ResizeObserverCallback) {
     TestResizeObserver.instances.push(this);
@@ -89,25 +89,25 @@ beforeEach(() => {
   // The pinned manager uses Date.now() + Math.random() as a request ID. At epoch
   // magnitudes its fractional precision can collide in this synchronous Worker fixture.
   let workerClock = Date.now();
-  rs.spyOn(Date, 'now').mockImplementation(() => ++workerClock);
+  vi.spyOn(Date, 'now').mockImplementation(() => ++workerClock);
   TestWorker.instances = [];
   TestResizeObserver.instances = [];
-  rs.stubGlobal('Worker', TestWorker);
-  rs.stubGlobal('ResizeObserver', TestResizeObserver);
-  rs.stubGlobal(
+  vi.stubGlobal('Worker', TestWorker);
+  vi.stubGlobal('ResizeObserver', TestResizeObserver);
+  vi.stubGlobal(
     'requestAnimationFrame',
-    rs.fn((callback: FrameRequestCallback) => {
+    vi.fn((callback: FrameRequestCallback) => {
       callback(0);
       return 1;
     }),
   );
-  rs.stubGlobal('cancelAnimationFrame', rs.fn());
+  vi.stubGlobal('cancelAnimationFrame', vi.fn());
 });
 
 afterEach(() => {
   document.body.innerHTML = '';
-  rs.unstubAllGlobals();
-  rs.restoreAllMocks();
+  vi.unstubAllGlobals();
+  vi.restoreAllMocks();
 });
 
 describe('JsonViewer', () => {
@@ -194,7 +194,7 @@ describe('JsonViewer', () => {
   });
 
   it('向 renderSearchButton 与 slot 暴露稳定控制器', async () => {
-    const renderSearchButton = rs.fn((defaultNode, controls) =>
+    const renderSearchButton = vi.fn((defaultNode, controls) =>
       h(
         'button',
         { class: 'custom-search', onClick: controls.onToggleSearchBar },

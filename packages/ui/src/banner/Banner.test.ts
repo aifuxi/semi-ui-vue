@@ -2,12 +2,12 @@
 
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import Banner, { BANNER_TYPES } from './index';
 
 afterEach(() => {
-  rs.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 describe('Banner', () => {
@@ -159,8 +159,8 @@ describe('Banner', () => {
   });
 
   it('关闭时先通知、阻止冒泡，再移除整个 alert DOM', async () => {
-    const parentClick = rs.fn();
-    const close = rs.fn((event: MouseEvent) => {
+    const parentClick = vi.fn();
+    const close = vi.fn((event: MouseEvent) => {
       expect(event).toBeInstanceOf(MouseEvent);
       expect(wrapper.find('[role="alert"]').exists()).toBe(true);
     });
@@ -182,7 +182,7 @@ describe('Banner', () => {
   });
 
   it('合并 class/style 和 Vue 根 attrs/原生事件', async () => {
-    const click = rs.fn();
+    const click = vi.fn();
     const wrapper = mount(Banner, {
       props: {
         class: 'vue-class',

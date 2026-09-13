@@ -127,7 +127,7 @@ assert(
 );
 
 for (const [directory, name] of [
-  ['apps/parity-vue', '@workspace/parity-vue'],
+  ['apps/storybook-vue', '@workspace/storybook-vue'],
   ['apps/reference-react', '@workspace/reference-react'],
   ['packages/foundation-integration', '@workspace/foundation-integration'],
   ['packages/test-infra', '@workspace/test-infra'],

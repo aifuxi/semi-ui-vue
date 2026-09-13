@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from 'vitest';
 import { Table, type TableColumnProps } from './index';
 
 const columns: TableColumnProps[] = [

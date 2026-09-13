@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from 'vitest';
 
 import Highlight from './index';
 

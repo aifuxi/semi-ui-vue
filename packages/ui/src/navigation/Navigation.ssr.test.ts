@@ -1,6 +1,6 @@
-import { createSSRApp, h } from 'vue';
+import { describe, expect, it } from 'vitest';
+import { h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { describe, expect, it, rs } from '@rstest/core';
 
 import { ConfigProvider } from '../config-provider';
 import { LocaleProvider } from '../locale';
@@ -55,19 +55,5 @@ describe('Navigation SSR', () => {
     expect(html).toContain('semi-rtl');
     expect(html).toContain('semi-navigation-horizontal');
     expect(html).toContain('semi-navigation-collapsed');
-  });
-
-  it('hydration 无警告并保留受控 DOM', async () => {
-    const error = rs.spyOn(console, 'error').mockImplementation(() => undefined);
-    const Host = { render: () => h(Nav, { items, openKeys: ['parent'], selectedKeys: ['leaf'] }) };
-    const html = await renderToString(h(Host));
-    const container = document.createElement('div');
-    container.innerHTML = html;
-    const app = createSSRApp(Host);
-    app.mount(container);
-    expect(container.querySelector('.semi-navigation-item-selected')).not.toBeNull();
-    expect(error).not.toHaveBeenCalled();
-    app.unmount();
-    error.mockRestore();
   });
 });

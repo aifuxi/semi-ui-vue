@@ -1,8 +1,7 @@
 /* eslint-disable vue/one-component-per-file */
 import { mount } from '@vue/test-utils';
-import { renderToString } from '@vue/server-renderer';
-import { createSSRApp, defineComponent, h, inject, nextTick, onMounted, shallowRef } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { defineComponent, h, inject, nextTick, onMounted, shallowRef } from 'vue';
 
 import { Text } from '../typography';
 
@@ -18,19 +17,19 @@ import ConfigProvider, {
 interface MatchMediaController {
   emit(media: string, matches: boolean): void;
   listeners: Map<string, Set<(event: MediaQueryListEvent) => void>>;
-  removeEventListener: ReturnType<typeof rs.fn>;
+  removeEventListener: ReturnType<typeof vi.fn>;
 }
 
 function installMatchMedia(matches: Record<string, boolean>): MatchMediaController {
   const listeners = new Map<string, Set<(event: MediaQueryListEvent) => void>>();
-  const removeEventListener = rs.fn(
+  const removeEventListener = vi.fn(
     (media: string, listener: (event: MediaQueryListEvent) => void) => {
       listeners.get(media)?.delete(listener);
     },
   );
-  rs.stubGlobal(
+  vi.stubGlobal(
     'matchMedia',
-    rs.fn((media: string) => ({
+    vi.fn((media: string) => ({
       media,
       matches: matches[media] ?? false,
       onchange: null,
@@ -41,9 +40,9 @@ function installMatchMedia(matches: Record<string, boolean>): MatchMediaControll
       },
       removeEventListener: (_type: string, listener: (event: MediaQueryListEvent) => void) =>
         removeEventListener(media, listener),
-      addListener: rs.fn(),
-      removeListener: rs.fn(),
-      dispatchEvent: rs.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     })),
   );
   return {
@@ -64,8 +63,8 @@ describe('ConfigProvider', () => {
   });
 
   afterEach(() => {
-    rs.unstubAllGlobals();
-    rs.restoreAllMocks();
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
   });
 
   it('默认不增加 DOM，RTL 时增加固定 semi-rtl 包装', async () => {
@@ -192,7 +191,7 @@ describe('ConfigProvider', () => {
 
   it('默认关闭断点观察，订阅只返回全 false 且不会访问 matchMedia', () => {
     installMatchMedia({});
-    const warn = rs.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     const snapshot = shallowRef<Readonly<Record<string, boolean>>>();
     const Probe = defineComponent({
       setup() {
@@ -218,26 +217,5 @@ describe('ConfigProvider', () => {
     expect(ConfigProvider.defaultResponsiveMap).toBe(defaultResponsiveMap);
     semiGlobal.config.overrideDefaultProps = { Select: { zIndex: 2000 } };
     expect(semiGlobal.config.overrideDefaultProps?.Select).toEqual({ zIndex: 2000 });
-  });
-
-  it('SSR-safe 渲染 LTR/RTL 与 Consumer', async () => {
-    const app = createSSRApp({
-      render: () =>
-        h(
-          ConfigProvider,
-          { direction: 'rtl', timeZone: 'Asia/Shanghai' },
-          {
-            default: () =>
-              h(ConfigConsumer, null, {
-                default: (context: ConfigContextValue) =>
-                  h('span', { 'data-zone': context.timeZone }, context.direction),
-              }),
-          },
-        ),
-    });
-    const html = await renderToString(app);
-    expect(html).toContain('class="semi-rtl"');
-    expect(html).toContain('data-zone="Asia/Shanghai"');
-    expect(html).toContain('>rtl</span>');
   });
 });

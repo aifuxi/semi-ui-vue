@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { Table, TableColumn, type TableColumnProps, type TableVirtualizedListRef } from './index';
 
@@ -19,12 +19,12 @@ const columns: TableColumnProps[] = [
 
 afterEach(() => {
   document.body.innerHTML = '';
-  rs.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 describe('Table resizable mode boundary', () => {
   it('recreates on false → true → false and retains the instance for true → object', async () => {
-    const onSelectChange = rs.fn();
+    const onSelectChange = vi.fn();
     const wrapper = mount(Table, {
       props: {
         columns,
@@ -67,7 +67,7 @@ describe('Table resizable mode boundary', () => {
       rank: key,
       group: key < 10 ? 'keep' : 'other',
     }));
-    const onChange = rs.fn();
+    const onChange = vi.fn();
     const defaultColumns: TableColumnProps[] = [
       {
         dataIndex: 'name',
@@ -129,7 +129,7 @@ describe('Table resizable mode boundary', () => {
   });
 
   it('preserves controlled state through both mode transitions without extra change events', async () => {
-    const onChange = rs.fn();
+    const onChange = vi.fn();
     const wrapper = mount(Table, {
       props: {
         columns: [
@@ -155,9 +155,9 @@ describe('Table resizable mode boundary', () => {
   });
 
   it('forwards raw Boolean presence, attributes, slots and each event once while retaining the public ref', async () => {
-    const onChange = rs.fn();
-    const onChangeOnce = rs.fn();
-    const onVnodeMounted = rs.fn();
+    const onChange = vi.fn();
+    const onChangeOnce = vi.fn();
+    const onVnodeMounted = vi.fn();
     const wrapper = mount(Table, {
       attrs: {
         'data-probe': 'public',
@@ -215,8 +215,8 @@ describe('Table resizable mode boundary', () => {
   it.each([false, true])(
     'forwards expansion events once for grouped=%s before and after recreation',
     async (grouped) => {
-      const onExpand = rs.fn();
-      const onExpandedRowsChange = rs.fn();
+      const onExpand = vi.fn();
+      const onExpandedRowsChange = vi.fn();
       const wrapper = mount(Table, {
         props: {
           columns,
@@ -251,7 +251,7 @@ describe('Table resizable mode boundary', () => {
 
   it('replaces virtual refs and scroll state, and ignores requests through the disposed ref', async () => {
     const refs: Array<TableVirtualizedListRef | null> = [];
-    const onScroll = rs.fn();
+    const onScroll = vi.fn();
     const wrapper = mount(Table, {
       props: {
         columns: [{ dataIndex: 'name', width: 400 }],
@@ -290,7 +290,7 @@ describe('Table resizable mode boundary', () => {
   });
 
   it('discards resized widths and active drag listeners when leaving the mode', async () => {
-    const onResize = rs.fn(() => ({ title: 'Resized', className: 'resize-feedback' }));
+    const onResize = vi.fn(() => ({ title: 'Resized', className: 'resize-feedback' }));
     const wrapper = mount(Table, {
       props: { columns, dataSource, pagination: false, resizable: { onResize } },
     });

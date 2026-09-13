@@ -7,6 +7,7 @@ import {
 } from '../../../packages/test-infra/src';
 import {
   expectComparableTarget,
+  createVueScenarioUrl,
   expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
@@ -38,14 +39,14 @@ test('OverflowList 参考场景来自本地 v2.102.0 公开源码', async ({ pag
   );
   await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'overflow-list')).toBe(true);
   await page.goto(
-    createParityScenarioUrl(PARITY_APPLICATIONS.vue.baseUrl, {
+    createVueScenarioUrl({
       scenarioId: 'overflow-list',
       theme: 'light',
       direction: 'ltr',
       locale: 'zh-CN',
     }),
   );
-  await expect(page.getByRole('heading', { name: PARITY_APPLICATIONS.vue.heading })).toBeVisible();
+  await expect(page.getByTestId('overflow-list-vue')).toBeVisible();
   expect(runtimeErrors).toEqual([]);
 });
 

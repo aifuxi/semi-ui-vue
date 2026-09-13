@@ -1,6 +1,6 @@
-import { afterEach, expect, it, rs } from '@rstest/core';
+import { afterEach, expect, it, vi } from 'vitest';
 
-const { workers } = rs.hoisted(() => ({
+const { workers } = vi.hoisted(() => ({
   workers: [] as Array<{
     messages: Array<{ messageId: number; method: string; params: unknown }>;
     onmessage:
@@ -9,7 +9,7 @@ const { workers } = rs.hoisted(() => ({
   }>,
 }));
 
-rs.mock('./json-viewer-worker-entry?worker&inline', () => ({
+vi.mock('./json-viewer-worker-entry?worker&inline', () => ({
   default: class {
     messages: Array<{ messageId: number; method: string; params: unknown }> = [];
     onmessage = null;
@@ -34,14 +34,14 @@ import {
 import { setCurrentNameSpaceId } from './json-viewer-namespace';
 
 afterEach(() => {
-  rs.restoreAllMocks();
+  vi.restoreAllMocks();
   workers.length = 0;
   setCurrentNameSpaceId('default');
 });
 
 it('同一时刻发出的初始化和校验请求分别收到对应 Worker 响应', async () => {
-  rs.spyOn(Date, 'now').mockReturnValue(1_725_000_000_000);
-  rs.spyOn(Math, 'random').mockReturnValue(0.5);
+  vi.spyOn(Date, 'now').mockReturnValue(1_725_000_000_000);
+  vi.spyOn(Math, 'random').mockReturnValue(0.5);
   const manager = new JsonWorkerManager();
   const worker = workers[0]!;
   const results: Array<[string, unknown]> = [];

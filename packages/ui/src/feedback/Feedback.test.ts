@@ -1,6 +1,6 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils';
 import { defineComponent, h, nextTick, ref, type VNodeChild } from 'vue';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider } from '../config-provider';
 import { LocaleProvider } from '../locale';
@@ -25,8 +25,8 @@ async function mountVisible(
 }
 
 afterEach(async () => {
-  rs.restoreAllMocks();
-  rs.useRealTimers();
+  vi.restoreAllMocks();
+  vi.useRealTimers();
   document.body.style.overflow = '';
   document.body.style.width = '';
   document.body.replaceChildren();
@@ -126,8 +126,8 @@ describe('Feedback', () => {
   });
 
   it('显式 textAreaProps.onChange 按固定 spread 顺序覆盖内部值 handler', async () => {
-    const textAreaChange = rs.fn();
-    const valueChange = rs.fn();
+    const textAreaChange = vi.fn();
+    const valueChange = vi.fn();
     const wrapper = await mountVisible({
       onValueChange: valueChange,
       textAreaProps: { onChange: textAreaChange, placeholder: '自定义占位符' },
@@ -147,7 +147,7 @@ describe('Feedback', () => {
   });
 
   it('custom slot、content 包裹、footer/null 与按钮 props 按 spread 优先级生效', async () => {
-    const customClick = rs.fn();
+    const customClick = vi.fn();
     const wrapper = await mountVisible(
       {
         footer: null,
@@ -210,7 +210,7 @@ describe('Feedback', () => {
     const okPromise = new Promise<void>((resolve) => {
       resolveOk = resolve;
     });
-    const onCancel = rs.fn();
+    const onCancel = vi.fn();
     const wrapper = await mountVisible({ onCancel, onOk: () => okPromise });
     document.querySelector<HTMLElement>('[data-value="😃"]')?.click();
     await settle();

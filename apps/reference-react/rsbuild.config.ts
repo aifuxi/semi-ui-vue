@@ -416,7 +416,7 @@ function compilePinnedReferenceStyles(): Plugin {
   };
 }
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [
     parityBuildProvenance(fileURLToPath(new URL('../..', import.meta.url))),
     parityPrismOrder(),
@@ -730,9 +730,10 @@ export default defineConfig({
   server: { port: 4173, strictPort: true },
   // Parallel comparisons must keep their DOM/state while another page loads a cold example.
   // Rsbuild's lazy compilation can broadcast hot updates that reload already-ready pages.
-  dev: { lazyCompilation: false },
+  // Static development builds have no refresh runtime; only the dev server owns HMR.
+  dev: { lazyCompilation: false, hmr: command === 'dev' },
   // Lightning CSS shortens fractional grid percentages (20.8333333333% → 20.8333%),
   // changing Chromium's subpixel layout. Compare the pinned Sass output unchanged.
   tools: { lightningcssLoader: false },
   output: { distPath: { root: 'dist' }, minify: { css: false } },
-});
+}));

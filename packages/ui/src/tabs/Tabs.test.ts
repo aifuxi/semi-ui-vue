@@ -1,7 +1,7 @@
 /* eslint-disable vue/one-component-per-file -- test hosts cover template Boolean props and reactive pane collection. */
 import { mount } from '@vue/test-utils';
 import { Fragment, defineComponent, h, nextTick, shallowRef, type VNodeChild } from 'vue';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import TabItem from './TabItem.vue';
 import TabPane from './TabPane.vue';
@@ -30,8 +30,8 @@ function mountTabs(props: Record<string, unknown> = {}, slot: () => VNodeChild =
 afterEach(() => {
   for (const wrapper of wrappers.splice(0)) wrapper.unmount();
   document.body.replaceChildren();
-  rs.restoreAllMocks();
-  rs.useRealTimers();
+  vi.restoreAllMocks();
+  vi.useRealTimers();
 });
 
 describe('Tabs', () => {

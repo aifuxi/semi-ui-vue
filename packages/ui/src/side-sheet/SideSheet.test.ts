@@ -1,6 +1,6 @@
 import { mount, type VueWrapper } from '@vue/test-utils';
 import { defineComponent, h, nextTick, ref } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider, semiGlobal } from '../config-provider';
 import { SideSheet } from './index';
@@ -23,7 +23,7 @@ async function mountVisible(props: Record<string, unknown> = {}): Promise<VueWra
 
 describe('SideSheet', () => {
   beforeEach(() => {
-    rs.useFakeTimers();
+    vi.useFakeTimers();
     document.body.replaceChildren();
     document.body.style.overflow = '';
     document.body.style.width = '';
@@ -31,13 +31,13 @@ describe('SideSheet', () => {
   });
 
   afterEach(() => {
-    rs.runOnlyPendingTimers();
-    rs.useRealTimers();
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
     document.body.replaceChildren();
     document.body.style.overflow = '';
     document.body.style.width = '';
     delete semiGlobal.config.overrideDefaultProps;
-    rs.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('相邻自定义 Portal 挂载后，body SideSheet 首开、编辑与退出重开保持有效', async () => {
@@ -296,7 +296,7 @@ describe('SideSheet', () => {
     expect(order.slice(-2)).toEqual(['update:false', 'cancel']);
     wrapper.unmount();
 
-    const onDisabledCancel = rs.fn();
+    const onDisabledCancel = vi.fn();
     const disabled = await mountVisible({ closeOnEsc: false, onCancel: onDisabledCancel });
     window.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, keyCode: 27 }));
     expect(onDisabledCancel).not.toHaveBeenCalled();
@@ -346,7 +346,7 @@ describe('SideSheet', () => {
     expect(mask().className).not.toContain('semi-sidesheet-animation-mask_show');
     end(content());
     await wrapper.setProps({ visible: false });
-    await rs.advanceTimersByTimeAsync(500);
+    await vi.advanceTimersByTimeAsync(500);
     expect(document.querySelector('.semi-sidesheet')).not.toBeNull();
     expect(content().className).toContain('semi-sidesheet-animation-content_hide_left');
     end(content());
@@ -396,7 +396,7 @@ describe('SideSheet', () => {
       'stable',
     );
 
-    await rs.advanceTimersByTimeAsync(180);
+    await vi.advanceTimersByTimeAsync(180);
     expect(changes).toEqual([true, false]);
     wrapper.unmount();
     expect(document.body.style.overflow).toBe('');

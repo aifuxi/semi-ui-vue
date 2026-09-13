@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import Cropper from './Cropper.vue';
 import type { CropperMethods } from './types';
@@ -10,8 +10,8 @@ const IMAGE =
 class ResizeObserverMock {
   static instances: ResizeObserverMock[] = [];
   callback: ResizeObserverCallback;
-  disconnect = rs.fn();
-  observe = rs.fn();
+  disconnect = vi.fn();
+  observe = vi.fn();
 
   constructor(callback: ResizeObserverCallback) {
     this.callback = callback;
@@ -31,18 +31,18 @@ function mockImageLoad(element: HTMLImageElement, width = 400, height = 200): vo
 describe('Cropper', () => {
   beforeEach(() => {
     ResizeObserverMock.instances = [];
-    rs.stubGlobal('ResizeObserver', ResizeObserverMock);
-    rs.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockImplementation(function (
+    vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+    vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockImplementation(function (
       this: HTMLElement,
     ) {
       return this.classList.contains('semi-cropper') ? 400 : 0;
     });
-    rs.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockImplementation(function (
+    vi.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockImplementation(function (
       this: HTMLElement,
     ) {
       return this.classList.contains('semi-cropper') ? 200 : 0;
     });
-    rs.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
       this: HTMLElement,
     ) {
       const width = this.classList.contains('semi-cropper') ? 400 : 100;
@@ -62,8 +62,8 @@ describe('Cropper', () => {
   });
 
   afterEach(() => {
-    rs.restoreAllMocks();
-    rs.unstubAllGlobals();
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
   });
 
   it('renders the pinned DOM and merges root and crop-box classes', () => {
@@ -220,15 +220,15 @@ describe('Cropper', () => {
 
   it('exposes getCropperCanvas and paints the configured fill', async () => {
     const context = {
-      drawImage: rs.fn(),
-      fillRect: rs.fn(),
-      getImageData: rs.fn(() => ({ data: new Uint8ClampedArray(400 * 200 * 4) })),
-      putImageData: rs.fn(),
-      rotate: rs.fn(),
-      translate: rs.fn(),
+      drawImage: vi.fn(),
+      fillRect: vi.fn(),
+      getImageData: vi.fn(() => ({ data: new Uint8ClampedArray(400 * 200 * 4) })),
+      putImageData: vi.fn(),
+      rotate: vi.fn(),
+      translate: vi.fn(),
       fillStyle: '',
     };
-    rs.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(
       context as unknown as CanvasRenderingContext2D,
     );
     const wrapper = mount(Cropper, { props: { fill: '#fff', src: IMAGE } });
@@ -244,7 +244,7 @@ describe('Cropper', () => {
   });
 
   it('disconnects ResizeObserver and removes document drag listeners on unmount', async () => {
-    const removeSpy = rs.spyOn(document, 'removeEventListener');
+    const removeSpy = vi.spyOn(document, 'removeEventListener');
     const wrapper = mount(Cropper, { props: { src: IMAGE } });
     const image = wrapper.find('.semi-cropper-img').element as HTMLImageElement;
     mockImageLoad(image);

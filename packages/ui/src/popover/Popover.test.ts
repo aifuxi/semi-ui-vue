@@ -1,6 +1,6 @@
 /* eslint-disable vue/one-component-per-file -- test hosts exercise controlled state and hydration. */
 import { mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createSSRApp, defineComponent, h, nextTick, shallowRef } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
@@ -13,23 +13,23 @@ import type { PopoverExposed } from './types';
 async function flushPopover(): Promise<void> {
   for (let index = 0; index < 5; index += 1) {
     await nextTick();
-    await rs.runOnlyPendingTimersAsync();
+    await vi.runOnlyPendingTimersAsync();
   }
 }
 
 describe('Popover', () => {
   beforeEach(() => {
-    rs.useFakeTimers();
+    vi.useFakeTimers();
     document.body.replaceChildren();
     delete semiGlobal.config.overrideDefaultProps;
   });
 
   afterEach(() => {
-    rs.runOnlyPendingTimers();
-    rs.useRealTimers();
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
     document.body.replaceChildren();
     delete semiGlobal.config.overrideDefaultProps;
-    rs.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('SSR 只渲染 trigger，不创建 Portal', async () => {
@@ -121,8 +121,8 @@ describe('Popover', () => {
 
   it('click/outside、Escape 和 v-model:visible 保持公开事件', async () => {
     const visible = shallowRef(false);
-    const outside = rs.fn();
-    const escape = rs.fn();
+    const outside = vi.fn();
+    const escape = vi.fn();
     const Host = defineComponent({
       setup() {
         return () =>
@@ -172,7 +172,7 @@ describe('Popover', () => {
       slots: { default: '<button id="blocked-trigger">Blocked</button>' },
     });
     await wrapper.get('#blocked-trigger').trigger('mouseenter');
-    await rs.advanceTimersByTimeAsync(100);
+    await vi.advanceTimersByTimeAsync(100);
     expect(document.body.querySelector('.semi-popover-wrapper')).toBeNull();
 
     wrapper.unmount();
@@ -272,7 +272,7 @@ describe('Popover', () => {
     const container = document.createElement('div');
     container.innerHTML = serverHtml;
     document.body.appendChild(container);
-    const consoleError = rs.spyOn(console, 'error').mockImplementation(() => undefined);
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
     const app = createSSRApp(HydrationHost);
     app.mount(container);

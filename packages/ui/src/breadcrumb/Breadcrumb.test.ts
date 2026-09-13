@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, defineComponent, h, nextTick } from 'vue';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { IconHome } from '@aifuxi/semi-icons-vue';
 
 import { ConfigProvider } from '../config-provider';
@@ -31,8 +31,8 @@ function mountBreadcrumb(
 afterEach(() => {
   for (const wrapper of mountedWrappers.splice(0)) wrapper.unmount();
   document.body.replaceChildren();
-  rs.useRealTimers();
-  rs.restoreAllMocks();
+  vi.useRealTimers();
+  vi.restoreAllMocks();
 });
 
 describe('Breadcrumb', () => {
@@ -153,7 +153,7 @@ describe('Breadcrumb', () => {
 
   it('renderMore/more slot 接收隐藏 Item，并抑制隐藏项 separator', () => {
     const routes = ['一', '二', '三', '四', '五', '六'];
-    const renderMore = rs.fn((items: unknown[]) => h('b', { class: 'custom-more' }, items.length));
+    const renderMore = vi.fn((items: unknown[]) => h('b', { class: 'custom-more' }, items.length));
     const wrapper = mount(Breadcrumb, { props: { renderMore, routes } });
     mountedWrappers.push(wrapper);
     expect(renderMore).toHaveBeenCalledTimes(1);
@@ -195,7 +195,7 @@ describe('Breadcrumb', () => {
   });
 
   it('moreType=popover 挂载到 ConfigProvider 自定义容器并展示隐藏项', async () => {
-    rs.useFakeTimers();
+    vi.useFakeTimers();
     const popupContainer = document.createElement('div');
     document.body.append(popupContainer);
     const Host = defineComponent({
@@ -218,7 +218,7 @@ describe('Breadcrumb', () => {
 
     await nextTick();
     await wrapper.get('.semi-icon-more').trigger('mouseenter');
-    await rs.advanceTimersByTimeAsync(100);
+    await vi.advanceTimersByTimeAsync(100);
     await nextTick();
     await nextTick();
     expect(popupContainer.querySelector('.semi-popover-wrapper')).not.toBeNull();

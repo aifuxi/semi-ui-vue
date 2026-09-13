@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const workspaceRoot = fileURLToPath(new URL('..', import.meta.url));
 const guardedRoots = [
-  'apps/parity-vue/src',
+  'apps/storybook-vue/src',
   'packages/ui/src',
   'packages/icons/src',
   'packages/icons-lab/src',
@@ -65,7 +65,7 @@ for (const filePath of files) {
     for (const match of source.matchAll(pattern)) {
       const specifier = match[1];
       if (
-        relativePath.startsWith('apps/parity-vue/src/components/') &&
+        relativePath.startsWith('apps/storybook-vue/src/') &&
         specifier === '@aifuxi/semi-ui-vue'
       ) {
         throw new Error(

@@ -1,13 +1,13 @@
 import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
 
 import Spin from './Spin.vue';
 
 afterEach(() => {
-  rs.useRealTimers();
+  vi.useRealTimers();
   delete semiGlobal.config.overrideDefaultProps;
 });
 
@@ -45,7 +45,7 @@ describe('Spin', () => {
   });
 
   it('只延迟 false 到 true，并在到期后显示', async () => {
-    rs.useFakeTimers();
+    vi.useFakeTimers();
     const wrapper = mount(Spin, { props: { delay: 1000, spinning: true } });
     expect(wrapper.classes()).not.toContain('semi-spin-hidden');
 
@@ -53,19 +53,19 @@ describe('Spin', () => {
     expect(wrapper.classes()).toContain('semi-spin-hidden');
     await wrapper.setProps({ spinning: true });
     expect(wrapper.classes()).toContain('semi-spin-hidden');
-    await rs.advanceTimersByTimeAsync(999);
+    await vi.advanceTimersByTimeAsync(999);
     expect(wrapper.classes()).toContain('semi-spin-hidden');
-    await rs.advanceTimersByTimeAsync(1);
+    await vi.advanceTimersByTimeAsync(1);
     await nextTick();
     expect(wrapper.classes()).not.toContain('semi-spin-hidden');
   });
 
   it('卸载时清理 delay timer', async () => {
-    rs.useFakeTimers();
+    vi.useFakeTimers();
     const wrapper = mount(Spin, { props: { delay: 1000, spinning: false } });
     await wrapper.setProps({ spinning: true });
     wrapper.unmount();
-    expect(rs.getTimerCount()).toBe(0);
+    expect(vi.getTimerCount()).toBe(0);
   });
 
   it('渲染固定 SVG、三种尺寸和 data attrs 边界', () => {

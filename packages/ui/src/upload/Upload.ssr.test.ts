@@ -1,6 +1,6 @@
-import { createSSRApp, h } from 'vue';
+import { describe, expect, it } from 'vitest';
+import { h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { describe, expect, it, rs } from '@rstest/core';
 
 import { ConfigProvider } from '../config-provider';
 import Upload from './Upload.vue';
@@ -78,19 +78,5 @@ describe('Upload SSR', () => {
     expect(localized).toContain('semi-rtl');
     expect(localized).toContain('SSR selected');
     expect(localized).toContain('SSR clear');
-  });
-
-  it('hydration 无警告并保留受控 DOM', async () => {
-    const error = rs.spyOn(console, 'error').mockImplementation(() => undefined);
-    const Host = { render: () => h(Upload, { action: '/upload', fileList: files }) };
-    const html = await renderToString(h(Host));
-    const container = document.createElement('div');
-    container.innerHTML = html;
-    const app = createSSRApp(Host);
-    app.mount(container);
-    expect(container.querySelectorAll('.semi-upload-file-card')).toHaveLength(2);
-    expect(error).not.toHaveBeenCalled();
-    app.unmount();
-    error.mockRestore();
   });
 });

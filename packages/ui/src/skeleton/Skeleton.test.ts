@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { h } from 'vue';
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from 'vitest';
 
 import Skeleton from './Skeleton.vue';
 import SkeletonAvatar from './SkeletonAvatar.vue';

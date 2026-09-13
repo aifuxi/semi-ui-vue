@@ -1,7 +1,7 @@
 /* eslint-disable vue/one-component-per-file -- local black-box fixtures stay beside the test */
 import { mount, type VueWrapper } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
-import { afterEach, describe, expect, it } from '@rstest/core';
+import { afterEach, describe, expect, it } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
 import { MarkdownRender, markdownRenderDefaultComponents } from './index';

@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { Col, GRID_RESPONSIVE_MAP, Row } from './index';
 
@@ -12,7 +12,7 @@ afterEach(() => {
     configurable: true,
     value: originalMatchMedia,
   });
-  rs.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 describe('Grid', () => {
@@ -133,10 +133,10 @@ describe('Grid', () => {
 
   it('响应视口变化时按 xxl 到 xs 的优先级更新响应式 gutter', async () => {
     const listeners = new Map<string, (event: MediaQueryListEvent) => void>();
-    const removeEventListener = rs.fn();
+    const removeEventListener = vi.fn();
     Object.defineProperty(window, 'matchMedia', {
       configurable: true,
-      value: rs.fn((query: string) => ({
+      value: vi.fn((query: string) => ({
         matches: query === GRID_RESPONSIVE_MAP.md || query === GRID_RESPONSIVE_MAP.sm,
         media: query,
         onchange: null,
@@ -144,9 +144,9 @@ describe('Grid', () => {
           listeners.set(query, listener);
         },
         removeEventListener,
-        addListener: rs.fn(),
-        removeListener: rs.fn(),
-        dispatchEvent: rs.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        dispatchEvent: vi.fn(),
       })),
     });
 
@@ -200,7 +200,7 @@ describe('Grid', () => {
 
     const container = document.createElement('div');
     container.innerHTML = html;
-    const consoleError = rs.spyOn(console, 'error').mockImplementation(() => undefined);
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     const app = createSSRApp(Root);
     app.mount(container);
     await nextTick();

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "rsbuild dev",
-    "build": "tsc --noEmit && rsbuild build",
+    "build": "tsc --noEmit && rsbuild build --mode development",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf dist"
   },

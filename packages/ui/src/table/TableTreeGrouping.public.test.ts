@@ -1,12 +1,12 @@
 import { mount } from '@vue/test-utils';
 import { h } from 'vue';
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, vi } from 'vitest';
 import { Table } from './index';
 
 describe('Table 树形和分组公开契约', () => {
   it('整份数据分组后分页，组标题回调接收当前页的键，折叠重开不改变分页成员', async () => {
-    const renderGroupSection = rs.fn((key, keys) => h('strong', `${key}: ${keys.join(',')}`));
-    const onExpand = rs.fn();
+    const renderGroupSection = vi.fn((key, keys) => h('strong', `${key}: ${keys.join(',')}`));
+    const onExpand = vi.fn();
     const wrapper = mount(Table, {
       props: {
         columns: [{ title: 'Name', dataIndex: 'name' }],

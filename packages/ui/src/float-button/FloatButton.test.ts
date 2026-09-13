@@ -1,7 +1,7 @@
 import { renderToString } from '@vue/server-renderer';
 import { mount } from '@vue/test-utils';
 import { createSSRApp, h } from 'vue';
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, vi } from 'vitest';
 
 import FloatButton from './FloatButton.vue';
 import FloatButtonGroup from './FloatButtonGroup.vue';
@@ -41,7 +41,7 @@ describe('FloatButton', () => {
   });
 
   it('映射 small/large、square、colorful、disabled class 与点击契约', async () => {
-    const onClick = rs.fn();
+    const onClick = vi.fn();
     const wrapper = mount(FloatButton, {
       props: {
         colorful: true,
@@ -73,7 +73,7 @@ describe('FloatButton', () => {
 
   it('支持 _blank href 跳转并保持先跳转后 click 的顺序', async () => {
     const calls: string[] = [];
-    const open = rs.spyOn(window, 'open').mockImplementation(() => {
+    const open = vi.spyOn(window, 'open').mockImplementation(() => {
       calls.push('open');
       return null;
     });
@@ -138,7 +138,7 @@ describe('FloatButton', () => {
 
 describe('FloatButtonGroup', () => {
   it('渲染 item、badge、icon/content 并从直接点击目标上读取 value', async () => {
-    const onClick = rs.fn();
+    const onClick = vi.fn();
     const wrapper = mount(FloatButtonGroup, {
       props: {
         items: [
@@ -157,7 +157,7 @@ describe('FloatButtonGroup', () => {
   });
 
   it('与固定 Adapter 一致：disabled 只添加 group class，仍保留委托点击', async () => {
-    const onClick = rs.fn();
+    const onClick = vi.fn();
     const wrapper = mount(FloatButtonGroup, {
       props: {
         disabled: true,

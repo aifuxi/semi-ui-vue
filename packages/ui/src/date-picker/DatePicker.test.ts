@@ -1,5 +1,5 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, nextTick } from 'vue';
 
 import { semiGlobal } from '../config-provider';
@@ -8,7 +8,7 @@ import { DatePicker } from './index';
 afterEach(() => {
   document.body.innerHTML = '';
   delete semiGlobal.config.overrideDefaultProps;
-  rs.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 async function settle(): Promise<void> {

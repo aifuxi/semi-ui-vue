@@ -1,5 +1,5 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, nextTick } from 'vue';
 
 import { Popover } from '../popover';
@@ -33,7 +33,7 @@ async function open(wrapper: VueWrapper): Promise<void> {
 
 afterEach(() => {
   document.body.innerHTML = '';
-  rs.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 describe('Cascader', () => {
@@ -89,7 +89,7 @@ describe('Cascader', () => {
   it('opens in a stable custom container and closes with Escape', async () => {
     const container = document.createElement('div');
     document.body.append(container);
-    const visibleChange = rs.fn();
+    const visibleChange = vi.fn();
     const wrapper = mount(Cascader, {
       attachTo: document.body,
       props: {
@@ -134,7 +134,7 @@ describe('Cascader', () => {
   });
 
   it('supports related multiple selection, max and tag removal', async () => {
-    const exceed = rs.fn();
+    const exceed = vi.fn();
     const wrapper = mount(Cascader, {
       attachTo: document.body,
       props: { treeData, multiple: true, max: 1, motion: false, onExceed: exceed },
@@ -155,7 +155,7 @@ describe('Cascader', () => {
   });
 
   it('filters locally, supports remote results and exposes search', async () => {
-    const search = rs.fn();
+    const search = vi.fn();
     const wrapper = mount(Cascader, {
       attachTo: document.body,
       props: {
@@ -212,7 +212,7 @@ describe('Cascader', () => {
 
   it('loads async children once and emits the loaded key set', async () => {
     const asyncData: CascaderData[] = [{ label: 'Async', value: 'async', isLeaf: false }];
-    const loadData = rs.fn(async (options: CascaderData[]) => {
+    const loadData = vi.fn(async (options: CascaderData[]) => {
       options[0]!.children = [{ label: 'Loaded', value: 'loaded' }];
     });
     const wrapper = mount(Cascader, {
@@ -296,8 +296,8 @@ describe('Cascader', () => {
   });
 
   it('clears with Enter and removes its document listener on unmount', async () => {
-    const add = rs.spyOn(document, 'addEventListener');
-    const remove = rs.spyOn(document, 'removeEventListener');
+    const add = vi.spyOn(document, 'addEventListener');
+    const remove = vi.spyOn(document, 'removeEventListener');
     const wrapper = mount(Cascader, {
       attachTo: document.body,
       props: { treeData, defaultValue: ['europe'], showClear: true, motion: false },

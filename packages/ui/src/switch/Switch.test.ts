@@ -1,12 +1,11 @@
 import { mount } from '@vue/test-utils';
-import { renderToString } from '@vue/server-renderer';
-import { createSSRApp, defineComponent, h, nextTick, shallowRef } from 'vue';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { defineComponent, h, nextTick, shallowRef } from 'vue';
 
 import Switch, { SWITCH_SIZES } from './index';
 
 afterEach(() => {
-  rs.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 describe('Switch', () => {
@@ -180,7 +179,7 @@ describe('Switch', () => {
   it('仅键盘 focus-visible 增加 focus class，blur 后清理', async () => {
     const wrapper = mount(Switch);
     const input = wrapper.get('input');
-    rs.spyOn(input.element, 'matches').mockReturnValue(true);
+    vi.spyOn(input.element, 'matches').mockReturnValue(true);
     await input.trigger('focus');
     expect(wrapper.classes()).toContain('semi-switch-focus');
     await input.trigger('blur');
@@ -188,8 +187,8 @@ describe('Switch', () => {
   });
 
   it('鼠标进入/离开监听绑定 wrapper', async () => {
-    const enter = rs.fn();
-    const leave = rs.fn();
+    const enter = vi.fn();
+    const leave = vi.fn();
     const wrapper = mount(Switch, {
       attrs: { onMouseenter: enter, onMouseleave: leave },
     });
@@ -199,25 +198,5 @@ describe('Switch', () => {
     await wrapper.trigger('mouseleave');
     expect(enter).toHaveBeenCalledTimes(1);
     expect(leave).toHaveBeenCalledTimes(1);
-  });
-
-  it('SSR-safe 渲染受控、loading、文本和 ARIA，不访问浏览器全局', async () => {
-    const app = createSSRApp({
-      render: () =>
-        h(Switch, {
-          checked: true,
-          loading: true,
-          size: 'large',
-          checkedText: '开',
-          ariaLabel: 'SSR switch',
-        }),
-    });
-    const html = await renderToString(app);
-    expect(html).toContain('semi-switch-checked');
-    expect(html).toContain('semi-switch-loading');
-    expect(html).toContain('semi-spin-large');
-    expect(html).toContain('aria-label="SSR switch"');
-    expect(html).toContain('aria-checked="true"');
-    expect(html).toContain('开');
   });
 });

@@ -1,6 +1,6 @@
 import { createSSRApp, defineComponent } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from 'vitest';
 
 import { ConfigProvider } from '../config-provider';
 import Badge from './index';

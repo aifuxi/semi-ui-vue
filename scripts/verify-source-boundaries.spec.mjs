@@ -2,7 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { copyFile, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { expect, it } from '@rstest/core';
+import { expect, it } from 'vitest';
 
 it('独立于文档站允许正常依赖升级，同时拒绝公开包私有依赖和源码 vendor 越界', async () => {
   const root = await mkdtemp(path.join(tmpdir(), 'source-boundaries-'));
@@ -16,7 +16,7 @@ it('独立于文档站允许正常依赖升级，同时拒绝公开包私有依�
   try {
     for (const directory of [
       'scripts',
-      'apps/parity-vue/src',
+      'apps/storybook-vue/src',
       'packages/test-infra/src',
       ...packages.map((name) => `packages/${name}/src`),
     ]) {

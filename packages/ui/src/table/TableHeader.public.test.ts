@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, vi } from 'vitest';
 import { Table } from './index';
 
 describe('Table public header content and attributes', () => {
@@ -36,8 +36,8 @@ describe('Table public header content and attributes', () => {
   });
 
   it('resolves function titles once and preserves their final output without query wrappers', () => {
-    const stringTitle = rs.fn(() => 'Computed title');
-    const customTitle = rs.fn(() => h('strong', 'Custom heading'));
+    const stringTitle = vi.fn(() => 'Computed title');
+    const customTitle = vi.fn(() => h('strong', 'Custom heading'));
     const wrapper = mount(Table, {
       props: {
         pagination: false,
@@ -97,8 +97,8 @@ describe('Table public header content and attributes', () => {
 
 describe('Table header sorting hit areas', () => {
   it('uses fixed query DOM and sorts a whole heading once per click', async () => {
-    const onChange = rs.fn();
-    const onHeaderClick = rs.fn();
+    const onChange = vi.fn();
+    const onHeaderClick = vi.fn();
     const wrapper = mount(Table, {
       props: {
         pagination: false,
@@ -138,8 +138,8 @@ describe('Table header sorting hit areas', () => {
   });
 
   it('keeps filtering headings outside the whole-cell sort hit area', async () => {
-    const onChange = rs.fn();
-    const onHeaderClick = rs.fn();
+    const onChange = vi.fn();
+    const onHeaderClick = vi.fn();
     const wrapper = mount(Table, {
       props: {
         pagination: false,
@@ -250,7 +250,7 @@ describe('Table query heading wrappers', () => {
 });
 
 it('keeps confirmation controls inside the filter menu and resets pending choices before applying', async () => {
-  const onChange = rs.fn();
+  const onChange = vi.fn();
   let ready!: () => void;
   const opened = new Promise<void>((resolve) => {
     ready = resolve;
@@ -318,7 +318,7 @@ it('keeps confirmation controls inside the filter menu and resets pending choice
 });
 
 it('applies custom input drafts and suppresses unchanged confirmations while still closing', async () => {
-  const onChange = rs.fn();
+  const onChange = vi.fn();
   let opened!: () => void;
   const ready = new Promise<void>((resolve) => {
     opened = resolve;

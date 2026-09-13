@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick, onMounted } from 'vue';
 import { IconHome } from '@aifuxi/semi-icons-vue';
 
@@ -10,7 +10,7 @@ import { Toast, ToastFactory, useToast } from './index';
 
 describe('Toast', () => {
   beforeEach(() => {
-    rs.useFakeTimers();
+    vi.useFakeTimers();
     Toast.destroyAll();
     semiGlobal.config = {};
     resetToastSeedsForTests();
@@ -19,7 +19,7 @@ describe('Toast', () => {
   afterEach(() => {
     Toast.destroyAll();
     semiGlobal.config = {};
-    rs.useRealTimers();
+    vi.useRealTimers();
     document.body.innerHTML = '';
   });
 
@@ -103,7 +103,7 @@ describe('Toast', () => {
 
   it('相同 id 原位更新内容和类型并重启自动关闭计时', async () => {
     Toast.info({ content: 'Before', duration: 3, id: 7, motion: false });
-    await rs.advanceTimersByTimeAsync(2000);
+    await vi.advanceTimersByTimeAsync(2000);
     Toast.success({ content: 'After', duration: 3, id: 7, motion: false });
     await nextTick();
 
@@ -112,9 +112,9 @@ describe('Toast', () => {
     expect(document.querySelector('.semi-toast')?.classList.contains('semi-toast-success')).toBe(
       true,
     );
-    await rs.advanceTimersByTimeAsync(2000);
+    await vi.advanceTimersByTimeAsync(2000);
     expect(document.querySelector('.semi-toast')).not.toBeNull();
-    await rs.advanceTimersByTimeAsync(1000);
+    await vi.advanceTimersByTimeAsync(1000);
     expect(document.querySelector('.semi-toast')).toBeNull();
   });
 
@@ -123,18 +123,18 @@ describe('Toast', () => {
     const alert = document.querySelector<HTMLElement>('.semi-toast');
     expect(alert).not.toBeNull();
     alert?.dispatchEvent(new MouseEvent('mouseenter'));
-    await rs.advanceTimersByTimeAsync(4000);
+    await vi.advanceTimersByTimeAsync(4000);
     expect(document.querySelector('.semi-toast')).not.toBeNull();
     alert?.dispatchEvent(new MouseEvent('mouseleave'));
-    await rs.advanceTimersByTimeAsync(1999);
+    await vi.advanceTimersByTimeAsync(1999);
     expect(document.querySelector('.semi-toast')).not.toBeNull();
-    await rs.advanceTimersByTimeAsync(1);
+    await vi.advanceTimersByTimeAsync(1);
     expect(document.querySelector('.semi-toast')).toBeNull();
   });
 
   it('关闭按钮阻止冒泡、关闭单条并只调用一次 onClose', async () => {
-    const onClose = rs.fn();
-    const parentClick = rs.fn();
+    const onClose = vi.fn();
+    const parentClick = vi.fn();
     document.body.addEventListener('click', parentClick);
     Toast.info({ content: 'Close me', duration: 0, motion: false, onClose });
     const button = document.querySelector<HTMLButtonElement>('.semi-toast-close-button button');

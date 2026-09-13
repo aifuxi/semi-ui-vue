@@ -1,5 +1,5 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick } from 'vue';
 
 import { ConfigProvider } from '../config-provider';
@@ -27,7 +27,7 @@ async function open(wrapper: VueWrapper): Promise<void> {
 
 afterEach(() => {
   document.body.innerHTML = '';
-  rs.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 describe('TreeSelect', () => {
@@ -59,7 +59,7 @@ describe('TreeSelect', () => {
   it('opens in a stable custom popup container and closes with Escape', async () => {
     const container = document.createElement('div');
     document.body.append(container);
-    const visibleChange = rs.fn();
+    const visibleChange = vi.fn();
     const wrapper = mount(TreeSelect, {
       attachTo: document.body,
       props: {
@@ -149,7 +149,7 @@ describe('TreeSelect', () => {
   });
 
   it('filters locally and reports matching nodes', async () => {
-    const search = rs.fn();
+    const search = vi.fn();
     const wrapper = mount(TreeSelect, {
       attachTo: document.body,
       props: {
@@ -173,7 +173,7 @@ describe('TreeSelect', () => {
   });
 
   it('remote search only emits and does not remove local options', async () => {
-    const search = rs.fn();
+    const search = vi.fn();
     const wrapper = mount(TreeSelect, {
       attachTo: document.body,
       props: {
@@ -271,8 +271,8 @@ describe('TreeSelect', () => {
   });
 
   it('removes the document click listener on unmount', async () => {
-    const add = rs.spyOn(document, 'addEventListener');
-    const remove = rs.spyOn(document, 'removeEventListener');
+    const add = vi.spyOn(document, 'addEventListener');
+    const remove = vi.spyOn(document, 'removeEventListener');
     const wrapper = mount(TreeSelect, { props: { treeData } });
     await open(wrapper);
     const handler = add.mock.calls.find(([name]) => name === 'mousedown')?.[1];

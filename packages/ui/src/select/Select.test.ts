@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
 import Select from './Select.vue';
@@ -105,7 +105,7 @@ describe('Select', () => {
   });
 
   it('多选支持 max、标签移除、+N 与清空', async () => {
-    const onExceed = rs.fn();
+    const onExceed = vi.fn();
     const wrapper = mount(Select, {
       attachTo: document.body,
       props: {

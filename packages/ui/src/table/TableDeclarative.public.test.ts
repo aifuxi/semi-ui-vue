@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from 'vitest';
 
 import TableDeclarativeColumns from './test-fixtures/TableDeclarativeColumns.vue';
 import TableDeclarativeFullRender from './test-fixtures/TableDeclarativeFullRender.vue';

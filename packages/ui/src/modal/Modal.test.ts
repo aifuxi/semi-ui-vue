@@ -1,6 +1,6 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils';
 import { defineComponent, h, nextTick, onMounted } from 'vue';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { IconSend } from '@aifuxi/semi-icons-vue';
 import { DragMove } from '../drag-move';
@@ -146,7 +146,7 @@ describe('Modal', () => {
   });
 
   it('keepDOM/lazyRender/motion 收敛到正确 DOM 和 afterClose 终态', async () => {
-    const afterClose = rs.fn();
+    const afterClose = vi.fn();
     const wrapper = mount(Modal, {
       attachTo: document.body,
       props: {

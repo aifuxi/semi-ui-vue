@@ -1,6 +1,6 @@
-import { createSSRApp, h } from 'vue';
+import { describe, expect, it } from 'vitest';
+import { h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { describe, expect, it, rs } from '@rstest/core';
 
 import { ConfigProvider } from '../config-provider';
 import Transfer from './Transfer.vue';
@@ -79,19 +79,5 @@ describe('Transfer SSR', () => {
     );
     expect(virtual).toContain('semi-transfer-right-virtual-list');
     expect(virtual).toContain('role="listitem"');
-  });
-
-  it('hydration 无警告并保留受控 DOM', async () => {
-    const error = rs.spyOn(console, 'error').mockImplementation(() => undefined);
-    const Host = { render: () => h(Transfer, { dataSource: data, value: ['alpha'] }) };
-    const html = await renderToString(h(Host));
-    const container = document.createElement('div');
-    container.innerHTML = html;
-    const app = createSSRApp(Host);
-    app.mount(container);
-    expect(container.querySelectorAll('.semi-transfer-right-item')).toHaveLength(1);
-    expect(error).not.toHaveBeenCalled();
-    app.unmount();
-    error.mockRestore();
   });
 });

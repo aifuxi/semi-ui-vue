@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, vi } from 'vitest';
 import { Table, type TableVirtualizedListRef } from './index';
 
 const records = Array.from({ length: 1000 }, (_, index) => ({
@@ -22,7 +22,7 @@ function clampScrollToRenderedHeight(body: HTMLElement, height: number) {
   geometry(body, height, 0);
   const tbody = body.querySelector('.semi-table-tbody') as HTMLElement;
   let scrollTop = 0;
-  const writeScrollTop = rs.fn((value: number) => {
+  const writeScrollTop = vi.fn((value: number) => {
     scrollTop = Math.max(0, Math.min(value, body.scrollHeight - body.clientHeight));
   });
   // jsdom does not lay out scroll containers. Model the browser's native
@@ -37,7 +37,7 @@ function clampScrollToRenderedHeight(body: HTMLElement, height: number) {
 describe('Table 真实虚拟表体公开契约', () => {
   it('远跳尾部先提交增大的总高，再设置滚动位置和通知调用方', async () => {
     let list: TableVirtualizedListRef | null = null;
-    const onScroll = rs.fn();
+    const onScroll = vi.fn();
     const wrapper = mount(Table, {
       props: {
         columns: [{ dataIndex: 'name', width: 400 }],
@@ -82,7 +82,7 @@ describe('Table 真实虚拟表体公开契约', () => {
 
   it('同一提交周期连续程序滚动仅写入最后一个请求', async () => {
     let list: TableVirtualizedListRef | null = null;
-    const onScroll = rs.fn();
+    const onScroll = vi.fn();
     const wrapper = mount(Table, {
       props: {
         columns: [{ dataIndex: 'name', width: 400 }],
@@ -115,7 +115,7 @@ describe('Table 真实虚拟表体公开契约', () => {
 
   it('卸载取消尚未提交的滚动，保留旧ref也不再写DOM或回调', async () => {
     let list: TableVirtualizedListRef | null = null;
-    const onScroll = rs.fn();
+    const onScroll = vi.fn();
     const wrapper = mount(Table, {
       props: {
         columns: [{ dataIndex: 'name', width: 400 }],
@@ -173,7 +173,7 @@ describe('Table 真实虚拟表体公开契约', () => {
 
   it('使用 div 行窗口、默认 53px 行高与已测前缀/50px估算后缀，auto 仅滚动到目标可见', async () => {
     let list: TableVirtualizedListRef | null = null;
-    const onScroll = rs.fn();
+    const onScroll = vi.fn();
     const wrapper = mount(Table, {
       props: {
         columns: [{ dataIndex: 'name', title: 'Name', width: 400 }],
@@ -213,7 +213,7 @@ describe('Table 真实虚拟表体公开契约', () => {
 
   it('逐行高度决定窗口；程序、纵向与纯横向滚动分开通知并同步表头', async () => {
     let list: TableVirtualizedListRef | null = null;
-    const onScroll = rs.fn();
+    const onScroll = vi.fn();
     const wrapper = mount(Table, {
       props: {
         columns: [{ dataIndex: 'name', width: 400 }],
@@ -278,7 +278,7 @@ describe('Table 真实虚拟表体公开契约', () => {
   });
 
   it('展开内容占据独立虚拟索引，itemSize 收到对应行元数据', async () => {
-    const itemSize = rs.fn(
+    const itemSize = vi.fn(
       (_index?: number, row?: { expandedRow?: boolean; sectionRow?: boolean }) =>
         row?.expandedRow ? 90 : 53,
     );

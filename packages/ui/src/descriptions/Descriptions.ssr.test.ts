@@ -1,6 +1,6 @@
-import { createSSRApp, h } from 'vue';
+import { describe, expect, it } from 'vitest';
+import { h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { describe, expect, it, rs } from '@rstest/core';
 
 import Descriptions from './Descriptions.vue';
 import DescriptionsItem from './DescriptionsItem.vue';
@@ -43,21 +43,5 @@ describe('Descriptions SSR', () => {
     expect(html).toContain('colspan="3"');
     expect(html).toContain('colspan="1"');
     expect(html).not.toContain('隐藏');
-  });
-
-  it('hydration 无警告且保留固定 table DOM', async () => {
-    const error = rs.spyOn(console, 'error').mockImplementation(() => undefined);
-    const Host = {
-      render: () => h(Descriptions, { data: [{ key: 'Hydrate', value: 'ok' }] }),
-    };
-    const html = await renderToString(h(Host));
-    const container = document.createElement('div');
-    container.innerHTML = html;
-    const app = createSSRApp(Host);
-    app.mount(container);
-    expect(container.querySelectorAll('.semi-descriptions table tbody tr')).toHaveLength(1);
-    expect(error).not.toHaveBeenCalled();
-    app.unmount();
-    error.mockRestore();
   });
 });

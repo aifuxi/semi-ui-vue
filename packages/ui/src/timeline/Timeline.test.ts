@@ -1,6 +1,6 @@
 import { Fragment, defineComponent, h } from 'vue';
 import { mount } from '@vue/test-utils';
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from 'vitest';
 
 import { Timeline, TimelineItem } from './index';
 

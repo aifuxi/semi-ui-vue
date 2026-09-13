@@ -1,7 +1,7 @@
 /* eslint-disable vue/one-component-per-file -- local passthrough hosts expose Portal slot contracts. */
 import { mount, type VueWrapper } from '@vue/test-utils';
 import { computed, defineComponent, nextTick } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
   configContextKey,
@@ -60,14 +60,14 @@ function buttonForIcon(wrapper: VueWrapper, iconClass: string): HTMLButtonElemen
 
 beforeEach(() => {
   semiGlobal.config = {};
-  rs.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined);
-  rs.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => undefined);
-  rs.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => undefined);
+  vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined);
+  vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => undefined);
+  vi.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => undefined);
 });
 
 afterEach(() => {
   semiGlobal.config = {};
-  rs.restoreAllMocks();
+  vi.restoreAllMocks();
   document.body.innerHTML = '';
 });
 
@@ -164,7 +164,7 @@ describe('AudioPlayer', () => {
 
     const verticalSlider = wrapper.get('.semi-audio-player-slider-wrapper-vertical');
     const sliderElement = verticalSlider.get('.semi-audio-player-slider').element;
-    rs.spyOn(sliderElement, 'getBoundingClientRect').mockReturnValue({
+    vi.spyOn(sliderElement, 'getBoundingClientRect').mockReturnValue({
       bottom: 120,
       height: 120,
       left: 0,
@@ -232,8 +232,8 @@ describe('AudioPlayer', () => {
   });
 
   it('使用相同监听函数引用初始化和销毁并透传根 attrs', () => {
-    const add = rs.spyOn(HTMLMediaElement.prototype, 'addEventListener');
-    const remove = rs.spyOn(HTMLMediaElement.prototype, 'removeEventListener');
+    const add = vi.spyOn(HTMLMediaElement.prototype, 'addEventListener');
+    const remove = vi.spyOn(HTMLMediaElement.prototype, 'removeEventListener');
     const wrapper = mountPlayer({ className: 'named', style: { width: '640px' } });
 
     expect(wrapper.classes()).toEqual(expect.arrayContaining(['semi-audio-player', 'named']));

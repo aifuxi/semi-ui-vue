@@ -1,5 +1,5 @@
 import { renderToString } from '@vue/server-renderer';
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from 'vitest';
 import { h } from 'vue';
 
 import { Form } from './index';

@@ -1,27 +1,27 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import BackTop from './BackTop.vue';
 
 describe('BackTop', () => {
   beforeEach(() => {
     let now = 0;
-    rs.spyOn(Date, 'now').mockImplementation(() => {
+    vi.spyOn(Date, 'now').mockImplementation(() => {
       now += 16;
       return now;
     });
-    rs.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
       callback(now);
       return 1;
     });
-    rs.stubGlobal('cancelAnimationFrame', rs.fn());
+    vi.stubGlobal('cancelAnimationFrame', vi.fn());
   });
 
   afterEach(() => {
-    rs.useRealTimers();
-    rs.unstubAllGlobals();
-    rs.restoreAllMocks();
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
   });
 
   it('超过阈值后输出固定 DOM、默认 IconButton、class/style/attrs 与 duration', async () => {
@@ -103,7 +103,7 @@ describe('BackTop', () => {
   it('默认 Window target 读取 pageYOffset，并同步 body 与 documentElement 回顶', async () => {
     document.body.scrollTop = 96;
     document.documentElement.scrollTop = 96;
-    rs.spyOn(window, 'pageYOffset', 'get').mockImplementation(
+    vi.spyOn(window, 'pageYOffset', 'get').mockImplementation(
       () => document.documentElement.scrollTop,
     );
     const wrapper = mount(BackTop, {
@@ -137,8 +137,8 @@ describe('BackTop', () => {
     empty.unmount();
 
     const target = document.createElement('div');
-    const add = rs.spyOn(target, 'addEventListener');
-    const remove = rs.spyOn(target, 'removeEventListener');
+    const add = vi.spyOn(target, 'addEventListener');
+    const remove = vi.spyOn(target, 'removeEventListener');
     const wrapper = mount(BackTop, { props: { target: () => target } });
     expect(add).toHaveBeenCalledWith('scroll', expect.any(Function));
     const listener = add.mock.calls.find(([name]) => name === 'scroll')?.[1];

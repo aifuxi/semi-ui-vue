@@ -2,7 +2,7 @@
 
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, vi } from 'vitest';
 
 import Checkbox, { CheckboxGroup } from './index';
 
@@ -45,7 +45,7 @@ describe('Checkbox', () => {
   });
 
   it('disabled、indeterminate、addon/extra ARIA 与 card/pureCard DOM 对齐', async () => {
-    const onChange = rs.fn();
+    const onChange = vi.fn();
     const wrapper = mount(Checkbox, {
       props: {
         disabled: true,
@@ -81,7 +81,7 @@ describe('Checkbox', () => {
   it('Enter、focus-visible 与公开 focus/blur 落在原生 input', async () => {
     const wrapper = mount(Checkbox, { attachTo: document.body });
     const input = wrapper.get('input');
-    rs.spyOn(input.element, 'matches').mockReturnValue(true);
+    vi.spyOn(input.element, 'matches').mockReturnValue(true);
     await input.trigger('focus');
     expect(wrapper.get('.semi-checkbox-inner-display').classes()).toContain('semi-checkbox-focus');
     await wrapper.trigger('keypress', { key: 'Enter', keyCode: 13 });

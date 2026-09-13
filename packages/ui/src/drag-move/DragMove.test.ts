@@ -1,7 +1,7 @@
 /* eslint-disable vue/one-component-per-file -- template/render hosts verify single-VNode ref and constrainer contracts. */
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
 import DragMove from './DragMove.vue';
@@ -46,7 +46,7 @@ function defineLayout(
 
 beforeEach(() => {
   semiGlobal.config = {};
-  rs.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+  vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
     callback(0);
     return 1;
   });
@@ -54,8 +54,8 @@ beforeEach(() => {
 
 afterEach(() => {
   semiGlobal.config = {};
-  rs.unstubAllGlobals();
-  rs.restoreAllMocks();
+  vi.unstubAllGlobals();
+  vi.restoreAllMocks();
   document.body.innerHTML = '';
 });
 
@@ -93,7 +93,7 @@ describe('DragMove', () => {
       'absolute',
     );
 
-    const error = rs.spyOn(console, 'error').mockImplementation(() => undefined);
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     expect(() =>
       mount(DragMove, { slots: { default: () => [h('span', 'one'), h('span', 'two')] } }),
     ).toThrow('DragMove requires exactly one element in the default slot');
@@ -104,8 +104,8 @@ describe('DragMove', () => {
     semiGlobal.config.overrideDefaultProps = {
       DragMove: { allowInputDrag: true, positionStrategy: 'relative' },
     };
-    const inheritedDown = rs.fn();
-    const inheritedMove = rs.fn();
+    const inheritedDown = vi.fn();
+    const inheritedMove = vi.fn();
     const inherited = mount(DragMove, {
       props: { onMouseDown: inheritedDown, onMouseMove: inheritedMove },
       slots: { default: () => h('div', [h('input')]) },
@@ -117,7 +117,7 @@ describe('DragMove', () => {
     expect(inheritedDown).toHaveBeenCalledOnce();
     expect(inheritedMove).toHaveBeenCalledOnce();
 
-    const explicitMove = rs.fn();
+    const explicitMove = vi.fn();
     const explicit = mount(DragMove, {
       props: {
         allowInputDrag: false,
@@ -211,8 +211,8 @@ describe('DragMove', () => {
 
   it('自定义 handler 是唯一 start 入口，allowMove=false 只通知 down', () => {
     let handle: HTMLElement | null = null;
-    const move = rs.fn();
-    const down = rs.fn();
+    const move = vi.fn();
+    const down = vi.fn();
     const wrapper = mount(DragMove, {
       props: {
         allowMove: () => false,
@@ -242,9 +242,9 @@ describe('DragMove', () => {
   });
 
   it('input/textarea 缺省禁止拖动，显式 true 恢复且 customMove 接收计算位置', () => {
-    const blockedDown = rs.fn();
-    const blockedMove = rs.fn();
-    const blockedUp = rs.fn();
+    const blockedDown = vi.fn();
+    const blockedMove = vi.fn();
+    const blockedUp = vi.fn();
     const blocked = mount(DragMove, {
       props: {
         onMouseDown: blockedDown,
@@ -261,7 +261,7 @@ describe('DragMove', () => {
     expect(blockedMove).not.toHaveBeenCalled();
     expect(blockedUp).not.toHaveBeenCalled();
 
-    const customMove = rs.fn();
+    const customMove = vi.fn();
     const allowed = mount(DragMove, {
       props: { allowInputDrag: true, customMove },
       slots: { default: () => h('div', [h('input')]) },

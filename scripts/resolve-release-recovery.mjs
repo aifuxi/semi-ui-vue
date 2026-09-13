@@ -23,11 +23,7 @@ assert.equal(run.head_sha, sha);
 assert.equal(run.head_branch, 'master');
 assert.equal(run.path, '.github/workflows/publish.yml');
 const { jobs } = await get(`actions/runs/${runId}/jobs?per_page=100`);
-for (const name of [
-  'Quality and package verification',
-  'Chromium parity on Darwin',
-  'Pack and verify original tarballs',
-]) {
+for (const name of ['Quality and package verification', 'Pack and verify original tarballs']) {
   assert.ok(
     jobs.some((job) => job.name === name && job.conclusion === 'success'),
     `${name} has no successful evidence`,

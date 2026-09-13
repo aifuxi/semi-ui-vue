@@ -10,7 +10,7 @@ on:
         type: string
         required: true
       recover-run-id:
-        description: Original run with successful quality, browser and pack verification
+        description: Original run with successful quality and pack verification
         type: string
         required: true
 
@@ -108,7 +108,7 @@ jobs:
           version: 2026.9.3
       - run: mise exec -- pnpm install --frozen-lockfile
       - run: mise exec -- pnpm audit:prod
-      - run: mise exec -- pnpm check
+      - run: mise exec -- pnpm check:source
       - run: mise exec -- pnpm test:changesets
       - run: mise exec -- pnpm build
       - run: mise exec -- pnpm verify:theme-dist
@@ -120,35 +120,6 @@ jobs:
           path: packages/*/dist
           if-no-files-found: error
           retention-days: 30
-
-  browser:
-    name: Chromium parity on Darwin
-    needs: select-mode
-    if: needs.select-mode.outputs.mode == 'publish'
-    runs-on: macos-15
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          ref: ${{ env.CANDIDATE_SHA }}
-          fetch-depth: 0
-          submodules: recursive
-      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
-        with:
-          version: 2026.9.3
-      - run: mise exec -- pnpm install --frozen-lockfile
-      - run: mise exec -- pnpm exec playwright install chromium
-      - run: mise exec -- pnpm test:browser
-        env:
-          PARITY_IGNORE_HOST_BASELINES: '1'
-      - uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: darwin-parity-failure
-          path: |
-            playwright-report
-            test-results
-          if-no-files-found: warn
-          retention-days: 14
 
   pack-verify:
     name: Pack and verify original tarballs
@@ -216,7 +187,7 @@ jobs:
 
   publish:
     name: Publish with npm OIDC
-    needs: [select-mode, quality, browser, pack-verify]
+    needs: [select-mode, quality, pack-verify]
     runs-on: ubuntu-latest
     environment: npm
     permissions:

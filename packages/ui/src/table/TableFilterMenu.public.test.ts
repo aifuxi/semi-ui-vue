@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { h } from 'vue';
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, vi } from 'vitest';
 import { Table } from './index';
 import { Dropdown } from '../dropdown';
 
@@ -35,7 +35,7 @@ function mountFilteredTable(
 
 describe('Table public custom filter items', () => {
   it('renders each custom item once with its text and filters on one public click', async () => {
-    const renderItem = rs.fn((props?: Record<string, unknown>) =>
+    const renderItem = vi.fn((props?: Record<string, unknown>) =>
       h(
         Dropdown.Item,
         {

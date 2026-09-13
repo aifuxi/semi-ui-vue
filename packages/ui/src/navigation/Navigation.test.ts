@@ -1,7 +1,7 @@
 /* eslint-disable vue/one-component-per-file -- independent template hosts verify native slot and Boolean contracts. */
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, vi } from 'vitest';
 import { IconStar } from '@aifuxi/semi-icons-vue';
 
 import { ConfigProvider } from '../config-provider';
@@ -223,7 +223,7 @@ describe('Navigation', () => {
   });
 
   it('header/footer、link、wrapper、disabled、键盘和 locale 保持公开行为', async () => {
-    const onSelect = rs.fn();
+    const onSelect = vi.fn();
     const wrapper = mount(ConfigProvider, {
       props: {
         locale: {

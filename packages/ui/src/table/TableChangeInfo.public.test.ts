@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { h } from 'vue';
-import { afterEach, describe, expect, it } from '@rstest/core';
+import { afterEach, describe, expect, it } from 'vitest';
 
 import { Table, type TableChangeInfo, type TableColumnProps } from './index';
 

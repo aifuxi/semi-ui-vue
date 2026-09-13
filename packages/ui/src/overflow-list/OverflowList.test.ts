@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { createCommentVNode, defineComponent, h, nextTick } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
 import OverflowList from './OverflowList.vue';
@@ -8,9 +8,9 @@ import type { OverflowItem } from './types';
 
 class TestResizeObserver {
   static instances: TestResizeObserver[] = [];
-  readonly observe = rs.fn();
-  readonly unobserve = rs.fn();
-  readonly disconnect = rs.fn();
+  readonly observe = vi.fn();
+  readonly unobserve = vi.fn();
+  readonly disconnect = vi.fn();
 
   constructor(readonly callback: ResizeObserverCallback) {
     TestResizeObserver.instances.push(this);
@@ -23,9 +23,9 @@ class TestResizeObserver {
 
 class TestIntersectionObserver {
   static instances: TestIntersectionObserver[] = [];
-  readonly observe = rs.fn();
-  readonly unobserve = rs.fn();
-  readonly disconnect = rs.fn();
+  readonly observe = vi.fn();
+  readonly unobserve = vi.fn();
+  readonly disconnect = vi.fn();
 
   constructor(
     readonly callback: IntersectionObserverCallback,
@@ -48,7 +48,7 @@ interface MeasuredWidths {
 }
 
 function mockWidths(width: MeasuredWidths) {
-  rs.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockImplementation(function (
+  vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockImplementation(function (
     this: HTMLElement,
   ) {
     if (this.classList.contains('semi-overflow-list-overflow')) return width.overflow;
@@ -87,14 +87,14 @@ async function settleMeasurement(): Promise<void> {
 beforeEach(() => {
   TestResizeObserver.instances = [];
   TestIntersectionObserver.instances = [];
-  rs.stubGlobal('ResizeObserver', TestResizeObserver);
-  rs.stubGlobal('IntersectionObserver', TestIntersectionObserver);
+  vi.stubGlobal('ResizeObserver', TestResizeObserver);
+  vi.stubGlobal('IntersectionObserver', TestIntersectionObserver);
 });
 
 afterEach(() => {
   delete semiGlobal.config.overrideDefaultProps;
-  rs.restoreAllMocks();
-  rs.unstubAllGlobals();
+  vi.restoreAllMocks();
+  vi.unstubAllGlobals();
 });
 
 describe('OverflowList', () => {

@@ -2,16 +2,16 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { addDays } from 'date-fns';
 import { createApp, defineComponent, h, nextTick } from 'vue';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider, type SemiLocale } from '../config-provider';
 import Calendar, { CALENDAR_MODES, type CalendarEvent } from './index';
 
 class TestResizeObserver {
   static instances: TestResizeObserver[] = [];
-  disconnect = rs.fn();
-  observe = rs.fn();
-  unobserve = rs.fn();
+  disconnect = vi.fn();
+  observe = vi.fn();
+  unobserve = vi.fn();
   constructor(readonly callback: ResizeObserverCallback) {
     TestResizeObserver.instances.push(this);
   }
@@ -31,17 +31,17 @@ function event(key: string, date: Date, label: string, allDay = false): Calendar
 
 describe('Calendar', () => {
   beforeEach(() => {
-    rs.useFakeTimers();
-    rs.setSystemTime(displayValue);
-    rs.stubGlobal('ResizeObserver', TestResizeObserver);
+    vi.useFakeTimers();
+    vi.setSystemTime(displayValue);
+    vi.stubGlobal('ResizeObserver', TestResizeObserver);
     TestResizeObserver.instances = [];
   });
 
   afterEach(() => {
     document.body.innerHTML = '';
-    rs.useRealTimers();
-    rs.unstubAllGlobals();
-    rs.restoreAllMocks();
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
   });
 
   it('公开四种 mode 并默认渲染 week', async () => {

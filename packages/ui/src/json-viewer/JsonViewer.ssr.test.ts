@@ -1,13 +1,13 @@
 import { renderToString } from '@vue/server-renderer';
 import { h } from 'vue';
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, vi } from 'vitest';
 
 import JsonViewer from './JsonViewer.vue';
 
 describe('JsonViewer SSR', () => {
   it('只输出静态容器与搜索触发器，不创建 Worker 或访问 DOM', async () => {
-    const WorkerConstructor = rs.fn();
-    rs.stubGlobal('Worker', WorkerConstructor);
+    const WorkerConstructor = vi.fn();
+    vi.stubGlobal('Worker', WorkerConstructor);
     const html = await renderToString(
       h(JsonViewer, {
         value: '{"ssr":true}',
@@ -21,7 +21,7 @@ describe('JsonViewer SSR', () => {
     expect(html).toContain('width:360px');
     expect(html).toContain('semi-json-viewer-search-bar-trigger');
     expect(WorkerConstructor).not.toHaveBeenCalled();
-    rs.unstubAllGlobals();
+    vi.unstubAllGlobals();
   });
 
   it('showSearch=false 时不渲染搜索入口且仍保持 editor SSR shell', async () => {

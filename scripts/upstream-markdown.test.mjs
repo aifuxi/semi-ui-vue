@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from 'vitest';
 import { upstreamLiveDemos } from './upstream-markdown.mjs';
 
 describe('固定上游 live Demo 清单', () => {

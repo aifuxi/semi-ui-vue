@@ -2,14 +2,14 @@
 
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
-import { afterEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import Empty, { EMPTY_LAYOUTS } from './index';
 
 afterEach(() => {
   document.body.removeAttribute('theme-mode');
-  rs.restoreAllMocks();
-  rs.unstubAllGlobals();
+  vi.restoreAllMocks();
+  vi.unstubAllGlobals();
 });
 
 describe('Empty', () => {
@@ -117,7 +117,7 @@ describe('Empty', () => {
   });
 
   it('合并兼容 class、Vue attrs/style 并保留根节点原生事件', async () => {
-    const click = rs.fn();
+    const click = vi.fn();
     const wrapper = mount(Empty, {
       props: {
         class: 'vue-class',
@@ -155,18 +155,18 @@ describe('Empty', () => {
     expect(wrapper.get('img').attributes('src')).toBe('/dark.png');
 
     document.body.setAttribute('theme-mode', 'light');
-    await rs.waitFor(() => expect(wrapper.get('img').attributes('src')).toBe('/light.png'));
+    await vi.waitFor(() => expect(wrapper.get('img').attributes('src')).toBe('/light.png'));
     document.body.setAttribute('theme-mode', 'dark');
-    await rs.waitFor(() => expect(wrapper.get('img').attributes('src')).toBe('/dark.png'));
+    await vi.waitFor(() => expect(wrapper.get('img').attributes('src')).toBe('/dark.png'));
   });
 
   it('没有暗色图片时不创建 observer，并在卸载时断开已创建 observer', async () => {
-    const observe = rs.fn();
-    const disconnect = rs.fn();
-    const Observer = rs.fn(function (this: MutationObserver) {
+    const observe = vi.fn();
+    const disconnect = vi.fn();
+    const Observer = vi.fn(function (this: MutationObserver) {
       return { observe, disconnect } as unknown as MutationObserver;
     });
-    rs.stubGlobal('MutationObserver', Observer);
+    vi.stubGlobal('MutationObserver', Observer);
 
     const lightOnly = mount(Empty, { props: { image: '/light.png' } });
     expect(Observer).not.toHaveBeenCalled();

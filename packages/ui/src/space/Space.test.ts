@@ -1,7 +1,7 @@
 import { renderToString } from '@vue/server-renderer';
 import { mount } from '@vue/test-utils';
 import { createSSRApp, Fragment, h } from 'vue';
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from 'vitest';
 
 import Space from './Space.vue';
 

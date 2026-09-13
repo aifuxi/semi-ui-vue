@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { computed, h, nextTick } from 'vue';
 
 import { configContextKey, type ConfigContextValue } from '../config-provider';
@@ -7,7 +7,7 @@ import Rating from './index';
 
 function mockItemGeometry(element: Element, left = 0, width = 100): void {
   Object.defineProperty(element, 'clientWidth', { configurable: true, value: width });
-  rs.spyOn(element, 'getBoundingClientRect').mockReturnValue({
+  vi.spyOn(element, 'getBoundingClientRect').mockReturnValue({
     bottom: 24,
     height: 24,
     left,
@@ -23,15 +23,15 @@ function mockItemGeometry(element: Element, left = 0, width = 100): void {
 async function flushTooltip(): Promise<void> {
   for (let index = 0; index < 5; index += 1) {
     await nextTick();
-    await rs.runOnlyPendingTimersAsync();
+    await vi.runOnlyPendingTimersAsync();
   }
 }
 
 describe('Rating', () => {
   beforeEach(() => document.body.replaceChildren());
   afterEach(() => {
-    rs.useRealTimers();
-    rs.restoreAllMocks();
+    vi.useRealTimers();
+    vi.restoreAllMocks();
     document.body.replaceChildren();
   });
 
@@ -178,7 +178,7 @@ describe('Rating', () => {
   });
 
   it('character slot 优先于 prop，Tooltip 通过真实 Portal 展示对应内容', async () => {
-    rs.useFakeTimers();
+    vi.useFakeTimers();
     const wrapper = mount(Rating, {
       attachTo: document.body,
       props: { character: 'P', tooltips: ['bad', 'normal', 'good'] },
