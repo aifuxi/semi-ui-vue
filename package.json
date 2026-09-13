@@ -53,6 +53,7 @@
     "test:browser": "playwright test tests/browser",
     "test:browser:built": "PARITY_SERVER_MODE=build playwright test tests/browser",
     "playwright:install": "playwright install chromium",
+    "playwright:cli": "playwright cli",
     "verify:ssr-dist": "node scripts/verify-ssr-import.mjs",
     "test:ssr": "pnpm build:public-js && pnpm verify:ssr-dist",
     "audit:prod": "pnpm --registry=https://registry.npmjs.org/ audit --prod --audit-level=moderate",

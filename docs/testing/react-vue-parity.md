@@ -1,6 +1,6 @@
 # React / Vue 对照基础设施
 
-组件对照在锁定 Chromium 的同一个 BrowserContext 中运行真实 React 参考页和 Vue 页面。两端共享场景 ID、数据、主题、方向、Locale、viewport、DPR、目标和计算样式字段。矩阵与数值门槛统一见[组件契约](component-contract.md)。
+组件对照使用锁定的完整 Chromium 新 headless 模式（`channel: 'chromium'`、`headless: true`），在同一个 BrowserContext 中运行真实 React 参考页和 Vue 页面。两端共享场景 ID、数据、主题、方向、Locale、viewport、DPR、目标和计算样式字段。矩阵与数值门槛统一见[组件契约](component-contract.md)。
 
 ## 场景与来源
 
@@ -42,5 +42,7 @@ React/Vue 对应截图解码为像素后直接比较。组件、Portal 和动效
 发布 CI 的 `PARITY_IGNORE_HOST_BASELINES=1` 会跳过 `toHaveScreenshot()`；因此不能依赖它等待动画或证明两端一致。该模式仍须独立截取两端局部图片，显式使用 `animations: 'disabled'` 并比较像素。
 
 平台快照独立保留，不以 Linux 覆盖 macOS。更新基线前核对固定来源、公开行为、样式和实际图片；只更新受影响场景。历史移动端或 PNG 字节比较记录不改变当前兼容性承诺。
+
+2026-09-13 切换新 headless 时，以 Playwright 1.62.1 / Chrome for Testing 151.0.7922.34、macOS arm64、DPR 1 校准了 Breadcrumb Popover light、ColorPicker inline light / popup dark、Illustrations light / dark 的 10 张 React/Vue 宿主快照。相同 13 项用例在旧 shell 下通过；新模式先独立验证了固定来源、行为、样式、几何及实时 React/Vue 像素对照，再核对历史图中的边缘和渐变栅格化差异。新图尺寸保持不变，5 组 React/Vue 图片逐像素一致。仅迁移这些受影响快照，保留原有门槛及历史 Git 记录。新模式使用浏览器默认渲染后端；没有为匹配旧图添加 SwiftShader 参数。后续变更浏览器或宿主环境仍需重新核对，不能将校准命令的成功当作正式回归通过。
 
 构建、SSR、tarball 与发布检查见[验证入口](validation.md)。对照工作台独立运行，不依赖文档站。

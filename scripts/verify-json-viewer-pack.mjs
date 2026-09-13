@@ -68,7 +68,7 @@ createApp({ render: () => h('main', [
   let browser;
   const errors = [];
   try {
-    browser = await chromium.launch();
+    browser = await chromium.launch({ channel: 'chromium', headless: true });
     const page = await browser.newPage();
     page.on('pageerror', (error) => errors.push(error.message));
     page.on('console', (message) => {

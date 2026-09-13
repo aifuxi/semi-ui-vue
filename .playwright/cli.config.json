@@ -1,0 +1,17 @@
+{
+  "browser": {
+    "browserName": "chromium",
+    "launchOptions": {
+      "channel": "chromium",
+      "headless": true
+    },
+    "contextOptions": {
+      "viewport": { "width": 1440, "height": 900 },
+      "deviceScaleFactor": 1,
+      "locale": "zh-CN",
+      "timezoneId": "Asia/Shanghai",
+      "colorScheme": "light"
+    }
+  },
+  "outputDir": "test-results/playwright-cli"
+}

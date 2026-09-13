@@ -118,7 +118,7 @@ try {
   const failedPreparation = preparations.find((result) => result.status === 'rejected');
   if (failedPreparation) throw failedPreparation.reason;
   report.prepareMs = elapsed(started);
-  browser = await chromium.launch();
+  browser = await chromium.launch({ channel: 'chromium', headless: true });
   report.chromium = browser.version();
   const warmStarted = performance.now();
   if (mode === 'warm') await runPhase('warmup', 1);

@@ -41,6 +41,9 @@ export default defineConfig({
     },
   },
   use: {
+    // Use the full Chrome for Testing binary in new headless mode.
+    channel: 'chromium',
+    headless: true,
     locale: 'zh-CN',
     timezoneId: 'Asia/Shanghai',
     viewport: {

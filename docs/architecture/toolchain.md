@@ -31,6 +31,23 @@ MCP 先用 `get_run_configurations` 获取名称，再用 `execute_run_configura
 
 CodeGraph 用于已索引代码的符号与依赖分析；配置、文档、索引遗漏或过期内容用定向读取补足。个人 MCP 连接保存在本地配置中，`.codex/config.toml` 不入库。
 
+## 本地 Playwright
+
+本地自动测试继续使用 `pnpm test:browser`，默认 3 workers，并以 `channel: 'chromium'`、`headless: true` 启动完整 Chromium 的新 headless 模式。先运行 `pnpm playwright:install` 准备浏览器；定位问题时可用 `pnpm exec playwright test <spec> --headed` 运行指定用例并临时打开窗口。
+
+`pnpm playwright:cli` 复用已锁定的 `@playwright/test@1.62.1` 所带 CLI；对应官方 skill 安装在 [.agents/skills/playwright-cli](../../.agents/skills/playwright-cli/SKILL.md)。CLI 默认读取 [.playwright/cli.config.json](../../.playwright/cli.config.json)，同样使用完整 Chromium 的新 headless 模式。页面服务启动后，在项目根目录执行：
+
+```bash
+pnpm playwright:cli -s=semi-debug open http://127.0.0.1:4174
+pnpm playwright:cli -s=semi-debug snapshot
+pnpm playwright:cli -s=semi-debug close
+# 需要可见窗口时临时启用
+pnpm playwright:cli -s=semi-debug open http://127.0.0.1:4174 --headed
+pnpm playwright:cli -s=semi-debug close
+```
+
+CLI 用于本地页面操作和问题定位；自动回归仍由 Playwright Test 执行。诊断截图、trace 和日志保存在已忽略目录，不提交 Git。
+
 ## 依赖与共享资源
 
 依赖由 pnpm workspace、catalog、overrides 和统一 lockfile 管理，保留严格 peer/engine 校验与 `allowBuilds`。pnpm v12 lockfile 的独立 YAML 文档记录包管理器依赖，升级时一并审阅。使用默认用户 store，位置由 `pnpm store path` 查询。
