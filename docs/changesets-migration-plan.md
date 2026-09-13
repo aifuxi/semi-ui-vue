@@ -216,5 +216,5 @@ registry 查询可对传播延迟做有限重试并记录等待原因；不得�
 - 原始失败、补发、重复执行、五包精确 workspace 依赖和本地标签补建均由真实 CLI 加独立 registry 演练。GitHub Release 补建、OIDC、版本 PR 触发 CI 仍属于外部待验事项。
 - Git 签名失败注入证明 CLI 3.0.2 的 git-tag 命令可能成功退出但没有创建标签；后验增加对实际 GitHub refs、候选 SHA 和 Release 的检查，不依赖 CLI 成功消息。
 - 仓库安装保留统一 lockfile；发布 job 使用 frozen-lockfile 与 ignore-scripts 安装锁定工具环境。它会安装根开发依赖，不另造一份会漂移的工具锁文件，也不运行 workspace 生命周期或重新构建。
-- 最新五包 registry 与远端 refs 已保存到 [快照](../ai-work/20260911-changesets-registry.json)。master 未受保护，仓库 Actions variables/secrets 为空；npm Environment 已有 required reviewer。未修改外部配置或发布包。
+- 2026-09-11 核对五包 registry 与远端 refs，当时结果见[迁移记录](../ai-work/20260911-125341-changesets-migration.md)。master 未受保护，仓库 Actions variables/secrets 为空；npm Environment 已有 required reviewer。未修改外部配置或发布包。
 - 完整本地分阶段门禁已通过：1,206 项单测、442 项组件 Chromium、477 项文档 Chromium，以及审计、构建、主题、SSR、官方 tarball 隔离消费。详细命令、故障与取舍见 [实施记录](../ai-work/20260911-125341-changesets-migration.md)。

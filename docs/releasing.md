@@ -59,6 +59,6 @@ CLI 3.0.2 对原计划重跑仍会尝试已发布包，且仅识别特定重复�
 
 发布前应保护 master，并核对 npm Environment 审核。五包的 npm Trusted Publisher 均应指向 `aifuxi/semi-ui-vue` / `publish.yml` / `npm`。OIDC 配置和真实首发属于外部验收，不由本地测试证明。
 
-2026-09-11 历史快照：npm Environment 已有 required reviewer `aifuxi`；master 的 `protected=false`；仓库级 Actions variables/secrets 列表为空；五包 registry 均为 `next=0.1.0-alpha.4`、`latest=0.1.0-alpha.0`，见[迁移记录](../ai-work/20260911-changesets-registry.json)。当时未创建 App、修改远端配置或发布 npm。准备新候选时重新核对这些外部状态，不把此快照当作当前检查结果。
+2026-09-11 历史核对结论：npm Environment 已有 required reviewer `aifuxi`；master 的 `protected=false`；仓库级 Actions variables/secrets 列表为空；五包 registry 均为 `next=0.1.0-alpha.4`、`latest=0.1.0-alpha.0`，见[迁移记录](../ai-work/20260911-125341-changesets-migration.md)。当时未创建 App、修改远端配置或发布 npm。准备新候选时重新核对这些外部状态，不把历史结论当作当前检查结果。
 
 迁移方案及原验收定义见 [迁移计划](changesets-migration-plan.md)。历史审计中的旧命令仅为当时证据，不是现行发布入口。

@@ -53,7 +53,7 @@ Navigation 双语示例/章节/映射/许可、React 固定文档编译与注册
 - Navigation/Dropdown 与 Worker/JsonViewer 共 7 个单元/SSR 文件、42 项通过；Worker 碰撞先得到确定性失败，再以实例 ID 修复后通过。
 - UI、Foundation、参考应用、根工具类型检查及变更 ESLint/格式、源码边界、主题与 SSR 产物检查通过。最终构建后的 `pnpm verify:pack-dist` 安装、exports、ESM、类型、样式和 SSR import 均通过。
 - 人工查看 Template dark、组合导航 light、英文 RTL 水平导航和嵌套浮层的 React/Vue 裁剪，未发现可见局部差异。没有新增 mask、降低阈值或更新宿主快照基线。
-- [单元/SSR 日志](./20260906-200000-navigation-unit.log.gz)、[全仓与重复专项浏览器日志](./20260906-200000-navigation-browser.log.gz)、[Worker 失败复现](./20260906-200000-navigation-worker-reproduction.log.gz)、[检查与 tarball 日志](./20260906-200000-navigation-checks.log.gz)、[正式入口日志](./20260906-200000-navigation-official.log.gz)。正式环境、样式、截图及源码哈希见 [Navigation evidence](../docs/documentation/evidence/navigation.json) 及其压缩报告。
+- 本节保留 2026-09-06 当时的验证结论；原始单元/SSR、浏览器、Worker 复现、检查与 tarball 日志，以及正式环境、样式、截图和源码哈希附件已按[清理说明](../docs/documentation/README.md)移除。
 
 ## 剩余范围
 

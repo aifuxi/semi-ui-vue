@@ -28,10 +28,12 @@
 
 ## 验证证据
 
+以下保留 2026-09-06 当时的验证与计时结论；原始日志和计时附件已按[清理说明](../docs/documentation/README.md)移除。
+
 - pnpm --filter @workspace/docs check:nuxt:evidence：30 项通过，覆盖共享执行、报告拆分与失败拒绝。
 - 修改范围 ESLint、pnpm typecheck:root、git diff --check：通过。
-- `pnpm --filter @workspace/docs accept:nuxt:batch --affected`：172 项通过，无失败/跳过/重试；五批证据已重新生成，[正式日志](./20260906-190000-documentation-acceptance-performance.log.gz)。
-- [阶段计时](./20260906-190000-documentation-acceptance-performance.timing.json)：总计 864.7 秒，准备资源 40.8 秒、Nuxt 生成 57.7 秒、类型 12.2 秒、浏览器命令 734.5 秒。前次五批 Playwright 报告累计 741.6 秒，本次约 12.2 分钟，差异很小且计时口径/运行环境存在自然波动，不能宣称显著提速。
+- `pnpm --filter @workspace/docs accept:nuxt:batch --affected`：172 项通过，无失败/跳过/重试；当时五批证据已重新生成。
+- 阶段计时：总计 864.7 秒，准备资源 40.8 秒、Nuxt 生成 57.7 秒、类型 12.2 秒、浏览器命令 734.5 秒。前次五批 Playwright 报告累计 741.6 秒，本次约 12.2 分钟，差异很小且计时口径/运行环境存在自然波动，不能宣称显著提速。
 - 最慢用例为 Dark Mode Local 四个场景，每项 24–26 秒。剩余主要成本是复杂交互矩阵与诊断返工；共享启动优化不替代后续代表用例分阶段诊断。
 - `accept:nuxt:batch --affected --plan` 核对最终五批证据；覆盖数量保持 712/859 映射、33/859 有效验收。
 

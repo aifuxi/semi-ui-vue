@@ -40,11 +40,13 @@
 
 ## 验证证据
 
-- `pnpm exec vitest run packages/ui/src/navigation packages/ui/src/tooltip packages/ui/src/pagination packages/ui/src/select`：8 文件、61 项通过，[日志](./20260906-180000-dark-mode-unit.log.gz)。
-- `pnpm exec playwright test tests/browser --retries=0 --reporter=json`：全仓 Chromium 442 项通过，无跳过、失败或 flaky，[报告](./20260906-180000-dark-mode-browser.json.gz)。
-- `pnpm --filter @workspace/docs accept:nuxt:batch dark-mode --affected`：共享公开 JS、主题和 Nuxt 构建，类型/内容/产物检查通过；Button 84、ConfigProvider 16、Dark Mode 8、Icon 48、Locale 16，共 172 项通过，无跳过、失败或 flaky，[正式日志](./20260906-180000-dark-mode-official.log.gz)。截图、样式和环境附件保存在 [批次证据目录](../docs/documentation/evidence/)。
+以下保留 2026-09-06 当时的验证结论；原始日志、报告、截图和环境附件已按[清理说明](../docs/documentation/README.md)移除。
+
+- `pnpm exec vitest run packages/ui/src/navigation packages/ui/src/tooltip packages/ui/src/pagination packages/ui/src/select`：8 文件、61 项通过。
+- `pnpm exec playwright test tests/browser --retries=0 --reporter=json`：全仓 Chromium 442 项通过，无跳过、失败或 flaky。
+- `pnpm --filter @workspace/docs accept:nuxt:batch dark-mode --affected`：共享公开 JS、主题和 Nuxt 构建，类型/内容/产物检查通过；Button 84、ConfigProvider 16、Dark Mode 8、Icon 48、Locale 16，共 172 项通过，无跳过、失败或 flaky。
 - UI、文档和参考 React 类型检查、`pnpm typecheck:root`、修改范围 ESLint 通过；证据验证器 19 项通过。
-- `pnpm verify:pack-dist`：真实 tarball 安装、exports、ESM、类型、样式和 SSR import 通过；`pnpm verify:ssr-dist`、`pnpm check:boundaries` 通过。[检查日志](./20260906-180000-dark-mode-checks.log.gz)。
+- `pnpm verify:pack-dist`：真实 tarball 安装、exports、ESM、类型、样式和 SSR import 通过；`pnpm verify:ssr-dist`、`pnpm check:boundaries` 通过。
 - 复核 14 个示例许可 sha256；手动查看导航浮层、带箭头 Tooltip 和键盘焦点截图。五批 acceptedBatch 均为 true，最终覆盖账本为 1476 个注册 Demo、712/859 项映射、33/859 项有效严格验收。
 
 ## 未验证事项与剩余风险

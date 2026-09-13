@@ -6,4 +6,6 @@ Nuxt 文档站与旧逐示例验收体系于 2026-09-13 移除。组件开发、
 
 保留只读 `vendor/semi-design` 固定基线、[静态组件契约](../components/)、[组件验收要求](../testing/component-contract.md)、[现有验证入口](../testing/validation.md)和[发布手册](../releasing.md)。组件缺口仍需按公开契约修复并验证。Vitest、Storybook 与测试组织方式的后续迁移见[替代方案](../testing/vue-testing-strategy-proposal.md)，该方案尚未实施。
 
-旧站点内容、映射、验收报告与站点决策可通过 Git 历史查阅，例如 `git log -- apps/docs docs/documentation`。保留的组件记录或研究材料可能引用这些历史路径和当时结果；它们不要求恢复旧工具，也不替代当前候选的有效证据。
+旧站点源码、映射与文字决策可通过 Git 历史查阅，例如 `git log -- apps/docs docs/documentation`。为缩减推送体积，`docs/documentation/evidence/`、`docs/documentation/coverage.json` 与 `ai-work/` 下的非 Markdown 附件已从当前树及未发布历史清理，原始报告、日志、诊断截图、补丁和外部快照不再保留。
+
+保留的组件记录或研究材料可能引用已清理附件的历史路径和当时结果；这些路径仅说明历史背景，不再提供原始附件，也不替代当前候选的有效证据。后续运行附件放入本地已忽略目录或 CI artifacts，不提交 Git；`tests/browser/snapshots/` 中现行测试使用的基线继续保留。

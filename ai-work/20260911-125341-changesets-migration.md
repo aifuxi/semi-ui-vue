@@ -36,7 +36,7 @@
 
 ## 外部核对与剩余事项
 
-- 五包当前 npm 均为 `next=0.1.0-alpha.4`、`latest=0.1.0-alpha.0`，完整 refs 与版本快照见 `20260911-changesets-registry.json`。
+- 2026-09-11 核对时，五包 npm 均为 `next=0.1.0-alpha.4`、`latest=0.1.0-alpha.0`。原始 refs 与版本快照已按[清理说明](../docs/documentation/README.md)移除；本节保留当时结论，发布前需重新核对外部状态。
 - npm Environment 存在 required reviewer `aifuxi`；master API 返回 `protected=false`，仓库 Actions variables/secrets 为空。需配置 GitHub App、`RELEASE_APP_ID`、`RELEASE_BOT_LOGIN`、`RELEASE_APP_PRIVATE_KEY`，保护 master，并验证机器人创建/更新 PR 能触发 CI。
 - `npm trust list @aifuxi/semi-ui-vue` 返回 E401（当前 npm 身份不能读取）；五包 Trusted Publisher 尚未核实，不能从历史 provenance 推断现行配置正确。
 - GitHub Release 的远端补建、首个版本 PR、OIDC 发布和新候选后验均未执行；稳定版切换须等待产品验收。
