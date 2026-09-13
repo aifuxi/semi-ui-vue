@@ -276,14 +276,19 @@ test('实际批次仅纳入自身 React 适配器及固定局部依赖；Table �
             'apps/reference-react/docs-adapters/descriptions-vertical.mjs',
             'apps/reference-react/docs-adapters/descriptions.mjs',
           ]
-        : [`apps/reference-react/docs-adapters/${batch.id}.mjs`],
+        : batch.id === 'table-2'
+          ? [
+              'apps/reference-react/docs-adapters/table-1.mjs',
+              'apps/reference-react/docs-adapters/table-2.mjs',
+            ]
+          : [`apps/reference-react/docs-adapters/${batch.id}.mjs`],
       batch.id,
     );
   }
   const affected = (file) =>
     inputs.filter((result) => result.files.includes(file)).map(({ batch }) => batch.id);
   // Skeleton 的 Table 示例直接渲染 Table，因此 Table 变更必须使其批次失效。
-  assert.deepEqual(affected(foundationTable), ['locale', 'skeleton', 'table-1']);
+  assert.deepEqual(affected(foundationTable), ['locale', 'skeleton', 'table-1', 'table-2']);
   assert.deepEqual(affected('packages/foundation-integration/src/audio-player.js'), []);
   for (const file of [
     foundationTooltip,
@@ -306,6 +311,10 @@ test('实际批次仅纳入自身 React 适配器及固定局部依赖；Table �
       file,
     );
   assert.deepEqual(affected('apps/reference-react/docs-adapters/navigation.mjs'), ['navigation']);
+  assert.deepEqual(affected('apps/reference-react/docs-adapters/table-1.mjs'), [
+    'table-1',
+    'table-2',
+  ]);
 });
 
 for (const target of [

@@ -60,8 +60,8 @@ export const tableApi: readonly ApiSection[] = [
         'groupBy / renderGroupSection',
         'key | function / renderer',
         '—',
-        '行分组。',
-        'Row grouping.',
+        '行分组；renderGroupSection 的 group 参数为当前页成员行 key 数组。',
+        'Row grouping; renderGroupSection receives current-page member row keys as group.',
       ),
       p(
         'scroll / sticky / virtualized',
@@ -70,7 +70,13 @@ export const tableApi: readonly ApiSection[] = [
         '滚动、吸顶与虚拟化。',
         'Scrolling, sticky header, and virtualization.',
       ),
-      p('resizable', 'boolean | TableResizable', 'false', '列宽调整。', 'Column resizing.'),
+      p(
+        'resizable',
+        'boolean | TableResizable',
+        'false',
+        '列宽调整；回调返回部分列属性或 void，handlerClassName 定制手柄 class。',
+        'Column resizing; callbacks return partial column properties or void; handlerClassName styles handles.',
+      ),
       p(
         'bordered / size / showHeader',
         'boolean / size / boolean',

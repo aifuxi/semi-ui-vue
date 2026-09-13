@@ -37,7 +37,7 @@ import '@aifuxi/semi-theme-default/button.css';
 
 - **组件实现：85/85 个公开根模块已完成垂直切片（ready）**，包含 `_base`、`_utils`，不等于 85 个可视组件。范围以[固定上游清单](docs/inventory/semi-v2.102.0.json)的 `summary.rootModuleCount` 为准，API 映射与验收记录见[组件目录](docs/components/)。
 - **资产：**覆盖固定基线的 57 个语言源、稳定/Lab 图标与公开插画。
-- **文档：**已统一为 Nuxt（Rspack builder）。覆盖账本记录 859/859 个上游中文 Demo 已映射至双语实现；映射不等于视觉与行为验收通过。历史 44 批已全部恢复，当前有效验收 332/859，剩余 527 项尚未验收。有效验收数量见[覆盖账本](docs/documentation/coverage.json)，下一批及剩余工作见[双线计划](docs/documentation/batch-plan.md)，固定 React 对照的样式、几何、像素与交互门槛见[文档流程](docs/documentation/workflow.md)。
+- **文档：**已统一为 Nuxt（Rspack builder）。覆盖账本记录 859/859 个上游中文 Demo 已映射至双语实现；映射不等于视觉与行为验收通过。历史 44 批已全部恢复，新增 Table 14 项，当前 45 批有效验收 346/859，剩余 513 项尚未验收。有效验收数量见[覆盖账本](docs/documentation/coverage.json)，下一批及剩余工作见[双线计划](docs/documentation/batch-plan.md)，固定 React 对照的样式、几何、像素与交互门槛见[文档流程](docs/documentation/workflow.md)。
 - **稳定版：**仍需文档严格验收、章节/API/迁移审阅、站点与许可审计及发布接入闭环，见[1.0 发布审计](docs/release-audit-1.0.md)。
 
 组件 ready、文档映射、当前有效验收和稳定发布是不同状态；历史通过记录不证明当前源码已通过全部门禁。

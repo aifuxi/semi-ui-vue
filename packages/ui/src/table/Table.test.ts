@@ -244,9 +244,9 @@ describe('Table', () => {
       template: `
         <Table :data-source="data" :pagination="false" resizable>
           ignored text
-          <TableColumn title="Name" data-index="name" resize />
+          <TableColumn title="Name" data-index="name" :width="120" resize />
           <span>not a column</span>
-          <TableColumn title="Score" data-index="score" :resize="false" />
+          <TableColumn title="Score" data-index="score" :width="120" :resize="false" />
         </Table>
       `,
     });
@@ -261,8 +261,8 @@ describe('Table', () => {
           { dataSource: data, pagination: false, resizable: true },
           {
             default: () => [
-              h(TableColumn, { dataIndex: 'name', resize: true, title: 'Name' }),
-              h(TableColumn, { dataIndex: 'score', resize: false, title: 'Score' }),
+              h(TableColumn, { dataIndex: 'name', width: 120, resize: true, title: 'Name' }),
+              h(TableColumn, { dataIndex: 'score', width: 120, resize: false, title: 'Score' }),
             ],
           },
         ),
@@ -440,7 +440,7 @@ describe('Table', () => {
     );
 
     const handle = wrapper.find('.react-resizable-handle');
-    await handle.trigger('pointerdown', { clientX: 100 });
+    await handle.trigger('pointerdown', { clientX: 100, button: 0 });
     window.dispatchEvent(new MouseEvent('pointermove', { clientX: 130 }));
     window.dispatchEvent(new MouseEvent('pointerup', { clientX: 130 }));
     await nextTick();

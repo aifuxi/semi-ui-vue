@@ -1,97 +1,17 @@
 <script setup lang="ts">
-import { h, shallowRef } from 'vue';
 import { Table, type TableColumnProps } from '@aifuxi/semi-ui-vue/table';
-import { Avatar } from '@aifuxi/semi-ui-vue/avatar';
-import '@aifuxi/semi-theme-default/table.css';
-import '@aifuxi/semi-theme-default/avatar.css';
-
-const figmaIcon = '/demos/one.svg';
-type Row = Record<string, unknown>;
-function makeData(total: number): Row[] {
-  return Array.from({ length: total }, (_, index) => ({
-    key: String(index),
-    name: `${index % 2 ? 'Semi D2C' : 'Semi Design'} design${index}.fig`,
-    nameIconSrc: figmaIcon,
-    size: (index * 1000) % 199,
-    owner: index % 2 ? 'Hao Xuan' : 'Jiang Pengzhi',
-    status: index % 3 === 0 ? 'success' : index % 3 === 1 ? 'pending' : 'wait',
-    updateTime: new Date(Date.UTC(2020, 1, 2) + ((index * 1000) % 199) * 86400000)
-      .toISOString()
-      .slice(0, 10),
-    avatarBg: index % 2 ? 'red' : 'grey',
-  }));
-}
-const baseColumns: TableColumnProps[] = [
-  {
-    title: 'Title',
-    dataIndex: 'name',
-    width: 400,
-    render: (text, record) =>
-      h('span', { style: { display: 'inline-flex', alignItems: 'center' } }, [
-        h(Avatar, {
-          size: 'small',
-          shape: 'square',
-          src: String(record.nameIconSrc),
-          style: { marginRight: '12px' },
-        }),
-        String(text),
-      ]),
-  },
-  { title: 'Size', dataIndex: 'size', width: 150, render: (text) => `${text} KB` },
-  {
-    title: 'Owner',
-    dataIndex: 'owner',
-    width: 200,
-    render: (text, record) =>
-      h('span', [
-        h(
-          Avatar,
-          {
-            size: 'small',
-            color: record.avatarBg as 'red' | 'grey',
-            style: { marginRight: '4px' },
-          },
-          () => String(text).slice(0, 1),
-        ),
-        String(text),
-      ]),
-  },
-  { title: 'Updated', dataIndex: 'updateTime', width: 200 },
-];
-
-const data = makeData(3);
-const message = shallowRef('');
-const columns: TableColumnProps[] = baseColumns.map((column) => ({
-  ...column,
-  onCell: (record) => ({
-    onClick: () => {
-      message.value = `${column.dataIndex}: ${record?.name}`;
-    },
-  }),
-}));
-const onRow = (record?: Row) => ({
-  onDblclick: () => {
-    message.value = `Double clicked row: ${record?.name}`;
-  },
-  'data-document-key': record?.key,
-  style: { cursor: 'pointer' },
+import { fileColumns, generatedRows } from './first-batch-fixture';
+const columns = fileColumns('en-us', 5).filter((column) => column.dataIndex !== 'status');
+const data = generatedRows('en-us', 5);
+const onRow = (record?: Record<string, unknown>, index?: number) => ({
+  className: 'my-tr-class',
+  ...(index === 2 ? { onClick: () => console.log('mouse click: ', record, index) } : {}),
 });
-const onHeaderRow = () => ({
-  onClick: () => {
-    message.value = 'Header clicked';
-  },
+const onHeaderRow = (columns?: TableColumnProps[], index?: number) => ({
+  onMouseenter: () => console.log('mouse enter: ', columns, index),
+  onMouseleave: () => console.log('mouse leave: ', columns, index),
 });
 </script>
-
 <template>
-  <div>
-    <Table
-      :columns="columns"
-      :data-source="data"
-      :pagination="false"
-      :on-row="onRow"
-      :on-header-row="onHeaderRow"
-    ></Table>
-    <p aria-live="polite">{{ message }}</p>
-  </div>
+  <Table :columns="columns" :data-source="data" :on-row="onRow" :on-header-row="onHeaderRow" />
 </template>

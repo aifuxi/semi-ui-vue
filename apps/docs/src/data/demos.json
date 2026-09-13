@@ -16421,12 +16421,18 @@
   {
     "id": "table/en-us/CellHover",
     "entry": "CellHover.vue",
-    "files": { "CellHover.vue": "table/en-us/CellHover.vue" },
+    "files": {
+      "CellHover.vue": "table/en-us/CellHover.vue",
+      "second-batch-style-fixture.ts": "table/en-us/second-batch-style-fixture.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/typography.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/typography",
       "vue"
     ],
     "pages": ["/en-us/components/table/"],
@@ -16542,13 +16548,18 @@
   {
     "id": "table/en-us/Ellipsis",
     "entry": "Ellipsis.vue",
-    "files": { "Ellipsis.vue": "table/en-us/Ellipsis.vue" },
+    "files": {
+      "Ellipsis.vue": "table/en-us/Ellipsis.vue",
+      "second-batch-style-fixture.ts": "table/en-us/second-batch-style-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/typography.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/typography",
       "vue"
     ],
     "pages": ["/en-us/components/table/"],
@@ -16557,7 +16568,10 @@
   {
     "id": "table/en-us/EllipsisTooltip",
     "entry": "EllipsisTooltip.vue",
-    "files": { "EllipsisTooltip.vue": "table/en-us/EllipsisTooltip.vue" },
+    "files": {
+      "EllipsisTooltip.vue": "table/en-us/EllipsisTooltip.vue",
+      "second-batch-style-fixture.ts": "table/en-us/second-batch-style-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
@@ -16703,12 +16717,18 @@
   {
     "id": "table/en-us/Grouping",
     "entry": "Grouping.vue",
-    "files": { "Grouping.vue": "table/en-us/Grouping.vue" },
+    "files": {
+      "Grouping.vue": "table/en-us/Grouping.vue",
+      "second-batch-style-fixture.ts": "table/en-us/second-batch-style-fixture.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/typography.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/typography",
       "vue"
     ],
     "pages": ["/en-us/components/table/"],
@@ -16741,12 +16761,18 @@
   {
     "id": "table/en-us/HeaderStyle",
     "entry": "HeaderStyle.vue",
-    "files": { "HeaderStyle.vue": "table/en-us/HeaderStyle.vue" },
+    "files": {
+      "HeaderStyle.vue": "table/en-us/HeaderStyle.vue",
+      "second-batch-style-fixture.ts": "table/en-us/second-batch-style-fixture.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/typography.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/typography",
       "vue"
     ],
     "pages": ["/en-us/components/table/"],
@@ -16809,12 +16835,18 @@
   {
     "id": "table/en-us/Resizable",
     "entry": "Resizable.vue",
-    "files": { "Resizable.vue": "table/en-us/Resizable.vue" },
+    "files": {
+      "Resizable.vue": "table/en-us/Resizable.vue",
+      "second-batch-style-fixture.ts": "table/en-us/second-batch-style-fixture.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/typography.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/typography",
       "vue"
     ],
     "pages": ["/en-us/components/table/"],
@@ -16823,12 +16855,18 @@
   {
     "id": "table/en-us/ResizableStyle",
     "entry": "ResizableStyle.vue",
-    "files": { "ResizableStyle.vue": "table/en-us/ResizableStyle.vue" },
+    "files": {
+      "ResizableStyle.vue": "table/en-us/ResizableStyle.vue",
+      "second-batch-style-fixture.ts": "table/en-us/second-batch-style-fixture.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/typography.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/typography",
       "vue"
     ],
     "pages": ["/en-us/components/table/"],
@@ -16837,12 +16875,18 @@
   {
     "id": "table/en-us/RowEvents",
     "entry": "RowEvents.vue",
-    "files": { "RowEvents.vue": "table/en-us/RowEvents.vue" },
+    "files": {
+      "RowEvents.vue": "table/en-us/RowEvents.vue",
+      "first-batch-fixture.ts": "table/en-us/first-batch-fixture.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
       "vue"
     ],
     "pages": ["/en-us/components/table/"],
@@ -16851,12 +16895,21 @@
   {
     "id": "table/en-us/RowExpandable",
     "entry": "RowExpandable.vue",
-    "files": { "RowExpandable.vue": "table/en-us/RowExpandable.vue" },
+    "files": {
+      "RowExpandable.vue": "table/en-us/RowExpandable.vue",
+      "first-batch-fixture.ts": "table/en-us/first-batch-fixture.ts",
+      "first-batch-data.ts": "table/en-us/first-batch-data.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/descriptions.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
       "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/descriptions",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
       "vue"
     ],
     "pages": ["/en-us/components/table/"],
@@ -16943,7 +16996,10 @@
   {
     "id": "table/en-us/Tree",
     "entry": "Tree.vue",
-    "files": { "Tree.vue": "table/en-us/Tree.vue" },
+    "files": {
+      "Tree.vue": "table/en-us/Tree.vue",
+      "second-batch-tree-fixture.ts": "table/en-us/second-batch-tree-fixture.ts"
+    },
     "dependencies": ["@aifuxi/semi-theme-default/table.css", "@aifuxi/semi-ui-vue/table"],
     "pages": ["/en-us/components/table/"],
     "upstream": "show/table"
@@ -16951,7 +17007,10 @@
   {
     "id": "table/en-us/TreeRelation",
     "entry": "TreeRelation.vue",
-    "files": { "TreeRelation.vue": "table/en-us/TreeRelation.vue" },
+    "files": {
+      "TreeRelation.vue": "table/en-us/TreeRelation.vue",
+      "second-batch-tree-fixture.ts": "table/en-us/second-batch-tree-fixture.ts"
+    },
     "dependencies": ["@aifuxi/semi-theme-default/table.css", "@aifuxi/semi-ui-vue/table", "vue"],
     "pages": ["/en-us/components/table/"],
     "upstream": "show/table"
@@ -16959,8 +17018,12 @@
   {
     "id": "table/en-us/TreeReorder",
     "entry": "TreeReorder.vue",
-    "files": { "TreeReorder.vue": "table/en-us/TreeReorder.vue" },
+    "files": {
+      "TreeReorder.vue": "table/en-us/TreeReorder.vue",
+      "second-batch-tree-fixture.ts": "table/en-us/second-batch-tree-fixture.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/button.css",
       "@aifuxi/semi-theme-default/table.css",
       "@aifuxi/semi-ui-vue/button",
@@ -16973,7 +17036,10 @@
   {
     "id": "table/en-us/TreeSelection",
     "entry": "TreeSelection.vue",
-    "files": { "TreeSelection.vue": "table/en-us/TreeSelection.vue" },
+    "files": {
+      "TreeSelection.vue": "table/en-us/TreeSelection.vue",
+      "second-batch-tree-fixture.ts": "table/en-us/second-batch-tree-fixture.ts"
+    },
     "dependencies": ["@aifuxi/semi-theme-default/table.css", "@aifuxi/semi-ui-vue/table", "vue"],
     "pages": ["/en-us/components/table/"],
     "upstream": "show/table"
@@ -17018,12 +17084,19 @@
   {
     "id": "table/en-us/Zebra",
     "entry": "Zebra.vue",
-    "files": { "Zebra.vue": "table/en-us/Zebra.vue" },
+    "files": {
+      "Zebra.vue": "table/en-us/Zebra.vue",
+      "first-batch-fixture.ts": "table/en-us/first-batch-fixture.ts",
+      "first-batch-data.ts": "table/en-us/first-batch-data.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
       "vue"
     ],
     "pages": ["/en-us/components/table/"],
@@ -17053,12 +17126,18 @@
   {
     "id": "table/zh-cn/CellHover",
     "entry": "CellHover.vue",
-    "files": { "CellHover.vue": "table/zh-cn/CellHover.vue" },
+    "files": {
+      "CellHover.vue": "table/zh-cn/CellHover.vue",
+      "second-batch-style-fixture.ts": "table/zh-cn/second-batch-style-fixture.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/typography.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/typography",
       "vue"
     ],
     "pages": ["/zh-cn/components/table/"],
@@ -17174,13 +17253,18 @@
   {
     "id": "table/zh-cn/Ellipsis",
     "entry": "Ellipsis.vue",
-    "files": { "Ellipsis.vue": "table/zh-cn/Ellipsis.vue" },
+    "files": {
+      "Ellipsis.vue": "table/zh-cn/Ellipsis.vue",
+      "second-batch-style-fixture.ts": "table/zh-cn/second-batch-style-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/typography.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/typography",
       "vue"
     ],
     "pages": ["/zh-cn/components/table/"],
@@ -17189,7 +17273,10 @@
   {
     "id": "table/zh-cn/EllipsisTooltip",
     "entry": "EllipsisTooltip.vue",
-    "files": { "EllipsisTooltip.vue": "table/zh-cn/EllipsisTooltip.vue" },
+    "files": {
+      "EllipsisTooltip.vue": "table/zh-cn/EllipsisTooltip.vue",
+      "second-batch-style-fixture.ts": "table/zh-cn/second-batch-style-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
@@ -17335,12 +17422,18 @@
   {
     "id": "table/zh-cn/Grouping",
     "entry": "Grouping.vue",
-    "files": { "Grouping.vue": "table/zh-cn/Grouping.vue" },
+    "files": {
+      "Grouping.vue": "table/zh-cn/Grouping.vue",
+      "second-batch-style-fixture.ts": "table/zh-cn/second-batch-style-fixture.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/typography.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/typography",
       "vue"
     ],
     "pages": ["/zh-cn/components/table/"],
@@ -17373,12 +17466,18 @@
   {
     "id": "table/zh-cn/HeaderStyle",
     "entry": "HeaderStyle.vue",
-    "files": { "HeaderStyle.vue": "table/zh-cn/HeaderStyle.vue" },
+    "files": {
+      "HeaderStyle.vue": "table/zh-cn/HeaderStyle.vue",
+      "second-batch-style-fixture.ts": "table/zh-cn/second-batch-style-fixture.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/typography.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/typography",
       "vue"
     ],
     "pages": ["/zh-cn/components/table/"],
@@ -17441,12 +17540,18 @@
   {
     "id": "table/zh-cn/Resizable",
     "entry": "Resizable.vue",
-    "files": { "Resizable.vue": "table/zh-cn/Resizable.vue" },
+    "files": {
+      "Resizable.vue": "table/zh-cn/Resizable.vue",
+      "second-batch-style-fixture.ts": "table/zh-cn/second-batch-style-fixture.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/typography.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/typography",
       "vue"
     ],
     "pages": ["/zh-cn/components/table/"],
@@ -17455,12 +17560,18 @@
   {
     "id": "table/zh-cn/ResizableStyle",
     "entry": "ResizableStyle.vue",
-    "files": { "ResizableStyle.vue": "table/zh-cn/ResizableStyle.vue" },
+    "files": {
+      "ResizableStyle.vue": "table/zh-cn/ResizableStyle.vue",
+      "second-batch-style-fixture.ts": "table/zh-cn/second-batch-style-fixture.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/typography.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/typography",
       "vue"
     ],
     "pages": ["/zh-cn/components/table/"],
@@ -17469,12 +17580,18 @@
   {
     "id": "table/zh-cn/RowEvents",
     "entry": "RowEvents.vue",
-    "files": { "RowEvents.vue": "table/zh-cn/RowEvents.vue" },
+    "files": {
+      "RowEvents.vue": "table/zh-cn/RowEvents.vue",
+      "first-batch-fixture.ts": "table/zh-cn/first-batch-fixture.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
       "vue"
     ],
     "pages": ["/zh-cn/components/table/"],
@@ -17483,12 +17600,21 @@
   {
     "id": "table/zh-cn/RowExpandable",
     "entry": "RowExpandable.vue",
-    "files": { "RowExpandable.vue": "table/zh-cn/RowExpandable.vue" },
+    "files": {
+      "RowExpandable.vue": "table/zh-cn/RowExpandable.vue",
+      "first-batch-fixture.ts": "table/zh-cn/first-batch-fixture.ts",
+      "first-batch-data.ts": "table/zh-cn/first-batch-data.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
+      "@aifuxi/semi-theme-default/descriptions.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
       "@aifuxi/semi-ui-vue/avatar",
+      "@aifuxi/semi-ui-vue/descriptions",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
       "vue"
     ],
     "pages": ["/zh-cn/components/table/"],
@@ -17575,7 +17701,10 @@
   {
     "id": "table/zh-cn/Tree",
     "entry": "Tree.vue",
-    "files": { "Tree.vue": "table/zh-cn/Tree.vue" },
+    "files": {
+      "Tree.vue": "table/zh-cn/Tree.vue",
+      "second-batch-tree-fixture.ts": "table/zh-cn/second-batch-tree-fixture.ts"
+    },
     "dependencies": ["@aifuxi/semi-theme-default/table.css", "@aifuxi/semi-ui-vue/table"],
     "pages": ["/zh-cn/components/table/"],
     "upstream": "show/table"
@@ -17583,7 +17712,10 @@
   {
     "id": "table/zh-cn/TreeRelation",
     "entry": "TreeRelation.vue",
-    "files": { "TreeRelation.vue": "table/zh-cn/TreeRelation.vue" },
+    "files": {
+      "TreeRelation.vue": "table/zh-cn/TreeRelation.vue",
+      "second-batch-tree-fixture.ts": "table/zh-cn/second-batch-tree-fixture.ts"
+    },
     "dependencies": ["@aifuxi/semi-theme-default/table.css", "@aifuxi/semi-ui-vue/table", "vue"],
     "pages": ["/zh-cn/components/table/"],
     "upstream": "show/table"
@@ -17591,8 +17723,12 @@
   {
     "id": "table/zh-cn/TreeReorder",
     "entry": "TreeReorder.vue",
-    "files": { "TreeReorder.vue": "table/zh-cn/TreeReorder.vue" },
+    "files": {
+      "TreeReorder.vue": "table/zh-cn/TreeReorder.vue",
+      "second-batch-tree-fixture.ts": "table/zh-cn/second-batch-tree-fixture.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/button.css",
       "@aifuxi/semi-theme-default/table.css",
       "@aifuxi/semi-ui-vue/button",
@@ -17605,7 +17741,10 @@
   {
     "id": "table/zh-cn/TreeSelection",
     "entry": "TreeSelection.vue",
-    "files": { "TreeSelection.vue": "table/zh-cn/TreeSelection.vue" },
+    "files": {
+      "TreeSelection.vue": "table/zh-cn/TreeSelection.vue",
+      "second-batch-tree-fixture.ts": "table/zh-cn/second-batch-tree-fixture.ts"
+    },
     "dependencies": ["@aifuxi/semi-theme-default/table.css", "@aifuxi/semi-ui-vue/table", "vue"],
     "pages": ["/zh-cn/components/table/"],
     "upstream": "show/table"
@@ -17650,12 +17789,19 @@
   {
     "id": "table/zh-cn/Zebra",
     "entry": "Zebra.vue",
-    "files": { "Zebra.vue": "table/zh-cn/Zebra.vue" },
+    "files": {
+      "Zebra.vue": "table/zh-cn/Zebra.vue",
+      "first-batch-fixture.ts": "table/zh-cn/first-batch-fixture.ts",
+      "first-batch-data.ts": "table/zh-cn/first-batch-data.ts"
+    },
     "dependencies": [
+      "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
+      "@aifuxi/semi-theme-default/tag.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/table",
+      "@aifuxi/semi-ui-vue/tag",
       "vue"
     ],
     "pages": ["/zh-cn/components/table/"],

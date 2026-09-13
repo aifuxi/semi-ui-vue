@@ -21,6 +21,7 @@ interface Props {
   component?: Component | string | undefined;
   direction: TableDirection;
   expanded?: boolean | undefined;
+  expansionDisabled?: boolean | undefined;
   expandNode?: VNodeChild | undefined;
   fixedEdge?: boolean | undefined;
   fixedOffset?: number | undefined;
@@ -28,6 +29,7 @@ interface Props {
   hovered?: boolean | undefined;
   indent?: number | undefined;
   indentSize?: number | undefined;
+  isSection?: boolean | undefined;
   prefixCls: string;
   record: Record<string, unknown>;
   rowIndex: number;
@@ -161,7 +163,7 @@ const cellStyle = computed<StyleValue>(() => {
 });
 const cellClass = computed(() => [
   `${props.prefixCls}-row-cell`,
-  props.column.className,
+  props.expansionDisabled ? undefined : props.column.className,
   mergedCell.value.class,
   props.column.ellipsis ? `${props.prefixCls}-row-cell-ellipsis` : undefined,
   physicalFixedSide.value ? `${props.prefixCls}-cell-fixed-${physicalFixedSide.value}` : undefined,
@@ -186,6 +188,15 @@ const textTitle = computed(() => {
 function handleClick(event: MouseEvent): void {
   mergedCell.value.onClick?.(event);
 }
+const innerContent = computed<VNodeChild>(() => {
+  const children = [
+    ...(!props.column.useFullRender ? [indentNode.value, props.expandNode] : []),
+    renderResult.value.children,
+  ];
+  return props.isSection
+    ? h('div', { class: `${props.prefixCls}-section-inner` }, children)
+    : children;
+});
 </script>
 
 <template>
@@ -202,11 +213,6 @@ function handleClick(event: MouseEvent): void {
     role="gridcell"
     @click="handleClick"
   >
-    <TableNodeRenderer v-if="!props.column.useFullRender && indentNode" :content="indentNode" />
-    <TableNodeRenderer
-      v-if="!props.column.useFullRender && props.expandNode"
-      :content="props.expandNode"
-    />
-    <TableNodeRenderer :content="renderResult.children" />
+    <TableNodeRenderer :content="innerContent" />
   </component>
 </template>

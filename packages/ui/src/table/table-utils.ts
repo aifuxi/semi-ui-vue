@@ -174,18 +174,14 @@ export function flattenRecords<RecordType extends Record<string, unknown>>(
   },
   level = 0,
   parentKey?: TableRowKey,
-  indexOffset = { value: 0 },
 ): FlatTableRecord<RecordType>[] {
   const output: FlatTableRecord<RecordType>[] = [];
-  records.forEach((record) => {
-    const index = indexOffset.value++;
+  records.forEach((record, index) => {
     const key = getRecordKey(record, options.rowKey, index);
     output.push({ record, key, level, parentKey, index });
     const children = record[options.childrenRecordName];
     if (options.expandedKeys.has(key) && Array.isArray(children)) {
-      output.push(
-        ...flattenRecords(children as RecordType[], options, level + 1, key, indexOffset),
-      );
+      output.push(...flattenRecords(children as RecordType[], options, level + 1, key));
     }
   });
   return output;

@@ -1,91 +1,20 @@
 <script setup lang="ts">
-import { Table, type TableColumnProps } from '@aifuxi/semi-ui-vue/table';
+import { Table } from '@aifuxi/semi-ui-vue/table';
 import '@aifuxi/semi-theme-default/table.css';
 
-type Row = Record<string, unknown>;
-const initial: Row[] = [
-  {
-    key: '1',
-    dataKey: 'videos_info',
-    name: 'Video information',
-    type: 'Object',
-    description: 'Video metadata',
-    default: '-',
-    children: [
-      {
-        key: '11',
-        dataKey: 'status',
-        name: 'Video status',
-        type: 'Enum',
-        description: 'Visibility and recommendation status',
-        default: '1',
-      },
-      {
-        key: '12',
-        dataKey: 'vid',
-        name: 'Video ID',
-        type: 'String',
-        description: 'Unique video identifier',
-        default: '-',
-        children: [
-          {
-            key: '121',
-            dataKey: 'video_url',
-            name: 'Video URL',
-            type: 'String',
-            description: 'Unique video URL',
-            default: '-',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    key: '2',
-    dataKey: 'text_info',
-    name: 'Text information',
-    type: 'Object',
-    description: 'Text metadata',
-    default: '-',
-    children: [
-      {
-        key: '21',
-        dataKey: 'title',
-        name: 'Video title',
-        type: 'String',
-        description: 'Video title',
-        default: '-',
-      },
-      {
-        key: '22',
-        dataKey: 'video_description',
-        name: 'Video description',
-        type: 'String',
-        description: 'Video description',
-        default: '-',
-      },
-    ],
-  },
-];
-const columns: TableColumnProps[] = [
-  { title: 'Key', dataIndex: 'dataKey' },
-  { title: 'Name', dataIndex: 'name', width: 200 },
-  { title: 'Data type', dataIndex: 'type' },
-  { title: 'Description', dataIndex: 'description' },
-  { title: 'Default', dataIndex: 'default', width: 100 },
-];
+import { treeData, treeColumns } from './second-batch-tree-fixture';
+const initial = treeData;
+const columns = treeColumns('tree');
 
 const data = initial;
 </script>
 
 <template>
-  <div>
-    <Table
-      :columns="columns"
-      :data-source="data"
-      :pagination="false"
-      row-key="key"
-      children-record-name="children"
-    ></Table>
-  </div>
+  <Table
+    :columns="columns"
+    :data-source="data"
+    default-expand-all-rows
+    row-key="key"
+    children-record-name="children"
+  ></Table>
 </template>

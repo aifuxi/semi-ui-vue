@@ -79,8 +79,10 @@ const emit = defineEmits<{
 }>();
 
 const resizeColumn = shallowRef<NormalizedTableColumn<Record<string, unknown>> | null>(null);
-const resizeStartX = shallowRef(0);
-const resizeStartWidth = shallowRef(0);
+const resizeHandle = shallowRef<HTMLElement | null>(null);
+let resizeLastX = 0;
+let resizeWidth = 0;
+let resizeSlack = 0;
 const initialFilterValues = shallowRef(new Map<string | number, unknown[]>());
 const tempFilterValues = shallowRef(new Map<string | number, unknown[]>());
 const filterVisibility = shallowRef(new Map<string | number, boolean>());
@@ -573,6 +575,16 @@ function headerRowStyle(rowIndex: number): StyleValue {
   )?.style as StyleValue;
 }
 
+let headerMouseDownTarget: { tagName?: string; className?: string } | undefined;
+
+function rememberHeaderMouseDown(event: MouseEvent | PointerEvent): void {
+  const target = event.target as Element | null;
+  headerMouseDownTarget = {
+    ...(target?.tagName ? { tagName: target.tagName } : {}),
+    ...(typeof target?.className === 'string' ? { className: target.className } : {}),
+  };
+}
+
 function handleHeaderClick(
   cell: TableHeaderCell<Record<string, unknown>>,
   columnIndex: number,
@@ -581,44 +593,85 @@ function handleHeaderClick(
 ): void {
   const custom = cellCustom(cell, columnIndex, rowIndex);
   (custom.onClick as ((event: MouseEvent) => void) | undefined)?.(event);
-  if (clickColumnToSort(cell.column)) emit('sort', cell.column, event);
+  if (clickColumnToSort(cell.column)) {
+    // Pinned Foundation #2802 checks the gesture origin because the final click
+    // may target the header rather than the resize handle after a drag.
+    if (
+      headerMouseDownTarget?.tagName === 'SPAN' &&
+      headerMouseDownTarget.className?.includes('react-resizable-handle')
+    )
+      return;
+    headerMouseDownTarget = undefined;
+    emit('sort', cell.column, event);
+  }
+}
+
+function canResize(column: NormalizedTableColumn<Record<string, unknown>>): boolean {
+  return Boolean(props.resizable) && typeof column.width === 'number' && column.resize !== false;
 }
 
 function startResize(
   column: NormalizedTableColumn<Record<string, unknown>>,
   event: PointerEvent,
 ): void {
-  event.preventDefault();
+  if (event.button !== 0 || !canResize(column)) return;
   event.stopPropagation();
+  window.getSelection()?.removeAllRanges();
+  // Keep mouse defaults: the pinned draggable disables its user-select hack.
+  rememberHeaderMouseDown(event);
   resizeColumn.value = column;
-  resizeStartX.value = event.clientX;
-  resizeStartWidth.value =
+  resizeHandle.value = event.currentTarget as HTMLElement;
+  resizeLastX = resizeLocalX(event);
+  resizeSlack = 0;
+  resizeWidth =
     typeof column.__width === 'number'
       ? column.__width
       : typeof column.width === 'number'
         ? column.width
         : ((event.currentTarget as HTMLElement).parentElement?.getBoundingClientRect().width ?? 0);
-  emit('resize', column, resizeStartWidth.value, 'start');
+  emit('resize', column, resizeWidth, 'start');
   window.addEventListener('pointermove', moveResize);
   window.addEventListener('pointerup', stopResize, { once: true });
 }
 
-function moveResize(event: PointerEvent): void {
-  if (!resizeColumn.value) return;
-  const delta = (event.clientX - resizeStartX.value) * (props.direction === 'rtl' ? -1 : 1);
-  emit('resize', resizeColumn.value, Math.max(40, resizeStartWidth.value + delta), 'move');
+function resizeLocalX(event: PointerEvent): number {
+  const node = resizeHandle.value;
+  if (!node) return event.clientX;
+  const parent = (node.offsetParent ?? node.ownerDocument.body) as HTMLElement;
+  const left = parent === node.ownerDocument.body ? 0 : parent.getBoundingClientRect().left;
+  return event.clientX + parent.scrollLeft - left;
 }
 
-function stopResize(event: PointerEvent): void {
-  if (resizeColumn.value) {
-    const delta = (event.clientX - resizeStartX.value) * (props.direction === 'rtl' ? -1 : 1);
-    emit('resize', resizeColumn.value, Math.max(40, resizeStartWidth.value + delta), 'stop');
-  }
+function moveResize(event: PointerEvent): void {
+  if (!resizeColumn.value) return;
+  // react-draggable measures incremental positions in the live offset parent.
+  // In RTL the east handle is styled on the left, so a changing column rect
+  // contributes to the next delta just as parent scrolling does.
+  const x = resizeLocalX(event);
+  const delta = x - resizeLastX;
+  resizeLastX = x;
+  const currentColumn = props.headerRows
+    .flat()
+    .find((cell) => cell.column.key === resizeColumn.value?.key)?.column;
+  const currentWidth = currentColumn?.__width ?? currentColumn?.width;
+  const previousWidth = typeof currentWidth === 'number' ? currentWidth : resizeWidth;
+  const proposedWidth = previousWidth + delta;
+  resizeWidth = Math.max(20, proposedWidth + resizeSlack);
+  // Preserve react-resizable's constraint slack: moving back from below the
+  // minimum must consume the overshoot before the column grows again.
+  resizeSlack += proposedWidth - resizeWidth;
+  if (resizeWidth !== previousWidth) emit('resize', resizeColumn.value, resizeWidth, 'move');
+}
+
+function stopResize(): void {
+  if (resizeColumn.value) emit('resize', resizeColumn.value, resizeWidth, 'stop');
   resizeColumn.value = null;
+  resizeHandle.value = null;
   window.removeEventListener('pointermove', moveResize);
 }
 
 onBeforeUnmount(() => {
+  resizeHandle.value = null;
   if (typeof window !== 'undefined') {
     window.removeEventListener('pointermove', moveResize);
     window.removeEventListener('pointerup', stopResize);
@@ -654,7 +707,10 @@ function selectAll(event: CheckboxChangeEvent): void {
       >
         <component
           :is="props.componentCell"
-          :class="cellClass(cell, columnIndex, rowIndex)"
+          :class="[
+            cellClass(cell, columnIndex, rowIndex),
+            canResize(cell.column) && 'react-resizable',
+          ]"
           :style="[cellStyle(cell, columnIndex, rowIndex), stickyStyle]"
           :colspan="cell.colSpan"
           :rowspan="cell.rowSpan"
@@ -662,6 +718,7 @@ function selectAll(event: CheckboxChangeEvent): void {
           :title="nativeTitle(cell.column)"
           role="columnheader"
           v-bind="nativeCellAttrs(cell, columnIndex, rowIndex)"
+          @mousedown="rememberHeaderMouseDown"
           @click="handleHeaderClick(cell, columnIndex, rowIndex, $event)"
         >
           <span
@@ -765,11 +822,10 @@ function selectAll(event: CheckboxChangeEvent): void {
           </span>
           <TableNodeRenderer v-else :content="columnTitle(cell.column)" />
           <span
-            v-if="props.resizable && cell.column.resize !== false"
-            class="react-resizable-handle"
-            role="separator"
-            aria-orientation="vertical"
+            v-if="canResize(cell.column)"
+            class="react-resizable-handle react-resizable-handle-se"
             @pointerdown="startResize(cell.column, $event)"
+            @touchstart.prevent
           />
         </component>
       </HeaderCellWrapper>

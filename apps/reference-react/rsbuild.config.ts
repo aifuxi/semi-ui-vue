@@ -713,7 +713,7 @@ export default defineConfig({
         },
         {
           find: /^react-resizable$/,
-          replacement: fileURLToPath(new URL('./src/runtime/reactResizable.tsx', import.meta.url)),
+          replacement: require.resolve('react-resizable'),
         },
         {
           find: /^fast-copy$/,

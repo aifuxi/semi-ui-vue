@@ -219,9 +219,10 @@ export interface TableSticky {
 }
 
 export interface TableResizable<RecordType extends Record<string, unknown>> {
-  onResize?: (column: TableColumn<RecordType>) => TableColumn<RecordType>;
-  onResizeStart?: (column: TableColumn<RecordType>) => TableColumn<RecordType>;
-  onResizeStop?: (column: TableColumn<RecordType>) => TableColumn<RecordType>;
+  handlerClassName?: string;
+  onResize?: (column: TableColumn<RecordType>) => Partial<TableColumn<RecordType>> | void;
+  onResizeStart?: (column: TableColumn<RecordType>) => Partial<TableColumn<RecordType>> | void;
+  onResizeStop?: (column: TableColumn<RecordType>) => Partial<TableColumn<RecordType>> | void;
 }
 
 export interface TableChangeInfo<RecordType extends Record<string, unknown>> {
@@ -284,7 +285,7 @@ export interface TableProps<RecordType extends Record<string, unknown> = Record<
   prefixCls?: string;
   renderGroupSection?: (
     groupKey?: string | number,
-    group?: RecordType[],
+    group?: TableRowKey[],
   ) => VNodeChild | { children: VNodeChild; [key: string]: unknown };
   renderPagination?: (paginationProps: TablePaginationConfig) => VNodeChild;
   resizable?: boolean | TableResizable<RecordType>;

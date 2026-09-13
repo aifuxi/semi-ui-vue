@@ -1,94 +1,37 @@
 <script setup lang="ts">
+import { Table } from '@aifuxi/semi-ui-vue/table';
+import { fileColumns, selection, type FileRow } from './first-batch-fixture';
+import { rows } from './first-batch-data';
 import { h } from 'vue';
-import { Table, type TableColumnProps } from '@aifuxi/semi-ui-vue/table';
-import { Avatar } from '@aifuxi/semi-ui-vue/avatar';
-import '@aifuxi/semi-theme-default/table.css';
-import '@aifuxi/semi-theme-default/avatar.css';
+import { Descriptions } from '@aifuxi/semi-ui-vue/descriptions';
+import { Tag } from '@aifuxi/semi-ui-vue/tag';
+import '@aifuxi/semi-theme-default/descriptions.css';
 
-const figmaIcon = '/demos/one.svg';
-type Row = Record<string, unknown>;
-function makeData(total: number): Row[] {
-  return Array.from({ length: total }, (_, index) => ({
-    key: String(index),
-    name: `${index % 2 ? 'Semi D2C' : 'Semi Design'} 设计稿${index}.fig`,
-    nameIconSrc: figmaIcon,
-    size: (index * 1000) % 199,
-    owner: index % 2 ? '郝宣' : '姜鹏志',
-    status: index % 3 === 0 ? 'success' : index % 3 === 1 ? 'pending' : 'wait',
-    updateTime: new Date(Date.UTC(2020, 1, 2) + ((index * 1000) % 199) * 86400000)
-      .toISOString()
-      .slice(0, 10),
-    avatarBg: index % 2 ? 'red' : 'grey',
-  }));
-}
-const baseColumns: TableColumnProps[] = [
-  {
-    title: '标题',
-    dataIndex: 'name',
-    width: 400,
-    render: (text, record) =>
-      h('span', { style: { display: 'inline-flex', alignItems: 'center' } }, [
-        h(Avatar, {
-          size: 'small',
-          shape: 'square',
-          src: String(record.nameIconSrc),
-          style: { marginRight: '12px' },
-        }),
-        String(text),
-      ]),
-  },
-  { title: '大小', dataIndex: 'size', width: 150, render: (text) => `${text} KB` },
-  {
-    title: '所有者',
-    dataIndex: 'owner',
-    width: 200,
-    render: (text, record) =>
-      h('span', [
-        h(
-          Avatar,
-          {
-            size: 'small',
-            color: record.avatarBg as 'red' | 'grey',
-            style: { marginRight: '4px' },
-          },
-          () => String(text).slice(0, 1),
-        ),
-        String(text),
-      ]),
-  },
-  { title: '更新日期', dataIndex: 'updateTime', width: 200 },
-];
-const nameFilters = [
-  { text: 'Semi Design 设计稿', value: 'Semi Design' },
-  { text: 'Semi D2C 设计稿', value: 'Semi D2C' },
-];
-const filterName: NonNullable<TableColumnProps['onFilter']> = (value, record) =>
-  String(record?.name).includes(String(value));
-const queryColumns: TableColumnProps[] = baseColumns.map((column) =>
-  column.dataIndex === 'name'
-    ? { ...column, filters: nameFilters, onFilter: filterName }
-    : column.dataIndex === 'size'
-      ? { ...column, sorter: (a, b) => Number(a.size) - Number(b.size) }
-      : column.dataIndex === 'updateTime'
-        ? { ...column, sorter: (a, b) => String(a.updateTime).localeCompare(String(b.updateTime)) }
-        : column,
+const columns = fileColumns('zh-cn', 14);
+const data: FileRow[] = rows[14]!;
+const rowSelection = selection('zh-cn', 14);
+const expandData = [
+  ['1,480,000', '98%', '3 级', '设计', '未认证'],
+  ['2,480,000', '90%', '1 级', '模板', '已认证'],
+  ['2,920,000', '98%', '2 级', '文档', '已认证'],
+].map((values) =>
+  ['实际用户数量', '7 天留存', '安全等级', '垂类标签', '认证状态'].map((key, i) => ({
+    key,
+    value: i === 3 ? h(Tag, { style: { margin: '0px' } }, () => values[i]) : values[i],
+  })),
 );
-
-const data = makeData(46);
-const columns = queryColumns;
 </script>
 
 <template>
-  <div>
-    <Table
-      :columns="columns"
-      :data-source="data"
-      :row-selection="{}"
-      :pagination="{ pageSize: 5 }"
-      :row-expandable="(record) => record?.key !== '0'"
-      ><template #expandedRow="{ record }"
-        ><article style="padding: 20px">{{ record.name }}</article></template
-      ></Table
-    >
-  </div>
+  <Table
+    :columns="columns"
+    :data-source="data"
+    :pagination="false"
+    :row-selection="rowSelection"
+    row-key="name"
+    :hide-expanded-column="false"
+    :row-expandable="(record) => record?.name !== '设计文档'"
+    ><template #expandedRow="{ index: rowIndex }"
+      ><Descriptions align="justify" :data="expandData[rowIndex]" /></template
+  ></Table>
 </template>

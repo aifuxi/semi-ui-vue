@@ -6,6 +6,34 @@ import { Table } from './index';
 import TableDescriptionsExpansion from './test-fixtures/TableDescriptionsExpansion.vue';
 
 describe('Table 公开展开列契约', () => {
+  it('rowExpandable=false 的独立展开格不带展开列 class，展开图标主动关闭仍保留列 class', async () => {
+    const wrapper = mount(Table, {
+      props: {
+        columns: [{ title: 'Name', dataIndex: 'name' }],
+        dataSource: [
+          { key: 'enabled', name: 'Enabled' },
+          { key: 'disabled', name: 'Disabled' },
+        ],
+        hideExpandedColumn: false,
+        pagination: false,
+        rowExpandable: (record) => record?.key !== 'disabled',
+        expandedRowRender: () => h('p', 'Details'),
+      },
+    });
+    expect(wrapper.findAll('tbody > tr')[0]!.get('td').classes()).toContain(
+      'semi-table-column-expand',
+    );
+    expect(wrapper.findAll('tbody > tr')[1]!.get('td').classes()).not.toContain(
+      'semi-table-column-expand',
+    );
+    expect(wrapper.findAll('tbody > tr')[1]!.get('td').text()).toBe('');
+    await wrapper.setProps({ expandIcon: false });
+    expect(wrapper.findAll('tbody > tr')[0]!.get('td').classes()).toContain(
+      'semi-table-column-expand',
+    );
+    wrapper.unmount();
+  });
+
   it('编译 SFC 展开 slot 卸载重挂后保留 data 中的 Tag VNode', async () => {
     const wrapper = mount(TableDescriptionsExpansion);
     await wrapper.get('tbody > tr').trigger('mouseenter');

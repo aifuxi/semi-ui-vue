@@ -21,7 +21,7 @@ import '@aifuxi/semi-theme-default/table.css';
 
 ## 代码演示
 
-首批 1–15 项使用固定上游的原始 Figma/Docs 图标本地副本 `/demos/table/`，保留原图像素与 64×64 固有尺寸，不请求第三方服务。其余示例仍使用原有本地示意图，尚未纳入本批严格验收。
+第 1–28、30 项使用固定上游的原始 Figma/Docs 图标本地副本 `/demos/table/`，保留原图像素与 64×64 固有尺寸，不请求第三方服务。拖拽排序与第 31–37 项仍使用原有本地示意图，尚未纳入本批严格验收。
 
 ### 基本表格
 
@@ -134,7 +134,7 @@ import '@aifuxi/semi-theme-default/table.css';
 
 ### 关闭某一行的可展开按钮渲染
 
-`rowExpandable(record)` 返回 false 时隐藏该行的展开按钮。本例第一条记录不可展开，其余记录保留详情。
+`rowExpandable(record)` 返回 false 时隐藏该行的展开按钮。本例第三条「设计文档」记录不可展开且不可选择，其余记录保留详情。
 
 ::demo-block{demo="table/zh-cn/RowExpandable" title="关闭某一行的可展开按钮渲染"}
 ::
@@ -169,14 +169,14 @@ import '@aifuxi/semi-theme-default/table.css';
 
 ### 自定义行或单元格事件以及属性
 
-`onRow` / `onHeaderRow` 返回真实行节点的属性和事件；`column.onCell` / `column.onHeaderCell` 作用于单元格。Vue 原生事件使用 `onClick`、`onDblclick`、`onMouseenter` 等名称。点击单元格或表头、双击行即可查看本例反馈。
+`onRow` / `onHeaderRow` 返回真实行节点的属性和事件；`column.onCell` / `column.onHeaderCell` 作用于单元格。Vue 原生事件使用 `onClick`、`onDblclick`、`onMouseenter` 等名称。点击第三行会输出控制台记录；移入、移出表头会输出对应控制台事件。
 
 ::demo-block{demo="table/zh-cn/RowEvents" title="自定义行或单元格事件以及属性"}
 ::
 
 ### 实现斑马纹样式
 
-用 `onRow` 根据行号添加 class，并使用主题 Token 绘制交替背景。固定列需要定制背景时，也可通过 `onCell` 为每个单元格返回样式。
+用 `onRow` 为偶数索引的行返回内联 background 样式，以主题 Token 绘制交替背景。固定列需要定制背景时，也可通过 `onCell` 为每个单元格返回样式。
 
 ::demo-block{demo="table/zh-cn/Zebra" title="实现斑马纹样式"}
 ::
@@ -218,7 +218,7 @@ import '@aifuxi/semi-theme-default/table.css';
 
 ### 进阶的伸缩列
 
-`resizable` 对象支持 `onResizeStart`、`onResize`、`onResizeStop`；返回列配置可定制拖动状态。本例开始时添加 class，结束时清除，显示临时竖线和拖动手柄样式。
+`resizable` 对象支持 `onResizeStart`、`onResize`、`onResizeStop`；返回列配置可定制拖动状态。本例开始时添加 class，结束时清除，显示临时竖线和拖动手柄样式。回调可以返回部分列属性，也可不返回；`handlerClassName` 为手柄添加 class。
 
 ::demo-block{demo="table/zh-cn/ResizableStyle" title="进阶的伸缩列"}
 ::
@@ -232,7 +232,7 @@ import '@aifuxi/semi-theme-default/table.css';
 
 ### 表格分组
 
-通过 `groupBy` 指定字段或返回字符串/数字的函数。使用 `#groupSection="{ groupKey, group }"` 或 `renderGroupSection` 渲染分组标题；`clickGroupedRowToExpand` 支持点击整行分组标题展开。
+通过 `groupBy` 指定字段或返回字符串/数字的函数。使用 `#groupSection="{ groupKey, group }"` 或 `renderGroupSection` 渲染分组标题；`clickGroupedRowToExpand` 支持点击整行分组标题展开。`renderGroupSection(groupKey, group)` 的第二参数是该页分组成员的行 key 数组；Vue `groupSection` 插槽的 `group` 则提供该页成员记录。分组先按全量数据整理组序再分页。
 
 ::demo-block{demo="table/zh-cn/Grouping" title="表格分组"}
 ::
@@ -427,11 +427,11 @@ import '@aifuxi/semi-theme-default/table.css';
 
 ### Resizable
 
-| 属性          | 说明                     | 类型                       | 默认值 |
-| ------------- | ------------------------ | -------------------------- | ------ |
-| onResize      | 表格列改变宽度时触发     | (column: Column) => Column |        |
-| onResizeStart | 表格列开始改变宽度时触发 | (column: Column) => Column |        |
-| onResizeStop  | 表格列停止改变宽度时触发 | (column: Column) => Column |        |
+| 属性          | 说明                     | 类型                                        | 默认值 |
+| ------------- | ------------------------ | ------------------------------------------- | ------ |
+| onResize      | 表格列改变宽度时触发     | (column: Column) => Partial<Column> \| void |        |
+| onResizeStart | 表格列开始改变宽度时触发 | (column: Column) => Partial<Column> \| void |        |
+| onResizeStop  | 表格列停止改变宽度时触发 | (column: Column) => Partial<Column> \| void |        |
 
 ### 方法
 

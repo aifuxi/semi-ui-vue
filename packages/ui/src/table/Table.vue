@@ -31,6 +31,7 @@ import {
   flattenColumns,
   flattenRecords,
   getRecordKey,
+  getByPath,
   normalizeColumn,
   normalizeColumns,
   normalizeColumnVNodes,
@@ -57,7 +58,9 @@ import type {
 type RecordType = Record<string, unknown>;
 
 defineOptions({ name: 'Table', inheritAttrs: false });
-const props = defineProps<TableProps<RecordType>>();
+// Preserve absence so adding expandIcon=false changes a reactive prop instead of
+// matching Vue's implicit Boolean false before the caller supplied it.
+const props = withDefaults(defineProps<TableProps<RecordType>>(), { expandIcon: undefined });
 const emit = defineEmits<TableEmits<RecordType>>();
 defineSlots<TableSlots<RecordType>>();
 
@@ -73,13 +76,17 @@ const internalSortOrders = shallowRef(new Map<TableRowKey, TableSortOrder>());
 const internalFilterValues = shallowRef(new Map<TableRowKey, unknown[]>());
 const internalExpandedKeys = shallowRef(new Set<TableRowKey>());
 const internalSelectedKeys = shallowRef(new Set<TableRowKey>());
-const columnWidths = shallowRef(new Map<TableRowKey, number>());
+const resizedColumns = shallowRef(
+  new Map<TableRowKey, Partial<NormalizedTableColumn<RecordType>>>(),
+);
 const measuredHeaderWidths = shallowRef(new Map<TableRowKey, number>());
 const currentPage = shallowRef(1);
 const pageSize = shallowRef(tableNumbers.DEFAULT_PAGE_SIZE);
 const scrollTop = shallowRef(0);
 const scrollPosition = shallowRef<'both' | 'left' | 'middle' | 'right'>('both');
 let resizeObserver: ResizeObserver | undefined;
+let resizeFrame: number | undefined;
+let resizeDisposed = false;
 
 function hasRawProp(key: keyof TableProps<RecordType>): boolean {
   const raw = instance?.vnode.props;
@@ -151,6 +158,25 @@ const declaredColumns = computed<NormalizedTableColumn<RecordType>[]>(() => {
   return normalizeColumnVNodes<RecordType>(slots.default?.());
 });
 
+// Watching the public columns avoids invoking a declarative slot outside render.
+// New fields replace callback overrides; a stretched width survives prop refresh.
+watch(
+  () => props.columns,
+  (columns) => {
+    const next = new Map<TableRowKey, Partial<NormalizedTableColumn<RecordType>>>();
+    for (const column of flattenColumns(normalizeColumns(columns))) {
+      const previous = resizedColumns.value.get(column.key);
+      if (!previous) continue;
+      const patch = { ...previous };
+      for (const key of Object.keys(column) as Array<keyof typeof patch>) {
+        if (key !== 'width') delete patch[key];
+      }
+      next.set(column.key, patch);
+    }
+    resizedColumns.value = next;
+  },
+);
+
 function initialQueryState(): void {
   const sorts = new Map<TableRowKey, TableSortOrder>();
   const filters = new Map<TableRowKey, unknown[]>();
@@ -179,8 +205,11 @@ function allDataKeys(records: RecordType[] = dataSource.value): TableRowKey[] {
 
 function groupKeyFor(record: RecordType): TableRowKey | undefined {
   if (!props.groupBy) return undefined;
-  const value = typeof props.groupBy === 'function' ? props.groupBy(record) : record[props.groupBy];
-  return typeof value === 'string' || typeof value === 'number' ? value : undefined;
+  const value =
+    typeof props.groupBy === 'function' ? props.groupBy(record) : getByPath(record, props.groupBy);
+  return value !== '' && (typeof value === 'string' || typeof value === 'number')
+    ? value
+    : undefined;
 }
 
 function allGroupKeys(records: RecordType[] = dataSource.value): TableRowKey[] {
@@ -285,10 +314,17 @@ const displayColumns = computed<NormalizedTableColumn<RecordType>[]>(() => {
         ? [...columns, selectionColumn]
         : [selectionColumn, ...columns];
   }
-  return columns.map((column) => {
-    const width = columnWidths.value.get(column.key) ?? column.width;
-    return { ...column, ...(width === undefined ? {} : { __width: width }) };
-  });
+  const applyResize = (
+    column: NormalizedTableColumn<RecordType>,
+  ): NormalizedTableColumn<RecordType> => {
+    const resized = { ...column, ...resizedColumns.value.get(column.key) };
+    return {
+      ...resized,
+      ...(resized.width === undefined ? {} : { __width: resized.width }),
+      ...(resized.children ? { children: resized.children.map(applyResize) } : {}),
+    };
+  };
+  return columns.map(applyResize);
 });
 const flatColumns = computed(() => flattenColumns(displayColumns.value));
 const headerRows = computed(() => buildHeaderRows(displayColumns.value));
@@ -346,6 +382,19 @@ function sortTree(records: RecordType[]): RecordType[] {
 }
 
 const processedData = computed(() => sortTree(filterTree(dataSource.value)));
+// Foundation groups the entire filtered/sorted data before it takes a page.
+const groupedData = computed(() => {
+  if (!props.groupBy) return processedData.value;
+  const groups = new Map<TableRowKey, RecordType[]>();
+  for (const record of processedData.value) {
+    const key = groupKeyFor(record);
+    if (key === undefined) continue;
+    const group = groups.get(key) ?? [];
+    group.push(record);
+    groups.set(key, group);
+  }
+  return groups.size ? [...groups.values()].flat() : processedData.value;
+});
 const paginationConfig = computed<TablePaginationConfig | false>(() => {
   if (paginationProp.value === false) return false;
   const source = paginationProp.value === true ? {} : paginationProp.value;
@@ -353,17 +402,17 @@ const paginationConfig = computed<TablePaginationConfig | false>(() => {
     ...source,
     currentPage: source.currentPage ?? currentPage.value,
     pageSize: source.pageSize ?? pageSize.value,
-    total: source.total ?? processedData.value.length,
+    total: source.total ?? groupedData.value.length,
   };
 });
 const pageData = computed(() => {
   const pagination = paginationConfig.value;
-  if (!pagination) return processedData.value;
+  if (!pagination) return groupedData.value;
   const source = paginationProp.value;
-  if (source && source !== true && source.currentPage != null) return processedData.value;
+  if (source && source !== true && source.currentPage != null) return groupedData.value;
   const page = pagination.currentPage ?? 1;
   const size = pagination.pageSize ?? tableNumbers.DEFAULT_PAGE_SIZE;
-  return processedData.value.slice((page - 1) * size, page * size);
+  return groupedData.value.slice((page - 1) * size, page * size);
 });
 const flatPageRows = computed<FlatTableRecord<RecordType>[]>(() => {
   const options = {
@@ -381,22 +430,22 @@ const flatPageRows = computed<FlatTableRecord<RecordType>[]>(() => {
     groups.set(key, group);
   });
   const output: FlatTableRecord<RecordType>[] = [];
-  const offset = { value: 0 };
+  let sectionIndex = 0;
   groups.forEach((group, groupKey) => {
     output.push({
       group,
       groupKey,
-      index: offset.value,
+      index: sectionIndex++,
       key: groupKey,
       level: 0,
-      record: group[0] ?? {},
+      record: { groupKey, records: group },
       sectionRow: true,
     });
     if (expandedKeys.value.has(groupKey)) {
-      output.push(...flattenRecords(group, options, 1, groupKey, offset));
+      output.push(...flattenRecords(group, options));
     }
   });
-  return output;
+  return groups.size ? output : flattenRecords(pageData.value, options);
 });
 
 interface SelectionEntity {
@@ -665,11 +714,19 @@ function handleExpand(row: FlatTableRecord<RecordType>, event: MouseEvent): void
 }
 
 function handleGroupExpand(groupKey: TableRowKey, event: MouseEvent): void {
-  const next = new Set(expandedKeys.value);
-  if (next.has(groupKey)) next.delete(groupKey);
-  else next.add(groupKey);
-  if (!Array.isArray(props.expandedRowKeys)) internalExpandedKeys.value = next;
   event.stopPropagation?.();
+  const expanded = !expandedKeys.value.has(groupKey);
+  const next = new Set(expandedKeys.value);
+  if (expanded) next.add(groupKey);
+  else next.delete(groupKey);
+  if (!Array.isArray(props.expandedRowKeys)) internalExpandedKeys.value = next;
+  const record = { groupKey };
+  props.onExpand?.(expanded, record, event);
+  emit('expand', expanded, record, event);
+  const rows = allRecords().filter((item) => next.has(getRecordKey(item, rowKey.value)));
+  for (const key of next) rows.push({ groupKey: key });
+  props.onExpandedRowsChange?.(rows);
+  emit('expandedRowsChange', rows);
 }
 
 function allRecords(records = dataSource.value): RecordType[] {
@@ -751,14 +808,40 @@ function handleResize(
   width: number,
   phase: 'start' | 'move' | 'stop',
 ): void {
-  const next = new Map(columnWidths.value);
-  next.set(column.key, width);
-  columnWidths.value = next;
-  if (!props.resizable || props.resizable === true) return;
-  const resized = { ...column, width };
-  if (phase === 'start') props.resizable.onResizeStart?.(resized);
-  else if (phase === 'move') props.resizable.onResize?.(resized);
-  else props.resizable.onResizeStop?.(resized);
+  const config = typeof props.resizable === 'object' ? props.resizable : {};
+  const handlerClassName = config.handlerClassName ?? 'resizing';
+  const resized = { ...column, ...resizedColumns.value.get(column.key) };
+  if (phase === 'start') {
+    resized.className = [
+      ...new Set([...(resized.className ?? '').split(/\s+/).filter(Boolean), handlerClassName]),
+    ].join(' ');
+  } else if (phase === 'stop') {
+    resized.className = (resized.className ?? '')
+      .split(/\s+/)
+      .filter((name) => name !== handlerClassName)
+      .join(' ');
+  } else {
+    resized.width = width;
+  }
+  const callback =
+    phase === 'start'
+      ? config.onResizeStart
+      : phase === 'move'
+        ? config.onResize
+        : config.onResizeStop;
+  const customProps = callback?.(resized);
+  const { children, ...customFields } = customProps ?? {};
+  const patch = {
+    ...resizedColumns.value.get(column.key),
+    ...(phase === 'move' ? { width } : { className: resized.className ?? '' }),
+    ...customFields,
+    ...(customProps && 'children' in customProps
+      ? { children: children === undefined ? undefined : normalizeColumns(children) }
+      : {}),
+  };
+  const next = new Map(resizedColumns.value);
+  next.set(column.key, patch);
+  resizedColumns.value = next;
 }
 
 const bodyStyle = computed<StyleValue>(() => ({
@@ -869,7 +952,10 @@ function renderExpandedRow(args: {
 function renderGroupSection(args: { group: RecordType[]; groupKey: TableRowKey }): VNodeChild {
   const result =
     slots.groupSection?.(args) ??
-    props.renderGroupSection?.(args.groupKey, args.group) ??
+    props.renderGroupSection?.(
+      args.groupKey,
+      args.group.map((record) => getRecordKey(record, rowKey.value)),
+    ) ??
     args.groupKey;
   if (result && typeof result === 'object' && !('__v_isVNode' in result) && 'children' in result) {
     return result.children as VNodeChild;
@@ -945,30 +1031,37 @@ watch(
 );
 
 watch([flatColumns, direction], () => {
-  void nextTick(() => {
-    measureHeaderWidths();
-    updateScrollPosition();
-  });
+  // The pinned Table refreshes boundary classes on scroll and container resize.
+  // Column changes only require refreshing the widths used by fixed cells.
+  void nextTick(measureHeaderWidths);
 });
 
 onMounted(() => {
   props.getVirtualizedListRef?.({ current: virtualRef() });
   if (
     typeof ResizeObserver !== 'undefined' &&
-    bodyRef.value &&
+    wrapperRef.value &&
     (anyFixed.value || (showHeader.value && Boolean(props.scroll?.y)))
   ) {
     resizeObserver = new ResizeObserver(() => {
-      measureHeaderWidths();
-      updateScrollPosition();
+      if (resizeDisposed) return;
+      if (resizeFrame !== undefined) window.cancelAnimationFrame(resizeFrame);
+      resizeFrame = window.requestAnimationFrame(() => {
+        resizeFrame = undefined;
+        if (resizeDisposed) return;
+        measureHeaderWidths();
+        updateScrollPosition();
+      });
     });
-    resizeObserver.observe(bodyRef.value);
+    resizeObserver.observe(wrapperRef.value);
   }
   updateScrollPosition();
   measureHeaderWidths();
 });
 onBeforeUnmount(() => {
+  resizeDisposed = true;
   resizeObserver?.disconnect();
+  if (resizeFrame !== undefined) window.cancelAnimationFrame(resizeFrame);
   props.getVirtualizedListRef?.({ current: null });
 });
 </script>
@@ -1128,7 +1221,7 @@ onBeforeUnmount(() => {
                 :component-wrapper="tableComponent('body', 'wrapper')"
                 :direction="direction"
                 :expanded-keys="expandedKeys"
-                :expand-icon="hasRawProp('expandIcon') ? props.expandIcon : undefined"
+                :expand-icon="props.expandIcon"
                 :expand-row-by-click="props.expandRowByClick"
                 :expanded-row-render="props.expandedRowRender"
                 :fixed-offsets="fixedOffsets"
