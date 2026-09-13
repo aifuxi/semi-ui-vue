@@ -101,31 +101,32 @@ The fixed Chinese reference has nine live demos; English has ten, including Stac
 
 ## API
 
-| Option                  | Type                        | Default         | Description                                |
-| ----------------------- | --------------------------- | --------------- | ------------------------------------------ |
-| `content`               | `VNodeChild`                | `''`            | Toast content                              |
-| `icon`                  | `VNodeChild`                | by type         | Custom icon                                |
-| `showClose`             | `boolean`                   | `true`          | Shows the close button                     |
-| `textMaxWidth`          | `number \| string`          | `450`           | Maximum content width                      |
-| `duration`              | `number`                    | `3`             | Auto-close delay in seconds; 0 disables it |
-| `theme`                 | `'normal' \| 'light'`       | `'normal'`      | Fill style                                 |
-| `stack`                 | `boolean`                   | `false`         | Stacks multiple Toasts                     |
-| `direction`             | `'ltr' \| 'rtl'`            | context or LTR  | Text direction                             |
-| `id`                    | `string \| number`          | generated       | Custom id; the same id updates             |
-| `onClose`               | `() => void`                | -               | Automatic or close-button callback         |
-| `className`             | Vue class value             | -               | Class on the Toast root                    |
-| `style`                 | `StyleValue`                | -               | Style on the Toast root                    |
-| `top/right/bottom/left` | `number \| string`          | -               | Wrapper offsets                            |
-| `zIndex`                | `number`                    | `1010`          | Initial wrapper z-index                    |
-| `getPopupContainer`     | `() => HTMLElement \| null` | `document.body` | Initial wrapper parent                     |
+| Option                  | Type                        | Default         | Description                                                                   |
+| ----------------------- | --------------------------- | --------------- | ----------------------------------------------------------------------------- |
+| `content`               | `VNodeChild`                | `''`            | Toast content                                                                 |
+| `icon`                  | `VNodeChild`                | by type         | Custom icon                                                                   |
+| `motion`                | `boolean`                   | `true`          | Enter/exit animation for imperative Toasts; the inline holder does not use it |
+| `showClose`             | `boolean`                   | `true`          | Shows the close button                                                        |
+| `textMaxWidth`          | `number \| string`          | `450`           | Maximum content width                                                         |
+| `duration`              | `number`                    | `3`             | Auto-close delay in seconds; 0 disables it                                    |
+| `theme`                 | `'normal' \| 'light'`       | `'normal'`      | Fill style                                                                    |
+| `stack`                 | `boolean`                   | `false`         | Stacks multiple Toasts                                                        |
+| `direction`             | `'ltr' \| 'rtl'`            | context or LTR  | Text direction                                                                |
+| `id`                    | `string \| number`          | generated       | Custom id; the same id updates                                                |
+| `onClose`               | `() => void`                | -               | Automatic or close-button callback                                            |
+| `className`             | Vue class value             | -               | Class on the Toast root                                                       |
+| `style`                 | `StyleValue`                | -               | Style on the Toast root                                                       |
+| `top/right/bottom/left` | `number \| string`          | -               | Wrapper offsets                                                               |
+| `zIndex`                | `number`                    | `1010`          | Initial wrapper z-index                                                       |
+| `getPopupContainer`     | `() => HTMLElement \| null` | `document.body` | Initial wrapper parent                                                        |
 
-Methods: `Toast.info`, `success`, `warning`, `error`, `close`, `destroyAll`, `config`, `ToastFactory.create`, and `useToast` / `Toast.useToast`.
+Methods: `Toast.info`, `success`, `warning`, `error`, `close`, `destroyAll`, `config`, `ToastFactory.create`, `getWrapperId`, and `useToast` / `Toast.useToast`. `getWrapperId()` returns the current wrapper string id, or `null` before the first display and after destruction.
 
 ## Config
 
 Call `Toast.config(config)` before the first display. It accepts `top/right/bottom/left`, `duration`, `theme`, `zIndex`, and `getPopupContainer` from the table above. Once created, the wrapper does not change its parent or z-index; explicitly supplied offsets can still update it.
 
-Static methods return string ids; Vue accepts string/number inputs and normalizes them to strings. The upstream docs list number for id, but its public React type is string. Automatic closing and the close button call `onClose`; external `close(id)` and `destroyAll()` do not. Holder methods accept options and create a new entry on every call, and also expose `open(options)`. The static same-id update contract does not apply to the holder.
+Display methods return string ids; Vue accepts string/number inputs and normalizes them to strings. `close(id)` also returns the normalized string id. The upstream docs list number for id, but its public React type is string. Automatic closing and the close button call `onClose`; external `close(id)` and `destroyAll()` do not. Hovering a Toast pauses its close timer; leaving restarts the full duration. Although the `getPopupContainer` type permits `null`, displaying a Toast requires a mounted HTMLElement; returning `null` throws. Holder methods accept options and create a new entry on every call, and also expose `open(options)`. The static same-id update contract does not apply to the holder.
 
 ## Accessibility and SSR
 

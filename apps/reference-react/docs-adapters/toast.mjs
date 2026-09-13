@@ -30,7 +30,7 @@ const throttleShim = `function throttle(fn, wait, options = {}) {
 }`;
 
 export function adapt(code, { entry }) {
-  // Independent-brand substitution plus the pinned English Other Types example's missing
+  // Independent-brand substitution plus the pinned bilingual Other Types examples' missing
   // space after the comma; every other string stays identical to the fixed source.
   code = code
     .replaceAll('Hi,Bytedance dance dance', 'Hi, AIFUXI dance dance')

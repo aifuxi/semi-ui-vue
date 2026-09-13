@@ -20,5 +20,11 @@
       "item": "IconSemiLogo brand asset",
       "reason": "仓库明确禁止复用 Semi Logo；仅将示例图标替换为 IconInfoCircle，未排除自定义内容示例。"
     }
-  ]
+  ],
+  "review": {
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "fingerprint": "b9431f72ef767cdcd13354299358c1ab9091b6297bd1d720c7398ffb3b18479f"
+  }
 }

@@ -77,7 +77,7 @@ Opening an existing id updates the current notification instead of adding anothe
 ::demo-block{demo="notification/en-US/Update" title="Update content"}
 ::
 
-Both pinned upstream languages contain the same eight live examples in the same order, with no language-only or multi-file examples. The first two English snippets misspell `duration` and `position` as `with` and `Position`; the Vue examples use the real public API. To preserve this repository's independent branding, Bytedance copy and Toutiao/Vigo brand icons are replaced with AIFUXI copy and generic Bell/Star icons while retaining the custom-icon and color behavior; every other button and body string stays identical to the pinned source. The link example keeps the pinned fragment structure, and icon-only buttons carry a bilingual `aria-label`. The update example clears pending timers on unmount. All eight examples have passed strict React/Vue visual and behavioral acceptance across both languages, light/dark, and the applicable RTL cases.
+Both pinned upstream languages contain the same eight live examples in the same order, with no language-only or multi-file examples. The first two English snippets misspell `duration` and `position` as `with` and `Position`; the Vue examples use the real public API. For independent branding, Bytedance titles become `Hi, AIFUXI`; `ies dance dance dance` and `Hi, Bytedance dance dance` become `AIFUXI design notification`; the position example's `semi-ui-notification` becomes `aifuxi-notification`; and Toutiao/Vigo icons become Bell/Star. Other strings retain the pinned language-specific copy, including the English buttons in the Chinese examples. The link example keeps the pinned fragment structure, and icon-only buttons carry a bilingual `aria-label`. The update example clears pending timers on unmount. All eight examples have passed strict React/Vue visual and behavioral acceptance across both languages, light/dark, and the applicable RTL cases.
 
 ## API Reference
 
@@ -89,23 +89,26 @@ Display methods accept an options object and return the notification id:
 - `Notification.warning(options)`
 - `Notification.success(options)`
 
-Use `Notification.close(id)` to close one notification and `Notification.destroyAll()` to destroy all notifications and the imperative wrapper.
+Use `Notification.close(id: string)` to close one notification and return the supplied string id. Use `Notification.destroyAll()` to destroy all notifications and the imperative wrapper.
 
-| Property            | Type                   | Default         | Description                                |
-| ------------------- | ---------------------- | --------------- | ------------------------------------------ |
-| `content`           | `VNodeChild`           | `''`            | Notification body                          |
-| `duration`          | `number`               | `3`             | Auto-close delay in seconds; 0 disables it |
-| `getPopupContainer` | `() => HTMLElement`    | `document.body` | Parent of the first imperative wrapper     |
-| `icon`              | `VNodeChild`           | -               | Custom leading icon                        |
-| `id`                | `string`               | generated       | Reuse an id to update a notification       |
-| `position`          | `NotificationPosition` | `topRight`      | Popup placement                            |
-| `showClose`         | `boolean`              | `true`          | Whether the close button is rendered       |
-| `theme`             | `'normal' \| 'light'`  | `normal`        | Background treatment                       |
-| `title`             | `VNodeChild`           | `''`            | Notification title                         |
-| `zIndex`            | `number`               | `1010`          | Layer of the first wrapper                 |
-| `onClick`           | `(event) => void`      | -               | Card click callback                        |
-| `onClose`           | `() => void`           | -               | Auto-close or close-button callback        |
-| `onCloseClick`      | `(id) => void`         | -               | Close-button callback                      |
+| Property            | Type                          | Default         | Description                                                 |
+| ------------------- | ----------------------------- | --------------- | ----------------------------------------------------------- |
+| `className`         | `HTMLAttributes['class']`     | -               | Card class; accepts Vue class values                        |
+| `direction`         | `'ltr' \| 'rtl'`              | `ltr`           | Card direction; a holder inherits ConfigProvider by default |
+| `style`             | `StyleValue`                  | -               | Card inline styles                                          |
+| `content`           | `VNodeChild`                  | `''`            | Notification body                                           |
+| `duration`          | `number`                      | `3`             | Auto-close delay in seconds; 0 disables it                  |
+| `getPopupContainer` | `() => HTMLElement`           | `document.body` | Parent of the first imperative wrapper                      |
+| `icon`              | `VNodeChild`                  | -               | Custom leading icon                                         |
+| `id`                | `string`                      | generated       | Reuse an id to update a notification                        |
+| `position`          | `NotificationPosition`        | `topRight`      | Popup placement                                             |
+| `showClose`         | `boolean`                     | `true`          | Whether the close button is rendered                        |
+| `theme`             | `'normal' \| 'light'`         | `normal`        | Background treatment                                        |
+| `title`             | `VNodeChild`                  | `''`            | Notification title                                          |
+| `zIndex`            | `number`                      | `1010`          | Layer of the first wrapper                                  |
+| `onClick`           | `(event: MouseEvent) => void` | -               | Card click callback                                         |
+| `onClose`           | `() => void`                  | -               | Auto-close or close-button callback                         |
+| `onCloseClick`      | `(id: string) => void`        | -               | Close-button callback                                       |
 
 Call global configuration before the first display method:
 
@@ -123,11 +126,13 @@ Notification.config({ position: 'top', top: 24, duration: 5, zIndex: 1200 });
 | `top`      | `number \| string`     | -          | Top offset                  |
 | `zIndex`   | `number`               | `1010`     | Wrapper stacking level      |
 
+`NotificationConfig` currently declares `direction`, but `Notification.config()` does not read it. Set direction on each notification or through the local holder's `ConfigProvider`.
+
 Imperative notifications share the first wrapper. `getPopupContainer` and `zIndex` are resolved only when that wrapper is created; displaying again after `destroyAll()` resolves them again.
 
 ### Local context
 
-`Notification.useNotification()` returns `[notification, NotificationHolder]`. The holder inherits Vue context such as `ConfigProvider` direction.
+`Notification.useNotification()` returns `[notification, NotificationHolder]`. The holder inherits Vue context such as `ConfigProvider` direction. The local API provides `open/info/success/warning/error/close`; each display call generates a new id and does not provide the static API's same-id updates, `config`, or `destroyAll`.
 
 ```vue
 <script setup lang="ts">

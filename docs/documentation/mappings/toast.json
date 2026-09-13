@@ -11,7 +11,7 @@
       "index": 2,
       "zhCN": "toast/zh-CN/Types",
       "enUS": "toast/en-US/Types",
-      "notes": "中文索引2，英文索引2。success字符串简写与warning/error对象输入，保留纵向布局及颜色。英文上游成功串缺一个空格，按修正后的示例文案统一为Hi, AIFUXI。"
+      "notes": "中文索引2，英文索引2。success字符串简写与warning/error对象输入，保留纵向布局及颜色。双语上游成功串缺一个空格，按修正后的示例文案统一为Hi, AIFUXI。"
     },
     {
       "index": 3,
@@ -128,5 +128,16 @@
       "source": "Context示例title字段；Factory示例遗漏Toast导入",
       "reason": "固定公开Toast类型和Adapter不消费title，故移除；工厂示例补全实际所需导入。"
     }
-  ]
+  ],
+  "review": {
+    "fingerprint": "212c5d29bb59a0960a8ffe93f1814054f7fd889851ece1fe6b76018a4df26988",
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "notes": [
+      "2026-09-13 逐段审阅固定中英文全部 19 个 live 片段、章节/文案/ARIA/Token、内联 API 与 Vue 公开类型，全部前提详见 toast-acceptance.md。",
+      "补齐 motion、getWrapperId、close 返回值、hover 重启计时及 getPopupContainer 的运行时 HTMLElement 前提；同 id 更新仅用于静态实例，holder 每次创建新条目。",
+      "核对 ReactNode 到 VNodeChild、Context 到 provide/inject、holder Component、实例隔离和 SSR 边界；双语 Types 均有缺空格的显式品牌文案修正。"
+    ]
+  }
 }

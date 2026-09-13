@@ -77,7 +77,7 @@ import '@aifuxi/semi-theme-default/notification.css';
 ::demo-block{demo="notification/zh-CN/Update" title="更新内容"}
 ::
 
-中英文固定上游均有八项 live 示例，顺序一致，没有语言独有示例或多文件依赖。英文上游前两项误写了 `with` 与 `Position`；Vue 示例按实际公开 API 修正为 `duration` 与 `position`。按照仓库独立品牌约束，示例中的 Bytedance 文案与 Toutiao/Vigo 品牌图标替换为 AIFUXI 文案和通用 Bell/Star 图标，同时保留自定义图标与颜色的演示意图；其余按钮与正文字面沿用固定源码英文原文。链接示例保留固定示例的 fragment 结构，纯图标按钮补充双语 `aria-label`。更新示例会在卸载时清理尚未触发的定时器。八项示例已完成双语、明暗与适用 RTL 的严格 React/Vue 视觉与行为验收。
+中英文固定上游均有八项 live 示例，顺序一致，没有语言独有示例或多文件依赖。英文上游前两项误写了 `with` 与 `Position`；Vue 示例按实际公开 API 修正为 `duration` 与 `position`。按照仓库独立品牌约束，Bytedance 标题改为 `Hi, AIFUXI`，`ies dance dance dance` 与 `Hi, Bytedance dance dance` 正文改为 `AIFUXI design notification`，位置示例的 `semi-ui-notification` 改为 `aifuxi-notification`，Toutiao/Vigo 图标改为通用 Bell/Star；其余字面保留固定双语源码，包括中文示例原有的英文按钮。链接示例保留固定示例的 fragment 结构，纯图标按钮补充双语 `aria-label`。更新示例会在卸载时清理尚未触发的定时器。八项示例已完成双语、明暗与适用 RTL 的严格 React/Vue 视觉与行为验收。
 
 ## API 参考
 
@@ -89,23 +89,26 @@ import '@aifuxi/semi-theme-default/notification.css';
 - `Notification.warning(options)`
 - `Notification.success(options)`
 
-使用 `Notification.close(id)` 手动关闭单条通知，使用 `Notification.destroyAll()` 销毁全部通知及命令式 wrapper。
+使用 `Notification.close(id: string)` 手动关闭单条通知并返回传入的 string id，使用 `Notification.destroyAll()` 销毁全部通知及命令式 wrapper。
 
-| 属性                | 类型                   | 默认值          | 说明                           |
-| ------------------- | ---------------------- | --------------- | ------------------------------ |
-| `content`           | `VNodeChild`           | `''`            | 通知正文                       |
-| `duration`          | `number`               | `3`             | 自动关闭秒数；0 表示不自动关闭 |
-| `getPopupContainer` | `() => HTMLElement`    | `document.body` | 首个命令式 wrapper 的父节点    |
-| `icon`              | `VNodeChild`           | -               | 自定义左侧图标                 |
-| `id`                | `string`               | 自动生成        | 复用 id 可更新通知             |
-| `position`          | `NotificationPosition` | `topRight`      | 弹出位置                       |
-| `showClose`         | `boolean`              | `true`          | 是否显示关闭按钮               |
-| `theme`             | `'normal' \| 'light'`  | `normal`        | 背景填充样式                   |
-| `title`             | `VNodeChild`           | `''`            | 通知标题                       |
-| `zIndex`            | `number`               | `1010`          | 首个 wrapper 的层级            |
-| `onClick`           | `(event) => void`      | -               | 点击卡片回调                   |
-| `onClose`           | `() => void`           | -               | 自动或按钮关闭回调             |
-| `onCloseClick`      | `(id) => void`         | -               | 点击关闭按钮回调               |
+| 属性                | 类型                          | 默认值          | 说明                                     |
+| ------------------- | ----------------------------- | --------------- | ---------------------------------------- |
+| `className`         | `HTMLAttributes['class']`     | -               | 卡片类名，支持 Vue class 值              |
+| `direction`         | `'ltr' \| 'rtl'`              | `ltr`           | 卡片方向；holder 默认继承 ConfigProvider |
+| `style`             | `StyleValue`                  | -               | 卡片内联样式                             |
+| `content`           | `VNodeChild`                  | `''`            | 通知正文                                 |
+| `duration`          | `number`                      | `3`             | 自动关闭秒数；0 表示不自动关闭           |
+| `getPopupContainer` | `() => HTMLElement`           | `document.body` | 首个命令式 wrapper 的父节点              |
+| `icon`              | `VNodeChild`                  | -               | 自定义左侧图标                           |
+| `id`                | `string`                      | 自动生成        | 复用 id 可更新通知                       |
+| `position`          | `NotificationPosition`        | `topRight`      | 弹出位置                                 |
+| `showClose`         | `boolean`                     | `true`          | 是否显示关闭按钮                         |
+| `theme`             | `'normal' \| 'light'`         | `normal`        | 背景填充样式                             |
+| `title`             | `VNodeChild`                  | `''`            | 通知标题                                 |
+| `zIndex`            | `number`                      | `1010`          | 首个 wrapper 的层级                      |
+| `onClick`           | `(event: MouseEvent) => void` | -               | 点击卡片回调                             |
+| `onClose`           | `() => void`                  | -               | 自动或按钮关闭回调                       |
+| `onCloseClick`      | `(id: string) => void`        | -               | 点击关闭按钮回调                         |
 
 全局配置需在首次展示前调用：
 
@@ -123,11 +126,13 @@ Notification.config({ position: 'top', top: 24, duration: 5, zIndex: 1200 });
 | `top`      | `number \| string`     | -          | top 偏移       |
 | `zIndex`   | `number`               | `1010`     | wrapper 的层级 |
 
+`NotificationConfig` 当前声明了 `direction`，但 `Notification.config()` 不读取该字段；方向请通过每条通知的 `direction` 或局部 holder 的 `ConfigProvider` 设置。
+
 命令式通知共享首个 wrapper：`getPopupContainer` 与 `zIndex` 只在第一次创建 wrapper 时生效；`destroyAll()` 后再次展示会重新解析容器。
 
 ### 局部上下文
 
-`Notification.useNotification()` 返回 `[notification, NotificationHolder]`。holder 放在 `ConfigProvider` 内时会继承 direction 等 Vue 上下文。
+`Notification.useNotification()` 返回 `[notification, NotificationHolder]`。holder 放在 `ConfigProvider` 内时会继承 direction 等 Vue 上下文。局部 API 提供 `open/info/success/warning/error/close`；每次展示都生成新 id，不提供静态 API 的同 id 更新、`config` 或 `destroyAll`。
 
 ```vue
 <script setup lang="ts">

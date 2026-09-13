@@ -96,23 +96,24 @@ import '@aifuxi/semi-theme-default/toast.css';
 
 ### Toast options
 
-| 属性                    | 类型                        | 默认值          | 说明                           |
-| ----------------------- | --------------------------- | --------------- | ------------------------------ |
-| `content`               | `VNodeChild`                | `''`            | 提示内容                       |
-| `icon`                  | `VNodeChild`                | 按 type         | 自定义图标                     |
-| `showClose`             | `boolean`                   | `true`          | 是否显示关闭按钮               |
-| `textMaxWidth`          | `number \| string`          | `450`           | 内容最大宽度                   |
-| `duration`              | `number`                    | `3`             | 自动关闭秒数，0 表示不自动关闭 |
-| `theme`                 | `'normal' \| 'light'`       | `'normal'`      | 填充样式                       |
-| `stack`                 | `boolean`                   | `false`         | 是否堆叠多条 Toast             |
-| `direction`             | `'ltr' \| 'rtl'`            | 上下文或 LTR    | 文本方向                       |
-| `id`                    | `string \| number`          | 自动生成        | 自定义 id；相同 id 更新        |
-| `onClose`               | `() => void`                | -               | 自动或关闭按钮触发的回调       |
-| `className`             | Vue class 值                | -               | 单条根节点 class               |
-| `style`                 | `StyleValue`                | -               | 单条根节点样式                 |
-| `top/right/bottom/left` | `number \| string`          | -               | wrapper 偏移                   |
-| `zIndex`                | `number`                    | `1010`          | wrapper 首次创建时的层级       |
-| `getPopupContainer`     | `() => HTMLElement \| null` | `document.body` | wrapper 首次创建时的父节点     |
+| 属性                    | 类型                        | 默认值          | 说明                                              |
+| ----------------------- | --------------------------- | --------------- | ------------------------------------------------- |
+| `content`               | `VNodeChild`                | `''`            | 提示内容                                          |
+| `icon`                  | `VNodeChild`                | 按 type         | 自定义图标                                        |
+| `motion`                | `boolean`                   | `true`          | 命令式提示的进出动画；holder 就地渲染不使用该动画 |
+| `showClose`             | `boolean`                   | `true`          | 是否显示关闭按钮                                  |
+| `textMaxWidth`          | `number \| string`          | `450`           | 内容最大宽度                                      |
+| `duration`              | `number`                    | `3`             | 自动关闭秒数，0 表示不自动关闭                    |
+| `theme`                 | `'normal' \| 'light'`       | `'normal'`      | 填充样式                                          |
+| `stack`                 | `boolean`                   | `false`         | 是否堆叠多条 Toast                                |
+| `direction`             | `'ltr' \| 'rtl'`            | 上下文或 LTR    | 文本方向                                          |
+| `id`                    | `string \| number`          | 自动生成        | 自定义 id；相同 id 更新                           |
+| `onClose`               | `() => void`                | -               | 自动或关闭按钮触发的回调                          |
+| `className`             | Vue class 值                | -               | 单条根节点 class                                  |
+| `style`                 | `StyleValue`                | -               | 单条根节点样式                                    |
+| `top/right/bottom/left` | `number \| string`          | -               | wrapper 偏移                                      |
+| `zIndex`                | `number`                    | `1010`          | wrapper 首次创建时的层级                          |
+| `getPopupContainer`     | `() => HTMLElement \| null` | `document.body` | wrapper 首次创建时的父节点                        |
 
 ### 静态方法
 
@@ -122,6 +123,7 @@ import '@aifuxi/semi-theme-default/toast.css';
 - `Toast.error(options | string)`
 - `Toast.close(id)`
 - `Toast.destroyAll()`
+- `Toast.getWrapperId()`：返回当前 wrapper 的 string id，首次展示前及销毁后为 `null`。
 - `Toast.config(config)`
 - `ToastFactory.create(config?)`
 - `useToast()` / `Toast.useToast()`
@@ -130,7 +132,7 @@ import '@aifuxi/semi-theme-default/toast.css';
 
 `Toast.config(config)` 应在当前实例首次展示前调用，支持上表的 `top/right/bottom/left`、`duration`、`theme`、`zIndex` 和 `getPopupContainer`。wrapper 创建后，容器与 zIndex 不迁移；显式传入的位置仍会更新。
 
-静态方法返回 string id；Vue 接受 string/number 输入并规范为 string。上游文档将 id 写为 number，而公开 React 类型是 string。`onClose` 由自动关闭或关闭按钮触发，外部 `close(id)` / `destroyAll()` 不额外触发它。holder 方法接收 options，每次调用创建新条目，额外提供 `open(options)`；不要把静态同 id 更新的契约套用到 holder。
+展示方法返回 string id；`close(id)` 返回规范化后的 string id。Vue 接受 string/number 输入并规范为 string。上游文档将 id 写为 number，而公开 React 类型是 string。`onClose` 由自动关闭或关闭按钮触发，外部 `close(id)` / `destroyAll()` 不额外触发它。鼠标移入单条提示会暂停自动关闭，移出后重新开始完整 duration。`getPopupContainer` 的类型允许 `null`，但实际展示时必须返回已挂载的 HTMLElement；返回 `null` 会报错。holder 方法接收 options，每次调用创建新条目，额外提供 `open(options)`；不要把静态同 id 更新的契约套用到 holder。
 
 ## 可访问性与 SSR
 

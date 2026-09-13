@@ -41,5 +41,11 @@
     "设计变量",
     "FAQ"
   ],
-  "exclusions": []
+  "exclusions": [],
+  "review": {
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "fingerprint": "e41cf95244e4855a4efb0b1b0431205bb6eb4ad3e6584231415d73de093166b3"
+  }
 }

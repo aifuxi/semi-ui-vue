@@ -76,5 +76,17 @@
       "source": "IconToutiaoLogo 与 IconVigoLogo",
       "reason": "按仓库独立品牌约束替换为通用Bell/Star图标；自定义图标、颜色与三个触发按钮的演示能力保持不变。"
     }
-  ]
+  ],
+  "review": {
+    "chapters": true,
+    "api": true,
+    "migration": true,
+    "fingerprint": "f9509adbadf83938b22141d7e617bd0a1225332241759af0034324319ccecd1b",
+    "notes": [
+      "2026-09-13 对固定双语全部 8 例、章节、内联 API 与 React→Vue 迁移完成语义复核；逐例数量、语言文案、属性拼写与编译依赖见 notification-acceptance.md。",
+      "依据固定 Notification/Notice/Foundation 与 Vue 类型、命令式和 holder 实现核对默认值、string id、关闭回调和容器行为；明确局部 API 不支持同 id 更新或 config/destroyAll。",
+      "补足实际品牌文本替换清单；保留已声明的英文拼写修复、useState import、纯图标 aria-label、fragment 与卸载 timer 清理，不扩展参考行为或放宽矩阵。",
+      "交叉复核后补齐 direction/className/style、精确回调与静态 close 返回类型；Config.direction 仅声明但不读取的限制已按实际实现写入双语正文。"
+    ]
+  }
 }

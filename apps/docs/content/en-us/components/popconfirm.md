@@ -28,7 +28,7 @@ import '@aifuxi/semi-theme-default/popconfirm.css';
 
 ### Type collocation
 
-Developers can use scenario-based `OK Type`/`Cancel Type`/`icon` Equal parameters are matched with different styles of bubble confirmation boxes.
+Use `okType`, `cancelType`, and `icon` to choose a confirmation style for the action.
 
 ::demo-block{demo="popconfirm/en-us/Types" title="Type collocation"}
 ::
@@ -69,7 +69,7 @@ Please refer to [Use with Tooltip/Popover](/en-us/components/tooltip/#Use%20with
 | getPopupContainer  | Specify the parent DOM, and the pop-up layer will be rendered into the DOM. Customization needs to set `position: relative` This will change the DOM tree position, but not the view's rendering position. | Function():HTMLElement     | () => document.body                        |
 | guardFocus         | When the focus is in the popup layer, toggle whether the Tab makes the focus loop in the popup layer                                                                                                       | boolean                    | true                                       | **2.8.0** |
 | icon               | Custom pop bubble Icon icon                                                                                                                                                                                | VNodeChild                 | `<IconAlertTriangle size="extra-large" />` |
-| motion             | Whether there is animation when the drop-down list appears/hidden. You can customize animation by passing in an object that conforms to the structure                                                      | boolean                    | true                                       |
+| motion             | Whether to animate the popup when it appears or hides                                                                                                                                                      | boolean                    | true                                       |
 | position           | Placement; defaults to bottomLeft in LTR and bottomRight in RTL                                                                                                                                            | TooltipPosition            | bottomLeft                                 | -         |
 | okText             | Confirm button text                                                                                                                                                                                        | string                     | "Confirm"                                  |
 | okType             | Confirm button type                                                                                                                                                                                        | string                     | "primary"                                  |
