@@ -1,50 +1,16 @@
 ---
 name: semi-ui-vue-vertical-slice
-description: 实现或验收固定 Semi 基线的 Vue 完整切片，修复既有组件的对齐缺陷。普通 React 使用查询交给 semi-design-guide；文档示例维护走文档流程。
-metadata:
-  short-description: 完成 Semi UI Vue 组件垂直切片
+description: 对齐固定 Semi 基线的 Vue 组件，修复契约差异或完成组件验收。
 ---
 
-# Semi UI Vue 组件对齐
+# Vue 组件对齐
 
-在当前仓库使用；路径从实际仓库根解析，不绑定个人检出目录。硬约束遵守根 `AGENTS.md`，固定只读 vendor 是唯一正确性来源，现有 Vue 实现与旧证据不能自证正确。
+以 `vendor/semi-design` 的固定源码为依据，完成用户指定的组件或行为。已有实现与旧快照用于定位，不能自行证明正确。
 
-## 选择分支
+- 修复已有组件：从可复现差异和 `docs/components/<component>/alignment.md` 入手，只更新受影响契约、实现与证据。
+- 新建或完整验收组件：按[组件契约](../../../docs/testing/component-contract.md)核对公开能力、Vue 映射和交付物；必要项未完成时保留缺口，不标记 ready。
+- 文档示例任务：使用[文档流程](../../../docs/documentation/workflow.md)；发现组件缺陷时按第一项定点修复。
 
-| 用户目标                             | 执行范围                                                                                                                                              |
-| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 新建、继续或重新完整验收组件切片     | 执行下面的完整切片流程与验收合同。                                                                                                                    |
-| 修复既有组件的具体对齐缺陷           | 复现目标行为，读取对应固定源码和已有矩阵，更新差异与失效证据；使用下方验证策略，不重新选组件或重建未受影响的交付物。                                  |
-| 示例补齐、已有示例修复、文档严格验收 | 转入 [文档任务入口](../../../docs/documentation/workflow.md#任务入口)，不继续执行完整切片流程。发现阻塞示例的组件缺陷时，只叠加上一行的缺陷修复范围。 |
+按问题读取对应 React Adapter、Foundation、样式或文档，避免通读无关组件。默认值、受控状态、VNode、Portal 和定位差异按组件契约中的 Vue 适配规则处理。
 
-普通 Semi React 业务查询使用 `semi-design-guide`。升级 vendor、修改上游源码和无关 Vue 开发不属于本技能。
-
-## 完整切片流程
-
-1. 检查工作区状态与指定组件的现状。仅在用户要求“下一个组件”而未指定目标时，从当前 inventory、README 进度及 `docs/research/` 路线判断候选，必要时查架构、最近组件和提交历史；已有公开模块全部 ready 时说明现状，不虚构新切片。
-2. 核验固定基线：`git submodule status vendor/semi-design` 与 `git -C vendor/semi-design describe --tags --exact-match`。按 [组件契约](../../../docs/testing/component-contract.md) 的顺序读取该组件的 Adapter、Foundation、SCSS/主题、文档及相关资产。只有固定源码缺失所需信息或用户明确要求时才查询线上资料，并注明版本差异。
-3. 创建或更新 `docs/components/<component>/alignment.md`，覆盖根规范规定的 API、状态、事件序、Vue 映射、DOM/class、视觉、键盘/ARIA、Portal、动效、暗色、RTL、国际化、SSR 与 deviation。
-4. 沿用已有工程接线方式，独立验证固定源码的行为，不复制其他组件的正确性假设。
-
-任一实现或缺陷修复涉及默认 true 的可选 Boolean、子 VNode 读取/克隆、Portal/自定义容器或 resize/scroll 定位时，先读 [Vue Adapter 对齐易错点](references/vue-adapter-parity-pitfalls.md)，把适用行为纳入矩阵和测试。
-
-## 完整切片验收合同
-
-完整切片须同时具备根 `AGENTS.md` 规定的源码/公开类型与导出、Foundation 隔离、主题/逐组件样式、双语文档与迁移表、对齐矩阵、React/Vue 场景、黑盒单测、适用的 SSR/Chromium 证据及真实 tarball 验证。公开运行时与声明不能泄漏 vendor 或私有包，归属与许可证据同步完成。
-
-视觉矩阵遵循根规范的桌面 light/dark 与适用状态；仅在上游契约要求时增加窄视口/触摸，方向与国际化敏感场景按契约补齐。保留同进程 Chromium、computed style、几何和局部截图门禁。无法等价的差异须有源码、原因、用户影响与验收结论；缺必要产物或未解释差异不得标记 ready。标记 ready 时同步 README 进度。
-
-## 验证策略
-
-- 开发或定点修复先运行当前行为的单元/SSR、受影响包类型检查及筛选后的 Chromium 场景。视觉基线有依据地更新后，须再无更新参数运行相同场景。
-- 稳定后按实际改动验证共享边界、主题、SSR dist 与真实 tarball；无关链路不为形式重复运行。既有组件修复只刷新受影响证据，不以全新切片合同扩大任务。
-- 完整切片准备 ready 时，在定向检查通过后运行仓库 `pnpm check` 与 `pnpm check:artifacts`，默认集中一轮。后置阶段失败时修复并定向续跑；共享边界改变、无法证明前序结果有效或用户要求时再重跑完整检查。提交本身不触发重复检查。
-- 默认浏览器验收为当前组件受影响的完整场景与工作台 smoke。共享运行时/全局主题、比较算法、Playwright/webServer、字体/viewport/动画归一化变化、发布或周期性全量审计及用户要求才触发全仓浏览器回归；单纯新增当前组件的注册、harness 接线或快照目录不构成全量触发条件。
-- 先验证行为和 computed style，再接受截图；阈值通过不代表图片字节一致。报告区分定向、受影响链路与全仓结果，不写死测试数量或耗时。
-- 避免并行争用固定 webServer 端口或构建输入。端口、权限和浏览器启动失败先诊断环境；验证后只清理本次启动的服务并复查工作区范围。
-
-## 完成与提交
-
-按根 `AGENTS.md` 的 Git 约定，在本次任务完成并通过对应验收后自动提交，无需再次询问；遵循用户对当前任务的明确范围或提交要求。只暂存任务相关文件，检查暂存 diff 与 `git diff --cached --check`，使用简体中文 Conventional Commit，提交后核实结果与工作区状态。已通过且输入未变的内容不为提交重复构建或测试。
-
-最终说明交付范围、实际验证、截图结论、deviation 与提交结果；只有选择下一组件时才补充组件选择理由。
+验证范围与命令见[验证入口](../../../docs/testing/validation.md)。先验证目标行为，再按改动影响验证共享边界与发布产物；复用输入未变且仍有效的结果。验收通过后更新对齐结论及必要的完成状态，按根 `AGENTS.md` 提交并说明剩余差异。

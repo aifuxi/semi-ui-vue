@@ -1,39 +1,42 @@
-# 工具链管理
+# 工具链与 IDE
 
-Node.js 与 pnpm 的开发、CI 版本由根 `mise.toml` 精确声明，当前为 Node 24.18.0 / pnpm 12.3.4。`package.json` 保留包管理器声明和引擎契约；`pnpm check:toolchain` 核对配置和实际运行版本，已接入 `pnpm check`。
+Node.js 与 pnpm 的精确版本由根 `mise.toml` 管理；`package.json` 声明引擎和包管理器契约。`pnpm check:toolchain` 核对配置与实际版本，已纳入日常 check。
 
-## 本地与 IDE
-
-安装 mise 后，在仓库根执行：
+## 本地准备
 
 ```bash
 mise trust
 mise install
 mise exec -- pnpm install --frozen-lockfile
 mise exec -- pnpm check:toolchain
-mise exec -- pnpm dev
 ```
 
-希望终端自动切换版本时，在个人 zsh 配置加入 `eval "$(mise activate zsh)"`。未激活的终端、自动化任务统一使用 `mise exec --`。无需执行 `corepack enable`，也不需要全局安装 pnpm。
+个人终端可用 `mise activate zsh` 自动切换；未激活时使用 `mise exec -- pnpm …`。无需额外启用 corepack 或全局安装 pnpm。
 
-WebStorm 的 Node interpreter 与 package manager 分别选用 `mise which node`、`mise which pnpm` 返回的位置。版本升级后重新核对 IDE 选择；个人绝对路径不写入共享配置。用 IDE 运行 `pnpm check:toolchain` 确认 IDE 与终端一致。
+## WebStorm
 
-`.nvmrc` 与 `.node-version` 已移除，避免多个工具版本来源。已有全局工具不必卸载，项目命令通过 mise 选择版本。
+共享运行配置在 [.run](../../.run/)，打开项目即可识别：
 
-## 依赖与缓存
+| 配置名称               | 用途                  |
+| ---------------------- | --------------------- |
+| `pnpm check:toolchain` | 验证 IDE 的 Node/pnpm |
+| `pnpm dev:docs`        | 启动文档开发服务      |
+| `pnpm check`           | 日常源码集成          |
+| `pnpm check:docs`      | 文档构建、类型与内容  |
+| `pnpm check:artifacts` | 公开产物与真实包消费  |
+| `pnpm check:full`      | 全量回归              |
+| `pnpm release:check`   | 发布候选验证，不发布  |
 
-依赖仍由 pnpm workspace、catalog、overrides 和统一 `pnpm-lock.yaml` 管理。`pmOnFail: error` 要求当前 pnpm 满足项目声明，不自动下载另一个版本；依赖脚本使用 `allowBuilds` 白名单。保持严格 peer 与 engine 检查。
+配置使用 `$PROJECT_DIR$`、项目 Node runtime 和 `pnpm` 别名。首次设置项目 Node interpreter 与 package manager 时，分别选择 `mise which node`、`mise which pnpm` 返回的位置。升级版本后运行 `pnpm check:toolchain` 复核。
 
-pnpm v12 在锁文件的独立 YAML 文档中记录包管理器依赖，普通业务依赖保留在另一个文档中。升级须审核完整 diff，不能把包管理器记录误认为业务依赖升级。安装采用用户级默认 store，实际位置用 `mise exec -- pnpm store path` 查询，不配置项目内 `.pnpm-store`。
+MCP 先用 `get_run_configurations` 获取名称，再用 `execute_run_configuration` 执行。npm 配置不支持动态参数覆盖；指定单测文件、文档 batch 或一次性环境变量时用 IDE 终端。长任务以实际退出码和日志判断结束，不能把启动成功当作检查通过。
 
-## CI 与升级
+CodeGraph 用于已索引代码的符号与依赖分析；配置、文档、索引遗漏或过期内容用定向读取补足。个人 MCP 连接保存在本地配置中，`.codex/config.toml` 不入库。
 
-GitHub Actions 使用固定提交的 `jdx/mise-action` 和固定 mise 版本读取 `mise.toml`；CI 不再单独声明 Node/pnpm 版本。发布保留 npm 11.16.0 与官方 registry、OIDC 权限，实际发布命令仍显式指定官方 registry。
+## 依赖与共享资源
 
-升级时同步修改 `mise.toml`、`package.json` 的 `packageManager` / `engines.pnpm` 及本文版本，安装新工具后首先尝试 frozen install。只有确需更新锁文件时执行一次非 frozen 安装并审查差异，随后重新执行 frozen install 和 `pnpm check:full`。提交精确版本，不使用 `latest` 或主版本浮动范围。
+依赖由 pnpm workspace、catalog、overrides 和统一 lockfile 管理，保留严格 peer/engine 校验与 `allowBuilds`。pnpm v12 lockfile 的独立 YAML 文档记录包管理器依赖，升级时一并审阅。使用默认用户 store，位置由 `pnpm store path` 查询。
 
-项目内隔离 worktree 放在 `.worktrees/`，Git、Prettier 和 ESLint 都忽略该目录。文档浏览器测试需要避开主工作区服务时，可以设置 `DOCS_PORT=14321 DOCS_ACCEPTANCE=1`；该端口仅用于本次文档预览与验收，默认仍为 4321。React/Vue 对照仍使用 4173/4174，运行前确认空闲。
+文档默认端口 4321，React/Vue 对照为 4173/4174。并行工作共享代码和构建产物，正式验收由一个执行者管理服务；隔离文档端口可用 `DOCS_PORT`，验收模式用 `DOCS_ACCEPTANCE=1`。仓库内 worktree 放在已忽略的 `.worktrees/`。
 
-回退可恢复迁移前的工具声明、配置、锁文件和脚本，并重新安装依赖；不要清理其他项目的全局工具或缓存。
-
-参考：[mise CI](https://mise.jdx.dev/continuous-integration.html)、[pnpm v12 发布说明](https://github.com/pnpm/pnpm/releases/tag/v12.0.0)。
+CI 从 mise.toml 读取工具版本；升级同步 packageManager/engines，按[验证入口](../testing/validation.md)验证受影响工具链与产物。不要清理其他项目的全局工具或缓存。

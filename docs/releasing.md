@@ -1,5 +1,7 @@
 # 发布手册
 
+日常变更只需添加 Changeset；准备发布时核对当前候选、外部接入和对应门禁；只有发布失败恢复时才读取恢复步骤。产品剩余工作见[发布审计](release-audit-1.0.md)。
+
 Changesets 负责版本计算、五包联动、CHANGELOG、版本 PR、打包及发布。五包使用 fixed 分组：主题、稳定图标、实验图标、插画和主组件包始终同版。`workspace:*` 保留在源码中，真实 tarball 的内部依赖必须转换为同版本精确值。
 
 当前处于迁移接入期：本地 `0.1.0` 是官方命令清除旧 alpha 计数产生的未发布基线，必须与待处理 major changeset 及 next 状态一起合并。首个版本 PR 的目标是五包 `1.0.0-next.0`。不能直接发布迁移基线，也不能把流程迁移视为 1.0 产品验收完成。
@@ -55,6 +57,6 @@ CLI 3.0.2 对原计划重跑仍会尝试已发布包，且仅识别特定重复�
 
 发布前应保护 master，并核对 npm Environment 审核。五包的 npm Trusted Publisher 均应指向 `aifuxi/semi-ui-vue` / `publish.yml` / `npm`。OIDC 配置和真实首发属于外部验收，不由本地测试证明。
 
-2026-09-11 只读核对：npm Environment 已有 required reviewer `aifuxi`；master 的 `protected=false`；仓库级 Actions variables/secrets 列表为空。未创建 App、未修改远端配置、未发布 npm。五包 registry 均为 `next=0.1.0-alpha.4`、`latest=0.1.0-alpha.0`，完整快照见 [迁移记录](../ai-work/20260911-changesets-registry.json)。外部配置与首个版本 PR/next 发布仍待完成。
+2026-09-11 历史快照：npm Environment 已有 required reviewer `aifuxi`；master 的 `protected=false`；仓库级 Actions variables/secrets 列表为空；五包 registry 均为 `next=0.1.0-alpha.4`、`latest=0.1.0-alpha.0`，见[迁移记录](../ai-work/20260911-changesets-registry.json)。当时未创建 App、修改远端配置或发布 npm。准备新候选时重新核对这些外部状态，不把此快照当作当前检查结果。
 
 迁移方案及原验收定义见 [迁移计划](changesets-migration-plan.md)。历史审计中的旧命令仅为当时证据，不是现行发布入口。

@@ -1,36 +1,39 @@
-# 验证入口与范围
+# 验证入口
 
-以用户目标和受影响契约决定范围。发布标准保持完整，日常反馈避免反复清理、构建和安装。
+选择能证明本次目标和影响的检查。通过且输入未变的证据直接复用；修复新失败后重跑受影响范围。发布候选才要求完整发布门禁。
 
-| 入口                                            | 验证内容                                                         | 何时使用                                 |
-| ----------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------- |
-| `pnpm check`                                    | 固定基线/生成漂移/源码边界、格式、lint、源码类型、单测、工具测试 | 日常集成；局部修改可先跑对应检查         |
-| `pnpm check:docs`                               | 缓存校验后的公开包/资源、静态站、Nuxt 类型、内容与产物           | 文档或构建输入变化                       |
-| `pnpm --filter @workspace/docs test:dev`        | Rspack 开发服务、Vue 状态保持与 Markdown 自动更新                | 文档构建器或开发更新链路变化             |
-| `pnpm check:artifacts`                          | 一次准备公开包/文档，构建工作台；主题、SSR、tarball 消费         | 公开 API、样式、依赖、构建与发布脚本变化 |
-| `pnpm check:full`                               | 日常检查、产物检查、组件与文档 Chromium 回归                     | 共享变更、全量审计                       |
-| `pnpm release:check`                            | 依赖审计、全量回归、隔离 tarball 安装、发布元数据                | 发布前                                   |
-| `pnpm test:coverage` / `pnpm test:coverage:all` | 相对 origin/master 变更文件 / 全量覆盖报告                       | 排查测试缺口，不作为统一 100% 阻断       |
-| `pnpm --filter @workspace/docs check:links`     | 已构建静态站的正文、链接与锚点诊断                               | 文档链接审计；既有断链不自动扩展当前任务 |
+| 变更或目标                       | 检查                                                                                |
+| -------------------------------- | ----------------------------------------------------------------------------------- |
+| 规则、普通文案、IDE 配置         | 受影响文件格式、链接、diff；配置需实际识别/启动                                     |
+| 局部组件修复                     | 对应类型/行为测试；视觉、焦点、Portal、拖拽、动效变化加对应 Chromium spec           |
+| 日常源码集成                     | `pnpm check`：工具链、固定基线、生成漂移、边界、格式/lint、源码类型、单测与工具测试 |
+| 文档内容或构建输入               | `pnpm check:docs`：资源、静态站、Nuxt 类型、内容与产物                              |
+| 文档示例验收                     | [文档流程](../documentation/workflow.md)中的选定批次；普通补齐不自动升级为严格验收  |
+| 公开 API、样式、依赖、构建链变化 | `pnpm check:artifacts`：构建、主题、SSR、真实 tarball 消费                          |
+| 共享行为全量回归或全仓审计       | `pnpm check:full`：check、artifacts、组件和文档 Chromium                            |
+| 发布候选                         | `pnpm release:check`：Changesets 集成、生产依赖审计、全量回归、隔离安装、发布元数据 |
 
-`check` 不包括 Nuxt 类型与完整生产构建；需要这些证据时显式执行 `check:docs` 或 `check:artifacts`。`typecheck` 保留全 workspace 的独立准备语义，`typecheck:source` 用于避免日常检查隐式构建文档。`typecheck:clean` 只用于排查缓存或验证干净构建，会清理临时证据，不作为日常入口。
+## 定向检查
 
-文档站使用 Nuxt 的 Rspack builder。`test:dev` 在默认 4332 端口启动独立开发服务，使用锁定 Chromium 临时修改并恢复 Counter 示例与 Introduction 正文；Vue 模板更新保留组件状态，Content 更新在数据库与 Nitro 完成更新后自动刷新页面。此开发检查不替代静态站的浏览器矩阵。
+- 单测使用 Rstest，通过 `pnpm test:unit <受影响测试文件>` 定向运行。
+- 组件浏览器规格在 `tests/browser/components/`，例如 `pnpm exec playwright test tests/browser/components/button.spec.ts`。运行模式与截图规则见[对照基础设施](react-vue-parity.md)。
+- 文档工具修改运行 `pnpm test:tooling` 和对应 spec；只改日志/计时/筛选时用工具测试或 `--list`，不因此重跑页面矩阵。改变断言、环境或构建内容时才重验相应行为。
+- 文档开发更新链路用 `pnpm --filter @workspace/docs test:dev`；它会临时修改并恢复 Demo/正文，使用独立端口 4332，不替代静态站验收。
+- 已构建站点链接审计用 `pnpm --filter @workspace/docs check:links`。当前验收进度用覆盖工具核验，不把旧报告的通过状态当作当前证据。
+- 覆盖率用 `pnpm test:coverage`（相对 origin/master 的变更）或 `pnpm test:coverage:all` 排查缺口，不统一强求 100%。
 
-`build` 复用文档三阶段准备，再构建两个工作台，公开包和主题只由 resources 阶段准备一次。缓存按输入和输出内容校验；丢失或过期时重建，不提供跳过新鲜度检查的开关。`check:full` 在产物检查后直接运行文档测试，不再次构建文档站。独立 `test:browser:docs` 自行准备。
+## 构建与证据复用
 
-CSS 产物和安装包共用 `scripts/theme-contracts.json`；条目来自原主题与安装包断言的并集，源码 SCSS 导入及顺序仍由 `verify-theme.mjs` 校验。新增组件样式要求只维护一份。SSR 根据 package exports 枚举公开 JavaScript 入口，包含通配入口，缺失产物不能静默跳过。
+`check` 不含 Nuxt 类型或生产构建。独立 `typecheck` 会准备整个 workspace；`typecheck:source` 排除文档。仅缓存故障或干净构建验证使用 `typecheck:clean`，它会清理临时证据。
 
-日常 tarball 验证默认复用已安装的外部依赖以支持离线运行。`pnpm verify:pack-isolated` 或 `PACK_ISOLATED=1 pnpm check:artifacts` 使用独立临时 store，从官方 registry 解析依赖，不链接 workspace 的 Vue/运行时依赖，并启用严格 peer 校验。发布入口使用隔离模式；它验证打包消费，不会发布包。网络不可用时应明确记录未完成隔离验证，不能把离线结果称为干净消费环境验证。
+`build` 复用文档资源、站点和检查阶段，再构建两个工作台。准备缓存核对输入和输出内容；`check:full` 复用已准备的文档站，独立 `test:browser:docs` 自行准备。按需运行对应入口，避免依次重复执行 check、artifacts、full、release。
 
-测试工具变更运行 `pnpm test:tooling` 与相应 Rstest spec；需要验证筛选时使用 Playwright `--list`，不为更改计时、日志或诊断规则重跑页面矩阵。改变实际断言、环境或构建内容时才重验对应行为。历史 accepted 失效由账本自动反映，不改写旧报告；工具精简任务不以恢复所有历史 accepted 为完成条件。
+文档历史证据随真实依赖失效；保持旧报告和指纹，如实报告失效范围。普通修复或新批次任务不隐式承担恢复全部历史 accepted；要求恢复或发布时再完成相应完整矩阵。
 
-单测配置位于 `rstest.config.ts`；默认 jsdom，Node 注解保留 SSR 模板编译。`test:coverage` 使用 V8 并统计相对 `origin/master` 的改动文件，`test:coverage:all` 统计完整包源码范围。当前 V8 provider 的版本锁定补丁修复 Vue 多编译模块的覆盖率合并，背景及移除条件见 [Rstack 迁移记录](../../ai-work/20260910-103000-rstack-migration.md#第四阶段单测迁移到-rstest)。
+主题与安装包断言共用 `scripts/theme-contracts.json`；SCSS 导入顺序由主题检查验证。SSR 按 exports 枚举公开 JavaScript 入口，缺失产物不能跳过。
 
-CI 的 PR 源码检查包含工具测试与 `check:changesets` 变更意图检查；相关构建输入变化时才执行产物检查。`test:changesets` 使用真实 CLI 和独立本地 registry 验证五包升版、预发布退出及恢复。发布流程由 quality 传递构建产物，官方 pack 创建 artifact，pack-verify 对下载的准确 tarball 执行隔离消费验证，再把相同 artifact ID 交给 publish。`PACK_DIR` 可指定官方 pack 输出目录；publish 不重建。视觉矩阵与阈值保持不变。
+## 隔离安装与 CI
 
-## 浏览器 runner 的迁移边界
+日常 tarball 检查复用已安装外部依赖以支持离线运行。`pnpm verify:pack-isolated` 或 `PACK_ISOLATED=1 pnpm check:artifacts` 使用临时 store、官方 registry 与严格 peer 校验，不链接 workspace 运行时依赖；它验证消费，不发布包。离线通过不能称为隔离安装通过。
 
-React 参考服务显式关闭 Rsbuild 按需编译，仍保留开发模式和正常源码热更新。多个对照页面共享服务时，冷示例触发的惰性编译热更新曾重载已就绪页面，清除方向、几何定位和交互状态；不能通过重试、放宽像素门槛或只跑单例消除该故障。`reference-stability.spec.ts` 保留跨示例冷加载时已有页面不重载的浏览器回归。
-
-源码单测使用 Rstest；组件对照、文档站矩阵和开发 HMR 继续使用 Playwright Test。2026-09-10 对 `@rstest/playwright` 0.11.12 的真实 Chromium 评估确认：截图基线断言、CI 的 `forbidOnly` / `failOnFlakyTests` 尚无等价能力，Nuxt 开发服务生命周期也需额外适配，因此本轮不迁移浏览器 runner。失败 trace 可用不能替代这些验收门禁。版本和实测依据见 [迁移记录](../../ai-work/20260910-103000-rstack-migration.md#第九阶段浏览器-runner-兼容性评估)。
+PR CI 执行源码检查、Changesets 意图检查，并按影响执行产物检查。发布时验证准确的 pack artifact 后交给 publish，详见[发布手册](../releasing.md)。Rstest 仅承担源码单测，浏览器仍用 Playwright；迁移背景与能力缺口见 [Rstack 记录](../../ai-work/20260910-103000-rstack-migration.md)。

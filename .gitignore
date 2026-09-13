@@ -12,6 +12,7 @@ node_modules
 /.worktrees/
 .vite
 /.codegraph/
+/.codex/config.toml
 .nuxt
 .output
 .data

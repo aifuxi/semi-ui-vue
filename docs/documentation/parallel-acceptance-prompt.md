@@ -1,15 +1,10 @@
-# 新对话启动并行验收
+# 接续文档验收
 
-在本仓库的新对话中复制下面的提示词。具体流程由 [并行验收 Skill](../../.agents/skills/parallel-documentation-acceptance/SKILL.md) 维护；当前进度从账本读取，无需把上一轮数字粘贴到新任务。
+在当前仓库的新任务中使用：
 
 ```text
-使用 $parallel-documentation-acceptance，按当前队列继续一轮文档严格验收。
-我授权最多三个子 agent 并行准备，复杂批次按瓶颈分工，共享修复可交给明确的单一负责人；
-主 agent 统一调度构建和正式验收。正式运行前完成最终正文审阅、--preflight 和输入冻结。
-本轮从当前队列选择至多三个可分工批次，完成必要修复、实际失效历史回归、
-证据门禁、进度更新和本地提交后结束，不自动开始下一轮，不发布或推送。
-以当前源码与有效证据为准，汇报新增进度、历史重验范围、各阶段实际耗时及提交号。
-若未发现该 Skill，直接读取 .agents/skills/parallel-documentation-acceptance/SKILL.md。
+使用 $parallel-documentation-acceptance，按当前队列继续一轮文档严格验收，
+并行准备，统一验收并提交。
 ```
 
-指定组件时，将“从当前队列选择至多三个可分工批次”替换为实际批次名单；希望串行准备或调整并发时直接修改对应句子。范围与授权以本次提示为准，Skill 不扩大到未请求的新一轮或发布操作。
+可直接补充具体批次或子 agent 并发上限。当前进度从[批次计划](./batch-plan.md)和有效证据读取；流程由[技能](../../.agents/skills/parallel-documentation-acceptance/SKILL.md)维护，无需在提示词重复。
