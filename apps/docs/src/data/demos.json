@@ -16530,14 +16530,19 @@
   {
     "id": "table/en-us/Dynamic",
     "entry": "Dynamic.vue",
-    "files": { "Dynamic.vue": "table/en-us/Dynamic.vue" },
+    "files": {
+      "Dynamic.vue": "table/en-us/Dynamic.vue",
+      "third-batch-virtual-fixture.ts": "table/en-us/third-batch-virtual-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/button.css",
+      "@aifuxi/semi-theme-default/space.css",
       "@aifuxi/semi-theme-default/switch.css",
       "@aifuxi/semi-theme-default/table.css",
       "@aifuxi/semi-ui-vue/avatar",
       "@aifuxi/semi-ui-vue/button",
+      "@aifuxi/semi-ui-vue/space",
       "@aifuxi/semi-ui-vue/switch",
       "@aifuxi/semi-ui-vue/table",
       "vue"
@@ -16673,7 +16678,10 @@
   {
     "id": "table/en-us/FullRender",
     "entry": "FullRender.vue",
-    "files": { "FullRender.vue": "table/en-us/FullRender.vue" },
+    "files": {
+      "FullRender.vue": "table/en-us/FullRender.vue",
+      "third-batch-render-fixture.ts": "table/en-us/third-batch-render-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
@@ -16687,7 +16695,10 @@
   {
     "id": "table/en-us/GroupedColumns",
     "entry": "GroupedColumns.vue",
-    "files": { "GroupedColumns.vue": "table/en-us/GroupedColumns.vue" },
+    "files": {
+      "GroupedColumns.vue": "table/en-us/GroupedColumns.vue",
+      "third-batch-render-fixture.ts": "table/en-us/third-batch-render-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
@@ -16702,7 +16713,10 @@
   {
     "id": "table/en-us/GroupedDeclarative",
     "entry": "GroupedDeclarative.vue",
-    "files": { "GroupedDeclarative.vue": "table/en-us/GroupedDeclarative.vue" },
+    "files": {
+      "GroupedDeclarative.vue": "table/en-us/GroupedDeclarative.vue",
+      "third-batch-render-fixture.ts": "table/en-us/third-batch-render-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
@@ -16781,7 +16795,10 @@
   {
     "id": "table/en-us/InfiniteScroll",
     "entry": "InfiniteScroll.vue",
-    "files": { "InfiniteScroll.vue": "table/en-us/InfiniteScroll.vue" },
+    "files": {
+      "InfiniteScroll.vue": "table/en-us/InfiniteScroll.vue",
+      "third-batch-virtual-fixture.ts": "table/en-us/third-batch-virtual-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
@@ -16982,7 +16999,10 @@
   {
     "id": "table/en-us/Span",
     "entry": "Span.vue",
-    "files": { "Span.vue": "table/en-us/Span.vue" },
+    "files": {
+      "Span.vue": "table/en-us/Span.vue",
+      "third-batch-render-fixture.ts": "table/en-us/third-batch-render-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
@@ -17068,7 +17088,10 @@
   {
     "id": "table/en-us/Virtualized",
     "entry": "Virtualized.vue",
-    "files": { "Virtualized.vue": "table/en-us/Virtualized.vue" },
+    "files": {
+      "Virtualized.vue": "table/en-us/Virtualized.vue",
+      "third-batch-virtual-fixture.ts": "table/en-us/third-batch-virtual-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/button.css",
@@ -17235,7 +17258,10 @@
   {
     "id": "table/zh-cn/Dynamic",
     "entry": "Dynamic.vue",
-    "files": { "Dynamic.vue": "table/zh-cn/Dynamic.vue" },
+    "files": {
+      "Dynamic.vue": "table/zh-cn/Dynamic.vue",
+      "third-batch-virtual-fixture.ts": "table/zh-cn/third-batch-virtual-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/button.css",
@@ -17378,7 +17404,10 @@
   {
     "id": "table/zh-cn/FullRender",
     "entry": "FullRender.vue",
-    "files": { "FullRender.vue": "table/zh-cn/FullRender.vue" },
+    "files": {
+      "FullRender.vue": "table/zh-cn/FullRender.vue",
+      "third-batch-render-fixture.ts": "table/zh-cn/third-batch-render-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
@@ -17392,7 +17421,10 @@
   {
     "id": "table/zh-cn/GroupedColumns",
     "entry": "GroupedColumns.vue",
-    "files": { "GroupedColumns.vue": "table/zh-cn/GroupedColumns.vue" },
+    "files": {
+      "GroupedColumns.vue": "table/zh-cn/GroupedColumns.vue",
+      "third-batch-render-fixture.ts": "table/zh-cn/third-batch-render-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
@@ -17407,7 +17439,10 @@
   {
     "id": "table/zh-cn/GroupedDeclarative",
     "entry": "GroupedDeclarative.vue",
-    "files": { "GroupedDeclarative.vue": "table/zh-cn/GroupedDeclarative.vue" },
+    "files": {
+      "GroupedDeclarative.vue": "table/zh-cn/GroupedDeclarative.vue",
+      "third-batch-render-fixture.ts": "table/zh-cn/third-batch-render-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-theme-default/avatar.css",
@@ -17486,7 +17521,10 @@
   {
     "id": "table/zh-cn/InfiniteScroll",
     "entry": "InfiniteScroll.vue",
-    "files": { "InfiniteScroll.vue": "table/zh-cn/InfiniteScroll.vue" },
+    "files": {
+      "InfiniteScroll.vue": "table/zh-cn/InfiniteScroll.vue",
+      "third-batch-virtual-fixture.ts": "table/zh-cn/third-batch-virtual-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
@@ -17687,7 +17725,10 @@
   {
     "id": "table/zh-cn/Span",
     "entry": "Span.vue",
-    "files": { "Span.vue": "table/zh-cn/Span.vue" },
+    "files": {
+      "Span.vue": "table/zh-cn/Span.vue",
+      "third-batch-render-fixture.ts": "table/zh-cn/third-batch-render-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/table.css",
@@ -17773,7 +17814,10 @@
   {
     "id": "table/zh-cn/Virtualized",
     "entry": "Virtualized.vue",
-    "files": { "Virtualized.vue": "table/zh-cn/Virtualized.vue" },
+    "files": {
+      "Virtualized.vue": "table/zh-cn/Virtualized.vue",
+      "third-batch-virtual-fixture.ts": "table/zh-cn/third-batch-virtual-fixture.ts"
+    },
     "dependencies": [
       "@aifuxi/semi-theme-default/avatar.css",
       "@aifuxi/semi-theme-default/button.css",

@@ -1,212 +1,323 @@
 <script setup lang="ts">
-import { h, reactive, shallowRef, computed } from 'vue';
-import { Table, type TableColumnProps } from '@aifuxi/semi-ui-vue/table';
-import { Avatar } from '@aifuxi/semi-ui-vue/avatar';
-import '@aifuxi/semi-theme-default/table.css';
-import '@aifuxi/semi-theme-default/avatar.css';
-import { Button } from '@aifuxi/semi-ui-vue/button';
-import '@aifuxi/semi-theme-default/button.css';
+import { computed, h, onBeforeUnmount, onMounted, reactive, shallowRef } from 'vue';
+import {
+  Table,
+  type TableChangeInfo,
+  type TableColumnProps,
+  type TablePaginationConfig,
+  type TableRowKey,
+  type TableRowSelection,
+  type TableScroll,
+} from '@aifuxi/semi-ui-vue/table';
+import { Button, ButtonGroup } from '@aifuxi/semi-ui-vue/button';
 import { Switch } from '@aifuxi/semi-ui-vue/switch';
-import type { TablePaginationConfig, TableRowKey } from '@aifuxi/semi-ui-vue/table';
+
+import { fileColumns, generatedRows, type FileRow } from './third-batch-virtual-fixture';
+import '@aifuxi/semi-theme-default/button.css';
 import '@aifuxi/semi-theme-default/switch.css';
 
-const figmaIcon = '/demos/one.svg';
 type Row = Record<string, unknown>;
-function makeData(total: number): Row[] {
-  return Array.from({ length: total }, (_, index) => ({
-    key: String(index),
-    name: `${index % 2 ? 'Semi D2C' : 'Semi Design'} 设计稿${index}.fig`,
-    nameIconSrc: figmaIcon,
-    size: (index * 1000) % 199,
-    owner: index % 2 ? '郝宣' : '姜鹏志',
-    status: index % 3 === 0 ? 'success' : index % 3 === 1 ? 'pending' : 'wait',
-    updateTime: new Date(Date.UTC(2020, 1, 2) + ((index * 1000) % 199) * 86400000)
-      .toISOString()
-      .slice(0, 10),
-    avatarBg: index % 2 ? 'red' : 'grey',
-  }));
-}
-const baseColumns: TableColumnProps[] = [
-  {
-    title: '标题',
-    dataIndex: 'name',
-    width: 400,
-    render: (text, record) =>
-      h('span', { style: { display: 'inline-flex', alignItems: 'center' } }, [
-        h(Avatar, {
-          size: 'small',
-          shape: 'square',
-          src: String(record.nameIconSrc),
-          style: { marginRight: '12px' },
-        }),
-        String(text),
-      ]),
-  },
-  { title: '大小', dataIndex: 'size', width: 150, render: (text) => `${text} KB` },
-  {
-    title: '所有者',
-    dataIndex: 'owner',
-    width: 200,
-    render: (text, record) =>
-      h('span', [
-        h(
-          Avatar,
-          {
-            size: 'small',
-            color: record.avatarBg as 'red' | 'grey',
-            style: { marginRight: '4px' },
-          },
-          () => String(text).slice(0, 1),
-        ),
-        String(text),
-      ]),
-  },
-  { title: '更新日期', dataIndex: 'updateTime', width: 200 },
-];
-const nameFilters = [
-  { text: 'Semi Design 设计稿', value: 'Semi Design' },
-  { text: 'Semi D2C 设计稿', value: 'Semi D2C' },
-];
-const filterName: NonNullable<TableColumnProps['onFilter']> = (value, record) =>
-  String(record?.name).includes(String(value));
-const queryColumns: TableColumnProps[] = baseColumns.map((column) =>
-  column.dataIndex === 'name'
-    ? { ...column, filters: nameFilters, onFilter: filterName }
-    : column.dataIndex === 'size'
-      ? { ...column, sorter: (a, b) => Number(a.size) - Number(b.size) }
-      : column.dataIndex === 'updateTime'
-        ? { ...column, sorter: (a, b) => String(a.updateTime).localeCompare(String(b.updateTime)) }
-        : column,
-);
-
-const allData = makeData(46);
+type ChangeInfo = TableChangeInfo<Row>;
+type Sorter = NonNullable<ChangeInfo['sorter']>;
+type Filters = NonNullable<ChangeInfo['filters']>;
+const allData = generatedRows(46);
+const columns = shallowRef<TableColumnProps[]>(fileColumns(true));
+const dataSource = shallowRef<FileRow[]>([]);
+const scroll = shallowRef<TableScroll>({});
+const rowSelection = shallowRef<false | TableRowSelection<Row>>(false);
+const expandedRowKeys = shallowRef<TableRowKey[]>([]);
 const state = reactive({
-  fixedHeader: true,
-  hideHeader: false,
-  title: false,
-  footer: false,
-  fixedColumns: false,
-  selection: false,
   loading: false,
-  empty: false,
-  sorting: false,
-  filtering: false,
+  showHeader: true,
+  showTitle: false,
+  showFooter: false,
   expandable: false,
-  allExpanded: false,
-  bordered: false,
+  expandCellFixed: false,
+  bordered: undefined as boolean | undefined,
   resizable: false,
 });
-const controls: Array<{ key: keyof typeof state; label: string }> = [
-  { key: 'fixedHeader', label: '固定表头' },
-  { key: 'hideHeader', label: '隐藏表头' },
-  { key: 'title', label: '显示标题' },
-  { key: 'footer', label: '显示底部' },
-  { key: 'fixedColumns', label: '固定列' },
-  { key: 'selection', label: '显示选择列' },
-  { key: 'loading', label: '加载状态' },
-  { key: 'empty', label: '无数据' },
-  { key: 'sorting', label: '排序' },
-  { key: 'filtering', label: '过滤' },
-  { key: 'expandable', label: '行展开' },
-  { key: 'allExpanded', label: '展开全部行' },
-  { key: 'bordered', label: '边框' },
-  { key: 'resizable', label: '列伸缩' },
-];
-const currentPage = shallowRef(1);
-const position = shallowRef<false | 'top' | 'bottom' | 'both'>('bottom');
-const positions = ['bottom', 'top', 'both', false] as const;
-const selected = shallowRef<TableRowKey[]>([]);
-const expanded = shallowRef<TableRowKey[]>([]);
-const data = computed(() => (state.empty ? [] : allData));
-const columns = computed<TableColumnProps[]>(() =>
-  queryColumns.map((column, index) => {
-    const result = { ...column, fixed: state.fixedColumns && index === 0 };
-    if (!state.sorting) delete result.sorter;
-    if (!state.filtering) delete result.filters;
-    return result;
-  }),
-);
-const pagination = computed<false | TablePaginationConfig>(() =>
-  position.value === false
-    ? false
-    : {
-        currentPage: currentPage.value,
-        pageSize: 5,
-        total: data.value.length,
-        position: position.value,
-      },
-);
-const pageData = computed(() =>
-  position.value === false
-    ? data.value
-    : data.value.slice((currentPage.value - 1) * 5, currentPage.value * 5),
-);
-const scroll = computed(() => ({
-  ...(state.fixedColumns ? { x: 1200 } : {}),
-  ...(state.fixedHeader ? { y: 300 } : {}),
-}));
-const rowSelection = computed(() =>
-  state.selection
-    ? {
-        selectedRowKeys: selected.value,
-        onChange: (keys?: TableRowKey[]) => {
-          selected.value = keys ?? [];
-        },
-        fixed: state.fixedColumns,
+function defaultPagination(): TablePaginationConfig {
+  return {
+    currentPage: 1,
+    pageSize: 8,
+    total: allData.length,
+    onChange: (page) => setPage(page),
+  };
+}
+const pagination = shallowRef<false | TablePaginationConfig>(defaultPagination());
+const timers = new Set<ReturnType<typeof setTimeout>>();
+
+function mergeColumns(update: TableColumnProps) {
+  columns.value = columns.value.map((column) =>
+    column.dataIndex === update.dataIndex ? { ...column, ...update } : column,
+  );
+}
+function setPage(currentPage?: number, requestedSorter?: Sorter, requestedFilters?: Filters) {
+  if (state.loading) return;
+  const page =
+    typeof currentPage === 'number'
+      ? currentPage
+      : (pagination.value && pagination.value.currentPage) || 1;
+  const sorter = requestedSorter ?? columns.value.find((column) => Boolean(column.sorter)) ?? {};
+  const filters =
+    requestedFilters ??
+    columns.value.filter(
+      (column) => Array.isArray(column.filteredValue) && column.filteredValue.length,
+    );
+  const nextPagination: TablePaginationConfig = { ...pagination.value, currentPage: page };
+  state.loading = true;
+  const timer = setTimeout(() => {
+    timers.delete(timer);
+    try {
+      let data = [...allData];
+      let compare = sorter.sorter;
+      const dataIndex = sorter.dataIndex;
+      if (compare && sorter.sortOrder && typeof compare !== 'function' && dataIndex) {
+        compare = (a, b) =>
+          (a[dataIndex] as string | number) > (b[dataIndex] as string | number) ? 1 : -1;
       }
-    : false,
-);
-const expandedKeys = computed(() =>
-  state.allExpanded ? data.value.map((row) => String(row.key)) : expanded.value,
-);
-const expandedProps = computed(() =>
+      if (typeof compare === 'function') {
+        data.sort(compare);
+        if (sorter.sortOrder === 'descend') data.reverse();
+      }
+      for (const filter of filters) {
+        const { filteredValue, dataIndex: filterIndex } = filter;
+        if (Array.isArray(filteredValue) && filteredValue.length && filterIndex) {
+          data = data.filter((row) =>
+            filteredValue.some((value) => String(row[filterIndex]).includes(String(value))),
+          );
+        }
+      }
+      const pageSize = Number(nextPagination.pageSize);
+      dataSource.value = data.slice((page - 1) * pageSize, page * pageSize);
+      nextPagination.total = data.length;
+      pagination.value = nextPagination;
+      mergeColumns(sorter);
+      for (const filter of filters) mergeColumns(filter);
+      state.loading = false;
+    } catch (error) {
+      console.error(error);
+      state.loading = false;
+    }
+  }, 1500);
+  timers.add(timer);
+}
+
+function toggleFixHeader(checked: boolean) {
+  const next = { ...scroll.value };
+  if (checked) next.y = 300;
+  else delete next.y;
+  scroll.value = next;
+}
+function toggleFixColumns(checked: boolean) {
+  columns.value = columns.value.map((column, index, all) => ({
+    ...column,
+    fixed: checked ? (index === 0 ? true : index === all.length - 1 ? 'right' : false) : false,
+  }));
+  const next = { ...scroll.value };
+  if (checked) next.x = '150%';
+  else delete next.x;
+  scroll.value = next;
+  state.expandCellFixed = checked;
+  if (rowSelection.value) rowSelection.value = { ...rowSelection.value, fixed: checked };
+}
+function toggleRowSelection(checked: boolean) {
+  rowSelection.value = checked
+    ? {
+        width: 48,
+        fixed: true,
+        onChange: (selectedRowKeys, selectedRows) =>
+          console.log(
+            'Selection changed, selectedRowKeys: ',
+            selectedRowKeys,
+            'selectedRows: ',
+            selectedRows,
+          ),
+      }
+    : false;
+}
+function toggleShowSorter(checked: boolean) {
+  // The fixed snippet enables the absent "age" column and clears every sorter
+  // when disabled. Retain that observable behavior when toggling it again.
+  columns.value = columns.value.map((column) => {
+    if (checked) return column.dataIndex === 'age' ? { ...column, sorter: true } : column;
+    const next = { ...column };
+    delete next.sorter;
+    return next;
+  });
+}
+function toggleShowFilter(checked: boolean) {
+  columns.value = columns.value.map((column) => {
+    if (checked) {
+      return column.dataIndex === 'name'
+        ? {
+            ...column,
+            filters: ['1', '2', '3'].map((value) => ({
+              text: `姓名中包含 ${value}`,
+              value,
+            })),
+            filteredValue: [],
+          }
+        : column;
+    }
+    const next = { ...column };
+    delete next.filters;
+    next.filteredValue = [];
+    return next;
+  });
+  if (!checked) setPage(undefined, undefined, []);
+}
+function toggleExpandedRowKeys(checked: boolean) {
+  expandedRowKeys.value = checked
+    ? dataSource.value.filter((row) => row.key).map((row) => row.key)
+    : [];
+  if (checked) state.expandable = true;
+}
+function toggleResizable(checked: boolean) {
+  state.resizable = checked;
+  state.bordered = checked;
+}
+function toggleDataSource(checked: boolean) {
+  if (checked) dataSource.value = [];
+  else setPage();
+}
+function switchPagination(position: false | 'bottom' | 'top' | 'both') {
+  pagination.value =
+    position === false ? false : { ...defaultPagination(), ...pagination.value, position };
+}
+function onChange(change: ChangeInfo) {
+  console.log('Table changed: ', change);
+  setPage(change.pagination?.currentPage, change.sorter, change.filters);
+}
+function onExpandedRowsChange(rows?: Row[]) {
+  console.log('Expanded rows changed to: ', rows);
+  expandedRowKeys.value = (rows ?? []).map((row) => row.key as TableRowKey);
+}
+const expandedRowRender = computed(() =>
   state.expandable
-    ? { expandedRowRender: (record?: Row) => h('article', String(record?.name)) }
-    : {},
+    ? (record?: Row) => ({
+        children: h('p', String(record?.description ?? '')),
+        fixed: 'left' as const,
+      })
+    : undefined,
 );
+const footer = computed(() =>
+  state.showFooter ? () => h('p', { style: { margin: 0 } }, 'This is footer.') : undefined,
+);
+onMounted(() => setPage(1));
+onBeforeUnmount(() => timers.forEach(clearTimeout));
 </script>
 
 <template>
   <div>
-    <div class="table-demo-controls">
-      <label v-for="control in controls" :key="control.key"
-        >{{ control.label }} <Switch v-model="state[control.key]" size="small" /></label
-      ><Button v-for="value in positions" :key="String(value)" @click="position = value">{{
-        value || 'None'
-      }}</Button>
+    <div
+      :style="{
+        marginBottom: '15px',
+        display: 'flex',
+        justifyContent: 'space-around',
+        flexWrap: 'wrap',
+      }"
+    >
+      <span :style="{ display: 'inline-flex', alignItems: 'center', margin: '5px' }">
+        <span>固定表头：</span>
+        <Switch
+          size="small"
+          :checked="scroll.y == null ? undefined : Boolean(scroll.y)"
+          @change="toggleFixHeader"
+        />
+      </span>
+      <span :style="{ display: 'inline-flex', alignItems: 'center', margin: '5px' }">
+        <span>隐藏表头：</span>
+        <Switch size="small" @change="(checked: boolean) => (state.showHeader = !checked)" />
+      </span>
+      <span :style="{ display: 'inline-flex', alignItems: 'center', margin: '5px' }">
+        <span>显示标题：</span>
+        <Switch size="small" @change="(checked: boolean) => (state.showTitle = checked)" />
+      </span>
+      <span :style="{ display: 'inline-flex', alignItems: 'center', margin: '5px' }">
+        <span>显示底部：</span>
+        <Switch size="small" @change="(checked: boolean) => (state.showFooter = checked)" />
+      </span>
+      <span :style="{ display: 'inline-flex', alignItems: 'center', margin: '5px' }">
+        <span>固定列：</span>
+        <Switch size="small" @change="toggleFixColumns" />
+      </span>
+      <span :style="{ display: 'inline-flex', alignItems: 'center', margin: '5px' }">
+        <span>显示选择列：</span>
+        <Switch size="small" @change="toggleRowSelection" />
+      </span>
+      <span :style="{ display: 'inline-flex', alignItems: 'center', margin: '5px' }">
+        <span>显示加载状态：</span>
+        <Switch
+          size="small"
+          :checked="state.loading"
+          @change="(checked: boolean) => (state.loading = checked)"
+        />
+      </span>
+      <span :style="{ display: 'inline-flex', alignItems: 'center', margin: '5px' }">
+        <span>无数据：</span>
+        <Switch size="small" :checked="!dataSource.length" @change="toggleDataSource" />
+      </span>
+      <span :style="{ display: 'inline-flex', alignItems: 'center', margin: '5px' }">
+        <span>开启排序功能：</span>
+        <Switch size="small" @change="toggleShowSorter" />
+      </span>
+      <span :style="{ display: 'inline-flex', alignItems: 'center', margin: '5px' }">
+        <span>开启过滤功能：</span>
+        <Switch size="small" @change="toggleShowFilter" />
+      </span>
+      <span :style="{ display: 'inline-flex', alignItems: 'center', margin: '5px' }">
+        <span>开启行展开功能：</span>
+        <Switch
+          size="small"
+          :checked="state.expandable"
+          @change="(checked: boolean) => (state.expandable = checked)"
+        />
+      </span>
+      <span :style="{ display: 'inline-flex', alignItems: 'center', margin: '5px' }">
+        <span>展开当前所有行：</span>
+        <Switch size="small" @change="toggleExpandedRowKeys" />
+      </span>
+      <span :style="{ display: 'inline-flex', alignItems: 'center', margin: '5px' }">
+        <span>显示边框：</span>
+        <Switch
+          size="small"
+          :checked="state.bordered"
+          @change="(checked: boolean) => (state.bordered = checked)"
+        />
+      </span>
+      <span :style="{ display: 'inline-flex', alignItems: 'center', margin: '5px' }">
+        <span>开启列伸缩功能：</span>
+        <Switch size="small" @change="toggleResizable" />
+      </span>
+      <span :style="{ display: 'inline-flex', alignItems: 'center', margin: '5px' }">
+        <span>分页控件：</span>
+        <ButtonGroup>
+          <Button @click="switchPagination('bottom')">Bottom</Button>
+          <Button @click="switchPagination('top')">Top</Button>
+          <Button @click="switchPagination('both')">Both</Button>
+          <Button @click="switchPagination(false)">None</Button>
+        </ButtonGroup>
+      </span>
     </div>
     <Table
-      :columns="columns"
-      :data-source="pageData"
-      :pagination="pagination"
-      :row-selection="rowSelection"
-      :loading="state.loading"
-      :show-header="!state.hideHeader"
+      :default-expanded-row-keys="[]"
+      :title="state.showTitle ? 'This is title.' : undefined"
+      :footer="footer"
+      :show-header="state.showHeader"
       :bordered="state.bordered"
-      :resizable="state.resizable"
+      :expand-cell-fixed="state.expandCellFixed"
+      :expanded-row-render="expandedRowRender"
+      :expanded-row-keys="expandedRowKeys"
+      :row-selection="rowSelection"
       :scroll="scroll"
-      :title="state.title ? '文件列表' : undefined"
-      :footer="state.footer ? '表格尾部' : undefined"
-      v-bind="expandedProps"
-      :expanded-row-keys="expandedKeys"
-      @page-change="(page: number) => (currentPage = page)"
-      @expanded-rows-change="
-        (rows?: Row[]) => (expanded = (rows ?? []).map((row) => String(row.key)))
-      "
-    ></Table>
+      :columns="columns"
+      :data-source="dataSource"
+      :pagination="pagination"
+      :loading="state.loading"
+      :resizable="state.resizable"
+      @change="onChange"
+      @expanded-rows-change="onExpandedRowsChange"
+    />
   </div>
 </template>
-
-<style scoped>
-.table-demo-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-.table-demo-controls label {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-</style>

@@ -1,4 +1,11 @@
-import { Comment, Fragment, Text, type VNode } from 'vue';
+import {
+  camelize,
+  Comment,
+  Fragment,
+  Text,
+  type ComponentObjectPropsOptions,
+  type VNode,
+} from 'vue';
 
 import { TABLE_COLUMN_MARK, TableColumnComponent } from './TableColumn';
 import type { TableColumn as TableColumnType, TableFixed, TableRowKey } from './types';
@@ -12,10 +19,20 @@ export interface NormalizedTableColumn<
   __kind?: 'expand' | 'selection' | undefined;
 }
 
+// Keep declaration identity outside the rendered column object so public query
+// callbacks can preserve an absent key without exposing normalization metadata.
+const columnSources = new WeakMap<object, object>();
+
+export function getColumnSource<RecordType extends Record<string, unknown>>(
+  column: TableColumnType<RecordType>,
+): TableColumnType<RecordType> {
+  return (columnSources.get(column) ?? column) as TableColumnType<RecordType>;
+}
+
 export interface TableHeaderCell<RecordType extends Record<string, unknown>> {
   column: NormalizedTableColumn<RecordType>;
   colSpan: number;
-  rowSpan: number;
+  rowSpan?: number | undefined;
 }
 
 export interface FlatTableRecord<RecordType> {
@@ -54,17 +71,37 @@ function vnodePropsToColumn<RecordType extends Record<string, unknown>>(
   node: VNode,
   index: number,
 ): NormalizedTableColumn<RecordType> {
-  const raw = { ...(node.props ?? {}) } as Record<string, unknown>;
+  // Declaration-only columns never mount, so Vue does not normalize their props.
+  // Cast supplied Boolean props using the declared String/Boolean precedence while
+  // leaving absent props absent for the Table defaults and controlled-state checks.
+  const definitions = TableColumnComponent.props as ComponentObjectPropsOptions;
+  const raw = Object.fromEntries(
+    Object.entries(node.props ?? {}).map(([rawName, value]) => {
+      const name = camelize(rawName);
+      if (!Object.prototype.hasOwnProperty.call(definitions, name)) return [rawName, value];
+      const definition = definitions[name];
+      const type =
+        definition && typeof definition === 'object' && !Array.isArray(definition)
+          ? definition.type
+          : definition;
+      const types: unknown[] = Array.isArray(type) ? type : [type];
+      const booleanIndex = types.indexOf(Boolean);
+      const stringIndex = types.indexOf(String);
+      const castBoolean = booleanIndex >= 0 && (stringIndex < 0 || booleanIndex < stringIndex);
+      const attributeName = name.replace(/\B([A-Z])/g, '-$1').toLowerCase();
+      return [name, castBoolean && (value === '' || value === attributeName) ? true : value];
+    }),
+  );
   delete raw.key;
   const slots = typeof node.children === 'object' && node.children ? node.children : {};
   const slotRecord = slots as Record<string, (() => unknown) | undefined>;
   const nested = normalizeColumnVNodes<RecordType>(slotRecord.default?.());
-  const key = (node.key as TableRowKey | null) ?? (raw.dataIndex as string | undefined);
+  const key = node.key as TableRowKey | null;
   const title = (slotRecord.title?.() ?? raw.title) as TableColumnType<RecordType>['title'];
   return normalizeColumn<RecordType>(
     {
       ...(raw as TableColumnType<RecordType>),
-      ...(key === undefined ? {} : { key }),
+      ...(key == null ? {} : { key }),
       ...(title === undefined ? {} : { title }),
       ...(nested.length ? { children: nested } : {}),
     },
@@ -114,11 +151,13 @@ export function normalizeColumn<RecordType extends Record<string, unknown>>(
   const children = Array.isArray(sourceChildren)
     ? sourceChildren.map((child, childIndex) => normalizeColumn(child, childIndex, level + 1))
     : undefined;
-  return {
+  const column: NormalizedTableColumn<RecordType> = {
     ...rest,
     key: source.key ?? source.dataIndex ?? `${level}-${index}`,
     ...(children?.length ? { children } : {}),
   };
+  columnSources.set(column, getColumnSource(source));
+  return column;
 }
 
 export function normalizeColumns<RecordType extends Record<string, unknown>>(
@@ -157,7 +196,11 @@ export function buildHeaderRows<RecordType extends Record<string, unknown>>(
     rows[level]!.push({
       column,
       colSpan: column.colSpan ?? colSpan,
-      rowSpan: column.children?.length ? 1 : depth - level,
+      ...('rowSpan' in column
+        ? { rowSpan: column.rowSpan as number | undefined }
+        : column.children?.length
+          ? {}
+          : { rowSpan: depth - level }),
     });
     return colSpan;
   };

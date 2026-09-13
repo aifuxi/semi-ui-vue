@@ -16,6 +16,7 @@ import { getByPath } from './table-utils';
 import type { TableCellAttributes, TableDirection, TableRenderReturnObject } from './types';
 
 interface Props {
+  width?: number | undefined;
   column: NormalizedTableColumn<Record<string, unknown>>;
   columnIndex: number;
   component?: Component | string | undefined;
@@ -96,16 +97,14 @@ const renderResult = computed(() => {
         rowIndex: props.rowIndex,
         text: rawText.value,
       }) ?? rawText.value);
-  if (
-    value &&
-    typeof value === 'object' &&
-    !('__v_isVNode' in value) &&
-    'children' in value &&
-    'props' in value
-  ) {
-    return value as TableRenderReturnObject;
+  if (value && typeof value === 'object' && !('__v_isVNode' in value) && 'children' in value) {
+    const result = value as TableRenderReturnObject;
+    return { children: result.children, props: result.props ?? {} };
   }
-  return { children: value as VNodeChild, props: {} } as TableRenderReturnObject;
+  return {
+    children: value as VNodeChild,
+    props: {} as NonNullable<TableRenderReturnObject['props']>,
+  };
 });
 const mergedCell = computed<TableCellAttributes>(() => ({
   ...customCell.value,
@@ -145,6 +144,7 @@ const cellStyle = computed<StyleValue>(() => {
   return [
     {
       [physicalFixedSide.value ?? 'left']: props.fixedSide ? `${props.fixedOffset}px` : undefined,
+      width: props.width === undefined ? undefined : `${props.width}px`,
     },
     customCell.value.style as StyleValue,
     props.column.align

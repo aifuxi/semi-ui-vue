@@ -33,6 +33,8 @@
 
 事件顺序：非受控 change 由 Foundation 先写入可见 checked，再通知 `change`，之后发出两个 Vue update 事件；受控 change 不自行提交状态，父级通过 `checked` 或 `v-model` 更新后才改变 class/input。若父级拒绝更新，浏览器临时切换的原生 checkbox 会在 Vue tick 后恢复受控值。
 
+受控值移除同样是状态更新：固定 Adapter 的 `componentDidUpdate` 在 `checked` 从布尔值变为 `undefined` 时仍调用 Foundation，Adapter 原样保存该值。Vue 的 `checked` 或 `modelValue` 移除后清除选中 class、将原生 input 置为关闭并移除 `aria-checked`；下一次操作恢复非受控更新。显式 `false` 仍保留 `aria-checked="false"`。定点回归覆盖两个受控入口的移除，以及 Table 动态示例的缺省→开启→移除→重开路径。
+
 ## DOM、样式、键盘与可访问性
 
 | 状态          | 固定 DOM/class 契约                                                                                    |

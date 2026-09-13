@@ -71,6 +71,13 @@ export const tableApi: readonly ApiSection[] = [
         'Scrolling, sticky header, and virtualization.',
       ),
       p(
+        'getVirtualizedListRef',
+        '(ref: { current: TableVirtualizedListRef | null }) => void',
+        '—',
+        '接收公开 scrollTo / scrollToItem 滚动句柄。',
+        'Receives the public scrollTo / scrollToItem scrolling handle.',
+      ),
+      p(
         'resizable',
         'boolean | TableResizable',
         'false',

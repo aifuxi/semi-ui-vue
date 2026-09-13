@@ -10,6 +10,7 @@ import {
   sha256,
   acceptedBatch,
   loadBatchReviews,
+  writeEvidenceArchive,
 } from './documentation-evidence.mjs';
 import { batchInputs, preflightBatch } from './documentation-inputs.mjs';
 import {
@@ -125,25 +126,13 @@ try {
     if ((await fingerprint(batch)) !== before.get(batch.id))
       throw new Error(`验收期间 ${batch.id} 源码发生变化。`);
 
-  const directory = resolve(root, 'docs/documentation/evidence');
-  await mkdir(directory, { recursive: true });
   for (const { batch, compressed } of completed) {
-    await writeFile(resolve(directory, `${batch.id}.report.json.gz`), compressed);
-    await writeFile(
-      resolve(directory, `${batch.id}.json`),
-      JSON.stringify(
-        {
-          batch: batch.id,
-          fingerprint: before.get(batch.id),
-          examples: batch.examples,
-          checks,
-          reportSha256: sha256(compressed),
-          completedAt: new Date().toISOString(),
-        },
-        null,
-        2,
-      ) + '\n',
-    );
+    await writeEvidenceArchive(batch, compressed, {
+      fingerprint: before.get(batch.id),
+      examples: batch.examples,
+      checks,
+      completedAt: new Date().toISOString(),
+    });
   }
   // Refresh coverage once after the complete stable batch set; never rehash an old browser report.
   run(['exec', 'node', 'scripts/prepare-coverage.mjs']);

@@ -185,43 +185,43 @@
       "index": 31,
       "zhCN": "table/zh-cn/Virtualized",
       "enUS": "table/en-us/Virtualized",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "1000条，首列200固定、大小150、owner自适应、日期150右固定；无名称Avatar、保留ownerAvatar，750居中与scroll x900/y400。真实虚拟窗口、scrollToItem(100)、自然滚动、筛选排序。 正式状态以 table-3 完整证据为准。"
     },
     {
       "index": 32,
       "zhCN": "table/zh-cn/InfiniteScroll",
       "enUS": "table/en-us/InfiniteScroll",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "从空列表挂载后追加20条，750居中、scroll x1000/y600、itemSize56，forward自然滚动达阈值追加20，程序化滚动不追加；不增加加载数量段落。 正式状态以 table-3 完整证据为准。"
     },
     {
       "index": 33,
       "zhCN": "table/zh-cn/Dynamic",
       "enUS": "table/en-us/Dynamic",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "46条受控数据，1500ms异步、页8条，初始按首个size sorter排序；中文flex/英文Space wrap，14开关及四分页位置。完整sorter/query被回填后进入空筛选受控集合，降序请求被随后合并的旧filters覆盖回升序；两列可同时显示升序，严格区分请求与终态。保留age不存在的排序开关、Show Header控制title、None仅隐藏分页和空description展开对象。 正式状态以 table-3 完整证据为准。"
     },
     {
       "index": 34,
       "zhCN": "table/zh-cn/FullRender",
       "enUS": "table/en-us/FullRender",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "46条、页12条，双语首列表头Name；首列自行排布selection/indent/expand/filter/sorter。保留真实头像、选择、展开、排序、筛选与分页。 正式状态以 table-3 完整证据为准。"
     },
     {
       "index": 35,
       "zhCN": "table/zh-cn/GroupedColumns",
       "enUS": "table/en-us/GroupedColumns",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "46条、页10条，固定基础组宽300/100、其他组owner/update自适应、操作100右固定、选择fixed、scroll.y400；英文Basic Info/Others Info。保留分层表头及真实操作。 正式状态以 table-3 完整证据为准。"
     },
     {
       "index": 36,
       "zhCN": "table/zh-cn/GroupedDeclarative",
       "enUS": "table/en-us/GroupedDeclarative",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "同固定分组前提，以真实Table.Column模板声明并通过组件边界归一Vue kebab props/Boolean。保留选择、展开、筛选、排序和分页。 正式状态以 table-3 完整证据为准。"
     },
     {
       "index": 37,
       "zhCN": "table/zh-cn/Span",
       "enUS": "table/en-us/Span",
-      "notes": "独立 Vue SFC 保留本章公开交互；React hooks/render props 改 Composition API/VNode 或 scoped slot。文件数据按同类字段构建固定日期本地 fixture，中文/英文分别本地化；尚未做逐例 React/Vue 浏览器视觉验收。 上游远程 Figma 图标以已有本地 /demos/one.svg 示意图替代，无第三方图片请求；不作为图片像素等价证据。"
+      "notes": "5条、无分页，首行colSpan4；第二行标题/大小/日期rowSpan2，第三行对应零跨度，owner不跨行；头像和日期排序保持固定片段。 正式状态以 table-3 完整证据为准。"
     }
   ],
   "chapters": [
@@ -299,21 +299,21 @@
     }
   ],
   "localeDifferences": [
-    "中文共37个live片段，英文35个；首批1–15双语索引一致；第二批16–28、30中23/24为中文独有，英文显式翻译中文固定片段，其余使用对应固定英文索引；29及31–37尚未严格验收。",
+    "中文共37个live片段、英文35个；1–15双语索引一致；16–28、30中23/24为中文独有且英文显式翻译；第三批中文31–37对应英文29–35。29 DragSort保留真实第三方集成待办，不追认accepted。",
     "中文独有status列的本批索引为1、3、4、5、6、8、10，英文不可增加该列。",
     "HeaderFilter中文固定2024-01-25与D2C首页；英文使用当前日期与design draft。CustomFilter英文owner面板按钮写Filter+Close/Clear+Close，但closeDropdown仍false。",
     "Expanded/SeparateExpand英文安全等级保留3 级/1 级/2 级；UndefinedSort英文为Jiang/Hao与专属文件名，不复用其余英文数据。"
   ],
   "review": {
-    "fingerprint": "52c36f818c4fb728a4ed7ddb7e294ec3ceb21f00abc63aa1875e5d4c372412ae",
+    "fingerprint": "798e02541c7c06902d04f8c1429336dbbd644f4cabec6ba16e16ec9d7662a9c4",
     "chapters": true,
     "api": true,
     "migration": true,
     "notes": [
-      "章节与API审阅绑定完整固定双语正文、公开table/types.ts及页面/API元数据；首批严格范围1–15，本轮新增范围16–28、30；29与31–37不追认accepted。",
-      "首批30段前提见table-acceptance.md；第二批28段固定双语前提、23/24语言派生、数据/宽度/图标/日期/过滤器及编译依赖见table-2-acceptance.md。参考分别由table-1/table-2 adapter直接编译vendor，不复制组件实现。",
-      "保留受控当前页数据、300ms加载和第三sorter参数契约；React pagination.onPageChange迁移Vue onChange，VNodeChild、作用域插槽和事件说明一致。第二批修正文案中的禁展开/禁选、真实行事件与斑马纹说明；renderGroupSection第二参数是当前页成员keys，groupSection slot保留records，resize回调支持PartialColumn或void及handlerClassName。",
-      "已逐段检查本轮固定示例与最新公开类型及Vue接入；DragSort明确保留第三方传感器、垂直约束、自动滚动和当前页重排的非等价边界。完整浏览器证据仍独立决定accepted。"
+      "章节/API审阅绑定固定双语正文和页面/API元数据，结合当前公开table类型核对Vue迁移。第三批新增范围中文31–37/英文29–35；严格状态以当前正式证据为准。",
+      "第三批固定数据、宽度、头像、真实虚拟列表依赖及动态开关quirks见table-3-acceptance.md；reference adapter直接编译vendor，不复制组件实现。历史首两批语义前提分别保留table-acceptance.md及table-2-acceptance.md。",
+      "Vue使用VNode、Composition API、真实Table.Column、typed props/emits/slots；expandedRowRender支持对象children；getVirtualizedListRef公开scrollTo/scrollToItem、onScroll区分自然与程序化滚动。保留Dynamic 1500ms/8条受控分页、固定英文控制区与标签、关闭后不可恢复排序的age列前提；resizable真假切换重建内部Table，当前受控props继续生效。",
+      "DragSort仍明确保留dnd-kit传感器、垂直约束、动画和自动滚动差异；其余正文保留全部37章节及章节/API/迁移说明。语义审阅不能替代完整浏览器认证。"
     ]
   }
 }

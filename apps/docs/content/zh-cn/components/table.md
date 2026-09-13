@@ -239,7 +239,7 @@ import '@aifuxi/semi-theme-default/table.css';
 
 ### 虚拟化表格
 
-`virtualized` 适合大数据量，需要数值 `scroll.y` 和明确表宽。普通行默认高度 56，也可通过 `virtualized.itemSize` 提供数值或 `(index, { sectionRow, expandedRow }) => number`。本例有 1000 条记录，通过 `getVirtualizedListRef` 获得公开 `scrollTo` / `scrollToItem` 接口。React 的 react-window 私有实例方法不属于 Vue 契约。
+`virtualized` 适合大数据量，需要数值 `scroll.y` 和明确表宽。默认尺寸的虚拟行高度为 53，也可通过 `virtualized.itemSize` 提供数值或 `(index, { sectionRow, expandedRow }) => number`。本例有 1000 条记录，通过 `getVirtualizedListRef` 获得公开 `scrollTo` / `scrollToItem` 接口。React 的 react-window 私有实例方法不属于 Vue 契约。
 
 ::demo-block{demo="table/zh-cn/Virtualized" title="虚拟化表格"}
 ::
@@ -253,7 +253,11 @@ import '@aifuxi/semi-theme-default/table.css';
 
 ### 受控的动态表格
 
-分别切换固定表头、隐藏表头、标题、底部、固定列、选择、加载、空数据、排序、过滤、行展开、全部展开、边框、列伸缩和分页位置。配置通过 reactive / computed 派生，页码、选择和展开主键分别受控，不修改组件内部状态。
+分别切换固定表头、隐藏表头、标题、底部、固定列、选择、加载、空数据、排序、过滤、行展开、全部展开、边框、列伸缩和分页位置。示例使用受控页码、排序、筛选与展开键，每次等待 1500ms 返回当前页 8 条数据；None 只隐藏分页，保留当前页数据。固定示例的排序开关仅尝试启用不存在的 age 列，因此关闭排序后再次开启不会恢复；初始排序与筛选列也不由对应开关的初始状态决定。
+
+固定示例先合并 `change.sorter`，再合并 `change.filters` 的整列对象。首次排序带回的 `filteredValue: []` 会使该列进入受控筛选集合；后续降序请求完成后，旧筛选对象会把排序状态覆盖回升序。因此点击排序会改变当前页数据，但箭头可能仍保持升序，两列也可能同时显示升序。复用时应根据业务明确排序与筛选字段的回写优先级。
+
+开启或关闭 `resizable` 会重新初始化表格的内部状态，与固定基线的模式切换一致。需要在切换后保留的选择、排序、筛选、展开和页码应由对应受控属性管理；同一开启状态下更新伸缩配置不会重新初始化。
 
 ::demo-block{demo="table/zh-cn/Dynamic" title="受控的动态表格"}
 ::
@@ -261,6 +265,8 @@ import '@aifuxi/semi-theme-default/table.css';
 ### 完全自定义渲染
 
 `useFullRender: true` 将选择框、展开图标与缩进交给列渲染。`title` 收到 `{ sorter, filter, selection }`，`render` 第四参数收到 `{ expandIcon, selection, indentText, isHovering }`。使用 `rowSelection.hidden` 隐藏单独选择列，再把 origin VNode 插回自定义布局，保留原有交互。
+
+固定中文示例的首列表头为 Name；筛选、排序、选择、展开和每页 12 条的分页均保留。`expandedRowRender` 也接受 `{ children, fixed }` 返回对象，内容使用 Vue VNode。
 
 ::demo-block{demo="table/zh-cn/FullRender" title="完全自定义渲染"}
 ::
@@ -309,7 +315,7 @@ import '@aifuxi/semi-theme-default/table.css';
 | expandCellFixed           | 展开图标所在列是否固定，与 Column 中的 fixed 取值相同                                                           | boolean\|string                                                                                                                                       | false      |
 | expandIcon                | 自定义展开按钮，传 `false` 关闭默认的渲染                                                                       | boolean \| VNodeChild<br/> \| (expanded: boolean) => VNodeChild                                                                                       |            |
 | expandedRowKeys           | 展开的行，传入此参数时行展开功能将受控                                                                          | (string \| number)[]                                                                                                                                  |            |
-| expandedRowRender         | 额外的展开行。**请为每一条数据分配一个独立的 key，或使用 rowKey 指定一个作为主键的属性名**                      | (record: object, index: number, expanded: boolean) => VNodeChild                                                                                      |            |
+| expandedRowRender         | 额外的展开行。**请为每一条数据分配一个独立的 key，或使用 rowKey 指定一个作为主键的属性名**                      | (record: object, index: number, expanded: boolean) => TableExpandedRowRenderResult                                                                    |            |
 | expandAllRows             | 是否展开所有行                                                                                                  | boolean                                                                                                                                               | false      | -          |
 | expandAllGroupRows        | 是否展开分组行                                                                                                  | boolean                                                                                                                                               | false      | -          |
 | expandRowByClick          | 点击行时是否展开可展开行                                                                                        | boolean                                                                                                                                               | false      | -          |
@@ -335,7 +341,7 @@ import '@aifuxi/semi-theme-default/table.css';
 | sticky                    | 固定表头                                                                                                        | boolean \| { top: number }                                                                                                                            | false      | **2.21.0** |
 | title                     | 表格标题                                                                                                        | VNodeChild<br/>\|(pageData: RecordType[]) => VNodeChild                                                                                               |            |
 | virtualized               | 虚拟化配置                                                                                                      | Virtualized                                                                                                                                           | false      | -          |
-| virtualized.itemSize      | 每行的高度                                                                                                      | number\|(index: number) => number                                                                                                                     | 56         | -          |
+| virtualized.itemSize      | 每行的高度                                                                                                      | number\|(index: number, row: TableVirtualizedItemRow) => number                                                                                       | 53         | -          |
 | virtualized.onScroll      | 虚拟列表滚动回调。                                                                                              | (args: { scrollDirection?: "forward" \| "backward"; scrollOffset?: number; scrollUpdateWasRequested?: boolean }) => void                              | —          |
 | onChange                  | 分页、排序、筛选变化时触发。extra.changeType 自 v2.72 支持。                                                    | ({ pagination: TablePaginationConfig, <br/>filters: Array<\*>, sorter: object, extra: { changeType: 'sorter' \| 'filter' \| 'pagination' } }) => void |            |
 | onExpand                  | 点击行展开图标时进行触发                                                                                        | (expanded: boolean, record: RecordType, DOMEvent: MouseEvent) => void                                                                                 |            | -          |

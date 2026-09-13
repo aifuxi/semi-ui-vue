@@ -709,7 +709,7 @@ export default defineConfig({
         },
         {
           find: /^react-window$/,
-          replacement: fileURLToPath(new URL('./src/runtime/reactWindow.tsx', import.meta.url)),
+          replacement: require.resolve('react-window'),
         },
         {
           find: /^react-resizable$/,

@@ -450,6 +450,7 @@ describe('Table', () => {
 
     const exposed = virtualRef.mock.calls[0]![0].current;
     exposed.scrollToItem(5, 'start');
+    await nextTick();
     expect((wrapper.find('.semi-table-body').element as HTMLElement).scrollTop).toBe(200);
   });
 

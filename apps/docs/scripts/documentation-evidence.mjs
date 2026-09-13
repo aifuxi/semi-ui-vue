@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
-import { readFile, readdir } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { lstat, mkdir, mkdtemp, readFile, readdir, rename, rm, writeFile } from 'node:fs/promises';
+import { basename, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { gunzipSync } from 'node:zlib';
 import { batchInputs } from './documentation-inputs.mjs';
@@ -207,19 +207,162 @@ export function evidenceIsCurrent(evidence, batch, currentFingerprint) {
     )
   );
 }
+
+const evidenceDirectory = 'docs/documentation/evidence';
+export const reportPartBytes = 32 * 1024 * 1024;
+const digestPattern = /^[a-f0-9]{64}$/;
+class InvalidReportArchive extends Error {}
+
+function reportBase(batch) {
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(batch.id))
+    throw new InvalidReportArchive('Invalid evidence batch id');
+  return `${evidenceDirectory}/${batch.id}`;
+}
+
+function partPath(batch, digest, count, index, partDigest) {
+  return `${reportBase(batch)}.report.${digest}.json.gz${count === 1 ? '' : `.part-${String(index + 1).padStart(5, '0')}-${partDigest}`}`;
+}
+
+/** Check ordered, batch-local names before reading any metadata-provided path. */
+function archiveParts(evidence, batch) {
+  const base = reportBase(batch);
+  if (!digestPattern.test(evidence.reportSha256))
+    throw new InvalidReportArchive('Invalid report digest');
+  if (!Object.hasOwn(evidence, 'reportArchive'))
+    return [{ path: `${base}.report.json.gz`, sha256: evidence.reportSha256 }];
+  const archive = evidence.reportArchive;
+  if (
+    archive?.format !== 'gzip-parts-v1' ||
+    !Number.isSafeInteger(archive.byteLength) ||
+    archive.byteLength <= 0 ||
+    !Array.isArray(archive.parts) ||
+    !archive.parts.length
+  )
+    throw new InvalidReportArchive('Invalid report archive metadata');
+  let total = 0;
+  for (const [index, part] of archive.parts.entries()) {
+    if (
+      !part ||
+      part?.path !==
+        partPath(batch, evidence.reportSha256, archive.parts.length, index, part.sha256) ||
+      !Number.isSafeInteger(part.byteLength) ||
+      part.byteLength <= 0 ||
+      part.byteLength > reportPartBytes ||
+      !digestPattern.test(part.sha256)
+    )
+      throw new InvalidReportArchive('Invalid report part path, order, size or digest');
+    total += part.byteLength;
+  }
+  if (total !== archive.byteLength) throw new InvalidReportArchive('Invalid report archive size');
+  return archive.parts;
+}
+
+/** Reconstruct the exact original gzip stream before applying the unchanged report gate. */
+export async function readEvidenceReport(evidence, batch, workspace = root) {
+  try {
+    const parts = archiveParts(evidence, batch);
+    const buffers = [];
+    for (const part of parts) {
+      const file = resolve(workspace, part.path);
+      if (!(await lstat(file)).isFile())
+        throw new InvalidReportArchive('Report part is not a regular file');
+      const bytes = await readFile(file);
+      if (
+        (part.byteLength !== undefined && bytes.length !== part.byteLength) ||
+        sha256(bytes) !== part.sha256
+      )
+        throw new InvalidReportArchive('Report part size or digest mismatch');
+      buffers.push(bytes);
+    }
+    const bytes = buffers.length === 1 ? buffers[0] : Buffer.concat(buffers);
+    if (sha256(bytes) !== evidence.reportSha256)
+      throw new InvalidReportArchive('Report digest mismatch');
+    try {
+      if (!validateReport(JSON.parse(gunzipSync(bytes)), batch)) return null;
+    } catch {
+      return null;
+    }
+    return { bytes, paths: parts.map((part) => part.path) };
+  } catch (error) {
+    if (error.code === 'ENOENT' || error instanceof InvalidReportArchive) return null;
+    throw error;
+  }
+}
+
+/** Publish a freshly validated report; keep the old generation until metadata commits. */
+export async function writeEvidenceArchive(
+  batch,
+  compressed,
+  metadata,
+  { workspace = root, partBytes = reportPartBytes } = {},
+) {
+  const base = reportBase(batch);
+  if (!Buffer.isBuffer(compressed) || !compressed.length)
+    throw new InvalidReportArchive('Expected a nonempty compressed report');
+  if (!Number.isSafeInteger(partBytes) || partBytes <= 0 || partBytes > reportPartBytes)
+    throw new InvalidReportArchive('Invalid report part limit');
+  const digest = sha256(compressed);
+  const count = Math.ceil(compressed.length / partBytes);
+  const parts = Array.from({ length: count }, (_, index) => {
+    const bytes = compressed.subarray(index * partBytes, (index + 1) * partBytes);
+    const partDigest = sha256(bytes);
+    return {
+      path: partPath(batch, digest, count, index, partDigest),
+      byteLength: bytes.length,
+      sha256: partDigest,
+    };
+  });
+  const evidence = {
+    ...metadata,
+    batch: batch.id,
+    reportSha256: digest,
+    reportArchive: { format: 'gzip-parts-v1', byteLength: compressed.length, parts },
+  };
+  const directory = resolve(workspace, evidenceDirectory);
+  await mkdir(directory, { recursive: true });
+  const staging = await mkdtemp(resolve(directory, `.${batch.id}-archive-`));
+  try {
+    for (const [index, part] of parts.entries()) {
+      const file = resolve(staging, basename(part.path));
+      await writeFile(file, compressed.subarray(index * partBytes, (index + 1) * partBytes));
+      const written = await readFile(file);
+      if (written.length !== part.byteLength || sha256(written) !== part.sha256)
+        throw new InvalidReportArchive('Written report part failed verification');
+      await rename(file, resolve(workspace, part.path));
+    }
+    if (!(await readEvidenceReport(evidence, batch, workspace)))
+      throw new InvalidReportArchive('Written report archive failed complete validation');
+    const manifest = resolve(staging, `${batch.id}.json`);
+    await writeFile(manifest, JSON.stringify(evidence, null, 2) + '\n');
+    await rename(manifest, resolve(workspace, `${base}.json`));
+
+    // Only after the new manifest is committed, remove this batch's old report
+    // generations. Other batches and unrelated files are never cleanup targets.
+    const keep = new Set(parts.map((part) => basename(part.path)));
+    const previous = new RegExp(
+      `^${batch.id}\\.report\\.[a-f0-9]{64}\\.json\\.gz(?:\\.part-\\d{5}-[a-f0-9]{64})?$`,
+    );
+    for (const file of await readdir(directory))
+      if (!keep.has(file) && (file === `${batch.id}.report.json.gz` || previous.test(file)))
+        await rm(resolve(directory, file), { force: true });
+    return evidence;
+  } finally {
+    await rm(staging, { recursive: true, force: true });
+  }
+}
+
 export async function acceptedBatch(batch) {
   try {
     const path = `docs/documentation/evidence/${batch.id}.json`;
     const evidence = await readJson(path);
     if (!evidenceIsCurrent(evidence, batch, await fingerprint(batch))) return null;
-    const reportPath = `docs/documentation/evidence/${batch.id}.report.json.gz`;
-    const bytes = await readFile(resolve(root, reportPath));
-    if (
-      sha256(bytes) !== evidence.reportSha256 ||
-      !validateReport(JSON.parse(gunzipSync(bytes)), batch)
-    )
-      return null;
-    return { path, report: reportPath, fingerprint: evidence.fingerprint };
+    const report = await readEvidenceReport(evidence, batch);
+    if (!report) return null;
+    return {
+      path,
+      ...(report.paths.length === 1 ? { report: report.paths[0] } : { reportParts: report.paths }),
+      fingerprint: evidence.fingerprint,
+    };
   } catch (error) {
     if (error.code === 'ENOENT' || error instanceof SyntaxError) return null;
     throw error;

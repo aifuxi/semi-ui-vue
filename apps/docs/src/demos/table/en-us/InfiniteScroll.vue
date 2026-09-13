@@ -1,112 +1,41 @@
 <script setup lang="ts">
-import { h, shallowRef } from 'vue';
-import { Table, type TableColumnProps } from '@aifuxi/semi-ui-vue/table';
-import { Avatar } from '@aifuxi/semi-ui-vue/avatar';
-import '@aifuxi/semi-theme-default/table.css';
-import '@aifuxi/semi-theme-default/avatar.css';
-import type { TableVirtualizedOnScrollArgs } from '@aifuxi/semi-ui-vue/table';
+import { onMounted, shallowRef } from 'vue';
+import { Table, type TableVirtualizedOnScrollArgs } from '@aifuxi/semi-ui-vue/table';
+import { fileColumns, generatedRows, type FileRow } from './third-batch-virtual-fixture';
 
-const figmaIcon = '/demos/one.svg';
-type Row = Record<string, unknown>;
-function makeData(total: number): Row[] {
-  return Array.from({ length: total }, (_, index) => ({
-    key: String(index),
-    name: `${index % 2 ? 'Semi D2C' : 'Semi Design'} design${index}.fig`,
-    nameIconSrc: figmaIcon,
-    size: (index * 1000) % 199,
-    owner: index % 2 ? 'Hao Xuan' : 'Jiang Pengzhi',
-    status: index % 3 === 0 ? 'success' : index % 3 === 1 ? 'pending' : 'wait',
-    updateTime: new Date(Date.UTC(2020, 1, 2) + ((index * 1000) % 199) * 86400000)
-      .toISOString()
-      .slice(0, 10),
-    avatarBg: index % 2 ? 'red' : 'grey',
-  }));
+const columns = fileColumns();
+const data = shallowRef<FileRow[]>([]);
+const scroll = { y: 600, x: 1000 };
+function loadMore() {
+  data.value = [...data.value, ...generatedRows(20, data.value.length)];
 }
-const baseColumns: TableColumnProps[] = [
-  {
-    title: 'Title',
-    dataIndex: 'name',
-    width: 400,
-    render: (text, record) =>
-      h('span', { style: { display: 'inline-flex', alignItems: 'center' } }, [
-        h(Avatar, {
-          size: 'small',
-          shape: 'square',
-          src: String(record.nameIconSrc),
-          style: { marginRight: '12px' },
-        }),
-        String(text),
-      ]),
-  },
-  { title: 'Size', dataIndex: 'size', width: 150, render: (text) => `${text} KB` },
-  {
-    title: 'Owner',
-    dataIndex: 'owner',
-    width: 200,
-    render: (text, record) =>
-      h('span', [
-        h(
-          Avatar,
-          {
-            size: 'small',
-            color: record.avatarBg as 'red' | 'grey',
-            style: { marginRight: '4px' },
-          },
-          () => String(text).slice(0, 1),
-        ),
-        String(text),
-      ]),
-  },
-  { title: 'Updated', dataIndex: 'updateTime', width: 200 },
-];
-const nameFilters = [
-  { text: 'Semi Design design', value: 'Semi Design' },
-  { text: 'Semi D2C design', value: 'Semi D2C' },
-];
-const filterName: NonNullable<TableColumnProps['onFilter']> = (value, record) =>
-  String(record?.name).includes(String(value));
-const queryColumns: TableColumnProps[] = baseColumns.map((column) =>
-  column.dataIndex === 'name'
-    ? { ...column, filters: nameFilters, onFilter: filterName }
-    : column.dataIndex === 'size'
-      ? { ...column, sorter: (a, b) => Number(a.size) - Number(b.size) }
-      : column.dataIndex === 'updateTime'
-        ? { ...column, sorter: (a, b) => String(a.updateTime).localeCompare(String(b.updateTime)) }
-        : column,
-);
-
-const data = shallowRef(makeData(20));
-const columns: TableColumnProps[] = queryColumns.map((column, index) => ({
-  ...column,
-  width: index === 0 ? 200 : 150,
-  fixed: index === 0 ? 'left' : index === 3 ? 'right' : false,
-}));
 const itemSize = 56;
-function loadMore({
-  scrollDirection,
-  scrollOffset = 0,
-  scrollUpdateWasRequested,
-}: TableVirtualizedOnScrollArgs) {
-  if (
-    scrollDirection === 'forward' &&
-    !scrollUpdateWasRequested &&
-    scrollOffset >= (data.value.length - Math.ceil(600 / itemSize) * 1.5) * itemSize
-  )
-    data.value = makeData(data.value.length + 20);
-}
-const virtualized = { itemSize, onScroll: loadMore };
+const virtualized = {
+  itemSize,
+  onScroll: ({
+    scrollDirection,
+    scrollOffset = 0,
+    scrollUpdateWasRequested,
+  }: TableVirtualizedOnScrollArgs) => {
+    if (
+      scrollDirection === 'forward' &&
+      scrollOffset >= (data.value.length - Math.ceil(scroll.y / itemSize) * 1.5) * itemSize &&
+      !scrollUpdateWasRequested
+    ) {
+      loadMore();
+    }
+  },
+};
+onMounted(loadMore);
 </script>
 
 <template>
-  <div>
-    <Table
-      :columns="columns"
-      :data-source="data"
-      :pagination="false"
-      :scroll="{ x: 1000, y: 600 }"
-      :virtualized="virtualized"
-      :style="{ width: '750px', maxWidth: '100%' }"
-    ></Table>
-    <p aria-live="polite">Loaded: {{ data.length }}</p>
-  </div>
+  <Table
+    :pagination="false"
+    :columns="columns"
+    :data-source="data"
+    :scroll="scroll"
+    :style="{ width: '750px', margin: '0 auto' }"
+    :virtualized="virtualized"
+  />
 </template>

@@ -1,128 +1,76 @@
 <script setup lang="ts">
-import { h } from 'vue';
+import { h, onMounted, shallowRef } from 'vue';
 import { Table, type TableColumnProps } from '@aifuxi/semi-ui-vue/table';
 import { Avatar } from '@aifuxi/semi-ui-vue/avatar';
-import '@aifuxi/semi-theme-default/table.css';
-import '@aifuxi/semi-theme-default/avatar.css';
+import {
+  figmaIcon,
+  filterName,
+  logChange,
+  makeData,
+  nameFilters,
+  renderDate,
+  renderOwner,
+  sortSize,
+  sortUpdate,
+  type Row,
+} from './third-batch-render-fixture';
 
-const figmaIcon = '/demos/one.svg';
-type Row = Record<string, unknown>;
-function makeData(total: number): Row[] {
-  return Array.from({ length: total }, (_, index) => ({
-    key: String(index),
-    name: `${index % 2 ? 'Semi D2C' : 'Semi Design'} design${index}.fig`,
-    nameIconSrc: figmaIcon,
-    size: (index * 1000) % 199,
-    owner: index % 2 ? 'Hao Xuan' : 'Jiang Pengzhi',
-    status: index % 3 === 0 ? 'success' : index % 3 === 1 ? 'pending' : 'wait',
-    updateTime: new Date(Date.UTC(2020, 1, 2) + ((index * 1000) % 199) * 86400000)
-      .toISOString()
-      .slice(0, 10),
-    avatarBg: index % 2 ? 'red' : 'grey',
-  }));
-}
-const baseColumns: TableColumnProps[] = [
+const data = shallowRef<Row[]>([]);
+onMounted(() => {
+  data.value = makeData(46);
+});
+const pagination = { pageSize: 12 };
+const rowSelection = { hidden: true, fixed: 'left' as const };
+const columns: TableColumnProps[] = [
   {
-    title: 'Title',
+    title: (options) =>
+      h('span', { style: { display: 'inline-flex', alignItems: 'center', paddingLeft: '20px' } }, [
+        options?.selection,
+        h('span', { style: { marginLeft: '8px' } }, 'Name'),
+        options?.sorter,
+        options?.filter,
+      ]),
     dataIndex: 'name',
     width: 400,
-    render: (text, record) =>
-      h('span', { style: { display: 'inline-flex', alignItems: 'center' } }, [
-        h(Avatar, {
-          size: 'small',
-          shape: 'square',
-          src: String(record.nameIconSrc),
-          style: { marginRight: '12px' },
-        }),
-        String(text),
-      ]),
-  },
-  { title: 'Size', dataIndex: 'size', width: 150, render: (text) => `${text} KB` },
-  {
-    title: 'Owner',
-    dataIndex: 'owner',
-    width: 200,
-    render: (text, record) =>
-      h('span', [
-        h(
-          Avatar,
-          {
-            size: 'small',
-            color: record.avatarBg as 'red' | 'grey',
-            style: { marginRight: '4px' },
-          },
-          () => String(text).slice(0, 1),
-        ),
-        String(text),
-      ]),
-  },
-  { title: 'Updated', dataIndex: 'updateTime', width: 200 },
-];
-const nameFilters = [
-  { text: 'Semi Design design', value: 'Semi Design' },
-  { text: 'Semi D2C design', value: 'Semi D2C' },
-];
-const filterName: NonNullable<TableColumnProps['onFilter']> = (value, record) =>
-  String(record?.name).includes(String(value));
-const queryColumns: TableColumnProps[] = baseColumns.map((column) =>
-  column.dataIndex === 'name'
-    ? { ...column, filters: nameFilters, onFilter: filterName }
-    : column.dataIndex === 'size'
-      ? { ...column, sorter: (a, b) => Number(a.size) - Number(b.size) }
-      : column.dataIndex === 'updateTime'
-        ? { ...column, sorter: (a, b) => String(a.updateTime).localeCompare(String(b.updateTime)) }
-        : column,
-);
-
-const data = makeData(46);
-const columns: TableColumnProps[] = queryColumns.map((column) =>
-  column.dataIndex === 'name'
-    ? {
-        ...column,
-        useFullRender: true,
-        title: (options) =>
-          h(
-            'span',
-            {
-              style: {
-                display: 'inline-flex',
-                alignItems: 'center',
-                paddingLeft: '20px',
-                gap: '8px',
-              },
-            },
-            [options?.selection, 'Title', options?.sorter, options?.filter],
-          ),
-        render: (text, _record, _index, options) =>
-          h('span', { style: { display: 'inline-flex', alignItems: 'center' } }, [
-            options?.indentText,
-            options?.expandIcon,
-            options?.selection,
-            h('span', { style: { marginLeft: '8px' } }, [
-              h(Avatar, {
-                size: 'small',
-                shape: 'square',
-                src: figmaIcon,
-                style: { marginRight: '12px' },
-              }),
-              String(text),
-            ]),
+    filters: nameFilters,
+    onFilter: filterName,
+    useFullRender: true,
+    render: (text, _record, _index, options) =>
+      h(
+        'span',
+        { style: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center' } },
+        [
+          options?.indentText,
+          options?.expandIcon,
+          options?.selection,
+          h('span', { style: { marginLeft: '8px' } }, [
+            h(Avatar, {
+              size: 'small',
+              shape: 'square',
+              src: figmaIcon,
+              style: { marginRight: '12px' },
+            }),
+            String(text),
           ]),
-      }
-    : column,
-);
+        ],
+      ),
+  },
+  { title: 'Size', dataIndex: 'size', sorter: sortSize, render: (text) => `${text} KB` },
+  { title: 'Owner', dataIndex: 'owner', render: renderOwner },
+  { title: 'Update', dataIndex: 'updateTime', sorter: sortUpdate, render: renderDate },
+];
 </script>
 
 <template>
-  <div>
-    <Table
-      :columns="columns"
-      :data-source="data"
-      :pagination="{ pageSize: 12 }"
-      :row-selection="{ hidden: true, fixed: 'left' }"
-      ><template #expandedRow="{ record }"
-        ><article>{{ record.name }}</article></template
-      ></Table
-    >
-  </div>
+  <Table
+    :columns="columns"
+    :data-source="data"
+    :pagination="pagination"
+    :row-selection="rowSelection"
+    @change="logChange"
+  >
+    <template #expandedRow="{ record }">
+      <article>{{ record.name }}</article>
+    </template>
+  </Table>
 </template>

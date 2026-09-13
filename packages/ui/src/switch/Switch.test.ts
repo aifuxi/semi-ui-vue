@@ -73,6 +73,49 @@ describe('Switch', () => {
     expect((input.element as HTMLInputElement).checked).toBe(true);
   });
 
+  for (const prop of ['checked', 'modelValue'] as const) {
+    it(`${prop} 从 true 移除后清除选中状态与 aria-checked，再次操作恢复非受控更新`, async () => {
+      const wrapper = mount(Switch, { props: { [prop]: true } });
+      const input = wrapper.get('input');
+      expect(input.attributes('aria-checked')).toBe('true');
+
+      await wrapper.setProps({ [prop]: undefined });
+      expect(input.attributes('aria-checked')).toBeUndefined();
+      expect((input.element as HTMLInputElement).checked).toBe(false);
+      expect(wrapper.classes()).not.toContain('semi-switch-checked');
+      expect(wrapper.emitted('change')).toBeUndefined();
+
+      (input.element as HTMLInputElement).checked = true;
+      await input.trigger('change');
+      expect(input.attributes('aria-checked')).toBe('true');
+      expect(wrapper.classes()).toContain('semi-switch-checked');
+      expect(wrapper.emitted('change')?.map(([checked]) => checked)).toEqual([true]);
+      wrapper.unmount();
+    });
+  }
+
+  it('父级用 true/undefined 回写开关时可关闭并重开，缺省状态不变成显式 false ARIA', async () => {
+    const wrapper = mount(Switch, {
+      props: {
+        checked: undefined,
+        onChange: (value: boolean): void => {
+          void wrapper.setProps({ checked: value ? true : undefined });
+        },
+      },
+    });
+    const input = wrapper.get('input');
+    expect(input.attributes('aria-checked')).toBeUndefined();
+    for (const value of [true, false, true]) {
+      (input.element as HTMLInputElement).checked = value;
+      await input.trigger('change');
+      await nextTick();
+      expect((input.element as HTMLInputElement).checked).toBe(value);
+      expect(input.attributes('aria-checked')).toBe(value ? 'true' : undefined);
+      expect(wrapper.get('.semi-switch').classes().includes('semi-switch-checked')).toBe(value);
+    }
+    wrapper.unmount();
+  });
+
   it('支持原生 v-model，并保持 checked 的兼容优先级', async () => {
     const value = shallowRef(false);
     const Host = defineComponent({

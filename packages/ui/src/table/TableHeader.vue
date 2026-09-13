@@ -39,10 +39,7 @@ interface Props {
   dataCount: number;
   direction: TableDirection;
   filterValues: ReadonlyMap<string | number, unknown[]>;
-  fixedOffsets: ReadonlyMap<
-    string | number,
-    { side: 'left' | 'right'; value: number; edge: boolean }
-  >;
+  headerWidths: ReadonlyMap<string | number, number>;
   headerStyle?: StyleValue | undefined;
   headerRows: TableHeaderCell<Record<string, unknown>>[][];
   locale: TableLocale;
@@ -211,14 +208,18 @@ function renderFilterDropdownProps(
 
 function fullSelectionNode(): VNodeChild {
   if (!props.rowSelection) return undefined;
-  return h(Checkbox, {
-    checked: props.dataCount > 0 && props.selectedCount === props.dataCount,
-    disabled: Boolean(props.rowSelection.disabled),
-    indeterminate: props.selectedCount > 0 && props.selectedCount < props.dataCount,
-    style: { width: '16px' },
-    ariaLabel: `${props.dataCount > 0 && props.selectedCount === props.dataCount ? 'Deselect' : 'Select'} all rows`,
-    onChange: selectAll,
-  });
+  return h(
+    'span',
+    { class: `${props.prefixCls}-selection-wrap` },
+    h(Checkbox, {
+      checked: props.dataCount > 0 && props.selectedCount === props.dataCount,
+      disabled: Boolean(props.rowSelection.disabled),
+      indeterminate: props.selectedCount > 0 && props.selectedCount < props.dataCount,
+      style: { width: '16px' },
+      ariaLabel: `${props.dataCount > 0 && props.selectedCount === props.dataCount ? 'Deselect' : 'Select'} all rows`,
+      onChange: selectAll,
+    }),
+  );
 }
 
 function hasColumnFilter(column: NormalizedTableColumn<Record<string, unknown>>): boolean {
@@ -484,20 +485,67 @@ function physicalAlign(column: NormalizedTableColumn<Record<string, unknown>>) {
     : column.align;
 }
 
+const headerFixedOffsets = computed(() => {
+  let columns = props.headerRows[0]?.map((cell) => cell.column) ?? [];
+  return props.headerRows.map((_row, rowIndex) => {
+    if (rowIndex > 0)
+      columns = columns.flatMap((column) => (column.children?.length ? column.children : [column]));
+    const widths = columns.map((column) =>
+      typeof column.__width === 'number'
+        ? column.__width
+        : typeof column.width === 'number'
+          ? column.width
+          : (props.headerWidths.get(column.key) ?? 0),
+    );
+    const lastLeft = columns
+      .filter((column) => column.fixed === true || column.fixed === 'left')
+      .at(-1)?.key;
+    const firstRight = columns.find((column) => column.fixed === 'right')?.key;
+    const total = widths.reduce((sum, width) => sum + width, 0);
+    let before = 0;
+    const offsets = new Map<
+      string | number,
+      { side: 'left' | 'right'; value: number; edge: boolean }
+    >();
+    columns.forEach((column, index) => {
+      const width = widths[index]!;
+      if (column.fixed === true || column.fixed === 'left')
+        offsets.set(column.key, { side: 'left', value: before, edge: column.key === lastLeft });
+      else if (column.fixed === 'right')
+        offsets.set(column.key, {
+          side: 'right',
+          value: total - before - width,
+          edge: column.key === firstRight,
+        });
+      before += width;
+    });
+    return offsets;
+  });
+});
+
+function cellHidden(
+  cell: TableHeaderCell<Record<string, unknown>>,
+  columnIndex: number,
+  rowIndex: number,
+): boolean {
+  const { rowSpan, colSpan } = { ...cell, ...cellCustom(cell, columnIndex, rowIndex) };
+  return rowSpan === 0 || colSpan === 0;
+}
+
 function cellStyle(
   cell: TableHeaderCell<Record<string, unknown>>,
   columnIndex: number,
   rowIndex: number,
 ): StyleValue {
   const custom = cellCustom(cell, columnIndex, rowIndex);
-  const fixed = props.fixedOffsets.get(cell.column.key);
+  const fixed = headerFixedOffsets.value[rowIndex]?.get(cell.column.key);
   const property =
     props.direction === 'rtl' ? (fixed?.side === 'left' ? 'right' : 'left') : fixed?.side;
   return [
     props.headerStyle,
     custom.style as StyleValue,
     {
-      ...(fixed ? { [property ?? 'left']: `${fixed.value}px` } : {}),
+      ...(fixed ? { position: 'sticky', [property ?? 'left']: `${fixed.value}px` } : {}),
       ...(cell.column.align ? { textAlign: physicalAlign(cell.column) } : {}),
     },
   ];
@@ -508,7 +556,7 @@ function cellClass(
   columnIndex: number,
   rowIndex: number,
 ): unknown[] {
-  const fixed = props.fixedOffsets.get(cell.column.key);
+  const fixed = headerFixedOffsets.value[rowIndex]?.get(cell.column.key);
   const custom = cellCustom(cell, columnIndex, rowIndex);
   const side =
     props.direction === 'rtl'
@@ -699,136 +747,137 @@ function selectAll(event: CheckboxChangeEvent): void {
       role="row"
       v-bind="headerRowAttrs(rowIndex)"
     >
-      <HeaderCellWrapper
-        v-for="(cell, columnIndex) in row"
-        :key="cell.column.key"
-        :tooltip="clickColumnToSort(cell.column) && shouldShowSortTip(cell.column)"
-        :content="nextSortTip(cell.column)"
-      >
-        <component
-          :is="props.componentCell"
-          :class="[
-            cellClass(cell, columnIndex, rowIndex),
-            canResize(cell.column) && 'react-resizable',
-          ]"
-          :style="[cellStyle(cell, columnIndex, rowIndex), stickyStyle]"
-          :colspan="cell.colSpan"
-          :rowspan="cell.rowSpan"
-          :aria-colindex="columnIndex + 1"
-          :title="nativeTitle(cell.column)"
-          role="columnheader"
-          v-bind="nativeCellAttrs(cell, columnIndex, rowIndex)"
-          @mousedown="rememberHeaderMouseDown"
-          @click="handleHeaderClick(cell, columnIndex, rowIndex, $event)"
+      <template v-for="(cell, columnIndex) in row" :key="cell.column.key">
+        <HeaderCellWrapper
+          v-if="!cellHidden(cell, columnIndex, rowIndex)"
+          :tooltip="clickColumnToSort(cell.column) && shouldShowSortTip(cell.column)"
+          :content="nextSortTip(cell.column)"
         >
-          <span
-            v-if="cell.column.__kind === 'selection'"
-            :class="`${props.prefixCls}-selection-wrap`"
+          <component
+            :is="props.componentCell"
+            :class="[
+              cellClass(cell, columnIndex, rowIndex),
+              canResize(cell.column) && 'react-resizable',
+            ]"
+            :style="[cellStyle(cell, columnIndex, rowIndex), stickyStyle]"
+            :colspan="cell.colSpan"
+            :rowspan="cell.rowSpan"
+            :aria-colindex="columnIndex + 1"
+            :title="nativeTitle(cell.column)"
+            role="columnheader"
+            v-bind="nativeCellAttrs(cell, columnIndex, rowIndex)"
+            @mousedown="rememberHeaderMouseDown"
+            @click="handleHeaderClick(cell, columnIndex, rowIndex, $event)"
           >
-            <Checkbox
-              :checked="props.dataCount > 0 && props.selectedCount === props.dataCount"
-              :indeterminate="props.selectedCount > 0 && props.selectedCount < props.dataCount"
-              :disabled="Boolean(props.rowSelection && props.rowSelection.disabled)"
-              :style="{ width: '16px' }"
-              :aria-label="`${props.dataCount > 0 && props.selectedCount === props.dataCount ? 'Deselect' : 'Select'} all rows`"
-              @change="selectAll"
-            />
-          </span>
-          <TableNodeRenderer
-            v-else-if="typeof cell.column.title === 'function'"
-            :content="columnTitle(cell.column)"
-          />
-          <div
-            v-else-if="cell.column.sorter || hasColumnFilter(cell.column)"
-            :class="`${props.prefixCls}-operate-wrapper`"
-          >
-            <TableNodeRenderer v-if="cell.column.sorter" :content="sorterNode(cell.column)" />
-            <template v-else>
-              <span
-                :class="`${props.prefixCls}-row-head-title`"
-                :title="ellipsisTitle(cell.column, cell.column.title)"
-              >
-                <TableNodeRenderer :content="columnTitle(cell.column)" />
-              </span>
-            </template>
-
-            <Dropdown
-              v-if="hasColumnFilter(cell.column)"
-              trigger="click"
-              position="bottom"
-              :class="`${props.prefixCls}-column-filter-dropdown`"
-              v-bind="filterDropdownBindings(cell.column)"
-              @update:visible="setFilterVisible(cell.column, $event)"
-              @visible-change="handleFilterVisibleChange(cell.column, $event)"
+            <span
+              v-if="cell.column.__kind === 'selection'"
+              :class="`${props.prefixCls}-selection-wrap`"
             >
-              <div
-                :class="[
-                  `${props.prefixCls}-column-filter`,
-                  selectedFilters(cell.column).length ? 'on' : undefined,
-                ]"
-              >
-                {{ '\u200b' }}
-                <TableNodeRenderer
-                  v-if="typeof cell.column.filterIcon === 'function'"
-                  :content="cell.column.filterIcon(selectedFilters(cell.column).length > 0)"
-                />
-                <TableNodeRenderer
-                  v-else-if="cell.column.filterIcon && cell.column.filterIcon !== true"
-                  :content="cell.column.filterIcon"
-                />
-                <IconFilter
-                  v-else
-                  role="button"
-                  aria-label="Filter data with this column"
-                  aria-haspopup="listbox"
-                  tabindex="-1"
-                />
-              </div>
-              <template #content>
-                <TableNodeRenderer
-                  v-if="cell.column.filterDropdown"
-                  :content="cell.column.filterDropdown"
-                />
-                <TableNodeRenderer
-                  v-else-if="cell.column.renderFilterDropdown"
-                  :content="
-                    cell.column.renderFilterDropdown({
-                      ...renderFilterDropdownProps(cell.column),
-                    })
-                  "
-                />
-                <template v-else>
-                  <TableFilterMenu
-                    :filters="cell.column.filters || []"
-                    :multiple="cell.column.filterMultiple !== false"
-                    :render-item="cell.column.renderFilterDropdownItem"
-                    :selected="displayFilters(cell.column)"
-                    @toggle="(filter, event) => toggleFilter(cell.column, filter, event)"
-                  >
-                    <template #footer
-                      ><TableNodeRenderer :content="filterFooter(cell.column)"
-                    /></template>
-                  </TableFilterMenu>
-                </template>
+              <Checkbox
+                :checked="props.dataCount > 0 && props.selectedCount === props.dataCount"
+                :indeterminate="props.selectedCount > 0 && props.selectedCount < props.dataCount"
+                :disabled="Boolean(props.rowSelection && props.rowSelection.disabled)"
+                :style="{ width: '16px' }"
+                :aria-label="`${props.dataCount > 0 && props.selectedCount === props.dataCount ? 'Deselect' : 'Select'} all rows`"
+                @change="selectAll"
+              />
+            </span>
+            <TableNodeRenderer
+              v-else-if="typeof cell.column.title === 'function'"
+              :content="columnTitle(cell.column)"
+            />
+            <div
+              v-else-if="cell.column.sorter || hasColumnFilter(cell.column)"
+              :class="`${props.prefixCls}-operate-wrapper`"
+            >
+              <TableNodeRenderer v-if="cell.column.sorter" :content="sorterNode(cell.column)" />
+              <template v-else>
+                <span
+                  :class="`${props.prefixCls}-row-head-title`"
+                  :title="ellipsisTitle(cell.column, cell.column.title)"
+                >
+                  <TableNodeRenderer :content="columnTitle(cell.column)" />
+                </span>
               </template>
-            </Dropdown>
-          </div>
-          <span
-            v-else-if="cell.column.onFilter || cell.column.filters || cell.column.useFullRender"
-            :class="`${props.prefixCls}-row-head-title`"
-            :title="ellipsisTitle(cell.column, cell.column.title)"
-          >
-            <TableNodeRenderer :content="columnTitle(cell.column)" />
-          </span>
-          <TableNodeRenderer v-else :content="columnTitle(cell.column)" />
-          <span
-            v-if="canResize(cell.column)"
-            class="react-resizable-handle react-resizable-handle-se"
-            @pointerdown="startResize(cell.column, $event)"
-            @touchstart.prevent
-          />
-        </component>
-      </HeaderCellWrapper>
+
+              <Dropdown
+                v-if="hasColumnFilter(cell.column)"
+                trigger="click"
+                position="bottom"
+                :class="`${props.prefixCls}-column-filter-dropdown`"
+                v-bind="filterDropdownBindings(cell.column)"
+                @update:visible="setFilterVisible(cell.column, $event)"
+                @visible-change="handleFilterVisibleChange(cell.column, $event)"
+              >
+                <div
+                  :class="[
+                    `${props.prefixCls}-column-filter`,
+                    selectedFilters(cell.column).length ? 'on' : undefined,
+                  ]"
+                >
+                  {{ '\u200b' }}
+                  <TableNodeRenderer
+                    v-if="typeof cell.column.filterIcon === 'function'"
+                    :content="cell.column.filterIcon(selectedFilters(cell.column).length > 0)"
+                  />
+                  <TableNodeRenderer
+                    v-else-if="cell.column.filterIcon && cell.column.filterIcon !== true"
+                    :content="cell.column.filterIcon"
+                  />
+                  <IconFilter
+                    v-else
+                    role="button"
+                    aria-label="Filter data with this column"
+                    aria-haspopup="listbox"
+                    tabindex="-1"
+                  />
+                </div>
+                <template #content>
+                  <TableNodeRenderer
+                    v-if="cell.column.filterDropdown"
+                    :content="cell.column.filterDropdown"
+                  />
+                  <TableNodeRenderer
+                    v-else-if="cell.column.renderFilterDropdown"
+                    :content="
+                      cell.column.renderFilterDropdown({
+                        ...renderFilterDropdownProps(cell.column),
+                      })
+                    "
+                  />
+                  <template v-else>
+                    <TableFilterMenu
+                      :filters="cell.column.filters || []"
+                      :multiple="cell.column.filterMultiple !== false"
+                      :render-item="cell.column.renderFilterDropdownItem"
+                      :selected="displayFilters(cell.column)"
+                      @toggle="(filter, event) => toggleFilter(cell.column, filter, event)"
+                    >
+                      <template #footer
+                        ><TableNodeRenderer :content="filterFooter(cell.column)"
+                      /></template>
+                    </TableFilterMenu>
+                  </template>
+                </template>
+              </Dropdown>
+            </div>
+            <span
+              v-else-if="cell.column.onFilter || cell.column.filters || cell.column.useFullRender"
+              :class="`${props.prefixCls}-row-head-title`"
+              :title="ellipsisTitle(cell.column, cell.column.title)"
+            >
+              <TableNodeRenderer :content="columnTitle(cell.column)" />
+            </span>
+            <TableNodeRenderer v-else :content="columnTitle(cell.column)" />
+            <span
+              v-if="canResize(cell.column)"
+              class="react-resizable-handle react-resizable-handle-se"
+              @pointerdown="startResize(cell.column, $event)"
+              @touchstart.prevent
+            />
+          </component>
+        </HeaderCellWrapper>
+      </template>
     </component>
   </component>
 </template>
