@@ -43,4 +43,4 @@ React/Vue 对应截图解码为像素后直接比较。组件、Portal 和动效
 
 平台快照独立保留，不以 Linux 覆盖 macOS。更新基线前核对固定来源、公开行为、样式和实际图片；只更新受影响场景。历史移动端或 PNG 字节比较记录不改变当前兼容性承诺。
 
-构建、SSR、tarball 与发布检查见[验证入口](validation.md)。正式文档示例另按[文档流程](../documentation/workflow.md)验收。
+构建、SSR、tarball 与发布检查见[验证入口](validation.md)。对照工作台独立运行，不依赖文档站。

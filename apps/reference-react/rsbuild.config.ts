@@ -9,7 +9,6 @@ import { pluginReact } from '@rsbuild/plugin-react';
 import { pinnedSourcePlugins } from '../../scripts/parity-rsbuild.js';
 import sass from 'sass-legacy';
 import { adaptPinnedJsonViewerCore } from '../../packages/foundation-integration/vite-json-viewer-plugin.js';
-import { pinnedButtonDocumentation } from './docs-reference-plugin.js';
 
 const require = createRequire(import.meta.url);
 const workspaceRoot = fileURLToPath(new URL('../..', import.meta.url));
@@ -425,7 +424,7 @@ export default defineConfig({
     pluginReact({ swcReactOptions: { runtime: 'classic' } }),
     pinnedSourcePlugins(
       fileURLToPath(new URL('.', import.meta.url)),
-      [adaptPinnedJsonViewerCore(), compilePinnedReferenceStyles(), pinnedButtonDocumentation()],
+      [adaptPinnedJsonViewerCore(), compilePinnedReferenceStyles()],
       [
         { find: '@semi-v2.102.0/anchor', replacement: anchorPublicEntry },
         { find: '@semi-v2.102.0/avatar', replacement: avatarPublicEntry },
@@ -724,10 +723,10 @@ export default defineConfig({
     ),
   ],
   source: {
-    entry: { index: './src/main.tsx', docs: './src/docs-reference.tsx' },
+    entry: { index: './src/main.tsx' },
     include: [/vendor\/semi-design/],
   },
-  html: { template: ({ entryName }) => (entryName === 'docs' ? './docs.html' : './index.html') },
+  html: { template: './index.html' },
   server: { port: 4173, strictPort: true },
   // Parallel comparisons must keep their DOM/state while another page loads a cold example.
   // Rsbuild's lazy compilation can broadcast hot updates that reload already-ready pages.

@@ -5,7 +5,6 @@ import { fileURLToPath } from 'node:url';
 const workspaceRoot = fileURLToPath(new URL('..', import.meta.url));
 const guardedRoots = [
   'apps/parity-vue/src',
-  'apps/docs/src',
   'packages/ui/src',
   'packages/icons/src',
   'packages/icons-lab/src',

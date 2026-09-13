@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { expect, it } from '@rstest/core';
 
-it('允许正常依赖升级，同时拒绝公开包私有依赖和源码 vendor 越界', async () => {
+it('独立于文档站允许正常依赖升级，同时拒绝公开包私有依赖和源码 vendor 越界', async () => {
   const root = await mkdtemp(path.join(tmpdir(), 'source-boundaries-'));
   const packages = ['ui', 'theme-default', 'icons', 'icons-lab', 'illustrations'];
   const write = (file, value) => writeFile(path.join(root, file), JSON.stringify(value));
@@ -17,7 +17,6 @@ it('允许正常依赖升级，同时拒绝公开包私有依赖和源码 vendor
     for (const directory of [
       'scripts',
       'apps/parity-vue/src',
-      'apps/docs/src',
       'packages/test-infra/src',
       ...packages.map((name) => `packages/${name}/src`),
     ]) {

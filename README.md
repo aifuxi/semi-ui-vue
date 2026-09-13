@@ -33,10 +33,10 @@ import '@aifuxi/semi-theme-default/button.css';
 
 ## 开发与发布状态
 
-固定基线的 85 个公开根模块已具备组件切片记录（含 `_base`、`_utils`），资产覆盖 57 个语言源、稳定/Lab 图标和公开插画。组件 ready 不等于全部文档已严格验收，也不等于稳定版已可发布。
+固定基线的 85 个公开根模块已具备组件切片记录（含 `_base`、`_utils`），资产覆盖 57 个语言源、稳定/Lab 图标和公开插画。组件 ready 不等于稳定版已可发布，发布候选仍需有效的组件与产物验证。
 
 - [组件契约与记录](docs/components/)：公开 API、对齐矩阵和已知差异。
-- [文档计划](docs/documentation/batch-plan.md)与[覆盖账本](docs/documentation/coverage.json)：当前队列、映射和有效验收。
+- [测试体系替代方案](docs/testing/vue-testing-strategy-proposal.md)：后续测试工具与组织方式的设计，尚未切换。
 - [发布审计](docs/release-audit-1.0.md)：稳定版剩余工作。
 - [发布手册](docs/releasing.md)：Changesets 版本流程、渠道与外部接入状态；仓库中的版本号不代表 npm 已发布版本。
 
@@ -49,11 +49,13 @@ git submodule update --init --recursive
 mise trust
 mise install
 mise exec -- pnpm install --frozen-lockfile
-mise exec -- pnpm dev
+mise exec -- pnpm dev:parity
 ```
 
-文档站默认运行于 `http://127.0.0.1:4321`。浏览器检查前运行 `mise exec -- pnpm playwright:install`。WebStorm 可直接使用 [.run](.run/) 中的共享配置，环境准备见[工具链](docs/architecture/toolchain.md)。
+Vue 对照应用默认运行于 `http://127.0.0.1:4174`，固定 React 参考应用通过 `mise exec -- pnpm dev:reference` 启动于 `http://127.0.0.1:4173`。浏览器检查前运行 `mise exec -- pnpm playwright:install`。WebStorm 可直接使用 [.run](.run/) 中的共享配置，环境准备见[工具链](docs/architecture/toolchain.md)。
 
-日常集成用 `pnpm check`，公开产物用 `pnpm check:artifacts`，发布候选用 `pnpm release:check`；按影响选择，详见[验证入口](docs/testing/validation.md)。示例维护见[文档流程](docs/documentation/workflow.md)，工程边界见[工作区架构](docs/architecture/workspace.md)，代理规则见 [AGENTS.md](AGENTS.md)。
+日常集成用 `pnpm check`，公开产物用 `pnpm check:artifacts`，发布候选用 `pnpm release:check`；按影响选择，详见[验证入口](docs/testing/validation.md)。工程边界见[工作区架构](docs/architecture/workspace.md)，代理规则见 [AGENTS.md](AGENTS.md)。
+
+Nuxt 文档站及旧逐示例验收体系已移除。静态组件契约继续保留，退役范围与历史追溯见[说明](docs/documentation/README.md)。
 
 本项目使用 [MIT License](LICENSE)。发布包携带 Semi Design 及适用第三方许可证、归属声明和 SPDX SBOM。

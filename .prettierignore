@@ -3,13 +3,7 @@ vendor
 .agents
 .codex
 node_modules
-.nuxt
-.output
 .data
-apps/docs/public/upstream
-apps/docs/public/repl
-apps/docs/public/search-index.json
-apps/docs/public/sitemap.xml
 dist
 coverage
 playwright-report

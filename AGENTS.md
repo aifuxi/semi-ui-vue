@@ -19,13 +19,15 @@
 
 ## 按需入口
 
-| 任务                      | 入口                                                                      |
-| ------------------------- | ------------------------------------------------------------------------- |
-| 组件实现、对齐修复        | [组件技能](.agents/skills/semi-ui-vue-vertical-slice/SKILL.md)            |
-| 文档示例维护              | [文档流程](docs/documentation/workflow.md)                                |
-| 批量或并行文档严格验收    | [并行验收技能](.agents/skills/parallel-documentation-acceptance/SKILL.md) |
-| 选择检查范围              | [验证入口](docs/testing/validation.md)                                    |
-| 包依赖、exports、构建边界 | [工作区架构](docs/architecture/workspace.md)                              |
-| 发布准备与上线            | [发布手册](docs/releasing.md)                                             |
+| 任务                      | 入口                                                           |
+| ------------------------- | -------------------------------------------------------------- |
+| 组件实现、对齐修复        | [组件技能](.agents/skills/semi-ui-vue-vertical-slice/SKILL.md) |
+| 组件契约与静态文档        | [组件契约](docs/testing/component-contract.md)                 |
+| 测试体系替代设计          | [测试方案](docs/testing/vue-testing-strategy-proposal.md)      |
+| 选择检查范围              | [验证入口](docs/testing/validation.md)                         |
+| 包依赖、exports、构建边界 | [工作区架构](docs/architecture/workspace.md)                   |
+| 发布准备与上线            | [发布手册](docs/releasing.md)                                  |
 
-完成条件是目标已实现、受影响检查通过、剩余问题如实说明。完成后仅暂存本次文件并创建独立 commit；公开产物用 Changesets，纯文档/测试/内部工具用 `pnpm changeset --empty`。版本由机器人维护。组件 ready、文档映射、有效验收和稳定发布分别记录；动态进度只维护[文档计划](docs/documentation/batch-plan.md)与覆盖账本。
+完成条件是目标已实现、受影响检查通过、剩余问题如实说明。完成后仅暂存本次文件并创建独立 commit；公开产物用 Changesets，纯文档/测试/内部工具用 `pnpm changeset --empty`。版本由机器人维护。组件状态及缺口写入对应组件契约，稳定发布剩余工作写入[发布审计](docs/release-audit-1.0.md)。
+
+Nuxt 文档站及旧逐示例验收体系已退役，不再作为开发、测试或发布前置条件。本次删除不代表组件验收通过；历史记录通过 Git 追溯，退役范围见[说明](docs/documentation/README.md)。新测试工具或站点仅在对应任务中实施。

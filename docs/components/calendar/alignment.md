@@ -110,4 +110,4 @@
 - 普通 gridcell 始终输出 `aria-current`：当天为 `date`，其余为 `false`。固定实现是 `aria-current={isToday ? "date" : false}`，非当天也会输出 `false`；此前 Vue 省略该属性。
 - 折叠单元格（“还有 N 项”）的 Popover 触发器 `<li>` 不再附加 `role="gridcell"`、`aria-label` 与 `aria-current`。固定 `renderCollapsed` 的触发节点只带单元格 class 与点击，Vue 之前把普通单元格的语义重复到了触发器上。
 
-验证：Calendar 单元/SSR 9 项、组件 Chromium 5/5、双语文档矩阵 9 例 72 项通过；细节与限定等价项见 [Calendar 文档验收](../../documentation/calendar-acceptance.md)。
+历史验证：Calendar 单元/SSR 9 项、组件 Chromium 5/5、双语文档矩阵 9 例 72 项通过。旧文档报告已[退役](../../documentation/README.md)，细节与限定等价项可从 Git 历史查看，不作为当前输入的验收结论。

@@ -1,4 +1,0 @@
-interface:
-  display_name: '并行文档验收'
-  short_description: '按当前队列并行准备，统一完成严格验收和提交'
-  default_prompt: '使用 $parallel-documentation-acceptance，按当前队列继续一轮文档严格验收，并行准备，统一验收并提交。'

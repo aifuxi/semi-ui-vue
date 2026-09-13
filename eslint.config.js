@@ -11,13 +11,7 @@ export default tseslint.config(
       '.worktrees/**',
       '.agents/**',
       '.codex/**',
-      '**/.nuxt/**',
-      '**/.output/**',
       '**/.data/**',
-      'apps/docs/public/upstream/**',
-      'apps/docs/public/repl/**',
-      'apps/docs/test-results/**',
-      'apps/docs/playwright-report/**',
       '**/dist/**',
       '**/node_modules/**',
       'coverage/**',
@@ -58,11 +52,7 @@ export default tseslint.config(
     },
   },
   {
-    files: [
-      'apps/*/src/**/*.{js,ts,tsx,vue}',
-      'apps/docs/public/*.js',
-      'packages/ui/src/**/*.{js,ts,vue}',
-    ],
+    files: ['apps/*/src/**/*.{js,ts,tsx,vue}', 'packages/ui/src/**/*.{js,ts,vue}'],
     languageOptions: {
       globals: globals.browser,
     },
@@ -77,12 +67,6 @@ export default tseslint.config(
     },
   },
   {
-    files: ['apps/docs/src/env.d.ts'],
-    rules: {
-      '@typescript-eslint/triple-slash-reference': 'off',
-    },
-  },
-  {
     files: ['apps/reference-react/**/*.{ts,tsx}'],
     languageOptions: {
       parserOptions: {
@@ -93,7 +77,6 @@ export default tseslint.config(
   {
     files: [
       'apps/parity-vue/src/**/*.{ts,vue}',
-      'apps/docs/src/**/*.{ts,vue}',
       'packages/ui/src/**/*.{ts,vue}',
       'packages/icons/src/**/*.{ts,vue}',
       'packages/icons-lab/src/**/*.{ts,vue}',

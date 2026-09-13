@@ -140,7 +140,6 @@ jobs:
       - run: mise exec -- pnpm test:browser
         env:
           PARITY_IGNORE_HOST_BASELINES: '1'
-      - run: mise exec -- pnpm test:browser:docs
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
@@ -148,8 +147,6 @@ jobs:
           path: |
             playwright-report
             test-results
-            apps/docs/playwright-report
-            apps/docs/test-results
           if-no-files-found: warn
           retention-days: 14
 
