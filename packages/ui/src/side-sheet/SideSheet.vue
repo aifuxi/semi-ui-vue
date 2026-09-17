@@ -6,6 +6,7 @@ import {
   markRaw,
   onBeforeMount,
   onBeforeUnmount,
+  onBeforeUpdate,
   onMounted,
   shallowReactive,
   shallowRef,
@@ -43,11 +44,13 @@ const mounted = shallowRef(false);
 const contentAnimating = shallowRef(false);
 const maskAnimating = shallowRef(false);
 const cache = new Map<unknown, unknown>();
+const rawPropsRevision = shallowRef(0);
 let activeCycle = false;
 let originalBodyOverflow: string | null = null;
 let originalBodyWidth = '';
 
 function hasRawProp(key: keyof SideSheetProps): boolean {
+  void rawPropsRevision.value;
   const kebabKey = String(key).replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
   const raw = instance?.vnode.props;
   return Boolean(
@@ -258,6 +261,9 @@ function handleAnimationEnd(event: AnimationEvent): void {
   if (!runtimeVisible.value) finishHide();
 }
 
+onBeforeUpdate(() => {
+  rawPropsRevision.value += 1;
+});
 onMounted(() => {
   mounted.value = true;
   resolveContainer();

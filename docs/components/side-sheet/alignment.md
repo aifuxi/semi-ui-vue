@@ -88,7 +88,7 @@
 - `side-04` 的 Placement top 失败并非基线高度变化。固定 `sideSheet/constants.ts` 的 HEIGHT=448，React `index.tsx` 将该数值交给 `SideSheetContent.tsx`，React style 自动附加 px。归档 trace 中 React 是 `width:100%;height:448px`，Vue 只有 `width:100%`，高度随内容变为150px。
 - Vue 不给数字 style 自动附加 px；`SideSheetContent.vue` 现对公开数字 height、width 及无 mask 外层 wrapperWidth 显式转换 px，字符串（包括50%、40%）原样保留。未修改默认448、尺寸常量、基线、动效或布局结构。数字220的容器场景与Placement默认448都由主agent统一浏览器重验。
 - 新增公开DOM和SSR回归先失败（DOM height为空、SSR写出height:448），修复后验证默认448px、显式220px、方向切换、mask=false外层220px/内部100%、百分比原样保留；原有字符串尺寸测试继续保留。
-- 尺寸测试探索发现另一个既有边界：初始缺省mask到动态显式false时，Vue归一化值均为false，SideSheet.vue基于raw props的computed可能不重新计算，DOM仍带mask。本轮尺寸修复不改该状态逻辑；新尺寸切换测试从显式mask=true开始，SSR另覆盖初始mask=false。该独立风险已同步主agent，不能把尺寸通过当作这一路径已修复。
+- 2026-09-17 补充修复：初始省略 `mask` 后动态显式设置 `mask=false` 时，SideSheet 会重新读取当前 VNode raw props 并移除遮罩；再切回 `mask=true` 会恢复遮罩。该回归只修正默认 true Boolean 的动态显式性，不改变尺寸转换、Portal、滚动锁或动效边界。
 - 文档正式证据与受影响历史回归由本轮主agent统一生成；旧记录中的通过结论不能代替本次输入变化后的证据。
 
 ## 多实例 Portal 锚点修复（2026-09-13）

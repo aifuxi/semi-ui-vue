@@ -208,6 +208,18 @@ describe('SideSheet', () => {
     explicitTrue.unmount();
   });
 
+  it('初始省略 mask 后动态显式 false 会移除遮罩', async () => {
+    const wrapper = await mountVisible();
+    expect(document.querySelector('.semi-sidesheet-mask')).not.toBeNull();
+    await wrapper.setProps({ mask: false });
+    await settle();
+    expect(document.querySelector('.semi-sidesheet-mask')).toBeNull();
+    await wrapper.setProps({ mask: true });
+    await settle();
+    expect(document.querySelector('.semi-sidesheet-mask')).not.toBeNull();
+    wrapper.unmount();
+  });
+
   it('四个 placement、width/height、mask=false 与 canVerticalSetWidth 保留固定布局', async () => {
     const wrapper = await mountVisible({ placement: 'left', width: '413px' });
     const dialog = () => document.querySelector<HTMLElement>('.semi-sidesheet-inner')!;
