@@ -268,6 +268,53 @@ describe('OverflowList', () => {
     expect(wrapper.findAll('.overflow-trigger').map((node) => node.text())).toEqual(['+1', '+1']);
   });
 
+  it('scroll 边缘溢出计数随可见项变化重新渲染', async () => {
+    mockWidths({ root: 100, item: 40, overflow: 20 });
+    const wrapper = mount(OverflowList, {
+      props: { items, renderMode: 'scroll' },
+      slots: {
+        visibleItem: ({ item, index }: { item: OverflowItem; index: number }) =>
+          h('button', { class: 'token', 'data-index': index }, String(item.key)),
+        overflow: ({
+          items: overflowItems,
+          position,
+        }: {
+          items: readonly OverflowItem[];
+          position: string;
+        }) =>
+          overflowItems.length
+            ? h(
+                'button',
+                { class: 'edge', 'data-position': position },
+                `${position}:${overflowItems.length}`,
+              )
+            : null,
+      },
+    });
+    await settleMeasurement();
+
+    const observer = TestIntersectionObserver.instances.at(-1)!;
+    const notifyVisible = async (visibleIndexes: number[]) => {
+      observer.notify(
+        wrapper.findAll('[data-scrollkey]').map((node, index) => ({
+          target: node.element,
+          isIntersecting: visibleIndexes.includes(index),
+          boundingClientRect: { y: 0 },
+        })) as unknown as IntersectionObserverEntry[],
+      );
+      await nextTick();
+    };
+
+    await notifyVisible([1, 2]);
+    expect(wrapper.findAll('.edge').map((node) => node.text())).toEqual(['start:1', 'end:1']);
+
+    await notifyVisible([2, 3]);
+    expect(wrapper.findAll('.edge').map((node) => node.text())).toEqual(['start:2']);
+
+    await notifyVisible([0, 1]);
+    expect(wrapper.findAll('.edge').map((node) => node.text())).toEqual(['end:2']);
+  });
+
   it('items 改变后移除旧 scroll 节点并重新观察新 key', async () => {
     const wrapper = mountList({ renderMode: 'scroll' });
     await settleMeasurement();
