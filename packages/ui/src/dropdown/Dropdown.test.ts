@@ -536,7 +536,7 @@ describe('Dropdown', () => {
     expect(nestedClick).toHaveBeenCalledOnce();
   });
 
-  it('独立导出的 Menu/Title/Item 保留原生 attrs、ARIA 与鼠标事件', async () => {
+  it('独立导出的 Menu/Title/Item 只保留固定 ARIA、data attrs 与鼠标事件', async () => {
     const enter = vi.fn();
     const leave = vi.fn();
     const contextmenu = vi.fn();
@@ -548,6 +548,8 @@ describe('Dropdown', () => {
           h(
             DropdownItem,
             {
+              'aria-haspopup': 'dialog',
+              'aria-label': 'user item',
               'data-item': 'yes',
               onContextmenu: contextmenu,
               onMouseenter: enter,
@@ -574,6 +576,8 @@ describe('Dropdown', () => {
       role: 'menuitem',
       tabindex: '-1',
     });
+    expect(item.attributes('aria-haspopup')).toBeUndefined();
+    expect(item.attributes('aria-label')).toBeUndefined();
     expect(enter).toHaveBeenCalledOnce();
     expect(leave).toHaveBeenCalledOnce();
     expect(contextmenu).toHaveBeenCalledOnce();
