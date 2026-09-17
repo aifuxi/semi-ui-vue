@@ -49,10 +49,15 @@ const emit = defineEmits<{
 const dialogElement = useTemplateRef<HTMLDivElement>('dialog');
 const hasDefaultHeader = computed(() => props.title !== null && props.title !== undefined);
 const hasHeader = computed(() => props.headerProvided || hasDefaultHeader.value);
+
+function cssSize(value: string | number | undefined): string | undefined {
+  return typeof value === 'number' ? `${value}px` : value;
+}
+
 const outerStyle = computed<StyleValue>(() => [
   props.outerStyle,
-  props.width === undefined ? undefined : { width: props.width },
-  props.height === undefined ? undefined : { height: props.height },
+  props.width === undefined ? undefined : { width: cssSize(props.width) },
+  props.height === undefined ? undefined : { height: cssSize(props.height) },
   props.fullScreen ? { width: '100%', height: '100%', margin: 'unset' } : undefined,
 ]);
 const contentClasses = computed(() => [

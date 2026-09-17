@@ -53,6 +53,19 @@ describe('Modal', () => {
     expect(document.querySelector('[data-modal-render]')).toBeNull();
   });
 
+  it('数字 width/height 显式转为 px，字符串尺寸原样保留', async () => {
+    const numeric = await mountVisible({ height: 320, width: 600 });
+    const modal = () => document.querySelector<HTMLElement>('.semi-modal')!;
+    expect(modal().style.width).toBe('600px');
+    expect(modal().style.height).toBe('320px');
+    numeric.unmount();
+
+    const string = await mountVisible({ height: '50%', width: '40vw' });
+    expect(modal().style.width).toBe('40vw');
+    expect(modal().style.height).toBe('50%');
+    string.unmount();
+  });
+
   it('区分默认 true Boolean 的缺省、显式 false、显式 true 与全局覆盖', async () => {
     const defaults = await mountVisible();
     expect(document.querySelector('.semi-modal-mask')).not.toBeNull();

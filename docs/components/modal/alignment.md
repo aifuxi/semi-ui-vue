@@ -99,6 +99,6 @@
 
 现将渲染回调传入 ModalInnerContent，在外层内用无新增 DOM 的 ModalContentRenderer 包装单个内容 VNode；默认返回原内容节点，保留原模板 ref、事件与 SSR 语义。DragMove 的定位、cursor 和事件只作用于内容节点。新增公开 DOM/回调测试先红后绿，断言外层尺寸保留、内容被包装及 DragMove 生效、取消 update:visible 和卸载；原 Modal Unit/SSR 全部通过。文档矩阵改对内容节点断言拖动位移，保留外层 Portal 绝对几何与 cursor 比较。正式 Chromium 证据由本轮调度生成，历史数字不用于证明本次输入。
 
-已知范围外问题：数字 `width=600` 在当前 outerStyle 中没有转换 CSS 单位，得到空 inline width；字符串 `width='600px'` 正常。固定本轮 12 例未用该数值尺寸，不将其并入本次 modalRender 修复，保留后续处理。
+2026-09-17 补充修复：数字 `width`/`height` 在 `.semi-modal` 外层显式转换为 CSS `px`，字符串尺寸（如 `40vw`、`50%`）继续原样保留；公开回归覆盖数字与字符串路径。该修复不改变 `modalRender` 作用边界、默认尺寸、fullScreen 覆盖或 Portal 结构。
 
 同轮 diagnostic-17 的 Imperative 第六个自定义 IconSend 发现 24px→16px 及蓝色→正文色差异。固定 ConfirmModal 对 elementType=Icon 的自定义节点 cloneElement，覆盖 size=extra-large 与两项 Modal 图标 className；Vue 原直接返回自定义 icon。现复用 isSemiIcon，只克隆 Semi Icon 并覆盖 size/class，保留原 VNode、其他 props 和普通节点/null。Vue cloneVNode 的 class 合并与 React 覆盖不同，故只替换克隆的 class props。公开回归先红后绿，覆盖传入 small/custom class 仍被覆盖、原 VNode 不修改、update 为普通 span 或 null 保持对应内容。Modal Unit/SSR 最终 11 项通过；不在 Demo 添加 size/class 绕过组件契约。
