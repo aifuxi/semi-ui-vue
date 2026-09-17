@@ -8,6 +8,14 @@ import SkeletonButton from './SkeletonButton.vue';
 import SkeletonImage from './SkeletonImage.vue';
 import SkeletonParagraph from './SkeletonParagraph.vue';
 import SkeletonTitle from './SkeletonTitle.vue';
+import {
+  Skeleton as CompoundSkeleton,
+  SkeletonAvatar as NamedSkeletonAvatar,
+  SkeletonButton as NamedSkeletonButton,
+  SkeletonImage as NamedSkeletonImage,
+  SkeletonParagraph as NamedSkeletonParagraph,
+  SkeletonTitle as NamedSkeletonTitle,
+} from './index';
 
 describe('Skeleton', () => {
   it('区分 loading 缺省、显式 false 与显式 true', () => {
@@ -82,6 +90,17 @@ describe('Skeleton', () => {
 });
 
 describe('Skeleton items', () => {
+  it('公开复合入口转发全部子组件', () => {
+    expect(CompoundSkeleton.Avatar).toBe(NamedSkeletonAvatar);
+    expect(CompoundSkeleton.Button).toBe(NamedSkeletonButton);
+    expect(CompoundSkeleton.Image).toBe(NamedSkeletonImage);
+    expect(CompoundSkeleton.Paragraph).toBe(NamedSkeletonParagraph);
+    expect(CompoundSkeleton.Title).toBe(NamedSkeletonTitle);
+
+    expect(mount(CompoundSkeleton.Avatar).classes()).toContain('semi-skeleton-avatar');
+    expect(mount(CompoundSkeleton.Paragraph, { props: { rows: 2 } }).findAll('li')).toHaveLength(2);
+  });
+
   it('渲染 Avatar 默认尺寸/形状、全部尺寸和 square', () => {
     const avatar = mount(SkeletonAvatar, {
       attrs: { 'data-testid': 'avatar' },
