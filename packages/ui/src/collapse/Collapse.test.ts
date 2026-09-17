@@ -103,6 +103,26 @@ describe('Collapse', () => {
     ]);
   });
 
+  it('activeSet 变化后向所有 Panel 传播 aria-owns id', async () => {
+    const wrapper = mount(Collapse, {
+      props: { keepDOM: true, motion: false },
+      slots: panels(),
+    });
+    const headers = wrapper.findAll('.semi-collapse-header');
+    expect(headers.map((node) => node.attributes('aria-owns'))).toEqual(['', '', '']);
+
+    await headers[1]!.trigger('click');
+    const contents = wrapper.findAll('.semi-collapse-content');
+    expect(headers.map((node) => node.attributes('aria-owns'))).toEqual(
+      contents.map((node) => node.attributes('id')),
+    );
+    expect(contents.map((node) => node.attributes('aria-hidden'))).toEqual([
+      'true',
+      'false',
+      'true',
+    ]);
+  });
+
   it('受控模式只通知，父级回传 activeKey 后才更新 DOM', async () => {
     const onChange = vi.fn();
     const wrapper = mount(Collapse, {
