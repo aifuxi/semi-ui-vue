@@ -45,6 +45,41 @@ describe('Progress', () => {
     expect(wrapper.get('.semi-progress-line-text').text()).toBe('0%');
   });
 
+  it('原生 ARIA attrs 可作为 line 和 circle 的可访问标签来源', () => {
+    const line = mount(Progress, {
+      attrs: {
+        'aria-label': '任务进度',
+        'aria-labelledby': 'progress-label',
+        'aria-valuetext': '三成',
+        title: '不应透传',
+      },
+      props: { motion: false, percent: 30 },
+    });
+    expect(line.attributes()).toMatchObject({
+      'aria-label': '任务进度',
+      'aria-labelledby': 'progress-label',
+      'aria-valuetext': '三成',
+      role: 'progressbar',
+    });
+    expect(line.attributes('title')).toBeUndefined();
+
+    const circle = mount(Progress, {
+      attrs: {
+        'aria-label': '圆形进度',
+        'aria-labelledby': 'circle-label',
+        'aria-valuetext': '一半',
+      },
+      props: { motion: false, percent: 50, type: 'circle' },
+    });
+    expect(circle.attributes()).toMatchObject({
+      'aria-label': '圆形进度',
+      'aria-labelledby': 'circle-label',
+      'aria-valuenow': '50',
+      'aria-valuetext': '一半',
+      role: 'progressbar',
+    });
+  });
+
   it('覆盖 vertical/large、轨道和进度颜色以及原生 class/style', () => {
     const wrapper = mount(Progress, {
       attrs: { class: 'native-class', style: 'opacity: 0.8' },
