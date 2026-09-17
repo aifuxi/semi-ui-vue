@@ -81,6 +81,7 @@ describe('Divider', () => {
 
   it('ignores content for the vertical layout like the pinned adapter', () => {
     const wrapper = mount(Divider, {
+      attrs: { 'aria-orientation': 'vertical', role: 'separator' },
       props: { align: 'right', dashed: true, layout: 'vertical' },
       slots: { default: () => '不会渲染' },
     });
@@ -88,6 +89,10 @@ describe('Divider', () => {
     expect(wrapper.classes()).toEqual(
       expect.arrayContaining(['semi-divider-vertical', 'semi-divider-dashed']),
     );
+    expect(wrapper.attributes()).toMatchObject({
+      'aria-orientation': 'vertical',
+      role: 'separator',
+    });
     expect(wrapper.classes()).not.toContain('semi-divider-with-text');
     expect(wrapper.text()).toBe('');
   });
