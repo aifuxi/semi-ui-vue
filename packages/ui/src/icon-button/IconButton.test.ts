@@ -3,12 +3,17 @@ import { defineComponent, h } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
 import IconButton from './IconButton';
+import { IconButton as PublicIconButton } from './index';
 
 function ScenarioIcon() {
   return h('svg', { 'aria-hidden': 'true', viewBox: '0 0 16 16' }, h('path', { d: 'M3 8h10' }));
 }
 
 describe('IconButton', () => {
+  it('公开入口导出轻量 Button 包装器', () => {
+    expect(PublicIconButton).toBe(IconButton);
+  });
+
   it('缺省与显式空 icon 都保持固定 icon-only DOM/class，并透传原生 attrs', () => {
     const omitted = mount(IconButton, {
       attrs: { 'aria-label': '空图标按钮', class: 'custom', 'data-kind': 'omitted' },

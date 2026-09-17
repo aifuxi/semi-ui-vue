@@ -5,9 +5,17 @@ import { defineComponent, h } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Button } from '../button';
-import { Card, CardGroup, CardMeta } from './index';
+import DefaultCard, { CARD_GROUP_TYPES, CARD_SHADOWS, Card, CardGroup, CardMeta } from './index';
 
 describe('Card', () => {
+  it('公开入口保留默认导出、compound Meta、Group 与固定枚举常量', () => {
+    expect(DefaultCard).toBe(Card);
+    expect(Card.Meta).toBe(CardMeta);
+    expect(CARD_SHADOWS).toEqual(['hover', 'always']);
+    expect(CARD_GROUP_TYPES).toEqual(['grid']);
+    expect(CardGroup).toBeDefined();
+  });
+
   it('区分 bordered/headerLine 缺省、显式 false 与显式 true', () => {
     const wrapper = mount(
       defineComponent({

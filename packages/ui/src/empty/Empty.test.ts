@@ -4,7 +4,7 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import Empty, { EMPTY_LAYOUTS } from './index';
+import Empty, { EMPTY_LAYOUTS, Empty as PublicEmpty } from './index';
 
 afterEach(() => {
   document.body.removeAttribute('theme-mode');
@@ -13,13 +13,17 @@ afterEach(() => {
 });
 
 describe('Empty', () => {
+  it('公开入口导出组件与固定布局枚举', () => {
+    expect(PublicEmpty).toBe(Empty);
+    expect(EMPTY_LAYOUTS).toEqual(['vertical', 'horizontal']);
+  });
+
   it('渲染固定默认 DOM、垂直布局与无图片标题分支', () => {
     const wrapper = mount(Empty, {
       props: { title: '没有结果', description: '请调整筛选条件' },
       slots: { default: '<button>重置</button>' },
     });
 
-    expect(EMPTY_LAYOUTS).toEqual(['vertical', 'horizontal']);
     expect(wrapper.classes()).toEqual(
       expect.arrayContaining(['semi-empty', 'semi-empty-vertical']),
     );

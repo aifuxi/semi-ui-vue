@@ -1,9 +1,13 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 
-import Highlight from './index';
+import Highlight, { Highlight as PublicHighlight } from './index';
 
 describe('Highlight', () => {
+  it('公开入口保持默认导出与命名导出一致', () => {
+    expect(PublicHighlight).toBe(Highlight);
+  });
+
   it('按固定默认值输出原始文本和 mark 标签', () => {
     const host = document.createElement('div');
     document.body.append(host);

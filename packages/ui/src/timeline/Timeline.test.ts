@@ -2,9 +2,23 @@ import { Fragment, defineComponent, h } from 'vue';
 import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 
-import { Timeline, TimelineItem } from './index';
+import DefaultTimeline, {
+  TIMELINE_ITEM_POSITIONS,
+  TIMELINE_ITEM_TYPES,
+  TIMELINE_MODES,
+  Timeline,
+  TimelineItem,
+} from './index';
 
 describe('Timeline', () => {
+  it('公开入口保留 compound Item 与固定枚举常量', () => {
+    expect(DefaultTimeline).toBe(Timeline);
+    expect(Timeline.Item).toBe(TimelineItem);
+    expect(TIMELINE_MODES).toEqual(['left', 'right', 'center', 'alternate']);
+    expect(TIMELINE_ITEM_POSITIONS).toEqual(['left', 'right']);
+    expect(TIMELINE_ITEM_TYPES).toEqual(['default', 'ongoing', 'success', 'warning', 'error']);
+  });
+
   it('渲染默认 mode、固定 DOM、ARIA 与装饰节点', () => {
     const wrapper = mount(Timeline, {
       attrs: { 'aria-label': '事故处理时间线', 'data-origin': 'slot' },

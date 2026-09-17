@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { semiGlobal } from '../config-provider';
 
 import Spin from './Spin.vue';
+import DefaultSpin, { SPIN_SIZES, Spin as PublicSpin } from './index';
 
 afterEach(() => {
   vi.useRealTimers();
@@ -12,6 +13,12 @@ afterEach(() => {
 });
 
 describe('Spin', () => {
+  it('公开入口导出组件与固定尺寸枚举', () => {
+    expect(PublicSpin).toBe(Spin);
+    expect(DefaultSpin).toBe(Spin);
+    expect(SPIN_SIZES).toEqual(['small', 'middle', 'large']);
+  });
+
   it('区分 spinning 缺省、显式 false 与显式 true', () => {
     for (const spinning of [undefined, true] as const) {
       const wrapper = mount(Spin, {

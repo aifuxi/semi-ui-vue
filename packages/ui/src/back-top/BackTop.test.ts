@@ -3,6 +3,7 @@ import { nextTick } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import BackTop from './BackTop.vue';
+import DefaultBackTop, { BackTop as NamedBackTop } from './index';
 
 describe('BackTop', () => {
   beforeEach(() => {
@@ -22,6 +23,11 @@ describe('BackTop', () => {
     vi.useRealTimers();
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
+  });
+
+  it('公开入口保持默认导出与命名导出一致', () => {
+    expect(NamedBackTop).toBe(BackTop);
+    expect(DefaultBackTop).toBe(BackTop);
   });
 
   it('超过阈值后输出固定 DOM、默认 IconButton、class/style/attrs 与 duration', async () => {
