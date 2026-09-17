@@ -193,6 +193,7 @@ describe('Banner', () => {
         'aria-label': '发布通知',
         'data-parity-target': 'banner',
         onClick: click,
+        role: 'presentation',
         style: { width: '320px' },
       },
     });
