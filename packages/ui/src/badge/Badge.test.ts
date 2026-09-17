@@ -1,7 +1,7 @@
 /* eslint-disable vue/one-component-per-file -- test hosts cover template and render VNode inputs. */
 
 import { mount } from '@vue/test-utils';
-import { defineComponent, h } from 'vue';
+import { Comment, Fragment, defineComponent, h } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider } from '../config-provider';
@@ -84,6 +84,25 @@ describe('Badge', () => {
     for (const position of BADGE_POSITIONS) {
       expect(count.classes()).not.toContain(`semi-badge-${position}`);
     }
+  });
+
+  it('空白和注释 slot 按无 children 处理，Fragment 子节点按有 children 处理', () => {
+    const empty = mount(Badge, {
+      props: { count: 1, position: 'leftBottom' },
+      slots: { default: () => [h(Comment), ''] },
+    });
+    const emptyCount = empty.get('[x-semi-prop="count"]');
+    expect(emptyCount.classes()).toContain('semi-badge-block');
+    expect(emptyCount.classes()).not.toContain('semi-badge-leftBottom');
+
+    const fragment = mount(Badge, {
+      props: { count: 1, position: 'leftBottom' },
+      slots: { default: () => h(Fragment, null, [h('i', { class: 'fragment-child' })]) },
+    });
+    const fragmentCount = fragment.get('[x-semi-prop="count"]');
+    expect(fragment.get('.fragment-child').exists()).toBe(true);
+    expect(fragmentCount.classes()).toContain('semi-badge-leftBottom');
+    expect(fragmentCount.classes()).not.toContain('semi-badge-block');
   });
 
   it('只对数字应用固定 overflowCount truthy 边界', () => {
