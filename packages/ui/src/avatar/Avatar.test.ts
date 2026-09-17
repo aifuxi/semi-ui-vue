@@ -188,6 +188,49 @@ describe('Avatar', () => {
     expect(click).toHaveBeenCalledTimes(1);
   });
 
+  it('共享 topSlot、bottomSlot 与 hoverMask VNode 配置时每个实例都渲染', async () => {
+    const sharedTop = h('strong', { class: 'shared-top-slot' }, 'T');
+    const sharedBottom = h('em', { class: 'shared-bottom-slot' }, 'B');
+    const sharedMask = h('span', { class: 'shared-hover-mask' }, 'M');
+    const wrapper = mount(
+      defineComponent({
+        setup: () => () =>
+          h('div', [
+            h(
+              Avatar,
+              {
+                bottomSlot: { shape: 'circle', text: sharedBottom },
+                hoverMask: sharedMask,
+                size: 'large',
+                topSlot: { text: sharedTop },
+              },
+              () => 'A',
+            ),
+            h(
+              Avatar,
+              {
+                bottomSlot: { shape: 'circle', text: sharedBottom },
+                hoverMask: sharedMask,
+                size: 'large',
+                topSlot: { text: sharedTop },
+              },
+              () => 'B',
+            ),
+          ]),
+      }),
+    );
+
+    expect(wrapper.findAll('.shared-top-slot')).toHaveLength(2);
+    expect(wrapper.findAll('.shared-bottom-slot')).toHaveLength(2);
+    const avatars = wrapper.findAll('.semi-avatar-wrapper');
+    await avatars[0]!.trigger('mouseenter');
+    await nextTick();
+    expect(wrapper.findAll('.shared-hover-mask')).toHaveLength(1);
+    await avatars[1]!.trigger('mouseenter');
+    await nextTick();
+    expect(wrapper.findAll('.shared-hover-mask')).toHaveLength(2);
+  });
+
   it('缺省、显式 false、显式 true 的 Boolean 装饰语义互不混淆', () => {
     const host = mount(
       defineComponent({
