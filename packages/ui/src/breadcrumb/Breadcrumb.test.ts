@@ -128,6 +128,31 @@ describe('Breadcrumb', () => {
     );
   });
 
+  it('父级 separator slot 透传给子项，单项 separator slot 优先覆盖', () => {
+    const Host = defineComponent({
+      components: { Breadcrumb, BreadcrumbItem },
+      template: `
+        <Breadcrumb separator="prop-separator">
+          <template #separator><span class="root-separator">::</span></template>
+          <BreadcrumbItem>Root</BreadcrumbItem>
+          <BreadcrumbItem>
+            <template #separator><span class="item-separator">--</span></template>
+            Item
+          </BreadcrumbItem>
+          <BreadcrumbItem>Leaf</BreadcrumbItem>
+        </Breadcrumb>
+      `,
+    });
+    const wrapper = mount(Host);
+    mountedWrappers.push(wrapper);
+
+    expect(wrapper.get('.root-separator').text()).toBe('::');
+    expect(wrapper.get('.item-separator').text()).toBe('--');
+    expect(wrapper.findAll('.semi-breadcrumb-separator')).toHaveLength(1);
+    expect(wrapper.text()).toContain('Root::Item--Leaf');
+    expect(wrapper.text()).not.toContain('prop-separator');
+  });
+
   it('autoCollapse 缺省/显式 true 折叠并支持 click/Enter，显式 false 保留全部项', async () => {
     const items = () =>
       ['一', '二', '三', '四', '五', '六'].map((name) =>
