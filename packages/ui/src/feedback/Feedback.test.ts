@@ -232,6 +232,40 @@ describe('Feedback', () => {
     wrapper.unmount();
   });
 
+  it('popup 通过 SideSheet 转发动效参数并等待真实退出 animationend', async () => {
+    vi.useFakeTimers();
+    const wrapper = await mountVisible({ mask: true, motion: true });
+    const content = () =>
+      document.querySelector<HTMLElement>('.semi-feedback .semi-sidesheet-inner')!;
+    const mask = () => document.querySelector<HTMLElement>('.semi-feedback .semi-sidesheet-mask')!;
+    const end = (node: HTMLElement) =>
+      node.dispatchEvent(new Event('animationend', { bubbles: true }));
+
+    expect(mask()).not.toBeNull();
+    expect(mask().className).toContain('semi-sidesheet-animation-mask_show');
+    expect(content().className).toContain('semi-sidesheet-animation-content_show_bottom');
+    end(mask());
+    await settle();
+    expect(mask().className).not.toContain('semi-sidesheet-animation-mask_show');
+    expect(content().className).toContain('semi-sidesheet-animation-content_show_bottom');
+    end(content());
+    await settle();
+    expect(content().className).not.toContain('semi-sidesheet-animation-content_show_bottom');
+
+    await wrapper.setProps({ visible: false });
+    await vi.advanceTimersByTimeAsync(500);
+    expect(document.querySelector('.semi-feedback')).not.toBeNull();
+    expect(content().className).toContain('semi-sidesheet-animation-content_hide_bottom');
+    end(content());
+    await settle();
+    expect(document.querySelector('.semi-feedback')).toBeNull();
+
+    await wrapper.setProps({ visible: true });
+    await settle();
+    expect(content().className).toContain('semi-sidesheet-animation-content_show_bottom');
+    wrapper.unmount();
+  });
+
   it('modal 使用容器 Promise loading、用户 okButtonProps 覆盖默认 disabled，并转发 v-model', async () => {
     const visible = ref(true);
     let resolveOk!: () => void;
