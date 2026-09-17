@@ -93,6 +93,38 @@ describe('SideSheet', () => {
     expect(second.querySelector('.semi-portal')).toBeNull();
   });
 
+  it('多个自定义容器实例切换目标时保留各自 Portal 锚点', async () => {
+    const first = document.createElement('div');
+    const second = document.createElement('div');
+    document.body.append(first, second);
+    const primary = mount(SideSheet, {
+      attachTo: document.body,
+      props: { motion: false, title: 'A', visible: true, getPopupContainer: () => first },
+      slots: { default: () => h('p', { 'data-sheet': 'primary' }, 'Primary') },
+    });
+    const secondary = mount(SideSheet, {
+      attachTo: document.body,
+      props: { motion: false, title: 'B', visible: true, getPopupContainer: () => second },
+      slots: { default: () => h('p', { 'data-sheet': 'secondary' }, 'Secondary') },
+    });
+    await settle();
+
+    expect(first.querySelector('[data-sheet="primary"]')).not.toBeNull();
+    expect(second.querySelector('[data-sheet="secondary"]')).not.toBeNull();
+    await primary.setProps({ getPopupContainer: () => second });
+    await settle();
+    expect(first.querySelector('.semi-portal')).toBeNull();
+    expect(second.querySelector('[data-sheet="primary"]')).not.toBeNull();
+    expect(second.querySelector('[data-sheet="secondary"]')).not.toBeNull();
+
+    primary.unmount();
+    await settle();
+    expect(second.querySelector('[data-sheet="primary"]')).toBeNull();
+    expect(second.querySelector('[data-sheet="secondary"]')).not.toBeNull();
+    secondary.unmount();
+    expect(second.querySelector('.semi-portal')).toBeNull();
+  });
+
   it('渲染固定 dialog/header/body/footer DOM、样式、data 与默认尺寸', async () => {
     const wrapper = mount(SideSheet, {
       attachTo: document.body,
