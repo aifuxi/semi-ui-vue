@@ -9,6 +9,14 @@ const PIXEL =
 const PIXEL_TWO =
   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="80" height="60"%3E%3Crect width="80" height="60" fill="%2300aa66"/%3E%3C/svg%3E';
 
+function expectPreviewPageTextNodes(expected: string[]): void {
+  const page = document.querySelector('.semi-image-preview-footer-page');
+  expect(page).not.toBeNull();
+  const nodes = [...page!.childNodes];
+  expect(nodes.map((node) => node.nodeType)).toEqual(expected.map(() => Node.TEXT_NODE));
+  expect(nodes.map((node) => node.textContent)).toEqual(expected);
+}
+
 afterEach(() => {
   document.body.innerHTML = '';
   document.body.removeAttribute('style');
@@ -160,6 +168,7 @@ describe('ImagePreview', () => {
     expect(onChange).toHaveBeenCalledWith(1);
     expect(document.querySelector('.semi-image-preview-header-title')?.textContent).toBe('第二张');
     expect(document.querySelector('.semi-image-preview-footer-page')?.textContent).toBe('2/2');
+    expectPreviewPageTextNodes(['2', '/', '2']);
     expect(document.querySelector<HTMLImageElement>('.semi-image-preview-image-img')?.src).toBe(
       PIXEL_TWO,
     );
@@ -168,6 +177,7 @@ describe('ImagePreview', () => {
     await nextTick();
     expect(onChange).toHaveBeenLastCalledWith(0);
     expect(document.querySelector('.semi-image-preview-footer-page')?.textContent).toBe('1/2');
+    expectPreviewPageTextNodes(['1', '/', '2']);
     wrapper.unmount();
   });
 
