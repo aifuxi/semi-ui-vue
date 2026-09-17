@@ -1,9 +1,10 @@
 /* eslint-disable vue/one-component-per-file -- test hosts cover template and render VNode inputs. */
 import { mount } from '@vue/test-utils';
-import { defineComponent, h } from 'vue';
+import { defineComponent, h, nextTick, ref } from 'vue';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
+import { Tag } from '../tag';
 import Descriptions from './Descriptions.vue';
 import DescriptionsItem from './DescriptionsItem.vue';
 
@@ -118,6 +119,24 @@ describe('Descriptions', () => {
     expect(wrapper.findAll('td').map((cell) => cell.attributes('colspan'))).toEqual(['3', '3']);
     expect(wrapper.text()).not.toContain('隐藏');
     expect(data[2]).not.toHaveProperty('span');
+  });
+
+  it('data 复用同一个 VNode 时卸载重挂仍保留内容', async () => {
+    const visible = ref(true);
+    const sharedValue = h(Tag, { style: { margin: '0px' } }, () => 'Design');
+    const data = [{ key: 'Category', value: sharedValue }];
+    const Host = defineComponent({
+      setup: () => () => (visible.value ? h(Descriptions, { align: 'justify', data }) : null),
+    });
+    const wrapper = mount(Host);
+
+    expect(wrapper.get('.semi-tag').text()).toBe('Design');
+    visible.value = false;
+    await nextTick();
+    expect(wrapper.find('.semi-descriptions').exists()).toBe(false);
+    visible.value = true;
+    await nextTick();
+    expect(wrapper.get('.semi-tag').text()).toBe('Design');
   });
 
   it('horizontal 同时解析模板与 render-function Item，忽略非 Item 子节点', () => {
