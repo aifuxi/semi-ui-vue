@@ -3,12 +3,28 @@ import { h, nextTick } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import Progress from './Progress.vue';
+import DefaultProgress, {
+  PROGRESS_DIRECTIONS,
+  PROGRESS_SIZES,
+  PROGRESS_STROKE_LINECAPS,
+  PROGRESS_TYPES,
+  Progress as PublicProgress,
+} from './index';
 
 afterEach(() => {
   vi.useRealTimers();
 });
 
 describe('Progress', () => {
+  it('公开入口导出组件与固定枚举常量', () => {
+    expect(PublicProgress).toBe(Progress);
+    expect(DefaultProgress).toBe(Progress);
+    expect(PROGRESS_DIRECTIONS).toEqual(['horizontal', 'vertical']);
+    expect(PROGRESS_SIZES).toEqual(['default', 'small', 'large']);
+    expect(PROGRESS_STROKE_LINECAPS).toEqual(['round', 'square']);
+    expect(PROGRESS_TYPES).toEqual(['line', 'circle']);
+  });
+
   it('渲染默认 line DOM、钳制百分比并只透传 data/ARIA attrs', async () => {
     const wrapper = mount(Progress, {
       attrs: {

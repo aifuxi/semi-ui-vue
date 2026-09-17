@@ -4,20 +4,24 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import Banner, { BANNER_TYPES } from './index';
+import Banner, { BANNER_TYPES, Banner as PublicBanner } from './index';
 
 afterEach(() => {
   vi.restoreAllMocks();
 });
 
 describe('Banner', () => {
+  it('公开入口导出组件与固定类型枚举', () => {
+    expect(PublicBanner).toBe(Banner);
+    expect(BANNER_TYPES).toEqual(['info', 'success', 'danger', 'warning']);
+  });
+
   it('渲染默认 info/full DOM、图标、关闭按钮与 alert 语义', () => {
     const wrapper = mount(Banner, {
       props: { title: '版本提示', description: '新版本已经可用' },
       slots: { default: '<button>立即查看</button>' },
     });
 
-    expect(BANNER_TYPES).toEqual(['info', 'success', 'danger', 'warning']);
     expect(wrapper.classes()).toEqual(
       expect.arrayContaining(['semi-banner', 'semi-banner-info', 'semi-banner-full']),
     );

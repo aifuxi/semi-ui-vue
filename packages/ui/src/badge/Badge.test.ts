@@ -5,9 +5,23 @@ import { Comment, Fragment, defineComponent, h } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider } from '../config-provider';
-import Badge, { BADGE_POSITIONS, BADGE_THEMES, BADGE_TYPES } from './index';
+import Badge, { BADGE_POSITIONS, BADGE_THEMES, BADGE_TYPES, Badge as PublicBadge } from './index';
 
 describe('Badge', () => {
+  it('公开入口导出组件与固定枚举常量', () => {
+    expect(PublicBadge).toBe(Badge);
+    expect(BADGE_TYPES).toEqual([
+      'primary',
+      'secondary',
+      'tertiary',
+      'danger',
+      'warning',
+      'success',
+    ]);
+    expect(BADGE_THEMES).toEqual(['solid', 'light', 'inverted']);
+    expect(BADGE_POSITIONS).toEqual(['leftTop', 'leftBottom', 'rightTop', 'rightBottom']);
+  });
+
   it('渲染默认计数、点状、自定义节点和无内容边界', () => {
     const host = mount(
       defineComponent({

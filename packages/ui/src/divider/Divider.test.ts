@@ -3,8 +3,15 @@ import { describe, expect, it } from 'vitest';
 import { h } from 'vue';
 
 import Divider from './Divider.vue';
+import { DIVIDER_ALIGNS, DIVIDER_LAYOUTS, Divider as PublicDivider } from './index';
 
 describe('Divider', () => {
+  it('公开入口导出组件与固定枚举常量', () => {
+    expect(PublicDivider).toBe(Divider);
+    expect(DIVIDER_ALIGNS).toEqual(['left', 'right', 'center']);
+    expect(DIVIDER_LAYOUTS).toEqual(['horizontal', 'vertical']);
+  });
+
   it('renders the horizontal solid default and forwards native attrs', () => {
     const wrapper = mount(Divider, {
       attrs: {

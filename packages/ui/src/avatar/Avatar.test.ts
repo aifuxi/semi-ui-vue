@@ -4,9 +4,49 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
-import Avatar, { AvatarGroup } from './index';
+import Avatar, {
+  AVATAR_COLORS,
+  AVATAR_SHAPES,
+  AVATAR_SIZES,
+  Avatar as PublicAvatar,
+  AvatarGroup,
+} from './index';
 
 describe('Avatar', () => {
+  it('公开入口保留默认导出、compound Group 与固定枚举常量', () => {
+    expect(PublicAvatar).toBe(Avatar);
+    expect(Avatar.Group).toBe(AvatarGroup);
+    expect(AVATAR_SHAPES).toEqual(['circle', 'square']);
+    expect(AVATAR_SIZES).toEqual([
+      'extra-extra-small',
+      'extra-small',
+      'small',
+      'default',
+      'medium',
+      'large',
+      'extra-large',
+    ]);
+    expect(AVATAR_COLORS).toEqual([
+      'grey',
+      'red',
+      'pink',
+      'purple',
+      'violet',
+      'indigo',
+      'blue',
+      'light-blue',
+      'cyan',
+      'teal',
+      'green',
+      'light-green',
+      'lime',
+      'yellow',
+      'amber',
+      'orange',
+      'white',
+    ]);
+  });
+
   it('渲染默认文本语义、全尺寸、自定义尺寸、形状与颜色', () => {
     const wrapper = mount(
       defineComponent({

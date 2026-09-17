@@ -7,12 +7,29 @@ import { semiGlobal } from '../config-provider';
 import { Tag } from '../tag';
 import Descriptions from './Descriptions.vue';
 import DescriptionsItem from './DescriptionsItem.vue';
+import DefaultDescriptions, {
+  DESCRIPTIONS_ALIGNS,
+  DESCRIPTIONS_LAYOUTS,
+  DESCRIPTIONS_SIZES,
+  Descriptions as PublicDescriptions,
+  DescriptionsItem as PublicDescriptionsItem,
+} from './index';
 
 beforeEach(() => {
   semiGlobal.config = {};
 });
 
 describe('Descriptions', () => {
+  it('公开入口保留默认导出、compound Item 与固定枚举常量', () => {
+    expect(PublicDescriptions).toBe(Descriptions);
+    expect(DefaultDescriptions).toBe(Descriptions);
+    expect(PublicDescriptions.Item).toBe(PublicDescriptionsItem);
+    expect(PublicDescriptionsItem).toBe(DescriptionsItem);
+    expect(DESCRIPTIONS_ALIGNS).toEqual(['center', 'justify', 'left', 'plain']);
+    expect(DESCRIPTIONS_LAYOUTS).toEqual(['horizontal', 'vertical']);
+    expect(DESCRIPTIONS_SIZES).toEqual(['small', 'medium', 'large']);
+  });
+
   it('以默认 center/vertical DOM 渲染 data、函数值、VNode key 并过滤 hidden', () => {
     const data = [
       { key: h('strong', '用户名'), value: 'Semi' },
