@@ -90,6 +90,22 @@ describe('Calendar', () => {
     expect((wrapper.emitted('click')?.at(-1)?.[1] as Date).getDate()).toBe(10);
   });
 
+  it('月视图普通日期格保持固定 Adapter 的 gridcell 与 aria-current 输出', () => {
+    const wrapper = mount(Calendar, { props: { displayValue, mode: 'month' } });
+    const cells = wrapper.findAll('.semi-calendar-month-skeleton [role="gridcell"]');
+    const today = cells.find(
+      (cell) => cell.attributes('aria-label') === new Date(2023, 3, 10).toLocaleDateString(),
+    );
+    const nonToday = cells.find(
+      (cell) => cell.attributes('aria-label') === new Date(2023, 3, 11).toLocaleDateString(),
+    );
+
+    expect(today).toBeDefined();
+    expect(today!.attributes('aria-current')).toBe('date');
+    expect(nonToday).toBeDefined();
+    expect(nonToday!.attributes('aria-current')).toBe('false');
+  });
+
   it('解析日内、全天与相同时间事件并响应受控 events 更新', async () => {
     const events = [
       event('day-a', new Date(2023, 3, 10, 9), 'A'),
@@ -187,6 +203,12 @@ describe('Calendar', () => {
     const wrapper = mount(Host, { attachTo: document.body });
     await flushPromises();
     const more = wrapper.get('.semi-calendar-month-event-card-wrapper');
+    const triggerCell = more.element.closest('li');
+    expect(triggerCell).not.toBeNull();
+    expect(triggerCell!.getAttribute('role')).toBeNull();
+    expect(triggerCell!.getAttribute('aria-label')).toBeNull();
+    expect(triggerCell!.getAttribute('aria-current')).toBeNull();
+
     await more.trigger('click');
     await flushPromises();
     expect(popup.querySelector('.semi-portal-inner')).not.toBeNull();
