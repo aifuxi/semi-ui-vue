@@ -65,13 +65,18 @@ describe('Layout', () => {
     const wrapper = mount(Layout, {
       props: { prefixCls: 'demo-layout', tagName: 'article' },
       slots: {
-        default: () => h(LayoutHeader, { prefixCls: 'demo-layout', tagName: 'div' }, () => 'H'),
+        default: () => [
+          h(LayoutHeader, { prefixCls: 'demo-layout', tagName: 'div' }, () => 'H'),
+          h(LayoutSider, { prefixCls: 'demo-layout' }, () => 'S'),
+        ],
       },
     });
 
     expect(wrapper.element.tagName).toBe('ARTICLE');
     expect(wrapper.classes()).toContain('demo-layout');
     expect(wrapper.get('div').classes()).toContain('demo-layout-header');
+    expect(wrapper.get('aside').classes()).toContain('demo-layout-sider');
+    expect(wrapper.get('.demo-layout-sider-children').text()).toBe('S');
   });
 
   it('通过 hasSider 或直接 Sider 子节点切换横向布局 class', async () => {
