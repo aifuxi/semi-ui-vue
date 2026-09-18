@@ -2,14 +2,10 @@ import { mount } from '@vue/test-utils';
 import { h } from 'vue';
 import { describe, expect, it } from 'vitest';
 
-import Skeleton from './Skeleton.vue';
-import SkeletonAvatar from './SkeletonAvatar.vue';
-import SkeletonButton from './SkeletonButton.vue';
-import SkeletonImage from './SkeletonImage.vue';
-import SkeletonParagraph from './SkeletonParagraph.vue';
-import SkeletonTitle from './SkeletonTitle.vue';
-import {
-  Skeleton as CompoundSkeleton,
+import Skeleton, {
+  SKELETON_AVATAR_SHAPES,
+  SKELETON_AVATAR_SIZES,
+  Skeleton as NamedSkeleton,
   SkeletonAvatar as NamedSkeletonAvatar,
   SkeletonButton as NamedSkeletonButton,
   SkeletonImage as NamedSkeletonImage,
@@ -91,18 +87,29 @@ describe('Skeleton', () => {
 
 describe('Skeleton items', () => {
   it('公开复合入口转发全部子组件', () => {
-    expect(CompoundSkeleton.Avatar).toBe(NamedSkeletonAvatar);
-    expect(CompoundSkeleton.Button).toBe(NamedSkeletonButton);
-    expect(CompoundSkeleton.Image).toBe(NamedSkeletonImage);
-    expect(CompoundSkeleton.Paragraph).toBe(NamedSkeletonParagraph);
-    expect(CompoundSkeleton.Title).toBe(NamedSkeletonTitle);
+    expect(Skeleton).toBe(NamedSkeleton);
+    expect(Skeleton.Avatar).toBe(NamedSkeletonAvatar);
+    expect(Skeleton.Button).toBe(NamedSkeletonButton);
+    expect(Skeleton.Image).toBe(NamedSkeletonImage);
+    expect(Skeleton.Paragraph).toBe(NamedSkeletonParagraph);
+    expect(Skeleton.Title).toBe(NamedSkeletonTitle);
+    expect(SKELETON_AVATAR_SHAPES).toEqual(['circle', 'square']);
+    expect(SKELETON_AVATAR_SIZES).toEqual([
+      'extra-extra-small',
+      'extra-small',
+      'small',
+      'default',
+      'medium',
+      'large',
+      'extra-large',
+    ]);
 
-    expect(mount(CompoundSkeleton.Avatar).classes()).toContain('semi-skeleton-avatar');
-    expect(mount(CompoundSkeleton.Paragraph, { props: { rows: 2 } }).findAll('li')).toHaveLength(2);
+    expect(mount(Skeleton.Avatar).classes()).toContain('semi-skeleton-avatar');
+    expect(mount(Skeleton.Paragraph, { props: { rows: 2 } }).findAll('li')).toHaveLength(2);
   });
 
   it('渲染 Avatar 默认尺寸/形状、全部尺寸和 square', () => {
-    const avatar = mount(SkeletonAvatar, {
+    const avatar = mount(NamedSkeletonAvatar, {
       attrs: { 'data-testid': 'avatar' },
       props: { className: 'custom-avatar' },
     });
@@ -125,20 +132,20 @@ describe('Skeleton items', () => {
       'large',
       'extra-large',
     ] as const) {
-      expect(mount(SkeletonAvatar, { props: { size } }).classes()).toContain(
+      expect(mount(NamedSkeletonAvatar, { props: { size } }).classes()).toContain(
         `semi-skeleton-avatar-${size}`,
       );
     }
-    expect(mount(SkeletonAvatar, { props: { shape: 'square' } }).classes()).toContain(
+    expect(mount(NamedSkeletonAvatar, { props: { shape: 'square' } }).classes()).toContain(
       'semi-skeleton-avatar-square',
     );
   });
 
   it('渲染 Image/Title/Button 并支持 prefixCls 与 attrs', () => {
-    expect(mount(SkeletonImage).classes()).toContain('semi-skeleton-image');
-    expect(mount(SkeletonTitle).classes()).toContain('semi-skeleton-title');
-    expect(mount(SkeletonButton).classes()).toContain('semi-skeleton-button');
-    const custom = mount(SkeletonTitle, {
+    expect(mount(NamedSkeletonImage).classes()).toContain('semi-skeleton-image');
+    expect(mount(NamedSkeletonTitle).classes()).toContain('semi-skeleton-title');
+    expect(mount(NamedSkeletonButton).classes()).toContain('semi-skeleton-button');
+    const custom = mount(NamedSkeletonTitle, {
       attrs: { id: 'custom-title' },
       props: { className: 'extra', prefixCls: 'custom-skeleton' },
     });
@@ -147,7 +154,7 @@ describe('Skeleton items', () => {
   });
 
   it('Paragraph 默认四行、自定义行数，且不透传其余 attrs', () => {
-    const paragraph = mount(SkeletonParagraph, {
+    const paragraph = mount(NamedSkeletonParagraph, {
       attrs: { 'data-ignored': 'true' },
       props: { className: 'custom-paragraph' },
     });
@@ -157,7 +164,7 @@ describe('Skeleton items', () => {
     expect(paragraph.findAll('li')).toHaveLength(4);
     expect(paragraph.attributes('data-ignored')).toBeUndefined();
 
-    const compact = mount(SkeletonParagraph, { props: { rows: 1 } });
+    const compact = mount(NamedSkeletonParagraph, { props: { rows: 1 } });
     expect(compact.findAll('li')).toHaveLength(1);
   });
 });

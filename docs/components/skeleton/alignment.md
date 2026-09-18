@@ -67,6 +67,7 @@ Skeleton 没有受控/非受控状态、emits、`v-model`、公开 ref 方法或
 - SSR：loading/内容态、compound item、placeholder VNode/slot 可渲染，产物不含私有路径。
 - Chromium：真实 vendor source 请求、DOM/attrs、computed style、几何、active 动画、desktop/mobile light/dark、RTL，以及成对独立 PNG 的直接字节比较。
 - 发包：根导出与 `@aifuxi/semi-ui-vue/skeleton` 子路径、复合静态成员、公开类型、`@aifuxi/semi-theme-default/skeleton.css`、tree-shaking、SSR-safe import、许可证/SBOM 和隔离 tarball 消费。
+- 公开入口：`Skeleton.test.ts` 从 `./index` 挂载默认导出、命名组件、复合静态成员与 `SKELETON_AVATAR_*` 枚举；`Skeleton.ssr.test.ts` 也从公开入口渲染复合 items。
 - 最终证据：`pnpm check` 通过（104 个测试文件、743 条单元/SSR 测试，并覆盖 vendor/inventory、格式、lint、typecheck、build、主题、SSR dist 与真实 tarball）；Skeleton 专项 Chromium 7/7、共享工作台 2/2 通过。
 - 五组 Skeleton React/Vue 截图分别从两个运行时独立生成，并经 `cmp` 直接验证 PNG bytes；desktop light/dark、mobile light/dark、desktop RTL 均逐字节相等。关键 computed style 精确相等，bounding rect 各轴差值均在 `0.5 CSS px` 以内。
 
