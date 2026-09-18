@@ -87,3 +87,7 @@
 
 - Vue 将 React `renderItem` 同时映射为 typed `renderItem` prop 和更自然的 `#item` scoped slot；slot 存在时优先。用户影响：模板调用无需 render function，DOM/行为不变，验收为等价适配。
 - List 内部 Spin 不作为公开组件导出；用户侧 List loading 的 DOM、样式、视觉和 SSR 契约完整，不据此宣称 Spin 完成。
+
+## 验收结论
+
+当前状态：ready。公开入口、compound `List.Item`、固定布局/尺寸/Item 对齐枚举、dataSource/slot/renderItem、Grid、loading、locale empty、SSR/hydration、React/Vue Chromium 对照、RTL、主题与发布子路径证据均已闭合；剩余差异仅为上述 Vue 原生 `#item` slot 与私有 ListSpin 边界。
