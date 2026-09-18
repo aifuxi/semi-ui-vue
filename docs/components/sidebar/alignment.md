@@ -76,7 +76,7 @@
 - Annotation：文本/视频、时长格式、链接打开、item payload、custom item slot、受控 collapse。
 - Code/File：JSON/代码路径、展开 payload、HTML 更新、只读工具栏、主/详情模式、copy 成败回调。
 - Chromium：desktop/mobile light/dark + RTL；React/Vue computed style、geometry、截图；工作台 smoke。
-- 发布：root/subpath runtime、声明、主题子入口、SSR-safe import、tree-shaking、许可证/SBOM 与隔离 tarball consumer。
+- 发布：root/subpath 的 default/named `Sidebar`、`Annotation`/`MCPConfigure` 与 compound 静态成员由单元用例从 `./index` 固定，另覆盖声明、主题子入口、SSR-safe import、tree-shaking、许可证/SBOM 与隔离 tarball consumer。
 
 ## Deviation
 

@@ -2,16 +2,20 @@ import { flushPromises, mount, shallowMount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, ref } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import Sidebar from './Sidebar.vue';
-import SidebarAnnotation from './SidebarAnnotation.vue';
-import SidebarMCPConfigure from './SidebarMCPConfigure.vue';
-import SidebarAnnotationContent from './SidebarAnnotationContent.vue';
-import SidebarCodeContent from './SidebarCodeContent.vue';
-import SidebarCodeItem from './SidebarCodeItem.vue';
-import SidebarContainer from './SidebarContainer.vue';
-import SidebarFileItem from './SidebarFileItem.vue';
-import SidebarMCPConfigureContent from './SidebarMCPConfigureContent.vue';
 import { Input } from '../input';
+
+import DefaultSidebar, {
+  Annotation as SidebarAnnotation,
+  MCPConfigure as SidebarMCPConfigure,
+  Sidebar,
+  SidebarAnnotationContent,
+  SidebarCodeContent,
+  SidebarCodeItem,
+  SidebarContainer,
+  SidebarFileContent,
+  SidebarFileItem,
+  SidebarMCPConfigureContent,
+} from './index';
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -19,6 +23,17 @@ afterEach(() => {
 });
 
 describe('Sidebar', () => {
+  it('公开入口保持 default、named 与复合静态成员一致', () => {
+    expect(DefaultSidebar).toBe(Sidebar);
+    expect(Sidebar.Container).toBe(SidebarContainer);
+    expect(Sidebar.CodeContent).toBe(SidebarCodeContent);
+    expect(Sidebar.CodeItem).toBe(SidebarCodeItem);
+    expect(Sidebar.FileContent).toBe(SidebarFileContent);
+    expect(Sidebar.FileItem).toBe(SidebarFileItem);
+    expect(SidebarAnnotation.AnnotationContent).toBe(SidebarAnnotationContent);
+    expect(SidebarMCPConfigure).toBeTypeOf('object');
+  });
+
   for (const [name, Component] of [
     ['Annotation', SidebarAnnotation],
     ['MCPConfigure', SidebarMCPConfigure],
