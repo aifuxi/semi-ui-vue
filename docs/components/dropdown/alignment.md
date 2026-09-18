@@ -128,3 +128,7 @@
 - CustomFilter 的可见回调会聚焦输入。原 Dropdown 在 requestVisible 同步通知 visibleChange，使 Vue 示例 nextTick 聚焦发生于 Tooltip 的 offscreen（-9999）定位阶段；trace 中 Vue 页面 scrollY 从7751归零，而 React仍7751，两端弹层文档top同为7905，因此不是像素阈值或容器对齐问题。
 - 固定 Tooltip Foundation 在 positionUpdated 后 togglePortalVisible 的回调中通知 visibleChange。Dropdown 现仅同步发送 update:visible 请求，让受控父级及时回写；visibleChange 由真正的 Tooltip 生命周期发送，不吞掉定位后通知。pendingUpdate 只避免重复发送已提出的 v-model 更新。
 - 新受控回归先红，修复后验证同步 update、定位后的唯一 visibleChange、回调聚焦、关闭和去重。固定 hover 在 portalInserted 即取消的分支只有 false 生命周期通知（请求仍是true/false）；同步宿主键盘处理发生在定位后通知之前。相关旧断言按该固定时序更正，未增加延迟或跳过终态验证。
+
+## Dropdown 公开入口锁定（2026-09-18）
+
+- `Dropdown.test.ts` 从 `./index` 同时覆盖默认导出、命名 `Dropdown` 与 `Dropdown.Item/Menu/Title/Divider` 复合静态成员，锁定根/子路径公开入口关系。SSR 与 hydration 测试已通过公开入口挂载，继续覆盖无 DOM 导入、稳定 trigger ARIA、Portal 接管和卸载清理。

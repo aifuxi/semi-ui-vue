@@ -5,7 +5,13 @@ import { defineComponent, h, nextTick, shallowRef } from 'vue';
 
 import { semiGlobal } from '../config-provider';
 import { Tag } from '../tag';
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTitle } from './index';
+import DefaultDropdown, {
+  Dropdown,
+  DropdownDivider,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTitle,
+} from './index';
 
 async function flushDropdown(): Promise<void> {
   for (let index = 0; index < 6; index += 1) {
@@ -38,6 +44,14 @@ describe('Dropdown', () => {
     document.body.replaceChildren();
     semiGlobal.config = {};
     vi.restoreAllMocks();
+  });
+
+  it('公开入口导出默认 Dropdown、命名 Dropdown 与复合静态子组件', () => {
+    expect(DefaultDropdown).toBe(Dropdown);
+    expect(Dropdown.Item).toBe(DropdownItem);
+    expect(Dropdown.Menu).toBe(DropdownMenu);
+    expect(Dropdown.Title).toBe(DropdownTitle);
+    expect(Dropdown.Divider).toBe(DropdownDivider);
   });
 
   it('受控请求及时回写，visibleChange 在 Portal 定位后各通知一次', async () => {
