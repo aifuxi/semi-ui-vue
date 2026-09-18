@@ -86,7 +86,7 @@
 - 单元：受控/非受控 value/open、默认 true Boolean 的缺省/false/true、format/12h/range、step/disabled/hide、输入/清空/事件顺序、slot/custom trigger、焦点、ARIA、stable Portal、Element/Document scroll 与卸载清理。
 - SSR：默认/range/disabled/readOnly/locale/slot 输出，无 Portal、无 vendor/private 路径。
 - Chromium：同 BrowserContext 的 React/Vue 来源、行为、computed style、bounding rect、desktop/mobile light/dark/RTL、Portal 和裁剪截图。
-- 发布：根与 `time-picker` 子路径导入、类型、样式、SSR-safe import、tree-shaking、许可/SBOM 和真实 tarball 安装。
+- 发布：根与 `time-picker` 子路径 default/named 导入、类型、样式、SSR-safe import、tree-shaking、许可/SBOM 和真实 tarball 安装。
 
 ## Deviation
 
