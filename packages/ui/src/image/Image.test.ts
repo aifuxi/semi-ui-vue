@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import Image, { ImagePreview } from './index';
+import Image, { Image as NamedImage, ImagePreview } from './index';
 
 const PIXEL =
   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="80" height="60"%3E%3Crect width="80" height="60" fill="%230066ff"/%3E%3C/svg%3E';
@@ -25,6 +25,11 @@ afterEach(() => {
 });
 
 describe('Image', () => {
+  it('公开入口导出默认 Image、命名 Image 与 ImagePreview', () => {
+    expect(NamedImage).toBe(Image);
+    expect(ImagePreview).toBeTruthy();
+  });
+
   it('按固定顺序处理 loading、load、src 重置和 error/fallback', async () => {
     const onLoad = vi.fn();
     const onError = vi.fn();

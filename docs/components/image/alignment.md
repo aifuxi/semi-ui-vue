@@ -89,7 +89,7 @@ Teleport target
 - React/Vue 共享场景：`preview=false` 单图、两张带标题的 group、默认操作区与稳定内联 SVG；所有图片不依赖外网。loading/error/fallback、受控状态、自定义内容和 custom container 由单元/SSR 覆盖。
 - Chromium：桌面 `1440×900` 与移动 `390×844` 的 light/dark、LTR/RTL；open/close、prev/next、wheel 缩放、原始尺寸、旋转、Esc、body lock/cleanup；关键颜色/显示/行高 computed style 精确相等，全部 bounding rect 轴差 `<=0.5px`。
 - 截图：`threshold<=0.1`、`maxDiffPixelRatio<=0.001`。关闭场景的桌面/移动 light/dark 与 RTL 裁剪图、打开后的预览大图分别直接比较独立 React/Vue PNG buffer 且字节相等；打开态整层和 footer 保留各自独立基线，footer 文本固有排版宽度差 `0.015625 CSS px`，按统一几何门槛验收，不宣称该裁剪 PNG 字节相等。
-- 发布：根与 `@aifuxi/semi-ui-vue/image` ESM/声明、默认 `Image` 和具名 `ImagePreview`、`@aifuxi/semi-theme-default/image.css`、tree-shaking、SSR-safe import、真实 tarball 安装、许可证/第三方声明/SBOM；声明与运行时不得泄漏 `vendor/**` 或私有 Foundation 类型。固定上游没有 `Image.Preview` 静态成员，本项目不虚构该入口。
+- 发布：根与 `@aifuxi/semi-ui-vue/image` ESM/声明、默认 `Image`、具名 `Image` 和具名 `ImagePreview`、`@aifuxi/semi-theme-default/image.css`、tree-shaking、SSR-safe import、真实 tarball 安装、许可证/第三方声明/SBOM；声明与运行时不得泄漏 `vendor/**` 或私有 Foundation 类型。固定上游没有 `Image.Preview` 静态成员，本项目不虚构该入口。
 
 ## Deviation
 
@@ -103,7 +103,11 @@ Teleport target
 - 行为门禁：Image 聚焦 `13/13`（11 个单元 + 2 个 SSR）通过；全仓 `75` 个测试文件、`554` 个单元与 SSR 测试通过。
 - 浏览器门禁：Image 定向 `7/7`、全量 Chromium `292/292` 通过；桌面/移动 light/dark、RTL、打开态交互与运行时错误均完成验收。
 - 视觉门禁：关闭场景五组 React/Vue 裁剪 PNG 与打开态预览大图直接字节相等；footer 关键 computed style 精确相等，最大已测几何差为 `0.015625 CSS px`。
-- 发布门禁：根/`image` 子路径 ESM 与公开声明、独立 `image.css`、SSR-safe import、真实 tarball 安装、许可证/第三方声明/SBOM 全部通过，产物未泄漏 `vendor/**` 或私有 Foundation 类型。
+- 发布门禁：根/`image` 子路径 ESM 与公开声明、默认/具名 `Image`、具名 `ImagePreview`、独立 `image.css`、SSR-safe import、真实 tarball 安装、许可证/第三方声明/SBOM 全部通过，产物未泄漏 `vendor/**` 或私有 Foundation 类型。
+
+## Image 公开入口锁定（2026-09-18）
+
+- `Image.test.ts` 从 `./index` 同时覆盖默认 `Image`、命名 `Image` 与 `ImagePreview`，锁定根/子路径公开入口关系。SSR 继续从公开入口挂载 `Image` / `ImagePreview`，覆盖无 DOM 渲染、group ID 与非 Portal 输出。
 
 ## 2026-09-12 文档严格验收发现的页码文本排版修复
 
