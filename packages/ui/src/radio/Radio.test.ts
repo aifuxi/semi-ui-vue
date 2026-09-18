@@ -4,7 +4,15 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, ref, shallowRef } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
-import Radio, { RadioGroup, type RadioValue } from './index';
+import DefaultRadio, {
+  RADIO_BUTTON_SIZES,
+  RADIO_DIRECTIONS,
+  RADIO_MODES,
+  RADIO_TYPES,
+  Radio,
+  RadioGroup,
+  type RadioValue,
+} from './index';
 
 function setNativeChecked(
   wrapper: ReturnType<typeof mount>,
@@ -16,6 +24,15 @@ function setNativeChecked(
 }
 
 describe('Radio', () => {
+  it('公开入口保持 default、named 与复合 Group 一致，并固定枚举常量', () => {
+    expect(DefaultRadio).toBe(Radio);
+    expect(Radio.Group).toBe(RadioGroup);
+    expect(RADIO_DIRECTIONS).toEqual(['horizontal', 'vertical']);
+    expect(RADIO_MODES).toEqual(['', 'advanced']);
+    expect(RADIO_TYPES).toEqual(['default', 'button', 'card', 'pureCard']);
+    expect(RADIO_BUTTON_SIZES).toEqual(['small', 'middle', 'large']);
+  });
+
   it('非受控 change 更新 DOM，并发出完整事件与 Vue update', async () => {
     const wrapper = mount(Radio, { props: { value: 'semi' }, slots: { default: 'Semi' } });
     setNativeChecked(wrapper, 0, true);
