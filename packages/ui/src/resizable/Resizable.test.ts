@@ -2,7 +2,13 @@ import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { h, nextTick } from 'vue';
 
-import { Resizable, ResizeGroup, ResizeHandler, ResizeItem } from './index';
+import {
+  RESIZE_DIRECTIONS,
+  Resizable,
+  ResizeGroup,
+  ResizeHandler,
+  ResizeItem,
+} from './index';
 
 const widthDescriptor = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetWidth');
 const heightDescriptor = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight');
@@ -45,6 +51,23 @@ afterEach(() => {
 });
 
 describe('Resizable', () => {
+  it('公开入口保留四组件具名导出与固定方向枚举', () => {
+    expect(Resizable.name).toBe('Resizable');
+    expect(ResizeGroup.name).toBe('ResizeGroup');
+    expect(ResizeItem.name).toBe('ResizeItem');
+    expect(ResizeHandler.name).toBe('ResizeHandler');
+    expect(RESIZE_DIRECTIONS).toEqual([
+      'top',
+      'right',
+      'bottom',
+      'left',
+      'topRight',
+      'bottomRight',
+      'bottomLeft',
+      'topLeft',
+    ]);
+  });
+
   it('渲染固定根 class、默认尺寸、八方向 handler、slot 与原生属性', () => {
     const wrapper = mount(Resizable, {
       attrs: {
