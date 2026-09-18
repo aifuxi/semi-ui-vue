@@ -70,6 +70,7 @@
 - SSR：根入口/子路径 import、基础/空态/树/选择 renderToString 与 hydration。
 - Chromium：同一固定 Chromium 进程的 React/Vue 来源、公开行为、computed style、几何；桌面/移动 light/dark 与 RTL 成对最小截图，Playwright 阈值后再直接比较独立 PNG buffer。
 - 发布：根/`table` default/named ESM 与声明、复合 `Table.Column` 与 `DEFAULT_KEY_COLUMN_*` 常量（单元用例从 `./index` 固定）、tree-shaking、根/独立样式、SSR-safe import、真实 tarball 离线消费、许可证和 SPDX SBOM。
+- 静态文档：仓库内 [index.md](./index.md)、[index.en-US.md](./index.en-US.md) 与 [react-to-vue.md](./react-to-vue.md) 覆盖 props/Table.Column/slots/events/exposed、选择/排序过滤/分页/展开/树形分组/固定列/虚拟化、可访问性与 React→Vue 映射；`coverage.md` 保留退役站点的历史映射。
 - ReactNode/render props/children/className 映射为 Vue VNodeChild/函数/slots/class；`v-model` 不替代上游受控状态。这些是框架原生映射，不构成能力损失。
 - 验证结果：`pnpm check` 全链通过（90 个测试文件、657 项单元/SSR 测试）；Table 自身 15 项公开行为/SSR 测试通过；7 项 Table 专属 Chromium 测试覆盖来源、DOM、computed style、几何、桌面/移动 light/dark 与 RTL，5 组 React/Vue 独立 PNG buffer 直接字节相等。
 - 发布结果：根/`table` ESM 与声明、根/独立 `table.css`、SSR-safe import、许可证、第三方声明和 SPDX SBOM 均通过真实 tarball 离线安装消费；公开 `.d.ts` 不含私有 Foundation 或 vendor 路径。
