@@ -108,3 +108,4 @@ Worker 专属构建同时固定 `common/worker.ts` 为 DedicatedWorker 环境，
 - 单元/SSR：JsonViewer 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
 - Chromium：`tests/browser/components/json-viewer.spec.ts` 5/5 通过，覆盖固定源码来源、Worker 搜索/替换、公开 DOM、computed style/几何与 light/dark、RTL 对照截图。
 - 发布：`pnpm check:artifacts` 通过，覆盖构建（含 Worker 入口保留）、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、`json-viewer.css`、tree-shaking、许可与 SBOM。
+- 静态文档：本轮补齐仓库内 [index.md](./index.md)、[index.en-US.md](./index.en-US.md) 与 [react-to-vue.md](./react-to-vue.md)，覆盖 props/events/slots/methods、options/自定义渲染、搜索与替换、可访问性/键盘、主题/RTL/SSR 与 Worker 发布边界；`coverage.md` 保留退役站点的历史映射。
