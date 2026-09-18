@@ -18,7 +18,7 @@ import { Input } from '../input';
 import { Tag } from '../tag';
 import { ConfigProvider } from '../config-provider';
 
-import Tooltip from './Tooltip.vue';
+import DefaultTooltip, { Tooltip } from './index';
 import type { TooltipExposed } from './types';
 
 async function flushTooltip(): Promise<void> {
@@ -39,6 +39,10 @@ describe('Tooltip', () => {
     vi.useRealTimers();
     document.body.replaceChildren();
     vi.restoreAllMocks();
+  });
+
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultTooltip).toBe(Tooltip);
   });
 
   it('rePosKey 与触发器位置同次更新后使用更新后的 DOM 定位', async () => {

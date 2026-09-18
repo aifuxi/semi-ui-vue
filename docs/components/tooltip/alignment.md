@@ -90,7 +90,7 @@ Escape 在 `closeOnEsc=true` 时关闭并通知；ArrowDown/ArrowUp 将焦点移
 - 单元/SSR：默认值、VNode/文本/多节点/disabled 包裹、五 trigger、延迟与 condition、custom visible、outside/clickToHide、ARIA、focus guard/Escape、keepDOM/afterClose、容器优先级、公开方法与 SSR import/render。
 - React/Vue 场景：top/right/bottom/left、edge placement、hover/click/focus/contextMenu/custom、无箭头、自定义样式、disabled trigger、RTL 和自定义容器。
 - Chromium：固定源码请求、真实 Portal、computed style/几何、placement 与箭头、hover bridge、click outside、focus/Escape、overflow flip、resize/rePosKey、桌面/移动 light/dark 与 RTL 截图。
-- 发布包：根/`tooltip` 子路径 ESM 与声明、`tooltip.css`、SSR-safe import、tree-shaking 与真实 tarball 离线安装。
+- 发布包：根/`tooltip` 子路径 default/named ESM 与声明、`tooltip.css`、SSR-safe import、tree-shaking 与真实 tarball 离线安装。
 
 ## React → Vue 迁移
 
