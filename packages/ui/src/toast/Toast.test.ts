@@ -6,7 +6,7 @@ import { IconHome } from '@aifuxi/semi-icons-vue';
 import { ConfigProvider, semiGlobal } from '../config-provider';
 
 import { resetToastSeedsForTests } from './imperative';
-import { Toast, ToastFactory, useToast } from './index';
+import DefaultToast, { TOAST_THEMES, TOAST_TYPES, Toast, ToastFactory, useToast } from './index';
 
 describe('Toast', () => {
   beforeEach(() => {
@@ -21,6 +21,14 @@ describe('Toast', () => {
     semiGlobal.config = {};
     vi.useRealTimers();
     document.body.innerHTML = '';
+  });
+
+  it('公开入口保持 default、named、Factory 与常量导出一致', () => {
+    expect(DefaultToast).toBe(Toast);
+    expect(ToastFactory.create).toEqual(expect.any(Function));
+    expect(Toast.useToast).toBe(useToast);
+    expect(TOAST_TYPES).toEqual(['warning', 'success', 'info', 'error', 'default']);
+    expect(TOAST_THEMES).toEqual(['normal', 'light']);
   });
 
   it('支持四种静态方法、字符串简写、默认图标与 alert 语义', async () => {
