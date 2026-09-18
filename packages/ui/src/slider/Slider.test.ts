@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { computed, nextTick } from 'vue';
 
 import { configContextKey, type ConfigContextValue } from '../config-provider';
-import Slider from './index';
+import DefaultSlider, { Slider } from './index';
 
 function mockSliderGeometry(element: Element, left = 10, top = 20, width = 200, height = 32): void {
   Object.defineProperties(element, {
@@ -30,6 +30,10 @@ describe('Slider', () => {
   afterEach(() => {
     vi.restoreAllMocks();
     document.body.replaceChildren();
+  });
+
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultSlider).toBe(Slider);
   });
 
   it('保留默认/范围/纵向 DOM、样式位置与完整 ARIA', () => {
