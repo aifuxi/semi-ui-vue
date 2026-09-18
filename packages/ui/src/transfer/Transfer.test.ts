@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider } from '../config-provider';
 import Tree from '../tree/Tree.vue';
-import Transfer from './Transfer.vue';
+import DefaultTransfer, { Transfer } from './index';
 import type {
   TransferDataItem,
   TransferExposed,
@@ -19,6 +19,10 @@ const items: TransferDataItem[] = [
 ];
 
 describe('Transfer', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultTransfer).toBe(Transfer);
+  });
+
   it('渲染固定 DOM/class/data/style/ARIA，并按 select -> change 顺序更新非受控值', async () => {
     const order: string[] = [];
     const wrapper = mount(Transfer, {

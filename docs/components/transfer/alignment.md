@@ -80,7 +80,7 @@
 - pagination 默认/受控页、virtualize list 语义与滚动窗口、draggable 最终顺序。
 - Checkbox/Button/Input 键盘与焦点、ARIA list/listitem/search、disabled/loading、zh-CN/en-US、dark、RTL、SSR。
 - desktop `1440x900`、mobile `390x844`、light/dark/RTL 的 React/Vue computed style、geometry、裁剪截图；截图独立生成后直接比较 bytes/pixels。
-- 根/子路径类型、逐组件 CSS、SSR import、真实 tarball 安装/导入/声明/tree-shaking/合规。
+- 根/子路径 default/named 导入、公开类型、逐组件 CSS、SSR import、真实 tarball 安装/导入/声明/tree-shaking/合规。
 
 ## Deviation
 
