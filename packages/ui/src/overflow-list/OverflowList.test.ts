@@ -3,7 +3,7 @@ import { createCommentVNode, defineComponent, h, nextTick } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
-import OverflowList from './OverflowList.vue';
+import OverflowList, { OverflowList as OverflowListNamed } from './index';
 import type { OverflowItem } from './types';
 
 class TestResizeObserver {
@@ -98,6 +98,10 @@ afterEach(() => {
 });
 
 describe('OverflowList', () => {
+  it('公开入口保持默认导出与命名导出', () => {
+    expect(OverflowList).toBe(OverflowListNamed);
+  });
+
   it('collapse 默认从末尾收起并按最终 pivot 触发 overflow', async () => {
     const wrapper = mountList();
     expect(wrapper.classes()).toContain('semi-overflow-list');

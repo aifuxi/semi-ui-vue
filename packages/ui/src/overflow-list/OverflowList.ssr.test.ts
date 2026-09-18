@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
-import OverflowList from './OverflowList.vue';
+import OverflowList from './index';
 import type { OverflowItem } from './types';
 
 afterEach(() => {

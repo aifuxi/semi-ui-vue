@@ -92,6 +92,7 @@
 ## 完成证据
 
 - 状态：`ready`（2026-08-29）。
+- 本轮补充公开入口契约锁：默认导出与命名导出 `OverflowList` 均由单元测试固定，SSR 测试也从公开入口导入。
 - Unit/SSR：OverflowList 聚焦测试 2 个文件、8 个用例通过；全仓 83 个测试文件、604 项测试通过。
 - Chromium：OverflowList 来源、折叠/scroll 行为、desktop/mobile light/dark 与 RTL 共 7 项通过；全量 Chromium 回归 320/320 通过。
 - 样式与几何：三个专项目标的关键 computed style 精确相等，bounding rect 各轴差值不超过 `0.5 CSS px`；截图未使用 mask，也未放宽仓库阈值。
