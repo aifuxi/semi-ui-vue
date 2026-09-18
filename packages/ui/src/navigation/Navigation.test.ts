@@ -9,7 +9,7 @@ import { LocaleProvider } from '../locale';
 import enUS from '../locale/source/en_US';
 import zhCN from '../locale/source/zh_CN';
 import { Dropdown } from '../dropdown';
-import { Nav, NavItem, SubNav, type NavigationWrapperData } from './index';
+import DefaultNav, { Nav, NavItem, SubNav, type NavigationWrapperData } from './index';
 
 const items = [
   { itemKey: 'home', text: '首页' },
@@ -18,6 +18,14 @@ const items = [
 ];
 
 describe('Navigation', () => {
+  it('公开入口保持 default、named 与复合静态成员一致', () => {
+    expect(DefaultNav).toBe(Nav);
+    expect(DefaultNav.Item).toBe(NavItem);
+    expect(DefaultNav.Sub).toBe(SubNav);
+    expect(DefaultNav.Header).toBe(Nav.Header);
+    expect(DefaultNav.Footer).toBe(Nav.Footer);
+  });
+
   it('图标插槽应用导航尺寸，Item 保留显式尺寸而 Sub 强制使用 large', () => {
     const Host = defineComponent({
       components: { Nav, NavItem, SubNav, IconStar },
