@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, nextTick } from 'vue';
 
 import { semiGlobal } from '../config-provider';
-import { DatePicker } from './index';
+import DefaultDatePicker, { DatePicker } from './index';
 
 afterEach(() => {
   document.body.innerHTML = '';
@@ -19,6 +19,10 @@ async function settle(): Promise<void> {
 }
 
 describe('DatePicker', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultDatePicker).toBe(DatePicker);
+  });
+
   it('resolves omitted, explicit false and bare true default-true props', async () => {
     semiGlobal.config.overrideDefaultProps = { DatePicker: { showClear: false, motion: false } };
     const Host = defineComponent({
