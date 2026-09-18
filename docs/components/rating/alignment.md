@@ -78,4 +78,8 @@ Rating 是固定 `vendor/semi-design/content/order.js` 中 Radio 之后的下一
 
 Vue 模板会在 `v-for` 片段边界生成注释锚点，因此不能照搬 React Adapter 中依赖 `childNodes[index]` 的焦点迁移写法；本实现仍由固定 Rating Foundation 负责评分状态机，只在 Adapter 层通过组件 ref 定位同一公开 radio。该实现差异不改变 DOM/class、焦点目标、事件顺序或键盘行为，单元测试与同一 Chromium 的 React/Vue 行为对照已验证等价。
 
-状态：`ready`。`pnpm check` 已通过 259 个单元/SSR 测试、全包构建、主题产物、SSR import 与真实 tarball 安装验证；`pnpm test:browser` 已通过 140 个 Chromium 场景。Rating 的 desktop/mobile light/dark 与 RTL 截图、关键 computed style、bounding rect、Tooltip Portal、清空、键盘及焦点均与 React v2.102.0 参考场景一致。
+## 验收结论
+
+当前状态：ready。公开入口、固定尺寸枚举、受控/非受控评分、半星、ARIA、键盘、焦点、Tooltip Portal、SSR、React/Vue Chromium 对照、RTL、主题与发布子路径证据均已闭合；剩余差异仅为上述 Vue ref 焦点定位实现。
+
+历史完整门禁：`pnpm check` 已通过 259 个单元/SSR 测试、全包构建、主题产物、SSR import 与真实 tarball 安装验证；`pnpm test:browser` 已通过 140 个 Chromium 场景。Rating 的 desktop/mobile light/dark 与 RTL 截图、关键 computed style、bounding rect、Tooltip Portal、清空、键盘及焦点均与 React v2.102.0 参考场景一致。

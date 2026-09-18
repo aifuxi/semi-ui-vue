@@ -3,7 +3,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { computed, h, nextTick } from 'vue';
 
 import { configContextKey, type ConfigContextValue } from '../config-provider';
-import Rating from './index';
+import DefaultRating, { RATING_SIZES, Rating as PublicRating } from './index';
+
+const Rating = DefaultRating;
 
 function mockItemGeometry(element: Element, left = 0, width = 100): void {
   Object.defineProperty(element, 'clientWidth', { configurable: true, value: width });
@@ -33,6 +35,11 @@ describe('Rating', () => {
     vi.useRealTimers();
     vi.restoreAllMocks();
     document.body.replaceChildren();
+  });
+
+  it('公开入口保留默认导出、具名组件导出与固定尺寸枚举', () => {
+    expect(PublicRating).toBe(DefaultRating);
+    expect(RATING_SIZES).toEqual(['small', 'default']);
   });
 
   it('保留 count + 1 DOM、默认/半星/尺寸、字符与完整 ARIA', () => {
