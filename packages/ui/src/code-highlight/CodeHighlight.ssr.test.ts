@@ -2,7 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { h } from 'vue';
 import { describe, expect, it } from 'vitest';
 
-import CodeHighlight from './CodeHighlight.vue';
+import CodeHighlight from './index';
 
 describe('CodeHighlight SSR', () => {
   it('无 browser global 时输出安全文本、固定结构与 attrs，不执行 Prism DOM 高亮', async () => {

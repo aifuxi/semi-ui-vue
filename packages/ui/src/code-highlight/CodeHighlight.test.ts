@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { defineComponent, h } from 'vue';
 
 import { semiGlobal } from '../config-provider';
-import CodeHighlight from './CodeHighlight.vue';
+import CodeHighlight, { CodeHighlight as NamedCodeHighlight } from './index';
 
 const javascriptCode = ['const answer = 42;', 'console.log(answer);'].join('\n');
 
@@ -13,6 +13,10 @@ afterEach(() => {
 });
 
 describe('CodeHighlight', () => {
+  it('公开入口导出默认 CodeHighlight 与命名 CodeHighlight', () => {
+    expect(NamedCodeHighlight).toBe(CodeHighlight);
+  });
+
   it('缺省 Boolean 使用固定 true 默认值并生成 Prism token 与行号', () => {
     const wrapper = mount(CodeHighlight, {
       props: { code: javascriptCode, language: 'javascript' },
