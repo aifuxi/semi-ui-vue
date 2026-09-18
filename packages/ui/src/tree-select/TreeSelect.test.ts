@@ -101,7 +101,7 @@ describe('TreeSelect', () => {
         onSelect: () => order.push('select'),
         onChange: () => order.push('change'),
         'onUpdate:modelValue': () => order.push('update'),
-        onVisibleChange: (visible) => order.push(`visible:${visible}`),
+        onVisibleChange: (visible: boolean) => order.push(`visible:${visible}`),
       },
     });
     await open(wrapper);

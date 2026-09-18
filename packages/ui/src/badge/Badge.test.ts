@@ -114,7 +114,7 @@ describe('Badge', () => {
       slots: { default: () => h(Fragment, null, [h('i', { class: 'fragment-child' })]) },
     });
     const fragmentCount = fragment.get('[x-semi-prop="count"]');
-    expect(fragment.get('.fragment-child').exists()).toBe(true);
+    expect(fragment.find('.fragment-child').exists()).toBe(true);
     expect(fragmentCount.classes()).toContain('semi-badge-leftBottom');
     expect(fragmentCount.classes()).not.toContain('semi-badge-block');
   });
