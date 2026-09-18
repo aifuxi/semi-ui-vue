@@ -6,7 +6,13 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import ConfigProvider from '../config-provider/ConfigProvider.vue';
 import LocaleProvider from '../locale/LocaleProvider.vue';
 import enUS from '../locale/source/en_US';
-import { Table, TableColumn, type TableColumnProps as TableColumnConfig } from './index';
+import DefaultTable, {
+  DEFAULT_KEY_COLUMN_EXPAND,
+  DEFAULT_KEY_COLUMN_SELECTION,
+  Table,
+  TableColumn,
+  type TableColumnProps as TableColumnConfig,
+} from './index';
 
 const columns: TableColumnConfig[] = [
   { dataIndex: 'name', key: 'name', title: 'Name' },
@@ -28,6 +34,13 @@ afterEach(() => {
 });
 
 describe('Table', () => {
+  it('公开入口保持 default、named、复合 Column 与固定键常量一致', () => {
+    expect(DefaultTable).toBe(Table);
+    expect(Table.Column).toBe(TableColumn);
+    expect(Table.DEFAULT_KEY_COLUMN_SELECTION).toBe(DEFAULT_KEY_COLUMN_SELECTION);
+    expect(Table.DEFAULT_KEY_COLUMN_EXPAND).toBe(DEFAULT_KEY_COLUMN_EXPAND);
+  });
+
   it('LocaleProvider 提供表格文案，跨页选择保留表头半选状态', async () => {
     const wrapper = mount(LocaleProvider, {
       props: { locale: enUS },
