@@ -4,7 +4,17 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import Carousel from './Carousel.vue';
+import Carousel, {
+  CAROUSEL_ANIMATIONS,
+  CAROUSEL_ARROW_TYPES,
+  CAROUSEL_INDICATOR_POSITIONS,
+  CAROUSEL_INDICATOR_SIZES,
+  CAROUSEL_INDICATOR_TYPES,
+  CAROUSEL_SLIDE_DIRECTIONS,
+  CAROUSEL_THEMES,
+  CAROUSEL_TRIGGERS,
+  Carousel as NamedCarousel,
+} from './index';
 import type { CarouselMethods } from './types';
 
 const slides = {
@@ -24,6 +34,18 @@ afterEach(() => {
 });
 
 describe('Carousel', () => {
+  it('公开入口保持默认导出、命名导出和常量契约', () => {
+    expect(Carousel).toBe(NamedCarousel);
+    expect(CAROUSEL_ANIMATIONS).toEqual(['slide', 'fade']);
+    expect(CAROUSEL_ARROW_TYPES).toEqual(['always', 'hover']);
+    expect(CAROUSEL_INDICATOR_POSITIONS).toEqual(['left', 'center', 'right']);
+    expect(CAROUSEL_INDICATOR_SIZES).toEqual(['small', 'medium']);
+    expect(CAROUSEL_INDICATOR_TYPES).toEqual(['columnar', 'line', 'dot']);
+    expect(CAROUSEL_SLIDE_DIRECTIONS).toEqual(['left', 'right']);
+    expect(CAROUSEL_THEMES).toEqual(['dark', 'primary', 'light']);
+    expect(CAROUSEL_TRIGGERS).toEqual(['click', 'hover']);
+  });
+
   it('渲染固定 DOM/class、默认值并合并子 VNode 的 class/style', () => {
     const wrapper = mount(Carousel, {
       props: {
