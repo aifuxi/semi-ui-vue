@@ -4,7 +4,11 @@ import { defineComponent, h, nextTick } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
-import { Collapse, CollapsePanel } from './index';
+import CollapseDefault, {
+  COLLAPSE_ICON_POSITIONS,
+  Collapse,
+  CollapsePanel,
+} from './index';
 
 const panels = () => ({
   default: () => [
@@ -24,6 +28,12 @@ afterEach(() => {
 });
 
 describe('Collapse', () => {
+  it('公开入口保持默认导出、命名导出、复合 Panel 与常量', () => {
+    expect(CollapseDefault).toBe(Collapse);
+    expect(Collapse.Panel).toBe(CollapsePanel);
+    expect(COLLAPSE_ICON_POSITIONS).toEqual(['left', 'right']);
+  });
+
   it('渲染固定根/Panel DOM、默认状态并按 Adapter 边界转发属性', () => {
     const wrapper = mount(Collapse, {
       attrs: {

@@ -77,5 +77,6 @@
 - 固定 vendor 已核验为 `v2.102.0` / `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`，工作区开始时干净。
 - Collapse 定向单元/SSR/入口回归为 5 files / 177 tests；仓库单元门禁为 126 files / 902 tests，类型、lint、format、源码边界和全 workspace build 均通过。
 - 后续文档验收补充：`aria-owns` 的渲染传播按固定 Adapter 时序对齐，Collapse 单元/SSR 14 项与组件级 Chromium 5/5（含 desktop light/dark 与 RTL）在本仓库重新通过。
+- 本轮补充公开入口契约锁：默认导出、命名导出、`Collapse.Panel` 复合项与 `COLLAPSE_ICON_POSITIONS` 常量均由单元测试固定。
 - Collapse Chromium 对照为 7 / 7，工作台 smoke 为 2 / 2；桌面/移动 light/dark 与 RTL 的 React/Vue 对应截图独立生成且直接字节相等，无 mask、无 accepted visual deviation。
 - 根入口、`@aifuxi/semi-ui-vue/collapse`、`@aifuxi/semi-theme-default/collapse.css`、SSR-safe import、许可证/SBOM 与真实 tarball consumer 已通过。
