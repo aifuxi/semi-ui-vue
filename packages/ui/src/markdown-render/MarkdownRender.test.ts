@@ -4,7 +4,7 @@ import { defineComponent, h, nextTick } from 'vue';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
-import { MarkdownRender, markdownRenderDefaultComponents } from './index';
+import DefaultMarkdownRender, { MarkdownRender, markdownRenderDefaultComponents } from './index';
 
 async function waitFor(wrapper: VueWrapper, selector: string, maximumAttempts = 30): Promise<void> {
   for (let attempt = 0; attempt < maximumAttempts; attempt += 1) {
@@ -20,6 +20,11 @@ afterEach(() => {
 });
 
 describe('MarkdownRender', () => {
+  it('公开入口保持 default、named 与默认组件静态成员一致', () => {
+    expect(DefaultMarkdownRender).toBe(MarkdownRender);
+    expect(MarkdownRender.defaultComponents).toBe(markdownRenderDefaultComponents);
+  });
+
   it('异步渲染 Markdown、默认 Typography、链接和行内代码', async () => {
     const wrapper = mount(MarkdownRender, {
       props: {

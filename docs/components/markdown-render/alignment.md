@@ -59,7 +59,7 @@
 ## SSR 与发布门禁
 
 - SSR import 不访问 DOM；SSR render 只包含空根容器，hydration 后异步填充。
-- 根导出、`./markdown-render` 子路径、主题 `./markdown-render.css`、Vite entry、声明、source-boundary、许可证/SBOM 和真实 tarball consumer 均需验证。
+- 根导出、`./markdown-render` 子路径、default/named 导出与 `MarkdownRender.defaultComponents` 静态成员（单元/SSR 用例从 `./index` 固定）、主题 `./markdown-render.css`、Vite entry、声明、source-boundary、许可证/SBOM 和真实 tarball consumer 均需验证。
 - 新依赖固定为上游实际解析版本 `@mdx-js/mdx@3.0.1` 与 `remark-gfm@4.0.0`，同步 lockfile 和合规证据。
 
 ## 行为与视觉门禁
