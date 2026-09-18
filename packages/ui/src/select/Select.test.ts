@@ -3,9 +3,7 @@ import { defineComponent, h, nextTick } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
-import Select from './Select.vue';
-import SelectOption from './SelectOption.vue';
-import SelectOptionGroup from './SelectOptionGroup.vue';
+import DefaultSelect, { Select, SelectOption, SelectOptionGroup } from './index';
 import type { SelectExposed } from './types';
 
 afterEach(() => {
@@ -25,6 +23,12 @@ function options() {
 }
 
 describe('Select', () => {
+  it('公开入口保持 default、named 与复合 Option/OptGroup 一致', () => {
+    expect(DefaultSelect).toBe(Select);
+    expect(Select.Option).toBe(SelectOption);
+    expect(Select.OptGroup).toBe(SelectOptionGroup);
+  });
+
   it('受控值更新保留已悬停选项，不重置到第一项', async () => {
     const wrapper = mount(Select, {
       props: {

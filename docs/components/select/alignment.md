@@ -73,7 +73,7 @@ Select 是 Tooltip PoC 后的第二道复杂度门槛，用来验证搜索、多
 
 ## 视觉与发布门禁
 
-同一 Chromium 进程比较 React/Vue 的基础、禁用、占位、多选、分组搜索和打开浮层；桌面/移动、light/dark、RTL 均执行。computed style 和 bounding rect 沿用 `0.5 CSS px`，截图沿用 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`。发布包必须验证根/`select` 子路径、声明、`select.css`、SSR-safe import、tree-shaking、SBOM 与许可清单。
+同一 Chromium 进程比较 React/Vue 的基础、禁用、占位、多选、分组搜索和打开浮层；桌面/移动、light/dark、RTL 均执行。computed style 和 bounding rect 沿用 `0.5 CSS px`，截图沿用 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`。发布包必须验证根/`select` 子路径、default/named 导出与复合 `Select.Option`/`Select.OptGroup`（单元与 SSR 用例从 `./index` 固定）、声明、`select.css`、SSR-safe import、tree-shaking、SBOM 与许可清单。
 
 ## Deviation
 

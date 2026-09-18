@@ -2,10 +2,13 @@ import { renderToString } from '@vue/server-renderer';
 import { h } from 'vue';
 import { describe, expect, it } from 'vitest';
 
-import Select from './Select.vue';
-import SelectOption from './SelectOption.vue';
+import DefaultSelect, { Select, SelectOption } from './index';
 
 describe('Select SSR', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultSelect).toBe(Select);
+  });
+
   it('服务端渲染声明式选项、缺省选择与 ARIA，不创建 DOM 副作用', async () => {
     const html = await renderToString(
       h(Select, { defaultValue: 'douyin', id: 'ssr-select' }, () => [
