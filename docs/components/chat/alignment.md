@@ -67,7 +67,7 @@
 - 渲染：三种 mode、两种 align、连续角色、四种 status、divider、文本/图片/文件、HTML 转义、五类 render config 与 scoped slots。
 - 滚动/拖放：初始底部、流式跟随、滚轮停止跟随、返回底部、resize、drop overlay、卸载清理。
 - Chromium：desktop/mobile light/dark + en-US RTL；computed style、geometry、截图与工作台 smoke。
-- 发布：根/`./chat` runtime 和声明、`chat.css`、SSR-safe import、tree-shaking、许可证/SBOM 与隔离 tarball consumer。
+- 发布：根/`./chat` default/named runtime 和声明、`CHAT_*` 枚举常量（单元用例从 `./index` 固定）、`chat.css`、SSR-safe import、tree-shaking、许可证/SBOM 与隔离 tarball consumer。
 
 ## Deviation
 

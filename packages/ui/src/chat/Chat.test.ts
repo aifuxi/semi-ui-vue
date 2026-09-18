@@ -3,7 +3,15 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick } from 'vue';
 
 import { semiGlobal } from '../config-provider';
-import { Chat, type ChatExposed, type ChatMessage } from './index';
+import DefaultChat, {
+  CHAT_ALIGNS,
+  CHAT_MESSAGE_STATUSES,
+  CHAT_MODES,
+  CHAT_SEND_HOT_KEYS,
+  Chat,
+  type ChatExposed,
+  type ChatMessage,
+} from './index';
 
 const messages: ChatMessage[] = [
   { id: 'assistant-1', role: 'assistant', content: 'Hello **Semi**' },
@@ -16,6 +24,14 @@ afterEach(() => {
 });
 
 describe('Chat', () => {
+  it('公开入口保持 default、named 与固定枚举常量一致', () => {
+    expect(DefaultChat).toBe(Chat);
+    expect(CHAT_ALIGNS).toEqual(['leftRight', 'leftAlign']);
+    expect(CHAT_MODES).toEqual(['bubble', 'noBubble', 'userBubble']);
+    expect(CHAT_SEND_HOT_KEYS).toEqual(['enter', 'shift+enter']);
+    expect(CHAT_MESSAGE_STATUSES).toEqual(['loading', 'incomplete', 'complete', 'error']);
+  });
+
   it('保留固定消息 DOM、默认 bubble/leftRight 与连续角色结构', () => {
     const wrapper = mount(Chat, {
       props: {
