@@ -82,6 +82,8 @@
 
 ## 验收结论
 
+当前状态：`ready`。
+
 - 单元与 SSR 行为已纳入全仓测试；全量单元测试 `222/222` 通过。
 - 同一 Playwright Chromium 进程中的行为、computed style 与 geometry 对照通过；全量浏览器测试 `120/120` 通过。
 - 桌面/移动、light/dark 与 RTL 的 10 张 React/Vue 组件截图逐对字节一致。
