@@ -98,4 +98,5 @@ Select 是 Tooltip PoC 后的第二道复杂度门槛，用来验证搜索、多
 - 单元/SSR：Select 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
 - Chromium：`tests/browser/components/select.spec.ts` 5/5 通过，覆盖固定源码来源、Option/分组/Portal、搜索与键盘选择、computed style、几何、desktop light/dark 与 RTL 截图。
 - 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、复合 `Select.Option`/`Select.OptGroup`、类型、`select.css`、tree-shaking、许可与 SBOM。
-- 剩余交付缺口：仓库内尚无 Select 静态中英文文档与迁移说明；`coverage.md` 记录的页面属于已退役文档站。按[组件契约](../../testing/component-contract.md)的完整切片口径，补齐静态双语文档/迁移表后才可标记 `ready`，本轮未修改该状态。
+- 静态文档：本轮补齐仓库内 [index.md](./index.md)、[index.en-US.md](./index.en-US.md) 与 [react-to-vue.md](./react-to-vue.md)，覆盖 Props/Option/OptGroup/Events/Slots/Methods、受控与非受控、搜索/远程/创建、Portal/虚拟化、键盘/ARIA、主题/RTL/SSR 与 React→Vue 映射；`coverage.md` 保留退役站点的历史映射。
+- 状态：`ready`。公开入口、复合 `Select.Option`/`Select.OptGroup`、受控/非受控、搜索与远程、多选/折叠/N 标签、Portal/虚拟化、键盘/ARIA、SSR、双语文档与迁移表、React/Vue Chromium 对照、主题与发布子路径证据均已闭合。

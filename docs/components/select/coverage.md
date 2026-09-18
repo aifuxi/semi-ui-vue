@@ -3,6 +3,7 @@
 本页保留历史内容映射，以下路径与状态属于已[退役的文档站](../../documentation/README.md)。组件当前契约见 [alignment.md](alignment.md)，历史映射和通过记录不代表当前验收。
 
 - 状态：`ready`
+- 当前静态文档：[index.md](index.md)、[index.en-US.md](index.en-US.md)、[react-to-vue.md](react-to-vue.md)
 - 正式页面：`apps/docs/content/{zh-cn,en-us}/components/select.md`
 - Vue Demo：`apps/docs/src/demos/select/Showcase.vue`
 - API 元数据：`apps/docs/src/data/api/select.ts`
