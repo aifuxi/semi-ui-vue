@@ -4,11 +4,7 @@ import { defineComponent, h, nextTick } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
-import CollapseDefault, {
-  COLLAPSE_ICON_POSITIONS,
-  Collapse,
-  CollapsePanel,
-} from './index';
+import CollapseDefault, { COLLAPSE_ICON_POSITIONS, Collapse, CollapsePanel } from './index';
 
 const panels = () => ({
   default: () => [

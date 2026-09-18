@@ -61,13 +61,13 @@
 
 ## 验收矩阵
 
-| 证据                | 场景                                                                                                                        |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| 证据                | 场景                                                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | 单元/SSR            | 公开入口、聚合根、四组件标签、装饰顺序、link/disabled、尺寸/字重、复制/键盘/计时器、CSS/JS ellipsis、数值六规则与 parser、locale、SSR |
-| Chromium 行为       | 固定源码请求、DOM/class、标题/段落/链接/禁用、CSS Tooltip、JS 展开收起、数值/复制、无运行时错误                             |
-| computed style/几何 | 10 个目标逐项比较颜色、字体、字重、行高、截断、margin、cursor、user-select；各轴差值不超过 0.5px                            |
-| 视觉                | desktop 1440×900 与 mobile 390×844，light/dark；组件级裁剪                                                                  |
-| 发布                | 根/typography 子路径 ESM/types、根/typography.css、SSR import、真实 tarball 安装与 SBOM                                     |
+| Chromium 行为       | 固定源码请求、DOM/class、标题/段落/链接/禁用、CSS Tooltip、JS 展开收起、数值/复制、无运行时错误                                       |
+| computed style/几何 | 10 个目标逐项比较颜色、字体、字重、行高、截断、margin、cursor、user-select；各轴差值不超过 0.5px                                      |
+| 视觉                | desktop 1440×900 与 mobile 390×844，light/dark；组件级裁剪                                                                            |
+| 发布                | 根/typography 子路径 ESM/types、根/typography.css、SSR import、真实 tarball 安装与 SBOM                                               |
 
 截图阈值为 `threshold=0.1`、`maxDiffPixelRatio=0.001`；仍需人工排除局部集中差异。
 

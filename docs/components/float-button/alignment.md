@@ -56,13 +56,13 @@
 
 ## 验收矩阵
 
-| 证据                  | 场景                                                                                              |
-| --------------------- | ------------------------------------------------------------------------------------------------- |
+| 证据                  | 场景                                                                                                                      |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | 单元行为              | 公开入口命名组件与常量、默认 DOM、attrs、尺寸/形状、colorful、disabled、跳转/click 顺序、Badge、Group 委托、SSR/hydration |
-| Chromium 行为/无障碍  | 固定源码请求、禁用不触发、Group value、无默认键盘语义、hover/active、无运行时错误                 |
-| computed style / 几何 | 八个目标的尺寸、圆角、背景、颜色、阴影、badge 与 group 布局逐项相等；各轴误差不超过 0.5px         |
-| 视觉                  | desktop 1440×900 与 mobile 390×844，light/dark；额外 desktop light RTL；组件裁剪                  |
-| 发布                  | 根/`float-button` 子路径 ESM 与 types、`float-button.css`、SSR import、真实 tarball 安装          |
+| Chromium 行为/无障碍  | 固定源码请求、禁用不触发、Group value、无默认键盘语义、hover/active、无运行时错误                                         |
+| computed style / 几何 | 八个目标的尺寸、圆角、背景、颜色、阴影、badge 与 group 布局逐项相等；各轴误差不超过 0.5px                                 |
+| 视觉                  | desktop 1440×900 与 mobile 390×844，light/dark；额外 desktop light RTL；组件裁剪                                          |
+| 发布                  | 根/`float-button` 子路径 ESM 与 types、`float-button.css`、SSR import、真实 tarball 安装                                  |
 
 截图门槛保持 `threshold=0.1`、`maxDiffPixelRatio=0.001`，并人工检查局部集中差异。
 

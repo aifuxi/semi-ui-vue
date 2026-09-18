@@ -3,13 +3,7 @@ import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import {
-  Col,
-  GRID_BREAKPOINTS,
-  GRID_RESPONSIVE_MAP,
-  GRID_RESPONSIVE_PRIORITY,
-  Row,
-} from './index';
+import { Col, GRID_BREAKPOINTS, GRID_RESPONSIVE_MAP, GRID_RESPONSIVE_PRIORITY, Row } from './index';
 
 const originalMatchMedia = window.matchMedia;
 

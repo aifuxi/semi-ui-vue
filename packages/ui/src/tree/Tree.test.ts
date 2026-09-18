@@ -2,7 +2,13 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, type VNodeChild } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import DefaultTree, { Tree, TreeNode, type TreeExposed, type TreeNodeData, type TreeSlots } from './index';
+import DefaultTree, {
+  Tree,
+  TreeNode,
+  type TreeExposed,
+  type TreeNodeData,
+  type TreeSlots,
+} from './index';
 
 const data: TreeNodeData[] = [
   {

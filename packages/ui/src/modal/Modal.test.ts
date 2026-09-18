@@ -5,12 +5,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { IconSend } from '@aifuxi/semi-icons-vue';
 import { DragMove } from '../drag-move';
 import { ConfigProvider, semiGlobal } from '../config-provider';
-import DefaultModal, {
-  MODAL_CONFIRM_TYPES,
-  MODAL_SIZES,
-  Modal,
-  useModal,
-} from './index';
+import DefaultModal, { MODAL_CONFIRM_TYPES, MODAL_SIZES, Modal, useModal } from './index';
 
 afterEach(async () => {
   Modal.destroyAll();

@@ -2,13 +2,7 @@ import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { h, nextTick } from 'vue';
 
-import {
-  RESIZE_DIRECTIONS,
-  Resizable,
-  ResizeGroup,
-  ResizeHandler,
-  ResizeItem,
-} from './index';
+import { RESIZE_DIRECTIONS, Resizable, ResizeGroup, ResizeHandler, ResizeItem } from './index';
 
 const widthDescriptor = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetWidth');
 const heightDescriptor = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight');
