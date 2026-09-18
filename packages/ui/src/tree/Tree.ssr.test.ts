@@ -2,11 +2,15 @@ import { renderToString } from '@vue/server-renderer';
 import { describe, expect, it } from 'vitest';
 import { createSSRApp, h } from 'vue';
 
-import Tree from './Tree.vue';
+import DefaultTree, { Tree } from './index';
 
 const treeData = [{ key: 'root', label: 'Root', children: [{ key: 'leaf', label: 'Leaf' }] }];
 
 describe('Tree SSR', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultTree).toBe(Tree);
+  });
+
   it('默认、展开、多选、搜索与目录模式在无 browser global 时稳定输出', async () => {
     const html = await renderToString(
       createSSRApp({

@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 
-import Tree from './Tree.vue';
+import { Tree } from './index';
 
 const treeData = [{ key: 'root', label: 'Root', children: [{ key: 'leaf', label: 'Leaf' }] }];
 

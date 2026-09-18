@@ -55,7 +55,7 @@
 ## SSR、发布与验收
 
 - SSR import 不读取 `window/document`；默认、expanded/multiple/search/directory/RTL 静态输出和 hydration 无警告。
-- 根导出、`tree` 子路径、类型、`tree.css`、root CSS、tree-shaking、SSR-safe import 和真实 tarball 安装全部验证。
+- 根导出、`tree` 子路径、default/named 导出与复合 `Tree.TreeNode`（单元、SSR 与 client 用例从 `./index` 固定）、类型、`tree.css`、root CSS、tree-shaking、SSR-safe import 和真实 tarball 安装全部验证。
 - React/Vue 参考场景使用相同数据、viewport、DPR、locale、主题、方向与 Chromium 进程。
 
 ## Deviation

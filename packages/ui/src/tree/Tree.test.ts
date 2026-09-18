@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, type VNodeChild } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import Tree, { type TreeExposed, type TreeNodeData, type TreeSlots } from './index';
+import DefaultTree, { Tree, TreeNode, type TreeExposed, type TreeNodeData, type TreeSlots } from './index';
 
 const data: TreeNodeData[] = [
   {
@@ -43,6 +43,11 @@ afterEach(() => {
 });
 
 describe('Tree', () => {
+  it('公开入口保持 default、named 与复合 TreeNode 一致', () => {
+    expect(DefaultTree).toBe(Tree);
+    expect(Tree.TreeNode).toBe(TreeNode);
+  });
+
   it('保留根/list/node DOM、class、data、ARIA 与默认 true Boolean', () => {
     const wrapper = mountTree({
       ariaLabel: '地区树',
