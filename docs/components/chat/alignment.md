@@ -82,3 +82,10 @@
 固定 `semi-ui/chat/chatBox/index.tsx:112` 的完整渲染参数包含 avatar/title/content/action。文档 FullBox 浏览器复现 Vue 只提供前三项，默认操作消失。维护范围为将现有 action VNode 同时提供给默认布局与完整 slot；保持 Foundation 反馈、重置、复制、删除事件和现有类名/Portal 不变。增加完整 slot 的公开反馈/重置回归，并用双语真实文档验证默认操作与删除确认。
 
 代码消息的 fence 路径使用公开 CodeHighlight（lineNumber=true），对应固定 chat/chatBox/code.tsx → markdownRender/components/code.tsx。补齐示例显式引入 markdown-render.css，保留深色代码容器中的可读配色。
+
+## 验收结论
+
+- 状态：`ready`（2026-09-18 复核）。
+- 单元/SSR：Chat 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/chat.spec.ts` 5/5 通过，覆盖固定源码来源、DOM/computed style/几何、hint 受控更新、desktop light/dark 与 en-US RTL 截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、`CHAT_*` 枚举、类型、`chat.css`、tree-shaking、许可与 SBOM。

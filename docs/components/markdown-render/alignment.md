@@ -73,3 +73,10 @@
 
 - `format='mdx'` 的自定义组件使用 Vue Component，而不是 React Component；事件属性映射为 Vue `onXxx`。这是框架原生迁移，不改变调用方可观察交互。
 - Vue 会在 `format`、插件和 `remarkGfm` 动态变化时重新求值；React v2.102.0 仅在 `raw` 变化时重新求值。Vue 调用方无需通过额外改变 `raw` 才能应用新配置，验收为可接受的框架响应性增强。
+
+## 验收结论
+
+- 状态：`ready`（2026-09-18 复核）。
+- 单元/SSR：MarkdownRender 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/markdown-render.spec.ts` 5/5 通过，覆盖固定源码来源、DOM/computed style/几何、desktop light/dark 与 RTL 截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、`MarkdownRender.defaultComponents`、类型、样式、tree-shaking、许可与 SBOM。

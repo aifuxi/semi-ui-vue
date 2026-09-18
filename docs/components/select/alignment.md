@@ -92,3 +92,10 @@ Select 是 Tooltip PoC 后的第二道复杂度门槛，用来验证搜索、多
 - Custom 首开附件完整比较137个节点，仅4个多选选项 Tag 缺少 `semi-tag-square` 与 `max-width:100%`，其余节点样式、属性、文本及几何一致。
 - 固定 Select `renderTag` 使用 Tag 并显式传 `style={{ maxWidth: '100%' }}`，Tag 默认 `shape: 'square'`。Vue Select 内联结构现补默认 square 类；已选选项及剩余选项标签保留100%宽度上限，+N标签不新增该限制。不修改 Tag 公共实现或选择交互。
 - 现有多选公开行为测试增加默认Tag形状和选项宽度上限断言，先红后绿；正式组合场景及历史证据由主 agent 统一重验。
+
+## 验收证据与剩余缺口（2026-09-18 复核）
+
+- 单元/SSR：Select 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/select.spec.ts` 5/5 通过，覆盖固定源码来源、Option/分组/Portal、搜索与键盘选择、computed style、几何、desktop light/dark 与 RTL 截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、复合 `Select.Option`/`Select.OptGroup`、类型、`select.css`、tree-shaking、许可与 SBOM。
+- 剩余交付缺口：仓库内尚无 Select 静态中英文文档与迁移说明；`coverage.md` 记录的页面属于已退役文档站。按[组件契约](../../testing/component-contract.md)的完整切片口径，补齐静态双语文档/迁移表后才可标记 `ready`，本轮未修改该状态。

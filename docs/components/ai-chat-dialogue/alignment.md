@@ -86,3 +86,10 @@
 消息复制优先使用用户激活下的同步复制，符合固定 dialogueAction.tsx 的 copy-text-to-clipboard 路径；临时textarea始终清理并恢复焦点。同步复制不可用时尝试Clipboard API，拒绝后不抛未处理异常或显示虚假成功提示。该失败处理是Vue适配的显式改进，不改变message-copy事件顺序。
 
 `message-edit` 插槽的 `{ value }` 为公开 `messageToChatInput(message)` 的返回值，包含 `inputContents`、`attachments` 和 `references`；消息编辑保留文本、附件与引用。固定依据：`aiChatDialogue/widgets/dialogueContent.tsx:342`。
+
+## 验收结论
+
+- 状态：`ready`（2026-09-18 复核）。
+- 单元/SSR：AIChatDialogue 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/ai-chat-dialogue.spec.ts` 5/5 通过，覆盖固定源码来源、DOM/computed style/几何、hint 受控更新、desktop light/dark 与 en-US RTL 截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、静态子组件一致性、类型、`ai-chat-dialogue.css`、tree-shaking、许可与 SBOM。

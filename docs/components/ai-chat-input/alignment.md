@@ -105,3 +105,10 @@ Vue render prop 使用 scoped slots；同时保留函数 prop 作为迁移兼容
 - 用户影响：脚本/render function 与模板都可扩展自定义配置项；`initValue` 在 Vue 侧走 `Configure.change`，会与既有 `Configure.Item` 一样发出一次 `change`（React 的 `init=true` 分支只更新状态），该差异与 `Configure.Item` 同源并已在本文档记录。
 
 默认上传按钮由外层 Upload trigger 统一打开文件选择器，一次点击只触发一次；自定义上传插槽仍可使用公开 `openFileDialog` 回调。固定依据：`aiChatInput/index.tsx:528` 的默认按钮没有额外 click 回调。
+
+## 验收结论
+
+- 状态：`ready`（2026-09-18 复核）。
+- 单元/SSR：AIChatInput 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例），含新增的 `getConfigureItem` 8 项公开回归。
+- Chromium：`tests/browser/components/ai-chat-input.spec.ts` 5/5 通过，覆盖固定源码来源、DOM/computed style/几何与交互、desktop light/dark 与 en-US RTL 截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出（含 `getConfigureItem`）、类型、`ai-chat-input.css`、tree-shaking、许可与 SBOM。
