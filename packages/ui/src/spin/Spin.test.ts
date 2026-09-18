@@ -4,8 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
 
-import Spin from './Spin.vue';
-import DefaultSpin, { SPIN_SIZES, Spin as PublicSpin } from './index';
+import Spin, { SPIN_SIZES, Spin as PublicSpin } from './index';
 
 afterEach(() => {
   vi.useRealTimers();
@@ -15,7 +14,6 @@ afterEach(() => {
 describe('Spin', () => {
   it('公开入口导出组件与固定尺寸枚举', () => {
     expect(PublicSpin).toBe(Spin);
-    expect(DefaultSpin).toBe(Spin);
     expect(SPIN_SIZES).toEqual(['small', 'middle', 'large']);
   });
 

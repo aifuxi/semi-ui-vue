@@ -64,6 +64,7 @@ Spin 没有 emits、`v-model`、公开命令式 ref、Portal 或非受控状态�
 - SSR：默认/hidden/block、自定义 VNode 内容、fallback gradient、无私有路径。
 - Chromium：真实 vendor source 请求，DOM/data/ARIA、三尺寸、包装/hidden、默认与自定义动画、desktop/mobile light/dark、RTL，以及独立 React/Vue PNG 直接比较。
 - 发包：根导出、`@aifuxi/semi-ui-vue/spin` 子路径、公开类型、`@aifuxi/semi-theme-default/spin.css`、tree-shaking、SSR-safe import、许可证/SBOM 与隔离 tarball 消费。
+- 公开入口：`Spin.test.ts` 从 `./index` 挂载默认导出、命名组件与 `SPIN_SIZES` 枚举；`Spin.ssr.test.ts` 也从公开入口渲染默认、hidden 与 block 场景。
 
 ## Deviation
 
