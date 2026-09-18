@@ -73,7 +73,7 @@
 - ReactNode/render props/children/className 映射为 Vue VNodeChild/函数/slots/class；`v-model` 不替代上游受控状态。这些是框架原生映射，不构成能力损失。
 - 验证结果：`pnpm check` 全链通过（90 个测试文件、657 项单元/SSR 测试）；Table 自身 15 项公开行为/SSR 测试通过；7 项 Table 专属 Chromium 测试覆盖来源、DOM、computed style、几何、桌面/移动 light/dark 与 RTL，5 组 React/Vue 独立 PNG buffer 直接字节相等。
 - 发布结果：根/`table` ESM 与声明、根/独立 `table.css`、SSR-safe import、许可证、第三方声明和 SPDX SBOM 均通过真实 tarball 离线安装消费；公开 `.d.ts` 不含私有 Foundation 或 vendor 路径。
-- Deviation：ReactNode、render props、children、className 按上表映射为 Vue 原生 VNode/slot/props 语义。第三批消费者复核确认 `expandedRowRender` 对象附带的额外 ColumnProps 尚未完整对齐，详见下文；此项是待修公开边界，未作为已接受差异关闭。
+- Deviation：ReactNode、render props、children、className 按上表映射为 Vue 原生 VNode/slot/props 语义。第三批消费者复核发现的 `expandedRowRender` 对象附加 ColumnProps 公开边界已在下方“展开行附加列属性对齐”小节闭合，不再是待修项。
 - 当前状态：`ready`。
 
 ## Locale 文档消费者回归（2026-09-06）
@@ -106,13 +106,17 @@ ResizableStyle 拖动态对照确认：scroll-position 类的更新遵守固定 
 
 Virtualized 与 InfiniteScroll 消费者使用真实 div 窗口和固定 react-window 1.8.10 的测量规则。默认 53px 行高、400px 视口、1000 条记录的首屏测量 10 行，总高为 `10 × 53 + 990 × 50 = 50030px`；`scrollToItem(100)` 的 auto 定位为 4953px，目标已可见时再次调用保持位置。显式 56px 行高、600px 视口的 20 条记录首屏总高为 1078px，滚至 168px 后已测前缀扩至 16 行，总高为 1096px；返回顶部、缩短为 10 行再恢复 20 行后继续保留 1096px。展开内容占据独立虚拟索引，参与 itemSize 计算、行定位与 ARIA 索引。
 
-GroupedDeclarative 的真实 SFC 使用 `data-index`、`on-filter`、裸 `fixed` 与 `use-full-render`；规范化直接依据 Table.Column 的 props 声明，未知属性不改名，缺省属性不补成 false。嵌套表头、排序过滤以及自定义 render 中的选择控件保持公开交互。`expandedRowRender` 的 `{ children, fixed }` 对象提取 children 渲染，fixed 字段不进入正文，折叠重开保留 VNode；列 render 的 `{ children }` 合法，公开 `TableRenderReturnObject.props` 可省略，传入 props 时继续合并 rowSpan/colSpan，跨度 0 隐藏对应单元格。
+GroupedDeclarative 的真实 SFC 使用 `data-index`、`on-filter`、裸 `fixed` 与 `use-full-render`；规范化直接依据 Table.Column 的 props 声明，未知属性不改名，缺省属性不补成 false。嵌套表头、排序过滤以及自定义 render 中的选择控件保持公开交互。`expandedRowRender` 的对象结果把 `children` 之外的 ColumnProps（`className`/`onCell`/`render`/`align`/`colSpan` 等）应用到展开单元格，`fixed` 仍只作为固定列元数据；列 render 的 `{ children }` 合法，公开 `TableRenderReturnObject.props` 可省略，传入 props 时继续合并 rowSpan/colSpan，跨度 0 隐藏对应单元格。
 
 FullRender 的函数表头获得带 `.semi-table-selection-wrap` 的完整选择节点，与正文选择节点保持相同包装。分组表头逐层切分完整列树，跨行叶子仍参与该层列宽和固定边缘计算；固定父组使用本层所有前置或后置列的宽度求偏移，不从子列继承固定位置。父组省略自动 rowSpan，叶子按剩余层数补齐；显式 rowSpan 保留，rowSpan/colSpan 为 0 时省略该表头单元格。
 
 GroupedColumns/GroupedDeclarative 的固定列展开内容使用根 `.semi-table-wrapper` 的实际宽度，减去固定左右 padding/border 共 34px 及独立测量的系统垂直滚动条宽度。宽度在挂载及已有根 ResizeObserver 的 rAF 回调中更新，保留小于 0.5px 的变化阈值；测量结果经私有 Body prop 落到 expand-inner，取消固定列后移除该宽度。此修复复用原有观察器和卸载清理，保持滚动边界更新时机；挂载后同一 tick 卸载也会取消待发的初始虚拟滚动通知。
 
-已知公开边界：固定 `Body/ExpandedRow.tsx` 会将对象结果中除 children/fixed 外的 ColumnProps 应用于展开列，且其 render 可以覆盖默认展开渲染；当前 Vue 公开类型和实现只保留 children/fixed，尚未保留 className、onCell、render 等附加列属性的完整类型及行为。本轮示例修复覆盖 children/fixed 与固定列内容宽度，附加列属性仍需后续独立对齐。
+## 展开行附加列属性对齐（2026-09-18）
+
+- 源码证据：固定 `Body/ExpandedRow.tsx:96-131` 把 `expandedRowRender` 对象结果的 `children`/`fixed` 拆出后，将其余 ColumnProps 展开在默认 `render` 之后，因此 `className`、`onCell`、`render`、`align` 等都会作用于展开列，自定义 `render` 覆盖默认展开内容；`ExpandedRow` 只在该行展开时渲染，因此每次渲染只调用一次。
+- Vue 处理：`TableExpandedRowRenderResult` 放宽为 `Omit<TableColumn, 'children'> & { children; fixed? }`，`TableBody` 用对象结果合成展开列并交给公开 `TableCell` 渲染，class/onCell/style/align/render/`TableRenderReturnObject.props` 沿用普通单元格同一套合并规则；`fixed` 保持元数据，不落到 DOM。展开行改用 `computed` 映射按行求值，折叠且非 `keepDOM` 的行不再调用 `expandedRowRender`，每次渲染每条展开行只调用一次。
+- 验收证据：`TableExpansion.public.test.ts` 新增两条公开回归覆盖附加列属性（class/onCell/style/align/colSpan、`fixed` 不进入 DOM）与 `render` 覆盖并合并返回 props，同时断言折叠态 0 次调用、展开后 1 次调用；Table 全部 93 项单元/SSR 通过，Table 专项 Chromium 5/5 通过（覆盖场景未含展开行，用于确认共享 `TableBody` 未回归）。
 
 Dynamic 的默认 Pagination 通过一个合并后的 `onChange` 入口进入 Table 处理器，避免 Vue 将配置中的 onChange 与模板监听合并后再次调用配置函数。配置回调先于 Table 的 pageChange/change 通知，受控数据和 loading 门控继续由调用方管理；top、bottom 与 both 均使用相同入口。其 14 个功能切换项同时消费 Switch 的受控状态与移除控制状态后的切换语义，依赖契约见 [Switch 对齐说明](../switch/alignment.md)。表格固定布局依据声明列的 fixed/ellipsis 或固定表头条件决定；单独注入固定选择列、展开列仍保留自动布局，固定单元格自身继续生效。
 

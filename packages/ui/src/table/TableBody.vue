@@ -19,8 +19,10 @@ import TableNodeRenderer from './TableNodeRenderer';
 import type { FlatTableRecord, NormalizedTableColumn } from './table-utils';
 import type { VirtualTableRow } from './useTableVirtualization';
 import type {
+  TableColumn,
   TableDirection,
   TableExpandedRowRenderResult,
+  TableFixed,
   TableRowAttributes,
   TableRowKey,
   TableRowSelection,
@@ -278,15 +280,71 @@ function handleRowClick(row: FlatTableRecord<Record<string, unknown>>, event: Mo
     else emit('expand', row, event);
 }
 
-function expandedContent(row: VirtualTableRow): VNodeChild {
+type ExpandedCellColumn = Omit<TableColumn, 'children'>;
+
+function expandedCell(
+  row: VirtualTableRow,
+): { children: VNodeChild; column: ExpandedCellColumn } | null {
   const expanded = props.expandedKeys.has(row.sourceKey ?? row.key);
   const result =
     props.renderExpandedRow?.({ expanded, index: row.index, record: row.record }) ??
     props.expandedRowRender?.(row.record, row.index, expanded);
-  // The pinned renderer unwraps object results and consumes `fixed` as metadata.
-  if (result && typeof result === 'object' && !isVNode(result) && 'children' in result)
-    return result.children;
-  return result as VNodeChild;
+  if (result === null || result === undefined) return null;
+  // The pinned renderer unwraps object results, keeps `fixed` as metadata and
+  // applies every other ColumnProp to the expanded row cell.
+  if (typeof result === 'object' && !isVNode(result) && 'children' in result) {
+    const payload = result as ExpandedCellColumn & { children: VNodeChild; fixed?: TableFixed };
+    const column: ExpandedCellColumn = { ...payload };
+    delete column.children;
+    delete column.fixed;
+    return { children: payload.children, column };
+  }
+  return { children: result as VNodeChild, column: {} };
+}
+
+function expandedColumn(row: VirtualTableRow): NormalizedTableColumn<Record<string, unknown>> {
+  const cell = expandedCellAt(row);
+  const expandedWidth = props.virtualColumnWidths?.reduce((sum, width) => sum + width, 0);
+  return {
+    key: `${row.key}-expanded-cell`,
+    render: () => ({
+      props: {
+        colSpan: columnCount.value,
+        ...(props.virtualized
+          ? { style: { display: 'block', height: '100%', width: `${expandedWidth}px` } }
+          : {}),
+      },
+      children: h(
+        'div',
+        {
+          class: `${props.prefixCls}-expand-inner`,
+          style: {
+            width:
+              props.expandedInnerWidth === undefined ? undefined : `${props.expandedInnerWidth}px`,
+          },
+        },
+        cell === null ? undefined : h(TableNodeRenderer, { content: cell.children }),
+      ),
+    }),
+    ...(cell?.column ?? {}),
+  } as NormalizedTableColumn<Record<string, unknown>>;
+}
+
+// The pinned ExpandedRow evaluates expandedRowRender once per rendered expanded
+// row; collapsed rows without keepDOM never call it.
+const expandedCells = computed(() => {
+  const cells = new Map<TableRowKey, ReturnType<typeof expandedCell>>();
+  for (const row of props.rows) {
+    const rendered =
+      Boolean(row.expandedRow) ||
+      (!props.virtualized && !row.sectionRow && (props.expandedKeys.has(row.key) || props.keepDOM));
+    cells.set(row.key, rendered ? expandedCell(row) : null);
+  }
+  return cells;
+});
+
+function expandedCellAt(row: VirtualTableRow): ReturnType<typeof expandedCell> {
+  return expandedCells.value.get(row.key) ?? null;
 }
 
 function groupRowCustom(row: FlatTableRecord<Record<string, unknown>>): TableRowAttributes {
@@ -434,7 +492,7 @@ const columnCount = computed(() => Math.max(1, props.columns.length));
           row.expandedRow ||
           (!props.virtualized &&
             !row.sectionRow &&
-            expandedContent(row) != null &&
+            expandedCellAt(row) != null &&
             (props.expandedKeys.has(row.key) || props.keepDOM))
         "
         :class="[
@@ -450,32 +508,15 @@ const columnCount = computed(() => Math.max(1, props.columns.length));
         :data-row-key="row.expandedRow ? row.key : `${row.record.key}-expanded-row`"
         role="row"
       >
-        <component
-          :is="props.componentCell"
-          :class="`${props.prefixCls}-row-cell`"
-          :style="
-            props.virtualized
-              ? {
-                  display: 'block',
-                  height: '100%',
-                  width: `${props.virtualColumnWidths?.reduce((sum, width) => sum + width, 0)}px`,
-                }
-              : undefined
-          "
-          :colspan="columnCount"
-          aria-colindex="1"
-          role="gridcell"
-          ><div
-            :class="`${props.prefixCls}-expand-inner`"
-            :style="{
-              width:
-                props.expandedInnerWidth === undefined
-                  ? undefined
-                  : `${props.expandedInnerWidth}px`,
-            }"
-          >
-            <TableNodeRenderer :content="expandedContent(row)" /></div
-        ></component>
+        <TableCell
+          :column="expandedColumn(row)"
+          :column-index="0"
+          :component="props.componentCell"
+          :direction="props.direction"
+          :prefix-cls="props.prefixCls"
+          :record="row.record"
+          :row-index="row.index"
+        />
       </component>
     </template>
   </component>

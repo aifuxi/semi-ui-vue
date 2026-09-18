@@ -13,7 +13,7 @@ export type TableFilterConfirmMode = 'immediate' | 'confirm';
 export type TableCheckRelation = 'related' | 'unRelated';
 
 export type TableExpandedRowRenderResult =
-  VNodeChild | { children: VNodeChild; fixed?: TableFixed };
+  VNodeChild | (Omit<TableColumn, 'children'> & { children: VNodeChild; fixed?: TableFixed });
 
 export interface TableFilter {
   value?: unknown;

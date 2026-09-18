@@ -314,4 +314,73 @@ describe('Table 公开展开列契约', () => {
       wrapper.unmount();
     });
   }
+
+  it('对象展开结果的附加列属性作用于展开单元格且 fixed 保持元数据', async () => {
+    const wrapper = mount(Table, {
+      props: {
+        columns: [{ title: 'Name', dataIndex: 'name' }],
+        dataSource: [{ key: 'a', name: 'Alpha' }],
+        pagination: false,
+        expandedRowRender: () => ({
+          children: h('p', 'Details'),
+          align: 'right',
+          className: 'column-class',
+          fixed: 'left',
+          onCell: (record?: Record<string, unknown>) => ({
+            'data-cell': `cell-${String(record?.key)}`,
+            className: 'cell-class',
+            style: { color: 'red' },
+          }),
+        }),
+      },
+    });
+    await wrapper.get('.semi-table-expand-icon').trigger('click');
+    const cell = wrapper.get('.semi-table-row-expand td');
+    expect(cell.classes()).toEqual(
+      expect.arrayContaining(['semi-table-row-cell', 'column-class', 'cell-class']),
+    );
+    expect(cell.attributes('data-cell')).toBe('cell-a');
+    expect(cell.attributes('colspan')).toBe('1');
+    expect(cell.attributes('fixed')).toBeUndefined();
+    expect((cell.element as HTMLElement).style.color).toBe('red');
+    expect((cell.element as HTMLElement).style.textAlign).toBe('right');
+    expect(cell.get('.semi-table-expand-inner').text()).toBe('Details');
+    wrapper.unmount();
+  });
+
+  it('对象展开结果的 render 覆盖默认内容并合并返回的单元格 props', async () => {
+    const calls: Array<{ text: unknown; index: number; name: unknown }> = [];
+    const renderCalls = vi.fn();
+    const wrapper = mount(Table, {
+      props: {
+        columns: [{ title: 'Name', dataIndex: 'name' }],
+        dataSource: [{ key: 'a', name: 'Alpha' }],
+        pagination: false,
+        expandedRowRender: () => {
+          renderCalls();
+          return {
+            children: h('p', 'default-details'),
+            render: (text: unknown, record: Record<string, unknown>, index: number) => {
+              calls.push({ text, index, name: record.name });
+              return {
+                children: h('p', { class: 'custom-render' }, `custom-${String(record.name)}`),
+                props: { colSpan: 2 },
+              };
+            },
+          };
+        },
+      },
+    });
+    expect(renderCalls).not.toHaveBeenCalled();
+    await wrapper.get('.semi-table-expand-icon').trigger('click');
+    expect(renderCalls).toHaveBeenCalledTimes(1);
+    const cell = wrapper.get('.semi-table-row-expand td');
+    expect(cell.get('.custom-render').text()).toBe('custom-Alpha');
+    expect(cell.text()).not.toContain('default-details');
+    expect(cell.attributes('colspan')).toBe('2');
+    expect(calls).toHaveLength(1);
+    expect(calls[0]).toMatchObject({ index: 0, name: 'Alpha' });
+    expect(calls[0]?.text).toMatchObject({ key: 'a', name: 'Alpha' });
+    wrapper.unmount();
+  });
 });
