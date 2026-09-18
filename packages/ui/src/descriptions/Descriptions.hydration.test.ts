@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
-import Descriptions from './Descriptions.vue';
+import Descriptions from './index';
 
 describe('Descriptions hydration', () => {
   it('hydration 无警告且保留固定 table DOM', async () => {

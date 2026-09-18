@@ -2,8 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
-import Descriptions from './Descriptions.vue';
-import DescriptionsItem from './DescriptionsItem.vue';
+import Descriptions, { DescriptionsItem } from './index';
 
 describe('Descriptions SSR', () => {
   it('无 browser global 时稳定输出 vertical data、plain、class/style/data attrs', async () => {
