@@ -3,10 +3,10 @@ import { execFileSync } from 'node:child_process';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { setTimeout as delay } from 'node:timers/promises';
 import { registryState } from './release-evidence.mjs';
 import { publicPackages, NPM_REGISTRY } from './public-packages.mjs';
 import { verifyReleaseMetadata } from './release-metadata.mjs';
+import { propagationTimeoutMs, waitForRegistryMetadata } from './release-propagation.mjs';
 
 const evidence = JSON.parse(await readFile(process.argv[2] ?? 'release-evidence.json', 'utf8'));
 assert.deepEqual(
@@ -15,21 +15,21 @@ assert.deepEqual(
 );
 const results = [];
 try {
+  // npm 在 publish 之后异步传播元数据：本次实测 ui 比发布报告晚 3 分钟以上，
+  // 因此并行轮询到共享预算用尽，再交给下面的断言判定。
+  const propagation = await waitForRegistryMetadata({
+    packages: evidence.packages,
+    tag: evidence.tag,
+    readState: registryState,
+    timeoutMs: propagationTimeoutMs(),
+  });
   for (const expected of evidence.packages) {
-    let state;
-    for (let attempt = 0; attempt < 4; attempt++) {
-      state = await registryState(expected.name);
-      if (state.versions[expected.version] && state['dist-tags'][evidence.tag] === expected.version)
-        break;
-      if (attempt < 3) {
-        process.stdout.write(
-          `${expected.name}: waiting for registry metadata propagation (${attempt + 1}/3)\n`,
-        );
-        await delay(5000);
-      }
-    }
+    const { state, missing } = propagation.get(expected.name);
     const manifest = state.versions[expected.version];
-    assert.ok(manifest, `${expected.name}: version missing`);
+    assert.ok(
+      manifest,
+      `${expected.name}: version missing${missing ? ` (${missing} not propagated within the wait budget)` : ''}`,
+    );
     assert.equal(manifest.dist.integrity, expected.integrity);
     assert.equal(state['dist-tags'][evidence.tag], expected.version);
     if (expected.name === '@aifuxi/semi-ui-vue') {

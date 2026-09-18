@@ -53,7 +53,7 @@ CLI 3.0.2 对原计划重跑仍会尝试已发布包，且仅识别特定重复�
 
 独立补建元数据时，先在原候选 checkout 下载并核对原证据及五包 registry integrity。官方 `pnpm changeset git-tag` 可补建本地五包标签（本地演练已验证不包含私有包）。CLI 3.0.2 在 Git 签名失败时也可能成功退出，因此必须用实际 Git refs 核对结果。逐一确认标签指向原候选后再推送缺失标签；对已存在且指向正确候选的标签，用 `gh release create '@aifuxi/包名@版本' --verify-tag --notes-file <该包该版本的发布记录文件>` 补建缺失 Release，预发布加 `--prerelease`。不得覆盖已有标签或 Release。GitHub Release 的远端补建尚需外部演练，本地标签测试不能代替它。
 
-`pnpm release:postcheck <release-evidence.json>` 按完整五包清单查询版本、精确内部依赖、渠道和 SHA-512，核对 provenance 的仓库、workflow、候选 SHA 与产物摘要，检查实际包级 GitHub 标签和 Release，再从官方 registry 隔离安装，运行签名审计和 SSR import。只有 npm 元数据传播缺失允许最多三次等待；功能失败不重试。
+`pnpm release:postcheck <release-evidence.json>` 按完整五包清单查询版本、精确内部依赖、渠道和 SHA-512，核对 provenance 的仓库、workflow、候选 SHA 与产物摘要，检查实际包级 GitHub 标签和 Release，再从官方 registry 隔离安装，运行签名审计和 SSR import。npm 在 publish 之后异步传播元数据，只有"版本、dist-tag 或 provenance 尚未可见"允许等待：五包并行轮询共享同一预算，退避从 2 秒递增到 30 秒上限，默认总预算 10 分钟，可用 `POSTCHECK_PROPAGATION_TIMEOUT_MS` 覆盖（2026-09-18 的 `1.0.0-next.0` 候选中，最慢的 ui 比发布报告晚 188 秒才可见，旧实现 15 秒预算因此必然失败）；其余功能失败（integrity、内部依赖、签名、SSR import）立即失败，不重试。
 
 ## 外部配置与当前状态
 
