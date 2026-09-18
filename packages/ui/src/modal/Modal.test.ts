@@ -5,7 +5,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { IconSend } from '@aifuxi/semi-icons-vue';
 import { DragMove } from '../drag-move';
 import { ConfigProvider, semiGlobal } from '../config-provider';
-import { Modal } from './index';
+import DefaultModal, {
+  MODAL_CONFIRM_TYPES,
+  MODAL_SIZES,
+  Modal,
+  useModal,
+} from './index';
 
 afterEach(async () => {
   Modal.destroyAll();
@@ -29,6 +34,19 @@ async function mountVisible(props: Record<string, unknown> = {}): Promise<VueWra
 }
 
 describe('Modal', () => {
+  it('公开入口保持 default、named、命令式方法与固定枚举常量', () => {
+    expect(DefaultModal).toBe(Modal);
+    expect(Modal.confirm).toBeTypeOf('function');
+    expect(Modal.info).toBeTypeOf('function');
+    expect(Modal.success).toBeTypeOf('function');
+    expect(Modal.error).toBeTypeOf('function');
+    expect(Modal.warning).toBeTypeOf('function');
+    expect(Modal.destroyAll).toBeTypeOf('function');
+    expect(Modal.useModal).toBe(useModal);
+    expect(MODAL_SIZES).toEqual(['small', 'medium', 'large', 'full-width']);
+    expect(MODAL_CONFIRM_TYPES).toEqual(['success', 'info', 'warning', 'error', 'confirm']);
+  });
+
   it('modalRender 只包装内容节点，保留外层尺寸定位且 DragMove 作用于 dialog', async () => {
     const wrapper = await mountVisible({
       width: '600px',
