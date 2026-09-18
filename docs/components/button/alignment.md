@@ -75,7 +75,7 @@ Button 不存在受控/非受控双态；props 只读，组件不修改调用方
 - disabled 同时输出原生 `disabled` 与 `aria-disabled=true`。
 - ButtonGroup/SplitButtonGroup 输出 `role=group` 并透传 `aria-label`。
 - Button 和 ButtonGroup 可直接 SSR render；SplitButtonGroup 只在 mounted 创建 Observer，因此 import 与 SSR render 安全。
-- `@aifuxi/semi-ui-vue` 根与 `@aifuxi/semi-ui-vue/button` 均导出 ESM/声明；真实 tarball 验证两种导入、类型、SSR 和 `button.css`。
+- `@aifuxi/semi-ui-vue` 根与 `@aifuxi/semi-ui-vue/button` 均导出 ESM/声明；公开入口以 named 形式导出 `Button`/`ButtonGroup`/`SplitButtonGroup` 与 `BUTTON_*` 枚举常量，单元与 SSR 用例均从 `./index` 消费；真实 tarball 验证两种导入、类型、SSR 和 `button.css`。
 
 ## 验收矩阵
 

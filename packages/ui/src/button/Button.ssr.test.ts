@@ -2,7 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { describe, expect, it } from 'vitest';
 import { h } from 'vue';
 
-import Button from './Button.vue';
+import { Button } from './index';
 
 describe('Button', () => {
   it('is safe to render without a DOM', async () => {

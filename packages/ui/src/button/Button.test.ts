@@ -3,11 +3,30 @@ import { describe, expect, it, vi } from 'vitest';
 import { h, nextTick } from 'vue';
 
 import { IconDelete } from '@aifuxi/semi-icons-vue';
-import Button from './Button.vue';
-import ButtonGroup from './ButtonGroup';
-import SplitButtonGroup from './SplitButtonGroup.vue';
+
+import {
+  BUTTON_HTML_TYPES,
+  BUTTON_ICON_POSITIONS,
+  BUTTON_SIZES,
+  BUTTON_THEMES,
+  BUTTON_TYPES,
+  Button,
+  ButtonGroup,
+  SplitButtonGroup,
+} from './index';
 
 describe('Button', () => {
+  it('公开入口保持 named 导出、复合分组组件与固定枚举常量', () => {
+    expect(Button).toBeDefined();
+    expect(ButtonGroup).toBeDefined();
+    expect(SplitButtonGroup).toBeDefined();
+    expect(BUTTON_TYPES).toEqual(['primary', 'secondary', 'tertiary', 'warning', 'danger']);
+    expect(BUTTON_THEMES).toEqual(['solid', 'borderless', 'light', 'outline']);
+    expect(BUTTON_SIZES).toEqual(['default', 'small', 'large']);
+    expect(BUTTON_HTML_TYPES).toEqual(['button', 'reset', 'submit']);
+    expect(BUTTON_ICON_POSITIONS).toEqual(['left', 'right']);
+  });
+
   it('组件图标在多次 loading 切换后恢复，并能正常卸载', async () => {
     const wrapper = mount(Button, {
       slots: {
