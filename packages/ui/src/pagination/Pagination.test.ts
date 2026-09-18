@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ConfigProvider } from '../config-provider';
 import { Select } from '../select';
 
-import Pagination from './Pagination.vue';
+import DefaultPagination, { Pagination } from './index';
 
 const wrappers: Array<ReturnType<typeof mount>> = [];
 
@@ -27,6 +27,10 @@ afterEach(() => {
 });
 
 describe('Pagination', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultPagination).toBe(Pagination);
+  });
+
   it('渲染固定根 DOM、class/style/data、页数和前后禁用态', () => {
     const wrapper = mountPagination({
       total: 30,

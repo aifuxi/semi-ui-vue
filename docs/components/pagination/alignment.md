@@ -93,7 +93,7 @@
 - SSR：默认/受控/small/disabled/hide/locale/RTL 输出，无 Portal、browser global 或 vendor/private 路径；验证 hydration。
 - Chromium：同一 BrowserContext 中核对固定 React 与 Vue 的请求来源、运行时错误、关键 computed style、bounding rect；desktop `1440x900`、mobile `390x844`、light/dark、RTL、zh-CN/en-US、hover Popover、Select 与 quick jump 行为。
 - 视觉：组件裁剪截图 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`，并直接比较成对 PNG；不能以阈值通过代替局部差异审计。
-- 发布：根与 `pagination` 子路径、声明、`pagination.css`、tree-shaking、SSR-safe import、真实 tarball 离线安装、许可证/SBOM；产物不得含 `vendor` 或私有 workspace 运行时路径。
+- 发布：根与 `pagination` 子路径 default/named 入口、声明、`pagination.css`、tree-shaking、SSR-safe import、真实 tarball 离线安装、许可证/SBOM；产物不得含 `vendor` 或私有 workspace 运行时路径。
 
 ## Deviation
 
