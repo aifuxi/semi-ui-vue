@@ -5,7 +5,13 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider, semiGlobal } from '../config-provider';
 import { resetNotificationForTests } from './imperative';
-import { Notification, useNotification } from './index';
+import DefaultNotification, {
+  NOTIFICATION_POSITIONS,
+  NOTIFICATION_THEMES,
+  NOTIFICATION_TYPES,
+  Notification,
+  useNotification,
+} from './index';
 
 afterEach(async () => {
   Notification.destroyAll();
@@ -17,6 +23,21 @@ afterEach(async () => {
 });
 
 describe('Notification', () => {
+  it('公开入口保持 default、named、静态 hook 与常量导出一致', () => {
+    expect(DefaultNotification).toBe(Notification);
+    expect(Notification.useNotification).toBe(useNotification);
+    expect(NOTIFICATION_TYPES).toEqual(['warning', 'success', 'info', 'error', 'default']);
+    expect(NOTIFICATION_THEMES).toEqual(['normal', 'light']);
+    expect(NOTIFICATION_POSITIONS).toEqual([
+      'top',
+      'topLeft',
+      'topRight',
+      'bottom',
+      'bottomLeft',
+      'bottomRight',
+    ]);
+  });
+
   it('覆盖五种方法、默认 DOM、ARIA、图标、theme 与显式 showClose', async () => {
     Notification.open({ content: 'default', duration: 0, id: 'default' });
     Notification.info({ content: 'info', duration: 0, id: 'info' });

@@ -91,6 +91,8 @@
 
 ## 验收结论
 
+- `./notification` 子路径公开入口提供 default `Notification`、named `Notification`、静态 `useNotification`、常量与类型；单元与 SSR 均从公开入口导入，覆盖无 DOM 导入边界。
+- 单元覆盖公开入口、五种静态方法、默认 DOM、ARIA、图标、theme、关闭按钮、全局覆盖、hook holder、timer、Portal 容器与六种 position。
 - `pnpm check` 通过：98 个测试文件、711 项单元/SSR/基础设施测试，以及全仓构建、主题产物、SSR import 与真实 tarball 消费验证。
 - `pnpm test:browser` 通过：375 项 Chromium 测试；Notification 覆盖 desktop/mobile、light/dark、RTL、ARIA、键盘关闭、computed style、几何与组件裁剪截图。
 - Notification 的 5 组 React/Vue 基线 PNG 经独立 `cmp` 校验，字节完全一致；对应节点各轴几何差值不超过 `0.5 CSS px`。
