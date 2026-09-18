@@ -2,7 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, h } from 'vue';
 import { describe, expect, it } from 'vitest';
 
-import InputNumber from './InputNumber.vue';
+import InputNumber from './index';
 
 describe('InputNumber SSR', () => {
   it('服务端渲染 spinbutton 且不访问浏览器全局', async () => {

@@ -74,7 +74,7 @@
 - Chromium：基础、上下界、三尺寸、disabled、precision、formatter、currency、scientific、inner/hide buttons；桌面与移动端 light/dark，RTL，zh-CN/en-US 行为。
 - computed style/geometry：根、Input wrapper/input、外部/内部步进器与按钮逐节点比较；bounding rect 各轴差值不超过 `0.5 CSS px`。
 - 截图：组件最小完整裁剪，`threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`；另行报告是否字节一致。
-- 发布：根/`input-number` 子路径、声明、`input-number.css`、真实 tarball 安装/类型/tree-shaking/SSR-safe import、SBOM 与许可。
+- 发布：根/`input-number` 子路径 default/named 导入、公开声明、`input-number.css`、真实 tarball 安装/类型/tree-shaking/SSR-safe import、SBOM 与许可。
 
 ## Deviation
 
