@@ -4,7 +4,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider } from '../config-provider';
 import { LocaleProvider } from '../locale';
-import Feedback from './Feedback.vue';
+import DefaultFeedback, {
+  FEEDBACK_EMOJIS,
+  FEEDBACK_MODES,
+  FEEDBACK_TYPES,
+  Feedback,
+} from './index';
 
 async function settle(): Promise<void> {
   await nextTick();
@@ -34,6 +39,13 @@ afterEach(async () => {
 });
 
 describe('Feedback', () => {
+  it('公开入口保持 default、named 与运行时常量一致', () => {
+    expect(DefaultFeedback).toBe(Feedback);
+    expect(FEEDBACK_MODES).toEqual(['modal', 'popup']);
+    expect(FEEDBACK_TYPES).toEqual(['text', 'emoji', 'radio', 'checkbox', 'custom']);
+    expect(FEEDBACK_EMOJIS).toEqual(['😞', '😐', '😃']);
+  });
+
   it('默认 popup/emoji DOM、默认容器参数、值通知与坏评原因对齐', async () => {
     const values: unknown[] = [];
     const wrapper = await mountVisible({ onValueChange: (value: unknown) => values.push(value) });

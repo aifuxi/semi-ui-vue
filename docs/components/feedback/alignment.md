@@ -62,7 +62,7 @@
 
 - 取消/提交文字读取 `locale.Feedback.cancel/submit`；57 个固定 locale 的生成数据继续作为完整性来源，缺失时回退 zh-CN。
 - SSR import 不访问 DOM；不可见 Feedback 不输出 Portal。hydration 后打开不得产生 hydration warning。
-- 根导出与 `./feedback` 子路径、`feedback.css`、SSR-safe dist、tree-shaking 和真实 tarball consumer 必须通过；公开声明不得出现 `vendor/**` 或私有 Foundation 路径。
+- 根导出与 `./feedback` 子路径 default/named 入口、运行时常量、`feedback.css`、SSR-safe dist、tree-shaking 和真实 tarball consumer 必须通过；公开声明不得出现 `vendor/**` 或私有 Foundation 路径。
 
 ## React/Vue 对照场景
 
