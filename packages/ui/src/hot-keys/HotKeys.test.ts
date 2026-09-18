@@ -3,8 +3,7 @@ import { h, nextTick } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
-import HotKeysBase from './HotKeys.vue';
-import { HotKeys } from './index';
+import HotKeys, { HOT_KEYS, HotKeys as NamedHotKeys } from './index';
 
 function keydown(
   target: EventTarget,
@@ -33,8 +32,13 @@ afterEach(() => {
 });
 
 describe('HotKeys', () => {
+  it('公开入口导出默认 HotKeys、命名 HotKeys、静态 Keys 与 HOT_KEYS 常量', () => {
+    expect(NamedHotKeys).toBe(HotKeys);
+    expect(HotKeys.Keys).toBe(HOT_KEYS);
+  });
+
   it('按固定 DOM 渲染 hotKeys，并由 content 覆盖显示文本', () => {
-    const basic = mount(HotKeysBase, { props: { hotKeys: ['control', 'shift', 'k'] } });
+    const basic = mount(HotKeys, { props: { hotKeys: ['control', 'shift', 'k'] } });
     expect(basic.classes()).toContain('semi-hotKeys');
     expect(basic.findAll('.semi-hotKeys-content').map((node) => node.text())).toEqual([
       'control',
@@ -44,7 +48,7 @@ describe('HotKeys', () => {
     expect(basic.findAll('.semi-hotKeys-split').map((node) => node.text())).toEqual(['+', '+']);
     expect(basic.element.children).toHaveLength(3);
 
-    const content = mount(HotKeysBase, {
+    const content = mount(HotKeys, {
       props: { content: ['Ctrl', 'K'], hotKeys: ['control', 'k'] },
     });
     expect(content.findAll('.semi-hotKeys-content').map((node) => node.text())).toEqual([
@@ -54,7 +58,7 @@ describe('HotKeys', () => {
   });
 
   it('默认 slot 映射 render，空 slot 不输出根节点', () => {
-    const custom = mount(HotKeysBase, {
+    const custom = mount(HotKeys, {
       props: { hotKeys: ['r'] },
       slots: { default: () => h('strong', { class: 'custom-hot-key' }, 'Run') },
     });
@@ -62,7 +66,7 @@ describe('HotKeys', () => {
     expect(custom.get('.custom-hot-key').text()).toBe('Run');
     expect(custom.find('.semi-hotKeys-content').exists()).toBe(false);
 
-    const empty = mount(HotKeysBase, {
+    const empty = mount(HotKeys, {
       props: { hotKeys: ['r'] },
       slots: { default: () => null },
     });
@@ -71,7 +75,7 @@ describe('HotKeys', () => {
 
   it('合并 class/style/attrs，并发出带原生事件的 click', async () => {
     const onClick = vi.fn();
-    const wrapper = mount(HotKeysBase, {
+    const wrapper = mount(HotKeys, {
       attrs: { 'aria-label': 'Save shortcut', 'data-hot-key': 'save', role: 'note' },
       props: {
         class: 'class-prop',
@@ -105,7 +109,7 @@ describe('HotKeys', () => {
 
   it('严格匹配普通键 code 与全部修饰键，并在命中后通知', () => {
     const onHotKey = vi.fn();
-    const wrapper = mount(HotKeysBase, {
+    const wrapper = mount(HotKeys, {
       props: { hotKeys: ['Control', 'Shift', 'K'], onHotKey },
     });
 
@@ -123,7 +127,7 @@ describe('HotKeys', () => {
 
   it('只在成功命中时 preventDefault，并在下一次事件读取更新后的 props', async () => {
     const onHotKey = vi.fn();
-    const wrapper = mount(HotKeysBase, {
+    const wrapper = mount(HotKeys, {
       props: { hotKeys: ['r'], onHotKey, preventDefault: true },
     });
 
@@ -147,7 +151,7 @@ describe('HotKeys', () => {
     const target = document.createElement('section');
     document.body.append(target);
     const onHotKey = vi.fn();
-    const wrapper = mount(HotKeysBase, {
+    const wrapper = mount(HotKeys, {
       props: { getListenerTarget: () => target, hotKeys: ['enter'], onHotKey },
     });
 
@@ -162,7 +166,7 @@ describe('HotKeys', () => {
 
   it('mergeMetaCtrl 在固定 v2.102.0 Foundation 中保持 no-op', () => {
     const onHotKey = vi.fn();
-    const wrapper = mount(HotKeysBase, {
+    const wrapper = mount(HotKeys, {
       props: { hotKeys: ['control', 'k'], mergeMetaCtrl: true, onHotKey },
     });
     keydown(document.body, 'k', 'KeyK', { metaKey: true });
@@ -176,7 +180,7 @@ describe('HotKeys', () => {
     semiGlobal.config.overrideDefaultProps = {
       HotKeys: { content: ['Global', 'R'], preventDefault: true },
     };
-    const inherited = mount(HotKeysBase, { props: { hotKeys: ['r'] } });
+    const inherited = mount(HotKeys, { props: { hotKeys: ['r'] } });
     expect(inherited.findAll('.semi-hotKeys-content').map((node) => node.text())).toEqual([
       'Global',
       'R',
@@ -184,7 +188,7 @@ describe('HotKeys', () => {
     expect(keydown(document.body, 'r', 'KeyR').event.defaultPrevented).toBe(true);
     inherited.unmount();
 
-    const explicit = mount(HotKeysBase, {
+    const explicit = mount(HotKeys, {
       props: { content: ['Explicit'], hotKeys: ['r'], preventDefault: false },
     });
     expect(explicit.get('.semi-hotKeys-content').text()).toBe('Explicit');
@@ -192,13 +196,13 @@ describe('HotKeys', () => {
   });
 
   it('拒绝未知键、零个普通键和多个普通键，且失败后不遗留监听', () => {
-    expect(() => mount(HotKeysBase, { props: { hotKeys: ['unknown-key'] } })).toThrow(
+    expect(() => mount(HotKeys, { props: { hotKeys: ['unknown-key'] } })).toThrow(
       'unknown-key is not a valid key',
     );
-    expect(() => mount(HotKeysBase, { props: { hotKeys: ['control', 'shift'] } })).toThrow(
+    expect(() => mount(HotKeys, { props: { hotKeys: ['control', 'shift'] } })).toThrow(
       'HotKeys must have one common key and 0/some modifier key',
     );
-    expect(() => mount(HotKeysBase, { props: { hotKeys: ['a', 'b'] } })).toThrow(
+    expect(() => mount(HotKeys, { props: { hotKeys: ['a', 'b'] } })).toThrow(
       'HotKeys must have one common key and 0/some modifier key',
     );
   });

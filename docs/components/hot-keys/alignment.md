@@ -120,3 +120,7 @@ prop 在此基线是可接受的已知 no-op，不擅自实现更新版本语义
 - 本切片只新增 HotKeys 组件级场景、别名、样式入口与快照，没有修改共享比较算法、
   Playwright 配置、webServer、字体/viewport 或全局运行时；因此不触发全仓
   `pnpm test:browser`。仓库 `pnpm check` 全链路通过，工作台 Chromium smoke 2 项通过。
+
+## HotKeys 公开入口锁定（2026-09-18）
+
+- `HotKeys.test.ts`、`HotKeys.ssr.test.ts` 与 `HotKeys.hydration.test.ts` 均改为从 `./index` 挂载，锁定默认 `HotKeys`、命名 `HotKeys`、`HotKeys.Keys` 与 `HOT_KEYS` 常量的公开入口关系。
