@@ -77,7 +77,7 @@
 
 ## 发布与门禁
 
-- 根导出与 `@aifuxi/semi-ui-vue/json-viewer` 子路径导出；声明不得出现 `vendor/**`、`@workspace/**` 或 `@douyinfe/**`。
+- 根导出与 `@aifuxi/semi-ui-vue/json-viewer` 子路径 default/named 导出；声明不得出现 `vendor/**`、`@workspace/**` 或 `@douyinfe/**`。
 - 主题根入口和 `@aifuxi/semi-theme-default/json-viewer.css` 均包含 JsonViewer 样式。
 - 真实 tarball 消费验证根/子路径导入、类型、SSR import、Worker 内联（无额外 vendor/worker 文件请求）、编辑/搜索 API 与许可证/SBOM。
 - 定向单测覆盖公开 DOM、emits、expose、Boolean 三态、composition、readOnly、custom render、resize/清理；Chromium 覆盖真实 Worker、编辑、折叠、搜索/替换、主题、移动、RTL 与 i18n。

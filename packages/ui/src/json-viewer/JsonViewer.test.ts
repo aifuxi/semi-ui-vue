@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { configContextKey, type ConfigContextValue } from '../config-provider';
 import enUS from '../locale/source/en_US';
-import JsonViewer from './JsonViewer.vue';
+import DefaultJsonViewer, { JsonViewer } from './index';
 import type { JsonViewerExposed } from './types';
 
 class TestWorker {
@@ -111,6 +111,10 @@ afterEach(() => {
 });
 
 describe('JsonViewer', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultJsonViewer).toBe(JsonViewer);
+  });
+
   it('保留根 attrs/class/style/尺寸并区分 showSearch 三态', async () => {
     const omitted = mountViewer({ className: 'named', width: 520, height: '180px' });
     await flushPromises();
