@@ -8,7 +8,15 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ConfigProvider } from '../config-provider';
 import { Text } from '../typography';
 
-import Anchor, { AnchorLink } from './index';
+import DefaultAnchor, {
+  ANCHOR_POSITIONS,
+  ANCHOR_RAIL_THEMES,
+  ANCHOR_SIZES,
+  Anchor as PublicAnchor,
+  AnchorLink,
+} from './index';
+
+const Anchor = DefaultAnchor;
 
 const mountedWrappers: Array<ReturnType<typeof mount>> = [];
 
@@ -33,6 +41,29 @@ afterEach(() => {
 });
 
 describe('Anchor', () => {
+  it('公开入口保留默认导出、compound Link 与固定枚举常量', () => {
+    expect(PublicAnchor).toBe(DefaultAnchor);
+    expect(Anchor.Link).toBe(AnchorLink);
+    expect(ANCHOR_SIZES).toEqual(['small', 'default']);
+    expect(ANCHOR_RAIL_THEMES).toEqual(['primary', 'tertiary', 'muted']);
+    expect(ANCHOR_POSITIONS).toEqual([
+      'top',
+      'topLeft',
+      'topRight',
+      'left',
+      'leftTop',
+      'leftBottom',
+      'right',
+      'rightTop',
+      'rightBottom',
+      'bottom',
+      'bottomLeft',
+      'bottomRight',
+      'leftTopOver',
+      'rightTopOver',
+    ]);
+  });
+
   it('保留 navigation、滑轨、列表、层级、尺寸、主题、ARIA 与样式契约', async () => {
     const wrapper = mountAnchor(
       {
