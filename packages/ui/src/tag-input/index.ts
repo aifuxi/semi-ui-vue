@@ -17,5 +17,6 @@ export type {
   TagInputTooltipOptions,
   TagInputValidateStatus,
 } from './types';
+export { TAG_INPUT_SIZES, TAG_INPUT_VALIDATE_STATUSES } from './types';
 
 export default TagInput;

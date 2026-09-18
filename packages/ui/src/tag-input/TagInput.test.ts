@@ -2,7 +2,13 @@ import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { h, nextTick } from 'vue';
 
-import TagInput from './index';
+import DefaultTagInput, {
+  TAG_INPUT_SIZES,
+  TAG_INPUT_VALIDATE_STATUSES,
+  TagInput as PublicTagInput,
+} from './index';
+
+const TagInput = DefaultTagInput;
 
 async function setInput(wrapper: ReturnType<typeof mount>, value: string): Promise<void> {
   await wrapper.get('input').setValue(value);
@@ -31,6 +37,12 @@ describe('TagInput', () => {
     vi.useRealTimers();
     vi.restoreAllMocks();
     document.body.replaceChildren();
+  });
+
+  it('公开入口保留默认导出、具名组件导出与固定枚举常量', () => {
+    expect(PublicTagInput).toBe(DefaultTagInput);
+    expect(TAG_INPUT_SIZES).toEqual(['small', 'default', 'large']);
+    expect(TAG_INPUT_VALIDATE_STATUSES).toEqual(['default', 'error', 'warning']);
   });
 
   it('保留固定 DOM、尺寸、校验、前后缀、ARIA 与 data-*', () => {
