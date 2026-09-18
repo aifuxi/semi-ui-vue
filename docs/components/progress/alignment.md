@@ -64,7 +64,7 @@ Progress 没有受控/非受控状态、emits 或 `v-model`。`percent` 是单�
 - 无 Portal、Teleport、Observer、全局事件、国际化文案或 Locale 依赖。
 - CSS 进度几何动画持续 0.3s；数字动画由 Semi Animation 线性执行 300ms。截图场景固定 `motion=false` 并禁用 CSS animations/transitions，避免采样时刻漂移。
 - RTL 由外围 `.semi-rtl` 驱动：line 文字 margin 从左切到右，circle 文本从 left 50% 切到 right 50%；圆环仍从顶部开始。
-- SSR 只输出静态 line/circle DOM，不读取 window/document；数组中的 Semi Token 在 SSR 无 DOM 时按固定算法返回 undefined，最终回退到 SCSS 默认 stroke。
+- SSR 只输出静态 line/circle DOM，不读取 window/document；数组中的 Semi Token 在 SSR 无 DOM 时按固定算法返回 undefined，最终回退到 SCSS 默认 stroke。单元与 SSR 用例从 `./index` 公开入口消费组件。
 - 视觉最低矩阵：桌面 1440×900 与移动 390×844、DPR 1、light/dark；方向敏感布局另验 RTL。组件无 locale 文案，因此无需 zh-CN/en-US 双份截图。
 
 ## 测试与发布门禁

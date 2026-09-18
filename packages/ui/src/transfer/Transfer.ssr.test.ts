@@ -3,7 +3,7 @@ import { h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
 import { ConfigProvider } from '../config-provider';
-import Transfer from './Transfer.vue';
+import Transfer from './index';
 
 const data = [
   { key: 'a', label: 'Alpha', value: 'alpha' },

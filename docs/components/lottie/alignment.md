@@ -73,6 +73,7 @@ ConfigProvider 的 `overrideDefaultProps.Lottie` 位于显式 prop 与缺省值�
 - 无内置 Locale 文案。57 个 Locale 的完整性继续由共享门禁覆盖。
 - `lottie-web` 仅能在客户端求值。公开根入口和 `./lottie` 子路径必须通过纯 Node SSR
   import；服务端渲染不得访问 window/document/navigator，hydration 后才创建实例。
+  单元、SSR 与 hydration 用例均从 `./index` 公开入口消费组件。
 
 ## 依赖、发布与合规边界
 

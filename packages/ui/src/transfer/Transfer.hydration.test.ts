@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
-import Transfer from './Transfer.vue';
+import Transfer from './index';
 
 const data = [
   { key: 'a', label: 'Alpha', value: 'alpha' },

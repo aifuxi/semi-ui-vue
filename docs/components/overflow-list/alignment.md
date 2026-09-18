@@ -65,7 +65,7 @@
 
 ## Observer、SSR 与清理
 
-- `ResizeObserver` / `IntersectionObserver` 仅在 mounted 后创建，缺失时安全降级；SSR import/render 不访问 DOM 全局。
+- `ResizeObserver` / `IntersectionObserver` 仅在 mounted 后创建，缺失时安全降级；SSR import/render 不访问 DOM 全局，client/SSR 用例从 `./index` 公开入口消费组件。
 - items、模式或 root 改变时重新绑定 observer；卸载时全部 disconnect。
 - scroll observer 的 root 必须是当前 wrapper；threshold 精确转发。
 

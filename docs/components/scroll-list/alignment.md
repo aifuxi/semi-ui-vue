@@ -89,7 +89,7 @@ Vue 同时支持 `@select` 和 `onSelect` 监听器的原生编译结果；不�
 - React/Vue 场景：同一份确定性时段/小时/分钟数据；normal、wheel 非循环和 wheel 循环、disabled、item/common transform、header/footer、bodyHeight、RTL。
 - Chromium：同一 Chromium 下对根、body、normal/wheel 列、selected/disabled/selector/shade 执行 computed style 与几何对照；验证点击和滚动行为；桌面 1440×900、移动 390×844 的 light/dark，加 RTL。
 - 视觉：裁剪 ScrollList 最小完整场景，`threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`；测试通过后再独立比较 React/Vue PNG 字节。
-- 发布：根与 `scroll-list` 子路径 ESM/声明、`scroll-list.css`、tree-shaking、SSR-safe import、真实 tarball 离线消费、许可证和 SBOM。
+- 发布：根与 `scroll-list` 子路径 ESM/声明、`scroll-list.css`、tree-shaking、SSR-safe import（client/SSR 用例从 `./index` 消费 `ScrollList`/`ScrollItem`）、真实 tarball 离线消费、许可证和 SBOM。
 
 实际结果：
 

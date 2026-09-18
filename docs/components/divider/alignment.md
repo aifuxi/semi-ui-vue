@@ -52,13 +52,13 @@
 
 ## 验收矩阵
 
-| 证据                  | 场景                                                                                          |
-| --------------------- | --------------------------------------------------------------------------------------------- |
-| 单元行为              | 默认值、attrs/class/style、margin 覆盖、虚线、三种 align、文本/自定义 slot、垂直忽略内容、SSR |
-| Chromium 行为/无障碍  | 本地固定源码请求、八个节点、role/ARIA 透传、水平/垂直边框、无运行时错误                       |
-| computed style / 几何 | 八个节点逐项精确比较；伪元素短线宽度；bounding rect 每轴差不超过 0.5 CSS px                   |
-| 视觉                  | desktop 1440×900 与 mobile 390×844，light/dark；额外 desktop light RTL；组件裁剪              |
-| 发布                  | 根/`divider` 子路径 ESM 与 types、根/`divider.css`、SSR import、真实 tarball 安装             |
+| 证据                  | 场景                                                                                                                  |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| 单元行为              | 默认值、attrs/class/style、margin 覆盖、虚线、三种 align、文本/自定义 slot、垂直忽略内容、SSR                         |
+| Chromium 行为/无障碍  | 本地固定源码请求、八个节点、role/ARIA 透传、水平/垂直边框、无运行时错误                                               |
+| computed style / 几何 | 八个节点逐项精确比较；伪元素短线宽度；bounding rect 每轴差不超过 0.5 CSS px                                           |
+| 视觉                  | desktop 1440×900 与 mobile 390×844，light/dark；额外 desktop light RTL；组件裁剪                                      |
+| 发布                  | 根/`divider` 子路径 ESM 与 types、根/`divider.css`、SSR import（单元与 SSR 用例从 `./index` 消费）、真实 tarball 安装 |
 
 截图阈值保持 `threshold=0.1`、`maxDiffPixelRatio=0.001`，同时要求同一 Chromium 中 React/Vue 组件截图字节完全一致。
 

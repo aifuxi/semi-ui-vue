@@ -2,8 +2,7 @@ import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 import { h } from 'vue';
 
-import TabPane from './TabPane.vue';
-import Tabs from './Tabs.vue';
+import { TabPane, Tabs } from './index';
 
 describe('Tabs client mount', () => {
   it('客户端挂载保持所选 tab 的 ARIA 且无 warning', async () => {

@@ -2,8 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createSSRApp, defineComponent, h, nextTick, shallowRef, type Component } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
-import LocaleConsumer from './LocaleConsumer.vue';
-import LocaleProvider from './LocaleProvider.vue';
+import { LocaleConsumer, LocaleProvider } from './index';
 import type { LocaleConsumerSlotProps } from './types';
 
 describe('Locale hydration', () => {

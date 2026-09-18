@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
-import Upload from './Upload.vue';
+import Upload from './index';
 
 const files = [
   { uid: 'a', name: 'alpha.txt', size: '1.0KB', status: 'success' as const },

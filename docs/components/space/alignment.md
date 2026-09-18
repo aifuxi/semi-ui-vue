@@ -51,13 +51,13 @@
 
 ## 验收矩阵
 
-| 证据                  | 场景                                                                                                       |
-| --------------------- | ---------------------------------------------------------------------------------------------------------- |
-| 单元行为              | 默认值、attrs/class、三种预设、number/array、style 优先级、四种 align、方向、wrap、Fragment、SSR/hydration |
-| Chromium 行为/无障碍  | 本地固定源码请求、十个节点、DOM/class、无默认交互语义、无运行时错误                                        |
-| computed style / 几何 | 十个节点逐项精确比较：display、direction、flex、align、wrap、row/column gap、width；每轴误差不超过 0.5px   |
-| 视觉                  | desktop 1440×900 与 mobile 390×844，light/dark；额外 desktop light RTL；组件裁剪                           |
-| 发布                  | 根/`space` 子路径 ESM 与 types、根/`space.css`、SSR import、真实 tarball 安装                              |
+| 证据                  | 场景                                                                                                        |
+| --------------------- | ----------------------------------------------------------------------------------------------------------- |
+| 单元行为              | 默认值、attrs/class、三种预设、number/array、style 优先级、四种 align、方向、wrap、Fragment、SSR/hydration  |
+| Chromium 行为/无障碍  | 本地固定源码请求、十个节点、DOM/class、无默认交互语义、无运行时错误                                         |
+| computed style / 几何 | 十个节点逐项精确比较：display、direction、flex、align、wrap、row/column gap、width；每轴误差不超过 0.5px    |
+| 视觉                  | desktop 1440×900 与 mobile 390×844，light/dark；额外 desktop light RTL；组件裁剪                            |
+| 发布                  | 根/`space` 子路径 ESM 与 types、根/`space.css`、SSR import（单元/SSR 从 `./index` 消费）、真实 tarball 安装 |
 
 截图阈值保持 `threshold=0.1`、`maxDiffPixelRatio=0.001`，同时要求同一 Chromium 中 React/Vue 组件截图字节完全一致。
 

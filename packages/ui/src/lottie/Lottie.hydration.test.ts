@@ -6,7 +6,7 @@ const lottieMock = vi.hoisted(() => ({ loadAnimation: vi.fn() }));
 
 vi.mock('lottie-web', () => ({ default: lottieMock }));
 
-import Lottie from './Lottie.vue';
+import Lottie from './index';
 
 function createAnimation() {
   return { destroy: vi.fn(), goToAndStop: vi.fn(), play: vi.fn() };

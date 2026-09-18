@@ -2,7 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { describe, expect, it } from 'vitest';
 import { createSSRApp, h } from 'vue';
 
-import Divider from './Divider.vue';
+import { Divider } from './index';
 
 describe('Divider', () => {
   it('is safe to import and render without a DOM', async () => {

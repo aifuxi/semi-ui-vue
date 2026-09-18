@@ -80,7 +80,7 @@ AutoComplete 是固定文档输入类分组的首个组件。它以 Input 为触
 - Chromium 场景：固定中文文档首个基础示例；small/default/large、warning/error/disabled、加载、自定义候选、默认展开与键盘；桌面 `1440×900`、移动 `390×844`、light/dark 与 RTL。
 - computed style/geometry：默认 input wrapper、三尺寸、校验态、option/focused、Portal 宽度与位置逐节点比较；bounding rect 差值不超过 `0.5 CSS px`。
 - 截图：组件/Portal 最小裁剪，`threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`；数值通过后仍检查局部集中差异。
-- 发布：根/`auto-complete` 子路径、声明、`auto-complete.css`、真实 tarball 安装、类型、tree-shaking、SSR import、SBOM 与许可清单。
+- 发布：根/`auto-complete` 子路径、声明、`auto-complete.css`、真实 tarball 安装、类型、tree-shaking、SSR import、SBOM 与许可清单；单元与 SSR 用例从 `./index` 公开入口消费组件。
 
 ## 验收结论
 

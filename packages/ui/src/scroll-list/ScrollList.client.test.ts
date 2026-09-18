@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { nextTick } from 'vue';
 
-import ScrollItem from './ScrollItem.vue';
+import { ScrollItem } from './index';
 
 afterEach(() => {
   vi.restoreAllMocks();

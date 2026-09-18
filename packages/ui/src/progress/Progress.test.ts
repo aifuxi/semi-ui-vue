@@ -2,14 +2,14 @@ import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import Progress from './Progress.vue';
 import DefaultProgress, {
   PROGRESS_DIRECTIONS,
   PROGRESS_SIZES,
   PROGRESS_STROKE_LINECAPS,
   PROGRESS_TYPES,
-  Progress as PublicProgress,
+  Progress,
 } from './index';
+import ProgressBase from './Progress.vue';
 
 afterEach(() => {
   vi.useRealTimers();
@@ -17,7 +17,7 @@ afterEach(() => {
 
 describe('Progress', () => {
   it('公开入口导出组件与固定枚举常量', () => {
-    expect(PublicProgress).toBe(Progress);
+    expect(Progress).toBe(ProgressBase);
     expect(DefaultProgress).toBe(Progress);
     expect(PROGRESS_DIRECTIONS).toEqual(['horizontal', 'vertical']);
     expect(PROGRESS_SIZES).toEqual(['default', 'small', 'large']);

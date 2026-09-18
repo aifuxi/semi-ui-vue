@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { h, nextTick } from 'vue';
 
-import OverflowList from './OverflowList.vue';
+import OverflowList from './index';
 import type { OverflowItem } from './types';
 
 afterEach(() => {

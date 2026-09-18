@@ -2,7 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { describe, expect, it } from 'vitest';
 import { createSSRApp, h } from 'vue';
 
-import Feedback from './Feedback.vue';
+import Feedback from './index';
 
 describe('Feedback SSR', () => {
   it('不可见 popup/modal 都不在服务端创建 Portal 或访问 DOM', async () => {

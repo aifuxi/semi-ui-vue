@@ -87,7 +87,7 @@
 ## SSR、发布与合规
 
 - import 与 SSR render 不读取 window/document，不创建 Observer/Portal；hydration 后再启用测量和 popup。
-- 根与 `@aifuxi/semi-ui-vue/tabs` 子路径导出 Tabs、TabPane、TabItem 和公开类型；真实 tarball 验证 ESM、声明、根/`tabs.css`、tree-shaking 与 SSR-safe import。
+- 根与 `@aifuxi/semi-ui-vue/tabs` 子路径导出 Tabs、TabPane、TabItem 和公开类型；client 用例从 `./index` 消费这些导出；真实 tarball 验证 ESM、声明、根/`tabs.css`、tree-shaking 与 SSR-safe import。
 - Foundation 与 SCSS 经现有边界内联，发布产物不得泄漏 `vendor/**` 或私有 workspace 路径；许可证/SBOM 沿用总门禁。
 
 ## Deviation

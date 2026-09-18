@@ -3,12 +3,12 @@ import { mount } from '@vue/test-utils';
 import { createSSRApp, Fragment, h } from 'vue';
 import { describe, expect, it } from 'vitest';
 
-import Space from './Space.vue';
-import { SPACE_ALIGNS, SPACE_SPACING_PRESETS, Space as PublicSpace } from './index';
+import { SPACE_ALIGNS, SPACE_SPACING_PRESETS, Space } from './index';
+import SpaceBase from './Space.vue';
 
 describe('Space', () => {
   it('公开入口导出组件与固定枚举常量', () => {
-    expect(PublicSpace).toBe(Space);
+    expect(Space).toBe(SpaceBase);
     expect(SPACE_ALIGNS).toEqual(['start', 'center', 'end', 'baseline']);
     expect(SPACE_SPACING_PRESETS).toEqual(['tight', 'medium', 'loose']);
   });

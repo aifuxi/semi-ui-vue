@@ -2,12 +2,12 @@ import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 import { h } from 'vue';
 
-import Divider from './Divider.vue';
-import { DIVIDER_ALIGNS, DIVIDER_LAYOUTS, Divider as PublicDivider } from './index';
+import { DIVIDER_ALIGNS, DIVIDER_LAYOUTS, Divider } from './index';
+import DividerBase from './Divider.vue';
 
 describe('Divider', () => {
   it('公开入口导出组件与固定枚举常量', () => {
-    expect(PublicDivider).toBe(Divider);
+    expect(Divider).toBe(DividerBase);
     expect(DIVIDER_ALIGNS).toEqual(['left', 'right', 'center']);
     expect(DIVIDER_LAYOUTS).toEqual(['horizontal', 'vertical']);
   });

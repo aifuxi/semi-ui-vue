@@ -2,7 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { describe, expect, it, onTestFinished, vi } from 'vitest';
 import { createSSRApp, defineComponent, h, nextTick, ref } from 'vue';
 
-import Feedback from './Feedback.vue';
+import Feedback from './index';
 
 describe('Feedback hydration', () => {
   it.each(['popup', 'modal'] as const)('%s hydration 后可关闭重开并继续提交', async (mode) => {

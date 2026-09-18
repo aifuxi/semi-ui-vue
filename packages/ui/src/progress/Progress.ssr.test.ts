@@ -2,7 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, h } from 'vue';
 import { describe, expect, it } from 'vitest';
 
-import Progress from './Progress.vue';
+import Progress from './index';
 
 describe('Progress SSR', () => {
   it('SSR-safe 渲染 line/circle、ARIA 与 VNode format', async () => {
