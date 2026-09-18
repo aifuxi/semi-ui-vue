@@ -4,7 +4,7 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import Input, { InputGroup, TextArea } from './index';
+import DefaultInput, { Input, InputGroup, TextArea } from './index';
 
 class ResizeObserverMock {
   static instances: ResizeObserverMock[] = [];
@@ -29,6 +29,12 @@ afterEach(() => {
 });
 
 describe('Input', () => {
+  it('公开入口保持 default、named 与复合 Group/TextArea 一致', () => {
+    expect(DefaultInput).toBe(Input);
+    expect(Input.Group).toBe(InputGroup);
+    expect(Input.TextArea).toBe(TextArea);
+  });
+
   it('非受控输入更新 DOM，并按公开顺序发出 input/change/update', async () => {
     const order: string[] = [];
     const wrapper = mount(Input, {

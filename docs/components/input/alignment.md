@@ -105,7 +105,7 @@ InputGroup 必须装饰直接子 VNode，模板无法准确表达 `React.Childre
 - Chromium：固定中文文档首个基础示例；default/value、prefix/suffix/addon、clear、password、disabled、error、InputGroup、TextArea counter/autosize/line number；桌面 `1440×900`、移动 `390×844`、light/dark 与 RTL。
 - computed style/geometry：wrapper/input、prepend/prefix/suffix/clear/mode/append、group/label、textarea/counter/lineNumber 逐节点比较；bounding rect 各轴差值不超过 `0.5 CSS px`。
 - 截图：组件最小完整裁剪，`threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`；通过后仍检查局部集中差异，并单独报告是否字节一致。
-- 发布：根/`input` 子路径、声明、`input.css`、真实 tarball 安装、类型、tree-shaking、SSR-safe import、SBOM 与许可清单。
+- 发布：根/`input` 子路径 default/named 导出与复合 `Input.Group`/`Input.TextArea`、声明、`input.css`、真实 tarball 安装、类型、tree-shaking、SSR-safe import、SBOM 与许可清单；单元用例从 `./index` 固定公开入口。
 
 ## Deviation
 
