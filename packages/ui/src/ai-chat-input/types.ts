@@ -204,3 +204,11 @@ export interface AIChatInputConfigureItemProps {
   class?: HTMLAttributes['class'];
   className?: HTMLAttributes['class'];
 }
+
+export interface AIChatInputGetConfigureItemOptions {
+  valueKey?: string;
+  onKeyChangeFnName?: string;
+  valuePath?: string;
+  className?: HTMLAttributes['class'];
+  defaultProps?: Record<string, unknown>;
+}

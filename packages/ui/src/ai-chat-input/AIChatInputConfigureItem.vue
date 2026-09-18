@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onBeforeUnmount, onMounted } from 'vue';
-
-import { configureContextKey } from './configure-context';
+import { useConfigureItem } from './use-configure-item';
 import type { AIChatInputConfigureItemProps } from './types';
 
 // A scoped slot is the Vue counterpart of wrapping arbitrary controls with getConfigureItem.
@@ -10,16 +8,13 @@ const emit = defineEmits<{ change: [value: unknown] }>();
 defineSlots<{
   default?: (props: { value: unknown; onChange: (value: unknown) => void }) => unknown;
 }>();
-const configure = inject(configureContextKey);
-if (!configure) throw new Error('AIChatInput.Configure.Item must be inside AIChatInput.Configure');
-const value = computed(() => configure.value.value[props.field]);
-onMounted(() => {
-  if (props.initValue !== undefined && value.value === undefined)
-    configure.change(props.field, props.initValue);
-});
-onBeforeUnmount(() => configure.remove(props.field));
+const { value, change: commit } = useConfigureItem(
+  () => props.field,
+  () => props.initValue,
+  'AIChatInput.Configure.Item must be inside AIChatInput.Configure',
+);
 function change(next: unknown): void {
-  configure!.change(props.field, next);
+  commit(next);
   emit('change', next);
 }
 </script>

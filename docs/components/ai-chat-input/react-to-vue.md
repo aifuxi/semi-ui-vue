@@ -28,4 +28,4 @@
 
 所有默认值为 `true` 的 Boolean prop 都区分缺省与显式 `false`；模板中的裸属性、`:prop="false"` 与 render function 输入均遵循 Vue 原生语义。Tiptap 扩展继续通过 `extensions` 追加，公开 Tiptap 类型来自已声明的运行时依赖，不需要消费方初始化 `vendor/semi-design`。
 
-`getConfigureItem(Control)` 对应 `AIChatInput.Configure.Item` 的 `{ value, onChange }` 默认插槽。将 value 绑定给控件、将变更传给 onChange；保留 field/initValue、实例隔离与卸载字段清理，避免向示例暴露内部 InjectionKey。
+`getConfigureItem(Control)` 保持不变：Vue 同样公开 `getConfigureItem(Component, opts)`，`valueKey`/`onKeyChangeFnName`/`valuePath`/`defaultProps`/`className` 语义与固定工厂一致，渲染在最近的 `AIChatInput.Configure` 内即可自动收集字段。模板侧也可以用 `AIChatInput.Configure.Item` 的 `{ value, onChange }` 默认插槽表达同一件事：将 value 绑定给控件、将变更传给 onChange；两条路径都保留 field/initValue、实例隔离与卸载字段清理，避免向示例暴露内部 InjectionKey。
