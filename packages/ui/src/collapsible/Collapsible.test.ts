@@ -3,7 +3,7 @@ import { defineComponent, nextTick } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
-import Collapsible from './Collapsible.vue';
+import DefaultCollapsible, { Collapsible } from './index';
 
 class TestResizeObserver {
   static instances: TestResizeObserver[] = [];
@@ -59,6 +59,10 @@ afterEach(() => {
 });
 
 describe('Collapsible', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultCollapsible).toBe(Collapsible);
+  });
+
   it('渲染固定 wrapper/内容 DOM、默认关闭状态、data attrs 与 id', () => {
     const wrapper = mount(Collapsible, {
       attrs: {

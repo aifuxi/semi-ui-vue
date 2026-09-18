@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
-import Collapsible from './Collapsible.vue';
+import Collapsible from './index';
 
 describe('Collapsible SSR', () => {
   it('默认关闭时输出固定空内容结构且不访问 browser global', async () => {

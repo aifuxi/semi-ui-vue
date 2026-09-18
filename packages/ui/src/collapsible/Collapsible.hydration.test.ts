@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
-import Collapsible from './Collapsible.vue';
+import Collapsible from './index';
 
 describe('Collapsible hydration', () => {
   it('hydration 后无警告并在无 ResizeObserver 环境继续响应开关', async () => {
