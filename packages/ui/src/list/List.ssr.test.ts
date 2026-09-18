@@ -2,8 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
-import List from './List.vue';
-import ListItem from './ListItem.vue';
+import List, { ListItem } from './index';
 
 describe('List SSR', () => {
   it('稳定输出 dataSource、header/footer、Grid 与 loading DOM', async () => {

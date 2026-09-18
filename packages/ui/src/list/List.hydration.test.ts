@@ -2,8 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
-import List from './List.vue';
-import ListItem from './ListItem.vue';
+import List, { ListItem } from './index';
 
 describe('List hydration', () => {
   it('hydration 无警告并保留语义 ul/li', async () => {

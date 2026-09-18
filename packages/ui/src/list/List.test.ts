@@ -14,7 +14,7 @@ import DefaultList, {
 } from './index';
 
 describe('List', () => {
-  it('公开入口保留默认导出、compound Item 与固定枚举常量', () => {
+  it('公开入口保持 default/named、compound Item 与固定枚举常量', () => {
     expect(DefaultList).toBe(List);
     expect(List.Item).toBe(ListItem);
     expect(LIST_LAYOUTS).toEqual(['vertical', 'horizontal']);
