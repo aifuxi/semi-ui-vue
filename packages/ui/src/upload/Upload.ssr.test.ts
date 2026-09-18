@@ -3,7 +3,7 @@ import { h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
 import { ConfigProvider } from '../config-provider';
-import Upload from './Upload.vue';
+import DefaultUpload, { Upload } from './index';
 
 const files = [
   { uid: 'a', name: 'alpha.txt', size: '1.0KB', status: 'success' as const },
@@ -18,6 +18,10 @@ const files = [
 ];
 
 describe('Upload SSR', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultUpload).toBe(Upload);
+  });
+
   it('无 browser global 时输出 list、隐藏 inputs、data/style 与 ARIA', async () => {
     const html = await renderToString(
       h(

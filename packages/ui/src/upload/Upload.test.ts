@@ -4,7 +4,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import Button from '../button/Button.vue';
 import { ConfigProvider } from '../config-provider';
-import Upload from './Upload.vue';
+import DefaultUpload, {
+  UPLOAD_FILE_STATUSES,
+  UPLOAD_LIST_TYPES,
+  UPLOAD_PROMPT_POSITIONS,
+  UPLOAD_TRIGGERS,
+  Upload,
+  UploadFileCard,
+} from './index';
 import type { UploadExposed, UploadFileItem } from './types';
 
 const successFile: UploadFileItem = {
@@ -42,6 +49,22 @@ afterEach(() => {
 });
 
 describe('Upload', () => {
+  it('公开入口保持 default、named、compound FileCard 与固定枚举常量', () => {
+    expect(DefaultUpload).toBe(Upload);
+    expect(Upload.FileCard).toBe(UploadFileCard);
+    expect(UPLOAD_LIST_TYPES).toEqual(['picture', 'list', 'none']);
+    expect(UPLOAD_PROMPT_POSITIONS).toEqual(['left', 'right', 'bottom']);
+    expect(UPLOAD_TRIGGERS).toEqual(['auto', 'custom']);
+    expect(UPLOAD_FILE_STATUSES).toEqual([
+      'success',
+      'uploadFail',
+      'validateFail',
+      'validating',
+      'uploading',
+      'wait',
+    ]);
+  });
+
   it('渲染固定 DOM/class/data/style/ARIA 与默认 list 文件卡', () => {
     const wrapper = mount(Upload, {
       attrs: { class: 'attr-upload', 'data-kind': 'documents' },
