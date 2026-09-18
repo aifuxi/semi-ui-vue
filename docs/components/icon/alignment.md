@@ -93,3 +93,4 @@
 - 单元/SSR：Icon 包单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
 - Chromium：`tests/browser/components/icon.spec.ts` 4/4 通过，覆盖固定源码来源、尺寸/旋转/动画/颜色/AI fill/Lab 契约与 computed style/几何，以及 desktop light/dark 成对截图（该组件与方向无关，spec 无 RTL 专项）。
 - 发布：`pnpm check:artifacts` 通过，覆盖 build、图标与插画生成校验、SSR dist 枚举与真实 tarball 的 exports、类型、tree-shaking、许可与 SBOM。
+- 静态文档：本轮补齐仓库内 [index.md](./index.md)、[index.en-US.md](./index.en-US.md) 与 [react-to-vue.md](./react-to-vue.md)，覆盖 Icon props/slot/expose、`convertIcon`、稳定与 Lab 图标导出、尺寸/旋转/双色、可访问性与 SSR；`coverage.md` 保留退役站点的历史映射。
