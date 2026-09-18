@@ -96,3 +96,11 @@ Button 不存在受控/非受控双态；props 只读，组件不修改调用方
 
 - 图标 slot 的组件 VNode 不得放在 computed 中跨卸载缓存；loading 往返切换时在渲染阶段重新读取 slot，验证至少三轮恢复图标、click 和卸载。
 - 文档覆盖全部 17 个双语示例，具体矩阵与构建适配见 `docs/documentation/button-acceptance.md`。证据计数由指纹校验决定，不复用本组件历史 ready 状态。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Button/ButtonGroup/SplitButtonGroup 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/button.spec.ts` 8/8 通过，覆盖固定源码来源、五种类型、disabled/loading、Enter/Space、focus-visible、ARIA、Group/Split、computed style/几何与 desktop light/dark、RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 named 导出、`BUTTON_*` 枚举、类型、`button.css`、tree-shaking、许可与 SBOM。
+- 静态文档：本轮补齐仓库内 [index.md](./index.md)、[index.en-US.md](./index.en-US.md) 与 [react-to-vue.md](./react-to-vue.md)；`coverage.md` 保留退役站点的历史映射。
