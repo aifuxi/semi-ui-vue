@@ -110,3 +110,7 @@ IconButton 是一个单职责包装器，不需要额外 composable、provider�
   `Button` 的 `#icon` slot。
 
 当前没有 accepted visual 或 behavior deviation。
+
+## 公开入口契约锁
+
+- `IconButton.test.ts` 从 `./index` 消费公开入口，固定 default 与 named 导出一致；`pnpm check` 持续覆盖格式、lint、类型与该断言。

@@ -84,3 +84,7 @@
 - 行为门禁：完整 `pnpm check` 通过，共 `73` 个测试文件、`539` 个单元与 SSR 测试。
 - 浏览器门禁：Highlight 定向 `7/7` 通过，全量 Chromium 回归 `285/285` 通过；五组 React/Vue 裁剪 PNG 均由独立截图 buffer 直接比较且字节相等。
 - 发布门禁：根/子路径 ESM、公开类型、逐组件主题、SSR import、真实 tarball 安装与合规扫描全部通过。
+
+## 公开入口契约锁
+
+- `Highlight.test.ts` 从 `./index` 消费公开入口，固定 default 与 named 导出一致；`pnpm check` 持续覆盖格式、lint、类型与该断言。

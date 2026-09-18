@@ -112,3 +112,7 @@
 - 视觉门禁：Empty 的固定 Adapter 与 Illustrations 来源、真实 NoContent/Success 插画、DOM/暗色切换/样式/几何、四组 light/dark 桌面与移动截图、RTL 共 7 个 Chromium 用例通过；5 组 React/Vue 裁剪截图逐缓冲区一致。
 - 发布门禁：根入口与 `empty` 子路径的 ESM、类型声明、SSR import、根主题与 `empty.css`、真实 tarball 安装、exports、许可证、第三方声明和 SBOM 验证通过。
 - 总门禁：`pnpm check` 通过；插画与 Empty 专项 Chromium 共 12 个用例通过。
+
+## 公开入口契约锁
+
+- `Empty.test.ts` 从 `./index` 消费公开入口，固定 default 与 named 导出一致及 `EMPTY_LAYOUTS` 枚举；`pnpm check` 持续覆盖格式、lint、类型与该断言。

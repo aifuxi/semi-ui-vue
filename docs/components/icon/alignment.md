@@ -82,3 +82,7 @@
 - Icon 文档双语 light/dark 和适用 RTL 共 48/48 通过，computed style、几何与逐图标截图门槛未放宽。
 - 全仓 Chromium 回归 434/434 通过。
 - 原始失败报告与已应用补丁保留在 `ai-work/20260906-095242-icon-*`；有效文档证据见 `docs/documentation/evidence/icon.json`。该回归已关闭，无新增 accepted deviation。
+
+## 公开入口契约锁
+
+- `Icon.test.ts` 从 `./index` 消费主 UI 包入口，固定 default 与 named 都转发稳定 Icon 基类；`pnpm check` 持续覆盖格式、lint、类型与该断言。

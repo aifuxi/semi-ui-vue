@@ -79,3 +79,7 @@ Badge 没有可复用状态或副作用，不新增 composable；固定源码也
 - `pnpm check:full` 通过：56 个 Vitest 文件、430 个测试，以及 224 个 Chromium 测试全部通过；Badge 专属 Chromium 门禁 7/7 通过。
 - desktop/mobile 的 light/dark 与 light RTL 共 5 组 React/Vue 局部截图均满足严格阈值，成对文件逐字节一致。
 - 默认主题、逐组件 `badge.css`、源码/构建产物 SSR import、真实 tarball 安装、ESM、类型、样式入口、许可证与 SPDX SBOM 验证全部通过。
+
+## 公开入口契约锁
+
+- `Badge.test.ts` 从 `./index` 消费公开入口，固定 default 与 named 导出一致及 `BADGE_*` 枚举常量；`pnpm check` 持续覆盖格式、lint、类型与该断言。

@@ -81,3 +81,7 @@ Layout 不需要 Foundation 状态机或额外 composable；断点副作用留�
 ## Deviation
 
 当前没有 accepted visual/behavior deviation。React 静态子组件在 Vue 中增加具名 SFC 导出，以支持模板原生写法；`Layout.Header/Content/Footer/Sider` 仍保留在 `Layout` 导出对象上，供 render function 与脚本调用。
+
+## 公开入口契约锁
+
+- `Layout.test.ts` 从 `./index` 消费公开入口，固定 default 与 named 导出一致、`Layout.Header/Footer/Content/Sider` 静态成员与 `LAYOUT_*` 常量；`pnpm check` 持续覆盖格式、lint、类型与该断言。
