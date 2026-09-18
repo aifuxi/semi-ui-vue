@@ -75,7 +75,8 @@ facade，不复制语言内容形成第二份可编辑源码。
   SSR-safe；SSR 输出只包含 slot DOM，hydration 不新增包装或产生 warning。
 - Vite 从只读 submodule 通过私有集成层选择性编译并内联 57 份数据。真实 tarball 验证
   根/子路径 ESM、声明、逐组件 CSS、tree-shaking、SSR import、许可证/SBOM 与无
-  `vendor/**`/私有包引用。
+  `vendor/**`/私有包引用；单元与 SSR 用例从 `./index` 消费 `LocaleProvider`/
+  `LocaleConsumer` 具名导出，固定公开入口不新增默认导出。
 
 ## React → Vue 差异与 Deviation
 

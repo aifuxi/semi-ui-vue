@@ -4,8 +4,7 @@ import { defineComponent, h, nextTick, shallowRef, type Component } from 'vue';
 import { describe, expect, it } from 'vitest';
 
 import { ConfigProvider, type SemiLocale } from '../config-provider';
-import LocaleConsumer from './LocaleConsumer.vue';
-import LocaleProvider from './LocaleProvider.vue';
+import { LocaleConsumer, LocaleProvider } from './index';
 import type { LocaleConsumerSlotProps } from './types';
 
 const localeModules = import.meta.glob<{ default: Readonly<SemiLocale> }>('./source/*.ts', {
@@ -27,6 +26,11 @@ function consumer(
 }
 
 describe('LocaleProvider / LocaleConsumer', () => {
+  it('公开入口保持 LocaleProvider/LocaleConsumer 命名导出', () => {
+    expect(LocaleProvider).toBeDefined();
+    expect(LocaleConsumer).toBeDefined();
+  });
+
   it('脱离 Provider 时使用固定 zh_CN，并暴露四项具名 slot 数据', () => {
     const wrapper = mount(LocaleConsumer as Component, {
       props: { componentName: 'Pagination' },
