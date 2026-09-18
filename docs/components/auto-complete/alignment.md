@@ -82,6 +82,10 @@ AutoComplete 是固定文档输入类分组的首个组件。它以 Input 为触
 - 截图：组件/Portal 最小裁剪，`threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`；数值通过后仍检查局部集中差异。
 - 发布：根/`auto-complete` 子路径、声明、`auto-complete.css`、真实 tarball 安装、类型、tree-shaking、SSR import、SBOM 与许可清单。
 
+## 验收结论
+
+当前状态：ready。已覆盖公开入口默认导出、命名导出与 `AutoComplete.Option` 复合项，DOM/ARIA、受控与非受控事件顺序、Portal 容器、键盘交互、SSR 无 DOM 副作用及 React/Vue 浏览器对照均有固定回归。
+
 ## Deviation
 
 - `onChangeWithObject` 存在于 v2.102.0 Adapter 类型，但固定 Foundation 与 Adapter 均未读取，且文档未公开。Vue 保留该 prop 的类型入口，不人为赋予新行为；用户可观察行为与固定版本一致。
