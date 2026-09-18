@@ -3,7 +3,7 @@ import { defineComponent, h, nextTick, ref } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider, semiGlobal } from '../config-provider';
-import { SideSheet } from './index';
+import DefaultSideSheet, { SIDE_SHEET_PLACEMENTS, SIDE_SHEET_SIZES, SideSheet } from './index';
 import SideSheetDynamicSlot from './SideSheetDynamicSlot.fixture.vue';
 
 async function settle(): Promise<void> {
@@ -38,6 +38,12 @@ describe('SideSheet', () => {
     document.body.style.width = '';
     delete semiGlobal.config.overrideDefaultProps;
     vi.restoreAllMocks();
+  });
+
+  it('公开入口保持 default、named 与固定常量导出一致', () => {
+    expect(DefaultSideSheet).toBe(SideSheet);
+    expect(SIDE_SHEET_PLACEMENTS).toEqual(['top', 'right', 'bottom', 'left']);
+    expect(SIDE_SHEET_SIZES).toEqual(['small', 'medium', 'large']);
   });
 
   it('相邻自定义 Portal 挂载后，body SideSheet 首开、编辑与退出重开保持有效', async () => {

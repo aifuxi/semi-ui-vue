@@ -68,7 +68,7 @@
 
 ## 测试与发布证据
 
-- 单元：默认 DOM/尺寸/位置、样式/data、slot 优先级、四个默认 true Boolean 的缺省/false/true、全局默认覆盖、mask/close/Escape 事件顺序、body scroll、稳定容器、keepDOM、motion 周期、RTL。
+- 单元：公开入口 default/named 导出、placement/size 常量、默认 DOM/尺寸/位置、样式/data、slot 优先级、四个默认 true Boolean 的缺省/false/true、全局默认覆盖、mask/close/Escape 事件顺序、body scroll、稳定容器、keepDOM、motion 周期、RTL。
 - Chromium：同进程 React/Vue 的来源、公开行为、computed style 与 bounding rect；桌面/移动 light/dark 和 RTL 成对局部 PNG，并直接比较独立 buffer。
 - 发布：根/`side-sheet` ESM 与声明、逐组件 CSS、SSR-safe import、tree-shaking、合规产物和真实 tarball 消费。
 
