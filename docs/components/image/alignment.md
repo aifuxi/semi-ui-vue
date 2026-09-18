@@ -94,6 +94,7 @@ Teleport target
 ## Deviation
 
 - React render props 映射为 Vue scoped slots：`#header="{ title }"`、`#previewMenu="menuProps"`、`#leftIcon/#rightIcon`、`#closeIcon`；同名函数 props 保留以便程序化调用，slot 优先。迁移表逐项说明，能力不减少。
+- 固定 `image/index.tsx` 在 `Preview` 之外还具名导出 `PreviewInner`（预览内部实现）。Vue 公开 `ImagePreview`（对应 `Preview`），`ImagePreviewInner.vue` 保持私有：`PreviewInner` 在固定文档中没有使用示例，公开分组预览能力由 `ImagePreview` 完整表达。用户影响：需要该内部组件的高级用法改由 `ImagePreview` 组合；DOM、Portal、动效与事件契约不变。
 - Skeleton.Image 与 Spin 尚未作为独立公开 Vue 组件 ready；Image 内部只复现固定加载节点与本组件所需样式，不导出这些私有实现，也不据此声称 Skeleton/Spin 完成。
 - 当前无 accepted visual/behavior deviation。Footer 的 `1/2` 文本由 React/Vue 渲染器产生 `0.015625 CSS px` 的亚像素宽度差，颜色、display、line-height 与所有其余轴一致，远低于既定 `0.5 CSS px` 几何门槛；这是已测量的框架排版量化差，不扩大为像素相等结论。
 

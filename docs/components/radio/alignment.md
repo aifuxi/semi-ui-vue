@@ -99,4 +99,5 @@ Radio 是固定 `content/order.js` 中 PinCode 之后的下一项。Cascader、C
 
 ## Deviation
 
-当前无 accepted deviation。Radio 已通过同环境 React/Vue 行为、computed style、几何、截图、SSR 与真实发布包验证，状态为 `ready`。
+- 固定 `radio/index.tsx` 用 `class RadioWithGroup extends Radio { static Group = Group }` 承载 `Group` 静态成员并作为默认导出，同时具名导出 `Radio`/`RadioWithGroup`；该子类没有独立行为。Vue 入口把 `Group` 直接挂在 `Radio` 复合对象上（默认导出即复合组件）并具名导出 `RadioGroup`，不重复发布 `RadioWithGroup` 名字。用户影响：`Radio.Group` 用法不变，额外类名不可用；DOM、class、ARIA 与事件不变。
+- Radio 已通过同环境 React/Vue 行为、computed style、几何、截图、SSR 与真实发布包验证，状态为 `ready`；除上述 React 类包装映射外无其它 accepted deviation。

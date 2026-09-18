@@ -82,6 +82,7 @@
 
 - 上游 `renderTagItem` 与 `showContentTooltip.renderTooltip` 消费 `ReactNode`。Vue 主契约分别映射为 `#tag` slot，以及在该 slot 中组合公开 `Tooltip`；为渐进迁移保留 `renderTagItem` 函数 prop。原因是 ReactNode/render-prop 不能作为 Vue 公共类型逐字复制；用户影响是迁移自定义提示时需改写为 slot，标签 DOM、关闭回调和可实现能力不变，验收为 Vue 原生等价映射。
 - 上游 active draggable 分支通过 `_sortable`/dnd-kit 包裹列表；其公开结果是 handle、排序后的值与 `onChange`，内部 `onSortEnd`/`sortableHandle` 不属于 TagInput API。Vue 采用浏览器原生 drag events，保留相同 handle、指针排序结果和 `change` 回调，不发布 React/dnd-kit 类型。用户影响是拖拽过程由浏览器而非 dnd-kit 提供反馈；固定场景不比较瞬时 drag overlay，最终 DOM、顺序与事件已通过单元验收，因此接受该运行时实现差异。
+- 固定 `tagInput/index.tsx` 的 `ValidateStatus` 是 `type ValidateStatus = 'default' | 'error' | 'warning'`，`export { ValidateStatus }` 仅做类型再导出（运行时不存在）。Vue 公开类型命名为 `TagInputValidateStatus`，运行时以 `TAG_INPUT_VALIDATE_STATUSES` 常量导出同一取值集合；校验取值、默认值与 DOM/ARIA 输出不变，命名差异仅影响类型导入路径。
 
 ## 验收结论
 
