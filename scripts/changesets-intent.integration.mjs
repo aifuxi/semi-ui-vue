@@ -76,6 +76,10 @@ test('PR 检查区分遗漏、空记录、手改版本与可信机器人版本 P
     await writeFile(path.join(cwd, '.changeset/empty.md'), '---\n---\n');
     commit();
     verify();
+    // CI 的 PR 检出是 detached HEAD 且没有本地 base 分支，status 仍必须可运行
+    git('checkout', '--detach', 'HEAD');
+    git('branch', '-D', 'master');
+    verify();
     const file = path.join(cwd, 'packages/ui/package.json');
     const manifest = JSON.parse(await readFile(file, 'utf8'));
     manifest.version = '1.0.1';

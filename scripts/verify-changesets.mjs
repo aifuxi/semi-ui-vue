@@ -2,14 +2,18 @@ import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { publicPackages } from './public-packages.mjs';
 
-execFileSync(process.execPath, [path.resolve('node_modules/@changesets/cli/bin.js'), 'status'], {
-  stdio: 'inherit',
-});
 const base = process.env.BASE_SHA;
 const head = process.env.HEAD_SHA ?? 'HEAD';
+if (base && (!/^[a-f0-9]{40}$/.test(base) || (head !== 'HEAD' && !/^[a-f0-9]{40}$/.test(head))))
+  throw new Error('Expected immutable PR commit IDs');
+// `changeset status` 默认按 .changeset/config.json 的 baseBranch 解析本地 master 分支，
+// 而 CI 的 PR 检出是 detached HEAD 且没有本地分支，因此优先用工作流传入的不可变 base SHA。
+execFileSync(
+  process.execPath,
+  [path.resolve('node_modules/@changesets/cli/bin.js'), 'status', '--since', base ?? 'master'],
+  { stdio: 'inherit' },
+);
 if (base) {
-  if (!/^[a-f0-9]{40}$/.test(base) || (head !== 'HEAD' && !/^[a-f0-9]{40}$/.test(head)))
-    throw new Error('Expected immutable PR commit IDs');
   const git = (...args) => execFileSync('git', args, { encoding: 'utf8' }).trim();
   const versionPr =
     process.env.PR_HEAD_REF === 'changeset-release/master' &&
