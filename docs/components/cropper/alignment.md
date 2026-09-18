@@ -63,8 +63,8 @@
 
 ## 行为与视觉证据矩阵
 
-- unit：默认/显式 Boolean、DOM/class、load 初始化、ratio、wheel/边界/事件顺序、rotate/zoom watcher、三类拖动、preview 生命周期、canvas、attrs 和卸载清理。
-- SSR：根结构可渲染、无浏览器 global 访问、子路径与根入口可导入。
+- unit：公开入口 default/named 导出、默认/显式 Boolean、DOM/class、load 初始化、ratio、wheel/边界/事件顺序、rotate/zoom watcher、三类拖动、preview 生命周期、canvas、attrs 和卸载清理。
+- SSR：通过公开入口渲染根结构、无浏览器 global 访问、子路径与根入口可导入。
 - Chromium：同一 BrowserContext、固定内联 data URI 图片、桌面 `1440x900` 和移动 `390x844`、light/dark、RTL；检查 runtime error、请求来源、computed style、geometry 与组件裁剪截图。
 - 发布：根/子路径 JS 与 d.ts、`cropper.css`、SSR import、tree-shaking、许可/SBOM 和隔离 tarball consumer。
 

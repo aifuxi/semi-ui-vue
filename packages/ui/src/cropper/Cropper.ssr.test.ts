@@ -2,7 +2,7 @@ import { createSSRApp, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 import { describe, expect, it } from 'vitest';
 
-import Cropper from './Cropper.vue';
+import Cropper from './index';
 
 describe('Cropper SSR', () => {
   it('renders without browser globals and preserves the public DOM contract', async () => {

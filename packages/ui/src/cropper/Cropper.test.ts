@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import Cropper from './Cropper.vue';
+import DefaultCropper, { Cropper } from './index';
 import type { CropperMethods } from './types';
 
 const IMAGE =
@@ -64,6 +64,10 @@ describe('Cropper', () => {
   afterEach(() => {
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
+  });
+
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultCropper).toBe(Cropper);
   });
 
   it('renders the pinned DOM and merges root and crop-box classes', () => {
