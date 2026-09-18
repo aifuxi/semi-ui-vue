@@ -7,7 +7,7 @@ import { renderToString } from 'vue/server-renderer';
 import { Button } from '../button';
 import { ConfigProvider, semiGlobal } from '../config-provider';
 
-import Popover from './Popover.vue';
+import DefaultPopover, { Popover } from './index';
 import type { PopoverExposed } from './types';
 
 async function flushPopover(): Promise<void> {
@@ -30,6 +30,10 @@ describe('Popover', () => {
     document.body.replaceChildren();
     delete semiGlobal.config.overrideDefaultProps;
     vi.restoreAllMocks();
+  });
+
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultPopover).toBe(Popover);
   });
 
   it('SSR 只渲染 trigger，不创建 Portal', async () => {

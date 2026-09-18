@@ -73,7 +73,7 @@ Popover 具有多个默认值为 true 的可选 Boolean prop。实现必须通�
 - Portal/重定位：稳定自定义容器首次父节点、Element 与 Document scroll、resize/rePosKey、移动 viewport `scrollIntoView`、卸载后不再响应；断言最终 geometry，不读取私有 state。
 - React/Vue 场景：bottom/right、click dialog、hover tooltip、custom container、箭头与自定义颜色、无箭头、作用域内容、RTL。
 - 浏览器：同一 Chromium 的 computed style、bounding rect 与逐目标截图；桌面 1440×900、移动 390×844 的 light/dark，加 RTL；截图 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`，并独立比较 React/Vue 图片字节。
-- 发布：根与 `popover` 子路径 ESM/声明、`popover.css`、tree-shaking、SSR-safe import、真实 tarball 离线消费、许可证和 SBOM。
+- 发布：根与 `popover` 子路径 default/named ESM/声明、`popover.css`、tree-shaking、SSR-safe import、真实 tarball 离线消费、许可证和 SBOM。
 
 ## Deviation
 
