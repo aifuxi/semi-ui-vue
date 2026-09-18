@@ -58,7 +58,7 @@
     "changeset": "changeset",
     "release:version": "changeset version && pnpm install --lockfile-only --ignore-scripts",
     "check:changesets": "node scripts/verify-changesets.mjs",
-    "test:changesets": "node --test scripts/changesets-*.integration.mjs",
+    "test:changesets": "node --test scripts/*.integration.mjs",
     "release:verify": "node scripts/verify-release.mjs",
     "release:postcheck": "node scripts/release-postcheck.mjs",
     "release:check": "pnpm test:changesets && pnpm audit:prod && PACK_ISOLATED=1 pnpm check:full && pnpm release:verify",
