@@ -10,7 +10,7 @@ import {
   type ConfigContextValue,
 } from '../config-provider';
 import enUS from '../locale/source/en_US';
-import AudioPlayer from './AudioPlayer.vue';
+import AudioPlayer, { AudioPlayer as NamedAudioPlayer } from './index';
 
 const Passthrough = defineComponent({
   template: '<div><slot /><slot name="content" /></div>',
@@ -72,6 +72,10 @@ afterEach(() => {
 });
 
 describe('AudioPlayer', () => {
+  it('公开入口保持 default 与 named export 一致', () => {
+    expect(NamedAudioPlayer).toBe(AudioPlayer);
+  });
+
   it('区分 showToolbar 缺省、显式 false、显式 true 与全局覆盖', () => {
     expect(mountPlayer().findAll(':scope > .semi-audio-player-control')).toHaveLength(2);
     expect(

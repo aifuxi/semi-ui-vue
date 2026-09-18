@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
-import AudioPlayer from './AudioPlayer.vue';
+import AudioPlayer from './index';
 
 describe('AudioPlayer SSR', () => {
   it('服务端渲染静态 audio/control/info/toolbar 且无媒体副作用', async () => {
