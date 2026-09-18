@@ -100,7 +100,7 @@ ConfigProvider 的 `overrideDefaultProps.Lottie` 位于显式 prop 与缺省值�
   卸载清理且无 warning。
 - Chromium：固定 React/Vue 同 animationData；desktop/mobile light/dark/light RTL；
   computed style、几何、确定帧截图、实例控制与 params 重建行为。
-- 发布：根/子路径运行时与声明、空样式入口、真实 tarball consumer、许可证/SBOM、
+- 发布：根/子路径 default/named 运行时与声明、空样式入口、真实 tarball consumer、许可证/SBOM、
   source-boundary 与 tree-shaking/SSR-safe import。
 
 ## 完成证据
