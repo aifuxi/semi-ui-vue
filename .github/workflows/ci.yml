@@ -38,7 +38,10 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
+          set -euo pipefail
           changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
-          if rg -q '^(packages/|apps/|scripts/|tests/|vendor/|package.json$|pnpm-|tsconfig|vite|mise.toml$|\.npmrc$|\.github/workflows/)' <<< "$changed"; then
+          if grep -qE '^(packages/|apps/|scripts/|tests/|vendor/|package.json$|pnpm-|tsconfig|vite|mise.toml$|\.npmrc$|\.github/workflows/)' <<< "$changed"; then
             mise exec -- pnpm check:artifacts
+          else
+            echo '未触及构建或包契约路径，跳过 check:artifacts'
           fi
