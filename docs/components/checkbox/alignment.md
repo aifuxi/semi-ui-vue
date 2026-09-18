@@ -97,3 +97,7 @@ Group 需要装饰直接子 VNode，模板无法准确表达 `React.Children.toA
 ## Deviation
 
 没有 accepted deviation。固定 React v2.102.0 与 Vue 场景已在同一 Chromium 进程中完成行为、ARIA、computed style、geometry、桌面/移动明暗主题及 RTL 对照；对应 React/Vue 截图字节一致。
+
+## 验收结论
+
+当前状态：`ready`。本切片公开入口、compound `Checkbox.Group`、固定枚举常量、单元/SSR、同环境 React/Vue Chromium 场景、主题与发布入口证据均已闭环；后续 Cascader/Form 等组件可以把 Checkbox 作为已就绪依赖复用。

@@ -4,9 +4,21 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
-import Checkbox, { CheckboxGroup } from './index';
+import Checkbox, {
+  CHECKBOX_DIRECTIONS,
+  CHECKBOX_TYPES,
+  Checkbox as PublicCheckbox,
+  CheckboxGroup,
+} from './index';
 
 describe('Checkbox', () => {
+  it('公开入口保留默认导出、compound Group 与固定枚举常量', () => {
+    expect(PublicCheckbox).toBe(Checkbox);
+    expect(Checkbox.Group).toBe(CheckboxGroup);
+    expect(CHECKBOX_DIRECTIONS).toEqual(['horizontal', 'vertical']);
+    expect(CHECKBOX_TYPES).toEqual(['default', 'card', 'pureCard']);
+  });
+
   it('省略 disabled 时不输出 ARIA，显式 false 与 true 均保留', async () => {
     const wrapper = mount(Checkbox);
     expect(wrapper.get('input').attributes('aria-disabled')).toBeUndefined();
