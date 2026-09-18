@@ -70,6 +70,7 @@
 ## 发布与 deviation
 
 - 根与 `@aifuxi/semi-ui-vue/modal` 子路径的 default/named `Modal` 导出、confirm/info/success/error/warning/destroyAll 静态方法、`useModal`、`MODAL_*` 枚举和全部公开 Vue 类型均由单元用例从 `./index` 固定；`@aifuxi/semi-theme-default/modal.css` 编译固定样式。
+- 静态文档：仓库内 [index.md](./index.md)、[index.en-US.md](./index.en-US.md) 与 [react-to-vue.md](./react-to-vue.md) 覆盖 props/slots/events、命令式 API、Portal/遮罩/滚动、焦点陷阱/ARIA、主题/RTL/SSR 与 React→Vue 映射；`coverage.md` 保留退役站点的历史映射。
 - 真实 tarball 验证 ESM、声明、根/子路径、根 CSS/`modal.css`、tree-shaking、SSR-safe import、许可证与 SPDX SBOM；公开 `.d.ts` 不得出现 `vendor/**` 或私有 workspace Foundation 类型。
 - React `children` 映射默认 slot，ReactNode props 同时提供 Vue 命名 slot；React `useModal` 的 ReactNode holder 映射为 Vue 动态组件 holder，能力与上下文语义保留。
 - 暂无 accepted deviation；任何浏览器或静态 API 差异必须在完成状态前补录证据与影响。
