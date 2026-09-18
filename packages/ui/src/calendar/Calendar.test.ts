@@ -5,7 +5,7 @@ import { createApp, defineComponent, h, nextTick } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider, type SemiLocale } from '../config-provider';
-import Calendar, { CALENDAR_MODES, type CalendarEvent } from './index';
+import DefaultCalendar, { CALENDAR_MODES, Calendar, type CalendarEvent } from './index';
 
 class TestResizeObserver {
   static instances: TestResizeObserver[] = [];
@@ -44,7 +44,8 @@ describe('Calendar', () => {
     vi.restoreAllMocks();
   });
 
-  it('公开四种 mode 并默认渲染 week', async () => {
+  it('公开入口保持 default、named 与四种 mode 常量导出一致', async () => {
+    expect(DefaultCalendar).toBe(Calendar);
     expect(CALENDAR_MODES).toEqual(['day', 'week', 'month', 'range']);
     const wrapper = mount(Calendar, { props: { displayValue } });
     expect(wrapper.get('.semi-calendar-week').element.tagName).toBe('DIV');
