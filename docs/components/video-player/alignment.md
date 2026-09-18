@@ -122,12 +122,11 @@ stall/noResource/videoError`，57 个既有 Locale 数据无需新增或改写�
 
 ## 完成证据
 
-- 当前组件：VideoPlayer 单元/SSR、场景注册与两端应用定向测试通过；
-  Chromium 7 项覆盖来源、行为、Portal、computed style、几何、desktop/mobile
-  light/dark 与 en-US RTL，无更新参数复跑通过。
-- 视觉：5 组 React/Vue 裁剪图解码像素对照通过，人工复核无可见局部差异；
-  desktop/mobile light、mobile dark 与 RTL light 四组 PNG 还直接字节一致。
-  desktop dark 只宣称解码像素门禁通过，不宣称 PNG 字节一致。
+- `./video-player` 子路径公开入口提供 default `VideoPlayer`、named `VideoPlayer` 与
+  `formatVideoTime`，单元、SSR 与 hydration 均从公开入口导入，覆盖无 DOM 导入边界。
+- 当前组件：VideoPlayer 单元、SSR 与 hydration 为 3 个文件、12 项通过。
+- Chromium spec 为 5/5，覆盖来源、行为、Portal、computed style、几何、desktop
+  light/dark 与 en-US RTL；React/Vue PNG 成对像素比较通过。
 - 受影响链路：React/Vue 生产构建、工作台 smoke、Foundation/UI 类型、主题产物、
   源码边界、根/子路径 SSR import 与真实 tarball 消费均通过。
 - 仓库门禁：`pnpm check` 通过，包含固定 vendor/inventory、生成漂移、格式/lint、

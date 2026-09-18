@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
-import VideoPlayer from './VideoPlayer.vue';
+import VideoPlayer from './index';
 
 describe('VideoPlayer SSR', () => {
   it('服务端渲染静态 video/poster/progress/controls 且无媒体或全局副作用', async () => {
