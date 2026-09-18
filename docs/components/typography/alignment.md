@@ -63,7 +63,7 @@
 
 | 证据                | 场景                                                                                                                        |
 | ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| 单元/SSR            | 聚合根、四组件标签、装饰顺序、link/disabled、尺寸/字重、复制/键盘/计时器、CSS/JS ellipsis、数值六规则与 parser、locale、SSR |
+| 单元/SSR            | 公开入口、聚合根、四组件标签、装饰顺序、link/disabled、尺寸/字重、复制/键盘/计时器、CSS/JS ellipsis、数值六规则与 parser、locale、SSR |
 | Chromium 行为       | 固定源码请求、DOM/class、标题/段落/链接/禁用、CSS Tooltip、JS 展开收起、数值/复制、无运行时错误                             |
 | computed style/几何 | 10 个目标逐项比较颜色、字体、字重、行高、截断、margin、cursor、user-select；各轴差值不超过 0.5px                            |
 | 视觉                | desktop 1440×900 与 mobile 390×844，light/dark；组件级裁剪                                                                  |
@@ -74,6 +74,11 @@
 ## Deviation
 
 没有 accepted visual/behavior deviation。React children、ReactNode 和 ref 分别迁移为默认/命名 slot、VNodeChild 与 template ref；`renderTooltip` 迁移为 scoped slot，属于框架原生 API 映射。
+
+## 公开入口证据
+
+- `./typography` 子路径公开入口提供 default `Typography`、named `Typography`、`Text`、`Title`、`Paragraph`、`Numeral`、常量与类型；单元与 SSR 均从公开入口导入。
+- 单元锁定 default/named `Typography` 一致性及 `Typography.Text/Title/Paragraph/Numeral` compound 成员映射。
 
 ## ConfigProvider 文档续验：正式浮层集成
 

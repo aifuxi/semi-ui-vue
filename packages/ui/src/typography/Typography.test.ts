@@ -8,6 +8,8 @@ import Typography, {
   Paragraph,
   Text,
   Title,
+  TYPOGRAPHY_TYPES,
+  Typography as NamedTypography,
   typographyLocaleKey,
 } from './index';
 
@@ -27,6 +29,15 @@ describe('Typography', () => {
   afterEach(() => {
     vi.useRealTimers();
     vi.unstubAllGlobals();
+  });
+
+  it('公开入口保持 default、named 与 compound 成员一致', () => {
+    expect(NamedTypography).toBe(Typography);
+    expect(Typography.Text).toBe(Text);
+    expect(Typography.Title).toBe(Title);
+    expect(Typography.Paragraph).toBe(Paragraph);
+    expect(Typography.Numeral).toBe(Numeral);
+    expect(TYPOGRAPHY_TYPES).toContain('primary');
   });
 
   it('渲染聚合根节点并透传原生 attrs', () => {
