@@ -3,9 +3,29 @@ import { defineComponent, h, nextTick, shallowRef } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Popover } from '../popover';
-import Tag, { SplitTagGroup, TagGroup } from './index';
+import DefaultTag, {
+  SplitTagGroup,
+  TAG_SHAPES,
+  TAG_SIZES,
+  TAG_TYPES,
+  Tag,
+  TagGroup,
+} from './index';
+import SplitTagGroupBase from './SplitTagGroup';
+import TagBase from './Tag.vue';
+import TagGroupBase from './TagGroup';
 
 describe('Tag', () => {
+  it('公开入口保持 default、named 与复合 Group 一致，并固定枚举常量', () => {
+    expect(DefaultTag).toBe(Tag);
+    expect(Tag).toBe(TagBase);
+    expect(TagGroup).toBe(TagGroupBase);
+    expect(SplitTagGroup).toBe(SplitTagGroupBase);
+    expect(TAG_TYPES).toEqual(['light', 'solid', 'ghost']);
+    expect(TAG_SIZES).toEqual(['default', 'small', 'large']);
+    expect(TAG_SHAPES).toEqual(['square', 'circle']);
+  });
+
   it('覆盖默认 DOM、枚举 class、图标、Avatar 与 attrs', () => {
     const wrapper = mount(Tag, {
       attrs: { 'data-testid': 'tag' },

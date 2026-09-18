@@ -60,7 +60,7 @@
 - 单元：全部枚举/class、内容与图标 slot、Avatar、受控/非受控可见性、关闭 preventDefault、鼠标/键盘顺序、ARIA/tabIndex、TagGroup 数据/折叠/回调/Popover、SplitTagGroup template+h() 门禁。
 - SSR：Tag/TagGroup/SplitTagGroup 可渲染，受控 invisible 与 fixed classes 保留，无浏览器全局访问。
 - Chromium：同进程 React/Vue 来源、交互、computed style 与 bounding rect；桌面/移动 light/dark 和 RTL 成对局部 PNG，另做独立 buffer 直接比较。
-- 发布：根/`tag` ESM 与声明、逐组件 CSS、SSR-safe import、tree-shaking、合规产物和真实 tarball 消费。
+- 发布：根/`tag` default/named ESM 与声明、`TagGroup`/`SplitTagGroup` 命名导出、`TAG_*` 枚举常量、逐组件 CSS、SSR-safe import、tree-shaking、合规产物和真实 tarball 消费。
 
 ## Deviation 与状态
 
