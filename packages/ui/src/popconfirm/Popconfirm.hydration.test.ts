@@ -2,7 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { describe, expect, it, vi } from 'vitest';
 import { createSSRApp, defineComponent, h, nextTick } from 'vue';
 
-import Popconfirm from './Popconfirm.vue';
+import Popconfirm from './index';
 
 describe('Popconfirm hydration', () => {
   it('SSR markup 可无警告 hydration，并在客户端把 Portal 挂入稳定容器', async () => {

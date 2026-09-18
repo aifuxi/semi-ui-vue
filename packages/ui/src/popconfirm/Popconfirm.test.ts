@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Button } from '../button';
 import { ConfigProvider, semiGlobal } from '../config-provider';
 
-import Popconfirm from './Popconfirm.vue';
+import Popconfirm, { Popconfirm as PopconfirmNamed } from './index';
 
 async function flushPopconfirm(): Promise<void> {
   for (let index = 0; index < 5; index += 1) {
@@ -35,6 +35,10 @@ describe('Popconfirm', () => {
     document.body.replaceChildren();
     delete semiGlobal.config.overrideDefaultProps;
     vi.restoreAllMocks();
+  });
+
+  it('公开入口保持默认导出与命名导出', () => {
+    expect(Popconfirm).toBe(PopconfirmNamed);
   });
 
   it('点击 trigger 打开固定 DOM，取消按钮先回调再关闭并恢复焦点', async () => {

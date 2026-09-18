@@ -2,7 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { describe, expect, it } from 'vitest';
 import { createSSRApp, h } from 'vue';
 
-import Popconfirm from './Popconfirm.vue';
+import Popconfirm from './index';
 
 describe('Popconfirm SSR', () => {
   it('只渲染 trigger，不访问 Portal 或浮层 DOM', async () => {
