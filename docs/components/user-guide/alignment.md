@@ -86,7 +86,8 @@
 
 ## 验收证据
 
-- 单元与 SSR：UserGuide 11 条用例覆盖 Boolean 缺省/显式值、受控父级回写、非受控事件顺序、空目标、源码 deviation、modal、slots、body 清理与 hydration。
+- `./user-guide` 子路径公开入口提供 default `UserGuide` 与 named `UserGuide`，单元、SSR 与 hydration 均从公开入口导入，覆盖无 DOM 导入边界。
+- 单元与 SSR：UserGuide 12 条用例覆盖公开入口、Boolean 缺省/显式值、受控父级回写、非受控事件顺序、空目标、源码 deviation、modal、slots、body 清理与 hydration。
 - React/Vue Chromium：7 条场景覆盖 pinned source 请求、Portal、popup/modal 行为、desktop/narrow light/dark 与 RTL；关键节点样式精确相等，几何差值不超过 `0.5 CSS px`，成对像素阈值保持 `0.1 / 0.001`。
 - 固定弹层宽 400px、大于 390px 窄 viewport；为避免 `locator.screenshot()` 自动滚动改变 fixed 弹层底图，测试对当前 viewport 内的共同裁剪区域做像素比较，并继续对完整节点做样式与几何断言。
 - 发布边界：`user-guide` 根导出、子路径声明、`user-guide.css`、主题依赖顺序、SSR-safe dist、真实 tarball 安装/导入/类型/样式与合规产物均已纳入仓库门禁。

@@ -2,7 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { describe, expect, it, vi } from 'vitest';
 import { createSSRApp, defineComponent, h, nextTick, ref } from 'vue';
 
-import UserGuide from './UserGuide.vue';
+import UserGuide from './index';
 
 describe('UserGuide hydration', () => {
   it('hydrates without warnings and measures only after the client opens', async () => {

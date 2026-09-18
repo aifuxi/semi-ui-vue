@@ -2,7 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { describe, expect, it } from 'vitest';
 import { createSSRApp, h } from 'vue';
 
-import UserGuide from './UserGuide.vue';
+import UserGuide from './index';
 
 describe('UserGuide SSR', () => {
   it('does not access DOM or create a Portal while hidden', async () => {

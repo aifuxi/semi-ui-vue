@@ -2,8 +2,7 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick, type VNodeChild } from 'vue';
 
-import UserGuide from './UserGuide.vue';
-import type { UserGuideStepItem } from './types';
+import UserGuide, { UserGuide as NamedUserGuide, type UserGuideStepItem } from './index';
 
 const originalRaf = globalThis.requestAnimationFrame;
 const originalCancelRaf = globalThis.cancelAnimationFrame;
@@ -46,6 +45,10 @@ afterEach(() => {
 });
 
 describe('UserGuide', () => {
+  it('keeps the public default and named exports aligned', () => {
+    expect(NamedUserGuide).toBe(UserGuide);
+  });
+
   it('keeps default true booleans distinct from explicit false', async () => {
     const element = target();
     const wrapper = mount(UserGuide, {
