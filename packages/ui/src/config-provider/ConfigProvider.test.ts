@@ -5,7 +5,9 @@ import { defineComponent, h, inject, nextTick, onMounted, shallowRef } from 'vue
 
 import { Text } from '../typography';
 
-import ConfigProvider, {
+import DefaultConfigProvider, {
+  CONFIG_BREAKPOINTS,
+  ConfigProvider,
   ConfigConsumer,
   configContextKey,
   defaultResponsiveMap,
@@ -58,6 +60,13 @@ function installMatchMedia(matches: Record<string, boolean>): MatchMediaControll
 }
 
 describe('ConfigProvider', () => {
+  it('公开入口保持 default、named、静态响应式映射与固定断点枚举', () => {
+    expect(DefaultConfigProvider).toBe(ConfigProvider);
+    expect(ConfigProvider.defaultResponsiveMap).toBe(defaultResponsiveMap);
+    expect(ConfigConsumer).toBeDefined();
+    expect(CONFIG_BREAKPOINTS).toEqual(['xs', 'sm', 'md', 'lg', 'xl', 'xxl']);
+  });
+
   beforeEach(() => {
     semiGlobal.config = {};
   });

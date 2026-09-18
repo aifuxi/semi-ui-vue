@@ -58,12 +58,12 @@
 
 ## 验收证据
 
-| 层级           | 覆盖                                                                                                                 |
-| -------------- | -------------------------------------------------------------------------------------------------------------------- |
-| 单元/SSR       | LTR/RTL DOM、公开/默认 Context、嵌套隔离、动态 locale、两类断点订阅、过滤、取消、默认禁用、静态属性、semiGlobal、SSR |
-| React/Vue 场景 | 固定 React Adapter 请求、RTL 包装、Consumer、timeZone、en-US Typography、嵌套 LTR、桌面/窄视口断点                   |
-| Chromium       | 公开 DOM、计算样式、几何、响应式 viewport、无 console/page error、desktop/narrow light/dark 截图                     |
-| 发布包         | 根/`config-provider` ESM 与声明、`config-provider.css`、SSR import、真实 tarball 离线安装                            |
+| 层级           | 覆盖                                                                                                                                                                 |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 单元/SSR       | LTR/RTL DOM、公开/默认 Context、嵌套隔离、动态 locale、两类断点订阅、过滤、取消、默认禁用、静态属性、semiGlobal、SSR                                                 |
+| React/Vue 场景 | 固定 React Adapter 请求、RTL 包装、Consumer、timeZone、en-US Typography、嵌套 LTR、桌面/窄视口断点                                                                   |
+| Chromium       | 公开 DOM、计算样式、几何、响应式 viewport、无 console/page error、desktop/narrow light/dark 截图                                                                     |
+| 发布包         | 根/`config-provider` default/named ESM 与声明、`ConfigProvider.defaultResponsiveMap`、`CONFIG_BREAKPOINTS`、`config-provider.css`、SSR import、真实 tarball 离线安装 |
 
 当前没有 accepted visual/behavior deviation。Vue scoped slot、InjectionKey 和响应式只读上下文属于框架原生映射。
 
