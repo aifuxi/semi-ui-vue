@@ -2,9 +2,7 @@ import { mount } from '@vue/test-utils';
 import { Comment, Fragment, defineComponent, h } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import Step from './Step.vue';
-import Steps from './Steps.vue';
-import DefaultSteps, { Step as PublicStep, Steps as PublicSteps } from './index';
+import Steps, { Step, Steps as NamedSteps } from './index';
 
 const wrappers: Array<ReturnType<typeof mount>> = [];
 
@@ -30,10 +28,8 @@ afterEach(() => {
 
 describe('Steps', () => {
   it('公开入口保留默认导出、命名导出与 compound Step', () => {
-    expect(PublicStep).toBe(Step);
-    expect(PublicSteps).toBe(Steps);
-    expect(DefaultSteps).toBe(Steps);
-    expect(PublicSteps.Step).toBe(PublicStep);
+    expect(NamedSteps).toBe(Steps);
+    expect(Steps.Step).toBe(Step);
   });
 
   it('fill 默认值保留 Row/Col、等宽、状态、序号与根 class/style/data/ARIA', () => {

@@ -2,8 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, defineComponent, h } from 'vue';
 import { describe, expect, it } from 'vitest';
 
-import Step from './Step.vue';
-import Steps from './Steps.vue';
+import Steps, { Step } from './index';
 
 function render(type: 'fill' | 'basic' | 'nav') {
   return renderToString(
