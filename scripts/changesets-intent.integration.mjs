@@ -103,6 +103,14 @@ test('PR 检查区分遗漏、空记录、手改版本与可信机器人版本 P
         }),
       (error) => error.stderr.includes('Only the version PR'),
     );
+    // 版本 PR 消费掉 changeset 并只改版本，CLI 的发布意图检查必须让位给版本 PR 例外
+    await rm(path.join(cwd, '.changeset/empty.md'));
+    commit();
+    verify({ PR_HEAD_REF: 'changeset-release/master', PR_AUTHOR: 'release[bot]' });
+    assert.throws(
+      () => verify(),
+      (error) => `${error.stdout}${error.stderr}`.includes('no changesets were found'),
+    );
   } finally {
     await rm(cwd, { recursive: true, force: true });
   }
