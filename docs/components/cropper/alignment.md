@@ -83,3 +83,10 @@
 - 四组独立 React/Vue 基线 PNG 经直接 `cmp` 均逐字节相同；测试仍保留 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001` 与关键节点 `0.5 CSS px` 几何上限。
 - 默认主题共 `86` 个根入口、`3352102` 字节 CSS 通过，包含 `cropper.css`；根入口及全部公开子路径 SSR import 通过。
 - 真实 tarball consumer 的安装、exports、ESM、类型、样式入口、SSR import、许可与 SBOM 检查通过。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Cropper 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/cropper.spec.ts` 5/5 通过，覆盖固定源码来源、滚轮/拖动交互、computed style/几何与 desktop light/dark、RTL 成对截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、`cropper.css`、tree-shaking、许可与 SBOM。

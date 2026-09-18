@@ -93,3 +93,10 @@
 ## 文档补齐：主视图退出与重开
 
 工作区由 main 进入 code/file 再返回时，主内容插槽在当前渲染中重新创建 VNode，避免复用已卸载的 Fragment。生产静态页面及在线编辑器均验证代码复制、文件编辑/返回、选项切换；开发单测不能代替生产编译下的重开证据。详情内容与标题回调保留既有参数契约。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Sidebar/Annotation 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/sidebar.spec.ts` 5/5 通过，覆盖固定源码来源、基础 DOM/样式/几何与受控选项，以及 desktop light/dark、en-US RTL 成对截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、`Sidebar.*`/`Annotation` 复合静态成员、类型、`sidebar.css`、tree-shaking、许可与 SBOM。

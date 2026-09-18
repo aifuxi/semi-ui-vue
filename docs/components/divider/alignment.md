@@ -65,3 +65,10 @@
 ## Deviation
 
 当前没有 accepted visual/behavior deviation。React `children`、`className`、`style` 仅按 Vue 原生 slot 与 attrs 迁移，不作为差异。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Divider 单测、SSR 与 hydration 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/divider.spec.ts` 5/5 通过，覆盖固定源码来源、八个节点的 role/ARIA、边框、computed style/几何与桌面/移动 light/dark、RTL 截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、`divider.css`、tree-shaking、许可与 SBOM。

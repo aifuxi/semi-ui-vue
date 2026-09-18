@@ -64,3 +64,10 @@
 ## Deviation
 
 当前没有 accepted visual/behavior deviation。React `children`、`className`、`style` 迁移为 Vue 默认 slot 与原生 attrs；Vue 额外允许 `id / role / aria-*` 等 attrs 透传，这是 Vue 原生 API 映射，不改变固定场景的视觉或布局行为。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Space 单测、SSR 与 hydration 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/space.spec.ts` 5/5 通过，覆盖固定源码来源、间距/方向/换行/对齐、computed style/几何与 light/dark、RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、`space.css`、tree-shaking、许可与 SBOM。

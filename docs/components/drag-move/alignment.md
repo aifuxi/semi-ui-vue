@@ -130,3 +130,10 @@ React 类型漏写但 `propTypes`、`defaultProps`、Foundation 和文档均公�
   SBOM 验证通过，公开产物未泄漏 vendor 或私有包路径。
 - 未运行全仓 `pnpm test:browser`：本切片只新增 DragMove 组件、场景注册和组件作用域
   harness CSS，没有修改共享运行时、全局主题、Playwright 配置或比较算法。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：DragMove 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/drag-move.spec.ts` 5/5 通过，覆盖固定源码来源、拖拽交互、computed style/几何与 light/dark、RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、`drag-move.css`、tree-shaking、许可与 SBOM。

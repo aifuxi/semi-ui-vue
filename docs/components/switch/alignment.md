@@ -73,3 +73,10 @@ Tab/Shift+Tab 聚焦原生 input，Space 由浏览器原生 checkbox 行为触�
 | `onMouseEnter` / `onMouseLeave`                  | `@mouseenter` / `@mouseleave`                   |
 
 没有 accepted visual/behavior deviation。Vue 新增 `v-model`、update emits 与 slots 是框架原生 API 映射，不改变固定默认 DOM、状态或事件载荷。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Switch 单测、SSR 与 hydration 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/switch.spec.ts` 5/5 通过，覆盖固定源码来源、受控/非受控、键盘焦点、loading、computed style/几何与 light/dark、RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、`SWITCH_SIZES`、类型、`switch.css`、tree-shaking、许可与 SBOM。

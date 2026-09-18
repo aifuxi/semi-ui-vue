@@ -111,3 +111,10 @@
 修复：`useToast` 改为渲染内部 `ToastContextList`，逐条就地渲染 `ToastNotice`，空列表返回 `null`；`ToastNotice.positionInList` 改为可选，缺省时 `reservedIndex` 为 0。命令式路径继续使用 `ToastHost` 的 wrapper/innerWrapper，公开 API 与类型不变。
 
 同时补充：英文独有 Stacking 示例纳入本批严格验收；参考适配器补齐固定源码省略的 `React`/`lodash-es` 依赖，并把 `Toast`/`ToastFactory` 改走已公开的 `@semi-v2.102.0/toast` 别名（固定 `semi-ui/index.ts` 的组合导出形态超出共享参考导入映射）。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Toast/ToastFactory 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/toast.spec.ts` 5/5 通过，覆盖固定源码来源、类型/light/关闭/alert 与公开 DOM、computed style/几何、desktop light/dark 与 RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、`TOAST_*` 枚举、类型、`toast.css`、tree-shaking、许可与 SBOM。

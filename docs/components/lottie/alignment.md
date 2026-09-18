@@ -120,3 +120,10 @@ ConfigProvider 的 `overrideDefaultProps.Lottie` 位于显式 prop 与缺省值�
   `lottie-web@5.13.0` MIT 许可证副本、第三方声明与 SPDX SBOM 全部通过。
 - 影响面未修改共享比较算法、Playwright 配置、全局主题或既有组件运行时，因此按项目
   门禁运行 Lottie 完整场景与工作台 smoke，没有运行全仓 `pnpm test:browser`。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Lottie 单测、SSR 与 hydration 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/lottie.spec.ts` 5/5 通过，覆盖固定源码来源、播放器实例与公开 DOM、computed style/几何与 light/dark、RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、`lottie.css`、tree-shaking、`lottie-web` 许可与 SBOM。

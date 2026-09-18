@@ -124,3 +124,10 @@ prop 在此基线是可接受的已知 no-op，不擅自实现更新版本语义
 ## HotKeys 公开入口锁定（2026-09-18）
 
 - `HotKeys.test.ts`、`HotKeys.ssr.test.ts` 与 `HotKeys.hydration.test.ts` 均改为从 `./index` 挂载，锁定默认 `HotKeys`、命名 `HotKeys`、`HotKeys.Keys` 与 `HOT_KEYS` 常量的公开入口关系。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：HotKeys 单测、SSR 与 hydration 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/hot-keys.spec.ts` 5/5 通过，覆盖固定源码来源、快捷键捕获与公开 DOM、computed style/几何与 light/dark、RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、样式入口、tree-shaking、许可与 SBOM。

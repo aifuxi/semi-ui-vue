@@ -69,3 +69,10 @@
 ## Deviation
 
 当前没有 accepted visual/behavior deviation。Vue 增加原生 attrs 透传、`icon`/`item` slots 与 emit 语法，是 ReactNode、className 和回调的 Vue 原生迁移，不改变固定场景 DOM、样式或事件顺序。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：FloatButton 单测与 SSR/hydration 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/float-button.spec.ts` 5/5 通过，覆盖固定源码来源、公开 DOM/ARIA、computed style/几何与 light/dark、RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、`float-button.css`、tree-shaking、许可与 SBOM。

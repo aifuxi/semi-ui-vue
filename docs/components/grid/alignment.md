@@ -80,3 +80,10 @@ Grid 不需要 Foundation 运行时实例或额外 composable；Foundation 仅�
 ## Deviation
 
 当前没有 accepted visual/behavior deviation。React `RowContext` 是内部实现细节，Vue 改用类型化 provide/inject；公开 DOM、Gutter 传播和嵌套隔离不变。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Grid 单测、SSR 与 hydration 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/grid.spec.ts` 7/7 通过，覆盖固定源码来源、24 栅格与响应式 Gutter、computed style/几何与 desktop/narrow light/dark、RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、`grid.css`、tree-shaking、许可与 SBOM。

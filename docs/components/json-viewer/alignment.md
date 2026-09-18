@@ -101,3 +101,10 @@ Navigation 文档回归的全仓门禁发现 JsonViewer 首轮出现 `ErrorWidge
 公开包的 Vite worker 构建对这一精确固定入口标记 moduleSideEffects:true，复用现有 Foundation 构建隔离边界；不改 vendor、协议、组件 API 或默认行为。参考静态工作台已有相同保留语义。回归必须用生产构建的真实 Worker 完成初始化、格式化和替换响应，只有源码测试或检查 Worker 构造器存在不能证明修复。
 
 Worker 专属构建同时固定 `common/worker.ts` 为 DedicatedWorker 环境，并以不可调用的报错入口隔离嵌套 manager，避免把主线程的 `%WORKER_RAW%` 模板带入发布产物。该 manager 在固定 JSONModel 的 Worker 分支不会调用。新增构建测试验证真实协议响应；真实 tarball 门禁通过安装包构建浏览器消费者，完成查找、替换与关闭搜索。原有 MIT 归属及 SBOM 来源沿用固定 core，随公开构建重新生成。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：JsonViewer 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/json-viewer.spec.ts` 5/5 通过，覆盖固定源码来源、Worker 搜索/替换、公开 DOM、computed style/几何与 light/dark、RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建（含 Worker 入口保留）、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、`json-viewer.css`、tree-shaking、许可与 SBOM。
