@@ -23,7 +23,7 @@ function paste(element: HTMLInputElement, text: string): Event {
 }
 
 describe('PinCode', () => {
-  it('公开入口保持默认导出与命名导出', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
     expect(PinCode).toBe(PinCodeNamed);
   });
 

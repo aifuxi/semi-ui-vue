@@ -73,7 +73,7 @@ Vue 额外发出 `update:value` 与 `update:modelValue`，顺序为 `change → 
 - Chromium：固定中文文档首个 small/default/large 示例，以及空值、禁用、mixed、四位码；桌面 `1440×900`、移动 `390×844`、light/dark 与 RTL。
 - computed style/geometry：根、三尺寸 wrapper/input、disabled 与间距逐节点比较；bounding rect 各轴差值不超过 `0.5 CSS px`。
 - 截图：组件最小完整裁剪，`threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`；通过后仍单独检查是否字节一致。
-- 发布：根/`pin-code` 子路径、声明、`pin-code.css`、真实 tarball 安装/类型/tree-shaking/SSR-safe import、SBOM 与许可。
+- 发布：根/`pin-code` 子路径 default/named 导入、公开声明、`pin-code.css`、真实 tarball 安装/类型/tree-shaking/SSR-safe import、SBOM 与许可。
 
 ## Deviation
 
