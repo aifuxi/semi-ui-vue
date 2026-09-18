@@ -70,7 +70,7 @@
 - 滚动：初始底部、流式跟随、wheel 停止跟随、返回底部、公开滚动方法、卸载清理。
 - 数据适配：非流式和流式 Chat Completion/Response、ChatInput 双向转换的公开样例与增量状态。
 - Chromium：desktop/mobile light/dark + en-US RTL；computed style、geometry、行为、截图与工作台 smoke。
-- 发布：根/`./ai-chat-dialogue`/`./ai-chat-dialogue/data-adapter` runtime 与声明、`ai-chat-dialogue.css`、SSR-safe import、tree-shaking、许可证/SBOM 和隔离 tarball consumer。
+- 发布：根/`./ai-chat-dialogue`/`./ai-chat-dialogue/data-adapter` default/named runtime 与声明、`AIChatDialogue.*` 静态成员与命名子组件一致性（单元用例从 `./index` 固定）、`ai-chat-dialogue.css`、SSR-safe import、tree-shaking、许可证/SBOM 和隔离 tarball consumer。
 
 ## Deviation
 

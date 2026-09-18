@@ -3,8 +3,12 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick } from 'vue';
 
 import { semiGlobal } from '../config-provider';
-import {
+import DefaultAIChatDialogue, {
   AIChatDialogue,
+  AIChatDialogueAnnotation,
+  AIChatDialogueCode,
+  AIChatDialogueReasoning,
+  AIChatDialogueStep,
   chatCompletionToMessage,
   chatInputToChatCompletion,
   chatInputToMessage,
@@ -24,6 +28,14 @@ const plainRender = {
 };
 
 describe('AIChatDialogue', () => {
+  it('公开入口保持 default、named 与复合静态成员一致', () => {
+    expect(DefaultAIChatDialogue).toBe(AIChatDialogue);
+    expect(AIChatDialogue.Annotation).toBe(AIChatDialogueAnnotation);
+    expect(AIChatDialogue.Reasoning).toBe(AIChatDialogueReasoning);
+    expect(AIChatDialogue.Step).toBe(AIChatDialogueStep);
+    expect(AIChatDialogue.defaultComponents.code).toBe(AIChatDialogueCode);
+  });
+
   it('消息编辑回调保留文本、附件和引用', async () => {
     const message: Message = {
       id: 'edit',
