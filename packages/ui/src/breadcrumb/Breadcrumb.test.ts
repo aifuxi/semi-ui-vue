@@ -1,3 +1,5 @@
+/* eslint-disable vue/one-component-per-file -- local hosts cover template separator slots and the custom popup container. */
+
 import { mount } from '@vue/test-utils';
 import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, defineComponent, h, nextTick } from 'vue';
