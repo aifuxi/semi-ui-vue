@@ -7,7 +7,7 @@ import { IconHome } from '@aifuxi/semi-icons-vue';
 import { ConfigProvider } from '../config-provider';
 import { Text } from '../typography';
 
-import Breadcrumb, { BreadcrumbItem, type BreadcrumbItemInfo } from './index';
+import DefaultBreadcrumb, { Breadcrumb, BreadcrumbItem, type BreadcrumbItemInfo } from './index';
 
 const mountedWrappers: Array<ReturnType<typeof mount>> = [];
 
@@ -36,6 +36,11 @@ afterEach(() => {
 });
 
 describe('Breadcrumb', () => {
+  it('公开入口保持 default、named 与复合 Item 一致', () => {
+    expect(DefaultBreadcrumb).toBe(Breadcrumb);
+    expect(Breadcrumb.Item).toBe(BreadcrumbItem);
+  });
+
   it('保留 nav、compact 三态、class/style/data/ARIA 与 separator DOM', () => {
     const defaultWrapper = mountBreadcrumb({
       className: 'custom-breadcrumb',

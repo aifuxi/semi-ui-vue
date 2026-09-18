@@ -83,7 +83,7 @@
 - 单元：根 DOM/class/style/attrs、compact 三态、separator、routes/string/自定义 item、icon/href/noLink、activeIndex、Item→parent 事件顺序、collapse click/Enter、autoCollapse 三态、maxItemCount、自定义 more、showTooltip false/true/对象、Popover 容器与 RTL。
 - SSR：默认/route/slot/collapse/RTL 静态输出，无 Portal、browser global 或 vendor/private 路径；验证 hydration 无警告。
 - Chromium：同 BrowserContext 的本地 React/Vue 来源、点击与 Enter 展开、链接事件、Tooltip/Popover、computed style、bounding rect、desktop/mobile light/dark/RTL 裁剪截图。
-- 发布：根与 `breadcrumb` 子路径、类型、`breadcrumb.css`、tree-shaking、SSR-safe import、许可证/SBOM 与真实 tarball 安装验证。
+- 发布：根与 `breadcrumb` 子路径 default/named 导出与复合 `Breadcrumb.Item`、类型、`breadcrumb.css`、tree-shaking、SSR-safe import、许可证/SBOM 与真实 tarball 安装验证。
 
 ## Deviation
 
@@ -93,7 +93,7 @@
 ## 验收结果
 
 - 状态：`ready`。
-- 单元/SSR：Breadcrumb 组件 9 项行为、SSR 与 hydration 测试通过；场景路由和 test-infra 契约纳入工作区单元回归。
+- 单元/SSR：Breadcrumb 组件 9 项行为、SSR 与 hydration 测试通过；`Breadcrumb.test.ts` 从公开入口固定默认导出、命名导出与复合 `Breadcrumb.Item`；场景路由和 test-infra 契约纳入工作区单元回归。
 - Chromium：7 项 Breadcrumb 专项通过；React 参考请求直接来自本地 `vendor/semi-design` v2.102.0，事件、Enter 展开、Popover、4 个 computed-style/geometry 目标、desktop/mobile light/dark 与 RTL 均对齐。
 - 视觉：desktop/mobile light/dark 和 RTL 的 React/Vue 场景裁剪图逐字节相等；Popover 共享裁剪基线在 `threshold=0.1`、`maxDiffPixelRatio=0.001` 下通过；全部 bounding rect 轴差不超过 `0.5 CSS px`。
 - 发布：工作区完整门禁覆盖 root/`breadcrumb` ESM 与声明、`breadcrumb.css`、SSR-safe import、真实 tarball 离线安装、许可证与 SBOM；产物扫描不含 `vendor` 或私有 workspace 运行时路径。
