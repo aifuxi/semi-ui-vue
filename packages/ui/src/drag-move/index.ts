@@ -1,4 +1,6 @@
-export { default as DragMove } from './DragMove.vue';
+import DragMove from './DragMove.vue';
+
+export { DragMove };
 export type {
   DragMoveAllowMove,
   DragMoveConstrainer,
@@ -8,3 +10,5 @@ export type {
   DragMoveProps,
   DragMoveSlots,
 } from './types';
+
+export default DragMove;

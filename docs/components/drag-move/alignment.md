@@ -119,7 +119,9 @@ React 类型漏写但 `propTypes`、`defaultProps`、Foundation 和文档均公�
 ## 完成证据
 
 - Foundation/UI/Test Infra/React/Vue 工作台定向 typecheck 通过。
-- DragMove 单元与 SSR/hydration 共 10 项通过；共享场景与两端工作台定向测试通过。
+- `./drag-move` 子路径公开入口提供 default `DragMove` 与 named `DragMove`，单元、SSR 与
+  hydration 均从公开入口导入，覆盖无 DOM 导入边界。
+- DragMove 单元与 SSR/hydration 共 11 项通过；共享场景与两端工作台定向测试通过。
 - Chromium 当前组件 7 项在更新快照后以无更新参数复跑通过，覆盖固定源码请求、5 个
   computed-style/几何目标、交互，以及 desktop/mobile light/dark 与 RTL；工作台 smoke
   2 项通过。React/Vue 截图通过逐像素阈值比较，不宣称 PNG 文件字节一致。

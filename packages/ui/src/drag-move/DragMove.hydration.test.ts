@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
-import DragMove from './DragMove.vue';
+import DragMove from './index';
 
 afterEach(() => {
   vi.unstubAllGlobals();
