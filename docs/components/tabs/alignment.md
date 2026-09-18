@@ -108,3 +108,4 @@
 - Tabs 专项 Chromium 7 项通过：固定源码请求、四 type/top/left/disabled/closable/More/collapsible DOM，点击、方向键、Enter、hover、Dropdown Portal、computed style、bounding rect、desktop/mobile light/dark 与 RTL。
 - 5 对 React/Vue 基线 PNG 落盘文件分别同 SHA-256：desktop/light `c4e30499054a6f2148fee06127e7338fb933820aa94d186d89b5a9aa41a2a0bb`、desktop/dark `ac516733dc20e581d7b1987149931ebe605e37104aae0d7be34c8b0f094c3721`、mobile/light `b614e9d5a3a9c3d49fb3f8fbb7e43486956fc39141546ab5321b52962f5757c8`、mobile/dark `daa62c1682f0b3999a16b1b5df489ead97e185eeae06c17ebfff4007eaf75a8d`、light/RTL `68f01147006f05b0ba936e26dcd28967dff2781df27be1556d6f88b3ea17dbc9`。
 - `@aifuxi/semi-ui-vue` 根/`tabs` 子路径、声明、`@aifuxi/semi-theme-default/tabs.css`、tree-shaking、SSR-safe import、许可证与 SPDX SBOM 均由真实 tarball 消费项目验证通过。
+- 2026-09-18：`Tabs.test.ts` 与 `Tabs.ssr.test.ts` 改为从 `./index` 挂载，锁定默认 `Tabs`、命名 `Tabs`、`TabPane`、`TabItem` 公开入口及 SSR 路径。

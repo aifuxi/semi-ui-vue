@@ -2,8 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { describe, expect, it, vi } from 'vitest';
 import { createSSRApp, h } from 'vue';
 
-import TabPane from './TabPane.vue';
-import Tabs from './Tabs.vue';
+import Tabs, { TabPane } from './index';
 
 function renderTabs(props: Record<string, unknown> = {}) {
   return renderToString(
