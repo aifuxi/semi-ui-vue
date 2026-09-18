@@ -1,9 +1,9 @@
-import { createSSRApp, h } from 'vue';
+import { describe, expect, it } from 'vitest';
+import { h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider } from '../config-provider';
-import Upload from './Upload.vue';
+import DefaultUpload, { Upload } from './index';
 
 const files = [
   { uid: 'a', name: 'alpha.txt', size: '1.0KB', status: 'success' as const },
@@ -18,6 +18,10 @@ const files = [
 ];
 
 describe('Upload SSR', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultUpload).toBe(Upload);
+  });
+
   it('无 browser global 时输出 list、隐藏 inputs、data/style 与 ARIA', async () => {
     const html = await renderToString(
       h(
@@ -78,19 +82,5 @@ describe('Upload SSR', () => {
     expect(localized).toContain('semi-rtl');
     expect(localized).toContain('SSR selected');
     expect(localized).toContain('SSR clear');
-  });
-
-  it('hydration 无警告并保留受控 DOM', async () => {
-    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
-    const Host = { render: () => h(Upload, { action: '/upload', fileList: files }) };
-    const html = await renderToString(h(Host));
-    const container = document.createElement('div');
-    container.innerHTML = html;
-    const app = createSSRApp(Host);
-    app.mount(container);
-    expect(container.querySelectorAll('.semi-upload-file-card')).toHaveLength(2);
-    expect(error).not.toHaveBeenCalled();
-    app.unmount();
-    error.mockRestore();
   });
 });

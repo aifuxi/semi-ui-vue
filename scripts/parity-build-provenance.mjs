@@ -1,37 +1,61 @@
 import path from 'node:path';
 
-// Emit provenance from the bundler's actual output, not a hand-maintained component list.
+// Both dev and preview bundle modules; evidence follows only requested output chunks.
 export function parityBuildProvenance(workspaceRoot) {
   return {
     name: 'parity-build-provenance',
-    generateBundle(_options, bundle) {
-      const chunks = {};
-      const emittedModules = new Set(
-        Object.values(bundle).flatMap((output) =>
-          output.type === 'chunk' ? output.moduleIds : [],
-        ),
-      );
-      for (const output of Object.values(bundle)) {
-        if (output.type !== 'chunk') continue;
-        const sources = new Set(output.moduleIds);
-        const visit = (id) => {
-          for (const dependency of this.getModuleInfo(id)?.importedIds ?? []) {
-            // Retain eliminated public re-export entries, but do not attribute another
-            // emitted chunk (or a lazy import) to this request.
-            if (sources.has(dependency) || emittedModules.has(dependency)) continue;
-            sources.add(dependency);
-            visit(dependency);
+    setup(api) {
+      api.processAssets({ stage: 'report' }, ({ compilation, sources }) => {
+        const chunks = {};
+        const members = (module) => [module, ...Array.from(module.modules ?? []).flatMap(members)];
+        const emitted = new Set(
+          Array.from(compilation.chunks)
+            .flatMap((chunk) =>
+              Array.from(compilation.chunkGraph.getChunkModulesIterable(chunk)).flatMap(members),
+            )
+            .map((module) => module.identifier()),
+        );
+        for (const chunk of compilation.chunks) {
+          const modules = new Set(
+            Array.from(compilation.chunkGraph.getChunkModulesIterable(chunk)).flatMap(members),
+          );
+          const visited = new Set([...modules].map((module) => module.identifier()));
+          const visit = (module) => {
+            for (const connection of compilation.moduleGraph.getOutgoingConnections(module)) {
+              const dependency = connection.module;
+              // Dynamic imports belong to their own request, even if optimized away.
+              if (
+                !dependency ||
+                connection.dependency?.type?.includes('import()') ||
+                visited.has(dependency.identifier()) ||
+                emitted.has(dependency.identifier())
+              )
+                continue;
+              visited.add(dependency.identifier());
+              modules.add(dependency);
+              visit(dependency);
+            }
+          };
+          for (const module of modules) visit(module);
+          const paths = [
+            ...new Set(
+              [...modules]
+                .map((module) => module.resource?.split('?')[0])
+                .filter(
+                  (id) =>
+                    id && path.isAbsolute(id) && !path.relative(workspaceRoot, id).startsWith('..'),
+                )
+                .map((id) => path.relative(workspaceRoot, id).split(path.sep).join('/')),
+            ),
+          ];
+          for (const file of chunk.files) {
+            if (/\.m?js$/.test(file)) chunks[`/${file}`] = paths;
           }
-        };
-        for (const id of output.moduleIds) visit(id);
-        chunks[`/${output.fileName}`] = [...sources]
-          .filter((id) => path.isAbsolute(id) && !path.relative(workspaceRoot, id).startsWith('..'))
-          .map((id) => path.relative(workspaceRoot, id).split(path.sep).join('/'));
-      }
-      this.emitFile({
-        type: 'asset',
-        fileName: 'parity-provenance.json',
-        source: JSON.stringify({ version: 1, chunks }),
+        }
+        compilation.emitAsset(
+          'parity-provenance.json',
+          new sources.RawSource(JSON.stringify({ version: 1, chunks })),
+        );
       });
     },
   };

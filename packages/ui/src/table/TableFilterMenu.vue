@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /* eslint-disable vue/require-default-prop -- recursive filter menu preserves absent custom renderer semantics. */
-import type { VNodeChild } from 'vue';
+import { defineComponent, h, isVNode, type PropType, type VNodeChild } from 'vue';
 import { Checkbox } from '../checkbox';
 import { Dropdown, DropdownItem, DropdownMenu } from '../dropdown';
 import { Radio } from '../radio';
@@ -22,38 +22,41 @@ const emit = defineEmits<{
   toggle: [filter: TableFilter, event: MouseEvent];
 }>();
 
-function renderFilterItem(filter: TableFilter, eventHandler: (event: MouseEvent) => void) {
-  return props.renderItem?.({
-    checked: props.selected.includes(filter.value),
-    filteredValue: props.selected,
-    filterMultiple: props.multiple,
-    level: props.level,
-    onChange: eventHandler,
-    text: filter.text,
-    value: filter.value,
-  });
-}
+const FilterMenuItem = defineComponent({
+  props: { filter: { type: Object as PropType<TableFilter>, required: true } },
+  setup(itemProps) {
+    return () => {
+      const choice = itemProps.filter;
+      const checked = props.selected.includes(choice.value);
+      const onChange = (event: MouseEvent) => emit('toggle', choice, event);
+      const custom = props.renderItem?.({
+        checked,
+        filteredValue: props.selected,
+        filterMultiple: props.multiple,
+        level: props.level,
+        onChange,
+        text: choice.text,
+        value: choice.value,
+      });
+      // A custom Dropdown.Item is the menu item itself, not content of another item.
+      if (isVNode(custom)) return custom;
+      const content = () => h(TableNodeRenderer, { content: choice.text });
+      return h(DropdownItem, { onClick: onChange }, () =>
+        props.multiple ? h(Checkbox, { checked }, content) : h(Radio, { checked }, content),
+      );
+    };
+  },
+});
 </script>
 
 <template>
   <DropdownMenu>
-    <template v-for="(filter, index) in props.filters" :key="`${props.level}-${index}`">
-      <Dropdown v-if="filter.children?.length" trigger="hover" position="right">
-        <DropdownItem @click="emit('toggle', filter, $event)">
-          <TableNodeRenderer
-            v-if="props.renderItem"
-            :content="renderFilterItem(filter, (event) => emit('toggle', filter, event))"
-          />
-          <Checkbox v-else-if="props.multiple" :checked="props.selected.includes(filter.value)">
-            <TableNodeRenderer :content="filter.text" />
-          </Checkbox>
-          <Radio v-else :checked="props.selected.includes(filter.value)">
-            <TableNodeRenderer :content="filter.text" />
-          </Radio>
-        </DropdownItem>
+    <template v-for="(option, index) in props.filters" :key="`${props.level}-${index}`">
+      <Dropdown v-if="option.children?.length" trigger="hover" position="right">
+        <FilterMenuItem :filter="option" />
         <template #content>
           <TableFilterMenu
-            :filters="filter.children"
+            :filters="option.children"
             :level="props.level + 1"
             :multiple="props.multiple"
             :render-item="props.renderItem"
@@ -62,18 +65,8 @@ function renderFilterItem(filter: TableFilter, eventHandler: (event: MouseEvent)
           />
         </template>
       </Dropdown>
-      <DropdownItem v-else @click="emit('toggle', filter, $event)">
-        <TableNodeRenderer
-          v-if="props.renderItem"
-          :content="renderFilterItem(filter, (event) => emit('toggle', filter, event))"
-        />
-        <Checkbox v-else-if="props.multiple" :checked="props.selected.includes(filter.value)">
-          <TableNodeRenderer :content="filter.text" />
-        </Checkbox>
-        <Radio v-else :checked="props.selected.includes(filter.value)">
-          <TableNodeRenderer :content="filter.text" />
-        </Radio>
-      </DropdownItem>
+      <FilterMenuItem v-else :filter="option" />
     </template>
+    <slot v-if="props.level === 0" name="footer" />
   </DropdownMenu>
 </template>

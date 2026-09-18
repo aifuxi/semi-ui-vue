@@ -3,14 +3,43 @@ import { mount } from '@vue/test-utils';
 import { createSSRApp, h } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
-import FloatButton from './FloatButton.vue';
-import FloatButtonGroup from './FloatButtonGroup.vue';
+import {
+  FLOAT_BUTTON_BADGE_POSITIONS,
+  FLOAT_BUTTON_BADGE_THEMES,
+  FLOAT_BUTTON_BADGE_TYPES,
+  FLOAT_BUTTON_SHAPES,
+  FLOAT_BUTTON_SIZES,
+  FloatButton,
+  FloatButtonGroup,
+} from './index';
 
 const TestIcon = {
   render: () => h('span', { class: 'test-icon' }, '+'),
 };
 
 describe('FloatButton', () => {
+  it('公开入口导出组件与固定枚举常量', () => {
+    expect(FloatButton).toBeDefined();
+    expect(FloatButtonGroup).toBeDefined();
+    expect(FLOAT_BUTTON_SHAPES).toEqual(['square', 'round']);
+    expect(FLOAT_BUTTON_SIZES).toEqual(['small', 'default', 'large']);
+    expect(FLOAT_BUTTON_BADGE_TYPES).toEqual([
+      'primary',
+      'secondary',
+      'tertiary',
+      'danger',
+      'warning',
+      'success',
+    ]);
+    expect(FLOAT_BUTTON_BADGE_THEMES).toEqual(['solid', 'light', 'inverted']);
+    expect(FLOAT_BUTTON_BADGE_POSITIONS).toEqual([
+      'leftTop',
+      'leftBottom',
+      'rightTop',
+      'rightBottom',
+    ]);
+  });
+
   it('保留默认根节点、body、尺寸、形状并透传 Vue 原生 attrs', () => {
     const wrapper = mount(FloatButton, {
       attrs: {

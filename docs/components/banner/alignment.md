@@ -94,3 +94,7 @@
 - `pnpm test:browser` 完整 Chromium 回归 368 项通过；Banner 覆盖固定源码来源、computed style、bounding rect、ARIA、Space 键关闭，以及 desktop/mobile 的 light/dark 和 RTL。
 - 5 组 Banner React/Vue PNG（desktop light/dark、mobile light/dark、RTL）逐对 `cmp` 相等，未共享截图文件名或 buffer。
 - 中英文文档、React→Vue 迁移表、根与 `banner` 子路径 ESM/声明、`banner.css`、许可证与 SBOM 均进入真实发布包验证。
+
+## 公开入口契约锁
+
+- `Banner.test.ts` 从 `./index` 消费公开入口，固定 default 与 named 导出一致及 `BANNER_TYPES` 枚举；`pnpm check` 持续覆盖格式、lint、类型与该断言。

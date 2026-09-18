@@ -1,10 +1,18 @@
 /* eslint-disable vue/one-component-per-file -- test hosts cover template and render Boolean inputs. */
 
 import { mount } from '@vue/test-utils';
-import { defineComponent, h, nextTick, shallowRef } from 'vue';
+import { defineComponent, h, nextTick, ref, shallowRef } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
-import Radio, { RadioGroup, type RadioValue } from './index';
+import DefaultRadio, {
+  RADIO_BUTTON_SIZES,
+  RADIO_DIRECTIONS,
+  RADIO_MODES,
+  RADIO_TYPES,
+  Radio,
+  RadioGroup,
+  type RadioValue,
+} from './index';
 
 function setNativeChecked(
   wrapper: ReturnType<typeof mount>,
@@ -16,6 +24,15 @@ function setNativeChecked(
 }
 
 describe('Radio', () => {
+  it('公开入口保持 default、named 与复合 Group 一致，并固定枚举常量', () => {
+    expect(DefaultRadio).toBe(Radio);
+    expect(Radio.Group).toBe(RadioGroup);
+    expect(RADIO_DIRECTIONS).toEqual(['horizontal', 'vertical']);
+    expect(RADIO_MODES).toEqual(['', 'advanced']);
+    expect(RADIO_TYPES).toEqual(['default', 'button', 'card', 'pureCard']);
+    expect(RADIO_BUTTON_SIZES).toEqual(['small', 'middle', 'large']);
+  });
+
   it('非受控 change 更新 DOM，并发出完整事件与 Vue update', async () => {
     const wrapper = mount(Radio, { props: { value: 'semi' }, slots: { default: 'Semi' } });
     setNativeChecked(wrapper, 0, true);
@@ -241,5 +258,19 @@ describe('RadioGroup', () => {
     });
     expect(render.findAll('input')[0]!.attributes('disabled')).toBeDefined();
     expect(render.findAll('input')[1]!.attributes('disabled')).toBeUndefined();
+  });
+
+  it('模板内顶层 v-for 的 Fragment 子节点全部渲染并保持组语义', async () => {
+    const TemplateHost = defineComponent({
+      components: { Radio, RadioGroup },
+      setup: () => ({ items: ['A', 'B', 'C'], value: ref('B') }),
+      template: `<RadioGroup v-model="value" type="button"><Radio v-for="item in items" :key="item" :value="item">{{ item }}</Radio></RadioGroup>`,
+    });
+    const wrapper = mount(TemplateHost);
+    expect(wrapper.findAll('input')).toHaveLength(3);
+    expect(wrapper.findAll('.semi-radio').map((item) => item.text())).toEqual(['A', 'B', 'C']);
+    expect(wrapper.get('.semi-radio-checked').text()).toBe('B');
+    await wrapper.findAll('input')[2]!.setValue(true);
+    expect(wrapper.get('.semi-radio-checked').text()).toBe('C');
   });
 });

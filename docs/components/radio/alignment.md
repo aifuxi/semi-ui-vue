@@ -89,14 +89,15 @@ Radio 是固定 `content/order.js` 中 PinCode 之后的下一项。Cascader、C
 
 ## 验收矩阵
 
-| 维度          | 最低证据                                                                                                              |
-| ------------- | --------------------------------------------------------------------------------------------------------------------- |
-| 单元          | 受控/非受控、advanced、事件顺序、options/slot、disabled、类型/尺寸、focus、ARIA、模板与 render Boolean                |
-| SSR           | 根/子路径 import 与主要 DOM/class/ARIA 场景                                                                           |
-| Chromium 行为 | 点击、受控回写、advanced 取消、键盘/focus-visible、disabled、RTL                                                      |
-| 视觉          | 1440×900 light/dark、390×844 light/dark、1440×900 RTL；computed style 精确相等、rect 轴差 ≤0.5px、截图阈值 ≤0.1/0.001 |
-| 发布          | 根/`radio` ESM/types、根/`radio.css`、tree-shaking、SSR import、真实 tarball 安装与许可/SBOM                          |
+| 维度          | 最低证据                                                                                                                                      |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| 单元          | 受控/非受控、advanced、事件顺序、options/slot、disabled、类型/尺寸、focus、ARIA、模板与 render Boolean                                        |
+| SSR           | 根/子路径 import 与主要 DOM/class/ARIA 场景                                                                                                   |
+| Chromium 行为 | 点击、受控回写、advanced 取消、键盘/focus-visible、disabled、RTL                                                                              |
+| 视觉          | 1440×900 light/dark、390×844 light/dark、1440×900 RTL；computed style 精确相等、rect 轴差 ≤0.5px、截图阈值 ≤0.1/0.001                         |
+| 发布          | 根/`radio` default/named ESM/types、复合 `Radio.Group` 与固定枚举常量、根/`radio.css`、tree-shaking、SSR import、真实 tarball 安装与许可/SBOM |
 
 ## Deviation
 
-当前无 accepted deviation。Radio 已通过同环境 React/Vue 行为、computed style、几何、截图、SSR 与真实发布包验证，状态为 `ready`。
+- 固定 `radio/index.tsx` 用 `class RadioWithGroup extends Radio { static Group = Group }` 承载 `Group` 静态成员并作为默认导出，同时具名导出 `Radio`/`RadioWithGroup`；该子类没有独立行为。Vue 入口把 `Group` 直接挂在 `Radio` 复合对象上（默认导出即复合组件）并具名导出 `RadioGroup`，不重复发布 `RadioWithGroup` 名字。用户影响：`Radio.Group` 用法不变，额外类名不可用；DOM、class、ARIA 与事件不变。
+- Radio 已通过同环境 React/Vue 行为、computed style、几何、截图、SSR 与真实发布包验证，状态为 `ready`；除上述 React 类包装映射外无其它 accepted deviation。

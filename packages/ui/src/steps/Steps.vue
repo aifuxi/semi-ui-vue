@@ -6,6 +6,9 @@ import {
   cloneVNode,
   computed,
   isVNode,
+  getCurrentInstance,
+  onBeforeUpdate,
+  shallowRef,
   provide,
   useAttrs,
   useSlots,
@@ -38,6 +41,16 @@ const props = withDefaults(defineProps<StepsProps>(), {
 const emit = defineEmits<StepsEmits>();
 defineSlots<StepsSlots>();
 const attrs = useAttrs();
+const instance = getCurrentInstance();
+const hasChangeListener = () => {
+  const listener = instance?.vnode.props?.onChange ?? instance?.vnode.props?.onChangeOnce;
+  return typeof listener === 'function' || (Array.isArray(listener) && listener.length > 0);
+};
+const changeEnabled = shallowRef(hasChangeListener());
+// Declared event listeners are not reactive props; synchronize on parent updates.
+onBeforeUpdate(() => {
+  changeEnabled.value = hasChangeListener();
+});
 const slots = useSlots();
 
 const resolvedType = computed<StepsType>(() => props.type);
@@ -105,7 +118,10 @@ function internalProps(node: VNode, index: number): InternalStepProps {
       : {}),
   };
 
-  if (index !== props.current) output.onStepChange = () => emit('change', index + props.initial);
+  if (changeEnabled.value)
+    output.onStepChange = () => {
+      if (index !== props.current) emit('change', index + props.initial);
+    };
 
   if (props.status === 'error' && index === props.current - 1) {
     output.className = `${props.prefixCls}-next-error`;

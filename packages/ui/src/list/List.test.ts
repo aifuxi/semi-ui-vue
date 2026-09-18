@@ -5,9 +5,17 @@ import { defineComponent, h } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider } from '../config-provider';
-import { List, ListItem } from './index';
+import DefaultList, { LIST_ITEM_ALIGNS, LIST_LAYOUTS, LIST_SIZES, List, ListItem } from './index';
 
 describe('List', () => {
+  it('公开入口保持 default/named、compound Item 与固定枚举常量', () => {
+    expect(DefaultList).toBe(List);
+    expect(List.Item).toBe(ListItem);
+    expect(LIST_LAYOUTS).toEqual(['vertical', 'horizontal']);
+    expect(LIST_SIZES).toEqual(['small', 'default', 'large']);
+    expect(LIST_ITEM_ALIGNS).toEqual(['flex-start', 'flex-end', 'center', 'baseline', 'stretch']);
+  });
+
   it('覆盖 split/bordered/loading 的缺省、false、裸属性 true', () => {
     const wrapper = mount(
       defineComponent({

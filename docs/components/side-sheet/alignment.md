@@ -46,10 +46,12 @@
 - 初始 `visible=false` 不渲染；初始 `visible=true` 挂载后执行 `beforeShow`，但不伪造一次 React 未产生的 prop-transition 回调。
 - `false -> true`：先解除 `displayNone`、解析稳定容器并执行 Foundation `beforeShow`，随后触发 `afterVisibleChange(true)`。
 - close/mask/Escape：Foundation `notifyCancel` -> `update:visible(false)` -> `cancel(event)`；受控父级决定实际关闭。
-- `true -> false`：立即执行 Foundation `afterHide`（恢复 body 与移除 keydown）；`motion=false` 立即隐藏，`motion=true` 在 mask/content animationend 或 180ms 兜底后隐藏；只触发一次 `afterVisibleChange(false)`。
+- `true -> false`：立即执行 Foundation `afterHide`（恢复 body 与移除 keydown）；`motion=false` 立即隐藏，`motion=true` 在 mask/content animationend 后隐藏；只触发一次 `afterVisibleChange(false)`。
 - `keepDOM=true` 时关闭后 DOM 保留但 `.semi-sidesheet-hidden { display:none }`；再次打开复用内容。
 
 ## DOM、样式、主题、RTL 与动效
+
+- 进入动效的 mask/content class 在各自 animationend 后独立移除，重新打开重新进入动效。退出等待真实 animationend；移除从状态更新起算的 180ms JS 兜底，避免 CSS 在下一帧才开始时被提前截断。Feedback 文档严格对照覆盖这一生命周期。
 
 - Portal -> `.semi-sidesheet` -> mask + `.semi-sidesheet-inner.semi-sidesheet-inner-wrap` -> content -> header/body/footer；不引入额外布局 wrapper。
 - header 恒存在并有 `role=heading aria-level=1`；inner 有 `role=dialog tabindex=-1`。上游未设置 `aria-modal`、自动焦点或 focus trap，Vue 侧不借用 Modal 的额外语义。
@@ -66,7 +68,7 @@
 
 ## 测试与发布证据
 
-- 单元：默认 DOM/尺寸/位置、样式/data、slot 优先级、四个默认 true Boolean 的缺省/false/true、全局默认覆盖、mask/close/Escape 事件顺序、body scroll、稳定容器、keepDOM、motion 周期、RTL。
+- 单元：公开入口 default/named 导出、placement/size 常量、默认 DOM/尺寸/位置、样式/data、slot 优先级、四个默认 true Boolean 的缺省/false/true、全局默认覆盖、mask/close/Escape 事件顺序、body scroll、稳定容器、keepDOM、motion 周期、RTL。
 - Chromium：同进程 React/Vue 的来源、公开行为、computed style 与 bounding rect；桌面/移动 light/dark 和 RTL 成对局部 PNG，并直接比较独立 buffer。
 - 发布：根/`side-sheet` ESM 与声明、逐组件 CSS、SSR-safe import、tree-shaking、合规产物和真实 tarball 消费。
 
@@ -75,3 +77,23 @@
 - React `children/ReactNode/className` 映射为 Vue `slots/VNodeChild/class`，并增加原生 `v-model:visible` 与 emits；这是框架原生映射，不构成能力损失。
 - 当前没有 accepted visual/behavior deviation。任一未解释的 DOM、样式、几何、事件或截图差异均阻止 `pending -> ready`。
 - 当前状态：`ready`；固定源码、单元/SSR、主题/打包与 Chromium 全量门禁均已通过。
+
+## Feedback 文档运行修复（2026-09-07）
+
+- SSR 应用中，退出动画完成后重新挂载 Portal 必须重新求值 slots，不能缓存携带旧宿主节点的 VNode。正文、标题、footer 与关闭图标改为渲染期获取；保留状态、DOM、样式与原有动画。
+- `Feedback.ssr.test.ts` 通过选择、提交、真实 `animationend` 事件和重开验证正文及按钮可再次操作；该问题在 `motion=false` 下不会复现。三组件 30 项单元/SSR、直接消费者 39 项、三组件 15 项 Chromium 对照与真实包验证通过。
+
+## 文档严格验收尺寸修复（2026-09-13）
+
+- `side-04` 的 Placement top 失败并非基线高度变化。固定 `sideSheet/constants.ts` 的 HEIGHT=448，React `index.tsx` 将该数值交给 `SideSheetContent.tsx`，React style 自动附加 px。归档 trace 中 React 是 `width:100%;height:448px`，Vue 只有 `width:100%`，高度随内容变为150px。
+- Vue 不给数字 style 自动附加 px；`SideSheetContent.vue` 现对公开数字 height、width 及无 mask 外层 wrapperWidth 显式转换 px，字符串（包括50%、40%）原样保留。未修改默认448、尺寸常量、基线、动效或布局结构。数字220的容器场景与Placement默认448都由主agent统一浏览器重验。
+- 新增公开DOM和SSR回归先失败（DOM height为空、SSR写出height:448），修复后验证默认448px、显式220px、方向切换、mask=false外层220px/内部100%、百分比原样保留；原有字符串尺寸测试继续保留。
+- 2026-09-17 补充修复：初始省略 `mask` 后动态显式设置 `mask=false` 时，SideSheet 会重新读取当前 VNode raw props 并移除遮罩；再切回 `mask=true` 会恢复遮罩。该回归只修正默认 true Boolean 的动态显式性，不改变尺寸转换、Portal、滚动锁或动效边界。
+- 文档正式证据与受影响历史回归由本轮主agent统一生成；旧记录中的通过结论不能代替本次输入变化后的证据。
+
+## 多实例 Portal 锚点修复（2026-09-13）
+
+- Outside 首开报 `insertBefore` 的节点不属于父节点。独立 Chromium 探针确认新内容完整渲染、目标为 body，但插入 anchor 位于后挂载 Container 示例内；与 slot 文本或尺寸无关。
+- Vue Teleport 在 target 改变时移动 targetAnchor，初始 targetStart 仍在原目标；renderer 的 getNextHostNode 遇到该 start 会跳到对应 end 后的节点。原先所有 SideSheet 未挂载时都指定 body，随后 Container 改目标，使相邻 body SideSheet 的分支替换取得容器内 anchor。
+- 客户端在 onBeforeMount 创建实例私有、离线的 DocumentFragment，供未解析目标阶段的 disabled Teleport 使用；SSR 仍保留 body selector 和可见内容。原始 VNode 及 DOM 经 Teleport 移动，不通过 key 重建；初始 start 锚点始终留在离线片段，不影响实际容器的其他 Portal。片段无全局引用，卸载时由 Teleport 清理。
+- 双实例 SFC 回归先复现相同 NotFoundError，修复后首开、外部编辑、关闭和重开通过。增加有效目标切换与 keepDOM 隐藏重开的输入节点身份和值保持断言；SSR hydration 验证挂载前已输入的值及原 DOM 节点迁移后保持。14 项单元/SSR通过，正式浏览器由主 agent 统一重验。

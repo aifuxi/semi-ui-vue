@@ -1,11 +1,17 @@
-import { createSSRApp, h } from 'vue';
-import { renderToString } from '@vue/server-renderer';
 import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
+import { h } from 'vue';
 
-import Divider from './Divider.vue';
+import { DIVIDER_ALIGNS, DIVIDER_LAYOUTS, Divider } from './index';
+import DividerBase from './Divider.vue';
 
 describe('Divider', () => {
+  it('公开入口导出组件与固定枚举常量', () => {
+    expect(Divider).toBe(DividerBase);
+    expect(DIVIDER_ALIGNS).toEqual(['left', 'right', 'center']);
+    expect(DIVIDER_LAYOUTS).toEqual(['horizontal', 'vertical']);
+  });
+
   it('renders the horizontal solid default and forwards native attrs', () => {
     const wrapper = mount(Divider, {
       attrs: {
@@ -82,6 +88,7 @@ describe('Divider', () => {
 
   it('ignores content for the vertical layout like the pinned adapter', () => {
     const wrapper = mount(Divider, {
+      attrs: { 'aria-orientation': 'vertical', role: 'separator' },
       props: { align: 'right', dashed: true, layout: 'vertical' },
       slots: { default: () => '不会渲染' },
     });
@@ -89,19 +96,11 @@ describe('Divider', () => {
     expect(wrapper.classes()).toEqual(
       expect.arrayContaining(['semi-divider-vertical', 'semi-divider-dashed']),
     );
+    expect(wrapper.attributes()).toMatchObject({
+      'aria-orientation': 'vertical',
+      role: 'separator',
+    });
     expect(wrapper.classes()).not.toContain('semi-divider-with-text');
     expect(wrapper.text()).toBe('');
-  });
-
-  it('is safe to import and render without a DOM', async () => {
-    const html = await renderToString(
-      createSSRApp({
-        render: () => h(Divider, { align: 'right', margin: '8px' }, () => '服务端标题'),
-      }),
-    );
-
-    expect(html).toContain('semi-divider-with-text-right');
-    expect(html).toContain('semi-divider_inner-text');
-    expect(html).toContain('服务端标题');
   });
 });

@@ -85,6 +85,8 @@
 
 ## 验收结果
 
+- 当前状态：`ready`。
+- 本轮补充公开入口契约锁：默认导出与命名导出 `Popconfirm` 均由单元测试固定，SSR/hydration 测试也从公开入口导入。
 - `pnpm check`：通过；固定 vendor/inventory、格式、lint、类型、100 个测试文件 / 724 项测试、全 workspace 构建、主题产物、SSR import 和真实 tarball 消费均通过。
 - `pnpm test:browser`：382/382 通过；Popconfirm 新增 7 项，覆盖固定源码、DOM/Portal/ARIA/键盘、desktop/mobile × light/dark 与 RTL。
 - 5 组 React/Vue Popconfirm 裁剪 PNG（desktop light/dark、mobile light/dark、RTL）均经独立 `cmp` 验证字节完全相等；对应 computed style 精确相等，bounding rect 各轴差值不超过 0.5 CSS px。

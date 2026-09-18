@@ -1,6 +1,6 @@
 # AIChatInput
 
-AIChatInput matches Semi Design v2.102.0 for rich-text input, skills, suggestions, templates, references, attachments, and generating state. It uses Tiptap 3.10.7 and maps the React contract to Vue props, emits, scoped slots, and exposed methods.
+AIChatInput matches Semi Design v2.102.0 for rich-text input, skills, suggestions, templates, references, attachments, and generating state. It uses Tiptap `^3.31.3` (compatible upgrades within major version 3, with the workspace resolution recorded in the lockfile) and maps the React contract to Vue props, emits, scoped slots, and exposed methods.
 
 ```ts
 import { AIChatInput } from '@aifuxi/semi-ui-vue';
@@ -43,10 +43,12 @@ Emits include `contentChange`, `messageSend`, `stopGenerate`, `focus`, `blur`, `
 
 ## Slots and Configure
 
-`#reference`, `#uploadButton`, `#top`, `#configure`, `#action`, `#suggestion`, `#skill`, and `#template` replace React render props. `AIChatInput.Configure` supplies `Button`, `Select`, `RadioButton`, and `Mcp` items with per-instance provider state.
+`#reference`, `#uploadButton`, `#top`, `#configure`, `#action`, `#suggestion`, `#skill`, and `#template` replace React render props. `AIChatInput.Configure` supplies `Button`, `Select`, `RadioButton`, `Mcp`, and `Item` items with per-instance provider state.
 
 ## SSR and accessibility
 
 SSR import and rendering do not create an EditorView, Portal, or document listener. Tiptap starts after client mount and is destroyed on unmount. The editor is a real `contenteditable`; suggestion and skill panels use listbox/option semantics, and send, stop, upload, and delete controls expose accessible names.
 
 See the [React-to-Vue guide](./react-to-vue.md) and the [alignment matrix](./alignment.md).
+
+`Configure.Item` connects arbitrary controls through `field`, `initValue`, and the default slot `{ value, onChange }`. Changes update `configureChange` and the sent `setup`; unmounting removes the field.

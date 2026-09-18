@@ -1,11 +1,16 @@
 import { mount } from '@vue/test-utils';
-import { defineComponent, h, nextTick } from 'vue';
+import { defineComponent, h, nextTick, type VNodeChild } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider } from '../config-provider';
 import Tree from '../tree/Tree.vue';
-import Transfer from './Transfer.vue';
-import type { TransferDataItem, TransferExposed, TransferLocale } from './types';
+import DefaultTransfer, { Transfer } from './index';
+import type {
+  TransferDataItem,
+  TransferExposed,
+  TransferLocale,
+  TransferSelectedItemProps,
+} from './types';
 
 const items: TransferDataItem[] = [
   { key: 'a', label: 'Alpha', value: 'alpha' },
@@ -14,6 +19,10 @@ const items: TransferDataItem[] = [
 ];
 
 describe('Transfer', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultTransfer).toBe(Transfer);
+  });
+
   it('渲染固定 DOM/class/data/style/ARIA，并按 select -> change 顺序更新非受控值', async () => {
     const order: string[] = [];
     const wrapper = mount(Transfer, {
@@ -189,6 +198,67 @@ describe('Transfer', () => {
     await slotted.findAll('.slot-selected')[0]!.trigger('click');
     expect(slotted.findAll('.slot-selected')).toHaveLength(1);
   });
+
+  it.each(['slot', 'render'] as const)(
+    '自定义已选项 %s 保留把手内容并接收整行拖放排序',
+    async (mode) => {
+      const renderItem = (item: TransferSelectedItemProps) =>
+        h('div', { class: 'custom-selected' }, [
+          mode === 'slot'
+            ? h('span', item.dragHandleProps, 'Move')
+            : item.sortableHandle?.(() => h('span', 'Move')),
+          h('span', { class: 'custom-label' }, String(item.label)),
+        ]);
+      const wrapper = mount(Transfer, {
+        props: {
+          dataSource: items,
+          defaultValue: ['alpha', 'beta'],
+          draggable: true,
+          ...(mode === 'render' ? { renderSelectedItem: renderItem } : {}),
+        },
+        slots: mode === 'slot' ? { selectedItem: renderItem } : {},
+      });
+      const handle = wrapper.get('[draggable="true"]');
+      expect(handle.text()).toBe('Move');
+      await handle.trigger('dragstart', { dataTransfer: { setData: vi.fn() } });
+      await wrapper.findAll('.custom-label')[1]!.trigger('drop');
+      expect(wrapper.emitted('change')?.[0]?.[0]).toEqual(['beta', 'alpha']);
+      expect(wrapper.findAll('.custom-label').map((node) => node.text())).toEqual([
+        'Beta',
+        'Alpha',
+      ]);
+      await wrapper.get('[draggable="true"]').trigger('dragstart', {
+        dataTransfer: { setData: vi.fn() },
+      });
+      await wrapper.get('[draggable="true"]').trigger('dragend');
+      await wrapper.findAll('.custom-label')[1]!.trigger('drop');
+      expect(wrapper.emitted('change')).toHaveLength(1);
+      wrapper.unmount();
+    },
+  );
+
+  it.each([
+    ['null', () => null, ''],
+    ['false', () => false, ''],
+    ['number', () => 0, '0'],
+    ['text', () => 'Move', 'Move'],
+    ['nodes', () => [h('b', 'Move'), h('span', 'item')], 'Moveitem'],
+  ] satisfies [string, () => VNodeChild, string][])(
+    'sortableHandle 接受 %s 内容并保留可拖拽包装',
+    (_name, render, text) => {
+      const wrapper = mount(Transfer, {
+        props: {
+          dataSource: items,
+          defaultValue: ['alpha'],
+          draggable: true,
+          renderSelectedItem: (item) => item.sortableHandle?.(render),
+        },
+      });
+      expect(wrapper.get('[draggable="true"]').text()).toBe(text);
+      expect(wrapper.findAll('.semi-transfer-right-item-sortable-item')).toHaveLength(1);
+      wrapper.unmount();
+    },
+  );
 
   it('draggable 通过 handle 重排并发送最终顺序，virtualize 保留 list/listitem 语义', async () => {
     const draggable = mount(Transfer, {

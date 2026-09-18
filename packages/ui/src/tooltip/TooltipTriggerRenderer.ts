@@ -111,7 +111,8 @@ export default defineComponent({
           'data-popupid': props.popupId,
           ref: captureRef,
           style: [originalProps.style, extraStyle],
-          tabindex: explicitTabindex ?? 0,
+          // Vue components declare tabIndex; native elements accept the same DOM property.
+          tabIndex: explicitTabindex ?? 0,
         },
         true,
       );

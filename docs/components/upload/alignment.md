@@ -85,7 +85,7 @@
 - list/picture/none、hotSpot start/end、prompt position、validate status/message、preview fallback、progress/fail/retry/replace/remove、全部 render prop/slot。
 - Exposed API、ARIA、Button/input 焦点、zh-CN/en-US、dark、RTL、SSR/hydration。
 - desktop 1440×900、mobile 390×844、light/dark/RTL 的 React/Vue computed style、geometry、组件裁剪截图；独立图片再做直接 byte/pixel 比较。
-- 根/子路径导出与声明、逐组件 CSS、SSR dist、真实 tarball 安装/导入/类型/tree-shaking/合规。
+- 根/子路径 default/named 导出、compound `Upload.FileCard` 与 `UPLOAD_*` 枚举常量（由单元/SSR 用例从 `./index` 固定）、声明、逐组件 CSS、SSR dist、真实 tarball 安装/导入/类型/tree-shaking/合规。
 
 ## Deviation
 

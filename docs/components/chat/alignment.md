@@ -67,7 +67,7 @@
 - 渲染：三种 mode、两种 align、连续角色、四种 status、divider、文本/图片/文件、HTML 转义、五类 render config 与 scoped slots。
 - 滚动/拖放：初始底部、流式跟随、滚轮停止跟随、返回底部、resize、drop overlay、卸载清理。
 - Chromium：desktop/mobile light/dark + en-US RTL；computed style、geometry、截图与工作台 smoke。
-- 发布：根/`./chat` runtime 和声明、`chat.css`、SSR-safe import、tree-shaking、许可证/SBOM 与隔离 tarball consumer。
+- 发布：根/`./chat` default/named runtime 和声明、`CHAT_*` 枚举常量（单元用例从 `./index` 固定）、`chat.css`、SSR-safe import、tree-shaking、许可证/SBOM 与隔离 tarball consumer。
 
 ## Deviation
 
@@ -76,3 +76,16 @@
 - hint 的 clickable div 改为原生 button，以补足键盘和可访问名称；保留固定 class、视觉和点击 payload。
 - Chat 内部 Markdown 使用与后续公开 `MarkdownRender` 相同的 `markdown-it` 解析内核；`customMarkDownComponents` 在 Vue 中接受标签到 Vue 组件的映射，并可由 `chat-box-content` slot 完全替代。MDX 中的 React JSX 组件实例不能跨框架直接复用。
 - 固定 React 基线在 `escapeHtml=false` 时允许 Markdown 渲染器解释原始 HTML；Vue 不使用 `v-html`，因此所有消息 HTML 仍显示为文本。该安全 deviation 避免未经清洗的消息执行脚本；可信富内容需经业务层清洗后由 `chat-box-content` slot 渲染。
+
+## 文档补齐回归（2026-09-08）
+
+固定 `semi-ui/chat/chatBox/index.tsx:112` 的完整渲染参数包含 avatar/title/content/action。文档 FullBox 浏览器复现 Vue 只提供前三项，默认操作消失。维护范围为将现有 action VNode 同时提供给默认布局与完整 slot；保持 Foundation 反馈、重置、复制、删除事件和现有类名/Portal 不变。增加完整 slot 的公开反馈/重置回归，并用双语真实文档验证默认操作与删除确认。
+
+代码消息的 fence 路径使用公开 CodeHighlight（lineNumber=true），对应固定 chat/chatBox/code.tsx → markdownRender/components/code.tsx。补齐示例显式引入 markdown-render.css，保留深色代码容器中的可读配色。
+
+## 验收结论
+
+- 状态：`ready`（2026-09-18 复核）。
+- 单元/SSR：Chat 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/chat.spec.ts` 5/5 通过，覆盖固定源码来源、DOM/computed style/几何、hint 受控更新、desktop light/dark 与 en-US RTL 截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、`CHAT_*` 枚举、类型、`chat.css`、tree-shaking、许可与 SBOM。

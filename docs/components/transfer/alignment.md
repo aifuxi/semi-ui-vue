@@ -38,6 +38,10 @@
 
 `renderSelectedItem` 的 React `sortableHandle(render)` 在 Vue 中保留为返回 `VNodeChild` 的函数；slot 额外提供 `dragHandleProps`，便于模板把 `draggable` 与 drag 事件绑定到任意节点。
 
+2026-09-09 类型门禁修复：把 `sortableHandle` 与排序行的内容作为 children 数组传给 `h()`，保留 `VNodeChild` 的空值、布尔值、数字、文本及节点数组输入。回归测试通过公开 `renderSelectedItem` 验证把手内容与可拖拽包装，不收窄公开返回类型。
+
+2026-09-07 文档补齐发现并修复：自定义 `selectedItem` slot / `renderSelectedItem` 不再绕过排序接收边界。拖拽行由 `.semi-transfer-right-item-sortable-item` 包裹并接收整行 drop，对应固定 `_sortable/index.tsx:242-249`；`sortableHandle(render)` 的原生 span 直接渲染返回内容。保留默认、非拖拽和虚拟列表分支及公开 API；新增 slot / render 两条失败前、修复后通过的回归，并验证真实文档拖拽。详见 [本次修复与运行证据](../../../ai-work/20260907-113702-transfer-documentation-content.md)。
+
 ## 状态、事件顺序与数据规则
 
 1. `groupList` 按组顺序展平并保存 `_parent`；`treeList` 深度优先展平，保存 `path`，叶节点标记 `isLeaf`，不修改调用方数据。
@@ -76,7 +80,7 @@
 - pagination 默认/受控页、virtualize list 语义与滚动窗口、draggable 最终顺序。
 - Checkbox/Button/Input 键盘与焦点、ARIA list/listitem/search、disabled/loading、zh-CN/en-US、dark、RTL、SSR。
 - desktop `1440x900`、mobile `390x844`、light/dark/RTL 的 React/Vue computed style、geometry、裁剪截图；截图独立生成后直接比较 bytes/pixels。
-- 根/子路径类型、逐组件 CSS、SSR import、真实 tarball 安装/导入/声明/tree-shaking/合规。
+- 根/子路径 default/named 导入、公开类型、逐组件 CSS、SSR/hydration 用例从 `./index` 消费入口、真实 tarball 安装/导入/声明/tree-shaking/合规。
 
 ## Deviation
 

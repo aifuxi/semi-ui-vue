@@ -73,8 +73,30 @@ Select 是 Tooltip PoC 后的第二道复杂度门槛，用来验证搜索、多
 
 ## 视觉与发布门禁
 
-同一 Chromium 进程比较 React/Vue 的基础、禁用、占位、多选、分组搜索和打开浮层；桌面/移动、light/dark、RTL 均执行。computed style 和 bounding rect 沿用 `0.5 CSS px`，截图沿用 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`。发布包必须验证根/`select` 子路径、声明、`select.css`、SSR-safe import、tree-shaking、SBOM 与许可清单。
+同一 Chromium 进程比较 React/Vue 的基础、禁用、占位、多选、分组搜索和打开浮层；桌面/移动、light/dark、RTL 均执行。computed style 和 bounding rect 沿用 `0.5 CSS px`，截图沿用 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`。发布包必须验证根/`select` 子路径、default/named 导出与复合 `Select.Option`/`Select.OptGroup`（单元与 SSR 用例从 `./index` 固定）、声明、`select.css`、SSR-safe import、tree-shaking、SBOM 与许可清单。
 
 ## Deviation
 
 无 accepted deviation。
+
+## Locale/Pagination 菜单回归（2026-09-06）
+
+固定 option.tsx 仅为字符串 children 添加 semi-select-option-text；VNode/数字内容直接作为 option 子节点。补充字符串与 VNode 菜单结构及选择行为回归，消除分页大小菜单多出的包裹节点；不更改过滤/选中值或默认 true 的处理。
+
+固定 Select.componentDidUpdate 仅在选项变化时调用 handleOptionListChange 并重置 focusIndex；单独 value 变化保留当前焦点。Vue 使用稳定的 optionList computed 作为深度监听源，防止 runtimeProps 因 value 更新而创建新对象时误重置焦点。补充受控值变化时悬停项保持的公开行为测试，并由 Locale 语言选择后再次打开菜单的 RTL 对照验证。
+
+打开浮层后按上游 handlePopoverVisibleChange 滚动首个已选项到列表中部；计算 offsetTop 时扣除列表 offsetTop，保留键盘焦点项滚动的相同坐标系。Locale 长语言菜单在重复打开后逐项比较位置，覆盖中文/英文与 RTL。
+
+## SideSheet 文档组合场景修复（2026-09-13）
+
+- Custom 首开附件完整比较137个节点，仅4个多选选项 Tag 缺少 `semi-tag-square` 与 `max-width:100%`，其余节点样式、属性、文本及几何一致。
+- 固定 Select `renderTag` 使用 Tag 并显式传 `style={{ maxWidth: '100%' }}`，Tag 默认 `shape: 'square'`。Vue Select 内联结构现补默认 square 类；已选选项及剩余选项标签保留100%宽度上限，+N标签不新增该限制。不修改 Tag 公共实现或选择交互。
+- 现有多选公开行为测试增加默认Tag形状和选项宽度上限断言，先红后绿；正式组合场景及历史证据由主 agent 统一重验。
+
+## 验收证据与剩余缺口（2026-09-18 复核）
+
+- 单元/SSR：Select 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/select.spec.ts` 5/5 通过，覆盖固定源码来源、Option/分组/Portal、搜索与键盘选择、computed style、几何、desktop light/dark 与 RTL 截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、复合 `Select.Option`/`Select.OptGroup`、类型、`select.css`、tree-shaking、许可与 SBOM。
+- 静态文档：本轮补齐仓库内 [index.md](./index.md)、[index.en-US.md](./index.en-US.md) 与 [react-to-vue.md](./react-to-vue.md)，覆盖 Props/Option/OptGroup/Events/Slots/Methods、受控与非受控、搜索/远程/创建、Portal/虚拟化、键盘/ARIA、主题/RTL/SSR 与 React→Vue 映射；`coverage.md` 保留退役站点的历史映射。
+- 状态：`ready`。公开入口、复合 `Select.Option`/`Select.OptGroup`、受控/非受控、搜索与远程、多选/折叠/N 标签、Portal/虚拟化、键盘/ARIA、SSR、双语文档与迁移表、React/Vue Chromium 对照、主题与发布子路径证据均已闭合。

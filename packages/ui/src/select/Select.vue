@@ -560,6 +560,11 @@ defineExpose<SelectExposed>({
     :re-pos-key="`${state.optionKey}-${runtimeProps.rePosKey ?? ''}`"
     v-bind="popupContainer ? { getPopupContainer: popupContainer } : {}"
     @after-close="() => foundation.handlePopoverClose()"
+    @visible-change="
+      (visible) => {
+        if (visible) foundation.updateScrollTop();
+      }
+    "
     @update:visible="
       (visible) => {
         if (!visible && state.isOpen) foundation.close();
@@ -685,7 +690,12 @@ defineExpose<SelectExposed>({
                 <div v-if="entry.option.showTick !== false" class="semi-select-option-icon">
                   <IconTick />
                 </div>
-                <div class="semi-select-option-text">
+                <div
+                  v-if="
+                    entry.option._inputCreateOnly || typeof optionContent(entry.option) === 'string'
+                  "
+                  class="semi-select-option-text"
+                >
                   <template v-if="entry.option._inputCreateOnly">
                     <span class="semi-select-create-tips">{{
                       selectLocale.createText ?? '创建'
@@ -713,6 +723,7 @@ defineExpose<SelectExposed>({
                   </template>
                   <SelectNodeRenderer v-else :content="optionContent(entry.option)" />
                 </div>
+                <SelectNodeRenderer v-else :content="optionContent(entry.option)" />
               </div>
             </template>
           </template>
@@ -817,8 +828,9 @@ defineExpose<SelectExposed>({
                   v-for="(option, index) in shownTags"
                   :key="option.value ?? index"
                   :data-select-tag-index="index"
+                  style="max-width: 100%"
                   :class="[
-                    'semi-tag semi-tag-large semi-tag-light semi-tag-white-light semi-tag-closable',
+                    'semi-tag semi-tag-square semi-tag-large semi-tag-light semi-tag-white-light semi-tag-closable',
                     option.disabled || runtimeProps.disabled ? 'semi-tag-disabled' : undefined,
                   ]"
                   :aria-label="`Closable Tag: ${String(option.label ?? option.value ?? '')}`"
@@ -856,7 +868,8 @@ defineExpose<SelectExposed>({
                     <div
                       v-for="(option, index) in selectedItems.slice(shownTags.length)"
                       :key="option.value ?? index"
-                      class="semi-tag semi-tag-large semi-tag-light semi-tag-white-light"
+                      class="semi-tag semi-tag-square semi-tag-large semi-tag-light semi-tag-white-light"
+                      style="max-width: 100%"
                     >
                       <div class="semi-tag-content semi-tag-content-ellipsis">
                         <SelectNodeRenderer :content="option.label" />
@@ -866,7 +879,7 @@ defineExpose<SelectExposed>({
                 </template>
                 <div
                   :class="[
-                    'semi-tag semi-tag-large semi-tag-light semi-tag-grey-light',
+                    'semi-tag semi-tag-square semi-tag-large semi-tag-light semi-tag-grey-light',
                     renderEllipsisTags ? 'semi-select-content-wrapper-collapse-tag' : undefined,
                   ]"
                   data-select-collapse-tag
@@ -880,7 +893,7 @@ defineExpose<SelectExposed>({
               <div
                 v-if="hiddenTagCount > 0 && !runtimeProps.showRestTagsPopover"
                 :class="[
-                  'semi-tag semi-tag-large semi-tag-light semi-tag-grey-light',
+                  'semi-tag semi-tag-square semi-tag-large semi-tag-light semi-tag-grey-light',
                   renderEllipsisTags ? 'semi-select-content-wrapper-collapse-tag' : undefined,
                 ]"
                 data-select-collapse-tag

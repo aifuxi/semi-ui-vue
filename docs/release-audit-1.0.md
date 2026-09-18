@@ -1,35 +1,22 @@
-# 1.0 发布审计
+# 1.0 发布准备
 
-本文记录首个稳定版本的发布审计。它是可持续更新的审计台账，不替代 `docs/releasing.md` 的发布操作手册，也不授权提交、打标签、推送或 npm 发布。
+本页维护稳定版剩余工作，发布操作以[发布手册](releasing.md)为准。历史检查只证明当时输入；新候选需重新核对证据有效性与外部状态。
 
-## 2026-09-01 第一轮
+## 剩余工作
 
-审计起始基线为 `8144bf422b7ca64ff99c1c1a7dddbc8ae81457f1`，固定 Semi Design 参考仍为 `v2.102.0` / `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`。README 与 Inventory 均为 85/85；`_base` 与 `_utils` 没有独立 DOM 场景，因此全仓按 84 个组件浏览器规格验收。
+1. 按[组件契约](testing/component-contract.md)核对公开能力、已知差异和必要验证，完成稳定版所需的组件缺口；既有 ready 状态不替代候选上的有效证据。
+2. 核对保留的 API、使用与迁移说明，以及实际公开包的许可、归属和 SBOM。后续测试工具迁移按[方案](testing/vue-testing-strategy-proposal.md)另行实施。
+3. 核对 GitHub App、仓库变量/secret、master 保护、npm Environment 和五包 Trusted Publisher；实证机器人版本 PR 的创建/更新能触发 CI。
+4. 在准确候选上通过质量、Chromium 与原 pack artifact 的隔离消费门禁，按发布流程完成 next 发布；复核 provenance、五包版本/精确依赖、标签/Release、registry 安装和渠道。
+5. 产品验收闭环后使用官方 `changeset pre exit`，由机器人生成稳定版本 PR，经相同候选门禁发布到 latest。
 
-### 已完成
+Nuxt 文档站及旧逐示例验收已[退役](documentation/README.md)，不再要求恢复历史批次或交付站点。移除文档站不表示产品验收完成，也不自动创建替代站点。
 
-- 将生产依赖 `lodash` 从 4.17.21 升级至 4.18.1、`prismjs` 从 1.29.0 升级至 1.30.0，并同步公开边界、许可和架构记录。
-- 新增固定官方 npm registry 的 production dependency audit；moderate、high、critical 漏洞阻断本地 `release:check` 与发布工作流。
-- `release:check` 全量通过：production audit 无已知漏洞，163 个 Vitest 文件共 1116 项通过，构建、86 个主题入口、SSR 与真实 tarball 消费通过，Chromium 589/589 通过，五个公开包统一为 `0.1.0-alpha.4` 且 dist-tag 为 `next`。
-- 浏览器回归覆盖桌面/移动、light/dark、适用时 RTL 与 Locale；没有更新截图基线，没有新增 accepted deviation。
+当前仓库的五包 `0.1.0` 是未发布迁移基线，待处理 major Changeset 与 next 状态使首个机器人版本 PR 目标为 `1.0.0-next.0`；不能直接发布迁移基线。外部接入状态需在准备发布时读取，不能从本地测试推断。
 
-### 当前阻断项
+## 历史证据
 
-- 当前工作树包含本轮审计修复，尚未形成干净的候选提交。
-- HEAD 没有精确版本标签；现有 `v0.1.0-alpha.4` 指向更早提交，不是当前候选。
-- 五个公开包仍为 `0.1.0-alpha.4`，尚未做首个稳定版本的统一升版决策。
-- 当前 HEAD 尚未推送，因此没有对应的 GitHub hosted CI / OIDC 发布证据。
-- npm 当前 `next` 指向 `0.1.0-alpha.4`，`latest` 仍停留在首次引导的 `0.1.0-alpha.0`；首个稳定版本发布后必须复核五包 dist-tag。
+- **2026-09-01**：基于 `8144bf4` 完成当时的依赖审计、1,116 项单测、589 项 Chromium、构建/主题/SSR/tarball 门禁；五包为 `0.1.0-alpha.4`。旧精确标签和手工升版阻断项已由 Changesets 流程取代。
+- **2026-09-11**：Changesets 在 `6302448` 接管发布，旧 `release:bump` 已删除，发布不再要求预先存在精确标签。本地迁移验证与当时的外部核对结论见[迁移记录](../ai-work/20260911-125341-changesets-migration.md)。
 
-### 非阻断观察
-
-- Lottie 构建仍会报告第三方 `lottie-web` direct-eval 警告，应用构建还会报告大 chunk 提示；真实 tarball、公开子路径、tree-shaking 边界和 SSR 门禁均通过，当前记录为后续体积与供应链观察项。
-- React v2.102.0 参考场景会把 `InputNumber.scientificNotation` 透传到 DOM 并产生开发警告；对应 React/Vue 行为、样式、几何和像素门禁通过，属于固定上游参考噪声。
-
-## 候选发布前下一步
-
-1. 评审并提交本轮审计修复，保持工作树干净。
-2. 明确首个稳定版本号；仅在显式授权后运行会自动提交和打标签的 `release:bump`。
-3. 在精确标签提交上再次运行 `pnpm release:check`，分别推送提交与标签。
-4. 等待 GitHub 发布工作流完成，核对 provenance、五包版本与依赖关系。
-5. 从空目录安装稳定版本，验证类型、样式、SSR、浏览器消费与 `latest` dist-tag。
+当时记录的 Lottie 第三方 direct-eval/大 chunk 提示与固定 React InputNumber DOM 属性告警属于已知观察项，不自动视为产品缺陷或永久豁免；实际候选检查出现相关变化时按证据判断。

@@ -67,7 +67,7 @@
 - 固定 Adapter 使用语义 `ul/li`，不添加 listbox、button、tabindex 或键盘状态机；Grid 模式因上游 Row/Col 包裹保留 `div > div > li` 结构。
 - Spin SVG `aria-hidden=true`；loading 根通过固定 class/DOM 表达，不新增上游不存在的 live region。
 - import/SSR render/hydration 不访问 DOM；无 Observer、Portal、全局监听或卸载资源。
-- 根导出、`@aifuxi/semi-ui-vue/list` 子路径、`@aifuxi/semi-theme-default/list.css`、SSR-safe import、真实 tarball 类型/样式/tree-shaking/许可/SBOM均需验证；公开声明不得泄漏 vendor 或私有包路径。
+- 根导出、`@aifuxi/semi-ui-vue/list` 子路径 default/named 导出、`@aifuxi/semi-theme-default/list.css`、SSR-safe import、真实 tarball 类型/样式/tree-shaking/许可/SBOM均需验证；公开声明不得泄漏 vendor 或私有包路径。
 
 ## 视觉与行为验收矩阵
 
@@ -87,3 +87,7 @@
 
 - Vue 将 React `renderItem` 同时映射为 typed `renderItem` prop 和更自然的 `#item` scoped slot；slot 存在时优先。用户影响：模板调用无需 render function，DOM/行为不变，验收为等价适配。
 - List 内部 Spin 不作为公开组件导出；用户侧 List loading 的 DOM、样式、视觉和 SSR 契约完整，不据此宣称 Spin 完成。
+
+## 验收结论
+
+当前状态：ready。公开入口、compound `List.Item`、固定布局/尺寸/Item 对齐枚举、dataSource/slot/renderItem、Grid、loading、locale empty、SSR/hydration、React/Vue Chromium 对照、RTL、主题与发布子路径证据均已闭合；剩余差异仅为上述 Vue 原生 `#item` slot 与私有 ListSpin 边界。

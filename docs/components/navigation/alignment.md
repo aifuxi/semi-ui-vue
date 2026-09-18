@@ -92,8 +92,26 @@
 
 ## 完成门禁
 
-- Vue 源码、Foundation facade、根/子路径导出、Navigation 独立 CSS。
+- Vue 源码、Foundation facade、根/子路径 default/named 导出、Navigation 复合静态成员、Navigation 独立 CSS。
 - 中英文文档、React→Vue 迁移、React/Vue 同数据场景。
 - 单元/SSR/类型、键盘/ARIA、Portal/locale/RTL、桌面/移动 light/dark 浏览器对照。
 - 关键 computed style 精确相等、几何误差不超过 `0.5 CSS px`；阈值截图通过后再直接比较成对 PNG。
 - 真实 tarball 安装、根/子路径 ESM、声明、样式、tree-shaking、SSR import、许可与 SBOM 验证。
+
+## Dark Mode 文档回归补充
+
+固定 Header.tsx 的 text 判定仅排除 null/undefined；缺省 text 与显式 false 不同。Vue 的 VNodeChild 含 Boolean，需以默认 undefined 阻止缺省转换为 false，避免自定义 default slot 前多出 header-text。单测覆盖缺省、undefined、null、false、空字符串、文本以及模板 children；SSR 与 Dark Mode 双语明暗 Chromium 覆盖真实结构与颜色。
+
+Navigation 的 LocaleConsumer 同时消费独立 LocaleProvider。Dark Mode 英文站点上下文补充了此路径：无 ConfigProvider 时读取 LocaleProvider，有 ConfigProvider 时保留其优先级；包括动态语言、独立实例与 SSR 英文侧栏文案回归。
+
+## Navigation 文档示例验收补充
+
+中文 10 / 英文 12 个 live 示例的独立索引与适配见 documentation/mappings/navigation.json。此次只补齐现有组件的文档示例与公开行为验收，不重新定义组件切片。Combined 按上游子视图拆为 SFC，其余每个 SFC 只承载一个演示；稳定 items 保存 VNode 身份，受控示例用类型推导的 refs 与 v-model。
+
+增量门禁：默认/展开/选择/折叠/恢复、固定头尾列表滚动、水平浮层键盘返回、三类方向敏感示例 RTL，双语明暗。英文额外无图标与头尾示例并入 Basic 的子步骤。React 原文缺少 useState import、重复 import、缺少 super 仅在参考编译阶段补齐；远程 Logo 与 Semi Logo 两端替换为公开 IconApps，保留 MIT 归属和文件哈希。
+
+折叠代表用例发现的 DOM 差异：固定 SubNav.renderTitleDiv 无论 toggleIconType 是否为 null 都渲染对应 i 容器；renderSubUl 在垂直且 subNavMotion=true 时保留 Collapsible，只在折叠时去掉其 ul。Vue 必须保留这两个边界，不能把 Dropdown 分支误当成整个子导航的替代。门禁包含默认展开后折叠再恢复，检查空箭头容器、无可见内联子项及公开选择/展开行为。
+
+水平嵌套菜单：固定 Item.tsx 的 popup 分支只传递 popoverItemCls，不把内联 sub-wrap/className 带进 Dropdown.Item。Vue 移除该分支额外内联 class，避免 sub-title 继承 8px 下边距与 flex 规则。Navigation 独立 CSS 已包含 Dropdown；文档不再重复导入 dropdown.css，防止后载通用条目规则覆盖 Navigation 的 12px padding/3px radius。
+
+图标插槽：Vue 单 VNode 插槽需解包后执行上游尺寸契约（Item.tsx:125–147、SubNav.tsx:163–186）。Nav.Item 保留显式 size，Nav.Sub 强制应用其位置尺寸；Template 双语严格矩阵及公开 DOM 单测覆盖。

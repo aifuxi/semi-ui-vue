@@ -34,6 +34,7 @@ export type {
   TableDirection,
   TableEmits,
   TableExposed,
+  TableExpandedRowRenderResult,
   TableFilter,
   TableFilterConfirmMode,
   TableFixed,

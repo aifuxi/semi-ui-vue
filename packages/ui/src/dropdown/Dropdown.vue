@@ -42,12 +42,14 @@ const instance = getCurrentInstance();
 const parentContext = inject(dropdownContextKey, undefined);
 const tooltipRef = useTemplateRef<TooltipExposed>('tooltip');
 const triggerElement = shallowRef<HTMLElement | null>(null);
-const popVisible = shallowRef(Boolean(props.visible));
+const popVisible = shallowRef<boolean | undefined>(
+  hasRawProp('visible') ? props.visible : undefined,
+);
 const generatedPopupId = `semi-dropdown-${useId()}`;
-const pendingNotification = shallowRef<boolean | undefined>(undefined);
+// Requests update v-model immediately; the pinned Tooltip notifies visibleChange after positioning.
+const pendingUpdate = shallowRef<boolean | undefined>(undefined);
 let enterTimer: ReturnType<typeof setTimeout> | undefined;
 let leaveTimer: ReturnType<typeof setTimeout> | undefined;
-let restoreFocusAfterClose = false;
 
 function hasRawProp(key: keyof DropdownProps): boolean {
   const kebabKey = String(key).replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
@@ -80,7 +82,7 @@ const runtimeTrigger = computed(() => resolveProp('trigger', 'hover'));
 const runtimeShowTick = computed(() => resolveProp('showTick', false));
 const runtimePrefixCls = computed(() => resolveProp('prefixCls', 'semi-dropdown'));
 const runtimeVisible = computed(() =>
-  hasRawProp('visible') ? Boolean(props.visible) : popVisible.value,
+  hasRawProp('visible') ? Boolean(props.visible) : Boolean(popVisible.value),
 );
 const runtimePopupId = computed(() => resolveOptional('wrapperId') ?? generatedPopupId);
 const runtimeSpacing = computed<number | TooltipSpacing>(() => {
@@ -107,11 +109,11 @@ const adapter: DropdownAdapter<FoundationProps, FoundationState> = {
   getProps: () => ({ trigger: runtimeTrigger.value }),
   getStates: () => ({ visible: runtimeVisible.value }),
   notifyVisibleChange: (visible) => {
-    if (pendingNotification.value === visible) {
-      pendingNotification.value = undefined;
+    emit('visibleChange', visible);
+    if (pendingUpdate.value === visible) {
+      pendingUpdate.value = undefined;
       return;
     }
-    emit('visibleChange', visible);
     emit('update:visible', visible);
   },
   setPopVisible: (visible) => {
@@ -177,13 +179,8 @@ function handleVisibleChange(visible: boolean): void {
       const id = tooltipRef.value?.getPopupId();
       if (id) foundation.setFocusToFirstMenuItem(id);
     });
-  } else if (
-    !visible &&
-    runtimeTrigger.value !== 'custom' &&
-    resolveProp('returnFocusOnClose', true)
-  ) {
-    restoreFocusAfterClose = true;
-    resolveCurrentTrigger()?.focus();
+  } else if (!visible) {
+    clearEnterTimer();
   }
 }
 
@@ -191,6 +188,8 @@ function handleTriggerKeydown(event: KeyboardEvent): void {
   rememberTrigger(event);
   if (event.key === 'Escape' && runtimeVisible.value && resolveProp('closeOnEsc', true)) {
     emit('escKeydown', event);
+    if (runtimeTrigger.value !== 'custom' && resolveProp('returnFocusOnClose', true))
+      resolveCurrentTrigger()?.focus();
     requestVisible(false);
     return;
   }
@@ -208,10 +207,10 @@ function clearLeaveTimer(): void {
 }
 
 function requestVisible(visible: boolean): void {
+  if (!visible) clearEnterTimer();
   if (runtimeVisible.value === visible) return;
   popVisible.value = visible;
-  pendingNotification.value = visible;
-  emit('visibleChange', visible);
+  pendingUpdate.value = visible;
   emit('update:visible', visible);
 }
 
@@ -244,6 +243,14 @@ const triggerEventSet = computed<
       delayVisible(true);
     };
     events.onMouseleave = () => delayVisible(false);
+    // The pinned hover trigger is also keyboard accessible unless explicitly disabled.
+    if (!resolveProp('disableFocusListener', false)) {
+      events.onFocus = (event) => {
+        rememberTrigger(event);
+        delayVisible(true);
+      };
+      events.onBlur = () => delayVisible(false);
+    }
   } else if (runtimeTrigger.value === 'focus') {
     events.onFocus = (event) => {
       rememberTrigger(event);
@@ -260,8 +267,38 @@ const triggerEventSet = computed<
   return events;
 });
 
+function handlePopupInserted(): void {
+  // Tooltip Foundation.show rechecks :hover after insertion, even when focus opened it.
+  void nextTick(() => {
+    if (
+      runtimeTrigger.value === 'hover' &&
+      runtimeVisible.value &&
+      !resolveCurrentTrigger()?.matches(':hover')
+    )
+      requestVisible(false);
+  });
+}
+
 function handlePopupEnter(): void {
   if (runtimeTrigger.value === 'hover' || runtimeTrigger.value === 'focus') clearLeaveTimer();
+}
+
+function handlePopupFocus(): void {
+  if (
+    runtimeTrigger.value === 'focus' ||
+    (runtimeTrigger.value === 'hover' && !resolveProp('disableFocusListener', false))
+  ) {
+    clearLeaveTimer();
+  }
+}
+
+function handlePopupBlur(): void {
+  if (
+    runtimeTrigger.value === 'focus' ||
+    (runtimeTrigger.value === 'hover' && !resolveProp('disableFocusListener', false))
+  ) {
+    delayVisible(false);
+  }
 }
 
 function handlePopupLeave(): void {
@@ -271,18 +308,16 @@ function handlePopupLeave(): void {
 function handlePopupKeydown(event: KeyboardEvent): void {
   if (event.key !== 'Escape' || !resolveProp('closeOnEsc', true)) return;
   emit('escKeydown', event);
-  requestVisible(false);
   if (resolveProp('returnFocusOnClose', true)) {
-    restoreFocusAfterClose = true;
     resolveCurrentTrigger()?.focus();
   }
+  // Focus returns before hiding, matching the pinned Tooltip Escape order.
+  requestVisible(false);
 }
 
 function handleAfterClose(): void {
-  if (restoreFocusAfterClose) {
-    restoreFocusAfterClose = false;
-    resolveCurrentTrigger()?.focus();
-  }
+  // Focus is restored before hiding, as in the pinned Tooltip Escape path.
+  // The user may move focus during the exit animation; do not steal it back here.
   emit('afterClose');
 }
 
@@ -361,8 +396,11 @@ onBeforeUnmount(() => {
       <div
         :class="[runtimePrefixCls, props.contentClassName]"
         :style="props.style"
+        @vue:mounted="handlePopupInserted"
         @mouseenter="handlePopupEnter"
         @mouseleave="handlePopupLeave"
+        @focusin="handlePopupFocus"
+        @focusout="handlePopupBlur"
         @keydown.capture="handlePopupKeydown"
       >
         <div :class="`${runtimePrefixCls}-content`" x-semi-prop="render">
@@ -385,6 +423,7 @@ onBeforeUnmount(() => {
 
     <DropdownTriggerRenderer
       :event-set="triggerEventSet"
+      :expanded="hasRawProp('visible') ? props.visible : popVisible"
       :popup-id="runtimePopupId"
       :prefix-cls="runtimePrefixCls"
       :set-trigger-element="setTriggerElement"

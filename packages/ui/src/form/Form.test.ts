@@ -7,10 +7,11 @@ import {
   ArrayField,
   Form,
   FormInput,
+  useForm,
   type ArrayFieldSlotProps,
   type FormApi,
-  useForm,
 } from './index';
+import DefaultForm from './index';
 
 afterEach(() => {
   document.body.innerHTML = '';
@@ -24,6 +25,12 @@ async function settle(): Promise<void> {
 }
 
 describe('Form alignment gates', () => {
+  it('公开入口保持 default、named 与 useForm/Input 静态成员一致', () => {
+    expect(DefaultForm).toBe(Form);
+    expect(Form.useForm).toBe(useForm);
+    expect(Form.Input).toBe(FormInput);
+  });
+
   it('keeps field initValue above form initValues and emits the upstream change order', async () => {
     const order: string[] = [];
     let api!: FormApi;

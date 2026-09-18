@@ -1,7 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { renderToString } from '@vue/server-renderer';
-import { createSSRApp, defineComponent, h, nextTick, provide } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { defineComponent, h, nextTick, provide } from 'vue';
 
 import Typography, {
   EN_US_TYPOGRAPHY_LOCALE,
@@ -9,6 +8,8 @@ import Typography, {
   Paragraph,
   Text,
   Title,
+  TYPOGRAPHY_TYPES,
+  Typography as NamedTypography,
   typographyLocaleKey,
 } from './index';
 
@@ -28,6 +29,15 @@ describe('Typography', () => {
   afterEach(() => {
     vi.useRealTimers();
     vi.unstubAllGlobals();
+  });
+
+  it('公开入口保持 default、named 与 compound 成员一致', () => {
+    expect(NamedTypography).toBe(Typography);
+    expect(Typography.Text).toBe(Text);
+    expect(Typography.Title).toBe(Title);
+    expect(Typography.Paragraph).toBe(Paragraph);
+    expect(Typography.Numeral).toBe(Numeral);
+    expect(TYPOGRAPHY_TYPES).toContain('primary');
   });
 
   it('渲染聚合根节点并透传原生 attrs', () => {
@@ -201,7 +211,6 @@ describe('Typography', () => {
   });
 
   it('从注入 locale 读取复制和展开文案', async () => {
-    // eslint-disable-next-line vue/one-component-per-file
     const Host = defineComponent({
       setup() {
         provide(typographyLocaleKey, EN_US_TYPOGRAPHY_LOCALE);
@@ -209,7 +218,9 @@ describe('Typography', () => {
       },
     });
     const wrapper = mount(Host);
-    expect(wrapper.get('[role="button"]').attributes('aria-label')).toBe('Copy');
+    expect(wrapper.get('[role="button"]').attributes('aria-label')).toBe('copy');
+    await wrapper.get('[role="button"]').trigger('keydown', { key: 'Enter' });
+    expect(wrapper.text()).toContain('Copied');
   });
 
   it('CSS ellipsis 输出固定 class，多行输出 line clamp', () => {
@@ -254,26 +265,5 @@ describe('Typography', () => {
     expect(action.text()).toBe('收起');
     await action.trigger('keydown', { key: 'Enter' });
     expect(wrapper.emitted('expand')?.[1]?.[0]).toBe(false);
-  });
-
-  it('四个公开组件均可 SSR-safe import/render', async () => {
-    const app = createSSRApp(
-      // eslint-disable-next-line vue/one-component-per-file
-      defineComponent({
-        setup: () => () =>
-          h(Typography, null, {
-            default: () => [
-              h(Title, { heading: 2 }, () => 'Title'),
-              h(Text, { strong: true }, () => 'Text'),
-              h(Paragraph, null, () => 'Paragraph'),
-              h(Numeral, { rule: 'percentages', precision: 1 }, () => '0.125'),
-            ],
-          }),
-      }),
-    );
-    const html = await renderToString(app);
-    expect(html).toContain('<article class="semi-typography">');
-    expect(html).toContain('12.5%');
-    expect(html).not.toContain('data-v-app');
   });
 });

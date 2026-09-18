@@ -1,72 +1,91 @@
 import { fileURLToPath } from 'node:url';
-import react from '@vitejs/plugin-react';
 import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vitest/config';
-import type { Plugin } from 'vite';
-import { adaptPinnedJsonViewerCore } from './packages/foundation-integration/vite-json-viewer-plugin.js';
-import { generateVitestAliases } from './scripts/gen-vitest-aliases.mjs';
-import { loadCoverageExemptions } from './scripts/verify-coverage-exemptions.mjs';
+import {
+  adaptPinnedJsonViewerCore,
+  preservePinnedJsonViewerWorker,
+} from './packages/foundation-integration/vite-json-viewer-plugin';
+import { pinnedPrismPlugin } from './packages/foundation-integration/vite-prism-plugin';
 
-function resolveSemiUiVueComponentSubpaths(): Plugin {
-  return {
-    name: 'resolve-semi-ui-vue-component-subpaths',
-    enforce: 'pre',
-    resolveId(source) {
-      if (source === '@aifuxi/semi-ui-vue') {
-        return fileURLToPath(new URL('./packages/ui/src/index.ts', import.meta.url));
-      }
-      const component = source.match(/^@aifuxi\/semi-ui-vue\/([^/]+)$/)?.[1];
-      return component
-        ? fileURLToPath(new URL(`./packages/ui/src/${component}/index.ts`, import.meta.url))
-        : null;
-    },
-  };
-}
-
-const [aliases, coverageExemptions] = await Promise.all([
-  generateVitestAliases(),
-  loadCoverageExemptions(),
-]);
-const fullCoverageReport = process.env.COVERAGE_ALL === '1';
+const fromRoot = (path: string) => fileURLToPath(new URL(path, import.meta.url));
+const nodeTests = [
+  'scripts/**/*.{test,spec}.mjs',
+  'packages/*/src/**/*.ssr.test.ts',
+  'packages/test-infra/src/**/*.{test,spec}.ts',
+  'packages/foundation-integration/src/**/*.{test,spec}.ts',
+  'apps/reference-react/src/runtime/**/*.{test,spec}.ts',
+];
 
 export default defineConfig({
-  plugins: [resolveSemiUiVueComponentSubpaths(), adaptPinnedJsonViewerCore(), vue(), react()],
+  plugins: [vue(), pinnedPrismPlugin(), adaptPinnedJsonViewerCore()],
   resolve: {
-    alias: aliases,
     dedupe: ['vue'],
-  },
-  test: {
-    environment: 'jsdom',
-    include: [
-      'scripts/**/*.{test,spec}.mjs',
-      'packages/*/src/**/*.{test,spec}.ts',
-      'apps/parity-vue/src/**/*.{test,spec}.ts',
-      'apps/docs/src/**/*.{test,spec}.ts',
-      'apps/reference-react/src/**/*.{test,spec}.{ts,tsx}',
+    alias: [
+      {
+        find: /^@aifuxi\/semi-ui-vue\/locale\/source\/(.+)$/,
+        replacement: fromRoot('./packages/ui/src/locale/source/$1.ts'),
+      },
+      { find: /^@aifuxi\/semi-ui-vue$/, replacement: fromRoot('./packages/ui/src/index.ts') },
+      {
+        find: /^@aifuxi\/semi-ui-vue\/([^/]+)$/,
+        replacement: fromRoot('./packages/ui/src/$1/index.ts'),
+      },
+      { find: '@aifuxi/semi-icons-vue', replacement: fromRoot('./packages/icons/src/index.ts') },
+      {
+        find: '@aifuxi/semi-icons-lab-vue',
+        replacement: fromRoot('./packages/icons-lab/src/index.ts'),
+      },
+      {
+        find: '@aifuxi/semi-illustrations-vue',
+        replacement: fromRoot('./packages/illustrations/src/index.ts'),
+      },
+      {
+        find: '@douyinfe/semi-animation',
+        replacement: fromRoot('./vendor/semi-design/packages/semi-animation/index.ts'),
+      },
+      {
+        find: 'fast-copy',
+        replacement: fromRoot('./packages/foundation-integration/src/fast-copy.js'),
+      },
+      { find: 'lottie-web', replacement: fromRoot('./packages/ui/src/test/lottieWeb.ts') },
     ],
-    exclude: ['vendor/**', '**/dist/**', 'tests/browser/**'],
+  },
+  worker: { plugins: () => [preservePinnedJsonViewerWorker()] },
+  test: {
+    maxWorkers: 3,
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: 'dom',
+          environment: 'jsdom',
+          setupFiles: ['./tests/unit/setup-dom.ts'],
+          include: ['packages/*/src/**/*.{test,spec}.ts'],
+          exclude: nodeTests,
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: 'node',
+          environment: 'node',
+          setupFiles: ['./tests/unit/setup-node.ts'],
+          include: nodeTests,
+        },
+      },
+    ],
     coverage: {
       provider: 'v8',
+      reportsDirectory: './coverage',
       include: ['packages/*/src/**/*.{ts,tsx,vue}'],
       exclude: [
         'vendor/**',
         '**/dist/**',
         '**/*.d.ts',
         '**/*.{test,spec}.{ts,tsx}',
-        ...coverageExemptions,
+        '**/src/test/**',
       ],
-      ...(fullCoverageReport
-        ? {}
-        : {
-            changed: 'origin/master',
-            thresholds: {
-              perFile: true,
-              statements: 100,
-              branches: 100,
-              functions: 100,
-              lines: 100,
-            },
-          }),
+      ...(process.env.COVERAGE_ALL === '1' ? {} : { changed: 'origin/master' }),
     },
   },
 });

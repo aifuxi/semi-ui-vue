@@ -1,37 +1,25 @@
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from '@playwright/test';
 import { PARITY_VIEWPORTS, VISUAL_THRESHOLDS } from './packages/test-infra/src';
 
-// Full-suite benchmark on 2026-08-30: 3 workers was faster than 2/4/6/8 while
-// keeping all 482 tests retry-free. Keep the two defaults explicit so future
-// runner-specific tuning does not need to change the PARITY_WORKERS contract.
-const DEFAULT_LOCAL_PARITY_WORKERS = 3;
-const DEFAULT_CI_PARITY_WORKERS = 3;
-const prebuilt = process.env.PARITY_SERVER_MODE === 'build';
+const dev = process.env.PARITY_SERVER_MODE === 'dev';
 if (process.env.PARITY_SERVER_MODE && !['dev', 'build'].includes(process.env.PARITY_SERVER_MODE)) {
   throw new Error('PARITY_SERVER_MODE must be dev or build');
 }
-const requestedWorkers = Number.parseInt(process.env.PARITY_WORKERS ?? '', 10);
-const parityWorkers =
-  Number.isSafeInteger(requestedWorkers) && requestedWorkers > 0
-    ? requestedWorkers
-    : process.env.CI
-      ? DEFAULT_CI_PARITY_WORKERS
-      : DEFAULT_LOCAL_PARITY_WORKERS;
+const workers = Number(process.env.PARITY_WORKERS ?? 3);
+if (!Number.isSafeInteger(workers) || workers < 1)
+  throw new Error('PARITY_WORKERS must be positive');
 
 export default defineConfig({
   testDir: './tests/browser',
-  // Each component spec stays serial so its behavior and visual phases remain ordered.
-  // Playwright can run independent component specs concurrently.
+  outputDir: 'test-results/components',
   fullyParallel: false,
-  workers: parityWorkers,
+  workers,
   snapshotPathTemplate: '{testDir}/snapshots/{arg}{-projectName}{-snapshotSuffix}{ext}',
-  forbidOnly: Boolean(process.env.CI),
-  failOnFlakyTests: Boolean(process.env.CI),
-  retries: process.env.CI ? 2 : 0,
-  reporter: [['list'], ['html', { open: 'never' }]],
-  // Hosted macOS image updates change rasterization. Release CI still performs the
-  // independent React/Vue pixel comparisons in each parity test.
-  ignoreSnapshots: process.env.PARITY_IGNORE_HOST_BASELINES === '1',
+  forbidOnly: true,
+  failOnFlakyTests: true,
+  retries: 0,
+  reporter: [['list'], ['html', { open: 'never', outputFolder: 'playwright-report/components' }]],
   expect: {
     toHaveScreenshot: {
       animations: 'disabled',
@@ -41,38 +29,36 @@ export default defineConfig({
     },
   },
   use: {
+    channel: 'chromium',
+    headless: true,
     locale: 'zh-CN',
     timezoneId: 'Asia/Shanghai',
-    viewport: {
-      width: PARITY_VIEWPORTS.desktop.width,
-      height: PARITY_VIEWPORTS.desktop.height,
-    },
+    viewport: { width: PARITY_VIEWPORTS.desktop.width, height: PARITY_VIEWPORTS.desktop.height },
     deviceScaleFactor: PARITY_VIEWPORTS.desktop.deviceScaleFactor,
     colorScheme: 'light',
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
   },
-  projects: [
-    {
-      name: 'chromium',
-      use: { browserName: 'chromium' },
-    },
-  ],
+  projects: [{ name: 'chromium', use: { browserName: 'chromium' } }],
   webServer: [
     {
-      command: prebuilt
-        ? 'node scripts/serve-parity-build.mjs reference-react'
-        : 'pnpm --filter @workspace/reference-react dev --host 127.0.0.1',
+      cwd: fileURLToPath(new URL('./apps/reference-react', import.meta.url)),
+      command: dev
+        ? 'pnpm dev --host 127.0.0.1'
+        : 'pnpm build && pnpm exec rsbuild preview --host 127.0.0.1 --port 4173',
       url: 'http://127.0.0.1:4173',
-      reuseExistingServer: !prebuilt && !process.env.CI,
+      stdout: 'pipe',
+      reuseExistingServer: false,
       timeout: 120_000,
     },
     {
-      command: prebuilt
-        ? 'node scripts/serve-parity-build.mjs parity-vue'
-        : 'pnpm --filter @workspace/parity-vue dev --host 127.0.0.1',
-      url: 'http://127.0.0.1:4174',
-      reuseExistingServer: !prebuilt && !process.env.CI,
+      cwd: fileURLToPath(new URL('./apps/storybook-vue', import.meta.url)),
+      command: dev
+        ? 'pnpm dev'
+        : 'pnpm build && pnpm exec vite preview --host 127.0.0.1 --port 4174 --strictPort',
+      url: 'http://127.0.0.1:4174/iframe.html',
+      stdout: 'pipe',
+      reuseExistingServer: false,
       timeout: 120_000,
     },
   ],

@@ -1,19 +1,17 @@
-// These legacy language scripts read a global without declaring their dependencies.
-// Express the existing core -> JSX -> TSX order so shared-chunk hoisting cannot invert it.
+// Legacy Prism extensions use an implicit global; make core initialization explicit.
 export function parityPrismOrder() {
   return {
     name: 'parity-prism-language-order',
-    apply: 'build',
-    enforce: 'pre',
-    transform(code, id) {
-      const language = id
-        .replaceAll('\\', '/')
-        .match(/\/prismjs\/components\/prism-(jsx|tsx)\.js$/)?.[1];
-      if (!language) return null;
-      return {
-        code: `import Prism from '../prism.js';\n${language === 'tsx' ? "import './prism-jsx.js';\n" : ''}${code}`,
-        map: null,
-      };
+    setup(api) {
+      api.transform(
+        {
+          test: /[\\/]prismjs[\\/](?:components[\\/]prism-(jsx|tsx)\.js|plugins[\\/]line-numbers[\\/]prism-line-numbers\.min\.js)$/,
+        },
+        ({ code, resourcePath }) => ({
+          code: `import Prism from '${resourcePath.includes('line-numbers') ? '../../prism.js' : '../prism.js'}';\n${resourcePath.endsWith('prism-tsx.js') ? "import './prism-jsx.js';\n" : ''}${code}`,
+          map: null,
+        }),
+      );
     },
   };
 }
@@ -21,11 +19,15 @@ export function parityPrismOrder() {
 export function parityWorkerEntry() {
   return {
     name: 'preserve-pinned-json-worker-handler',
-    transform(code, id) {
-      // Preserve the message handler excluded by upstream package sideEffects metadata.
-      if (!id.replaceAll('\\', '/').endsWith('/semi-json-viewer-core/src/worker/json.worker.ts'))
-        return null;
-      return { code, map: null, moduleSideEffects: true };
+    setup(api) {
+      api.modifyRspackConfig((config) => {
+        config.module ??= {};
+        config.module.rules ??= [];
+        config.module.rules.push({
+          test: /[\\/]semi-json-viewer-core[\\/]src[\\/]worker[\\/]json\.worker\.ts$/,
+          sideEffects: true,
+        });
+      });
     },
   };
 }

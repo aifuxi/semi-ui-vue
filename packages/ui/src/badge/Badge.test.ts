@@ -1,13 +1,27 @@
 /* eslint-disable vue/one-component-per-file -- test hosts cover template and render VNode inputs. */
 
 import { mount } from '@vue/test-utils';
-import { defineComponent, h } from 'vue';
+import { Comment, Fragment, defineComponent, h } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider } from '../config-provider';
-import Badge, { BADGE_POSITIONS, BADGE_THEMES, BADGE_TYPES } from './index';
+import Badge, { BADGE_POSITIONS, BADGE_THEMES, BADGE_TYPES, Badge as PublicBadge } from './index';
 
 describe('Badge', () => {
+  it('公开入口导出组件与固定枚举常量', () => {
+    expect(PublicBadge).toBe(Badge);
+    expect(BADGE_TYPES).toEqual([
+      'primary',
+      'secondary',
+      'tertiary',
+      'danger',
+      'warning',
+      'success',
+    ]);
+    expect(BADGE_THEMES).toEqual(['solid', 'light', 'inverted']);
+    expect(BADGE_POSITIONS).toEqual(['leftTop', 'leftBottom', 'rightTop', 'rightBottom']);
+  });
+
   it('渲染默认计数、点状、自定义节点和无内容边界', () => {
     const host = mount(
       defineComponent({
@@ -84,6 +98,25 @@ describe('Badge', () => {
     for (const position of BADGE_POSITIONS) {
       expect(count.classes()).not.toContain(`semi-badge-${position}`);
     }
+  });
+
+  it('空白和注释 slot 按无 children 处理，Fragment 子节点按有 children 处理', () => {
+    const empty = mount(Badge, {
+      props: { count: 1, position: 'leftBottom' },
+      slots: { default: () => [h(Comment), ''] },
+    });
+    const emptyCount = empty.get('[x-semi-prop="count"]');
+    expect(emptyCount.classes()).toContain('semi-badge-block');
+    expect(emptyCount.classes()).not.toContain('semi-badge-leftBottom');
+
+    const fragment = mount(Badge, {
+      props: { count: 1, position: 'leftBottom' },
+      slots: { default: () => h(Fragment, null, [h('i', { class: 'fragment-child' })]) },
+    });
+    const fragmentCount = fragment.get('[x-semi-prop="count"]');
+    expect(fragment.find('.fragment-child').exists()).toBe(true);
+    expect(fragmentCount.classes()).toContain('semi-badge-leftBottom');
+    expect(fragmentCount.classes()).not.toContain('semi-badge-block');
   });
 
   it('只对数字应用固定 overflowCount truthy 边界', () => {

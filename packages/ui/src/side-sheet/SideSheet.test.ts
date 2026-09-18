@@ -3,7 +3,8 @@ import { defineComponent, h, nextTick, ref } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider, semiGlobal } from '../config-provider';
-import { SideSheet } from './index';
+import DefaultSideSheet, { SIDE_SHEET_PLACEMENTS, SIDE_SHEET_SIZES, SideSheet } from './index';
+import SideSheetDynamicSlot from './SideSheetDynamicSlot.fixture.vue';
 
 async function settle(): Promise<void> {
   await nextTick();
@@ -37,6 +38,97 @@ describe('SideSheet', () => {
     document.body.style.width = '';
     delete semiGlobal.config.overrideDefaultProps;
     vi.restoreAllMocks();
+  });
+
+  it('公开入口保持 default、named 与固定常量导出一致', () => {
+    expect(DefaultSideSheet).toBe(SideSheet);
+    expect(SIDE_SHEET_PLACEMENTS).toEqual(['top', 'right', 'bottom', 'left']);
+    expect(SIDE_SHEET_SIZES).toEqual(['small', 'medium', 'large']);
+  });
+
+  it('相邻自定义 Portal 挂载后，body SideSheet 首开、编辑与退出重开保持有效', async () => {
+    const wrapper = mount(SideSheetDynamicSlot, { attachTo: document.body });
+    await settle();
+    const target = document.createElement('div');
+    wrapper.get('button').element.parentElement!.appendChild(target);
+    const sibling = mount(SideSheet, {
+      attachTo: target,
+      props: { visible: false, getPopupContainer: () => target },
+    });
+    await settle();
+    await wrapper.get('button').trigger('click');
+    await settle();
+    expect(document.querySelector('.semi-sidesheet-body')?.textContent).toBe('Entered:');
+    await wrapper.get('textarea').setValue('Updated');
+    expect(document.querySelector('.semi-sidesheet-body')?.textContent).toBe('Entered:Updated');
+    (document.querySelector('.semi-sidesheet-close') as HTMLElement).click();
+    await settle();
+    document.querySelector('.semi-sidesheet-inner')!.dispatchEvent(new Event('animationend'));
+    await settle();
+    expect(document.querySelector('.semi-sidesheet')).toBeNull();
+    await wrapper.get('button').trigger('click');
+    await settle();
+    expect(document.querySelector('.semi-sidesheet-body')?.textContent).toBe('Entered:Updated');
+    sibling.unmount();
+    wrapper.unmount();
+  });
+
+  it('自定义目标变更和 keepDOM 隐藏重开保留同一个输入节点及用户值', async () => {
+    const first = document.createElement('div');
+    const second = document.createElement('div');
+    document.body.append(first, second);
+    const wrapper = mount(SideSheet, {
+      attachTo: document.body,
+      props: { visible: true, keepDOM: true, motion: false, getPopupContainer: () => first },
+      slots: { default: () => h('input', { 'data-retained-input': '' }) },
+    });
+    await settle();
+    const input = first.querySelector('input')!;
+    input.value = 'User value';
+    await wrapper.setProps({ getPopupContainer: () => second });
+    await settle();
+    expect(first.querySelector('input')).toBeNull();
+    expect(second.querySelector('input')).toBe(input);
+    expect(input.value).toBe('User value');
+    await wrapper.setProps({ visible: false });
+    await wrapper.setProps({ visible: true });
+    await settle();
+    expect(second.querySelector('input')).toBe(input);
+    expect(input.value).toBe('User value');
+    wrapper.unmount();
+    expect(second.querySelector('.semi-portal')).toBeNull();
+  });
+
+  it('多个自定义容器实例切换目标时保留各自 Portal 锚点', async () => {
+    const first = document.createElement('div');
+    const second = document.createElement('div');
+    document.body.append(first, second);
+    const primary = mount(SideSheet, {
+      attachTo: document.body,
+      props: { motion: false, title: 'A', visible: true, getPopupContainer: () => first },
+      slots: { default: () => h('p', { 'data-sheet': 'primary' }, 'Primary') },
+    });
+    const secondary = mount(SideSheet, {
+      attachTo: document.body,
+      props: { motion: false, title: 'B', visible: true, getPopupContainer: () => second },
+      slots: { default: () => h('p', { 'data-sheet': 'secondary' }, 'Secondary') },
+    });
+    await settle();
+
+    expect(first.querySelector('[data-sheet="primary"]')).not.toBeNull();
+    expect(second.querySelector('[data-sheet="secondary"]')).not.toBeNull();
+    await primary.setProps({ getPopupContainer: () => second });
+    await settle();
+    expect(first.querySelector('.semi-portal')).toBeNull();
+    expect(second.querySelector('[data-sheet="primary"]')).not.toBeNull();
+    expect(second.querySelector('[data-sheet="secondary"]')).not.toBeNull();
+
+    primary.unmount();
+    await settle();
+    expect(second.querySelector('[data-sheet="primary"]')).toBeNull();
+    expect(second.querySelector('[data-sheet="secondary"]')).not.toBeNull();
+    secondary.unmount();
+    expect(second.querySelector('.semi-portal')).toBeNull();
   });
 
   it('渲染固定 dialog/header/body/footer DOM、样式、data 与默认尺寸', async () => {
@@ -122,6 +214,18 @@ describe('SideSheet', () => {
     explicitTrue.unmount();
   });
 
+  it('初始省略 mask 后动态显式 false 会移除遮罩', async () => {
+    const wrapper = await mountVisible();
+    expect(document.querySelector('.semi-sidesheet-mask')).not.toBeNull();
+    await wrapper.setProps({ mask: false });
+    await settle();
+    expect(document.querySelector('.semi-sidesheet-mask')).toBeNull();
+    await wrapper.setProps({ mask: true });
+    await settle();
+    expect(document.querySelector('.semi-sidesheet-mask')).not.toBeNull();
+    wrapper.unmount();
+  });
+
   it('四个 placement、width/height、mask=false 与 canVerticalSetWidth 保留固定布局', async () => {
     const wrapper = await mountVisible({ placement: 'left', width: '413px' });
     const dialog = () => document.querySelector<HTMLElement>('.semi-sidesheet-inner')!;
@@ -144,6 +248,33 @@ describe('SideSheet', () => {
     expect(root().classList).toContain('semi-sidesheet-fixed');
     expect(root().style.width).toBe('413px');
     expect(dialog().style.width).toBe('100%');
+    wrapper.unmount();
+  });
+
+  it('数字尺寸转换为像素，切换方向和无 mask 外层后保留百分比字符串', async () => {
+    const wrapper = await mountVisible({ placement: 'top', mask: true });
+    const dialog = () => document.querySelector<HTMLElement>('.semi-sidesheet-inner')!;
+    const root = () => document.querySelector<HTMLElement>('.semi-sidesheet')!;
+    expect(dialog().style.height).toBe('448px');
+    await wrapper.setProps({ placement: 'bottom', height: 220 });
+    await settle();
+    expect(dialog().style.height).toBe('220px');
+    await wrapper.setProps({ placement: 'right', width: 220 });
+    await settle();
+    expect(dialog().style.width).toBe('220px');
+    expect(dialog().style.height).toBe('100%');
+    await wrapper.setProps({ mask: false });
+    await settle();
+    expect(root().style.width).toBe('220px');
+    expect(dialog().style.width).toBe('100%');
+    await wrapper.setProps({ width: '50%' });
+    await settle();
+    expect(root().style.width).toBe('50%');
+    expect(dialog().style.width).toBe('100%');
+    await wrapper.setProps({ mask: true, placement: 'top', height: '40%' });
+    await settle();
+    expect(dialog().style.width).toBe('100%');
+    expect(dialog().style.height).toBe('40%');
     wrapper.unmount();
   });
 
@@ -243,6 +374,42 @@ describe('SideSheet', () => {
     expect(document.body.style.overflow).toBe('');
     wrapper.unmount();
     expect(target.querySelector('.semi-portal')).toBeNull();
+  });
+
+  it('进入动效分别清理状态 class，退出等待真实结束并在重开时恢复', async () => {
+    const wrapper = await mountVisible({ motion: true });
+    const content = () => document.querySelector<HTMLElement>('.semi-sidesheet-inner')!;
+    const mask = () => document.querySelector<HTMLElement>('.semi-sidesheet-mask')!;
+    const end = (node: HTMLElement) =>
+      node.dispatchEvent(new Event('animationend', { bubbles: true }));
+    expect(content().className).toContain('semi-sidesheet-animation-content_show_right');
+    end(mask());
+    await settle();
+    expect(mask().className).not.toContain('semi-sidesheet-animation-mask_show');
+    expect(content().className).toContain('semi-sidesheet-animation-content_show_right');
+    end(content());
+    await settle();
+    expect(content().className).not.toContain('semi-sidesheet-animation-content_show_right');
+    await wrapper.setProps({ placement: 'left' });
+    await settle();
+    expect(content().className).toContain('semi-sidesheet-animation-content_show_left');
+    expect(mask().className).not.toContain('semi-sidesheet-animation-mask_show');
+    end(content());
+    await wrapper.setProps({ visible: false });
+    await vi.advanceTimersByTimeAsync(500);
+    expect(document.querySelector('.semi-sidesheet')).not.toBeNull();
+    expect(content().className).toContain('semi-sidesheet-animation-content_hide_left');
+    end(content());
+    await settle();
+    expect(document.querySelector('.semi-sidesheet')).toBeNull();
+    await wrapper.setProps({ visible: true });
+    await settle();
+    expect(content().className).toContain('semi-sidesheet-animation-content_show_left');
+    await wrapper.setProps({ visible: false });
+    await wrapper.setProps({ motion: false });
+    await settle();
+    expect(document.querySelector('.semi-sidesheet')).toBeNull();
+    wrapper.unmount();
   });
 
   it('keepDOM 与 motion 生命周期只触发一次可见回调并完整清理 body', async () => {

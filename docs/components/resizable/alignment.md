@@ -95,3 +95,7 @@
 
 1. React callback 的 `false` 返回值无法通过 Vue emit 读取，因此使用 `beforeResizeStart` prop；开始、变化、结束仍通过 typed emits 输出。
 2. React `handleNode` 与 `children` 同时保留脚本 prop 兼容和 Vue slots；具名手柄 slot 优先于 `handleNode`。
+
+## 验收结论
+
+当前状态：ready。公开入口、四组件具名导出、固定方向枚举、单体/组合拖拽、约束、受控尺寸、SSR、React/Vue Chromium 对照、主题与发布子路径证据均已闭合；剩余差异仅为上述 Vue 原生取消守卫与 slot 映射。

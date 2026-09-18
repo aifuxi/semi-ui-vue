@@ -25,6 +25,7 @@ import {
   semiGlobal,
   type ConfigContextValue,
 } from '../config-provider';
+import { localeContextKey } from '../locale/locale-context';
 import NavFooter from './NavFooter.vue';
 import NavHeader from './NavHeader.vue';
 import NavItem from './NavItem';
@@ -65,12 +66,13 @@ const emit = defineEmits<NavigationEmits>();
 const slots = defineSlots<NavigationSlots>();
 const instance = getCurrentInstance();
 const injectedConfig = inject(configContextKey, undefined);
+const injectedLocale = inject(localeContextKey, undefined);
 const config = computed<ConfigContextValue>(() =>
   injectedConfig
     ? injectedConfig.value
     : ({
         direction: 'ltr',
-        locale: DEFAULT_CONFIG_LOCALE,
+        locale: injectedLocale?.value.code ? injectedLocale.value : DEFAULT_CONFIG_LOCALE,
       } as ConfigContextValue),
 );
 

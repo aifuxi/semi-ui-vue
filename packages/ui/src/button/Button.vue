@@ -114,14 +114,14 @@ const iconFill = computed<ButtonIconFill | undefined>(() => {
   return undefined;
 });
 
-const iconNodes = computed(
-  () =>
-    (slots.icon?.({
-      fill: iconFill.value,
-      iconSize: props.iconSize,
-      iconStyle: props.iconStyle,
-    }) ?? []) as VNode[],
-);
+// Slot VNodes carry component instances; request fresh nodes after loading unmounts the icon.
+function iconNodes(): VNode[] {
+  return (slots.icon?.({
+    fill: iconFill.value,
+    iconSize: props.iconSize,
+    iconStyle: props.iconStyle,
+  }) ?? []) as VNode[];
+}
 
 function emitMouseEvent(eventName: keyof ButtonEmits, event: MouseEvent): void {
   if (props.disabled) return;
@@ -168,7 +168,7 @@ function emitMouseEvent(eventName: keyof ButtonEmits, event: MouseEvent): void {
           <ButtonLoadingIcon v-else-if="props.loading && !props.disabled" />
           <ButtonIconRenderer
             v-else
-            :nodes="iconNodes"
+            :nodes="iconNodes()"
             v-bind="iconFill === undefined ? {} : { fill: iconFill }"
           />
         </template>
@@ -185,7 +185,7 @@ function emitMouseEvent(eventName: keyof ButtonEmits, event: MouseEvent): void {
           <ButtonLoadingIcon v-else-if="props.loading && !props.disabled" />
           <ButtonIconRenderer
             v-else
-            :nodes="iconNodes"
+            :nodes="iconNodes()"
             v-bind="iconFill === undefined ? {} : { fill: iconFill }"
           />
         </template>

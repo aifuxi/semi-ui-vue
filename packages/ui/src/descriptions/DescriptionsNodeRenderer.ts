@@ -1,4 +1,4 @@
-import { defineComponent, type PropType, type VNodeChild } from 'vue';
+import { cloneVNode, defineComponent, isVNode, type PropType, type VNodeChild } from 'vue';
 
 export default defineComponent({
   name: 'DescriptionsNodeRenderer',
@@ -9,6 +9,11 @@ export default defineComponent({
     },
   },
   setup(props) {
-    return () => (typeof props.content === 'function' ? props.content() : props.content);
+    return () => {
+      const content = typeof props.content === 'function' ? props.content() : props.content;
+      // Data values can outlive this renderer (for example, a collapsed Table detail).
+      // Give each mount its own VNode instead of storing its component/DOM state in user data.
+      return isVNode(content) ? cloneVNode(content) : content;
+    };
   },
 });

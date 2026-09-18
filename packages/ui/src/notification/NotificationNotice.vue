@@ -28,7 +28,12 @@ import Button from '../button/Button.vue';
 import type { ConfigDirection } from '../config-provider';
 
 import NotificationNodeRenderer from './NotificationNodeRenderer';
-import type { NotificationEntry, NotificationId, NotificationType } from './types';
+import {
+  NOTIFICATION_TYPES,
+  type NotificationEntry,
+  type NotificationId,
+  type NotificationType,
+} from './types';
 
 defineOptions({ name: 'NotificationNotice' });
 const props = defineProps<{
@@ -103,7 +108,9 @@ const hasTitle = computed(() => hasReactTruthyContent(props.entry.title));
 const hasContent = computed(() => hasReactTruthyContent(props.entry.content));
 const noticeClasses = computed(() => [
   'semi-notification-notice',
-  hasIcon.value ? 'semi-notification-notice-icon-show' : undefined,
+  // The pinned Notice keys this class off the type list, not off a rendered icon:
+  // `default` still gets `-icon-show` even though it renders no status icon.
+  NOTIFICATION_TYPES.includes(props.entry.type) ? 'semi-notification-notice-icon-show' : undefined,
   `semi-notification-notice-${props.entry.type}`,
   props.entry.theme === 'light' ? 'semi-notification-notice-light' : undefined,
   props.direction === 'rtl' ? 'semi-notification-notice-rtl' : undefined,
@@ -147,7 +154,11 @@ onBeforeUnmount(() => foundation.destroy());
         :class="['semi-notification-notice-icon', `semi-notification-notice-${props.entry.type}`]"
         x-semi-prop="icon"
       >
-        <NotificationNodeRenderer v-if="usesCustomIcon" :content="props.entry.icon" />
+        <NotificationNodeRenderer
+          v-if="usesCustomIcon"
+          :content="props.entry.icon"
+          icon-size="large"
+        />
         <component :is="defaultIconComponent" v-else size="large" />
       </div>
     </div>

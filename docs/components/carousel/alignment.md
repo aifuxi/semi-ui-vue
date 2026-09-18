@@ -79,7 +79,7 @@
 - SSR 覆盖默认/显式 Boolean、基础/单项、命名箭头 slots、ARIA/data attrs 与动画 style，确认 import/render 不创建 timer 或触碰 DOM。
 - React/Vue 场景覆盖基础 slide、fade、line/columnar、hover 箭头、自定义箭头、单项、受控切换、RTL 与可访问属性。
 - 视觉覆盖桌面 `1440×900`、移动 `390×844`、light/dark 与 RTL；关键 computed style 精确相等，bounding rect 各轴误差 `<= 0.5px`，截图阈值 `<= 0.1` / `0.001`，并独立比较成对 PNG 字节。
-- 根与 `@aifuxi/semi-ui-vue/carousel` 子路径导出组件和公开类型；`@aifuxi/semi-theme-default/carousel.css` 包含固定 Token、Icon 与 Carousel 样式。
+- 根与 `@aifuxi/semi-ui-vue/carousel` 子路径导出组件、命名组件、公开常量和公开类型；`@aifuxi/semi-theme-default/carousel.css` 包含固定 Token、Icon 与 Carousel 样式。
 - 真实 tarball 验证根/子路径 ESM、声明、逐组件 CSS、tree-shaking、SSR-safe import、许可证与 SPDX SBOM；公开声明不得泄漏 Foundation/vendor 私有类型。
 
 ## Deviation
@@ -91,6 +91,7 @@
 ## 验收结论
 
 - 当前状态：`ready`。
+- 公开入口已由 `Carousel.test.ts` 锁定默认导出、命名导出与 `CAROUSEL_*` 常量；SSR 测试也从公开入口导入，覆盖无 DOM 导入与服务端渲染边界。
 - `pnpm check` 全部通过：固定 vendor/inventory/icons/source boundary、格式、lint、类型、62 个单元测试文件共 468 条测试、全包构建、主题产物、SSR import 与真实 tarball 消费验证均为绿色。
 - `pnpm test:browser` 全部通过：245 条 Chromium 回归中 Carousel 专项 7 条，覆盖真实固定 React 来源、交互/计算样式/几何、桌面与移动 light/dark、RTL。
 - 五组 Carousel React/Vue 配对 PNG 另以 `cmp` 独立核验为逐字节相等；无 mask、无共享截图文件、无 accepted visual/behavior deviation。

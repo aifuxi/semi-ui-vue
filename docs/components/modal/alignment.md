@@ -69,7 +69,8 @@
 
 ## 发布与 deviation
 
-- 根与 `@aifuxi/semi-ui-vue/modal` 子路径导出 Modal、静态方法、useModal 和全部公开 Vue 类型；`@aifuxi/semi-theme-default/modal.css` 编译固定样式。
+- 根与 `@aifuxi/semi-ui-vue/modal` 子路径的 default/named `Modal` 导出、confirm/info/success/error/warning/destroyAll 静态方法、`useModal`、`MODAL_*` 枚举和全部公开 Vue 类型均由单元用例从 `./index` 固定；`@aifuxi/semi-theme-default/modal.css` 编译固定样式。
+- 静态文档：仓库内 [index.md](./index.md)、[index.en-US.md](./index.en-US.md) 与 [react-to-vue.md](./react-to-vue.md) 覆盖 props/slots/events、命令式 API、Portal/遮罩/滚动、焦点陷阱/ARIA、主题/RTL/SSR 与 React→Vue 映射；`coverage.md` 保留退役站点的历史映射。
 - 真实 tarball 验证 ESM、声明、根/子路径、根 CSS/`modal.css`、tree-shaking、SSR-safe import、许可证与 SPDX SBOM；公开 `.d.ts` 不得出现 `vendor/**` 或私有 workspace Foundation 类型。
 - React `children` 映射默认 slot，ReactNode props 同时提供 Vue 命名 slot；React `useModal` 的 ReactNode holder 映射为 Vue 动态组件 holder，能力与上下文语义保留。
 - 暂无 accepted deviation；任何浏览器或静态 API 差异必须在完成状态前补录证据与影响。
@@ -82,3 +83,23 @@
 - 视觉基线：React/Vue 分别保留 desktop/mobile light/dark 与 RTL 裁剪截图，阈值继续为 `threshold ≤ 0.1`、`maxDiffPixelRatio ≤ 0.001`，无 mask。
 - 发布：完整 `pnpm check` 通过，包含 vendor/inventory/assets/source-boundary、format、lint、typecheck、unit、全部 workspace build、主题入口、Modal 子路径 SSR import 与真实 tarball 安装/ESM/声明/样式/SBOM consumer 验证。
 - Deviation：无 accepted deviation。
+
+## ConfigProvider 命令式反馈续验
+
+根据固定 `Modal.tsx:377` 与 `_cssAnimation/index.tsx`，mask/content 使用独立动画结束状态；各自 animationend 后清除入场 class，motion 或 visible 变化时重新启动。新增分别结束两层动画、关闭回调只触发一次及重开的公开 DOM 测试，另用真实 Chromium 检查终态 transform/class。
+
+## Feedback 文档运行修复（2026-09-07）
+
+- SSR Portal 完成退出动画后重开，slot/default footer 不得复用带有已卸载 DOM 的 VNode。内容获取改为渲染期求值，保持组件状态、DOM、公开 API 与动效不变。
+- 动态添加 `footer: null` 必须隐藏默认按钮，移除该 prop 后恢复；raw prop 存在性在每次 footer 渲染时判断，不缓存非响应式的 VNode props 集合。
+- Feedback 单元与 SSR 回归覆盖失败前/修复后的两条路径；Modal/SideSheet/Feedback 共 30 项单元/SSR、直接消费者 39 项与三组件 15 项 Chromium 对照通过，真实发布包和 SSR import 通过。
+
+## 文档 Draggable 对齐修复（2026-09-13）
+
+固定 `ModalContent.tsx:getDialogElement` 将 `modalRender` 作用于带 `role="dialog"` 的 `.semi-modal-content`，外层 `.semi-modal` 继续负责尺寸与定位。原 Vue 将整个 `ModalInnerContent` 包装，导致 DragMove 的 ref/$el 落到外层，首次打开出现外层 cursor=move（基线 auto），拖动对象也错误。
+
+现将渲染回调传入 ModalInnerContent，在外层内用无新增 DOM 的 ModalContentRenderer 包装单个内容 VNode；默认返回原内容节点，保留原模板 ref、事件与 SSR 语义。DragMove 的定位、cursor 和事件只作用于内容节点。新增公开 DOM/回调测试先红后绿，断言外层尺寸保留、内容被包装及 DragMove 生效、取消 update:visible 和卸载；原 Modal Unit/SSR 全部通过。文档矩阵改对内容节点断言拖动位移，保留外层 Portal 绝对几何与 cursor 比较。正式 Chromium 证据由本轮调度生成，历史数字不用于证明本次输入。
+
+2026-09-17 补充修复：数字 `width`/`height` 在 `.semi-modal` 外层显式转换为 CSS `px`，字符串尺寸（如 `40vw`、`50%`）继续原样保留；公开回归覆盖数字与字符串路径。该修复不改变 `modalRender` 作用边界、默认尺寸、fullScreen 覆盖或 Portal 结构。
+
+同轮 diagnostic-17 的 Imperative 第六个自定义 IconSend 发现 24px→16px 及蓝色→正文色差异。固定 ConfirmModal 对 elementType=Icon 的自定义节点 cloneElement，覆盖 size=extra-large 与两项 Modal 图标 className；Vue 原直接返回自定义 icon。现复用 isSemiIcon，只克隆 Semi Icon 并覆盖 size/class，保留原 VNode、其他 props 和普通节点/null。Vue cloneVNode 的 class 合并与 React 覆盖不同，故只替换克隆的 class props。公开回归先红后绿，覆盖传入 small/custom class 仍被覆盖、原 VNode 不修改、update 为普通 span 或 null 保持对应内容。Modal Unit/SSR 最终 11 项通过；不在 Demo 添加 size/class 绕过组件契约。

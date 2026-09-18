@@ -3,9 +3,7 @@ import { mount } from '@vue/test-utils';
 import { Fragment, defineComponent, h, nextTick, shallowRef, type VNodeChild } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import TabItem from './TabItem.vue';
-import TabPane from './TabPane.vue';
-import Tabs from './Tabs.vue';
+import Tabs, { TabItem, TabPane, Tabs as NamedTabs } from './index';
 
 const wrappers: Array<ReturnType<typeof mount>> = [];
 
@@ -35,6 +33,12 @@ afterEach(() => {
 });
 
 describe('Tabs', () => {
+  it('公开入口导出默认 Tabs、命名 Tabs、TabPane 与 TabItem，并保留 React 复合静态成员', () => {
+    expect(NamedTabs).toBe(Tabs);
+    expect(Tabs.TabPane).toBe(TabPane);
+    expect(Tabs.TabItem).toBe(TabItem);
+  });
+
   it('从直接 TabPane 收集首个非禁用项并保留默认 DOM、class、ARIA 与 data', () => {
     const wrapper = mountTabs({
       class: 'vue-tabs',

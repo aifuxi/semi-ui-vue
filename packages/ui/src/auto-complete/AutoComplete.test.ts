@@ -3,7 +3,7 @@ import { nextTick } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
-import AutoComplete from './AutoComplete.vue';
+import AutoComplete, { AutoComplete as AutoCompleteNamed, AutoCompleteOption } from './index';
 import type { AutoCompleteExposed } from './types';
 
 afterEach(() => {
@@ -12,6 +12,11 @@ afterEach(() => {
 });
 
 describe('AutoComplete', () => {
+  it('公开入口保持默认导出、命名导出与复合 Option', () => {
+    expect(AutoComplete).toBe(AutoCompleteNamed);
+    expect(AutoComplete.Option).toBe(AutoCompleteOption);
+  });
+
   it('输入与选择按固定顺序更新非受控值', async () => {
     const wrapper = mount(AutoComplete, {
       attachTo: document.body,

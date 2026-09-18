@@ -108,13 +108,12 @@ truthiness 覆盖显式 false。
 
 ## 完成证据
 
-- AudioPlayer 定向单元与 SSR 为 2 个文件、11 项通过；最终全仓单测为
+- `./audio-player` 子路径公开入口提供 default `AudioPlayer` 与 named `AudioPlayer`，单元、SSR 与
+  hydration 均从公开入口导入，覆盖无 DOM 导入边界。
+- AudioPlayer 定向单元、SSR 与 hydration 为 3 个文件、12 项通过；最终全仓单测为
   141 个文件、998 项通过，lint、全仓类型检查、源码边界与生成漂移检查均通过。
-- AudioPlayer Chromium spec 在更新基线和不更新基线两轮均为 7/7；共享
-  parity harness 4/4，workbench smoke 2/2。desktop/mobile 的 light/dark 及 en-US RTL
-  五组 React/Vue PNG 均字节一致，独立解码像素比较亦通过；代表性 desktop/mobile
-  截图已人工检查。固定上游在 390px 视口中保留 323px 主滑块与完整控件固定布局，
-  Vue 精确复现其移动端裁切表现，未用额外响应式样式改写基线。
+- AudioPlayer Chromium spec 为 5/5，覆盖 pinned source 请求、DOM/交互/Portal/样式与几何、
+  desktop light/dark 截图及 en-US RTL；React/Vue PNG 成对像素比较通过。
 - React 参考应用、Vue 文档应用、全部公开包和默认主题构建通过；根入口与
   `./audio-player` 均通过 SSR-safe import，`audio-player.css` 的固定选择器、Token 和暗色
   主题通过检查。

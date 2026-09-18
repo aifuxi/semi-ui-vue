@@ -12,6 +12,9 @@ describe('Toast SSR', () => {
         return () => h('main', [h(Holder)]);
       },
     });
-    await expect(renderToString(createSSRApp(Root))).resolves.toContain('semi-toast-innerWrapper');
+    const html = await renderToString(createSSRApp(Root));
+    expect(html).toContain('<main>');
+    // The hook holder renders nothing while empty, matching the pinned HookToast.
+    expect(html).not.toContain('semi-toast');
   });
 });

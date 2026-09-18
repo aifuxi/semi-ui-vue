@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, nextTick } from 'vue';
 
 import { Popover } from '../popover';
-import Cascader from './Cascader.vue';
+import DefaultCascader, { Cascader } from './index';
 import type { CascaderData, CascaderExposed } from './types';
 
 const treeData: CascaderData[] = [
@@ -37,6 +37,10 @@ afterEach(() => {
 });
 
 describe('Cascader', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultCascader).toBe(Cascader);
+  });
+
   it('keeps omitted, explicit false and template-bare true popup Boolean semantics', () => {
     const Host = defineComponent({
       components: { Cascader },
@@ -119,7 +123,7 @@ describe('Cascader', () => {
         onSelect: () => order.push('select'),
         onChange: () => order.push('change'),
         'onUpdate:modelValue': () => order.push('update'),
-        onVisibleChange: (visible) => order.push(`visible:${visible}`),
+        onVisibleChange: (visible: boolean) => order.push(`visible:${visible}`),
       },
     });
     expect(wrapper.text()).toContain('Asia / Japan');

@@ -1,15 +1,19 @@
 import { mount } from '@vue/test-utils';
-import { renderToString } from '@vue/server-renderer';
-import { createSSRApp, defineComponent, h, nextTick, shallowRef } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { defineComponent, h, nextTick, shallowRef } from 'vue';
 
-import Switch, { SWITCH_SIZES } from './index';
+import DefaultSwitch, { Switch, SWITCH_SIZES } from './index';
 
 afterEach(() => {
   vi.restoreAllMocks();
 });
 
 describe('Switch', () => {
+  it('公开入口保持 default、named 与固定尺寸枚举一致', () => {
+    expect(DefaultSwitch).toBe(Switch);
+    expect(SWITCH_SIZES).toEqual(['large', 'default', 'small']);
+  });
+
   it('保留固定 wrapper、knob、原生 checkbox、ARIA 与 data DOM 契约', () => {
     const wrapper = mount(Switch, {
       props: {
@@ -28,6 +32,8 @@ describe('Switch', () => {
     expect(wrapper.attributes('data-source')).toBe('unit');
     expect(wrapper.get('.semi-switch-knob').attributes('aria-hidden')).toBe('true');
     const input = wrapper.get('input');
+    // Pinned Switch keeps omitted checked distinct from explicit false.
+    expect(input.attributes('aria-checked')).toBeUndefined();
     expect(input.attributes()).toMatchObject({
       type: 'checkbox',
       role: 'switch',
@@ -37,7 +43,6 @@ describe('Switch', () => {
       'aria-errormessage': 'switch-error',
       'aria-invalid': 'true',
       'aria-labelledby': 'switch-label',
-      'aria-checked': 'false',
       'aria-disabled': 'false',
     });
   });
@@ -70,6 +75,49 @@ describe('Switch', () => {
     await wrapper.setProps({ checked: true });
     expect(wrapper.classes()).toContain('semi-switch-checked');
     expect((input.element as HTMLInputElement).checked).toBe(true);
+  });
+
+  for (const prop of ['checked', 'modelValue'] as const) {
+    it(`${prop} 从 true 移除后清除选中状态与 aria-checked，再次操作恢复非受控更新`, async () => {
+      const wrapper = mount(Switch, { props: { [prop]: true } });
+      const input = wrapper.get('input');
+      expect(input.attributes('aria-checked')).toBe('true');
+
+      await wrapper.setProps({ [prop]: undefined });
+      expect(input.attributes('aria-checked')).toBeUndefined();
+      expect((input.element as HTMLInputElement).checked).toBe(false);
+      expect(wrapper.classes()).not.toContain('semi-switch-checked');
+      expect(wrapper.emitted('change')).toBeUndefined();
+
+      (input.element as HTMLInputElement).checked = true;
+      await input.trigger('change');
+      expect(input.attributes('aria-checked')).toBe('true');
+      expect(wrapper.classes()).toContain('semi-switch-checked');
+      expect(wrapper.emitted('change')?.map(([checked]) => checked)).toEqual([true]);
+      wrapper.unmount();
+    });
+  }
+
+  it('父级用 true/undefined 回写开关时可关闭并重开，缺省状态不变成显式 false ARIA', async () => {
+    const wrapper = mount(Switch, {
+      props: {
+        checked: undefined,
+        onChange: (value: boolean): void => {
+          void wrapper.setProps({ checked: value ? true : undefined });
+        },
+      },
+    });
+    const input = wrapper.get('input');
+    expect(input.attributes('aria-checked')).toBeUndefined();
+    for (const value of [true, false, true]) {
+      (input.element as HTMLInputElement).checked = value;
+      await input.trigger('change');
+      await nextTick();
+      expect((input.element as HTMLInputElement).checked).toBe(value);
+      expect(input.attributes('aria-checked')).toBe(value ? 'true' : undefined);
+      expect(wrapper.get('.semi-switch').classes().includes('semi-switch-checked')).toBe(value);
+    }
+    wrapper.unmount();
   });
 
   it('支持原生 v-model，并保持 checked 的兼容优先级', async () => {
@@ -155,25 +203,5 @@ describe('Switch', () => {
     await wrapper.trigger('mouseleave');
     expect(enter).toHaveBeenCalledTimes(1);
     expect(leave).toHaveBeenCalledTimes(1);
-  });
-
-  it('SSR-safe 渲染受控、loading、文本和 ARIA，不访问浏览器全局', async () => {
-    const app = createSSRApp({
-      render: () =>
-        h(Switch, {
-          checked: true,
-          loading: true,
-          size: 'large',
-          checkedText: '开',
-          ariaLabel: 'SSR switch',
-        }),
-    });
-    const html = await renderToString(app);
-    expect(html).toContain('semi-switch-checked');
-    expect(html).toContain('semi-switch-loading');
-    expect(html).toContain('semi-spin-large');
-    expect(html).toContain('aria-label="SSR switch"');
-    expect(html).toContain('aria-checked="true"');
-    expect(html).toContain('开');
   });
 });

@@ -76,8 +76,12 @@
 - 单元：单值/范围/多选、禁用、输入解析、清除、预设、受控/非受控、事件顺序、ref、三态 Boolean、插槽与 ARIA。
 - SSR：根/子路径安全 import、默认与范围 trigger 渲染、无浏览器全局访问。
 - Chromium：同一 BrowserContext 下 React/Vue 的请求来源、运行时错误、computed style、bounding rect 与局部截图；desktop `1440x900`、mobile `390x844`、light/dark、RTL，并覆盖打开面板、选择、键盘、自定义容器和滚动重定位。
-- 发布：根导出、`@aifuxi/semi-ui-vue/date-picker`、`@aifuxi/semi-theme-default/date-picker.css`、声明、SSR import、tree-shaking、真实 tarball consumer、License/SBOM。
+- 发布：根导出、`@aifuxi/semi-ui-vue/date-picker`、default/named 导出契约（单元用例从 `./index` 固定）、`@aifuxi/semi-theme-default/date-picker.css`、声明、SSR import、tree-shaking、真实 tarball consumer、License/SBOM。
 
 ## Deviation
 
 - RTL 单日期场景在计算样式、全部目标几何与独立截图基线一致的前提下，React/Vue 成对 PNG 仍有不可见的抗锯齿通道差异；其中触发器 ImageMagick AE 为 `0.278431`（约 `0.0000398` 像素比）。该差异低于项目 `0.001` 门槛，因此 RTL 触发器与弹层按共享 React 参考截图执行阈值比较，不宣称字节相等；桌面/移动 light/dark 的触发器和弹层仍执行独立字节相等断言。
+
+## ConfigProvider 时区更新回归
+
+固定 `datePicker/datePicker.tsx:417` 与 Foundation `initFromProps` 区分 value 更新和 timeZone 更新：新公开 value 作为 UTC 输入，不传 prevTimeZone；仅时区变化时传当前 state.value 和旧时区，受控/非受控均执行。新增连续 GMT+08→00→-11→+14→+08、同时更新 value/timeZone、随后更新 value 及不发出 change 的公开行为测试。

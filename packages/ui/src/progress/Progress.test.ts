@@ -2,13 +2,29 @@ import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import Progress from './Progress.vue';
+import DefaultProgress, {
+  PROGRESS_DIRECTIONS,
+  PROGRESS_SIZES,
+  PROGRESS_STROKE_LINECAPS,
+  PROGRESS_TYPES,
+  Progress,
+} from './index';
+import ProgressBase from './Progress.vue';
 
 afterEach(() => {
   vi.useRealTimers();
 });
 
 describe('Progress', () => {
+  it('公开入口导出组件与固定枚举常量', () => {
+    expect(Progress).toBe(ProgressBase);
+    expect(DefaultProgress).toBe(Progress);
+    expect(PROGRESS_DIRECTIONS).toEqual(['horizontal', 'vertical']);
+    expect(PROGRESS_SIZES).toEqual(['default', 'small', 'large']);
+    expect(PROGRESS_STROKE_LINECAPS).toEqual(['round', 'square']);
+    expect(PROGRESS_TYPES).toEqual(['line', 'circle']);
+  });
+
   it('渲染默认 line DOM、钳制百分比并只透传 data/ARIA attrs', async () => {
     const wrapper = mount(Progress, {
       attrs: {
@@ -43,6 +59,41 @@ describe('Progress', () => {
     expect(wrapper.attributes('aria-valuenow')).toBe('0');
     expect(wrapper.get('.semi-progress-track-inner').attributes('style')).toContain('width: 0%');
     expect(wrapper.get('.semi-progress-line-text').text()).toBe('0%');
+  });
+
+  it('原生 ARIA attrs 可作为 line 和 circle 的可访问标签来源', () => {
+    const line = mount(Progress, {
+      attrs: {
+        'aria-label': '任务进度',
+        'aria-labelledby': 'progress-label',
+        'aria-valuetext': '三成',
+        title: '不应透传',
+      },
+      props: { motion: false, percent: 30 },
+    });
+    expect(line.attributes()).toMatchObject({
+      'aria-label': '任务进度',
+      'aria-labelledby': 'progress-label',
+      'aria-valuetext': '三成',
+      role: 'progressbar',
+    });
+    expect(line.attributes('title')).toBeUndefined();
+
+    const circle = mount(Progress, {
+      attrs: {
+        'aria-label': '圆形进度',
+        'aria-labelledby': 'circle-label',
+        'aria-valuetext': '一半',
+      },
+      props: { motion: false, percent: 50, type: 'circle' },
+    });
+    expect(circle.attributes()).toMatchObject({
+      'aria-label': '圆形进度',
+      'aria-labelledby': 'circle-label',
+      'aria-valuenow': '50',
+      'aria-valuetext': '一半',
+      role: 'progressbar',
+    });
   });
 
   it('覆盖 vertical/large、轨道和进度颜色以及原生 class/style', () => {

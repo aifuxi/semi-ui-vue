@@ -55,8 +55,9 @@ export default defineComponent({
       required: true,
     },
     visible: Boolean,
+    expanded: { type: Boolean as PropType<boolean | undefined>, default: undefined },
   },
-  setup(props, { slots }) {
+  setup(props, { slots, attrs }) {
     return () => {
       const nodes = flattenNodes((slots.default?.() ?? []) as VNodeChild[]);
       const node = nodes.length === 1 ? nodes[0] : undefined;
@@ -73,12 +74,15 @@ export default defineComponent({
       const originalRest = Object.fromEntries(
         Object.entries(original).filter(([key]) => !eventNames.has(key)),
       );
-      const merged = mergeProps(originalRest, {
-        'aria-expanded': String(props.visible),
+      // Tooltip decorates this renderer with ARIA; forward it to the real trigger.
+      // Explicit child attributes retain the fixed React clone precedence.
+      const merged = mergeProps(attrs, originalRest, {
+        'aria-expanded': props.expanded === undefined ? undefined : String(props.expanded),
         'aria-haspopup': 'true',
         class: [original.class, props.visible ? `${props.prefixCls}-showing` : undefined],
         'data-popupid': props.popupId,
-        tabindex: original.tabindex ?? original.tabIndex ?? 0,
+        // Component triggers consume the declared camelCase prop, including Tag.
+        tabIndex: original.tabindex ?? original.tabIndex ?? original['tab-index'] ?? 0,
       });
       for (const eventName of eventNames) {
         const internal = props.eventSet[eventName];

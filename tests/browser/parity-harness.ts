@@ -1,5 +1,6 @@
 import { expect, type BrowserContext, type Locator, type Page } from '@playwright/test';
 import { requestedBuildSources } from '../../scripts/parity-build-provenance.mjs';
+import { storybookStoryId } from '../../apps/storybook-vue/src/storybook-scenarios';
 import {
   assertScenarioComparable,
   createParityScenarioUrl,
@@ -13,14 +14,39 @@ export const PARITY_APPLICATIONS = {
   react: {
     name: 'React',
     baseUrl: 'http://127.0.0.1:4173',
-    heading: 'Semi Design React 参考工作台',
   },
   vue: {
     name: 'Vue',
     baseUrl: 'http://127.0.0.1:4174',
-    heading: 'Semi UI Vue 对照工作台',
   },
 } as const;
+
+export function createVueScenarioUrl(options: ParityScenarioOptions): string {
+  const url = new URL('/iframe.html', PARITY_APPLICATIONS.vue.baseUrl);
+  url.searchParams.set('id', storybookStoryId(options.scenarioId));
+  url.searchParams.set('viewMode', 'story');
+  url.searchParams.set(
+    'globals',
+    `theme:${options.theme};direction:${options.direction};locale:${options.locale}`,
+  );
+  return url.toString();
+}
+
+function expectedVueSource(scenarioId: ParityScenarioId): string | undefined {
+  const reference = getParityScenario(scenarioId).referenceSource;
+  if (!reference) return undefined;
+  if (scenarioId === 'illustrations') return 'packages/illustrations/src/index.ts';
+  const component = reference.match(/\/semi-ui\/([^/]+)/)?.[1];
+  if (!component) throw new Error(`${scenarioId} 缺少公开 Vue 入口映射`);
+  const names: Record<string, string> = {
+    sideBar: 'sidebar',
+    backtop: 'back-top',
+    pincode: 'pin-code',
+    icons: 'icon',
+  };
+  const name = names[component] ?? component.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+  return `packages/ui/src/${name}/index.ts`;
+}
 
 export interface ParityPage {
   readonly page: Page;
@@ -78,6 +104,10 @@ export async function openParityPages(
   const [reactPage, vuePage] = await Promise.all([context.newPage(), context.newPage()]);
   const reactErrors = observeRuntimeErrors(reactPage);
   const vueErrors = observeRuntimeErrors(vuePage);
+  const reactRequests: string[] = [];
+  const vueRequests: string[] = [];
+  reactPage.on('request', (request) => reactRequests.push(request.url()));
+  vuePage.on('request', (request) => vueRequests.push(request.url()));
 
   if (viewport) {
     await Promise.all([reactPage.setViewportSize(viewport), vuePage.setViewportSize(viewport)]);
@@ -85,20 +115,36 @@ export async function openParityPages(
 
   await Promise.all([
     reactPage.goto(createParityScenarioUrl(PARITY_APPLICATIONS.react.baseUrl, options)),
-    vuePage.goto(createParityScenarioUrl(PARITY_APPLICATIONS.vue.baseUrl, options)),
+    vuePage.goto(createVueScenarioUrl(options)),
   ]);
 
   await Promise.all([
-    expect(
-      reactPage.getByRole('heading', { name: PARITY_APPLICATIONS.react.heading }),
-    ).toBeVisible(),
-    expect(vuePage.getByRole('heading', { name: PARITY_APPLICATIONS.vue.heading })).toBeVisible(),
+    expect(reactPage.locator('[data-parity-framework="react"]')).toHaveAttribute(
+      'data-parity-scenario',
+      options.scenarioId,
+    ),
+    expect(vuePage.locator('[data-parity-framework="vue"]')).toHaveAttribute(
+      'data-parity-scenario',
+      options.scenarioId,
+    ),
   ]);
   await Promise.all([
     expect(reactPage.locator('[data-parity-scenario-loading]')).toHaveCount(0),
     expect(vuePage.locator('[data-parity-scenario-loading]')).toHaveCount(0),
   ]);
   await Promise.all([waitForStableRendering(reactPage), waitForStableRendering(vuePage)]);
+
+  const reference = getParityScenario(options.scenarioId).referenceSource;
+  const vueSource = expectedVueSource(options.scenarioId);
+  if (reference && vueSource) {
+    const [reactSources, vueSources] = await Promise.all([
+      requestedSourcePaths(reactRequests, PARITY_APPLICATIONS.react.baseUrl),
+      requestedSourcePaths(vueRequests, PARITY_APPLICATIONS.vue.baseUrl),
+    ]);
+    expect(reactSources, `${options.scenarioId} 必须加载固定 React 源码`).toContain(reference);
+    expect(vueSources, `${options.scenarioId} 必须加载对应公开 Vue 入口`).toContain(vueSource);
+    expect(vueSources).not.toContain('packages/ui/src/index.ts');
+  }
 
   return {
     react: { page: reactPage, runtimeErrors: reactErrors },
@@ -324,12 +370,7 @@ export async function requestedSourcePaths(
   requestedUrls: readonly string[],
   baseUrl: string,
 ): Promise<string[]> {
-  if (process.env.PARITY_SERVER_MODE !== 'build') {
-    return requestedUrls
-      .filter((url) => new URL(url).origin === new URL(baseUrl).origin)
-      .map((url) => decodeURIComponent(new URL(url).pathname));
-  }
-  let manifest = buildManifests.get(baseUrl);
+  let manifest = process.env.PARITY_SERVER_MODE !== 'dev' ? buildManifests.get(baseUrl) : undefined;
   if (!manifest) {
     manifest = fetch(new URL('/parity-provenance.json', baseUrl), {
       signal: AbortSignal.timeout(5000),

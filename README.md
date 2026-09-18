@@ -1,65 +1,61 @@
 # Semi UI Vue
 
-这是一个以 Semi Design `v2.102.0` 为固定参考基线、面向 Vue 3.5+ 的像素级复刻工程。
+面向 Vue 3.5+ 的独立组件库，以 Semi Design `v2.102.0` 为固定基线，对齐视觉、行为、可访问性和主题。本项目不是 Semi Design 官方 Vue 版本。
 
-> 本项目是独立的 Vue 实现，不是 Semi Design 官方 Vue 版本，也不代表 DouyinFE 的授权、合作或品牌身份。当前发布线为 `0.1.0-alpha` 预览版，未完成组件和 API 在 `1.0.0` 前仍可能调整。
+## 安装与使用
 
-## npm 预览包
-
-五个公开包统一使用 `next` dist-tag：
-
-- `@aifuxi/semi-ui-vue`：Vue 主组件包。
-- `@aifuxi/semi-theme-default`：根主题和逐组件编译 CSS。
-- `@aifuxi/semi-icons-vue`：稳定图标。
-- `@aifuxi/semi-icons-lab-vue`：实验图标。
-- `@aifuxi/semi-illustrations-vue`：light/dark 插画。
+预览版使用 `next` 渠道；稳定版验收仍在推进，API 与发布结构可能调整。
 
 ```bash
 pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
 ```
 
-发布准备、首次人工引导和后续 GitHub OIDC 可信发布流程见 `docs/releasing.md`。
+```vue
+<script setup lang="ts">
+import { Button } from '@aifuxi/semi-ui-vue/button';
+import '@aifuxi/semi-theme-default/button.css';
+</script>
 
-## 复刻进度
-
-当前已完成 **85 / 85** 个上游公开根模块的完整垂直切片（**100%**）：
-
-- 基础与布局：`_base`、`_utils`、Button、IconButton、Divider、Icon、Space、FloatButton、Layout、Grid、Resizable、Typography、ConfigProvider、Locale、DragMove、HotKeys、Lottie。
-- 输入类：Switch、Tooltip、Select、AutoComplete、AIChatInput、Cascader、ColorPicker、DatePicker、Form、Checkbox、Input、InputNumber、PinCode、Radio、Rating、Slider、TagInput、TimePicker、Transfer、TreeSelect、Upload。
-- 导航类：Anchor、BackTop、Breadcrumb、Navigation、Pagination、Steps、Tabs、Tree。
-- 数据展示与容器：AIChatDialogue、Avatar、Badge、Calendar、Card、Carousel、Chat、Collapse、Collapsible、CodeHighlight、Descriptions、Dropdown、Empty、Highlight、Image、Cropper、JsonViewer、List、MarkdownRender、Modal、OverflowList、Popover、ScrollList、Sidebar、SideSheet、Table、Tag、Timeline。
-- 反馈与引导类：Banner、Feedback、Notification、Popconfirm、Progress、Skeleton、Spin、Toast、UserGuide。
-- 媒体类：AudioPlayer、VideoPlayer。
-
-最新完成范围为 `_base` 与 `_utils`：`BaseComponent`/`BaseFoundation`、基础类型、Vue 组件与 VNode 判定、全局单例、事件/复制/媒体查询/焦点工具、Vue 命令式 render、SSR-safe 子路径与真实 tarball 消费均已闭合。至此 inventory 的 85 个公开根模块全部进入 `ready`；下一阶段是 1.0 发布审计，不再追加组件切片。可视组件切片均包含 Vue API、Foundation/主题、中英文文档、React/Vue 场景、单元/SSR/Chromium 对照、逐组件样式和真实 tarball 验证；`_base` / `_utils` 没有独立 DOM 或 SCSS，因此以行为、声明、SSR、许可和 tarball 证据验收。Locale 还覆盖固定基线的全部 57 个语言源，Icon 覆盖稳定图标、Lab 图标与生成漂移检查，插画包覆盖全部公开插画。
-
-进度分母与剩余范围以 `docs/inventory/semi-v2.102.0.json` 的 `rootModuleCount` 为准；每完成一个 `ready` 垂直切片，必须在同一次提交中同步更新本节的数量、完成列表和下一项。唯一参考源码位于只读 submodule `vendor/semi-design`。
-
-## 本地环境
-
-- Node.js `24.18.0`（支持 `20.19+`、`22.13+` 和 `24.x`）
-- pnpm `11.19.0`
-- Playwright 固定 Chromium 构建
-
-```bash
-corepack enable
-pnpm install
-pnpm playwright:install
-pnpm check:vendor
-pnpm check:full
+<template>
+  <Button type="primary">开始使用</Button>
+</template>
 ```
 
-Linux CI 需要在镜像准备阶段执行 `pnpm exec playwright install --with-deps chromium`；普通 `pnpm install` 不会下载浏览器。当前首份截图校准基线生成于 macOS（Darwin），Linux 在纳入 `check:full` 前必须单独生成并人工审核对应平台基线，不能自动更新覆盖。
+主包为 ESM，支持根入口和逐组件导入；消费者无需克隆上游 submodule。
 
-## 常用命令
+| 公开包                           | 内容               |
+| -------------------------------- | ------------------ |
+| `@aifuxi/semi-ui-vue`            | Vue 组件           |
+| `@aifuxi/semi-theme-default`     | 根主题和逐组件 CSS |
+| `@aifuxi/semi-icons-vue`         | 稳定图标           |
+| `@aifuxi/semi-icons-lab-vue`     | 实验图标           |
+| `@aifuxi/semi-illustrations-vue` | light/dark 插画    |
+
+## 开发与发布状态
+
+固定基线的 85 个公开根模块已具备组件切片记录（含 `_base`、`_utils`），资产覆盖 57 个语言源、稳定/Lab 图标和公开插画。组件 ready 不等于稳定版已可发布，发布候选仍需有效的组件与产物验证。
+
+- [组件契约与记录](docs/components/)：公开 API、对齐矩阵和已知差异。
+- [测试体系迁移方案](docs/testing/vue-testing-strategy-proposal.md)：已实施并验证的 Vitest、Storybook 与本地 Playwright 分层。
+- [发布审计](docs/release-audit-1.0.md)：稳定版剩余工作。
+- [发布手册](docs/releasing.md)：Changesets 版本流程、渠道与外部接入状态；仓库中的版本号不代表 npm 已发布版本。
+
+## 本地开发
+
+[mise.toml](mise.toml) 固定 Node.js 与 pnpm。首次在仓库根执行：
 
 ```bash
-pnpm dev             # Vue 文档/对照应用
-pnpm dev:reference   # React 参考应用
-pnpm inventory:generate # 从固定 vendor 重建组件/API/文档/依赖 inventory
-pnpm check           # 格式、lint、类型、单测、构建、SSR 与真实包安装
-pnpm test:browser    # 受控并发的 Chromium React/Vue 对照基础设施
-pnpm test:browser:built # 与 CI 一致的预构建开发环境对照，保留全部门禁
+git submodule update --init --recursive
+mise trust
+mise install
+mise exec -- pnpm install --frozen-lockfile
+mise exec -- pnpm dev
 ```
 
-目录职责、依赖方向和新增组件流程见 `docs/architecture/workspace.md`；组件文档与对齐矩阵见 `docs/components/`；上游全量清单见 `docs/inventory/README.md`；真实 React/Vue 场景注册与验收流程见 `docs/testing/react-vue-parity.md`。
+Storybook Vue 场景站默认运行于 `http://127.0.0.1:4174`，固定 React 参考应用通过 `mise exec -- pnpm dev:reference` 启动于 `http://127.0.0.1:4173`。浏览器检查前运行 `mise exec -- pnpm playwright:install`。`pnpm test:browser` 自行构建并启动 React/Storybook preview，默认完整 Chromium 新 headless、3 workers、0 retries；请先关闭占用相同端口的手动服务。真实安装包浏览器消费使用独立的 `pnpm test:consumer`。WebStorm 可直接使用 [.run](.run/) 中的共享配置，环境准备见[工具链](docs/architecture/toolchain.md)。
+
+日常本地集成用 `pnpm check`（静态检查与 Vitest 单测），公开产物用 `pnpm check:artifacts`，完整本地回归用 `pnpm check:full`，发布候选用 `pnpm release:check`。组件单测（含源码 SSR）与浏览器消费测试在本地执行；CI 保留 `check:source`、Node 产物检查和发布职责。按影响选择，详见[验证入口](docs/testing/validation.md)。工程边界见[工作区架构](docs/architecture/workspace.md)，代理规则见 [AGENTS.md](AGENTS.md)。
+
+Nuxt 文档站及旧逐示例验收体系已移除。静态组件契约继续保留，退役范围与历史追溯见[说明](docs/documentation/README.md)。
+
+本项目使用 [MIT License](LICENSE)。发布包携带 Semi Design 及适用第三方许可证、归属声明和 SPDX SBOM。

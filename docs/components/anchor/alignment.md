@@ -93,4 +93,6 @@
 - 全仓 `pnpm check` 通过：固定 vendor/inventory/icons/source-boundary、格式、lint、全部 workspace 类型检查、40 个测试文件共 316 项 Vitest、全量构建、主题产物与 SSR import 均通过。
 - 全量 Chromium 168 项单次通过；根/`anchor` ESM 与声明、`anchor.css`、tree-shaking、许可证/SBOM、真实 tarball 安装/导入/类型/样式验证均通过。
 
-上述 React → Vue slot 映射为已解释 deviation，不损失公开可实现能力；没有 accepted 视觉或行为 deviation。Anchor 状态为 `ready`。
+## 验收结论
+
+当前状态：ready。公开入口、compound `Anchor.Link`、固定尺寸/滑轨主题/Tooltip 位置枚举、源码、Foundation 隔离入口、主题、单元/SSR、同环境 Chromium、视觉证据和真实 tarball 均已完成；没有 accepted 视觉或行为 deviation。上述 React → Vue slot 映射为已解释 deviation，不损失公开可实现能力。

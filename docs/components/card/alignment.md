@@ -101,3 +101,7 @@ Card 是纯组合容器，没有 Foundation 状态机、Portal、Observer 或全
 - `pnpm test:browser` 全量通过，共 238 项；其中 Card 专项 7 项覆盖默认值、交互、hover、ARIA、桌面/移动端 light/dark 与 RTL。
 - 5 组 React/Vue 截图既通过测试内独立 Buffer 比较，也通过逐文件 `cmp`；关键 computed style 精确相等，几何差异处于 `0.5 CSS px` 门槛内。
 - 当前垂直切片状态：`ready`；无已接受的视觉或行为 deviation。
+
+## 公开入口契约锁
+
+- `Card.test.ts` 从 `./index` 消费公开入口，固定 default 与 named 导出一致、compound `Card.Meta`/`CardGroup` 与 `CARD_*` 枚举常量；`pnpm check` 持续覆盖格式、lint、类型与该断言。

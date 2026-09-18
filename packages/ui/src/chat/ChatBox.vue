@@ -146,23 +146,27 @@ const contentNode = computed(
       className: contentClass.value,
     }) ?? contentWrapper.value,
 );
+// Share the complete action contract with full-message renderers.
+const actionNode = computed(() =>
+  h(ChatBoxAction as never, {
+    message: props.message,
+    lastChat: props.lastChat,
+    locale: props.locale,
+    renderAction: props.renderConfig?.renderChatBoxAction,
+    onCopy: (message: ChatMessage) => emit('copy', message),
+    onLike: (message: ChatMessage) => emit('like', message),
+    onDislike: (message: ChatMessage) => emit('dislike', message),
+    onReset: (message: ChatMessage) => emit('reset', message),
+    onDelete: (message: ChatMessage) => emit('delete', message),
+  }),
+);
 const defaultBox = computed(() =>
   h('div', { class: className.value }, [
     avatarNode.value,
     h('div', { class: 'semi-chat-chatBox-wrap' }, [
       continueSend.value ? undefined : titleNode.value,
       contentNode.value,
-      h(ChatBoxAction as never, {
-        message: props.message,
-        lastChat: props.lastChat,
-        locale: props.locale,
-        renderAction: props.renderConfig?.renderChatBoxAction,
-        onCopy: (message: ChatMessage) => emit('copy', message),
-        onLike: (message: ChatMessage) => emit('like', message),
-        onDislike: (message: ChatMessage) => emit('dislike', message),
-        onReset: (message: ChatMessage) => emit('reset', message),
-        onDelete: (message: ChatMessage) => emit('delete', message),
-      }),
+      actionNode.value,
     ]),
   ]),
 );
@@ -176,6 +180,7 @@ const output = computed(
         avatar: avatarNode.value,
         title: titleNode.value,
         content: contentNode.value,
+        action: actionNode.value,
       },
     }) ?? defaultBox.value,
 );

@@ -1,115 +1,66 @@
-# npm 发布手册
+# 发布手册
 
-本仓库发布五个统一版本的公共包：
+日常变更只需添加 Changeset；准备发布时核对当前候选、外部接入和对应门禁；只有发布失败恢复时才读取恢复步骤。产品剩余工作见[发布审计](release-audit-1.0.md)。
 
-1. `@aifuxi/semi-theme-default`
-2. `@aifuxi/semi-icons-vue`
-3. `@aifuxi/semi-icons-lab-vue`
-4. `@aifuxi/semi-illustrations-vue`
-5. `@aifuxi/semi-ui-vue`
+Changesets 负责版本计算、五包联动、CHANGELOG、版本 PR、打包及发布。五包使用 fixed 分组：主题、稳定图标、实验图标、插画和主组件包始终同版。`workspace:*` 保留在源码中，真实 tarball 的内部依赖必须转换为同版本精确值。
 
-顺序是发布契约的一部分：UI 精确依赖同版本稳定图标包，因此始终最后发布。Foundation 集成层、测试基础设施和两个应用保持私有。
+当前处于迁移接入期：本地 `0.1.0` 是官方命令清除旧 alpha 计数产生的未发布基线，必须与待处理 major changeset 及 next 状态一起合并。首个版本 PR 的目标是五包 `1.0.0-next.0`。不能直接发布迁移基线，也不能把流程迁移视为 1.0 产品验收完成。
 
-## 版本与 dist-tag
+## 开发者提交变更
 
-- 五个公开包必须使用完全相同的版本。
-- 包含 prerelease 标识的版本发布到 `next`。
-- 没有 prerelease 标识的稳定版本才发布到 `latest`。
-- Git 标签必须是 annotated tag，名称严格为 `v<version>`，message 严格为 `发布 v<version>`，例如标签 `v0.1.0-alpha.5` 的 message 是 `发布 v0.1.0-alpha.5`。
+在功能 PR 执行 `pnpm changeset`：公开修复用 patch，新增功能用 minor，破坏性变化用 major 并写明迁移方法。主题、Foundation、生成资产和构建链路只要改变公开产物，同样需要记录。纯文档、测试、内部工具变更使用 `pnpm changeset --empty`。
 
-`scripts/release-packages.mjs` 是包名、发布顺序、registry 和 dist-tag 规则的唯一集中清单。修改发布身份时必须同步通过 `pnpm release:verify`。
+CI 使用官方 CLI 校验格式、包名和版本计划，并要求新增一份记录；空记录代表无需发布，不能直接遗漏。不要手改公开包版本、手工打标签。版本 PR 的例外同时核对本仓库、`changeset-release/master` 分支和配置的机器人账号，不能仅凭分支名豁免。
 
-## 自动升版、提交与标签
+维护环境由 `mise.toml` 固定 Node 24.18.0 和 pnpm 12.3.4。CLI 为 3.0.2，GitHub CHANGELOG 插件为 1.0.1，官方子 Action 固定 v2.1.2 的提交 `ae32849d5ba541f9ae29e40e22a623bc13562f51`。
 
-后续统一版本使用根命令升级，不再逐个修改五个公开包：
+## 版本 PR 与发布
 
-```bash
-# 只递增当前 x.y.z-alpha.N 的 N
-pnpm release:bump alpha
+`master` push 触发 `publish.yml`。官方 select-mode 遇到待处理发布记录时维护版本 PR；空 changeset 不触发发布。`release:version` 只执行官方 version 和 lockfile 更新，不自动提交。机器人由官方 version Action 提交和更新 PR。
 
-# 显式指定严格、无 v 前缀且高于当前版本的 SemVer
-pnpm release:bump 0.2.0-beta.0
-pnpm release:bump 0.2.0
-```
+版本 PR 合并后的候选需要完成对应的本地组件与产物验证：Vitest dom/node、Storybook/React 组件 Chromium、真实 tarball consumer 浏览器与公开产物检查。CI 自动职责限于 `check:source`、Changesets、依赖审计、构建、主题、Node SSR、Node 真实包验证及发布，不运行组件单测或浏览器矩阵。CI 通过不能代替候选所需本地组件结果。
 
-命令要求工作区和暂存区完全干净，并在写入前确认 Git 提交身份有效、五包版本一致且目标标签不存在。成功后只提交五个公开包的 `package.json`，预发布提交沿用 `chore(release): 升级公开包版本至 alpha.5` / `beta.0` 格式，稳定版提交使用完整版本号；随后创建 message 为 `发布 v<version>` 的 annotated tag。
+quality 传递构建产物，官方 pack 创建 artifact；pack-verify 下载该 artifact 的准确文件，执行 Node 隔离消费检查并记录候选 SHA、原计划摘要和五包 SHA-512。publish 只接收已通过验证的 artifact ID，不重建、不执行 workspace 生命周期脚本。
 
-命令不会执行 `push`、`release:check` 或 npm 发布。检查生成的提交和标签后，先在标签所在提交运行发布门禁，再分别推送提交和精确标签：
+Nuxt 文档站、站点部署和旧逐示例验收不再属于包发布门禁。静态 API 与迁移说明仍需准确，实际公开包继续保留独立品牌、MIT、第三方归属和 SBOM。
 
-```bash
-pnpm release:check
-git push origin HEAD
-git push origin v0.1.0-alpha.5
-```
+`release:check` 是完整本地只读验证入口，包含 `check:full` 的源码单测、组件与 consumer 浏览器回归；可按影响和执行阶段复用输入未变的有效结果，无须重复运行总命令。组件浏览器默认构建后 preview、完整 Chromium 新 headless、3 workers、0 retries。`PACK_DIR=/绝对路径 pnpm verify:pack-isolated` 验证官方 pack 输出，未指定 `PACK_DIR` 时保留日常本地打包模式。`release:verify` 检查包身份、许可、私有依赖与产物泄漏，不要求预先存在 Git 标签。
 
-推送 `v*` 标签后，`.github/workflows/publish.yml` 才会执行 GitHub OIDC 发布。
+所有发布使用固定 concurrency，npm Environment 审批前可查看 `release-evidence` artifact 和 job summary。候选必须仍是 master 当前提交，发布前再次核对；渠道存在更新版本时拒绝回拨。旧 `v*` 标签保留为历史，不再触发发布。新标签和 GitHub Release 使用 `@aifuxi/包名@版本`，每次五包同版产生五个 Release。
 
-## 发布前门禁
+## next 与稳定版
 
-在发布提交上执行：
+当前 next 状态已经建立。日常提交 changeset 即可推进 `1.0.0-next.N`，不要重复进入 pre 模式。未来新预发布周期使用 `pnpm changeset pre enter next`。
 
-```bash
-pnpm install --frozen-lockfile
-pnpm playwright:install
-pnpm release:check
-```
+产品验收闭环后执行 `pnpm changeset pre exit`，并用 `pnpm changeset --empty` 记录本次流程变更意图，然后一起提交。机器人将生成稳定版本 PR；当前周期预期为五包 `1.0.0`，审核后经相同门禁发布到 latest。预发布不会自动改写 latest，稳定发布也不会自动改写 next。对退出模式的归档 changeset 应按官方提示审阅。
 
-`release:check` 先固定到官方 npm registry 审计全部 production 依赖，并阻止 moderate、high 或 critical 已知漏洞；随后执行边界、格式、lint、类型、单元/SSR、构建、主题、真实 tarball 消费和完整 Chromium 回归。发布验证还会扫描公开 manifest、README 和 `dist`，阻止 `@workspace/*`、`vendor/**`、私有 Foundation 类型及本机绝对路径进入产物。显式使用官方 registry 是为了避免本地镜像未实现 npm audit API 时产生错误结论。
+## 失败恢复
 
-Linux 截图不能覆盖 Darwin 基线。首次启用 Linux CI 前，手动运行 `visual-linux.yml`，下载生成的 `linux-snapshots` artifact，人工审核后再把 Linux 基线纳入仓库。
+多包发布不是原子操作。任何 npm 成功都不能回滚；先保留原 run ID、候选 SHA、`changeset-publish-plan-*`、`changeset-pack-*` 和 `release-evidence`，不能为恢复重新升版。
 
-## 首次人工引导发布
+CLI 3.0.2 对原计划重跑仍会尝试已发布包，且仅识别特定重复发布错误文字。Verdaccio 6.10.3 / pnpm 12.3.4 的真实恢复演练确认，直接重跑会因 409 中断。因此失败发生在 publish 之后时，使用 `workflow_dispatch`，填写原始成功通过 quality、pack-verify 的 run ID 和精确候选 SHA。browser CI job 已移除；候选对应的本地组件结果仍按输入有效性复用。不要仅重跑 publish job。
 
-npm trusted publisher 只能绑定已经存在的包。因此 `0.1.0-alpha.0` 需要由 `aifuxi` 在本机用 2FA 创建，仓库和 CI 不保存长期写入 token。
-`publish.yml` 会对这个引导标签执行质量与浏览器门禁，但显式跳过 OIDC 发布任务；从 `0.1.0-alpha.1` 起才允许工作流发布。
+恢复入口核对原运行来源、检查结果、候选和未过期 artifact，重新验证原 tarball。`prepare-release-recovery.mjs` 调用官方 `publish-plan`，仅把剩余官方计划重新绑定原 tarball；它不计算版本、不自行选择待发布包、不打包、不发布。计划的版本、访问策略与渠道必须与原计划一致。衍生计划与原五包 tarball 另存 `recovery-pack`，由官方 publish 子 Action 执行。已发布包必须先通过 integrity 核对。
 
-1. 确认 npm 账户已启用 2FA，并显式登录官方 registry：
+| 故障                               | 处理                                                                      |
+| ---------------------------------- | ------------------------------------------------------------------------- |
+| 发布前失败                         | 修复后重跑原门禁；没有验证成功的 artifact 不能跳到发布                    |
+| 部分包成功                         | 使用上述手动恢复，保持候选和原五包 tarball 不变                           |
+| 全部包成功但标签/Release 缺失      | 官方新计划可补建缺失标签；已有标签但缺 Release 时按下述一次性维护步骤补齐 |
+| 全部成功后再次执行                 | 官方新计划为空，不再发布；后验仍检查完整五包清单                          |
+| 原 artifact 过期、缺失或候选已过时 | 自动恢复拒绝执行；先调查并建立新的可验证一致性方案，不能静默重建          |
+| 后验失败                           | 发布未闭环；渠道故障单独修复，产品缺陷通过新 changeset 和新版本处理       |
 
-   ```bash
-   npm login --registry=https://registry.npmjs.org/
-   npm whoami --registry=https://registry.npmjs.org/
-   ```
+独立补建元数据时，先在原候选 checkout 下载并核对原证据及五包 registry integrity。官方 `pnpm changeset git-tag` 可补建本地五包标签（本地演练已验证不包含私有包）。CLI 3.0.2 在 Git 签名失败时也可能成功退出，因此必须用实际 Git refs 核对结果。逐一确认标签指向原候选后再推送缺失标签；对已存在且指向正确候选的标签，用 `gh release create '@aifuxi/包名@版本' --verify-tag --notes-file <该包该版本的发布记录文件>` 补建缺失 Release，预发布加 `--prerelease`。不得覆盖已有标签或 Release。GitHub Release 的远端补建尚需外部演练，本地标签测试不能代替它。
 
-2. 保证 `master` 上的发布提交已经推送，工作区干净，并创建精确标签：
+`pnpm release:postcheck <release-evidence.json>` 按完整五包清单查询版本、精确内部依赖、渠道和 SHA-512，核对 provenance 的仓库、workflow、候选 SHA 与产物摘要，检查实际包级 GitHub 标签和 Release，再从官方 registry 隔离安装，运行签名审计和 SSR import。只有 npm 元数据传播缺失允许最多三次等待；功能失败不重试。
 
-   ```bash
-   git tag -a v0.1.0-alpha.0 -m "发布 v0.1.0-alpha.0"
-   git push origin master v0.1.0-alpha.0
-   ```
+## 外部配置与当前状态
 
-3. 先执行只读预检，再人工确认执行真实发布：
+版本机器人需要仅安装于本仓库的 GitHub App，Contents / Pull requests 写权限；配置仓库变量 `RELEASE_APP_ID`、`RELEASE_BOT_LOGIN` 与 secret `RELEASE_APP_PRIVATE_KEY`。App token 只进入 version job，不进入 npm 发布 job。必须实证 App 创建和更新的 PR 能触发 CI。
 
-   ```bash
-   pnpm release:preflight
-   pnpm release:publish
-   ```
+发布前应保护 master，并核对 npm Environment 审核。五包的 npm Trusted Publisher 均应指向 `aifuxi/semi-ui-vue` / `publish.yml` / `npm`。OIDC 配置和真实首发属于外部验收，不由本地测试证明。
 
-`release:preflight` 会验证 npm CLI、登录用户、干净工作区、精确 git 标签，并确认五个同名版本尚不存在；对首次引导版本还会要求五个包名全部未被占用。`release:publish` 是不可逆的外部操作：它先用固定版本的 pnpm 为五个包生成 tarball，确保 `workspace:*` 被改写为精确版本，再依次对这些 tarball 调用官方 `npm publish --access=public --tag=next`。禁止直接对 workspace 包目录执行 `npm publish`。
+2026-09-11 历史核对结论：npm Environment 已有 required reviewer `aifuxi`；master 的 `protected=false`；仓库级 Actions variables/secrets 列表为空；五包 registry 均为 `next=0.1.0-alpha.4`、`latest=0.1.0-alpha.0`，见[迁移记录](../ai-work/20260911-125341-changesets-migration.md)。当时未创建 App、修改远端配置或发布 npm。准备新候选时重新核对这些外部状态，不把历史结论当作当前检查结果。
 
-若顺序发布中途失败，不要修改或覆盖已经发布的版本；先核对 npm 上的实际状态，再为未发布包处理失败原因。npm 已存在的版本号不可复用。
-
-## 配置 GitHub 可信发布
-
-首发五包均可在 npm 页面访问后，分别进入包的 Trusted Publisher 设置并使用相同配置：
-
-- Provider：GitHub Actions
-- Organization or user：`aifuxi`
-- Repository：`semi-ui-vue`
-- Workflow filename：`publish.yml`
-- Allowed action：`npm publish`
-- Environment：`npm`
-
-配置完成后，为 GitHub 仓库创建需要人工批准的 `npm` Environment。后续发布只推送精确版本标签，由 `.github/workflows/publish.yml` 使用 OIDC 短期身份完成；不要向 GitHub 添加 `NPM_TOKEN`。
-
-可信发布首次实际验证应使用下一统一版本 `0.1.0-alpha.1`。确认 OIDC 发布和 provenance 正常后，在 npm 包设置中禁用传统 token 发布并撤销不再需要的写入 token。
-
-## 发布后验证
-
-从空目录连接官方 registry 安装 `next`：
-
-```bash
-pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
-npm audit signatures
-```
-
-同时核对五个 npm 页面：公开可见、版本一致、预发布只更新 `next`、repository 指向 `aifuxi/semi-ui-vue`，并显示正确的 MIT License、README、provenance 与依赖关系。首次人工引导版本可能使 `latest` 暂时停留在 `0.1.0-alpha.0`；首个稳定版本发布后，必须再确认 `latest` 精确指向该稳定版本。注册表中的 UI manifest 必须把 `@aifuxi/semi-icons-vue` 固定为同版本号，不得出现 `workspace:`。
+迁移方案及原验收定义见 [迁移计划](changesets-migration-plan.md)。历史审计中的旧命令仅为当时证据，不是现行发布入口。

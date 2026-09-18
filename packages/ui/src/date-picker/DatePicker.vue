@@ -8,6 +8,7 @@ import {
 } from '@workspace/foundation-integration';
 import { IconCalendar, IconCalendarClock, IconClear } from '@aifuxi/semi-icons-vue';
 import { enUS, zhCN } from 'date-fns/locale';
+import isEqual from 'lodash/isEqual';
 import {
   computed,
   getCurrentInstance,
@@ -584,12 +585,19 @@ watch(
 watch(
   () => [controlledValue.value, incomingValue.value, runtimeProps.value.timeZone] as const,
   ([controlled, value, timeZone], previous) => {
-    if (!controlled) return;
-    foundation.initFromProps({
-      ...(value === undefined ? {} : { value }),
-      ...(timeZone === undefined ? {} : { timeZone }),
-      ...(previous?.[2] === undefined ? {} : { prevTimeZone: previous[2] }),
-    });
+    // A new public value is UTC input; a timezone-only update converts the stored zoned dates.
+    if (controlled && !isEqual(value, previous?.[1])) {
+      foundation.initFromProps({
+        ...(value === undefined ? {} : { value }),
+        ...(timeZone === undefined ? {} : { timeZone }),
+      });
+    } else if (timeZone !== previous?.[2]) {
+      foundation.initFromProps({
+        value: state.value,
+        ...(timeZone === undefined ? {} : { timeZone }),
+        ...(previous?.[2] === undefined ? {} : { prevTimeZone: previous[2] }),
+      });
+    }
   },
   { deep: true },
 );
@@ -718,7 +726,10 @@ watch(
             /></slot>
           </div>
           <div class="semi-datepicker-range-input-suffix">
-            <IconCalendarClock v-if="type.includes('Time')" /><IconCalendar v-else />
+            <IconCalendarClock v-if="type.includes('Time')" aria-hidden="true" /><IconCalendar
+              v-else
+              aria-hidden="true"
+            />
           </div>
         </template>
         <Input
@@ -727,7 +738,8 @@ watch(
           ref="inputComponent"
           :auto-focus="state.autofocus"
           :class-name="[
-            'semi-datepicker-input-readonly',
+            (runtimeProps.inputReadOnly || Boolean(runtimeProps.insetInput)) &&
+              'semi-datepicker-input-readonly',
             type === 'monthRange' && 'semi-datepicker-monthRange-input',
           ]"
           :disabled="inputDisabled"
@@ -758,7 +770,9 @@ watch(
                 :content="props.clearIcon" /><IconClear v-else /></slot
           ></template>
           <template #suffix
-            ><IconCalendarClock v-if="type.includes('Time')" /><IconCalendar v-else
+            ><IconCalendarClock v-if="type.includes('Time')" aria-hidden="true" /><IconCalendar
+              v-else
+              aria-hidden="true"
           /></template>
         </Input>
       </div>

@@ -6,7 +6,11 @@ import SidebarContainer from './SidebarContainer.vue';
 import type { SidebarAnnotationProps, SidebarLocale } from './types';
 
 defineOptions({ name: 'SidebarAnnotation', inheritAttrs: false });
-const props = defineProps<SidebarAnnotationProps>();
+const props = withDefaults(defineProps<SidebarAnnotationProps>(), {
+  motion: true,
+  resizable: true,
+  showClose: true,
+});
 const containerBindings = computed<Record<string, unknown>>(() =>
   Object.fromEntries(
     Object.entries({

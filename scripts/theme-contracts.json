@@ -1,0 +1,681 @@
+{
+  "ai-chat-dialogue.css": [
+    ".semi-ai-chat-dialogue",
+    ".semi-ai-chat-dialogue-action-show",
+    ".semi-ai-chat-dialogue-content-user",
+    ".semi-ai-chat-dialogue-hint-item",
+    ".semi-chat-chatBox-action-icon-flip",
+    "[theme-mode=dark]"
+  ],
+  "ai-chat-input.css": [
+    ".semi-aiChatInput",
+    ".semi-aiChatInput-editor-content",
+    ".semi-aiChatInput-footer-action-send",
+    ".semi-aiChatInput-skill-item-active",
+    ".semi-aiChatInput-suggestion-item-active",
+    "[theme-mode=dark]"
+  ],
+  "anchor.css": [
+    ".semi-anchor-link-title-active",
+    ".semi-anchor-link-title-disabled",
+    ".semi-anchor-link-tooltip",
+    ".semi-rtl .semi-anchor",
+    ".semi-tooltip-wrapper",
+    ".semi-typography-ellipsis"
+  ],
+  "audio-player.css": [
+    ".semi-audio-player",
+    ".semi-audio-player-control-volume",
+    ".semi-audio-player-slider-horizontal",
+    "[theme-mode=dark]"
+  ],
+  "auto-complete.css": [
+    ".semi-autocomplete",
+    ".semi-autocomplete-option-focused",
+    ".semi-autocomplete-option-list",
+    ".semi-input-wrapper",
+    ".semi-popover-wrapper",
+    ".semi-rtl .semi-autocomplete",
+    ".semi-spin-wrapper"
+  ],
+  "avatar.css": [
+    ".semi-avatar-additionalBorder",
+    ".semi-avatar-bottom_slot",
+    ".semi-avatar-group",
+    ".semi-avatar-top_slot",
+    ".semi-rtl .semi-avatar"
+  ],
+  "back-top.css": [
+    ".semi-backtop",
+    ".semi-button-with-icon-only",
+    ".semi-icon-default",
+    ".semi-rtl .semi-backtop"
+  ],
+  "badge.css": [
+    ".semi-badge-block",
+    ".semi-badge-count",
+    ".semi-badge-custom",
+    ".semi-badge-dot",
+    ".semi-badge-leftBottom",
+    ".semi-badge-rightTop",
+    ".semi-badge-success",
+    ".semi-rtl .semi-badge"
+  ],
+  "banner.css": [
+    ".semi-banner-close",
+    ".semi-banner-in-container",
+    ".semi-banner-info",
+    ".semi-banner-title + .semi-banner-description",
+    ".semi-rtl .semi-banner"
+  ],
+  "breadcrumb.css": [
+    ".semi-breadcrumb-collapse",
+    ".semi-breadcrumb-item-active",
+    ".semi-breadcrumb-wrapper-compact",
+    ".semi-icon-default",
+    ".semi-popover-wrapper",
+    ".semi-rtl .semi-breadcrumb-wrapper",
+    ".semi-typography-ellipsis"
+  ],
+  "button.css": [".semi-button", ".semi-button-group", ".semi-button-split"],
+  "calendar.css": [
+    ".semi-calendar-day",
+    ".semi-calendar-event-day",
+    ".semi-calendar-month",
+    ".semi-calendar-month-event-card",
+    ".semi-calendar-week",
+    ".semi-popover",
+    ".semi-rtl .semi-calendar"
+  ],
+  "card.css": [
+    ".semi-card-body-actions",
+    ".semi-card-group-grid",
+    ".semi-card-header-bordered",
+    ".semi-card-meta-wrapper-description",
+    ".semi-rtl .semi-card",
+    ".semi-skeleton-active",
+    ".semi-space",
+    ".semi-typography-h6"
+  ],
+  "carousel.css": [
+    ".semi-carousel-arrow-prev",
+    ".semi-carousel-content-slide",
+    ".semi-carousel-indicator-columnar",
+    ".semi-carousel-indicator-dot",
+    ".semi-icon",
+    ".semi-rtl .semi-carousel"
+  ],
+  "cascader.css": [
+    ".semi-cascader",
+    ".semi-cascader-option-list",
+    ".semi-cascader-option-select",
+    ".semi-cascader-popover",
+    ".semi-cascader-selection",
+    ".semi-rtl .semi-cascader"
+  ],
+  "chat.css": [
+    ".semi-chat",
+    ".semi-chat-chatBox",
+    ".semi-chat-hint-item",
+    ".semi-chat-inputBox-container",
+    "[theme-mode=dark]"
+  ],
+  "checkbox.css": [
+    ".semi-checkbox-cardType_checked",
+    ".semi-checkbox-indeterminate",
+    ".semi-checkbox-inner-checked",
+    ".semi-checkboxGroup-horizontal",
+    ".semi-icon-default",
+    ".semi-rtl .semi-checkbox"
+  ],
+  "code-highlight.css": [
+    ".line-numbers-rows",
+    ".semi-codeHighlight .line-numbers .line-numbers-rows",
+    ".semi-codeHighlight .line-numbers-rows > span:before",
+    ".semi-codeHighlight-defaultTheme",
+    ".token.keyword"
+  ],
+  "collapse.css": [
+    ".semi-collapse-header-disabled",
+    ".semi-collapse-header-iconLeft",
+    ".semi-collapse-item",
+    ".semi-collapsible-transition",
+    ".semi-rtl .semi-collapse"
+  ],
+  "collapsible.css": [".semi-collapsible-transition", "opacity", "transition: height"],
+  "color-picker.css": [
+    ".semi-colorPicker",
+    ".semi-colorPicker-alphaSlider",
+    ".semi-colorPicker-colorChooseArea",
+    ".semi-colorPicker-colorSlider",
+    ".semi-colorPicker-dataPart",
+    ".semi-colorPicker-popover"
+  ],
+  "config-provider.css": ["--semi-color-primary"],
+  "cropper.css": [
+    ".semi-cropper",
+    ".semi-cropper-box",
+    ".semi-cropper-box-corner",
+    ".semi-cropper-mask",
+    ".semi-cropper-view-box-round"
+  ],
+  "date-picker.css": [
+    ".semi-datepicker",
+    ".semi-datepicker-day-selected",
+    ".semi-datepicker-footer",
+    ".semi-datepicker-month",
+    ".semi-datepicker-navigation"
+  ],
+  "descriptions.css": [
+    ".semi-descriptions-double-large",
+    ".semi-descriptions-horizontal",
+    ".semi-rtl .semi-descriptions"
+  ],
+  "divider.css": [".semi-divider-horizontal", ".semi-divider-vertical", ".semi-divider-with-text"],
+  "drag-move.css": ["--semi-color-primary", "[theme-mode=dark]"],
+  "dropdown.css": [
+    ".semi-dropdown-item-disabled",
+    ".semi-dropdown-wrapper",
+    ".semi-icon",
+    ".semi-portal-inner",
+    ".semi-rtl .semi-dropdown",
+    ".semi-tooltip-animation-hide",
+    ".semi-tooltip-animation-show"
+  ],
+  "empty.css": [
+    ".semi-empty-horizontal",
+    ".semi-empty-title.semi-typography",
+    ".semi-empty-vertical",
+    ".semi-rtl .semi-empty"
+  ],
+  "feedback.css": [
+    ".semi-feedback-emoji-container",
+    ".semi-feedback-emoji-item-selected",
+    ".semi-feedback-footer",
+    ".semi-feedback.semi-sidesheet",
+    ".semi-modal-content",
+    ".semi-sidesheet-inner"
+  ],
+  "float-button.css": [
+    ".semi-badge-count",
+    ".semi-floatButton-body",
+    ".semi-floatButtonGroup-item"
+  ],
+  "form.css": [
+    ".semi-form-field-error-message",
+    ".semi-form-field-label",
+    ".semi-form-horizontal",
+    ".semi-form-section",
+    ".semi-form-vertical",
+    ".semi-rtl .semi-form"
+  ],
+  "grid.css": [".semi-col-24", ".semi-col-lg-24", ".semi-row-flex"],
+  "highlight.css": [
+    ".semi-highlight-tag",
+    "font-weight: 600",
+    "var(--semi-color-highlight)",
+    "var(--semi-color-highlight-bg)"
+  ],
+  "hot-keys.css": [
+    ".semi-hotKeys",
+    ".semi-hotKeys-content",
+    ".semi-hotKeys-split",
+    "[theme-mode=dark]"
+  ],
+  "icon-button.css": [
+    ".semi-button",
+    ".semi-button-loading",
+    ".semi-button-with-icon",
+    ".semi-button-with-icon-only",
+    ".semi-icon-default",
+    ".semi-rtl .semi-button"
+  ],
+  "icon.css": [".semi-icon", ".semi-icon-default", ".semi-icon-extra-large", ".semi-icon-spinning"],
+  "image.css": [
+    ".semi-image-img-preview",
+    ".semi-image-preview",
+    ".semi-image-preview-footer",
+    ".semi-portal",
+    ".semi-rtl .semi-image-preview",
+    ".semi-skeleton-image",
+    ".semi-slider",
+    ".semi-spin-wrapper",
+    ".semi-tooltip-wrapper"
+  ],
+  "index.css": [
+    ".line-numbers-rows",
+    ".semi-anchor",
+    ".semi-autocomplete",
+    ".semi-autocomplete-option-list",
+    ".semi-avatar",
+    ".semi-avatar-group",
+    ".semi-backtop",
+    ".semi-badge-count",
+    ".semi-badge-dot",
+    ".semi-breadcrumb",
+    ".semi-button",
+    ".semi-calendar-month",
+    ".semi-calendar-week",
+    ".semi-card",
+    ".semi-card-group-grid",
+    ".semi-carousel",
+    ".semi-carousel-indicator",
+    ".semi-cascader",
+    ".semi-cascader-popover",
+    ".semi-checkbox",
+    ".semi-checkboxGroup",
+    ".semi-codeHighlight-defaultTheme",
+    ".semi-col-24",
+    ".semi-collapse",
+    ".semi-collapse-header",
+    ".semi-collapse-item",
+    ".semi-collapsible-transition",
+    ".semi-colorPicker",
+    ".semi-colorPicker-popover",
+    ".semi-cropper-box-corner",
+    ".semi-datepicker",
+    ".semi-datepicker-month",
+    ".semi-descriptions-horizontal",
+    ".semi-divider",
+    ".semi-dropdown-wrapper",
+    ".semi-empty",
+    ".semi-empty-vertical",
+    ".semi-floatButton",
+    ".semi-form-field",
+    ".semi-form-horizontal",
+    ".semi-highlight-tag",
+    ".semi-icon",
+    ".semi-image-preview",
+    ".semi-input-group",
+    ".semi-input-number",
+    ".semi-input-textarea-wrapper",
+    ".semi-input-wrapper",
+    ".semi-layout",
+    ".semi-list-item",
+    ".semi-modal",
+    ".semi-modal-content",
+    ".semi-navigation-item",
+    ".semi-navigation-sub-title",
+    ".semi-overflow-list-scroll-wrapper",
+    ".semi-page",
+    ".semi-pincode-wrapper",
+    ".semi-popover-wrapper",
+    ".semi-progress-track-inner",
+    ".semi-radio",
+    ".semi-radioGroup",
+    ".semi-rating",
+    ".semi-resizable-resizable",
+    ".semi-row",
+    ".semi-select",
+    ".semi-select-option-list",
+    ".semi-skeleton-active",
+    ".semi-slider",
+    ".semi-space",
+    ".semi-spin-hidden",
+    ".semi-spin-wrapper",
+    ".semi-steps",
+    ".semi-switch",
+    ".semi-tabs",
+    ".semi-tagInput",
+    ".semi-timepicker",
+    ".semi-tooltip-wrapper",
+    ".semi-transfer-left",
+    ".semi-transfer-right-item",
+    ".semi-tree-select",
+    ".semi-tree-select-popover",
+    ".semi-typography",
+    ".semi-upload",
+    ".semi-upload-file-card",
+    ".semi-upload-picture-add"
+  ],
+  "input-number.css": [
+    ".semi-icon-extra-small",
+    ".semi-input-number",
+    ".semi-input-number-button-up",
+    ".semi-input-number-suffix-btns",
+    ".semi-input-number-suffix-btns-inner",
+    ".semi-rtl .semi-input-number"
+  ],
+  "input.css": [
+    ".semi-form-field-label",
+    ".semi-icon-default",
+    ".semi-input-clearbtn",
+    ".semi-input-group",
+    ".semi-input-modebtn",
+    ".semi-input-textarea-counter",
+    ".semi-input-textarea-lineNumber",
+    ".semi-input-wrapper",
+    ".semi-rtl .semi-input"
+  ],
+  "json-viewer.css": [
+    ".semi-json-viewer-background",
+    ".semi-json-viewer-current-search-result",
+    ".semi-json-viewer-folding",
+    ".semi-json-viewer-search-bar",
+    "[theme-mode=dark]"
+  ],
+  "layout.css": [
+    ".semi-layout-content",
+    ".semi-layout-has-sider",
+    ".semi-layout-header",
+    ".semi-layout-sider-children"
+  ],
+  "list.css": [
+    ".semi-list-grid",
+    ".semi-list-item-body",
+    ".semi-list-split .semi-list-item",
+    ".semi-row-flex",
+    ".semi-rtl .semi-list",
+    ".semi-spin-wrapper"
+  ],
+  "locale.css": ["--semi-color-primary", "[theme-mode=dark]"],
+  "lottie.css": ["--semi-color-primary", "[theme-mode=dark]"],
+  "markdown-render.css": [
+    ".semi-markdownRender-component-header",
+    ".semi-markdownRender-component-image",
+    ".semi-markdownRender-simple-code",
+    ".semi-table-container",
+    "[theme-mode=dark]"
+  ],
+  "modal.css": [
+    ".semi-modal-confirm",
+    ".semi-modal-content",
+    ".semi-modal-content-fullScreen",
+    ".semi-modal-mask",
+    ".semi-modal-rtl",
+    ".semi-portal"
+  ],
+  "navigation.css": [
+    ".semi-dropdown-wrapper",
+    ".semi-navigation-collapse-btn",
+    ".semi-navigation-item-selected",
+    ".semi-navigation-sub-title",
+    ".semi-rtl .semi-navigation",
+    ".semi-tooltip-wrapper"
+  ],
+  "notification.css": [
+    ".semi-notification-list[placement=topRight]",
+    ".semi-notification-notice-icon-close",
+    ".semi-notification-notice-info",
+    ".semi-notification-notice-light.semi-notification-notice-warning",
+    ".semi-notification-notice-rtl",
+    ".semi-notification-wrapper"
+  ],
+  "overflow-list.css": [
+    ".semi-overflow-list",
+    ".semi-overflow-list-scroll-wrapper",
+    ".semi-overflow-list-spacer",
+    ".semi-rtl .semi-overflow-list"
+  ],
+  "pagination.css": [
+    ".semi-icon-default",
+    ".semi-input-number",
+    ".semi-page-item-active",
+    ".semi-page-quickjump",
+    ".semi-page-rest-list",
+    ".semi-popover-wrapper",
+    ".semi-rtl .semi-page",
+    ".semi-select-selection"
+  ],
+  "pin-code.css": [
+    ".semi-input-wrapper-default",
+    ".semi-input-wrapper-large",
+    ".semi-input-wrapper-small",
+    ".semi-pincode-wrapper"
+  ],
+  "popconfirm.css": [
+    ".semi-popconfirm-body-withIcon",
+    ".semi-popconfirm-footer",
+    ".semi-popconfirm-header-title",
+    ".semi-popconfirm-inner",
+    ".semi-popconfirm-popover",
+    ".semi-popconfirm-rtl"
+  ],
+  "popover.css": [
+    ".semi-popover-animation-show",
+    ".semi-popover-icon-arrow",
+    ".semi-popover-with-arrow",
+    ".semi-popover-wrapper",
+    ".semi-popover.semi-popover-rtl",
+    ".semi-portal-inner",
+    ".semi-tooltip-animation-hide",
+    ".semi-tooltip-animation-show"
+  ],
+  "progress.css": [
+    ".semi-progress-circle-ring-inner",
+    ".semi-progress-circle-text",
+    ".semi-progress-track-inner",
+    ".semi-progress-vertical",
+    ".semi-rtl .semi-progress"
+  ],
+  "radio.css": [
+    ".semi-icon-default",
+    ".semi-radio-buttonRadioGroup-large",
+    ".semi-radio-cardRadioGroup_checked",
+    ".semi-radio-inner-checked",
+    ".semi-radioGroup-horizontal",
+    ".semi-rtl .semi-radio"
+  ],
+  "rating.css": [
+    ".semi-icon-extra-large",
+    ".semi-rating-disabled",
+    ".semi-rating-star-full",
+    ".semi-rating-star-half",
+    ".semi-rating-star-small",
+    ".semi-rtl .semi-rating"
+  ],
+  "resizable.css": [
+    ".semi-icon-default",
+    ".semi-resizable-background",
+    ".semi-resizable-group",
+    ".semi-resizable-handler-horizontal",
+    ".semi-resizable-item",
+    ".semi-resizable-resizableHandler-topRight"
+  ],
+  "scroll-list.css": [
+    ".semi-rtl .semi-scrolllist",
+    ".semi-scrolllist-body",
+    ".semi-scrolllist-item-sel",
+    ".semi-scrolllist-item-wheel",
+    ".semi-scrolllist-selector"
+  ],
+  "select.css": [
+    ".semi-input-wrapper",
+    ".semi-popover-wrapper",
+    ".semi-rtl .semi-select",
+    ".semi-select",
+    ".semi-select-option-list",
+    ".semi-select-option-selected",
+    ".semi-spin-wrapper",
+    ".semi-tag"
+  ],
+  "side-sheet.css": [
+    ".semi-portal",
+    ".semi-sidesheet-animation-content_show_right",
+    ".semi-sidesheet-inner",
+    ".semi-sidesheet-mask",
+    ".semi-sidesheet-popup",
+    ".semi-sidesheet-rtl"
+  ],
+  "sidebar.css": [
+    ".semi-sidebar-collapse",
+    ".semi-sidebar-container",
+    ".semi-sidebar-file-menu-bar",
+    ".semi-sidebar-mcp-configure-content",
+    ".semi-sidebar-options",
+    "[theme-mode=dark]"
+  ],
+  "skeleton.css": [
+    ".semi-rtl .semi-skeleton",
+    ".semi-skeleton-active",
+    ".semi-skeleton-avatar-medium",
+    ".semi-skeleton-button",
+    ".semi-skeleton-image",
+    ".semi-skeleton-paragraph"
+  ],
+  "slider.css": [
+    ".semi-rtl .semi-slider",
+    ".semi-slider-disabled",
+    ".semi-slider-handle-clicked",
+    ".semi-slider-vertical-wrapper",
+    ".semi-slider-wrapper",
+    ".semi-tooltip-wrapper"
+  ],
+  "space.css": [
+    ".semi-space-horizontal",
+    ".semi-space-tight-horizontal",
+    ".semi-space-vertical",
+    ".semi-space-wrap"
+  ],
+  "spin.css": [
+    ".semi-rtl .semi-spin",
+    ".semi-spin-animate",
+    ".semi-spin-block",
+    ".semi-spin-children",
+    ".semi-spin-hidden",
+    ".semi-spin-large",
+    ".semi-spin-middle",
+    ".semi-spin-small",
+    ".semi-spin-wrapper"
+  ],
+  "steps.css": [
+    ".semi-icon-default",
+    ".semi-row-flex",
+    ".semi-rtl .semi-steps",
+    ".semi-steps-basic",
+    ".semi-steps-item-process",
+    ".semi-steps-nav",
+    ".semi-steps-vertical"
+  ],
+  "switch.css": [
+    ".semi-rtl .semi-switch",
+    ".semi-spin-wrapper",
+    ".semi-switch-checked",
+    ".semi-switch-loading-spin",
+    ".semi-switch-native-control"
+  ],
+  "table.css": [
+    ".semi-table-cell-fixed-left",
+    ".semi-table-pagination-outer",
+    ".semi-table-scroll-position-left",
+    ".semi-table-selection-wrap",
+    ".semi-table-wrapper",
+    ".semi-table-wrapper-rtl .semi-table"
+  ],
+  "tabs.css": [
+    ".semi-dropdown-menu",
+    ".semi-icon-default",
+    ".semi-rtl .semi-tabs",
+    ".semi-tabs-bar-button",
+    ".semi-tabs-bar-card",
+    ".semi-tabs-bar-overflow-list",
+    ".semi-tabs-bar-slash",
+    ".semi-tabs-tab-active"
+  ],
+  "tag-input.css": [
+    ".semi-popover-wrapper",
+    ".semi-portal-inner",
+    ".semi-rtl .semi-tagInput",
+    ".semi-tag-close",
+    ".semi-tagInput-disabled",
+    ".semi-tagInput-warning",
+    ".semi-tagInput-wrapper-input",
+    ".semi-tagInput-wrapper-n"
+  ],
+  "tag.css": [
+    ".semi-rtl .semi-tag",
+    ".semi-tag-blue-solid",
+    ".semi-tag-close",
+    ".semi-tag-group",
+    ".semi-tag-rest-group-popover",
+    ".semi-tag-split"
+  ],
+  "time-picker.css": [
+    ".semi-popover-wrapper",
+    ".semi-portal-inner",
+    ".semi-rtl .semi-timepicker-panel",
+    ".semi-scrolllist-body",
+    ".semi-timepicker",
+    ".semi-timepicker-panel-list-hour",
+    ".semi-timepicker-range-panel"
+  ],
+  "timeline.css": [
+    ".semi-rtl .semi-timeline",
+    ".semi-timeline-alternate",
+    ".semi-timeline-center",
+    ".semi-timeline-item-head-success"
+  ],
+  "toast.css": [
+    ".semi-toast-animation-show",
+    ".semi-toast-close-button",
+    ".semi-toast-content",
+    ".semi-toast-light.semi-toast-warning",
+    ".semi-toast-rtl",
+    ".semi-toast-wrapper",
+    ".semi-toast-zero-height-wrapper"
+  ],
+  "tooltip.css": [
+    ".semi-portal-inner",
+    ".semi-portal-rtl .semi-tooltip-wrapper",
+    ".semi-tooltip-animation-show",
+    ".semi-tooltip-icon-arrow",
+    ".semi-tooltip-wrapper"
+  ],
+  "transfer.css": [
+    ".semi-rtl .semi-transfer",
+    ".semi-transfer-filter",
+    ".semi-transfer-item-disabled",
+    ".semi-transfer-left",
+    ".semi-transfer-right-item",
+    ".semi-transfer-right-item-drag-handler"
+  ],
+  "tree-select.css": [
+    ".semi-rtl .semi-tree-select",
+    ".semi-tree-option-selected",
+    ".semi-tree-search-wrapper",
+    ".semi-tree-select",
+    ".semi-tree-select-popover",
+    ".semi-tree-select-selection"
+  ],
+  "tree.css": [
+    ".semi-checkbox",
+    ".semi-collapsible-transition",
+    ".semi-icon-default",
+    ".semi-input-wrapper",
+    ".semi-rtl .semi-tree",
+    ".semi-tree-option-draggable",
+    ".semi-tree-option-indent-show-line",
+    ".semi-tree-option-list-block",
+    ".semi-tree-option-selected"
+  ],
+  "typography.css": [
+    ".semi-icon-default",
+    ".semi-popover-wrapper",
+    ".semi-tooltip-wrapper",
+    ".semi-typography-action-copy",
+    ".semi-typography-ellipsis-multiple-line",
+    ".semi-typography-h1",
+    ".semi-typography-paragraph"
+  ],
+  "upload.css": [
+    ".semi-rtl .semi-upload",
+    ".semi-upload-file-card",
+    ".semi-upload-file-card-fail",
+    ".semi-upload-picture-add",
+    ".semi-upload-picture-file-card"
+  ],
+  "user-guide.css": [
+    ".semi-userGuide-modal-indicator-item-active",
+    ".semi-userGuide-popover",
+    ".semi-userGuide-popup-content-primary",
+    ".semi-userGuide-spotlight",
+    "[theme-mode=dark]"
+  ],
+  "video-player.css": [
+    ".semi-audio-player-slider-wrapper-vertical",
+    ".semi-videoPlayer",
+    ".semi-videoPlayer-controls-volume",
+    ".semi-videoPlayer-progress-slider",
+    "[theme-mode=dark]"
+  ]
+}

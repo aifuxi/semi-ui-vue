@@ -5,8 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { configContextKey, semiGlobal, type ConfigContextValue } from '../config-provider';
 import enUS from '../locale/source/en_US';
-import VideoPlayer from './VideoPlayer.vue';
-import { formatVideoTime } from './utils';
+import VideoPlayer, { VideoPlayer as NamedVideoPlayer, formatVideoTime } from './index';
 
 const Passthrough = defineComponent({ template: '<div><slot /><slot name="content" /></div>' });
 const TooltipPassthrough = defineComponent({
@@ -58,6 +57,10 @@ afterEach(() => {
 });
 
 describe('VideoPlayer', () => {
+  it('公开入口保持 default 与 named export 一致', () => {
+    expect(NamedVideoPlayer).toBe(VideoPlayer);
+  });
+
   it('区分 clickToPlay 缺省、显式 false、显式 true 与全局覆盖', async () => {
     await mountPlayer().get('video').trigger('click');
     expect(HTMLMediaElement.prototype.play).toHaveBeenCalledTimes(1);

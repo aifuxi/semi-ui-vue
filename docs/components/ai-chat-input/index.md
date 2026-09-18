@@ -1,6 +1,6 @@
 # AIChatInput 智能输入框
 
-AIChatInput 对齐 Semi Design v2.102.0 的富文本输入、技能、建议、模板、引用、附件和生成态。组件使用 Tiptap 3.10.7，并在 Vue 中以 props、emits、scoped slots 与公开实例方法表达原 React 契约。
+AIChatInput 对齐 Semi Design v2.102.0 的富文本输入、技能、建议、模板、引用、附件和生成态。组件使用 Tiptap `^3.31.3`（允许同主版本兼容升级，仓库实际版本由 lockfile 固定），并在 Vue 中以 props、emits、scoped slots 与公开实例方法表达原 React 契约。
 
 ```ts
 import { AIChatInput } from '@aifuxi/semi-ui-vue';
@@ -43,10 +43,12 @@ function send(message: MessageContent) {
 
 ## 插槽与 Configure
 
-`#reference`、`#uploadButton`、`#top`、`#configure`、`#action`、`#suggestion`、`#skill`、`#template` 分别替代 React render props。`AIChatInput.Configure` 提供 `Button`、`Select`、`RadioButton` 与 `Mcp` 配置项，provider 按组件实例隔离。
+`#reference`、`#uploadButton`、`#top`、`#configure`、`#action`、`#suggestion`、`#skill`、`#template` 分别替代 React render props。`AIChatInput.Configure` 提供 `Button`、`Select`、`RadioButton`、`Mcp` 与 `Item` 配置项，provider 按组件实例隔离。
 
 ## SSR 与无障碍
 
 SSR 导入和渲染不会创建 EditorView、Portal 或 document 监听器；客户端挂载后创建 Tiptap 并在卸载时销毁。编辑器为真实 `contenteditable`，建议和技能使用 listbox/option 语义，发送、停止、上传和删除操作均提供可访问名称。
 
 逐项迁移见 [React → Vue 指南](./react-to-vue.md)，固定源码证据与完整矩阵见 [对齐矩阵](./alignment.md)。
+
+`Configure.Item` 通过 `field`、`initValue` 和默认插槽 `{ value, onChange }` 接入任意配置控件；变更同步到 `configureChange` 和发送数据的 `setup`，卸载时移除字段。

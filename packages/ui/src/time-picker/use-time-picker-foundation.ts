@@ -133,27 +133,20 @@ export function useTimePickerFoundation(options: UseTimePickerFoundationOptions)
 
   foundation.initDataFromDefaultValue();
 
-  watch(options.incomingValue, (value, previous) => {
-    if (!options.controlledValue.value || value === previous) return;
-    foundation.refreshProps({
-      value,
-      timeZone: options.runtimeProps.value.timeZone,
-      __prevTimeZone: options.runtimeProps.value.timeZone,
-    });
-  });
+  watch(
+    () => [options.incomingValue.value, options.runtimeProps.value.timeZone] as const,
+    ([value, timeZone], [previousValue, previousTimeZone]) => {
+      // Match React's value-first update branch and avoid converting a new UTC value twice.
+      if (options.controlledValue.value && value !== previousValue) {
+        foundation.refreshProps({ value, timeZone });
+      } else if (timeZone !== previousTimeZone) {
+        foundation.refreshProps({ value: state.value, timeZone, __prevTimeZone: previousTimeZone });
+      }
+    },
+  );
   watch(options.incomingOpen, (open) => {
     if (options.controlledOpen.value) state.open = Boolean(open);
   });
-  watch(
-    () => options.runtimeProps.value.timeZone,
-    (timeZone, previousTimeZone) => {
-      foundation.refreshProps({
-        value: options.controlledValue.value ? options.incomingValue.value : state.value,
-        timeZone,
-        __prevTimeZone: previousTimeZone,
-      });
-    },
-  );
 
   onMounted(() => foundation.init());
   onBeforeUnmount(() => foundation.destroy());

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { IconTick } from '@aifuxi/semi-icons-vue';
-import { computed, inject } from 'vue';
+import { computed, inject, useAttrs } from 'vue';
 
 import { dropdownContextKey } from './dropdown-context';
 import DropdownNodeRenderer from './DropdownNodeRenderer';
@@ -14,6 +14,11 @@ const props = withDefaults(defineProps<DropdownItemProps>(), {
   showTick: false,
 });
 const emit = defineEmits<DropdownItemEmits>();
+const attrs = useAttrs();
+// The pinned Dropdown.Item forwards getDataAttr(props), not arbitrary trigger ARIA.
+function dataAttributes(): Record<string, unknown> {
+  return Object.fromEntries(Object.entries(attrs).filter(([name]) => name.startsWith('data-')));
+}
 defineSlots<DropdownItemSlots>();
 const context = inject(dropdownContextKey, undefined);
 const realShowTick = computed(() => context?.showTick.value ?? props.showTick);
@@ -41,7 +46,7 @@ function mousedown(event: MouseEvent): void {
 
 <template>
   <li
-    v-bind="$attrs"
+    v-bind="dataAttributes()"
     :ref="setElement"
     role="menuitem"
     tabindex="-1"

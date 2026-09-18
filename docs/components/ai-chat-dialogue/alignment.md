@@ -70,7 +70,7 @@
 - 滚动：初始底部、流式跟随、wheel 停止跟随、返回底部、公开滚动方法、卸载清理。
 - 数据适配：非流式和流式 Chat Completion/Response、ChatInput 双向转换的公开样例与增量状态。
 - Chromium：desktop/mobile light/dark + en-US RTL；computed style、geometry、行为、截图与工作台 smoke。
-- 发布：根/`./ai-chat-dialogue`/`./ai-chat-dialogue/data-adapter` runtime 与声明、`ai-chat-dialogue.css`、SSR-safe import、tree-shaking、许可证/SBOM 和隔离 tarball consumer。
+- 发布：根/`./ai-chat-dialogue`/`./ai-chat-dialogue/data-adapter` default/named runtime 与声明、`AIChatDialogue.*` 静态成员与命名子组件一致性（单元用例从 `./index` 固定）、`ai-chat-dialogue.css`、SSR-safe import、tree-shaking、许可证/SBOM 和隔离 tarball consumer。
 
 ## Deviation
 
@@ -78,3 +78,18 @@
 - React 静态子组件同时提供 Vue 命名导出，避免模板无法自然访问构造函数静态属性。
 - 上游 hint 与部分图标入口使用 clickable div；Vue 保留固定 DOM/class，并补齐可聚焦、可访问名称与 Enter/Space 键盘处理。
 - Markdown/MDX 中的 React 组件不能跨框架复用；自定义映射接受 Vue 组件或 VNode renderer。
+
+### 文档补齐核验（2026-09-08）
+
+`streamingResponseToMessage` 的固定 Foundation 返回 `{ message, nextState } | null`：无分片返回 null，完成分片返回 nextState=null。公开声明同步此形状，避免文档消费者按旧的 messages/state 读取不存在字段；不改变运行时转换逻辑。文档包含重复、乱序和延迟分片。
+
+消息复制优先使用用户激活下的同步复制，符合固定 dialogueAction.tsx 的 copy-text-to-clipboard 路径；临时textarea始终清理并恢复焦点。同步复制不可用时尝试Clipboard API，拒绝后不抛未处理异常或显示虚假成功提示。该失败处理是Vue适配的显式改进，不改变message-copy事件顺序。
+
+`message-edit` 插槽的 `{ value }` 为公开 `messageToChatInput(message)` 的返回值，包含 `inputContents`、`attachments` 和 `references`；消息编辑保留文本、附件与引用。固定依据：`aiChatDialogue/widgets/dialogueContent.tsx:342`。
+
+## 验收结论
+
+- 状态：`ready`（2026-09-18 复核）。
+- 单元/SSR：AIChatDialogue 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/ai-chat-dialogue.spec.ts` 5/5 通过，覆盖固定源码来源、DOM/computed style/几何、hint 受控更新、desktop light/dark 与 en-US RTL 截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、静态子组件一致性、类型、`ai-chat-dialogue.css`、tree-shaking、许可与 SBOM。

@@ -4,7 +4,7 @@ import { defineComponent, h, nextTick } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
-import { Collapse, CollapsePanel } from './index';
+import CollapseDefault, { COLLAPSE_ICON_POSITIONS, Collapse, CollapsePanel } from './index';
 
 const panels = () => ({
   default: () => [
@@ -24,6 +24,12 @@ afterEach(() => {
 });
 
 describe('Collapse', () => {
+  it('公开入口保持默认导出、命名导出、复合 Panel 与常量', () => {
+    expect(CollapseDefault).toBe(Collapse);
+    expect(Collapse.Panel).toBe(CollapsePanel);
+    expect(COLLAPSE_ICON_POSITIONS).toEqual(['left', 'right']);
+  });
+
   it('渲染固定根/Panel DOM、默认状态并按 Adapter 边界转发属性', () => {
     const wrapper = mount(Collapse, {
       attrs: {
@@ -100,6 +106,26 @@ describe('Collapse', () => {
       'update:["2"]',
       'change:["2","3"]:click',
       'update:["2","3"]',
+    ]);
+  });
+
+  it('activeSet 变化后向所有 Panel 传播 aria-owns id', async () => {
+    const wrapper = mount(Collapse, {
+      props: { keepDOM: true, motion: false },
+      slots: panels(),
+    });
+    const headers = wrapper.findAll('.semi-collapse-header');
+    expect(headers.map((node) => node.attributes('aria-owns'))).toEqual(['', '', '']);
+
+    await headers[1]!.trigger('click');
+    const contents = wrapper.findAll('.semi-collapse-content');
+    expect(headers.map((node) => node.attributes('aria-owns'))).toEqual(
+      contents.map((node) => node.attributes('id')),
+    );
+    expect(contents.map((node) => node.attributes('aria-hidden'))).toEqual([
+      'true',
+      'false',
+      'true',
     ]);
   });
 

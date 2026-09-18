@@ -9,13 +9,23 @@ lerna-debug.log*
 
 node_modules
 .pnpm-store
+/.worktrees/
 .vite
-.astro
+/.codegraph/
+/.codex/config.toml
+.data
 dist
 dist-ssr
 coverage
 playwright-report
 test-results
+/.playwright-cli/
+# Keep work notes in Git; store generated evidence locally or in CI artifacts.
+/ai-work/**
+!/ai-work/**/
+!/ai-work/**/*.md
+/docs/documentation/evidence/
+/docs/documentation/coverage.json
 *.tgz
 *.tsbuildinfo
 *.local

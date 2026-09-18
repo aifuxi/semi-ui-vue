@@ -79,7 +79,7 @@
 - SSR 只输出已转义的原始代码和固定结构，不执行 DOM 高亮；hydration/mount 后再生成 Prism token 与行号。
 - `prismjs` 作为公开运行时依赖固定版本、许可和 SBOM 证据；Foundation 入口保持私有并在 UI 构建中内联，
   公开 JS / `.d.ts` 不得出现 `vendor/**` 或 `@workspace/**`。
-- 根包与 `./code-highlight` 子路径导出组件和公开类型；主题根 CSS 与
+- 根包与 `./code-highlight` 子路径导出默认 `CodeHighlight`、命名 `CodeHighlight` 和公开类型；主题根 CSS 与
   `./code-highlight.css` 子路径导出编译样式。
 - 真实 tarball 验证覆盖安装、根/子路径导入、类型、SSR-safe import、逐组件样式和 prismjs 许可证。
 
@@ -103,3 +103,8 @@
 当前状态：`ready`。单元/SSR、受影响类型与构建、主题、同环境 Chromium、工作台 smoke 和真实
 tarball 门禁均已通过；五组 React/Vue PNG 同时通过像素阈值比较与逐字节比较，当前没有 accepted
 visual/behavior deviation。
+
+## CodeHighlight 公开入口锁定（2026-09-18）
+
+- `code-highlight/index.ts` 补齐默认 `CodeHighlight` 导出，并保留命名 `CodeHighlight` 与公开类型；这与固定上游默认入口对齐。
+- `CodeHighlight.test.ts` 与 `CodeHighlight.ssr.test.ts` 改为从 `./index` 挂载，锁定默认/命名公开入口以及 SSR-safe public entry。

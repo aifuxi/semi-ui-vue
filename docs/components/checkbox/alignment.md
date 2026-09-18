@@ -14,6 +14,8 @@
 
 ## Vue 组件边界
 
+2026-09-13 Table 文档行选择契约补齐独立 Checkbox 的 `name`：按固定 `checkboxInner.tsx` 将非空名称传给原生 input，移除名称时同步移除属性；入组时仍优先使用 Group 名称。定点公开测试覆盖独立名称与响应式移除。
+
 | 文件                                              | 单一职责                                                                                         |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | `Checkbox.vue`                                    | 单项公开 props/emits/slots/v-model、受控/非受控状态、原生 input、ARIA、焦点与组上下文消费        |
@@ -94,4 +96,9 @@ Group 需要装饰直接子 VNode，模板无法准确表达 `React.Children.toA
 
 ## Deviation
 
-没有 accepted deviation。固定 React v2.102.0 与 Vue 场景已在同一 Chromium 进程中完成行为、ARIA、computed style、geometry、桌面/移动明暗主题及 RTL 对照；对应 React/Vue 截图字节一致。
+- 固定 `checkbox/index.tsx` 用 `class CheckboxWithGroup extends Checkbox { static Group = Group }` 承载 `Group` 静态成员并作为默认导出，同时具名导出 `Checkbox`；该子类没有独立行为。Vue 入口把 `Group` 直接挂在 `Checkbox` 复合对象上（默认导出即复合组件）并具名导出 `CheckboxGroup`，不重复发布 `CheckboxWithGroup` 名字。用户影响：`Checkbox.Group` 用法不变，额外类名不可用；DOM、class、ARIA 与事件不变。
+- 固定 React v2.102.0 与 Vue 场景已在同一 Chromium 进程中完成行为、ARIA、computed style、geometry、桌面/移动明暗主题及 RTL 对照；对应 React/Vue 截图字节一致；以上 React 类包装映射是唯一的具名差异记录。
+
+## 验收结论
+
+当前状态：`ready`。本切片公开入口、compound `Checkbox.Group`、固定枚举常量、单元/SSR、同环境 React/Vue Chromium 场景、主题与发布入口证据均已闭环；后续 Cascader/Form 等组件可以把 Checkbox 作为已就绪依赖复用。

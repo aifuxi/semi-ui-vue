@@ -1,74 +1,20 @@
 ---
 name: semi-ui-vue-vertical-slice
-description: 在本仓库实现、继续或验证 Semi Design v2.102.0 的 Vue 组件完整对齐切片。用于“开始下一个组件”“继续组件复刻”“实现 Tooltip 完整切片”等请求，覆盖组件选择、源码、主题、文档、React/Vue 对照、测试与发布验证；不用于普通业务页面中的 Semi 使用问题、vendor 升级或无关 Vue 开发。
-metadata:
-  short-description: 完成 Semi UI Vue 组件垂直切片
+description: 对齐固定 Semi 基线的 Vue 组件，修复契约差异或完成组件验收。
 ---
 
-# Semi UI Vue 组件垂直切片
+# Vue 组件对齐
 
-## 适用边界
+以 `vendor/semi-design` 的固定源码为依据，完成用户指定的组件或行为。已有实现与旧快照用于定位，不能自行证明正确。
 
-在 `/Users/chen/fc-studio/semi-ui-vue` 中新增、继续、修复或验收一个 Semi 对齐组件时使用本 Skill。用户没有指定组件而是说“下一个组件”时，必须从项目既定路线和依赖关系中选择，不能按字母顺序猜测。
+- 修复已有组件：从可复现差异和 `docs/components/<component>/alignment.md` 入手，只更新受影响契约、实现与证据。
+- 新建或完整验收组件：按[组件契约](../../../docs/testing/component-contract.md)核对公开能力、Vue 映射和交付物；必要项未完成时保留缺口，不标记 ready。
+- 静态组件文档：直接维护对应契约与迁移说明，按实际修改检查格式、链接及公开 API；发现组件缺陷时按第一项定点修复。
 
-普通业务项目中查询或使用上游 Semi React 组件时，使用 `semi-design-guide`；升级 vendor、修改上游源码或处理无关 Vue 页面不属于本 Skill。
+按问题读取对应 React Adapter、Foundation、样式或文档，避免通读无关组件。默认值、受控状态、VNode、Portal 和定位差异按组件契约中的 Vue 适配规则处理。
 
-## 权威来源
+验证范围与命令见[验证入口](../../../docs/testing/validation.md)。组件测试在本地执行：Vitest dom project 验证组件交互、hydration 与卸载，node project 验证真实无 DOM SSR 和纯工具；Storybook Vue 场景与固定 React 参考应用由 Playwright 对照，默认构建后 preview、完整 Chromium 新 headless、3 workers、0 retries。真实 tarball 浏览器消费使用独立的 `pnpm test:consumer`。探索使用项目 Playwright CLI skill 和 `pnpm playwright:cli`，操作记录不计为验收通过。
 
-1. 先遵守仓库根目录 `AGENTS.md` 的全部项目约束，不在本 Skill 重复维护那些硬规则。
-2. 以只读 `vendor/semi-design` 的固定 tag 和 SHA 为唯一 Semi 对齐基线；现有 Vue 实现、测试和截图都不是正确性来源。
-3. 从 `docs/research/`、`docs/architecture/workspace.md`、最近完成的组件与提交历史确定组件路线和依赖。
-4. 固定源码缺失信息或用户明确要求检查当前上游时，才查询在线资料，并标明版本差异。
+先验证目标行为，再按影响验证共享边界与发布产物；复用输入未变且仍有效的结果。`check:source` 只做静态检查，`check` 追加单测，`check:full` 追加产物、组件浏览器与 consumer 浏览器检查。CI 仅保留静态源码、Node 产物与发布职责，不能代替本地组件结果。验收通过后更新对齐结论及必要的完成状态，按根 `AGENTS.md` 提交并说明剩余差异。
 
-## 开始工作
-
-1. 检查 `git status --short`、近期提交、已进入 `ready` 的组件和当前路线。保护所有无关修改。
-2. 用户指定组件时遵循其范围；未指定时根据路线、公开依赖和基础设施缺口选出下一组件，并在编码前说明选择理由。
-3. 运行以下只读检查，确认本地基线有效：
-
-   ```bash
-   git submodule status vendor/semi-design
-   git -C vendor/semi-design describe --tags --exact-match
-   ```
-
-4. 按 `AGENTS.md` 规定的顺序读取对应 `semi-ui` Adapter/类型/DOM、Foundation/常量/SCSS、默认主题、文档测试和相关资产。
-5. 编码前创建或更新 `docs/components/<component>/alignment.md`，记录 API、默认值、状态、事件顺序、Vue 映射、DOM/class、样式、键盘焦点、ARIA、Portal、动效、暗色、RTL、国际化、SSR 与 deviation。
-6. 组件存在以下任一特征时，编码前必须读取 [Vue Adapter 对齐易错点](references/vue-adapter-parity-pitfalls.md)，并先把适用的行为门禁写入对齐矩阵和测试骨架：
-   - 默认值为 `true` 的可选 Boolean prop；
-   - 读取、克隆或装饰子 VNode；
-   - Portal、Teleport 或 `getPopupContainer`；
-   - 根据 resize、scroll 或 viewport 变化重新定位。
-
-## 完整切片合同
-
-一个组件切片应在适用范围内同时完成：
-
-- Vue 源码、公开类型、props/emits/slots/v-model，以及根导出和子路径导出。
-- 必需的 Foundation 隔离入口；公开运行时和声明不得泄漏 `vendor/**` 或私有包路径。
-- 默认主题根入口、逐组件 CSS 入口及构建/校验接线。
-- 中文文档、英文文档、React → Vue 迁移说明和对齐矩阵。
-- 使用固定 React 源码的参考场景、Vue 场景和共享测试基础设施接线。
-- 面向公开行为的单元测试，以及适用的 SSR、键盘、焦点、ARIA、Portal、动效、RTL 和国际化测试。
-- 同一 Chromium 环境下的 React/Vue computed style、几何和截图证据，覆盖要求的桌面/移动端、light/dark 与适用状态。
-- 真实发布 tarball 的安装、导入、类型、样式入口、tree-shaking/SSR-safe import 和合规验证。
-
-不能等价的差异必须记录源码证据、原因、用户影响和验收结论；缺少必要产物时不得宣称完成。
-
-## 实现与验证策略
-
-- 沿用最近完成组件的工程接线方式，但独立对照固定源码，不复制其行为假设或视觉基线。
-- 按风险分层验证，避免把每次组件迭代都放大成全仓回归：
-  1. 开发中只运行当前组件的单元/SSR 测试、受影响包的 typecheck，以及用 `--grep` 或等价方式筛选的当前组件 Chromium 场景。更新视觉基线后，必须再无更新参数运行一次相同场景。
-  2. 切片连贯后，按实际改动运行受影响的共享门禁，例如源码边界、主题产物、SSR dist 和真实 tarball；没有触及的链路不得仅为形式重复执行。
-  3. 准备标记 `ready` 或提交前，在上述定向检查全部通过后，最多运行一次仓库 `package.json` 定义的 `pnpm check`。如果完整检查的后置阶段失败，修复后优先重跑失败阶段及直接受影响的后续阶段；只有修复触及更早的共享边界、无法证明前序结果仍有效，或用户明确要求时，才再次从头运行完整检查。
-  4. 默认浏览器验收是当前组件的完整场景加工作台 smoke，不默认运行全仓 `pnpm test:browser`。只有修改了会影响既有组件的共享运行时/全局主题，修改了浏览器比较算法、Playwright 配置、webServer、字体/viewport/动画归一化等公共基建，执行发布/周期性全量审计，或用户明确要求时，才运行全仓浏览器回归。仅在共享注册表、场景入口、组件作用域 harness CSS 或快照目录中新增当前组件接线，不单独构成全量触发条件。
-- 最终报告必须如实区分“当前组件定向通过”“受影响链路通过”和“全仓回归通过”；未运行全仓浏览器时说明未运行及依据，不得暗示已有全量证明。不要在 Skill 中写死测试数量、耗时或产物大小。
-- 不要并行运行会争用固定 Playwright webServer 端口的命令。端口、权限或浏览器启动失败应先按环境问题诊断。
-- 先验证行为和 computed style，再接受截图。Playwright 阈值通过不等于图片字节一致；只有实际比较确认后才能报告字节一致。
-- 浏览器验证结束后清理本次启动的服务，并复查工作区范围。
-
-## 完成与提交边界
-
-最终报告应说明组件选择理由、主要交付物、实际验证范围、截图结论、deviation 和工作区状态。
-
-不要自动提交。只有用户明确要求提交时，才审计并暂存本切片的确认路径，运行 `git diff --cached --check` 和暂存范围检查，使用简体中文 Conventional Commit，并在提交后确认工作区状态。不要仅为提交而重复构建或测试。
+Vitest/Storybook 替换已实施；Rstest、旧 Vue 工作台、App 外壳测试与专用 stubs、测试别名生成器均已移除。Nuxt 文档站与旧逐示例验收继续保持退役，不恢复历史批次或兼容入口。迁移验证证据与适用边界见[迁移方案](../../../docs/testing/vue-testing-strategy-proposal.md#当前验证状态)；工具迁移、删除旧机制或单测通过都不等于全部组件验收完成，也不承诺提速。

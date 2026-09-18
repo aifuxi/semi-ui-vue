@@ -1,13 +1,49 @@
 import { mount } from '@vue/test-utils';
-import { renderToString } from '@vue/server-renderer';
-import { h, nextTick } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
+import { h, nextTick } from 'vue';
 
-import Button from './Button.vue';
-import ButtonGroup from './ButtonGroup';
-import SplitButtonGroup from './SplitButtonGroup.vue';
+import { IconDelete } from '@aifuxi/semi-icons-vue';
+
+import {
+  BUTTON_HTML_TYPES,
+  BUTTON_ICON_POSITIONS,
+  BUTTON_SIZES,
+  BUTTON_THEMES,
+  BUTTON_TYPES,
+  Button,
+  ButtonGroup,
+  SplitButtonGroup,
+} from './index';
 
 describe('Button', () => {
+  it('公开入口保持 named 导出、复合分组组件与固定枚举常量', () => {
+    expect(Button).toBeDefined();
+    expect(ButtonGroup).toBeDefined();
+    expect(SplitButtonGroup).toBeDefined();
+    expect(BUTTON_TYPES).toEqual(['primary', 'secondary', 'tertiary', 'warning', 'danger']);
+    expect(BUTTON_THEMES).toEqual(['solid', 'borderless', 'light', 'outline']);
+    expect(BUTTON_SIZES).toEqual(['default', 'small', 'large']);
+    expect(BUTTON_HTML_TYPES).toEqual(['button', 'reset', 'submit']);
+    expect(BUTTON_ICON_POSITIONS).toEqual(['left', 'right']);
+  });
+
+  it('组件图标在多次 loading 切换后恢复，并能正常卸载', async () => {
+    const wrapper = mount(Button, {
+      slots: {
+        icon: () => h(IconDelete, { 'data-testid': 'component-icon' }),
+        default: () => '删除',
+      },
+    });
+    for (let cycle = 0; cycle < 3; cycle++) {
+      await wrapper.setProps({ loading: true });
+      expect(wrapper.find('[data-testid="component-icon"]').exists()).toBe(false);
+      await wrapper.setProps({ loading: false });
+      expect(wrapper.find('[data-testid="component-icon"]').exists()).toBe(true);
+      await wrapper.trigger('click');
+      expect(wrapper.emitted('click')).toHaveLength(cycle + 1);
+    }
+    wrapper.unmount();
+  });
   it('renders the pinned default DOM and forwards native attributes', () => {
     const wrapper = mount(Button, {
       attrs: {
@@ -138,16 +174,6 @@ describe('Button', () => {
       'var(--semi-button-colorful-multiple-fill-2)',
       'var(--semi-button-colorful-multiple-fill-3)',
     ]);
-  });
-
-  it('is safe to render without a DOM', async () => {
-    const html = await renderToString(
-      h(Button, { type: 'warning', loading: true }, { default: () => '撤销' }),
-    );
-
-    expect(html).toContain('semi-button-warning');
-    expect(html).toContain('semi-button-loading');
-    expect(html).toContain('data-icon="spin"');
   });
 });
 

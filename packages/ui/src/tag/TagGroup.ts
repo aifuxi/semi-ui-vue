@@ -1,4 +1,14 @@
-import { computed, defineComponent, h, isVNode, toRaw, type PropType, type VNodeChild } from 'vue';
+import {
+  computed,
+  cloneVNode,
+  createTextVNode,
+  defineComponent,
+  h,
+  isVNode,
+  toRaw,
+  type PropType,
+  type VNodeChild,
+} from 'vue';
 
 import { Popover, type PopoverProps } from '../popover';
 import Tag from './Tag.vue';
@@ -44,10 +54,10 @@ export default defineComponent({
     },
   },
   setup(props, { attrs, emit }) {
-    const renderedTags = computed<VNodeChild[]>(() => {
+    function createTags(fresh = false): VNodeChild[] {
       if (props.mode === 'custom') {
         return (props.tagList as VNodeChild[]).map((entry) =>
-          isVNode(entry) ? toRaw(entry) : entry,
+          isVNode(entry) ? (fresh ? cloneVNode(toRaw(entry)) : toRaw(entry)) : entry,
         );
       }
       return (props.tagList as TagData[]).map((entry, index) => {
@@ -75,26 +85,24 @@ export default defineComponent({
           content === undefined ? undefined : { default: () => content },
         );
       });
-    });
+    }
+    const renderedTags = computed(() => createTags());
 
     return () => {
       let visibleTags = renderedTags.value;
       if (props.maxTagCount !== undefined) {
         const normalTags = renderedTags.value.slice(0, props.maxTagCount);
-        const restTags = renderedTags.value.slice(props.maxTagCount);
         const count = props.restCount ? props.restCount : props.tagList.length - props.maxTagCount;
         if (count > 0) {
-          const nTag = h(
-            Tag,
-            {
-              color: 'grey',
-              key: '_+n',
-              onMouseenter: (event: MouseEvent) => emit('plusNMouseenter', event),
-              size: props.size,
-              style: { backgroundColor: 'transparent' },
-            },
-            () => `+${count}`,
-          );
+          const nTag = h(Tag, {
+            color: 'grey',
+            // The pinned +{n} has two text children, so Tag uses its centered content branch.
+            content: [createTextVNode('+'), createTextVNode(String(count))],
+            key: '_+n',
+            onMouseenter: (event: MouseEvent) => emit('plusNMouseenter', event),
+            size: props.size,
+            style: { backgroundColor: 'transparent' },
+          });
           normalTags.push(
             props.showPopover
               ? h(
@@ -102,14 +110,20 @@ export default defineComponent({
                   {
                     autoAdjustOverflow: true,
                     className: 'semi-tag-rest-group-popover',
-                    content: restTags,
                     key: '_+n_Popover',
                     position: 'top',
                     showArrow: true,
                     trigger: 'hover',
                     ...props.popoverProps,
                   },
-                  () => nTag,
+                  {
+                    default: () => nTag,
+                    // A new portal mount must render new component VNodes instead of reusing
+                    // instances from the cached array after their previous portal was removed.
+                    ...(!Object.hasOwn(props.popoverProps ?? {}, 'content')
+                      ? { content: () => createTags(true).slice(props.maxTagCount) }
+                      : {}),
+                  },
                 )
               : nTag,
           );

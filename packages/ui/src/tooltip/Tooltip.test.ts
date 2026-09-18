@@ -14,9 +14,11 @@ import {
 import { renderToString } from 'vue/server-renderer';
 
 import { Button } from '../button';
+import { Input } from '../input';
+import { Tag } from '../tag';
 import { ConfigProvider } from '../config-provider';
 
-import Tooltip from './Tooltip.vue';
+import DefaultTooltip, { Tooltip } from './index';
 import type { TooltipExposed } from './types';
 
 async function flushTooltip(): Promise<void> {
@@ -39,48 +41,134 @@ describe('Tooltip', () => {
     vi.restoreAllMocks();
   });
 
-  it('自身动画结束清理 class，忽略内容冒泡动画，并可再次关闭和打开', async () => {
-    const afterClose = vi.fn();
-    const wrapper = mount(Tooltip, {
-      props: {
-        content: h('span', { id: 'animated-content' }, '动画内容'),
-        trigger: 'custom',
-        visible: true,
-        motion: true,
-        keepDOM: true,
-        onAfterClose: afterClose,
-      },
-      slots: { default: '<button>触发</button>' },
-    });
-    await flushTooltip();
-    const popup = document.body.querySelector<HTMLElement>('.semi-tooltip-wrapper')!;
-    const content = popup.querySelector('#animated-content')!;
-    expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
-    content.dispatchEvent(new Event('animationstart', { bubbles: true }));
-    content.dispatchEvent(new Event('animationend', { bubbles: true }));
-    await nextTick();
-    expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
-    popup.dispatchEvent(new Event('animationstart'));
-    popup.dispatchEvent(new Event('animationend'));
-    await nextTick();
-    expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(false);
-    expect(popup.textContent).toContain('动画内容');
-    await wrapper.setProps({ visible: false });
-    await flushTooltip();
-    expect(popup.classList.contains('semi-tooltip-animation-hide')).toBe(true);
-    popup.dispatchEvent(new Event('animationstart'));
-    popup.dispatchEvent(new Event('animationend'));
-    await flushTooltip();
-    expect(popup.style.display).toBe('none');
-    expect(afterClose).toHaveBeenCalledOnce();
-    await wrapper.setProps({ visible: true });
-    await flushTooltip();
-    expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
-    popup.dispatchEvent(new Event('animationend'));
-    await nextTick();
-    expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(false);
-    wrapper.unmount();
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultTooltip).toBe(Tooltip);
   });
+
+  it('rePosKey 与触发器位置同次更新后使用更新后的 DOM 定位', async () => {
+    const left = shallowRef(100);
+    const originalRect = HTMLElement.prototype.getBoundingClientRect;
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
+      this: HTMLElement,
+    ) {
+      if (this.id === 'moving-tooltip-trigger') {
+        // jsdom has no layout: derive geometry from the actual rendered DOM, not the ref.
+        return new DOMRect(Number.parseFloat(this.style.left), 200, 20, 20);
+      }
+      return originalRect.call(this);
+    });
+    const Host = defineComponent({
+      setup: () => () =>
+        h(
+          Tooltip,
+          {
+            content: '移动提示',
+            visible: true,
+            trigger: 'custom',
+            motion: false,
+            showArrow: false,
+            autoAdjustOverflow: false,
+            position: 'top',
+            rePosKey: left.value,
+          },
+          {
+            default: () =>
+              h(
+                'button',
+                {
+                  id: 'moving-tooltip-trigger',
+                  style: { position: 'absolute', left: `${left.value}px` },
+                },
+                '移动触发器',
+              ),
+          },
+        ),
+    });
+    const wrapper = mount(Host, { attachTo: document.body });
+    try {
+      await flushTooltip();
+      const portal = document.body.querySelector<HTMLElement>('.semi-portal-inner')!;
+      const previousLeft = Number.parseFloat(portal.style.left);
+      expect(Number.isFinite(previousLeft)).toBe(true);
+      left.value = 180;
+      await flushTooltip();
+      expect((wrapper.get('#moving-tooltip-trigger').element as HTMLElement).style.left).toBe(
+        '180px',
+      );
+      expect(Number.parseFloat(portal.style.left) - previousLeft).toBe(80);
+    } finally {
+      wrapper.unmount();
+    }
+  });
+
+  it.each([undefined, 0, -1, 2])(
+    '向组件触发器传入 tabIndex=%s 并支持真实焦点',
+    async (tabIndex) => {
+      const wrapper = mount(Tooltip, {
+        attachTo: document.body,
+        props: { content: 'Tag tooltip', trigger: 'focus', motion: false },
+        slots: {
+          default: () => h(Tag, tabIndex === undefined ? {} : { tabIndex }, () => 'Focusable tag'),
+        },
+      });
+      await flushTooltip();
+      const tag = wrapper.get('.semi-tag');
+      expect(tag.attributes('tabindex')).toBe(String(tabIndex ?? 0));
+      (tag.element as HTMLElement).focus();
+      await flushTooltip();
+      expect(document.activeElement).toBe(tag.element);
+      expect(document.body.querySelector('.semi-tooltip-content')?.textContent).toBe('Tag tooltip');
+      wrapper.unmount();
+    },
+  );
+
+  it.each(['semi-tooltip', 'semi-dropdown'])(
+    '前缀 %s 的自身动画结束清理 class，忽略冒泡动画，并可再次开关',
+    async (prefixCls) => {
+      const afterClose = vi.fn();
+      const wrapper = mount(Tooltip, {
+        props: {
+          prefixCls,
+          content: h('span', { id: 'animated-content' }, '动画内容'),
+          trigger: 'custom',
+          visible: true,
+          motion: true,
+          keepDOM: true,
+          onAfterClose: afterClose,
+        },
+        slots: { default: '<button>触发</button>' },
+      });
+      await flushTooltip();
+      const popup = document.body.querySelector<HTMLElement>(`.${prefixCls}-wrapper`)!;
+      const content = popup.querySelector('#animated-content')!;
+      expect(popup.querySelector(':scope > .semi-tooltip-content')).not.toBeNull();
+      expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
+      content.dispatchEvent(new Event('animationstart', { bubbles: true }));
+      content.dispatchEvent(new Event('animationend', { bubbles: true }));
+      await nextTick();
+      expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
+      popup.dispatchEvent(new Event('animationstart'));
+      popup.dispatchEvent(new Event('animationend'));
+      await nextTick();
+      expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(false);
+      expect(popup.textContent).toContain('动画内容');
+      await wrapper.setProps({ visible: false });
+      await flushTooltip();
+      expect(popup.classList.contains('semi-tooltip-animation-hide')).toBe(true);
+      popup.dispatchEvent(new Event('animationstart'));
+      popup.dispatchEvent(new Event('animationend'));
+      await flushTooltip();
+      expect(popup.style.display).toBe('none');
+      expect(afterClose).toHaveBeenCalledOnce();
+      await wrapper.setProps({ visible: true });
+      await flushTooltip();
+      expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
+      popup.dispatchEvent(new Event('animationend'));
+      await nextTick();
+      expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(false);
+      wrapper.unmount();
+    },
+  );
 
   it('content slot 优先，slot 变空后回退到 content prop', async () => {
     const showSlot = shallowRef(true);
@@ -430,6 +518,45 @@ describe('Tooltip', () => {
     expect(target.querySelector('.semi-portal-rtl')).not.toBeNull();
     expect(target.querySelector('.semi-tooltip-rtl')).not.toBeNull();
     expect(document.body.querySelector(':scope > .semi-portal')).toBeNull();
+  });
+
+  it('initialFocusRef 调用 Input 公开 focus 并在关闭重开后恢复输入焦点', async () => {
+    const wrapper = mount(Tooltip, {
+      attachTo: document.body,
+      props: {
+        trigger: 'click',
+        role: 'dialog',
+        motion: false,
+        closeOnEsc: true,
+        returnFocusOnClose: true,
+      },
+      slots: {
+        default: () => h(Button, { id: 'component-focus-trigger' }, () => '打开'),
+        content: ({ initialFocusRef }) =>
+          h('div', [
+            h(Button, {}, () => '前面的可聚焦按钮'),
+            h(Input, { ref: initialFocusRef, placeholder: '指定的初始焦点' }),
+          ]),
+      },
+    });
+    try {
+      await flushTooltip();
+      for (let opening = 0; opening < 2; opening++) {
+        await wrapper.get('#component-focus-trigger').trigger('click');
+        await flushTooltip();
+        const input = document.body.querySelector<HTMLInputElement>(
+          'input[placeholder="指定的初始焦点"]',
+        )!;
+        expect(input).not.toBeNull();
+        expect(document.activeElement).toBe(input);
+        input.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'Escape' }));
+        await flushTooltip();
+        expect(document.body.querySelector('.semi-tooltip-wrapper')).toBeNull();
+        expect(document.activeElement).toBe(wrapper.get('#component-focus-trigger').element);
+      }
+    } finally {
+      wrapper.unmount();
+    }
   });
 
   it('closeOnEsc、initialFocusRef、guardFocus、keepDOM 与 afterClose', async () => {

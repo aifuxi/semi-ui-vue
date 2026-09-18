@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ConfigProvider } from '../config-provider';
 import { Select } from '../select';
 
-import Pagination from './Pagination.vue';
+import DefaultPagination, { Pagination } from './index';
 
 const wrappers: Array<ReturnType<typeof mount>> = [];
 
@@ -27,6 +27,10 @@ afterEach(() => {
 });
 
 describe('Pagination', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultPagination).toBe(Pagination);
+  });
+
   it('渲染固定根 DOM、class/style/data、页数和前后禁用态', () => {
     const wrapper = mountPagination({
       total: 30,
@@ -42,6 +46,24 @@ describe('Pagination', () => {
     expect(wrapper.get('[aria-label="Previous"]').attributes('aria-disabled')).toBe('true');
     expect(wrapper.get('[aria-label="Next"]').attributes('aria-disabled')).toBe('false');
     expect(wrapper.get('[aria-current="page"]').text()).toBe('1');
+    expect(wrapper.get('[aria-label="Page 2"]').attributes('aria-current')).toBe('false');
+  });
+
+  it('页大小变化按上游重建选择器并释放旧触发器焦点', async () => {
+    const wrapper = mountPagination(
+      { total: 200, pageSize: 10, showSizeChanger: true },
+      { attachTo: document.body },
+    );
+    await nextTick();
+    const previous = wrapper.get('.semi-select').element as HTMLElement;
+    previous.focus();
+    expect(document.activeElement).toBe(previous);
+    await wrapper.setProps({ pageSize: 20 });
+    await nextTick();
+    expect(wrapper.get('.semi-select').text()).toContain('20');
+    expect(previous.isConnected).toBe(false);
+    expect(document.activeElement).not.toBe(wrapper.get('.semi-select').element);
+    expect(wrapper.get('.semi-select').classes()).not.toContain('semi-select-focus');
   });
 
   it('严格复现 7 项页码截断的四个分支与省略范围', async () => {

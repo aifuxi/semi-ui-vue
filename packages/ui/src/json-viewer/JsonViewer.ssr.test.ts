@@ -2,7 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { h } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
-import JsonViewer from './JsonViewer.vue';
+import JsonViewer from './index';
 
 describe('JsonViewer SSR', () => {
   it('只输出静态容器与搜索触发器，不创建 Worker 或访问 DOM', async () => {

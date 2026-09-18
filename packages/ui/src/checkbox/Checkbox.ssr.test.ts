@@ -1,6 +1,6 @@
 import { renderToString } from '@vue/server-renderer';
-import { createSSRApp, h } from 'vue';
 import { describe, expect, it } from 'vitest';
+import { createSSRApp, h } from 'vue';
 
 import Checkbox, { CheckboxGroup } from './index';
 

@@ -73,6 +73,7 @@ ConfigProvider 的 `overrideDefaultProps.Lottie` 位于显式 prop 与缺省值�
 - 无内置 Locale 文案。57 个 Locale 的完整性继续由共享门禁覆盖。
 - `lottie-web` 仅能在客户端求值。公开根入口和 `./lottie` 子路径必须通过纯 Node SSR
   import；服务端渲染不得访问 window/document/navigator，hydration 后才创建实例。
+  单元、SSR 与 hydration 用例均从 `./index` 公开入口消费组件。
 
 ## 依赖、发布与合规边界
 
@@ -100,7 +101,7 @@ ConfigProvider 的 `overrideDefaultProps.Lottie` 位于显式 prop 与缺省值�
   卸载清理且无 warning。
 - Chromium：固定 React/Vue 同 animationData；desktop/mobile light/dark/light RTL；
   computed style、几何、确定帧截图、实例控制与 params 重建行为。
-- 发布：根/子路径运行时与声明、空样式入口、真实 tarball consumer、许可证/SBOM、
+- 发布：根/子路径 default/named 运行时与声明、空样式入口、真实 tarball consumer、许可证/SBOM、
   source-boundary 与 tree-shaking/SSR-safe import。
 
 ## 完成证据
@@ -119,3 +120,10 @@ ConfigProvider 的 `overrideDefaultProps.Lottie` 位于显式 prop 与缺省值�
   `lottie-web@5.13.0` MIT 许可证副本、第三方声明与 SPDX SBOM 全部通过。
 - 影响面未修改共享比较算法、Playwright 配置、全局主题或既有组件运行时，因此按项目
   门禁运行 Lottie 完整场景与工作台 smoke，没有运行全仓 `pnpm test:browser`。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Lottie 单测、SSR 与 hydration 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/lottie.spec.ts` 5/5 通过，覆盖固定源码来源、播放器实例与公开 DOM、computed style/几何与 light/dark、RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、`lottie.css`、tree-shaking、`lottie-web` 许可与 SBOM。

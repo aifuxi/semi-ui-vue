@@ -4,7 +4,7 @@ import { defineComponent, h, nextTick, shallowRef } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
-import DragMove from './DragMove.vue';
+import DragMove, { DragMove as NamedDragMove } from './index';
 
 function mouse(
   target: EventTarget,
@@ -60,6 +60,10 @@ afterEach(() => {
 });
 
 describe('DragMove', () => {
+  it('公开入口保持 default 与 named export 一致', () => {
+    expect(NamedDragMove).toBe(DragMove);
+  });
+
   it('不增加 wrapper，并在模板与 h() 宿主中保留原 ref', () => {
     const templateHost = mount(
       defineComponent({

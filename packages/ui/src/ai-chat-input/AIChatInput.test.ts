@@ -1,8 +1,12 @@
-import { enableAutoUnmount, flushPromises, mount } from '@vue/test-utils';
-import { nextTick } from 'vue';
+import { flushPromises, mount } from '@vue/test-utils';
+import { h, nextTick } from 'vue';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 
-import AIChatInput from './AIChatInput.vue';
+import DefaultAIChatInput, {
+  AIChatInput,
+  AIChatInputConfigure,
+  AIChatInputConfigureItem,
+} from './index';
 import type { AIChatInputExposed, Attachment, Skill } from './types';
 
 beforeAll(() => {
@@ -36,9 +40,72 @@ afterEach(() => {
   document.body.innerHTML = '';
   vi.restoreAllMocks();
 });
-enableAutoUnmount(afterEach);
 
 describe('AIChatInput', () => {
+  it('公开入口保持 default、named 与复合 Configure 静态成员一致', () => {
+    expect(DefaultAIChatInput).toBe(AIChatInput);
+    expect(AIChatInput.Configure).toBe(AIChatInputConfigure);
+    expect(AIChatInputConfigure.Item).toBe(AIChatInputConfigureItem);
+  });
+
+  it('默认上传按钮一次点击只打开一次文件选择器', async () => {
+    const open = vi.spyOn(HTMLInputElement.prototype, 'click');
+    const wrapper = await mountInput({ uploadProps: { action: '' } });
+    await wrapper.get('button[aria-label="Upload"]').trigger('click');
+    expect(
+      open.mock.contexts.filter(
+        (input) => input instanceof HTMLInputElement && input.type === 'file',
+      ),
+    ).toHaveLength(1);
+  });
+
+  it('custom configure slots contribute setup values with provider isolation', async () => {
+    const custom = (initial: string) =>
+      mount(AIChatInput, {
+        attachTo: document.body,
+        props: { defaultContent: 'Send with setup' },
+        slots: {
+          configure: () =>
+            h(
+              AIChatInputConfigureItem,
+              { field: 'model', initValue: initial },
+              {
+                default: ({
+                  value,
+                  onChange,
+                }: {
+                  value: unknown;
+                  onChange: (value: unknown) => void;
+                }) =>
+                  h('input', {
+                    'aria-label': 'custom model',
+                    value,
+                    onInput: (event: Event) => onChange((event.target as HTMLInputElement).value),
+                  }),
+              },
+            ),
+        },
+      });
+    const first = custom('first');
+    const second = custom('second');
+    await flushPromises();
+    await first.get('input[aria-label="custom model"]').setValue('selected');
+    expect(second.get<HTMLInputElement>('input[aria-label="custom model"]').element.value).toBe(
+      'second',
+    );
+    await vi.waitFor(() =>
+      expect(first.get<HTMLButtonElement>('button[aria-label="Send"]').element.disabled).toBe(
+        false,
+      ),
+    );
+    await first.get('button[aria-label="Send"]').trigger('click');
+    expect(first.emitted('messageSend')?.at(-1)?.[0]).toMatchObject({
+      setup: { model: 'selected' },
+    });
+    first.unmount();
+    second.unmount();
+  });
+
   it('renders the Tiptap editor and default-true public areas', async () => {
     const attachment: Attachment = {
       uid: 'a-1',

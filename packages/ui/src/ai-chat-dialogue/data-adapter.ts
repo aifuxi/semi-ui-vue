@@ -84,11 +84,11 @@ export function responseToMessage(input: Response): Message {
 export function streamingResponseToMessage(
   chunks: ResponseChunk[],
   state?: StreamingResponseState,
-): { messages: Message[]; state?: StreamingResponseState } {
+): { message: Message | null; nextState: StreamingResponseState | null } | null {
   return foundationStreamingResponseToMessage(chunks, state) as {
-    messages: Message[];
-    state?: StreamingResponseState;
-  };
+    message: Message | null;
+    nextState: StreamingResponseState | null;
+  } | null;
 }
 export function chatInputToMessage(input: AIChatDialogueMessageContent): Message {
   return foundationChatInputToMessage(input) as Message;

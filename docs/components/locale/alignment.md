@@ -75,7 +75,8 @@ facade，不复制语言内容形成第二份可编辑源码。
   SSR-safe；SSR 输出只包含 slot DOM，hydration 不新增包装或产生 warning。
 - Vite 从只读 submodule 通过私有集成层选择性编译并内联 57 份数据。真实 tarball 验证
   根/子路径 ESM、声明、逐组件 CSS、tree-shaking、SSR import、许可证/SBOM 与无
-  `vendor/**`/私有包引用。
+  `vendor/**`/私有包引用；单元与 SSR 用例从 `./index` 消费 `LocaleProvider`/
+  `LocaleConsumer` 具名导出，固定公开入口不新增默认导出。
 
 ## React → Vue 差异与 Deviation
 
@@ -111,3 +112,15 @@ facade，不复制语言内容形成第二份可编辑源码。
 - 本切片没有修改共享 Playwright 运行时、全局主题或截图比较基础设施，因此按分级策略未
   重跑全部组件浏览器回归；已覆盖当前场景、共享 harness 与工作台 smoke。
 - 没有 accepted deviation 或未解释差异，Locale 垂直切片标记为 `ready`。
+
+## 文档示例补齐与严格验收（2026-09-06，进行中）
+
+以 `content/other/locale/index{,-en-US}.md` 的三个 live 示例为独立批次：
+
+| 示例                 | Vue 边界                            | 默认值与行为门禁                                                  | 视觉范围                                   |
+| -------------------- | ----------------------------------- | ----------------------------------------------------------------- | ------------------------------------------ |
+| Internationalization | 两个透明 Provider 与 Pagination     | en_GB/ja_JP 同屏隔离；分页与 pageSize                             | 双语、light/dark、分页器及浮层             |
+| Custom               | 六个透明 Provider/Consumer          | zh_CN/ko_KR/en_GB 的 TimePicker.begin 和 ComponentA.customKey     | 六行文本 DOM、样式、几何与紧裁剪           |
+| Components           | 语言选择容器 + 输入/展示/导航子示例 | 中文 zh_CN、英文 en_GB；逐端选项清单；切换后消费者重建；ar 为 RTL | 双语、light/dark、组件独立裁剪、浮层与 RTL |
+
+子示例只消费 Provider，不接收或修改语言数据；语言选择状态归入口所有。固定源码在函数内定义 I18nComponent，切换语言会重新挂载消费者，Vue 用 key 保留此行为。Locale 无独立 Foundation/SCSS，使用消费者原样式和全局主题。Consumer render 函数改具名 slot，不添加 DOM。日期固定到同一 Chromium 时钟；图片使用站点本地样本，两端一致替换，不以 mask 忽略图片。独立品牌图标替代 Semi Logo，明确列为文档品牌适配。默认 true、键盘、焦点、ARIA 和 Portal 保持消费者公开契约；文档批次不改变组件 API 或 SSR 实现。验收未通过前不增加 accepted 数。

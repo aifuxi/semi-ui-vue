@@ -1,4 +1,10 @@
-import { compile, evaluate, evaluateSync, type CompileOptions } from '@mdx-js/mdx';
+import {
+  compile,
+  evaluate,
+  evaluateSync,
+  type CompileOptions,
+  type EvaluateOptions,
+} from '@mdx-js/mdx';
 import remarkGfm from 'remark-gfm';
 
 export type MarkdownRenderFormat = 'md' | 'mdx';
@@ -31,6 +37,11 @@ function getOptions(options: MarkdownRenderEvaluationOptions): CompileOptions {
   };
 }
 
+// MDX binds its return type to the host's ambient JSX namespace. Keep that
+// host-specific type inside this private boundary: the supplied runtime owns
+// its element representation (Vue VNode in the public Vue implementation).
+type MdxRuntimeOptions = Required<Pick<EvaluateOptions, 'Fragment' | 'jsx' | 'jsxs'>>;
+
 export async function compileMarkdownRender(
   raw: string,
   options: MarkdownRenderEvaluationOptions,
@@ -43,7 +54,10 @@ export async function evaluateMarkdownRender(
   runtime: MarkdownRenderRuntime,
   options: MarkdownRenderEvaluationOptions,
 ): Promise<MarkdownRenderContent> {
-  const result = await evaluate(raw, { ...getOptions(options), ...runtime });
+  const result = await evaluate(raw, {
+    ...getOptions(options),
+    ...(runtime as MdxRuntimeOptions),
+  });
   return result.default as MarkdownRenderContent;
 }
 
@@ -52,5 +66,8 @@ export function evaluateMarkdownRenderSync(
   runtime: MarkdownRenderRuntime,
   options: MarkdownRenderEvaluationOptions,
 ): MarkdownRenderContent {
-  return evaluateSync(raw, { ...getOptions(options), ...runtime }).default as MarkdownRenderContent;
+  return evaluateSync(raw, {
+    ...getOptions(options),
+    ...(runtime as MdxRuntimeOptions),
+  }).default as MarkdownRenderContent;
 }

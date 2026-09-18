@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
 
 import { ConfigProvider, semiGlobal } from '../config-provider';
-import TimePicker from './index';
+import DefaultTimePicker, { TimePicker } from './index';
 
 async function flushPortal(): Promise<void> {
   for (let index = 0; index < 5; index += 1) {
@@ -24,6 +24,10 @@ describe('TimePicker', () => {
     vi.restoreAllMocks();
     document.body.replaceChildren();
     semiGlobal.config = {};
+  });
+
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultTimePicker).toBe(TimePicker);
   });
 
   it('保留固定输入 DOM、默认格式、尺寸、校验、ARIA 与 data-*', () => {

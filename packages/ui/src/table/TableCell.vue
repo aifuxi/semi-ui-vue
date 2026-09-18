@@ -16,10 +16,13 @@ import { getByPath } from './table-utils';
 import type { TableCellAttributes, TableDirection, TableRenderReturnObject } from './types';
 
 interface Props {
+  width?: number | undefined;
   column: NormalizedTableColumn<Record<string, unknown>>;
+  columnIndex: number;
   component?: Component | string | undefined;
   direction: TableDirection;
   expanded?: boolean | undefined;
+  expansionDisabled?: boolean | undefined;
   expandNode?: VNodeChild | undefined;
   fixedEdge?: boolean | undefined;
   fixedOffset?: number | undefined;
@@ -27,6 +30,7 @@ interface Props {
   hovered?: boolean | undefined;
   indent?: number | undefined;
   indentSize?: number | undefined;
+  isSection?: boolean | undefined;
   prefixCls: string;
   record: Record<string, unknown>;
   rowIndex: number;
@@ -62,7 +66,11 @@ watch(
   { flush: 'sync' },
 );
 
-const rawText = computed(() => getByPath(renderRecord.value, props.column.dataIndex));
+const rawText = computed(() =>
+  props.column.__kind === 'expand'
+    ? undefined
+    : getByPath(renderRecord.value, props.column.dataIndex),
+);
 const customCell = computed<TableCellAttributes>(
   () => props.column.onCell?.(renderRecord.value, props.rowIndex) ?? {},
 );
@@ -89,16 +97,14 @@ const renderResult = computed(() => {
         rowIndex: props.rowIndex,
         text: rawText.value,
       }) ?? rawText.value);
-  if (
-    value &&
-    typeof value === 'object' &&
-    !('__v_isVNode' in value) &&
-    'children' in value &&
-    'props' in value
-  ) {
-    return value as TableRenderReturnObject;
+  if (value && typeof value === 'object' && !('__v_isVNode' in value) && 'children' in value) {
+    const result = value as TableRenderReturnObject;
+    return { children: result.children, props: result.props ?? {} };
   }
-  return { children: value as VNodeChild, props: {} } as TableRenderReturnObject;
+  return {
+    children: value as VNodeChild,
+    props: {} as NonNullable<TableRenderReturnObject['props']>,
+  };
 });
 const mergedCell = computed<TableCellAttributes>(() => ({
   ...customCell.value,
@@ -127,42 +133,70 @@ const align = computed(() => {
   }
   return props.column.align;
 });
+const physicalFixedSide = computed(() =>
+  props.fixedSide && props.direction === 'rtl'
+    ? props.fixedSide === 'left'
+      ? 'right'
+      : 'left'
+    : props.fixedSide,
+);
 const cellStyle = computed<StyleValue>(() => {
-  const fixedProperty =
-    props.direction === 'rtl' ? (props.fixedSide === 'left' ? 'right' : 'left') : props.fixedSide;
   return [
     {
-      [fixedProperty ?? 'left']: props.fixedSide ? `${props.fixedOffset}px` : undefined,
-      textAlign: align.value,
+      [physicalFixedSide.value ?? 'left']: props.fixedSide ? `${props.fixedOffset}px` : undefined,
+      width: props.width === undefined ? undefined : `${props.width}px`,
     },
-    mergedCell.value.style,
+    customCell.value.style as StyleValue,
+    props.column.align
+      ? {
+          textAlign: align.value,
+          justifyContent:
+            align.value === 'left'
+              ? 'flex-start'
+              : align.value === 'right'
+                ? 'flex-end'
+                : align.value,
+        }
+      : undefined,
+    renderResult.value.props.style as StyleValue,
   ];
 });
 const cellClass = computed(() => [
   `${props.prefixCls}-row-cell`,
-  props.column.className,
+  props.expansionDisabled ? undefined : props.column.className,
   mergedCell.value.class,
   props.column.ellipsis ? `${props.prefixCls}-row-cell-ellipsis` : undefined,
-  props.fixedSide ? `${props.prefixCls}-cell-fixed-${props.fixedSide}` : undefined,
-  props.fixedSide === 'left' && props.fixedEdge
+  physicalFixedSide.value ? `${props.prefixCls}-cell-fixed-${physicalFixedSide.value}` : undefined,
+  physicalFixedSide.value === 'left' && props.fixedEdge
     ? `${props.prefixCls}-cell-fixed-left-last`
     : undefined,
-  props.fixedSide === 'right' && props.fixedEdge
+  physicalFixedSide.value === 'right' && props.fixedEdge
     ? `${props.prefixCls}-cell-fixed-right-first`
     : undefined,
 ]);
 const textTitle = computed(() => {
-  const showTitle =
-    props.column.ellipsis === true ||
-    (typeof props.column.ellipsis === 'object' && props.column.ellipsis.showTitle !== false);
-  return showTitle && ['string', 'number'].includes(typeof rawText.value)
-    ? String(rawText.value)
+  if (Object.prototype.hasOwnProperty.call(mergedCell.value, 'title'))
+    return mergedCell.value.title;
+  const showTitle = !(
+    typeof props.column.ellipsis === 'object' && props.column.ellipsis.showTitle === false
+  );
+  return showTitle && typeof renderResult.value.children === 'string'
+    ? renderResult.value.children
     : undefined;
 });
 
 function handleClick(event: MouseEvent): void {
   mergedCell.value.onClick?.(event);
 }
+const innerContent = computed<VNodeChild>(() => {
+  const children = [
+    ...(!props.column.useFullRender ? [indentNode.value, props.expandNode] : []),
+    renderResult.value.children,
+  ];
+  return props.isSection
+    ? h('div', { class: `${props.prefixCls}-section-inner` }, children)
+    : children;
+});
 </script>
 
 <template>
@@ -175,14 +209,10 @@ function handleClick(event: MouseEvent): void {
     :colspan="mergedCell.colSpan"
     :rowspan="mergedCell.rowSpan"
     :title="textTitle"
+    :aria-colindex="props.columnIndex + 1"
     role="gridcell"
     @click="handleClick"
   >
-    <TableNodeRenderer v-if="!props.column.useFullRender && indentNode" :content="indentNode" />
-    <TableNodeRenderer
-      v-if="!props.column.useFullRender && props.expandNode"
-      :content="props.expandNode"
-    />
-    <TableNodeRenderer :content="renderResult.children" />
+    <TableNodeRenderer :content="innerContent" />
   </component>
 </template>

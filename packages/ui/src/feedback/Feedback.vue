@@ -166,8 +166,9 @@ const forwardedBindings = computed<Record<string, unknown>>(() => {
   return output;
 });
 
-const contentNode = computed<VNodeChild>(() =>
-  h(
+// Reopened SSR Portals need fresh VNodes rather than cached nodes with detached host elements.
+function contentNode(): VNodeChild {
+  return h(
     FeedbackContent as Component,
     {
       type: props.type,
@@ -183,12 +184,13 @@ const contentNode = computed<VNodeChild>(() =>
       onTextChange: (value: string, event: Event) => foundation.handleTextChange(value, event),
     },
     { default: () => slots.default?.() },
-  ),
-);
-const realContent = computed<VNodeChild>(() => {
-  if (slots.content) return slots.content({ content: contentNode.value });
-  return props.renderContent?.(contentNode.value) ?? contentNode.value;
-});
+  );
+}
+function realContent(): VNodeChild {
+  const content = contentNode();
+  if (slots.content) return slots.content({ content });
+  return props.renderContent?.(content) ?? content;
+}
 
 function popupButtonBindings(kind: 'cancel' | 'ok'): Record<string, unknown> {
   const buttonProps = kind === 'cancel' ? props.cancelButtonProps : props.okButtonProps;
@@ -209,14 +211,14 @@ function popupButtonBindings(kind: 'cancel' | 'ok'): Record<string, unknown> {
   return { ...defaults, ...buttonProps };
 }
 
-const popupFooter = computed<VNodeChild>(() => {
+function popupFooter(): VNodeChild {
   if (slots.footer) return slots.footer();
   if (rawHas('footer')) return props.footer;
   return h('div', { class: 'semi-feedback-footer' }, [
     h(Button, popupButtonBindings('cancel'), () => locale.value.cancel),
     h(Button, popupButtonBindings('ok'), () => locale.value.submit),
   ]);
-});
+}
 const modalBindings = computed<Record<string, unknown>>(() => ({
   cancelText: locale.value.cancel,
   class: rootClasses.value,
@@ -230,16 +232,16 @@ const modalBindings = computed<Record<string, unknown>>(() => ({
   onOk: (event: MouseEvent | KeyboardEvent): FeedbackActionResult =>
     foundation.handleModalOk(event) as FeedbackActionResult,
 }));
-const sideSheetBindings = computed<Record<string, unknown>>(() => ({
+const sideSheetBindings = (): Record<string, unknown> => ({
   canVerticalSetWidth: true,
   class: rootClasses.value,
   disableScroll: false,
-  footer: popupFooter.value,
+  footer: popupFooter(),
   height: 'auto',
   mask: false,
   placement: 'bottom',
   ...forwardedBindings.value,
-}));
+});
 
 function forwardVisible(visible: boolean): void {
   emit('update:visible', visible);
@@ -256,7 +258,7 @@ onBeforeUnmount(() => foundation.destroy());
     v-bind="modalBindings"
     @update:visible="forwardVisible"
   >
-    <FeedbackNodeRenderer :content="realContent" />
+    <FeedbackNodeRenderer :content="realContent()" />
     <template v-if="$slots.title" #title><slot name="title" /></template>
     <template v-if="$slots.header" #header><slot name="header" /></template>
     <template v-if="$slots.footer" #footer><slot name="footer" /></template>
@@ -265,11 +267,11 @@ onBeforeUnmount(() => foundation.destroy());
   <SideSheet
     v-else
     key="feedback-popup"
-    v-bind="sideSheetBindings"
+    v-bind="sideSheetBindings()"
     @cancel="foundation.handleCancel"
     @update:visible="forwardVisible"
   >
-    <FeedbackNodeRenderer :content="realContent" />
+    <FeedbackNodeRenderer :content="realContent()" />
     <template v-if="$slots.title" #title><slot name="title" /></template>
     <template v-if="$slots.footer" #footer><slot name="footer" /></template>
     <template v-if="$slots.closeIcon" #closeIcon><slot name="closeIcon" /></template>

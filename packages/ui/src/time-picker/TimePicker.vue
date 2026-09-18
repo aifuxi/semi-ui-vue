@@ -318,57 +318,59 @@ defineExpose<TimePickerExposed>({ blur, close: () => close(), focus, open });
 </script>
 
 <template>
-  <Tooltip
-    v-bind="tooltipOptionalProps"
-    :auto-adjust-overflow="Boolean(runtimeProps.autoAdjustOverflow)"
-    :motion="runtimeProps.motion !== false"
-    :position="(runtimeProps.position ?? 'bottomLeft') as TooltipPosition"
-    prefix-cls="semi-popover"
-    role="dialog"
-    :show-arrow="false"
-    :spacing="4"
-    :stop-propagation="runtimeProps.stopPropagation !== false"
-    trigger="custom"
-    :visible="!runtimeProps.disabled && state.open"
-    :z-index="Number(runtimeProps.zIndex)"
-    @click-outside="(event) => foundation.handlePanelClose(true, event)"
+  <div
+    :class="rootClasses"
+    :style="[attrs.style, props.style]"
+    @click="slots.trigger || runtimeProps.triggerRender ? open() : undefined"
   >
-    <template #content>
-      <div :class="popupClass" :style="runtimeProps.popupStyle">
-        <div class="semi-popover-content">
-          <div :class="type === 'timeRange' ? 'semi-timepicker-lists' : undefined">
-            <TimePickerPanel
-              v-for="index in type === 'timeRange' ? 2 : 1"
-              :key="index - 1"
-              :disabled-options="disabledOptions(index - 1)"
-              :format="format"
-              :hide-disabled-options="Boolean(runtimeProps.hideDisabledOptions)"
-              :hour-step="runtimeProps.hourStep"
-              :index="index - 1"
-              :is-a-m="state.isAM[index - 1] ?? true"
-              :locale="locale"
-              :minute-step="runtimeProps.minuteStep"
-              :panel-footer="panelContent('panelFooter', index - 1)"
-              :panel-header="panelContent('panelHeader', index - 1)"
-              :panel-type="panelType(index - 1)"
-              :scroll-item-props="runtimeProps.scrollItemProps"
-              :second-step="runtimeProps.secondStep"
-              :show-footer="Boolean(panelContent('panelFooter', index - 1))"
-              :show-header="type === 'timeRange' || Boolean(panelContent('panelHeader', index - 1))"
-              :time-stamp-value="state.value[index - 1]"
-              :use12-hours="Boolean(runtimeProps.use12Hours)"
-              @change="handlePanelChange"
-            />
+    <Tooltip
+      v-bind="tooltipOptionalProps"
+      :auto-adjust-overflow="Boolean(runtimeProps.autoAdjustOverflow)"
+      :motion="runtimeProps.motion !== false"
+      :position="(runtimeProps.position ?? 'bottomLeft') as TooltipPosition"
+      prefix-cls="semi-popover"
+      role="dialog"
+      :show-arrow="false"
+      :spacing="4"
+      :stop-propagation="runtimeProps.stopPropagation !== false"
+      trigger="custom"
+      :visible="!runtimeProps.disabled && state.open"
+      :z-index="Number(runtimeProps.zIndex)"
+      @click-outside="(event) => foundation.handlePanelClose(true, event)"
+    >
+      <template #content>
+        <div :class="popupClass" :style="runtimeProps.popupStyle">
+          <div class="semi-popover-content">
+            <div :class="type === 'timeRange' ? 'semi-timepicker-lists' : undefined">
+              <TimePickerPanel
+                v-for="index in type === 'timeRange' ? 2 : 1"
+                :key="index - 1"
+                :disabled-options="disabledOptions(index - 1)"
+                :format="format"
+                :hide-disabled-options="Boolean(runtimeProps.hideDisabledOptions)"
+                :hour-step="runtimeProps.hourStep"
+                :index="index - 1"
+                :is-a-m="state.isAM[index - 1] ?? true"
+                :locale="locale"
+                :minute-step="runtimeProps.minuteStep"
+                :panel-footer="panelContent('panelFooter', index - 1)"
+                :panel-header="panelContent('panelHeader', index - 1)"
+                :panel-type="panelType(index - 1)"
+                :scroll-item-props="runtimeProps.scrollItemProps"
+                :second-step="runtimeProps.secondStep"
+                :show-footer="Boolean(panelContent('panelFooter', index - 1))"
+                :show-header="
+                  type === 'timeRange' || Boolean(panelContent('panelHeader', index - 1))
+                "
+                :time-stamp-value="state.value[index - 1]"
+                :use12-hours="Boolean(runtimeProps.use12Hours)"
+                @change="handlePanelChange"
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </template>
+      </template>
 
-    <div
-      :class="rootClasses"
-      :style="[attrs.style, props.style]"
-      @click="slots.trigger || runtimeProps.triggerRender ? open() : undefined"
-    >
       <slot v-if="slots.trigger" name="trigger" v-bind="triggerSlotProps()" />
       <TimePickerNodeRenderer
         v-else-if="runtimeProps.triggerRender"
@@ -401,6 +403,6 @@ defineExpose<TimePickerExposed>({ blur, close: () => close(), focus, open });
           </Input>
         </div>
       </span>
-    </div>
-  </Tooltip>
+    </Tooltip>
+  </div>
 </template>

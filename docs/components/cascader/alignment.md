@@ -101,7 +101,7 @@
 
 ## 完成门禁
 
-- Vue 源码、Foundation facade、根/子路径导出、Cascader 独立 CSS。
+- Vue 源码、Foundation facade、根/子路径 default/named 导出（单元用例从 `./index` 固定）、Cascader 独立 CSS。
 - 中英文文档、React→Vue 迁移、React/Vue 同数据场景。
 - 单元/SSR/类型、搜索、多选、键盘/ARIA、Portal/locale/RTL、桌面/移动 light/dark 浏览器对照。
 - 关键 computed style 精确相等、几何误差不超过 `0.5 CSS px`；阈值截图通过后再直接比较成对 PNG。

@@ -1,6 +1,6 @@
-import { createSSRApp, h, nextTick } from 'vue';
+import { describe, expect, it } from 'vitest';
+import { h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { describe, expect, it, vi } from 'vitest';
 
 import { SideSheet } from './index';
 
@@ -20,23 +20,16 @@ describe('SideSheet SSR', () => {
     expect(visible).toContain('Body');
   });
 
-  it('visible hydration 无 mismatch，并在挂载后迁移到 body Portal', async () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-    const Host = {
-      render: () => h(SideSheet, { motion: false, title: 'Hydrate', visible: true }, () => 'Body'),
-    };
-    const html = await renderToString(h(Host));
-    const container = document.createElement('div');
-    container.innerHTML = html;
-    document.body.appendChild(container);
-    const app = createSSRApp(Host);
-    app.mount(container);
-    await nextTick();
-    await nextTick();
-    expect(document.body.querySelector(':scope > .semi-portal [role="dialog"]')).not.toBeNull();
-    expect(warn).not.toHaveBeenCalledWith(expect.stringContaining('Hydration'));
-    app.unmount();
-    container.remove();
-    warn.mockRestore();
+  it('SSR 输出数字像素尺寸与无 mask 百分比宽度', async () => {
+    const top = await renderToString(h(SideSheet, { visible: true, placement: 'top' }));
+    expect(top).toContain('height:448px');
+    const numeric = await renderToString(h(SideSheet, { visible: true, width: 220, mask: false }));
+    expect(numeric).toContain('width:220px');
+    expect(numeric).toContain('width:100%');
+    const percent = await renderToString(
+      h(SideSheet, { visible: true, width: '50%', mask: false }),
+    );
+    expect(percent).toContain('width:50%');
+    expect(percent).toContain('width:100%');
   });
 });

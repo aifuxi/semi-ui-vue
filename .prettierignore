@@ -1,8 +1,9 @@
 vendor
+.worktrees
 .agents
 .codex
 node_modules
-.astro
+.data
 dist
 coverage
 playwright-report

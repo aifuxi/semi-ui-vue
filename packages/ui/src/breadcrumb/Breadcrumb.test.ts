@@ -1,3 +1,5 @@
+/* eslint-disable vue/one-component-per-file -- local hosts cover template separator slots and the custom popup container. */
+
 import { mount } from '@vue/test-utils';
 import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, defineComponent, h, nextTick } from 'vue';
@@ -7,7 +9,7 @@ import { IconHome } from '@aifuxi/semi-icons-vue';
 import { ConfigProvider } from '../config-provider';
 import { Text } from '../typography';
 
-import Breadcrumb, { BreadcrumbItem, type BreadcrumbItemInfo } from './index';
+import DefaultBreadcrumb, { Breadcrumb, BreadcrumbItem, type BreadcrumbItemInfo } from './index';
 
 const mountedWrappers: Array<ReturnType<typeof mount>> = [];
 
@@ -36,6 +38,11 @@ afterEach(() => {
 });
 
 describe('Breadcrumb', () => {
+  it('公开入口保持 default、named 与复合 Item 一致', () => {
+    expect(DefaultBreadcrumb).toBe(Breadcrumb);
+    expect(Breadcrumb.Item).toBe(BreadcrumbItem);
+  });
+
   it('保留 nav、compact 三态、class/style/data/ARIA 与 separator DOM', () => {
     const defaultWrapper = mountBreadcrumb({
       className: 'custom-breadcrumb',
@@ -126,6 +133,31 @@ describe('Breadcrumb', () => {
     expect(wrapper.findAll('.semi-breadcrumb-item-wrap')[1]!.attributes('aria-current')).toBe(
       'page',
     );
+  });
+
+  it('父级 separator slot 透传给子项，单项 separator slot 优先覆盖', () => {
+    const Host = defineComponent({
+      components: { Breadcrumb, BreadcrumbItem },
+      template: `
+        <Breadcrumb separator="prop-separator">
+          <template #separator><span class="root-separator">::</span></template>
+          <BreadcrumbItem>Root</BreadcrumbItem>
+          <BreadcrumbItem>
+            <template #separator><span class="item-separator">--</span></template>
+            Item
+          </BreadcrumbItem>
+          <BreadcrumbItem>Leaf</BreadcrumbItem>
+        </Breadcrumb>
+      `,
+    });
+    const wrapper = mount(Host);
+    mountedWrappers.push(wrapper);
+
+    expect(wrapper.get('.root-separator').text()).toBe('::');
+    expect(wrapper.get('.item-separator').text()).toBe('--');
+    expect(wrapper.findAll('.semi-breadcrumb-separator')).toHaveLength(1);
+    expect(wrapper.text()).toContain('Root::Item--Leaf');
+    expect(wrapper.text()).not.toContain('prop-separator');
   });
 
   it('autoCollapse 缺省/显式 true 折叠并支持 click/Enter，显式 false 保留全部项', async () => {

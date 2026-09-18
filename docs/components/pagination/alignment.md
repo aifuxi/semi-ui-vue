@@ -8,6 +8,8 @@
 
 ## 组件边界
 
+2026-09-13 Table 文档严格对照补齐非当前页码的 `aria-current="false"`，与固定 Pagination `index.tsx` 一致；当前页仍为 `page`，公开测试同时断言两种状态。
+
 | 文件/模块                   | 单一职责                                                          | 公开边界                             |
 | --------------------------- | ----------------------------------------------------------------- | ------------------------------------ |
 | `Pagination.vue`            | 连接 Foundation，管理受控/非受控状态、渲染默认/迷你分页和派发事件 | props / emits / slots / v-model      |
@@ -91,10 +93,20 @@
 - SSR：默认/受控/small/disabled/hide/locale/RTL 输出，无 Portal、browser global 或 vendor/private 路径；验证 hydration。
 - Chromium：同一 BrowserContext 中核对固定 React 与 Vue 的请求来源、运行时错误、关键 computed style、bounding rect；desktop `1440x900`、mobile `390x844`、light/dark、RTL、zh-CN/en-US、hover Popover、Select 与 quick jump 行为。
 - 视觉：组件裁剪截图 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`，并直接比较成对 PNG；不能以阈值通过代替局部差异审计。
-- 发布：根与 `pagination` 子路径、声明、`pagination.css`、tree-shaking、SSR-safe import、真实 tarball 离线安装、许可证/SBOM；产物不得含 `vendor` 或私有 workspace 运行时路径。
+- 发布：根与 `pagination` 子路径 default/named 入口、声明、`pagination.css`、tree-shaking、SSR-safe import、真实 tarball 离线安装、许可证/SBOM；产物不得含 `vendor` 或私有 workspace 运行时路径。
 
 ## Deviation
 
 - Accepted：Vue 用 `modelValue`/`update:modelValue` 提供原生 `v-model`，同时保留 `currentPage`/`update:currentPage`；这是 React 受控 prop 的 Vue 原生映射，不改变页码与事件语义。
 - Accepted：React 用 `react-window` 渲染省略页列表；Vue 使用等价固定行高窗口化组件，保持 78px 宽、32px 行高、5 行 viewport、滚动可达范围和公开 DOM class，不引入 React 运行时依赖。
 - Accepted parity limitation：固定上游的 `handleKeyDown` 是空实现且页码项未提供 tabindex；Vue 不额外添加新的键盘导航契约。Select、InputNumber 与 Popover 自身的键盘/焦点能力照常保留。
+
+## Locale 文档消费者回归（2026-09-06）
+
+固定 LocaleConsumer 优先 ConfigProvider，再取最近 LocaleProvider，缺 code 整体回退默认语言。新增 Pagination 同屏 en_GB/ja_JP、响应式切换、嵌套隔离和 ConfigProvider 优先级公开行为/SSR 回归，修复仅读 ConfigProvider 的遗漏；语言元数据不深层代理，不改变 props/emits 或默认方向。
+
+## Dark Mode 页大小切换补充
+
+固定 `pagination/index.tsx:312` 使用 `pageSize + pageSizeToken` 作为 Select key。Vue 同步该身份契约，在页大小或语言文案变化时重建选择器并释放旧焦点，避免关闭菜单后保留多余焦点 class/边框。公开受控页大小变更测试和双语明暗文档中的真实菜单选择共同验证此行为。
+
+相邻 Select 消费路径的 `updateScrollTop()` 已存在于固定 Foundation `select/foundation.ts:1198`，补齐集成层漏写的声明，不修改上游逻辑。

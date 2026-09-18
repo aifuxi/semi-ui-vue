@@ -147,7 +147,7 @@ const placeholderCount = computed(() => {
   return Math.max(0, (props.icon && !props.indent ? props.level : props.level - 1) || 0);
 });
 const iconRotation = computed(() =>
-  context.subNavMotion.value
+  context.subNavMotion.value && context.mode.value === 'vertical' && !collapsed.value
     ? `${context.prefixCls.value}-icon-rotate-${isOpen.value ? '180' : '0'}`
     : undefined,
 );
@@ -210,7 +210,7 @@ const dropdownBindings = computed(() => {
           role="menuitem"
           :tabindex="showNestedChevron ? -1 : 0"
           :class="titleClasses"
-          :aria-expanded="isOpen ? 'true' : 'false'"
+          :aria-expanded="undefined"
           @click="handleClick"
           @keypress="handleKey"
         >
@@ -224,7 +224,7 @@ const dropdownBindings = computed(() => {
               ]"
             />
             <i
-              v-if="context.toggleIconPosition.value === 'left' && hasToggleIcon"
+              v-if="context.toggleIconPosition.value === 'left'"
               :class="[
                 `${context.prefixCls.value}-item-icon`,
                 `${context.prefixCls.value}-item-icon-toggle-${context.toggleIconPosition.value}`,
@@ -232,12 +232,13 @@ const dropdownBindings = computed(() => {
             >
               <component
                 :is="defaultToggleIcon"
-                v-if="!hasCustomToggleIcon"
+                v-if="hasToggleIcon && !hasCustomToggleIcon"
                 :class="iconRotation"
+                :aria-hidden="!collapsed || undefined"
                 size="default"
               />
               <NavigationIconRenderer
-                v-else
+                v-else-if="hasToggleIcon"
                 :animation-class="iconRotation || ''"
                 :content="toggleIcon"
                 force
@@ -261,7 +262,7 @@ const dropdownBindings = computed(() => {
               <NavigationNodeRenderer :content="titleContent" />
             </span>
             <i
-              v-if="context.toggleIconPosition.value === 'right' && hasToggleIcon"
+              v-if="context.toggleIconPosition.value === 'right'"
               :class="[
                 `${context.prefixCls.value}-item-icon`,
                 `${context.prefixCls.value}-item-icon-toggle-${context.toggleIconPosition.value}`,
@@ -269,12 +270,13 @@ const dropdownBindings = computed(() => {
             >
               <component
                 :is="defaultToggleIcon"
-                v-if="!hasCustomToggleIcon"
+                v-if="hasToggleIcon && !hasCustomToggleIcon"
                 :class="iconRotation"
+                :aria-hidden="!collapsed || undefined"
                 size="default"
               />
               <NavigationIconRenderer
-                v-else
+                v-else-if="hasToggleIcon"
                 :animation-class="iconRotation || ''"
                 :content="toggleIcon"
                 force
@@ -307,7 +309,7 @@ const dropdownBindings = computed(() => {
               ]"
             />
             <i
-              v-if="context.toggleIconPosition.value === 'left' && hasToggleIcon"
+              v-if="context.toggleIconPosition.value === 'left'"
               :class="[
                 `${context.prefixCls.value}-item-icon`,
                 `${context.prefixCls.value}-item-icon-toggle-${context.toggleIconPosition.value}`,
@@ -315,12 +317,13 @@ const dropdownBindings = computed(() => {
             >
               <component
                 :is="defaultToggleIcon"
-                v-if="!hasCustomToggleIcon"
+                v-if="hasToggleIcon && !hasCustomToggleIcon"
                 :class="iconRotation"
+                :aria-hidden="!collapsed || undefined"
                 size="default"
               />
               <NavigationIconRenderer
-                v-else
+                v-else-if="hasToggleIcon"
                 :animation-class="iconRotation || ''"
                 :content="toggleIcon"
                 force
@@ -340,7 +343,7 @@ const dropdownBindings = computed(() => {
               <NavigationNodeRenderer :content="titleContent" />
             </span>
             <i
-              v-if="context.toggleIconPosition.value === 'right' && hasToggleIcon"
+              v-if="context.toggleIconPosition.value === 'right'"
               :class="[
                 `${context.prefixCls.value}-item-icon`,
                 `${context.prefixCls.value}-item-icon-toggle-${context.toggleIconPosition.value}`,
@@ -348,12 +351,13 @@ const dropdownBindings = computed(() => {
             >
               <component
                 :is="defaultToggleIcon"
-                v-if="!hasCustomToggleIcon"
+                v-if="hasToggleIcon && !hasCustomToggleIcon"
                 :class="iconRotation"
+                :aria-hidden="!collapsed || undefined"
                 size="default"
               />
               <NavigationIconRenderer
-                v-else
+                v-else-if="hasToggleIcon"
                 :animation-class="iconRotation || ''"
                 :content="toggleIcon"
                 force
@@ -362,21 +366,22 @@ const dropdownBindings = computed(() => {
             </i>
           </div>
         </div>
-        <Collapsible
-          v-if="context.subNavMotion.value"
-          :fade="true"
-          :is-open="isOpen"
-          :keep-d-o-m="false"
-          :motion="context.subNavMotion.value"
-        >
-          <ul :class="subClasses">
-            <slot />
-          </ul>
-        </Collapsible>
-        <ul v-else-if="isOpen" :class="subClasses">
+      </template>
+      <!-- The pinned vertical adapter retains the motion shell when collapsed. -->
+      <Collapsible
+        v-if="context.mode.value === 'vertical' && context.subNavMotion.value"
+        :fade="true"
+        :is-open="isOpen"
+        :keep-d-o-m="false"
+        :motion="context.subNavMotion.value"
+      >
+        <ul v-if="!collapsed" :class="subClasses">
           <slot />
         </ul>
-      </template>
+      </Collapsible>
+      <ul v-else-if="context.mode.value === 'vertical' && isOpen && !collapsed" :class="subClasses">
+        <slot />
+      </ul>
     </NavigationContextProvider>
   </NavItem>
 </template>

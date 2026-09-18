@@ -33,6 +33,8 @@
 
 事件顺序：非受控 change 由 Foundation 先写入可见 checked，再通知 `change`，之后发出两个 Vue update 事件；受控 change 不自行提交状态，父级通过 `checked` 或 `v-model` 更新后才改变 class/input。若父级拒绝更新，浏览器临时切换的原生 checkbox 会在 Vue tick 后恢复受控值。
 
+受控值移除同样是状态更新：固定 Adapter 的 `componentDidUpdate` 在 `checked` 从布尔值变为 `undefined` 时仍调用 Foundation，Adapter 原样保存该值。Vue 的 `checked` 或 `modelValue` 移除后清除选中 class、将原生 input 置为关闭并移除 `aria-checked`；下一次操作恢复非受控更新。显式 `false` 仍保留 `aria-checked="false"`。定点回归覆盖两个受控入口的移除，以及 Table 动态示例的缺省→开启→移除→重开路径。
+
 ## DOM、样式、键盘与可访问性
 
 | 状态          | 固定 DOM/class 契约                                                                                    |
@@ -56,7 +58,7 @@ Tab/Shift+Tab 聚焦原生 input，Space 由浏览器原生 checkbox 行为触�
 - SSR import 不访问 DOM；受控/defaultChecked、文本、loading SVG 与 ARIA 可稳定渲染。Foundation 的 mount/destroy 仅在客户端生命周期执行。
 - 单元测试覆盖 DOM、ARIA、受控/非受控、`v-model`、事件、disabled/loading、尺寸/文本、focus-visible、鼠标监听和 SSR。
 - Chromium 对照覆盖固定源码请求、11 个目标的 computed style/几何/局部像素、鼠标/Space/focus、Spin 动画、桌面/移动 light/dark 与 RTL 截图。
-- tarball 验证覆盖根/`switch` 子路径 ESM、声明、SSR import 与 `switch.css` 安装解析。
+- tarball 验证覆盖根/`switch` 子路径 default/named ESM、声明、`SWITCH_SIZES` 枚举、SSR import 与 `switch.css` 安装解析；单元用例从 `./index` 固定默认与命名导出一致。
 
 ## React → Vue 迁移
 
@@ -71,3 +73,10 @@ Tab/Shift+Tab 聚焦原生 input，Space 由浏览器原生 checkbox 行为触�
 | `onMouseEnter` / `onMouseLeave`                  | `@mouseenter` / `@mouseleave`                   |
 
 没有 accepted visual/behavior deviation。Vue 新增 `v-model`、update emits 与 slots 是框架原生 API 映射，不改变固定默认 DOM、状态或事件载荷。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Switch 单测、SSR 与 hydration 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/switch.spec.ts` 5/5 通过，覆盖固定源码来源、受控/非受控、键盘焦点、loading、computed style/几何与 light/dark、RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、`SWITCH_SIZES`、类型、`switch.css`、tree-shaking、许可与 SBOM。

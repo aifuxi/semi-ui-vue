@@ -5,7 +5,7 @@ import { createApp, defineComponent, h, nextTick } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider, type SemiLocale } from '../config-provider';
-import Calendar, { CALENDAR_MODES, type CalendarEvent } from './index';
+import DefaultCalendar, { CALENDAR_MODES, Calendar, type CalendarEvent } from './index';
 
 class TestResizeObserver {
   static instances: TestResizeObserver[] = [];
@@ -44,7 +44,8 @@ describe('Calendar', () => {
     vi.restoreAllMocks();
   });
 
-  it('公开四种 mode 并默认渲染 week', async () => {
+  it('公开入口保持 default、named 与四种 mode 常量导出一致', async () => {
+    expect(DefaultCalendar).toBe(Calendar);
     expect(CALENDAR_MODES).toEqual(['day', 'week', 'month', 'range']);
     const wrapper = mount(Calendar, { props: { displayValue } });
     expect(wrapper.get('.semi-calendar-week').element.tagName).toBe('DIV');
@@ -88,6 +89,22 @@ describe('Calendar', () => {
     expect(aprilTen).toBeDefined();
     await aprilTen!.trigger('click');
     expect((wrapper.emitted('click')?.at(-1)?.[1] as Date).getDate()).toBe(10);
+  });
+
+  it('月视图普通日期格保持固定 Adapter 的 gridcell 与 aria-current 输出', () => {
+    const wrapper = mount(Calendar, { props: { displayValue, mode: 'month' } });
+    const cells = wrapper.findAll('.semi-calendar-month-skeleton [role="gridcell"]');
+    const today = cells.find(
+      (cell) => cell.attributes('aria-label') === new Date(2023, 3, 10).toLocaleDateString(),
+    );
+    const nonToday = cells.find(
+      (cell) => cell.attributes('aria-label') === new Date(2023, 3, 11).toLocaleDateString(),
+    );
+
+    expect(today).toBeDefined();
+    expect(today!.attributes('aria-current')).toBe('date');
+    expect(nonToday).toBeDefined();
+    expect(nonToday!.attributes('aria-current')).toBe('false');
   });
 
   it('解析日内、全天与相同时间事件并响应受控 events 更新', async () => {
@@ -187,6 +204,12 @@ describe('Calendar', () => {
     const wrapper = mount(Host, { attachTo: document.body });
     await flushPromises();
     const more = wrapper.get('.semi-calendar-month-event-card-wrapper');
+    const triggerCell = more.element.closest('li');
+    expect(triggerCell).not.toBeNull();
+    expect(triggerCell!.getAttribute('role')).toBeNull();
+    expect(triggerCell!.getAttribute('aria-label')).toBeNull();
+    expect(triggerCell!.getAttribute('aria-current')).toBeNull();
+
     await more.trigger('click');
     await flushPromises();
     expect(popup.querySelector('.semi-portal-inner')).not.toBeNull();

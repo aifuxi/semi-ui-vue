@@ -2,7 +2,7 @@
 
 面向 Vue 3.5+、以 Semi Design `v2.102.0` 为固定参考基线的独立组件库实现。
 
-> 当前为 `0.1.0-alpha.1` 预览版，只完成了仓库 README 所列的组件范围，API 和发布结构在 `1.0.0` 前仍可能调整。本项目不是 Semi Design 官方 Vue 版本，也不代表 DouyinFE 的授权、合作或品牌身份。
+> 当前通过 `next` 渠道提供预览版，组件范围以仓库 README 为准，API 和发布结构在稳定版验收前仍可能调整。本项目不是 Semi Design 官方 Vue 版本，也不代表 DouyinFE 的授权、合作或品牌身份。
 
 ## 安装
 
@@ -16,6 +16,8 @@ import '@aifuxi/semi-theme-default/button.css';
 ```
 
 主包是 ESM-only，要求 Vue `>=3.5.0`。可以从根入口导入，也可以使用 `exports` 中列出的组件子路径。
+
+预览版使用 `next` 渠道，后续稳定版使用 `latest`；五个公开包同步升版。发布记录随包提供，见 [CHANGELOG](CHANGELOG.md)。
 
 ## 许可与归属
 

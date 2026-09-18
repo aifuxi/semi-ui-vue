@@ -92,11 +92,11 @@ const licensedDependencies = [
     '@tiptap/starter-kit',
     '@tiptap/vue-3',
   ].map((name) => ({
-    licenseFile: 'LICENSE.md',
+    licenseFile: name === '@tiptap/pm' ? 'LICENSE' : 'LICENSE.md',
     licenseRoot: path.join(workspaceRoot, 'packages', 'ui', 'node_modules'),
     name,
     noticeName: name,
-    version: '3.10.7',
+    version: runtimeDependencies[name],
   })),
   {
     licenseFile: 'LICENSE.md',
@@ -154,6 +154,14 @@ const licensedDependencies = [
     version: '2.2.31',
   },
 ].filter(({ name }) => Object.hasOwn(runtimeDependencies, name));
+// Tiptap accepts compatible upgrades; notices identify the installed license version.
+for (const dependency of licensedDependencies) {
+  if (!dependency.name.startsWith('@tiptap/')) continue;
+  const installedManifest = JSON.parse(
+    await readFile(path.join(dependency.licenseRoot, dependency.name, 'package.json'), 'utf8'),
+  );
+  dependency.version = installedManifest.version;
+}
 const creationTime = resolveCreationTime();
 const buildFingerprint = createHash('sha256')
   .update(
@@ -182,6 +190,14 @@ for (const dependency of licensedDependencies) {
     ),
     path.join(licenseRoot, dependencyLicenseArtifact(dependency.name)),
   );
+  if (dependency.name === '@tiptap/pm') {
+    const notices = await readFile(
+      path.join(dependency.licenseRoot, dependency.name, 'THIRD_PARTY_LICENSES.md'),
+      'utf8',
+    );
+    const licensePath = path.join(licenseRoot, dependencyLicenseArtifact(dependency.name));
+    await writeFile(licensePath, `${await readFile(licensePath, 'utf8')}\n\n${notices}`);
+  }
 }
 
 await writeFile(

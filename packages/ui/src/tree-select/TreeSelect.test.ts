@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick } from 'vue';
 
 import { ConfigProvider } from '../config-provider';
-import TreeSelect from './TreeSelect.vue';
+import DefaultTreeSelect, { TreeSelect } from './index';
 import type { TreeNodeData, TreeSelectExposed } from './types';
 
 const treeData: TreeNodeData[] = [
@@ -31,6 +31,10 @@ afterEach(() => {
 });
 
 describe('TreeSelect', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultTreeSelect).toBe(TreeSelect);
+  });
+
   it('renders the upstream trigger classes and combobox aria contract', () => {
     const wrapper = mount(TreeSelect, {
       props: {
@@ -97,7 +101,7 @@ describe('TreeSelect', () => {
         onSelect: () => order.push('select'),
         onChange: () => order.push('change'),
         'onUpdate:modelValue': () => order.push('update'),
-        onVisibleChange: (visible) => order.push(`visible:${visible}`),
+        onVisibleChange: (visible: boolean) => order.push(`visible:${visible}`),
       },
     });
     await open(wrapper);

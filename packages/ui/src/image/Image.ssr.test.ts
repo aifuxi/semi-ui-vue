@@ -1,8 +1,8 @@
 /* eslint-disable vue/one-component-per-file */
 
+import { describe, expect, it } from 'vitest';
 import { createSSRApp, defineComponent, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import { describe, expect, it } from 'vitest';
 
 import Image, { ImagePreview } from './index';
 
@@ -25,7 +25,6 @@ describe('Image SSR', () => {
     expect(html).toContain('class="semi-skeleton-image"');
     expect(html).not.toContain('semi-image-preview"');
   });
-
   it('ImagePreview SSR 只渲染 group，不创建 Portal 或客户端副作用', async () => {
     const html = await renderToString(
       createSSRApp(
@@ -40,6 +39,7 @@ describe('Image SSR', () => {
       ),
     );
     expect(html).toContain('semi-image-preview-group');
+    expect(html).toMatch(/id="semi-image-preview-group-[^"]+"/);
     expect(html.match(/class="semi-image"/g)).toHaveLength(2);
     expect(html).toContain('data-src="/one.png"');
     expect(html).not.toContain('class="semi-portal');

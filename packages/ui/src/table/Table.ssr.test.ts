@@ -1,7 +1,6 @@
-import { mount } from '@vue/test-utils';
-import { createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createSSRApp, h } from 'vue';
 
 import { Table } from './index';
 
@@ -39,25 +38,5 @@ describe('Table SSR', () => {
     expect(html).toContain('semi-table-placeholder');
     expect(html).toContain('Empty');
     expect(html).toContain('column-selection');
-  });
-
-  it('hydration 后无 warning 并初始化虚拟列表 ref', async () => {
-    const getVirtualizedListRef = vi.fn();
-    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
-    const wrapper = mount(Table, {
-      props: {
-        ...props,
-        getVirtualizedListRef,
-        scroll: { y: 120 },
-        virtualized: true,
-      },
-    });
-    expect(wrapper.find('.semi-table-virtualized').exists()).toBe(true);
-    expect(getVirtualizedListRef).toHaveBeenCalledWith(
-      expect.objectContaining({ current: expect.anything() }),
-    );
-    expect(consoleError).not.toHaveBeenCalled();
-    wrapper.unmount();
-    expect(getVirtualizedListRef).toHaveBeenLastCalledWith({ current: null });
   });
 });

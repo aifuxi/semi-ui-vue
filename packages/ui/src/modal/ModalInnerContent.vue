@@ -10,6 +10,7 @@ import { IconClose } from '@aifuxi/semi-icons-vue';
 
 import { Button } from '../button';
 import { Title } from '../typography';
+import ModalContentRenderer from './ModalContentRenderer';
 import ModalNodeRenderer from './ModalNodeRenderer';
 import type { ModalSize } from './types';
 
@@ -31,6 +32,7 @@ interface Props {
   headerProvided: boolean;
   height?: string | number | undefined;
   icon: VNodeChild;
+  modalRender?: ((dialog: VNodeChild) => VNodeChild) | undefined;
   outerStyle?: StyleValue | undefined;
   outerClass?: HTMLAttributes['class'];
   size: ModalSize;
@@ -47,10 +49,15 @@ const emit = defineEmits<{
 const dialogElement = useTemplateRef<HTMLDivElement>('dialog');
 const hasDefaultHeader = computed(() => props.title !== null && props.title !== undefined);
 const hasHeader = computed(() => props.headerProvided || hasDefaultHeader.value);
+
+function cssSize(value: string | number | undefined): string | undefined {
+  return typeof value === 'number' ? `${value}px` : value;
+}
+
 const outerStyle = computed<StyleValue>(() => [
   props.outerStyle,
-  props.width === undefined ? undefined : { width: props.width },
-  props.height === undefined ? undefined : { height: props.height },
+  props.width === undefined ? undefined : { width: cssSize(props.width) },
+  props.height === undefined ? undefined : { height: cssSize(props.height) },
   props.fullScreen ? { width: '100%', height: '100%', margin: 'unset' } : undefined,
 ]);
 const contentClasses = computed(() => [
@@ -81,92 +88,94 @@ defineExpose({ element: dialogElement });
     :style="outerStyle"
     @mousedown="emit('mousedown', $event)"
   >
-    <div
-      ref="dialog"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="semi-modal-title"
-      aria-describedby="semi-modal-body"
-      :class="contentClasses"
-      @animationend="emit('animationEnd', $event)"
-    >
-      <ModalNodeRenderer v-if="props.headerProvided" :content="props.header" />
-      <div v-else-if="hasDefaultHeader" class="semi-modal-header">
-        <span
-          v-if="props.icon !== null && props.icon !== undefined"
-          class="semi-modal-icon-wrapper"
-          x-semi-prop="icon"
-        >
-          <ModalNodeRenderer :content="props.icon" />
-        </span>
-        <Title id="semi-modal-title" :heading="5" class="semi-modal-title" x-semi-prop="title">
-          <ModalNodeRenderer :content="props.title" />
-        </Title>
-        <Button
-          v-if="props.closable"
-          aria-label="close"
-          class="semi-modal-close"
-          type="tertiary"
-          theme="borderless"
-          size="small"
-          @click="emit('close', $event)"
-        >
-          <template #icon>
-            <ModalNodeRenderer
-              v-if="props.closeIcon !== null && props.closeIcon !== undefined"
-              :content="props.closeIcon"
-            />
-            <IconClose v-else x-semi-prop="closeIcon" />
-          </template>
-        </Button>
-      </div>
-
+    <ModalContentRenderer :render="props.modalRender">
       <div
-        v-if="hasHeader"
-        id="semi-modal-body"
-        :class="bodyClasses"
-        :style="props.bodyStyle"
-        x-semi-prop="children"
+        ref="dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="semi-modal-title"
+        aria-describedby="semi-modal-body"
+        :class="contentClasses"
+        @animationend="emit('animationEnd', $event)"
       >
-        <ModalNodeRenderer :content="props.body" />
-      </div>
-      <div v-else class="semi-modal-body-wrapper">
-        <span
-          v-if="props.icon !== null && props.icon !== undefined"
-          class="semi-modal-icon-wrapper"
-          x-semi-prop="icon"
+        <ModalNodeRenderer v-if="props.headerProvided" :content="props.header" />
+        <div v-else-if="hasDefaultHeader" class="semi-modal-header">
+          <span
+            v-if="props.icon !== null && props.icon !== undefined"
+            class="semi-modal-icon-wrapper"
+            x-semi-prop="icon"
+          >
+            <ModalNodeRenderer :content="props.icon" />
+          </span>
+          <Title id="semi-modal-title" :heading="5" class="semi-modal-title" x-semi-prop="title">
+            <ModalNodeRenderer :content="props.title" />
+          </Title>
+          <Button
+            v-if="props.closable"
+            aria-label="close"
+            class="semi-modal-close"
+            type="tertiary"
+            theme="borderless"
+            size="small"
+            @click="emit('close', $event)"
+          >
+            <template #icon>
+              <ModalNodeRenderer
+                v-if="props.closeIcon !== null && props.closeIcon !== undefined"
+                :content="props.closeIcon"
+              />
+              <IconClose v-else x-semi-prop="closeIcon" />
+            </template>
+          </Button>
+        </div>
+
+        <div
+          v-if="hasHeader"
+          id="semi-modal-body"
+          :class="bodyClasses"
+          :style="props.bodyStyle"
+          x-semi-prop="children"
         >
-          <ModalNodeRenderer :content="props.icon" />
-        </span>
-        <div :class="bodyClasses" :style="props.bodyStyle" x-semi-prop="children">
           <ModalNodeRenderer :content="props.body" />
         </div>
-        <Button
-          v-if="props.closable"
-          aria-label="close"
-          class="semi-modal-close"
-          type="tertiary"
-          theme="borderless"
-          size="small"
-          @click="emit('close', $event)"
-        >
-          <template #icon>
-            <ModalNodeRenderer
-              v-if="props.closeIcon !== null && props.closeIcon !== undefined"
-              :content="props.closeIcon"
-            />
-            <IconClose v-else x-semi-prop="closeIcon" />
-          </template>
-        </Button>
-      </div>
+        <div v-else class="semi-modal-body-wrapper">
+          <span
+            v-if="props.icon !== null && props.icon !== undefined"
+            class="semi-modal-icon-wrapper"
+            x-semi-prop="icon"
+          >
+            <ModalNodeRenderer :content="props.icon" />
+          </span>
+          <div :class="bodyClasses" :style="props.bodyStyle" x-semi-prop="children">
+            <ModalNodeRenderer :content="props.body" />
+          </div>
+          <Button
+            v-if="props.closable"
+            aria-label="close"
+            class="semi-modal-close"
+            type="tertiary"
+            theme="borderless"
+            size="small"
+            @click="emit('close', $event)"
+          >
+            <template #icon>
+              <ModalNodeRenderer
+                v-if="props.closeIcon !== null && props.closeIcon !== undefined"
+                :content="props.closeIcon"
+              />
+              <IconClose v-else x-semi-prop="closeIcon" />
+            </template>
+          </Button>
+        </div>
 
-      <div
-        v-if="props.footer !== null && props.footer !== undefined"
-        class="semi-modal-footer"
-        x-semi-prop="footer"
-      >
-        <ModalNodeRenderer :content="props.footer" />
+        <div
+          v-if="props.footer !== null && props.footer !== undefined"
+          class="semi-modal-footer"
+          x-semi-prop="footer"
+        >
+          <ModalNodeRenderer :content="props.footer" />
+        </div>
       </div>
-    </div>
+    </ModalContentRenderer>
   </div>
 </template>

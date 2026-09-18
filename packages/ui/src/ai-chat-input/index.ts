@@ -1,21 +1,53 @@
-import type { DefineComponent } from 'vue';
+import type { Component, DefineComponent } from 'vue';
 
 import AIChatInputBase from './AIChatInput.vue';
 import AIChatInputConfigureBase from './AIChatInputConfigure.vue';
+import AIChatInputConfigureItemBase from './AIChatInputConfigureItem.vue';
 import AIChatInputConfigureButtonBase from './AIChatInputConfigureButton.vue';
 import AIChatInputConfigureMcpBase from './AIChatInputConfigureMcp.vue';
 import AIChatInputConfigureRadioButtonBase from './AIChatInputConfigureRadioButton.vue';
 import AIChatInputConfigureSelectBase from './AIChatInputConfigureSelect.vue';
-import type { AIChatInputConfigureProps, AIChatInputExposed, AIChatInputProps } from './types';
+import { getConfigureItem as getConfigureItemBase } from './get-configure-item';
+import type {
+  AIChatInputConfigureProps,
+  AIChatInputConfigureItemProps,
+  AIChatInputExposed,
+  AIChatInputGetConfigureItemOptions,
+  AIChatInputProps,
+} from './types';
 
 export type AIChatInputConfigureComponent = DefineComponent<AIChatInputConfigureProps> & {
+  Item: AIChatInputConfigureItemComponent;
   Button: typeof AIChatInputConfigureButtonBase;
   Mcp: typeof AIChatInputConfigureMcpBase;
   RadioButton: typeof AIChatInputConfigureRadioButtonBase;
   Select: typeof AIChatInputConfigureSelectBase;
 };
 
+export type AIChatInputConfigureItemComponent = DefineComponent<
+  Pick<AIChatInputConfigureItemProps, 'field' | 'initValue'> & {
+    onChange?: (value: unknown) => void;
+  }
+> & {
+  new (): {
+    $slots: {
+      default?: (props: { value: unknown; onChange: (value: unknown) => void }) => unknown;
+    };
+  };
+};
+export const AIChatInputConfigureItem =
+  AIChatInputConfigureItemBase as unknown as AIChatInputConfigureItemComponent;
+
+export type AIChatInputGetConfigureItemFactory = (
+  component: Component,
+  options?: AIChatInputGetConfigureItemOptions,
+) => AIChatInputConfigureItemComponent;
+
+export const getConfigureItem =
+  getConfigureItemBase as unknown as AIChatInputGetConfigureItemFactory;
+
 export const AIChatInputConfigure = Object.assign(AIChatInputConfigureBase, {
+  Item: AIChatInputConfigureItemBase,
   Button: AIChatInputConfigureButtonBase,
   Mcp: AIChatInputConfigureMcpBase,
   RadioButton: AIChatInputConfigureRadioButtonBase,
@@ -49,6 +81,7 @@ export type {
   AIChatInputConfigureEmits,
   AIChatInputConfigureExposed,
   AIChatInputConfigureItemProps,
+  AIChatInputGetConfigureItemOptions,
   AIChatInputConfigureProps,
   AIChatInputContent,
   AIChatInputEmits,

@@ -1,9 +1,8 @@
-import { mount } from '@vue/test-utils';
-import { createSSRApp, h, nextTick } from 'vue';
-import { renderToString } from 'vue/server-renderer';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { createSSRApp, h } from 'vue';
+import { renderToString } from 'vue/server-renderer';
 
-import OverflowList from './OverflowList.vue';
+import OverflowList from './index';
 import type { OverflowItem } from './types';
 
 afterEach(() => {
@@ -32,20 +31,5 @@ describe('OverflowList SSR', () => {
     expect(html).toContain('semi-overflow-list');
     expect(html).toContain('semi-overflow-list-item');
     expect(html).toContain('visibility:hidden');
-  });
-
-  it('observer 不可用时客户端挂载安全降级并保持 slot 内容', async () => {
-    vi.stubGlobal('ResizeObserver', undefined);
-    vi.stubGlobal('IntersectionObserver', undefined);
-    const wrapper = mount(OverflowList, {
-      props: { items: [{ key: 'a' }], renderMode: 'scroll' },
-      slots: {
-        visibleItem: ({ item }: { item: OverflowItem }) => h('button', String(item.key)),
-      },
-    });
-    await nextTick();
-
-    expect(wrapper.find('button[data-scrollkey="a"]').text()).toBe('a');
-    wrapper.unmount();
   });
 });

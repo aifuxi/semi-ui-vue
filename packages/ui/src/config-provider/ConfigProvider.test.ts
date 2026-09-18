@@ -1,12 +1,13 @@
 /* eslint-disable vue/one-component-per-file */
 import { mount } from '@vue/test-utils';
-import { renderToString } from '@vue/server-renderer';
-import { createSSRApp, defineComponent, h, inject, nextTick, onMounted, shallowRef } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { defineComponent, h, inject, nextTick, onMounted, shallowRef } from 'vue';
 
 import { Text } from '../typography';
 
-import ConfigProvider, {
+import DefaultConfigProvider, {
+  CONFIG_BREAKPOINTS,
+  ConfigProvider,
   ConfigConsumer,
   configContextKey,
   defaultResponsiveMap,
@@ -59,6 +60,13 @@ function installMatchMedia(matches: Record<string, boolean>): MatchMediaControll
 }
 
 describe('ConfigProvider', () => {
+  it('公开入口保持 default、named、静态响应式映射与固定断点枚举', () => {
+    expect(DefaultConfigProvider).toBe(ConfigProvider);
+    expect(ConfigProvider.defaultResponsiveMap).toBe(defaultResponsiveMap);
+    expect(ConfigConsumer).toBeDefined();
+    expect(CONFIG_BREAKPOINTS).toEqual(['xs', 'sm', 'md', 'lg', 'xl', 'xxl']);
+  });
+
   beforeEach(() => {
     semiGlobal.config = {};
   });
@@ -129,7 +137,9 @@ describe('ConfigProvider', () => {
       props: { locale: english },
       slots: { default: () => h(Text, { copyable: true }, () => 'Token') },
     });
-    expect(wrapper.get('[role="button"]').attributes('aria-label')).toBe('Copy');
+    expect(wrapper.get('[role="button"]').attributes('aria-label')).toBe('copy');
+    await wrapper.get('[role="button"]').trigger('keydown', { key: 'Enter' });
+    expect(wrapper.text()).toContain('Copied');
 
     await wrapper.setProps({
       locale: {
@@ -137,7 +147,10 @@ describe('ConfigProvider', () => {
         Typography: { copy: '复制它', copied: '已复制', expand: '展开', collapse: '收起' },
       },
     });
-    expect(wrapper.get('[role="button"]').attributes('aria-label')).toBe('复制它');
+    expect(wrapper.text()).toContain('已复制');
+    await wrapper.setProps({ locale: { code: 'partial' } });
+    expect(wrapper.text()).toContain('复制成功');
+    wrapper.unmount();
   });
 
   it('首次订阅时读取断点，过滤变更回调并在最后取消订阅时清理', async () => {
@@ -213,26 +226,5 @@ describe('ConfigProvider', () => {
     expect(ConfigProvider.defaultResponsiveMap).toBe(defaultResponsiveMap);
     semiGlobal.config.overrideDefaultProps = { Select: { zIndex: 2000 } };
     expect(semiGlobal.config.overrideDefaultProps?.Select).toEqual({ zIndex: 2000 });
-  });
-
-  it('SSR-safe 渲染 LTR/RTL 与 Consumer', async () => {
-    const app = createSSRApp({
-      render: () =>
-        h(
-          ConfigProvider,
-          { direction: 'rtl', timeZone: 'Asia/Shanghai' },
-          {
-            default: () =>
-              h(ConfigConsumer, null, {
-                default: (context: ConfigContextValue) =>
-                  h('span', { 'data-zone': context.timeZone }, context.direction),
-              }),
-          },
-        ),
-    });
-    const html = await renderToString(app);
-    expect(html).toContain('class="semi-rtl"');
-    expect(html).toContain('data-zone="Asia/Shanghai"');
-    expect(html).toContain('>rtl</span>');
   });
 });

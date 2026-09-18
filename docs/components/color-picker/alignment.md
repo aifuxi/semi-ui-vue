@@ -72,7 +72,7 @@
 
 ## 完成门禁
 
-- Vue 源码、Foundation facade、根/子路径导出、独立 ColorPicker CSS。
+- Vue 源码、Foundation facade、根/子路径导出、default/named `ColorPicker` 与静态 `colorStringToValue`、独立 ColorPicker CSS。
 - 中英文文档、React→Vue 迁移、React/Vue 同数据同状态场景。
 - 单元/SSR/类型：转换、受控/非受控、输入格式、拖拽/清理、ARIA、EyeDropper、Popover 自定义容器、dark/RTL/locale。
 - 同一 Chromium 中先通过 computed style 与几何，再以 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001` 验证桌面/移动 light/dark/RTL；阈值通过后直接比较成对 PNG。

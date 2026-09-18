@@ -445,7 +445,6 @@ const defaultUploadNode = computed<VNodeChild>(() =>
       type: 'button',
       'aria-label': 'Upload',
       disabled: Boolean(props.uploadProps?.disabled),
-      onClick: () => uploadRef.value?.openFileDialog(),
     },
     [h(IconPaperclip)],
   ),

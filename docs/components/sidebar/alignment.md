@@ -76,7 +76,7 @@
 - Annotation：文本/视频、时长格式、链接打开、item payload、custom item slot、受控 collapse。
 - Code/File：JSON/代码路径、展开 payload、HTML 更新、只读工具栏、主/详情模式、copy 成败回调。
 - Chromium：desktop/mobile light/dark + RTL；React/Vue computed style、geometry、截图；工作台 smoke。
-- 发布：root/subpath runtime、声明、主题子入口、SSR-safe import、tree-shaking、许可证/SBOM 与隔离 tarball consumer。
+- 发布：root/subpath 的 default/named `Sidebar`、`Annotation`/`MCPConfigure` 与 compound 静态成员由单元用例从 `./index` 固定，另覆盖声明、主题子入口、SSR-safe import、tree-shaking、许可证/SBOM 与隔离 tarball consumer。
 
 ## Deviation
 
@@ -85,3 +85,18 @@
 - 上游 Container Foundation 读取未声明/未透传的 `closeOnEsc`，固定文档也没有列出该 prop；Vue 将它作为显式可选 prop 提供并默认 `false`，以保留可验证行为而不改变默认值。
 - 上游 Annotation item 为无键盘语义的 clickable div；本切片保持相同 DOM/class/点击行为以满足样式契约，并在文档中提示业务方通过自定义 item slot 提供更强语义。
 - Tiptap extension 类型属于框架运行时；Vue 公开 `extensions` 使用 `Extension[]` 的 Vue Tiptap 类型，不能直接接收 React extension/node-view 实例。
+
+## 文档补齐：包装组件 Boolean 透传
+
+固定 Container/index.tsx:37-41 的 motion/showClose/resizable 默认均为 true；Annotation 与 MCPConfigure 按 pick 透传时，未提供的属性保留 undefined。Vue 包装层不能把省略的 Boolean 转为 false 后覆盖 Container 默认。补充双包装层的省略/false/true、关闭回调黑盒测试，并在双语文档浏览器检查显隐、退出与重开。
+
+## 文档补齐：主视图退出与重开
+
+工作区由 main 进入 code/file 再返回时，主内容插槽在当前渲染中重新创建 VNode，避免复用已卸载的 Fragment。生产静态页面及在线编辑器均验证代码复制、文件编辑/返回、选项切换；开发单测不能代替生产编译下的重开证据。详情内容与标题回调保留既有参数契约。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Sidebar/Annotation 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/sidebar.spec.ts` 5/5 通过，覆盖固定源码来源、基础 DOM/样式/几何与受控选项，以及 desktop light/dark、en-US RTL 成对截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、`Sidebar.*`/`Annotation` 复合静态成员、类型、`sidebar.css`、tree-shaking、许可与 SBOM。

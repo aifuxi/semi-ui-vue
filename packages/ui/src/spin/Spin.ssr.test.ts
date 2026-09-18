@@ -2,7 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, h } from 'vue';
 import { describe, expect, it } from 'vitest';
 
-import Spin from './Spin.vue';
+import Spin from './index';
 
 describe('Spin SSR', () => {
   it('SSR-safe 渲染默认、hidden、block 与自定义内容', async () => {

@@ -80,6 +80,7 @@ Group 读取子 VNode 时以“键是否存在 + 值不为显式 `false`”解�
 ## React → Vue deviation
 
 - Accepted：React `hoverMask`/`children`/topSlot/bottomSlot 接收 ReactNode；Vue 使用 VNodeChild prop并提供同名 slot，节点结构和触发时机不变。
+- Accepted：`topSlot.text`/`bottomSlot.text`/`hoverMask` 传入的 VNode 在渲染前克隆（与 `RatingNodeRenderer` 一致）。Vue vnode 属于挂载它的树，而固定示例把同一份 slot 配置对象交给多个头像；React element 可复用，因此克隆后同一配置在每个实例上都继续渲染，不静默丢内容。
 - Accepted：React `renderMore` 映射为 `#more` scoped slot，同时保留同名函数 prop；输入仍是剩余数量与剩余 Avatar VNode。
 - Accepted：React SyntheticEvent 映射为 Vue 原生 `MouseEvent | KeyboardEvent | Event`；DOM、默认行为与回调顺序保持一致。
 
@@ -97,3 +98,7 @@ Group 读取子 VNode 时以“键是否存在 + 值不为显式 `false`”解�
 - 完整 `pnpm check:full` 通过：54 个 Vitest 文件、418 个单元/SSR 测试，以及 217 个 Chromium 行为与视觉测试全部通过。
 - Avatar 定向 Chromium 场景 7/7 通过；desktop/mobile 的 light/dark 与 RTL 共 5 组成对截图均通过严格阈值，且 React/Vue PNG 逐组字节一致。
 - 默认主题、`avatar.css` 逐组件入口、`@aifuxi/semi-ui-vue/avatar` SSR import、真实 tarball 的 ESM/声明/样式/类型/合规门禁均通过；公开产物未泄漏 `vendor/**` 或私有 workspace 路径。
+
+## 公开入口契约锁
+
+- `Avatar.test.ts` 从 `./index` 消费公开入口，固定 default 与 named 导出一致、compound `Avatar.Group` 与 `AVATAR_*` 枚举常量；`pnpm check` 持续覆盖格式、lint、类型与该断言。

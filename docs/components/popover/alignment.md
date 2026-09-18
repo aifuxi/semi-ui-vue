@@ -53,7 +53,7 @@ Popover 具有多个默认值为 true 的可选 Boolean prop。实现必须通�
 ## DOM、class、样式、角色与事件顺序
 
 - Tooltip Portal 内的定位根为 `.semi-popover-wrapper`，带 `x-placement`、show/hide animation class 与 `.semi-popover-with-arrow`；内容卡片为 `div.semi-popover[.semi-popover-rtl] > div.semi-popover-content`。
-- showArrow=true 时渲染 `.semi-popover-icon-arrow` 两层 path；上下方位 SVG 为 24×8，左右方位最终由 Tooltip placement 渲染为 8×24。arrowStyle 优先于 popup style，未传时由固定 CSS Token 着色。
+- showArrow=true 时渲染 `.semi-popover-icon-arrow` 两层 path；上下方位 SVG 为 24×8，左右方位最终由 Tooltip placement 渲染为 8×24。arrowStyle 优先于 popup style，未传时由固定 CSS Token 着色。 SVG 保留固定源未设置 aria-hidden 的可访问属性；无名箭头仍映射 Chromium image 角色，不等价于 aria-hidden=true。
 - trigger 为 click/custom 时 role=`dialog`，子节点获得 `aria-expanded`、`aria-haspopup="dialog"`、`aria-controls`；hover/focus/contextMenu 为 role=`tooltip`，子节点获得 `aria-describedby`。
 - `visibleChange` 之后同步发出 `update:visible`；outside/Escape/afterClose 直接保持 Tooltip/Foundation 已验证顺序。content 内 clickToHide 与 stopPropagation 沿用 Tooltip Portal 事件集。
 - mouse enter/leave 默认各 50ms；hover bridge、focus、click、contextMenu、custom、condition、keepDOM 与 motion 均由 Tooltip 状态机执行，Popover 不另建 timer 或监听器。
@@ -73,7 +73,7 @@ Popover 具有多个默认值为 true 的可选 Boolean prop。实现必须通�
 - Portal/重定位：稳定自定义容器首次父节点、Element 与 Document scroll、resize/rePosKey、移动 viewport `scrollIntoView`、卸载后不再响应；断言最终 geometry，不读取私有 state。
 - React/Vue 场景：bottom/right、click dialog、hover tooltip、custom container、箭头与自定义颜色、无箭头、作用域内容、RTL。
 - 浏览器：同一 Chromium 的 computed style、bounding rect 与逐目标截图；桌面 1440×900、移动 390×844 的 light/dark，加 RTL；截图 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`，并独立比较 React/Vue 图片字节。
-- 发布：根与 `popover` 子路径 ESM/声明、`popover.css`、tree-shaking、SSR-safe import、真实 tarball 离线消费、许可证和 SBOM。
+- 发布：根与 `popover` 子路径 default/named ESM/声明、`popover.css`、tree-shaking、SSR-safe import、真实 tarball 离线消费、许可证和 SBOM。
 
 ## Deviation
 

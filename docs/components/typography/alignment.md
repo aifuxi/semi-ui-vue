@@ -61,16 +61,35 @@
 
 ## 验收矩阵
 
-| 证据                | 场景                                                                                                                        |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| 单元/SSR            | 聚合根、四组件标签、装饰顺序、link/disabled、尺寸/字重、复制/键盘/计时器、CSS/JS ellipsis、数值六规则与 parser、locale、SSR |
-| Chromium 行为       | 固定源码请求、DOM/class、标题/段落/链接/禁用、CSS Tooltip、JS 展开收起、数值/复制、无运行时错误                             |
-| computed style/几何 | 10 个目标逐项比较颜色、字体、字重、行高、截断、margin、cursor、user-select；各轴差值不超过 0.5px                            |
-| 视觉                | desktop 1440×900 与 mobile 390×844，light/dark；组件级裁剪                                                                  |
-| 发布                | 根/typography 子路径 ESM/types、根/typography.css、SSR import、真实 tarball 安装与 SBOM                                     |
+| 证据                | 场景                                                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| 单元/SSR            | 公开入口、聚合根、四组件标签、装饰顺序、link/disabled、尺寸/字重、复制/键盘/计时器、CSS/JS ellipsis、数值六规则与 parser、locale、SSR |
+| Chromium 行为       | 固定源码请求、DOM/class、标题/段落/链接/禁用、CSS Tooltip、JS 展开收起、数值/复制、无运行时错误                                       |
+| computed style/几何 | 10 个目标逐项比较颜色、字体、字重、行高、截断、margin、cursor、user-select；各轴差值不超过 0.5px                                      |
+| 视觉                | desktop 1440×900 与 mobile 390×844，light/dark；组件级裁剪                                                                            |
+| 发布                | 根/typography 子路径 ESM/types、根/typography.css、SSR import、真实 tarball 安装与 SBOM                                               |
 
 截图阈值为 `threshold=0.1`、`maxDiffPixelRatio=0.001`；仍需人工排除局部集中差异。
 
 ## Deviation
 
 没有 accepted visual/behavior deviation。React children、ReactNode 和 ref 分别迁移为默认/命名 slot、VNodeChild 与 template ref；`renderTooltip` 迁移为 scoped slot，属于框架原生 API 映射。
+
+## 公开入口证据
+
+- `./typography` 子路径公开入口提供 default `Typography`、named `Typography`、`Text`、`Title`、`Paragraph`、`Numeral`、常量与类型；单元与 SSR 均从公开入口导入。
+- 单元锁定 default/named `Typography` 一致性及 `Typography.Text/Title/Paragraph/Numeral` compound 成员映射。
+
+## ConfigProvider 文档续验：正式浮层集成
+
+- 固定源码 `typography/base.tsx:311,739`：仅在溢出且无展开操作时用 Tooltip/Popover 包裹整个 Typography；Popover 默认 showArrow=true，opts 可覆盖，保留 ellipsis-popover class。
+- Vue 将浮层职责集中到 TypographyTooltip：透传 opts、原始 VNode 内容和 tooltip scoped slot；测量与装饰仍归 TypographyBase。复用既有 Tooltip/Popover 定位、Portal、事件及卸载逻辑；逐组件样式已有这些依赖。
+- 必须验证默认 Tooltip、Popover showArrow 缺省/false/true、自定义容器、滚动定位、溢出恢复、卸载与 SSR；ConfigProvider Consumer 双语 light/dark 比较完整浮层的 DOM、样式、几何和截图。现有 ready 记录不构成本次改动的通过证据。
+
+实现说明：TypographyTooltip 使用范围受限的 render function，在无需浮层时直接返回原 VNode；SFC slot 会引入 Fragment 并改变原根节点。TypographyBase 在根节点替换后重新绑定 ResizeObserver。新增 Popover 箭头三态、VNode 内容、tooltip slot、显式容器和清理单测，以及双主题 Tooltip/Popover 的真实几何、computed style、完整箭头截图、Document 滚动、宽度恢复与卸载用例。
+
+最终证据：新增 8 项双主题浮层 Chromium 用例及 ConfigProvider Consumer 双语明暗 4 项均通过；共享修改后全仓 Chromium 442 项通过，真实 tarball 和 SSR dist 通过。
+
+## Locale 文档消费者回归（2026-09-06）
+
+固定 copyable.tsx 默认 IconCopy 保留图标自己的 aria-label=copy；本地化 copyTip 属于 Tooltip 提示文案，不覆盖默认或自定义 VNode 图标名称。复制入口使用现有 Tooltip 实现真实浮层，替代原生 title；新增本地化提示与 Enter 复制回归，以及文档矩阵中的日语复制浮层完整截图。RTL 展开入口的短暂缺失来自重挂载后的测量状态；验收在滚动定位后等待公开的折叠入口，不修改截断算法或放宽截图阈值。

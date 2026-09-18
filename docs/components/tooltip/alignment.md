@@ -58,7 +58,7 @@
 4. hover/focus 使用 50ms enter/leave 延迟；移入弹层会取消 leave，`clickToHide` 可在内部点击后直接关闭。
 5. click/contextMenu 在显示期间监听 window mousedown；trigger 与 portal 内部不算 outside，关闭时注销。
 6. hide 先进入 leave；100ms 动画结束后移除 Portal，或在 `keepDOM=true` 时保留 DOM 并 `display:none`，随后发出 `afterClose`。
-7. `visible` 外部变化：hover/focus 仍走延迟，其它 trigger 立即 show/hide；`rePosKey` 变化立即重新定位。
+7. `visible` 外部变化：hover/focus 仍走延迟，其它 trigger 立即 show/hide；`rePosKey` 变化在同轮触发器 DOM 更新后重新定位，与固定 React `componentDidUpdate` 的测量时机一致。
 
 ## DOM、样式、键盘与可访问性
 
@@ -85,10 +85,12 @@ Escape 在 `closeOnEsc=true` 时关闭并通知；ArrowDown/ArrowUp 将焦点移
 
 ## 验证矩阵
 
+2026-09-12 定点回归补充：调用方在同次父状态更新中移动触发器并更新 `rePosKey` 时，默认 pre watcher 会测量旧触发器 DOM，浮层保持前一个位置；固定 React 在 `componentDidUpdate` 后测量。Vue 的重定位 watcher 改为 `flush: 'post'`，未改变计算公式、公开 API 或可见状态机。新增单测从实际触发器 `style.left` 派生 jsdom 测量：触发器从 100px 移至 180px，旧实现浮层位移为 0，修复后为 80px。Tooltip 与 TooltipPortal 两个文件的 24 项单元/SSR 测试通过；真实浏览器与受影响历史批次由集中验收记录确认。
+
 - 单元/SSR：默认值、VNode/文本/多节点/disabled 包裹、五 trigger、延迟与 condition、custom visible、outside/clickToHide、ARIA、focus guard/Escape、keepDOM/afterClose、容器优先级、公开方法与 SSR import/render。
 - React/Vue 场景：top/right/bottom/left、edge placement、hover/click/focus/contextMenu/custom、无箭头、自定义样式、disabled trigger、RTL 和自定义容器。
 - Chromium：固定源码请求、真实 Portal、computed style/几何、placement 与箭头、hover bridge、click outside、focus/Escape、overflow flip、resize/rePosKey、桌面/移动 light/dark 与 RTL 截图。
-- 发布包：根/`tooltip` 子路径 ESM 与声明、`tooltip.css`、SSR-safe import、tree-shaking 与真实 tarball 离线安装。
+- 发布包：根/`tooltip` 子路径 default/named ESM 与声明、`tooltip.css`、SSR-safe import、tree-shaking 与真实 tarball 离线安装。
 
 ## React → Vue 迁移
 
@@ -110,3 +112,23 @@ Escape 在 `closeOnEsc=true` 时关闭并通知；ArrowDown/ArrowUp 将焦点移
 - 根/`tooltip` ESM 与声明、`tooltip.css`、SSR-safe import、主题顺序、许可证/SBOM 和真实 tarball 离线安装均通过。
 
 当前没有 accepted deviation，Tooltip 状态为 `ready`。
+
+## 文档组合场景补充
+
+固定 React Adapter 在 index.tsx:762 使用常量 prefix（semi-tooltip）生成动画类，公开 prefixCls 只控制 wrapper 等样式类。Vue 必须保留这一分离；Dropdown/Popover 自定义 wrapper 前缀时仍使用 semi-tooltip-animation-show/hide，以便 animationend 清理 Portal 和通知 afterClose。增加自定义前缀开关回归与 Button Split 浏览器实测。
+
+## Typography 集成发现的内容容器修正
+
+固定 `tooltip/index.tsx:795` 使用常量 prefix 生成 `.semi-tooltip-content`，不随 `prefixCls` 的 Popover/Dropdown 覆盖而变化。Vue Portal 修正该外层内容 class；Popover/Dropdown 自身的内层内容 class 保留。新增前缀回归并运行全仓 Chromium，不能仅以 Typography 的定向结果覆盖共享影响。
+
+## Dark Mode 组合触发器补充
+
+固定 `tooltip/index.tsx:927` 给子组件传递 `tabIndex`。Vue 装饰 VNode 时也必须使用组件声明的 camelCase prop，而非仅写原生 `tabindex` attribute；否则 Tag 的显式绑定会覆盖该 attribute，导致不可键盘聚焦。覆盖缺省、0、-1、2、显式 focus 打开，以及文档真实 Tab 焦点与焦点环。
+
+固定 Foundation `show` 在 `foundation.ts:348-356` 对 hover 触发器执行 `:hover` 检查；单纯键盘聚焦且指针移开时会关闭刚插入的弹层。文档测试保留这一上游行为，不把“聚焦后持续显示 hover 弹层”作为当前基线。显式 `trigger="focus"` 不走该检查，单测验证其聚焦打开。
+
+## 组件实例初始焦点
+
+Popover 文档 InitialFocus 的真实对照发现 `initialFocusRef` 绑定 Input 实例时 Vue 未聚焦。固定 React `tooltip/index.tsx:545–551` 直接调用 ref 的公开 `focus`；Vue 原先只保存组件 `$el`，Input 的根 div 无法聚焦。现在浅引用优先保存具有公开 `focus` 的组件实例并以成员调用保留 this；HTMLElement 路径不变，无公开方法才回退 HTMLElement `$el`，收到 null 时清理。公开 TooltipInitialFocusRef 类型不变。
+
+新增回归在目标 Input 前放置另一 Button，以公开 ref 绑定 Input，初次打开与关闭重开均验证实际 activeElement 是 Input 内部 input；从 input 发出 Escape 后验证销毁与触发器回焦，不由测试调用 focus。此用例在修复前于 activeElement 断言失败；修复后 Tooltip/Popover/Popconfirm 三文件共42项通过，保留原生 DOM ref 用例。jsdom 证明适配调用与公开状态，真实焦点及视觉仍以本轮完整文档 Chromium 矩阵为准，不复用失效旧证据。

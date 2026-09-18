@@ -16199,7 +16199,7 @@
             "headings": ["Cascader", "CascaderData"]
           }
         ],
-        "liveDemoCount": 27,
+        "liveDemoCount": 26,
         "markdownTableRowCount": 87
       }
     },
@@ -16587,7 +16587,7 @@
       "zhCN": {
         "path": "vendor/semi-design/content/input/upload/index.md",
         "apiSections": [{ "title": "API 参考", "line": 1708, "headings": [] }],
-        "liveDemoCount": 40,
+        "liveDemoCount": 42,
         "markdownTableRowCount": 78
       },
       "enUS": {
@@ -16595,7 +16595,7 @@
         "apiSections": [
           { "title": "API Reference", "line": 1691, "headings": [] }
         ],
-        "liveDemoCount": 40,
+        "liveDemoCount": 42,
         "markdownTableRowCount": 76
       }
     },
@@ -16911,7 +16911,7 @@
             ]
           }
         ],
-        "liveDemoCount": 10,
+        "liveDemoCount": 11,
         "markdownTableRowCount": 71
       },
       "enUS": {
@@ -16929,7 +16929,7 @@
             ]
           }
         ],
-        "liveDemoCount": 10,
+        "liveDemoCount": 11,
         "markdownTableRowCount": 71
       }
     },
@@ -17404,7 +17404,7 @@
             "headings": ["Image", "ImagePreview", "MenuProps"]
           }
         ],
-        "liveDemoCount": 9,
+        "liveDemoCount": 10,
         "markdownTableRowCount": 92
       },
       "enUS": {
@@ -17416,7 +17416,7 @@
             "headings": ["Image", "ImagePreview", "MenuProps"]
           }
         ],
-        "liveDemoCount": 9,
+        "liveDemoCount": 10,
         "markdownTableRowCount": 91
       }
     },

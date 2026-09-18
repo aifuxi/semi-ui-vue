@@ -94,7 +94,27 @@
 
 ## 验收结论
 
-- 单元与 SSR 覆盖静态 API、Factory 隔离、holder 上下文、默认值优先级、同 id 更新、timer/hover、关闭回调、Portal、stack、RTL、自定义图标和 SSR-safe import。
+- `./toast` 子路径公开入口提供 default `Toast`、named `Toast`、`ToastFactory`、`useToast`、常量与类型；单元与 SSR 均从公开入口导入，覆盖无 DOM 导入边界。
+- 单元与 SSR 覆盖公开入口、静态 API、Factory 隔离、holder 上下文、默认值优先级、同 id 更新、timer/hover、关闭回调、Portal、stack、RTL、自定义图标和 SSR-safe import。
 - Chromium 定向验收覆盖桌面 `1440×900` 与移动 `390×844`、DPR 1、light/dark、RTL、关闭交互、ARIA、关键 computed style 和 bounding rect。
 - 18 张 Toast 裁剪基线均由 React/Vue 独立截图生成并通过严格阈值，未使用截图 mask；每个场景还会在同一稳定时刻独立抓取 React/Vue buffer，并以 `Buffer.equals` 验证直接字节相同。
 - 根入口、`@aifuxi/semi-ui-vue/toast` 子路径、`@aifuxi/semi-theme-default/toast.css`、声明文件、SSR import 和隔离 tarball 消费均验证通过。
+
+## ConfigProvider 反馈文档续验
+
+固定 `toast/toast.tsx:159` 的关闭 Button 不设置 aria-label，名称由 IconClose 提供。移除 Vue 两种 stack 渲染分支额外注入的 `aria-label="Close"`；保留图标和原生 Button 键盘关闭行为，新增属性回归并运行 Toast 定向 Chromium。
+
+## 文档严格验收补充（2026-09-11）
+
+固定文档示例严格验收定位到 hook holder 的结构差异：固定 `useToast` 渲染的是 `HookToast`，即一条裸 `Toast`（`stack` 为真时包 `.semi-toast-zero-height-wrapper`），空 holder 渲染 `null`，且不传 `positionInList`（`reservedIndex` 为 0）。Vue 原先复用命令式 `ToastHost`，因此空 holder 会常驻一个 `.semi-toast-innerWrapper`，弹层也被包进该 `width/height: fit-content` 的祖先，使 hook Toast 的宽度与固定实现不同。
+
+修复：`useToast` 改为渲染内部 `ToastContextList`，逐条就地渲染 `ToastNotice`，空列表返回 `null`；`ToastNotice.positionInList` 改为可选，缺省时 `reservedIndex` 为 0。命令式路径继续使用 `ToastHost` 的 wrapper/innerWrapper，公开 API 与类型不变。
+
+同时补充：英文独有 Stacking 示例纳入本批严格验收；参考适配器补齐固定源码省略的 `React`/`lodash-es` 依赖，并把 `Toast`/`ToastFactory` 改走已公开的 `@semi-v2.102.0/toast` 别名（固定 `semi-ui/index.ts` 的组合导出形态超出共享参考导入映射）。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Toast/ToastFactory 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/toast.spec.ts` 5/5 通过，覆盖固定源码来源、类型/light/关闭/alert 与公开 DOM、computed style/几何、desktop light/dark 与 RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、`TOAST_*` 枚举、类型、`toast.css`、tree-shaking、许可与 SBOM。

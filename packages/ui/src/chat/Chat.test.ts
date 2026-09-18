@@ -3,7 +3,15 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick } from 'vue';
 
 import { semiGlobal } from '../config-provider';
-import { Chat, type ChatExposed, type ChatMessage } from './index';
+import DefaultChat, {
+  CHAT_ALIGNS,
+  CHAT_MESSAGE_STATUSES,
+  CHAT_MODES,
+  CHAT_SEND_HOT_KEYS,
+  Chat,
+  type ChatExposed,
+  type ChatMessage,
+} from './index';
 
 const messages: ChatMessage[] = [
   { id: 'assistant-1', role: 'assistant', content: 'Hello **Semi**' },
@@ -16,6 +24,14 @@ afterEach(() => {
 });
 
 describe('Chat', () => {
+  it('公开入口保持 default、named 与固定枚举常量一致', () => {
+    expect(DefaultChat).toBe(Chat);
+    expect(CHAT_ALIGNS).toEqual(['leftRight', 'leftAlign']);
+    expect(CHAT_MODES).toEqual(['bubble', 'noBubble', 'userBubble']);
+    expect(CHAT_SEND_HOT_KEYS).toEqual(['enter', 'shift+enter']);
+    expect(CHAT_MESSAGE_STATUSES).toEqual(['loading', 'incomplete', 'complete', 'error']);
+  });
+
   it('保留固定消息 DOM、默认 bubble/leftRight 与连续角色结构', () => {
     const wrapper = mount(Chat, {
       props: {
@@ -30,6 +46,40 @@ describe('Chat', () => {
     expect(wrapper.findAll('.semi-chat-chatBox-content-bubble')).toHaveLength(3);
     expect(wrapper.findAll('.semi-chat-chatBox-avatar-hidden')).toHaveLength(1);
     expect(wrapper.find('.semi-markdownRender strong').text()).toBe('Semi');
+  });
+
+  it('代码消息通过公开高亮容器展示原始文本', () => {
+    const wrapper = mount(Chat, {
+      props: {
+        chats: [{ id: 'code', role: 'assistant', content: '```js\nconst answer = 42;\n```' }],
+        enableUpload: false,
+      },
+    });
+    expect(wrapper.get('.semi-codeHighlight pre code').text()).toContain('const answer = 42;');
+    expect(wrapper.get('.semi-codeHighlight').classes()).toContain(
+      'semi-codeHighlight-defaultTheme',
+    );
+    wrapper.unmount();
+  });
+
+  it('完整消息 slot 的 defaultNodes.action 保留反馈和重置公开行为', async () => {
+    const source: ChatMessage[] = [{ id: 'answer', role: 'assistant', content: 'Answer' }];
+    const wrapper = mount(Chat, {
+      props: { chats: source, enableUpload: false },
+      slots: {
+        'chat-box': ({ defaultNodes }) =>
+          h('div', { class: 'custom-box' }, [defaultNodes.content, defaultNodes.action]),
+      },
+    });
+    expect(wrapper.find('.custom-box').text()).toContain('Answer');
+    await wrapper.get('button[aria-label="like"]').trigger('click');
+    expect(wrapper.emitted('message-good-feedback')?.[0]?.[0]).toEqual(source[0]);
+    expect((wrapper.emitted('update:chats')?.[0]?.[0] as ChatMessage[])[0]).toMatchObject({
+      like: true,
+    });
+    await wrapper.get('button[aria-label="reset"]').trigger('click');
+    expect(wrapper.emitted('message-reset')?.[0]?.[0]).toEqual(source[0]);
+    wrapper.unmount();
   });
 
   it('sendMessage 先生成受控 user 消息，再发出发送 payload', () => {

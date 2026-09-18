@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils';
-import { h, nextTick } from 'vue';
+import { createCommentVNode, defineComponent, h, nextTick } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
-import OverflowList from './OverflowList.vue';
+import OverflowList, { OverflowList as OverflowListNamed } from './index';
 import type { OverflowItem } from './types';
 
 class TestResizeObserver {
@@ -41,14 +41,13 @@ class TestIntersectionObserver {
 
 const items = [{ key: 'alarm' }, { key: 'bookmark' }, { key: 'camera' }, { key: 'duration' }];
 
-function mountList(
-  props: Record<string, unknown> = {},
-  width: { root: number; item: number; overflow: number } = {
-    root: 100,
-    item: 40,
-    overflow: 20,
-  },
-) {
+interface MeasuredWidths {
+  root: number;
+  item: number;
+  overflow: number;
+}
+
+function mockWidths(width: MeasuredWidths) {
   vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockImplementation(function (
     this: HTMLElement,
   ) {
@@ -57,6 +56,17 @@ function mountList(
     if (this.classList.contains('semi-overflow-list')) return width.root;
     return 0;
   });
+}
+
+function mountList(
+  props: Record<string, unknown> = {},
+  width: MeasuredWidths = {
+    root: 100,
+    item: 40,
+    overflow: 20,
+  },
+) {
+  mockWidths(width);
   return mount(OverflowList, {
     props: { items, ...props },
     slots: {
@@ -88,6 +98,10 @@ afterEach(() => {
 });
 
 describe('OverflowList', () => {
+  it('公开入口保持默认导出与命名导出', () => {
+    expect(OverflowList).toBe(OverflowListNamed);
+  });
+
   it('collapse 默认从末尾收起并按最终 pivot 触发 overflow', async () => {
     const wrapper = mountList();
     expect(wrapper.classes()).toContain('semi-overflow-list');
@@ -100,6 +114,82 @@ describe('OverflowList', () => {
     expect(wrapper.find('.overflow-trigger').text()).toBe('+2');
     expect(wrapper.attributes('style')).toContain('visibility: visible');
     expect(wrapper.emitted('overflow')?.at(-1)?.[0]).toEqual(items.slice(2));
+  });
+
+  it('collapse 槽内容随容器宽度重新渲染', async () => {
+    const width: MeasuredWidths = { root: 100, item: 40, overflow: 20 };
+    const wrapper = mountList({}, width);
+    await settleMeasurement();
+    expect(wrapper.find('.overflow-trigger').text()).toBe('+2');
+
+    // 容器收窄后 pivot 变为 1：槽位必须重新渲染成 “+3”，不能保留上一次的 2 项。
+    width.root = 60;
+    TestResizeObserver.instances[0]!.notify(wrapper.element);
+    await settleMeasurement();
+
+    expect(wrapper.findAll('.token').map((node) => node.text())).toEqual(['alarm']);
+    expect(wrapper.find('.overflow-trigger').text()).toBe('+3');
+  });
+
+  it('collapse 槽位没有可渲染内容时不渲染溢出包装节点', async () => {
+    const width: MeasuredWidths = { root: 1000, item: 40, overflow: 20 };
+    mockWidths(width);
+    const wrapper = mount(OverflowList, {
+      props: { items },
+      slots: {
+        visibleItem: ({ item }: { item: OverflowItem }) =>
+          h('button', { class: 'token' }, String(item.key)),
+        // 模板里的 `v-if` 在为空时会留下注释节点，固定实现（返回 null）不会渲染包装节点。
+        overflow: ({ items: overflowItems }: { items: readonly OverflowItem[] }) =>
+          overflowItems.length
+            ? h('button', { class: 'overflow-trigger' }, `+${overflowItems.length}`)
+            : createCommentVNode('v-if', true),
+      },
+    });
+    await settleMeasurement();
+    expect(wrapper.find('.semi-overflow-list-overflow').exists()).toBe(false);
+    expect(wrapper.findAll('.token')).toHaveLength(4);
+
+    width.root = 100;
+    TestResizeObserver.instances[0]!.notify(wrapper.element);
+    await settleMeasurement();
+
+    expect(wrapper.findAll('.semi-overflow-list-overflow')).toHaveLength(1);
+    expect(wrapper.find('.overflow-trigger').text()).toBe('+2');
+  });
+
+  it('collapse 槽位用组件封装计数时同样随隐藏项更新', async () => {
+    // 文档示例把计数放在 Tag 组件里；Tag 的 props 不变，Vue 会跳过它的更新，
+    // 因此组件必须在隐藏项变化时让槽内容重新挂载，才能与固定实现“渲染器随渲染调用”的语义一致。
+    const Counter = defineComponent({
+      name: 'Counter',
+      props: { label: { type: String, required: true } },
+      setup:
+        (props, { slots }) =>
+        () =>
+          h('div', { class: 'counter' }, [props.label, slots.default?.()]),
+    });
+    const width: MeasuredWidths = { root: 100, item: 40, overflow: 20 };
+    mockWidths(width);
+    const wrapper = mount(OverflowList, {
+      props: { items },
+      slots: {
+        visibleItem: ({ item }: { item: OverflowItem }) =>
+          h('button', { class: 'token' }, String(item.key)),
+        overflow: ({ items: overflowItems }: { items: readonly OverflowItem[] }) =>
+          overflowItems.length
+            ? h(Counter, { label: 'hidden' }, { default: () => `+${overflowItems.length}` })
+            : null,
+      },
+    });
+    await settleMeasurement();
+    expect(wrapper.find('.counter').text()).toBe('hidden+2');
+
+    width.root = 60;
+    TestResizeObserver.instances[0]!.notify(wrapper.element);
+    await settleMeasurement();
+
+    expect(wrapper.find('.counter').text()).toBe('hidden+3');
   });
 
   it('collapseFrom=start 保留尾部且 minVisibleItems 优先', async () => {
@@ -180,6 +270,53 @@ describe('OverflowList', () => {
       ['duration', false],
     ]);
     expect(wrapper.findAll('.overflow-trigger').map((node) => node.text())).toEqual(['+1', '+1']);
+  });
+
+  it('scroll 边缘溢出计数随可见项变化重新渲染', async () => {
+    mockWidths({ root: 100, item: 40, overflow: 20 });
+    const wrapper = mount(OverflowList, {
+      props: { items, renderMode: 'scroll' },
+      slots: {
+        visibleItem: ({ item, index }: { item: OverflowItem; index: number }) =>
+          h('button', { class: 'token', 'data-index': index }, String(item.key)),
+        overflow: ({
+          items: overflowItems,
+          position,
+        }: {
+          items: readonly OverflowItem[];
+          position: string;
+        }) =>
+          overflowItems.length
+            ? h(
+                'button',
+                { class: 'edge', 'data-position': position },
+                `${position}:${overflowItems.length}`,
+              )
+            : null,
+      },
+    });
+    await settleMeasurement();
+
+    const observer = TestIntersectionObserver.instances.at(-1)!;
+    const notifyVisible = async (visibleIndexes: number[]) => {
+      observer.notify(
+        wrapper.findAll('[data-scrollkey]').map((node, index) => ({
+          target: node.element,
+          isIntersecting: visibleIndexes.includes(index),
+          boundingClientRect: { y: 0 },
+        })) as unknown as IntersectionObserverEntry[],
+      );
+      await nextTick();
+    };
+
+    await notifyVisible([1, 2]);
+    expect(wrapper.findAll('.edge').map((node) => node.text())).toEqual(['start:1', 'end:1']);
+
+    await notifyVisible([2, 3]);
+    expect(wrapper.findAll('.edge').map((node) => node.text())).toEqual(['start:2']);
+
+    await notifyVisible([0, 1]);
+    expect(wrapper.findAll('.edge').map((node) => node.text())).toEqual(['end:2']);
   });
 
   it('items 改变后移除旧 scroll 节点并重新观察新 key', async () => {

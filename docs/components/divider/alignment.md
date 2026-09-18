@@ -52,16 +52,23 @@
 
 ## 验收矩阵
 
-| 证据                  | 场景                                                                                          |
-| --------------------- | --------------------------------------------------------------------------------------------- |
-| 单元行为              | 默认值、attrs/class/style、margin 覆盖、虚线、三种 align、文本/自定义 slot、垂直忽略内容、SSR |
-| Chromium 行为/无障碍  | 本地固定源码请求、八个节点、role/ARIA 透传、水平/垂直边框、无运行时错误                       |
-| computed style / 几何 | 八个节点逐项精确比较；伪元素短线宽度；bounding rect 每轴差不超过 0.5 CSS px                   |
-| 视觉                  | desktop 1440×900 与 mobile 390×844，light/dark；额外 desktop light RTL；组件裁剪              |
-| 发布                  | 根/`divider` 子路径 ESM 与 types、根/`divider.css`、SSR import、真实 tarball 安装             |
+| 证据                  | 场景                                                                                                                  |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| 单元行为              | 默认值、attrs/class/style、margin 覆盖、虚线、三种 align、文本/自定义 slot、垂直忽略内容、SSR                         |
+| Chromium 行为/无障碍  | 本地固定源码请求、八个节点、role/ARIA 透传、水平/垂直边框、无运行时错误                                               |
+| computed style / 几何 | 八个节点逐项精确比较；伪元素短线宽度；bounding rect 每轴差不超过 0.5 CSS px                                           |
+| 视觉                  | desktop 1440×900 与 mobile 390×844，light/dark；额外 desktop light RTL；组件裁剪                                      |
+| 发布                  | 根/`divider` 子路径 ESM 与 types、根/`divider.css`、SSR import（单元与 SSR 用例从 `./index` 消费）、真实 tarball 安装 |
 
 截图阈值保持 `threshold=0.1`、`maxDiffPixelRatio=0.001`，同时要求同一 Chromium 中 React/Vue 组件截图字节完全一致。
 
 ## Deviation
 
 当前没有 accepted visual/behavior deviation。React `children`、`className`、`style` 仅按 Vue 原生 slot 与 attrs 迁移，不作为差异。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Divider 单测、SSR 与 hydration 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/divider.spec.ts` 5/5 通过，覆盖固定源码来源、八个节点的 role/ARIA、边框、computed style/几何与桌面/移动 light/dark、RTL 截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、`divider.css`、tree-shaking、许可与 SBOM。

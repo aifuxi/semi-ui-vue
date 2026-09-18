@@ -1,6 +1,6 @@
 {
   "name": "@aifuxi/semi-icons-vue",
-  "version": "0.1.0-alpha.8",
+  "version": "0.1.0",
   "description": "Stable Semi Design v2.102.0 icons generated as Vue 3 components.",
   "license": "MIT",
   "author": "aifuxi",
@@ -22,8 +22,7 @@
   },
   "publishConfig": {
     "access": "public",
-    "registry": "https://registry.npmjs.org/",
-    "tag": "next"
+    "registry": "https://registry.npmjs.org/"
   },
   "type": "module",
   "main": "./dist/index.js",
@@ -32,6 +31,7 @@
   "files": [
     "LICENSE",
     "README.md",
+    "CHANGELOG.md",
     "dist"
   ],
   "sideEffects": false,
@@ -51,11 +51,14 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "node ../../scripts/generate-icons.mjs --check && rimraf dist && vite build && node ../../scripts/write-compliance-artifacts.mjs .",
+    "build": "node ../../scripts/generate-icons.mjs --check && rimraf dist && rslib build && node ../../scripts/write-compliance-artifacts.mjs .",
     "typecheck": "vue-tsc --noEmit",
     "clean": "rimraf dist"
   },
   "peerDependencies": {
     "vue": ">=3.5.0"
+  },
+  "devDependencies": {
+    "vue": "catalog:"
   }
 }

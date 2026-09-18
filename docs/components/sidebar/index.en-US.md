@@ -74,3 +74,5 @@ The file editor pins Tiptap `3.10.7`; `extensions` accepts Vue Tiptap extensions
 A hidden Sidebar emits no container during SSR; visible main content renders deterministically. Tiptap, clipboard access, and global key listeners are client-only. Default close, back, copy, and expand controls have aria-labels. The pinned React citation item is a clickable `div`; use the custom item slot when stronger keyboard semantics are required.
 
 See [alignment.md](./alignment.md) for the full parity evidence and [react-to-vue.md](./react-to-vue.md) for migration details.
+
+`Annotation` and `MCPConfigure` retain the container defaults: omitted `motion`, `resizable`, and `showClose` are `true`; each can be disabled explicitly with `false`.

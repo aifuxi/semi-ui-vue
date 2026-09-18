@@ -2,7 +2,7 @@ import { renderToString } from '@vue/server-renderer';
 import { createSSRApp, h } from 'vue';
 import { describe, expect, it } from 'vitest';
 
-import PinCode from './PinCode.vue';
+import PinCode from './index';
 
 describe('PinCode SSR', () => {
   it('渲染固定 Input DOM、数量、值与禁用状态且不访问浏览器全局', async () => {

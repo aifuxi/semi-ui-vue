@@ -3,7 +3,7 @@ import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { Col, GRID_RESPONSIVE_MAP, Row } from './index';
+import { Col, GRID_BREAKPOINTS, GRID_RESPONSIVE_MAP, GRID_RESPONSIVE_PRIORITY, Row } from './index';
 
 const originalMatchMedia = window.matchMedia;
 
@@ -16,6 +16,19 @@ afterEach(() => {
 });
 
 describe('Grid', () => {
+  it('公开入口导出固定断点与响应式优先级', () => {
+    expect(GRID_BREAKPOINTS).toEqual(['xs', 'sm', 'md', 'lg', 'xl', 'xxl']);
+    expect(GRID_RESPONSIVE_PRIORITY).toEqual(['xxl', 'xl', 'lg', 'md', 'sm', 'xs']);
+    expect(GRID_RESPONSIVE_MAP).toEqual({
+      xs: '(max-width: 575px)',
+      sm: '(min-width: 576px)',
+      md: '(min-width: 768px)',
+      lg: '(min-width: 992px)',
+      xl: '(min-width: 1200px)',
+      xxl: '(min-width: 1600px)',
+    });
+  });
+
   it('公开 Row 与 Col，并渲染基础 24 栅格 class、slot 和原生属性', () => {
     const wrapper = mount(Row, {
       attrs: {

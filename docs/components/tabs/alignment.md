@@ -87,7 +87,7 @@
 ## SSR、发布与合规
 
 - import 与 SSR render 不读取 window/document，不创建 Observer/Portal；hydration 后再启用测量和 popup。
-- 根与 `@aifuxi/semi-ui-vue/tabs` 子路径导出 Tabs、TabPane、TabItem 和公开类型；真实 tarball 验证 ESM、声明、根/`tabs.css`、tree-shaking 与 SSR-safe import。
+- 根与 `@aifuxi/semi-ui-vue/tabs` 子路径导出 Tabs、TabPane、TabItem 和公开类型，并保留固定基线的 `Tabs.TabPane`/`Tabs.TabItem` 复合静态成员；client 用例从 `./index` 消费这些导出；真实 tarball 验证 ESM、声明、根/`tabs.css`、tree-shaking 与 SSR-safe import。
 - Foundation 与 SCSS 经现有边界内联，发布产物不得泄漏 `vendor/**` 或私有 workspace 路径；许可证/SBOM 沿用总门禁。
 
 ## Deviation
@@ -108,3 +108,5 @@
 - Tabs 专项 Chromium 7 项通过：固定源码请求、四 type/top/left/disabled/closable/More/collapsible DOM，点击、方向键、Enter、hover、Dropdown Portal、computed style、bounding rect、desktop/mobile light/dark 与 RTL。
 - 5 对 React/Vue 基线 PNG 落盘文件分别同 SHA-256：desktop/light `c4e30499054a6f2148fee06127e7338fb933820aa94d186d89b5a9aa41a2a0bb`、desktop/dark `ac516733dc20e581d7b1987149931ebe605e37104aae0d7be34c8b0f094c3721`、mobile/light `b614e9d5a3a9c3d49fb3f8fbb7e43486956fc39141546ab5321b52962f5757c8`、mobile/dark `daa62c1682f0b3999a16b1b5df489ead97e185eeae06c17ebfff4007eaf75a8d`、light/RTL `68f01147006f05b0ba936e26dcd28967dff2781df27be1556d6f88b3ea17dbc9`。
 - `@aifuxi/semi-ui-vue` 根/`tabs` 子路径、声明、`@aifuxi/semi-theme-default/tabs.css`、tree-shaking、SSR-safe import、许可证与 SPDX SBOM 均由真实 tarball 消费项目验证通过。
+- 2026-09-18：`Tabs.test.ts` 与 `Tabs.ssr.test.ts` 改为从 `./index` 挂载，锁定默认 `Tabs`、命名 `Tabs`、`TabPane`、`TabItem` 公开入口及 SSR 路径。
+- 2026-09-18：固定 `packages/semi-ui/tabs/index.tsx:30-31` 的 `static TabPane/TabItem`，参考场景也以 `Tabs.TabPane` 渲染；原 Vue 入口只有同名命名导出，缺少复合静态成员。现按 List/Select/Navigation 的既有 compound 形态在 `./index` 补 `Tabs.TabPane`/`Tabs.TabItem`，公开回归先红后绿，DOM/行为不变。

@@ -17,6 +17,7 @@ import {
   type Component,
   type PropType,
   type VNode,
+  type VNodeChild,
 } from 'vue';
 
 import RadioBase from './Radio.vue';
@@ -241,14 +242,22 @@ export default defineComponent({
       );
     }
 
+    // A keyed `v-for` directly inside the group compiles to a Fragment wrapping its
+    // children. The pinned React group maps arrays through `React.Children.map`, so
+    // unwrap fragments instead of dropping the rendered list.
+    function collectSlotChildren(nodes: VNodeChild[]): VNode[] {
+      const children: VNode[] = [];
+      for (const node of nodes) {
+        if (!isVNode(node) || node.type === Text || node.type === Comment) continue;
+        if (node.type === Fragment && Array.isArray(node.children))
+          children.push(...collectSlotChildren(node.children as VNodeChild[]));
+        else children.push(node);
+      }
+      return children;
+    }
+
     function renderSlotChildren(): VNode[] {
-      return (slots.default?.() ?? []).filter(
-        (child): child is VNode =>
-          isVNode(child) &&
-          child.type !== Text &&
-          child.type !== Comment &&
-          child.type !== Fragment,
-      );
+      return collectSlotChildren(slots.default?.() ?? []);
     }
 
     return () => {

@@ -59,9 +59,34 @@ function textContent(): string {
 
 async function copyMessage(): Promise<void> {
   emit('copy', props.message);
-  if (typeof navigator !== 'undefined') await navigator.clipboard?.writeText(textContent());
-  if (typeof document !== 'undefined')
-    Toast.success({ content: props.locale?.copySuccess ?? '复制成功' });
+  if (typeof document === 'undefined') return;
+  // The fixed upstream uses a synchronous copy so sandboxed previews work on user activation.
+  const activeElement = document.activeElement;
+  const textarea = document.createElement('textarea');
+  textarea.value = textContent();
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.append(textarea);
+  textarea.select();
+  let copied: boolean;
+  try {
+    copied = typeof document.execCommand === 'function' && document.execCommand('copy');
+  } catch {
+    copied = false;
+  } finally {
+    textarea.remove();
+    if (activeElement instanceof HTMLElement) activeElement.focus();
+  }
+  if (!copied && typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(textContent());
+      copied = true;
+    } catch {
+      return;
+    }
+  }
+  if (copied) Toast.success({ content: props.locale?.copySuccess ?? '复制成功' });
 }
 
 function confirmDelete(): void {

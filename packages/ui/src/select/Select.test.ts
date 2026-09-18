@@ -3,9 +3,7 @@ import { defineComponent, h, nextTick } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { semiGlobal } from '../config-provider';
-import Select from './Select.vue';
-import SelectOption from './SelectOption.vue';
-import SelectOptionGroup from './SelectOptionGroup.vue';
+import DefaultSelect, { Select, SelectOption, SelectOptionGroup } from './index';
 import type { SelectExposed } from './types';
 
 afterEach(() => {
@@ -25,6 +23,55 @@ function options() {
 }
 
 describe('Select', () => {
+  it('公开入口保持 default、named 与复合 Option/OptGroup 一致', () => {
+    expect(DefaultSelect).toBe(Select);
+    expect(Select.Option).toBe(SelectOption);
+    expect(Select.OptGroup).toBe(SelectOptionGroup);
+  });
+
+  it('受控值更新保留已悬停选项，不重置到第一项', async () => {
+    const wrapper = mount(Select, {
+      props: {
+        value: 'a',
+        motion: false,
+        defaultOpen: true,
+        optionList: [
+          { value: 'a', label: 'Alpha' },
+          { value: 'b', label: 'Beta' },
+        ],
+      },
+      attachTo: document.body,
+    });
+    await nextTick();
+    const options = document.querySelectorAll<HTMLElement>('.semi-select-option');
+    options[1]!.dispatchEvent(new MouseEvent('mouseenter'));
+    await wrapper.setProps({ value: 'b' });
+    await nextTick();
+    expect(document.querySelector('.semi-select-option-focused')?.textContent).toContain('Beta');
+    wrapper.unmount();
+  });
+  it('只为字符串选项添加文本容器，VNode 选项可正常选择', async () => {
+    const wrapper = mount(Select, {
+      attachTo: document.body,
+      props: { defaultOpen: true, motion: false },
+      slots: {
+        default: () => [
+          h(SelectOption, { value: 'plain' }, () => 'Plain'),
+          h(SelectOption, { value: 'node' }, () => h('span', { class: 'custom-option' }, 'Node')),
+        ],
+      },
+    });
+    await nextTick();
+    const options = document.body.querySelectorAll<HTMLElement>('[role="option"]');
+    expect(options[0]!.querySelector('.semi-select-option-text')?.textContent).toBe('Plain');
+    expect(options[1]!.querySelector('.semi-select-option-text')).toBeNull();
+    expect(options[1]!.querySelector(':scope > .custom-option')?.textContent).toBe('Node');
+    options[1]!.click();
+    await nextTick();
+    expect(wrapper.emitted('change')?.[0]).toEqual(['node']);
+    expect(wrapper.get('[role="combobox"]').text()).toContain('Node');
+    wrapper.unmount();
+  });
   it('渲染缺省值并按公开事件顺序完成单选', async () => {
     const wrapper = mount(Select, {
       attachTo: document.body,
@@ -77,6 +124,12 @@ describe('Select', () => {
     });
     await nextTick();
     expect(wrapper.findAll('.semi-tag')).toHaveLength(2);
+    expect(
+      wrapper.findAll('.semi-tag').every((tag) => tag.classes().includes('semi-tag-square')),
+    ).toBe(true);
+    expect((wrapper.get('[data-select-tag-index]').element as HTMLElement).style.maxWidth).toBe(
+      '100%',
+    );
     expect(wrapper.text()).toContain('+1');
     await wrapper.get('[role="combobox"]').trigger('click');
     await nextTick();

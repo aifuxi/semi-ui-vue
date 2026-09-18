@@ -19,6 +19,7 @@ import AIChatDialogueCode from './AIChatDialogueCode';
 import AIChatDialogueNodeRenderer from './AIChatDialogueNodeRenderer';
 import AIChatDialogueReasoning from './AIChatDialogueReasoning.vue';
 import AIChatDialogueReference from './AIChatDialogueReference.vue';
+import { messageToChatInput } from './data-adapter';
 import { AI_CHAT_DIALOGUE_ITEM_TYPE, AI_CHAT_DIALOGUE_STATUS } from './constants';
 import type {
   Annotation,
@@ -338,13 +339,8 @@ function renderItem(item: ContentItem, index: number): VNodeChild {
   return undefined;
 }
 
-function editPayload(message: Message): unknown {
-  const content = typeof message.content === 'string' ? message.content : '';
-  return { content, attachment: [] };
-}
-
 const defaultNode = computed<VNodeChild>(() => {
-  if (props.editing) return props.messageEditRender?.(editPayload(props.message));
+  if (props.editing) return props.messageEditRender?.(messageToChatInput(props.message));
   const content = props.message.content;
   const textContent = typeof content === 'string' ? content : props.message.output_text;
   let realContent: VNodeChild;

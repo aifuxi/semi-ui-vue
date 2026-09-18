@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, nextTick } from 'vue';
 
 import { InputNumber } from '../input-number';
-import { ColorPicker, colorStringToValue } from './index';
+import DefaultColorPicker, { ColorPicker, colorStringToValue } from './index';
 
 afterEach(() => {
   document.body.innerHTML = '';
@@ -12,6 +12,11 @@ afterEach(() => {
 });
 
 describe('ColorPicker', () => {
+  it('公开入口保持 default、named 与静态转换方法导出一致', () => {
+    expect(DefaultColorPicker).toBe(ColorPicker);
+    expect(ColorPicker.colorStringToValue).toBe(colorStringToValue);
+  });
+
   it('keeps omitted, explicit false and template-bare true Boolean semantics', () => {
     const Host = defineComponent({
       components: { ColorPicker },

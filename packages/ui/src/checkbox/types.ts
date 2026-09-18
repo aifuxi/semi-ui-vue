@@ -32,6 +32,7 @@ export interface CheckboxProps {
   autoFocus?: boolean;
   checked?: boolean | undefined;
   modelValue?: boolean | undefined;
+  name?: string;
   defaultChecked?: boolean;
   disabled?: boolean;
   extra?: VNodeChild;

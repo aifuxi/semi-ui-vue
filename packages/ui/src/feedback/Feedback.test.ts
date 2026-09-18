@@ -4,7 +4,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider } from '../config-provider';
 import { LocaleProvider } from '../locale';
-import Feedback from './Feedback.vue';
+import DefaultFeedback, {
+  FEEDBACK_EMOJIS,
+  FEEDBACK_MODES,
+  FEEDBACK_TYPES,
+  Feedback,
+} from './index';
 
 async function settle(): Promise<void> {
   await nextTick();
@@ -34,6 +39,13 @@ afterEach(async () => {
 });
 
 describe('Feedback', () => {
+  it('公开入口保持 default、named 与运行时常量一致', () => {
+    expect(DefaultFeedback).toBe(Feedback);
+    expect(FEEDBACK_MODES).toEqual(['modal', 'popup']);
+    expect(FEEDBACK_TYPES).toEqual(['text', 'emoji', 'radio', 'checkbox', 'custom']);
+    expect(FEEDBACK_EMOJIS).toEqual(['😞', '😐', '😃']);
+  });
+
   it('默认 popup/emoji DOM、默认容器参数、值通知与坏评原因对齐', async () => {
     const values: unknown[] = [];
     const wrapper = await mountVisible({ onValueChange: (value: unknown) => values.push(value) });
@@ -172,6 +184,39 @@ describe('Feedback', () => {
     buttons.unmount();
   });
 
+  it('modal 完成提示可动态隐藏 footer，退出提示后恢复提交按钮', async () => {
+    const completed = ref(false);
+    const Host = () =>
+      h(
+        Feedback,
+        {
+          mode: 'modal',
+          motion: false,
+          visible: true,
+          type: 'custom',
+          okButtonProps: { disabled: false },
+          onOk: () => {
+            completed.value = true;
+          },
+          ...(completed.value ? { footer: null } : {}),
+        },
+        { default: () => h('p', completed.value ? '感谢反馈' : '反馈内容') },
+      );
+    const wrapper = mount(Host, { attachTo: document.body });
+    await settle();
+    document.querySelector<HTMLButtonElement>('[aria-label="confirm"]')!.click();
+    await settle();
+    expect(document.querySelector('.semi-modal-body')?.textContent).toContain('感谢反馈');
+    expect(document.querySelector('.semi-modal-footer')).toBeNull();
+    completed.value = false;
+    await settle();
+    expect(document.querySelector('.semi-modal-body')?.textContent).toContain('反馈内容');
+    expect(document.querySelector<HTMLButtonElement>('[aria-label="confirm"]')?.disabled).toBe(
+      false,
+    );
+    wrapper.unmount();
+  });
+
   it('popup Promise 确定显示 loading、resolve 后清值，取消同步清值', async () => {
     let resolveOk!: () => void;
     const okPromise = new Promise<void>((resolve) => {
@@ -196,6 +241,40 @@ describe('Feedback', () => {
     await settle();
     expect(onCancel).toHaveBeenCalledTimes(1);
     expect(buttons[1]?.classList).toContain('semi-button-disabled');
+    wrapper.unmount();
+  });
+
+  it('popup 通过 SideSheet 转发动效参数并等待真实退出 animationend', async () => {
+    vi.useFakeTimers();
+    const wrapper = await mountVisible({ mask: true, motion: true });
+    const content = () =>
+      document.querySelector<HTMLElement>('.semi-feedback .semi-sidesheet-inner')!;
+    const mask = () => document.querySelector<HTMLElement>('.semi-feedback .semi-sidesheet-mask')!;
+    const end = (node: HTMLElement) =>
+      node.dispatchEvent(new Event('animationend', { bubbles: true }));
+
+    expect(mask()).not.toBeNull();
+    expect(mask().className).toContain('semi-sidesheet-animation-mask_show');
+    expect(content().className).toContain('semi-sidesheet-animation-content_show_bottom');
+    end(mask());
+    await settle();
+    expect(mask().className).not.toContain('semi-sidesheet-animation-mask_show');
+    expect(content().className).toContain('semi-sidesheet-animation-content_show_bottom');
+    end(content());
+    await settle();
+    expect(content().className).not.toContain('semi-sidesheet-animation-content_show_bottom');
+
+    await wrapper.setProps({ visible: false });
+    await vi.advanceTimersByTimeAsync(500);
+    expect(document.querySelector('.semi-feedback')).not.toBeNull();
+    expect(content().className).toContain('semi-sidesheet-animation-content_hide_bottom');
+    end(content());
+    await settle();
+    expect(document.querySelector('.semi-feedback')).toBeNull();
+
+    await wrapper.setProps({ visible: true });
+    await settle();
+    expect(content().className).toContain('semi-sidesheet-animation-content_show_bottom');
     wrapper.unmount();
   });
 

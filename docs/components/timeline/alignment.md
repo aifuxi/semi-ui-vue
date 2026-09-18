@@ -60,3 +60,7 @@
 - React `children/ReactNode/className` 映射为 Vue slots/`VNodeChild`/class；框架映射不构成能力损失。
 - Vue Fragment 会展开后按可见有效子 VNode计算位置；React Fragment 本身是单个可克隆元素但 class 无法落到 DOM。Vue 映射避免位置 class 丢失，并让模板注释/空白不改变交替顺序。
 - 当前没有 accepted visual/behavior deviation。当前状态：`ready`；固定源码、单元/SSR、主题/打包与 Chromium 全量门禁均已通过。
+
+## 公开入口契约锁
+
+- `Timeline.test.ts` 从 `./index` 消费公开入口，固定 default 与 named 导出一致、compound `Timeline.Item` 与 `TIMELINE_*` 枚举常量；`pnpm check` 持续覆盖格式、lint、类型与该断言。

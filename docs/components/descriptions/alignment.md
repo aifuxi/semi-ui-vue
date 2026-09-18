@@ -58,7 +58,7 @@
 - SSR：默认、plain、horizontal/data、Item slot、class/style/data attrs、无 browser global import/render/hydration。
 - React/Vue 场景：vertical center/plain、double-row sizes、horizontal span/hidden、VNode key 与函数 value；比较对应单元格 computed style 和 geometry。
 - 视觉：桌面 `1440x900`、移动 `390x844`、light/dark 与 RTL；关键 computed style 精确相等，bounding rect 各轴误差 `<= 0.5px`，截图 `threshold <= 0.1` / `maxDiffPixelRatio <= 0.001`，并独立比较成对 PNG 字节。
-- 根与 `@aifuxi/semi-ui-vue/descriptions` 子路径导出组件、Item 和公开类型；`@aifuxi/semi-theme-default/descriptions.css` 编译固定样式。真实 tarball 验证 ESM、声明、样式入口、tree-shaking、SSR-safe import、许可证和 SPDX SBOM。
+- 根与 `@aifuxi/semi-ui-vue/descriptions` 子路径 default/named 导出组件、Item 和公开类型；`@aifuxi/semi-theme-default/descriptions.css` 编译固定样式。真实 tarball 验证 ESM、声明、样式入口、tree-shaking、SSR-safe import、许可证和 SPDX SBOM。
 
 ## Deviation
 
@@ -73,3 +73,7 @@
 - `pnpm test:browser` 全量通过：固定 Chromium 中 259 项测试全部通过；Descriptions 专项 7 项覆盖真实 vendor 来源、vertical/plain/double/horizontal/Item、span/hidden、无交互语义、桌面/移动 light/dark 与 RTL。
 - 6 个专项目标的关键 computed style 精确相等、bounding rect 各轴差值不超过 `0.5 CSS px`；5 组 React/Vue 成对截图既通过 Playwright 阈值，也通过独立 Buffer 字节相等验证。未使用 mask，React/Vue 使用独立截图文件名。
 - 无 accepted visual/behavior deviation；固定 vendor 仍为 `v2.102.0` / `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21` 且未修改。
+
+## Table 展开行消费者回归（2026-09-13）
+
+调用方可以长期保存作为 data.value 的 VNode。每次 Descriptions 渲染时克隆 VNode，避免将已卸载的组件实例和 DOM 状态留在调用方数据中。生产静态站探针修复前首次展开有2个 Tag、关闭重开后为0；修复后首次与重开均为2。Table Expanded/SeparateExpand 双语及 RTL 代表路径已验证，完整正式矩阵结果见本轮文档工作记录；未将无法复现生产问题的单元测试称为红绿证据。

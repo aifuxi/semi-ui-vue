@@ -32,7 +32,7 @@ const emit = defineEmits<SwitchEmits>();
 defineSlots<SwitchSlots>();
 
 interface SwitchState {
-  nativeControlChecked: boolean;
+  nativeControlChecked: boolean | undefined;
   nativeControlDisabled: boolean;
   focusVisible: boolean;
 }
@@ -48,7 +48,7 @@ const nativeControl = useTemplateRef<HTMLInputElement>('nativeControl');
 const controlledChecked = computed(() => props.checked ?? props.modelValue);
 const isControlled = computed(() => props.checked !== undefined || props.modelValue !== undefined);
 const state = shallowReactive<SwitchState>({
-  nativeControlChecked: controlledChecked.value ?? props.defaultChecked ?? false,
+  nativeControlChecked: props.defaultChecked || controlledChecked.value,
   nativeControlDisabled: false,
   focusVisible: false,
 });
@@ -79,7 +79,7 @@ const adapter: SwitchAdapter<FoundationSwitchProps, SwitchState> = {
   stopPropagation: (event) => event?.stopPropagation?.(),
   persistEvent: () => undefined,
   setNativeControlChecked: (checked) => {
-    state.nativeControlChecked = checked ?? false;
+    state.nativeControlChecked = checked;
   },
   setNativeControlDisabled: (disabled) => {
     state.nativeControlDisabled = disabled ?? false;
@@ -139,7 +139,7 @@ function handleChange(event: Event): void {
 }
 
 watch(controlledChecked, (checked) => {
-  if (isControlled.value) foundation.setChecked(checked);
+  foundation.setChecked(checked);
 });
 watch(
   () => props.disabled,

@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
-import PinCode from './PinCode.vue';
+import PinCode, { PinCode as PinCodeNamed } from './index';
 import type { PinCodeExposed } from './types';
 
 function inputs(wrapper: ReturnType<typeof mount>) {
@@ -23,6 +23,10 @@ function paste(element: HTMLInputElement, text: string): Event {
 }
 
 describe('PinCode', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(PinCode).toBe(PinCodeNamed);
+  });
+
   it('渲染默认六格并保留尺寸、禁用、class 与 style 契约', () => {
     const wrapper = mount(PinCode, {
       props: { className: 'custom-pin-code', disabled: true, size: 'small' },

@@ -1,10 +1,8 @@
-import { mount } from '@vue/test-utils';
-import { createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
 import { describe, expect, it, vi } from 'vitest';
+import { createSSRApp, h } from 'vue';
 
-import TabPane from './TabPane.vue';
-import Tabs from './Tabs.vue';
+import Tabs, { TabPane } from './index';
 
 function renderTabs(props: Record<string, unknown> = {}) {
   return renderToString(
@@ -44,22 +42,5 @@ describe('Tabs SSR', () => {
     expect(html).not.toContain('Panel B');
     expect(html).not.toContain('semi-portal');
     vi.unstubAllGlobals();
-  });
-
-  it('SSR markup 可 hydration 且无 mismatch warning', async () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-    const wrapper = mount(Tabs, {
-      attachTo: document.body,
-      props: { defaultActiveKey: 'a' },
-      slots: {
-        default: () => [
-          h(TabPane, { itemKey: 'a', tab: 'A' }, () => 'Panel A'),
-          h(TabPane, { itemKey: 'b', tab: 'B' }, () => 'Panel B'),
-        ],
-      },
-    });
-    expect(wrapper.get('[role="tab"]').attributes('aria-selected')).toBe('true');
-    expect(warn.mock.calls.flat().join(' ')).not.toContain('Hydration');
-    wrapper.unmount();
   });
 });

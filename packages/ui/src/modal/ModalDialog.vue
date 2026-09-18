@@ -156,6 +156,7 @@ const innerVNode = computed(() =>
     height: props.height,
     icon: props.icon,
     outerStyle: props.outerStyle,
+    modalRender: props.modalRender,
     size: props.size,
     title: props.title,
     width: props.width,
@@ -164,7 +165,6 @@ const innerVNode = computed(() =>
     onMousedown: () => foundation.handleDialogMouseDown(),
   }),
 );
-const renderedDialog = computed(() => props.modalRender?.(innerVNode.value) ?? innerVNode.value);
 
 async function activate(): Promise<void> {
   if (active || typeof document === 'undefined') return;
@@ -235,7 +235,7 @@ defineExpose({ activate, deactivate });
       @click="handleMaskClick"
       @mouseup="handleMaskMouseUp"
     >
-      <ModalNodeRenderer :content="renderedDialog" />
+      <ModalNodeRenderer :content="innerVNode" />
     </div>
   </div>
 </template>

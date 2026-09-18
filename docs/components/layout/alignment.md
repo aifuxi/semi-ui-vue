@@ -81,3 +81,14 @@ Layout 不需要 Foundation 状态机或额外 composable；断点副作用留�
 ## Deviation
 
 当前没有 accepted visual/behavior deviation。React 静态子组件在 Vue 中增加具名 SFC 导出，以支持模板原生写法；`Layout.Header/Content/Footer/Sider` 仍保留在 `Layout` 导出对象上，供 render function 与脚本调用。
+
+## 公开入口契约锁
+
+- `Layout.test.ts` 从 `./index` 消费公开入口，固定 default 与 named 导出一致、`Layout.Header/Footer/Content/Sider` 静态成员与 `LAYOUT_*` 常量；`pnpm check` 持续覆盖格式、lint、类型与该断言。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Layout 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/layout.spec.ts` 7/7 通过，覆盖固定源码来源、Sider 折叠/断点/prefix、computed style/几何与 light/dark、RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、`Layout.*` 静态成员、类型、`layout.css`、tree-shaking、许可与 SBOM。

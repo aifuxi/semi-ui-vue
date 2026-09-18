@@ -1,14 +1,32 @@
 <script setup lang="ts">
 /* eslint-disable vue/require-default-prop, vue/no-required-prop-with-default -- internal renderer preserves absent callback and VNode semantics. */
-import { IconChevronRight } from '@aifuxi/semi-icons-vue';
+import { IconChevronRight, IconTreeTriangleRight } from '@aifuxi/semi-icons-vue';
 import { Checkbox, type CheckboxChangeEvent } from '../checkbox';
 import { Radio, type RadioChangeEvent } from '../radio';
-import { computed, h, shallowRef, type Component, type StyleValue, type VNodeChild } from 'vue';
+import {
+  computed,
+  h,
+  isVNode,
+  shallowRef,
+  type Component,
+  type CSSProperties,
+  type StyleValue,
+  type VNodeChild,
+} from 'vue';
 
 import TableCell from './TableCell.vue';
 import TableNodeRenderer from './TableNodeRenderer';
 import type { FlatTableRecord, NormalizedTableColumn } from './table-utils';
-import type { TableDirection, TableRowAttributes, TableRowKey, TableRowSelection } from './types';
+import type { VirtualTableRow } from './useTableVirtualization';
+import type {
+  TableColumn,
+  TableDirection,
+  TableExpandedRowRenderResult,
+  TableFixed,
+  TableRowAttributes,
+  TableRowKey,
+  TableRowSelection,
+} from './types';
 
 interface Props {
   clickGroupedRowToExpand?: boolean | undefined;
@@ -17,10 +35,15 @@ interface Props {
   componentRow?: Component | string | undefined;
   componentWrapper?: Component | string | undefined;
   direction: TableDirection;
+  expandedInnerWidth?: number | undefined;
   expandedKeys: ReadonlySet<TableRowKey>;
   expandIcon?: boolean | VNodeChild | ((expanded?: boolean) => VNodeChild) | undefined;
   expandedRowRender?:
-    | ((record?: Record<string, unknown>, index?: number, expanded?: boolean) => VNodeChild)
+    | ((
+        record?: Record<string, unknown>,
+        index?: number,
+        expanded?: boolean,
+      ) => TableExpandedRowRenderResult)
     | undefined;
   expandRowByClick?: boolean | undefined;
   fixedOffsets: ReadonlyMap<TableRowKey, { side: 'left' | 'right'; value: number; edge: boolean }>;
@@ -53,12 +76,15 @@ interface Props {
     | ((props: { group: Record<string, unknown>[]; groupKey: TableRowKey }) => VNodeChild)
     | undefined;
   rowExpandable?: ((record?: Record<string, unknown>) => boolean) | undefined;
-  rows: FlatTableRecord<Record<string, unknown>>[];
+  rows: VirtualTableRow[];
+  treeTable?: boolean;
   rowSelection?: false | TableRowSelection<Record<string, unknown>> | undefined;
   rowSpanHover?: boolean | undefined;
   selectedKeys: ReadonlySet<TableRowKey>;
-  virtualBottom?: number | undefined;
-  virtualTop?: number | undefined;
+  virtualized?: boolean;
+  virtualStyles?: ReadonlyMap<TableRowKey, CSSProperties> | undefined;
+  virtualBodyStyle?: CSSProperties | undefined;
+  virtualColumnWidths?: number[] | undefined;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -66,8 +92,6 @@ const props = withDefaults(defineProps<Props>(), {
   componentRow: 'tr',
   componentWrapper: 'tbody',
   indentSize: 20,
-  virtualBottom: 0,
-  virtualTop: 0,
 });
 const emit = defineEmits<{
   expand: [row: FlatTableRecord<Record<string, unknown>>, event: MouseEvent];
@@ -163,13 +187,14 @@ function expandable(row: FlatTableRecord<Record<string, unknown>>): boolean {
 }
 
 function expandNode(row: FlatTableRecord<Record<string, unknown>>): VNodeChild {
-  if (!expandable(row) || props.expandIcon === false) return undefined;
+  if ((!row.sectionRow && !expandable(row)) || props.expandIcon === false) return undefined;
   const expanded = props.expandedKeys.has(row.key);
   const icon =
     typeof props.expandIcon === 'function'
       ? props.expandIcon(expanded)
       : props.expandIcon ||
-        h(IconChevronRight, {
+        h(props.hideExpandedColumn && !row.sectionRow ? IconTreeTriangleRight : IconChevronRight, {
+          size: props.hideExpandedColumn && !row.sectionRow ? 'small' : 'default',
           class: expanded
             ? `${props.prefixCls}-expandedIcon-show`
             : `${props.prefixCls}-expandedIcon-hide`,
@@ -177,17 +202,20 @@ function expandNode(row: FlatTableRecord<Record<string, unknown>>): VNodeChild {
   return h(
     'span',
     {
-      'aria-expanded': expanded,
       'aria-label': 'Expand this row',
       class: `${props.prefixCls}-expand-icon`,
       role: 'button',
       tabindex: -1,
       onClick: (event: MouseEvent) => {
         event.stopPropagation();
-        emit('expand', row, event);
+        if (row.sectionRow) emit('groupExpand', row.key, event);
+        else emit('expand', row, event);
       },
       onKeypress: (event: KeyboardEvent) => {
-        if (event.key === 'Enter') emit('expand', row, event as unknown as MouseEvent);
+        if (event.key === 'Enter') {
+          if (row.sectionRow) emit('groupExpand', row.key, event as unknown as MouseEvent);
+          else emit('expand', row, event as unknown as MouseEvent);
+        }
       },
     },
     [icon],
@@ -203,7 +231,7 @@ function selectionNode(row: FlatTableRecord<Record<string, unknown>>): VNodeChil
     props.rowSelection.type === 'radio'
       ? h(Radio as never, {
           ...checkboxProps(row),
-          ariaLabel: `Select row ${row.index + 1}`,
+          ariaLabel: `${selected ? 'Deselect' : 'Select'} this row`,
           checked: selected,
           disabled,
           style: { width: '16px' },
@@ -212,7 +240,7 @@ function selectionNode(row: FlatTableRecord<Record<string, unknown>>): VNodeChil
         })
       : h(Checkbox as never, {
           ...checkboxProps(row),
-          ariaLabel: `Select row ${row.index + 1}`,
+          ariaLabel: `${selected ? 'Deselect' : 'Select'} this row`,
           checked: selected,
           disabled,
           indeterminate: props.halfSelectedKeys.has(row.key),
@@ -247,15 +275,76 @@ function handleRowClick(row: FlatTableRecord<Record<string, unknown>>, event: Mo
     emit('select', row, !props.selectedKeys.has(row.key), event);
   }
   if (props.rowSelection && props.rowSelection.clickRow) return;
-  if (props.expandRowByClick && expandable(row)) emit('expand', row, event);
+  if (props.expandRowByClick && expandable(row))
+    if (row.sectionRow) emit('groupExpand', row.key, event);
+    else emit('expand', row, event);
 }
 
-function expandedContent(row: FlatTableRecord<Record<string, unknown>>): VNodeChild {
-  const expanded = props.expandedKeys.has(row.key);
-  return (
+type ExpandedCellColumn = Omit<TableColumn, 'children'>;
+
+function expandedCell(
+  row: VirtualTableRow,
+): { children: VNodeChild; column: ExpandedCellColumn } | null {
+  const expanded = props.expandedKeys.has(row.sourceKey ?? row.key);
+  const result =
     props.renderExpandedRow?.({ expanded, index: row.index, record: row.record }) ??
-    props.expandedRowRender?.(row.record, row.index, expanded)
-  );
+    props.expandedRowRender?.(row.record, row.index, expanded);
+  if (result === null || result === undefined) return null;
+  // The pinned renderer unwraps object results, keeps `fixed` as metadata and
+  // applies every other ColumnProp to the expanded row cell.
+  if (typeof result === 'object' && !isVNode(result) && 'children' in result) {
+    const payload = result as ExpandedCellColumn & { children: VNodeChild; fixed?: TableFixed };
+    const column: ExpandedCellColumn = { ...payload };
+    delete column.children;
+    delete column.fixed;
+    return { children: payload.children, column };
+  }
+  return { children: result as VNodeChild, column: {} };
+}
+
+function expandedColumn(row: VirtualTableRow): NormalizedTableColumn<Record<string, unknown>> {
+  const cell = expandedCellAt(row);
+  const expandedWidth = props.virtualColumnWidths?.reduce((sum, width) => sum + width, 0);
+  return {
+    key: `${row.key}-expanded-cell`,
+    render: () => ({
+      props: {
+        colSpan: columnCount.value,
+        ...(props.virtualized
+          ? { style: { display: 'block', height: '100%', width: `${expandedWidth}px` } }
+          : {}),
+      },
+      children: h(
+        'div',
+        {
+          class: `${props.prefixCls}-expand-inner`,
+          style: {
+            width:
+              props.expandedInnerWidth === undefined ? undefined : `${props.expandedInnerWidth}px`,
+          },
+        },
+        cell === null ? undefined : h(TableNodeRenderer, { content: cell.children }),
+      ),
+    }),
+    ...(cell?.column ?? {}),
+  } as NormalizedTableColumn<Record<string, unknown>>;
+}
+
+// The pinned ExpandedRow evaluates expandedRowRender once per rendered expanded
+// row; collapsed rows without keepDOM never call it.
+const expandedCells = computed(() => {
+  const cells = new Map<TableRowKey, ReturnType<typeof expandedCell>>();
+  for (const row of props.rows) {
+    const rendered =
+      Boolean(row.expandedRow) ||
+      (!props.virtualized && !row.sectionRow && (props.expandedKeys.has(row.key) || props.keepDOM));
+    cells.set(row.key, rendered ? expandedCell(row) : null);
+  }
+  return cells;
+});
+
+function expandedCellAt(row: VirtualTableRow): ReturnType<typeof expandedCell> {
+  return expandedCells.value.get(row.key) ?? null;
 }
 
 function groupRowCustom(row: FlatTableRecord<Record<string, unknown>>): TableRowAttributes {
@@ -271,89 +360,85 @@ function groupRowAttrs(row: FlatTableRecord<Record<string, unknown>>): Record<st
 }
 
 function handleGroupClick(row: FlatTableRecord<Record<string, unknown>>, event: MouseEvent): void {
-  groupRowCustom(row).onClick?.(event);
   if (props.clickGroupedRowToExpand && row.groupKey !== undefined) {
     emit('groupExpand', row.groupKey, event);
   }
+  groupRowCustom(row).onClick?.(event);
 }
 
-function groupExpandNode(row: FlatTableRecord<Record<string, unknown>>): VNodeChild {
-  const expanded = props.expandedKeys.has(row.key);
-  return h(
-    'span',
-    {
-      'aria-expanded': expanded,
-      'aria-label': 'Expand this group',
-      class: `${props.prefixCls}-expand-icon`,
-      role: 'button',
-      tabindex: -1,
-      onClick: (event: MouseEvent) => {
-        event.stopPropagation();
-        if (row.groupKey !== undefined) emit('groupExpand', row.groupKey, event);
-      },
-    },
-    h(IconChevronRight, {
-      class: expanded
-        ? `${props.prefixCls}-expandedIcon-show`
-        : `${props.prefixCls}-expandedIcon-hide`,
-    }),
-  );
+function groupColumn(
+  row: FlatTableRecord<Record<string, unknown>>,
+): NormalizedTableColumn<Record<string, unknown>> {
+  const rendered = props.renderGroupSection?.({ group: row.group ?? [], groupKey: row.key });
+  return {
+    key: 'group-section',
+    render: () => ({ props: { colSpan: columnCount.value }, children: rendered }),
+  };
 }
 
 const columnCount = computed(() => Math.max(1, props.columns.length));
 </script>
 
 <template>
-  <component :is="props.componentWrapper" :class="`${props.prefixCls}-tbody`">
-    <component
-      :is="props.componentRow"
-      v-if="props.virtualTop > 0"
-      :class="`${props.prefixCls}-row`"
-      aria-hidden="true"
-      ><component
-        :is="props.componentCell"
-        :colspan="columnCount"
-        :style="{ height: `${props.virtualTop}px`, padding: 0, border: 0 }"
-    /></component>
+  <component
+    :is="props.componentWrapper"
+    :class="`${props.prefixCls}-tbody`"
+    :style="props.virtualBodyStyle"
+  >
     <template v-for="row in props.rows" :key="row.key">
       <component
         :is="props.componentRow"
         v-if="row.sectionRow"
         v-bind="groupRowAttrs(row)"
         :class="[
-          `${props.prefixCls}-row`,
           `${props.prefixCls}-row-section`,
+          props.expandedKeys.has(row.key) ? 'on' : undefined,
           groupRowCustom(row).class,
           groupRowCustom(row).className,
         ]"
-        :style="groupRowCustom(row).style as StyleValue"
+        :style="[props.virtualStyles?.get(row.key), groupRowCustom(row).style as StyleValue]"
         :aria-expanded="props.expandedKeys.has(row.key)"
+        :data-row-key="row.key"
+        :aria-rowindex="row.index + 1"
+        aria-level="1"
         role="row"
         @click="handleGroupClick(row, $event)"
       >
-        <component
-          :is="props.componentCell"
-          :class="`${props.prefixCls}-row-cell`"
-          :colspan="columnCount"
-          role="gridcell"
-        >
-          <TableNodeRenderer :content="groupExpandNode(row)" />
-          <TableNodeRenderer
-            :content="
-              props.renderGroupSection?.({ group: row.group || [], groupKey: row.groupKey! })
-            "
-          />
-        </component>
+        <TableCell
+          :is-section="true"
+          :width="
+            props.virtualized
+              ? props.virtualColumnWidths?.reduce((sum, width) => sum + width, 0)
+              : undefined
+          "
+          :column="groupColumn(row)"
+          :column-index="0"
+          :component="props.componentCell"
+          :direction="props.direction"
+          :expand-node="expandNode(row)"
+          :expanded="props.expandedKeys.has(row.key)"
+          :prefix-cls="props.prefixCls"
+          :record="row.record"
+          :row-index="row.index"
+        />
       </component>
       <component
         :is="props.componentRow"
-        v-else
+        v-else-if="!row.expandedRow"
         v-bind="rowAttrs(row)"
         :class="rowClass(row)"
-        :style="rowCustom(row).style as StyleValue"
+        :style="[props.virtualStyles?.get(row.key), rowCustom(row).style as StyleValue]"
         :data-row-key="row.key"
         :aria-expanded="expandable(row) ? props.expandedKeys.has(row.key) : undefined"
-        :aria-level="row.level + 1"
+        :aria-level="
+          props.treeTable ||
+          expandable(row) ||
+          (props.hideExpandedColumn && (props.expandedRowRender || props.renderExpandedRow))
+            ? row.level + 1
+            : props.expandedKeys.has(row.key)
+              ? 2
+              : undefined
+        "
         :aria-rowindex="row.index + 1"
         role="row"
         @click="handleRowClick(row, $event)"
@@ -364,6 +449,9 @@ const columnCount = computed(() => Math.max(1, props.columns.length));
           v-for="(column, columnIndex) in props.columns"
           :key="column.key"
           :column="column"
+          :column-index="columnIndex"
+          :width="props.virtualized ? props.virtualColumnWidths?.[columnIndex] : undefined"
+          :expansion-disabled="column.__kind === 'expand' && !expandable(row)"
           :component="props.componentCell"
           :direction="props.direction"
           :expanded="props.expandedKeys.has(row.key)"
@@ -380,7 +468,12 @@ const columnCount = computed(() => Math.max(1, props.columns.length));
           :indent="
             props.hideExpandedColumn &&
             columnIndex === (props.rowSelection && !props.rowSelection.hidden ? 1 : 0)
-              ? row.level
+              ? row.level +
+                ((props.treeTable || props.expandedRowRender || props.renderExpandedRow) &&
+                !expandable(row) &&
+                props.expandIcon !== false
+                  ? 1
+                  : 0)
               : 0
           "
           :indent-size="props.indentSize"
@@ -396,37 +489,35 @@ const columnCount = computed(() => Math.max(1, props.columns.length));
       <component
         :is="props.componentRow"
         v-if="
-          !row.sectionRow &&
-          expandedContent(row) != null &&
-          (props.expandedKeys.has(row.key) || props.keepDOM)
+          row.expandedRow ||
+          (!props.virtualized &&
+            !row.sectionRow &&
+            expandedCellAt(row) != null &&
+            (props.expandedKeys.has(row.key) || props.keepDOM))
         "
         :class="[
           `${props.prefixCls}-row`,
           `${props.prefixCls}-row-expand`,
-          !props.expandedKeys.has(row.key) ? `${props.prefixCls}-row-hidden` : undefined,
+          !props.expandedKeys.has(row.sourceKey ?? row.key)
+            ? `${props.prefixCls}-row-hidden`
+            : undefined,
         ]"
+        :style="props.virtualStyles?.get(row.key)"
         aria-level="2"
+        :aria-rowindex="props.virtualized ? row.index + 1 : undefined"
+        :data-row-key="row.expandedRow ? row.key : `${row.record.key}-expanded-row`"
         role="row"
       >
-        <component
-          :is="props.componentCell"
-          :class="`${props.prefixCls}-row-cell`"
-          :colspan="columnCount"
-          role="gridcell"
-          ><div :class="`${props.prefixCls}-expand-inner`">
-            <TableNodeRenderer :content="expandedContent(row)" /></div
-        ></component>
+        <TableCell
+          :column="expandedColumn(row)"
+          :column-index="0"
+          :component="props.componentCell"
+          :direction="props.direction"
+          :prefix-cls="props.prefixCls"
+          :record="row.record"
+          :row-index="row.index"
+        />
       </component>
     </template>
-    <component
-      :is="props.componentRow"
-      v-if="props.virtualBottom > 0"
-      :class="`${props.prefixCls}-row`"
-      aria-hidden="true"
-      ><component
-        :is="props.componentCell"
-        :colspan="columnCount"
-        :style="{ height: `${props.virtualBottom}px`, padding: 0, border: 0 }"
-    /></component>
   </component>
 </template>

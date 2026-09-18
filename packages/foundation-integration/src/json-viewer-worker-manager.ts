@@ -27,6 +27,7 @@ interface WorkerResponse {
 const workerManagerMap = new Map<string, JsonWorkerManager>();
 
 export class JsonWorkerManager {
+  private nextMessageId = 0;
   private readonly callbacks = new Map<number, (result: unknown) => void>();
   private readonly worker: Worker;
 
@@ -79,7 +80,9 @@ export class JsonWorkerManager {
     params: WorkerService[Key],
   ): Promise<unknown> {
     return new Promise((resolve) => {
-      const messageId = Date.now() + Math.random();
+      // Timestamp + fractional randomness can collide within one millisecond.
+      // IDs only need to be unique for this Worker's pending response callbacks.
+      const messageId = ++this.nextMessageId;
       this.callbacks.set(messageId, resolve);
       this.worker.postMessage({ messageId, method, params });
     });

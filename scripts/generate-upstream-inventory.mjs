@@ -3,8 +3,9 @@ import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { format, resolveConfig } from 'prettier';
+import { format } from 'prettier';
 import ts from 'typescript';
+import { upstreamLiveDemos } from './upstream-markdown.mjs';
 
 const workspaceRoot = fileURLToPath(new URL('..', import.meta.url));
 const vendorRoot = path.join(workspaceRoot, 'vendor/semi-design');
@@ -352,7 +353,7 @@ async function collectDocumentation() {
         ? {
             path: relativeToWorkspace(zhPath),
             apiSections: extractApiSections(zhSource),
-            liveDemoCount: countMatches(zhSource, /^```jsx live=true/gm),
+            liveDemoCount: upstreamLiveDemos(zhSource).length,
             markdownTableRowCount: countMatches(zhSource, /^\|.*\|\s*$/gm),
           }
         : null,
@@ -360,7 +361,7 @@ async function collectDocumentation() {
         ? {
             path: relativeToWorkspace(enPath),
             apiSections: extractApiSections(enSource),
-            liveDemoCount: countMatches(enSource, /^```jsx live=true/gm),
+            liveDemoCount: upstreamLiveDemos(enSource).length,
             markdownTableRowCount: countMatches(enSource, /^\|.*\|\s*$/gm),
           }
         : null,
@@ -672,7 +673,8 @@ async function assertCurrent(filePath, expected) {
 }
 
 const inventory = await buildInventory();
-const prettierConfig = (await resolveConfig(workspaceRoot)) ?? {};
+// Inventory has a fixed format, independent of parent directories in nested worktrees.
+const prettierConfig = { printWidth: 80 };
 const jsonOutput = await format(JSON.stringify(inventory), {
   ...prettierConfig,
   filepath: jsonOutputPath,

@@ -98,3 +98,37 @@
 - 行为门禁：Dropdown 专项单元/SSR 2 个文件、11 项通过，覆盖模板与 `h()` trigger 装饰、缺省/显式 Boolean、菜单数组/slot、受控/非受控、hover/focus/click/custom/contextMenu、outside click、事件顺序、disabled/nested、键盘/焦点/ARIA、稳定自定义 Portal、卸载清理与 SSR/hydration；仓库全量为 68 个文件、507 项通过。
 - 视觉门禁：同 Chromium 的 desktop 1440×900 与 mobile 390×844，DPR 1，light/dark，并追加 RTL；Dropdown 专项 7/7、仓库浏览器回归 266/266 通过。6 个关键目标的 computed style 精确相等、bounding rect 各轴差值不超过 0.5 CSS px；5 组成对场景共 10 张独立 PNG 经测试内 `Buffer.equals` 与命令行 `cmp` 双重确认逐字节相同。
 - 发布门禁：`pnpm check` 通过固定 vendor/inventory、源码边界、格式、lint、类型、全量构建、主题和 SSR；真实 tarball 的根/子路径 ESM、公开声明、逐组件 CSS、隔离安装/import、许可证与 SPDX SBOM 全部通过。
+
+## Navigation 文档键盘差异补充
+
+固定 Tooltip Foundation 的 hover 分支为 trigger 与 Portal 同时绑定 focus/blur（受 disableFocusListener 控制）。Vue Dropdown 自行管理 custom Tooltip 的可见性，因此必须补齐等价焦点事件，不能只代理 mouseenter/mouseleave。门禁：focus 打开、blur 关闭、ArrowDown 进入后保持、Escape 返回并取消焦点导致的待打开计时；disableFocusListener=true 禁止焦点打开但保留 hover。
+
+进一步核对固定 Foundation.ts:348–356：hover Portal 插入后会检查触发器的 :hover，即使由 focus 打开，指针不在触发器上也会再次关闭。此前双页采样中参考菜单消失来自这一规则，不能归因于页面切换。Vue 在内容插入后的 nextTick 执行相同检查；保留 visibleChange 的 true→false 顺序，不把上游限制擅自改为持续打开。单测只为 jsdom 的鼠标事件补充 :hover 环境状态，Chromium 验证实际指针。
+
+## Dropdown 文档触发器对齐修复（2026-09-12）
+
+本轮严格文档诊断发现默认态触发器缺失固定 Tooltip 注入的 `aria-describedby`，Tag 触发器还丢失默认 `tabIndex=0`。前者来自内部 DropdownTriggerRenderer 未转发外层克隆节点的 attrs；后者来自小写 tabindex 未进入组件公开 tabIndex prop。当前修复在 Dropdown 局部透传外层 attrs，保留真实子节点显式属性优先级，并以 tabIndex 传递给组件/原生触发器，兼容模板 tab-index；未修改 Tooltip/Tag。
+
+回归覆盖真实浮层 id 与描述关联、Tag 默认/负数/正数 tabIndex、模板显式 ARIA 描述与 tab-index 保留。原实现上新增及更新断言产生 4 项失败，修复后专项单元与 SSR 共 19 项通过。上述历史 ready/浏览器与发布计数保留原时间范围，不能作为本次修复的有效浏览器/产物证据；本轮 Chromium、主题、SSR dist 与 tarball 检查由统一验收补齐。
+
+后续代表诊断（diagnostic-07）完整 styles 附件显示 Basic 默认/浮层/键盘与 Position 默认/首浮层无差异；Nested 首浮层两个子菜单触发项额外包含 aria-describedby/aria-haspopup。固定 dropdownItem.tsx 只输出 role=menuitem、tabIndex=-1、aria-disabled、声明事件/class/style 和 getDataAttr(props)，不透传外部任意 ARIA。Vue DropdownItem 恢复此 data-* 透传边界；普通 Button/Tag 触发器继续保留上一修复的描述关联，矩阵不删除 ARIA。嵌套公开行为断言先红（1 失败/15 通过），修复后 Dropdown 单元/SSR 19 项通过；红绿日志保存在本轮 documentation-smoke 的 dropdown-item-red.log / dropdown-item-green.log。完整浏览器结论仍待统一验收。
+
+## 退出动画不抢回用户焦点（2026-09-12）
+
+诊断 diagnostic-14 的 Events 重开差异是首菜单项的 focus-visible 背景，非 hover。固定 SCSS hover 同时改变 cursor，失败中双方 cursor 仍为 auto。真实 Chromium original 探针确认：Escape 已在隐藏前回焦 trigger，用户 blur 后 React 保持 blur，Vue 却在浮层卸载时再次 focusin BUTTON；第二次鼠标点击时 Vue 因而沿用键盘焦点可见状态。blur-after 对照两侧恢复一致仅用来证伪原因，正式矩阵仍保留原始 blur 时序。
+
+固定 Tooltip Foundation _handleEscKeyDown 的顺序为 focusTrigger→hide，CSSAnimation leave 完成只执行 didLeave/afterClose，不再次聚焦。Dropdown 删除 restoreFocusAfterClose 状态与 afterClose 中的二次聚焦；同时去除 visibleChange(false) 通知里的无条件回焦，与固定 DropdownFoundation 仅更新状态/通知的行为一致。回焦集中于 trigger/popup 的 Escape 隐藏前，并受 returnFocusOnClose 判断；false 通知仍清理 enter timer。鼠标/外部点击关闭不会因状态通知无条件夺取焦点。用户在退出阶段将焦点移到其他控件后，浮层卸载不再抢回。
+
+新增 motion=true 的公开行为回归派发真实 wrapper animationend 出口事件，先验证 Escape 回焦及退出 class，等待可见状态通知稳定且退出 class 仍存在后再转移用户焦点，验证卸载/afterClose 后焦点不变。true/false 参数覆盖：修复前 true 分支真实失败（1 失败/17 通过），修复后单元+SSR共 21 项通过。原始红绿日志为本轮 dropdown-focus-red.log / dropdown-focus-green.log；中间仅移除 afterClose 焦点但测试未等待关闭通知稳定的失败保留为 dropdown-focus-green-failed.log，不作通过证据；真实探针在 focus-probe-original 与 focus-probe-blur-after 中。后续浏览器重新构建验证由主 agent 统一执行；不以单元模拟替代 Chromium 输入模态证据。
+
+新增 trigger Escape 隐藏前回焦保留固定 Tooltip.focusTrigger 的 custom 排除边界，不改变 custom 现有可见性逻辑。公开合成 Escape 回归先红后绿，确认外部已聚焦元素不被 custom 触发器抢回；最终专项单元+SSR 22 项通过。
+
+## Table 自定义筛选器焦点时机修复（2026-09-13）
+
+- CustomFilter 的可见回调会聚焦输入。原 Dropdown 在 requestVisible 同步通知 visibleChange，使 Vue 示例 nextTick 聚焦发生于 Tooltip 的 offscreen（-9999）定位阶段；trace 中 Vue 页面 scrollY 从7751归零，而 React仍7751，两端弹层文档top同为7905，因此不是像素阈值或容器对齐问题。
+- 固定 Tooltip Foundation 在 positionUpdated 后 togglePortalVisible 的回调中通知 visibleChange。Dropdown 现仅同步发送 update:visible 请求，让受控父级及时回写；visibleChange 由真正的 Tooltip 生命周期发送，不吞掉定位后通知。pendingUpdate 只避免重复发送已提出的 v-model 更新。
+- 新受控回归先红，修复后验证同步 update、定位后的唯一 visibleChange、回调聚焦、关闭和去重。固定 hover 在 portalInserted 即取消的分支只有 false 生命周期通知（请求仍是true/false）；同步宿主键盘处理发生在定位后通知之前。相关旧断言按该固定时序更正，未增加延迟或跳过终态验证。
+
+## Dropdown 公开入口锁定（2026-09-18）
+
+- `Dropdown.test.ts` 从 `./index` 同时覆盖默认导出、命名 `Dropdown` 与 `Dropdown.Item/Menu/Title/Divider` 复合静态成员，锁定根/子路径公开入口关系。SSR 与 hydration 测试已通过公开入口挂载，继续覆盖无 DOM 导入、稳定 trigger ARIA、Portal 接管和卸载清理。

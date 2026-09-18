@@ -1,12 +1,26 @@
-import { mount } from '@vue/test-utils';
 import { renderToString } from '@vue/server-renderer';
-import { createSSRApp, h, type Component } from 'vue';
+import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
+import { createSSRApp, h } from 'vue';
 
-import Icon, * as iconPackage from './index';
-import { IconAIFilledLevel2, IconAIWandLevel3, IconHome, IconSpin } from './icons';
+import { IconAIFilledLevel2, IconAIFilledLevel3, IconAIWandLevel3, IconHome } from './icons';
+import Icon from './index';
 
 describe('Icon', () => {
+  it('缺省 fill 保留 SVG 默认值，显式覆盖清除后恢复，AI 数组只应用于 path', async () => {
+    const wrapper = mount(IconHome);
+    expect(wrapper.get('svg').attributes('fill')).toBe('none');
+    await wrapper.setProps({ fill: 'red' });
+    expect(wrapper.get('svg').attributes('fill')).toBe('red');
+    // JavaScript consumers can explicitly remove fill despite exact optional TS props.
+    // @ts-expect-error Exercise runtime undefined without broadening the public IconFill type.
+    await wrapper.setProps({ fill: undefined });
+    expect(wrapper.get('svg').attributes('fill')).toBe('none');
+    const ai = mount(IconAIFilledLevel2, { props: { fill: ['red', 'blue'] } });
+    expect(ai.get('svg').attributes('fill')).toBe('none');
+    expect(ai.findAll('path').map((path) => path.attributes('fill'))).toEqual(['blue', 'red']);
+    expect(await renderToString(createSSRApp(IconHome))).toContain('fill="none"');
+  });
   it('保留内置图标的根节点、尺寸、语义与 SVG 契约', () => {
     const wrapper = mount(IconHome, {
       props: { size: 'small' },
@@ -93,19 +107,32 @@ describe('Icon', () => {
     ).toEqual(['#444444', '#333333', '#222222', '#111111']);
   });
 
-  it('完整导出并可服务端渲染 523 个固定稳定图标', async () => {
-    const components = Object.entries(iconPackage).filter(([name]) => /^Icon[A-Z]/.test(name));
-    expect(components).toHaveLength(523);
-    expect(IconSpin.elementType).toBe('Icon');
-
-    const rendered = await Promise.all(
-      components.map(async ([name, component]) => ({
-        name,
-        html: await renderToString(h(component as Component)),
-      })),
-    );
-    expect(rendered.every(({ html }) => html.includes('class="semi-icon'))).toBe(true);
-    expect(rendered.every(({ html }) => html.includes('<svg'))).toBe(true);
+  it.each([
+    [['red'], ['red', 'red', 'red', 'red']],
+    [
+      ['red', 'blue'],
+      ['red', 'blue', 'red', 'blue'],
+    ],
+    [
+      ['red', 'blue', 'green'],
+      ['red', 'blue', 'green', 'red'],
+    ],
+  ])('短 fill 调色板按固定上游顺序补齐：%j', async (fill, expected) => {
+    const wrapper = mount(IconAIFilledLevel3, { props: { fill } });
+    expect(wrapper.findAll('stop').map((stop) => stop.attributes('stop-color'))).toEqual(expected);
+    const html = await renderToString(h(IconAIFilledLevel3, { fill }));
+    expect([...html.matchAll(/stop-color="([^"]+)"/g)].map((match) => match[1])).toEqual(expected);
+    // Updating from a complete palette must restore the short-palette order as well.
+    await wrapper.setProps({ fill: ['red', 'blue', 'green', 'yellow'] });
+    expect(wrapper.findAll('stop').map((stop) => stop.attributes('stop-color'))).toEqual([
+      'yellow',
+      'green',
+      'blue',
+      'red',
+    ]);
+    await wrapper.setProps({ fill });
+    expect(wrapper.findAll('stop').map((stop) => stop.attributes('stop-color'))).toEqual(expected);
+    wrapper.unmount();
   });
 
   it('可用服务端 HTML 无警告 hydration', async () => {

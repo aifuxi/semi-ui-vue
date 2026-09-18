@@ -4,13 +4,15 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { configContextKey, type ConfigContextValue } from '../config-provider';
 import enUS from '../locale/source/en_US';
-import JsonViewer from './JsonViewer.vue';
+import DefaultJsonViewer, { JsonViewer } from './index';
 import type { JsonViewerExposed } from './types';
 
 class TestWorker {
   static instances: TestWorker[] = [];
   onmessage: ((event: MessageEvent) => void) | null = null;
   terminate = vi.fn();
+  // Rsbuild's inline Worker registers an error listener before returning the instance.
+  addEventListener = vi.fn();
   private value = '';
 
   constructor() {
@@ -84,6 +86,10 @@ function mountViewer(
 }
 
 beforeEach(() => {
+  // The pinned manager uses Date.now() + Math.random() as a request ID. At epoch
+  // magnitudes its fractional precision can collide in this synchronous Worker fixture.
+  let workerClock = Date.now();
+  vi.spyOn(Date, 'now').mockImplementation(() => ++workerClock);
   TestWorker.instances = [];
   TestResizeObserver.instances = [];
   vi.stubGlobal('Worker', TestWorker);
@@ -105,6 +111,10 @@ afterEach(() => {
 });
 
 describe('JsonViewer', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultJsonViewer).toBe(JsonViewer);
+  });
+
   it('保留根 attrs/class/style/尺寸并区分 showSearch 三态', async () => {
     const omitted = mountViewer({ className: 'named', width: 520, height: '180px' });
     await flushPromises();

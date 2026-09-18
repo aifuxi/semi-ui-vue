@@ -13,7 +13,8 @@ export function getFillColor(fill: IconFill | undefined, count: number): string[
 
   if (Array.isArray(fill) && fill.length > 0) {
     const colors = Array.from({ length: count }, (_, index) => fill[index % fill.length]!);
-    return count === 4 ? colors.reverse() : colors;
+    // Short palettes repeat in source order; only complete palettes are reversed upstream.
+    return count === 4 && fill.length >= count ? colors.reverse() : colors;
   }
 
   return [...(count === 2 ? DEFAULT_TWO_COLOR : DEFAULT_FOUR_COLOR)];

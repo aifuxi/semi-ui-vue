@@ -82,7 +82,7 @@ Vue render prop 使用 scoped slots；同时保留函数 prop 作为迁移兼容
 ## SSR、发布与合规
 
 - 模块导入和 SSR render 不访问 `window/document/HTMLElement/EditorView`；Tiptap 只在客户端挂载时创建并在卸载时 destroy。
-- 根导出与 `@aifuxi/semi-ui-vue/ai-chat-input` 子路径导出；Tiptap 类型可作为公开第三方类型，但声明不得出现 `vendor/**`、`@workspace/**` 或 `@douyinfe/**`。
+- 根导出与 `@aifuxi/semi-ui-vue/ai-chat-input` 子路径的 default/named 导出、`getConfigureItem` 工厂、`AIChatInput.Configure` 与 `Configure.Item/Button/Mcp/RadioButton/Select` 静态成员由单元/SSR 用例从 `./index` 固定；Tiptap 类型可作为公开第三方类型，但声明不得出现 `vendor/**`、`@workspace/**` 或 `@douyinfe/**`。
 - 新增 Tiptap/ProseMirror 运行时依赖同步 package/lockfile、源码边界、许可证/SBOM、SSR 与隔离 tarball consumer；Vue 使用 `@tiptap/vue-3` 对应 React 的 `@tiptap/react` adapter。
 - 真实 tarball 验证根/子路径导入、类型、样式、SSR import、编辑/发送以及依赖可解析。
 
@@ -90,6 +90,25 @@ Vue render prop 使用 scoped slots；同时保留函数 prop 作为迁移兼容
 
 ### `immediatelyRender` 在 Vue 中为兼容占位
 
-- 源码证据：固定 React `richTextInput.tsx` 将该值交给 `@tiptap/react` 的 `useEditor`，用于避免 React SSR 立即创建 Editor；`@tiptap/vue-3@3.10.7` 的 `useEditor` 在 `onMounted` 创建实例，并不接受该选项。
+- 源码证据：固定 React `richTextInput.tsx` 将该值交给 `@tiptap/react` 的 `useEditor`，用于避免 React SSR 立即创建 Editor；`@tiptap/vue-3@3.31.3` 的 `useEditor` 在 `onMounted` 创建实例，并不接受该选项。
 - Vue 处理：保留同名公开 prop 和类型，但不把它传给 Vue adapter；SSR 导入与 render 均不创建 EditorView，客户端统一在 mount 后创建。
 - 用户影响：服务端安全结果与 `immediatelyRender=false` 等价；在纯客户端传 true/false 不改变首帧编辑器时机。该差异来自 adapter 生命周期，不影响内容、事件、DOM/class 或水合结果，验收为 accepted deviation。
+
+## 文档补齐：任意配置控件
+
+固定 `configure/getConfigureItem.tsx` 的字段注册、初始化、变更和卸载由 Vue `Configure.Item` scoped slot 与同名的公开 `getConfigureItem(Component, opts)` 工厂两条路径表达；`field`/`initValue`、`valueKey`/`onKeyChangeFnName`/`valuePath`/`defaultProps`/`className` 语义保持，默认插槽提供 `value`/`onChange`，支持 Cascader 等公开控件。两条路径共用 `useConfigureItem` 接线，避免行为漂移。黑盒单测验证初值、双实例隔离、`valuePath` 解析、自定义绑定名、默认值与 class 合并、卸载移除、脱离 Configure 报错及 messageSend.setup；文档 Chromium 验证 Cascader 选择与发送，真实包验证公开导出和类型。无新增第三方依赖或资产。
+
+### `getConfigureItem` 的 Vue 等价实现
+
+- 源码证据：固定 `packages/semi-ui/aiChatInput/index.tsx:26` 导入并在公开导出中暴露 `getConfigureItem`，`configure/button.tsx`、`select.tsx`、`mcp.tsx`、`radioButton.tsx` 均由该工厂生成；官方文档 `content/ai/aiChatInput/index.md:294,377` 以 `import { getConfigureItem } from '@douyinfe/semi-ui'` 演示自定义控件接入。
+- Vue 处理：以 `getConfigureItem(Component, opts)` 返回一个读取 `configureContextKey` 的组件，`field`/`initValue`/`className` 为声明 props，其余调用方 props 透传；`defaultProps` 先于 attrs，绑定值与 `onKeyChangeFnName` 最后写入，与固定工厂的覆盖顺序一致。同时保留 `Configure.Item` scoped slot 作为模板侧写法。
+- 用户影响：脚本/render function 与模板都可扩展自定义配置项；`initValue` 在 Vue 侧走 `Configure.change`，会与既有 `Configure.Item` 一样发出一次 `change`（React 的 `init=true` 分支只更新状态），该差异与 `Configure.Item` 同源并已在本文档记录。
+
+默认上传按钮由外层 Upload trigger 统一打开文件选择器，一次点击只触发一次；自定义上传插槽仍可使用公开 `openFileDialog` 回调。固定依据：`aiChatInput/index.tsx:528` 的默认按钮没有额外 click 回调。
+
+## 验收结论
+
+- 状态：`ready`（2026-09-18 复核）。
+- 单元/SSR：AIChatInput 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例），含新增的 `getConfigureItem` 8 项公开回归。
+- Chromium：`tests/browser/components/ai-chat-input.spec.ts` 5/5 通过，覆盖固定源码来源、DOM/computed style/几何与交互、desktop light/dark 与 en-US RTL 截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出（含 `getConfigureItem`）、类型、`ai-chat-input.css`、tree-shaking、许可与 SBOM。

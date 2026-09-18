@@ -86,7 +86,7 @@
 - 单元：受控/非受控 value/open、默认 true Boolean 的缺省/false/true、format/12h/range、step/disabled/hide、输入/清空/事件顺序、slot/custom trigger、焦点、ARIA、stable Portal、Element/Document scroll 与卸载清理。
 - SSR：默认/range/disabled/readOnly/locale/slot 输出，无 Portal、无 vendor/private 路径。
 - Chromium：同 BrowserContext 的 React/Vue 来源、行为、computed style、bounding rect、desktop/mobile light/dark/RTL、Portal 和裁剪截图。
-- 发布：根与 `time-picker` 子路径导入、类型、样式、SSR-safe import、tree-shaking、许可/SBOM 和真实 tarball 安装。
+- 发布：根与 `time-picker` 子路径 default/named 导入、类型、样式、SSR-safe import、tree-shaking、许可/SBOM 和真实 tarball 安装。
 
 ## Deviation
 
@@ -101,3 +101,7 @@
 - 全量 Chromium 161 项单次通过；根/`time-picker` ESM 与声明、`time-picker.css`、许可证/SBOM、真实 tarball 安装/导入/类型/样式验证均通过。
 
 上述两项 React → Vue slots 映射和 TimePicker 私有组合边界为已解释 deviation，不损失公开可实现能力；TimePicker 状态为 `ready`。
+
+## ConfigProvider 时区更新回归
+
+固定 `timePicker/TimePicker.tsx:305` 使用 value-first 的互斥分支。合并 Vue value/timeZone watcher：新 value 不传 __prevTimeZone；仅时区变化时从 state.value 重投影，避免受控值被当成旧 zoned value，且同 tick 更新只转换一次。新增受控/非受控连续时区与同时更新 value/timeZone 的回归。

@@ -1,18 +1,14 @@
 import { expect, test } from '@playwright/test';
-import {
-  assertScenarioComparable,
-  createParityScenarioUrl,
-  PARITY_VIEWPORTS,
-  REFERENCE_BASELINE,
-} from '../../packages/test-infra/src';
+import { assertScenarioComparable, PARITY_VIEWPORTS } from '../../packages/test-infra/src';
 import {
   expectComparableTarget,
+  createVueScenarioUrl,
   openParityPages,
   PARITY_APPLICATIONS,
   requestedSourcePaths,
 } from './parity-harness';
 
-test('React 与 Vue 工作台在同一 Chromium 上下文中可用', async ({ context }) => {
+test('React 参考场景与 Storybook 在同一 Chromium 上下文中可用', async ({ context }) => {
   assertScenarioComparable('harness-calibration');
   const pair = await openParityPages(context, {
     scenarioId: 'harness-calibration',
@@ -22,10 +18,8 @@ test('React 与 Vue 工作台在同一 Chromium 上下文中可用', async ({ co
   });
 
   await Promise.all([
-    expect(pair.react.page.getByText(REFERENCE_BASELINE.tag, { exact: true })).toBeVisible(),
-    expect(pair.vue.page.getByText(REFERENCE_BASELINE.tag, { exact: true })).toBeVisible(),
-    expect(pair.react.page).toHaveTitle(/工作台/),
-    expect(pair.vue.page).toHaveTitle(/工作台/),
+    expect(pair.react.page.locator('[data-parity-framework="react"]')).toBeVisible(),
+    expect(pair.vue.page).toHaveURL(/\/iframe\.html\?id=parity-harness-calibration--scenario/),
   ]);
   await expect(pair.react.page.getByTestId('visual-calibration')).toHaveScreenshot(
     'workspace-calibration-react.png',
@@ -38,7 +32,7 @@ test('React 与 Vue 工作台在同一 Chromium 上下文中可用', async ({ co
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
-test('React 与 Vue 工作台保留窄视口专项入口', async ({ context }) => {
+test('React 与 Storybook 保留窄视口专项入口', async ({ context }) => {
   const { width, height, deviceScaleFactor } = PARITY_VIEWPORTS.narrow;
   const pair = await openParityPages(context, {
     scenarioId: 'harness-calibration',
@@ -55,12 +49,12 @@ test('React 与 Vue 工作台保留窄视口专项入口', async ({ context }) =
   expect(await pair.vue.page.evaluate(() => window.devicePixelRatio)).toBe(deviceScaleFactor);
 });
 
-test('Vue 工作台只加载当前场景的公开组件子路径', async ({ page }) => {
+test('Storybook 只加载当前场景的公开组件子路径', async ({ page }) => {
   const requestedUrls: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));
 
   await page.goto(
-    createParityScenarioUrl(PARITY_APPLICATIONS.vue.baseUrl, {
+    createVueScenarioUrl({
       scenarioId: 'divider',
       theme: 'light',
       direction: 'ltr',

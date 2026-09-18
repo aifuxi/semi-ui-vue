@@ -6,7 +6,7 @@
       "@aifuxi/semi-icons-vue": ["packages/icons/src/index.ts"],
       "@aifuxi/semi-illustrations-vue": ["packages/illustrations/src/index.ts"]
     },
-    "types": ["vite/client"]
+    "types": ["@rsbuild/core/types"]
   },
-  "include": ["src/**/*.ts", "src/**/*.vue", "vite.config.ts"]
+  "include": ["src/**/*.ts", "src/**/*.vue", "rslib.config.ts"]
 }

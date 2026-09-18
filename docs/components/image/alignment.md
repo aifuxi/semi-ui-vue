@@ -89,11 +89,12 @@ Teleport target
 - React/Vue 共享场景：`preview=false` 单图、两张带标题的 group、默认操作区与稳定内联 SVG；所有图片不依赖外网。loading/error/fallback、受控状态、自定义内容和 custom container 由单元/SSR 覆盖。
 - Chromium：桌面 `1440×900` 与移动 `390×844` 的 light/dark、LTR/RTL；open/close、prev/next、wheel 缩放、原始尺寸、旋转、Esc、body lock/cleanup；关键颜色/显示/行高 computed style 精确相等，全部 bounding rect 轴差 `<=0.5px`。
 - 截图：`threshold<=0.1`、`maxDiffPixelRatio<=0.001`。关闭场景的桌面/移动 light/dark 与 RTL 裁剪图、打开后的预览大图分别直接比较独立 React/Vue PNG buffer 且字节相等；打开态整层和 footer 保留各自独立基线，footer 文本固有排版宽度差 `0.015625 CSS px`，按统一几何门槛验收，不宣称该裁剪 PNG 字节相等。
-- 发布：根与 `@aifuxi/semi-ui-vue/image` ESM/声明、默认 `Image` 和具名 `ImagePreview`、`@aifuxi/semi-theme-default/image.css`、tree-shaking、SSR-safe import、真实 tarball 安装、许可证/第三方声明/SBOM；声明与运行时不得泄漏 `vendor/**` 或私有 Foundation 类型。固定上游没有 `Image.Preview` 静态成员，本项目不虚构该入口。
+- 发布：根与 `@aifuxi/semi-ui-vue/image` ESM/声明、默认 `Image`、具名 `Image` 和具名 `ImagePreview`、`@aifuxi/semi-theme-default/image.css`、tree-shaking、SSR-safe import、真实 tarball 安装、许可证/第三方声明/SBOM；声明与运行时不得泄漏 `vendor/**` 或私有 Foundation 类型。固定上游没有 `Image.Preview` 静态成员，本项目不虚构该入口。
 
 ## Deviation
 
 - React render props 映射为 Vue scoped slots：`#header="{ title }"`、`#previewMenu="menuProps"`、`#leftIcon/#rightIcon`、`#closeIcon`；同名函数 props 保留以便程序化调用，slot 优先。迁移表逐项说明，能力不减少。
+- 固定 `image/index.tsx` 在 `Preview` 之外还具名导出 `PreviewInner`（预览内部实现）。Vue 公开 `ImagePreview`（对应 `Preview`），`ImagePreviewInner.vue` 保持私有：`PreviewInner` 在固定文档中没有使用示例，公开分组预览能力由 `ImagePreview` 完整表达。用户影响：需要该内部组件的高级用法改由 `ImagePreview` 组合；DOM、Portal、动效与事件契约不变。
 - Skeleton.Image 与 Spin 尚未作为独立公开 Vue 组件 ready；Image 内部只复现固定加载节点与本组件所需样式，不导出这些私有实现，也不据此声称 Skeleton/Spin 完成。
 - 当前无 accepted visual/behavior deviation。Footer 的 `1/2` 文本由 React/Vue 渲染器产生 `0.015625 CSS px` 的亚像素宽度差，颜色、display、line-height 与所有其余轴一致，远低于既定 `0.5 CSS px` 几何门槛；这是已测量的框架排版量化差，不扩大为像素相等结论。
 
@@ -103,4 +104,24 @@ Teleport target
 - 行为门禁：Image 聚焦 `13/13`（11 个单元 + 2 个 SSR）通过；全仓 `75` 个测试文件、`554` 个单元与 SSR 测试通过。
 - 浏览器门禁：Image 定向 `7/7`、全量 Chromium `292/292` 通过；桌面/移动 light/dark、RTL、打开态交互与运行时错误均完成验收。
 - 视觉门禁：关闭场景五组 React/Vue 裁剪 PNG 与打开态预览大图直接字节相等；footer 关键 computed style 精确相等，最大已测几何差为 `0.015625 CSS px`。
-- 发布门禁：根/`image` 子路径 ESM 与公开声明、独立 `image.css`、SSR-safe import、真实 tarball 安装、许可证/第三方声明/SBOM 全部通过，产物未泄漏 `vendor/**` 或私有 Foundation 类型。
+- 发布门禁：根/`image` 子路径 ESM 与公开声明、默认/具名 `Image`、具名 `ImagePreview`、独立 `image.css`、SSR-safe import、真实 tarball 安装、许可证/第三方声明/SBOM 全部通过，产物未泄漏 `vendor/**` 或私有 Foundation 类型。
+
+## Image 公开入口锁定（2026-09-18）
+
+- `Image.test.ts` 从 `./index` 同时覆盖默认 `Image`、命名 `Image` 与 `ImagePreview`，锁定根/子路径公开入口关系。SSR 继续从公开入口挂载 `Image` / `ImagePreview`，覆盖无 DOM 渲染、group ID 与非 Portal 输出。
+
+## 2026-09-12 文档严格验收发现的页码文本排版修复
+
+历史记录中 footer 宽度 `0.015625 CSS px` 的差异此前仅按几何门槛检查，本轮文档矩阵对全部关键 computed style 的精确比较暴露其仍不一致，不能沿用历史结论追认当前证据。diagnostic-07 的最内层 `.semi-image-preview-footer-page` 宽为 React 20.59375 / Vue 20.578125 px；其余后代关键样式相同，footer 总宽与居中 transform/right 差异由此传播。trace 明确固定 React 的 `{curPage}/{totalNum}` 是 `1`、`/`、`1` 三个独立文本节点，而 Vue 先前生成单一 `1/1` 节点。
+
+`ImagePreviewFooter.vue` 的现有 menuItems render 边界现使用三个 `createTextVNode` 保持固定文本分段，未修改文字、API、事件、样式或参考侧。现有公开行为单元已覆盖打开第二张显示 `2/2`、切换首张更新 `1/2` 及受控索引，复用该回归而不为内部节点结构新增镜像断言。真实 Chromium 排版与文档完整矩阵仍需主 agent 统一验证；本节仅记录诊断证据与修复，不改历史浏览器报告或指纹，不宣称修复后证据已有效。
+
+本次修复静态与行为检查：UI `vue-tsc --noEmit`、本次文件 ESLint/Prettier 通过；复用 Image 的 11 项单元及 2 项 SSR（共 13 项）全部通过，无跳过或新增快照。真实 Chromium 样式修复结论待统一诊断。
+
+## 2026-09-13 Group 默认 ID 兼容修复
+
+diagnostic-16 的 Group 默认态只有 `.semi-image-preview-group` 缺少固定 React 提供的实例 ID；其余已采样属性一致。固定 `preview.tsx` 构造器生成 group ID，Observer 按该 ID 查找根；Vue 原来已用模板 ref 正确隔离根，但遗漏公开 DOM 标识。现以 setup 中一次 `useId()` 生成带固定 `semi-image-preview-group-` 前缀的稳定 ID，在 `v-bind="attrs"` 前绑定，保留调用方显式 ID 覆盖。Observer 仍直接使用相同实例的 groupRoot ref，不新增全局查询、共享计数器或 DOM 访问。
+
+新增公开 DOM 测试覆盖同宿主三实例默认 ID 非空且不同、响应式更新后稳定、显式 ID 保留；既有 SSR 场景追加默认 ID 存在断言。文档 Container 外层恢复固定 `id="container"`，实际 Portal 解析仍使用该元素 ref。真实默认态视觉和完整矩阵待统一诊断，不删除 ID 测量或改历史证据。
+
+本次 Group ID 修复已通过 UI vue-tsc、修改文件 ESLint/Prettier，以及 Image 12 项单元 + 2 项 SSR（共14项，无失败/跳过）。真实浏览器默认态仍由统一诊断完成。

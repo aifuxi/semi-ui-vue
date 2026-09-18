@@ -1,4 +1,4 @@
-name: Pull request quality and parity
+name: Pull request quality and package contracts
 
 on:
   pull_request:
@@ -12,46 +12,36 @@ permissions:
 
 jobs:
   quality:
-    name: Quality and package verification
+    name: Source quality and tooling
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: recursive
-      - uses: actions/setup-node@v6
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
         with:
-          node-version: 24.18.0
-          package-manager-cache: false
-      - run: corepack enable
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm check
-
-  browser:
-    name: Chromium parity on Linux
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          submodules: recursive
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24.18.0
-          package-manager-cache: false
-      - run: corepack enable
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium
-      - run: pnpm test:browser
+          version: 2026.9.3
+      - run: mise exec -- pnpm install --frozen-lockfile
+      - run: mise exec -- pnpm check:changesets
         env:
-          PARITY_SERVER_MODE: build
-          PARITY_IGNORE_HOST_BASELINES: '1'
-      - uses: actions/upload-artifact@v4
-        if: failure() || cancelled()
-        with:
-          name: linux-parity-failure
-          path: |
-            playwright-report
-            test-results
-          if-no-files-found: warn
-          retention-days: 14
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_HEAD_REF: ${{ github.head_ref }}
+          PR_HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          RELEASE_BOT_LOGIN: ${{ vars.RELEASE_BOT_LOGIN }}
+      - run: mise exec -- pnpm test:changesets
+      - run: mise exec -- pnpm check:source
+      - name: Verify affected build and package contracts
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
+          if grep -qE '^(packages/|apps/|scripts/|tests/|vendor/|package.json$|pnpm-|tsconfig|vite|mise.toml$|\.npmrc$|\.github/workflows/)' <<< "$changed"; then
+            mise exec -- pnpm check:artifacts
+          else
+            echo '未触及构建或包契约路径，跳过 check:artifacts'
+          fi

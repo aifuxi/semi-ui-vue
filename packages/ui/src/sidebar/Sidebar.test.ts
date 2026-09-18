@@ -1,15 +1,21 @@
 import { flushPromises, mount, shallowMount } from '@vue/test-utils';
-import { h, nextTick } from 'vue';
+import { defineComponent, h, nextTick, ref } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import Sidebar from './Sidebar.vue';
-import SidebarAnnotationContent from './SidebarAnnotationContent.vue';
-import SidebarCodeContent from './SidebarCodeContent.vue';
-import SidebarCodeItem from './SidebarCodeItem.vue';
-import SidebarContainer from './SidebarContainer.vue';
-import SidebarFileItem from './SidebarFileItem.vue';
-import SidebarMCPConfigureContent from './SidebarMCPConfigureContent.vue';
 import { Input } from '../input';
+
+import DefaultSidebar, {
+  Annotation as SidebarAnnotation,
+  MCPConfigure as SidebarMCPConfigure,
+  Sidebar,
+  SidebarAnnotationContent,
+  SidebarCodeContent,
+  SidebarCodeItem,
+  SidebarContainer,
+  SidebarFileContent,
+  SidebarFileItem,
+  SidebarMCPConfigureContent,
+} from './index';
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -17,6 +23,44 @@ afterEach(() => {
 });
 
 describe('Sidebar', () => {
+  it('公开入口保持 default、named 与复合静态成员一致', () => {
+    expect(DefaultSidebar).toBe(Sidebar);
+    expect(Sidebar.Container).toBe(SidebarContainer);
+    expect(Sidebar.CodeContent).toBe(SidebarCodeContent);
+    expect(Sidebar.CodeItem).toBe(SidebarCodeItem);
+    expect(Sidebar.FileContent).toBe(SidebarFileContent);
+    expect(Sidebar.FileItem).toBe(SidebarFileItem);
+    expect(SidebarAnnotation.AnnotationContent).toBe(SidebarAnnotationContent);
+    expect(SidebarMCPConfigure).toBeTypeOf('object');
+  });
+
+  for (const [name, Component] of [
+    ['Annotation', SidebarAnnotation],
+    ['MCPConfigure', SidebarMCPConfigure],
+  ] as const) {
+    it(`${name} preserves inherited container Boolean defaults and explicit overrides`, async () => {
+      for (const value of [undefined, false, true]) {
+        const onCancel = vi.fn();
+        const wrapper = mount(Component, {
+          props: {
+            visible: true,
+            onCancel,
+            ...(value === undefined ? {} : { motion: value, resizable: value, showClose: value }),
+          },
+        });
+        expect(wrapper.find('.semi-resizable-resizable').exists()).toBe(value !== false);
+        expect(wrapper.find('.semi-sidebar-animation-content_show').exists()).toBe(value !== false);
+        const close = wrapper.find('button[aria-label="close"]');
+        expect(close.exists()).toBe(value !== false);
+        if (close.exists()) {
+          await close.trigger('click');
+          expect(onCancel).toHaveBeenCalledOnce();
+        }
+        wrapper.unmount();
+      }
+    });
+  }
+
   it('保留默认 true Boolean，并区分显式 false/true', async () => {
     const omitted = mount(SidebarContainer, {
       props: { visible: true, motion: false, title: 'Workspace' },
@@ -94,6 +138,28 @@ describe('Sidebar', () => {
     await wrapper.get('[aria-label="back"]').trigger('click');
     expect(onBackWard.mock.calls[0]?.[1]).toBe('main');
     expect(wrapper.find('.semi-sidebar-code-content').exists()).toBe(true);
+  });
+
+  it('主视图退出并重开时重新挂载有状态插槽内容', async () => {
+    const Counter = defineComponent({
+      setup() {
+        const count = ref(0);
+        return () => h('button', { onClick: () => count.value++ }, String(count.value));
+      },
+    });
+    const wrapper = mount(Sidebar, {
+      props: { visible: true, motion: false, resizable: false },
+      slots: { 'main-content': () => h(Counter) },
+    });
+    for (let index = 0; index < 2; index++) {
+      const button = wrapper.get('.semi-sidebar-main-content button');
+      expect(button.text()).toBe('0');
+      await button.trigger('click');
+      expect(button.text()).toBe('1');
+      await wrapper.setProps({ mode: 'code' });
+      await wrapper.setProps({ mode: 'main' });
+    }
+    expect(wrapper.get('.semi-sidebar-main-content button').text()).toBe('0');
   });
 
   it('MCP 搜索、模式和受控启停均返回克隆数组', async () => {

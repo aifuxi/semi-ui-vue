@@ -4,7 +4,9 @@ import {
   getCurrentInstance,
   inject,
   markRaw,
+  onBeforeMount,
   onBeforeUnmount,
+  onBeforeUpdate,
   onMounted,
   shallowReactive,
   shallowRef,
@@ -33,14 +35,22 @@ const slots = useSlots();
 const instance = getCurrentInstance();
 const injectedConfig = inject(configContextKey, undefined);
 const teleportTarget = shallowRef<HTMLElement | null>(null);
+// Keep unresolved client Teleport anchors away from other portals without remounting content.
+const pendingTarget = shallowRef<DocumentFragment | null>(null);
+onBeforeMount(() => {
+  pendingTarget.value = document.createDocumentFragment();
+});
 const mounted = shallowRef(false);
+const contentAnimating = shallowRef(false);
+const maskAnimating = shallowRef(false);
 const cache = new Map<unknown, unknown>();
+const rawPropsRevision = shallowRef(0);
 let activeCycle = false;
-let hideTimer: ReturnType<typeof setTimeout> | undefined;
 let originalBodyOverflow: string | null = null;
 let originalBodyWidth = '';
 
 function hasRawProp(key: keyof SideSheetProps): boolean {
+  void rawPropsRevision.value;
   const kebabKey = String(key).replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
   const raw = instance?.vnode.props;
   return Boolean(
@@ -153,16 +163,14 @@ const customContainer = computed(
   () => typeof document !== 'undefined' && teleportTarget.value !== document.body,
 );
 const direction = computed(() => config.value?.direction ?? 'ltr');
-const bodyContent = computed<VNodeChild>(() => slots.default?.());
-const titleContent = computed<VNodeChild>(
-  () => slots.title?.() ?? (hasRawProp('title') ? props.title : undefined),
-);
-const footerContent = computed<VNodeChild>(
-  () => slots.footer?.() ?? (hasRawProp('footer') ? props.footer : undefined),
-);
-const closeIconContent = computed<VNodeChild>(
-  () => slots.closeIcon?.() ?? (hasRawProp('closeIcon') ? props.closeIcon : undefined),
-);
+// Slot VNodes carry mounted DOM state; evaluate them in each render, not across Portal lifetimes.
+const bodyContent = (): VNodeChild => slots.default?.();
+const titleContent = (): VNodeChild =>
+  slots.title?.() ?? (hasRawProp('title') ? props.title : undefined);
+const footerContent = (): VNodeChild =>
+  slots.footer?.() ?? (hasRawProp('footer') ? props.footer : undefined);
+const closeIconContent = (): VNodeChild =>
+  slots.closeIcon?.() ?? (hasRawProp('closeIcon') ? props.closeIcon : undefined);
 const dataAttrs = computed(() =>
   Object.fromEntries(Object.entries(attrs).filter(([name]) => name.startsWith('data-'))),
 );
@@ -179,14 +187,14 @@ const contentHeight = computed(() =>
   isHorizontal.value ? resolveOptional('height') || sideSheetStrings.HEIGHT : '100%',
 );
 const maskClass = computed(() =>
-  runtimeProps.value.motion
+  runtimeProps.value.motion && maskAnimating.value
     ? runtimeVisible.value
       ? 'semi-sidesheet-animation-mask_show'
       : 'semi-sidesheet-animation-mask_hide'
     : undefined,
 );
 const dialogClass = computed(() =>
-  runtimeProps.value.motion
+  runtimeProps.value.motion && contentAnimating.value
     ? runtimeVisible.value
       ? `semi-sidesheet-animation-content_show_${runtimeProps.value.placement}`
       : `semi-sidesheet-animation-content_hide_${runtimeProps.value.placement}`
@@ -215,10 +223,11 @@ function handleKeyDown(event: KeyboardEvent): void {
 }
 
 function beginShow(): void {
-  clearTimeout(hideTimer);
   const wasHidden = state.displayNone;
   resolveContainer();
   state.displayNone = false;
+  contentAnimating.value = runtimeProps.value.motion;
+  maskAnimating.value = runtimeProps.value.motion;
   activeCycle = true;
   foundation.beforeShow();
   if (wasHidden) foundation.onVisibleChange(true);
@@ -226,7 +235,6 @@ function beginShow(): void {
 
 function finishHide(): void {
   if (!activeCycle || runtimeVisible.value || state.displayNone) return;
-  clearTimeout(hideTimer);
   foundation.toggleDisplayNone(true);
   activeCycle = false;
   foundation.onVisibleChange(false);
@@ -234,19 +242,28 @@ function finishHide(): void {
 
 function beginHide(): void {
   if (!activeCycle) return;
+  contentAnimating.value = runtimeProps.value.motion;
+  maskAnimating.value = runtimeProps.value.motion;
   foundation.afterHide();
   if (!runtimeProps.value.motion) {
     finishHide();
     return;
   }
-  clearTimeout(hideTimer);
-  hideTimer = setTimeout(finishHide, 180);
+  // CSS starts on a later frame; a JS timer using the CSS duration truncates the last frame.
+  // Match the pinned adapter by finishing when the actual container animation ends.
 }
 
-function handleAnimationEnd(): void {
+function handleAnimationEnd(event: AnimationEvent): void {
+  // The pinned CSSAnimation wrappers track mask and content independently.
+  const target = event.currentTarget as HTMLElement;
+  if (target.classList.contains('semi-sidesheet-mask')) maskAnimating.value = false;
+  else contentAnimating.value = false;
   if (!runtimeVisible.value) finishHide();
 }
 
+onBeforeUpdate(() => {
+  rawPropsRevision.value += 1;
+});
 onMounted(() => {
   mounted.value = true;
   resolveContainer();
@@ -257,18 +274,30 @@ watch(runtimeVisible, (visible, previous) => {
   if (visible) beginShow();
   else beginHide();
 });
+watch(
+  () => [runtimeProps.value.motion, runtimeProps.value.placement] as const,
+  ([motion, placement], [previousMotion, previousPlacement]) => {
+    if (!mounted.value || !activeCycle) return;
+    if (motion !== previousMotion) {
+      contentAnimating.value = motion;
+      maskAnimating.value = motion;
+      if (!motion && !runtimeVisible.value) finishHide();
+    } else if (motion && placement !== previousPlacement) {
+      contentAnimating.value = true;
+    }
+  },
+);
 watch(popupGetter, () => {
   if (mounted.value) resolveContainer();
 });
 onBeforeUnmount(() => {
-  clearTimeout(hideTimer);
   if (activeCycle) foundation.destroy();
   else enableBodyScroll();
 });
 </script>
 
 <template>
-  <Teleport :to="teleportTarget ?? 'body'" :disabled="teleportTarget === null">
+  <Teleport :to="teleportTarget ?? pendingTarget ?? 'body'" :disabled="teleportTarget === null">
     <div
       v-if="shouldRender"
       class="semi-portal"
@@ -277,15 +306,15 @@ onBeforeUnmount(() => {
     >
       <SideSheetContent
         :aria-label="resolveOptional('aria-label')"
-        :body="bodyContent"
+        :body="bodyContent()"
         :body-style="resolveOptional('bodyStyle')"
         :class="rootClasses"
         :closable="runtimeProps.closable"
-        :close-icon="closeIconContent"
+        :close-icon="closeIconContent()"
         :custom-container="customContainer"
         :data-attrs="dataAttrs"
         :dialog-class="dialogClass"
-        :footer="footerContent"
+        :footer="footerContent()"
         :header-style="resolveOptional('headerStyle')"
         :height="contentHeight"
         :hidden="runtimeProps.keepDOM && state.displayNone"
@@ -297,7 +326,7 @@ onBeforeUnmount(() => {
         :placement="runtimeProps.placement"
         :rtl="direction === 'rtl'"
         :size="runtimeProps.size"
-        :title="titleContent"
+        :title="titleContent()"
         :width="contentWidth"
         :wrapper-width="resolveOptional('width')"
         @animation-end="handleAnimationEnd"

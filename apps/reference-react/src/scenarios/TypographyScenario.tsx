@@ -1,9 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from '@semi-v2.102.0/typography';
 
 const { Numeral, Paragraph, Text, Title } = Typography;
 
 export function TypographyScenario(): React.ReactElement {
+  const query = new URLSearchParams(typeof window === 'undefined' ? '' : window.location.search);
+  const tipMode = query.get('typographyTip');
+  const [wide, setWide] = useState(false);
+  const [textMounted, setTextMounted] = useState(true);
+  const tipOptions = tipMode
+    ? {
+        type: tipMode,
+        opts: {
+          getPopupContainer: () => document.getElementById('typography-tip-container')!,
+          ...(query.has('arrow') ? { showArrow: query.get('arrow') === 'true' } : {}),
+        },
+      }
+    : true;
   return (
     <div className="typography-scenario" data-testid="typography-reference">
       <section className="typography-scenario__section" aria-label="标题层级">
@@ -54,13 +67,24 @@ export function TypographyScenario(): React.ReactElement {
       </section>
 
       <section className="typography-scenario__section" aria-label="截断与提示">
-        <Text
-          ellipsis={{ showTooltip: true }}
-          style={{ width: '180px' }}
-          data-parity-target="typography-css-ellipsis"
-        >
-          Typography ellipsis tooltip contains the complete original content.
-        </Text>
+        {tipMode && (
+          <>
+            <div id="typography-tip-container" style={{ position: 'relative' }} />
+            <button onClick={() => setWide(!wide)}>Toggle width</button>
+            <button onClick={() => setTextMounted(!textMounted)}>Toggle text</button>
+          </>
+        )}
+        {textMounted && (
+          <>
+            <Text
+              ellipsis={{ showTooltip: tipOptions }}
+              style={{ width: wide ? '900px' : '180px' }}
+              data-parity-target="typography-css-ellipsis"
+            >
+              Typography ellipsis tooltip contains the complete original content.
+            </Text>
+          </>
+        )}
         <Paragraph
           ellipsis={{
             rows: 1,

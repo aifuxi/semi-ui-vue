@@ -91,7 +91,7 @@
 
 ## 发布与验证门禁
 
-- 根与 `@aifuxi/semi-ui-vue/calendar` 子路径导出 Calendar、`CalendarProps`、`CalendarMode`、`CalendarEvent`、`CalendarLocale`、`CalendarSlots`、`CalendarEmits` 和 `WeekStartsOn`。
+- 根与 `@aifuxi/semi-ui-vue/calendar` 子路径导出 default/named Calendar、`CALENDAR_MODES`、`CalendarProps`、`CalendarMode`、`CalendarEvent`、`CalendarLocale`、`CalendarSlots`、`CalendarEmits` 和 `WeekStartsOn`。
 - `@aifuxi/semi-theme-default/calendar.css` 与根 CSS 均包含 Calendar；真实 tarball 验证根/子路径 ESM、声明、样式、tree-shaking、SSR-safe import、许可证与 SPDX SBOM。
 - 单元测试覆盖四 mode、默认值显式性、事件解析/重算、点击日期、周起始日、custom slots、Locale、Month 折叠卡片、custom container、显式 close、ResizeObserver 与清理。
 - Chromium 行为覆盖日/周/月/范围、点击/卡片/Portal、ARIA、zh-CN/en-US、RTL；视觉覆盖桌面与移动、light/dark 及 RTL，关键 computed style 精确相等、几何误差 `<= 0.5px`、截图阈值 `<= 0.1` / `0.001`。
@@ -102,3 +102,12 @@
 - `dateGridRender`、`renderDateDisplay`、`renderTimeDisplay`、`allDayEventsRender` 改为命名 scoped slots；这是 Vue 原生 API 映射。
 - 月事件卡片关闭按钮增加 `aria-label`，属于不影响 DOM class、布局和事件顺序的无障碍补强。
 - 无其他 accepted deviation；任何未解释的 API、行为、ARIA、样式或截图差异均阻止 `pending -> ready`。
+
+## 文档严格验收补充（2026-09-12）
+
+双语文档矩阵逐节点比较 React/Vue 月视图 DOM 后修正两处实现，使其与固定 Adapter 的输出逐属性一致：
+
+- 普通 gridcell 始终输出 `aria-current`：当天为 `date`，其余为 `false`。固定实现是 `aria-current={isToday ? "date" : false}`，非当天也会输出 `false`；此前 Vue 省略该属性。
+- 折叠单元格（“还有 N 项”）的 Popover 触发器 `<li>` 不再附加 `role="gridcell"`、`aria-label` 与 `aria-current`。固定 `renderCollapsed` 的触发节点只带单元格 class 与点击，Vue 之前把普通单元格的语义重复到了触发器上。
+
+历史验证：Calendar 单元/SSR 9 项、组件 Chromium 5/5、双语文档矩阵 9 例 72 项通过。旧文档报告已[退役](../../documentation/README.md)，细节与限定等价项可从 Git 历史查看，不作为当前输入的验收结论。

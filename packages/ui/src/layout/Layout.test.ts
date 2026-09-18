@@ -3,7 +3,8 @@ import { createSSRApp, h, nextTick, shallowRef } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import {
+import DefaultLayout, {
+  LAYOUT_BREAKPOINTS,
   LAYOUT_RESPONSIVE_MAP,
   Layout,
   LayoutContent,
@@ -24,10 +25,20 @@ afterEach(() => {
 
 describe('Layout', () => {
   it('公开根组件、静态子组件与具名 Vue 子组件', () => {
+    expect(DefaultLayout).toBe(Layout);
     expect(Layout.Header).toBe(LayoutHeader);
     expect(Layout.Footer).toBe(LayoutFooter);
     expect(Layout.Content).toBe(LayoutContent);
     expect(Layout.Sider).toBe(LayoutSider);
+    expect(LAYOUT_BREAKPOINTS).toEqual(['xs', 'sm', 'md', 'lg', 'xl', 'xxl']);
+    expect(LAYOUT_RESPONSIVE_MAP).toEqual({
+      xs: '(max-width: 575px)',
+      sm: '(min-width: 576px)',
+      md: '(min-width: 768px)',
+      lg: '(min-width: 992px)',
+      xl: '(min-width: 1200px)',
+      xxl: '(min-width: 1600px)',
+    });
   });
 
   it('渲染固定语义标签、class、style 与原生属性', () => {
@@ -65,13 +76,18 @@ describe('Layout', () => {
     const wrapper = mount(Layout, {
       props: { prefixCls: 'demo-layout', tagName: 'article' },
       slots: {
-        default: () => h(LayoutHeader, { prefixCls: 'demo-layout', tagName: 'div' }, () => 'H'),
+        default: () => [
+          h(LayoutHeader, { prefixCls: 'demo-layout', tagName: 'div' }, () => 'H'),
+          h(LayoutSider, { prefixCls: 'demo-layout' }, () => 'S'),
+        ],
       },
     });
 
     expect(wrapper.element.tagName).toBe('ARTICLE');
     expect(wrapper.classes()).toContain('demo-layout');
     expect(wrapper.get('div').classes()).toContain('demo-layout-header');
+    expect(wrapper.get('aside').classes()).toContain('demo-layout-sider');
+    expect(wrapper.get('.demo-layout-sider-children').text()).toBe('S');
   });
 
   it('通过 hasSider 或直接 Sider 子节点切换横向布局 class', async () => {

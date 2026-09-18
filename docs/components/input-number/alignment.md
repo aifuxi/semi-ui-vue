@@ -74,13 +74,15 @@
 - Chromium：基础、上下界、三尺寸、disabled、precision、formatter、currency、scientific、inner/hide buttons；桌面与移动端 light/dark，RTL，zh-CN/en-US 行为。
 - computed style/geometry：根、Input wrapper/input、外部/内部步进器与按钮逐节点比较；bounding rect 各轴差值不超过 `0.5 CSS px`。
 - 截图：组件最小完整裁剪，`threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`；另行报告是否字节一致。
-- 发布：根/`input-number` 子路径、声明、`input-number.css`、真实 tarball 安装/类型/tree-shaking/SSR-safe import、SBOM 与许可。
+- 发布：根/`input-number` 子路径 default/named 导入、公开声明、`input-number.css`、真实 tarball 安装/类型/tree-shaking/SSR-safe import、SBOM 与许可。
 
 ## Deviation
 
 - **React 开发态 warning（accepted）**：固定 `packages/semi-ui/inputNumber/index.tsx` 的 render 解构未移除 `scientificNotation`，因此它经 `...rest` 落到原生 input，React 开发构建会报告未知 DOM prop；Vue Adapter 消费该 prop 而不把它写入 DOM。用户可见 DOM、展示值和行为不受影响，浏览器门禁只接受这一条精确匹配的上游 warning，Vue 侧仍要求零 runtime error。
 
 ## 验收结论
+
+当前状态：`ready`。
 
 - 单元与 SSR 行为已纳入全仓测试；全量单元测试 `222/222` 通过。
 - 同一 Playwright Chromium 进程中的行为、computed style 与 geometry 对照通过；全量浏览器测试 `120/120` 通过。

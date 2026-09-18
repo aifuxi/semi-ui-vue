@@ -2,6 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { readdir, readFile } from 'node:fs/promises';
 import {
   captureComparableGeometry,
+  expectComparableGeometry,
   expectScreenshotPixelsToMatch,
   waitForStableRendering,
   waitForTargetStable,
@@ -40,6 +41,55 @@ test('共享截图比较允许阈值内像素抖动并拒绝超限差异', async
   await expect(
     expectScreenshotPixelsToMatch(page, overThreshold, expected, '超限像素差异'),
   ).rejects.toThrow(/像素差异超限/);
+});
+
+test('共享几何断言拒绝外框不变的内部 1px 位移', async ({ page }) => {
+  await page.setContent(`
+    <div id="frame" style="position: relative; width: 100px; height: 100px">
+      <div id="child" style="position: absolute; left: 20px; top: 20px; width: 40px; height: 30px"></div>
+    </div>
+  `);
+  await waitForStableRendering(page);
+  const frame = page.locator('#frame');
+  const child = page.locator('#child');
+  const initialFrame = await captureComparableGeometry(frame);
+  const initialChild = await captureComparableGeometry(child);
+
+  await child.evaluate((element) => {
+    element.style.transform = 'translateX(1px)';
+  });
+  await waitForStableRendering(page);
+
+  expect(await captureComparableGeometry(frame)).toEqual(initialFrame);
+  const displacedChild = await captureComparableGeometry(child);
+  expect(displacedChild.x - initialChild.x).toBe(1);
+  expect(() => expectComparableGeometry(displacedChild, initialChild, '内部位移')).toThrow(
+    /内部位移 x 差异超限/,
+  );
+});
+
+test('共享像素比较拒绝几何不变的真实 DOM 颜色变化', async ({ page }) => {
+  await page.setContent(`
+    <div id="frame" style="width: 100px; height: 100px; background: white">
+      <div id="child" style="width: 40px; height: 40px; background: black"></div>
+    </div>
+  `);
+  await waitForStableRendering(page);
+  const frame = page.locator('#frame');
+  const child = page.locator('#child');
+  const initialGeometry = await captureComparableGeometry(child);
+  const expected = await frame.screenshot({ animations: 'disabled' });
+
+  await child.evaluate((element) => {
+    element.style.backgroundColor = '#ff0000';
+  });
+  await waitForStableRendering(page);
+
+  expect(await captureComparableGeometry(child)).toEqual(initialGeometry);
+  const actual = await frame.screenshot({ animations: 'disabled' });
+  await expect(
+    expectScreenshotPixelsToMatch(page, actual, expected, '内部颜色变化'),
+  ).rejects.toThrow(/内部颜色变化 像素差异超限/);
 });
 
 test('组件对照规格统一使用像素阈值而非 PNG 字节相等', async () => {

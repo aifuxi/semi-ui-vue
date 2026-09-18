@@ -4,6 +4,7 @@
 | ------------------------------------------------ | -------------------------------------------------------- | -------------------------------------------------------- |
 | `import Image, { Preview }`                      | `import Image, { ImagePreview }`                         | Vue 使用语义明确的具名导出；固定上游没有 `Image.Preview` |
 | `<Preview>`                                      | `<ImagePreview>`                                         | 默认 slot 递归识别 Image 子节点                          |
+| `import { PreviewInner }`                        | 不导出；用公开 `ImagePreview` 组合                       | `PreviewInner` 是固定预览内部实现，文档无使用示例        |
 | `onLoad/onError/onClick`                         | `@load/@error/@click`                                    | 事件参数和通知顺序保持                                   |
 | `onVisibleChange/onChange`                       | `@visible-change/@change`                                | 同时提供对应 `v-model` 更新事件                          |
 | `visible/currentIndex`                           | `v-model:visible/v-model:current-index` 或同名受控 props | 受控模式只通知，不越权修改外部值                         |

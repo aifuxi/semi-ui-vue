@@ -1,13 +1,21 @@
 import { mount } from '@vue/test-utils';
-import { defineComponent, h, nextTick } from 'vue';
+import { defineComponent, h, nextTick, shallowRef } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import Image, { ImagePreview } from './index';
+import Image, { Image as NamedImage, ImagePreview } from './index';
 
 const PIXEL =
   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="80" height="60"%3E%3Crect width="80" height="60" fill="%230066ff"/%3E%3C/svg%3E';
 const PIXEL_TWO =
   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="80" height="60"%3E%3Crect width="80" height="60" fill="%2300aa66"/%3E%3C/svg%3E';
+
+function expectPreviewPageTextNodes(expected: string[]): void {
+  const page = document.querySelector('.semi-image-preview-footer-page');
+  expect(page).not.toBeNull();
+  const nodes = [...page!.childNodes];
+  expect(nodes.map((node) => node.nodeType)).toEqual(expected.map(() => Node.TEXT_NODE));
+  expect(nodes.map((node) => node.textContent)).toEqual(expected);
+}
 
 afterEach(() => {
   document.body.innerHTML = '';
@@ -17,6 +25,11 @@ afterEach(() => {
 });
 
 describe('Image', () => {
+  it('公开入口导出默认 Image、命名 Image 与 ImagePreview', () => {
+    expect(NamedImage).toBe(Image);
+    expect(ImagePreview).toBeTruthy();
+  });
+
   it('按固定顺序处理 loading、load、src 重置和 error/fallback', async () => {
     const onLoad = vi.fn();
     const onError = vi.fn();
@@ -114,6 +127,30 @@ describe('Image', () => {
 });
 
 describe('ImagePreview', () => {
+  it('group 默认 ID 多实例唯一且更新稳定，保留显式 ID', async () => {
+    const caption = shallowRef('before');
+    const Host = () =>
+      h('main', [
+        h(ImagePreview, { class: caption.value, lazyLoad: false }),
+        h(ImagePreview, { lazyLoad: false }),
+        h(ImagePreview, { id: 'explicit-image-group', lazyLoad: false }),
+      ]);
+    const wrapper = mount(Host);
+    const ids = () =>
+      wrapper.findAll('.semi-image-preview-group').map((group) => group.attributes('id'));
+    const initial = ids();
+    expect(initial).toHaveLength(3);
+    expect(initial[0]).toMatch(/^semi-image-preview-group-.+/);
+    expect(initial[1]).toMatch(/^semi-image-preview-group-.+/);
+    expect(new Set(initial).size).toBe(3);
+    expect(initial[2]).toBe('explicit-image-group');
+    caption.value = 'after';
+    await nextTick();
+    expect(wrapper.find('.semi-image-preview-group').classes()).toContain('after');
+    expect(ids()).toEqual(initial);
+    wrapper.unmount();
+  });
+
   it('递归收集 group Image，按点击索引打开并切换图片', async () => {
     const onChange = vi.fn();
     const wrapper = mount(ImagePreview, {
@@ -136,6 +173,7 @@ describe('ImagePreview', () => {
     expect(onChange).toHaveBeenCalledWith(1);
     expect(document.querySelector('.semi-image-preview-header-title')?.textContent).toBe('第二张');
     expect(document.querySelector('.semi-image-preview-footer-page')?.textContent).toBe('2/2');
+    expectPreviewPageTextNodes(['2', '/', '2']);
     expect(document.querySelector<HTMLImageElement>('.semi-image-preview-image-img')?.src).toBe(
       PIXEL_TWO,
     );
@@ -144,6 +182,7 @@ describe('ImagePreview', () => {
     await nextTick();
     expect(onChange).toHaveBeenLastCalledWith(0);
     expect(document.querySelector('.semi-image-preview-footer-page')?.textContent).toBe('1/2');
+    expectPreviewPageTextNodes(['1', '/', '2']);
     wrapper.unmount();
   });
 

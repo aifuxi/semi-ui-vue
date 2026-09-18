@@ -75,6 +75,7 @@
 ## 验收结果
 
 - 固定基线核验通过：`vendor/semi-design` 为 `v2.102.0` / `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`。
+- 公开入口已由 `BackTop.test.ts` 锁定默认导出与命名导出；SSR 测试从公开入口导入，覆盖隐藏初始输出与无 DOM 边界。
 - `pnpm check` 通过：源码边界扫描覆盖 846 个运行时文件；42 个 Vitest 文件、326 项单元/SSR 测试通过；workspace 构建、主题逐组件产物、SSR import 与真实 tarball 安装验证通过。
 - `pnpm test:browser` 通过：单一 Chromium worker 下 175 项行为、样式、几何、无障碍与视觉回归全部通过。
 - BackTop 的 desktop/mobile light/dark 与 desktop light RTL 共五组 React/Vue 裁剪 PNG 逐字节一致；未使用截图 mask。

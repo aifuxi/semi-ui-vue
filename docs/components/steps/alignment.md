@@ -94,7 +94,7 @@
 
 ## 验收证据
 
-- `packages/ui/src/steps/Steps.test.ts` 与 `Steps.ssr.test.ts`：公开 DOM、三种类型、状态/序号、模板裸 Boolean、render function/Fragment、显式 status/icon、Click/Enter 顺序、ARIA 与 SSR 全部通过。
+- `packages/ui/src/steps/Steps.test.ts` 与 `Steps.ssr.test.ts`：从 `./index` 公开入口挂载默认导出、命名导出与 compound `Steps.Step`；公开 DOM、三种类型、状态/序号、模板裸 Boolean、render function/Fragment、显式 status/icon、Click/Enter 顺序、ARIA 与 SSR 全部通过。
 - 两个工作台的 typecheck/build 通过；React 场景直接请求 `vendor/semi-design/packages/semi-ui/steps/index.tsx`。
 - Chromium 专项 7 项通过：5 个 computed-style/rect 目标、点击/Enter/hover、桌面与移动 light/dark、RTL；阈值沿用仓库 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`。
 - 10 张 Steps 基线图逐对 React/Vue PNG 字节完全一致；5 个场景 SHA-256 分别为 `72d46af8…`、`3bae486d…`、`30d207d…`、`621e977d…`、`0babc2ba…`。

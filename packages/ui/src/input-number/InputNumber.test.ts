@@ -2,10 +2,14 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
-import InputNumber from './InputNumber.vue';
+import DefaultInputNumber, { InputNumber } from './index';
 import type { InputNumberExposed, InputNumberValue } from './types';
 
 describe('InputNumber', () => {
+  it('公开入口保持 default 与 named 导出一致', () => {
+    expect(DefaultInputNumber).toBe(InputNumber);
+  });
+
   it('保留 spinbutton DOM、默认值与步进按钮骨架', () => {
     const wrapper = mount(InputNumber, { props: { defaultValue: 1 } });
 

@@ -4,7 +4,15 @@ import { defineComponent, h, nextTick, shallowRef } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import ConfigProvider from '../config-provider/ConfigProvider.vue';
-import { Table, TableColumn, type TableColumnProps as TableColumnConfig } from './index';
+import LocaleProvider from '../locale/LocaleProvider.vue';
+import enUS from '../locale/source/en_US';
+import DefaultTable, {
+  DEFAULT_KEY_COLUMN_EXPAND,
+  DEFAULT_KEY_COLUMN_SELECTION,
+  Table,
+  TableColumn,
+  type TableColumnProps as TableColumnConfig,
+} from './index';
 
 const columns: TableColumnConfig[] = [
   { dataIndex: 'name', key: 'name', title: 'Name' },
@@ -26,6 +34,200 @@ afterEach(() => {
 });
 
 describe('Table', () => {
+  it('公开入口保持 default、named、复合 Column 与固定键常量一致', () => {
+    expect(DefaultTable).toBe(Table);
+    expect(Table.Column).toBe(TableColumn);
+    expect(Table.DEFAULT_KEY_COLUMN_SELECTION).toBe(DEFAULT_KEY_COLUMN_SELECTION);
+    expect(Table.DEFAULT_KEY_COLUMN_EXPAND).toBe(DEFAULT_KEY_COLUMN_EXPAND);
+  });
+
+  it('LocaleProvider 提供表格文案，跨页选择保留表头半选状态', async () => {
+    const wrapper = mount(LocaleProvider, {
+      props: { locale: enUS },
+      slots: {
+        default: () =>
+          h(Table, { columns, dataSource: data, pagination: { pageSize: 1 }, rowSelection: {} }),
+      },
+    });
+    expect(wrapper.text()).toContain('Showing 1 to 1 of 2');
+    await wrapper.get('tbody .semi-checkbox').trigger('click');
+    await wrapper.get('.semi-page-next').trigger('click');
+    expect(wrapper.text()).toContain('Showing 2 to 2 of 2');
+    expect(wrapper.get('thead .semi-checkbox').classes()).toContain('semi-checkbox-indeterminate');
+    expect(wrapper.get('tbody input').element).toHaveProperty('checked', false);
+    wrapper.unmount();
+  });
+  it('保留 onCell 对齐，显式列对齐覆盖 onCell，render 样式最终优先', () => {
+    const wrapper = mount(Table, {
+      props: {
+        columns: [
+          {
+            dataIndex: 'name',
+            onCell: () => ({ style: { textAlign: 'right', justifyContent: 'flex-end' } }),
+          },
+          { dataIndex: 'name', align: 'center', onCell: () => ({ style: { textAlign: 'right' } }) },
+          {
+            dataIndex: 'name',
+            align: 'center',
+            render: (text) => ({
+              children: String(text),
+              props: { style: { textAlign: 'left', justifyContent: 'flex-start' } },
+            }),
+          },
+        ],
+        dataSource: [data[0]!],
+        pagination: false,
+      },
+    });
+    const cells = wrapper.findAll('tbody td').map((cell) => (cell.element as HTMLElement).style);
+    expect(cells[0]!.textAlign).toBe('right');
+    expect(cells[0]!.justifyContent).toBe('flex-end');
+    expect(cells[1]!.textAlign).toBe('center');
+    expect(cells[2]!.textAlign).toBe('left');
+    expect(cells[2]!.justifyContent).toBe('flex-start');
+    wrapper.unmount();
+  });
+  it('RTL 固定列镜像定位和边界类，align 同步文字与弹性布局', () => {
+    const wrapper = mount(Table, {
+      props: {
+        columns: [{ dataIndex: 'name', title: 'Name', fixed: 'left', width: 120, align: 'left' }],
+        dataSource: data,
+        pagination: false,
+        direction: 'rtl',
+        scroll: { x: 400 },
+      },
+    });
+    const cell = wrapper.get('tbody td');
+    expect(cell.classes()).toEqual(
+      expect.arrayContaining(['semi-table-cell-fixed-right', 'semi-table-cell-fixed-right-first']),
+    );
+    expect((cell.element as HTMLElement).style.right).toBe('0px');
+    expect((cell.element as HTMLElement).style.textAlign).toBe('right');
+    expect((cell.element as HTMLElement).style.justifyContent).toBe('flex-end');
+    wrapper.unmount();
+  });
+  it('选择框保留 name 并随行和全选状态更新可访问名称', async () => {
+    const wrapper = mount(Table, {
+      props: {
+        columns,
+        dataSource: data,
+        pagination: false,
+        rowSelection: { getCheckboxProps: (record) => ({ name: String(record.name) }) },
+      },
+    });
+    expect(wrapper.get('tbody input').attributes()).toMatchObject({
+      name: 'Alpha',
+      'aria-label': 'Select this row',
+    });
+    await wrapper.get('thead .semi-checkbox').trigger('click');
+    expect(wrapper.get('thead input').attributes('aria-label')).toBe('Deselect all rows');
+    expect(wrapper.get('tbody input').attributes('aria-label')).toBe('Deselect this row');
+    wrapper.unmount();
+  });
+  it('分组列计数保留顶层列数，展开父行层级不随展开切换，自定义title优先', async () => {
+    const wrapper = mount(Table, {
+      props: {
+        columns: [
+          {
+            title: 'Group',
+            children: [
+              { dataIndex: 'name', title: 'Name', onCell: () => ({ title: 'Custom title' }) },
+              { dataIndex: 'score', title: 'Score' },
+            ],
+          },
+        ],
+        dataSource: data,
+        pagination: false,
+        expandedRowRender: () => 'Details',
+      },
+    });
+    expect(wrapper.find('table').attributes('aria-colcount')).toBe('1');
+    expect(wrapper.find('tbody tr').attributes('aria-level')).toBe('1');
+    expect(wrapper.find('tbody tr').attributes('aria-expanded')).toBe('false');
+    expect(wrapper.find('.semi-table-expand-icon').attributes('aria-expanded')).toBeUndefined();
+    expect(wrapper.find('td').attributes('title')).toBe('Custom title');
+    await wrapper.find('.semi-table-expand-icon').trigger('click');
+    expect(wrapper.find('tbody tr').attributes('aria-level')).toBe('1');
+    expect(wrapper.find('tbody tr').attributes('aria-expanded')).toBe('true');
+    expect(wrapper.get('.semi-table-row-expand').attributes('data-row-key')).toBe('a-expanded-row');
+    expect(wrapper.get('.semi-table-row-expand td').attributes('aria-colindex')).toBe('1');
+    wrapper.unmount();
+  });
+  it('普通表格输出行列计数及索引，title 使用最终字符串且不冒充树层级', () => {
+    const wrapper = mount(Table, { props: { columns, dataSource: data, pagination: false } });
+    expect(wrapper.find('table').attributes()).toMatchObject({
+      'aria-rowcount': '2',
+      'aria-colcount': '2',
+    });
+    expect(wrapper.find('thead tr').attributes('aria-rowindex')).toBe('1');
+    expect(wrapper.find('th').attributes()).toMatchObject({ 'aria-colindex': '1', title: 'Name' });
+    expect(wrapper.find('tbody tr').attributes('aria-level')).toBeUndefined();
+    expect(wrapper.find('td').attributes()).toMatchObject({ 'aria-colindex': '1', title: 'Alpha' });
+    wrapper.unmount();
+  });
+  it('sorter 接收实际方向，可在升降序都将空值保留在末尾', async () => {
+    const wrapper = mount(Table, {
+      props: {
+        columns: [
+          {
+            dataIndex: 'score',
+            title: 'Score',
+            sorter: (a, b, order) => {
+              if (a.score === undefined) return order === 'descend' ? -1 : 1;
+              if (b.score === undefined) return order === 'descend' ? 1 : -1;
+              return Number(a.score) - Number(b.score);
+            },
+          },
+        ],
+        dataSource: [{ key: 'empty' }, { key: 'two', score: 2 }, { key: 'one', score: 1 }],
+        pagination: false,
+      },
+    });
+    const rows = () => wrapper.findAll('tbody tr').map((row) => row.text());
+    await wrapper.find('.semi-table-column-sorter-wrapper').trigger('click');
+    expect(rows()).toEqual(['1', '2', '']);
+    await wrapper.find('.semi-table-column-sorter-wrapper').trigger('click');
+    expect(rows()).toEqual(['2', '1', '']);
+    wrapper.unmount();
+  });
+  it('受控远程分页直接展示当前页，移除 currentPage 后恢复本地切片', async () => {
+    const wrapper = mount(Table, {
+      props: { columns, dataSource: data, pagination: { currentPage: 2, pageSize: 1, total: 4 } },
+    });
+    expect(wrapper.findAll('tbody tr')).toHaveLength(2);
+    expect(wrapper.findAll('tbody tr')[0]!.text()).toContain('Alpha');
+    await wrapper.setProps({ pagination: { pageSize: 1, total: 4 } });
+    expect(wrapper.findAll('tbody tr')).toHaveLength(1);
+    wrapper.unmount();
+  });
+
+  it('受控排序通知下一方向与取消状态，只有回写后才改变行序', async () => {
+    const onChange = vi.fn();
+    const sortable = { ...columns[1]!, sortOrder: false as const };
+    const wrapper = mount(Table, {
+      props: { columns: [columns[0]!, sortable], dataSource: data, pagination: false, onChange },
+    });
+    await wrapper.find('.semi-table-column-sorter-wrapper').trigger('click');
+    expect(onChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        sorter: expect.objectContaining({ dataIndex: 'score', sortOrder: 'ascend' }),
+      }),
+    );
+    expect(wrapper.findAll('tbody tr')[0]!.text()).toContain('Alpha');
+    await wrapper.setProps({ columns: [columns[0]!, { ...sortable, sortOrder: 'ascend' }] });
+    expect(wrapper.findAll('tbody tr')[0]!.text()).toContain('Beta');
+    await wrapper.find('.semi-table-column-sorter-wrapper').trigger('click');
+    expect(onChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ sorter: expect.objectContaining({ sortOrder: 'descend' }) }),
+    );
+    await wrapper.setProps({ columns: [columns[0]!, { ...sortable, sortOrder: 'descend' }] });
+    await wrapper.find('.semi-table-column-sorter-wrapper').trigger('click');
+    expect(onChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ sorter: expect.objectContaining({ sortOrder: false }) }),
+    );
+    wrapper.unmount();
+  });
+
   it('保留默认 showHeader/hideExpandedColumn，并区分显式 false/true', () => {
     const Host = defineComponent({
       components: { Table },
@@ -55,9 +257,9 @@ describe('Table', () => {
       template: `
         <Table :data-source="data" :pagination="false" resizable>
           ignored text
-          <TableColumn title="Name" data-index="name" resize />
+          <TableColumn title="Name" data-index="name" :width="120" resize />
           <span>not a column</span>
-          <TableColumn title="Score" data-index="score" :resize="false" />
+          <TableColumn title="Score" data-index="score" :width="120" :resize="false" />
         </Table>
       `,
     });
@@ -72,8 +274,8 @@ describe('Table', () => {
           { dataSource: data, pagination: false, resizable: true },
           {
             default: () => [
-              h(TableColumn, { dataIndex: 'name', resize: true, title: 'Name' }),
-              h(TableColumn, { dataIndex: 'score', resize: false, title: 'Score' }),
+              h(TableColumn, { dataIndex: 'name', width: 120, resize: true, title: 'Name' }),
+              h(TableColumn, { dataIndex: 'score', width: 120, resize: false, title: 'Score' }),
             ],
           },
         ),
@@ -134,7 +336,7 @@ describe('Table', () => {
         },
       });
 
-      const sorter = wrapper.find('.semi-table-column-sorter-wrapper');
+      const sorter = wrapper.find('th');
       vi.spyOn(sorter.element, 'matches').mockImplementation((selector) => selector === ':hover');
       await sorter.trigger('mouseenter');
       await vi.advanceTimersByTimeAsync(100);
@@ -251,7 +453,7 @@ describe('Table', () => {
     );
 
     const handle = wrapper.find('.react-resizable-handle');
-    await handle.trigger('pointerdown', { clientX: 100 });
+    await handle.trigger('pointerdown', { clientX: 100, button: 0 });
     window.dispatchEvent(new MouseEvent('pointermove', { clientX: 130 }));
     window.dispatchEvent(new MouseEvent('pointerup', { clientX: 130 }));
     await nextTick();
@@ -261,6 +463,7 @@ describe('Table', () => {
 
     const exposed = virtualRef.mock.calls[0]![0].current;
     exposed.scrollToItem(5, 'start');
+    await nextTick();
     expect((wrapper.find('.semi-table-body').element as HTMLElement).scrollTop).toBe(200);
   });
 

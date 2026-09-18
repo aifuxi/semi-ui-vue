@@ -63,8 +63,8 @@
 
 ## 行为与视觉证据矩阵
 
-- unit：默认/显式 Boolean、DOM/class、load 初始化、ratio、wheel/边界/事件顺序、rotate/zoom watcher、三类拖动、preview 生命周期、canvas、attrs 和卸载清理。
-- SSR：根结构可渲染、无浏览器 global 访问、子路径与根入口可导入。
+- unit：公开入口 default/named 导出、默认/显式 Boolean、DOM/class、load 初始化、ratio、wheel/边界/事件顺序、rotate/zoom watcher、三类拖动、preview 生命周期、canvas、attrs 和卸载清理。
+- SSR：通过公开入口渲染根结构、无浏览器 global 访问、子路径与根入口可导入。
 - Chromium：同一 BrowserContext、固定内联 data URI 图片、桌面 `1440x900` 和移动 `390x844`、light/dark、RTL；检查 runtime error、请求来源、computed style、geometry 与组件裁剪截图。
 - 发布：根/子路径 JS 与 d.ts、`cropper.css`、SSR import、tree-shaking、许可/SBOM 和隔离 tarball consumer。
 
@@ -83,3 +83,10 @@
 - 四组独立 React/Vue 基线 PNG 经直接 `cmp` 均逐字节相同；测试仍保留 `threshold <= 0.1`、`maxDiffPixelRatio <= 0.001` 与关键节点 `0.5 CSS px` 几何上限。
 - 默认主题共 `86` 个根入口、`3352102` 字节 CSS 通过，包含 `cropper.css`；根入口及全部公开子路径 SSR import 通过。
 - 真实 tarball consumer 的安装、exports、ESM、类型、样式入口、SSR import、许可与 SBOM 检查通过。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Cropper 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/cropper.spec.ts` 5/5 通过，覆盖固定源码来源、滚轮/拖动交互、computed style/几何与 desktop light/dark、RTL 成对截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、`cropper.css`、tree-shaking、许可与 SBOM。

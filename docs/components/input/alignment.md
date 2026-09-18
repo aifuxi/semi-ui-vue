@@ -105,8 +105,21 @@ InputGroup 必须装饰直接子 VNode，模板无法准确表达 `React.Childre
 - Chromium：固定中文文档首个基础示例；default/value、prefix/suffix/addon、clear、password、disabled、error、InputGroup、TextArea counter/autosize/line number；桌面 `1440×900`、移动 `390×844`、light/dark 与 RTL。
 - computed style/geometry：wrapper/input、prepend/prefix/suffix/clear/mode/append、group/label、textarea/counter/lineNumber 逐节点比较；bounding rect 各轴差值不超过 `0.5 CSS px`。
 - 截图：组件最小完整裁剪，`threshold <= 0.1`、`maxDiffPixelRatio <= 0.001`；通过后仍检查局部集中差异，并单独报告是否字节一致。
-- 发布：根/`input` 子路径、声明、`input.css`、真实 tarball 安装、类型、tree-shaking、SSR-safe import、SBOM 与许可清单。
+- 发布：根/`input` 子路径 default/named 导出与复合 `Input.Group`/`Input.TextArea`、声明、`input.css`、真实 tarball 安装、类型、tree-shaking、SSR-safe import、SBOM 与许可清单；单元用例从 `./index` 固定公开入口。
 
 ## Deviation
 
 没有 accepted deviation。固定 React v2.102.0 与 Vue 场景已在同一 Chromium 进程中完成行为、ARIA、computed style、geometry、桌面/移动明暗主题及 RTL 对照；对应 React/Vue 截图字节一致。
+
+## 文档组合场景 ARIA 缺省修复（2026-09-13）
+
+- 固定 Input 将未指定的 `aria-invalid` / `aria-required` 保留为缺省，仅 `validateStatus=error` 强制 `aria-invalid=true`。Vue Boolean prop 转换曾让缺省值变为 false，导致 Table HeaderFilter 的输入节点多出两个属性。
+- Input 渲染期按原始 props 是否提供这两个 ARIA 值决定输出，未提供时不输出；保留用户传入 false、true、grammar/spelling 等有效取值，以及 error 状态覆盖。未修改 TextArea、InputNumber 或输入行为。
+- DOM/SSR 回归先红，修复后覆盖初始缺省、显式 false、true/grammar、error 覆盖与退出 error 后恢复显式值。正式组合和历史文档证据由主 agent 统一重验。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：Input/InputGroup/TextArea 单测与 SSR/hydration 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/input.spec.ts` 5/5 通过，覆盖固定源码来源、公开 DOM/ARIA、clear/password/group/textarea、computed style/几何与 light/dark、RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、复合 `Input.Group`/`Input.TextArea`、类型、`input.css`、tree-shaking、许可与 SBOM。

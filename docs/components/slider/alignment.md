@@ -73,7 +73,7 @@ Slider 是固定 `vendor/semi-design/content/order.js` 中 Rating 之后、Switc
 - SSR：默认/range/vertical/disabled/marks/ARIA 且无 Portal 与浏览器副作用。
 - Chromium：同 BrowserContext 中来源、运行时错误、track/handle computed style、bounding rect、点击、真实 mouse drag、键盘、Tooltip、desktop/mobile light/dark 与 RTL 截图。
 - 视觉取证：Slider 场景只在测试基建中将依赖 Tooltip 固定到动画最终帧；不使用 mask、不放宽阈值，React/Vue 裁剪图及场景图要求原始 PNG 字节相同。
-- 发布：根/子路径导入、公开类型、`slider.css`、tree-shaking/SSR import、真实 tarball 安装及许可/SBOM。
+- 发布：根/子路径 default/named 导入、公开类型、`slider.css`、tree-shaking/SSR import、真实 tarball 安装及许可/SBOM。
 
 完成证据：Slider 单元与 SSR 共 13 项通过，Slider Chromium 7 项通过；全仓 34 个测试文件、274 项单测和 147 项 Chromium 回归通过；全量构建、主题产物、SSR import 与真实 tarball 安装验证通过。
 

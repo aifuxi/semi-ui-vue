@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "paths": {},
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.vue"],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/calendar/CalendarDayColumn.vue",
+    "src/calendar/calendar-context.ts",
+    "src/calendar/use-calendar-foundation.ts",
+    "src/cropper/use-cropper-foundation.ts"
+  ]
+}

@@ -55,9 +55,16 @@
 ## SSR、发布与验收
 
 - SSR import 不读取 `window/document`；默认、expanded/multiple/search/directory/RTL 静态输出和 hydration 无警告。
-- 根导出、`tree` 子路径、类型、`tree.css`、root CSS、tree-shaking、SSR-safe import 和真实 tarball 安装全部验证。
+- 根导出、`tree` 子路径、default/named 导出与复合 `Tree.TreeNode`（单元、SSR 与 client 用例从 `./index` 固定）、类型、`tree.css`、root CSS、tree-shaking、SSR-safe import 和真实 tarball 安装全部验证。
 - React/Vue 参考场景使用相同数据、viewport、DPR、locale、主题、方向与 Chromium 进程。
 
 ## Deviation
 
 无。React/Vue 固定场景在同一 Chromium 中的 5 组整场截图逐字节一致；公开契约、Foundation 状态、主题、SSR 与 tarball 门禁均已通过。
+
+## 验收结论
+
+- 状态：`ready`（2026-09-18 复核）。
+- 单元/SSR：Tree 单测与 SSR/hydration 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/tree.spec.ts` 5/5 通过，覆盖固定源码来源、选择/禁用/搜索/键盘、computed style、几何、desktop light/dark 与 RTL/en-US 截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、类型、`tree.css`、tree-shaking、许可与 SBOM。

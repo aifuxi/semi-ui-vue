@@ -1,9 +1,8 @@
 import { mount } from '@vue/test-utils';
-import { createSSRApp, h, nextTick } from 'vue';
-import { renderToString } from 'vue/server-renderer';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { h, nextTick } from 'vue';
 
-import { Resizable, ResizeGroup, ResizeHandler, ResizeItem } from './index';
+import { RESIZE_DIRECTIONS, Resizable, ResizeGroup, ResizeHandler, ResizeItem } from './index';
 
 const widthDescriptor = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetWidth');
 const heightDescriptor = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight');
@@ -46,6 +45,23 @@ afterEach(() => {
 });
 
 describe('Resizable', () => {
+  it('公开入口保留四组件具名导出与固定方向枚举', () => {
+    expect(Resizable.name).toBe('Resizable');
+    expect(ResizeGroup.name).toBe('ResizeGroup');
+    expect(ResizeItem.name).toBe('ResizeItem');
+    expect(ResizeHandler.name).toBe('ResizeHandler');
+    expect(RESIZE_DIRECTIONS).toEqual([
+      'top',
+      'right',
+      'bottom',
+      'left',
+      'topRight',
+      'bottomRight',
+      'bottomLeft',
+      'topLeft',
+    ]);
+  });
+
   it('渲染固定根 class、默认尺寸、八方向 handler、slot 与原生属性', () => {
     const wrapper = mount(Resizable, {
       attrs: {
@@ -319,24 +335,5 @@ describe('ResizeGroup', () => {
     expect(() => mount(ResizeHandler)).toThrowError(
       'please make sure <ResizeHandler> inside <ResizeGroup>',
     );
-  });
-
-  it('SSR-safe import 与渲染不依赖 window、测量或事件注册', async () => {
-    const Root = {
-      render: () =>
-        h('div', [
-          h(Resizable, { defaultSize: { width: 120, height: 80 } }, () => 'Single'),
-          h(ResizeGroup, { direction: 'horizontal' }, () => [
-            h(ResizeItem, { defaultSize: '50%' }, () => 'A'),
-            h(ResizeHandler),
-            h(ResizeItem, { defaultSize: '50%' }, () => 'B'),
-          ]),
-        ]),
-    };
-    const html = await renderToString(createSSRApp(Root));
-    expect(html).toContain('semi-resizable-resizable');
-    expect(html).toContain('semi-resizable-resizableHandler-right');
-    expect(html).toContain('semi-resizable-group');
-    expect(html).toContain('semi-resizable-handler-horizontal');
   });
 });

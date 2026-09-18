@@ -62,7 +62,7 @@
 
 - 取消/提交文字读取 `locale.Feedback.cancel/submit`；57 个固定 locale 的生成数据继续作为完整性来源，缺失时回退 zh-CN。
 - SSR import 不访问 DOM；不可见 Feedback 不输出 Portal。hydration 后打开不得产生 hydration warning。
-- 根导出与 `./feedback` 子路径、`feedback.css`、SSR-safe dist、tree-shaking 和真实 tarball consumer 必须通过；公开声明不得出现 `vendor/**` 或私有 Foundation 路径。
+- 根导出与 `./feedback` 子路径 default/named 入口、运行时常量、`feedback.css`、SSR-safe dist、tree-shaking 和真实 tarball consumer 必须通过；单元、SSR 与 hydration 用例从 `./index` 消费入口；公开声明不得出现 `vendor/**` 或私有 Foundation 路径。
 
 ## React/Vue 对照场景
 
@@ -73,3 +73,11 @@
 ## Deviation
 
 无 accepted deviation。React/Vue 关键 computed style 与几何精确对照，桌面/移动 light/dark 与 RTL 截图均通过仓库阈值和解码像素比较。
+
+## 文档示例运行修复（2026-09-07）
+
+- Feedback 七项上游示例已补齐双语实现，14 个实际文档示例及编辑器运行通过；这不是七项文档严格验收完成声明。
+- SSR 应用在退出动画结束后重开时，缓存的内容/按钮 VNode 持有已移除的宿主节点，触发错误 hydration 并丢失正文。Feedback、Modal、SideSheet 改为在渲染时生成内容及调用 slots，不跨 Portal 挂载周期缓存 VNode；不增加重建 key、修改公开 API 或关闭动效。
+- `Feedback.ssr.test.ts` 在真实 `createSSRApp` hydration 后，选择→提交→`animationend`→重开→再次提交。popup/modal 两路修复前失败，修复后通过；单纯 `motion=false` 不能覆盖此缺陷。
+- `Feedback.test.ts` 覆盖完成提示的动态 `footer: null` 和撤销覆盖后恢复默认按钮；修复 Modal 对 raw prop 存在性的陈旧缓存。英文示例传入完整 en_US locale，而不是仅传 code。
+- 三组件 30 项单元/SSR、直接消费者 39 项回归、15 项组件 Chromium 对照、真实 tarball 与 SSR import 通过。双语两容器的独立时序检查在 1499ms 保留感谢信息，1700ms 关闭并复原内容；没有调整截图门禁或更新基线。

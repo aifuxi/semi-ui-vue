@@ -12,6 +12,9 @@ export type TableDirection = 'ltr' | 'rtl';
 export type TableFilterConfirmMode = 'immediate' | 'confirm';
 export type TableCheckRelation = 'related' | 'unRelated';
 
+export type TableExpandedRowRenderResult =
+  VNodeChild | (Omit<TableColumn, 'children'> & { children: VNodeChild; fixed?: TableFixed });
+
 export interface TableFilter {
   value?: unknown;
   text?: VNodeChild;
@@ -28,7 +31,7 @@ export interface TableRenderOptions {
 
 export interface TableRenderReturnObject {
   children: VNodeChild;
-  props: Record<string, unknown> & { colSpan?: number; rowSpan?: number };
+  props?: Record<string, unknown> & { colSpan?: number; rowSpan?: number };
   [key: string]: unknown;
 }
 
@@ -55,7 +58,7 @@ export interface TableColumn<RecordType extends Record<string, unknown> = Record
   filterDropdownVisible?: boolean;
   filterIcon?: boolean | VNodeChild | ((filtered: boolean) => VNodeChild);
   filterMultiple?: boolean;
-  filteredValue?: unknown[];
+  filteredValue?: unknown[] | undefined;
   filters?: TableFilter[];
   fixed?: TableFixed;
   key?: TableRowKey;
@@ -74,7 +77,7 @@ export interface TableColumn<RecordType extends Record<string, unknown> = Record
   shouldCellUpdate?: (next: Record<string, unknown>, previous: Record<string, unknown>) => boolean;
   showSortTip?: boolean;
   sortChildrenRecord?: boolean;
-  sorter?: boolean | ((a: RecordType, b: RecordType) => number);
+  sorter?: boolean | ((a: RecordType, b: RecordType, sortOrder?: 'ascend' | 'descend') => number);
   sortIcon?: (props: { sortOrder: TableSortOrder }) => VNodeChild;
   sortOrder?: TableSortOrder;
   title?: VNodeChild | ((props?: TableColumnTitleProps) => VNodeChild);
@@ -112,6 +115,7 @@ export interface TableScroll {
 }
 
 export interface TableVirtualizedOnScrollArgs {
+  horizontalScrolling?: boolean;
   scrollDirection?: 'forward' | 'backward';
   scrollOffset?: number;
   scrollUpdateWasRequested?: boolean;
@@ -126,6 +130,8 @@ export type TableVirtualizedItemSize =
   number | ((index?: number, row?: TableVirtualizedItemRow) => number);
 
 export interface TableVirtualizedProps extends Record<string, unknown> {
+  estimatedItemSize?: number;
+  overscanCount?: number;
   itemSize?: TableVirtualizedItemSize;
   onScroll?: (args: TableVirtualizedOnScrollArgs) => void;
 }
@@ -135,6 +141,7 @@ export type TableVirtualized = boolean | TableVirtualizedProps;
 export interface TableVirtualizedListRef {
   scrollTo(offset: number): void;
   scrollToItem(index: number, align?: 'auto' | 'smart' | 'center' | 'end' | 'start'): void;
+  resetAfterIndex(index: number, shouldForceUpdate?: boolean): void;
 }
 
 export interface TablePaginationConfig extends PaginationProps {
@@ -219,24 +226,16 @@ export interface TableSticky {
 }
 
 export interface TableResizable<RecordType extends Record<string, unknown>> {
-  onResize?: (column: TableColumn<RecordType>) => TableColumn<RecordType>;
-  onResizeStart?: (column: TableColumn<RecordType>) => TableColumn<RecordType>;
-  onResizeStop?: (column: TableColumn<RecordType>) => TableColumn<RecordType>;
+  handlerClassName?: string;
+  onResize?: (column: TableColumn<RecordType>) => Partial<TableColumn<RecordType>> | void;
+  onResizeStart?: (column: TableColumn<RecordType>) => Partial<TableColumn<RecordType>> | void;
+  onResizeStop?: (column: TableColumn<RecordType>) => Partial<TableColumn<RecordType>> | void;
 }
 
 export interface TableChangeInfo<RecordType extends Record<string, unknown>> {
   pagination?: TablePaginationConfig;
-  filters?: Array<{
-    dataIndex?: string;
-    filteredValue?: unknown[];
-    filters?: TableFilter[];
-    onFilter?: TableColumn<RecordType>['onFilter'];
-  }>;
-  sorter?: {
-    dataIndex?: string;
-    sortOrder?: TableSortOrder;
-    sorter?: TableColumn<RecordType>['sorter'];
-  };
+  filters?: TableColumn<RecordType>[];
+  sorter?: TableColumn<RecordType> | undefined;
   extra?: { changeType?: 'sorter' | 'filter' | 'pagination' };
 }
 
@@ -259,7 +258,11 @@ export interface TableProps<RecordType extends Record<string, unknown> = Record<
   expandCellFixed?: TableFixed;
   expandIcon?: boolean | VNodeChild | ((expanded?: boolean) => VNodeChild);
   expandedRowKeys?: TableRowKey[];
-  expandedRowRender?: (record?: RecordType, index?: number, expanded?: boolean) => VNodeChild;
+  expandedRowRender?: (
+    record?: RecordType,
+    index?: number,
+    expanded?: boolean,
+  ) => TableExpandedRowRenderResult;
   expandRowByClick?: boolean;
   footer?: VNodeChild | ((pageData?: RecordType[]) => VNodeChild);
   getVirtualizedListRef?: (ref: { current: TableVirtualizedListRef | null }) => void;
@@ -284,7 +287,7 @@ export interface TableProps<RecordType extends Record<string, unknown> = Record<
   prefixCls?: string;
   renderGroupSection?: (
     groupKey?: string | number,
-    group?: RecordType[],
+    group?: TableRowKey[],
   ) => VNodeChild | { children: VNodeChild; [key: string]: unknown };
   renderPagination?: (paginationProps: TablePaginationConfig) => VNodeChild;
   resizable?: boolean | TableResizable<RecordType>;

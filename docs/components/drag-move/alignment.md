@@ -119,7 +119,9 @@ React 类型漏写但 `propTypes`、`defaultProps`、Foundation 和文档均公�
 ## 完成证据
 
 - Foundation/UI/Test Infra/React/Vue 工作台定向 typecheck 通过。
-- DragMove 单元与 SSR/hydration 共 10 项通过；共享场景与两端工作台定向测试通过。
+- `./drag-move` 子路径公开入口提供 default `DragMove` 与 named `DragMove`，单元、SSR 与
+  hydration 均从公开入口导入，覆盖无 DOM 导入边界。
+- DragMove 单元与 SSR/hydration 共 11 项通过；共享场景与两端工作台定向测试通过。
 - Chromium 当前组件 7 项在更新快照后以无更新参数复跑通过，覆盖固定源码请求、5 个
   computed-style/几何目标、交互，以及 desktop/mobile light/dark 与 RTL；工作台 smoke
   2 项通过。React/Vue 截图通过逐像素阈值比较，不宣称 PNG 文件字节一致。
@@ -128,3 +130,10 @@ React 类型漏写但 `propTypes`、`defaultProps`、Foundation 和文档均公�
   SBOM 验证通过，公开产物未泄漏 vendor 或私有包路径。
 - 未运行全仓 `pnpm test:browser`：本切片只新增 DragMove 组件、场景注册和组件作用域
   harness CSS，没有修改共享运行时、全局主题、Playwright 配置或比较算法。
+
+## 验收结论（2026-09-18 复核）
+
+- 状态：`ready`。
+- 单元/SSR：DragMove 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
+- Chromium：`tests/browser/components/drag-move.spec.ts` 5/5 通过，覆盖固定源码来源、拖拽交互、computed style/几何与 light/dark、RTL 对照截图。
+- 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、`drag-move.css`、tree-shaking、许可与 SBOM。

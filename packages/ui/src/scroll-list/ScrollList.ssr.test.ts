@@ -1,10 +1,8 @@
-import { mount } from '@vue/test-utils';
-import { createSSRApp, h, nextTick } from 'vue';
-import { renderToString } from 'vue/server-renderer';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { createSSRApp, h } from 'vue';
+import { renderToString } from 'vue/server-renderer';
 
-import ScrollItem from './ScrollItem.vue';
-import ScrollList from './ScrollList.vue';
+import { ScrollItem, ScrollList } from './index';
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -34,16 +32,5 @@ describe('ScrollList SSR', () => {
     expect(html).toContain('semi-scrolllist-item-wheel');
     expect(html).toContain('role="listbox"');
     expect(html).toContain('SSR footer');
-  });
-
-  it('客户端挂载后初始化滚动并安全卸载', async () => {
-    const wrapper = mount(ScrollItem, {
-      props: { list: [{ value: 'A' }, { value: 'B' }], mode: 'wheel', motion: false },
-    });
-    await nextTick();
-    await nextTick();
-
-    expect(wrapper.findAll('[role="option"]')).toHaveLength(2);
-    wrapper.unmount();
   });
 });

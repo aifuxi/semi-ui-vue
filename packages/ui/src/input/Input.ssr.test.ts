@@ -5,6 +5,15 @@ import { describe, expect, it } from 'vitest';
 import Input, { InputGroup, TextArea } from './index';
 
 describe('Input SSR', () => {
+  it('SSR 的缺省 ARIA 不输出，显式 false 保留', async () => {
+    const absent = await renderToString(h(Input));
+    expect(absent).not.toContain('aria-invalid=');
+    expect(absent).not.toContain('aria-required=');
+    const explicit = await renderToString(h(Input, { ariaInvalid: false, ariaRequired: false }));
+    expect(explicit).toContain('aria-invalid="false"');
+    expect(explicit).toContain('aria-required="false"');
+  });
+
   it('渲染 Input/TextArea/InputGroup DOM、ARIA 与 slots，且不创建浏览器副作用', async () => {
     const html = await renderToString(
       createSSRApp({

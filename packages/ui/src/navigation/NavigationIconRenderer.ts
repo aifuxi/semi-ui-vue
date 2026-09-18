@@ -31,12 +31,15 @@ export default defineComponent({
   },
   setup(props) {
     return () => {
-      const content = resolveContent(props.content);
+      const resolved = resolveContent(props.content);
+      // A Vue icon slot wraps its single VNode in an array; preserve the same
+      // sizing contract as an icon supplied directly through props.
+      const content = Array.isArray(resolved) && resolved.length === 1 ? resolved[0] : resolved;
       if (!isVNode(content)) return content;
       if (!isSemiIcon(content) && !props.force) return cloneVNode(content);
       return cloneVNode(content, {
         class: [content.props?.class, props.animationClass],
-        size: content.props?.size || props.size,
+        size: props.force ? props.size : content.props?.size || props.size,
       });
     };
   },

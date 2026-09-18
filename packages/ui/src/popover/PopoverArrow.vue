@@ -30,7 +30,6 @@ const backgroundPathStyle = computed(() => ({
 <template>
   <svg
     v-if="topOrBottom"
-    aria-hidden="true"
     class="semi-popover-icon-arrow"
     width="24"
     height="8"
@@ -47,7 +46,6 @@ const backgroundPathStyle = computed(() => ({
   </svg>
   <svg
     v-else
-    aria-hidden="true"
     class="semi-popover-icon-arrow"
     width="24"
     height="8"

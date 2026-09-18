@@ -1,5 +1,6 @@
 import { SelectFoundation, type SelectAdapter } from '@workspace/foundation-integration';
 import {
+  computed,
   markRaw,
   nextTick,
   onBeforeUnmount,
@@ -61,6 +62,7 @@ interface SelectFoundationController {
   open(input?: string): void;
   removeTag(option: SelectOptionRuntime): void;
   selectAll(): void;
+  updateScrollTop(): void;
 }
 
 interface SelectFoundationBinding {
@@ -303,7 +305,10 @@ export function useSelectFoundation(options: UseSelectFoundationOptions): Select
       );
       if (target && listElement.value) {
         listElement.value.scrollTop =
-          target.offsetTop - listElement.value.clientHeight / 2 + target.clientHeight / 2;
+          target.offsetTop -
+          listElement.value.offsetTop -
+          listElement.value.clientHeight / 2 +
+          target.clientHeight / 2;
       }
     },
     updateOverflowItemCount: (count: number) => {
@@ -349,8 +354,11 @@ export function useSelectFoundation(options: UseSelectFoundationOptions): Select
     },
     { deep: true },
   );
+  // Keep unrelated runtime prop updates from being treated as an option-list change.
+  // The upstream adapter resets focus only when the options actually change.
+  const optionList = computed(() => runtimeProps.value.optionList);
   watch(
-    () => runtimeProps.value.optionList,
+    optionList,
     () => {
       foundation.handleOptionListChange();
       if (!controlled.value) foundation.handleOptionListChangeHadDefaultValue();

@@ -114,7 +114,7 @@ const rootClasses = computed(() => [
   effectiveChecked.value ? `${prefix.value}-checked` : `${prefix.value}-unChecked`,
   isCardType.value ? `${prefix.value}-cardType` : undefined,
   effectiveDisabled.value && isCardType.value ? `${prefix.value}-cardType_disabled` : undefined,
-  !effectiveDisabled.value && isCardType.value ? `${prefix.value}-cardType_enable` : undefined,
+  !(effectiveDisabled.value && isCardType.value) ? `${prefix.value}-cardType_enable` : undefined,
   isCardType.value && effectiveChecked.value && !effectiveDisabled.value
     ? `${prefix.value}-cardType_checked`
     : undefined,
@@ -278,9 +278,15 @@ defineExpose<CheckboxExposed>({
         :class="`${prefix}-input`"
         :checked="effectiveChecked"
         :disabled="effectiveDisabled"
-        :name="inGroup ? group?.name.value : undefined"
+        :name="(inGroup ? group?.name.value : props.name) || undefined"
         :aria-label="props.ariaLabel"
-        :aria-disabled="effectiveDisabled"
+        :aria-disabled="
+          effectiveDisabled
+            ? true
+            : hasRawProp('disabled') && props.disabled !== undefined
+              ? false
+              : undefined
+        "
         :aria-checked="effectiveChecked"
         :aria-labelledby="hasAddon ? state.addonId : undefined"
         :aria-describedby="hasExtra ? state.extraId : props.ariaDescribedby"

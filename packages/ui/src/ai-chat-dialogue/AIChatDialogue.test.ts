@@ -3,13 +3,18 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick } from 'vue';
 
 import { semiGlobal } from '../config-provider';
-import {
+import DefaultAIChatDialogue, {
   AIChatDialogue,
+  AIChatDialogueAnnotation,
+  AIChatDialogueCode,
+  AIChatDialogueReasoning,
+  AIChatDialogueStep,
   chatCompletionToMessage,
   chatInputToChatCompletion,
   chatInputToMessage,
   messageToChatInput,
   responseToMessage,
+  streamingResponseToMessage,
 } from './index';
 import type { AIChatDialogueExpose, Message } from './types';
 
@@ -23,6 +28,101 @@ const plainRender = {
 };
 
 describe('AIChatDialogue', () => {
+  it('公开入口保持 default、named 与复合静态成员一致', () => {
+    expect(DefaultAIChatDialogue).toBe(AIChatDialogue);
+    expect(AIChatDialogue.Annotation).toBe(AIChatDialogueAnnotation);
+    expect(AIChatDialogue.Reasoning).toBe(AIChatDialogueReasoning);
+    expect(AIChatDialogue.Step).toBe(AIChatDialogueStep);
+    expect(AIChatDialogue.defaultComponents.code).toBe(AIChatDialogueCode);
+  });
+
+  it('消息编辑回调保留文本、附件和引用', async () => {
+    const message: Message = {
+      id: 'edit',
+      role: 'user',
+      editing: true,
+      references: [{ id: 'ref', type: 'text', content: 'Reference' }],
+      content: [
+        {
+          type: 'message',
+          content: [
+            { type: 'input_text', text: 'Original question' },
+            { type: 'input_file', filename: 'notes.txt', file_url: '/notes.txt' },
+          ],
+        },
+      ],
+    };
+    const wrapper = mount(AIChatDialogue, {
+      props: {
+        chats: [message],
+        roleConfig,
+        messageEditRender: (value: unknown) => h('output', JSON.stringify(value)),
+      },
+    });
+    expect(JSON.parse(wrapper.get('output').text())).toMatchObject({
+      inputContents: [{ type: 'text', text: 'Original question' }],
+      attachments: [{ name: 'notes.txt', url: '/notes.txt', status: 'success' }],
+      references: [{ id: 'ref', content: 'Reference' }],
+    });
+    await wrapper.setProps({ chats: [{ ...message, content: 'Plain question' }] });
+    expect(JSON.parse(wrapper.get('output').text())).toMatchObject({
+      inputContents: [{ type: 'text', text: 'Plain question' }],
+      attachments: [],
+      references: [{ id: 'ref' }],
+    });
+    wrapper.unmount();
+  });
+
+  it('复制消息使用用户激活路径并清理临时文本域', async () => {
+    let copied = '';
+    const previous = document.execCommand;
+    document.execCommand = vi.fn(() => {
+      copied = document.querySelector('textarea')?.value ?? '';
+      return true;
+    });
+    const wrapper = mount(AIChatDialogue, {
+      props: {
+        chats: [{ id: 'copy', role: 'assistant', content: 'Copy this answer' }],
+        roleConfig,
+      },
+    });
+    await wrapper.get('button[aria-label="copy message"]').trigger('click');
+    expect(copied).toBe('Copy this answer');
+    expect(wrapper.emitted('message-copy')?.[0]?.[0]).toMatchObject({ id: 'copy' });
+    expect(document.querySelector('textarea')).toBeNull();
+    expect(navigator.clipboard.writeText).not.toHaveBeenCalled();
+    wrapper.unmount();
+    document.execCommand = previous;
+  });
+
+  it('流式 Response 暴露单条 message 与 nextState，并区分空输入和完成', () => {
+    expect(streamingResponseToMessage([])).toBeNull();
+    const pending = streamingResponseToMessage([
+      {
+        type: 'response.created',
+        sequence_number: 0,
+        response: { id: 'response', status: 'in_progress', output: [] },
+      },
+    ]);
+    expect(pending?.message).toMatchObject({ id: 'response', status: 'in_progress' });
+    expect(pending?.nextState?.processedSeq.has(0)).toBe(true);
+    const complete = streamingResponseToMessage(
+      [
+        {
+          type: 'response.completed',
+          sequence_number: 1,
+          response: { id: 'response', status: 'completed', output_text: 'Answer', output: [] },
+        },
+      ],
+      pending?.nextState ?? undefined,
+    );
+    expect(complete?.message).toMatchObject({
+      id: 'response',
+      output_text: 'Answer',
+      status: 'completed',
+    });
+    expect(complete?.nextState).toBeNull();
+  });
   beforeEach(() => {
     semiGlobal.config = {};
     vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {

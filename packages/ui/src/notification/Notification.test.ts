@@ -1,10 +1,17 @@
 import { mount } from '@vue/test-utils';
+import { IconBell } from '@aifuxi/semi-icons-vue';
 import { defineComponent, h, nextTick } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider, semiGlobal } from '../config-provider';
 import { resetNotificationForTests } from './imperative';
-import { Notification, useNotification } from './index';
+import DefaultNotification, {
+  NOTIFICATION_POSITIONS,
+  NOTIFICATION_THEMES,
+  NOTIFICATION_TYPES,
+  Notification,
+  useNotification,
+} from './index';
 
 afterEach(async () => {
   Notification.destroyAll();
@@ -16,6 +23,21 @@ afterEach(async () => {
 });
 
 describe('Notification', () => {
+  it('公开入口保持 default、named、静态 hook 与常量导出一致', () => {
+    expect(DefaultNotification).toBe(Notification);
+    expect(Notification.useNotification).toBe(useNotification);
+    expect(NOTIFICATION_TYPES).toEqual(['warning', 'success', 'info', 'error', 'default']);
+    expect(NOTIFICATION_THEMES).toEqual(['normal', 'light']);
+    expect(NOTIFICATION_POSITIONS).toEqual([
+      'top',
+      'topLeft',
+      'topRight',
+      'bottom',
+      'bottomLeft',
+      'bottomRight',
+    ]);
+  });
+
   it('覆盖五种方法、默认 DOM、ARIA、图标、theme 与显式 showClose', async () => {
     Notification.open({ content: 'default', duration: 0, id: 'default' });
     Notification.info({ content: 'info', duration: 0, id: 'info' });
@@ -136,6 +158,27 @@ describe('Notification', () => {
     expect(notice.querySelector('.semi-notification-notice-content strong')?.textContent).toBe(
       '内容',
     );
+  });
+
+  it('默认类型也带 icon-show；Semi 自定义图标按 large 克隆并保留显式尺寸', async () => {
+    Notification.open({ content: 'plain', duration: 0 });
+    Notification.info({ content: 'cloned', duration: 0, icon: h(IconBell) });
+    Notification.info({ content: 'sized', duration: 0, icon: h(IconBell, { size: 'small' }) });
+    await nextTick();
+    const notice = (text: string) =>
+      [...document.querySelectorAll<HTMLElement>('[role="alert"]')].find(
+        (node) => node.textContent === text,
+      )!;
+    const plain = notice('plain');
+    // The pinned Notice keys the class off the type list, even without a rendered icon.
+    expect(plain.classList).toContain('semi-notification-notice-icon-show');
+    expect(plain.querySelector('.semi-notification-notice-icon')).toBeNull();
+    expect(
+      notice('cloned').querySelector('.semi-notification-notice-icon .semi-icon-large'),
+    ).not.toBeNull();
+    expect(
+      notice('sized').querySelector('.semi-notification-notice-icon .semi-icon-small'),
+    ).not.toBeNull();
   });
 
   it('关闭按钮保持 onCloseClick → onClose 顺序并阻止 notice click', async () => {

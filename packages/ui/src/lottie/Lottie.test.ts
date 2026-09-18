@@ -10,7 +10,7 @@ vi.mock('lottie-web', () => ({ default: lottieMock }));
 
 import { semiGlobal } from '../config-provider';
 import LottieBase from './Lottie.vue';
-import { Lottie } from './index';
+import DefaultLottie, { Lottie } from './index';
 
 function createAnimation() {
   return { destroy: vi.fn(), goToAndStop: vi.fn(), play: vi.fn() };
@@ -29,6 +29,11 @@ afterEach(() => {
 });
 
 describe('Lottie', () => {
+  it('公开入口保持 default 与 named 导出一致并携带静态方法', () => {
+    expect(DefaultLottie).toBe(Lottie);
+    expect(DefaultLottie.getLottie()).toBe(lottieMock);
+  });
+
   it('创建内部容器并按固定顺序合并 class/style/attrs', () => {
     const wrapper = mount(LottieBase, {
       attrs: { 'aria-label': 'Loading animation', 'data-lottie': 'basic', role: 'img' },
