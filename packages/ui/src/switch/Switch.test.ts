@@ -2,13 +2,18 @@ import { mount } from '@vue/test-utils';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick, shallowRef } from 'vue';
 
-import Switch, { SWITCH_SIZES } from './index';
+import DefaultSwitch, { Switch, SWITCH_SIZES } from './index';
 
 afterEach(() => {
   vi.restoreAllMocks();
 });
 
 describe('Switch', () => {
+  it('公开入口保持 default、named 与固定尺寸枚举一致', () => {
+    expect(DefaultSwitch).toBe(Switch);
+    expect(SWITCH_SIZES).toEqual(['large', 'default', 'small']);
+  });
+
   it('保留固定 wrapper、knob、原生 checkbox、ARIA 与 data DOM 契约', () => {
     const wrapper = mount(Switch, {
       props: {

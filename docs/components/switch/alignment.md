@@ -58,7 +58,7 @@ Tab/Shift+Tab 聚焦原生 input，Space 由浏览器原生 checkbox 行为触�
 - SSR import 不访问 DOM；受控/defaultChecked、文本、loading SVG 与 ARIA 可稳定渲染。Foundation 的 mount/destroy 仅在客户端生命周期执行。
 - 单元测试覆盖 DOM、ARIA、受控/非受控、`v-model`、事件、disabled/loading、尺寸/文本、focus-visible、鼠标监听和 SSR。
 - Chromium 对照覆盖固定源码请求、11 个目标的 computed style/几何/局部像素、鼠标/Space/focus、Spin 动画、桌面/移动 light/dark 与 RTL 截图。
-- tarball 验证覆盖根/`switch` 子路径 ESM、声明、SSR import 与 `switch.css` 安装解析。
+- tarball 验证覆盖根/`switch` 子路径 default/named ESM、声明、`SWITCH_SIZES` 枚举、SSR import 与 `switch.css` 安装解析；单元用例从 `./index` 固定默认与命名导出一致。
 
 ## React → Vue 迁移
 
