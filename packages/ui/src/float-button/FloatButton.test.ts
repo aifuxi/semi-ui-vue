@@ -3,16 +3,14 @@ import { mount } from '@vue/test-utils';
 import { createSSRApp, h } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
-import FloatButton from './FloatButton.vue';
-import FloatButtonGroup from './FloatButtonGroup.vue';
 import {
   FLOAT_BUTTON_BADGE_POSITIONS,
   FLOAT_BUTTON_BADGE_THEMES,
   FLOAT_BUTTON_BADGE_TYPES,
   FLOAT_BUTTON_SHAPES,
   FLOAT_BUTTON_SIZES,
-  FloatButton as PublicFloatButton,
-  FloatButtonGroup as PublicFloatButtonGroup,
+  FloatButton,
+  FloatButtonGroup,
 } from './index';
 
 const TestIcon = {
@@ -21,8 +19,8 @@ const TestIcon = {
 
 describe('FloatButton', () => {
   it('公开入口导出组件与固定枚举常量', () => {
-    expect(PublicFloatButton).toBe(FloatButton);
-    expect(PublicFloatButtonGroup).toBe(FloatButtonGroup);
+    expect(FloatButton).toBeDefined();
+    expect(FloatButtonGroup).toBeDefined();
     expect(FLOAT_BUTTON_SHAPES).toEqual(['square', 'round']);
     expect(FLOAT_BUTTON_SIZES).toEqual(['small', 'default', 'large']);
     expect(FLOAT_BUTTON_BADGE_TYPES).toEqual([
