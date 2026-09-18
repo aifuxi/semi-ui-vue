@@ -82,7 +82,7 @@ Vue render prop 使用 scoped slots；同时保留函数 prop 作为迁移兼容
 ## SSR、发布与合规
 
 - 模块导入和 SSR render 不访问 `window/document/HTMLElement/EditorView`；Tiptap 只在客户端挂载时创建并在卸载时 destroy。
-- 根导出与 `@aifuxi/semi-ui-vue/ai-chat-input` 子路径导出；Tiptap 类型可作为公开第三方类型，但声明不得出现 `vendor/**`、`@workspace/**` 或 `@douyinfe/**`。
+- 根导出与 `@aifuxi/semi-ui-vue/ai-chat-input` 子路径的 default/named 导出、`AIChatInput.Configure` 与 `Configure.Item/Button/Mcp/RadioButton/Select` 静态成员由单元/SSR 用例从 `./index` 固定；Tiptap 类型可作为公开第三方类型，但声明不得出现 `vendor/**`、`@workspace/**` 或 `@douyinfe/**`。
 - 新增 Tiptap/ProseMirror 运行时依赖同步 package/lockfile、源码边界、许可证/SBOM、SSR 与隔离 tarball consumer；Vue 使用 `@tiptap/vue-3` 对应 React 的 `@tiptap/react` adapter。
 - 真实 tarball 验证根/子路径导入、类型、样式、SSR import、编辑/发送以及依赖可解析。
 

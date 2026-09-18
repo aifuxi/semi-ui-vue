@@ -1,9 +1,12 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
-import { AIChatInputConfigureItem } from './index';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 
-import AIChatInput from './AIChatInput.vue';
+import DefaultAIChatInput, {
+  AIChatInput,
+  AIChatInputConfigure,
+  AIChatInputConfigureItem,
+} from './index';
 import type { AIChatInputExposed, Attachment, Skill } from './types';
 
 beforeAll(() => {
@@ -39,6 +42,12 @@ afterEach(() => {
 });
 
 describe('AIChatInput', () => {
+  it('公开入口保持 default、named 与复合 Configure 静态成员一致', () => {
+    expect(DefaultAIChatInput).toBe(AIChatInput);
+    expect(AIChatInput.Configure).toBe(AIChatInputConfigure);
+    expect(AIChatInputConfigure.Item).toBe(AIChatInputConfigureItem);
+  });
+
   it('默认上传按钮一次点击只打开一次文件选择器', async () => {
     const open = vi.spyOn(HTMLInputElement.prototype, 'click');
     const wrapper = await mountInput({ uploadProps: { action: '' } });
