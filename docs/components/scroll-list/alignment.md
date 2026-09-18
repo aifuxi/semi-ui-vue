@@ -110,4 +110,4 @@ Vue 同时支持 `@select` 和 `onSelect` 监听器的原生编译结果；不�
 
 ## 验收结论
 
-当前状态为 `ready`。源码、Foundation 隔离入口、主题、双语文档与迁移表、单元/SSR、同环境 Chromium、五组视觉证据和真实 tarball 均已完成；没有 accepted deviation。
+当前状态：ready。公开入口、compound `ScrollList.Item`、固定模式枚举、源码、Foundation 隔离入口、主题、双语文档与迁移表、单元/SSR、同环境 Chromium、五组视觉证据和真实 tarball 均已完成；没有 accepted deviation。

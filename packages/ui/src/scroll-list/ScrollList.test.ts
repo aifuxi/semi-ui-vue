@@ -2,9 +2,15 @@ import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import ScrollItem from './ScrollItem.vue';
-import ScrollList from './ScrollList.vue';
+import DefaultScrollList, {
+  SCROLL_ITEM_MODES,
+  ScrollItem as PublicScrollItem,
+  ScrollList as PublicScrollList,
+} from './index';
 import type { ScrollItemData } from './types';
+
+const ScrollList = DefaultScrollList;
+const ScrollItem = PublicScrollItem;
 
 const list: ScrollItemData[] = [
   { value: 'AM', transform: () => '上午' },
@@ -51,6 +57,12 @@ afterEach(() => {
 });
 
 describe('ScrollList', () => {
+  it('公开入口保留默认导出、compound Item 与固定模式枚举', () => {
+    expect(PublicScrollList).toBe(DefaultScrollList);
+    expect(ScrollList.Item).toBe(PublicScrollItem);
+    expect(SCROLL_ITEM_MODES).toEqual(['normal', 'wheel']);
+  });
+
   it('渲染 header/body/footer、VNode prop、slot、bodyHeight 与 data 属性', () => {
     const wrapper = mount(ScrollList, {
       attrs: { 'data-kind': 'picker', title: 'filtered' },
