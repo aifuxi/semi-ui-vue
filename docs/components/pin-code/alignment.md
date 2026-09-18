@@ -81,6 +81,8 @@ Vue 额外发出 `update:value` 与 `update:modelValue`，顺序为 `change → 
 
 ## 验收结论
 
+- 当前状态：`ready`。
+- 本轮补充公开入口契约锁：默认导出与命名导出 `PinCode` 均由单元测试固定。
 - 全仓静态门禁、类型检查、全量构建、主题和源码边界检查通过；单元与 SSR 共 `236/236` 通过。
 - 同一 Playwright Chromium 进程中的输入、自动聚焦、键盘、粘贴、disabled、computed style 与 geometry 对照通过；全量浏览器回归 `126/126` 通过。
 - 桌面/移动、light/dark 与 RTL 的 10 张 React/Vue 场景截图逐对 SHA-1 相同；六个最小组件目标的即时截图也逐字节相同。
