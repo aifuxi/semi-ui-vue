@@ -3,11 +3,11 @@
  * 与上游 `semi-site-doc-style` 排版包的 `gatsby-*`（排版）。
  * 这里在 markdown-it 渲染阶段补上 class，让编译自基线的样式直接生效，不复制上游 CSS。
  *
- * 只用 VitePress 不会覆盖的 renderer 规则：表格由 `table_open` 被 VitePress 固定为
- * `<table tabindex="0">`，改由 `.vitepress/config.ts` 的 Vite 插件补齐。
+ * 表格额外恢复基线模板的 `.table-container` 包裹层，窄屏时只滚动表格而不挤压整页。
  */
 interface MarkdownToken {
   attrJoin: (name: string, value: string) => void;
+  attrSet: (name: string, value: string) => void;
   content: string;
   tag: string;
 }
@@ -76,13 +76,15 @@ function escapeHtml(value: string): string {
 
 export function applyProseClasses(md: MarkdownItLike): void {
   const rules = md.renderer.rules;
-  // VitePress 在 preConfig 之后把 table_open 固定成 `<table tabindex="0">`，会丢掉 token 属性。
-  // 这里在 core 阶段（渲染之前）把它换回带 class 的渲染，保证表格拿到基线 prose 表样式。
+  // VitePress 在 preConfig 之后覆盖 table_open；在 core 阶段恢复 vendor postTemplate.js
+  // 的滚动容器，并保留可聚焦的横向滚动区域。
   md.core.ruler.push('semi-docs-table-class', (state) => {
     state.md.renderer.rules.table_open = (tokens, index, options, _env, self) => {
       tokens[index]?.attrJoin('class', 'gatsby-table');
-      return self.renderToken(tokens, index, options);
+      tokens[index]?.attrSet('tabindex', '0');
+      return `<div class="table-container gatsby-table-container">${self.renderToken(tokens, index, options)}`;
     };
+    state.md.renderer.rules.table_close = () => '</table></div>';
   });
   rules.heading_open = (tokens, index, options, _env, self) => {
     const token = tokens[index];

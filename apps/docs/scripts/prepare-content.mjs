@@ -18,8 +18,8 @@ import {
 import { applyRewrites } from './upstream-rewrites.mjs';
 
 /**
- * 首版不呈现示例代码：每个代码块渲染为 DemoBlock 占位卡片。
- * `## 代码演示` 章标题保留，正文层次与上游官网一致，只把代码换成占位。
+ * 当前不呈现示例代码：每个代码块渲染为紧凑的 DemoBlock 迁移状态条。
+ * `## 代码演示` 章标题保留，正文层次与上游官网一致，只把代码换成状态提示。
  */
 const demoBlockKinds = new Map([
   ['import', 'import'],
@@ -50,6 +50,11 @@ function isSeparatorCell(cell) {
 }
 
 function cleanTableRow(line, record) {
+  // 设计规范表格会把完整 React 组件塞进单元格；移除标签后只剩 props 碎片，无法可靠降级。
+  if (/<[A-Z][\w.-]*\s+[^>\n]*[\w-]+=/.test(line)) {
+    record('inline-jsx-row', line.trim());
+    return null;
+  }
   const cleaned = stripInlineTags(line);
   const cells = cleaned
     .replace(/^\s*\|/, '')
@@ -196,9 +201,9 @@ function transformBody(body, page, context) {
     record('escape-mustache', '{{ → {&lbrace;');
   }
 
-  // 精修样板：上游示例位置只留占位，这里补一行 Vue 引入说明，说明本站的包名与样式来源。
+  // 上游示例位置只留迁移状态，这里同时交代 Vue 引入方式、固定基线和契约状态。
   if (page.componentDirectory) {
-    const notice = `> 示例代码尚未提供。组件通过 \`@aifuxi/semi-ui-vue/${page.componentDirectory}\` 子路径导入，样式由 \`@aifuxi/semi-theme-default\` 提供。\n`;
+    const notice = `> **Vue 使用说明**：从 \`@aifuxi/semi-ui-vue/${page.componentDirectory}\` 子路径引入组件，全局样式由 \`@aifuxi/semi-theme-default\` 提供。正文基于固定 Semi Design v2.102.0 生成；示例代码与 Vue API 契约仍在逐项校准。\n`;
     const anchorIndex = text.indexOf('## 代码演示');
     text =
       anchorIndex === -1
@@ -385,6 +390,7 @@ const searchIndex = entries
     return {
       title: `${englishTitle} ${chineseTitle}`,
       path: entry.route,
+      category: categories.find((category) => category.id === entry.type)?.label ?? '',
       text: `${entry.description} ${entry.searchText ?? ''}`
         .replaceAll(/\s+/g, ' ')
         .trim()

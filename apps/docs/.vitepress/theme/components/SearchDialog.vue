@@ -5,6 +5,7 @@ import { useRouter, withBase } from 'vitepress';
 interface SearchEntry {
   title: string;
   path: string;
+  category: string;
   text: string;
 }
 
@@ -51,8 +52,11 @@ watch(open, async (value) => {
       loadError.value = false;
       try {
         const response = await fetch(withBase('/search-index.json'));
-        if (!response.ok) throw new Error('搜索索引不可用');
-        entries.value = (await response.json()) as SearchEntry[];
+        if (response.ok) {
+          entries.value = (await response.json()) as SearchEntry[];
+        } else {
+          loadError.value = true;
+        }
       } catch {
         loadError.value = true;
       } finally {
@@ -74,7 +78,7 @@ function go(entry: SearchEntry): void {
 function onKeydown(event: KeyboardEvent): void {
   if (event.key === 'ArrowDown') {
     event.preventDefault();
-    active.value = Math.min(active.value + 1, results.value.length - 1);
+    active.value = Math.min(active.value + 1, Math.max(0, results.value.length - 1));
   } else if (event.key === 'ArrowUp') {
     event.preventDefault();
     active.value = Math.max(active.value - 1, 0);
@@ -121,7 +125,10 @@ onUnmounted(() => window.removeEventListener('keydown', onGlobalKeydown));
           @mouseenter="active = index"
         >
           <a :href="withBase(entry.path)" @click.prevent="go(entry)">
-            <strong>{{ entry.title }}</strong>
+            <span class="search-result-heading">
+              <strong>{{ entry.title }}</strong>
+              <small>{{ entry.category }}</small>
+            </span>
             <span>{{ entry.text.slice(0, 90) }}</span>
           </a>
         </li>

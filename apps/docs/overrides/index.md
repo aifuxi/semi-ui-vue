@@ -5,17 +5,22 @@ type: start
 order: 0
 ---
 
-<div class="docs-home">
-  <div class="docs-home-hero">
-    <h1>Semi UI Vue</h1>
+<div class="docs-home-hero">
+    <div class="docs-home-eyebrow"><span></span>Semi Design v2.102.0 固定基线</div>
+    <h1><span>Semi UI</span>，原生 Vue 体验</h1>
     <p>
-      基于固定基线 Semi Design v2.102.0 独立实现的 Vue 3 组件库。文档外壳、正文说明与 API
-      章节对齐 Semi 官方文档，首版只提供组件使用说明，示例代码与在线编辑后续补齐。
+      面向 Vue 3 与 TypeScript 的 Semi 组件库实现。文档外壳与使用说明对齐固定上游基线，
+      让组件能力、主题变量和迁移边界更容易查找与核对。
     </p>
     <div class="docs-home-actions">
       <a class="docs-home-action docs-home-action-primary" href="/zh-CN/start/introduction">开始使用</a>
       <a class="docs-home-action docs-home-action-secondary" href="/zh-CN/components">浏览组件</a>
     </div>
-  </div>
-  <ComponentOverview />
+    <ul class="docs-home-facts" aria-label="项目特性">
+      <li><strong>Vue 3</strong><span>Composition API</span></li>
+      <li><strong>TypeScript</strong><span>完整类型定义</span></li>
+      <li><strong>Semi 兼容</strong><span>主题与类名契约</span></li>
+    </ul>
 </div>
+
+<ComponentOverview />
