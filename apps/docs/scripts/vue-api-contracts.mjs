@@ -3117,4 +3117,147 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/other/configprovider',
+    {
+      sources: [
+        'packages/ui/src/config-provider/types.ts',
+        'packages/ui/src/config-provider/index.ts',
+      ],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/config-provider/types.ts',
+          interfaces: ['ConfigProviderProps'],
+          defaults: {
+            direction: '`ltr`',
+            getPopupContainer: '—',
+            locale: '`zh_CN`',
+            responsiveObserve: 'false',
+            responsiveMap: '`ConfigProvider.defaultResponsiveMap`',
+          },
+        },
+      ],
+      usageNotes: [
+        'ConfigProvider 通过 Vue `provide/inject` 向组件子树提供配置。',
+        'ConfigConsumer 的默认作用域插槽接收 `ConfigContextValue`；`onBreakpoint` 是上下文订阅函数，不是组件事件。',
+        '默认断点可从 `ConfigProvider.defaultResponsiveMap` 读取；组件默认 props 可通过 `semiGlobal.config.overrideDefaultProps` 覆盖。',
+      ],
+      slotGroups: [
+        {
+          name: 'ConfigProvider',
+          items: [slot('default', '{}', '使用全局配置的组件子树')],
+        },
+        {
+          name: 'ConfigConsumer',
+          items: [
+            slot(
+              'default',
+              '{ direction, timeZone, locale, getPopupContainer, responsiveObserve, responsiveMap, onBreakpoint, screens }',
+              '读取当前全局配置',
+            ),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          'ConfigProvider 借助 React Context 机制实现，因此它能影响 React 节点树中的子组件',
+          'ConfigProvider 通过 Vue provide/inject 实现，因此它能影响 Vue 组件树中的子组件。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/plus/hotkeys',
+    {
+      sources: ['packages/ui/src/hot-keys/types.ts', 'packages/ui/src/hot-keys/index.ts'],
+      propSections: [
+        {
+          heading: 'HotKeys',
+          level: 3,
+          source: 'packages/ui/src/hot-keys/types.ts',
+          interfaces: ['HotKeysProps'],
+          descriptions: {
+            class: 'Vue 原生类名',
+            content: '覆盖键帽显示文本，不改变实际组合',
+            hotKeys: '合法组合键；恰好一个普通键',
+            mergeMetaCtrl: 'v2.102.0 兼容 prop；固定 Foundation 中为 no-op',
+          },
+          defaults: {
+            content: '`hotKeys`',
+            getListenerTarget: '`document.body`',
+            mergeMetaCtrl: 'false',
+            preventDefault: 'false',
+          },
+        },
+      ],
+      eventSections: [{ heading: 'HotKeys', level: 3, rows: ['onClick', 'onHotKey'] }],
+      eventGroups: [
+        {
+          name: 'HotKeys',
+          items: [
+            event('click', '[event: MouseEvent]', '点击快捷键展示内容时触发'),
+            event('hotKey', '[event: KeyboardEvent]', '匹配快捷键组合时触发'),
+          ],
+        },
+      ],
+      usageNotes: [
+        '通过 `@hot-key` 监听快捷键，通过 `@click` 监听点击；`getListenerTarget` 是配置监听目标的 prop。',
+        '快捷键常量可从 `HotKeys.Keys` 或具名导出 `HOT_KEYS` 读取。',
+      ],
+      slotGroups: [
+        {
+          name: 'HotKeys',
+          items: [slot('default', '{}', '覆盖默认快捷键展示内容')],
+        },
+      ],
+      textRewrites: [
+        [
+          '基本使用，通过`hotKeys`传入快捷键组合，通过 `onHotKey` 绑定快捷键处理函数，作出响应动作。',
+          '基本使用，通过 `hotKeys` 传入快捷键组合，通过 `@hot-key` 监听快捷键并作出响应。',
+        ],
+        ['通过`render`传入代替渲染的元素', '通过默认插槽传入自定义展示内容'],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/show/empty',
+    {
+      sources: ['packages/ui/src/empty/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/empty/types.ts',
+          interfaces: ['EmptyProps'],
+          descriptions: { class: 'Vue 原生类名', className: '样式类名' },
+          defaults: { layout: '`vertical`' },
+        },
+      ],
+      usageNotes: [
+        '`image`、`darkModeImage`、`title`、`description` 同时支持 VNode prop 和同名插槽，插槽内容优先。',
+        '默认插槽渲染在底部操作区。',
+      ],
+      slotGroups: [
+        {
+          name: 'Empty',
+          items: [
+            slot('default', '{}', '底部操作区'),
+            slot('darkModeImage', '{}', '暗色模式占位图'),
+            slot('description', '{}', '内容描述'),
+            slot('image', '{}', '占位图'),
+            slot('title', '{}', '标题'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['@douyinfe/semi-illustrations', '@aifuxi/semi-illustrations-vue'],
+        [
+          '通过 `children` 可以实现自定义的描述内容。',
+          '通过默认插槽可以自定义底部操作内容，描述内容使用 `description` prop 或同名插槽。',
+        ],
+      ],
+    },
+  ],
 ]);
