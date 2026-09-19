@@ -21,6 +21,7 @@ import {
 } from 'vue';
 
 import { semiGlobal } from '../config-provider';
+import { useRenderComputed } from '../_utils';
 import DescriptionsItem from './DescriptionsItem.vue';
 import { descriptionsContextKey } from './descriptions-context';
 import type {
@@ -180,7 +181,7 @@ function normalizeItemVNode(vnode: VNode): NormalizedItem {
   return item;
 }
 
-const slotItems = computed(() =>
+const slotItems = useRenderComputed(() =>
   flattenItemVNodes(slots.default?.() ?? []).map(normalizeItemVNode),
 );
 const normalizedItems = computed(() =>

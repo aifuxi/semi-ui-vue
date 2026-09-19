@@ -3,6 +3,7 @@ import { computed, useAttrs, useSlots } from 'vue';
 
 import { Space } from '../space';
 import { Title } from '../typography';
+import { useRenderComputed } from '../_utils';
 import CardNodeRenderer from './CardNodeRenderer';
 import CardSkeleton from './CardSkeleton.vue';
 import { hasCardContent } from './card-content';
@@ -19,13 +20,15 @@ defineSlots<CardSlots>();
 const attrs = useAttrs();
 const slots = useSlots();
 
-const header = computed(() => slots.header?.() ?? props.header);
-const title = computed(() => slots.title?.() ?? props.title);
-const headerExtraContent = computed(() => slots.headerExtraContent?.() ?? props.headerExtraContent);
-const cover = computed(() => slots.cover?.() ?? props.cover);
-const body = computed(() => slots.default?.() ?? []);
-const footer = computed(() => slots.footer?.() ?? props.footer);
-const actions = computed(() => slots.actions?.() ?? props.actions ?? []);
+const header = useRenderComputed(() => slots.header?.() ?? props.header);
+const title = useRenderComputed(() => slots.title?.() ?? props.title);
+const headerExtraContent = useRenderComputed(
+  () => slots.headerExtraContent?.() ?? props.headerExtraContent,
+);
+const cover = useRenderComputed(() => slots.cover?.() ?? props.cover);
+const body = useRenderComputed(() => slots.default?.() ?? []);
+const footer = useRenderComputed(() => slots.footer?.() ?? props.footer);
+const actions = useRenderComputed(() => slots.actions?.() ?? props.actions ?? []);
 
 const hasHeader = computed(() => hasCardContent(header.value));
 const hasTitle = computed(() => hasCardContent(title.value));

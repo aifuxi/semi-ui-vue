@@ -51,6 +51,7 @@ import Progress from '../progress/Progress.vue';
 import Tooltip from '../tooltip/Tooltip.vue';
 import Upload from '../upload/Upload.vue';
 import type { UploadChangePayload, UploadExposed, UploadProps } from '../upload';
+import { useRenderComputed } from '../_utils';
 import AIChatInputConfigure from './AIChatInputConfigure.vue';
 import AIChatInputConfigureButton from './AIChatInputConfigureButton.vue';
 import AIChatInputEditor from './AIChatInputEditor.vue';
@@ -455,7 +456,7 @@ const uploadRenderProps = computed<RenderUploadButtonProps>(() => ({
   disabled: Boolean(props.uploadProps?.disabled),
   attachments: state.attachments,
 }));
-const customUploadNode = computed<VNodeChild>(
+const customUploadNode = useRenderComputed<VNodeChild>(
   () =>
     slots.uploadButton?.(uploadRenderProps.value) ??
     props.renderUploadButton?.(uploadRenderProps.value),
@@ -508,7 +509,7 @@ const sendButtonNode = computed<VNodeChild>(() =>
     [h(props.generating ? IconStop : IconArrowUp)],
   ),
 );
-const customActionNode = computed<VNodeChild>(() => {
+const customActionNode = useRenderComputed<VNodeChild>(() => {
   const renderProps = {
     menuItem: [
       runtimeShowUploadButton.value ? uploadMenuNode.value : undefined,

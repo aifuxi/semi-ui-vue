@@ -447,7 +447,7 @@ const columnCount = computed(() => Math.max(1, props.columns.length));
       >
         <TableCell
           v-for="(column, columnIndex) in props.columns"
-          :key="column.key"
+          :key="columnIndex"
           :column="column"
           :column-index="columnIndex"
           :width="props.virtualized ? props.virtualColumnWidths?.[columnIndex] : undefined"

@@ -18,6 +18,7 @@ import {
 
 import Collapsible from '../collapsible/Collapsible.vue';
 import { Dropdown, DropdownMenu } from '../dropdown';
+import { useRenderComputed } from '../_utils';
 import NavItem from './NavItem';
 import NavigationContextProvider from './NavigationContextProvider';
 import NavigationIconRenderer from './NavigationIconRenderer';
@@ -116,7 +117,7 @@ const showNestedChevron = computed(
     (!collapsed.value && context.isInSubNav && context.mode.value === 'horizontal') ||
     (collapsed.value && context.isInSubNav),
 );
-const toggleIcon = computed<NavigationContent | undefined>(() => {
+const toggleIcon = useRenderComputed<NavigationContent | undefined>(() => {
   if (collapsed.value) return context.isInSubNav ? () => h(IconChevronRight) : undefined;
   if (context.mode.value === 'horizontal' && context.isInSubNav) {
     return () => h(IconChevronRight);
@@ -134,10 +135,10 @@ const defaultToggleIcon = computed(() =>
     ? IconChevronRight
     : IconChevronDown,
 );
-const informationIcon = computed<NavigationContent | undefined>(() =>
+const informationIcon = useRenderComputed<NavigationContent | undefined>(() =>
   slots.icon ? () => slots.icon?.() : props.icon,
 );
-const titleContent = computed<NavigationContent | undefined>(() =>
+const titleContent = useRenderComputed<NavigationContent | undefined>(() =>
   slots.text ? () => slots.text?.() : props.text,
 );
 const placeholderCount = computed(() => {

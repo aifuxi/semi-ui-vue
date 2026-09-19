@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { IconClose } from '@aifuxi/semi-icons-vue';
-import { computed, useSlots, useTemplateRef, type VNodeChild } from 'vue';
+import { useSlots, useTemplateRef, type VNodeChild } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import ImageNodeRenderer from './ImageNodeRenderer';
 
 const props = defineProps<{
@@ -14,10 +15,10 @@ const props = defineProps<{
 const emit = defineEmits<{ close: [event: MouseEvent] }>();
 const slots = useSlots();
 const root = useTemplateRef<HTMLElement>('root');
-const headerContent = computed(
+const headerContent = useRenderComputed(
   () => slots.header?.({ title: props.title }) ?? props.renderHeader?.(props.title) ?? props.title,
 );
-const closeContent = computed(
+const closeContent = useRenderComputed(
   () =>
     slots.closeIcon?.() ??
     (typeof props.renderCloseIcon === 'function' ? props.renderCloseIcon() : props.renderCloseIcon),

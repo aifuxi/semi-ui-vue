@@ -11,6 +11,7 @@ import {
   type VNode,
 } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import CarouselArrow from './CarouselArrow.vue';
 import CarouselIndicator from './CarouselIndicator.vue';
 import CarouselItemRenderer from './CarouselItemRenderer';
@@ -50,7 +51,7 @@ function flattenElements(nodes: VNode[] | undefined, result: VNode[] = []): VNod
   return result;
 }
 
-const children = computed(() => flattenElements(slots.default?.()));
+const children = useRenderComputed(() => flattenElements(slots.default?.()));
 const { foundation, state } = useCarouselFoundation(props, children, emit);
 const rootAttrs = computed(() =>
   Object.fromEntries(

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, provide, shallowRef, useAttrs, useSlots, type VNode } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import LayoutSider from './LayoutSider.vue';
 import { layoutSiderHookKey } from './layout-context';
 import type { LayoutProps, LayoutSlots } from './types';
@@ -34,7 +35,7 @@ function isDirectSider(vnode: VNode): boolean {
   return vnode.type === LayoutSider;
 }
 
-const hasDirectSider = computed(() => (slots.default?.() ?? []).some(isDirectSider));
+const hasDirectSider = useRenderComputed(() => (slots.default?.() ?? []).some(isDirectSider));
 const layoutClasses = computed(() => [
   props.prefixCls,
   {

@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import ConfigProvider from '../config-provider/ConfigProvider.vue';
 import LocaleProvider from '../locale/LocaleProvider.vue';
 import enUS from '../locale/source/en_US';
+import { Tag } from '../tag';
 import DefaultTable, {
   DEFAULT_KEY_COLUMN_EXPAND,
   DEFAULT_KEY_COLUMN_SELECTION,
@@ -652,5 +653,94 @@ describe('Table', () => {
     await rows[1]!.trigger('mouseenter');
     expect(rows[0]!.classes()).toContain('semi-table-row-hovered');
     expect(rows[1]!.classes()).toContain('semi-table-row-hovered');
+  });
+
+  it('render 中 h(组件, 插槽) 的内容随记录原地更新', async () => {
+    // The reported case replaces a record without changing row keys, sorting, or pagination.
+    const rows = shallowRef([{ key: 'a', role: '访客' }]);
+    const wrapper = mount(Table, {
+      props: {
+        columns: [
+          {
+            dataIndex: 'role',
+            key: 'role',
+            render: (_text, record) =>
+              h(Tag, { color: 'blue' }, { default: () => String(record?.role) }),
+            title: 'Role',
+          },
+        ],
+        dataSource: rows.value,
+        pagination: false,
+        rowKey: 'key',
+      },
+    });
+    expect(wrapper.get('td').text()).toBe('访客');
+
+    await wrapper.setProps({ dataSource: [{ key: 'a', role: '管理员' }] });
+    await nextTick();
+    expect(wrapper.get('td').text()).toBe('管理员');
+  });
+
+  it('#cell 插槽内容随记录原地更新', async () => {
+    const rows = shallowRef([{ key: 'a', role: '访客' }]);
+    const wrapper = mount(Table, {
+      props: {
+        columns: [{ dataIndex: 'role', key: 'role', title: 'Role' }],
+        dataSource: rows.value,
+        pagination: false,
+        rowKey: 'key',
+      },
+      slots: {
+        cell: (slotProps: { text?: unknown }) =>
+          h(Tag, { color: 'blue' }, { default: () => String(slotProps.text) }),
+      },
+    });
+    expect(wrapper.get('td').text()).toBe('访客');
+
+    await wrapper.setProps({ dataSource: [{ key: 'a', role: '管理员' }] });
+    await nextTick();
+    expect(wrapper.get('td').text()).toBe('管理员');
+  });
+
+  it('声明式 Table.Column 在父级重渲染后刷新表头', async () => {
+    const title = shallowRef('First');
+    const host = defineComponent(
+      () => () =>
+        h(Table, { dataSource: [{ key: 'a', name: 'Alpha' }], pagination: false }, () => [
+          h(TableColumn, { dataIndex: 'name', title: title.value }),
+        ]),
+    );
+    const wrapper = mount(host);
+    expect(wrapper.get('th').text()).toBe('First');
+
+    title.value = 'Second';
+    await nextTick();
+    expect(wrapper.get('th').text()).toBe('Second');
+  });
+
+  it('同 dataIndex 的多列各自渲染标题与单元格', () => {
+    const build = (withKey: boolean) =>
+      mount(Table, {
+        props: {
+          columns: [
+            { dataIndex: 'name', title: 'A', ...(withKey ? { key: 'a' } : {}) },
+            { dataIndex: 'name', title: 'B', ...(withKey ? { key: 'b' } : {}) },
+            { dataIndex: 'role', title: 'C', ...(withKey ? { key: 'c' } : {}) },
+            { dataIndex: 'role', title: 'D', ...(withKey ? { key: 'd' } : {}) },
+          ],
+          dataSource: [{ key: 'r1', name: 'Alpha', role: 'Admin' }],
+          pagination: false,
+        },
+      });
+    for (const withKey of [true, false]) {
+      const wrapper = build(withKey);
+      expect(wrapper.findAll('th').map((cell) => cell.text())).toEqual(['A', 'B', 'C', 'D']);
+      expect(wrapper.findAll('td').map((cell) => cell.text())).toEqual([
+        'Alpha',
+        'Alpha',
+        'Admin',
+        'Admin',
+      ]);
+    }
   });
 });

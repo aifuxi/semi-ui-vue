@@ -427,8 +427,10 @@ function fullFilterNode(column: NormalizedTableColumn<Record<string, unknown>>):
 
 // Resolve each public title once per reactive change, then reuse the same result for
 // content and native title. Function titles may return text or consume query VNodes.
+// Titles are keyed by column identity: columns may share a sort/filter key
+// (key ?? dataIndex) while still rendering their own title.
 const resolvedColumnTitles = computed(() => {
-  const titles = new Map<string | number, VNodeChild>();
+  const titles = new Map<NormalizedTableColumn<Record<string, unknown>>, VNodeChild>();
   for (const row of props.headerRows)
     for (const { column } of row) {
       const content =
@@ -439,13 +441,13 @@ const resolvedColumnTitles = computed(() => {
               sorter: fullSorterNode(column),
             })
           : (props.renderHeaderCell?.({ column }) ?? column.title);
-      titles.set(column.key, content);
+      titles.set(column, content);
     }
   return titles;
 });
 
 function columnTitle(column: NormalizedTableColumn<Record<string, unknown>>): VNodeChild {
-  return resolvedColumnTitles.value.get(column.key);
+  return resolvedColumnTitles.value.get(column);
 }
 
 function ellipsisTitle(
@@ -747,7 +749,7 @@ function selectAll(event: CheckboxChangeEvent): void {
       role="row"
       v-bind="headerRowAttrs(rowIndex)"
     >
-      <template v-for="(cell, columnIndex) in row" :key="cell.column.key">
+      <template v-for="(cell, columnIndex) in row" :key="`${rowIndex}-${columnIndex}`">
         <HeaderCellWrapper
           v-if="!cellHidden(cell, columnIndex, rowIndex)"
           :tooltip="clickColumnToSort(cell.column) && shouldShowSortTip(cell.column)"

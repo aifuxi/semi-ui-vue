@@ -18,6 +18,7 @@ import {
 import { Button } from '../button';
 import { semiGlobal } from '../config-provider';
 import { LocaleConsumer } from '../locale';
+import { useRenderComputed } from '../_utils';
 import AIChatDialogueHint from './AIChatDialogueHint.vue';
 import AIChatDialogueItem from './AIChatDialogueItem.vue';
 import { AI_CHAT_DIALOGUE_SCROLL_DURATION, AI_CHAT_DIALOGUE_SCROLL_GAP } from './constants';
@@ -163,7 +164,7 @@ const editRenderer = computed(
       ? (payload: unknown) => slots['message-edit']?.({ value: payload })
       : props.messageEditRender) as ((properties: unknown) => VNodeChild) | undefined,
 );
-const hintRenderer = computed(() =>
+const hintRenderer = useRenderComputed(() =>
   slots.hint
     ? (payload: { content: string; index: number; onHintClick: () => void }) =>
         slots.hint?.(payload)

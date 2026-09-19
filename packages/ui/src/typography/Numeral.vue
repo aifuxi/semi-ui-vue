@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { FormatNumeral } from '@workspace/foundation-integration';
-import { computed, useSlots, type VNodeChild } from 'vue';
+import { useSlots, type VNodeChild } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import TypographyBase from './TypographyBase.vue';
 import { formatTypographyNodes } from './typography-utils';
 import type { NumeralProps, TypographyContentSlots, TypographyEmits } from './types';
@@ -27,7 +28,7 @@ const emit = defineEmits<TypographyEmits>();
 defineSlots<TypographyContentSlots>();
 const slots = useSlots();
 
-const content = computed<VNodeChild[]>(() => {
+const content = useRenderComputed<VNodeChild[]>(() => {
   const formatter = (value: string) =>
     new FormatNumeral(value, props.rule, props.precision, props.truncate, props.parser).format();
   return formatTypographyNodes(slots.default?.() ?? [], formatter);

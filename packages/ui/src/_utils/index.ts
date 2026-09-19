@@ -1,6 +1,14 @@
 import cloneDeepWith from 'lodash/cloneDeepWith.js';
 import set from 'lodash/set.js';
-import { isVNode, type VNode } from 'vue';
+import {
+  computed,
+  isVNode,
+  onActivated,
+  onBeforeUpdate,
+  shallowRef,
+  type ComputedRef,
+  type VNode,
+} from 'vue';
 
 import semiGlobal from './semi-global';
 
@@ -14,6 +22,27 @@ export interface WrappedEvent {
 export function stopPropagation(event: WrappedEvent | undefined, noImmediate = false): void {
   event?.stopPropagation?.();
   if (!noImmediate) event?.nativeEvent?.stopImmediatePropagation?.();
+}
+
+/**
+ * A computed that is invalidated on every component update, so a factory reading slot functions
+ * is evaluated once per render instead of being cached across renders. Slot functions carry no
+ * reactive dependency: a plain computed keeps handing back the VNodes of the render that first
+ * evaluated it, which leaves slot content stale after the parent re-renders with new content.
+ * Only use this where the factory reads `slots`; prop- and state-derived values stay on
+ * `computed` so their reactive dependencies keep working as documented.
+ */
+export function useRenderComputed<Value>(factory: () => Value): ComputedRef<Value> {
+  const renderVersion = shallowRef(0);
+  const invalidate = (): void => {
+    renderVersion.value += 1;
+  };
+  onBeforeUpdate(invalidate);
+  onActivated(invalidate);
+  return computed(() => {
+    void renderVersion.value;
+    return factory();
+  });
 }
 
 export function cloneDeep<Value>(value: Value): Value;

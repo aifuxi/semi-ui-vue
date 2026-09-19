@@ -14,6 +14,7 @@
 - 区分 prop 缺省、显式 `false` 与 `true`，保持 default/provider 优先级。读取子 VNode Boolean prop 时兼顾 SFC 裸属性的 `''` 和 `h()` 输入，不能只做 truthiness 判断。
 - Foundation、DOM、Observer 等身份敏感对象避免深层代理；DOM、Observer、事件在客户端创建并清理。所有公开 JavaScript 入口支持无 DOM 导入，适用组件验证 SSR render/hydration。
 - Portal/定位需要覆盖自定义容器首次挂载、capture scroll 重定位与卸载。子组件 mounted 可能早于父容器 ref 就绪；按公开契约处理首次目标，不因一次回退就引入动态迁移。scroll target 可能是 Document，不能无依据收窄为 Element。
+- 插槽内容必须在渲染期读取：`slots.x?.()` 的结果不得进入 `computed`/`watch` 等跨渲染缓存，否则父级重渲染后仍会渲染旧 VNode。读取插槽的派生值统一使用 `packages/ui/src/_utils` 的 `useRenderComputed`；`pnpm check:slots` 门禁拦截直接回退。
 - 默认使用 SFC 模板；必需的 DOM/VNode 合并可局部使用 render function。
 
 ## 完整切片的交付

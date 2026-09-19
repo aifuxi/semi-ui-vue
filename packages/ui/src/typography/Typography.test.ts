@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { defineComponent, h, nextTick, provide } from 'vue';
+import { defineComponent, h, nextTick, provide, shallowRef } from 'vue';
 
 import Typography, {
   EN_US_TYPOGRAPHY_LOCALE,
@@ -265,5 +265,23 @@ describe('Typography', () => {
     expect(action.text()).toBe('收起');
     await action.trigger('keydown', { key: 'Enter' });
     expect(wrapper.emitted('expand')?.[1]?.[0]).toBe(false);
+  });
+
+  it('父级重渲染后插槽内容刷新', async () => {
+    // The reported case feeds a plain record into the slot; only the enclosing component
+    // re-renders, so cached slot VNodes would keep rendering the previous text.
+    let label = '张三';
+    const version = shallowRef(0);
+    const host = defineComponent(() => () => {
+      void version.value;
+      return h(Text, null, { default: () => label });
+    });
+    const wrapper = mount(host);
+    expect(wrapper.get('.semi-typography').text()).toBe('张三');
+
+    label = '张三!';
+    version.value += 1;
+    await nextTick();
+    expect(wrapper.get('.semi-typography').text()).toBe('张三!');
   });
 });

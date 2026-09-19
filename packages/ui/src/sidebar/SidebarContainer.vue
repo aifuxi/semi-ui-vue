@@ -26,6 +26,7 @@ import {
 import { Button } from '../button';
 import { semiGlobal } from '../config-provider';
 import { Resizable } from '../resizable';
+import { useRenderComputed } from '../_utils';
 import SidebarNodeRenderer from './SidebarNodeRenderer';
 import type {
   SidebarContainerEmits,
@@ -114,12 +115,12 @@ function hasRenderableContent(nodes: readonly VNode[]): boolean {
   });
 }
 
-const customHeader = computed(() => {
+const customHeader = useRenderComputed(() => {
   const content = slots.header?.();
   if (!content || !hasRenderableContent(content)) return props.renderHeader?.();
   return content ?? props.renderHeader?.();
 });
-const titleContent = computed(() => slots.title?.() ?? props.title);
+const titleContent = useRenderComputed(() => slots.title?.() ?? props.title);
 
 const state = shallowReactive<SidebarContainerFoundationState>({
   displayNone: !visible.value,

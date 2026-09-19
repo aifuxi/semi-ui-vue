@@ -15,6 +15,7 @@ import {
 
 import { Text } from '../typography';
 
+import { useRenderComputed } from '../_utils';
 import AnchorNodeRenderer from './AnchorNodeRenderer';
 import { anchorContextKey, anchorLevelKey, anchorParentHrefKey } from './anchor-context';
 import type { AnchorLinkProps, AnchorLinkSlots, AnchorShowTooltip } from './types';
@@ -109,7 +110,7 @@ const tooltipConfig = computed<AnchorShowTooltip>(() => {
   if (context.position.value) value.opts.position = context.position.value;
   return value;
 });
-const titleContent = computed(() => slots.title?.() ?? props.title);
+const titleContent = useRenderComputed(() => slots.title?.() ?? props.title);
 
 function handleClick(event: MouseEvent | KeyboardEvent): void {
   if (!props.disabled) context.onClick(event, props.href);

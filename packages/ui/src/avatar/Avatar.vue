@@ -20,6 +20,7 @@ import {
   type VNodeChild,
 } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import AvatarNodeRenderer from './AvatarNodeRenderer';
 import TopSlotSvg from './TopSlotSvg.vue';
 import {
@@ -64,7 +65,7 @@ function meaningfulNodes(nodes: VNode[] | undefined): VNode[] {
   );
 }
 
-const defaultNodes = computed(() => meaningfulNodes(slots.default?.()));
+const defaultNodes = useRenderComputed(() => meaningfulNodes(slots.default?.()));
 const stringContent = computed<string | undefined>(() => {
   if (defaultNodes.value.length !== 1 || defaultNodes.value[0]?.type !== Text) return undefined;
   return String(defaultNodes.value[0].children ?? '');
@@ -106,7 +107,7 @@ const finalAlt = computed(() => {
   const base = props.alt ?? stringContent.value;
   return clickable.value ? `clickable Avatar: ${base}` : base;
 });
-const hoverMaskNode = computed<VNodeChild | undefined>(() => {
+const hoverMaskNode = useRenderComputed<VNodeChild | undefined>(() => {
   const nodes = meaningfulNodes(slots.hoverMask?.());
   return nodes.length ? nodes : props.hoverMask;
 });

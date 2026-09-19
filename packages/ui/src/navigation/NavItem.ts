@@ -23,6 +23,7 @@ import {
 
 import { DropdownItem } from '../dropdown';
 import Tooltip from '../tooltip/Tooltip.vue';
+import { useRenderComputed } from '../_utils';
 import NavigationIconRenderer from './NavigationIconRenderer';
 import NavigationNodeRenderer from './NavigationNodeRenderer';
 import { navigationContextKey } from './navigation-context';
@@ -171,7 +172,7 @@ export default defineComponent({
         (collapsed.value && !context.isInSubNav && !props.isSubNav) ||
         (collapsed.value && props.isSubNav && props.disabled),
     );
-    const placeholderCount = computed(() => {
+    const placeholderCount = useRenderComputed(() => {
       if (
         context.mode.value !== 'vertical' ||
         context.limitIndent.value ||

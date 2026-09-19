@@ -18,6 +18,7 @@ import {
   type VNodeChild,
 } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import TooltipArrow from './TooltipArrow.vue';
 import TooltipNodeRenderer from './TooltipNodeRenderer';
 import type { TooltipInitialFocusRef, TooltipPosition, TooltipState } from './types';
@@ -154,7 +155,7 @@ function collectRenderableNodes(nodes: VNodeChild[]): VNode[] {
   return result;
 }
 
-const customArrowNodes = computed(() =>
+const customArrowNodes = useRenderComputed(() =>
   collectRenderableNodes((slots.arrow?.() ?? []) as VNodeChild[]),
 );
 

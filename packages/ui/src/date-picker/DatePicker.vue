@@ -27,6 +27,7 @@ import {
 import { configContextKey, semiGlobal, type ConfigContextValue } from '../config-provider';
 import { Input, type InputExposed } from '../input';
 import { Popover } from '../popover';
+import { useRenderComputed } from '../_utils';
 import DatePickerNodeRenderer from './DatePickerNodeRenderer';
 import DatePickerPanel from './DatePickerPanel.vue';
 import type {
@@ -440,19 +441,20 @@ const popoverBindProps = computed<Record<string, unknown>>(() => {
 const rootAttrs = computed(() =>
   Object.fromEntries(Object.entries(attrs).filter(([key]) => !['class', 'style'].includes(key))),
 );
-const topContent = computed<VNodeChild>(() => slots.top?.() ?? props.topSlot);
-const bottomContent = computed<VNodeChild>(() => slots.bottom?.() ?? props.bottomSlot);
-const leftContent = computed<VNodeChild>(() => slots.left?.() ?? props.leftSlot);
-const rightContent = computed<VNodeChild>(() => slots.right?.() ?? props.rightSlot);
-const renderDate = computed<((dayNumber?: number, fullDate?: string) => VNodeChild) | undefined>(
-  () =>
-    slots.date || props.renderDate
-      ? (dayNumber, fullDate) =>
-          slots.date?.({ dayNumber: dayNumber ?? 0, fullDate: fullDate ?? '' }) ??
-          props.renderDate?.(dayNumber, fullDate)
-      : undefined,
+const topContent = useRenderComputed<VNodeChild>(() => slots.top?.() ?? props.topSlot);
+const bottomContent = useRenderComputed<VNodeChild>(() => slots.bottom?.() ?? props.bottomSlot);
+const leftContent = useRenderComputed<VNodeChild>(() => slots.left?.() ?? props.leftSlot);
+const rightContent = useRenderComputed<VNodeChild>(() => slots.right?.() ?? props.rightSlot);
+const renderDate = useRenderComputed<
+  ((dayNumber?: number, fullDate?: string) => VNodeChild) | undefined
+>(() =>
+  slots.date || props.renderDate
+    ? (dayNumber, fullDate) =>
+        slots.date?.({ dayNumber: dayNumber ?? 0, fullDate: fullDate ?? '' }) ??
+        props.renderDate?.(dayNumber, fullDate)
+    : undefined,
 );
-const renderFullDate = computed<
+const renderFullDate = useRenderComputed<
   ((dayNumber?: number, fullDate?: string, status?: DatePickerDayStatus) => VNodeChild) | undefined
 >(() =>
   slots.fullDate || props.renderFullDate
@@ -479,7 +481,7 @@ const triggerSlotProps = computed<DatePickerTriggerSlotProps>(() => ({
   close: () => foundation.closePanel(),
   clear: (event) => clearValue(event),
 }));
-const customTrigger = computed<VNodeChild>(
+const customTrigger = useRenderComputed<VNodeChild>(
   () => slots.trigger?.(triggerSlotProps.value) ?? props.triggerRender?.(triggerSlotProps.value),
 );
 

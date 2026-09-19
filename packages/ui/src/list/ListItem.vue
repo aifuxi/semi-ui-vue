@@ -2,6 +2,7 @@
 import { computed, getCurrentInstance, inject, useAttrs, useSlots, type PropType } from 'vue';
 
 import { Col, type ColProps } from '../grid';
+import { useRenderComputed } from '../_utils';
 import ListNodeRenderer from './ListNodeRenderer';
 import { listContextKey } from './list-context';
 import type { ListItemAlign, ListItemEmits, ListItemProps, ListItemSlots } from './types';
@@ -39,9 +40,9 @@ const colPropNames = [
   'xxl',
 ] as const;
 
-const headerContent = computed(() => slots.header?.() ?? props.header);
-const mainContent = computed(() => slots.main?.() ?? props.main);
-const extraContent = computed(() => slots.extra?.() ?? props.extra);
+const headerContent = useRenderComputed(() => slots.header?.() ?? props.header);
+const mainContent = useRenderComputed(() => slots.main?.() ?? props.main);
+const extraContent = useRenderComputed(() => slots.extra?.() ?? props.extra);
 const hasBody = computed(() => headerContent.value != null || mainContent.value != null);
 const grid = computed(() => context?.grid.value);
 const colProps = computed<ColProps>(() => {

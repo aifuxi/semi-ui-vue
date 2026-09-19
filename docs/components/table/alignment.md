@@ -142,3 +142,12 @@ Dynamic 首次排序的完整 sorter 经消费者回填 columns 后，其空 fil
 | [TableLayout.public.test.ts](../../../packages/ui/src/table/TableLayout.public.test.ts)               | 动态固定选择与展开列不强制整表布局；声明列 fixed/ellipsis、固定表头启用及移除                                               |
 | [TableChangeInfo.public.test.ts](../../../packages/ui/src/table/TableChangeInfo.public.test.ts)       | 完整列查询、原声明 key/自定义字段、操作前查询快照、连续两列排序回填、非筛选列空数组控制、受控与非受控清除及 props 只读      |
 | [TableResizableMode.public.test.ts](../../../packages/ui/src/table/TableResizableMode.public.test.ts) | 真假模式重建、同真值保留、默认与受控状态、列宽/监听清理、虚拟 ref、props 缺省、attrs/slots/公开 ref 和事件单次转发          |
+
+## 插槽渲染缓存与表头列键修复（2026-09-19 消费者观察复核）
+
+- 消费者观察：数据源记录原地替换（行 key、排序、分页不变）时，`column.render` 里 `h(组件, props, 插槽)` 的内容保持旧值，而纯文本、元素子节点与组件 prop 正常刷新；同一 `dataIndex` 的多列表头标题互相覆盖。
+- 根因修正（插槽）：缺陷不在 `TableCell`——其 `renderResult` computed 会随记录失效；等价组件在渲染期读取插槽时同一单元格路径立即刷新。真实原因是 Tag、Typography 等组件把 `slots.x?.()` 结果存进 `computed`，插槽无响应式依赖，导致 VNode 被跨渲染缓存。
+- 根因（列键）：`TableHeader` 标题解析用 `column.key` 作为 Map 键，且表头/表体/`colgroup` 的 `v-for` 也以 `column.key` 为 key；`key ?? dataIndex` 重复时相互覆盖。
+- 修复：新增 `packages/ui/src/_utils` 的 `useRenderComputed`（每次组件更新失效一次，插槽仍然只在渲染期求值），`packages/ui/src` 内全部读取插槽的 computed 改用它；`TableCore` 的声明式列、标题/页脚/空态一并转换，`TableCell` 与 `shouldCellUpdate` 语义保持不变。表头标题改按列实例标识，表头/表体/`colgroup` 的 `v-for` key 改为位置唯一；公开 `column.key`（`key ?? dataIndex`）与 `change` 载荷保持不变。
+- 门禁：`pnpm check:slots`（`scripts/verify-slot-render-usage.mjs`）扫描 `packages/ui/src` 与 `apps/storybook-vue/src`，禁止 `computed`/`watch` 回调直接调用插槽或引用读取插槽的本地函数，例外需显式 `slots-render-allow:` 标注。
+- 证据：`Tag.test.ts`、`Typography.test.ts`、`Table.test.ts` 新增用例在修复前失败、修复后通过（逐条以回退源码验证）；全量 `pnpm test:unit` 226 文件 / 1300 用例通过；`pnpm check:slots` 0 命中。

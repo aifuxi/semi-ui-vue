@@ -26,6 +26,7 @@ import {
 import Divider from '../divider/Divider.vue';
 import Slider from '../slider/Slider.vue';
 import Tooltip from '../tooltip/Tooltip.vue';
+import { useRenderComputed } from '../_utils';
 import ImageNodeRenderer from './ImageNodeRenderer';
 import type { ImageLocale, ImagePreviewMenuProps, ImageRatioType } from './types';
 
@@ -236,7 +237,7 @@ const menuProps = computed<ImagePreviewMenuProps>(() => ({
   totalNum: props.totalNum,
   zoom: props.zoom,
 }));
-const customMenu = computed(
+const customMenu = useRenderComputed(
   () => slots.previewMenu?.(menuProps.value) ?? props.renderPreviewMenu?.(menuProps.value),
 );
 

@@ -16,6 +16,7 @@ import {
 } from 'vue';
 
 import Button from '../button/Button.vue';
+import { useRenderComputed } from '../_utils';
 import TabItem from './TabItem.vue';
 import TabsDropdown from './TabsDropdown.vue';
 import TabsNodeRenderer from './TabsNodeRenderer';
@@ -96,7 +97,9 @@ const hiddenEnd = computed(() =>
     (item) => visibleState.get(item.itemKey) === false && !hiddenStart.value.includes(item),
   ),
 );
-const extraContent = computed(() => slots.tabBarExtraContent?.() ?? props.tabBarExtraContent);
+const extraContent = useRenderComputed(
+  () => slots.tabBarExtraContent?.() ?? props.tabBarExtraContent,
+);
 const barClasses = computed(() => [
   'semi-tabs-bar',
   `semi-tabs-bar-${props.type}`,

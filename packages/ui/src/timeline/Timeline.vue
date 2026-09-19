@@ -14,6 +14,7 @@ import {
   type VNodeChild,
 } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import TimelineItem from './TimelineItem.vue';
 import type { TimelineData, TimelineMode, TimelineProps, TimelineSlots } from './types';
 
@@ -80,7 +81,7 @@ function positionClass(node: VNode, index: number): string {
   return `${prefixCls}-item-${props.mode}`;
 }
 
-const sourceChildren = computed<VNode[]>(() => {
+const sourceChildren = useRenderComputed<VNode[]>(() => {
   if (props.dataSource?.length) {
     return props.dataSource.map((entry, index) => {
       const { content, ...itemProps } = entry;

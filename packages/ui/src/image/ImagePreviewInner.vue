@@ -21,6 +21,7 @@ import {
 } from 'vue';
 
 import { configContextKey, type ConfigContextValue } from '../config-provider';
+import { useRenderComputed } from '../_utils';
 import ImageNodeRenderer from './ImageNodeRenderer';
 import ImagePreviewFooter from './ImagePreviewFooter.vue';
 import ImagePreviewHeader from './ImagePreviewHeader.vue';
@@ -244,14 +245,14 @@ const title = computed<VNodeChild>(() =>
     ? (group.titles.value[state.currentIndex] as VNodeChild)
     : props.previewTitle,
 );
-const leftContent = computed(
+const leftContent = useRenderComputed(
   () =>
     slots.leftIcon?.({ index: state.currentIndex }) ??
     (typeof props.renderLeftIcon === 'function'
       ? props.renderLeftIcon(state.currentIndex)
       : props.renderLeftIcon),
 );
-const rightContent = computed(
+const rightContent = useRenderComputed(
   () =>
     slots.rightIcon?.({ index: state.currentIndex }) ??
     (typeof props.renderRightIcon === 'function'

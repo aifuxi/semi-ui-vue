@@ -26,6 +26,7 @@ import {
   type ConfigContextValue,
 } from '../config-provider';
 import { localeContextKey } from '../locale/locale-context';
+import { useRenderComputed } from '../_utils';
 import NavFooter from './NavFooter.vue';
 import NavHeader from './NavHeader.vue';
 import NavItem from './NavItem';
@@ -158,7 +159,7 @@ function isFooter(node: VNode): boolean {
   return node.type === NavFooter || componentName(node) === 'NavFooter';
 }
 
-const slotNodes = computed(() => flattenRenderable(slots.default?.() ?? []));
+const slotNodes = useRenderComputed(() => flattenRenderable(slots.default?.() ?? []));
 const headerNodes = computed(() => slotNodes.value.filter(isHeader));
 const footerNodes = computed(() => slotNodes.value.filter(isFooter));
 const bodyNodes = computed(() =>

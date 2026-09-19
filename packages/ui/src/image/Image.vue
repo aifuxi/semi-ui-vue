@@ -13,6 +13,7 @@ import {
   type VNodeChild,
 } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import ImageNodeRenderer from './ImageNodeRenderer';
 import ImagePreviewInner from './ImagePreviewInner.vue';
 import { imagePreviewContextKey } from './image-context';
@@ -119,8 +120,10 @@ const outerStyle = computed(() => {
   );
   return { ...base, ...definedUserStyle };
 });
-const placeholderContent = computed<VNodeChild>(() => slots.placeholder?.() ?? props.placeholder);
-const fallbackContent = computed<VNodeChild>(() => slots.fallback?.() ?? props.fallback);
+const placeholderContent = useRenderComputed<VNodeChild>(
+  () => slots.placeholder?.() ?? props.placeholder,
+);
+const fallbackContent = useRenderComputed<VNodeChild>(() => slots.fallback?.() ?? props.fallback);
 
 function handleClick(event: MouseEvent): void {
   emit('click', event);
