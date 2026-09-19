@@ -11,6 +11,7 @@ import {
   type VNodeChild,
 } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import CollapseButton from './CollapseButton.vue';
 import { navigationContextKey } from './navigation-context';
 import NavigationNodeRenderer from './NavigationNodeRenderer';
@@ -42,8 +43,8 @@ function hasElement(nodes: VNodeChild): boolean {
   return true;
 }
 
-const defaultNodes = computed(() => slots.default?.() ?? []);
-const customCollapse = computed(() => slots.collapseButton?.() ?? props.collapseButton);
+const defaultNodes = useRenderComputed(() => slots.default?.() ?? []);
+const customCollapse = useRenderComputed(() => slots.collapseButton?.() ?? props.collapseButton);
 const collapseEnabled = computed(() => {
   if (slots.collapseButton) return true;
   if (!hasRawProp('collapseButton')) return false;

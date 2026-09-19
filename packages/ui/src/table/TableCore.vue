@@ -20,6 +20,7 @@ import { tableCssClasses, tableNumbers, tableStrings } from '@workspace/foundati
 import { configContextKey, DEFAULT_CONFIG_LOCALE, semiGlobal } from '../config-provider';
 import Pagination from '../pagination/Pagination.vue';
 import { localeContextKey } from '../locale/locale-context';
+import { useRenderComputed } from '../_utils';
 import TableBody from './TableBody.vue';
 import TableHeader from './TableHeader.vue';
 import TableNativeElement from './TableNativeElement';
@@ -155,7 +156,7 @@ const locale = computed<TableLocale>(() => {
   );
 });
 
-const declaredColumns = computed<NormalizedTableColumn<RecordType>[]>(() => {
+const declaredColumns = useRenderComputed<NormalizedTableColumn<RecordType>[]>(() => {
   const propColumns = normalizeColumns(props.columns);
   if (propColumns.length) return propColumns;
   return normalizeColumnVNodes<RecordType>(slots.default?.());
@@ -978,7 +979,7 @@ const tableWrapClass = computed(() => [
   scrollPosition.value === 'middle' ? `${prefix.value}-scroll-position-middle` : undefined,
 ]);
 
-const titleContent = computed<VNodeChild>(
+const titleContent = useRenderComputed<VNodeChild>(
   () =>
     slots.title?.({ pageData: pageData.value }) ??
     (hasRawProp('title')
@@ -987,7 +988,7 @@ const titleContent = computed<VNodeChild>(
         : props.title
       : undefined),
 );
-const footerContent = computed<VNodeChild>(
+const footerContent = useRenderComputed<VNodeChild>(
   () =>
     slots.footer?.({ pageData: pageData.value }) ??
     (hasRawProp('footer')
@@ -996,7 +997,7 @@ const footerContent = computed<VNodeChild>(
         : props.footer
       : undefined),
 );
-const emptyContent = computed<VNodeChild>(
+const emptyContent = useRenderComputed<VNodeChild>(
   () => slots.empty?.() ?? (hasRawProp('empty') ? props.empty : locale.value.emptyText),
 );
 const pageInfo = computed(() => {
@@ -1228,8 +1229,8 @@ onBeforeUnmount(() => {
             >
               <colgroup :class="`${prefix}-colgroup`">
                 <col
-                  v-for="column in flatColumns"
-                  :key="column.key"
+                  v-for="(column, columnIndex) in flatColumns"
+                  :key="columnIndex"
                   :class="[`${prefix}-col`, column.className]"
                   :style="{
                     minWidth: toCssSize(column.__width ?? column.width),
@@ -1279,8 +1280,8 @@ onBeforeUnmount(() => {
               >
                 <component
                   :is="bodyColgroupComponent('col')"
-                  v-for="column in flatColumns"
-                  :key="column.key"
+                  v-for="(column, columnIndex) in flatColumns"
+                  :key="columnIndex"
                   :class="[`${prefix}-col`, column.className]"
                   :style="{
                     minWidth: toCssSize(column.__width ?? column.width),

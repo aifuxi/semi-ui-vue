@@ -17,6 +17,7 @@ import {
 } from 'vue';
 
 import { Col, Row } from '../grid';
+import { useRenderComputed } from '../_utils';
 import { stepsContextKey } from './steps-context';
 import type {
   InternalStepProps,
@@ -84,7 +85,7 @@ function hasVNodeProp(node: VNode, name: string): boolean {
   );
 }
 
-const sourceChildren = computed(() =>
+const sourceChildren = useRenderComputed(() =>
   flattenValidVNodes((slots.default?.() ?? []) as VNodeChild[]),
 );
 

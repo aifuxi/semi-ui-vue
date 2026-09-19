@@ -10,6 +10,7 @@ import {
   type VNodeChild,
 } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import { Avatar } from '../avatar';
 import TagNodeRenderer from './TagNodeRenderer';
 import type { TagEmits, TagProps, TagSlots } from './types';
@@ -46,23 +47,23 @@ const controlled = computed(() => hasRawProp('visible'));
 const isVisible = computed(() =>
   controlled.value ? props.visible === true : internalVisible.value,
 );
-const defaultNodes = computed(() => slots.default?.());
-const stringContent = computed<string | undefined>(() => {
+const defaultNodes = useRenderComputed(() => slots.default?.());
+const stringContent = useRenderComputed<string | undefined>(() => {
   if (!slots.default) return typeof props.content === 'string' ? props.content : undefined;
   const nodes = defaultNodes.value ?? [];
   return nodes.length === 1 && nodes[0]?.type === Text
     ? String(nodes[0].children ?? '')
     : undefined;
 });
-const content = computed<VNodeChild>(() =>
+const content = useRenderComputed<VNodeChild>(() =>
   stringContent.value !== undefined
     ? stringContent.value
     : slots.default
       ? defaultNodes.value
       : props.content,
 );
-const prefixIcon = computed(() => slots.prefixIcon?.() ?? props.prefixIcon);
-const suffixIcon = computed(() => slots.suffixIcon?.() ?? props.suffixIcon);
+const prefixIcon = useRenderComputed(() => slots.prefixIcon?.() ?? props.prefixIcon);
+const suffixIcon = useRenderComputed(() => slots.suffixIcon?.() ?? props.suffixIcon);
 const clickable = computed(() => props.closable || hasRawProp('onClick'));
 const rootClasses = computed(() => [
   'semi-tag',
@@ -79,11 +80,11 @@ const rootClasses = computed(() => [
   props.className,
   attrs.class,
 ]);
-const contentClasses = computed(() => [
+const contentClasses = useRenderComputed(() => [
   'semi-tag-content',
   `semi-tag-content-${stringContent.value === undefined ? 'center' : 'ellipsis'}`,
 ]);
-const ariaLabel = computed(() => {
+const ariaLabel = useRenderComputed(() => {
   if (!attrs['aria-label'] && stringContent.value === undefined) return '';
   return `${props.closable ? 'Closable ' : ''}Tag: ${stringContent.value ?? String(content.value ?? '')}`;
 });

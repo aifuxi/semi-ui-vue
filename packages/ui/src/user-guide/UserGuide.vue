@@ -23,6 +23,7 @@ import {
 import { configContextKey, DEFAULT_CONFIG_LOCALE, semiGlobal } from '../config-provider';
 import Modal from '../modal/Modal.vue';
 import Popover from '../popover/Popover.vue';
+import { useRenderComputed } from '../_utils';
 import UserGuideModalContent from './UserGuideModalContent.vue';
 import UserGuidePopupContent from './UserGuidePopupContent.vue';
 import type {
@@ -123,13 +124,13 @@ const slotProps = computed<UserGuideSlotProps | undefined>(() =>
     ? { current: current.value, index: current.value, step: activeStep.value }
     : undefined,
 );
-const coverContent = computed<VNodeChild>(() =>
+const coverContent = useRenderComputed<VNodeChild>(() =>
   slotProps.value ? (slots.cover?.(slotProps.value) ?? activeStep.value?.cover) : undefined,
 );
-const titleContent = computed<VNodeChild>(() =>
+const titleContent = useRenderComputed<VNodeChild>(() =>
   slotProps.value ? (slots.title?.(slotProps.value) ?? activeStep.value?.title) : undefined,
 );
-const descriptionContent = computed<VNodeChild>(() =>
+const descriptionContent = useRenderComputed<VNodeChild>(() =>
   slotProps.value
     ? (slots.description?.(slotProps.value) ?? activeStep.value?.description)
     : undefined,

@@ -15,6 +15,7 @@ import {
   type VNodeChild,
 } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import StepsNodeRenderer from './StepsNodeRenderer';
 import { stepsContextKey } from './steps-context';
 import type { InternalStepProps, StepEmits, StepSlots, StepsStatus } from './types';
@@ -44,11 +45,13 @@ function hasRawProp(name: string): boolean {
 }
 
 const prefixCls = 'semi-steps-item';
-const titleContent = computed<VNodeChild>(() => slots.title?.() ?? props.title);
-const descriptionContent = computed<VNodeChild>(() => slots.description?.() ?? props.description);
+const titleContent = useRenderComputed<VNodeChild>(() => slots.title?.() ?? props.title);
+const descriptionContent = useRenderComputed<VNodeChild>(
+  () => slots.description?.() ?? props.description,
+);
 const hasIcon = computed(() => Boolean(slots.icon) || hasRawProp('icon'));
-const iconContent = computed<VNodeChild>(() => slots.icon?.() ?? props.icon);
-const customIconVisible = computed(() => {
+const iconContent = useRenderComputed<VNodeChild>(() => slots.icon?.() ?? props.icon);
+const customIconVisible = useRenderComputed(() => {
   if (!hasIcon.value) return false;
   if (slots.icon) return (slots.icon() ?? []).length > 0;
   return context.type.value === 'basic' ? isVNode(props.icon) : Boolean(props.icon);

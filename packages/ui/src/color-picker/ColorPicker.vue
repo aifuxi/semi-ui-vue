@@ -26,6 +26,7 @@ import {
 } from 'vue';
 
 import { Popover, type PopoverProps } from '../popover';
+import { useRenderComputed } from '../_utils';
 import ColorPickerPanel from './ColorPickerPanel.vue';
 import type {
   ColorPickerEmits,
@@ -129,8 +130,8 @@ const popoverClass = computed(() => [
   props.popoverProps.class,
   props.popoverProps.className,
 ]);
-const topContent = computed<VNodeChild>(() => slots.top?.() ?? props.topSlot);
-const bottomContent = computed<VNodeChild>(() => slots.bottom?.() ?? props.bottomSlot);
+const topContent = useRenderComputed<VNodeChild>(() => slots.top?.() ?? props.topSlot);
+const bottomContent = useRenderComputed<VNodeChild>(() => slots.bottom?.() ?? props.bottomSlot);
 
 function handleChange(color: HsvaColor | RgbaColor | string, format: 'hex' | 'rgba' | 'hsva') {
   foundation.handleChange(color, format);

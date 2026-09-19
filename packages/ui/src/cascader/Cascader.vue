@@ -35,6 +35,7 @@ import { Input, type InputExposed } from '../input';
 import { Popover } from '../popover';
 import { Tag } from '../tag';
 import { TagInput, type TagInputExposed } from '../tag-input';
+import { useRenderComputed } from '../_utils';
 import CascaderNodeRenderer from './CascaderNodeRenderer';
 import CascaderPanel from './CascaderPanel.vue';
 import type {
@@ -447,24 +448,24 @@ const hasValue = computed(() => displayKeys.value.length > 0);
 const dataAttrs = computed(() =>
   Object.fromEntries(Object.entries(attrs).filter(([name]) => name.startsWith('data-'))),
 );
-const prefixContent = computed(
+const prefixContent = useRenderComputed(
   () => slots.prefix?.() ?? (hasRawProp('prefix') ? props.prefix : undefined),
 );
 const insetLabelContent = computed(() => (hasRawProp('insetLabel') ? props.insetLabel : undefined));
-const suffixContent = computed(
+const suffixContent = useRenderComputed(
   () => slots.suffix?.() ?? (hasRawProp('suffix') ? props.suffix : undefined),
 );
-const arrowContent = computed(
+const arrowContent = useRenderComputed(
   () =>
     slots.arrowIcon?.() ??
     (hasRawProp('arrowIcon') ? props.arrowIcon : undefined) ??
     h(IconChevronDown),
 );
-const clearContent = computed(
+const clearContent = useRenderComputed(
   () =>
     slots.clearIcon?.() ?? (hasRawProp('clearIcon') ? props.clearIcon : undefined) ?? h(IconClear),
 );
-const expandContent = computed(
+const expandContent = useRenderComputed(
   () => slots.expandIcon?.() ?? (hasRawProp('expandIcon') ? props.expandIcon : undefined),
 );
 const panelExpandContent = computed(() =>
@@ -472,13 +473,13 @@ const panelExpandContent = computed(() =>
     ? null
     : (expandContent.value as NormalizedPanelNode | undefined),
 );
-const topContent = computed(
+const topContent = useRenderComputed(
   () => slots.top?.() ?? (hasRawProp('topSlot') ? props.topSlot : undefined),
 );
-const bottomContent = computed(
+const bottomContent = useRenderComputed(
   () => slots.bottom?.() ?? (hasRawProp('bottomSlot') ? props.bottomSlot : undefined),
 );
-const emptyContent = computed<VNodeChild>(() => {
+const emptyContent = useRenderComputed<VNodeChild>(() => {
   if (slots.empty) return slots.empty();
   if (hasRawProp('emptyContent')) return props.emptyContent;
   const locale = config.value.locale.Cascader as { emptyText?: string } | undefined;
@@ -530,7 +531,7 @@ const showClearButton = computed(
     !props.disabled &&
     (state.isOpen || state.isHovering),
 );
-const singleDisplay = computed<VNodeChild>(() => {
+const singleDisplay = useRenderComputed<VNodeChild>(() => {
   const key = [...state.selectedKeys][0];
   if (!key) return undefined;
   const path = foundation.getItemPropPath(key, props.displayProp) as VNodeChild[];
@@ -607,7 +608,7 @@ const triggerRenderProps = computed<CascaderTriggerRenderProps>(() => {
   if (value !== undefined) output.value = value;
   return output;
 });
-const customTrigger = computed<VNodeChild>(
+const customTrigger = useRenderComputed<VNodeChild>(
   () =>
     slots.trigger?.(triggerRenderProps.value) ?? props.triggerRender?.(triggerRenderProps.value),
 );

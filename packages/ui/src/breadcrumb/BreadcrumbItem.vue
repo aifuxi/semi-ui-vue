@@ -20,6 +20,7 @@ import {
 
 import Text from '../typography/Text.vue';
 
+import { useRenderComputed } from '../_utils';
 import BreadcrumbIconRenderer from './BreadcrumbIconRenderer';
 import BreadcrumbNodeRenderer from './BreadcrumbNodeRenderer';
 import { breadcrumbContextKey } from './breadcrumb-context';
@@ -72,14 +73,16 @@ function flattenContent(nodes: VNodeChild[]): VNodeChild[] {
   return output;
 }
 
-const contentNodes = computed(() => flattenContent((slots.default?.() ?? []) as VNodeChild[]));
+const contentNodes = useRenderComputed(() =>
+  flattenContent((slots.default?.() ?? []) as VNodeChild[]),
+);
 const stringContent = computed<string | undefined>(() => {
   if (contentNodes.value.length !== 1) return undefined;
   const node = contentNodes.value[0];
   if (typeof node === 'string') return node.trim();
   return isVNode(node) && node.type === VueText ? String(node.children ?? '').trim() : undefined;
 });
-const iconContent = computed<VNodeChild>(() => slots.icon?.() ?? props.icon);
+const iconContent = useRenderComputed<VNodeChild>(() => slots.icon?.() ?? props.icon);
 const hasHref = computed(() => props.href !== null && props.href !== undefined);
 const itemTag = computed(() => (props.active || !hasHref.value ? 'span' : 'a'));
 const itemClasses = computed(() => [
@@ -90,7 +93,7 @@ const itemClasses = computed(() => [
 const rootAttrs = computed(() =>
   Object.fromEntries(Object.entries(attrs).filter(([name]) => !['class', 'style'].includes(name))),
 );
-const separatorContent = computed<VNodeChild>(() =>
+const separatorContent = useRenderComputed<VNodeChild>(() =>
   slots.separator ? slots.separator() : props.separator || context.separator.value,
 );
 const tooltipOptions = computed(() => {

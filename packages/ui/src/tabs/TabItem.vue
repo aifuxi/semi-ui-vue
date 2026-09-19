@@ -2,6 +2,7 @@
 import { IconClose } from '@aifuxi/semi-icons-vue';
 import { computed, useAttrs, useSlots } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import TabsNodeRenderer from './TabsNodeRenderer';
 import type { TabItemEmits, TabItemProps, TabItemSlots } from './types';
 
@@ -19,8 +20,8 @@ defineSlots<TabItemSlots>();
 const attrs = useAttrs();
 const slots = useSlots();
 
-const tabContent = computed(() => slots.tab?.() ?? props.tab);
-const iconContent = computed(() => slots.icon?.() ?? props.icon);
+const tabContent = useRenderComputed(() => slots.tab?.() ?? props.tab);
+const iconContent = useRenderComputed(() => slots.icon?.() ?? props.icon);
 const classes = computed(() => [
   'semi-tabs-tab',
   `semi-tabs-tab-${props.type}`,

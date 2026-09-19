@@ -25,6 +25,7 @@ import Button from '../button/Button.vue';
 import { configContextKey, DEFAULT_CONFIG_LOCALE, semiGlobal } from '../config-provider';
 import { Popover, type PopoverExposed, type PopoverProps } from '../popover';
 
+import { useRenderComputed } from '../_utils';
 import PopconfirmNodeRenderer from './PopconfirmNodeRenderer';
 import type {
   PopconfirmActionResult,
@@ -104,9 +105,9 @@ const locale = computed<PopconfirmLocale>(() => {
   const configured = config.value.locale.Popconfirm as PopconfirmLocale | undefined;
   return configured ?? { cancel: '取消', confirm: '确定' };
 });
-const titleContent = computed<VNodeChild>(() => slots.title?.() ?? props.title);
+const titleContent = useRenderComputed<VNodeChild>(() => slots.title?.() ?? props.title);
 const contentValue = computed<VNodeChild>(() => props.content);
-const iconContent = computed<VNodeChild>(() => slots.icon?.() ?? props.icon);
+const iconContent = useRenderComputed<VNodeChild>(() => slots.icon?.() ?? props.icon);
 const usesDefaultIcon = computed(() => !slots.icon && !hasExplicitProp('icon'));
 const hasIcon = computed(() => {
   if (usesDefaultIcon.value) return true;

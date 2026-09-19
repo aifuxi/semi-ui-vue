@@ -27,6 +27,7 @@ import {
 } from 'vue';
 
 import { configContextKey, DEFAULT_CONFIG_LOCALE } from '../config-provider';
+import { useRenderComputed } from '../_utils';
 import JsonViewerSearchOverlay from './JsonViewerSearchOverlay';
 import type {
   JsonViewerEmits,
@@ -235,7 +236,7 @@ const searchControls = computed<JsonViewerSearchControls>(() => ({
   onReplace: (text) => foundation.replace(text),
   onReplaceAll: (text) => foundation.replaceAll(text),
 }));
-const customSearchRenderer = computed(() => {
+const customSearchRenderer = useRenderComputed(() => {
   if (props.renderSearchButton) return props.renderSearchButton;
   if (!slots.searchButton) return undefined;
   return (defaultSearchButton: VNodeChild, controls: JsonViewerSearchControls) =>

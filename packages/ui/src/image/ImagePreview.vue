@@ -24,6 +24,7 @@ import {
   type VNodeChild,
 } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import Image from './Image.vue';
 import ImageNodeRenderer from './ImageNodeRenderer';
 import ImagePreviewInner from './ImagePreviewInner.vue';
@@ -180,7 +181,7 @@ function parseNodes(input: VNodeChild[], parsed: ParsedChildren): VNodeChild[] {
   return output;
 }
 
-const parsed = computed<ParsedChildren>(() => {
+const parsed = useRenderComputed<ParsedChildren>(() => {
   const result: ParsedChildren = { nodes: [], sources: [], titles: [] };
   result.nodes = parseNodes((slots.default?.() ?? []) as VNodeChild[], result);
   return result;

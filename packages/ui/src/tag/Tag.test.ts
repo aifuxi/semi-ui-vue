@@ -114,6 +114,24 @@ describe('Tag', () => {
     expect(closable.emitted('close')).toHaveLength(1);
     expect(closable.classes()).toContain('semi-tag-invisible');
   });
+
+  it('父级重渲染后插槽内容刷新', async () => {
+    // The reported case passes a plain record into the slot; only a separate reactive
+    // signal re-renders the parent, so cached slot VNodes would keep the old text.
+    let label = '访客';
+    const version = shallowRef(0);
+    const host = defineComponent(() => () => {
+      void version.value;
+      return h(Tag, null, { default: () => label });
+    });
+    const wrapper = mount(host);
+    expect(wrapper.get('.semi-tag-content').text()).toBe('访客');
+
+    label = '管理员';
+    version.value += 1;
+    await nextTick();
+    expect(wrapper.get('.semi-tag-content').text()).toBe('管理员');
+  });
 });
 
 describe('TagGroup', () => {

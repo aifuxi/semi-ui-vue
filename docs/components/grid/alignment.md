@@ -81,6 +81,12 @@ Grid 不需要 Foundation 运行时实例或额外 composable；Foundation 仅�
 
 当前没有 accepted visual/behavior deviation。React `RowContext` 是内部实现细节，Vue 改用类型化 provide/inject；公开 DOM、Gutter 传播和嵌套隔离不变。
 
+## 已知限制（2026-09-19 消费者观察复核）
+
+- 证据：固定 `packages/semi-ui/grid/row.tsx:132-142` 仅当 `type` 存在时输出 `-row-flex-{justify|align}` 类，且只有 `type === 'flex'` 才加 `-row-flex`；Vue 端口 `Row.vue` 的 class 计算与主题 `.semi-row { display: block }` / `.semi-row-flex { display: flex }` 一致。
+- 现象：未写 `type="flex"` 时 `align` / `justify` 静默失效，不报错也不告警，属固定基线行为。
+- 处理：仅补中英文文档说明，不改运行时行为。
+
 ## 验收结论（2026-09-18 复核）
 
 - 状态：`ready`。

@@ -42,6 +42,8 @@ Col 必须放在 Row 内。
 </Row>
 ```
 
+`align` 与 `justify` 只在 `type="flex"` 时生效（与固定基线 `row.tsx` 的 class 计算一致）。不写 `type="flex"` 时 Row 仍是块级 `display: block`，对齐类不会输出，也不会报错或告警。
+
 ## 响应式
 
 每个断点可以直接传 span 数值，也可以传入 `span/order/offset/push/pull` 对象。

@@ -36,6 +36,7 @@ import {
 import { configContextKey, type ConfigContextValue } from '../config-provider';
 import { CheckboxGroup } from '../checkbox';
 import { Input, type InputExposed } from '../input';
+import { useRenderComputed } from '../_utils';
 import TreeNode from './TreeNode.vue';
 import TreeNodeMotion from './TreeNodeMotion.vue';
 import TreeNodeRenderer from './TreeNodeRenderer';
@@ -438,7 +439,7 @@ const searchPlaceholder = computed(() => {
     treeLocale?.searchPlaceholder ?? (config.value.locale.code === 'en-US' ? 'Search' : '搜索')
   );
 });
-const emptyContent = computed<VNodeChild>(() => {
+const emptyContent = useRenderComputed<VNodeChild>(() => {
   if (slots.empty) return slots.empty();
   if (props.emptyContent !== undefined) return props.emptyContent;
   const treeLocale = config.value.locale.Tree as { emptyText?: string } | undefined;
@@ -452,7 +453,7 @@ const searchSlotProps = computed<TreeSearchSlotProps>(() => ({
   value: state.inputValue,
   onChange: handleInputChange,
 }));
-const customSearch = computed<VNodeChild>(
+const customSearch = useRenderComputed<VNodeChild>(
   () =>
     slots.search?.(searchSlotProps.value) ??
     (typeof props.searchRender === 'function'

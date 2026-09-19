@@ -14,6 +14,7 @@ import {
 
 import { Title } from '../typography';
 
+import { useRenderComputed } from '../_utils';
 import EmptyNodeRenderer from './EmptyNodeRenderer';
 import type { EmptyProps, EmptySlots, EmptySvgNode } from './types';
 
@@ -54,8 +55,8 @@ function isSvgNode(content: VNodeChild | EmptySvgNode): content is EmptySvgNode 
   );
 }
 
-const lightImage = computed<EmptyProps['image']>(() => slots.image?.() ?? props.image);
-const darkImage = computed<EmptyProps['darkModeImage']>(
+const lightImage = useRenderComputed<EmptyProps['image']>(() => slots.image?.() ?? props.image);
+const darkImage = useRenderComputed<EmptyProps['darkModeImage']>(
   () => slots.darkModeImage?.() ?? props.darkModeImage,
 );
 const selectedImage = computed(() =>
@@ -72,9 +73,9 @@ const hasImageNode = computed(
   () => isStringImage.value || Boolean(svgImage.value) || hasTruthyContent(customImage.value),
 );
 
-const titleContent = computed(() => slots.title?.() ?? props.title);
-const descriptionContent = computed(() => slots.description?.() ?? props.description);
-const footerContent = computed(() => slots.default?.());
+const titleContent = useRenderComputed(() => slots.title?.() ?? props.title);
+const descriptionContent = useRenderComputed(() => slots.description?.() ?? props.description);
+const footerContent = useRenderComputed(() => slots.default?.());
 const hasTitle = computed(() => hasTruthyContent(titleContent.value));
 const hasDescription = computed(() => hasTruthyContent(descriptionContent.value));
 const hasFooter = computed(() => hasTruthyContent(footerContent.value));

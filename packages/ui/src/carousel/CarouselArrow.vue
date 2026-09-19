@@ -2,6 +2,7 @@
 import { IconChevronLeft, IconChevronRight } from '@aifuxi/semi-icons-vue';
 import { computed, useSlots, type VNodeChild } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import CarouselNodeRenderer from './CarouselNodeRenderer';
 import type { CarouselArrowProps, CarouselArrowType, CarouselTheme } from './types';
 
@@ -47,10 +48,10 @@ const rightAttrs = computed(() =>
     () => emit('next'),
   ),
 );
-const leftContent = computed<VNodeChild | undefined>(
+const leftContent = useRenderComputed<VNodeChild | undefined>(
   () => slots.leftArrow?.() ?? props.arrowProps?.leftArrow?.children,
 );
-const rightContent = computed<VNodeChild | undefined>(
+const rightContent = useRenderComputed<VNodeChild | undefined>(
   () => slots.rightArrow?.() ?? props.arrowProps?.rightArrow?.children,
 );
 </script>

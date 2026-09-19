@@ -42,6 +42,8 @@ import '@aifuxi/semi-theme-default/space.css';
 
 The first array item controls the horizontal gap and the second controls the vertical gap. `wrap` only applies to horizontal Space; vertical mode omits the wrap class.
 
+The Space root is `display: inline-flex` with `align: center` by default, matching the pinned `space/index.tsx` defaults and theme rules. It shrinks to its content and centers it, so it is not a block-level page container: stack full pages with a plain `div` plus flex/gap, or give Space an explicit width.
+
 ## Alignment
 
 ```vue

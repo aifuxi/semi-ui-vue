@@ -41,6 +41,8 @@ The controlled Semi-style contract is also available:
 
 Inline text is not rendered at the `small` size. Put longer descriptions outside the Switch.
 
+The `checkedText` / `uncheckedText` box is a fixed `20px` wide, identical to the pinned `switch.scss` baseline: one character or a short English word fits, while two CJK characters overlap the knob. Use `size="large"` or move longer copy outside the Switch.
+
 ## API
 
 | Prop             | Description                                                          | Type                              | Default     |

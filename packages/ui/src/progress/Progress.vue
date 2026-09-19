@@ -10,6 +10,7 @@ import {
   type VNodeChild,
 } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import ProgressCircle from './ProgressCircle.vue';
 import ProgressLine from './ProgressLine.vue';
 import type { ProgressProps, ProgressSlots } from './types';
@@ -92,7 +93,7 @@ const selectedStroke = computed(() => {
   if (!props.stroke) return undefined;
   return generateProgressColor(props.stroke, props.percent, props.strokeGradient);
 });
-const formattedContent = computed<VNodeChild>(() => {
+const formattedContent = useRenderComputed<VNodeChild>(() => {
   const percent = clampedPercentNumber.value;
   return slots.format?.({ percent }) ?? props.format(percent);
 });

@@ -19,6 +19,7 @@ import {
   isVNode,
 } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import TypographyTooltip from './TypographyTooltip';
 import TypographyCopyable from './TypographyCopyable.vue';
 import TypographyDecorations from './TypographyDecorations';
@@ -95,8 +96,10 @@ let animationFrame: number | undefined;
 let lastMeasuredContent = '';
 let lastMeasurementKey = '';
 
-const contentNodes = computed<VNodeChild[]>(() => props.content ?? slots.default?.() ?? []);
-const contentText = computed(() => getTypographyText(contentNodes.value));
+const contentNodes = useRenderComputed<VNodeChild[]>(
+  () => props.content ?? slots.default?.() ?? [],
+);
+const contentText = useRenderComputed(() => getTypographyText(contentNodes.value));
 const ellipsisOptions = computed(() => {
   const options: TypographyEllipsis = typeof props.ellipsis === 'object' ? props.ellipsis : {};
   return {
@@ -115,7 +118,7 @@ const copyConfig = computed<TypographyCopyableConfig | null>(() => {
   if (!props.copyable) return null;
   return { duration: 3, ...(typeof props.copyable === 'object' ? props.copyable : {}) };
 });
-const copyContent = computed(() => copyConfig.value?.content ?? contentText.value);
+const copyContent = useRenderComputed(() => copyConfig.value?.content ?? contentText.value);
 const measurementKey = computed(() => {
   const options = ellipsisOptions.value;
   return JSON.stringify({
@@ -198,7 +201,7 @@ const linkClasses = computed(() => [
   props.link ? 'semi-typography-link-text' : null,
   props.link && props.underline ? 'semi-typography-link-underline' : null,
 ]);
-const iconContent = computed<VNodeChild>(() => {
+const iconContent = useRenderComputed<VNodeChild>(() => {
   const content = slots.icon?.() ?? props.icon ?? null;
   const iconSize = realSize.value === 'small' ? 'small' : 'default';
   const normalize = (node: VNodeChild): VNodeChild => {

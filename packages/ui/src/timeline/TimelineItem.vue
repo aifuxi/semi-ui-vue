@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, useAttrs, useSlots, type PropType, type VNodeChild } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import TimelineNodeRenderer from './TimelineNodeRenderer';
 import type {
   TimelineItemEmits,
@@ -37,12 +38,12 @@ const rootClasses = computed(() => [prefixCls, props.class, props.className, att
 const dataAttrs = computed(() =>
   Object.fromEntries(Object.entries(attrs).filter(([name]) => name.startsWith('data-'))),
 );
-const dotContent = computed<VNodeChild>(() => slots.dot?.() ?? props.dot);
-const extraContent = computed<VNodeChild>(() => slots.extra?.() ?? props.extra);
-const timeContent = computed<VNodeChild>(() => slots.time?.() ?? props.time);
-const hasDot = computed(() => Boolean(slots.dot?.().length || props.dot));
-const hasExtra = computed(() => Boolean(slots.extra?.().length || props.extra));
-const hasTime = computed(() => Boolean(slots.time?.().length || props.time));
+const dotContent = useRenderComputed<VNodeChild>(() => slots.dot?.() ?? props.dot);
+const extraContent = useRenderComputed<VNodeChild>(() => slots.extra?.() ?? props.extra);
+const timeContent = useRenderComputed<VNodeChild>(() => slots.time?.() ?? props.time);
+const hasDot = useRenderComputed(() => Boolean(slots.dot?.().length || props.dot));
+const hasExtra = useRenderComputed(() => Boolean(slots.extra?.().length || props.extra));
+const hasTime = useRenderComputed(() => Boolean(slots.time?.().length || props.time));
 const dotClasses = computed(() => [
   `${prefixCls}-head`,
   hasDot.value ? `${prefixCls}-head-custom` : undefined,

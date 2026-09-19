@@ -12,6 +12,7 @@ import {
 
 import { Col } from '../grid';
 import { InputGroup } from '../input';
+import { useRenderComputed } from '../_utils';
 import { formContextKey } from './form-context';
 import FormErrorMessage from './FormErrorMessage.vue';
 import { isFormFieldVNode } from './FormField';
@@ -58,7 +59,7 @@ export default defineComponent({
       console.warn('[Semi Form]: InputGroup must be used inside Form');
       return () => null;
     }
-    const fieldNames = computed(() =>
+    const fieldNames = useRenderComputed(() =>
       flatten(slots.default?.() ?? [])
         .filter(isFormFieldVNode)
         .map((node) => node.props?.field)

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Comment, Text, computed, useAttrs, useSlots, type CSSProperties, type VNode } from 'vue';
 
+import { useRenderComputed } from '../_utils';
 import DividerContentRenderer from './DividerContentRenderer';
 import type { DividerProps, DividerSlots } from './types';
 
@@ -19,7 +20,7 @@ defineSlots<DividerSlots>();
 const attrs = useAttrs();
 const slots = useSlots();
 
-const contentNodes = computed(() => (slots.default?.() ?? []) as VNode[]);
+const contentNodes = useRenderComputed(() => (slots.default?.() ?? []) as VNode[]);
 const hasRenderableContent = computed(() =>
   contentNodes.value.some(
     (node) => node.type !== Comment && !(node.type === Text && node.children === ''),

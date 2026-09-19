@@ -74,6 +74,12 @@ Tab/Shift+Tab 聚焦原生 input，Space 由浏览器原生 checkbox 行为触�
 
 没有 accepted visual/behavior deviation。Vue 新增 `v-model`、update emits 与 slots 是框架原生 API 映射，不改变固定默认 DOM、状态或事件载荷。
 
+## 已知限制（2026-09-19 消费者观察复核）
+
+- 证据：固定 `packages/semi-foundation/switch/switch.scss:142-158` 给 `-checked-text` / `-unchecked-text` 固定 `width: 20px`、`font-size: $font-size-small`，仅 `-large` 在 `switch.scss:264-268` 覆盖宽度；Vue 端口编译主题输出同一组规则。
+- 现象：默认尺寸（40×24）下两个中文字符约 24px，会溢出 20px 文本盒并与 24px 滑块重叠。这是固定基线限制，不是 Vue 端口回归。
+- 处理：仅补中英文文档说明（`index.md` / `index.en-US.md`），不改运行时行为；需要两字中文文案时使用 `size="large"` 或改为外部文案。
+
 ## 验收结论（2026-09-18 复核）
 
 - 状态：`ready`。

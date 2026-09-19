@@ -18,6 +18,7 @@ import {
 } from 'vue';
 
 import { semiGlobal } from '../config-provider';
+import { useRenderComputed } from '../_utils';
 import type { HotKeysEmits, HotKeysKey, HotKeysProps, HotKeysSlots } from './types';
 
 defineOptions({ name: 'HotKeys', inheritAttrs: false });
@@ -76,7 +77,7 @@ const rootAttrs = computed(() =>
     Object.entries(attrs).filter(([name]) => name !== 'class' && name !== 'style'),
   ),
 );
-const customContent = computed(() => slots.default?.() ?? []);
+const customContent = useRenderComputed(() => slots.default?.() ?? []);
 const hasCustomRender = computed(() => Boolean(slots.default));
 const hasCustomContent = computed(() =>
   customContent.value.some((node) => {

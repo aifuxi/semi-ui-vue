@@ -14,6 +14,7 @@ import {
 
 import { Row, type RowProps } from '../grid';
 import { configContextKey, DEFAULT_CONFIG_LOCALE } from '../config-provider';
+import { useRenderComputed } from '../_utils';
 import ListNodeRenderer from './ListNodeRenderer';
 import ListSpin from './ListSpin.vue';
 import { listContextKey } from './list-context';
@@ -56,9 +57,9 @@ function hasRenderableContent(content: VNodeChild): boolean {
   return true;
 }
 
-const defaultContent = computed<VNodeChild>(() => slots.default?.() ?? []);
+const defaultContent = useRenderComputed<VNodeChild>(() => slots.default?.() ?? []);
 const hasDefaultContent = computed(() => hasRenderableContent(defaultContent.value));
-const renderedItems = computed<RenderedItem[]>(() => {
+const renderedItems = useRenderComputed<RenderedItem[]>(() => {
   if (!props.dataSource?.length) return [];
   return props.dataSource.map((item, index) => {
     const content = slots.item?.({ item, index }) ?? props.renderItem?.(item, index);
@@ -67,13 +68,13 @@ const renderedItems = computed<RenderedItem[]>(() => {
   });
 });
 const shouldRenderEmpty = computed(() => !props.dataSource?.length && !hasDefaultContent.value);
-const headerContent = computed(() => slots.header?.() ?? props.header);
-const footerContent = computed(() => slots.footer?.() ?? props.footer);
-const loadMoreContent = computed(() => slots.loadMore?.() ?? props.loadMore);
+const headerContent = useRenderComputed(() => slots.header?.() ?? props.header);
+const footerContent = useRenderComputed(() => slots.footer?.() ?? props.footer);
+const loadMoreContent = useRenderComputed(() => slots.loadMore?.() ?? props.loadMore);
 const hasHeader = computed(() => hasRenderableContent(headerContent.value));
 const hasFooter = computed(() => hasRenderableContent(footerContent.value));
 const hasLoadMore = computed(() => hasRenderableContent(loadMoreContent.value));
-const customEmptyContent = computed(() => slots.emptyContent?.() ?? props.emptyContent);
+const customEmptyContent = useRenderComputed(() => slots.emptyContent?.() ?? props.emptyContent);
 const hasCustomEmpty = computed(() => hasRenderableContent(customEmptyContent.value));
 const emptyText = computed(
   () => (locale.value.List as ListLocale | undefined)?.emptyText ?? '暂无数据',

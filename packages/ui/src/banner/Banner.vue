@@ -26,6 +26,7 @@ import {
 import Button from '../button/Button.vue';
 import { Paragraph, Title } from '../typography';
 
+import { useRenderComputed } from '../_utils';
 import BannerNodeRenderer from './BannerNodeRenderer';
 import type { BannerEmits, BannerProps, BannerSlots, BannerType } from './types';
 
@@ -126,9 +127,11 @@ const rootAttrs = computed(() =>
   Object.fromEntries(Object.entries(attrs).filter(([name]) => !['class', 'style'].includes(name))),
 );
 
-const titleContent = computed<VNodeChild>(() => slots.title?.() ?? props.title);
-const descriptionContent = computed<VNodeChild>(() => slots.description?.() ?? props.description);
-const extraContent = computed<VNodeChild>(() => slots.default?.());
+const titleContent = useRenderComputed<VNodeChild>(() => slots.title?.() ?? props.title);
+const descriptionContent = useRenderComputed<VNodeChild>(
+  () => slots.description?.() ?? props.description,
+);
+const extraContent = useRenderComputed<VNodeChild>(() => slots.default?.());
 const hasTitle = computed(() =>
   slots.title
     ? hasSlotTruthyContent(titleContent.value)
@@ -147,7 +150,7 @@ const defaultIconComponents: Record<BannerType, Component> = {
   success: IconTickCircle,
   warning: IconAlertTriangle,
 };
-const customIcon = computed<VNodeChild>(() =>
+const customIcon = useRenderComputed<VNodeChild>(() =>
   slots.icon ? slots.icon() : hasRawProp('icon') ? props.icon : undefined,
 );
 const usesDefaultIcon = computed(() => !slots.icon && !hasRawProp('icon'));
@@ -158,7 +161,7 @@ const hasIcon = computed(
     (slots.icon ? hasSlotTruthyContent(customIcon.value) : hasReactTruthyContent(customIcon.value)),
 );
 
-const customCloseIcon = computed<VNodeChild>(() =>
+const customCloseIcon = useRenderComputed<VNodeChild>(() =>
   slots.closeIcon ? slots.closeIcon() : hasRawProp('closeIcon') ? props.closeIcon : undefined,
 );
 const hasCloseButton = computed(

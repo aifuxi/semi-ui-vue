@@ -21,6 +21,7 @@ import {
 
 import { semiGlobal } from '../config-provider';
 
+import { useRenderComputed } from '../_utils';
 import SpinNodeRenderer from './SpinNodeRenderer';
 import type { SpinProps, SpinSize, SpinSlots } from './types';
 
@@ -98,13 +99,13 @@ const runtimeClassName = computed(() => resolveProp('className', undefined));
 const runtimeWrapperClassName = computed(() => resolveProp('wrapperClassName', undefined));
 const runtimeStyle = computed(() => resolveProp('style', undefined));
 const runtimeChildStyle = computed(() => resolveProp('childStyle', undefined));
-const indicatorContent = computed<VNodeChild>(() =>
+const indicatorContent = useRenderComputed<VNodeChild>(() =>
   slots.indicator ? slots.indicator() : resolveProp('indicator', undefined),
 );
-const tipContent = computed<VNodeChild>(() =>
+const tipContent = useRenderComputed<VNodeChild>(() =>
   slots.tip ? slots.tip() : resolveProp('tip', undefined),
 );
-const childrenContent = computed<VNodeChild>(() => slots.default?.());
+const childrenContent = useRenderComputed<VNodeChild>(() => slots.default?.());
 const hasIndicator = computed(() =>
   slots.indicator
     ? hasSlotContent(indicatorContent.value)

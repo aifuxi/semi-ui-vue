@@ -18,6 +18,7 @@ import {
 
 import { configContextKey, type ConfigContextValue } from '../config-provider';
 import Tooltip from '../tooltip/Tooltip.vue';
+import { useRenderComputed } from '../_utils';
 import RatingItem from './RatingItem.vue';
 import type { RatingEmits, RatingExposed, RatingProps, RatingSlots, RatingState } from './types';
 
@@ -82,7 +83,7 @@ const setItemRef = (index: number) => (value: Element | ComponentPublicInstance 
   else itemInstances.delete(index);
 };
 
-const characterNode = computed<VNodeChild | undefined>(() => {
+const characterNode = useRenderComputed<VNodeChild | undefined>(() => {
   const slotContent = slots.character?.();
   if (slotContent?.length) return slotContent;
   return props.character || undefined;

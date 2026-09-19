@@ -3,6 +3,7 @@ import { computed, inject, Comment, Text, useAttrs, useSlots, type VNode } from 
 
 import { configContextKey } from '../config-provider/config-context';
 
+import { useRenderComputed } from '../_utils';
 import BadgeNodeRenderer from './BadgeNodeRenderer';
 import type { BadgeEmits, BadgeProps, BadgeSlots } from './types';
 
@@ -18,7 +19,7 @@ const attrs = useAttrs();
 const slots = useSlots();
 const config = inject(configContextKey, undefined);
 
-const childNodes = computed(() => slots.default?.() ?? []);
+const childNodes = useRenderComputed(() => slots.default?.() ?? []);
 const hasChildren = computed(() =>
   childNodes.value.some((node) => {
     if (typeof node !== 'object' || node === null) return Boolean(node);
@@ -28,7 +29,7 @@ const hasChildren = computed(() =>
     return true;
   }),
 );
-const slottedCount = computed(() => slots.count?.());
+const slottedCount = useRenderComputed(() => slots.count?.());
 const rawCount = computed(() => (slots.count ? slottedCount.value : props.count));
 const isPrimitiveCount = computed(
   () => typeof rawCount.value === 'number' || typeof rawCount.value === 'string',

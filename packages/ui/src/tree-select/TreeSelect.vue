@@ -37,6 +37,7 @@ import { Popover } from '../popover';
 import { Tag, TagGroup } from '../tag';
 import { TagInput, type TagInputExposed } from '../tag-input';
 import { Tree, type TreeExposed } from '../tree';
+import { useRenderComputed } from '../_utils';
 import TreeSelectNodeRenderer from './TreeSelectNodeRenderer';
 import type {
   TreeNodeData,
@@ -496,27 +497,27 @@ const triggerClasses = computed(() => [
 const dataAttrs = computed(() =>
   Object.fromEntries(Object.entries(attrs).filter(([name]) => name.startsWith('data-'))),
 );
-const prefixContent = computed(
+const prefixContent = useRenderComputed(
   () => slots.prefix?.() ?? (hasRawProp('prefix') ? props.prefix : undefined),
 );
 const insetLabelContent = computed(() => (hasRawProp('insetLabel') ? props.insetLabel : undefined));
-const suffixContent = computed(
+const suffixContent = useRenderComputed(
   () => slots.suffix?.() ?? (hasRawProp('suffix') ? props.suffix : undefined),
 );
-const arrowContent = computed(
+const arrowContent = useRenderComputed(
   () =>
     slots.arrowIcon?.() ??
     (hasRawProp('arrowIcon') ? props.arrowIcon : undefined) ??
     h(IconChevronDown),
 );
-const clearContent = computed(
+const clearContent = useRenderComputed(
   () =>
     slots.clearIcon?.() ?? (hasRawProp('clearIcon') ? props.clearIcon : undefined) ?? h(IconClear),
 );
-const outerTopContent = computed(
+const outerTopContent = useRenderComputed(
   () => slots.outerTop?.() ?? (hasRawProp('outerTopSlot') ? props.outerTopSlot : undefined),
 );
-const outerBottomContent = computed(
+const outerBottomContent = useRenderComputed(
   () =>
     slots.outerBottom?.() ?? (hasRawProp('outerBottomSlot') ? props.outerBottomSlot : undefined),
 );
@@ -525,7 +526,7 @@ const searchPlaceholder = computed(() => {
   const locale = config.value.locale.TreeSelect as { searchPlaceholder?: string } | undefined;
   return locale?.searchPlaceholder ?? (config.value.locale.code === 'en-US' ? 'Search' : '搜索');
 });
-const emptyContent = computed<VNodeChild>(() => {
+const emptyContent = useRenderComputed<VNodeChild>(() => {
   if (slots.empty) return slots.empty();
   if (hasRawProp('emptyContent')) return props.emptyContent;
   const locale = config.value.locale.Tree as { emptyText?: string } | undefined;
@@ -552,7 +553,7 @@ const searchRenderProps = computed<TreeSelectSearchRenderProps>(() => ({
   preventScroll: props.preventScroll,
   onChange: search,
 }));
-const customSearch = computed<VNodeChild>(
+const customSearch = useRenderComputed<VNodeChild>(
   () =>
     slots.search?.(searchRenderProps.value) ??
     (typeof props.searchRender === 'function'
@@ -614,7 +615,7 @@ const multipleTagList = computed(() =>
 function renderTriggerTag(value: string, index: number): VNodeChild {
   return renderTagForNode(nodeForKey(value), index);
 }
-const singleText = computed<VNodeChild>(() => {
+const singleText = useRenderComputed<VNodeChild>(() => {
   const node = selectedNodes.value[0];
   if (!node) return undefined;
   const slotContent = slots.selectedItem?.({ node, index: 0, onClose: () => undefined });
@@ -640,7 +641,7 @@ const triggerRenderProps = computed<TreeSelectTriggerRenderProps>(() => ({
   onSearch: search,
   onRemove: (key) => foundation.removeTag(key),
 }));
-const customTrigger = computed<VNodeChild>(
+const customTrigger = useRenderComputed<VNodeChild>(
   () =>
     slots.trigger?.(triggerRenderProps.value) ?? props.triggerRender?.(triggerRenderProps.value),
 );
@@ -746,7 +747,7 @@ function resolveFullLabel(
 ): VNodeChild {
   return slots.fullLabel?.(slotProps) ?? props.renderFullLabel?.(slotProps);
 }
-const resolvedExpandIcon = computed(() =>
+const resolvedExpandIcon = useRenderComputed(() =>
   slots.expandIcon
     ? (slotProps: Parameters<NonNullable<TreeSelectSlots['expandIcon']>>[0]) =>
         slots.expandIcon?.(slotProps)

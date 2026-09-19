@@ -20,6 +20,7 @@ import { semiGlobal } from '../config-provider';
 import { LocaleConsumer } from '../locale';
 import { ToastFactory } from '../toast';
 import type { UploadFileItem } from '../upload';
+import { useRenderComputed } from '../_utils';
 import ChatContent from './ChatContent.vue';
 import ChatHint from './ChatHint.vue';
 import ChatInputBox from './ChatInputBox.vue';
@@ -201,14 +202,14 @@ const renderConfig = computed<ChatBoxRenderConfig>(() => ({
   renderFullChatBox: slots['chat-box'] ?? props.chatBoxRenderConfig?.renderFullChatBox,
 }));
 const renderHint = computed(() => slots.hint ?? props.renderHintBox);
-const renderDivider = computed(() =>
+const renderDivider = useRenderComputed(() =>
   slots.divider
     ? (message?: ChatMessage) => slots.divider?.({ message: message! })
     : props.renderDivider,
 );
 const renderInputArea = computed(() => slots['input-area'] ?? props.renderInputArea);
-const topContent = computed<VNodeChild>(() => slots.top?.() ?? props.topSlot);
-const bottomContent = computed<VNodeChild>(() => slots.bottom?.() ?? props.bottomSlot);
+const topContent = useRenderComputed<VNodeChild>(() => slots.top?.() ?? props.topSlot);
+const bottomContent = useRenderComputed<VNodeChild>(() => slots.bottom?.() ?? props.bottomSlot);
 const inputChatProps = computed<ChatProps>(() => {
   const output = Object.fromEntries(
     Object.entries(props).filter(([, value]) => value !== undefined),

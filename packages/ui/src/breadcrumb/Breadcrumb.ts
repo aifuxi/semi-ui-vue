@@ -21,6 +21,7 @@ import {
 import { BreadcrumbFoundation, type BreadcrumbAdapter } from '@workspace/foundation-integration';
 import { IconMore } from '@aifuxi/semi-icons-vue';
 
+import { useRenderComputed } from '../_utils';
 import BreadcrumbItem from './BreadcrumbItem.vue';
 import BreadcrumbPopover from './BreadcrumbPopover.vue';
 import { breadcrumbContextKey } from './breadcrumb-context';
@@ -107,7 +108,9 @@ export default defineComponent({
       },
     };
     const foundation = markRaw(new BreadcrumbFoundation(adapter));
-    const separatorNode = computed<VNodeChild>(() => slots.separator?.() ?? props.separator);
+    const separatorNode = useRenderComputed<VNodeChild>(
+      () => slots.separator?.() ?? props.separator,
+    );
 
     provide(breadcrumbContextKey, {
       compact: computed(() => props.compact),
