@@ -69,6 +69,7 @@ class 由 `.vitepress/theme/markdown/prose-classes.ts` 在 markdown-it 渲染阶
 - 只提供中文，路由保留 `/zh-CN/` 前缀；英文内容源已存在，后续按同一管线开启。
 - Button、Input、Select、Form、Table、Modal、Tooltip、Upload、Tabs、Pagination、Navigation、Breadcrumb、
   Steps、Anchor、Dropdown、Popover、Toast、Notification、Checkbox、Radio、Switch、DatePicker、TimePicker、
-  Tree、TreeSelect、Cascader、Avatar、Badge、Tag 的 API 已按公开 Vue 类型校准；其余页面仍保留上游 API 表，生成时会明确标记契约状态。
+  Tree、TreeSelect、Cascader、Avatar、Badge、Tag、Divider、Space、Highlight 共 32 个页面的 API 已按公开 Vue
+  类型校准；其余页面仍保留上游 API 表，生成时会明确标记契约状态。
 - 上游 CDN 图片保留远程地址，自托管与离线资源留待后续版本。
 - 不新增 CI 与部署配置，`base` 固定为 `/`。

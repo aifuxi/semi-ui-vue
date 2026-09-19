@@ -2680,4 +2680,75 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/basic/divider',
+    {
+      sources: ['packages/ui/src/divider/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/divider/types.ts',
+          interfaces: ['DividerProps'],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Divider',
+          items: [slot('default', '{}', '分割线中的内容')],
+        },
+      ],
+      textRewrites: [['## API参考', '## API 参考']],
+    },
+  ],
+  [
+    '/zh-CN/basic/space',
+    {
+      sources: ['packages/ui/src/space/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/space/types.ts',
+          interfaces: ['SpaceProps'],
+        },
+      ],
+      usageNotes: [
+        '`spacing` 数组依次表示水平、垂直间距。',
+        '`wrap` 只在水平方向生效；`vertical=true` 时不会换行。',
+      ],
+      slotGroups: [
+        {
+          name: 'Space',
+          items: [slot('default', '{}', '需要排列的内容')],
+        },
+      ],
+      textRewrites: [['## API参考', '## API 参考']],
+    },
+  ],
+  [
+    '/zh-CN/show/highlight',
+    {
+      sources: ['packages/ui/src/highlight/types.ts'],
+      propSections: [
+        {
+          heading: 'Highlight',
+          level: 3,
+          source: 'packages/ui/src/highlight/types.ts',
+          interfaces: ['HighlightProps'],
+        },
+      ],
+      textRewrites: [
+        ['| sourceString | 源文本 | string | |', "| sourceString | 源文本 | string | `''` |"],
+        [
+          '| caseSensitive | 是否大小写敏感 | false | - |',
+          '| caseSensitive | 是否大小写敏感 | boolean | false |',
+        ],
+        [
+          '| autoEscape | 是否自动转义 | true | - |',
+          '| autoEscape | 是否自动转义 | boolean | true |',
+        ],
+      ],
+    },
+  ],
 ]);

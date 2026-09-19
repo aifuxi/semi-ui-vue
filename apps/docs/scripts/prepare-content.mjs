@@ -234,7 +234,7 @@ function parseTableCells(line) {
 
 function isTableSeparator(line) {
   const cells = parseTableCells(line);
-  return cells.length > 0 && cells.every((cell) => /^:?-{2,}:?$/.test(cell));
+  return cells.length > 0 && cells.every((cell) => /^:?-+:?$/.test(cell));
 }
 
 function renderVuePropsTable(section, props, headerLine, originalRows) {

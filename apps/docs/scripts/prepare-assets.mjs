@@ -68,6 +68,7 @@ for (const file of await readdir(iconRoot)) {
 }
 await cp(resolve(vendorRoot, 'LICENSE'), resolve(assetRoot, 'SEMI-LICENSE'));
 await cp(resolve(appRoot, 'assets/favicon.svg'), resolve(publicRoot, 'favicon.svg'));
+await cp(resolve(appRoot, 'assets/favicon.svg'), resolve(publicRoot, 'favicon.ico'));
 
 await writeFile(
   resolve(assetRoot, 'sources.json'),
