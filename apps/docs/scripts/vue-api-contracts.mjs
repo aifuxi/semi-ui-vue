@@ -2870,4 +2870,151 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/plus/lottie',
+    {
+      sources: ['packages/ui/src/lottie/types.ts', 'packages/ui/src/lottie/index.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/lottie/types.ts',
+          interfaces: ['LottieProps'],
+          descriptions: {
+            width: '内部动画容器宽度',
+            height: '内部动画容器高度',
+            class: 'Vue 原生类名',
+          },
+        },
+      ],
+      usageNotes: [
+        '`getAnimationInstance` 与 `getLottie` 是实例通知 callback props，不是组件事件。',
+        'SSR 仅输出空的内部容器；`lottie-web` 在客户端挂载后加载并在卸载时销毁。',
+      ],
+      methodGroups: [
+        {
+          name: 'Lottie',
+          items: [method('getLottie', '() => LottiePlayer', '返回全局 lottie-web 播放器对象')],
+        },
+      ],
+      textRewrites: [
+        ['- 更易和 React 项目结合使用', '- 更易和 Vue 项目结合使用'],
+        ['使用 `getLottie` Props 获取全局 lottie', '使用 `getLottie` prop 获取全局 lottie'],
+        ['### API', '## API 参考'],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/other/locale',
+    {
+      sources: ['packages/ui/src/locale/types.ts', 'packages/ui/src/locale/index.ts'],
+      propSections: [
+        {
+          heading: 'LocaleProvider',
+          level: 3,
+          source: 'packages/ui/src/locale/types.ts',
+          interfaces: ['LocaleProviderProps'],
+          descriptions: { locale: '注入子树的语言数据' },
+          defaults: { locale: '`zh_CN`' },
+        },
+        {
+          heading: 'LocaleConsumer',
+          level: 3,
+          source: 'packages/ui/src/locale/types.ts',
+          interfaces: ['LocaleConsumerProps'],
+          descriptions: { componentName: '读取语言数据的组件键名' },
+        },
+      ],
+      usageNotes: [
+        'LocaleConsumer 优先读取 ConfigProvider 的 locale，其次读取最近的 LocaleProvider，最后回退到 `zh_CN`。',
+        'Provider 与 Consumer 都不增加 DOM；57 个语言源从 `@aifuxi/semi-ui-vue/locale/source/*` 导入。',
+      ],
+      slotGroups: [
+        {
+          name: 'LocaleProvider',
+          items: [slot('default', '{}', '使用该语言数据的组件子树')],
+        },
+        {
+          name: 'LocaleConsumer',
+          items: [
+            slot(
+              'default',
+              '{ localeData, localeCode, dateFnsLocale, currency }',
+              '读取指定组件的语言数据',
+            ),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          'LocaleProvider 使用了 React 的 context 上下文特性，你只需要在应用外围包裹一次即可全局生效',
+          'LocaleProvider 使用 Vue provide/inject 向组件子树提供语言数据，在应用外围包裹一次即可生效。',
+        ],
+        [
+          '当你的自定义组件，也希望消费 Semi LocaleProvider Context 中的 localeCode 或者读取具体某个组件的 i18n 文本 localeData时，你可以使用 LocaleConsumer 进行获取；',
+          '自定义组件需要读取 localeCode 或具体组件的 i18n 文本 localeData 时，可以通过 LocaleConsumer 的默认作用域插槽获取。',
+        ],
+        [
+          '<DemoBlock title="支持多语言的组件" kind="live" />',
+          '<DemoBlock title="支持多语言的组件" kind="live" />\n\n## API 参考\n\n### LocaleProvider\n\n| 属性 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n\n### LocaleConsumer\n\n| 属性 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/plus/markdownrender',
+    {
+      sources: [
+        'packages/ui/src/markdown-render/types.ts',
+        'packages/ui/src/markdown-render/index.ts',
+      ],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/markdown-render/types.ts',
+          interfaces: ['MarkdownRenderProps'],
+          descriptions: { class: 'Vue 原生类名' },
+          defaults: {
+            format: '`mdx`',
+            rehypePlugins: '`[]`',
+            remarkGfm: 'true',
+            remarkPlugins: '`[]`',
+          },
+        },
+      ],
+      usageNotes: [
+        '`components` 的值为 Vue `Component` 或原生标签名，并与内置元素映射浅合并。',
+        '内置映射可从 `MarkdownRender.defaultComponents` 或具名导出 `markdownRenderDefaultComponents` 读取。',
+        'SSR 只输出空根容器，Markdown/MDX 在客户端挂载后异步求值。',
+      ],
+      textRewrites: [
+        [
+          'MDX 是在 Markdown 基础上，允许引入 JSX 实现更加复杂定制化的文档撰写与展示需求。',
+          'MDX 在 Markdown 基础上允许使用组件标签，实现更复杂的文档撰写与展示需求。',
+        ],
+        [
+          '注意：MarkdownRender 组件 依赖 `jsx/run-time`，搭配使用 React 版本需 > 16.14.0',
+          'MarkdownRender 内置面向 Vue 的 MDX runtime 适配，无需额外配置运行时。',
+        ],
+        [
+          '注意因为 `<` `{` 等符号是合法的 JSX 符号会被判定为代码，无法直接渲染，需要使用 `\\` 转义，如果你只需要渲染纯 Markdown，参考下方仅渲染 Markdown 一节。',
+          '注意 `<`、`{` 等符号在 MDX 中具有语法含义；作为普通文本时需要使用 `\\` 转义。只渲染纯 Markdown 时可参考下方“仅纯 Markdown”。',
+        ],
+        [
+          '通过传入自定义组件到 `components` Props，能够实现在 Markdown 中直接书写 JSX，组件会被渲染到最终页面上，支持 JS 事件。',
+          '通过 `components` prop 传入 Vue 组件，即可在 MDX 中使用组件标签，并保留 Vue 事件监听。',
+        ],
+        [
+          '当你渲染的 Markdown 仅仅是纯 markdown，不包含任何 JSX 代码时，可传入 `format="md"` 来开启仅 Markdown 模式，在这种模式下无需转义特殊字符',
+          '当内容是纯 Markdown、不包含组件标签或 MDX 表达式时，可传入 `format="md"` 开启仅 Markdown 模式，此时无需转义特殊字符。',
+        ],
+        [
+          '只需向 `components` props 中传入你的渲染组件覆盖即可',
+          '只需通过 `components` prop 传入 Vue 组件覆盖即可。',
+        ],
+        ['### API', '## API 参考'],
+      ],
+    },
+  ],
 ]);
