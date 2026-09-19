@@ -1888,4 +1888,398 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/navigation/tree',
+    {
+      sources: ['packages/ui/src/tree/types.ts', 'packages/ui/src/tree/index.ts'],
+      propSections: [
+        {
+          heading: 'Tree',
+          level: 3,
+          source: 'packages/ui/src/tree/types.ts',
+          interfaces: ['TreeProps'],
+          aliases: { ariaLabel: 'aria-label' },
+        },
+        {
+          heading: 'TreeNodeData',
+          level: 3,
+          source: 'packages/ui/src/tree/types.ts',
+          interfaces: ['TreeNodeData'],
+        },
+        {
+          heading: 'Virtualize Object',
+          level: 3,
+          source: 'packages/ui/src/tree/types.ts',
+          interfaces: ['TreeVirtualize'],
+        },
+      ],
+      models: [
+        '`v-model` 对应 `modelValue`，同时支持 `v-model:value`。',
+        '`v-model:expandedKeys` 对应受控展开节点。',
+      ],
+      eventSections: [
+        {
+          heading: 'Tree',
+          level: 3,
+          rows: [
+            'onChange',
+            'onDoubleClick',
+            'onDragEnd',
+            'onDragEnter',
+            'onDragLeave',
+            'onDragOver',
+            'onDragStart',
+            'onDrop',
+            'onExpand',
+            'onLoad',
+            'onContextMenu',
+            'onSearch',
+            'onSelect',
+          ],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Tree',
+          items: [
+            event('change', '[value?: TreeValue]', '选中值变化'),
+            event('contextMenu', '[event: MouseEvent, node: TreeNodeData]', '节点右键点击'),
+            event('doubleClick', '[event: MouseEvent, node: TreeNodeData]', '节点双击'),
+            event('dragEnd', '[props: TreeDragProps]', '拖拽结束'),
+            event('dragEnter', '[props: TreeDragEnterProps]', '拖入节点'),
+            event('dragLeave', '[props: TreeDragProps]', '拖出节点'),
+            event('dragOver', '[props: TreeDragProps]', '在节点上拖动'),
+            event('dragStart', '[props: TreeDragProps]', '开始拖拽'),
+            event('drop', '[props: TreeDropProps]', '放置节点'),
+            event('expand', '[expandedKeys: string[], detail: TreeExpandDetail]', '展开状态变化'),
+            event('load', '[loadedKeys: Set<string>, node?: TreeNodeData]', '异步节点加载完成'),
+            event('search', '[input: string, filteredExpandedKeys: string[]]', '搜索值变化'),
+            event(
+              'select',
+              '[key: string, selected: boolean, node: TreeNodeData]',
+              '节点选中状态变化',
+            ),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Tree',
+          items: [
+            slot('empty', '{}', '搜索无结果内容'),
+            slot('expandIcon', 'TreeExpandIconSlotProps', '展开图标'),
+            slot('fullLabel', 'TreeFullLabelSlotProps', '完整节点行'),
+            slot('icon', '{ node: TreeNodeData; expanded: boolean }', '节点图标'),
+            slot(
+              'label',
+              '{ label?: VNodeChild; node: TreeNodeData; searchWord?: string }',
+              '节点标签',
+            ),
+            slot('search', 'TreeSearchSlotProps', '搜索框'),
+          ],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'Tree ref',
+          items: [
+            method('search', '(value: string) => void', '手动触发搜索'),
+            method(
+              'scrollTo',
+              "(data: { key: string; align?: 'center' | 'start' | 'end' | 'smart' | 'auto' }) => void",
+              '将虚拟化树中的已展开节点滚动到视图',
+            ),
+            method('focus', '() => void', '聚焦树'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['## API参考', '## API 参考'],
+        ['可以配合 `onExpand` 使用', '可以使用 `v-model:expandedKeys` 或监听 `expand` 事件'],
+        ['`onSearch` 的入参', '`search` 事件的参数'],
+        [
+          '传入 `value` 时即为受控组件，可以配合 `onChange` 使用。',
+          '使用 `v-model` 管理受控值，或通过 `value` 与 `change` 事件配合管理。',
+        ],
+        [
+          '通过设置 draggable 配合 onDrop 可以实现 Tree 节点的拖拽。',
+          '通过设置 `draggable` 并监听 `drop` 事件，可以实现 Tree 节点拖拽。',
+        ],
+        [
+          '同时开启 leafOnly 可以使 onChange 的回调入参都是叶子节点。',
+          '同时开启 `leafOnly` 可以使 `change` 事件参数只包含叶子节点。',
+        ],
+        [
+          '多选模式下是否开启 onChange 回调入参及展示标签只有叶子节点',
+          '多选模式下是否仅通过 change 事件参数及展示标签返回叶子节点',
+        ],
+        [
+          '设为 true 时，onChange 的入参类型会从 string 变为 object',
+          '设为 true 时，`change` 事件参数类型会从 string 变为 object',
+        ],
+        [
+          '此时 onChange, value, defaultValue 及 onChangeWithObject 中所取的 value 属性值将改为 key 值。',
+          '此时 `change` 事件、value、defaultValue 及 onChangeWithObject 中的 value 将改为 key 值。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/input/treeselect',
+    {
+      sources: [
+        'packages/ui/src/tree-select/types.ts',
+        'packages/ui/src/tree-select/index.ts',
+        'packages/ui/src/tree/types.ts',
+      ],
+      propSections: [
+        {
+          heading: 'TreeSelect',
+          level: 3,
+          source: 'packages/ui/src/tree-select/types.ts',
+          interfaces: ['TreeSelectProps'],
+          aliases: {
+            ariaDescribedby: 'aria-describedby',
+            ariaErrormessage: 'aria-errormessage',
+            ariaInvalid: 'aria-invalid',
+            ariaLabel: 'aria-label',
+            ariaLabelledby: 'aria-labelledby',
+            ariaRequired: 'aria-required',
+          },
+        },
+        {
+          heading: 'TreeNodeData',
+          level: 3,
+          source: 'packages/ui/src/tree/types.ts',
+          interfaces: ['TreeNodeData'],
+        },
+      ],
+      models: [
+        '`v-model` 对应 `modelValue`，同时支持 `v-model:value`。',
+        '`v-model:expandedKeys` 对应受控展开节点。',
+      ],
+      eventSections: [
+        {
+          heading: 'TreeSelect',
+          level: 3,
+          rows: [
+            'onBlur',
+            'onChange',
+            'onClear',
+            'onExpand',
+            'onFocus',
+            'onLoad',
+            'onSearch',
+            'onSelect',
+            'onVisibleChange',
+          ],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'TreeSelect',
+          items: [
+            event('blur', '[event: unknown]', '选择框失去焦点'),
+            event(
+              'change',
+              '[valueOrNode: unknown, nodeOrEvent?: unknown, event?: unknown]',
+              '选中值变化',
+            ),
+            event('clear', '[event: MouseEvent | KeyboardEvent]', '点击清除按钮'),
+            event('expand', '[expandedKeys: string[], detail: TreeExpandDetail]', '展开状态变化'),
+            event('focus', '[event: unknown]', '选择框获得焦点'),
+            event('load', '[loadedKeys: Set<string>, node?: TreeNodeData]', '异步节点加载完成'),
+            event(
+              'search',
+              '[input: string, filteredExpandedKeys: string[], filteredNodes: TreeNodeData[]]',
+              '搜索值变化',
+            ),
+            event(
+              'select',
+              '[key: string, selected: boolean, node: TreeNodeData]',
+              '节点选中状态变化',
+            ),
+            event('visibleChange', '[visible: boolean]', '弹出层展示状态变化'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'TreeSelect',
+          items: [
+            slot('arrowIcon', '{}', '下拉箭头图标'),
+            slot('clearIcon', '{}', '清除图标'),
+            slot('empty', '{}', '搜索无结果内容'),
+            slot('expandIcon', 'TreeExpandIconSlotProps', '展开图标'),
+            slot('fullLabel', 'TreeFullLabelSlotProps', '完整节点行'),
+            slot(
+              'label',
+              '{ label?: VNodeChild; node: TreeNodeData; searchWord?: string }',
+              '节点标签',
+            ),
+            slot('outerBottom', '{}', '弹出层底部内容'),
+            slot('outerTop', '{}', '弹出层顶部内容'),
+            slot('prefix', '{}', '选择框前缀'),
+            slot('search', 'TreeSelectSearchRenderProps', '搜索框'),
+            slot('selectedItem', 'TreeSelectSelectedItemProps', '已选项'),
+            slot('suffix', '{}', '选择框后缀'),
+            slot('trigger', 'TreeSelectTriggerRenderProps', '自定义触发器'),
+          ],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'TreeSelect ref',
+          items: [
+            method('close', '() => void', '关闭弹出层'),
+            method('search', '(value: string) => void', '手动触发搜索'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['## API参考', '## API 参考'],
+        ['onChange 的回调入参', '`change` 事件参数'],
+        ['`onSearch` 回调函数', '`search` 事件'],
+        ['`onSearch` 回调', '`search` 事件'],
+        [
+          '传入 `value` 时即为受控组件，可以配合 `onChange` 使用。',
+          '使用 `v-model` 管理受控值，或通过 `value` 与 `change` 事件配合管理。',
+        ],
+        ['可以配合 `onExpand` 使用', '可以使用 `v-model:expandedKeys` 或监听 `expand` 事件'],
+        ['`onSearch` 的入参', '`search` 事件的参数'],
+        [
+          '多选模式下是否开启 onChange 回调入参及展示标签只有叶子节点',
+          '多选模式下是否仅通过 change 事件参数及展示标签返回叶子节点',
+        ],
+        ['onChange 的入参类型Function', '`change` 事件的参数类型为 Function'],
+        [
+          '此时 onChange, value, defaultValue 及 onChangeWithObject 中所取的 value 属性值将改为 key 值。',
+          '此时 `change` 事件、value、defaultValue 及 onChangeWithObject 中的 value 将改为 key 值。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/input/cascader',
+    {
+      sources: ['packages/ui/src/cascader/types.ts', 'packages/ui/src/cascader/index.ts'],
+      propSections: [
+        {
+          heading: 'Cascader',
+          level: 3,
+          source: 'packages/ui/src/cascader/types.ts',
+          interfaces: ['CascaderProps'],
+          aliases: {
+            ariaDescribedby: 'aria-describedby',
+            ariaErrormessage: 'aria-errormessage',
+            ariaInvalid: 'aria-invalid',
+            ariaLabel: 'aria-label',
+            ariaLabelledby: 'aria-labelledby',
+            ariaRequired: 'aria-required',
+          },
+        },
+        {
+          heading: 'CascaderData',
+          level: 3,
+          source: 'packages/ui/src/cascader/types.ts',
+          interfaces: ['CascaderData'],
+        },
+      ],
+      models: ['`v-model` 对应 `modelValue`，同时支持 `v-model:value`。'],
+      eventSections: [
+        {
+          heading: 'Cascader',
+          level: 3,
+          rows: [
+            'onBlur',
+            'onChange',
+            'onClear',
+            'onDropdownVisibleChange',
+            'onExceed',
+            'onFocus',
+            'onListScroll',
+            'onLoad',
+            'onSearch',
+            'onSelect',
+          ],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Cascader',
+          items: [
+            event('blur', '[event: unknown]', '选择框失去焦点'),
+            event('change', '[value: CascaderValue]', '选中值变化'),
+            event('clear', '[]', '点击清除按钮'),
+            event('exceed', '[checkedItems: CascaderEntity[]]', '选中数量超过 max'),
+            event('focus', '[event: unknown]', '选择框获得焦点'),
+            event('listScroll', '[event: Event, panel: CascaderScrollPanelProps]', '下拉面板滚动'),
+            event('load', '[loadedKeys: Set<string>, data: CascaderData]', '异步节点加载完成'),
+            event('search', '[value: string]', '搜索值变化'),
+            event('select', '[value: string | number | Array<string | number>]', '节点选中'),
+            event('visibleChange', '[visible: boolean]', '弹出层展示状态变化'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Cascader',
+          items: [
+            slot('arrowIcon', '{}', '下拉箭头图标'),
+            slot('bottom', '{}', '弹出层底部内容'),
+            slot('clearIcon', '{}', '清除图标'),
+            slot(
+              'display',
+              '{ selected: VNodeChild[] | CascaderEntity; index?: number }',
+              '已选内容',
+            ),
+            slot('empty', '{}', '搜索无结果内容'),
+            slot('expandIcon', '{}', '展开图标'),
+            slot('filter', 'CascaderFilterRenderProps', '搜索结果项'),
+            slot('prefix', '{}', '选择框前缀'),
+            slot('suffix', '{}', '选择框后缀'),
+            slot('top', '{}', '弹出层顶部内容'),
+            slot('trigger', 'CascaderTriggerRenderProps', '自定义触发器'),
+          ],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'Cascader ref',
+          items: [
+            method('open', '() => void', '展开弹出层'),
+            method('close', '() => void', '关闭弹出层'),
+            method('focus', '() => void', '聚焦选择框'),
+            method('blur', '() => void', '移除选择框焦点'),
+            method('search', '(value: string) => void', '手动触发搜索'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['onExceed 回调', '`exceed` 事件'],
+        [
+          '传入 `value` 时即为受控组件，可以配合 `onChange` 使用。',
+          '使用 `v-model` 管理受控值，或通过 `value` 与 `change` 事件配合管理。',
+        ],
+        ['onChange 的参数 value', '`change` 事件的 value 参数'],
+        ['`onSearch` 回调', '`search` 事件'],
+        [
+          '单选 (`multiple=false`) 时, `displayRender((labelPath: string[]) => ReactNode)`, 其中 labelPath 是由 label 构成的 path 数组。',
+          '单选时可使用 `#display` 插槽，或通过 `displayRender((selected: VNodeChild[] | CascaderEntity, index?: number) => VNodeChild)` 自定义已选内容。',
+        ],
+        [
+          '多选 (`multiple=true`) 时, `displayRender((item: Entity, index: number) => ReactNode)`, 其中 item 为节点的相关数据。',
+          '多选时同样可使用 `#display` 插槽或 `displayRender`，其中 `selected` 为当前节点实体。',
+        ],
+        [
+          '我们在级联选择器的顶部、底部分别预留了插槽，你可以通过 `topSlot` 或 `bottomSlot` 来设置。',
+          '级联选择器提供 `#top` 与 `#bottom` 插槽，也兼容 `topSlot`、`bottomSlot` 属性。',
+        ],
+        ['onChange 的 value 参数', '`change` 事件的 value 参数'],
+        ['触发 onExceed 回调', '触发 `exceed` 事件'],
+        ['仅触发 `onSearch` 回调', '仅触发 `search` 事件'],
+        ['onChange 的入参类型', '`change` 事件的参数类型'],
+      ],
+    },
+  ],
 ]);
