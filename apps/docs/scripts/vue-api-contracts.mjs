@@ -2,12 +2,13 @@
  * 已完成人工核对的 Vue API 契约。
  *
  * 上游表格继续承载属性说明、默认值与版本信息；这里仅声明需要从 React 语义中
- * 分离出的 emits / slots / v-model，以及少量正文措辞。每条契约都指向公开类型来源，
+ * 分离出的 emits / slots / v-model / 命令式方法，以及少量正文措辞。每条契约都指向公开类型来源，
  * 不根据上游 onXxx 名称做全局猜测。
  */
 
 const event = (name, parameters, description) => ({ name, parameters, description });
 const slot = (name, scope, description) => ({ name, scope, description });
+const method = (name, signature, description) => ({ name, signature, description });
 
 export const vueTypeRewrites = [
   ['React.ReactNode', 'VNodeChild'],
@@ -1320,6 +1321,164 @@ export const vueApiContracts = new Map([
         [
           ' 1. 能够透传 attrs，并最终渲染为单个 DOM 根节点的 Vue 组件\n 2. 能够透传 attrs，并最终渲染为单个 DOM 根节点的 Vue 组件\n 3. 特殊节点会按 `wrapWhenSpecial` 使用包装元素',
           ' 1. 能够透传 attrs，并最终渲染为单个 DOM 根节点的 Vue 组件\n 2. 原生 DOM 元素，例如 `span`、`div`、`p`\n 3. 特殊节点会按 `wrapWhenSpecial` 使用包装元素',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/feedback/toast',
+    {
+      sources: [
+        'packages/ui/src/toast/types.ts',
+        'packages/ui/src/toast/index.ts',
+        'packages/ui/src/toast/use-toast.ts',
+      ],
+      propSections: [
+        {
+          heading: 'Options',
+          level: 2,
+          source: 'packages/ui/src/toast/types.ts',
+          interfaces: ['ToastOptions'],
+        },
+        {
+          heading: 'Config',
+          level: 2,
+          source: 'packages/ui/src/toast/types.ts',
+          interfaces: ['ToastConfig'],
+        },
+      ],
+      usageNotes: [
+        '`useToast()` 可直接导入，也可通过 `Toast.useToast()` 调用。',
+        '返回元组第二项是 Vue `Component`；请在调用组件的模板中渲染该 holder，使 Toast 继承当前位置的 provide / inject 上下文。',
+      ],
+      methodGroups: [
+        {
+          name: 'Toast',
+          items: [
+            method(
+              'Toast.info / error / warning / success',
+              '(options: ToastInput) => ToastId',
+              '展示对应类型的 Toast',
+            ),
+            method('Toast.close', '(id: ToastInputId) => ToastId', '关闭指定 Toast'),
+            method(
+              'Toast.config',
+              '(config: ToastConfig) => void',
+              '设置当前 Toast 实例的默认配置',
+            ),
+            method('Toast.destroyAll', '() => void', '销毁当前 Toast 实例的全部消息'),
+            method('Toast.getWrapperId', '() => string | null', '获取当前 Toast 容器 id'),
+            method(
+              'ToastFactory.create',
+              '(config?: ToastConfig) => ToastStaticMethods',
+              '创建独立配置的 Toast 实例',
+            ),
+          ],
+        },
+      ],
+      composableGroups: [
+        {
+          name: 'useToast',
+          items: [
+            method(
+              'useToast',
+              '() => readonly [ToastMethods, Component]',
+              '创建局部方法集与 holder 组件',
+            ),
+            method('methods.open', '(options: ToastOptions) => ToastId', '展示默认类型 Toast'),
+            method(
+              'methods.info / error / warning / success',
+              '(options: ToastOptions) => ToastId',
+              '展示对应类型的局部 Toast',
+            ),
+            method('methods.close', '(id: ToastInputId) => ToastId', '关闭指定局部 Toast'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['### 消费 Context', '### 局部上下文'],
+        ['消费 Context：', '局部上下文：'],
+        [
+          '通过 Toast.useToast 创建支持读取 context 的 contextHolder。此时的 toast 会渲染在 contextHolder 所在的节点处。',
+          '通过 `useToast()` 创建可读取 Vue provide / inject 上下文的 holder 组件；局部 Toast 会渲染在 holder 所在位置。',
+        ],
+        [
+          '当你需要使用 Context 时，可以通过 Toast.useToast 创建一个 contextHolder 插入相应的节点中。此时通过 hooks 创建的 Toast 将会得到 contextHolder 所在位置的所有上下文。创建的 toast 对象拥有与以下方法：`info`, `success`, `warning`, `error`, `close`。',
+          '需要继承局部上下文时，在 `setup` 中调用 `useToast()`，并在模板中渲染返回的 holder 组件。局部方法集包含 `open`、`info`、`success`、`warning`、`error` 和 `close`。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/feedback/notification',
+    {
+      sources: [
+        'packages/ui/src/notification/types.ts',
+        'packages/ui/src/notification/index.ts',
+        'packages/ui/src/notification/use-notification.ts',
+      ],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          tableIndex: 0,
+          source: 'packages/ui/src/notification/types.ts',
+          interfaces: ['NotificationOptions'],
+        },
+        {
+          heading: 'API 参考',
+          level: 2,
+          tableIndex: 1,
+          source: 'packages/ui/src/notification/types.ts',
+          interfaces: ['NotificationConfig'],
+        },
+      ],
+      usageNotes: [
+        '`useNotification()` 可直接导入，也可通过 `Notification.useNotification()` 调用。',
+        '返回元组第二项是 Vue `Component`；请在调用组件的模板中渲染该 holder，使 Notification 继承当前位置的 provide / inject 上下文。',
+      ],
+      methodGroups: [
+        {
+          name: 'Notification',
+          items: [
+            method(
+              'Notification.open / info / error / warning / success',
+              '(options: NotificationOptions) => NotificationId',
+              '展示对应类型的通知',
+            ),
+            method('Notification.close', '(id: NotificationId) => NotificationId', '关闭指定通知'),
+            method(
+              'Notification.config',
+              '(config: NotificationConfig) => void',
+              '设置全局默认配置',
+            ),
+            method('Notification.destroyAll', '() => void', '销毁全部通知'),
+          ],
+        },
+      ],
+      composableGroups: [
+        {
+          name: 'useNotification',
+          items: [
+            method(
+              'useNotification',
+              '() => readonly [NotificationMethods, Component]',
+              '创建局部方法集与 holder 组件',
+            ),
+            method(
+              'methods.open / info / error / warning / success',
+              '(options: NotificationOptions) => NotificationId',
+              '展示对应类型的局部通知',
+            ),
+            method('methods.close', '(id: NotificationId) => NotificationId', '关闭指定局部通知'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['Hook Notification：', '局部上下文：'],
+        [
+          '当你需要使用 Context 时，可以通过 Notification.useNotification 创建一个 contextHolder 插入相应的节点中。此时通过 hooks 创建的 Notification 将会得到 contextHolder 所在位置的所有上下文。创建的 notification 对象拥有与以下方法：`info`, `success`, `warning`, `error`, `open`, `close`。使用方法可以参考：[useToast](/zh-CN/feedback/toast#Hooks用法)',
+          '需要继承局部上下文时，在 `setup` 中调用 `useNotification()`，并在模板中渲染返回的 holder 组件。局部方法集包含 `open`、`info`、`success`、`warning`、`error` 和 `close`。',
         ],
       ],
     },

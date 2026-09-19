@@ -55,6 +55,22 @@ function renderContractTable(columns, rows) {
   ].join('\n');
 }
 
+function pushMethodGroups(out, heading, groups) {
+  if (!groups?.length) return;
+  out.push('', `#### ${heading}`);
+  for (const group of groups) {
+    out.push(
+      '',
+      `**${group.name}**`,
+      '',
+      renderContractTable(
+        ['方法', '签名', '说明'],
+        group.items.map((item) => [`\`${item.name}\``, item.signature, item.description]),
+      ),
+    );
+  }
+}
+
 function renderVueContract(contract) {
   const out = [
     '### Vue 契约',
@@ -64,6 +80,11 @@ function renderVueContract(contract) {
   if (contract.models?.length) {
     out.push('', ...contract.models.map((model) => `- ${model}`));
   }
+  if (contract.usageNotes?.length) {
+    out.push('', '#### Vue 用法', '', ...contract.usageNotes.map((note) => `- ${note}`));
+  }
+  pushMethodGroups(out, 'Vue 静态方法', contract.methodGroups);
+  pushMethodGroups(out, 'Vue Composable', contract.composableGroups);
   if (contract.eventGroups?.length) {
     out.push('', '#### Vue 事件');
     for (const group of contract.eventGroups) {
@@ -280,8 +301,13 @@ function replacePropsTables(text, page, recordRewrite) {
       }
     }
     let tableStart = -1;
+    let remainingTables = section.tableIndex ?? 0;
     for (let index = headingIndex + 1; index < sectionEnd - 1; index += 1) {
       if (/^\s*\|/.test(lines[index] ?? '') && isTableSeparator(lines[index + 1] ?? '')) {
+        if (remainingTables > 0) {
+          remainingTables -= 1;
+          continue;
+        }
         tableStart = index;
         break;
       }
