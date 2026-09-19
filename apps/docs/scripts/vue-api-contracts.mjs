@@ -3448,4 +3448,171 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/feedback/banner',
+    {
+      sources: ['packages/ui/src/banner/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/banner/types.ts',
+          interfaces: ['BannerProps'],
+          descriptions: { class: 'Vue 原生类名', className: '样式类名' },
+          defaults: { bordered: 'false', fullMode: 'true', type: '`info`' },
+        },
+      ],
+      usageNotes: [
+        '`title`、`description`、`icon`、`closeIcon` 同时支持 VNode prop 和同名插槽，插槽优先。',
+        '组件没有受控 visible API；关闭后会移除自身 DOM，需由调用方重新挂载。',
+      ],
+      eventSections: [{ heading: 'API 参考', level: 2, rows: ['onClose'] }],
+      eventGroups: [
+        {
+          name: 'Banner',
+          items: [event('close', '[event: MouseEvent]', '关闭按钮激活时触发，随后移除 Banner')],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Banner',
+          items: [
+            slot('default', '{}', '底部额外内容'),
+            slot('closeIcon', '{}', '关闭图标'),
+            slot('description', '{}', '描述内容'),
+            slot('icon', '{}', '类型图标'),
+            slot('title', '{}', '标题'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['## API参考', '## API 参考'],
+        ['可以通过 children 自定义其他渲染内容。', '可以通过默认插槽自定义底部额外内容。'],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/show/timeline',
+    {
+      sources: ['packages/ui/src/timeline/types.ts', 'packages/ui/src/timeline/index.ts'],
+      propSections: [
+        {
+          heading: 'Timeline',
+          level: 3,
+          source: 'packages/ui/src/timeline/types.ts',
+          interfaces: ['TimelineProps'],
+          descriptions: {
+            ariaLabel: '`aria-label` 的类型化 Vue 映射',
+            class: 'Vue 原生类名',
+            className: '样式类名',
+          },
+          defaults: { mode: '`left`' },
+        },
+        {
+          heading: 'Timeline.Item',
+          level: 3,
+          source: 'packages/ui/src/timeline/types.ts',
+          interfaces: ['TimelineItemProps'],
+          descriptions: { class: 'Vue 原生类名', className: '样式类名' },
+          defaults: { time: "`''`", type: '`default`' },
+        },
+      ],
+      usageNotes: [
+        '非空 `dataSource` 优先于默认插槽；空数组回退到声明式 `TimelineItem`。',
+        '`TimelineData.onClick` 是数据配置中的真实 callback prop；声明式 `TimelineItem` 使用 `@click`。',
+        '`TimelineItem` 同时作为 `Timeline.Item` 静态成员和具名导出提供。',
+      ],
+      eventSections: [{ heading: 'Timeline.Item', level: 3, rows: ['onClick'] }],
+      eventGroups: [
+        {
+          name: 'TimelineItem',
+          items: [event('click', '[event: MouseEvent]', '点击整个时间轴项时触发')],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Timeline',
+          items: [slot('default', '{}', 'TimelineItem 子组件')],
+        },
+        {
+          name: 'TimelineItem',
+          items: [
+            slot('default', '{}', '时间轴项内容'),
+            slot('dot', '{}', '自定义时间轴节点'),
+            slot('extra', '{}', '辅助内容'),
+            slot('time', '{}', '时间内容'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['### TimeLine', '### Timeline'],
+        ['### TimeLine.Item', '### Timeline.Item'],
+        ['TimeLine', 'Timeline'],
+        [
+          '通过设置 `children` 的样式可以自定义节点样式。',
+          '可以通过默认插槽内容的样式自定义节点。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/feedback/skeleton',
+    {
+      sources: ['packages/ui/src/skeleton/types.ts', 'packages/ui/src/skeleton/index.ts'],
+      propSections: [
+        {
+          heading: 'Skeleton',
+          level: 3,
+          source: 'packages/ui/src/skeleton/types.ts',
+          interfaces: ['SkeletonProps'],
+          descriptions: { class: 'Vue 原生类名', className: '样式类名' },
+          defaults: { active: 'false', loading: 'true' },
+        },
+        {
+          heading: 'Skeleton.Avatar',
+          level: 3,
+          source: 'packages/ui/src/skeleton/types.ts',
+          interfaces: ['SkeletonBasicProps', 'SkeletonAvatarProps'],
+          descriptions: {
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            prefixCls: '样式类名前缀',
+          },
+          defaults: { prefixCls: '`semi-skeleton`', shape: '`circle`', size: '`medium`' },
+        },
+        {
+          heading: 'Skeleton.Paragraph',
+          level: 3,
+          source: 'packages/ui/src/skeleton/types.ts',
+          interfaces: ['SkeletonBasicProps', 'SkeletonParagraphProps'],
+          descriptions: {
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            prefixCls: '样式类名前缀',
+          },
+          defaults: { prefixCls: '`semi-skeleton`', rows: '4' },
+        },
+      ],
+      usageNotes: [
+        '`SkeletonButton`、`SkeletonImage`、`SkeletonTitle` 只使用 `SkeletonBasicProps`；`SkeletonAvatar` 和 `SkeletonParagraph` 分别在此基础上增加自有 props。',
+        '`loading` 是单向 prop，不映射为 `v-model`；为 false 时只渲染默认插槽。',
+        '`placeholder` 同时支持 VNode prop 和同名插槽，插槽优先。',
+      ],
+      slotGroups: [
+        {
+          name: 'Skeleton',
+          items: [
+            slot('default', '{}', '加载完成后的内容'),
+            slot('placeholder', '{}', '加载时的占位内容'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '> `Skeleton.Image`，`Skeleton.Title`，`Skeleton.Button` 大部分API 与 `Skeleton.Avatar` 相同。其中 shape 仅 `Skeleton.Avatar支持`',
+          '> `Skeleton.Image`、`Skeleton.Title`、`Skeleton.Button` 使用公共 item props；`size` 和 `shape` 仅 `Skeleton.Avatar` 支持。',
+        ],
+      ],
+    },
+  ],
 ]);
