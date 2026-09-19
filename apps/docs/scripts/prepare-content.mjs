@@ -244,9 +244,9 @@ function renderVuePropsTable(section, props, headerLine, originalRows) {
     const original = originalRows.get(upstreamName) ?? [];
     const row = Array.from({ length: headers.length }, () => '');
     row[0] = name;
-    row[1] = original[1] || '—';
+    row[1] = section.descriptions?.[name] ?? (original[1] || '—');
     row[2] = required ? `${type}（必填）` : type;
-    if (headers.length > 3) row[3] = original[3] || '—';
+    if (headers.length > 3) row[3] = section.defaults?.[name] ?? (original[3] || '—');
     for (let index = 4; index < headers.length; index += 1) row[index] = original[index] ?? '';
     return `| ${row.map(markdownCell).join(' | ')} |`;
   });

@@ -2751,4 +2751,123 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/plus/codehighlight',
+    {
+      sources: ['packages/ui/src/code-highlight/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/code-highlight/types.ts',
+          interfaces: ['CodeHighlightProps'],
+          descriptions: { class: 'Vue 原生类名' },
+        },
+      ],
+      usageNotes: [
+        '默认内置 JavaScript、CSS、类 C、HTML、SVG 语法；其他语言需由使用者显式引入对应的 Prism 语言模块。',
+        '组件支持浏览器原生选择与复制，不提供内置复制按钮或复制事件。',
+      ],
+      textRewrites: [
+        ['### API', '## API 参考'],
+        ['`defaultTheme={false}`', '`:default-theme="false"`'],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/navigation/backtop',
+    {
+      sources: ['packages/ui/src/back-top/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/back-top/types.ts',
+          interfaces: ['BackTopProps'],
+        },
+      ],
+      eventSections: [{ heading: 'API 参考', level: 2, rows: ['onClick'] }],
+      eventGroups: [
+        {
+          name: 'BackTop',
+          items: [event('click', '[event: MouseEvent]', '点击回到顶部按钮时触发')],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'BackTop',
+          items: [slot('default', '{}', '自定义回到顶部按钮')],
+        },
+      ],
+    },
+  ],
+  [
+    '/zh-CN/basic/icon',
+    {
+      sources: [
+        'packages/ui/src/icon/index.ts',
+        'packages/icons/src/components/Icon.ts',
+        'packages/icons/src/index.ts',
+      ],
+      propSections: [
+        {
+          heading: 'Icon',
+          level: 3,
+          source: 'packages/icons/src/components/Icon.ts',
+          interfaces: ['IconProps'],
+          descriptions: {
+            prefixCls: '样式类名前缀',
+            type: '图标类型；用于类型 class 与默认 aria-label',
+          },
+          defaults: { prefixCls: '`semi`', spin: 'false' },
+        },
+      ],
+      usageNotes: [
+        '`class`、`style`、ARIA 属性和原生事件监听器通过 attrs 传给根 span。',
+        '组件 ref 暴露只读 `element`，指向根 `HTMLSpanElement`；`convertIcon` 由 `@aifuxi/semi-icons-vue` 导出。',
+      ],
+      eventSections: [
+        {
+          heading: 'Icon',
+          level: 3,
+          rows: [
+            'onClick',
+            'onMouseDown',
+            'onMouseEnter',
+            'onMouseLeave',
+            'onMouseMove',
+            'onMouseUp',
+          ],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Icon 原生监听器',
+          items: [
+            event('click', '[event: MouseEvent]', '点击图标'),
+            event('mousedown / mouseup', '[event: MouseEvent]', '按下或抬起鼠标按钮'),
+            event('mouseenter / mouseleave / mousemove', '[event: MouseEvent]', '鼠标指针事件'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Icon',
+          items: [slot('default', '{}', '自定义 SVG 内容；对应程序化 `svg` prop')],
+        },
+      ],
+      textRewrites: [
+        ['## API参考', '## API 参考'],
+        ['### 使用svgr将svg文件转成ReactComponent', '### 使用 SVG 自定义图标'],
+        [
+          '如果 Semi 提供的图标不足以满足业务需求，你也可以通过@svgr/webpack引入自定义图标，并以React组件形式使用',
+          '如果内置图标不足以满足业务需求，可以把自定义 SVG 封装为 Vue 组件，并通过 Icon 默认插槽传入。',
+        ],
+        [
+          '<DemoBlock title="使用svgr将svg文件转成ReactComponent" kind="code" />',
+          '<DemoBlock title="使用 SVG 自定义图标" kind="code" />',
+        ],
+      ],
+    },
+  ],
 ]);
