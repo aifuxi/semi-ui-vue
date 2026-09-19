@@ -70,8 +70,8 @@ class 由 `.vitepress/theme/markdown/prose-classes.ts` 在 markdown-it 渲染阶
 - Button、Input、Select、Form、Table、Modal、Tooltip、Upload、Tabs、Pagination、Navigation、Breadcrumb、
   Steps、Anchor、Dropdown、Popover、Toast、Notification、Checkbox、Radio、Switch、DatePicker、TimePicker、
   Tree、TreeSelect、Cascader、Avatar、Badge、Tag、Divider、Space、Highlight、CodeHighlight、BackTop、Icon、
-  Lottie、Locale、MarkdownRender、Spin、Collapsible、Grid、ConfigProvider、HotKeys、Empty 共 44 个页面的 API
-  已按公开 Vue 类型校准；
+  Lottie、Locale、MarkdownRender、Spin、Collapsible、Grid、ConfigProvider、HotKeys、Empty、AudioPlayer、
+  Layout、Descriptions 共 47 个页面的 API 已按公开 Vue 类型校准；
   其余页面仍保留上游 API 表，生成时会明确标记契约状态。
 - 上游 CDN 图片保留远程地址，自托管与离线资源留待后续版本。
 - 不新增 CI 与部署配置，`base` 固定为 `/`。

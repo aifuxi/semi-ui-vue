@@ -3260,4 +3260,192 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/plus/audioPlayer',
+    {
+      sources: ['packages/ui/src/audio-player/types.ts', 'packages/ui/src/audio-player/index.ts'],
+      propSections: [
+        {
+          heading: 'AudioPlayer',
+          level: 3,
+          source: 'packages/ui/src/audio-player/types.ts',
+          interfaces: ['AudioPlayerProps'],
+          descriptions: { class: 'Vue 原生类名', className: '样式类名' },
+          defaults: {
+            autoPlay: 'false',
+            showToolbar: 'true',
+            skipDuration: '10',
+            theme: '`dark`',
+          },
+        },
+        {
+          heading: 'AudioInfo',
+          level: 3,
+          source: 'packages/ui/src/audio-player/types.ts',
+          interfaces: ['AudioInfo'],
+        },
+      ],
+      usageNotes: [
+        '播放进度、音量、倍速和曲目索引由组件内部与浏览器原生媒体事件管理；组件不宣声 emits。',
+        'SSR 只输出静态结构；媒体方法需在 mounted/hydration 后通过模板 ref 调用。',
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'AudioPlayer ref',
+          items: [
+            method(
+              'element',
+              'Readonly<{ value: HTMLAudioElement | null }>',
+              '原生 audio 元素的只读引用',
+            ),
+          ],
+        },
+      ],
+    },
+  ],
+  [
+    '/zh-CN/basic/layout',
+    {
+      sources: ['packages/ui/src/layout/types.ts', 'packages/ui/src/layout/index.ts'],
+      propSections: [
+        {
+          heading: 'Layout',
+          level: 3,
+          source: 'packages/ui/src/layout/types.ts',
+          interfaces: ['LayoutProps'],
+          descriptions: {
+            hasSider: '预先声明子树含 Sider，常用于 SSR',
+            prefixCls: '样式类名前缀',
+            tagName: '根语义标签',
+          },
+          defaults: { prefixCls: '`semi-layout`', tagName: '`section`' },
+        },
+        {
+          heading: 'LayoutHeader / LayoutContent / LayoutFooter',
+          level: 3,
+          source: 'packages/ui/src/layout/types.ts',
+          interfaces: ['LayoutSectionProps'],
+          descriptions: { prefixCls: '样式类名前缀', tagName: '根语义标签' },
+          defaults: { prefixCls: '`semi-layout`', tagName: '`header` / `main` / `footer`' },
+        },
+        {
+          heading: 'Layout.Sider',
+          level: 3,
+          source: 'packages/ui/src/layout/types.ts',
+          interfaces: ['LayoutSiderProps'],
+          descriptions: {
+            breakpoint: '需监听的响应式断点',
+            prefixCls: '样式类名前缀',
+          },
+          defaults: { breakpoint: '`[]`', prefixCls: '`semi-layout`' },
+        },
+      ],
+      eventSections: [{ heading: 'Layout.Sider', level: 3, rows: ['onBreakpoint'] }],
+      eventGroups: [
+        {
+          name: 'LayoutSider',
+          items: [
+            event(
+              'breakpoint',
+              '[screen: LayoutBreakpoint, match: boolean]',
+              '初始匹配和媒体查询变化时触发',
+            ),
+          ],
+        },
+      ],
+      slotGroups: [
+        { name: 'Layout', items: [slot('default', '{}', '布局子树')] },
+        { name: 'LayoutHeader', items: [slot('default', '{}', '页头内容')] },
+        { name: 'LayoutContent', items: [slot('default', '{}', '主内容')] },
+        { name: 'LayoutFooter', items: [slot('default', '{}', '页脚内容')] },
+        { name: 'LayoutSider', items: [slot('default', '{}', '侧边栏内容')] },
+      ],
+      textRewrites: [
+        [
+          '> `Layout.Header` `Layout.Footer` `Layout.Content` API 与 `Layout` 相同',
+          '`LayoutHeader`、`LayoutContent`、`LayoutFooter` 共用下表的 Vue props。',
+        ],
+        [
+          '| role | [role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles) 属性, 提升可访问性 >=2.3.0 | string | - |',
+          '| role | [role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles) 属性, 提升可访问性 >=2.3.0 | string | - |\n\n### LayoutHeader / LayoutContent / LayoutFooter\n\n| 属性 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |',
+        ],
+        [
+          '可以通过设置 `breakpoint` 属性设置断点，通过 `onBreakpoint` 调用回调函数。',
+          '可以通过 `breakpoint` prop 设置断点，通过 `@breakpoint` 监听初始匹配和后续变化。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/show/descriptions',
+    {
+      sources: ['packages/ui/src/descriptions/types.ts', 'packages/ui/src/descriptions/index.ts'],
+      propSections: [
+        {
+          heading: 'Descriptions',
+          level: 3,
+          source: 'packages/ui/src/descriptions/types.ts',
+          interfaces: ['DescriptionsProps'],
+          descriptions: { class: 'Vue 原生类名', className: '样式类名' },
+          defaults: {
+            align: '`center`',
+            column: '3',
+            layout: '`vertical`',
+            row: 'false',
+            size: '`medium`',
+          },
+        },
+        {
+          heading: 'DataItem',
+          level: 3,
+          source: 'packages/ui/src/descriptions/types.ts',
+          interfaces: ['DescriptionsDataItem'],
+          descriptions: {
+            class: 'Item 样式类名',
+            className: 'Item 样式类名',
+            style: 'Item 内联样式',
+          },
+          defaults: { hidden: 'false', span: '1' },
+        },
+        {
+          heading: 'DescriptionItem',
+          level: 3,
+          source: 'packages/ui/src/descriptions/types.ts',
+          interfaces: ['DescriptionsItemProps'],
+          descriptions: { class: 'Vue 原生类名', className: 'Item 样式类名' },
+          defaults: { hidden: 'false', span: '1' },
+        },
+      ],
+      usageNotes: [
+        '非空 `data` 优先于默认插槽；空数组回退到声明式 `DescriptionsItem`。',
+        '`DescriptionsItem` 同时作为 `Descriptions.Item` 静态成员和具名导出提供。',
+      ],
+      slotGroups: [
+        {
+          name: 'Descriptions',
+          items: [slot('default', '{}', 'DescriptionsItem 子组件')],
+        },
+        {
+          name: 'DescriptionsItem',
+          items: [slot('default', '{}', '属性值'), slot('key', '{}', '键值，优先于 itemKey prop')],
+        },
+      ],
+      textRewrites: [
+        [
+          'key、value 均支持 ReactNode 类型，你可以传入字符串或更高自由度的 ReactNode 自由定制渲染效果',
+          'key、value 均支持 `VNodeChild`；value 还可使用在渲染时调用的函数。',
+        ],
+        ['### JSX 写法', '### 声明式子组件'],
+        [
+          '<DemoBlock title="JSX 写法" kind="live" />',
+          '<DemoBlock title="声明式子组件" kind="live" />',
+        ],
+        [
+          '除了通过 props.data 声明数据外，还可以通过 Children JSX 写法声明数据（在 v1.17.0 版本后支持）',
+          '除了通过 `data` prop 声明数据外，还可以在默认插槽中声明 `DescriptionsItem`。',
+        ],
+        ['也可以配合 JSX 写法使用：', '也可以配合 `DescriptionsItem` 使用：'],
+      ],
+    },
+  ],
 ]);
