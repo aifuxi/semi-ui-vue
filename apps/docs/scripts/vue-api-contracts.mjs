@@ -2490,4 +2490,194 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/show/avatar',
+    {
+      sources: ['packages/ui/src/avatar/types.ts', 'packages/ui/src/avatar/index.ts'],
+      propSections: [
+        {
+          heading: 'Avatar',
+          level: 3,
+          source: 'packages/ui/src/avatar/types.ts',
+          interfaces: ['AvatarProps'],
+        },
+        {
+          heading: 'AvatarGroup',
+          level: 3,
+          source: 'packages/ui/src/avatar/types.ts',
+          interfaces: ['AvatarGroupProps'],
+        },
+      ],
+      eventSections: [
+        {
+          heading: 'Avatar',
+          level: 3,
+          rows: ['onClick', 'onMouseEnter', 'onMouseLeave'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Avatar',
+          items: [
+            event('click', '[event: MouseEvent | KeyboardEvent]', '点击或键盘激活头像'),
+            event('mouseenter', '[event: MouseEvent]', '指针进入头像'),
+            event('mouseleave', '[event: MouseEvent]', '指针离开头像'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Avatar',
+          items: [
+            slot('default', '{}', '头像内容'),
+            slot('hoverMask', '{}', '悬停覆盖层'),
+            slot('bottomSlot', '{ config: AvatarBottomSlot }', '底部附加内容'),
+            slot('topSlot', '{ config: AvatarTopSlot }', '顶部附加内容'),
+          ],
+        },
+        {
+          name: 'AvatarGroup',
+          items: [
+            slot('default', '{}', 'Avatar 子组件'),
+            slot('more', '{ restNumber: number; restAvatars: VNode[] }', '自定义剩余头像内容'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          'Avatar 支持 `onClick`、`onMouseEnter`、`onMouseLeave`。其中 `hover` 状态下可以通过 `hoverMask` 属性传入覆盖层的内容。覆盖层无默认样式。',
+          'Avatar 支持 `click`、`mouseenter`、`mouseleave` 事件。悬停覆盖层可通过 `#hoverMask` 插槽或 `hoverMask` 属性传入，覆盖层无默认样式。',
+        ],
+        [
+          '可以通过 `renderMore` 自定义 more 标签。',
+          '可以通过 `#more` 插槽或 `renderMore` 属性自定义 more 标签。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/show/badge',
+    {
+      sources: ['packages/ui/src/badge/types.ts', 'packages/ui/src/badge/index.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/badge/types.ts',
+          interfaces: ['BadgeProps'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Badge',
+          items: [
+            event('click', '[event: MouseEvent]', '点击徽标'),
+            event('mouseenter', '[event: MouseEvent]', '指针进入徽标'),
+            event('mouseleave', '[event: MouseEvent]', '指针离开徽标'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Badge',
+          items: [slot('default', '{}', '徽标基底内容'), slot('count', '{}', '徽标内容')],
+        },
+      ],
+      textRewrites: [['## API参考', '## API 参考']],
+    },
+  ],
+  [
+    '/zh-CN/show/tag',
+    {
+      sources: ['packages/ui/src/tag/types.ts', 'packages/ui/src/tag/index.ts'],
+      propSections: [
+        {
+          heading: 'Tag',
+          level: 3,
+          source: 'packages/ui/src/tag/types.ts',
+          interfaces: ['TagProps'],
+        },
+        {
+          heading: 'TagGroup',
+          level: 3,
+          source: 'packages/ui/src/tag/types.ts',
+          interfaces: ['TagGroupProps'],
+        },
+        {
+          heading: 'SplitTagGroup',
+          level: 3,
+          source: 'packages/ui/src/tag/types.ts',
+          interfaces: ['SplitTagGroupProps'],
+        },
+      ],
+      models: ['`v-model:visible` 对应标签的可见状态。'],
+      eventSections: [
+        { heading: 'Tag', level: 3, rows: ['onClick', 'onClose'] },
+        { heading: 'TagGroup', level: 3, rows: ['onTagClose'] },
+      ],
+      eventGroups: [
+        {
+          name: 'Tag',
+          items: [
+            event('click', '[event: MouseEvent | KeyboardEvent]', '点击或键盘激活标签'),
+            event(
+              'close',
+              '[content: VNodeChild, event: MouseEvent | KeyboardEvent, tagKey: string | number | undefined]',
+              '关闭标签',
+            ),
+            event('keydown', '[event: KeyboardEvent]', '标签触发键盘事件'),
+            event('mouseenter', '[event: MouseEvent]', '指针进入标签'),
+          ],
+        },
+        {
+          name: 'TagGroup',
+          items: [
+            event('plusNMouseenter', '[event: MouseEvent]', '指针进入 +N 标签'),
+            event(
+              'tagClose',
+              '[content: VNodeChild, event: MouseEvent | KeyboardEvent, tagKey: string | number | undefined]',
+              '关闭标签组中的标签',
+            ),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Tag',
+          items: [
+            slot('default', '{}', '标签内容'),
+            slot('prefixIcon', '{}', '前缀图标'),
+            slot('suffixIcon', '{}', '后缀图标'),
+          ],
+        },
+        {
+          name: 'SplitTagGroup',
+          items: [slot('default', '{}', 'Tag 子组件')],
+        },
+      ],
+      textRewrites: [
+        ['## API参考', '## API 参考'],
+        [
+          '可以通过添加 `closable` 属性将其变为可关闭标签，此时点击 x 关闭会触发 onClose 事件，在 onClose 中阻止默认事件可以使其点击后依然显示不隐藏',
+          '添加 `closable` 属性可显示关闭按钮；点击按钮会触发 `close` 事件，在事件中调用 `preventDefault()` 可阻止标签隐藏。',
+        ],
+        [
+          '如果 TagGroup 中的标签可删除，用户需要在 `onTagClose` 中处理传递给 TagGroup 的 `tagList`。',
+          '如果 TagGroup 中的标签可删除，需要监听 `tagClose` 事件并更新传给 TagGroup 的 `tagList`。',
+        ],
+        [
+          '使用了 `onClick` 属性时，键盘用户可以通过 `Enter` 键激活此 `Tag`',
+          '监听 `click` 事件时，键盘用户可以通过 `Enter` 键激活此 `Tag`',
+        ],
+        [
+          '| size | 标签的尺寸，可选 `small`、 `large` | string | `small` | |',
+          '| size | 标签的尺寸，可选 `small`、 `default`、 `large` | string | `default` | |',
+        ],
+        [
+          '| tagKey | React 需要的 key，作为每个标签的唯一标识，不允许重复 | string | number | |',
+          '| tagKey | 标签的唯一标识，不允许重复 | string \\| number | | |',
+        ],
+      ],
+    },
+  ],
 ]);
