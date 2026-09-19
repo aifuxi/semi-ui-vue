@@ -39,19 +39,22 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: ${{ env.CANDIDATE_SHA }}
+          # 恢复解析必须使用当前 master 的发布工具：候选落后时，候选里的旧工具（例如计划产物
+          # 命名）可能已经被修复，而恢复仍需运行最新校验逻辑；push 模式仍按候选检出。
+          ref: ${{ github.event_name == 'workflow_dispatch' && 'master' || env.CANDIDATE_SHA }}
           fetch-depth: 0
       - name: Reject stale or unrelated candidates
         run: |
           test "$GITHUB_REF" = refs/heads/master
-          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           git fetch origin master
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            test "$(git rev-parse HEAD)" = "$(git rev-parse origin/master)"
             # 恢复的候选允许落后于 master：候选必须是 master 祖先，且候选到 master 之间没有改动
             # packages/，这样从已验证的原始 tarball 补发仍与当前 master 的公开包内容一致。
             git merge-base --is-ancestor "$CANDIDATE_SHA" origin/master
             test -z "$(git diff --name-only "$CANDIDATE_SHA" origin/master -- packages/)"
           else
+            test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
             test "$(git rev-parse origin/master)" = "$CANDIDATE_SHA"
           fi
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
