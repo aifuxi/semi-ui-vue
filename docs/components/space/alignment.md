@@ -61,6 +61,12 @@
 
 截图阈值保持 `threshold=0.1`、`maxDiffPixelRatio=0.001`，同时要求同一 Chromium 中 React/Vue 组件截图字节完全一致。
 
+## 已知限制（2026-09-19 消费者观察复核）
+
+- 证据：固定 `packages/semi-ui/space/index.tsx:37-40` 默认 `vertical: false`、`align: 'center'`；Vue 端口 `Space.vue` 默认值相同，主题规则为 `.semi-space { display: inline-flex }`。
+- 现象：把整页内容放进 `<Space vertical>` 时子项按内容收缩并居中，`Col` 的 span 百分比基于收缩后的宽度，属固定基线行为而非端口回归。
+- 处理：仅补中英文文档说明，不改运行时行为；页面级堆叠请用普通 `div` 或显式宽度。
+
 ## Deviation
 
 当前没有 accepted visual/behavior deviation。React `children`、`className`、`style` 迁移为 Vue 默认 slot 与原生 attrs；Vue 额外允许 `id / role / aria-*` 等 attrs 透传，这是 Vue 原生 API 映射，不改变固定场景的视觉或布局行为。

@@ -42,6 +42,8 @@ A number sets the horizontal gutter. In a tuple, the first item is horizontal an
 </Row>
 ```
 
+`align` and `justify` only apply with `type="flex"`, matching the pinned `row.tsx` class computation. Without `type="flex"` the Row stays `display: block`, no alignment class is emitted, and no warning is raised.
+
 ## Responsive layout
 
 Each breakpoint accepts either a span number or a `span/order/offset/push/pull` object.

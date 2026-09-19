@@ -41,6 +41,8 @@ const enabled = shallowRef(false);
 
 `small` 尺寸不会渲染内嵌文本。较长说明应放在 Switch 外部。
 
+`checkedText` / `uncheckedText` 的文本盒固定 `20px` 宽（与固定基线 `switch.scss` 一致）：1 个中文字符或英文短词可正常显示，两个中文字符会与滑块重叠。需要更长文案时使用 `size="large"`，或把说明放在 Switch 外部。
+
 ## API
 
 | 属性             | 说明                                                  | 类型                              | 默认值      |

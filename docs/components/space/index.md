@@ -42,6 +42,8 @@ import '@aifuxi/semi-theme-default/space.css';
 
 数组的第 0 项控制水平间距，第 1 项控制垂直间距。`wrap` 只在水平方向生效；`vertical` 为 true 时不会输出换行 class。
 
+Space 根节点是 `display: inline-flex` 且默认 `align: center`（与固定基线的 `space/index.tsx` 和主题规则一致）。做整页纵向堆叠时它会按内容收缩并居中，不是块级容器；页面级堆叠请使用普通 `div` 加 flex/gap，或显式设置宽度。
+
 ## 对齐
 
 ```vue
