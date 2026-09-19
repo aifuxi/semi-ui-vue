@@ -21,6 +21,11 @@ peerDependencyRules:
   allowedVersions:
     react: 16.14.0
     react-dom: 16.14.0
+    # VitePress 的 @vueuse/integrations 声明 async-validator ^4；仓库固定 3.5.2，文档站不使用该集成。
+    async-validator: '3.5.2'
+  ignoreMissing:
+    # @docsearch 仅在本站使用 Algolia 搜索时才需要；文档站使用本地索引。
+    - search-insights
 
 overrides:
   '@types/react': 18.0.5

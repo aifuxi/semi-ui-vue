@@ -29,6 +29,7 @@
 | 选择检查范围              | [验证入口](docs/testing/validation.md)                         |
 | 包依赖、exports、构建边界 | [工作区架构](docs/architecture/workspace.md)                   |
 | 发布准备与上线            | [发布手册](docs/releasing.md)                                  |
+| 组件库文档站              | [文档站说明](apps/docs/README.md)                              |
 
 完成条件是目标已实现、受影响检查通过、剩余问题如实说明。完成后仅暂存本次文件并创建独立 commit；公开产物用 Changesets，纯文档/测试/内部工具用 `pnpm changeset --empty`。版本由机器人维护。组件状态及缺口写入对应组件契约，稳定发布剩余工作写入[发布审计](docs/release-audit-1.0.md)。
 

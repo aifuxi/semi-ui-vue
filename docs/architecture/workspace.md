@@ -11,6 +11,7 @@
 | `packages/test-infra`                          | 场景、环境、阈值和对照 helper，永不发布              |
 | `apps/reference-react`                         | 从固定 vendor 运行真实 React 参考场景                |
 | `apps/storybook-vue`                           | Storybook Vue 3/Vite 场景站，从公开组件子路径导入    |
+| `apps/docs`                                    | VitePress 组件库文档站，正文从固定基线构建期生成     |
 | `tests/browser`                                | 锁定 Chromium 的组件对照验收                         |
 | `tests/consumer`                               | 真实 tarball 的独立 Chromium 消费测试                |
 | `docs/components`                              | 静态组件契约、API 说明与已知差异                     |
@@ -28,9 +29,14 @@ JsonViewer 的固定 core 与 jsonc-parser 经私有构建插件编入内联 Wor
 
 每个公开包携带 MIT、第三方声明和 SPDX SBOM。可复现构建使用 `SOURCE_DATE_EPOCH`。版本、依赖和构建入口以各 package.json、lockfile 与 mise.toml 为准，组件进度与实现细节见[组件目录](../components/)。
 
-## Storybook、参考应用与测试
+## Storybook、参考应用、文档站与测试
 
-Nuxt 文档应用及其构建、REPL、站点资源和逐示例验收已移除。组件契约留在仓库静态文档中，开发、测试与包发布独立于文档站；退役范围见[说明](../documentation/README.md)。
+Nuxt 文档应用及其构建、REPL、站点资源和逐示例验收已移除，退役范围见[说明](../documentation/README.md)。
+`apps/docs` 是不参与发布的私有 VitePress 应用：站点外壳使用基线站点 SCSS 与 `@douyinfe/semi-site-doc-style`
+的构建期编译产物，正文、导航、检索索引和来源清单由 `apps/docs/scripts/*.mjs` 从只读基线生成到已忽略目录，
+仓库不保存派生正文；站点控件与样式来自公开包 `@aifuxi/semi-ui-vue`、`@aifuxi/semi-theme-default`。
+首版只交付组件使用说明与示例占位，不含示例代码、REPL 与自动化测试，验收由人工 UI 走查完成，
+入口见 [apps/docs/README.md](../../apps/docs/README.md)。
 
 Vue 场景由 Storybook Vue 3/Vite 承载，React 参考继续使用 Rsbuild、React 16 classic JSX；两端共享 harness CSS。React 的 Rspack 模块图与 Storybook 的 Vite 模块图分别生成来源证明，核对页面实际请求的代码。Vue 场景保持 pending，直到契约可对照；场景从组件子路径导入，避免根入口加载全库。Storybook 仅承载场景和调试，交互、布局和像素断言统一由 Playwright Test 执行。
 

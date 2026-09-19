@@ -16,6 +16,9 @@
   "scripts": {
     "dev": "pnpm --filter @workspace/storybook-vue dev",
     "dev:reference": "pnpm --filter @workspace/reference-react dev",
+    "docs:prepare": "pnpm --filter @workspace/docs run prepare:packages",
+    "docs:dev": "pnpm --filter @workspace/docs run dev",
+    "docs:build": "pnpm --filter @workspace/docs run build",
     "build": "pnpm build:public-js && pnpm --filter @aifuxi/semi-theme-default build",
     "build:storybook": "pnpm --filter @workspace/storybook-vue build",
     "build:public-js": "pnpm --filter @aifuxi/semi-ui-vue --filter @aifuxi/semi-icons-vue --filter @aifuxi/semi-icons-lab-vue --filter @aifuxi/semi-illustrations-vue run build",

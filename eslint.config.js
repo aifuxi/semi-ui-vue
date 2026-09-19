@@ -12,6 +12,7 @@ export default tseslint.config(
       '.agents/**',
       '.codex/**',
       '**/.data/**',
+      'apps/docs/cache/**',
       '**/dist/**',
       '**/node_modules/**',
       'coverage/**',
@@ -53,6 +54,12 @@ export default tseslint.config(
   },
   {
     files: ['apps/*/src/**/*.{js,ts,tsx,vue}', 'packages/ui/src/**/*.{js,ts,vue}'],
+    languageOptions: {
+      globals: globals.browser,
+    },
+  },
+  {
+    files: ['apps/docs/.vitepress/**/*.{js,ts,vue}'],
     languageOptions: {
       globals: globals.browser,
     },
