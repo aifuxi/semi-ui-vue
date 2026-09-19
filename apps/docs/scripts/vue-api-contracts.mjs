@@ -1483,4 +1483,188 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/input/checkbox',
+    {
+      sources: ['packages/ui/src/checkbox/types.ts'],
+      propSections: [
+        {
+          heading: 'Checkbox',
+          level: 3,
+          source: 'packages/ui/src/checkbox/types.ts',
+          interfaces: ['CheckboxProps'],
+          aliases: { ariaLabel: 'aria-label' },
+        },
+        {
+          heading: 'Checkbox Group',
+          level: 3,
+          source: 'packages/ui/src/checkbox/types.ts',
+          interfaces: ['CheckboxGroupProps'],
+          aliases: { ariaLabel: 'aria-label' },
+        },
+      ],
+      models: [
+        '`Checkbox`：`v-model` 对应 `modelValue`，`v-model:checked` 对应 `checked`。',
+        '`Checkbox.Group`：`v-model` 对应 `modelValue`，同时支持 `v-model:value`。',
+      ],
+      eventSections: [
+        { heading: 'Checkbox', level: 3, rows: ['onChange'] },
+        { heading: 'Checkbox Group', level: 3, rows: ['onChange'] },
+      ],
+      eventGroups: [
+        {
+          name: 'Checkbox',
+          items: [event('change', '[event: CheckboxChangeEvent]', '选中状态变化')],
+        },
+        {
+          name: 'Checkbox.Group',
+          items: [event('change', '[value: CheckboxValue[]]', '组选中值变化')],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Checkbox',
+          items: [slot('default', '{}', '复选框内容'), slot('extra', '{}', '辅助文本')],
+        },
+        {
+          name: 'Checkbox.Group',
+          items: [slot('default', '{}', 'Checkbox 子组件')],
+        },
+      ],
+      textRewrites: [
+        ['## API参考', '## API 参考'],
+        ['### JSX方式声明Checkbox组', '### 模板方式声明 Checkbox 组'],
+        ['title="JSX方式声明Checkbox组"', 'title="模板方式声明 Checkbox 组"'],
+        [
+          '通过在CheckboxGroup内部放置 Checkbox元素，可以声明Checkbox组',
+          '通过在 Checkbox.Group 的默认插槽中放置 Checkbox，可以声明 Checkbox 组。',
+        ],
+        [
+          '使用Checkbox组，你可以更便捷地通过CheckboxGroup的`defaultValue`、`value`属性去控制一组Checkbox的选中与否',
+          '使用 Checkbox.Group，可以通过 `defaultValue`、`value` 或 `v-model` 管理组选中值。',
+        ],
+        [
+          '此时Checkbox不需要再声明`defaultChecked`、`checked`属性',
+          '组内 Checkbox 不需要再声明 `defaultChecked` 或 `checked`。',
+        ],
+        ['如果 Children 没有文本', '如果默认插槽没有文本'],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/input/radio',
+    {
+      sources: ['packages/ui/src/radio/types.ts'],
+      propSections: [
+        {
+          heading: 'Radio',
+          level: 3,
+          source: 'packages/ui/src/radio/types.ts',
+          interfaces: ['RadioProps'],
+          aliases: { ariaLabel: 'aria-label' },
+        },
+        {
+          heading: 'RadioGroup',
+          level: 3,
+          source: 'packages/ui/src/radio/types.ts',
+          interfaces: ['RadioGroupProps'],
+          aliases: { ariaLabel: 'aria-label' },
+        },
+      ],
+      models: [
+        '`Radio`：`v-model` 对应 `modelValue`，`v-model:checked` 对应 `checked`。',
+        '`Radio.Group`：`v-model` 对应 `modelValue`，同时支持 `v-model:value`。',
+      ],
+      eventSections: [
+        {
+          heading: 'Radio',
+          level: 3,
+          rows: ['onChange', 'onMouseEnter', 'onMouseLeave'],
+        },
+        { heading: 'RadioGroup', level: 3, rows: ['onChange'] },
+      ],
+      eventGroups: [
+        {
+          name: 'Radio',
+          items: [
+            event('change', '[event: RadioChangeEvent]', '选中状态变化'),
+            event('mouseenter / mouseleave', '[event: MouseEvent]', '指针进入或离开选项'),
+          ],
+        },
+        {
+          name: 'Radio.Group',
+          items: [event('change', '[event: RadioChangeEvent]', '组选中值变化')],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Radio',
+          items: [slot('default', '{}', '单选框内容'), slot('extra', '{}', '辅助文本')],
+        },
+        {
+          name: 'Radio.Group',
+          items: [slot('default', '{}', 'Radio 子组件')],
+        },
+      ],
+    },
+  ],
+  [
+    '/zh-CN/input/switch',
+    {
+      sources: ['packages/ui/src/switch/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/switch/types.ts',
+          interfaces: ['SwitchProps'],
+          aliases: {
+            ariaDescribedby: 'aria-describedby',
+            ariaErrormessage: 'aria-errormessage',
+            ariaInvalid: 'aria-invalid',
+            ariaLabel: 'aria-label',
+            ariaLabelledby: 'aria-labelledby',
+          },
+        },
+      ],
+      models: ['`v-model` 对应 `modelValue`，`v-model:checked` 对应 `checked`。'],
+      eventSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          rows: ['onChange', 'onMouseEnter', 'onMouseLeave'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Switch',
+          items: [event('change', '[checked: boolean, event: Event]', '开关状态变化')],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Switch',
+          items: [
+            slot('checkedText', '{}', '打开时展示的内容'),
+            slot('uncheckedText', '{}', '关闭时展示的内容'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '你可以通过 `onChange` 监听状态变化，通过 `defaultChecked` 或受控的 `checked` 制定选中状态。',
+          '你可以通过 `change` 事件监听状态变化，也可以使用 `v-model`、`defaultChecked` 或受控的 `checked` 管理选中状态。',
+        ],
+        [
+          '组件是否选中完全取决于传入的 checked 值，配合 onChange 回调函数使用',
+          '受控模式下，组件是否选中完全取决于 `checked`，并通过 `change` 事件通知变化。',
+        ],
+        ['配合 onChange 使用', '配合 `v-model` 或 `change` 事件使用'],
+        [
+          '可以通过设置 loading="true" 开启加载中状态。',
+          '可以通过设置 `:loading="true"` 开启加载中状态。',
+        ],
+      ],
+    },
+  ],
 ]);
