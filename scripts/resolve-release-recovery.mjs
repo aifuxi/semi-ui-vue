@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { appendFile } from 'node:fs/promises';
 
+import { selectRecoveryArtifacts } from './release-recovery-artifacts.mjs';
+
 const runId = process.env.RECOVERY_RUN_ID;
 const sha = process.env.CANDIDATE_SHA;
 assert.match(runId ?? '', /^\d+$/);
@@ -30,18 +32,6 @@ for (const name of ['Quality and package verification', 'Pack and verify origina
   );
 }
 const { artifacts } = await get(`actions/runs/${runId}/artifacts?per_page=100`);
-for (const [key, prefix] of [
-  ['pack', 'changeset-pack-'],
-  ['evidence', 'release-evidence'],
-  ['plan', 'changeset-publish-plan-'],
-]) {
-  const matches = artifacts.filter(
-    (artifact) => artifact.name.startsWith(prefix) && !artifact.expired,
-  );
-  assert.equal(
-    matches.length,
-    1,
-    `Expected one unexpired ${key} artifact; rerun ambiguity requires explicit investigation`,
-  );
-  await appendFile(process.env.GITHUB_OUTPUT, `${key}=${matches[0].id}\n`);
+for (const [key, id] of selectRecoveryArtifacts(artifacts)) {
+  await appendFile(process.env.GITHUB_OUTPUT, `${key}=${id}\n`);
 }

@@ -36,7 +36,7 @@ Nuxt 文档站、站点部署和旧逐示例验收不再属于包发布门禁。
 
 ## 失败恢复
 
-多包发布不是原子操作。任何 npm 成功都不能回滚；先保留原 run ID、候选 SHA、`changeset-publish-plan-*`、`changeset-pack-*` 和 `release-evidence`，不能为恢复重新升版。
+多包发布不是原子操作。任何 npm 成功都不能回滚；先保留原 run ID、候选 SHA、发布计划（当前 changesets action 上传为 `publish-plan.json`，历史 run 为 `changeset-publish-plan-*`）、`changeset-pack-*` 和 `release-evidence`，不能为恢复重新升版。`scripts/resolve-release-recovery.mjs` 按上述三类产物名解析恢复输入（`scripts/release-recovery.spec.mjs` 覆盖），缺失或有多个未过期候选时恢复会显式失败，不会挑选任意产物。
 
 CLI 3.0.2 对原计划重跑仍会尝试已发布包，且仅识别特定重复发布错误文字。Verdaccio 6.10.3 / pnpm 12.3.4 的真实恢复演练确认，直接重跑会因 409 中断。因此失败发生在 publish 之后时，使用 `workflow_dispatch`，填写原始成功通过 quality、pack-verify 的 run ID 和精确候选 SHA。browser CI job 已移除；候选对应的本地组件结果仍按输入有效性复用。不要仅重跑 publish job。
 
