@@ -25,6 +25,7 @@
 | `.vitepress/theme/**`           | 自定义主题：Layout、头部、侧栏、页内目录、搜索、示例占位与站点样式 |
 | `scripts/upstream-config.mjs`   | 收录规则、侧栏分组来源、基线版本读取                               |
 | `scripts/upstream-rewrites.mjs` | 上游包名、链接与 React 措辞改写表                                  |
+| `scripts/vue-api-contracts.mjs` | 已人工核对页面的 Vue emits、slots、v-model 与正文定向改写          |
 | `scripts/prepare-assets.mjs`    | 编译基线站点 SCSS、复制字体与侧栏图标                              |
 | `scripts/prepare-content.mjs`   | 生成 Markdown 正文、导航数据、检索索引与来源清单                   |
 | `overrides/**`                  | 手工维护页；同名路由优先于生成结果                                 |
@@ -66,6 +67,7 @@ class 由 `.vitepress/theme/markdown/prose-classes.ts` 在 markdown-it 渲染阶
 - 不写示例代码、不接 REPL；`DemoBlock` 只渲染占位卡片，示例清单契约见
   `.vitepress/theme/demo/types.ts`。
 - 只提供中文，路由保留 `/zh-CN/` 前缀；英文内容源已存在，后续按同一管线开启。
-- 上游 API 表原样呈现（含 `ReactNode` 等上游类型名），后续再用本项目契约替换。
+- Button、Input、Select、Form、Table、Modal、Tooltip、Upload 的 API 已按公开 Vue 类型校准；其余页面仍保留上游 API
+  表，生成时会明确标记契约状态。
 - 上游 CDN 图片保留远程地址，自托管与离线资源留待后续版本。
 - 不新增 CI 与部署配置，`base` 固定为 `/`。

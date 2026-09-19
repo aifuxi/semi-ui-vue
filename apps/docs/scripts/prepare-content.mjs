@@ -14,8 +14,10 @@ import {
   readCategories,
   readComponentDirectories,
   vendorContentRoot,
+  workspaceRoot,
 } from './upstream-config.mjs';
 import { applyRewrites } from './upstream-rewrites.mjs';
+import { vueApiContracts, vueTypeRewrites } from './vue-api-contracts.mjs';
 
 /**
  * 当前不呈现示例代码：每个代码块渲染为紧凑的 DemoBlock 迁移状态条。
@@ -36,6 +38,336 @@ const frontmatterPattern = /^---\n([\s\S]*?)\n---\n?/;
 const headingPattern = /^(#{2,4})\s+(.*?)\s*#*\s*$/;
 const inlineTagPattern = /<\/?[A-Za-z][^>]*>/g;
 const markdownLinkPattern = /\[([^\]]+)\]\(([^)]*)\)/g;
+
+function markdownCell(value) {
+  return String(value)
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('|', '\\|')
+    .replaceAll('\n', ' ');
+}
+
+function renderContractTable(columns, rows) {
+  return [
+    `| ${columns.join(' | ')} |`,
+    `| ${columns.map(() => '---').join(' | ')} |`,
+    ...rows.map((row) => `| ${row.map(markdownCell).join(' | ')} |`),
+  ].join('\n');
+}
+
+function renderVueContract(contract) {
+  const out = [
+    '### Vue 契约',
+    '',
+    `> 以下内容以 \`${contract.sources.join('`、`')}\` 的公开类型为准；属性说明、默认值和版本信息沿用固定上游基线。`,
+  ];
+  if (contract.models?.length) {
+    out.push('', ...contract.models.map((model) => `- ${model}`));
+  }
+  if (contract.eventGroups?.length) {
+    out.push('', '#### Vue 事件');
+    for (const group of contract.eventGroups) {
+      out.push(
+        '',
+        `**${group.name}**`,
+        '',
+        renderContractTable(
+          ['事件', '参数', '说明'],
+          group.items.map((item) => [item.name, item.parameters, item.description]),
+        ),
+      );
+    }
+  }
+  if (contract.slotGroups?.length) {
+    out.push('', '#### Vue 插槽');
+    for (const group of contract.slotGroups) {
+      out.push(
+        '',
+        `**${group.name}**`,
+        '',
+        renderContractTable(
+          ['插槽', '作用域参数', '说明'],
+          group.items.map((item) => [item.name, item.scope, item.description]),
+        ),
+      );
+    }
+  }
+  return out.join('\n');
+}
+
+function firstTableCell(line) {
+  return line
+    .replace(/^\s*\|/, '')
+    .split('|', 1)[0]
+    ?.trim();
+}
+
+function extractInterfaceBody(source, interfaceName) {
+  const start = source.indexOf(`export interface ${interfaceName}`);
+  if (start === -1) throw new Error(`无法找到公开接口 ${interfaceName}。`);
+  const open = source.indexOf('{', start);
+  if (open === -1) throw new Error(`公开接口 ${interfaceName} 缺少起始花括号。`);
+  let depth = 0;
+  let quote = '';
+  let escaped = false;
+  for (let index = open; index < source.length; index += 1) {
+    const char = source[index];
+    if (quote) {
+      if (escaped) escaped = false;
+      else if (char === '\\') escaped = true;
+      else if (char === quote) quote = '';
+      continue;
+    }
+    if (char === "'" || char === '"' || char === '`') {
+      quote = char;
+      continue;
+    }
+    if (char === '{') depth += 1;
+    if (char !== '}') continue;
+    depth -= 1;
+    if (depth === 0) return source.slice(open + 1, index);
+  }
+  throw new Error(`公开接口 ${interfaceName} 缺少结束花括号。`);
+}
+
+function splitInterfaceMembers(body) {
+  const members = [];
+  let start = 0;
+  let round = 0;
+  let square = 0;
+  let curly = 0;
+  let quote = '';
+  let escaped = false;
+  for (let index = 0; index < body.length; index += 1) {
+    const char = body[index];
+    if (quote) {
+      if (escaped) escaped = false;
+      else if (char === '\\') escaped = true;
+      else if (char === quote) quote = '';
+      continue;
+    }
+    if (char === "'" || char === '"' || char === '`') {
+      quote = char;
+      continue;
+    }
+    if (char === '(') round += 1;
+    else if (char === ')') round -= 1;
+    else if (char === '[') square += 1;
+    else if (char === ']') square -= 1;
+    else if (char === '{') curly += 1;
+    else if (char === '}') curly -= 1;
+    else if (char === ';' && round === 0 && square === 0 && curly === 0) {
+      members.push(body.slice(start, index));
+      start = index + 1;
+    }
+  }
+  return members;
+}
+
+function extractInterfaceProps(source, interfaceName) {
+  return splitInterfaceMembers(extractInterfaceBody(source, interfaceName))
+    .map((member) =>
+      member
+        .replaceAll(/\/\*[\s\S]*?\*\//g, '')
+        .replaceAll(/\/\/.*$/gm, '')
+        .trim(),
+    )
+    .filter((member) => member !== '' && !member.startsWith('['))
+    .map((member) => {
+      const match = member.match(/^(?:readonly\s+)?['"]?([\w.-]+)['"]?(\?)?:\s*([\s\S]+)$/);
+      if (!match) return null;
+      return {
+        name: match[1],
+        required: match[2] !== '?',
+        type: match[3].replaceAll(/\s+/g, ' ').trim(),
+      };
+    })
+    .filter(Boolean);
+}
+
+function parseTableCells(line) {
+  const cells = [];
+  let current = '';
+  let escaped = false;
+  for (const char of line.replace(/^\s*\|/, '').replace(/\|\s*$/, '')) {
+    if (escaped) {
+      current += char;
+      escaped = false;
+      continue;
+    }
+    if (char === '\\') {
+      escaped = true;
+      continue;
+    }
+    if (char === '|') {
+      cells.push(current.trim());
+      current = '';
+      continue;
+    }
+    current += char;
+  }
+  cells.push(current.trim());
+  return cells;
+}
+
+function isTableSeparator(line) {
+  const cells = parseTableCells(line);
+  return cells.length > 0 && cells.every((cell) => /^:?-{2,}:?$/.test(cell));
+}
+
+function renderVuePropsTable(section, props, headerLine, originalRows) {
+  const headers = parseTableCells(headerLine);
+  const rows = props.map(({ name, required, type }) => {
+    const upstreamName = section.aliases?.[name] ?? name;
+    const original = originalRows.get(upstreamName) ?? [];
+    const row = Array.from({ length: headers.length }, () => '');
+    row[0] = name;
+    row[1] = original[1] || '—';
+    row[2] = required ? `${type}（必填）` : type;
+    if (headers.length > 3) row[3] = original[3] || '—';
+    for (let index = 4; index < headers.length; index += 1) row[index] = original[index] ?? '';
+    return `| ${row.map(markdownCell).join(' | ')} |`;
+  });
+  return [`| ${headers.join(' | ')} |`, `| ${headers.map(() => '---').join(' | ')} |`, ...rows];
+}
+
+async function loadVuePropSections() {
+  const sources = new Map();
+  const result = new Map();
+  for (const [route, contract] of vueApiContracts) {
+    if (!contract.propSections?.length) continue;
+    const sections = [];
+    for (const section of contract.propSections) {
+      let source = sources.get(section.source);
+      if (!source) {
+        source = await readFile(resolve(workspaceRoot, section.source), 'utf8');
+        sources.set(section.source, source);
+      }
+      const props = section.interfaces.flatMap((name) => extractInterfaceProps(source, name));
+      const uniqueProps = [...new Map(props.map((prop) => [prop.name, prop])).values()];
+      sections.push({ ...section, props: uniqueProps });
+    }
+    result.set(route, sections);
+  }
+  return result;
+}
+
+function replacePropsTables(text, page, recordRewrite) {
+  const sections = vuePropSections.get(page.route);
+  if (!sections) return text;
+  const lines = text.split('\n');
+  for (const section of sections) {
+    const heading = `${'#'.repeat(section.level)} ${section.heading}`;
+    const headingIndex = lines.findIndex((line) => line === heading);
+    if (headingIndex === -1) throw new Error(`${page.route} 缺少属性章节：${heading}`);
+    let sectionEnd = lines.length;
+    for (let index = headingIndex + 1; index < lines.length; index += 1) {
+      const nextHeading = lines[index]?.match(headingPattern);
+      if (nextHeading && nextHeading[1].length <= section.level) {
+        sectionEnd = index;
+        break;
+      }
+    }
+    let tableStart = -1;
+    for (let index = headingIndex + 1; index < sectionEnd - 1; index += 1) {
+      if (/^\s*\|/.test(lines[index] ?? '') && isTableSeparator(lines[index + 1] ?? '')) {
+        tableStart = index;
+        break;
+      }
+    }
+    if (tableStart === -1) throw new Error(`${page.route} 的 ${heading} 缺少属性表。`);
+    let tableEnd = tableStart + 2;
+    while (tableEnd < sectionEnd && /^\s*\|/.test(lines[tableEnd] ?? '')) {
+      tableEnd += 1;
+    }
+    const originalRows = new Map();
+    for (const line of lines.slice(tableStart + 2, tableEnd)) {
+      const cells = parseTableCells(line);
+      if (cells[0]) originalRows.set(cells[0], cells);
+    }
+    const eventRows =
+      contractForRoute(page.route)?.eventSections?.find(
+        (eventSection) =>
+          eventSection.level === section.level && eventSection.heading === section.heading,
+      )?.rows ?? [];
+    const props = section.props.filter((prop) => !eventRows.includes(prop.name));
+    lines.splice(
+      tableStart,
+      tableEnd - tableStart,
+      ...renderVuePropsTable(section, props, lines[tableStart] ?? '', originalRows),
+    );
+    recordRewrite('vue-props', `${section.heading}: ${props.length} props`);
+  }
+  return lines.join('\n');
+}
+
+function contractForRoute(route) {
+  return vueApiContracts.get(route);
+}
+
+function removeReactEventRows(text, contract, recordRewrite) {
+  if (!contract.eventSections?.length) return text;
+  const lines = text.split('\n');
+  let activeSection = null;
+  return lines
+    .filter((line) => {
+      const heading = line.match(headingPattern);
+      if (heading) {
+        const level = heading[1].length;
+        const title = stripInlineTags(heading[2]).trim();
+        activeSection =
+          contract.eventSections.find(
+            (section) => section.level === level && section.heading === title,
+          ) ?? null;
+        return true;
+      }
+      if (!activeSection || !/^\s*\|.*\|\s*$/.test(line)) return true;
+      const name = firstTableCell(line);
+      if (!activeSection.rows.includes(name)) return true;
+      recordRewrite('vue-event-row', `${activeSection.heading}.${name}`);
+      return false;
+    })
+    .join('\n');
+}
+
+function applyVueApiContract(text, page, recordRewrite) {
+  const contract = contractForRoute(page.route);
+  if (!contract) return text;
+  let result = removeReactEventRows(text, contract, recordRewrite);
+  for (const [from, to] of [...vueTypeRewrites, ...(contract.textRewrites ?? [])]) {
+    if (!result.includes(from)) continue;
+    result = result.replaceAll(from, to);
+    recordRewrite('vue-term', `${from} → ${to}`);
+  }
+  result = replacePropsTables(result, page, recordRewrite);
+  const apiHeading = '## API 参考';
+  if (!result.includes(apiHeading)) {
+    throw new Error(`${page.route} 缺少 API 参考章节，无法注入 Vue 契约。`);
+  }
+  result = result.replace(apiHeading, `${apiHeading}\n\n${renderVueContract(contract)}`);
+  recordRewrite('vue-contract', contract.sources.join(', '));
+  return result;
+}
+
+function removeDanglingExampleReferences(text, recordRewrite) {
+  const replacements = [
+    ['如下图所示', ''],
+    ['如下图', ''],
+    ['下图所示', ''],
+    ['如下所示', ''],
+    ['点击运行', '示例迁移完成后可在线运行'],
+  ];
+  let result = text;
+  for (const [from, to] of replacements) {
+    if (!result.includes(from)) continue;
+    result = result.replaceAll(from, to);
+    recordRewrite('dangling-example-reference', `${from} → ${to || '移除'}`);
+  }
+  return result
+    .replaceAll(/\s+([，。；：])/g, '$1')
+    .replaceAll(/，\s*。/g, '。')
+    .replaceAll(/：\s*。/g, '。');
+}
 
 function stripInlineTags(line) {
   return line
@@ -110,8 +442,10 @@ function rewriteLinks(text, context, record) {
  * 代码块 → DemoBlock 占位；多行 MDX 组件块与专属章节 → 丢弃；行内 JSX → 仅保留文本。
  */
 function transformBody(body, page, context) {
-  const record = (kind, detail) =>
+  const recordDrop = (kind, detail) =>
     context.drops.push({ route: page.route, kind, detail: String(detail).slice(0, 200) });
+  const recordRewrite = (kind, detail) =>
+    context.rewrites.push({ route: page.route, kind, detail: String(detail).slice(0, 200) });
   const withoutComments = body.replaceAll(/<!--[\s\S]*?-->/g, '');
   const lines = withoutComments.split('\n');
   const out = [];
@@ -130,13 +464,13 @@ function transformBody(body, page, context) {
       while (index < lines.length && !/^```/.test(lines[index] ?? '')) index += 1;
       index += 1;
       if (droppedFenceLanguages.has(language)) {
-        record('mdx-block', `\`\`\`${language}`);
+        recordDrop('mdx-block', `\`\`\`${language}`);
         continue;
       }
       const kind =
         demoBlockKinds.get(info.split(/\s+/)[0] ?? '') ?? (info.includes('live') ? 'live' : 'code');
       out.push('', `<DemoBlock title="${lastHeading || page.title}" kind="${kind}" />`, '');
-      record('demo-placeholder', `${kind}:${lastHeading}`);
+      recordDrop('demo-placeholder', `${kind}:${lastHeading}`);
       continue;
     }
 
@@ -151,7 +485,7 @@ function transformBody(body, page, context) {
       skipUntilLevel = null;
       if (level === 2 && droppedSections.has(text)) {
         skipUntilLevel = level;
-        record('mdx-section', text);
+        recordDrop('mdx-section', text);
         index += 1;
         continue;
       }
@@ -162,7 +496,7 @@ function transformBody(body, page, context) {
     }
 
     if (/^\s*\|.*\|\s*$/.test(line)) {
-      const row = cleanTableRow(line, record);
+      const row = cleanTableRow(line, recordDrop);
       if (row !== null) out.push(row);
       index += 1;
       continue;
@@ -171,13 +505,13 @@ function transformBody(body, page, context) {
     const trimmed = line.trim();
     if (jsxOpen) {
       if (/(?:\/>|>)\s*$/.test(trimmed)) jsxOpen = false;
-      record('mdx-block', trimmed);
+      recordDrop('mdx-block', trimmed);
       index += 1;
       continue;
     }
     if (/^<[A-Za-z][\w.-]*(?:\s|$|\/)/.test(trimmed)) {
       if (!/(?:\/>|<\/[\w.-]+>)\s*$/.test(trimmed)) jsxOpen = true;
-      record('mdx-block', trimmed);
+      recordDrop('mdx-block', trimmed);
       index += 1;
       continue;
     }
@@ -191,25 +525,30 @@ function transformBody(body, page, context) {
     .replaceAll(/\n{3,}/g, '\n\n')
     .trim();
   text = applyRewrites(text, (entry) =>
-    record(`rewrite-${entry.kind}`, `${entry.from} → ${entry.to}`),
+    recordRewrite(`rewrite-${entry.kind}`, `${entry.from} → ${entry.to}`),
   );
-  text = rewriteLinks(text, context, record);
+  text = rewriteLinks(text, context, recordRewrite);
+  text = removeDanglingExampleReferences(text, recordRewrite);
+  text = applyVueApiContract(text, page, recordRewrite);
   // Vue 模板会把 `{{ ... }}` 当成插值表达式；上游正文里有 `timePickerOpts={{ ... }}` 这类文字。
   // 把第二个花括号换成等价 HTML 实体，渲染结果不变，但不会进入模板编译。
   if (text.includes('{{')) {
     text = text.replaceAll('{{', '{&lbrace;');
-    record('escape-mustache', '{{ → {&lbrace;');
+    recordRewrite('escape-mustache', '{{ → {&lbrace;');
   }
 
   // 上游示例位置只留迁移状态，这里同时交代 Vue 引入方式、固定基线和契约状态。
   if (page.componentDirectory) {
-    const notice = `> **Vue 使用说明**：从 \`@aifuxi/semi-ui-vue/${page.componentDirectory}\` 子路径引入组件，全局样式由 \`@aifuxi/semi-theme-default\` 提供。正文基于固定 Semi Design v2.102.0 生成；示例代码与 Vue API 契约仍在逐项校准。\n`;
+    const contractStatus = vueApiContracts.has(page.route)
+      ? '本页 Vue API 契约已按公开类型校准；示例代码仍在逐项迁移。'
+      : '示例代码与 Vue API 契约仍在逐项校准。';
+    const notice = `> **Vue 使用说明**：从 \`@aifuxi/semi-ui-vue/${page.componentDirectory}\` 子路径引入组件，全局样式由 \`@aifuxi/semi-theme-default\` 提供。正文基于固定 Semi Design v2.102.0 生成；${contractStatus}\n`;
     const anchorIndex = text.indexOf('## 代码演示');
     text =
       anchorIndex === -1
         ? `${notice}\n${text}`
         : `${text.slice(0, anchorIndex)}${notice}\n${text.slice(anchorIndex)}`;
-    record('polish-notice', `@aifuxi/semi-ui-vue/${page.componentDirectory}`);
+    recordRewrite('polish-notice', `@aifuxi/semi-ui-vue/${page.componentDirectory}`);
   }
 
   return `${text}\n`;
@@ -268,6 +607,7 @@ const categories = await readCategories();
 const componentDirectories = await readComponentDirectories();
 const overrideFiles = await collectOverrideFiles();
 const baseline = readBaseline();
+const vuePropSections = await loadVuePropSections();
 
 /** 第一遍：确定收录范围与路由，供链接归一使用。 */
 const entries = [];
@@ -411,5 +751,5 @@ await writeFile(
 
 const generatedCount = entries.filter((entry) => entry.origin === 'generated').length;
 console.log(
-  `文档内容已生成：${entries.length} 页（${generatedCount} 页来自基线，${overrideFiles.size} 页手工覆盖），${context.drops.length} 条内容裁剪记录。`,
+  `文档内容已生成：${entries.length} 页（${generatedCount} 页来自基线，${overrideFiles.size} 页手工覆盖），${context.drops.length} 条裁剪、${context.rewrites.length} 条改写记录。`,
 );
