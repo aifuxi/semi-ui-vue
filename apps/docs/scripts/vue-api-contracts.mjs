@@ -1667,4 +1667,225 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/input/datepicker',
+    {
+      sources: ['packages/ui/src/date-picker/types.ts', 'packages/ui/src/date-picker/index.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/date-picker/types.ts',
+          interfaces: ['DatePickerProps'],
+          aliases: {
+            ariaDescribedby: 'aria-describedby',
+            ariaErrormessage: 'aria-errormessage',
+            ariaInvalid: 'aria-invalid',
+            ariaLabelledby: 'aria-labelledby',
+            ariaRequired: 'aria-required',
+          },
+        },
+      ],
+      models: [
+        '`v-model` 对应 `modelValue`，同时支持 `v-model:value`。',
+        '`v-model:open` 对应面板展开状态。',
+      ],
+      eventSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          rows: [
+            'onBlur',
+            'onCancel',
+            'onChange',
+            'onClear',
+            'onClickOutSide',
+            'onConfirm',
+            'onFocus',
+            'onOpenChange',
+            'onPanelChange',
+            'onPresetClick',
+          ],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'DatePicker',
+          items: [
+            event('blur', '[event?: unknown]', '输入框失去焦点'),
+            event(
+              'cancel',
+              '[date: Date | Date[] | undefined, dateString: string | string[] | undefined]',
+              '取消需要确认的选择',
+            ),
+            event(
+              'change',
+              '[first: Date | Date[] | string | string[] | undefined, second: Date | Date[] | string | string[] | undefined]',
+              '值变化；参数顺序由 onChangeWithDateFirst 决定',
+            ),
+            event('clear', '[event?: unknown]', '点击清除按钮'),
+            event('clickOutside', '[event: MouseEvent]', '点击浮层和触发器之外的区域'),
+            event(
+              'confirm',
+              '[date: Date | Date[] | undefined, dateString: string | string[] | undefined]',
+              '确认需要确认的选择',
+            ),
+            event('focus', '[event: unknown, rangeType?: DatePickerRangeType]', '输入框获得焦点'),
+            event('maxSelect', '[value?: Date[]]', '多选达到上限'),
+            event('openChange', '[open: boolean]', '面板展开状态变化'),
+            event(
+              'panelChange',
+              '[date: Date | Date[], dateString: string | string[]]',
+              '面板年月切换',
+            ),
+            event('presetClick', '[item: DatePickerPreset, event: MouseEvent]', '点击快捷选项'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'DatePicker',
+          items: [
+            slot('bottom', '{}', '面板底部内容'),
+            slot('clearIcon', '{}', '清除图标'),
+            slot('date', '{ dayNumber: number; fullDate: string }', '日期内容'),
+            slot(
+              'fullDate',
+              '{ dayNumber: number; fullDate: string; status: DatePickerDayStatus }',
+              '完整日期格子',
+            ),
+            slot('insetLabel', '{}', '内嵌标签'),
+            slot('left', '{}', '面板左侧内容'),
+            slot('prefix', '{}', '输入框前缀'),
+            slot('rangeSeparator', '{}', '范围分隔内容'),
+            slot('right', '{}', '面板右侧内容'),
+            slot('top', '{}', '面板顶部内容'),
+            slot('trigger', 'DatePickerTriggerSlotProps', '自定义触发器'),
+          ],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'DatePicker ref',
+          items: [
+            method('open', '() => void', '展开面板'),
+            method('close', '() => void', '关闭面板'),
+            method('focus', "(focusType?: 'rangeStart' | 'rangeEnd') => void", '聚焦输入框'),
+            method('blur', '() => void', '移除输入框焦点'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '只有开始日期和结束日期都被选择后才会触发 onChange。',
+          '只有开始日期和结束日期都被选择后才会触发 `change` 事件。',
+        ],
+        [
+          '`onPanelChange` 回调函数会在面板的月份或年份切换改变时被调用。',
+          '`panelChange` 事件会在面板的月份或年份切换时触发。',
+        ],
+        [
+          '同时支持 “确认”（onConfirm） 和 “取消”（onCancel） 两个按钮的点击回调。',
+          '同时支持“确认”按钮的 `confirm` 事件和“取消”按钮的 `cancel` 事件。',
+        ],
+        [
+          '下面这个例子绑定了 onChange、onConfirm、onCancel 三种回调，你可以打开控制台查看打印信息的区别。',
+          '下面示例同时监听 `change`、`confirm`、`cancel` 三种事件，可在控制台查看参数差异。',
+        ],
+        [
+          '`renderDate: (dayNumber: number, fullDate: string) => ReactNode`，自定义日期内容。',
+          '使用 `#date` 插槽或 `renderDate: (dayNumber: number, fullDate: string) => VNodeChild` 自定义日期内容。',
+        ],
+        [
+          '`renderFullDate: (dayNumber: number, fullDate: string, dayStatus: object) => ReactNode`， 自定义日期格子的渲染内容。',
+          '使用 `#fullDate` 插槽或 `renderFullDate: (dayNumber: number, fullDate: string, dayStatus: DatePickerDayStatus) => VNodeChild` 自定义日期格子。',
+        ],
+        [
+          '0.x 中 onChange(string, Date), 1.0 后(Date, string)。此开关设为 false 时，入参顺序将与 0.x 版本保持一致',
+          '控制 `change` 事件参数顺序；设为 `false` 时先传格式化字符串，再传日期值',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/input/timepicker',
+    {
+      sources: ['packages/ui/src/time-picker/types.ts', 'packages/ui/src/time-picker/index.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/time-picker/types.ts',
+          interfaces: ['TimePickerProps'],
+          aliases: {
+            ariaDescribedby: 'aria-describedby',
+            ariaErrormessage: 'aria-errormessage',
+            ariaInvalid: 'aria-invalid',
+            ariaLabel: 'aria-label',
+            ariaLabelledby: 'aria-labelledby',
+            ariaRequired: 'aria-required',
+          },
+        },
+      ],
+      models: [
+        '`v-model` 对应 `modelValue`，同时支持 `v-model:value`。',
+        '`v-model:open` 对应面板展开状态。',
+      ],
+      eventSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          rows: ['onBlur', 'onChange', 'onFocus', 'onOpenChange'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'TimePicker',
+          items: [
+            event('blur', '[event: FocusEvent | MouseEvent]', '输入框失去焦点'),
+            event(
+              'change',
+              '[value: TimePickerChangeValue | TimePickerFormattedValue, formatted: TimePickerFormattedValue | TimePickerChangeValue]',
+              '值变化；参数顺序由 onChangeWithDateFirst 决定',
+            ),
+            event('focus', '[event: FocusEvent]', '输入框获得焦点'),
+            event('openChange', '[open: boolean]', '面板展开状态变化'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'TimePicker',
+          items: [
+            slot('clearIcon', '{}', '清除图标'),
+            slot('insetLabel', '{}', '内嵌标签'),
+            slot('panelFooter', 'TimePickerPanelSlotProps', '面板底部内容'),
+            slot('panelHeader', 'TimePickerPanelSlotProps', '面板顶部内容'),
+            slot('trigger', 'TimePickerTriggerSlotProps', '自定义触发器'),
+          ],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'TimePicker ref',
+          items: [
+            method('open', '() => void', '展开面板'),
+            method('close', '() => void', '关闭面板'),
+            method('focus', '() => void', '聚焦输入框'),
+            method('blur', '() => void', '移除输入框焦点'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '当使用 `value` 而不是 `defaultValue` 时，作为受控组件使用。`value` 和 `onChange` 需要配合使用。',
+          '使用 `v-model` 管理受控值，或通过 `value` 与 `change` 事件配合管理。',
+        ],
+        [
+          '设置为 `true` 时 onChange 的入参顺序为 (Date, string), `false` 时为 (string, Date)',
+          '设置为 `true` 时 `change` 事件先传日期值，设为 `false` 时先传格式化字符串',
+        ],
+      ],
+    },
+  ],
 ]);

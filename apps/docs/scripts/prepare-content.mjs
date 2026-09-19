@@ -84,6 +84,7 @@ function renderVueContract(contract) {
     out.push('', '#### Vue 用法', '', ...contract.usageNotes.map((note) => `- ${note}`));
   }
   pushMethodGroups(out, 'Vue 静态方法', contract.methodGroups);
+  pushMethodGroups(out, 'Vue 实例方法', contract.instanceMethodGroups);
   pushMethodGroups(out, 'Vue Composable', contract.composableGroups);
   if (contract.eventGroups?.length) {
     out.push('', '#### Vue 事件');
