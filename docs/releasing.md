@@ -38,6 +38,8 @@ Nuxt 文档站、站点部署和旧逐示例验收不再属于包发布门禁。
 
 多包发布不是原子操作。任何 npm 成功都不能回滚；先保留原 run ID、候选 SHA、发布计划（当前 changesets action 上传为 `publish-plan.json`，历史 run 为 `changeset-publish-plan-*`）、`changeset-pack-*` 和 `release-evidence`，不能为恢复重新升版。`scripts/resolve-release-recovery.mjs` 按上述三类产物名解析恢复输入（`scripts/release-recovery.spec.mjs` 覆盖），缺失或有多个未过期候选时恢复会显式失败，不会挑选任意产物。
 
+恢复时候选 SHA 允许落后于当前 master（例如恢复前必须先合并发布工具修复），但要求候选是 master 祖先、且候选到 master 之间没有改动 `packages/`；`select-mode` 与 publish 前的复核步骤都会重新校验这条不变量，避免从与当前 master 不一致的代码补发包。
+
 CLI 3.0.2 对原计划重跑仍会尝试已发布包，且仅识别特定重复发布错误文字。Verdaccio 6.10.3 / pnpm 12.3.4 的真实恢复演练确认，直接重跑会因 409 中断。因此失败发生在 publish 之后时，使用 `workflow_dispatch`，填写原始成功通过 quality、pack-verify 的 run ID 和精确候选 SHA。browser CI job 已移除；候选对应的本地组件结果仍按输入有效性复用。不要仅重跑 publish job。
 
 恢复入口核对原运行来源、检查结果、候选和未过期 artifact，重新验证原 tarball。`prepare-release-recovery.mjs` 调用官方 `publish-plan`，仅把剩余官方计划重新绑定原 tarball；它不计算版本、不自行选择待发布包、不打包、不发布。计划的版本、访问策略与渠道必须与原计划一致。衍生计划与原五包 tarball 另存 `recovery-pack`，由官方 publish 子 Action 执行。已发布包必须先通过 integrity 核对。

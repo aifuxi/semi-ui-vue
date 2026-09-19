@@ -46,7 +46,14 @@ jobs:
           test "$GITHUB_REF" = refs/heads/master
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
           git fetch origin master
-          test "$(git rev-parse origin/master)" = "$CANDIDATE_SHA"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # 恢复的候选允许落后于 master：候选必须是 master 祖先，且候选到 master 之间没有改动
+            # packages/，这样从已验证的原始 tarball 补发仍与当前 master 的公开包内容一致。
+            git merge-base --is-ancestor "$CANDIDATE_SHA" origin/master
+            test -z "$(git diff --name-only "$CANDIDATE_SHA" origin/master -- packages/)"
+          else
+            test "$(git rev-parse origin/master)" = "$CANDIDATE_SHA"
+          fi
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
         with:
           version: 2026.9.3
@@ -204,7 +211,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           git fetch origin master
-          test "$(git rev-parse origin/master)" = "$CANDIDATE_SHA"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            git merge-base --is-ancestor "$CANDIDATE_SHA" origin/master
+            test -z "$(git diff --name-only "$CANDIDATE_SHA" origin/master -- packages/)"
+          else
+            test "$(git rev-parse origin/master)" = "$CANDIDATE_SHA"
+          fi
           test "$(gh api repos/$GITHUB_REPOSITORY/branches/master --jq .protected)" = true
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
         with:
