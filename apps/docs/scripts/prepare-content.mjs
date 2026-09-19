@@ -238,12 +238,23 @@ async function loadVuePropSections() {
     if (!contract.propSections?.length) continue;
     const sections = [];
     for (const section of contract.propSections) {
-      let source = sources.get(section.source);
-      if (!source) {
-        source = await readFile(resolve(workspaceRoot, section.source), 'utf8');
-        sources.set(section.source, source);
+      const fragments = section.sources ?? [
+        { source: section.source, interfaces: section.interfaces },
+      ];
+      const props = [];
+      for (const fragment of fragments) {
+        let source = sources.get(fragment.source);
+        if (!source) {
+          source = await readFile(resolve(workspaceRoot, fragment.source), 'utf8');
+          sources.set(fragment.source, source);
+        }
+        const omitted = new Set(fragment.omit ?? []);
+        props.push(
+          ...fragment.interfaces
+            .flatMap((name) => extractInterfaceProps(source, name))
+            .filter((prop) => !omitted.has(prop.name)),
+        );
       }
-      const props = section.interfaces.flatMap((name) => extractInterfaceProps(source, name));
       const uniqueProps = [...new Map(props.map((prop) => [prop.name, prop])).values()];
       sections.push({ ...section, props: uniqueProps });
     }

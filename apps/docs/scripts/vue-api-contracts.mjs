@@ -799,4 +799,529 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/navigation/tabs',
+    {
+      sources: ['packages/ui/src/tabs/types.ts'],
+      propSections: [
+        {
+          heading: 'Tab',
+          level: 3,
+          source: 'packages/ui/src/tabs/types.ts',
+          interfaces: ['TabsProps'],
+        },
+        {
+          heading: 'TabPane',
+          level: 3,
+          sources: [
+            {
+              source: 'packages/ui/src/tabs/types.ts',
+              interfaces: ['PlainTab', 'TabPaneProps'],
+            },
+          ],
+        },
+      ],
+      models: ['`v-model` 对应 `modelValue`；也可用 `v-model:activeKey` 显式绑定当前标签页。'],
+      eventSections: [
+        {
+          heading: 'Tab',
+          level: 3,
+          rows: ['onChange', 'onTabClick', 'onTabClose', 'onVisibleTabsChange'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Tabs',
+          items: [
+            event('change', '[activeKey: string]', '当前标签页变化'),
+            event(
+              'tabClick',
+              '[activeKey: string, event: MouseEvent | KeyboardEvent]',
+              '点击或键盘激活标签页',
+            ),
+            event('tabClose', '[tabKey: string]', '关闭标签页'),
+            event(
+              'visibleTabsChange',
+              '[visibleState: Map<string, boolean>]',
+              '滚动折叠模式下可见项变化',
+            ),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Tabs',
+          items: [
+            slot('default', '{}', 'TabPane 子组件'),
+            slot('tabBarExtraContent', '{}', '标签栏扩展内容'),
+            slot('tabBar', 'TabsTabBarSlotProps', '自定义整个标签栏'),
+            slot('more', '{ hiddenTabs: PlainTab[] }', '自定义更多菜单触发器'),
+            slot('arrow', 'TabsArrowSlotProps', '自定义滚动折叠箭头'),
+          ],
+        },
+        {
+          name: 'TabPane',
+          items: [
+            slot('default', '{}', '标签页面板内容'),
+            slot('icon', '{}', '标签图标'),
+            slot('tab', '{}', '标签文本或内容'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '- 或使用 `` 逐项显式传入，使用 `` 时默认会渲染所有面板，可以通过设置 `keepDOM={false}` 只渲染当前面板，此时不会有动画效果。',
+          '- 或通过 `TabPane` 子组件逐项声明；默认会渲染所有面板，可以设置 `:keep-d-o-m="false"` 只渲染当前面板，此时不会有动画效果。',
+        ],
+        ['通过 renderArrow 修改', '通过 `#arrow` 插槽修改'],
+        ['renderArrow', '`arrow` 插槽'],
+        [
+          '传入 `renderTabBar` 函数可对标签栏进行二次封装。',
+          '使用 `#tabBar` 作用域插槽可对标签栏进行二次封装。',
+        ],
+        ['`renderTabBar` API', '`tabBar` 作用域插槽'],
+        ['renderTabBar', '`tabBar` 插槽'],
+        ['onTabClose', '`tabClose` 事件'],
+        ['onChange', '`change` 事件'],
+        ['motion={false}', ':motion="false"'],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/navigation/pagination',
+    {
+      sources: ['packages/ui/src/pagination/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/pagination/types.ts',
+          interfaces: ['PaginationProps'],
+        },
+      ],
+      models: ['`v-model` 对应 `modelValue`；也支持 `v-model:currentPage` 与 `v-model:pageSize`。'],
+      eventSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          rows: ['onChange', 'onPageChange', 'onPageSizeChange'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Pagination',
+          items: [
+            event('change', '[currentPage: number, pageSize: number]', '页码或每页条数变化'),
+            event('pageChange', '[currentPage: number]', '页码变化'),
+            event('pageSizeChange', '[pageSize: number]', '每页条数变化'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Pagination',
+          items: [slot('prev', '{}', '自定义上一页内容'), slot('next', '{}', '自定义下一页内容')],
+        },
+      ],
+      textRewrites: [
+        [
+          '传入 `currentPage` 后，分页器即为受控组件，一般配合 `onPageChange` 使用。当前激活页码完全取决于传入的 `currentPage`的 值',
+          '传入 `currentPage` 后分页器受控，推荐使用 `v-model:currentPage`，也可以监听 `pageChange` 事件更新当前页码。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/navigation/navigation',
+    {
+      sources: ['packages/ui/src/navigation/types.ts'],
+      propSections: [
+        {
+          heading: 'Nav',
+          level: 3,
+          source: 'packages/ui/src/navigation/types.ts',
+          interfaces: ['NavigationProps'],
+        },
+        {
+          heading: 'Nav.Item',
+          level: 3,
+          source: 'packages/ui/src/navigation/types.ts',
+          interfaces: ['NavItemProps'],
+        },
+        {
+          heading: 'Nav.Sub',
+          level: 3,
+          sources: [
+            {
+              source: 'packages/ui/src/navigation/types.ts',
+              interfaces: ['NavItemProps'],
+              omit: ['forwardRef', 'isSubNav', 'link', 'linkOptions', 'tabIndex'],
+            },
+            {
+              source: 'packages/ui/src/navigation/types.ts',
+              interfaces: ['SubNavProps'],
+            },
+          ],
+        },
+        {
+          heading: 'Nav.Header',
+          level: 3,
+          source: 'packages/ui/src/navigation/types.ts',
+          interfaces: ['NavHeaderProps'],
+        },
+        {
+          heading: 'Nav.Footer',
+          level: 3,
+          source: 'packages/ui/src/navigation/types.ts',
+          interfaces: ['NavFooterProps'],
+        },
+      ],
+      models: [
+        '折叠、展开项与选中项分别支持 `v-model:isCollapsed`、`v-model:openKeys`、`v-model:selectedKeys`。',
+      ],
+      eventSections: [
+        {
+          heading: 'Nav',
+          level: 3,
+          rows: ['onClick', 'onCollapseChange', 'onOpenChange', 'onSelect'],
+        },
+        {
+          heading: 'Nav.Item',
+          level: 3,
+          rows: ['onClick', 'onMouseEnter', 'onMouseLeave'],
+        },
+        {
+          heading: 'Nav.Sub',
+          level: 3,
+          rows: ['onMouseEnter', 'onMouseLeave'],
+        },
+        { heading: 'Nav.Footer', level: 3, rows: ['onClick'] },
+      ],
+      eventGroups: [
+        {
+          name: 'Navigation',
+          items: [
+            event('click', '[data: NavigationClickData]', '点击任意导航项'),
+            event('collapseChange', '[isCollapsed: boolean]', '折叠状态变化'),
+            event('openChange', '[data: NavigationOpenChangeData]', '子导航展开状态变化'),
+            event('select', '[data: NavigationSelectData]', '导航项选中'),
+            event('deselect', '[data?: unknown]', '导航项取消选中'),
+          ],
+        },
+        {
+          name: 'Nav.Item',
+          items: [
+            event('click', '[data: NavItemSelectedData]', '点击导航项'),
+            event('mouseenter / mouseleave', '[event: MouseEvent]', '指针进入或离开导航项'),
+          ],
+        },
+        {
+          name: 'Nav.Footer',
+          items: [event('click', '[event: MouseEvent]', '点击底部区域')],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Navigation',
+          items: [
+            slot('default', '{}', '声明式导航子组件'),
+            slot('header / footer', '{}', '头部或底部内容'),
+            slot('itemWrapper', 'NavigationWrapperData', '包装每个导航项'),
+          ],
+        },
+        {
+          name: 'Nav.Item',
+          items: [
+            slot('default / text', '{}', '导航项文本或内容'),
+            slot('icon', '{}', '导航项图标'),
+          ],
+        },
+        {
+          name: 'Nav.Sub',
+          items: [
+            slot('default', '{}', '子导航项'),
+            slot('text / icon / expandIcon', '{}', '标题、图标与展开图标'),
+          ],
+        },
+        {
+          name: 'Nav.Header',
+          items: [slot('default / text', '{}', '头部内容'), slot('logo', '{}', 'Logo')],
+        },
+        {
+          name: 'Nav.Footer',
+          items: [slot('default', '{}', '底部内容'), slot('collapseButton', '{}', '折叠按钮内容')],
+        },
+      ],
+      textRewrites: [
+        ['### JSX 写法', '### 组件写法'],
+        ['title="JSX 写法"', 'title="组件写法"'],
+        [
+          '可以使用 JSX 写法定义导航头部、导航项以及导航底部。使用 JSX写法时，在 Nav 的 children 层级，你除了可以使用 Nav.Header、Nav.Item、Nav.Sub、Nav.Footer外，你也可以置入其他自定义的 VNodeChild 元素',
+          '可以通过模板定义导航头部、导航项与底部。在 Nav 默认插槽中，除 Nav.Header、Nav.Item、Nav.Sub、Nav.Footer 外，也可以放置其他 Vue 节点。',
+        ],
+        ['配合 react-router 等路由组件', '配合 vue-router 等路由组件'],
+        [
+          '为了在使用 react-router 等路由组件时，能将 NavItem 包裹在路由组件提供的 Link 或者 NavLink 中来让用户点击 NavItem 时候触发路由组件的点击事件， 我们需要自定义渲染。',
+          '配合 vue-router 时，可使用 `#itemWrapper` 把 Nav.Item 包裹在 RouterLink 中，由路由组件处理导航。',
+        ],
+        [
+          '使用 renderWrapper 在每个导航项外包裹自定义导航组件 [查看此 CodeSandBox](https://codesandbox.io/s/semi-navigation-with-react-router-9kk9dm?file=/src/App.js)',
+          '使用 `#itemWrapper` 作用域插槽在每个导航项外包裹自定义路由组件。',
+        ],
+        [
+          '`onCollapseChange(isCollapsed: boolean): void`',
+          '`collapseChange(isCollapsed: boolean)` 事件',
+        ],
+        [
+          '`onSelect({ itemKey: string, selectedKeys: string[], domEvent: MouseEvent, isOpen: boolean }): void`',
+          '`select(data: NavigationSelectData)` 事件',
+        ],
+        [
+          '`onOpenChange({ itemKey: string, openKeys: string[], domEvent: MouseEvent, isOpen: boolean }): void`',
+          '`openChange(data: NavigationOpenChangeData)` 事件',
+        ],
+        [
+          '在使用函数式组件时，应该用 useState 或者 useMemo 包裹一下 items，原因是 items 直接传一个数组会触发组件重新渲染。',
+          '请保持 `items` 的引用稳定；在 Vue 中可使用 `shallowRef` 或 `computed` 管理数组。',
+        ],
+        ['配合 `onOpenChange` 回调', '配合 `openChange` 事件'],
+        ['配合 `onSelect` 回调', '配合 `select` 事件'],
+        ['Footer 组件的 children 参数为空', 'Nav.Footer 默认插槽为空'],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/show/dropdown',
+    {
+      sources: ['packages/ui/src/dropdown/types.ts', 'packages/ui/src/tooltip/types.ts'],
+      propSections: [
+        {
+          heading: 'Dropdown',
+          level: 3,
+          sources: [
+            {
+              source: 'packages/ui/src/tooltip/types.ts',
+              interfaces: ['TooltipProps'],
+              omit: [
+                'class',
+                'content',
+                'mouseLeaveDelay',
+                'position',
+                'prefixCls',
+                'returnFocusOnClose',
+                'role',
+                'showArrow',
+                'spacing',
+                'style',
+                'trigger',
+                'visible',
+                'wrapperClassName',
+              ],
+            },
+            {
+              source: 'packages/ui/src/dropdown/types.ts',
+              interfaces: ['DropdownProps'],
+            },
+          ],
+        },
+        {
+          heading: 'Dropdown.Menu',
+          level: 3,
+          source: 'packages/ui/src/dropdown/types.ts',
+          interfaces: ['DropdownMenuProps'],
+        },
+        {
+          heading: 'Dropdown.Item',
+          level: 3,
+          source: 'packages/ui/src/dropdown/types.ts',
+          interfaces: ['DropdownItemProps'],
+        },
+        {
+          heading: 'Dropdown.Title',
+          level: 3,
+          source: 'packages/ui/src/dropdown/types.ts',
+          interfaces: ['DropdownTitleProps'],
+        },
+      ],
+      models: ['`v-model:visible` 对应 `visible` 与 `update:visible`。'],
+      eventSections: [
+        {
+          heading: 'Dropdown',
+          level: 3,
+          rows: ['onClickOutSide', 'onEscKeyDown', 'onVisibleChange'],
+        },
+        {
+          heading: 'Dropdown.Item',
+          level: 3,
+          rows: ['onClick', 'onMouseEnter', 'onMouseLeave', 'onContextMenu'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Dropdown',
+          items: [
+            event('visibleChange', '[visible: boolean]', '浮层显隐变化'),
+            event('clickOutside', '[event: MouseEvent]', '点击触发器和浮层以外区域'),
+            event('escKeydown', '[event: KeyboardEvent]', '按下 Escape'),
+            event('afterClose', '[]', '关闭动画完成'),
+          ],
+        },
+        {
+          name: 'Dropdown.Item',
+          items: [
+            event('click / contextmenu', '[event: MouseEvent]', '点击或右键点击菜单项'),
+            event('mouseenter / mouseleave', '[event: MouseEvent]', '指针进入或离开菜单项'),
+            event('keydown', '[event: KeyboardEvent]', '菜单项键盘事件'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Dropdown',
+          items: [slot('default', '{}', '触发元素'), slot('content', '{}', '下拉内容')],
+        },
+        {
+          name: 'Dropdown.Menu / Title',
+          items: [slot('default', '{}', '菜单项或标题内容')],
+        },
+        {
+          name: 'Dropdown.Item',
+          items: [slot('default', '{}', '菜单项内容'), slot('icon', '{}', '菜单项图标')],
+        },
+      ],
+      textRewrites: [
+        [
+          '在 Dropdown 的 children 中为它的 Trigger 触发器：默认为 hover 展示，可通过 props.trigger 修改为 `click`、`custom`、`contextMenu`等值指定不同触发方式',
+          'Dropdown 的默认插槽是触发元素：默认 hover 展示，可通过 `trigger` 改为 `click`、`custom`、`contextMenu` 等触发方式。',
+        ],
+        [
+          '更复杂的自定义结构，你可以通过 children 传入 ReactNode自定义渲染',
+          '更复杂的结构可以通过默认插槽自定义渲染。',
+        ],
+        [
+          '点击菜单项后可触发不同鼠标事件，支持 `onClick`，`onMouseEnter`， `onMouseLeave` 和 `onContextMenu`。',
+          '菜单项支持 `click`、`mouseenter`、`mouseleave` 与 `contextmenu` 事件。',
+        ],
+        ['### Json 用法', '### JSON 配置用法'],
+        ['title="Json 用法"', 'title="JSON 配置用法"'],
+        ['若菜单项绑定了 onClick，事件会被触发', '若菜单项监听了 `click`，事件会被触发'],
+        [
+          '更复杂的自定义结构，你可以通过 children 传入 VNodeChild自定义渲染',
+          '更复杂的结构可以通过默认插槽自定义渲染。',
+        ],
+        ['非 Children、非弹出层内部区域', '触发元素和弹出层以外区域'],
+        ['Trigger 元素（即 Dropdown children）', '触发元素（即默认插槽内容）'],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/show/popover',
+    {
+      sources: ['packages/ui/src/popover/types.ts', 'packages/ui/src/tooltip/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          sources: [
+            {
+              source: 'packages/ui/src/tooltip/types.ts',
+              interfaces: ['TooltipProps'],
+              omit: ['class', 'content', 'prefixCls', 'role', 'showArrow', 'style', 'zIndex'],
+            },
+            {
+              source: 'packages/ui/src/popover/types.ts',
+              interfaces: ['PopoverProps'],
+            },
+          ],
+        },
+      ],
+      models: ['`v-model:visible` 对应 `visible` 与 `update:visible`。'],
+      eventSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          rows: ['onClickOutSide', 'onEscKeyDown', 'onVisibleChange'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Popover',
+          items: [
+            event('visibleChange', '[visible: boolean]', '浮层显隐变化'),
+            event('clickOutside', '[event: MouseEvent]', '点击触发器和浮层以外区域'),
+            event('escKeydown', '[event: KeyboardEvent]', '按下 Escape'),
+            event('afterClose', '[]', '关闭动画完成'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Popover',
+          items: [
+            slot('default', '{}', '触发元素'),
+            slot('content', '{ initialFocusRef }', '浮层内容'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          'Popover 需要将 DOM 事件监听器应用到 children 中，如果子元素是自定义的组件，你需要确保它能将属性传递至底层的 DOM 元素',
+          'Popover 会把 DOM 事件监听器合并到默认插槽的触发元素；使用自定义组件时，需要将 attrs 透传到底层 DOM 元素。',
+        ],
+        [
+          '同时为了计算弹出层的定位，需要获取到 children 的真实 DOM 元素，因此 Popover 支持如下类型的 children',
+          '定位计算需要取得触发元素的真实 DOM 节点，因此默认插槽应提供以下类型的内容：',
+        ],
+        ['1. 真实 DOM 节点，如 span，div，p...', '1. 原生 DOM 元素，例如 `span`、`div`、`p`'],
+        [
+          '2. 使用 forwardRef 包裹后的函数式组件，将 props 与 ref 透传到 children 内真实的 DOM 节点上',
+          '2. 能够透传 attrs，并最终渲染为单个 DOM 根节点的 Vue 组件',
+        ],
+        [
+          '3. Class Component，不强制绑定 ref，但需要确保 props 可被透传至真实的 DOM 节点上',
+          '3. 多个根节点或特殊节点会按 `wrapWhenSpecial` 的设置使用包装元素',
+        ],
+        [
+          '将浮层的触发器 Trigger 作为`children`，使用 Popover 包裹（如下的例子中触发器为 Tag 元素）。浮层内容通过`content`传入',
+          '将触发元素放入默认插槽，并通过 `#content` 插槽提供浮层内容。',
+        ],
+        ['condition={false}', ':condition="false"'],
+        [
+          '显示的内容（函数类型，2.8.0 版本支持）',
+          '显示内容；需要 initialFocusRef 时使用 content 插槽',
+        ],
+        [
+          'const renderContent = ({ initialFocusRef }) => {',
+          '使用 `#content="{ initialFocusRef }"` 获取初始焦点引用。',
+        ],
+        ['Popover 的 children', 'Popover 的默认插槽触发元素'],
+        [
+          'Popover 底层依赖了 Tooltip，Tooltip 为了计算定位，需要获取到 children 的真实 DOM 元素，因此 Popover 类型目前支持如下类型的 children：',
+          'Popover 底层依赖 Tooltip 定位，需要取得默认插槽触发元素的真实 DOM 节点：',
+        ],
+        [
+          '1. Class Component，不强制绑定ref，但需要确保 props 可被透传至真实的 DOM 节点上',
+          '1. 能够透传 attrs，并最终渲染为单个 DOM 根节点的 Vue 组件',
+        ],
+        [
+          '2. 使用 forwardRef 包裹后的函数式组件，将 props 与 ref 透传到 children 内真实的 DOM 节点上',
+          '2. 原生 DOM 元素，例如 `span`、`div`、`p`',
+        ],
+        ['3. 真实 DOM 节点, 如 span，div，p...', '3. 特殊节点会按 `wrapWhenSpecial` 使用包装元素'],
+        [
+          '若通过 ref 或 findDOMNode 获取到的真实 DOM 节点宽高并非是你的 children 元素的全部',
+          '若触发元素根节点的宽高并未覆盖全部可见内容',
+        ],
+        ['children', '默认插槽触发元素'],
+        [
+          '1. 能够透传 attrs，并最终渲染为单个 DOM 根节点的 Vue 组件\n2. 能够透传 attrs，并最终渲染为单个 DOM 根节点的 Vue 组件\n3. 特殊节点会按 `wrapWhenSpecial` 使用包装元素',
+          '1. 能够透传 attrs，并最终渲染为单个 DOM 根节点的 Vue 组件\n2. 原生 DOM 元素，例如 `span`、`div`、`p`\n3. 特殊节点会按 `wrapWhenSpecial` 使用包装元素',
+        ],
+        [
+          ' 1. 能够透传 attrs，并最终渲染为单个 DOM 根节点的 Vue 组件\n 2. 能够透传 attrs，并最终渲染为单个 DOM 根节点的 Vue 组件\n 3. 特殊节点会按 `wrapWhenSpecial` 使用包装元素',
+          ' 1. 能够透传 attrs，并最终渲染为单个 DOM 根节点的 Vue 组件\n 2. 原生 DOM 元素，例如 `span`、`div`、`p`\n 3. 特殊节点会按 `wrapWhenSpecial` 使用包装元素',
+        ],
+      ],
+    },
+  ],
 ]);
