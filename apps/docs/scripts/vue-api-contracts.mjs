@@ -3017,4 +3017,104 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/feedback/spin',
+    {
+      sources: ['packages/ui/src/spin/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/spin/types.ts',
+          interfaces: ['SpinProps'],
+          descriptions: { class: 'Vue 原生类名', className: '样式类名' },
+        },
+      ],
+      usageNotes: [
+        '`indicator` 与 `tip` 同时支持 VNode prop；模板中优先使用同名插槽，插槽内容优先于 prop。',
+      ],
+      slotGroups: [
+        {
+          name: 'Spin',
+          items: [
+            slot('default', '{}', '被加载器包裹的内容'),
+            slot('indicator', '{}', '自定义加载指示符'),
+            slot('tip', '{}', '自定义加载说明'),
+          ],
+        },
+      ],
+    },
+  ],
+  [
+    '/zh-CN/show/collapsible',
+    {
+      sources: ['packages/ui/src/collapsible/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/collapsible/types.ts',
+          interfaces: ['CollapsibleProps'],
+          descriptions: { class: 'Vue 原生类名' },
+        },
+      ],
+      usageNotes: [
+        '`isOpen` 是单向受控 prop；组件不提供 `v-model`，由调用方更新展开状态。',
+        '`lazyRender=true` 需配合 `keepDOM`：首次关闭时不挂载内容，打开后保留 DOM。',
+      ],
+      eventSections: [{ heading: 'API 参考', level: 2, rows: ['onMotionEnd'] }],
+      eventGroups: [
+        {
+          name: 'Collapsible',
+          items: [event('motionEnd', '[]', '展开或折叠过渡完成后触发')],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Collapsible',
+          items: [slot('default', '{}', '展开或折叠的内容')],
+        },
+      ],
+      textRewrites: [['`id` props', '`id` prop']],
+    },
+  ],
+  [
+    '/zh-CN/basic/grid',
+    {
+      sources: ['packages/ui/src/grid/types.ts'],
+      propSections: [
+        {
+          heading: 'Row',
+          level: 3,
+          source: 'packages/ui/src/grid/types.ts',
+          interfaces: ['RowProps'],
+          descriptions: { prefixCls: '样式类名前缀' },
+          defaults: { gutter: '0', prefixCls: '`semi`' },
+        },
+        {
+          heading: 'Col',
+          level: 3,
+          source: 'packages/ui/src/grid/types.ts',
+          interfaces: ['ColSize', 'ColProps'],
+          descriptions: { prefixCls: '样式类名前缀' },
+          defaults: { prefixCls: '`semi`' },
+        },
+      ],
+      usageNotes: [
+        'Row 的默认插槽放置 Col；Col 的默认插槽放置列内容。',
+        '`gutter` 支持数值、六断点对象，或按“水平、垂直”排列的二元组；二元组两项也可分别使用断点对象。',
+        '`align` 与 `justify` 仅在 `type="flex"` 时生效。',
+      ],
+      slotGroups: [
+        {
+          name: 'Row',
+          items: [slot('default', '{}', 'Col 子组件')],
+        },
+        {
+          name: 'Col',
+          items: [slot('default', '{}', '列内容')],
+        },
+      ],
+    },
+  ],
 ]);
