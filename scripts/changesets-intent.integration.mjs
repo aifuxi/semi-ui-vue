@@ -115,3 +115,87 @@ test('PR 检查区分遗漏、空记录、手改版本与可信机器人版本 P
     await rm(cwd, { recursive: true, force: true });
   }
 });
+
+test('清理历史空 changeset 无需补记录，删除非空记录仍必须声明意图', async () => {
+  const cwd = await mkdtemp(path.join(tmpdir(), 'semi-cleanup-'));
+  const git = (...args) =>
+    execFileSync('git', args, { cwd, encoding: 'utf8', stdio: 'pipe' }).trim();
+  const commit = () => {
+    git('add', '.');
+    git(
+      '-c',
+      'user.name=Probe',
+      '-c',
+      'user.email=probe@example.invalid',
+      'commit',
+      '--allow-empty',
+      '-m',
+      'fixture',
+    );
+    return git('rev-parse', 'HEAD');
+  };
+  try {
+    await mkdir(path.join(cwd, '.changeset'));
+    await writeFile(
+      path.join(cwd, '.changeset/config.json'),
+      await readFile(path.join(root, '.changeset/config.json')),
+    );
+    await writeFile(
+      path.join(cwd, 'package.json'),
+      JSON.stringify({ name: 'cleanup-probe', private: true }),
+    );
+    await writeFile(path.join(cwd, 'pnpm-workspace.yaml'), 'packages:\n  - packages/*\n');
+    await writeFile(path.join(cwd, '.gitignore'), 'node_modules\n');
+    await mkdir(path.join(cwd, 'node_modules/@changesets'), { recursive: true });
+    await symlink(
+      path.join(root, 'node_modules/@changesets/cli'),
+      path.join(cwd, 'node_modules/@changesets/cli'),
+    );
+    for (const { name, directory } of publicPackages) {
+      await mkdir(path.join(cwd, 'packages', directory), { recursive: true });
+      await writeFile(
+        path.join(cwd, 'packages', directory, 'package.json'),
+        JSON.stringify({ name, version: '1.0.0' }),
+      );
+    }
+    // base 已经包含历史空记录，删除它才是“清理”而不是“声明意图”
+    await writeFile(path.join(cwd, '.changeset/empty-old.md'), '---\n---\n');
+    await writeFile(
+      path.join(cwd, '.changeset/release-old.md'),
+      "---\n'@aifuxi/semi-ui-vue': patch\n---\n\nprobe\n",
+    );
+    git('init', '-b', 'master');
+    const base = commit();
+    const verify = () =>
+      execFileSync(process.execPath, [path.join(root, 'scripts/verify-changesets.mjs')], {
+        cwd,
+        encoding: 'utf8',
+        stdio: 'pipe',
+        env: {
+          ...process.env,
+          BASE_SHA: base,
+          HEAD_SHA: git('rev-parse', 'HEAD'),
+          GITHUB_REPOSITORY: 'aifuxi/semi-ui-vue',
+          PR_HEAD_REPO: 'aifuxi/semi-ui-vue',
+          PR_HEAD_REF: 'feature',
+          PR_AUTHOR: 'developer',
+          RELEASE_BOT_LOGIN: 'release[bot]',
+        },
+      });
+
+    await rm(path.join(cwd, '.changeset/empty-old.md'));
+    commit();
+    const cleanup = verify();
+    assert.match(cleanup, /仅删除空 changeset/);
+
+    // 同一个 PR 里再删除非空记录时，仍必须新增记录声明意图
+    await rm(path.join(cwd, '.changeset/release-old.md'));
+    commit();
+    assert.throws(
+      () => verify(),
+      (error) => error.stderr.includes('PR must add a changeset'),
+    );
+  } finally {
+    await rm(cwd, { recursive: true, force: true });
+  }
+});
