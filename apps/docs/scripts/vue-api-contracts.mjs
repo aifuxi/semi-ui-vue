@@ -1092,6 +1092,214 @@ export const vueApiContracts = new Map([
     },
   ],
   [
+    '/zh-CN/navigation/breadcrumb',
+    {
+      sources: ['packages/ui/src/breadcrumb/types.ts', 'packages/ui/src/breadcrumb/index.ts'],
+      propSections: [
+        {
+          heading: 'Breadcrumb',
+          level: 3,
+          source: 'packages/ui/src/breadcrumb/types.ts',
+          interfaces: ['BreadcrumbProps'],
+        },
+        {
+          heading: 'Breadcrumb.Item',
+          level: 3,
+          source: 'packages/ui/src/breadcrumb/types.ts',
+          interfaces: ['BreadcrumbItemProps'],
+        },
+        {
+          heading: 'Route',
+          level: 3,
+          source: 'packages/ui/src/breadcrumb/types.ts',
+          interfaces: ['BreadcrumbRoute'],
+        },
+      ],
+      eventSections: [
+        { heading: 'Breadcrumb', level: 3, rows: ['onClick'] },
+        { heading: 'Breadcrumb.Item', level: 3, rows: ['onClick'] },
+      ],
+      eventGroups: [
+        {
+          name: 'Breadcrumb',
+          items: [
+            event(
+              'click',
+              '[item: BreadcrumbItemInfo, event: MouseEvent | KeyboardEvent]',
+              '点击任一面包屑项',
+            ),
+          ],
+        },
+        {
+          name: 'Breadcrumb.Item',
+          items: [
+            event(
+              'click',
+              '[item: BreadcrumbItemInfo, event: MouseEvent | KeyboardEvent]',
+              '点击当前面包屑项',
+            ),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Breadcrumb',
+          items: [
+            slot('default', '{}', 'Breadcrumb.Item 子组件'),
+            slot('item', '{ index: number; route: BreadcrumbRoute }', '自定义路由项'),
+            slot(
+              'more',
+              '{ expand: (event?: MouseEvent | KeyboardEvent) => void; items: VNodeChild[] }',
+              '自定义折叠项',
+            ),
+            slot('separator', '{}', '自定义分隔符'),
+          ],
+        },
+        {
+          name: 'Breadcrumb.Item',
+          items: [
+            slot('default', '{}', '面包屑项内容'),
+            slot('icon', '{}', '图标'),
+            slot('separator', '{}', '分隔符'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '| activeIndex| 受控使用，当前选择的导航序号 | - | 2.61.0 |',
+          '| activeIndex | 受控使用，当前选择的导航序号 | number | - | 2.61.0 |',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/navigation/steps',
+    {
+      sources: ['packages/ui/src/steps/types.ts', 'packages/ui/src/steps/index.ts'],
+      propSections: [
+        {
+          heading: 'Steps',
+          level: 3,
+          source: 'packages/ui/src/steps/types.ts',
+          interfaces: ['StepsProps'],
+          aliases: { ariaLabel: 'aria-label' },
+        },
+        {
+          heading: 'Steps.Step',
+          level: 3,
+          source: 'packages/ui/src/steps/types.ts',
+          interfaces: ['StepProps'],
+          aliases: { ariaLabel: 'aria-label' },
+        },
+      ],
+      eventSections: [
+        { heading: 'Steps', level: 3, rows: ['onChange'] },
+        { heading: 'Steps.Step', level: 3, rows: ['onClick', 'onKeyDown'] },
+      ],
+      eventGroups: [
+        {
+          name: 'Steps',
+          items: [event('change', '[current: number]', '当前步骤变化')],
+        },
+        {
+          name: 'Steps.Step',
+          items: [
+            event('click', '[event: MouseEvent]', '点击步骤'),
+            event('keyDown', '[event: KeyboardEvent]', '步骤触发键盘事件'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Steps',
+          items: [slot('default', '{}', 'Steps.Step 子组件')],
+        },
+        {
+          name: 'Steps.Step',
+          items: [
+            slot('description', '{}', '步骤描述'),
+            slot('icon', '{}', '步骤图标'),
+            slot('title', '{}', '步骤标题'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['### onChange 回调', '### change 事件'],
+        ['title="onChange 回调"', 'title="change 事件"'],
+        [
+          '从 1.29.0 版本开始支持 onChange，可以使用它来实现处理进度。onChange 接收一个 number 类型的参数，该参数等于 initial + current。',
+          '从 1.29.0 版本开始支持 `change` 事件，可以使用它来实现处理进度。事件接收一个 number 类型的参数，该参数等于 initial + current。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/navigation/anchor',
+    {
+      sources: ['packages/ui/src/anchor/types.ts', 'packages/ui/src/anchor/index.ts'],
+      propSections: [
+        {
+          heading: 'Anchor',
+          level: 3,
+          source: 'packages/ui/src/anchor/types.ts',
+          interfaces: ['AnchorProps'],
+        },
+        {
+          heading: 'Anchor.Link',
+          level: 3,
+          source: 'packages/ui/src/anchor/types.ts',
+          interfaces: ['AnchorLinkProps'],
+        },
+      ],
+      eventSections: [{ heading: 'Anchor', level: 3, rows: ['onChange', 'onClick'] }],
+      eventGroups: [
+        {
+          name: 'Anchor',
+          items: [
+            event('change', '[currentLink: string, previousLink: string]', '当前锚点变化'),
+            event('click', '[event: MouseEvent | KeyboardEvent, currentLink: string]', '点击锚点'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Anchor',
+          items: [slot('default', '{}', 'Anchor.Link 子组件')],
+        },
+        {
+          name: 'Anchor.Link',
+          items: [
+            slot('default', '{}', '嵌套 Anchor.Link 子组件'),
+            slot('title', '{}', '链接标题'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '| ------------- | ------------------------------------------------ | ----------------------------------- | --------- | - |',
+          '| ------------- | ------------------------------------------------ | ----------------------------------- | --------- | ------- |',
+        ],
+        [
+          ` import React from 'react';
+ import { Anchor } from '@aifuxi/semi-ui-vue';
+
+ function() {
+ // 此容器不是 Anchor 组件的容器，是文档内容的容器，因为要根据文档容器去计算当前是哪个 id 在容器上方
+ const getContainer = () => {
+ return document.querySelector('.my-container');
+ }
+ return (
+ /* Links */
+
+ )
+ }`,
+          ` // 将函数传给 Anchor 的 getContainer prop
+ const getContainer = () => document.querySelector<HTMLElement>('.my-container');`,
+        ],
+      ],
+    },
+  ],
+  [
     '/zh-CN/show/dropdown',
     {
       sources: ['packages/ui/src/dropdown/types.ts', 'packages/ui/src/tooltip/types.ts'],
