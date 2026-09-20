@@ -4380,4 +4380,253 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/input/slider',
+    {
+      sources: ['packages/ui/src/slider/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/slider/types.ts',
+          interfaces: ['SliderProps'],
+          aliases: {
+            ariaLabel: 'aria-label',
+            ariaLabelledby: 'aria-labelledby',
+            ariaValueText: 'aria-valuetext',
+          },
+          descriptions: {
+            ariaLabel: '`aria-label` 的类型化 Vue 映射',
+            ariaLabelledby: '`aria-labelledby` 的类型化 Vue 映射',
+            ariaValueText: '`aria-valuetext` 的类型化 Vue 映射',
+            className: '样式类名',
+            modelValue: '`v-model` 绑定值',
+            value: '兼容受控值',
+          },
+          defaults: {
+            disabled: 'false',
+            included: 'true',
+            max: '100',
+            min: '0',
+            range: 'false',
+            showArrow: 'true',
+            showBoundary: 'false',
+            showMarkLabel: 'true',
+            step: '1',
+            tipFormatter: '`value => value`',
+            tooltipOnMark: 'false',
+            vertical: 'false',
+            verticalReverse: 'false',
+          },
+        },
+      ],
+      models: [
+        '`v-model` 对应 `modelValue` 与 `update:modelValue`；兼容入口 `value` 可通过 `v-model:value` 绑定。',
+      ],
+      usageNotes: [
+        '`tipFormatter` 与 `getAriaValueText` 是格式化 callback props，不转换为事件。',
+        '`SliderValue` 在普通模式为 number，在 range 模式为 number[]。',
+      ],
+      eventSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          rows: ['onAfterChange', 'onChange', 'onMouseUp'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Slider',
+          items: [
+            event('change', '[value: SliderValue]', '滑块值变化'),
+            event('afterChange', '[value: SliderValue]', '一次拖动或键盘操作结束'),
+            event('mouseUp', '[event: MouseEvent]', '鼠标松开滑块'),
+            event('update:modelValue', '[value: SliderValue]', '更新默认 v-model'),
+            event('update:value', '[value: SliderValue]', '更新兼容 value 绑定'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['## API参考', '## API 参考'],
+        ['`tipFormatter={null}`', '`:tip-formatter="null"`'],
+        [
+          '配合 onChange 可以实现动态的分段背景效果',
+          '配合 `change` 事件可以实现动态的分段背景效果',
+        ],
+        [
+          '滑块位置即 `Slider` 的值由 value 控制，配合 onChange 使用。',
+          '使用 `v-model` 控制滑块值，也可使用兼容的 `v-model:value`。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/show/sidesheet',
+    {
+      sources: ['packages/ui/src/side-sheet/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/side-sheet/types.ts',
+          interfaces: ['SideSheetProps'],
+          descriptions: {
+            'aria-label': '对话框的可访问名称',
+            afterVisibleChange: '显隐动画完成 callback；同时触发同名事件',
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            closeIcon: '关闭图标 VNode；closeIcon 插槽优先',
+            footer: '底部 VNode；footer 插槽优先',
+            title: '标题 VNode；title 插槽优先',
+          },
+          defaults: {
+            canVerticalSetWidth: 'false',
+            closable: 'true',
+            closeOnEsc: 'false',
+            disableScroll: 'true',
+            keepDOM: 'false',
+            mask: 'true',
+            maskClosable: 'true',
+            motion: 'true',
+            placement: '`right`',
+            size: '`small`',
+            visible: 'false',
+            zIndex: '1000',
+          },
+        },
+      ],
+      models: ['`v-model:visible` 对应 `visible` 与 `update:visible`。'],
+      usageNotes: [
+        '`getPopupContainer` 返回 Portal 容器；不传时渲染到 document.body。',
+        '`afterVisibleChange` 保留 callback prop，并同时提供同名 Vue 事件。',
+        '`title`、`footer`、`closeIcon` 保留 VNode prop 入口；同名插槽优先。',
+      ],
+      eventSections: [{ heading: 'API 参考', level: 2, rows: ['onCancel'] }],
+      eventGroups: [
+        {
+          name: 'SideSheet',
+          items: [
+            event(
+              'cancel',
+              '[event: MouseEvent | KeyboardEvent]',
+              '点击关闭、遮罩或按 Escape 时触发',
+            ),
+            event('afterVisibleChange', '[visible: boolean]', '显隐动画完成'),
+            event('update:visible', '[visible: boolean]', '关闭时更新 v-model:visible'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'SideSheet',
+          items: [
+            slot('default', '{}', '面板主体内容'),
+            slot('title', '{}', '面板标题'),
+            slot('footer', '{}', '底部操作区'),
+            slot('closeIcon', '{}', '关闭图标'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ["`width={900}` / `width={'800px'}`", '`:width="900"` / `width="800px"`'],
+        ['`mask={false}`', '`:mask="false"`'],
+        ['`disableScroll={false}`', '`:disable-scroll="false"`'],
+        ['visible={visible} onCancel={change}', 'v-model:visible="visible" @cancel="change"'],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/show/collapse',
+    {
+      sources: ['packages/ui/src/collapse/types.ts', 'packages/ui/src/collapse/index.ts'],
+      propSections: [
+        {
+          heading: 'Collapse',
+          level: 3,
+          source: 'packages/ui/src/collapse/types.ts',
+          interfaces: ['CollapseProps'],
+          descriptions: {
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            activeKey: '`v-model:activeKey` 绑定值',
+            collapseIcon: '折叠图标 VNode；collapseIcon 插槽优先',
+            expandIcon: '展开图标 VNode；expandIcon 插槽优先',
+          },
+          defaults: {
+            accordion: 'false',
+            clickHeaderToExpand: 'true',
+            collapseIcon: '内置 `IconChevronUp`',
+            expandIcon: '内置 `IconChevronDown`',
+            expandIconPosition: '`right`',
+            keepDOM: 'false',
+            lazyRender: 'false',
+            motion: 'true',
+          },
+        },
+        {
+          heading: 'Collapse.Panel',
+          level: 3,
+          source: 'packages/ui/src/collapse/types.ts',
+          interfaces: ['CollapsePanelProps'],
+          descriptions: {
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            extra: '右上角辅助 VNode；extra 插槽优先',
+            header: '面板头 VNode；header 插槽优先',
+          },
+          defaults: { disabled: 'false', showArrow: 'true' },
+        },
+      ],
+      models: ['`v-model:activeKey` 对应 `activeKey` 与 `update:activeKey`。'],
+      usageNotes: [
+        '`Collapse.Panel` 同时作为 `Collapse.Panel` 静态成员和 `CollapsePanel` 具名导出提供。',
+        '`expandIcon`、`collapseIcon`、Panel 的 `header` 与 `extra` 均保留 VNode prop；同名插槽优先。',
+      ],
+      eventSections: [
+        { heading: 'Collapse', level: 3, rows: ['onChange'] },
+        { heading: 'Collapse.Panel', level: 3, rows: ['onMotionEnd'] },
+      ],
+      eventGroups: [
+        {
+          name: 'Collapse',
+          items: [
+            event('change', '[activeKey: CollapseActiveKey, event: MouseEvent]', '展开项变化'),
+            event('update:activeKey', '[activeKey: CollapseActiveKey]', '更新 v-model:activeKey'),
+          ],
+        },
+        {
+          name: 'CollapsePanel',
+          items: [event('motionEnd', '[]', '面板展开或收起动画结束')],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Collapse',
+          items: [
+            slot('default', '{}', 'CollapsePanel 子组件'),
+            slot('expandIcon', '{}', '展开图标'),
+            slot('collapseIcon', '{}', '折叠图标'),
+          ],
+        },
+        {
+          name: 'CollapsePanel',
+          items: [
+            slot('default', '{}', '面板内容'),
+            slot('header', '{}', '面板头'),
+            slot('extra', '{}', '右上角辅助内容；header 为字符串时生效'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '**仅在 header 为 string 时生效， 如果 header 为 ReactNode 会包含 extra 所在的区域，可以自行渲染**',
+          '**`#extra` 仅在 header 为字符串时单独渲染；自定义 `#header` 时可自行组织辅助区域。**',
+        ],
+        [
+          '可以在自定义元素的 onClick 事件回调中，阻止事件冒泡至 Collapse.Header 即可。若自定义元素未提供 event 对象，再包裹一层 div，于 div onClick 中阻止冒泡亦可。',
+          '可以在自定义元素的 `@click` 监听器中阻止事件冒泡至 Collapse header；必要时可外包一层 div 处理 `@click`。',
+        ],
+      ],
+    },
+  ],
 ]);
