@@ -144,9 +144,10 @@ body[theme-mode='dark'] .site-header {
 }
 
 .docs-nav-icon {
-  width: 16px;
-  height: 16px;
-  opacity: 0.75;
+  display: block;
+  align-self: center;
+  width: 20px;
+  height: 20px;
 }
 
 .title-area {
@@ -328,6 +329,7 @@ body[theme-mode='dark'] .site-header {
 }
 
 .category-anchor a {
+  position: relative;
   display: block;
   padding: 5px 8px;
   font-size: 12px;
@@ -343,9 +345,19 @@ body[theme-mode='dark'] .site-header {
 }
 
 .category-anchor a.active {
-  margin-left: -1px;
-  color: var(--semi-color-primary);
-  border-left: 2px solid var(--semi-color-primary);
+  color: var(--semi-color-text-0);
+}
+
+.category-anchor a.active::before {
+  position: absolute;
+  top: 50%;
+  left: -1px;
+  width: 2px;
+  height: 24px;
+  border-radius: 1px;
+  background: var(--semi-color-primary);
+  content: '';
+  transform: translateY(-50%);
 }
 
 /* 站内搜索 */

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, shallowRef } from 'vue';
+import { computed, onMounted, shallowRef } from 'vue';
 import { withBase, useRouter } from 'vitepress';
 import {
   Nav,
@@ -16,6 +16,11 @@ defineEmits<{ close: [] }>();
 const router = useRouter();
 const openKeys = shallowRef<ItemKey[]>(docsNav.categories.map((category) => category.id));
 const selectedKeys = computed(() => [normalizeRoute(props.path)]);
+const subNavMotion = shallowRef(false);
+
+onMounted(() => {
+  subNavMotion.value = true;
+});
 
 function onOpenChange(data: NavigationOpenChangeData): void {
   openKeys.value = [...data.openKeys];
@@ -43,7 +48,7 @@ function onNavigate(event: MouseEvent, path: string): void {
       body-style="height: 100%"
       :selected-keys="selectedKeys"
       :open-keys="openKeys"
-      :sub-nav-motion="false"
+      :sub-nav-motion="subNavMotion"
       @open-change="onOpenChange"
     >
       <SubNav
