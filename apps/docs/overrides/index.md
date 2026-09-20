@@ -6,7 +6,7 @@ order: 0
 ---
 
 <div class="docs-home-hero">
-    <div class="docs-home-eyebrow"><span></span>Semi Design v2.102.0 固定基线</div>
+    <div class="docs-home-eyebrow">Semi Design v2.102.0 固定基线</div>
     <h1><span>Semi UI</span>，原生 Vue 体验</h1>
     <p>
       面向 Vue 3 与 TypeScript 的 Semi 组件库实现。文档外壳与使用说明对齐固定上游基线，

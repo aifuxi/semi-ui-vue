@@ -474,46 +474,20 @@ body[theme-mode='dark'] .site-header {
 }
 
 .docs-home-hero {
-  position: relative;
-  isolation: isolate;
   margin-bottom: 64px;
   padding: 64px;
-  overflow: hidden;
   border: 1px solid var(--semi-color-border);
   border-radius: 16px;
-  background:
-    radial-gradient(circle at 88% 18%, rgba(var(--semi-blue-5), 0.18), transparent 34%),
-    linear-gradient(135deg, var(--semi-color-bg-0), var(--semi-color-fill-0));
-}
-
-.docs-home-hero::after {
-  position: absolute;
-  z-index: -1;
-  right: -52px;
-  bottom: -72px;
-  width: 260px;
-  height: 260px;
-  border: 48px solid rgba(var(--semi-blue-5), 0.1);
-  border-radius: 50%;
-  content: '';
+  background: var(--semi-color-bg-1);
 }
 
 .docs-home-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
   margin-bottom: 20px;
   font-size: 13px;
   font-weight: 600;
   color: var(--semi-color-primary);
-}
-
-.docs-home-eyebrow > span {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: currentColor;
-  box-shadow: 0 0 0 5px var(--semi-color-primary-light-default);
 }
 
 .docs-home-hero h1 {
