@@ -72,7 +72,7 @@ class 由 `.vitepress/theme/markdown/prose-classes.ts` 在 markdown-it 渲染阶
   Tree、TreeSelect、Cascader、Avatar、Badge、Tag、Divider、Space、Highlight、CodeHighlight、BackTop、Icon、
   Lottie、Locale、MarkdownRender、Spin、Collapsible、Grid、ConfigProvider、HotKeys、Empty、AudioPlayer、
   Layout、Descriptions、Banner、Timeline、Skeleton、OverflowList、Progress、DragMove、FloatButton、PinCode、
-  Cropper、ScrollList、Feedback、ColorPicker、Slider、SideSheet、Collapse 共 62 个页面的 API 已按公开 Vue 类型校准；
+  Cropper、ScrollList、Feedback、ColorPicker、Slider、SideSheet、Collapse、Carousel、VideoPlayer、UserGuide 共 65 个页面的 API 已按公开 Vue 类型校准；
   其余页面仍保留上游 API 表，生成时会明确标记契约状态。
 - 上游 CDN 图片保留远程地址，自托管与离线资源留待后续版本。
 - 不新增 CI 与部署配置，`base` 固定为 `/`。

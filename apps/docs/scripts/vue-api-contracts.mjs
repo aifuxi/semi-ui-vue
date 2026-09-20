@@ -4629,4 +4629,272 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/show/carousel',
+    {
+      sources: ['packages/ui/src/carousel/types.ts'],
+      propSections: [
+        {
+          heading: 'Carousel',
+          level: 3,
+          source: 'packages/ui/src/carousel/types.ts',
+          interfaces: ['CarouselProps'],
+          descriptions: {
+            activeIndex: '受控索引',
+            arrowProps: '左右箭头的嵌套配置；具名插槽优先',
+            class: 'Vue 原生类名',
+            className: '样式类名',
+          },
+          defaults: {
+            animation: '`slide`',
+            arrowType: '`always`',
+            autoPlay: 'true',
+            defaultActiveIndex: '0',
+            indicatorPosition: '`center`',
+            indicatorSize: '`small`',
+            indicatorType: '`dot`',
+            showArrow: 'true',
+            showIndicator: 'true',
+            slideDirection: '`left`',
+            speed: '300',
+            theme: '`light`',
+            trigger: '`click`',
+          },
+        },
+        {
+          heading: 'ArrowButton',
+          level: 3,
+          source: 'packages/ui/src/carousel/types.ts',
+          interfaces: ['CarouselArrowButton'],
+          descriptions: {
+            children: '箭头 VNode 内容；leftArrow / rightArrow 插槽优先',
+            props: '箭头 div 的 Vue HTMLAttributes 与扩展属性',
+          },
+        },
+      ],
+      usageNotes: [
+        '`activeIndex` 是单向受控 prop；索引变化通过 `change` 事件通知。',
+        '`arrowProps.leftArrow/rightArrow.children` 是公开兼容配置，不是组件 children；具名插槽优先。',
+        '默认插槽中的每个根 VNode 作为一个轮播项。',
+      ],
+      eventSections: [{ heading: 'Carousel', level: 3, rows: ['onChange'] }],
+      eventGroups: [
+        {
+          name: 'Carousel',
+          items: [event('change', '[activeIndex: number, preIndex: number]', '轮播索引变化')],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'CarouselMethods',
+          items: [
+            method('play', '() => void', '开始自动播放'),
+            method('stop', '() => void', '停止自动播放'),
+            method('goTo', '(targetIndex: number) => void', '切换到指定索引'),
+            method('prev', '() => void', '切换到上一项'),
+            method('next', '() => void', '切换到下一项'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Carousel',
+          items: [
+            slot('default', '{}', '轮播项列表'),
+            slot('leftArrow', '{}', '上一项箭头内容'),
+            slot('rightArrow', '{}', '下一项箭头内容'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['### API 参考', '## API 参考'],
+        ['**Carousel**', '### Carousel'],
+        ['**ArrowButton**', '### ArrowButton'],
+        [
+          '通过 arrowProps 属性定制箭头样式和点击事件',
+          '通过 `arrowProps` 定制箭头属性，也可使用 `#leftArrow` 与 `#rightArrow` 插槽定制内容。',
+        ],
+        ['## Methods', '## 实例方法'],
+        [
+          '绑定在组件实例上的方法，可以通过 ref 调用实现某些特殊交互',
+          '通过模板 ref 调用以下实例方法。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/plus/videoPlayer',
+    {
+      sources: ['packages/ui/src/video-player/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/video-player/types.ts',
+          interfaces: ['VideoPlayerProps'],
+          descriptions: {
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            defaultPlaybackRate: '初始播放速率',
+            defaultQuality: '初始清晰度',
+            defaultRoute: '初始线路',
+            playbackRateList: '播放速率选项',
+          },
+          defaults: {
+            autoPlay: 'false',
+            clickToPlay: 'true',
+            controlsList:
+              '`play, next, time, volume, playbackRate, quality, route, mirror, fullscreen, pictureInPicture`',
+            defaultPlaybackRate: '1',
+            loop: 'false',
+            muted: 'false',
+            playbackRateList: '`2, 1.5, 1.25, 1, 0.75`',
+            seekTime: '10',
+            theme: '`dark`',
+            volume: '100',
+          },
+        },
+        {
+          heading: 'Marker',
+          level: 4,
+          source: 'packages/ui/src/video-player/types.ts',
+          interfaces: ['VideoPlayerMarker'],
+        },
+      ],
+      usageNotes: [
+        '模板 ref 暴露只读 `element: Ref<HTMLVideoElement | null>`，用于访问原生 video 元素。',
+        '`qualityList` 与 `routeList` 只描述选项；监听对应事件后由调用方更新 src。',
+      ],
+      eventSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          rows: [
+            'onPause',
+            'onPlay',
+            'onQualityChange',
+            'onRateChange',
+            'onRouteChange',
+            'onVolumeChange',
+          ],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'VideoPlayer',
+          items: [
+            event('pause', '[]', '视频暂停'),
+            event('play', '[]', '视频播放'),
+            event('qualityChange', '[quality: string]', '清晰度选项变化'),
+            event('rateChange', '[rate: number]', '播放速率变化'),
+            event('routeChange', '[route: string]', '线路选项变化'),
+            event('volumeChange', '[volume: number]', '音量变化'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['### API', '## API 参考'],
+        ['### 使用 ref 控制', '### 使用模板 ref 控制'],
+        [
+          '通过 `ref` 获取原生 video 元素，可以实现更灵活的控制，例如多个视频同步播放/暂停',
+          '通过模板 ref 的 `element` 获取原生 video 元素，可以实现多个视频同步播放或暂停。',
+        ],
+        [
+          '通过 `qualityList` 设置清晰度选择列表，`defaultQuality` 设置初始选择的清晰度，`onQualityChange` 设置点击后更新的 `src` 逻辑。',
+          '通过 `qualityList` 设置清晰度列表，`defaultQuality` 设置初始值，并监听 `qualityChange` 事件更新 `src`。',
+        ],
+        [
+          '线路切换同理，通过 `routeList` 设置清晰度选择列表，`defaultRoute` 设置初始选择的线路，`onRouteChange` 设置点击后更新的 `src` 逻辑。',
+          '线路切换同理：通过 `routeList` 设置线路列表、`defaultRoute` 设置初始值，并监听 `routeChange` 事件更新 `src`。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/show/userGuide',
+    {
+      sources: ['packages/ui/src/user-guide/types.ts', 'packages/ui/src/button/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/user-guide/types.ts',
+          interfaces: ['UserGuideProps'],
+          descriptions: {
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            current: '`v-model:current` 绑定的步骤索引',
+            nextButtonProps: '下一步按钮配置；onClick 是嵌套 callback prop',
+            prevButtonProps: '上一步按钮配置；onClick 是嵌套 callback prop',
+            visible: '是否显示；单向受控 prop',
+          },
+          defaults: {
+            current: '0',
+            mask: 'true',
+            mode: '`popup`',
+            position: '`bottom`',
+            showPrevButton: 'true',
+            showSkipButton: 'true',
+            spotlightPadding: '5',
+            steps: '[]',
+            theme: '`default`',
+            visible: 'false',
+            zIndex: '1030',
+          },
+        },
+        {
+          heading: 'Steps.Step',
+          level: 3,
+          source: 'packages/ui/src/user-guide/types.ts',
+          interfaces: ['UserGuideStepItem'],
+          descriptions: {
+            cover: '封面 VNode；cover 插槽优先',
+            description: '描述 VNode；description 插槽优先',
+            title: '标题 VNode；title 插槽优先',
+          },
+          defaults: { showArrow: 'true' },
+        },
+      ],
+      models: ['`v-model:current` 对应 `current` 与 `update:current`；`visible` 是单向受控 prop。'],
+      usageNotes: [
+        '`nextButtonProps` 与 `prevButtonProps` 继承 ButtonProps；其中 `onClick` 是嵌套 callback prop。',
+        '`steps[].target` 可传 Element 或返回 Element 的函数；Portal 容器由 `getPopupContainer` 指定。',
+        '步骤中的 cover、title、description 保留 VNode 配置；同名作用域插槽优先。',
+      ],
+      eventSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          rows: ['onChange', 'onFinish', 'onNext', 'onPrev', 'onSkip'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'UserGuide',
+          items: [
+            event('change', '[current: number]', '步骤索引变化'),
+            event('next', '[current: number]', '点击下一步后触发'),
+            event('prev', '[current: number]', '点击上一步后触发'),
+            event('finish', '[]', '完成全部步骤'),
+            event('skip', '[]', '跳过引导'),
+            event('update:current', '[current: number]', '更新 v-model:current'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'UserGuide',
+          items: [
+            slot('cover', '{ current, index, step }', '当前步骤封面'),
+            slot('title', '{ current, index, step }', '当前步骤标题'),
+            slot('description', '{ current, index, step }', '当前步骤描述'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['## API 参考\n\n---', '## API 参考\n\n'],
+        ['通过 `current` 属性设置当前引导步骤。', '通过 `v-model:current` 双向绑定当前引导步骤。'],
+      ],
+    },
+  ],
 ]);
