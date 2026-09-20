@@ -317,11 +317,22 @@ body[theme-mode='dark'] .site-header {
 }
 
 .category-anchor ul {
+  position: relative;
   width: 100%;
   padding: 0;
   margin: 0;
   list-style: none;
-  border-left: 1px solid var(--semi-color-border);
+}
+
+.category-anchor ul::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--semi-color-border);
+  content: '';
 }
 
 .category-anchor li {
@@ -351,13 +362,25 @@ body[theme-mode='dark'] .site-header {
 .category-anchor a.active::before {
   position: absolute;
   top: 50%;
-  left: -1px;
+  left: 0;
   width: 2px;
   height: 24px;
   border-radius: 1px;
   background: var(--semi-color-primary);
   content: '';
   transform: translateY(-50%);
+}
+
+@media screen and (max-width: 1920px) and (min-width: 1681px) {
+  .category-anchor a {
+    min-width: 180px;
+  }
+}
+
+@media screen and (max-width: 1599px) and (min-width: 1400px) {
+  .category-anchor a {
+    width: 100px;
+  }
 }
 
 /* 站内搜索 */
