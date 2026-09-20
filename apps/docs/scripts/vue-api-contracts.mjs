@@ -6064,4 +6064,466 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/ai/aiChatDialogue',
+    {
+      sources: [
+        'packages/ui/src/ai-chat-dialogue/types.ts',
+        'packages/ui/src/ai-chat-dialogue/index.ts',
+      ],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/ai-chat-dialogue/types.ts',
+          interfaces: ['AIChatDialogueProps'],
+          descriptions: {
+            class: 'Vue class 入口',
+            dialogueRenderConfig: '各对话区块的渲染 callback 配置；同名插槽优先',
+            messageEditRender: '消息编辑渲染 callback prop；message-edit 插槽优先',
+            renderDialogueContentItem: '按消息类型配置内容渲染 callback',
+            renderHintBox: '提示项渲染 callback prop；hint 插槽优先',
+          },
+          defaults: {
+            align: '`leftRight`',
+            chats: '[]',
+            disabledFileItemClick: 'false',
+            escapeHtml: 'true',
+            hints: '[]',
+            mode: '`bubble`',
+            selecting: 'false',
+            showReference: 'false',
+            showReset: 'true',
+          },
+        },
+        {
+          heading: 'RoleConfig',
+          level: 3,
+          source: 'packages/ui/src/ai-chat-dialogue/types.ts',
+          interfaces: ['AIChatDialogueRoleConfig'],
+        },
+        {
+          heading: 'MetaData',
+          level: 3,
+          source: 'packages/ui/src/ai-chat-dialogue/types.ts',
+          interfaces: ['AIChatDialogueMetadata'],
+          descriptions: { avatar: '头像地址或 VNode' },
+        },
+        {
+          heading: 'Message',
+          level: 3,
+          source: 'packages/ui/src/ai-chat-dialogue/types.ts',
+          interfaces: ['AIChatDialogueMessage'],
+          descriptions: {
+            dislike: '是否已提交负向反馈',
+            editing: '消息是否处于编辑状态',
+            like: '是否已提交正向反馈',
+            output_text: 'Response API 聚合文本',
+            references: '消息引用列表',
+            updatedAt: '更新时间',
+          },
+        },
+        {
+          heading: 'Reference',
+          level: 3,
+          source: 'packages/ui/src/ai-chat-dialogue/types.ts',
+          interfaces: ['Reference'],
+        },
+      ],
+      models: [
+        '`v-model:chats` 对应 `chats` 与 `update:chats`；列表变更时同时触发 `chats-change`。',
+      ],
+      usageNotes: [
+        '`dialogueRenderConfig`、`renderDialogueContentItem`、`renderHintBox` 与 `messageEditRender` 是保留的 callback props，不是组件事件。',
+        'Reasoning、Step、Annotation 与 defaultComponents.code 同时作为静态成员提供；Reasoning、Step、Annotation、Code 也可使用具名导出。',
+        'Reasoning 接受 `status/summary/content/markdownRenderProps/completedText/thinkingText`；Step 接受 `steps`；Annotation 接受 `annotation/maxCount/description/annotationText`。',
+      ],
+      eventSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          rows: [
+            'onAnnotationClick',
+            'onChatsChange',
+            'onFileClick',
+            'onHintClick',
+            'onImageClick',
+            'onMessageBadFeedback',
+            'onMessageCopy',
+            'onMessageDelete',
+            'onMessageEdit',
+            'onMessageGoodFeedback',
+            'onMessageReset',
+            'onMessageShare',
+            'onReferenceClick',
+            'onSelect',
+          ],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'AIChatDialogue',
+          items: [
+            event('update:chats', '[chats: Message[]]', '更新 chats 绑定'),
+            event('chats-change', '[chats: Message[]]', '对话消息列表变化'),
+            event('select', '[selectedIds: string[]]', '选择项变化'),
+            event('annotation-click', '[annotation: Annotation[]]', '点击注释资料'),
+            event('file-click', '[file: InputFile]', '点击附件文件'),
+            event('image-click', '[image: InputImage]', '点击图片'),
+            event('hint-click', '[hint: string]', '点击提示词'),
+            event('reference-click', '[reference: Reference]', '点击引用'),
+            event('message-bad-feedback', '[message: Message]', '提交消息负向反馈'),
+            event('message-copy', '[message: Message]', '复制消息'),
+            event('message-delete', '[message: Message]', '删除消息'),
+            event('message-edit', '[message: Message]', '编辑消息'),
+            event('message-good-feedback', '[message: Message]', '提交消息正向反馈'),
+            event('message-reset', '[message: Message]', '重置消息'),
+            event('message-share', '[message: Message]', '分享消息'),
+          ],
+        },
+        {
+          name: 'AIChatDialogueAnnotation',
+          items: [event('click', '[annotation: Annotation[]]', '点击注释资料')],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'AIChatDialogueExpose',
+          items: [
+            method('selectAll', '() => void', '全选所有消息'),
+            method('deselectAll', '() => void', '取消全选所有消息'),
+            method('scrollToBottom', '(animation?: boolean) => void', '滚动到列表底部'),
+            method('scrollToTop', '(animation?: boolean) => void', '滚动到列表顶部'),
+            method('getContainerElement', '() => HTMLDivElement | null', '获取滚动容器'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'AIChatDialogue',
+          items: [
+            slot('dialogue-avatar', 'RenderAvatarProps', '自定义头像'),
+            slot('dialogue-title', 'RenderTitleProps', '自定义标题'),
+            slot('dialogue-content', 'RenderContentProps', '自定义消息内容'),
+            slot('dialogue-action', 'RenderActionProps', '自定义操作区'),
+            slot('full-dialogue', 'RenderFullDialogueProps', '自定义完整对话项'),
+            slot(
+              'hint',
+              '{ content: string, index: number, onHintClick: () => void }',
+              '自定义提示项',
+            ),
+            slot('message-edit', '{ value: unknown }', '自定义消息编辑器'),
+          ],
+        },
+        {
+          name: 'AIChatDialogueReasoning',
+          items: [slot('default', '{ raw: string, status?: string }', '自定义思考内容')],
+        },
+      ],
+      textRewrites: [
+        ['{ code: React.ComponentType }', '{ code: Component }'],
+        [
+          '通过设置 `chats` 和 `onChatsChange` 实现基础对话显示和交互。',
+          '通过 `v-model:chats` 实现基础对话显示和交互。',
+        ],
+        [
+          '`showReference` 配置当前消息是否显示可被引用样式, `onReferenceClick` 配置引用按钮点击回调。',
+          '`showReference` 配置当前消息是否显示可被引用样式，并通过 `reference-click` 事件监听引用按钮点击。',
+        ],
+        ['并触发 `onHintClick` 回调。', '并触发 `hint-click` 事件。'],
+        [
+          '通过 `renderHintBox` 可自定义提示区域内容， 参数如下',
+          '通过 `hint` 插槽可自定义提示区域内容；迁移代码也可继续使用 `renderHintBox` callback prop。',
+        ],
+        [
+          '通过 `chatBoxRenderConfig` 传入自定义渲染配置, chatBoxRenderConfig 类型如下',
+          '通过 `dialogueRenderConfig` 传入自定义渲染配置，或使用对应作用域插槽。',
+        ],
+        [
+          '自定义渲染头像和标题，可通过 `renderChatBoxAvatar` 和 `renderChatBoxTitle` 实现。',
+          '自定义渲染头像和标题，可使用 `dialogue-avatar` 和 `dialogue-title` 插槽。',
+        ],
+        [
+          '绑定在组件实例上的方法，可以通过 ref 调用实现某些特殊交互',
+          '可通过模板 ref 调用公开实例方法。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/input/taginput',
+    {
+      sources: ['packages/ui/src/tag-input/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/tag-input/types.ts',
+          interfaces: ['TagInputProps'],
+          descriptions: {
+            ariaLabel: '根元素 aria-label',
+            clearIcon: '清除图标 VNode；clearIcon 插槽优先',
+            inputValue: '受控输入内容，可通过 v-model:inputValue 绑定',
+            insetLabel: '内嵌标签 VNode；insetLabel 插槽优先',
+            insetLabelId: '内嵌标签元素 id',
+            modelValue: '默认 v-model 标签数组',
+            prefix: '前缀 VNode；prefix 插槽优先',
+            renderTagItem: '标签渲染 callback prop；tag 插槽优先',
+            split: '自定义批量输入切分 callback prop',
+            suffix: '后缀 VNode；suffix 插槽优先',
+            value: '兼容受控标签数组',
+          },
+          defaults: {
+            addOnBlur: 'false',
+            allowDuplicates: 'true',
+            autoFocus: 'false',
+            defaultValue: '[]',
+            disabled: 'false',
+            draggable: 'false',
+            expandRestTagsOnClick: 'true',
+            placeholder: "`''`",
+            separator: "`','`",
+            showClear: 'false',
+            showContentTooltip: 'true',
+            showRestTagsPopover: 'true',
+            size: '`default`',
+            validateStatus: '`default`',
+          },
+        },
+      ],
+      models: [
+        '`v-model` 对应 `modelValue` 与 `update:modelValue`；兼容入口 `value` 可通过 `v-model:value` 绑定，两个值同时存在时 `modelValue` 优先。',
+        '`v-model:inputValue` 对应受控输入内容与 `update:inputValue`。',
+      ],
+      usageNotes: [
+        '`renderTagItem` 与 `split` 是保留的 callback props，不是组件事件。',
+        'clearIcon、insetLabel、prefix、suffix 同时支持 VNode prop 和同名插槽；tag 插槽提供 Vue 原生标签渲染入口，插槽优先。',
+      ],
+      eventSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          rows: [
+            'onAdd',
+            'onBlur',
+            'onChange',
+            'onExceed',
+            'onFocus',
+            'onInputChange',
+            'onInputExceed',
+            'onKeyDown',
+            'onRemove',
+          ],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'TagInput',
+          items: [
+            event('add', '[addedValue: string[]]', '添加标签'),
+            event('blur', '[event: FocusEvent]', '输入框失焦'),
+            event('change', '[value: string[]]', '标签数组变化'),
+            event('exceed', '[value: string[]]', '标签数量超过 max'),
+            event('focus', '[event: FocusEvent]', '输入框聚焦'),
+            event('inputChange', '[value: string, event: Event]', '输入内容变化'),
+            event('inputExceed', '[value: string]', '输入内容超过 maxLength'),
+            event('keyDown', '[event: KeyboardEvent]', '输入框键盘事件'),
+            event('remove', '[removedValue: string, index: number]', '移除标签'),
+            event('update:inputValue', '[value: string]', '更新输入内容绑定'),
+            event('update:modelValue', '[value: string[]]', '更新默认 v-model'),
+            event('update:value', '[value: string[]]', '更新兼容 value 绑定'),
+          ],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'TagInputExposed',
+          items: [
+            method('focus', '() => void', '聚焦输入框'),
+            method('blur', '() => void', '让输入框失焦'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'TagInput',
+          items: [
+            slot('clearIcon', '{}', '清除图标'),
+            slot('insetLabel', '{}', '内嵌标签'),
+            slot('prefix', '{}', '输入框前缀'),
+            slot('suffix', '{}', '输入框后缀'),
+            slot('tag', '{ value: string, index: number, close: () => void }', '自定义标签内容'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '当前输入框，配合 onInputChange 实现受控',
+          '当前输入框内容，可通过 `v-model:inputValue` 受控',
+        ],
+        ['当前标签，配合 onChange 实现受控', '当前标签数组，可通过 `v-model` 受控'],
+        ['触发 `onExceed()` 回调', '触发 `exceed` 事件'],
+        ['触发 `onInputExceed()` 回调', '触发 `inputExceed` 事件'],
+        [
+          '可使用 `value` 设置标签内容，并配合 `onChange` 实现标签内容受控。',
+          '可使用 `v-model` 双向绑定标签内容。',
+        ],
+        [
+          '可使用 `inputValue` 设置输入框内容，并配合 `onInputChange` 实现输入内容受控。',
+          '可使用 `v-model:inputValue` 双向绑定输入框内容。',
+        ],
+        [
+          '可以使用 `renderTagItem` 自定义标签渲染。 `renderTagItem(value: string, index: number, onClose: function ) => VNodeChild` 第三个参数 `onClose` 于 2.23.0 版本开始提供。',
+          '优先使用 `tag` 作用域插槽自定义标签渲染；迁移代码也可继续使用 `renderTagItem(value, index, close)` callback prop。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/input/transfer',
+    {
+      sources: ['packages/ui/src/transfer/types.ts'],
+      propSections: [
+        {
+          heading: 'Transfer Props',
+          level: 3,
+          source: 'packages/ui/src/transfer/types.ts',
+          interfaces: ['TransferProps'],
+          descriptions: {
+            emptyContent: '左右面板与搜索空状态内容；同名插槽优先',
+            filter: '是否显示搜索框，或自定义筛选 callback prop',
+            inputProps: '搜索框 Input 配置；内部接管 value 与 change 绑定',
+            modelValue: '默认 v-model 已选值',
+            renderSelectedHeader: '右侧头部渲染 callback prop；selectedHeader 插槽优先',
+            renderSelectedItem: '右侧条目渲染 callback prop；selectedItem 插槽优先',
+            renderSelectedPanel: '右侧面板渲染 callback prop；selectedPanel 插槽优先',
+            renderSourceHeader: '左侧头部渲染 callback prop；sourceHeader 插槽优先',
+            renderSourceItem: '左侧条目渲染 callback prop；sourceItem 插槽优先',
+            renderSourcePanel: '左侧面板渲染 callback prop；sourcePanel 插槽优先',
+            value: '兼容受控已选值',
+          },
+          defaults: {
+            dataSource: '[]',
+            defaultValue: '[]',
+            disabled: 'false',
+            draggable: 'false',
+            emptyContent: '{}',
+            filter: 'true',
+            loading: 'false',
+            showPath: 'false',
+            type: '`list`',
+          },
+        },
+        {
+          heading: 'Item Interface',
+          level: 3,
+          source: 'packages/ui/src/transfer/types.ts',
+          interfaces: ['TransferDataItem'],
+        },
+        {
+          heading: 'GroupItem Interface',
+          level: 3,
+          source: 'packages/ui/src/transfer/types.ts',
+          interfaces: ['TransferGroupItem'],
+        },
+        {
+          heading: 'TreeItem Interface',
+          level: 3,
+          source: 'packages/ui/src/transfer/types.ts',
+          interfaces: ['TransferTreeItem'],
+        },
+        {
+          heading: 'VirtualizeProps Interface',
+          level: 3,
+          source: 'packages/ui/src/transfer/types.ts',
+          interfaces: ['TransferVirtualizeProps'],
+        },
+        {
+          heading: 'PaginationProps Interface',
+          level: 3,
+          source: 'packages/ui/src/transfer/types.ts',
+          interfaces: ['TransferPaginationProps'],
+          descriptions: { onPageChange: '页码变化 callback prop，不是 Transfer 事件' },
+          defaults: { defaultCurrentPage: '1', pageSize: '10' },
+        },
+      ],
+      models: [
+        '`v-model` 对应 `modelValue` 与 `update:modelValue`；兼容入口 `value` 可通过 `v-model:value` 绑定，两个值同时存在时 `modelValue` 优先。',
+      ],
+      usageNotes: [
+        '`filter` 函数、`pagination.onPageChange` 与六个 `renderXxx` 是保留的 callback props，不是组件事件。',
+        '六个渲染 callback 都有同名 scoped slot；emptyLeft、emptyRight、emptySearch 插槽分别覆盖三种空状态。',
+      ],
+      eventSections: [
+        {
+          heading: 'Transfer Props',
+          level: 3,
+          rows: ['onChange', 'onDeselect', 'onSearch', 'onSelect'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Transfer',
+          items: [
+            event(
+              'change',
+              '[values: TransferPrimitive[], items: TransferDataItem[]]',
+              '已选值变化',
+            ),
+            event('select', '[item: TransferDataItem]', '勾选条目'),
+            event('deselect', '[item: TransferDataItem]', '取消勾选条目'),
+            event('search', '[input: string]', '搜索输入变化'),
+            event('update:modelValue', '[values: TransferPrimitive[]]', '更新默认 v-model'),
+            event('update:value', '[values: TransferPrimitive[]]', '更新兼容 value 绑定'),
+          ],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'TransferExposed',
+          items: [method('search', '(value: string) => void', '更新搜索值且不触发 search 事件')],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Transfer',
+          items: [
+            slot('sourceItem', 'TransferSourceItemProps', '左侧候选条目'),
+            slot('selectedItem', 'TransferSelectedItemProps', '右侧已选条目'),
+            slot('sourcePanel', 'TransferSourcePanelProps', '完整左侧面板'),
+            slot('selectedPanel', 'TransferSelectedPanelProps', '完整右侧面板'),
+            slot('sourceHeader', 'TransferSourceHeaderProps', '左侧面板头部'),
+            slot('selectedHeader', 'TransferSelectedHeaderProps', '右侧面板头部'),
+            slot('emptyLeft', '{}', '左侧无数据内容'),
+            slot('emptyRight', '{}', '右侧无数据内容'),
+            slot('emptySearch', '{}', '无搜索结果内容'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['GroupItem继承Item的所有属性', 'GroupItem 是分组容器，不继承 Item 属性。'],
+        [
+          '但你需要自行实现拖拽逻辑，你可以借助社区中拖拽类工具库 [dnd-kit](https://github.com/clauderic/dnd-kit) 或者 [react-sortable-hoc](https://github.com/clauderic/react-sortable-hoc)，快速实现功能。关于两者选型，这是我们的一些建议',
+          '但你需要自行实现拖拽逻辑；Vue 自定义面板可使用浏览器原生 HTML5 drag events 或 Vue 拖拽库。',
+        ],
+        [
+          '- 两者均由同一作者维护， dnd-kit 是 react-sortable-hoc 的接任产品\n- react-sortable-hoc 的 API 设计更加高内聚，在简单场景上代码更加简洁。但它强依赖了 findDOMNode API，在未来的 React 版本中会被废弃。同时该库最近两年已经处于不维护的状态。\n- dnd-kit 相对而言，有一定上手门槛，但它的自由度更高，扩展性更强，并且仍处于维护状态。我们更推荐使用\n\n更多 DIff 信息可查阅 [react-sortable-hoc](https://github.com/clauderic/react-sortable-hoc) 的 Github 主页',
+          '',
+        ],
+        [
+          '另外，要支持拖拽排序，你需要在拖拽排序结束后，将 oldIndex、newIndex 作为入参，调用 onSortEnd',
+          '拖拽排序结束后，将 `oldIndex`、`newIndex` 传给自定义面板作用域中的 `onSortEnd`。',
+        ],
+        ['使用 react-sortable-hoc 的示例：', '自定义面板需自行完成拖拽交互。'],
+        [
+          '使用 dnd-kit 的示例如下，需要用到的核心依赖有 @dnd-kit/sortable， @dnd-kit/core，其中核心 hooks 为 useSortable，使用说明如下',
+          '自定义拖拽实现应在排序结束后回传最终索引。',
+        ],
+        [
+          '绑定在组件实例上的方法，可以通过 ref 调用实现某些特殊交互',
+          '可通过模板 ref 调用公开实例方法。',
+        ],
+      ],
+    },
+  ],
 ]);

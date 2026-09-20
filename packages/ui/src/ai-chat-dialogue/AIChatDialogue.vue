@@ -8,7 +8,6 @@ import {
   onMounted,
   shallowRef,
   useAttrs,
-  useSlots,
   useTemplateRef,
   watch,
   type PropType,
@@ -23,15 +22,14 @@ import AIChatDialogueHint from './AIChatDialogueHint.vue';
 import AIChatDialogueItem from './AIChatDialogueItem.vue';
 import { AI_CHAT_DIALOGUE_SCROLL_DURATION, AI_CHAT_DIALOGUE_SCROLL_GAP } from './constants';
 import type {
+  AIChatDialogueEmits,
+  AIChatDialogueExpose,
   AIChatDialogueLocale,
   AIChatDialogueProps,
-  Annotation,
+  AIChatDialogueSlots,
   DialogueRenderConfig,
-  InputFile,
-  InputImage,
   Message,
   Metadata,
-  Reference,
 } from './types';
 
 defineOptions({ name: 'AIChatDialogue', inheritAttrs: false });
@@ -72,26 +70,10 @@ const props = defineProps({
     default: undefined,
   },
 });
-const emit = defineEmits<{
-  'update:chats': [chats: Message[]];
-  'chats-change': [chats: Message[]];
-  select: [selectedIds: string[]];
-  'annotation-click': [annotation: Annotation[]];
-  'file-click': [file: InputFile];
-  'image-click': [image: InputImage];
-  'hint-click': [hint: string];
-  'reference-click': [reference: Reference];
-  'message-bad-feedback': [message: Message];
-  'message-copy': [message: Message];
-  'message-delete': [message: Message];
-  'message-edit': [message: Message];
-  'message-good-feedback': [message: Message];
-  'message-reset': [message: Message];
-  'message-share': [message: Message];
-}>();
+const emit = defineEmits<AIChatDialogueEmits>();
+const slots = defineSlots<AIChatDialogueSlots>();
 
 const attrs = useAttrs();
-const slots = useSlots();
 const instance = getCurrentInstance();
 const list = useTemplateRef<HTMLDivElement>('list');
 const selectedIds = shallowRef(new Set<string>());
@@ -321,7 +303,7 @@ onBeforeUnmount(() => {
   if (scrollTimer) clearTimeout(scrollTimer);
 });
 
-defineExpose({
+defineExpose<AIChatDialogueExpose>({
   selectAll,
   deselectAll,
   scrollToBottom,
