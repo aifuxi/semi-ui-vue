@@ -66,6 +66,10 @@ for (const file of await readdir(iconRoot)) {
     await cp(resolve(iconRoot, file), resolve(publicRoot, 'doc-icons', file));
   }
 }
+await cp(
+  resolve(vendorRoot, 'packages/semi-icons-lab/src/svgs/heart.svg'),
+  resolve(publicRoot, 'doc-icons/doc-heart.svg'),
+);
 await cp(resolve(vendorRoot, 'LICENSE'), resolve(assetRoot, 'SEMI-LICENSE'));
 await cp(resolve(appRoot, 'assets/favicon.svg'), resolve(publicRoot, 'favicon.svg'));
 await cp(resolve(appRoot, 'assets/favicon.svg'), resolve(publicRoot, 'favicon.ico'));

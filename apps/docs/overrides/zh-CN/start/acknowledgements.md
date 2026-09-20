@@ -3,6 +3,7 @@ title: Acknowledgements 致谢与声明
 description: 说明项目性质，并向 Semi Design 官方团队及其设计与开源成果致敬。
 type: start
 order: 11
+icon: doc-heart
 ---
 
 ## 关于本项目
