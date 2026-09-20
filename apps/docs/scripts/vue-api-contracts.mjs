@@ -5569,4 +5569,499 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/input/inputnumber',
+    {
+      sources: ['packages/ui/src/input-number/types.ts', 'packages/ui/src/input/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          sources: [
+            {
+              source: 'packages/ui/src/input/types.ts',
+              interfaces: ['InputProps'],
+              omit: ['className', 'defaultValue', 'modelValue', 'suffix', 'value'],
+            },
+            {
+              source: 'packages/ui/src/input-number/types.ts',
+              interfaces: ['InputNumberProps'],
+            },
+          ],
+          aliases: {
+            ariaDescribedby: 'aria-describedby',
+            ariaErrormessage: 'aria-errormessage',
+            ariaInvalid: 'aria-invalid',
+            ariaLabel: 'aria-label',
+            ariaLabelledby: 'aria-labelledby',
+            ariaRequired: 'aria-required',
+          },
+          descriptions: {
+            addonAfter: '后置标签 VNode；addonAfter 插槽优先',
+            addonBefore: '前置标签 VNode；addonBefore 插槽优先',
+            ariaDescribedby: '`aria-describedby` 的类型化 Vue 映射',
+            ariaErrormessage: '`aria-errormessage` 的类型化 Vue 映射',
+            ariaInvalid: '`aria-invalid` 的类型化 Vue 映射',
+            ariaLabel: '`aria-label` 的类型化 Vue 映射',
+            ariaLabelledby: '`aria-labelledby` 的类型化 Vue 映射',
+            ariaRequired: '`aria-required` 的类型化 Vue 映射',
+            autofocus: '兼容上游命名的自动聚焦开关',
+            autoFocus: 'Vue 公共类型保留的自动聚焦开关',
+            className: '样式类名',
+            clearIcon: '清除图标 VNode；clearIcon 插槽优先',
+            defaultCurrency: 'currency=true 时使用的默认货币代码',
+            defaultValue: '非受控初始值',
+            insetLabel: '内嵌标签 VNode；insetLabel 插槽优先',
+            modelValue: '默认 v-model 绑定值',
+            prefix: '前缀 VNode；prefix 插槽优先',
+            suffix: '后缀 VNode；suffix 插槽优先',
+            value: '兼容受控值',
+          },
+          defaults: {
+            autofocus: 'false',
+            borderless: 'false',
+            composition: 'false',
+            disabled: 'false',
+            hideButtons: 'false',
+            hideSuffix: 'false',
+            innerButtons: 'false',
+            keepFocus: 'false',
+            max: 'Infinity',
+            min: '-Infinity',
+            pressInterval: '250',
+            pressTimeout: '250',
+            readonly: 'false',
+            shiftStep: '10',
+            showClear: 'false',
+            showCurrencySymbol: 'true',
+            size: '`default`',
+            step: '1',
+            validateStatus: '`default`',
+          },
+        },
+      ],
+      models: [
+        '`v-model` 对应 `modelValue` 与 `update:modelValue`；兼容入口 `value` 可通过 `v-model:value` 绑定，两个值同时存在时 `value` 优先。',
+      ],
+      usageNotes: [
+        '`formatter`、`parser` 与 `getValueLength` 是保留的 callback props，不是组件事件。',
+        'addonBefore、addonAfter、clearIcon、insetLabel、prefix、suffix 同时支持 VNode prop 和同名插槽，插槽优先。',
+        '模板 ref 还公开只读 `input: HTMLInputElement | null`。',
+      ],
+      eventSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          rows: [
+            'onBlur',
+            'onChange',
+            'onDownClick',
+            'onFocus',
+            'onKeyDown',
+            'onNumberChange',
+            'onUpClick',
+          ],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'InputNumber',
+          items: [
+            event('blur', '[event: FocusEvent]', '输入框失焦'),
+            event('change', '[value: InputNumberValue, event?: Event | null]', '输入值变化'),
+            event('downClick', '[value: string, event: MouseEvent]', '点击向下步进按钮'),
+            event('focus', '[event: FocusEvent]', '输入框聚焦'),
+            event('keydown', '[event: KeyboardEvent]', '输入框键盘事件'),
+            event('numberChange', '[value: number, event?: Event | null]', '解析后的数字变化'),
+            event('upClick', '[value: string, event: MouseEvent]', '点击向上步进按钮'),
+            event('update:modelValue', '[value: InputNumberValue]', '更新默认 v-model'),
+            event('update:value', '[value: InputNumberValue]', '更新兼容 value 绑定'),
+          ],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'InputNumberExposed',
+          items: [
+            method('focus', '() => void', '聚焦输入框'),
+            method('blur', '() => void', '让输入框失焦'),
+            method('select', '() => void', '选中输入框内容'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'InputNumber',
+          items: [
+            slot('addonAfter', '{}', '后置标签'),
+            slot('addonBefore', '{}', '前置标签'),
+            slot('clearIcon', '{}', '清除图标'),
+            slot('insetLabel', '{}', '内嵌标签'),
+            slot('prefix', '{}', '输入框前缀'),
+            slot('suffix', '{}', '输入框后缀'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '搭配 formatter 和 onNumberChange（**>=v1.9.0**） 可以实现纯数字输入框。',
+          '搭配 `formatter` 和 `numberChange` 事件（**>=v1.9.0**）可以实现纯数字输入框。',
+        ],
+        ['国际化模式下通过 currency={true} 开启', '国际化模式下通过 `:currency="true"` 开启'],
+        [
+          '绑定在组件实例上的方法，可以通过 ref 调用实现某些特殊交互',
+          '可通过模板 ref 调用公开实例方法。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/basic/typography',
+    {
+      sources: ['packages/ui/src/typography/types.ts', 'packages/ui/src/typography/index.ts'],
+      propSections: [
+        {
+          heading: 'Typography.Text',
+          level: 3,
+          sources: [
+            {
+              source: 'packages/ui/src/typography/types.ts',
+              interfaces: ['TypographyBaseProps'],
+              omit: ['spacing', 'weight'],
+            },
+            {
+              source: 'packages/ui/src/typography/types.ts',
+              interfaces: ['TextProps'],
+            },
+          ],
+          descriptions: {
+            component: '自定义根元素或 Vue 组件',
+            copyable: '复制配置；内部 onCopy 是嵌套 callback prop',
+            ellipsis: '省略配置；内部 onExpand 是嵌套 callback prop',
+            icon: '前缀 VNode；icon 插槽优先',
+          },
+        },
+        {
+          heading: 'Typography.Title',
+          level: 3,
+          sources: [
+            {
+              source: 'packages/ui/src/typography/types.ts',
+              interfaces: ['TypographyBaseProps'],
+              omit: ['icon', 'size', 'spacing'],
+            },
+            {
+              source: 'packages/ui/src/typography/types.ts',
+              interfaces: ['TitleProps'],
+            },
+          ],
+          descriptions: {
+            component: '自定义根元素或 Vue 组件；默认由 heading 决定',
+            copyable: '复制配置；内部 onCopy 是嵌套 callback prop',
+            ellipsis: '省略配置；内部 onExpand 是嵌套 callback prop',
+          },
+        },
+        {
+          heading: 'Typography.Paragraph',
+          level: 3,
+          sources: [
+            {
+              source: 'packages/ui/src/typography/types.ts',
+              interfaces: ['TypographyBaseProps'],
+              omit: ['icon', 'weight'],
+            },
+            {
+              source: 'packages/ui/src/typography/types.ts',
+              interfaces: ['ParagraphProps'],
+            },
+          ],
+          descriptions: {
+            component: '自定义根元素或 Vue 组件',
+            copyable: '复制配置；内部 onCopy 是嵌套 callback prop',
+            ellipsis: '省略配置；内部 onExpand 是嵌套 callback prop',
+          },
+        },
+        {
+          heading: 'Typography.Numeral',
+          level: 3,
+          sources: [
+            {
+              source: 'packages/ui/src/typography/types.ts',
+              interfaces: ['TypographyBaseProps'],
+              omit: ['ellipsis', 'spacing'],
+            },
+            {
+              source: 'packages/ui/src/typography/types.ts',
+              interfaces: ['NumeralProps'],
+            },
+          ],
+          descriptions: {
+            component: '自定义根元素或 Vue 组件',
+            copyable: '复制配置；内部 onCopy 是嵌套 callback prop',
+            icon: '前缀 VNode；icon 插槽优先',
+            parser: '数值文本解析 callback prop',
+          },
+        },
+        {
+          heading: 'Ellipsis Config',
+          level: 3,
+          source: 'packages/ui/src/typography/types.ts',
+          interfaces: ['TypographyEllipsis'],
+          descriptions: {
+            onExpand: '展开或收起 callback prop；组件同时触发 expand 事件',
+            showTooltip: '是否展示 Tooltip/Popover 及其配置；tooltip 插槽可自定义内容',
+          },
+          defaults: {
+            collapseText: '启用折叠时使用 Locale 文案',
+            collapsible: 'false',
+            expandText: '启用展开时使用 Locale 文案',
+            expandable: 'false',
+            pos: '`end`',
+            rows: '1',
+            showTooltip: 'false',
+            suffix: "`''`",
+          },
+        },
+        {
+          heading: 'Copyable Config',
+          level: 3,
+          source: 'packages/ui/src/typography/types.ts',
+          interfaces: ['TypographyCopyableConfig'],
+          descriptions: {
+            copyTip: '复制操作提示 VNode',
+            duration: '复制成功状态持续秒数',
+            icon: '自定义复制 VNode；copyIcon 插槽优先',
+            onCopy: '复制完成 callback prop；组件同时触发 copy 事件',
+            render: '复制操作渲染 callback prop；copyIcon 插槽可替代',
+            successTip: '复制成功提示 VNode；copied 插槽优先',
+          },
+          defaults: { duration: '3' },
+        },
+      ],
+      usageNotes: [
+        '`Typography` 是默认导出容器，默认渲染 article；Text、Title、Paragraph、Numeral 同时作为静态成员和具名导出，SFC 模板推荐使用具名导出。',
+        '`ellipsis.onExpand`、`copyable.onCopy`、`copyable.render` 与 `Numeral.parser` 是保留的嵌套 callback props，不是组件事件。',
+        '默认插槽提供正文；icon、copyIcon、copied、tooltip 插槽分别覆盖前缀、复制图标、复制成功内容和省略浮层内容。',
+      ],
+      eventGroups: [
+        {
+          name: 'Text / Title / Paragraph / Numeral',
+          items: [
+            event(
+              'copy',
+              '[event: MouseEvent | KeyboardEvent, content: string, result: boolean]',
+              '复制操作完成',
+            ),
+            event(
+              'expand',
+              '[expanded: boolean, event: MouseEvent | KeyboardEvent]',
+              '省略内容展开或收起',
+            ),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Typography',
+          items: [slot('default', '{}', '排版容器内容')],
+        },
+        {
+          name: 'Text / Numeral',
+          items: [
+            slot('default', '{}', '正文内容'),
+            slot('icon', '{}', '前缀图标'),
+            slot(
+              'copyIcon',
+              '{ copied: boolean, copy: (event: MouseEvent | KeyboardEvent) => void }',
+              '复制操作图标',
+            ),
+            slot('copied', '{}', '复制成功内容'),
+            slot('tooltip', '{ content: string }', '省略内容浮层'),
+          ],
+        },
+        {
+          name: 'Title / Paragraph',
+          items: [
+            slot('default', '{}', '正文内容'),
+            slot(
+              'copyIcon',
+              '{ copied: boolean, copy: (event: MouseEvent | KeyboardEvent) => void }',
+              '复制操作图标',
+            ),
+            slot('copied', '{}', '复制成功内容'),
+            slot('tooltip', '{ content: string }', '省略内容浮层'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['## API参考', '## API 参考'],
+        [
+          '当 copyable 配置为 true时，默认复制内容为 children 本身，注意，此时 children 只支持 string类型传入',
+          '当 copyable 配置为 true 时，默认复制内容为默认插槽的文本。',
+        ],
+        [
+          '当 copyable 配置为 object 时，可通过 `copyable.content` 指定复制至粘贴板的内容，与 children 不再强关联， 此时 children 将不再限定类型，但 `copyable.content` 仍需要为 string',
+          '当 copyable 配置为对象时，可通过 `copyable.content` 指定复制内容；默认插槽可使用任意 VNode，但 `copyable.content` 仍须为 string。',
+        ],
+        [
+          '1. ellipsis 仅支持纯文本的截断，不支持 reactNode 等复杂类型，请确保 children 传入内容类型为 string',
+          '1. ellipsis 仅支持纯文本截断，不支持复杂 VNode，请确保默认插槽提供可提取的文本内容。',
+        ],
+        [
+          '通常来说，CSS 截断性能优于 JS 截断。在 children、 容器尺寸不变的情况下，CSS 截断只涉及 1~2 次计算，js 截断可能涉及多次计算。',
+          '通常来说，CSS 截断性能优于 JS 截断。在默认插槽内容、容器尺寸不变时，CSS 截断只涉及 1~2 次计算，JS 截断可能涉及多次计算。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/basic/resizable',
+    {
+      sources: ['packages/ui/src/resizable/types.ts', 'packages/ui/src/resizable/index.ts'],
+      propSections: [
+        {
+          heading: 'Resizable',
+          level: 3,
+          source: 'packages/ui/src/resizable/types.ts',
+          interfaces: ['ResizableProps'],
+          descriptions: {
+            beforeResizeStart: '开始调整前的 guard callback；返回 false 可取消本次调整',
+            boundElement: '限制可伸缩范围的 parent、window 或 HTMLElement',
+            defaultSize: '非受控初始宽高',
+            enable: '各方向开关；false 关闭全部手柄',
+            handleClass: '各方向手柄类名',
+            handleNode: '各方向手柄 VNode；对应 handle-* 插槽优先',
+            handleStyle: '各方向手柄样式',
+            size: '`v-model:size` 绑定的受控宽高',
+          },
+          defaults: {
+            boundsByDirection: 'false',
+            enable: '{}',
+            grid: '[1, 1]',
+            lockAspectRatio: 'false',
+            lockAspectRatioExtraHeight: '0',
+            lockAspectRatioExtraWidth: '0',
+            ratio: '1',
+            scale: '1',
+            snapGap: '0',
+          },
+        },
+        {
+          heading: 'ResizeGroup',
+          level: 3,
+          source: 'packages/ui/src/resizable/types.ts',
+          interfaces: ['ResizeGroupProps'],
+          defaults: { direction: '`horizontal`' },
+        },
+        {
+          heading: 'ResizeHandler',
+          level: 3,
+          sources: [
+            {
+              source: 'packages/ui/src/resizable/types.ts',
+              interfaces: ['ResizeGroupProps'],
+              omit: ['direction'],
+            },
+          ],
+        },
+        {
+          heading: 'ResizeItem',
+          level: 3,
+          source: 'packages/ui/src/resizable/types.ts',
+          interfaces: ['ResizeItemProps'],
+        },
+      ],
+      models: ['`v-model:size` 对应 `size` 与 `update:size`。'],
+      usageNotes: [
+        'Resizable、ResizeGroup、ResizeItem、ResizeHandler 均为具名导出；组合模式按 Item / Handler / Item 顺序放入 ResizeGroup 默认插槽。',
+        '`beforeResizeStart` 是保留的 guard callback prop；resizeStart、change、resizeEnd 是组件事件。',
+        'class 与 style 作为 Vue 原生 attributes 透传，不是四个组件的声明式 props。',
+        'ResizeHandler 由所在 ResizeGroup 提供方向，不公开独立 props 或事件。',
+      ],
+      eventSections: [
+        {
+          heading: 'Resizable',
+          level: 3,
+          rows: ['onChange', 'onResizeStart', 'onResizeEnd'],
+        },
+        {
+          heading: 'ResizeItem',
+          level: 3,
+          rows: ['onChange', 'onResizeStart', 'onResizeEnd'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Resizable',
+          items: [
+            event(
+              'resizeStart',
+              '[event: ResizeStartPointer, direction: ResizeDirection]',
+              '开始调整尺寸',
+            ),
+            event(
+              'change',
+              '[size: ResizeSize, event: ResizeStartPointer | ResizeMoveEvent, direction: ResizeDirection]',
+              '调整过程中的尺寸变化',
+            ),
+            event(
+              'resizeEnd',
+              '[size: ResizeSize, event: ResizeMoveEvent, direction: ResizeDirection]',
+              '结束调整尺寸',
+            ),
+            event('update:size', '[size: ResizeSize]', '更新 v-model:size'),
+          ],
+        },
+        {
+          name: 'ResizeItem',
+          items: [
+            event(
+              'resizeStart',
+              '[event: ResizeStartPointer, direction: ResizeDirection]',
+              '所在分隔条开始拖动',
+            ),
+            event(
+              'change',
+              '[size: ResizeSize, event: ResizeMoveEvent, direction: ResizeDirection]',
+              '组合项尺寸变化',
+            ),
+            event(
+              'resizeEnd',
+              '[size: ResizeSize, event: ResizeMoveEvent, direction: ResizeDirection]',
+              '所在分隔条结束拖动',
+            ),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Resizable',
+          items: [
+            slot('default', '{}', '可伸缩内容'),
+            slot('handle-top', '{}', '顶部手柄'),
+            slot('handle-right', '{}', '右侧手柄'),
+            slot('handle-bottom', '{}', '底部手柄'),
+            slot('handle-left', '{}', '左侧手柄'),
+            slot('handle-topRight', '{}', '右上手柄'),
+            slot('handle-bottomRight', '{}', '右下手柄'),
+            slot('handle-bottomLeft', '{}', '左下手柄'),
+            slot('handle-topLeft', '{}', '左上手柄'),
+          ],
+        },
+        { name: 'ResizeGroup', items: [slot('default', '{}', '组合子项')] },
+        { name: 'ResizeItem', items: [slot('default', '{}', '组合项内容')] },
+        { name: 'ResizeHandler', items: [slot('default', '{}', '自定义分隔条')] },
+      ],
+      textRewrites: [
+        [
+          '通过`defaultSize`设置初始大小，可以通过`onResizeStart`、`onChange`、`onResizeEnd`设置拖拽的回调',
+          '通过 `defaultSize` 设置初始大小，并监听 `resizeStart`、`change`、`resizeEnd` 事件。',
+        ],
+        [
+          '通过`direction`设置伸缩方向，可选值为`horizontal`和`vertical` 支持`onResizeStart`、`onChange`、`onResizeEnd`回调，支持`min`、`max`设置最大最小宽高',
+          '通过 `direction` 设置伸缩方向，可选 `horizontal` 或 `vertical`；可监听 `resizeStart`、`change`、`resizeEnd` 事件，并通过 `min`、`max` 设置尺寸范围。',
+        ],
+      ],
+    },
+  ],
 ]);

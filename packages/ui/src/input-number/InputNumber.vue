@@ -277,10 +277,13 @@ const inputProps = computed<Partial<InputProps>>(() => {
   if (props.addonAfter !== undefined) output.addonAfter = props.addonAfter;
   if (props.addonBefore !== undefined) output.addonBefore = props.addonBefore;
   if (props.clearIcon !== undefined) output.clearIcon = props.clearIcon;
+  if (props.getValueLength !== undefined) output.getValueLength = props.getValueLength;
+  if (props.hideSuffix !== undefined) output.hideSuffix = props.hideSuffix;
   if (props.inputStyle !== undefined) output.inputStyle = props.inputStyle;
   if (props.insetLabelId !== undefined) output.insetLabelId = props.insetLabelId;
   if (props.maxLength !== undefined) output.maxLength = props.maxLength;
   if (props.minLength !== undefined) output.minLength = props.minLength;
+  if (props.mode !== undefined) output.mode = props.mode;
   if (props.onlyBorder !== undefined) output.onlyBorder = props.onlyBorder;
   if (props.placeholder !== undefined) output.placeholder = props.placeholder;
   if (props.prefix !== undefined) output.prefix = props.prefix;
@@ -288,6 +291,7 @@ const inputProps = computed<Partial<InputProps>>(() => {
   if (props.showClearIgnoreDisabled !== undefined) {
     output.showClearIgnoreDisabled = props.showClearIgnoreDisabled;
   }
+  if (props.type !== undefined) output.type = props.type;
   if (props.insetLabel !== undefined) output.insetLabel = props.insetLabel;
   if (!(props.innerButtons && (state.hovering || state.focusing)) && props.suffix !== undefined) {
     output.suffix = props.suffix;
