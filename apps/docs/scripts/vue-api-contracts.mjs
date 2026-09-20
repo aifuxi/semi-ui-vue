@@ -4897,4 +4897,314 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/feedback/popconfirm',
+    {
+      sources: [
+        'packages/ui/src/popconfirm/types.ts',
+        'packages/ui/src/popover/types.ts',
+        'packages/ui/src/tooltip/types.ts',
+      ],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          sources: [
+            {
+              source: 'packages/ui/src/tooltip/types.ts',
+              interfaces: ['TooltipProps'],
+              omit: [
+                'class',
+                'content',
+                'position',
+                'prefixCls',
+                'role',
+                'showArrow',
+                'style',
+                'trigger',
+                'zIndex',
+              ],
+            },
+            {
+              source: 'packages/ui/src/popover/types.ts',
+              interfaces: ['PopoverProps'],
+              omit: [
+                'class',
+                'className',
+                'content',
+                'position',
+                'prefixCls',
+                'style',
+                'trigger',
+                'zIndex',
+              ],
+            },
+            {
+              source: 'packages/ui/src/popconfirm/types.ts',
+              interfaces: ['PopconfirmProps'],
+            },
+          ],
+          descriptions: {
+            cancelButtonProps: '取消按钮配置；autoFocus 与嵌套 onClick callback 可用',
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            content: '内容 VNode；content 作用域插槽优先',
+            icon: '图标 VNode；icon 插槽优先',
+            okButtonProps: '确认按钮配置；autoFocus 与嵌套 onClick callback 可用',
+            title: '标题 VNode；title 插槽优先',
+            visible: '`v-model:visible` 绑定值',
+          },
+          defaults: {
+            cancelType: '`tertiary`',
+            defaultVisible: 'false',
+            disabled: 'false',
+            motion: 'true',
+            okType: '`primary`',
+            position: '`bottomLeft`（RTL 为 `bottomRight`）',
+            showArrow: 'false',
+            showCloseIcon: 'true',
+            stopPropagation: 'true',
+            trigger: '`click`（受控时为 `custom`）',
+            visible: 'false',
+            zIndex: '1030',
+          },
+        },
+      ],
+      models: ['`v-model:visible` 对应 `visible` 与 `update:visible`。'],
+      usageNotes: [
+        '未重写的浮层属性继承自 Popover / Tooltip；Portal 容器由 `getPopupContainer` 指定。',
+        '`confirm` 与 `cancel` 监听器可返回 Promise；pending 时按钮进入 loading，resolve 后关闭，reject 时保持打开。',
+        '`cancelButtonProps`、`okButtonProps` 中的 `onClick` 是嵌套 callback prop。',
+        '`content`、`icon`、`title` 保留 VNode prop 入口；同名插槽优先。',
+      ],
+      eventSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          rows: ['onConfirm', 'onCancel', 'onClickOutSide', 'onEscKeyDown', 'onVisibleChange'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Popconfirm',
+          items: [
+            event('confirm', '[event: MouseEvent]', '点击确认；监听器可返回 Promise'),
+            event('cancel', '[event: MouseEvent]', '点击取消或关闭；监听器可返回 Promise'),
+            event('clickOutside', '[event: MouseEvent]', '点击触发元素和浮层以外区域'),
+            event('escKeydown', '[event: KeyboardEvent]', '按下 Escape'),
+            event('visibleChange', '[visible: boolean]', '浮层显隐变化'),
+            event('update:visible', '[visible: boolean]', '更新 v-model:visible'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Popconfirm',
+          items: [
+            slot('default', '{}', '触发元素'),
+            slot('content', '{ initialFocusRef }', '确认框内容'),
+            slot('icon', '{}', '提示图标'),
+            slot('title', '{}', '确认框标题'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          'Popconfirm 底层基于 Tooltip 封装，Children 支持类型同 Tooltip，注意事项详情可查阅',
+          'Popconfirm 底层基于 Tooltip 封装，默认插槽触发元素的支持类型同 Tooltip，注意事项详情可查阅',
+        ],
+        [
+          'onOk、onCancel 可以通过 return Promise 实现点击后延时关闭 （v2.19后支持）',
+          '`confirm`、`cancel` 事件监听器可以返回 Promise，实现点击后延时关闭（v2.19 后支持）。',
+        ],
+        [
+          'onCancel、onOk 被触发时，对应的 Button 会自动切换为 loading: true, promise solve 会关闭气泡确认框， promise reject时气泡依然保留，同时 button loading 自动切换为 false',
+          '事件触发后对应按钮会自动进入 loading；Promise resolve 后关闭气泡确认框，reject 时保持打开并结束 loading。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/show/card',
+    {
+      sources: ['packages/ui/src/card/types.ts', 'packages/ui/src/card/index.ts'],
+      propSections: [
+        {
+          heading: 'Card',
+          level: 3,
+          source: 'packages/ui/src/card/types.ts',
+          interfaces: ['CardProps'],
+          descriptions: {
+            actions: '操作 VNode 数组；actions 插槽优先',
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            cover: '封面 VNode；cover 插槽优先',
+            footer: '页脚 VNode；footer 插槽优先',
+            header: '头部 VNode；header 插槽优先',
+            headerExtraContent: '标题右侧 VNode；headerExtraContent 插槽优先',
+            title: '标题 VNode；title 插槽优先',
+          },
+          defaults: { bordered: 'true', footerLine: 'false', headerLine: 'true', loading: 'false' },
+        },
+        {
+          heading: 'CardGroup',
+          level: 3,
+          source: 'packages/ui/src/card/types.ts',
+          interfaces: ['CardGroupProps'],
+          descriptions: { class: 'Vue 原生类名', className: '样式类名' },
+          defaults: { spacing: '16' },
+        },
+        {
+          heading: 'Card.Meta',
+          level: 3,
+          source: 'packages/ui/src/card/types.ts',
+          interfaces: ['CardMetaProps'],
+          descriptions: {
+            avatar: '头像 VNode；avatar 插槽优先',
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            description: '描述 VNode；description 插槽优先',
+            title: '标题 VNode；title 插槽优先',
+          },
+        },
+      ],
+      usageNotes: [
+        '`Card.Meta` 同时作为 `Card.Meta` 静态成员和 `CardMeta` 具名导出；`CardGroup` 为具名导出。',
+        'Card 与 CardMeta 的内容均保留 VNode prop；同名插槽优先。',
+        '`CardGroup type="grid"` 时忽略 spacing 并使用网格布局。',
+      ],
+      slotGroups: [
+        {
+          name: 'Card',
+          items: [
+            slot('default', '{}', '卡片主体内容'),
+            slot('actions', '{}', '内容区底部操作组'),
+            slot('cover', '{}', '卡片封面'),
+            slot('footer', '{}', '卡片页脚'),
+            slot('header', '{}', '完整自定义头部'),
+            slot('headerExtraContent', '{}', '标题右侧额外内容'),
+            slot('title', '{}', '卡片标题'),
+          ],
+        },
+        {
+          name: 'CardMeta',
+          items: [
+            slot('avatar', '{}', '头像'),
+            slot('description', '{}', '描述'),
+            slot('title', '{}', '标题'),
+          ],
+        },
+        {
+          name: 'CardGroup',
+          items: [slot('default', '{}', 'Card 子组件')],
+        },
+      ],
+      textRewrites: [
+        ['### API 参考', '## API 参考'],
+        ['**Card**', '### Card'],
+        ['**CardGroup**', '### CardGroup'],
+        ['**Card.Meta**', '### Card.Meta'],
+        [
+          '`actions` 接收 ReactNode 数组，元素间将以 12px 的水平间距展示于内容区底部。',
+          '`actions` prop 接收 VNode 数组，也可使用 `#actions` 插槽；元素间以 12px 的水平间距展示。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/input/rating',
+    {
+      sources: ['packages/ui/src/rating/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/rating/types.ts',
+          interfaces: ['RatingProps'],
+          aliases: {
+            ariaDescribedby: 'aria-describedby',
+            ariaErrormessage: 'aria-errormessage',
+            ariaInvalid: 'aria-invalid',
+            ariaLabel: 'aria-label',
+            ariaLabelledby: 'aria-labelledby',
+            ariaRequired: 'aria-required',
+          },
+          descriptions: {
+            ariaDescribedby: '`aria-describedby` 的类型化 Vue 映射',
+            ariaErrormessage: '`aria-errormessage` 的类型化 Vue 映射',
+            ariaInvalid: '`aria-invalid` 的类型化 Vue 映射',
+            ariaLabel: '`aria-label` 的类型化 Vue 映射',
+            ariaLabelledby: '`aria-labelledby` 的类型化 Vue 映射',
+            ariaRequired: '`aria-required` 的类型化 Vue 映射',
+            character: '评分字符 VNode；character 插槽优先',
+            className: '样式类名',
+            modelValue: '`v-model` 绑定值',
+            value: '兼容受控值',
+          },
+          defaults: {
+            allowClear: 'true',
+            allowHalf: 'false',
+            autoFocus: 'false',
+            count: '5',
+            defaultValue: '0',
+            disabled: 'false',
+            prefixCls: '`semi-rating`',
+            size: '`default`',
+            tabIndex: '-1',
+          },
+        },
+      ],
+      models: [
+        '`v-model` 对应 `modelValue` 与 `update:modelValue`；兼容入口 `value` 可通过 `v-model:value` 绑定。',
+      ],
+      usageNotes: [
+        '`character` 保留 VNode prop；character 插槽优先。',
+        '`preventScroll` 同时作用于自动聚焦、键盘移动和公开 focus() 方法。',
+        '方向键按 allowHalf 决定以 1 或 0.5 递增；RTL 下水平方向相反。',
+        '`click` 保留在导出的 RatingEmits 兼容类型中；固定基线运行时不额外触发，请监听 `change`。',
+      ],
+      eventSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          rows: ['onBlur', 'onChange', 'onFocus', 'onHoverChange', 'onKeyDown'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Rating',
+          items: [
+            event('blur', '[event: FocusEvent]', '评分组件失焦'),
+            event('change', '[value: number]', '评分值变化'),
+            event(
+              'click',
+              '[event: MouseEvent | KeyboardEvent, index: number]',
+              '兼容类型成员；固定基线运行时不额外触发',
+            ),
+            event('focus', '[event: FocusEvent]', '评分组件聚焦'),
+            event('hoverChange', '[value: number | undefined]', '悬浮评分值变化'),
+            event('keyDown', '[event: KeyboardEvent]', '方向键调整评分'),
+            event('update:modelValue', '[value: number]', '更新默认 v-model'),
+            event('update:value', '[value: number]', '更新兼容 value 绑定'),
+          ],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'RatingExposed',
+          items: [
+            method('focus', '() => void', '聚焦评分组件'),
+            method('blur', '() => void', '让评分组件失焦'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Rating',
+          items: [slot('character', '{}', '自定义评分字符')],
+        },
+      ],
+      textRewrites: [['## API参考', '## API 参考']],
+    },
+  ],
 ]);

@@ -61,6 +61,7 @@ Rating 是固定 `vendor/semi-design/content/order.js` 中 Radio 之后的下一
 ## 可访问性、Portal、主题、国际化与 SSR
 
 - 根 label、子 `role=radio`、`aria-checked`、`aria-posinset`、`aria-setsize`、`aria-disabled` 和 roving tabindex 精确对齐。
+- 根节点透传 `aria-describedby`、`aria-errormessage`、`aria-invalid`、`aria-labelledby` 与 `aria-required`。
 - Tooltip 只复用现有稳定 Portal/定位能力；Rating 不新增 Observer、全局 scroll 或自定义容器契约。单元测试查询真实 `document.body`，Chromium 验证实际弹层与几何。
 - 视觉矩阵覆盖 desktop/mobile、light/dark；方向敏感场景另覆盖 RTL。Rating 无 Locale 文案依赖，zh-CN/en-US 复用相同静态数据即可。
 - SSR 只输出 Rating DOM，不执行 autofocus、focus-visible 检测或 Tooltip Portal 挂载；公开根入口与子路径必须 SSR-safe import。

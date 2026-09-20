@@ -44,12 +44,28 @@ describe('Rating', () => {
 
   it('保留 count + 1 DOM、默认/半星/尺寸、字符与完整 ARIA', () => {
     const basic = mount(Rating, {
-      props: { defaultValue: 3, id: 'score', ariaLabel: 'heart' },
+      props: {
+        defaultValue: 3,
+        id: 'score',
+        ariaDescribedby: 'score-help',
+        ariaErrormessage: 'score-error',
+        ariaInvalid: true,
+        ariaLabel: 'heart',
+        ariaLabelledby: 'score-label',
+        ariaRequired: true,
+      },
     });
     expect(basic.get('ul').classes()).toContain('semi-rating');
     expect(basic.findAll('li')).toHaveLength(6);
     expect(basic.findAll('.semi-rating-star-full')).toHaveLength(3);
     expect(basic.get('ul').attributes('aria-label')).toBe('Rating: 3 of 5 hearts,');
+    expect(basic.get('ul').attributes()).toMatchObject({
+      'aria-describedby': 'score-help',
+      'aria-errormessage': 'score-error',
+      'aria-invalid': 'true',
+      'aria-labelledby': 'score-label',
+      'aria-required': 'true',
+    });
     expect(basic.findAll('[role="radio"]')[2]!.attributes()).toMatchObject({
       'aria-checked': 'true',
       'aria-posinset': '3',
