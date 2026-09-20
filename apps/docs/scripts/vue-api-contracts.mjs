@@ -4088,4 +4088,296 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/show/scrolllist',
+    {
+      sources: ['packages/ui/src/scroll-list/types.ts', 'packages/ui/src/scroll-list/index.ts'],
+      propSections: [
+        {
+          heading: 'ScrollList',
+          level: 3,
+          source: 'packages/ui/src/scroll-list/types.ts',
+          interfaces: ['ScrollListProps'],
+          descriptions: {
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            prefixCls: '样式类名前缀',
+          },
+          defaults: {
+            bodyHeight: '—',
+            className: '—',
+            footer: '—',
+            header: '—',
+            prefixCls: '`semi-scrolllist`',
+            style: '—',
+          },
+        },
+        {
+          heading: 'ScrollItem',
+          level: 3,
+          source: 'packages/ui/src/scroll-list/types.ts',
+          interfaces: ['ScrollItemProps'],
+          aliases: { ariaLabel: 'aria-label' },
+          descriptions: {
+            ariaLabel: '`aria-label` 的类型化 Vue 映射',
+            class: 'Vue 原生类名',
+            className: '样式类名',
+          },
+          defaults: {
+            cycled: 'false',
+            list: '[]',
+            mode: '`wheel`',
+            motion: 'true',
+            selectedIndex: '0',
+            transform: '—',
+          },
+        },
+        {
+          heading: 'ItemData',
+          level: 4,
+          source: 'packages/ui/src/scroll-list/types.ts',
+          interfaces: ['ScrollItemData'],
+          defaults: { transform: '—' },
+        },
+      ],
+      usageNotes: [
+        '`ScrollItem` 同时作为 `ScrollList.Item` 静态成员和具名导出提供。',
+        '`ScrollList` 的 header、footer 同时支持 VNode prop 和同名插槽，插槽优先。',
+        '`ScrollItem.transform` 与 `ItemData.transform` 是显示值转换 callback props；ItemData 中的配置优先。',
+      ],
+      eventSections: [{ heading: 'ScrollItem', level: 3, rows: ['onSelect'] }],
+      eventGroups: [
+        {
+          name: 'ScrollItem',
+          items: [event('select', '[data: ScrollItemSelectData]', '点击或滚动选中可用项时触发')],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'ScrollItemExposed',
+          items: [
+            method(
+              'scrollToCenter',
+              '(selectedNode?: HTMLElement, scrollWrapper?: HTMLElement, duration?: number) => void',
+              '将指定节点滚动到容器中心',
+            ),
+            method(
+              'scrollToIndex',
+              '(selectedIndex?: number, duration?: number) => void',
+              '滚动到指定索引',
+            ),
+            method(
+              'scrollToNode',
+              '(node: HTMLElement, duration?: number) => void',
+              '滚动到指定节点',
+            ),
+            method(
+              'scrollToPos',
+              '(targetTop: number, duration?: number) => void',
+              '滚动到指定纵向位置',
+            ),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'ScrollList',
+          items: [
+            slot('default', '{}', 'ScrollItem 子组件'),
+            slot('header', '{}', '列表头部内容'),
+            slot('footer', '{}', '列表底部内容'),
+          ],
+        },
+      ],
+    },
+  ],
+  [
+    '/zh-CN/feedback/feedback',
+    {
+      sources: [
+        'packages/ui/src/feedback/types.ts',
+        'packages/ui/src/modal/types.ts',
+        'packages/ui/src/side-sheet/types.ts',
+      ],
+      propSections: [
+        {
+          heading: 'FeedbackProps',
+          level: 3,
+          sources: [
+            {
+              source: 'packages/ui/src/modal/types.ts',
+              interfaces: ['ModalProps'],
+              omit: [
+                'cancelButtonProps',
+                'class',
+                'className',
+                'footer',
+                'onCancel',
+                'onOk',
+                'okButtonProps',
+              ],
+            },
+            {
+              source: 'packages/ui/src/side-sheet/types.ts',
+              interfaces: ['SideSheetProps'],
+              omit: [
+                'cancelButtonProps',
+                'class',
+                'className',
+                'footer',
+                'onCancel',
+                'onOk',
+                'okButtonProps',
+              ],
+            },
+            {
+              source: 'packages/ui/src/feedback/types.ts',
+              interfaces: ['FeedbackProps'],
+            },
+          ],
+          descriptions: {
+            cancelButtonProps: '取消按钮配置；其中事件字段是嵌套 callback props',
+            checkboxGroupProps: '多选配置；onChange 是嵌套 callback prop',
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            mode: '展示容器类型',
+            okButtonProps: '提交按钮配置；其中事件字段是嵌套 callback props',
+            onCancel: '取消操作 callback，可返回 Promise',
+            onOk: '提交操作 callback，可返回 Promise',
+            onValueChange: '反馈值变化 callback',
+            radioGroupProps: '单选配置；onChange 是嵌套 callback prop',
+            renderContent: '内容转换 callback；content 插槽优先',
+            textAreaProps: '文本输入配置；onChange 是嵌套 callback prop',
+            type: '反馈输入类型',
+          },
+          defaults: { mode: '`popup`', onValueChange: '—', type: '`emoji`' },
+        },
+      ],
+      models: ['`v-model:visible` 对应继承的 `visible` 与 `update:visible`。'],
+      usageNotes: [
+        '`onOk`、`onCancel`、`onValueChange` 是组件控制流程使用的真实 callback props，不转换为 emits。',
+        '`textAreaProps`、`radioGroupProps`、`checkboxGroupProps` 和按钮配置中的 `onXxx` 是嵌套配置 callback props。',
+        '`content` 插槽优先于 `renderContent`；`header` 插槽仅在 modal 模式生效。',
+        '其余容器 props 继承自 `ModalProps` 与 `SideSheetProps`，按 mode 转发。',
+      ],
+      eventGroups: [
+        {
+          name: 'Feedback',
+          items: [event('update:visible', '[visible: boolean]', '更新 v-model:visible')],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Feedback',
+          items: [
+            slot('default', '{}', '默认反馈内容'),
+            slot('content', '{ content }', '转换默认反馈内容'),
+            slot('title', '{}', '标题'),
+            slot('header', '{}', 'modal 模式头部'),
+            slot('footer', '{}', '底部操作区'),
+            slot('closeIcon', '{}', '关闭图标'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '通过 `visible` 设置是否显示。默认反馈展示内容是 emoji 形式。 可通过 `onValueChange` 获取当前选择的内容。',
+          '通过 `v-model:visible` 控制是否显示。默认反馈内容是 emoji 形式；可通过 `onValueChange` callback 获取当前选择。',
+        ],
+        [
+          '设置 `type` 为 `custom` 可获得多选形式的 feedback，可通过 `renderContent` 设置反馈的内容。使用自定义反馈时候，需自行控制提交按钮的禁用与否状态，用户可通过 `okButtonProps` 设置。',
+          '设置 `type` 为 `custom` 可展示自定义反馈内容，可通过 `#content` 插槽或 `renderContent` prop 转换内容。使用自定义反馈时，需通过 `okButtonProps` 自行控制提交按钮状态。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/input/colorpicker',
+    {
+      sources: ['packages/ui/src/color-picker/types.ts', 'packages/ui/src/color-picker/index.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/color-picker/types.ts',
+          interfaces: ['ColorPickerProps'],
+          descriptions: {
+            bottomSlot: '底部 VNode 内容；bottom 插槽优先',
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            modelValue: '`v-model` 绑定值',
+            topSlot: '顶部 VNode 内容；top 插槽优先',
+            value: '兼容受控值',
+          },
+          defaults: {
+            alpha: 'true',
+            defaultFormat: '`hex`',
+            defaultValue: '`#39c5bb` 对应的 ColorValue',
+            eyeDropper: 'true',
+            height: '280',
+            popoverProps: '{}',
+            usePopover: 'false',
+            width: '280',
+          },
+        },
+      ],
+      models: [
+        '`v-model` 对应 `modelValue` 与 `update:modelValue`；兼容入口 `value` 可通过 `v-model:value` 绑定。',
+      ],
+      usageNotes: [
+        '`popoverProps` 是传给 Popover 的嵌套配置，其中回调字段保持 callback prop 语义。',
+        '`topSlot`、`bottomSlot` 保留 VNode prop 入口；同名 Vue 插槽优先。',
+        '默认插槽只在 `usePopover` 为 true 时作为触发元素。',
+      ],
+      eventSections: [{ heading: 'API 参考', level: 3, rows: ['onChange'] }],
+      eventGroups: [
+        {
+          name: 'ColorPicker',
+          items: [
+            event('change', '[value: ColorValue]', '用户选择的颜色变化'),
+            event('update:modelValue', '[value: ColorValue]', '更新默认 v-model'),
+            event('update:value', '[value: ColorValue]', '更新兼容 value 绑定'),
+          ],
+        },
+      ],
+      methodGroups: [
+        {
+          name: 'ColorPicker',
+          items: [
+            method(
+              'ColorPicker.colorStringToValue',
+              '(raw: string) => ColorValue',
+              '将常见颜色字符串转换为 ColorValue；也可直接导入同名函数',
+            ),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'ColorPicker',
+          items: [
+            slot('default', '{}', 'Popover 模式触发元素'),
+            slot('top', '{}', '面板顶部额外内容'),
+            slot('bottom', '{}', '面板底部额外内容'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['### API 参考', '## API 参考'],
+        [
+          '在进行各种颜色表示格式之间相互转换时，部分格式之间存在理论误差，因此 onChange 返回给你的值是同时包含了 hsva hex rgba 三种格式的色值的对象。',
+          '在不同颜色格式之间转换时可能存在理论误差，因此 `change` 事件返回同时包含 hsva、hex、rgba 三种格式的 `ColorValue`。',
+        ],
+        [
+          '你传入的 defaultValue(非受控) 和 value(受控) 也应当是同样包含三种格式的对象。',
+          '`defaultValue` 与 `v-model` / `v-model:value` 也应使用同时包含三种格式的 `ColorValue`。',
+        ],
+        ['通过传入 value 来受控使用', '使用 `v-model` 双向绑定，也可使用兼容的 `v-model:value`。'],
+        [
+          '使用 `topSlot` 和 `bottomSlot` 在顶部和底部渲染额外元素',
+          '使用 `#top` 和 `#bottom` 插槽在顶部和底部渲染额外内容；也保留同名 VNode props。',
+        ],
+      ],
+    },
+  ],
 ]);
