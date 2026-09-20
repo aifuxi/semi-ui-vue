@@ -3857,4 +3857,235 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/basic/floatbutton',
+    {
+      sources: ['packages/ui/src/float-button/types.ts'],
+      propSections: [
+        {
+          heading: 'FloatButton',
+          level: 3,
+          source: 'packages/ui/src/float-button/types.ts',
+          interfaces: ['FloatButtonProps'],
+          defaults: {
+            colorful: 'false',
+            disabled: 'false',
+            shape: '`round`',
+            size: '`default`',
+          },
+        },
+        {
+          heading: 'FloatButtonBadgeProps',
+          level: 3,
+          source: 'packages/ui/src/float-button/types.ts',
+          interfaces: ['FloatButtonBadgeProps'],
+          descriptions: {
+            className: '徽章根元素类名',
+            count: '徽章内容',
+            countClassName: '徽章内容类名',
+            countStyle: '徽章内容备用样式',
+            dot: '是否显示为小圆点',
+            onClick: '徽章点击 callback',
+            onMouseEnter: '指针移入徽章 callback',
+            onMouseLeave: '指针移出徽章 callback',
+            overflowCount: '数字上限，超出后显示加号',
+            position: '徽章位置',
+            style: '徽章内容样式，优先于 countStyle',
+            theme: '徽章主题',
+            type: '徽章类型',
+          },
+          defaults: {
+            dot: 'false',
+            position: '`rightTop`',
+            theme: '`solid`',
+            type: '`primary`',
+          },
+        },
+        {
+          heading: 'FloatButtonGroupItem',
+          level: 3,
+          sources: [
+            {
+              source: 'packages/ui/src/float-button/types.ts',
+              interfaces: ['FloatButtonProps', 'FloatButtonGroupItem'],
+            },
+          ],
+          defaults: {
+            colorful: 'false',
+            disabled: 'false',
+            shape: '`round`',
+            size: '`default`',
+          },
+        },
+        {
+          heading: 'FloatButtonGroup',
+          level: 3,
+          source: 'packages/ui/src/float-button/types.ts',
+          interfaces: ['FloatButtonGroupProps'],
+          defaults: { disabled: 'false' },
+        },
+      ],
+      usageNotes: [
+        '`badge` 使用 `FloatButtonBadgeProps`；其中 `onClick`、`onMouseEnter`、`onMouseLeave` 是嵌套配置的真实 callback props。',
+        '`FloatButtonGroupItem` 继承全部 `FloatButtonProps`，并增加 `value` 和 `content`。',
+        '`icon` 和 `content` 可传 VNode；Button 的 `#icon`、Group 的 `#item` 插槽优先。',
+      ],
+      eventSections: [
+        { heading: 'FloatButton', level: 3, rows: ['onClick'] },
+        { heading: 'FloatButtonGroup', level: 3, rows: ['onClick'] },
+      ],
+      eventGroups: [
+        {
+          name: 'FloatButton',
+          items: [event('click', '[event: MouseEvent]', '未禁用时点击按钮触发')],
+        },
+        {
+          name: 'FloatButtonGroup',
+          items: [event('click', '[value: string, event: MouseEvent]', '点击组内子项时触发')],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'FloatButton',
+          items: [slot('icon', '{}', '按钮图标，优先于 icon prop')],
+        },
+        {
+          name: 'FloatButtonGroup',
+          items: [slot('item', '{ item, index }', '自定义组内子项内容')],
+        },
+      ],
+      textRewrites: [
+        ['## API参考', '## API 参考'],
+        [
+          '### FloatButtonGroupItem\n\n在 FloatButtonProps 基础上增加以下参数',
+          '### FloatButtonBadgeProps\n\n`badge` prop 的配置项。\n\n| 属性 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n\n### FloatButtonGroupItem\n\n在 `FloatButtonProps` 基础上增加以下参数。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/input/pincode',
+    {
+      sources: ['packages/ui/src/pin-code/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/pin-code/types.ts',
+          interfaces: ['PinCodeProps'],
+          descriptions: { modelValue: '`v-model` 绑定值', value: '兼容受控值' },
+          defaults: {
+            autoFocus: 'true',
+            count: '6',
+            disabled: 'false',
+            format: '`number`',
+            size: '`default`',
+          },
+        },
+      ],
+      models: [
+        '`v-model` 对应 `modelValue` 与 `update:modelValue`；兼容入口 `value` 可通过 `v-model:value` 绑定。',
+      ],
+      usageNotes: [
+        '`format` 的函数形式是逐字符校验 callback prop，不转换为事件。',
+        '`focus(index)` 和 `blur(index)` 的 index 从 0 开始。',
+      ],
+      eventSections: [{ heading: 'API 参考', level: 2, rows: ['onChange', 'onComplete'] }],
+      eventGroups: [
+        {
+          name: 'PinCode',
+          items: [
+            event('change', '[value: string]', '任一输入格的值变化'),
+            event('complete', '[value: string]', '全部输入格填写完成'),
+            event('update:modelValue', '[value: string]', '更新默认 v-model'),
+            event('update:value', '[value: string]', '更新兼容 value 绑定'),
+          ],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'PinCodeExposed',
+          items: [
+            method('focus', '(index: number) => void', '聚焦指定序号的输入格'),
+            method('blur', '(index: number) => void', '让指定序号的输入格失焦'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '使用 value 传入验证码字符串，配合 onChange 受控使用',
+          '使用 `v-model` 双向绑定验证码字符串，也可使用兼容的 `v-model:value`。',
+        ],
+        ['使用 Ref 上方法 focus 与 blur', '使用模板 ref 上的 `focus` 与 `blur` 方法'],
+        ['## Methods', '## 实例方法'],
+        [
+          '| 属性 | 说明 |\n| ----- | ---------------------------- |\n| focus | 聚焦，入参为验证码第几位 |\n| blur | 移出焦点，入参为验证码第几位 | string |',
+          '| 方法 | 签名 | 说明 |\n| --- | --- | --- |\n| focus | `(index: number) => void` | 聚焦指定序号的输入格 |\n| blur | `(index: number) => void` | 让指定序号的输入格失焦 |',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/show/cropper',
+    {
+      sources: ['packages/ui/src/cropper/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/cropper/types.ts',
+          interfaces: ['CropperProps'],
+          aliases: { class: 'className', cropperBoxCls: 'cropperBoxClassName' },
+          descriptions: {
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            cropperBoxCls: '`cropperBoxClassName` 的兼容别名',
+            preview: '返回实时预览容器的函数',
+          },
+          defaults: {
+            defaultAspectRatio: '1',
+            fill: '`rgba(0, 0, 0, 0)`',
+            maxZoom: '3',
+            minZoom: '0.1',
+            shape: '`rect`',
+            showResizeBox: 'true',
+            zoomStep: '0.1',
+          },
+        },
+      ],
+      models: ['`v-model:zoom` 对应 `zoom` 与 `update:zoom`；`rotate` 是单向 prop。'],
+      usageNotes: [
+        '`preview` 是返回预览容器的真实 callback prop，不转换为事件。',
+        '`cropperBoxCls` 是 `cropperBoxClassName` 的兼容别名，前者优先。',
+      ],
+      eventSections: [{ heading: 'API', level: 3, rows: ['onZoomChange'] }],
+      eventGroups: [
+        {
+          name: 'Cropper',
+          items: [
+            event('zoomChange', '[zoom: number]', '缩放比例变化'),
+            event('update:zoom', '[zoom: number]', '更新 v-model:zoom'),
+          ],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'CropperMethods',
+          items: [method('getCropperCanvas', '() => HTMLCanvasElement', '获取裁剪结果 canvas')],
+        },
+      ],
+      textRewrites: [
+        ['### API', '## API 参考'],
+        [
+          '通过 `rotate` 和 `zoom` 控制图片旋转和缩放, 可通过 `onZoomChange` 拿到最新的 `zoom` 值。',
+          '通过 `rotate` 和 `zoom` 控制图片旋转和缩放；可监听 `zoomChange` 事件获取最新的 `zoom` 值，也可使用 `v-model:zoom`。',
+        ],
+        ['### Methods', '### 实例方法'],
+        [
+          '| Name | Description |\n|---------|--------------|\n| getCropperCanvas | 获取裁剪图片的 canvas |',
+          '| 方法 | 签名 | 说明 |\n| --- | --- | --- |\n| getCropperCanvas | `() => HTMLCanvasElement` | 获取裁剪图片的 canvas |',
+        ],
+      ],
+    },
+  ],
 ]);
