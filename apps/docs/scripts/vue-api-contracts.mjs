@@ -10,6 +10,32 @@ const event = (name, parameters, description) => ({ name, parameters, descriptio
 const slot = (name, scope, description) => ({ name, scope, description });
 const method = (name, signature, description) => ({ name, signature, description });
 
+const sidebarContainerDescriptions = {
+  title: '标题内容；title 插槽优先',
+  visible: '是否显示侧边栏',
+  motion: '是否启用显隐动画',
+  minWidth: '可调整宽度时的最小宽度',
+  maxWidth: '可调整宽度时的最大宽度',
+  resizable: '是否允许调整宽度',
+  defaultSize: '可调整宽度时的默认尺寸',
+  showClose: '是否显示关闭按钮',
+  closeOnEsc: '是否允许按 Escape 请求关闭',
+  class: 'Vue class 入口',
+  className: '兼容 className 入口',
+  style: '自定义内联样式',
+  renderHeader: '头部渲染 callback prop；header 插槽优先',
+  containerRef: '容器元素回调 ref；模板 ref 另暴露 getContainerElement()',
+};
+
+const sidebarContainerDefaults = {
+  visible: 'false',
+  motion: 'true',
+  minWidth: '150',
+  resizable: 'true',
+  showClose: 'true',
+  closeOnEsc: 'false',
+};
+
 export const vueTypeRewrites = [
   ['React.ReactNode', 'VNodeChild'],
   ['ReactNode', 'VNodeChild'],
@@ -7014,6 +7040,556 @@ export const vueApiContracts = new Map([
           '通过 `renderHeader` 可以自定义预览顶部展示区',
           '优先使用 `header` 作用域插槽自定义预览顶部展示区，迁移代码也可继续使用 `renderHeader` callback prop。',
         ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/ai/aiChatInput',
+    {
+      sources: ['packages/ui/src/ai-chat-input/types.ts', 'packages/ui/src/ai-chat-input/index.ts'],
+      propSections: [
+        {
+          heading: 'AIChatInput',
+          level: 3,
+          source: 'packages/ui/src/ai-chat-input/types.ts',
+          interfaces: ['AIChatInputProps'],
+          descriptions: {
+            class: 'Vue class 入口',
+            immediatelyRender: '兼容 prop；Vue Tiptap 仅在 mounted 后创建编辑器',
+            keepSkillAfterSend: '生成态清空内容时是否保留当前技能',
+            placeholder: '输入框占位符或 Tiptap placeholder callback',
+            renderActionArea: '操作区渲染 callback prop；action 插槽优先',
+            renderConfigureArea: '配置区渲染 callback prop；configure 插槽优先',
+            renderReference: '引用项渲染 callback prop；reference 插槽优先',
+            renderSkillItem: '技能项渲染 callback prop；skill 插槽优先',
+            renderSuggestionItem: '建议项渲染 callback prop；suggestion 插槽优先',
+            renderTemplate: '模板渲染 callback prop；template 插槽优先',
+            renderTopSlot: '顶部区域渲染 callback prop；top 插槽优先',
+            renderUploadButton: '上传按钮渲染 callback prop；uploadButton 插槽优先',
+            transformer: '自定义 Tiptap 节点转换 callback 映射',
+          },
+          defaults: {
+            canSend: '由输入内容、附件和引用决定',
+            clearContentOnGenerating: 'true',
+            dropdownMatchTriggerWidth: 'true',
+            generating: 'false',
+            keepSkillAfterSend: 'false',
+            round: 'true',
+            sendHotKey: '`enter`',
+            showPlaceholderWhenSkillOnly: 'false',
+            showReference: 'true',
+            showTemplateButton: 'false',
+            showUploadButton: 'true',
+            showUploadFile: 'true',
+            topSlotPosition: '`top`',
+          },
+        },
+      ],
+      usageNotes: [
+        'renderReference、renderUploadButton、renderTopSlot、renderConfigureArea、renderActionArea、renderSuggestionItem、renderSkillItem 与 renderTemplate 是保留的迁移 callback props；Vue 代码优先使用对应作用域插槽。',
+        '`placeholder` 函数、`transformer` 映射以及 uploadProps、popoverProps、uploadTipProps 内部函数均为配置 callback，不是组件事件。',
+        '`AIChatInput.Configure` 提供 Item、Button、Mcp、RadioButton、Select 静态成员；配置容器的 `value` 可通过 `v-model:value` 绑定。',
+      ],
+      eventSections: [
+        {
+          heading: 'AIChatInput',
+          level: 3,
+          rows: [
+            'onBlur',
+            'onConfigureChange',
+            'onContentChange',
+            'onFocus',
+            'onMessageSend',
+            'onPaste',
+            'onReferenceClick',
+            'onReferenceDelete',
+            'onSkillChange',
+            'onStopGenerate',
+            'onSuggestClick',
+            'onTemplateVisibleChange',
+            'onUploadChange',
+          ],
+        },
+        { heading: 'Configure.Mcp', level: 3, rows: ['onConfigureButtonClick'] },
+      ],
+      eventGroups: [
+        {
+          name: 'AIChatInput',
+          items: [
+            event('contentChange', '[contents: AIChatInputContent[]]', '富文本内容变化'),
+            event('focus / blur', '[event: FocusEvent]', '富文本编辑器聚焦或失焦'),
+            event('paste', '[event: ClipboardEvent]', '富文本编辑器发生粘贴'),
+            event('referenceDelete', '[reference: Reference]', '删除引用'),
+            event('referenceClick', '[reference: Reference]', '点击引用'),
+            event('uploadChange', '[payload: UploadChangePayload]', '附件列表变化'),
+            event('messageSend', '[content: MessageContent]', '发送消息'),
+            event('stopGenerate', '[]', '停止生成'),
+            event(
+              'configureChange',
+              '[value: LeftMenuChangeProps, changedValue?: LeftMenuChangeProps]',
+              '配置值变化',
+            ),
+            event('suggestClick', '[suggestion: Suggestion]', '选择建议项'),
+            event('skillChange', '[skill: Skill | undefined]', '技能变化'),
+            event('templateVisibleChange', '[visible: boolean]', '模板面板显隐变化'),
+          ],
+        },
+        {
+          name: 'AIChatInput.Configure',
+          items: [
+            event(
+              'change',
+              '[value: LeftMenuChangeProps, changedValue?: LeftMenuChangeProps]',
+              '配置值变化',
+            ),
+            event('update:value', '[value: LeftMenuChangeProps]', '更新 value 绑定'),
+          ],
+        },
+        {
+          name: 'AIChatInput.Configure.Mcp',
+          items: [event('configureButtonClick', '[]', '点击 MCP 配置按钮')],
+        },
+      ],
+      methodGroups: [
+        {
+          name: '包导出',
+          items: [
+            method(
+              'getConfigureItem',
+              '(component: Component, options?: AIChatInputGetConfigureItemOptions) => AIChatInputConfigureItemComponent',
+              '将自定义 Vue 组件接入 Configure 状态',
+            ),
+          ],
+        },
+        {
+          name: 'AIChatInput 静态成员',
+          items: [
+            method(
+              'getCustomSlotAttribute',
+              '() => Record<string, unknown>',
+              '返回自定义 Tiptap slot 节点属性',
+            ),
+          ],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'AIChatInputExposed',
+          items: [
+            method('changeTemplateVisible', '(visible: boolean) => void', '切换模板面板'),
+            method('deleteContent', '(content: AIChatInputContent) => void', '删除富文本内容项'),
+            method('deleteUploadFile', '(item: Attachment) => void', '删除附件'),
+            method(
+              'focusEditor',
+              "(pos?: Parameters<Editor['commands']['focus']>[0]) => void",
+              '聚焦编辑器',
+            ),
+            method('getEditor', '() => Editor | undefined', '获取 Tiptap Editor'),
+            method('setContent', '(content: TiptapContent) => void', '设置编辑器内容'),
+            method('setContentWhileSaveTool', '(content: string) => void', '保留技能并设置内容'),
+          ],
+        },
+        {
+          name: 'AIChatInputConfigureExposed',
+          items: [method('getConfigureValue', '() => LeftMenuChangeProps', '获取当前配置值')],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'AIChatInput',
+          items: [
+            slot('reference', '{ reference: Reference }', '自定义引用项'),
+            slot('uploadButton', 'RenderUploadButtonProps', '自定义上传按钮'),
+            slot('top', 'RenderTopSlotProps', '自定义顶部区域'),
+            slot('configure', '{ className: string }', '自定义配置区'),
+            slot('action', 'ActionAreaProps', '自定义操作区'),
+            slot('suggestion', 'RenderSuggestionItemProps', '自定义建议项'),
+            slot('skill', 'RenderSkillItemProps', '自定义技能项'),
+            slot(
+              'template',
+              '{ skill: Skill | undefined; onTemplateClick(content: string): void }',
+              '自定义模板面板',
+            ),
+          ],
+        },
+        {
+          name: 'AIChatInput.Configure.Item',
+          items: [
+            slot('default', '{ value: unknown; onChange(value: unknown): void }', '自定义配置控件'),
+          ],
+        },
+      ],
+      textRewrites: [
+        ['`onUploadChange` 获取文件上传变化', '`upload-change` 事件获取文件上传变化'],
+        [
+          '`onContentChange` 输入框内容变化时的回调函数，参数为当前输入框的内容',
+          '`content-change` 事件在输入框内容变化时返回当前富文本内容',
+        ],
+        ['会触发 `onMessageSend` 回调函数', '会触发 `message-send` 事件'],
+        [
+          '用户可在 `onMessageSend` 中根据判断是否设置 `generating`',
+          '用户可在 `message-send` 监听器中按需设置 `generating`',
+        ],
+        [
+          '会触发 `onStopGenerate` 回调函数，用户可在该回调函数中处理停止生成的逻辑',
+          '会触发 `stop-generate` 事件，用户可在监听器中处理停止生成逻辑',
+        ],
+        ['可以通过 ref 方法', '可以通过模板 ref 的公开方法'],
+        [
+          '`renderReference` 自定义单个引用内容的渲染。',
+          '`reference` 作用域插槽自定义单个引用内容；迁移代码也可继续使用 `renderReference` callback prop。',
+        ],
+        ['`onReferenceDelete` 处理引用内容的删除。', '`reference-delete` 事件处理引用内容的删除。'],
+        ['`onReferenceClick` 处理引用内容的点击。', '`reference-click` 事件处理引用内容的点击。'],
+        [
+          '可通过 `renderConfigureArea` API 自定义输入框的操作按钮。',
+          '可通过 `configure` 插槽自定义输入框的配置区；迁移代码也可继续使用 `renderConfigureArea` callback prop。',
+        ],
+        [
+          '通过 `onConfigureChange` API 监听配置项的变化',
+          '通过 `configure-change` 事件监听配置项的变化',
+        ],
+        [
+          '通过 `renderActionArea` API 自定义操作区域',
+          '通过 `action` 作用域插槽自定义操作区域；迁移代码也可继续使用 `renderActionArea` callback prop',
+        ],
+        [
+          '通过 `renderSuggestionItem` API 自定义建议列表的展示。',
+          '通过 `suggestion` 作用域插槽自定义建议项；迁移代码也可继续使用 `renderSuggestionItem` callback prop。',
+        ],
+        [
+          '用户可以通过 `renderTemplate`API 自定义模版的展示。',
+          '用户可以通过 `template` 作用域插槽自定义模板展示；迁移代码也可继续使用 `renderTemplate` callback prop。',
+        ],
+        [
+          '用户可以通过 `renderTopSlot` API 自定义渲染顶部区域',
+          '用户可以通过 `top` 作用域插槽自定义顶部区域；迁移代码也可继续使用 `renderTopSlot` callback prop',
+        ],
+        ['在 `onContentChange` 中得到的该节点数据', '在 `content-change` 事件中得到的该节点数据'],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/ai/sidebar',
+    {
+      sources: ['packages/ui/src/sidebar/types.ts', 'packages/ui/src/sidebar/index.ts'],
+      propSections: [
+        {
+          heading: 'Container',
+          level: 3,
+          source: 'packages/ui/src/sidebar/types.ts',
+          interfaces: ['SidebarContainerProps'],
+          descriptions: {
+            ...sidebarContainerDescriptions,
+          },
+          defaults: { ...sidebarContainerDefaults },
+        },
+        {
+          heading: 'MCPConfigure',
+          level: 3,
+          sources: [
+            { source: 'packages/ui/src/sidebar/types.ts', interfaces: ['SidebarContainerProps'] },
+            {
+              source: 'packages/ui/src/sidebar/types.ts',
+              interfaces: ['SidebarMCPConfigureContentProps'],
+            },
+          ],
+          descriptions: {
+            ...sidebarContainerDescriptions,
+            renderItem: 'MCP 项渲染 callback prop；item 插槽优先',
+          },
+          defaults: { ...sidebarContainerDefaults },
+        },
+        {
+          heading: 'SidebarMCPOption',
+          level: 4,
+          source: 'packages/ui/src/sidebar/types.ts',
+          interfaces: ['SidebarMCPOption'],
+        },
+        {
+          heading: 'Annotation',
+          level: 3,
+          sources: [
+            { source: 'packages/ui/src/sidebar/types.ts', interfaces: ['SidebarContainerProps'] },
+            {
+              source: 'packages/ui/src/sidebar/types.ts',
+              interfaces: ['SidebarAnnotationContentProps'],
+            },
+          ],
+          descriptions: {
+            ...sidebarContainerDescriptions,
+            renderItem: '参考来源渲染 callback prop；item 插槽优先',
+          },
+          defaults: { ...sidebarContainerDefaults },
+        },
+        {
+          heading: 'AnnotationItem',
+          level: 4,
+          source: 'packages/ui/src/sidebar/types.ts',
+          interfaces: ['SidebarAnnotationItem'],
+          descriptions: {
+            onClick: '数据项点击 callback；未提供 Annotation click 监听器时使用',
+          },
+        },
+        {
+          heading: 'Sidebar',
+          level: 3,
+          sources: [
+            { source: 'packages/ui/src/sidebar/types.ts', interfaces: ['SidebarContainerProps'] },
+            { source: 'packages/ui/src/sidebar/types.ts', interfaces: ['SidebarProps'] },
+          ],
+          descriptions: {
+            ...sidebarContainerDescriptions,
+            activeKey: '当前导航项',
+            detailContent: '内置 code/file 详情数据',
+            fileEditable: '文件详情是否可编辑',
+            imgUploadProps: '文件详情中的图片上传配置',
+            mode: '主视图、代码、文件或自定义详情模式',
+            options: '主视图导航项',
+            renderDetailContent: '详情区渲染 callback prop；detail-content 插槽优先',
+            renderDetailHeader: '详情头渲染 callback prop；detail-header 插槽优先',
+            renderMainContent: '主内容渲染 callback prop；main-content 插槽优先',
+            renderOptionItem: '导航项渲染 callback prop；option 插槽优先',
+          },
+          defaults: { ...sidebarContainerDefaults, fileEditable: 'true', mode: '`main`' },
+        },
+        {
+          heading: 'Code',
+          level: 3,
+          sources: [
+            { source: 'packages/ui/src/sidebar/types.ts', interfaces: ['SidebarCollapseProps'] },
+            { source: 'packages/ui/src/sidebar/types.ts', interfaces: ['SidebarCodeContentProps'] },
+          ],
+          descriptions: { class: 'Vue class 入口' },
+        },
+        {
+          heading: 'CodeItemProps',
+          level: 4,
+          source: 'packages/ui/src/sidebar/types.ts',
+          interfaces: ['SidebarCodeItemProps'],
+          descriptions: {
+            codeHighlightProps: 'CodeHighlight 配置',
+            content: '代码或 JSON 内容',
+            isJson: '是否使用 JsonViewer 展示',
+            jsonViewerProps: 'JsonViewer 配置',
+            key: '唯一标识',
+            language: '代码语言',
+            name: '展示名称',
+          },
+        },
+        {
+          heading: 'FileContent',
+          level: 4,
+          sources: [
+            { source: 'packages/ui/src/sidebar/types.ts', interfaces: ['SidebarCollapseProps'] },
+            { source: 'packages/ui/src/sidebar/types.ts', interfaces: ['SidebarFileContentProps'] },
+          ],
+          descriptions: { class: 'Vue class 入口' },
+        },
+        {
+          heading: 'FileItemProps',
+          level: 4,
+          source: 'packages/ui/src/sidebar/types.ts',
+          interfaces: ['SidebarFileItemProps'],
+          descriptions: {
+            class: 'Vue class 入口',
+            content: '富文本 HTML 内容',
+            editable: '是否允许编辑',
+            extensions: '附加 Tiptap extensions',
+            imgUploadProps: '富文本图片上传配置',
+            key: '唯一标识',
+            name: '展示名称',
+            style: '自定义内联样式',
+          },
+          defaults: { editable: 'true' },
+        },
+      ],
+      usageNotes: [
+        'renderHeader、renderOptionItem、renderMainContent、renderDetailHeader、renderDetailContent 与各 renderItem 是保留的迁移 callback props；Vue 代码优先使用对应插槽。',
+        '`containerRef`、MCP filter、SidebarImageUploadOptions.getUploadImageSrc 与 SidebarAnnotationItem.onClick 是真实 callback props，不是组件事件。',
+        'Sidebar 提供 Container、CodeContent、CodeItem、FileContent、FileItem 静态成员；Annotation 提供 AnnotationContent 静态成员，MCPConfigure 作为具名组件导出。',
+      ],
+      eventSections: [
+        { heading: 'Container', level: 3, rows: ['afterVisibleChange', 'onCancel'] },
+        {
+          heading: 'MCPConfigure',
+          level: 3,
+          rows: [
+            'afterVisibleChange',
+            'onAddClick',
+            'onCancel',
+            'onConfigureClick',
+            'onEditClick',
+            'onSearch',
+            'onStatusChange',
+          ],
+        },
+        {
+          heading: 'Annotation',
+          level: 3,
+          rows: ['afterVisibleChange', 'onCancel', 'onChange', 'onClick'],
+        },
+        {
+          heading: 'Sidebar',
+          level: 3,
+          rows: [
+            'afterVisibleChange',
+            'onActiveOptionChange',
+            'onBackWard',
+            'onCancel',
+            'onDetailContentCopy',
+            'onFileContentChange',
+          ],
+        },
+        { heading: 'Code', level: 3, rows: ['onChange', 'onExpand'] },
+        { heading: 'FileContent', level: 4, rows: ['onChange', 'onExpand'] },
+        { heading: 'FileItemProps', level: 4, rows: ['onContentChange'] },
+      ],
+      eventGroups: [
+        {
+          name: 'Sidebar.Container',
+          items: [
+            event('cancel', '[event: MouseEvent | KeyboardEvent]', '点击关闭或按下 Escape'),
+            event('after-visible-change', '[visible: boolean]', '显隐动画完成'),
+          ],
+        },
+        {
+          name: 'MCPConfigure',
+          items: [
+            event('cancel', '[event: MouseEvent | KeyboardEvent]', '点击关闭或按下 Escape'),
+            event('after-visible-change', '[visible: boolean]', '显隐动画完成'),
+            event(
+              'status-change',
+              '[options: SidebarMCPOption[], custom: boolean]',
+              'MCP 状态变化',
+            ),
+            event('search', '[inputValue: string, custom: boolean]', '搜索输入变化'),
+            event('add-click', '[event: MouseEvent]', '点击新增'),
+            event('configure-click', '[event: MouseEvent, option: SidebarMCPOption]', '点击配置'),
+            event('edit-click', '[event: MouseEvent, option: SidebarMCPOption]', '点击编辑'),
+          ],
+        },
+        {
+          name: 'Annotation',
+          items: [
+            event('cancel', '[event: MouseEvent | KeyboardEvent]', '点击关闭或按下 Escape'),
+            event('after-visible-change', '[visible: boolean]', '显隐动画完成'),
+            event('change', '[activeKey: SidebarActiveKey]', '展开项变化'),
+            event('click', '[event: MouseEvent, item: SidebarAnnotationItem]', '点击参考来源'),
+          ],
+        },
+        {
+          name: 'Sidebar',
+          items: [
+            event('cancel', '[event: MouseEvent | KeyboardEvent]', '点击关闭或按下 Escape'),
+            event('after-visible-change', '[visible: boolean]', '显隐动画完成'),
+            event('active-option-change', '[event: MouseEvent, activeKey: string]', '导航项变化'),
+            event('file-content-change', '[content: string]', '详情文件内容变化'),
+            event('back-ward', '[event: MouseEvent, mode: SidebarMode]', '返回主视图'),
+            event(
+              'detail-content-copy',
+              '[event: MouseEvent, content: string, result: boolean]',
+              '复制详情内容',
+            ),
+          ],
+        },
+        {
+          name: 'Sidebar.CodeContent',
+          items: [
+            event('change', '[activeKey: SidebarActiveKey]', '展开项变化'),
+            event(
+              'expand',
+              "[event: MouseEvent, code: SidebarCodeItemProps, mode: 'code']",
+              '打开代码详情',
+            ),
+          ],
+        },
+        {
+          name: 'Sidebar.FileContent',
+          items: [
+            event('change', '[activeKey: SidebarActiveKey]', '展开项变化'),
+            event(
+              'expand',
+              "[event: MouseEvent, file: SidebarFileItemProps, mode: 'file']",
+              '打开文件详情',
+            ),
+          ],
+        },
+        {
+          name: 'Sidebar.FileItem',
+          items: [event('content-change', '[content: string]', '富文本内容变化')],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'SidebarContainerExposed',
+          items: [method('getContainerElement', '() => HTMLDivElement | null', '获取容器元素')],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Sidebar.Container',
+          items: [
+            slot('default', '{}', '容器内容'),
+            slot('title', '{}', '标题内容'),
+            slot('header', '{}', '完整自定义头部'),
+          ],
+        },
+        {
+          name: 'Sidebar',
+          items: [
+            slot('title', '{}', '主视图标题'),
+            slot('option', '{ option: SidebarOption; onChange(event, activeKey): void }', '导航项'),
+            slot('main-content', '{ activeKey?: string }', '主视图内容'),
+            slot(
+              'detail-header',
+              "{ mode: SidebarMode; detailContent: SidebarProps['detailContent'] }",
+              '详情头部',
+            ),
+            slot('detail-content', '{ mode: SidebarMode }', '详情内容'),
+          ],
+        },
+        {
+          name: 'Annotation.AnnotationContent',
+          items: [slot('item', '{ annotation: SidebarAnnotationItem }', '参考来源项')],
+        },
+        {
+          name: 'MCPConfigureContent',
+          items: [slot('item', '{ option: SidebarMCPOption; custom: boolean }', 'MCP 配置项')],
+        },
+      ],
+      textRewrites: [
+        [
+          '`visible` 配置 `onCancel` 使用控制显示和隐藏',
+          '`visible` 控制显示状态，`cancel` 事件处理关闭请求',
+        ],
+        ['使用 `onCancel` 监听用户的关闭行为', '监听 `cancel` 事件处理用户关闭行为'],
+        [
+          '使用 `onStatusChange` 自定义处理 MCP 工具的启用/关闭',
+          '监听 `status-change` 事件处理 MCP 工具的启用/关闭',
+        ],
+        [
+          '使用 `onAddClick` 处理自定义 MCP 页的点击添加按钮后的操作',
+          '监听 `add-click` 事件处理自定义 MCP 页的新增操作',
+        ],
+        [
+          '可通过 `onConfigureClick` 监听内置 MCP 工具的配置，通过 `onEditClick` 监听自定义 MCP 工具的配置',
+          '通过 `configure-click` 监听内置 MCP 工具配置，通过 `edit-click` 监听自定义 MCP 工具配置',
+        ],
+        ['MCPReactOption', 'SidebarMCPOption'],
+        [
+          '`activeKey`配合 `onChange` 管理当前展开的项',
+          '`activeKey` 配合 `change` 事件管理当前展开项',
+        ],
+        [
+          '可通过 `renderMainContent` 传入渲染函数。',
+          '可通过 `main-content` 作用域插槽提供主视图内容；迁移代码也可继续使用 `renderMainContent` callback prop。',
+        ],
+        [
+          '则通过 `renderDetailContent` 自行处理渲染即可。',
+          '则通过 `detail-content` 作用域插槽自行处理；迁移代码也可继续使用 `renderDetailContent` callback prop。',
+        ],
+        ["name | 名称 | string | -'\n| style | 自定义内联样式 | StyleValue | - |", ''],
       ],
     },
   ],
