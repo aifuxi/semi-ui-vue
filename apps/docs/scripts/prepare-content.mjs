@@ -494,12 +494,12 @@ function transformBody(body, page, context) {
 
   while (index < lines.length) {
     const line = lines[index] ?? '';
-    const fence = line.match(/^```(\S*)\s*(.*)$/);
+    const fence = line.match(/^[ \t]{0,3}```\s*(\S*)\s*(.*)$/);
     if (fence) {
       const language = (fence[1] ?? '').trim();
       const info = (fence[2] ?? '').trim();
       index += 1;
-      while (index < lines.length && !/^```/.test(lines[index] ?? '')) index += 1;
+      while (index < lines.length && !/^[ \t]{0,3}```/.test(lines[index] ?? '')) index += 1;
       index += 1;
       if (droppedFenceLanguages.has(language)) {
         recordDrop('mdx-block', `\`\`\`${language}`);
