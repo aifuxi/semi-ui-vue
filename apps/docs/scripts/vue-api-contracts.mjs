@@ -3615,4 +3615,246 @@ export const vueApiContracts = new Map([
       ],
     },
   ],
+  [
+    '/zh-CN/show/overflowlist',
+    {
+      sources: ['packages/ui/src/overflow-list/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          sources: [
+            {
+              source: 'packages/ui/src/overflow-list/types.ts',
+              interfaces: ['OverflowListProps'],
+              omit: [
+                'items',
+                'collapseFrom',
+                'minVisibleItems',
+                'threshold',
+                'wrapperClassName',
+                'wrapperStyle',
+                'overflowRenderDirection',
+              ],
+            },
+          ],
+          aliases: { class: 'className' },
+          descriptions: { class: 'Vue 原生类名', className: '样式类名' },
+          defaults: { renderMode: '`collapse`' },
+        },
+        {
+          heading: "renderMode='collapse'",
+          level: 3,
+          sources: [
+            {
+              source: 'packages/ui/src/overflow-list/types.ts',
+              interfaces: ['OverflowListProps'],
+              omit: [
+                'renderMode',
+                'class',
+                'className',
+                'style',
+                'wrapperClassName',
+                'wrapperStyle',
+                'itemKey',
+                'threshold',
+                'overflowRenderDirection',
+              ],
+            },
+          ],
+          defaults: { collapseFrom: '`end`', minVisibleItems: '0' },
+        },
+        {
+          heading: "renderMode='scroll'",
+          level: 3,
+          sources: [
+            {
+              source: 'packages/ui/src/overflow-list/types.ts',
+              interfaces: ['OverflowListProps'],
+              omit: [
+                'renderMode',
+                'class',
+                'className',
+                'style',
+                'collapseFrom',
+                'minVisibleItems',
+                'itemKey',
+              ],
+            },
+          ],
+          defaults: { overflowRenderDirection: '`both`', threshold: '0.75' },
+        },
+      ],
+      usageNotes: [
+        '`visibleItem` 和 `overflow` 是作用域插槽，不再使用上游 renderer props。',
+        '`itemKey` 同时支持固定键和取键函数；滚动模式的 item 仍需提供稳定 key。',
+      ],
+      eventSections: [
+        { heading: "renderMode='collapse'", level: 3, rows: ['onOverflow'] },
+        {
+          heading: "renderMode='scroll'",
+          level: 3,
+          rows: ['onIntersect', 'onVisibleStateChange'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'OverflowList',
+          items: [
+            event('overflow', '[items: OverflowItem[]]', '折叠项集合变化'),
+            event(
+              'intersect',
+              '[entries: Record<string, IntersectionObserverEntry>]',
+              '滚动项相交状态变化',
+            ),
+            event(
+              'visibleStateChange',
+              '[visibleState: Map<string, boolean>]',
+              '滚动项可见状态变化',
+            ),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'OverflowList',
+          items: [
+            slot('visibleItem', '{ item, index }', '渲染可见项'),
+            slot('overflow', '{ items, position }', '渲染起始或末尾的折叠项'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '`collapse` 模式下支持 collapseFrom 设置折叠方向。',
+          '`collapse` 模式下支持 `collapseFrom` 设置折叠方向。',
+        ],
+        [
+          '`collapse` 模式下支持 minVisibleItems 设置最小展示的数目。',
+          '`collapse` 模式下支持 `minVisibleItems` 设置最小展示数目。',
+        ],
+        ['如果需要 scrollIntoView', '如果需要 `scrollIntoView`'],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/feedback/progress',
+    {
+      sources: ['packages/ui/src/progress/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/progress/types.ts',
+          interfaces: ['ProgressProps'],
+          aliases: {
+            ariaLabel: 'aria-label',
+            ariaLabelledby: 'aria-labelledby',
+            ariaValuetext: 'aria-valuetext',
+            class: 'className',
+          },
+          descriptions: {
+            ariaLabel: '`aria-label` 的类型化 Vue 映射',
+            ariaLabelledby: '`aria-labelledby` 的类型化 Vue 映射',
+            ariaValuetext: '`aria-valuetext` 的类型化 Vue 映射',
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            motion: '是否启用进度变化动画，或提供动画配置',
+          },
+          defaults: {
+            direction: '`horizontal`',
+            format: '`${percent}%`',
+            motion: 'true',
+            percent: '0',
+            showInfo: 'false',
+            size: '`default`',
+            strokeGradient: 'false',
+            strokeLinecap: '`round`',
+            strokeWidth: '4',
+            type: '`line`',
+          },
+        },
+      ],
+      usageNotes: [
+        '`format` 是保留的内容格式化 callback prop；也可使用 `#format` 作用域插槽，插槽优先。',
+        '`stroke` 数组按 percent 选择颜色；启用 `strokeGradient` 后补齐颜色区间。',
+      ],
+      slotGroups: [
+        {
+          name: 'Progress',
+          items: [slot('format', '{ percent }', '自定义进度文本内容')],
+        },
+      ],
+    },
+  ],
+  [
+    '/zh-CN/plus/dragMove',
+    {
+      sources: ['packages/ui/src/drag-move/types.ts'],
+      propSections: [
+        {
+          heading: 'API 参考',
+          level: 2,
+          source: 'packages/ui/src/drag-move/types.ts',
+          interfaces: ['DragMoveProps'],
+          defaults: { allowInputDrag: 'false', positionStrategy: '`absolute`' },
+        },
+      ],
+      usageNotes: [
+        '`allowMove`、`constrainer`、`customMove` 和 `handler` 是拖拽配置 callback props，不转换为 emits。',
+        '默认插槽应提供单个可接收 attrs 和 DOM 事件的根元素。',
+      ],
+      eventSections: [
+        {
+          heading: 'API',
+          level: 3,
+          rows: [
+            'onMouseDown',
+            'onMouseMove',
+            'onMouseUp',
+            'onTouchCancel',
+            'onTouchEnd',
+            'onTouchMove',
+            'onTouchStart',
+          ],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'DragMove',
+          items: [
+            event('mouseDown', '[event: MouseEvent]', '鼠标拖拽开始'),
+            event('mouseMove', '[event: MouseEvent]', '鼠标拖拽移动'),
+            event('mouseUp', '[event: MouseEvent]', '鼠标拖拽结束'),
+            event('touchStart', '[event: TouchEvent]', '触摸拖拽开始'),
+            event('touchMove', '[event: TouchEvent]', '触摸拖拽移动'),
+            event('touchEnd', '[event: TouchEvent]', '触摸拖拽结束'),
+            event('touchCancel', '[event: TouchEvent]', '触摸拖拽取消'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'DragMove',
+          items: [slot('default', '{}', '可拖拽的单个根元素')],
+        },
+      ],
+      textRewrites: [
+        ['### API', '## API 参考'],
+        [
+          '2. DragMove 需要将 DOM 事件监听器应用到 children 中，如果子元素是自定义的组件，你需要确保它能将属性传递至底层的 DOM 元素。支持以下类型的 children：',
+          '2. DragMove 会把 DOM 事件监听器合并到默认插槽的根元素；使用自定义组件时，需要将 attrs 透传到底层 DOM 元素。支持以下内容：',
+        ],
+        [
+          '1. Class Component，不强制绑定ref，但需要确保 props 可被透传至真实的 DOM 节点上',
+          '1. 能够透传 attrs，并最终渲染为单个 DOM 根节点的 Vue 组件',
+        ],
+        [
+          '2. 使用 forwardRef 包裹后的函数式组件，将 props 与 ref 透传到 children 内真实的 DOM 节点上',
+          '2. 能够把 attrs 和事件监听器传递给原生元素的函数式组件',
+        ],
+        ['3. 真实 DOM 节点, 如 span，div，p...', '3. 原生 DOM 元素，例如 `span`、`div`、`p`'],
+      ],
+    },
+  ],
 ]);
