@@ -15,7 +15,8 @@
 
 - 代码定位、依赖分析、调用链调查：优先调用 `mcp__codegraph__codegraph_explore`。
 - 文件读取、项目诊断、运行配置和 IDE 执行：优先调用 `mcp__webstorm__*`，并始终传入当前仓库的绝对 `projectPath`。
-- 只有对应 MCP 工具未出现在当前会话工具注册表，或实际调用失败时，才声明 MCP 不可用并回退 CLI。
+- 判断 MCP 是否可用时，不得只检查首屏或显式展开的工具列表；必须先检查完整工具目录，包括延迟加载工具（运行时提供 `ALL_TOOLS` 或等价工具搜索时必须使用）。
+- 只有完整工具目录中不存在对应工具，或找到工具后实际调用失败，才可声明 MCP 不可用并回退 CLI；不得将“首屏未显示”视为“未注册”。
 - 不要把 `vendor/semi-design` 中的 Semi MCP 文档或组件 API 当成当前会话已连接的 MCP server。
 
 - 会话中确认一次项目和可用运行配置，复用 [.run](.run/)；临时参数用 IDE 终端。权限拒绝不绕过。环境设置见[工具链](docs/architecture/toolchain.md)。
