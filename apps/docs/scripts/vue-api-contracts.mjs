@@ -5207,4 +5207,366 @@ export const vueApiContracts = new Map([
       textRewrites: [['## API参考', '## API 参考']],
     },
   ],
+  [
+    '/zh-CN/show/calendar',
+    {
+      sources: ['packages/ui/src/calendar/types.ts'],
+      propSections: [
+        {
+          heading: 'Calendar',
+          level: 3,
+          source: 'packages/ui/src/calendar/types.ts',
+          interfaces: ['CalendarProps'],
+          descriptions: {
+            className: '样式类名',
+            displayValue: '展示日期',
+            events: '待渲染的 CalendarEvent 列表',
+            header: '头部 VNode；header 插槽优先',
+            range: 'range 模式的左闭右开日期范围',
+            style: '内联样式',
+            weekStartsOn: '每周第一天；0 为周日，1 为周一，依此类推',
+          },
+          defaults: {
+            displayValue: '组件实例创建时的当前日期',
+            events: '[]',
+            height: '600',
+            markWeekend: 'false',
+            minEventHeight: 'Number.MIN_SAFE_INTEGER',
+            mode: '`week`',
+            range: '[]',
+            scrollTop: '400',
+            showCurrTime: 'true',
+            weekStartsOn: '0',
+          },
+        },
+        {
+          heading: 'Event Object',
+          level: 3,
+          source: 'packages/ui/src/calendar/types.ts',
+          interfaces: ['CalendarEvent'],
+          descriptions: {
+            allDay: '全天事件',
+            content: '事件内容 VNode；event 插槽优先',
+            end: '事件结束时间',
+            key: '唯一事件 key',
+            start: '事件开始时间',
+          },
+          defaults: { allDay: 'false' },
+        },
+      ],
+      usageNotes: [
+        '`day`、`week`、`month`、`range` 由 Calendar 内部视图实现，不作为公开子组件导出。',
+        '`header` 与 `events[].content` 保留 VNode prop；对应 header、event 插槽优先。',
+        '`range` 左闭右开；`weekStartsOn` 对周视图和月视图生效。',
+      ],
+      eventSections: [
+        {
+          heading: 'Calendar',
+          level: 3,
+          rows: ['onClick', 'onClose', 'onMoreClick'],
+        },
+      ],
+      eventGroups: [
+        {
+          name: 'Calendar',
+          items: [
+            event('click', '[event: MouseEvent, date: Date]', '点击日期格'),
+            event('close', '[event: MouseEvent]', '关闭月视图事件列表'),
+            event(
+              'moreClick',
+              '[event: MouseEvent, date: Date, remaining: number]',
+              '点击月视图“还有几项”',
+            ),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'Calendar',
+          items: [
+            slot('allDayEvents', '{ events: CalendarEvent[] }', '顶部全天事件区'),
+            slot('dateDisplay', '{ date: Date }', '日期文案'),
+            slot('dateGrid', '{ date: Date, dateString: string }', '日期单元格或日期列'),
+            slot('event', '{ event: CalendarEvent }', '单个事件内容'),
+            slot('header', '{}', '日历头部'),
+            slot('timeDisplay', '{ time: number }', '日、周、范围视图的时间轴文案'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '通过 `events` 传入需要渲染的事件，`events` 是一个由 event objects 组成的数组，具体形式请参考 events API。',
+          '通过 `events` 传入需要渲染的 `CalendarEvent` 数组，具体形式请参考 Event Object API。',
+        ],
+        [
+          '`events` 是一个 event object 组成的数组，event object 约定格式如下：',
+          '`events` 是一个 `CalendarEvent` 数组，成员格式如下：',
+        ],
+        [
+          '通过 dateGridRender 可以自定义渲染日期单元格/列。需要使用绝对定位。',
+          '通过 `#dateGrid="{ dateString, date }"` 作用域插槽自定义日期单元格或日期列，内容需要使用绝对定位。',
+        ],
+        [
+          '可以通过 dateGridRender 自定义单元格的背景，月视图的文字 zIndex 默认为 3，如需完全覆盖单元格可以设置更大的 zIndex 来实现。',
+          '可以通过 `#dateGrid` 插槽自定义单元格背景。月视图文字的 zIndex 默认为 3，如需完全覆盖单元格，可设置更大的 zIndex。',
+        ],
+        [
+          '可以通过 renderDateDisplay 自定义日期文案。',
+          '可以通过 `#dateDisplay="{ date }"` 作用域插槽自定义日期文案。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/show/list',
+    {
+      sources: ['packages/ui/src/list/types.ts', 'packages/ui/src/grid/types.ts'],
+      propSections: [
+        {
+          heading: 'List',
+          level: 3,
+          source: 'packages/ui/src/list/types.ts',
+          interfaces: ['ListProps'],
+          descriptions: {
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            dataSource: '只读列表数据源',
+            emptyContent: '空态 VNode；emptyContent 插槽优先',
+            footer: '列表底部 VNode；footer 插槽优先',
+            header: '列表头部 VNode；header 插槽优先',
+            loadMore: '根节点底部的加载更多 VNode；loadMore 插槽优先',
+            renderItem: '数据项渲染 callback；item 插槽优先',
+          },
+          defaults: {
+            bordered: 'false',
+            layout: '`vertical`',
+            loading: 'false',
+            size: '`default`',
+            split: 'true',
+          },
+        },
+        {
+          heading: 'List grid props',
+          level: 3,
+          sources: [
+            {
+              source: 'packages/ui/src/grid/types.ts',
+              interfaces: ['RowProps'],
+              omit: ['prefixCls'],
+            },
+            {
+              source: 'packages/ui/src/grid/types.ts',
+              interfaces: ['ColSize', 'ColProps'],
+              omit: ['prefixCls'],
+            },
+          ],
+          descriptions: {
+            align: '行内项目的垂直对齐方式',
+            justify: '行内项目的水平排列方式',
+            offset: '左侧间隔格数',
+            order: '栅格顺序',
+            pull: '向左移动格数',
+            push: '向右移动格数',
+            type: '行布局类型',
+          },
+          defaults: { gutter: '0', type: '`flex`' },
+        },
+        {
+          heading: 'List.Item',
+          level: 3,
+          source: 'packages/ui/src/list/types.ts',
+          interfaces: ['ListItemProps'],
+          descriptions: {
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            extra: '附加内容 VNode；extra 插槽优先',
+            header: '头部内容 VNode；header 插槽优先',
+            main: '主体内容 VNode；main 插槽优先',
+          },
+          defaults: { align: '`flex-start`' },
+        },
+      ],
+      usageNotes: [
+        '`List.Item` 同时作为静态成员和 `ListItem` 具名导出；SFC 模板推荐使用 `ListItem`。',
+        '`renderItem` 是保留的 callback prop；typed `#item="{ item, index }"` 插槽存在时优先。',
+        'header、footer、loadMore、emptyContent 与 ListItem 的 header、main、extra 都支持同名插槽，插槽优先。',
+        '`loading` 只控制列表加载态；分页由外部 Pagination 组合，不是 List prop。',
+      ],
+      eventSections: [
+        { heading: 'List', level: 3, rows: ['onClick', 'onRightClick'] },
+        { heading: 'List.Item', level: 3, rows: ['onClick', 'onRightClick'] },
+      ],
+      eventGroups: [
+        {
+          name: 'List',
+          items: [
+            event('click', '[event: MouseEvent]', '列表项未监听同名事件时，由 List 接收点击'),
+            event(
+              'rightClick',
+              '[event: MouseEvent]',
+              '列表项未监听同名事件时，由 List 接收右键点击',
+            ),
+          ],
+        },
+        {
+          name: 'ListItem',
+          items: [
+            event('click', '[event: MouseEvent]', '点击列表项'),
+            event('rightClick', '[event: MouseEvent]', '右键点击列表项'),
+            event('mouseEnter', '[event: MouseEvent]', '指针进入列表项'),
+            event('mouseLeave', '[event: MouseEvent]', '指针离开列表项'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'List',
+          items: [
+            slot('default', '{}', '声明式 ListItem 子组件'),
+            slot('emptyContent', '{}', '空态内容'),
+            slot('footer', '{}', '列表底部'),
+            slot('header', '{}', '列表头部'),
+            slot('item', '{ item, index }', '逐项渲染 dataSource'),
+            slot('loadMore', '{}', '加载更多内容'),
+          ],
+        },
+        {
+          name: 'ListItem',
+          items: [
+            slot('default', '{}', '列表项内容'),
+            slot('extra', '{}', '附加内容'),
+            slot('header', '{}', '头部内容'),
+            slot('main', '{}', '主体内容'),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '可以通过集成 [react-infinite-scroller](https://github.com/CassetteRocks/react-infinite-scroller) 来实现滚动加载的列表。',
+          '可以结合滚动事件与分批加载实现滚动加载列表。',
+        ],
+        [
+          '可以通过集成 [react-virtualized](https://github.com/bvaughn/react-virtualized) 实现滚动加载无限长列表，带有虚拟化（virtualization）功能，能够提高数据量大时候长列表的性能。',
+          '可以结合虚拟列表实现无限长列表，在数据量较大时减少实际渲染的列表项。',
+        ],
+      ],
+    },
+  ],
+  [
+    '/zh-CN/plus/jsonviewer',
+    {
+      sources: ['packages/ui/src/json-viewer/types.ts', 'packages/ui/src/json-viewer/index.ts'],
+      propSections: [
+        {
+          heading: 'JsonViewer',
+          level: 3,
+          source: 'packages/ui/src/json-viewer/types.ts',
+          interfaces: ['JsonViewerProps'],
+          descriptions: {
+            class: 'Vue 原生类名',
+            className: '样式类名',
+            limitSearchButtonBounds: '是否将搜索按钮拖动范围限制在组件容器内',
+            options: '编辑器配置',
+            renderSearchButton: '搜索按钮渲染 callback；优先于 searchButton 插槽',
+            renderTooltip: '悬浮提示 callback；固定 v2.102.0 运行时未订阅 hoverNode',
+            showSearch: '是否显示搜索入口',
+            style: '内联样式',
+            value: '`v-model:value` 绑定的 JSON 字符串',
+          },
+          defaults: {
+            height: '400',
+            limitSearchButtonBounds: 'false',
+            options: '`{ readOnly: false, autoWrap: true }`',
+            showSearch: 'true',
+            value: "`''`",
+            width: '400',
+          },
+        },
+        {
+          heading: 'JsonViewerOptions',
+          level: 3,
+          source: 'packages/ui/src/json-viewer/types.ts',
+          interfaces: ['JsonViewerOptions'],
+          descriptions: {
+            completionOptions: '静态补全项配置',
+            prefixCls: '样式类名前缀',
+          },
+          defaults: { autoWrap: 'true', readOnly: 'false' },
+        },
+      ],
+      models: ['`v-model:value` 对应 `value` 与 `update:value`。'],
+      usageNotes: [
+        '`value` 更新会重建内部编辑器；编辑内容时依次触发 `change` 与 `update:value`。',
+        '`renderSearchButton` 是保留的 callback prop；未提供时可使用 `#searchButton` 作用域插槽。',
+        '`SearchControls.onXxx` 是传给渲染 callback / 插槽的控制器方法，不是组件事件。',
+        '`options.customRenderRule[].match/render` 与 `renderTooltip` 是嵌套或顶层 callback props；`renderTooltip` 在固定 v2.102.0 中保持兼容 no-op。',
+      ],
+      eventSections: [{ heading: 'JsonViewer', level: 3, rows: ['onChange'] }],
+      eventGroups: [
+        {
+          name: 'JsonViewer',
+          items: [
+            event('change', '[value: string]', '编辑器内容变化'),
+            event('update:value', '[value: string]', '更新 v-model:value'),
+          ],
+        },
+      ],
+      instanceMethodGroups: [
+        {
+          name: 'JsonViewerExposed',
+          items: [
+            method('getValue', '() => string', '获取当前值'),
+            method('format', '() => void', '格式化当前内容'),
+            method(
+              'search',
+              '(text: string, caseSensitive?: boolean, wholeWord?: boolean, regex?: boolean) => void',
+              '搜索文本',
+            ),
+            method(
+              'getSearchResults',
+              '() => JsonViewerSearchResult[] | undefined',
+              '获取当前搜索结果',
+            ),
+            method('prevSearch', '(step?: number) => void', '导航到上一个搜索结果'),
+            method('nextSearch', '(step?: number) => void', '导航到下一个搜索结果'),
+            method('replace', '(text: string) => void', '替换当前搜索匹配项'),
+            method('replaceAll', '(text: string) => void', '替换全部搜索匹配项'),
+          ],
+        },
+      ],
+      slotGroups: [
+        {
+          name: 'JsonViewer',
+          items: [
+            slot(
+              'searchButton',
+              '{ defaultSearchButton: VNodeChild, controls: JsonViewerSearchControls }',
+              '自定义搜索按钮',
+            ),
+          ],
+        },
+      ],
+      textRewrites: [
+        [
+          '注意：JsonViewer 为非受控组件，若传入 value 属性为受控属性即React State，不建议在 onChange 中修改 value 属性即setState操作。若需要获取组件的值，可以通过 ref 获取，具体可参考 [Methods](#Methods)。',
+          'JsonViewer 内部编辑器保持非受控；`value` prop 更新时会重建编辑器。可通过 `v-model:value` 同步编辑结果，或使用模板 ref 调用实例方法。',
+        ],
+        ['设置固定行高（单位：px, 默认 18）', '设置固定行高（单位：px，默认 20）'],
+        ['(content: string) => VNodeChild', '(content: string) => VNodeChild 或 HTMLElement'],
+        [
+          '通过 `renderSearchButton` 属性，你可以自定义搜索按钮的渲染方式，实现固定位置、自定义样式等需求。',
+          '可通过 `renderSearchButton` callback prop 或 `#searchButton` 作用域插槽自定义搜索按钮，实现固定位置或自定义样式。',
+        ],
+        [
+          '可以通过 `ref` 调用组件实例上绑定的方法，实现某些特殊交互。',
+          '可以通过模板 ref 调用公开实例方法。',
+        ],
+        [
+          'https://github.com/aifuxi/semi-ui-vue/blob/main/packages/semi-ui/jsonViewer/_story/jsonViewer.stories.jsx',
+          'https://github.com/aifuxi/semi-ui-vue/blob/main/apps/storybook-vue/src/stories/json-viewer.stories.ts',
+        ],
+        ['ReactMonacoEditor', 'MonacoEditor'],
+      ],
+    },
+  ],
 ]);
