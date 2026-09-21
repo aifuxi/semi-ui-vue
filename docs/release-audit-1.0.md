@@ -25,6 +25,7 @@ Nuxt 文档站及旧逐示例验收已[退役](documentation/README.md)；现行
 - 盘点 82 个组件 API 页面和 61 份 React 到 Vue 迁移说明，核对包名、Vue 公开 API 与固定基线方向；通过既有上游正文重写链修正简介、主题、暗色模式和无障碍指南中残留的 React Adapter、旧插件与上游规划措辞，未增加第二套展示机制。
 - 复核五个公开包的真实 tarball：项目 MIT License、Semi Design v2.102.0 原始许可、第三方声明与 SPDX 2.3 SBOM 均随包生成；`release:verify` 和隔离安装的 `verify:pack-isolated` 均通过，覆盖 exports、ESM、类型、样式、无 DOM 导入与 tree-shaking。
 - 生产依赖审计发现 VitePress 1.6.4 默认 Vite 5 链路包含已知漏洞，现按官方兼容范围仅将 `vitepress>vite` 覆盖到 6.4.3；`pnpm audit:prod` 已无已知漏洞，文档构建、类型检查及通用指南生产态 Playwright 回归通过。
+- `DOCS_EXAMPLE_TIER=t1` 至 `t5` 的生产态全量巡检共 113 项通过：82 个组件页的 1,033 个 live 示例均存在预览与源码且无客户端错误，22 个通用指南代码块均为 code-only，并覆盖 Select、拖拽、缩放、视频、上传、Form、Table、Chat 与 AI 组件等 11 项实际交互。
 - 本项已完成；剩余发布阻塞只有产品验收闭环和稳定预发布退出流程，尚未执行实际发布。
 
 ## 历史证据
