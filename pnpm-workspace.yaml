@@ -29,6 +29,8 @@ peerDependencyRules:
 
 overrides:
   '@types/react': 18.0.5
+  # VitePress 1 的 Vite 5 已停止安全更新；官方维护者确认 v1 可覆盖到 Vite 6。
+  'vitepress>vite': 6.4.3
 
 allowBuilds:
   '@parcel/watcher': true

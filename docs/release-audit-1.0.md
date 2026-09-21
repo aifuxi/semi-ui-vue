@@ -4,14 +4,13 @@
 
 ## 剩余工作
 
-1. 核对保留的 API、使用与迁移说明，以及实际公开包的许可、归属和 SBOM。后续测试工具迁移按[方案](testing/vue-testing-strategy-proposal.md)另行实施。
-2. 产品验收闭环后使用官方 `changeset pre exit`，由机器人生成稳定版本 PR，经相同候选门禁发布到 latest。
+1. 产品验收闭环后使用官方 `changeset pre exit`，由机器人生成稳定版本 PR，经相同候选门禁发布到 latest。
 
 外部接入与 next 发布已在 2026-09-18 完成：GitHub App、仓库变量/secret、master 保护、npm Environment 和五包 Trusted Publisher 都在真实发布中生效，机器人版本 PR 的创建与更新都实测触发了 CI；next 候选的质量、Chromium、隔离消费门禁、provenance、五包版本与精确依赖、包级标签/Release 和 registry 安装均已核对，见下方历史证据。
 
-Nuxt 文档站及旧逐示例验收已[退役](documentation/README.md)，不再要求恢复历史批次或交付站点。移除文档站不表示产品验收完成，也不自动创建替代站点。
+Nuxt 文档站及旧逐示例验收已[退役](documentation/README.md)；现行 VitePress 站点作为文档入口维护，但不属于公开包发布门禁。
 
-五包 `0.1.0` 是未发布迁移基线；`1.0.0-next.0` 已按预发布流程进入 next，`latest` 仍指向历史 `0.1.0-alpha.0`，只有稳定版发布才会改写它。外部接入状态需在准备发布时重新读取，不能从本地测试推断。
+五包当前源码与 registry `next` 均为 `1.0.0-next.1`；`latest` 仍指向历史 `0.1.0-alpha.0`，只有稳定版发布才会改写它。外部接入状态需在准备发布时重新读取，不能从本地测试推断。
 
 ## 组件契约复核（2026-09-22）
 
@@ -20,6 +19,13 @@ Nuxt 文档站及旧逐示例验收已[退役](documentation/README.md)，不再
 - 全量候选检查发现并修复 Pagination small 模式文本节点合并回归，同时保留 SSR hydration 无警告；修复后的单元/SSR 12 项和生产态 Chromium 5 项通过。其余公开能力、已记录 deviation、ARIA、Portal、主题、RTL、Locale、SSR 与发布入口未发现新的未解释差异。
 - 当前工作树的 `pnpm check:full` 通过：232 个 Vitest 文件、1,314 项测试，444 项生产态 Chromium，以及构建、主题、SSR、tarball 和真实 tarball consumer 门禁全部通过。
 - 本项完成不替代后续候选的 `release:check`、许可/SBOM 核对或产品验收；稳定版发布前仍需以最终候选重新执行门禁。
+
+## 文档与发布合规复核（2026-09-22）
+
+- 盘点 82 个组件 API 页面和 61 份 React 到 Vue 迁移说明，核对包名、Vue 公开 API 与固定基线方向；通过既有上游正文重写链修正简介、主题、暗色模式和无障碍指南中残留的 React Adapter、旧插件与上游规划措辞，未增加第二套展示机制。
+- 复核五个公开包的真实 tarball：项目 MIT License、Semi Design v2.102.0 原始许可、第三方声明与 SPDX 2.3 SBOM 均随包生成；`release:verify` 和隔离安装的 `verify:pack-isolated` 均通过，覆盖 exports、ESM、类型、样式、无 DOM 导入与 tree-shaking。
+- 生产依赖审计发现 VitePress 1.6.4 默认 Vite 5 链路包含已知漏洞，现按官方兼容范围仅将 `vitepress>vite` 覆盖到 6.4.3；`pnpm audit:prod` 已无已知漏洞，文档构建、类型检查及通用指南生产态 Playwright 回归通过。
+- 本项已完成；剩余发布阻塞只有产品验收闭环和稳定预发布退出流程，尚未执行实际发布。
 
 ## 历史证据
 

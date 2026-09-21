@@ -97,6 +97,21 @@ test('通用指南的 22 个代码块全部使用 code-only 展示', async ({ pa
   }
 });
 
+test('通用指南正文只描述当前 Vue 公开能力', async ({ page }) => {
+  await page.goto('/zh-CN/start/introduction');
+  await expect(page.locator('#main-content')).toContainText(
+    'Semi UI Vue 是基于该设计系统的独立 Vue 3 实现',
+  );
+  await expect(page.locator('#main-content')).not.toContainText(
+    '通过引入 semi-ui 来使用我们的 React 组件',
+  );
+
+  await page.goto('/zh-CN/advanced/customize-theme');
+  await expect(page.locator('#main-content')).toContainText('Semi UI Vue 不要求安装额外主题插件');
+  await expect(page.locator('#main-content')).not.toContainText('@douyinfe/semi-vite-plugin');
+  await expect(page.locator('#main-content')).not.toContainText('SemiVitePlugin');
+});
+
 for (const { component, route, expectedExamples } of pages) {
   test(`${tier.toUpperCase()} ${component}：${expectedExamples} 个示例可运行且无客户端错误`, async ({
     page,
