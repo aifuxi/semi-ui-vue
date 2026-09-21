@@ -51,10 +51,11 @@ function eventStyle(event: ParsedCalendarEvent): CSSProperties {
   const end = event.endPos ?? 0;
   const top = start * props.scrollHeight;
   const height = Math.max(props.minEventHeight, (end - start) * props.scrollHeight);
+  const left = typeof event.left === 'string' ? Number.parseFloat(event.left) : event.left;
   return {
     top: `${top}px`,
     height: `${height}px`,
-    left: event.left ?? 0,
+    left: Number.isFinite(left) && typeof event.left === 'string' ? event.left : '0%',
   };
 }
 

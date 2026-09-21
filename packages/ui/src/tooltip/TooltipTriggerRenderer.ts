@@ -103,6 +103,10 @@ export default defineComponent({
             }
           : { 'aria-describedby': props.popupId };
       const explicitTabindex = originalProps.tabindex ?? originalProps.tabIndex;
+      const tabindex = explicitTabindex ?? 0;
+      const tabindexProp = Object.hasOwn(originalProps, 'tabindex')
+        ? { tabindex }
+        : { tabIndex: tabindex };
       return cloneVNode(
         node,
         {
@@ -111,8 +115,7 @@ export default defineComponent({
           'data-popupid': props.popupId,
           ref: captureRef,
           style: [originalProps.style, extraStyle],
-          // Vue components declare tabIndex; native elements accept the same DOM property.
-          tabIndex: explicitTabindex ?? 0,
+          ...tabindexProp,
         },
         true,
       );

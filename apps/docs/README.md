@@ -2,7 +2,7 @@
 
 `apps/docs` 是基于 [VitePress](https://vitepress.dev/) 的私有文档应用，用自定义主题复刻 Semi 官网外壳，
 正文说明从只读基线 `vendor/semi-design/content` 在构建期生成。组件示例按固定基线逐项迁移；当前已完成
-T1、T2 的 39 个组件、311 个可运行 Vue SFC，其余示例继续显示迁移状态。
+T1、T2、T3 的 61 个组件、495 个可运行 Vue SFC，其余示例继续显示迁移状态。
 
 ## 常用命令
 
@@ -29,7 +29,7 @@ T1、T2 的 39 个组件、311 个可运行 Vue SFC，其余示例继续显示�
 | `scripts/prepare-assets.mjs`    | 编译基线站点 SCSS、复制字体与侧栏图标                                       |
 | `scripts/prepare-content.mjs`   | 生成 Markdown 正文、导航数据、检索索引与来源清单                            |
 | `overrides/**`                  | 手工维护页；同名路由优先于生成结果                                          |
-| `assets/**`                     | 站点自有静态资源（当前为 favicon）                                          |
+| `assets/**`                     | 站点自有静态资源                                                            |
 
 以下路径全部是生成产物，不进入 Git：`content/`、`cache/`、`dist/`、`.vitepress/theme/generated/`。
 
@@ -66,7 +66,7 @@ class 由 `.vitepress/theme/markdown/prose-classes.ts` 在 markdown-it 渲染阶
 ## 当前示例边界
 
 - 不接 REPL；`DemoBlock` 直接运行已登记的 Vue SFC，并用同一文件的原始源码生成代码区。示例清单契约见
-  `.vitepress/theme/demo/types.ts`；T1、T2 示例按稳定 ID 自动登记，未登记示例保持占位状态。
+  `.vitepress/theme/demo/types.ts`；T1、T2、T3 示例按稳定 ID 自动登记，未登记示例保持占位状态。
 - 只提供中文，路由保留 `/zh-CN/` 前缀；英文内容源已存在，后续按同一管线开启。
 - Button、Input、Select、Form、Table、Modal、Tooltip、Upload、Tabs、Pagination、Navigation、Breadcrumb、
   Steps、Anchor、Dropdown、Popover、Toast、Notification、Checkbox、Radio、Switch、DatePicker、TimePicker、

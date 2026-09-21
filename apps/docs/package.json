@@ -15,6 +15,7 @@
     "clean": "rimraf content dist cache .vitepress/theme/generated"
   },
   "dependencies": {
+    "@aifuxi/semi-icons-lab-vue": "workspace:*",
     "@aifuxi/semi-icons-vue": "workspace:*",
     "@aifuxi/semi-illustrations-vue": "workspace:*",
     "@aifuxi/semi-theme-default": "workspace:*",

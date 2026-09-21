@@ -5,6 +5,7 @@ import type {
   MonthlyCalendarEvents,
   ParsedCalendarEvent,
 } from '@workspace/foundation-integration';
+import { roundCalendarPosition } from '@workspace/foundation-integration';
 import {
   computed,
   nextTick,
@@ -88,8 +89,8 @@ function dayClasses(day: CalendarDateObject): Array<string | false> {
 
 function eventStyle(event: ParsedCalendarEvent): CSSProperties {
   return {
-    left: `${Math.min(event.leftPos ?? 0, 1) * 100}%`,
-    width: `${Math.min(event.width ?? 0, 1) * 100}%`,
+    left: `${roundCalendarPosition(Math.min(event.leftPos ?? 0, 1) * 100)}%`,
+    width: `${roundCalendarPosition(Math.min(event.width ?? 0, 1) * 100)}%`,
     top: `${event.topInd ?? 0}em`,
   };
 }
@@ -270,7 +271,7 @@ watch(
                 <li
                   v-else
                   role="gridcell"
-                  :aria-label="day.date.toLocaleDateString()"
+                  :aria-label="runtime.formatDateLabel(day.date)"
                   :aria-current="day.isToday ? 'date' : 'false'"
                   :class="dayClasses(day)"
                   @click="clickDay($event, day)"

@@ -127,6 +127,7 @@ const runtime: CalendarRuntime = {
   eventContent,
   foundation,
   formatClickValue: (value) => foundation.formatCbValue([...value] as typeof value),
+  formatDateLabel: (value) => value.toLocaleDateString(localeCode.value),
   getPopupContainer: computed(() => config.value.getPopupContainer),
   locale,
   moreClick: (event, date, remaining) => emit('moreClick', event, date, remaining),

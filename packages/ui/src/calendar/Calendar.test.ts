@@ -82,7 +82,7 @@ describe('Calendar', () => {
 
     await wrapper.setProps({ mode: 'month' });
     await nextTick();
-    const aprilTenLabel = new Date(2023, 3, 10).toLocaleDateString();
+    const aprilTenLabel = new Date(2023, 3, 10).toLocaleDateString('zh-CN');
     const aprilTen = wrapper
       .findAll('[role="gridcell"]')
       .find((cell) => cell.attributes('aria-label') === aprilTenLabel);
@@ -95,10 +95,10 @@ describe('Calendar', () => {
     const wrapper = mount(Calendar, { props: { displayValue, mode: 'month' } });
     const cells = wrapper.findAll('.semi-calendar-month-skeleton [role="gridcell"]');
     const today = cells.find(
-      (cell) => cell.attributes('aria-label') === new Date(2023, 3, 10).toLocaleDateString(),
+      (cell) => cell.attributes('aria-label') === new Date(2023, 3, 10).toLocaleDateString('zh-CN'),
     );
     const nonToday = cells.find(
-      (cell) => cell.attributes('aria-label') === new Date(2023, 3, 11).toLocaleDateString(),
+      (cell) => cell.attributes('aria-label') === new Date(2023, 3, 11).toLocaleDateString('zh-CN'),
     );
 
     expect(today).toBeDefined();

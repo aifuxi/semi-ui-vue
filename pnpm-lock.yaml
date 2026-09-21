@@ -265,6 +265,9 @@ importers:
 
   apps/docs:
     dependencies:
+      '@aifuxi/semi-icons-lab-vue':
+        specifier: workspace:*
+        version: link:../../packages/icons-lab
       '@aifuxi/semi-icons-vue':
         specifier: workspace:*
         version: link:../../packages/icons

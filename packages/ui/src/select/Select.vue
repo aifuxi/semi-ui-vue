@@ -905,7 +905,9 @@ defineExpose<SelectExposed>({
             <span
               v-else-if="!state.inputValue"
               class="semi-select-selection-text semi-select-selection-placeholder"
-              ><SelectNodeRenderer :content="runtimeProps.placeholder"
+              ><SelectNodeRenderer
+                v-if="runtimeProps.placeholder !== ''"
+                :content="runtimeProps.placeholder"
             /></span>
             <div
               v-if="runtimeProps.filter && runtimeProps.searchPosition === 'trigger'"
@@ -939,7 +941,7 @@ defineExpose<SelectExposed>({
                 :index="0"
                 ><SelectNodeRenderer :content="selectedItems[0].label" /></slot
               ><SelectNodeRenderer
-                v-else-if="!state.inputValue"
+                v-else-if="!state.inputValue && runtimeProps.placeholder !== ''"
                 :content="runtimeProps.placeholder"
             /></span>
             <div

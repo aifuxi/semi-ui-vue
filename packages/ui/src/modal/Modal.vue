@@ -319,9 +319,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <Teleport :to="teleportTarget ?? 'body'" :disabled="teleportTarget === null">
+  <Teleport v-if="shouldRender" :to="teleportTarget ?? 'body'" :disabled="teleportTarget === null">
     <div
-      v-if="shouldRender"
       class="semi-portal"
       :class="{ 'semi-portal-rtl': direction === 'rtl' }"
       :style="portalStyle"

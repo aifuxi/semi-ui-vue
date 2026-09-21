@@ -85,8 +85,8 @@ const hasAddon = computed(() => slots.default !== undefined);
 const hasExtra = computed(() => slots.extra !== undefined || Boolean(props.extra));
 const state = shallowReactive<RadioState>({
   hover: false,
-  addonId: props.addonId,
-  extraId: props.extraId,
+  addonId: props.addonId ?? (hasAddon.value ? `addon-${generatedId}` : undefined),
+  extraId: props.extraId ?? (hasExtra.value ? `extra-${generatedId}` : undefined),
   focusVisible: false,
   checked:
     controlled.value && !(hasChecked.value && props.checked === undefined)

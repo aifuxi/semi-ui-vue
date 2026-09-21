@@ -44,6 +44,7 @@ export interface CalendarRuntime {
   eventContent(event: ParsedCalendarEvent | CalendarEvent): VNodeChild;
   foundation: CalendarFoundationRuntime;
   formatClickValue(value: [Date] | [Date, number, number, number]): Date;
+  formatDateLabel(value: Date): string;
   getPopupContainer: ComputedRef<(() => HTMLElement) | undefined>;
   locale: ComputedRef<CalendarLocale>;
   moreClick(event: MouseEvent, date: Date, remaining: number): void;
