@@ -9,6 +9,7 @@
 | 静态源码检查                     | `pnpm check:source`：工具链、固定基线、生成漂移、边界、格式、lint 与源码类型                          |
 | 日常本地源码集成                 | `pnpm check`：静态源码检查与 Vitest 单测                                                              |
 | 静态组件文档                     | 格式、链接与公开契约核对；示例代码变化按实际行为选择类型或组件测试                                    |
+| 文档示例梯次                     | 先定向 hydration 单测，再以 `DOCS_EXAMPLE_TIER=tN pnpm test:docs` 做一次生产构建与全部页面聚合巡检    |
 | 公开 API、样式、依赖、构建链变化 | `pnpm check:artifacts`：构建、主题、SSR 与 Node tarball 消费；浏览器消费风险另跑 `pnpm test:consumer` |
 | 共享行为全量回归或全仓审计       | `pnpm check:full`：check、artifacts、组件 Chromium 与真实安装包浏览器消费                             |
 | 发布候选                         | `pnpm release:check`：Changesets 集成、生产依赖审计、完整本地回归、隔离安装与发布元数据               |
@@ -21,6 +22,7 @@
 - 组件浏览器规格在 `tests/browser/components/`，定向运行例如 `pnpm exec playwright test tests/browser/components/button.spec.ts`，全套使用 `pnpm test:browser`。默认由 Playwright `webServer` 构建固定 React 参考应用和 Storybook，再启动 preview；React 构建保留开发语义。默认完整 Chromium 新 headless、3 workers、0 retries。`pnpm test:browser:dev` 用于开发服务诊断，`--headed` 可观察窗口。来源与截图规则见[对照基础设施](react-vue-parity.md)。
 - `pnpm test:consumer` 使用独立的 `playwright.consumer.config.ts` 验证真实 tarball 在浏览器中的消费行为，不依赖 Storybook 场景。
 - 本地页面探索与调试使用项目 Playwright CLI skill 和 `pnpm playwright:cli`；CLI 操作记录不计作自动验收通过。
+- 文档示例巡检使用 `DOCS_EXAMPLE_TIER=t1` 至 `t5` 选择梯次；默认 T3。每个路由是独立 Playwright 用例，失败在整轮结束后汇总，不使用 fail-fast。临时交互脚本先用 snapshot 或 `locator.count()` 确认目标，再执行 hover/click/wait；单个 locator 等待上限 5 秒，避免错误定位耗尽默认 30 秒。
 - 覆盖率用 `pnpm test:coverage`（相对 origin/master 的变更）或 `pnpm test:coverage:all` 排查缺口。V8 报告映射自有 Vue/TypeScript 源码，不扫描 vendor，不统一强求 100%。
 
 ## 构建与证据复用
@@ -28,6 +30,8 @@
 `check:source` 与 `check` 均不含生产构建。`typecheck` 与 `typecheck:source` 检查当前 workspace 源码；仅缓存故障或干净构建验证使用 `typecheck:clean`。
 
 `build` 构建公开 JavaScript 包与主题；`pnpm dev` 启动 Storybook，`pnpm build:storybook` 单独构建场景站。浏览器测试自行管理所需参考服务，避免在同一验证链中重复准备产物。按需运行入口，不依次重复执行 check、artifacts、full、release。
+
+文档梯次开发使用“定向 hydration 单测 → 一次生产构建与浏览器巡检”的顺序。首次准备或资源包变化运行 `pnpm docs:prepare`；仅 UI/主题变化运行 `pnpm docs:prepare:ui`，随后 `test:docs` 只构建文档应用，不重复构建所有公开包。生产环境只输出笼统 hydration 警告时，给同一次巡检增加 `DOCS_HYDRATION_DIAGNOSTICS=1`，构建会启用 Vue 的详细 mismatch 信息。
 
 Nuxt 文档站、旧 Vue 工作台、逐示例批次、覆盖账本与正式文档证据协议已[退役](../documentation/README.md)。历史通过 Git 追溯，不恢复旧 accepted 数量；删除旧机制不能计作组件或示例通过。Rstest 配置、覆盖率补丁、旧 App 外壳测试及其专用 stubs、测试别名生成器均已移除。
 

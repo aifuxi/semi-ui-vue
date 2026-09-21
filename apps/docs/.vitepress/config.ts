@@ -3,6 +3,7 @@ import { applyProseClasses, type MarkdownItLike } from './theme/markdown/prose-c
 
 /** 亮暗色由站点自己管理，首帧先按 localStorage 恢复，避免闪烁。 */
 const themeBootScript = `(function(){try{if(localStorage.getItem('semi-docs-theme')==='dark'){document.documentElement.setAttribute('theme-mode','dark');document.documentElement.setAttribute('data-theme','dark');}}catch(error){}})();`;
+const hydrationDiagnostics = process.env.DOCS_HYDRATION_DIAGNOSTICS === '1';
 
 export default defineConfig({
   title: 'Semi UI Vue',
@@ -13,6 +14,11 @@ export default defineConfig({
   srcDir: 'content',
   cacheDir: 'cache',
   outDir: 'dist',
+  vite: {
+    define: {
+      __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: JSON.stringify(hydrationDiagnostics),
+    },
+  },
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     ['link', { rel: 'stylesheet', href: '/upstream/site.css' }],

@@ -9,13 +9,19 @@ T1、T2、T3 的 61 个组件、495 个可运行 Vue SFC，其余示例继续显
 | 命令                                      | 用途                                                  |
 | ----------------------------------------- | ----------------------------------------------------- |
 | `pnpm docs:prepare`                       | 先构建公开包与主题包，生成产物依赖它们                |
+| `pnpm docs:prepare:ui`                    | 增量重建 UI 与主题包，不重复构建未变的资源包          |
 | `pnpm docs:dev`                           | 生成站点内容并在 <http://127.0.0.1:4321> 启动开发服务 |
 | `pnpm docs:build`                         | 生成站点内容并做一次生产构建，输出到 `apps/docs/dist` |
+| `DOCS_EXAMPLE_TIER=t3 pnpm test:docs`     | 生产构建后聚合检查指定梯次的全部示例页                |
 | `pnpm --filter @workspace/docs preview`   | 预览已构建的产物                                      |
 | `pnpm --filter @workspace/docs typecheck` | 生成内容后做 `.vitepress` 主题类型检查                |
 
 首次使用或更新了 `packages/**` 之后先执行一次 `pnpm docs:prepare`；`docs:dev` 与 `docs:build` 只做站点侧生成，
 不会隐式重建公开包，避免每次启动都触发整库构建。
+
+迁移梯次时先定向运行受影响组件的 `*.hydration.test.ts`，修复完成后只做一次生产站点巡检。组件实现或主题有改动时先执行 `pnpm docs:prepare:ui`；图标、插画等资源包有改动时才重新执行完整的 `pnpm docs:prepare`。生产 hydration 问题需要详细节点差异时，使用 `DOCS_HYDRATION_DIAGNOSTICS=1 DOCS_EXAMPLE_TIER=t3 pnpm test:docs`；该开关仅影响本次构建，不作为默认产物配置。
+
+`test:docs` 默认检查 T3，也可通过 `DOCS_EXAMPLE_TIER=t1` 至 `t5` 指定梯次。每个页面独立报告示例数量、迁移状态、console error 与 page error；单页失败不会中断其余页面。测试使用 5 秒操作超时和 15 秒导航超时，结果写入已忽略的 `test-results/docs` 与 `playwright-report/docs`。
 
 ## 目录职责
 
