@@ -2,7 +2,7 @@
 
 `apps/docs` 是基于 [VitePress](https://vitepress.dev/) 的私有文档应用，用自定义主题复刻 Semi 官网外壳，
 正文说明从只读基线 `vendor/semi-design/content` 在构建期生成。组件示例按固定基线逐项迁移；当前已完成
-T1 至 T5 的 82 个组件、855 个可运行 Vue SFC，以及 72 个仅展示代码的引入示例。
+T1 至 T5 的 82 个组件、855 个可运行 Vue SFC，以及 178 个仅展示代码的示例。
 
 ## 常用命令
 
@@ -47,8 +47,8 @@ T1 至 T5 的 82 个组件、855 个可运行 Vue SFC，以及 72 个仅展示�
   `advanced/design-source`、`advanced/design-to-code`、`ecosystem/*`）首版不收录。
 - 路由与官网一致：`/zh-CN/<上游目录>/<组件目录名>`，例如 `/zh-CN/basic/button`。
 - 正文转换：代码块（含“如何引入”的 import）变成带稳定 `id` 的 `<DemoBlock />`；存在 manifest 时运行
-  Vue SFC 并展示源码，否则显示迁移状态。上游 MDX 专属组件与“设计变量 / 相关物料”章节整块丢弃；
-  表格与段落里的行内 JSX 只保留文本。
+  Vue SFC 并展示源码，组件页的 import 与普通静态代码则从生成的 code-only 清单展示。上游 MDX 专属组件与
+  “设计变量 / 相关物料”章节整块丢弃；表格与段落里的行内 JSX 只保留文本。
 - 链接：站内链接按 slug 归一到本站路由（上游存在 `/zh-CN/input/button` 这类历史路径）；无法归一的链接
   保留为上游官网绝对地址；`[联系我们]()` 这类空地址降级为纯文本。
 - 改写：包名 `@douyinfe/semi-ui` → `@aifuxi/semi-ui-vue` 等，React 措辞按显式规则表替换；
@@ -71,10 +71,11 @@ class 由 `.vitepress/theme/markdown/prose-classes.ts` 在 markdown-it 渲染阶
 
 ## 当前示例边界
 
-- 不接 REPL；`DemoBlock` 直接运行已登记的 Vue SFC，并用同一文件的原始源码生成代码区。引入示例在内容生成时
-  保留经包名改写的源码，仅展示代码、不运行预览。示例清单契约见 `.vitepress/theme/demo/types.ts`；T1 至 T5
-  示例均按稳定 ID 自动登记，剩余 106 个普通静态代码示例保持占位状态。Table 的上游引入块混入了完整
-  React 示例，因此这里只保留其导入语句；紧邻的基础用法由可运行 Vue 示例覆盖。
+- 不接 REPL；`DemoBlock` 直接运行已登记的 Vue SFC，并用同一文件的原始源码生成代码区。72 个引入示例与
+  106 个普通静态代码示例在内容生成时写入同一 code-only 清单，仅展示代码、不运行预览；其中 React 类型名
+  复用 Vue 契约表改写，无法安全机械转换的 JSX 使用稳定 ID 定向提供 Vue 版本。Table 的上游引入块混入了
+  完整 React 示例，因此这里只保留其导入语句；紧邻的基础用法由可运行 Vue 示例覆盖。通用指南页另外包含的
+  15 个代码块不属于这份 82 个组件示例清单。
 - 只提供中文，路由保留 `/zh-CN/` 前缀；英文内容源已存在，后续按同一管线开启。
 - Button、Input、Select、Form、Table、Modal、Tooltip、Upload、Tabs、Pagination、Navigation、Breadcrumb、
   Steps、Anchor、Dropdown、Popover、Toast、Notification、Checkbox、Radio、Switch、DatePicker、TimePicker、

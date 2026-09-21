@@ -17,9 +17,14 @@ import {
   workspaceRoot,
 } from './upstream-config.mjs';
 import { applyRewrites } from './upstream-rewrites.mjs';
-import { vueApiContracts, vueTypeRewrites } from './vue-api-contracts.mjs';
+import {
+  vueApiContracts,
+  vueStaticCodeOverrides,
+  vueStaticCodeRewrites,
+  vueTypeRewrites,
+} from './vue-api-contracts.mjs';
 
-/** 代码块统一交给 DemoBlock；已有 manifest 的示例会运行，其余继续显示迁移状态。 */
+/** 代码块统一交给 DemoBlock；已有 manifest 的示例运行，其余组件示例仅展示源码。 */
 const demoBlockKinds = new Map([
   ['import', 'import'],
   ['live', 'live'],
@@ -404,6 +409,39 @@ function removeDanglingExampleReferences(text, recordRewrite) {
     .replaceAll(/：\s*。/g, '。');
 }
 
+function adaptStaticCodeSource(demoId, language, source, recordRewrite) {
+  const override = vueStaticCodeOverrides.get(demoId);
+  if (override) {
+    recordRewrite('vue-code', demoId);
+    return override;
+  }
+
+  let adapted = source;
+  for (const [from, to] of vueStaticCodeRewrites.get(demoId) ?? []) {
+    if (!adapted.includes(from)) throw new Error(`静态代码改写未命中：${demoId}: ${from}`);
+    adapted = adapted.replaceAll(from, to);
+    recordRewrite('vue-code-syntax', `${demoId}: ${from} → ${to}`);
+  }
+  for (const [from, to] of vueTypeRewrites) {
+    if (!adapted.includes(from)) continue;
+    adapted = adapted.replaceAll(from, to);
+    recordRewrite('vue-code-term', `${demoId}: ${from} → ${to}`);
+  }
+  const vueTypes = ['StyleValue', 'VNodeChild'].filter((name) =>
+    new RegExp(`\\b${name}\\b`).test(adapted),
+  );
+  if (vueTypes.length > 0) {
+    adapted = `import type { ${vueTypes.join(', ')} } from 'vue';\n\n${adapted}`;
+  }
+  const normalizedLanguage =
+    language === 'jsx' || language === 'tsx'
+      ? /\b(?:interface|type)\b/.test(adapted)
+        ? 'ts'
+        : 'js'
+      : language || 'text';
+  return { language: normalizedLanguage, source: adapted };
+}
+
 function stripInlineTags(line) {
   return line
     .replaceAll(/<br\s*\/?>/gi, ' ')
@@ -509,15 +547,20 @@ function transformBody(body, page, context) {
         demoBlockKinds.get(info.split(/\s+/)[0] ?? '') ?? (info.includes('live') ? 'live' : 'code');
       demoIndex += 1;
       const demoId = `${page.route.replace(/^\//, '').replaceAll('/', '-')}-${demoIndex}`;
-      if (kind === 'import') {
+      if (kind !== 'live' && page.componentDirectory) {
         const importSource =
           demoId === 'zh-CN-show-table-1'
             ? "import { Table, Tag } from '@douyinfe/semi-ui';"
             : source;
         if (importSource !== source) recordRewrite('import-trim', demoId);
-        context.importSources[demoId] = applyRewrites(importSource, (entry) =>
+        const rewrittenSource = applyRewrites(importSource, (entry) =>
           recordRewrite(`rewrite-${entry.kind}`, `${entry.from} → ${entry.to}`),
         );
+        const codeSource =
+          kind === 'code'
+            ? adaptStaticCodeSource(demoId, language, rewrittenSource, recordRewrite)
+            : { language: 'js', source: rewrittenSource };
+        context.codeSources[demoId] = { kind, ...codeSource };
       }
       out.push(
         '',
@@ -724,7 +767,7 @@ for (const entry of entries) {
 }
 
 /** 第二遍：生成正文，手工覆盖页直接使用 overrides 的原文。 */
-const context = { routesBySlug, drops: [], rewrites: [], importSources: {} };
+const context = { routesBySlug, drops: [], rewrites: [], codeSources: {} };
 
 for (const entry of entries) {
   if (entry.origin !== 'generated') continue;
@@ -794,17 +837,30 @@ const searchIndex = entries
   });
 
 await writeFile(resolve(generatedDataRoot, 'nav.json'), `${JSON.stringify(nav, null, 2)}\n`);
-const importSourceCount = Object.keys(context.importSources).length;
+const codeSourceEntries = Object.entries(context.codeSources);
+const importSourceCount = codeSourceEntries.filter(([, entry]) => entry.kind === 'import').length;
 if (importSourceCount !== 72) {
   throw new Error(`引入示例数量应为 72，实际为 ${importSourceCount}`);
 }
-const invalidImportSource = Object.entries(context.importSources).find(([, source]) =>
-  /@douyinfe|from ['"]react['"]/.test(source),
+const staticSourceCount = codeSourceEntries.filter(([, entry]) => entry.kind === 'code').length;
+if (staticSourceCount !== 106) {
+  throw new Error(`静态代码示例数量应为 106，实际为 ${staticSourceCount}`);
+}
+const invalidImportSource = codeSourceEntries.find(
+  ([, entry]) => entry.kind === 'import' && /@douyinfe|from ['"]react['"]/.test(entry.source),
 );
 if (invalidImportSource) throw new Error(`引入示例仍含 React 源码：${invalidImportSource[0]}`);
+const invalidStaticSource = codeSourceEntries.find(
+  ([, entry]) =>
+    entry.kind === 'code' &&
+    (/@douyinfe|\bReact(?:DOM)?\b|from ['"]react(?:-router-dom)?['"]/.test(entry.source) ||
+      entry.language === 'jsx' ||
+      entry.language === 'tsx'),
+);
+if (invalidStaticSource) throw new Error(`静态代码示例仍含 React 源码：${invalidStaticSource[0]}`);
 await writeFile(
-  resolve(generatedDataRoot, 'import-sources.json'),
-  `${JSON.stringify(context.importSources, null, 2)}\n`,
+  resolve(generatedDataRoot, 'code-sources.json'),
+  `${JSON.stringify(context.codeSources, null, 2)}\n`,
 );
 await writeFile(
   resolve(generatedDataRoot, 'sources.json'),

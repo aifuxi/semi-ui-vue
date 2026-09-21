@@ -38,6 +38,7 @@ const sidebarContainerDefaults = {
 
 export const vueTypeRewrites = [
   ['React.ReactNode', 'VNodeChild'],
+  ['React.ReactElement', 'VNodeChild'],
   ['ReactNode', 'VNodeChild'],
   ['React.CSSProperties', 'StyleValue'],
   ['CSSProperties', 'StyleValue'],
@@ -48,6 +49,510 @@ export const vueTypeRewrites = [
   ['ReactElement', 'VNodeChild'],
   ['JSX.Element', 'VNodeChild'],
 ];
+
+const vueCode = (source) => ({ language: 'vue', source: source.trim() });
+
+/** 无法通过类型名替换安全迁移的上游 JSX 片段。 */
+export const vueStaticCodeOverrides = new Map([
+  [
+    'zh-CN-ai-aiChatDialogue-18',
+    {
+      language: 'ts',
+      source: `import { AIChatDialogue } from '@aifuxi/semi-ui-vue/ai-chat-dialogue';
+
+const markdownRenderProps = {
+  components: {
+    code: AIChatDialogue.defaultComponents.code,
+  },
+};`,
+    },
+  ],
+  [
+    'zh-CN-basic-icon-9',
+    vueCode(`
+<script setup lang="ts">
+import { Icon } from '@aifuxi/semi-ui-vue/icon';
+import StarIcon from './StarIcon.vue';
+</script>
+
+<template>
+  <Icon><StarIcon /></Icon>
+</template>
+`),
+  ],
+  [
+    'zh-CN-plus-chat-12',
+    {
+      language: 'ts',
+      source: `import { h, type VNodeChild } from 'vue';
+import type { ChatRenderInputAreaProps } from '@aifuxi/semi-ui-vue/chat';
+
+function renderInputArea({ detailProps }: ChatRenderInputAreaProps): VNodeChild {
+  const { uploadNode, inputNode, sendNode, onClick } = detailProps;
+  return h(
+    'div',
+    {
+      style: {
+        margin: '8px 16px',
+        display: 'flex',
+        alignItems: 'flex-end',
+        padding: '10px',
+        border: '1px solid var(--semi-color-border)',
+        borderRadius: '16px',
+      },
+      onClick,
+    },
+    [uploadNode, inputNode, sendNode],
+  );
+}`,
+    },
+  ],
+  [
+    'zh-CN-plus-markdownrender-5',
+    vueCode(`
+<script setup lang="ts">
+import { MarkdownRender } from '@aifuxi/semi-ui-vue/markdown-render';
+import rehypeRaw from 'rehype-raw';
+
+const raw = '<span style="color:red">红色文字</span>';
+</script>
+
+<template>
+  <MarkdownRender format="md" :raw="raw" :rehype-plugins="[rehypeRaw]" />
+</template>
+`),
+  ],
+  [
+    'zh-CN-input-form-45',
+    vueCode(`
+<script setup lang="ts">
+import { Form, FormInput, useForm } from '@aifuxi/semi-ui-vue/form';
+import { Button } from '@aifuxi/semi-ui-vue/button';
+
+const [formApi] = useForm();
+
+function logForm() {
+  console.log(formApi.getFormState());
+}
+</script>
+
+<template>
+  <Form :form="formApi">
+    <FormInput field="a" />
+    <Button @click="logForm">log</Button>
+  </Form>
+</template>
+`),
+  ],
+  [
+    'zh-CN-input-form-46',
+    vueCode(`
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Form, type FormApi } from '@aifuxi/semi-ui-vue/form';
+import { Button } from '@aifuxi/semi-ui-vue/button';
+
+const formA = ref<{ formApi: FormApi } | null>(null);
+const formB = ref<{ formApi: FormApi } | null>(null);
+
+function changeValues() {
+  formA.value?.formApi.setValues({ a: 1 });
+  formB.value?.formApi.setValues({ b: 2 });
+}
+</script>
+
+<template>
+  <Form ref="formA" />
+  <Form ref="formB" />
+  <Button @click="changeValues">Change</Button>
+</template>
+`),
+  ],
+  [
+    'zh-CN-input-select-30',
+    {
+      language: 'ts',
+      source: `import { shallowRef } from 'vue';
+import type { SelectModelValue } from '@aifuxi/semi-ui-vue/select';
+
+const selected = shallowRef<string[]>([]);
+
+function change(value: SelectModelValue) {
+  if (Array.isArray(value) && value.every((item) => typeof item === 'string')) {
+    selected.value = value;
+  }
+}`,
+    },
+  ],
+  [
+    'zh-CN-input-treeselect-22',
+    vueCode(`
+<script setup lang="ts">
+import { TreeSelect } from '@aifuxi/semi-ui-vue/tree-select';
+</script>
+
+<template>
+  <TreeSelect aria-label="示例树选择器" />
+</template>
+`),
+  ],
+  [
+    'zh-CN-navigation-anchor-3',
+    vueCode(`
+<script setup lang="ts">
+import { Anchor, AnchorLink } from '@aifuxi/semi-ui-vue/anchor';
+
+const getContainer = () => document.querySelector<HTMLElement>('#scroll-container') ?? document.body;
+</script>
+
+<template>
+  <div id="scroll-container">
+    <Anchor :get-container="getContainer" :offset-top="100" :target-offset="100">
+      <AnchorLink href="#基本示例" title="基本示例" />
+      <AnchorLink href="#综合使用" title="综合使用" />
+      <AnchorLink href="#API参考" title="API 参考">
+        <AnchorLink href="#Anchor" title="Anchor" />
+        <AnchorLink href="#AnchorLink" title="AnchorLink" />
+      </AnchorLink>
+    </Anchor>
+  </div>
+</template>
+`),
+  ],
+  [
+    'zh-CN-navigation-navigation-5',
+    vueCode(`
+<script setup lang="ts">
+import { h } from 'vue';
+import { RouterLink } from 'vue-router';
+import { Nav, type NavigationWrapperData } from '@aifuxi/semi-ui-vue/navigation';
+
+const routes: Record<string, string> = {
+  Home: '/',
+  About: '/about',
+  Dashboard: '/dashboard',
+};
+
+function renderWrapper({ itemElement, props }: NavigationWrapperData) {
+  return h(RouterLink, { to: routes[String(props.itemKey)] ?? '/' }, () => itemElement);
+}
+
+const items = [
+  { itemKey: 'Home', text: 'Home' },
+  { itemKey: 'About', text: 'About' },
+  { itemKey: 'Dashboard', text: 'Dashboard' },
+];
+</script>
+
+<template>
+  <Nav :items="items" :render-wrapper="renderWrapper" />
+</template>
+`),
+  ],
+  [
+    'zh-CN-navigation-tree-33',
+    vueCode(`
+<script setup lang="ts">
+import { Tree } from '@aifuxi/semi-ui-vue/tree';
+</script>
+
+<template>
+  <Tree aria-label="示例树" />
+</template>
+`),
+  ],
+  [
+    'zh-CN-show-avatar-17',
+    vueCode(`
+<script setup lang="ts">
+import { Avatar } from '@aifuxi/semi-ui-vue/avatar';
+
+const imageUrl = 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/dy.png';
+</script>
+
+<template>
+  <!-- 好：alt 描述人物或图片内容。 -->
+  <Avatar alt="一只可爱的猫咪" :src="imageUrl" />
+  <Avatar alt="姜鹏志" :src="imageUrl" />
+  <!-- 装饰图片使用空 alt；避免“某某的图片”这类冗余描述。 -->
+  <Avatar alt="" :src="imageUrl" />
+</template>
+`),
+  ],
+  [
+    'zh-CN-show-collapse-8',
+    vueCode(`
+<script setup lang="ts">
+import { Collapse, CollapsePanel } from '@aifuxi/semi-ui-vue/collapse';
+import { Input } from '@aifuxi/semi-ui-vue/input';
+</script>
+
+<template>
+  <Collapse>
+    <CollapsePanel item-key="1">
+      <template #header>
+        <div style="display: inline-flex" @click.stop>
+          <span>Panel header</span>
+          <Input />
+        </div>
+      </template>
+      <p>Hi, bytedance dance dance. This is the docsite of Semi UI.</p>
+    </CollapsePanel>
+  </Collapse>
+</template>
+`),
+  ],
+  [
+    'zh-CN-show-collapsible-6',
+    vueCode(`
+<script setup lang="ts">
+import { shallowRef, useId } from 'vue';
+import { Collapsible } from '@aifuxi/semi-ui-vue/collapsible';
+import { Button } from '@aifuxi/semi-ui-vue/button';
+
+const visible = shallowRef(false);
+const collapseId = useId();
+</script>
+
+<template>
+  <Button :aria-controls="collapseId" :aria-expanded="visible" @click="visible = !visible">
+    {{ visible ? 'hide' : 'show' }}
+  </Button>
+  <Collapsible :id="collapseId" :is-open="visible">
+    <div>hide content</div>
+  </Collapsible>
+</template>
+`),
+  ],
+  [
+    'zh-CN-show-table-46',
+    vueCode(`
+<script setup lang="ts">
+import { Table } from '@aifuxi/semi-ui-vue/table';
+
+const columns = [
+  { title: '姓名', dataIndex: 'name', width: 180, fixed: 'left' },
+  { title: '年龄', dataIndex: 'age', width: 120 },
+  { title: '地址', dataIndex: 'address', width: 280 },
+  { title: '公司', dataIndex: 'company', width: 280 },
+];
+const dataSource = Array.from({ length: 6 }, (_, index) => ({
+  key: index,
+  name: 'Edward ' + index,
+  age: 20 + index,
+  address: '西湖区湖底公园 1 号',
+  company: 'Semi Design',
+}));
+</script>
+
+<template>
+  <Table
+    :columns="columns"
+    :data-source="dataSource"
+    :scroll="{ x: 900 }"
+    :header-style="{ backgroundColor: '#F5F6F7', fontWeight: 600 }"
+  />
+</template>
+`),
+  ],
+  [
+    'zh-CN-show-table-48',
+    {
+      language: 'ts',
+      source: `import type { TableColumnProps } from '@aifuxi/semi-ui-vue/table';
+
+interface RecordItem {
+  key: string;
+  name: string;
+  age: number;
+  address: string;
+}
+
+const columns: TableColumnProps<RecordItem>[] = [
+  { title: 'Name', dataIndex: 'name', width: 200 },
+];
+
+const dataSource: RecordItem[] = [
+  { key: '1', name: 'John Brown', age: 32, address: 'New York No. 1 Lake Park' },
+];`,
+    },
+  ],
+  [
+    'zh-CN-show-table-49',
+    vueCode(`
+<script setup lang="ts">
+import { Table, type TableProps } from '@aifuxi/semi-ui-vue/table';
+
+const onRow: TableProps['onRow'] = (_record, index, rowStatus) => ({
+  onClick: () => {
+    if (rowStatus?.disabled) return;
+    console.log('点击行', index, rowStatus);
+  },
+  onMouseenter: () => {},
+  onMouseleave: () => {},
+});
+
+const onHeaderRow: TableProps['onHeaderRow'] = () => ({
+  onClick: () => {},
+  onMouseenter: () => {},
+  onMouseleave: () => {},
+});
+</script>
+
+<template>
+  <Table :on-row="onRow" :on-header-row="onHeaderRow" />
+</template>
+`),
+  ],
+  [
+    'zh-CN-show-table-51',
+    vueCode(`
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { Table, type TableExposed } from '@aifuxi/semi-ui-vue/table';
+
+const tableRef = ref<TableExposed | null>(null);
+const columns = [];
+const dataSource = [];
+
+onMounted(() => {
+  console.log(tableRef.value?.getCurrentPageData());
+});
+</script>
+
+<template>
+  <Table ref="tableRef" :columns="columns" :data-source="dataSource" />
+</template>
+`),
+  ],
+  [
+    'zh-CN-show-timeline-10',
+    vueCode(`
+<script setup lang="ts">
+import { Timeline, TimelineItem } from '@aifuxi/semi-ui-vue/timeline';
+</script>
+
+<template>
+  <Timeline aria-label="事故处理过程时间线">
+    <TimelineItem time="2015-09-01">创建服务现场</TimelineItem>
+    <TimelineItem time="2015-09-02">初步排除网络异常</TimelineItem>
+    <TimelineItem time="2015-09-03">技术测试异常</TimelineItem>
+    <TimelineItem time="2015-09-05">网络异常正在修复</TimelineItem>
+  </Timeline>
+</template>
+`),
+  ],
+  [
+    'zh-CN-show-tooltip-11',
+    vueCode(`
+<script setup lang="ts">
+import { Tooltip } from '@aifuxi/semi-ui-vue/tooltip';
+import { IconSetting } from '@aifuxi/semi-icons-vue';
+</script>
+
+<template>
+  <Tooltip>
+    <template #content><p id="description">编辑设置</p></template>
+    <IconSetting aria-label="设置" />
+  </Tooltip>
+</template>
+`),
+  ],
+  [
+    'zh-CN-feedback-progress-14',
+    vueCode(`
+<script setup lang="ts">
+import { Progress } from '@aifuxi/semi-ui-vue/progress';
+</script>
+
+<template>
+  <p id="progressbar-label">磁盘使用量</p>
+  <Progress aria-labelledby="progressbar-label" :percent="80" />
+  <Progress aria-label="文件下载" :percent="80" />
+  <Progress aria-label="磁盘使用量" :percent="80" aria-valuetext="步骤 2：正在复制文件…" />
+</template>
+`),
+  ],
+  [
+    'zh-CN-other-configprovider-4',
+    vueCode(`
+<script setup lang="ts">
+import { ConfigProvider, ConfigConsumer } from '@aifuxi/semi-ui-vue/config-provider';
+
+const responsiveMap = ConfigProvider.defaultResponsiveMap;
+</script>
+
+<template>
+  <ConfigProvider responsive-observe :responsive-map="responsiveMap">
+    <ConfigConsumer v-slot="{ screens }">
+      <pre>{{ screens }}</pre>
+    </ConfigConsumer>
+  </ConfigProvider>
+</template>
+`),
+  ],
+  [
+    'zh-CN-other-configprovider-6',
+    {
+      language: 'css',
+      source: `/* Vue 包固定保留 .semi-* / --semi-* 兼容契约，不提供全局 prefixCls 改写。 */
+.semi-button {
+  /* 在业务作用域中按需覆盖样式。 */
+}`,
+    },
+  ],
+  [
+    'zh-CN-other-locale-1',
+    vueCode(`
+<script setup lang="ts">
+import { LocaleProvider } from '@aifuxi/semi-ui-vue/locale';
+import enGB from '@aifuxi/semi-ui-vue/locale/source/en_GB';
+import App from './App.vue';
+</script>
+
+<template>
+  <LocaleProvider :locale="enGB">
+    <App />
+  </LocaleProvider>
+</template>
+`),
+  ],
+]);
+
+/** 上游静态类型片段中的定点语法修正。 */
+export const vueStaticCodeRewrites = new Map([
+  [
+    'zh-CN-ai-aiChatDialogue-19',
+    [['Reasoning FileSearchToolCall', 'Reasoning | FileSearchToolCall']],
+  ],
+  ['zh-CN-ai-aiChatInput-15', [['renderTemplate?: (', 'type RenderTemplate = (']]],
+  ['zh-CN-input-form-47', [['ArrayFieldItem<>', 'ArrayFieldItem[]']]],
+  ['zh-CN-input-select-25', [['array<object>', 'object[]']]],
+  [
+    'zh-CN-input-treeselect-19',
+    [
+      ['onClear: e => void', 'onClear: (event: Event) => void'],
+      ['onRemove: key => void', 'onRemove: (key: string | number) => void'],
+      ['onSearch: inputValue => void', 'onSearch: (inputValue: string) => void'],
+    ],
+  ],
+  ['zh-CN-input-upload-36', [['// beforeUploadResult:\n{', 'interface BeforeUploadResult {']]],
+  ['zh-CN-input-upload-39', [['// afterUploadResult:\n{', 'interface AfterUploadResult {']]],
+  [
+    'zh-CN-input-upload-41',
+    [
+      ['{\n    // 当前文件名称', 'interface CustomRequestArgs {\n    // 当前文件名称'],
+      ['e: event', 'e: Event'],
+    ],
+  ],
+  [
+    'zh-CN-navigation-tree-19',
+    [
+      ['expandIcon:', 'type ExpandIcon ='],
+      ['}))', '}) => VNodeChild);'],
+    ],
+  ],
+]);
 
 export const vueApiContracts = new Map([
   [
@@ -320,6 +825,14 @@ export const vueApiContracts = new Map([
         },
       ],
       textRewrites: [
+        [
+          '`Select` 组件支持通过泛型参数来约束 `value` 的类型，从而提供更好的类型推断。',
+          'Vue 模板不能传入组件泛型；请用 `SelectModelValue` 收窄 `change` 事件或 `v-model` 的值类型。',
+        ],
+        [
+          '使用泛型参数后，你可以获得更精确的类型推断，无需再手动进行类型转换。',
+          '根据单选或多选模式对 `SelectModelValue` 做类型收窄后，再写入业务状态。',
+        ],
         ['同时会触发`onExceed`回调', '同时会触发 `exceed` 事件'],
         [
           '默认情况下`onChange`只能拿到 value，如果需要拿选中节点的其他属性，可以使用`onChangeWithObject`属性',
@@ -3191,6 +3704,15 @@ export const vueApiContracts = new Map([
           'ConfigProvider 借助 React Context 机制实现，因此它能影响 React 节点树中的子组件',
           'ConfigProvider 通过 Vue provide/inject 实现，因此它能影响 Vue 组件树中的子组件。',
         ],
+        [
+          '- ConfigProvider中没有提供全局自定义prefix classname的功能，有类似需求如何实现（例如SDK中使用了Semi，期望打包的dom样式不带.semi-xx前缀，以免被宿主的全局 CSS 影响）？',
+          '- ConfigProvider 不提供全局 `prefixCls`。本项目固定保留 `.semi-*` / `--semi-*` 兼容契约；需要隔离时请在业务作用域中覆盖样式。',
+        ],
+        [
+          ' - 由于 prefixCls 需要同时被组件层的 js/css 消费，Semi 将此开关放在了webpack plugin的配置项中，而不是作为ConfigProvider的配置项。',
+          '',
+        ],
+        [' - 如果你使用webpack，请在`SemiWebpackPlugin`的参数中进行配置', ''],
       ],
     },
   ],

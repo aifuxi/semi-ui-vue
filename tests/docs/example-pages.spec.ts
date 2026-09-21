@@ -62,6 +62,25 @@ test('引入示例展示 Vue 代码且不运行预览', async ({ page }) => {
   );
 });
 
+test('静态代码示例展示 Vue 代码且不运行预览', async ({ page }) => {
+  await page.goto('/zh-CN/input/select');
+  const example = page
+    .locator('.demo-block[data-demo-kind="code"]')
+    .filter({ hasText: 'TypeScript 泛型支持' });
+  await expect(example).toHaveCount(1);
+  await expect(example.locator('.demo-block-preview')).toHaveCount(0);
+  await expect(example.locator('.demo-block-status-ready')).toHaveCount(1);
+  await expect(example.locator('.demo-block-source')).toHaveAttribute('open', '');
+  await expect(example.locator('summary')).toContainText('ts');
+  await expect(example.locator('code')).toContainText('SelectModelValue');
+  await expect(example.locator('code')).not.toContainText('React');
+
+  await page.goto('/zh-CN/other/configprovider');
+  const faq = page.locator('.demo-block[data-demo-kind="code"]').filter({ hasText: 'FAQ' });
+  await expect(faq.locator('code')).toContainText('固定保留 .semi-* / --semi-* 兼容契约');
+  await expect(faq.locator('code')).not.toContainText('@douyinfe');
+});
+
 for (const { component, route, expectedExamples } of pages) {
   test(`${tier.toUpperCase()} ${component}：${expectedExamples} 个示例可运行且无客户端错误`, async ({
     page,
