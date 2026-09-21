@@ -11,7 +11,9 @@ import {
   inject,
   markRaw,
   onBeforeUnmount,
+  onMounted,
   shallowReactive,
+  shallowRef,
   useAttrs,
   useSlots,
   watch,
@@ -118,6 +120,12 @@ const state = shallowReactive<PaginationState>({
       : [],
 });
 const cache = new Map<unknown, unknown>();
+const smallPageMounted = shallowRef(false);
+
+// SSR 会合并连续文本；挂载后恢复固定 React 的四个文本节点，避免 hydration mismatch。
+onMounted(() => {
+  smallPageMounted.value = true;
+});
 
 type FoundationProps = PaginationProps & {
   currentPage?: number;
@@ -308,7 +316,12 @@ function handleQuickJumpKeydown(event: KeyboardEvent): void {
 
     <template v-if="props.size === 'small'">
       <PaginationPopover v-if="props.hoverShowPageSelect && !props.disabled">
-        <div class="semi-page-item semi-page-item-small">
+        <div v-if="smallPageMounted" class="semi-page-item semi-page-item-small">
+          <PaginationNodeRenderer :content="state.currentPage" /><PaginationNodeRenderer
+            content="/"
+          /><PaginationNodeRenderer :content="totalPages" /><PaginationNodeRenderer content=" " />
+        </div>
+        <div v-else class="semi-page-item semi-page-item-small">
           {{ state.currentPage }}/{{ totalPages }}{{ ' ' }}
         </div>
         <template #content>
@@ -319,13 +332,24 @@ function handleQuickJumpKeydown(event: KeyboardEvent): void {
           />
         </template>
       </PaginationPopover>
-      <div
-        v-else
-        class="semi-page-item semi-page-item-small"
-        :class="{ 'semi-page-item-all-disabled': props.disabled }"
-      >
-        {{ state.currentPage }}/{{ totalPages }}{{ ' ' }}
-      </div>
+      <template v-else>
+        <div
+          v-if="smallPageMounted"
+          class="semi-page-item semi-page-item-small"
+          :class="{ 'semi-page-item-all-disabled': props.disabled }"
+        >
+          <PaginationNodeRenderer :content="state.currentPage" /><PaginationNodeRenderer
+            content="/"
+          /><PaginationNodeRenderer :content="totalPages" /><PaginationNodeRenderer content=" " />
+        </div>
+        <div
+          v-else
+          class="semi-page-item semi-page-item-small"
+          :class="{ 'semi-page-item-all-disabled': props.disabled }"
+        >
+          {{ state.currentPage }}/{{ totalPages }}{{ ' ' }}
+        </div>
+      </template>
     </template>
 
     <template v-else>

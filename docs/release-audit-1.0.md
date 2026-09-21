@@ -4,15 +4,22 @@
 
 ## 剩余工作
 
-1. 按[组件契约](testing/component-contract.md)核对公开能力、已知差异和必要验证，完成稳定版所需的组件缺口；既有 ready 状态不替代候选上的有效证据。
-2. 核对保留的 API、使用与迁移说明，以及实际公开包的许可、归属和 SBOM。后续测试工具迁移按[方案](testing/vue-testing-strategy-proposal.md)另行实施。
-3. 产品验收闭环后使用官方 `changeset pre exit`，由机器人生成稳定版本 PR，经相同候选门禁发布到 latest。
+1. 核对保留的 API、使用与迁移说明，以及实际公开包的许可、归属和 SBOM。后续测试工具迁移按[方案](testing/vue-testing-strategy-proposal.md)另行实施。
+2. 产品验收闭环后使用官方 `changeset pre exit`，由机器人生成稳定版本 PR，经相同候选门禁发布到 latest。
 
 外部接入与 next 发布已在 2026-09-18 完成：GitHub App、仓库变量/secret、master 保护、npm Environment 和五包 Trusted Publisher 都在真实发布中生效，机器人版本 PR 的创建与更新都实测触发了 CI；next 候选的质量、Chromium、隔离消费门禁、provenance、五包版本与精确依赖、包级标签/Release 和 registry 安装均已核对，见下方历史证据。
 
 Nuxt 文档站及旧逐示例验收已[退役](documentation/README.md)，不再要求恢复历史批次或交付站点。移除文档站不表示产品验收完成，也不自动创建替代站点。
 
 五包 `0.1.0` 是未发布迁移基线；`1.0.0-next.0` 已按预发布流程进入 next，`latest` 仍指向历史 `0.1.0-alpha.0`，只有稳定版发布才会改写它。外部接入状态需在准备发布时重新读取，不能从本地测试推断。
+
+## 组件契约复核（2026-09-22）
+
+- 按固定 Semi `v2.102.0 / cdfba6e520fc83ad871b30f51f36d8af3aaa5a21` 复核 130 个根导出、85 个模块组和 85 份对齐矩阵；82 个公开组件页均有 API 契约，另外 3 个技术入口为 `_base`、`_utils`、`iconButton`。所有矩阵均包含固定基线与验收证据，85 个组件浏览器规格无 `skip` / `fixme`。
+- 对缺少统一状态措辞的 Calendar、ConfigProvider、DatePicker、Form、Typography、VideoPlayer 做定向复核：18 个单元/SSR/hydration 文件、104 项测试，以及 7 个生产态 Playwright 规格、38 项测试全部通过，确认没有实现缺口。
+- 全量候选检查发现并修复 Pagination small 模式文本节点合并回归，同时保留 SSR hydration 无警告；修复后的单元/SSR 12 项和生产态 Chromium 5 项通过。其余公开能力、已记录 deviation、ARIA、Portal、主题、RTL、Locale、SSR 与发布入口未发现新的未解释差异。
+- 当前工作树的 `pnpm check:full` 通过：232 个 Vitest 文件、1,314 项测试，444 项生产态 Chromium，以及构建、主题、SSR、tarball 和真实 tarball consumer 门禁全部通过。
+- 本项完成不替代后续候选的 `release:check`、许可/SBOM 核对或产品验收；稳定版发布前仍需以最终候选重新执行门禁。
 
 ## 历史证据
 
