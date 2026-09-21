@@ -2890,8 +2890,8 @@ export const vueApiContracts = new Map([
           '如果内置图标不足以满足业务需求，可以把自定义 SVG 封装为 Vue 组件，并通过 Icon 默认插槽传入。',
         ],
         [
-          '<DemoBlock title="使用svgr将svg文件转成ReactComponent" kind="code" />',
-          '<DemoBlock title="使用 SVG 自定义图标" kind="code" />',
+          '<DemoBlock id="zh-CN-basic-icon-9" title="使用svgr将svg文件转成ReactComponent" kind="code" />',
+          '<DemoBlock id="zh-CN-basic-icon-9" title="使用 SVG 自定义图标" kind="code" />',
         ],
       ],
     },
@@ -2981,8 +2981,8 @@ export const vueApiContracts = new Map([
           '自定义组件需要读取 localeCode 或具体组件的 i18n 文本 localeData 时，可以通过 LocaleConsumer 的默认作用域插槽获取。',
         ],
         [
-          '<DemoBlock title="支持多语言的组件" kind="live" />',
-          '<DemoBlock title="支持多语言的组件" kind="live" />\n\n## API 参考\n\n### LocaleProvider\n\n| 属性 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n\n### LocaleConsumer\n\n| 属性 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |',
+          '<DemoBlock id="zh-CN-other-locale-4" title="支持多语言的组件" kind="live" />',
+          '<DemoBlock id="zh-CN-other-locale-4" title="支持多语言的组件" kind="live" />\n\n## API 参考\n\n### LocaleProvider\n\n| 属性 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n\n### LocaleConsumer\n\n| 属性 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |',
         ],
       ],
     },
@@ -3463,8 +3463,8 @@ export const vueApiContracts = new Map([
         ],
         ['### JSX 写法', '### 声明式子组件'],
         [
-          '<DemoBlock title="JSX 写法" kind="live" />',
-          '<DemoBlock title="声明式子组件" kind="live" />',
+          '<DemoBlock id="zh-CN-show-descriptions-4" title="JSX 写法" kind="live" />',
+          '<DemoBlock id="zh-CN-show-descriptions-4" title="声明式子组件" kind="live" />',
         ],
         [
           '除了通过 props.data 声明数据外，还可以通过 Children JSX 写法声明数据（在 v1.17.0 版本后支持）',

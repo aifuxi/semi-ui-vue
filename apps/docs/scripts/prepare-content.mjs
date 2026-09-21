@@ -19,10 +19,7 @@ import {
 import { applyRewrites } from './upstream-rewrites.mjs';
 import { vueApiContracts, vueTypeRewrites } from './vue-api-contracts.mjs';
 
-/**
- * 当前不呈现示例代码：每个代码块渲染为紧凑的 DemoBlock 迁移状态条。
- * `## 代码演示` 章标题保留，正文层次与上游官网一致，只把代码换成状态提示。
- */
+/** 代码块统一交给 DemoBlock；已有 manifest 的示例会运行，其余继续显示迁移状态。 */
 const demoBlockKinds = new Map([
   ['import', 'import'],
   ['live', 'live'],
@@ -477,7 +474,7 @@ function rewriteLinks(text, context, record) {
 
 /**
  * 把上游 MDX 正文转成 VitePress Markdown：
- * 代码块 → DemoBlock 占位；多行 MDX 组件块与专属章节 → 丢弃；行内 JSX → 仅保留文本。
+ * 代码块 → 带稳定 id 的 DemoBlock；多行 MDX 组件块与专属章节 → 丢弃；行内 JSX → 仅保留文本。
  */
 function transformBody(body, page, context) {
   const recordDrop = (kind, detail) =>
@@ -491,6 +488,7 @@ function transformBody(body, page, context) {
   let skipUntilLevel = null;
   let jsxOpen = false;
   let index = 0;
+  let demoIndex = 0;
 
   while (index < lines.length) {
     const line = lines[index] ?? '';
@@ -507,7 +505,13 @@ function transformBody(body, page, context) {
       }
       const kind =
         demoBlockKinds.get(info.split(/\s+/)[0] ?? '') ?? (info.includes('live') ? 'live' : 'code');
-      out.push('', `<DemoBlock title="${lastHeading || page.title}" kind="${kind}" />`, '');
+      demoIndex += 1;
+      const demoId = `${page.route.replace(/^\//, '').replaceAll('/', '-')}-${demoIndex}`;
+      out.push(
+        '',
+        `<DemoBlock id="${demoId}" title="${lastHeading || page.title}" kind="${kind}" />`,
+        '',
+      );
       recordDrop('demo-placeholder', `${kind}:${lastHeading}`);
       continue;
     }

@@ -4,6 +4,7 @@
 @import '@aifuxi/semi-theme-default/tooltip.css';
 @import '@aifuxi/semi-theme-default/popover.css';
 @import '@aifuxi/semi-theme-default/dropdown.css';
+@import '@aifuxi/semi-theme-default/divider.css';
 
 /* 站点外壳：DOM 与 class 复刻基线站点，样式在 /upstream/site.css 中由基线 SCSS 编译而来。 */
 *:not([class*='semi-'], [class*='semi-'] *) {
@@ -228,13 +229,18 @@ body[theme-mode='dark'] .site-header {
   background-color: var(--semi-color-fill-0);
 }
 
-/* 示例状态：保留与基线正文一一对应的锚点，但不让未迁移示例主导页面节奏。 */
+/* 示例块：已有 manifest 时展示运行结果与源码，其余保留紧凑迁移状态。 */
 .demo-block {
   margin: 12px 0 20px;
   border: 1px solid var(--semi-color-border);
   border-radius: 6px;
   overflow: hidden;
   background: var(--semi-color-fill-0);
+}
+
+.demo-block-preview {
+  padding: 24px;
+  background: var(--semi-color-bg-0);
 }
 
 .demo-block-footer {
@@ -269,6 +275,32 @@ body[theme-mode='dark'] .site-header {
   height: 6px;
   border-radius: 50%;
   background: var(--semi-color-warning);
+}
+
+.demo-block-status-ready {
+  color: var(--semi-color-success);
+}
+
+.demo-block-status-ready > span {
+  background: var(--semi-color-success);
+}
+
+.demo-block-source {
+  border-top: 1px solid var(--semi-color-border);
+}
+
+.demo-block-source summary {
+  padding: 10px 12px;
+  cursor: pointer;
+  color: var(--semi-color-text-1);
+}
+
+.demo-block-source pre {
+  max-height: 480px;
+  margin: 0;
+  padding: 16px;
+  overflow: auto;
+  border-radius: 0;
 }
 
 .prev-next {

@@ -1,8 +1,8 @@
 # 组件库文档站
 
 `apps/docs` 是基于 [VitePress](https://vitepress.dev/) 的私有文档应用，用自定义主题复刻 Semi 官网外壳，
-正文说明从只读基线 `vendor/semi-design/content` 在构建期生成。首版只交付结构、导航与组件使用说明：
-不包含示例代码、不接入 `@vue/repl`、没有自动化测试，验收由人工 UI 走查完成。
+正文说明从只读基线 `vendor/semi-design/content` 在构建期生成。组件示例按固定基线逐项迁移；当前已接通
+`Divider / 基本用法` 的 Vue SFC 运行与源码展示，其余示例继续显示迁移状态。
 
 ## 常用命令
 
@@ -22,7 +22,7 @@
 | 路径                            | 职责                                                                        |
 | ------------------------------- | --------------------------------------------------------------------------- |
 | `.vitepress/config.ts`          | VitePress 站点配置：路由、Markdown 行为、外部样式与首帧主题脚本             |
-| `.vitepress/theme/**`           | 自定义主题：Layout、头部、侧栏、页内目录、搜索、示例占位与站点样式          |
+| `.vitepress/theme/**`           | 自定义主题：Layout、头部、侧栏、页内目录、搜索、示例运行与站点样式          |
 | `scripts/upstream-config.mjs`   | 收录规则、侧栏分组来源、基线版本读取                                        |
 | `scripts/upstream-rewrites.mjs` | 上游包名、链接与 React 措辞改写表                                           |
 | `scripts/vue-api-contracts.mjs` | 已人工核对页面的 Vue props、emits、slots、v-model、命令式方法与正文定向改写 |
@@ -40,8 +40,9 @@
   content-guidelines）。其余上游页面（`show/chart`、`ai/aiComponent`、`basic/tokens`、`start/mcp-skills`、
   `advanced/design-source`、`advanced/design-to-code`、`ecosystem/*`）首版不收录。
 - 路由与官网一致：`/zh-CN/<上游目录>/<组件目录名>`，例如 `/zh-CN/basic/button`。
-- 正文转换：代码块（含“如何引入”的 import）变成 `<DemoBlock />` 占位卡片；上游 MDX 专属组件与
-  “设计变量 / 相关物料”章节整块丢弃；表格与段落里的行内 JSX 只保留文本。
+- 正文转换：代码块（含“如何引入”的 import）变成带稳定 `id` 的 `<DemoBlock />`；存在 manifest 时运行
+  Vue SFC 并展示源码，否则显示迁移状态。上游 MDX 专属组件与“设计变量 / 相关物料”章节整块丢弃；
+  表格与段落里的行内 JSX 只保留文本。
 - 链接：站内链接按 slug 归一到本站路由（上游存在 `/zh-CN/input/button` 这类历史路径）；无法归一的链接
   保留为上游官网绝对地址；`[联系我们]()` 这类空地址降级为纯文本。
 - 改写：包名 `@douyinfe/semi-ui` → `@aifuxi/semi-ui-vue` 等，React 措辞按显式规则表替换；
@@ -62,10 +63,10 @@
 class 由 `.vitepress/theme/markdown/prose-classes.ts` 在 markdown-it 渲染阶段补上，项目不复制上游 CSS。
 组件自身的样式来自 `@aifuxi/semi-theme-default`，站点控件直接使用 `@aifuxi/semi-ui-vue`。
 
-## 首版边界
+## 当前示例边界
 
-- 不写示例代码、不接 REPL；`DemoBlock` 只渲染占位卡片，示例清单契约见
-  `.vitepress/theme/demo/types.ts`。
+- 不接 REPL；`DemoBlock` 直接运行已登记的 Vue SFC，并用同一文件的原始源码生成代码区。示例清单契约见
+  `.vitepress/theme/demo/types.ts`，未登记示例保持占位状态。
 - 只提供中文，路由保留 `/zh-CN/` 前缀；英文内容源已存在，后续按同一管线开启。
 - Button、Input、Select、Form、Table、Modal、Tooltip、Upload、Tabs、Pagination、Navigation、Breadcrumb、
   Steps、Anchor、Dropdown、Popover、Toast、Notification、Checkbox、Radio、Switch、DatePicker、TimePicker、
