@@ -74,7 +74,23 @@ await cp(resolve(vendorRoot, 'LICENSE'), resolve(assetRoot, 'SEMI-LICENSE'));
 await cp(resolve(appRoot, 'assets/favicon.svg'), resolve(publicRoot, 'favicon.svg'));
 await cp(resolve(appRoot, 'assets/favicon.svg'), resolve(publicRoot, 'favicon.ico'));
 await mkdir(resolve(publicRoot, 'demos'), { recursive: true });
-for (const file of ['lottie.json', 'one.svg', 'photo.svg', 'poster.svg', 'two.svg']) {
+for (const file of [
+  'cropper-abstract.svg',
+  'cropper-image.svg',
+  'image-abstract-big.svg',
+  'image-abstract-small.svg',
+  'image-abstract.svg',
+  'image-colorful.svg',
+  'image-greenleaf.svg',
+  'image-sky.svg',
+  'lottie.json',
+  'motion.webm',
+  'one.svg',
+  'photo.svg',
+  'poster.svg',
+  'tone.wav',
+  'two.svg',
+]) {
   await cp(resolve(appRoot, `assets/${file}`), resolve(publicRoot, `demos/${file}`));
 }
 
