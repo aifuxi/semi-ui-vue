@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@aifuxi/semi-icons-vue": "workspace:*",
+    "@aifuxi/semi-illustrations-vue": "workspace:*",
     "@aifuxi/semi-theme-default": "workspace:*",
     "@aifuxi/semi-ui-vue": "workspace:*",
     "vitepress": "1.6.4",
