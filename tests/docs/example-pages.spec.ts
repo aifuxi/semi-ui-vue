@@ -44,6 +44,24 @@ const pages = await Promise.all(
     }),
 );
 
+test('引入示例展示 Vue 代码且不运行预览', async ({ page }) => {
+  await page.goto('/zh-CN/basic/button');
+  const example = page.locator('.demo-block[data-demo-kind="import"]');
+  await expect(example).toHaveCount(1);
+  await expect(example.locator('.demo-block-preview')).toHaveCount(0);
+  await expect(example.locator('.demo-block-status-ready')).toHaveCount(1);
+  await expect(example.locator('.demo-block-source')).toHaveAttribute('open', '');
+  await expect(example.locator('code')).toContainText(
+    "import { Button, SplitButtonGroup } from '@aifuxi/semi-ui-vue';",
+  );
+
+  await page.goto('/zh-CN/show/table');
+  const tableExample = page.locator('.demo-block[data-demo-kind="import"]');
+  await expect(tableExample.locator('code')).toHaveText(
+    "import { Table, Tag } from '@aifuxi/semi-ui-vue';",
+  );
+});
+
 for (const { component, route, expectedExamples } of pages) {
   test(`${tier.toUpperCase()} ${component}：${expectedExamples} 个示例可运行且无客户端错误`, async ({
     page,

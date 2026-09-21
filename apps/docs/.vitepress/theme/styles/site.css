@@ -229,7 +229,7 @@ body[theme-mode='dark'] .site-header {
   background-color: var(--semi-color-fill-0);
 }
 
-/* 示例块：已有 manifest 时展示运行结果与源码，其余保留紧凑迁移状态。 */
+/* 示例块：可运行示例展示预览和源码，code-only 示例只展示源码。 */
 .demo-block {
   margin: 12px 0 20px;
   border: 1px solid var(--semi-color-border);

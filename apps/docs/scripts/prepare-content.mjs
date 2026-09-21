@@ -497,7 +497,9 @@ function transformBody(body, page, context) {
       const language = (fence[1] ?? '').trim();
       const info = (fence[2] ?? '').trim();
       index += 1;
+      const sourceStart = index;
       while (index < lines.length && !/^[ \t]{0,3}```/.test(lines[index] ?? '')) index += 1;
+      const source = lines.slice(sourceStart, index).join('\n').trimEnd();
       index += 1;
       if (droppedFenceLanguages.has(language)) {
         recordDrop('mdx-block', `\`\`\`${language}`);
@@ -507,12 +509,23 @@ function transformBody(body, page, context) {
         demoBlockKinds.get(info.split(/\s+/)[0] ?? '') ?? (info.includes('live') ? 'live' : 'code');
       demoIndex += 1;
       const demoId = `${page.route.replace(/^\//, '').replaceAll('/', '-')}-${demoIndex}`;
+      if (kind === 'import') {
+        const importSource =
+          demoId === 'zh-CN-show-table-1'
+            ? "import { Table, Tag } from '@douyinfe/semi-ui';"
+            : source;
+        if (importSource !== source) recordRewrite('import-trim', demoId);
+        context.importSources[demoId] = applyRewrites(importSource, (entry) =>
+          recordRewrite(`rewrite-${entry.kind}`, `${entry.from} → ${entry.to}`),
+        );
+      }
       out.push(
         '',
         `<DemoBlock id="${demoId}" title="${lastHeading || page.title}" kind="${kind}" />`,
         '',
       );
-      recordDrop('demo-placeholder', `${kind}:${lastHeading}`);
+      if (kind === 'import') recordRewrite('demo-code-only', lastHeading);
+      else recordDrop('demo-placeholder', `${kind}:${lastHeading}`);
       continue;
     }
 
@@ -711,7 +724,7 @@ for (const entry of entries) {
 }
 
 /** 第二遍：生成正文，手工覆盖页直接使用 overrides 的原文。 */
-const context = { routesBySlug, drops: [], rewrites: [] };
+const context = { routesBySlug, drops: [], rewrites: [], importSources: {} };
 
 for (const entry of entries) {
   if (entry.origin !== 'generated') continue;
@@ -781,6 +794,18 @@ const searchIndex = entries
   });
 
 await writeFile(resolve(generatedDataRoot, 'nav.json'), `${JSON.stringify(nav, null, 2)}\n`);
+const importSourceCount = Object.keys(context.importSources).length;
+if (importSourceCount !== 72) {
+  throw new Error(`引入示例数量应为 72，实际为 ${importSourceCount}`);
+}
+const invalidImportSource = Object.entries(context.importSources).find(([, source]) =>
+  /@douyinfe|from ['"]react['"]/.test(source),
+);
+if (invalidImportSource) throw new Error(`引入示例仍含 React 源码：${invalidImportSource[0]}`);
+await writeFile(
+  resolve(generatedDataRoot, 'import-sources.json'),
+  `${JSON.stringify(context.importSources, null, 2)}\n`,
+);
 await writeFile(
   resolve(generatedDataRoot, 'sources.json'),
   `${JSON.stringify(sources, null, 2)}\n`,

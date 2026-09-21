@@ -2,7 +2,7 @@
 
 `apps/docs` 是基于 [VitePress](https://vitepress.dev/) 的私有文档应用，用自定义主题复刻 Semi 官网外壳，
 正文说明从只读基线 `vendor/semi-design/content` 在构建期生成。组件示例按固定基线逐项迁移；当前已完成
-T1 至 T5 的 82 个组件、855 个可运行 Vue SFC。
+T1 至 T5 的 82 个组件、855 个可运行 Vue SFC，以及 72 个仅展示代码的引入示例。
 
 ## 常用命令
 
@@ -71,8 +71,10 @@ class 由 `.vitepress/theme/markdown/prose-classes.ts` 在 markdown-it 渲染阶
 
 ## 当前示例边界
 
-- 不接 REPL；`DemoBlock` 直接运行已登记的 Vue SFC，并用同一文件的原始源码生成代码区。示例清单契约见
-  `.vitepress/theme/demo/types.ts`；T1 至 T5 示例均按稳定 ID 自动登记，未登记示例保持占位状态。
+- 不接 REPL；`DemoBlock` 直接运行已登记的 Vue SFC，并用同一文件的原始源码生成代码区。引入示例在内容生成时
+  保留经包名改写的源码，仅展示代码、不运行预览。示例清单契约见 `.vitepress/theme/demo/types.ts`；T1 至 T5
+  示例均按稳定 ID 自动登记，剩余 106 个普通静态代码示例保持占位状态。Table 的上游引入块混入了完整
+  React 示例，因此这里只保留其导入语句；紧邻的基础用法由可运行 Vue 示例覆盖。
 - 只提供中文，路由保留 `/zh-CN/` 前缀；英文内容源已存在，后续按同一管线开启。
 - Button、Input、Select、Form、Table、Modal、Tooltip、Upload、Tabs、Pagination、Navigation、Breadcrumb、
   Steps、Anchor、Dropdown、Popover、Toast、Notification、Checkbox、Radio、Switch、DatePicker、TimePicker、
