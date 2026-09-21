@@ -19,9 +19,13 @@
 首次使用或更新了 `packages/**` 之后先执行一次 `pnpm docs:prepare`；`docs:dev` 与 `docs:build` 只做站点侧生成，
 不会隐式重建公开包，避免每次启动都触发整库构建。
 
-迁移梯次时先定向运行受影响组件的 `*.hydration.test.ts`，修复完成后只做一次生产站点巡检。组件实现或主题有改动时先执行 `pnpm docs:prepare:ui`；图标、插画等资源包有改动时才重新执行完整的 `pnpm docs:prepare`。生产 hydration 问题需要详细节点差异时，使用 `DOCS_HYDRATION_DIAGNOSTICS=1 DOCS_EXAMPLE_TIER=t3 pnpm test:docs`；该开关仅影响本次构建，不作为默认产物配置。
+迁移梯次时先定向运行受影响组件的 `*.hydration.test.ts`，修复完成后只做一次生产站点巡检。组件实现或主题有改动时先执行
+`pnpm docs:prepare:ui`；图标、插画等资源包有改动时才重新执行完整的 `pnpm docs:prepare`。生产 hydration 问题需要详细节点差异时，使用
+`DOCS_HYDRATION_DIAGNOSTICS=1 DOCS_EXAMPLE_TIER=t3 pnpm test:docs`；该开关仅影响本次构建，不作为默认产物配置。
 
-`test:docs` 默认检查 T3，也可通过 `DOCS_EXAMPLE_TIER=t1` 至 `t5` 指定梯次。每个页面独立报告示例数量、迁移状态、console error 与 page error；单页失败不会中断其余页面。测试使用 5 秒操作超时和 15 秒导航超时，结果写入已忽略的 `test-results/docs` 与 `playwright-report/docs`。
+`test:docs` 默认检查 T3，也可通过 `DOCS_EXAMPLE_TIER=t1` 至 `t5` 指定梯次。每个页面独立报告示例数量、预览与源码完整性、console error
+与 page error；单页失败不会中断其余页面。测试使用 5 秒操作超时和 15 秒导航超时，结果写入已忽略的 `test-results/docs` 与
+`playwright-report/docs`。
 
 ## 目录职责
 
@@ -78,7 +82,7 @@ class 由 `.vitepress/theme/markdown/prose-classes.ts` 在 markdown-it 渲染阶
   不运行预览；其中指南包含基线原有的 15 个静态代码块、3 个降级为 code-only 的 `live=true` 块，以及快速
   开始手工页的 4 个代码块。React 类型名复用 Vue 契约表改写，无法安全机械转换的 JSX 使用稳定 ID 定向提供
   Vue 版本。Table 的上游引入块混入了完整 React 示例，因此这里只保留其导入语句；紧邻的基础用法由可运行
-  Vue 示例覆盖。全站 1,055 个 `DemoBlock` 均已就绪，不再保留“示例迁移中”占位。
+  Vue 示例覆盖。全站 1,055 个 `DemoBlock` 的就绪状态由生成校验与浏览器测试保证；示例卡只展示预览和源码。
 - 只提供中文，路由保留 `/zh-CN/` 前缀；英文内容源已存在，后续按同一管线开启。
 - Button、Input、Select、Form、Table、Modal、Tooltip、Upload、Tabs、Pagination、Navigation、Breadcrumb、
   Steps、Anchor、Dropdown、Popover、Toast、Notification、Checkbox、Radio、Switch、DatePicker、TimePicker、

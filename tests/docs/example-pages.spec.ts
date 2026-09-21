@@ -49,7 +49,6 @@ test('引入示例展示 Vue 代码且不运行预览', async ({ page }) => {
   const example = page.locator('.demo-block[data-demo-kind="import"]');
   await expect(example).toHaveCount(1);
   await expect(example.locator('.demo-block-preview')).toHaveCount(0);
-  await expect(example.locator('.demo-block-status-ready')).toHaveCount(1);
   await expect(example.locator('.demo-block-source')).toHaveAttribute('open', '');
   await expect(example.locator('code')).toContainText(
     "import { Button, SplitButtonGroup } from '@aifuxi/semi-ui-vue';",
@@ -64,19 +63,16 @@ test('引入示例展示 Vue 代码且不运行预览', async ({ page }) => {
 
 test('静态代码示例展示 Vue 代码且不运行预览', async ({ page }) => {
   await page.goto('/zh-CN/input/select');
-  const example = page
-    .locator('.demo-block[data-demo-kind="code"]')
-    .filter({ hasText: 'TypeScript 泛型支持' });
+  const example = page.locator('[data-demo-id="zh-CN-input-select-30"]');
   await expect(example).toHaveCount(1);
   await expect(example.locator('.demo-block-preview')).toHaveCount(0);
-  await expect(example.locator('.demo-block-status-ready')).toHaveCount(1);
   await expect(example.locator('.demo-block-source')).toHaveAttribute('open', '');
   await expect(example.locator('summary')).toContainText('ts');
   await expect(example.locator('code')).toContainText('SelectModelValue');
   await expect(example.locator('code')).not.toContainText('React');
 
   await page.goto('/zh-CN/other/configprovider');
-  const faq = page.locator('.demo-block[data-demo-kind="code"]').filter({ hasText: 'FAQ' });
+  const faq = page.locator('[data-demo-id="zh-CN-other-configprovider-6"]');
   await expect(faq.locator('code')).toContainText('固定保留 .semi-* / --semi-* 兼容契约');
   await expect(faq.locator('code')).not.toContainText('@douyinfe');
 });
@@ -93,8 +89,8 @@ test('通用指南的 22 个代码块全部使用 code-only 展示', async ({ pa
     await page.goto(route);
     const examples = page.locator('.demo-block[data-demo-kind="code"]');
     await expect(examples).toHaveCount(expected);
-    await expect(examples.locator('.demo-block-status-ready')).toHaveCount(expected);
-    await expect(page.getByText('示例迁移中')).toHaveCount(0);
+    await expect(examples.locator('.demo-block-source')).toHaveCount(expected);
+    await expect(examples.locator('.demo-block-footer')).toHaveCount(0);
     expect((await examples.locator('code').allTextContents()).join('\n')).not.toMatch(
       /@douyinfe|\bReact(?:DOM)?\b/,
     );
@@ -121,9 +117,8 @@ for (const { component, route, expectedExamples } of pages) {
     await page.goto(route, { waitUntil: 'domcontentloaded' });
     const liveExamples = page.locator('.demo-block[data-demo-kind="live"]');
     await expect.soft(liveExamples).toHaveCount(expectedExamples);
-    await expect
-      .soft(liveExamples.locator('.demo-block-status-ready'))
-      .toHaveCount(expectedExamples);
+    await expect.soft(liveExamples.locator('.demo-block-preview')).toHaveCount(expectedExamples);
+    await expect.soft(liveExamples.locator('.demo-block-source')).toHaveCount(expectedExamples);
     expect.soft(clientErrors, `客户端错误：\n${clientErrors.join('\n')}`).toEqual([]);
   });
 }
@@ -205,7 +200,7 @@ if (tier === 't5') {
   test('T5 Form 可新增数组字段', async ({ page }) => {
     await page.goto('/zh-CN/input/form');
     const preview = page
-      .locator("figure.demo-block:has(.demo-block-title:text-is('使用 ArrayField'))")
+      .locator('[data-demo-id="zh-CN-input-form-31"]')
       .locator('.demo-block-preview');
     await expect(preview.getByRole('button', { name: '删除行' })).toHaveCount(2);
     await preview.getByRole('button', { name: '新增带初始值的行' }).click();
@@ -216,7 +211,7 @@ if (tier === 't5') {
   test('T5 Table 可选择数据行', async ({ page }) => {
     await page.goto('/zh-CN/show/table');
     const preview = page
-      .locator("figure.demo-block:has(.demo-block-title:text-is('行选择操作'))")
+      .locator('[data-demo-id="zh-CN-show-table-4"]')
       .locator('.demo-block-preview');
     const checkboxes = preview.getByRole('checkbox');
     await expect(checkboxes).toHaveCount(4);
@@ -236,7 +231,7 @@ if (tier === 't5') {
   test('T5 AIChatInput 可提交结构化消息', async ({ page }) => {
     await page.goto('/zh-CN/ai/aiChatInput');
     const preview = page
-      .locator("figure.demo-block:has(.demo-block-title:text-is('消息发送'))")
+      .locator('[data-demo-id="zh-CN-ai-aiChatInput-3"]')
       .locator('.demo-block-preview');
     await preview.getByRole('button', { name: 'Send' }).click();
     await expect(preview.locator('.sent-message')).toContainText('inputContents');
@@ -249,7 +244,7 @@ if (tier === 't5') {
   test('T5 AIChatDialogue 可取消全部消息选择', async ({ page }) => {
     await page.goto('/zh-CN/ai/aiChatDialogue');
     const preview = page
-      .locator("figure.demo-block:has(.demo-block-title:text-is('选择'))")
+      .locator('[data-demo-id="zh-CN-ai-aiChatDialogue-6"]')
       .locator('.demo-block-preview');
     const checkboxes = preview.getByRole('checkbox');
     await expect(checkboxes).toHaveCount(3);
