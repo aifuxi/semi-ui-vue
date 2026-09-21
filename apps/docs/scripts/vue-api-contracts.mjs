@@ -50,10 +50,215 @@ export const vueTypeRewrites = [
   ['JSX.Element', 'VNodeChild'],
 ];
 
-const vueCode = (source) => ({ language: 'vue', source: source.trim() });
+const staticCode = (language, source) => ({ language, source: source.trim() });
+const vueCode = (source) => staticCode('vue', source);
 
 /** 无法通过类型名替换安全迁移的上游 JSX 片段。 */
 export const vueStaticCodeOverrides = new Map([
+  [
+    'zh-CN-experience-accessibility-1',
+    staticCode(
+      'bash',
+      `# 安装无障碍主题
+pnpm add @semi-bot/semi-theme-a11y`,
+    ),
+  ],
+  [
+    'zh-CN-experience-accessibility-2',
+    vueCode(`
+<script setup lang="ts">
+import { Avatar } from '@aifuxi/semi-ui-vue/avatar';
+import '@aifuxi/semi-theme-default/avatar.css';
+</script>
+
+<template>
+  <Avatar
+    alt="Person Name"
+    src="https://lf9-static.bytednsdoc.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/a11y-img-alt-avatar.png"
+    :style="{ margin: '4px' }"
+  />
+</template>
+`),
+  ],
+  [
+    'zh-CN-advanced-customize-theme-1',
+    staticCode(
+      'ts',
+      `// main.ts：主题包提供编译后的 CSS，无需额外插件
+import '你的主题包名称/semi.min.css';`,
+    ),
+  ],
+  [
+    'zh-CN-advanced-customize-theme-2',
+    staticCode(
+      'scss',
+      `// local.scss
+:root {
+  --semi-color-primary: rgb(0 100 250);
+}`,
+    ),
+  ],
+  [
+    'zh-CN-advanced-customize-theme-3',
+    staticCode(
+      'ts',
+      `// main.ts：本地覆盖文件放在默认主题之后
+import '@aifuxi/semi-theme-default/index.css';
+import './local.scss';`,
+    ),
+  ],
+  [
+    'zh-CN-advanced-customize-theme-4',
+    staticCode(
+      'css',
+      `:root {
+  --semi-color-primary: rgb(0 100 250);
+  --semi-color-primary-hover: rgb(0 86 214);
+}`,
+    ),
+  ],
+  [
+    'zh-CN-advanced-customize-theme-5',
+    staticCode(
+      'css',
+      `/* .semi-* 是公开兼容契约；需要隔离时增加业务作用域。 */
+.custom-scope .semi-button {
+  border-radius: 999px;
+}`,
+    ),
+  ],
+  [
+    'zh-CN-advanced-customize-theme-6',
+    staticCode(
+      'ts',
+      `// main.ts：Vite 可直接加载主题包 CSS
+import '你的主题包名称/semi.min.css';`,
+    ),
+  ],
+  [
+    'zh-CN-advanced-customize-theme-7',
+    staticCode(
+      'scss',
+      `// local.scss
+:root {
+  --semi-color-primary: rgb(0 100 250);
+}`,
+    ),
+  ],
+  [
+    'zh-CN-advanced-customize-theme-8',
+    staticCode(
+      'ts',
+      `// main.ts：Vite 按标准样式顺序应用覆盖
+import '@aifuxi/semi-theme-default/index.css';
+import './local.scss';`,
+    ),
+  ],
+  [
+    'zh-CN-advanced-customize-theme-9',
+    staticCode(
+      'css',
+      `:root {
+  --semi-color-primary: rgb(0 100 250);
+  --semi-color-primary-hover: rgb(0 86 214);
+}`,
+    ),
+  ],
+  [
+    'zh-CN-advanced-customize-theme-10',
+    staticCode(
+      'css',
+      `/* .semi-* 是公开兼容契约；需要隔离时增加业务作用域。 */
+.custom-scope .semi-button {
+  border-radius: 999px;
+}`,
+    ),
+  ],
+  [
+    'zh-CN-advanced-customize-theme-11',
+    staticCode(
+      'css',
+      `/* 组件级覆盖放在主题 CSS 之后。 */
+.semi-button {
+  border-radius: 8px;
+}`,
+    ),
+  ],
+  [
+    'zh-CN-advanced-dark-mode-1',
+    staticCode(
+      'css',
+      `body {
+  color: var(--semi-color-text-0);
+  background-color: var(--semi-color-bg-0);
+}`,
+    ),
+  ],
+  [
+    'zh-CN-advanced-dark-mode-2',
+    staticCode(
+      'ts',
+      `function setDarkMode(enabled: boolean) {
+  if (enabled) document.body.setAttribute('theme-mode', 'dark');
+  else document.body.removeAttribute('theme-mode');
+}`,
+    ),
+  ],
+  [
+    'zh-CN-advanced-dark-mode-3',
+    vueCode(`
+<script setup lang="ts">
+import { Button } from '@aifuxi/semi-ui-vue/button';
+import '@aifuxi/semi-theme-default/button.css';
+
+function switchMode() {
+  const body = document.body;
+  if (body.getAttribute('theme-mode') === 'dark') body.removeAttribute('theme-mode');
+  else body.setAttribute('theme-mode', 'dark');
+}
+</script>
+
+<template>
+  <Button @click="switchMode">切换亮暗模式</Button>
+</template>
+`),
+  ],
+  [
+    'zh-CN-advanced-dark-mode-4',
+    staticCode(
+      'ts',
+      `const colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+function syncMode({ matches }: MediaQueryList | MediaQueryListEvent) {
+  if (matches) document.body.setAttribute('theme-mode', 'dark');
+  else document.body.removeAttribute('theme-mode');
+}
+
+syncMode(colorScheme);
+colorScheme.addEventListener('change', syncMode);`,
+    ),
+  ],
+  [
+    'zh-CN-advanced-dark-mode-5',
+    vueCode(`
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Button } from '@aifuxi/semi-ui-vue/button';
+import '@aifuxi/semi-theme-default/button.css';
+
+const mode = ref<'semi-always-dark' | 'semi-always-light'>('semi-always-dark');
+function switchMode() {
+  mode.value = mode.value === 'semi-always-dark' ? 'semi-always-light' : 'semi-always-dark';
+}
+</script>
+
+<template>
+  <section :class="mode" style="padding: 16px; background: var(--semi-color-bg-0)">
+    <Button @click="switchMode">切换局部模式</Button>
+  </section>
+</template>
+`),
+  ],
   [
     'zh-CN-ai-aiChatDialogue-18',
     {

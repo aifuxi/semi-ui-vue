@@ -81,6 +81,26 @@ test('静态代码示例展示 Vue 代码且不运行预览', async ({ page }) =
   await expect(faq.locator('code')).not.toContainText('@douyinfe');
 });
 
+test('通用指南的 22 个代码块全部使用 code-only 展示', async ({ page }) => {
+  const guides = [
+    ['/zh-CN/start/getting-started', 4],
+    ['/zh-CN/experience/accessibility', 2],
+    ['/zh-CN/advanced/customize-theme', 11],
+    ['/zh-CN/advanced/dark-mode', 5],
+  ] as const;
+
+  for (const [route, expected] of guides) {
+    await page.goto(route);
+    const examples = page.locator('.demo-block[data-demo-kind="code"]');
+    await expect(examples).toHaveCount(expected);
+    await expect(examples.locator('.demo-block-status-ready')).toHaveCount(expected);
+    await expect(page.getByText('示例迁移中')).toHaveCount(0);
+    expect((await examples.locator('code').allTextContents()).join('\n')).not.toMatch(
+      /@douyinfe|\bReact(?:DOM)?\b/,
+    );
+  }
+});
+
 for (const { component, route, expectedExamples } of pages) {
   test(`${tier.toUpperCase()} ${component}：${expectedExamples} 个示例可运行且无客户端错误`, async ({
     page,

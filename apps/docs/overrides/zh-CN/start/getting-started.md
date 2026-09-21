@@ -10,21 +10,36 @@ icon: doc-gettingstarted
 
 组件库发布包为 `@aifuxi/semi-ui-vue`，默认主题为 `@aifuxi/semi-theme-default`，两者版本同步发布。
 
-<DemoBlock title="安装依赖" kind="import" />
+```bash
+pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
+```
 
 ## 2、引入样式
 
 组件样式来自 `@aifuxi/semi-theme-default`。整包引入使用 `@aifuxi/semi-theme-default/index.css`；
 只需要部分组件时，可以按组件引入对应样式文件，例如按钮使用 `@aifuxi/semi-theme-default/button.css`。
 
-<DemoBlock title="引入样式" kind="import" />
+```ts
+import '@aifuxi/semi-theme-default/index.css';
+// 或仅引入单个组件样式
+import '@aifuxi/semi-theme-default/button.css';
+```
 
 ## 3、使用组件
 
 组件从公开子路径导入，例如 `@aifuxi/semi-ui-vue/button`、`@aifuxi/semi-ui-vue/select`。
 根入口 `@aifuxi/semi-ui-vue` 会加载全量组件，业务代码建议使用子路径以保留按需加载能力。
 
-<DemoBlock title="使用组件" kind="import" />
+```vue
+<script setup lang="ts">
+import { Button } from '@aifuxi/semi-ui-vue/button';
+import '@aifuxi/semi-theme-default/button.css';
+</script>
+
+<template>
+  <Button type="primary">开始使用</Button>
+</template>
+```
 
 ## 4、Vue 版本与 SSR
 
@@ -35,7 +50,12 @@ icon: doc-gettingstarted
 
 主题包内置亮暗两套 token。给 `body` 增加 `theme-mode="dark"` 即可切换暗色，移除该属性回到亮色。
 
-<DemoBlock title="切换暗色模式" kind="import" />
+```ts
+function setDarkMode(enabled: boolean) {
+  if (enabled) document.body.setAttribute('theme-mode', 'dark');
+  else document.body.removeAttribute('theme-mode');
+}
+```
 
 ## 6、国际化
 

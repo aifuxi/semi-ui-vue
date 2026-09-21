@@ -24,7 +24,7 @@ import {
   vueTypeRewrites,
 } from './vue-api-contracts.mjs';
 
-/** 代码块统一交给 DemoBlock；已有 manifest 的示例运行，其余组件示例仅展示源码。 */
+/** 代码块统一交给 DemoBlock；已有 manifest 的组件示例运行，其余示例仅展示源码。 */
 const demoBlockKinds = new Map([
   ['import', 'import'],
   ['live', 'live'],
@@ -543,11 +543,13 @@ function transformBody(body, page, context) {
         recordDrop('mdx-block', `\`\`\`${language}`);
         continue;
       }
-      const kind =
+      const sourceKind =
         demoBlockKinds.get(info.split(/\s+/)[0] ?? '') ?? (info.includes('live') ? 'live' : 'code');
       demoIndex += 1;
       const demoId = `${page.route.replace(/^\//, '').replaceAll('/', '-')}-${demoIndex}`;
-      if (kind !== 'live' && page.componentDirectory) {
+      const kind = sourceKind === 'live' && !page.componentDirectory ? 'code' : sourceKind;
+      if (kind !== sourceKind) recordRewrite('guide-code-only', demoId);
+      if (kind !== 'live') {
         const importSource =
           demoId === 'zh-CN-show-table-1'
             ? "import { Table, Tag } from '@douyinfe/semi-ui';"
@@ -561,6 +563,12 @@ function transformBody(body, page, context) {
             ? adaptStaticCodeSource(demoId, language, rewrittenSource, recordRewrite)
             : { language: 'js', source: rewrittenSource };
         context.codeSources[demoId] = { kind, ...codeSource };
+        if (!page.componentDirectory) {
+          context.guideSourceCount += 1;
+          if (page.origin === 'generated' && sourceKind === 'code') {
+            context.generatedGuideStaticSourceCount += 1;
+          }
+        }
       }
       out.push(
         '',
@@ -726,6 +734,7 @@ for (const [relativePath, absolutePath] of overrideFiles) {
     icon: values.icon,
     source: `apps/docs/overrides/${relativePath}`,
     searchText: searchTextOf(source),
+    rawBody: source.includes('```') ? source.replace(frontmatterPattern, '') : undefined,
   });
 }
 
@@ -766,11 +775,18 @@ for (const entry of entries) {
   if (slug && !routesBySlug.has(slug)) routesBySlug.set(slug, entry.route);
 }
 
-/** 第二遍：生成正文，手工覆盖页直接使用 overrides 的原文。 */
-const context = { routesBySlug, drops: [], rewrites: [], codeSources: {} };
+/** 第二遍：生成基线正文；含代码块的手工覆盖页也走同一转换链路。 */
+const context = {
+  routesBySlug,
+  drops: [],
+  rewrites: [],
+  codeSources: {},
+  guideSourceCount: 0,
+  generatedGuideStaticSourceCount: 0,
+};
 
 for (const entry of entries) {
-  if (entry.origin !== 'generated') continue;
+  if (entry.rawBody === undefined) continue;
   const body = transformBody(entry.rawBody ?? '', entry, context);
   const target = resolve(contentRoot, `${entry.route.replace(/^\//, '')}.md`);
   await mkdir(resolve(target, '..'), { recursive: true });
@@ -843,8 +859,16 @@ if (importSourceCount !== 72) {
   throw new Error(`引入示例数量应为 72，实际为 ${importSourceCount}`);
 }
 const staticSourceCount = codeSourceEntries.filter(([, entry]) => entry.kind === 'code').length;
-if (staticSourceCount !== 106) {
-  throw new Error(`静态代码示例数量应为 106，实际为 ${staticSourceCount}`);
+if (staticSourceCount !== 128) {
+  throw new Error(`静态代码示例数量应为 128，实际为 ${staticSourceCount}`);
+}
+if (context.generatedGuideStaticSourceCount !== 15) {
+  throw new Error(
+    `基线通用指南静态代码块数量应为 15，实际为 ${context.generatedGuideStaticSourceCount}`,
+  );
+}
+if (context.guideSourceCount !== 22) {
+  throw new Error(`通用指南代码块数量应为 22，实际为 ${context.guideSourceCount}`);
 }
 const invalidImportSource = codeSourceEntries.find(
   ([, entry]) => entry.kind === 'import' && /@douyinfe|from ['"]react['"]/.test(entry.source),
