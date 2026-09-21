@@ -254,7 +254,7 @@ function collectRenderedOptions(nodes: VNodeChild): void {
   const serialized = JSON.stringify(nextSignature);
   if (serialized === optionSignature) return;
   optionSignature = serialized;
-  if (typeof document === 'undefined' && state.options.length === 0) {
+  if (state.options.length === 0) {
     const options = collectOptions();
     const rawValue = controlled.value
       ? (runtimeProps.value.value ?? runtimeProps.value.modelValue)

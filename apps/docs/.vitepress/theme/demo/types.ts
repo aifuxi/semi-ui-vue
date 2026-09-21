@@ -19,11 +19,11 @@ export interface ExampleManifest {
 
 export type DemoSourceLoader = (id: string) => ExampleManifest | null;
 
-const exampleComponents = import.meta.glob<Component>('./examples/t1/**/zh-CN-*.vue', {
+const exampleComponents = import.meta.glob<Component>('./examples/t*/**/zh-CN-*.vue', {
   eager: true,
   import: 'default',
 });
-const exampleSources = import.meta.glob<string>('./examples/t1/**/zh-CN-*.vue', {
+const exampleSources = import.meta.glob<string>('./examples/t*/**/zh-CN-*.vue', {
   eager: true,
   import: 'default',
   query: '?raw',

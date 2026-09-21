@@ -309,9 +309,7 @@ function handleQuickJumpKeydown(event: KeyboardEvent): void {
     <template v-if="props.size === 'small'">
       <PaginationPopover v-if="props.hoverShowPageSelect && !props.disabled">
         <div class="semi-page-item semi-page-item-small">
-          <PaginationNodeRenderer :content="state.currentPage" /><PaginationNodeRenderer
-            content="/"
-          /><PaginationNodeRenderer :content="totalPages" /><PaginationNodeRenderer content=" " />
+          {{ state.currentPage }}/{{ totalPages }}{{ ' ' }}
         </div>
         <template #content>
           <PaginationRestList
@@ -326,9 +324,7 @@ function handleQuickJumpKeydown(event: KeyboardEvent): void {
         class="semi-page-item semi-page-item-small"
         :class="{ 'semi-page-item-all-disabled': props.disabled }"
       >
-        <PaginationNodeRenderer :content="state.currentPage" /><PaginationNodeRenderer
-          content="/"
-        /><PaginationNodeRenderer :content="totalPages" /><PaginationNodeRenderer content=" " />
+        {{ state.currentPage }}/{{ totalPages }}{{ ' ' }}
       </div>
     </template>
 

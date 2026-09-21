@@ -74,7 +74,9 @@ await cp(resolve(vendorRoot, 'LICENSE'), resolve(assetRoot, 'SEMI-LICENSE'));
 await cp(resolve(appRoot, 'assets/favicon.svg'), resolve(publicRoot, 'favicon.svg'));
 await cp(resolve(appRoot, 'assets/favicon.svg'), resolve(publicRoot, 'favicon.ico'));
 await mkdir(resolve(publicRoot, 'demos'), { recursive: true });
-await cp(resolve(appRoot, 'assets/photo.svg'), resolve(publicRoot, 'demos/photo.svg'));
+for (const file of ['one.svg', 'photo.svg', 'poster.svg', 'two.svg']) {
+  await cp(resolve(appRoot, `assets/${file}`), resolve(publicRoot, `demos/${file}`));
+}
 
 await writeFile(
   resolve(assetRoot, 'sources.json'),

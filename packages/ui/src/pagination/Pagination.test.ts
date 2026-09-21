@@ -250,7 +250,18 @@ describe('Pagination', () => {
   });
 
   it('可无警告 hydration，并保持受控页码静态结构', async () => {
-    const Root = { render: () => h(Pagination, { currentPage: 3, total: 80, showTotal: true }) };
+    const Root = {
+      render: () =>
+        h('div', [
+          h(Pagination, {
+            currentPage: 3,
+            showSizeChanger: true,
+            showTotal: true,
+            total: 80,
+          }),
+          h(Pagination, { currentPage: 3, size: 'small', total: 80 }),
+        ]),
+    };
     const host = document.createElement('div');
     host.innerHTML = await renderToString(createSSRApp(Root));
     document.body.append(host);
@@ -261,6 +272,10 @@ describe('Pagination', () => {
     await nextTick();
     expect(warnings).toEqual([]);
     expect(host.querySelector('[aria-current="page"]')?.textContent).toBe('3');
+    expect(host.querySelector('.semi-page-small .semi-page-item-small')?.textContent).toBe('3/8 ');
+    expect(host.querySelector('.semi-page-switch .semi-select-selection-text')?.textContent).toBe(
+      '每页条数：10',
+    );
     app.unmount();
   });
 });
