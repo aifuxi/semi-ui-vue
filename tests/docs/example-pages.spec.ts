@@ -143,3 +143,71 @@ if (tier === 't4') {
     await expect(preview.locator('.semi-upload-file-card')).toHaveCount(1);
   });
 }
+
+if (tier === 't5') {
+  test('T5 Form 可新增数组字段', async ({ page }) => {
+    await page.goto('/zh-CN/input/form');
+    const preview = page
+      .locator("figure.demo-block:has(.demo-block-title:text-is('使用 ArrayField'))")
+      .locator('.demo-block-preview');
+    await expect(preview.getByRole('button', { name: '删除行' })).toHaveCount(2);
+    await preview.getByRole('button', { name: '新增带初始值的行' }).click();
+    await expect(preview.getByRole('button', { name: '删除行' })).toHaveCount(3);
+    await expect(preview.locator('input').nth(2)).toHaveValue('Semi DSM');
+  });
+
+  test('T5 Table 可选择数据行', async ({ page }) => {
+    await page.goto('/zh-CN/show/table');
+    const preview = page
+      .locator("figure.demo-block:has(.demo-block-title:text-is('行选择操作'))")
+      .locator('.demo-block-preview');
+    const checkboxes = preview.getByRole('checkbox');
+    await expect(checkboxes).toHaveCount(4);
+    await preview.locator('.semi-checkbox-inner-display').nth(1).click();
+    await expect(checkboxes.nth(1)).toBeChecked();
+  });
+
+  test('T5 Chat 可发送消息并接收异步回复', async ({ page }) => {
+    await page.goto('/zh-CN/plus/chat');
+    const preview = page.locator('.demo-block-preview').first();
+    await preview.getByRole('textbox').fill('T5 消息');
+    await preview.getByRole('button', { name: 'send message' }).click();
+    await expect(preview.getByText('T5 消息', { exact: true })).toBeVisible();
+    await expect(preview.getByText('这是一条 mock 回复信息', { exact: true })).toBeVisible();
+  });
+
+  test('T5 AIChatInput 可提交结构化消息', async ({ page }) => {
+    await page.goto('/zh-CN/ai/aiChatInput');
+    const preview = page
+      .locator("figure.demo-block:has(.demo-block-title:text-is('消息发送'))")
+      .locator('.demo-block-preview');
+    await preview.getByRole('button', { name: 'Send' }).click();
+    await expect(preview.locator('.sent-message')).toContainText('inputContents');
+    await expect(preview.locator('.sent-message')).toContainText(
+      '点击发送按钮，观察上传内容、引用内容、输入框内容变化',
+    );
+    await expect(preview.getByRole('button', { name: 'Stop' })).toBeVisible();
+  });
+
+  test('T5 AIChatDialogue 可取消全部消息选择', async ({ page }) => {
+    await page.goto('/zh-CN/ai/aiChatDialogue');
+    const preview = page
+      .locator("figure.demo-block:has(.demo-block-title:text-is('选择'))")
+      .locator('.demo-block-preview');
+    const checkboxes = preview.getByRole('checkbox');
+    await expect(checkboxes).toHaveCount(3);
+    await preview.getByText('取消全选', { exact: true }).click();
+    await expect(preview.locator('output')).toHaveText('已选: ');
+    for (let index = 0; index < 3; index += 1)
+      await expect(checkboxes.nth(index)).not.toBeChecked();
+  });
+
+  test('T5 Sidebar 可隐藏并重新展示容器', async ({ page }) => {
+    await page.goto('/zh-CN/ai/sidebar');
+    const preview = page.locator('.demo-block-preview').first();
+    await expect(preview.locator('.semi-sidebar-container')).toBeVisible();
+    await preview.getByRole('button', { name: '点我隐藏容器' }).click();
+    await expect(preview.locator('.semi-sidebar-container')).toHaveCount(0);
+    await expect(preview.getByRole('button', { name: '点我展示容器' })).toBeVisible();
+  });
+}

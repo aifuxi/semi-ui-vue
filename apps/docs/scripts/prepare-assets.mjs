@@ -88,6 +88,8 @@ for (const file of [
   'one.svg',
   'photo.svg',
   'poster.svg',
+  'table-docs-icon.png',
+  'table-figma-icon.png',
   'tone.wav',
   'two.svg',
 ]) {
