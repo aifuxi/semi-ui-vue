@@ -1,5 +1,19 @@
 # @aifuxi/semi-ui-vue
 
+## 1.1.0
+
+### Minor Changes
+
+- [#16](https://github.com/aifuxi/semi-ui-vue/pull/16) [`8b163d9`](https://github.com/aifuxi/semi-ui-vue/commit/8b163d910a4f58bc1f120393faa24f63a10ecd9a) Thanks [@aifuxi](https://github.com/aifuxi)! - 浏览器构建自动按需加载默认主题，并将默认主题、稳定图标、Lab 图标与插画作为同版本依赖安装。
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@1.1.0
+  - @aifuxi/semi-icons-lab-vue@1.1.0
+  - @aifuxi/semi-illustrations-vue@1.1.0
+  - @aifuxi/semi-theme-default@1.1.0
+
 ## 1.0.0
 
 ### Major Changes
