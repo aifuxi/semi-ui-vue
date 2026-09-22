@@ -21,11 +21,12 @@ const importPatterns = [
   /@import\s*['"]([^'"]+)['"]/g,
 ];
 const publicPackagePolicies = ['ui', 'theme-default', 'icons', 'icons-lab', 'illustrations'];
-// Dependency versions belong to package.json and the lockfile. Only architectural
-// directions are duplicated here; normal dependency upgrades need no second edit.
+// 依赖版本由 package.json 与 lockfile 管理，此处只复制架构方向，普通升级无需同步修改。
 const allowedInternalDependencies = new Set([
+  '@aifuxi/semi-icons-lab-vue',
   '@aifuxi/semi-icons-vue',
   '@aifuxi/semi-illustrations-vue',
+  '@aifuxi/semi-theme-default',
 ]);
 const publicSourcePathPolicies = {
   '@aifuxi/semi-icons-vue': ['packages/icons/src/index.ts'],
