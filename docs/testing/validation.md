@@ -6,7 +6,7 @@
 | -------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | 规则、普通文案、IDE 配置         | 受影响文件格式、链接、diff；配置需实际识别或启动                                                      |
 | 局部组件修复                     | 对应类型与行为测试；视觉、焦点、Portal、拖拽、动效变化加对应 Chromium spec                            |
-| 静态源码检查                     | `pnpm check:source`：工具链、固定基线、生成漂移、边界、格式、lint 与源码类型                          |
+| 静态源码检查                     | `pnpm check:source`：工具链、固定基线、生成漂移、边界、格式、lint 与冷启动源码类型检查                |
 | 日常本地源码集成                 | `pnpm check`：静态源码检查与 Vitest 单测                                                              |
 | 静态组件文档                     | 格式、链接与公开契约核对；示例代码变化按实际行为选择类型或组件测试                                    |
 | 文档示例梯次                     | 先定向 hydration 单测，再以 `DOCS_EXAMPLE_TIER=tN pnpm test:docs` 做一次生产构建与全部页面聚合巡检    |
@@ -27,7 +27,7 @@
 
 ## 构建与证据复用
 
-`check:source` 与 `check` 均不含生产构建。`typecheck` 与 `typecheck:source` 检查当前 workspace 源码；仅缓存故障或干净构建验证使用 `typecheck:clean`。
+`typecheck` 检查当前 workspace；文档站会先通过 `prepare:packages` 重建五个公开包，再按真实 exports 检查类型。`typecheck:source`、`check:source` 与 `check` 均复用 `typecheck:clean`，先清理旧产物，避免本地残留的 `dist` 掩盖冷启动错误。
 
 `build` 构建公开 JavaScript 包与主题；`pnpm dev` 启动 Storybook，`pnpm build:storybook` 单独构建场景站。浏览器测试自行管理所需参考服务，避免在同一验证链中重复准备产物。按需运行入口，不依次重复执行 check、artifacts、full、release。
 
