@@ -1,5 +1,16 @@
 # @aifuxi/semi-ui-vue
 
+## 1.1.1
+
+### Patch Changes
+
+- [#18](https://github.com/aifuxi/semi-ui-vue/pull/18) [`06c8387`](https://github.com/aifuxi/semi-ui-vue/commit/06c838708dd7280f1b90c48196580405b9998045) Thanks [@aifuxi](https://github.com/aifuxi)! - 解耦 npm 发布检查与文档站验证，发布流水线仅执行公开包相关门禁。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@1.1.1
+  - @aifuxi/semi-icons-lab-vue@1.1.1
+  - @aifuxi/semi-illustrations-vue@1.1.1
+  - @aifuxi/semi-theme-default@1.1.1
+
 ## 1.1.0
 
 ### Minor Changes
