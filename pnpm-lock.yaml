@@ -281,6 +281,9 @@ importers:
       '@aifuxi/semi-ui-vue':
         specifier: workspace:*
         version: link:../../packages/ui
+      prismjs:
+        specifier: 1.30.0
+        version: 1.30.0
       vitepress:
         specifier: 1.6.4
         version: 1.6.4(@algolia/client-search@5.59.0)(@types/node@24.13.4)(@types/react@18.0.5)(async-validator@3.5.2)(fuse.js@7.3.0)(jiti@2.6.1)(lightningcss@1.33.0)(postcss@8.5.26)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(sass@1.54.9)(terser@5.51.2)(typescript@5.9.3)(yaml@2.9.0)

@@ -20,6 +20,7 @@
     "@aifuxi/semi-illustrations-vue": "workspace:*",
     "@aifuxi/semi-theme-default": "workspace:*",
     "@aifuxi/semi-ui-vue": "workspace:*",
+    "prismjs": "1.30.0",
     "vitepress": "1.6.4",
     "vue": "catalog:"
   },

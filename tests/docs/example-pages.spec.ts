@@ -53,6 +53,16 @@ test('引入示例展示 Vue 代码且不运行预览', async ({ page }) => {
   await expect(example.locator('code')).toContainText(
     "import { Button, SplitButtonGroup } from '@aifuxi/semi-ui-vue';",
   );
+  await expect(example.locator('code .token.keyword').first()).toHaveText('import');
+  expect(
+    await example
+      .locator('code .token')
+      .evaluateAll((tokens) => new Set(tokens.map((token) => getComputedStyle(token).color)).size),
+  ).toBeGreaterThan(1);
+
+  const liveExample = page.locator('.demo-block[data-demo-kind="live"]').first();
+  await liveExample.locator('summary').click();
+  await expect(liveExample.locator('code .token.tag').first()).toBeVisible();
 
   await page.goto('/zh-CN/show/table');
   const tableExample = page.locator('.demo-block[data-demo-kind="import"]');
@@ -70,6 +80,7 @@ test('静态代码示例展示 Vue 代码且不运行预览', async ({ page }) =
   await expect(example.locator('summary')).toContainText('ts');
   await expect(example.locator('code')).toContainText('SelectModelValue');
   await expect(example.locator('code')).not.toContainText('React');
+  await expect(example.locator('code .token.keyword').first()).toBeVisible();
 
   await page.goto('/zh-CN/other/configprovider');
   const faq = page.locator('[data-demo-id="zh-CN-other-configprovider-6"]');
