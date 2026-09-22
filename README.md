@@ -1,6 +1,18 @@
 # Semi UI Vue
 
-面向 Vue 3.5+ 的独立组件库，以 Semi Design `v2.102.0` 为固定基线，对齐视觉、行为、可访问性和主题。本项目不是 Semi Design 官方 Vue 版本。
+面向 Vue 3.5+ 的独立组件库，以 Semi Design `v2.102.0` 为固定基线，对齐视觉、行为、可访问性和主题。
+
+## 致谢与声明
+
+Semi UI Vue 是个人维护、借助大量 AI 辅助开发的非官方项目，并非 Semi Design 官方推出或维护的 Vue 3 组件库。项目仍在持续完善，可能存在不稳定、不完整或与官方实现行为不一致的情况，请在使用前自行评估风险。
+
+我很喜欢 Semi Design 的设计理念、视觉风格与工程实践。感谢 Semi Design 团队在设计、工程和开源社区中的投入与贡献。项目文档基于 Semi Design 官方文档改造，并尽可能与固定的 `v2.102.0` 基线保持一致，同时针对 Vue 3 的组件接口和使用方式进行适配。
+
+Semi Design 的名称、Logo、图标、插画及项目引用的官方素材，其相关权利归 Semi Design 官方及相应权利人所有。相关引用与改写仅用于 Vue 3 兼容实现和文档说明，不代表 Semi Design 官方的授权、认可或背书。
+
+- [Semi Design 官方文档](https://semi.design/zh-CN/start/introduction)
+- [Semi Design GitHub](https://github.com/DouyinFE/semi-design)
+- [第三方归属声明](THIRD_PARTY_NOTICES.md)
 
 ## 安装与使用
 
@@ -56,6 +68,6 @@ Storybook Vue 场景站默认运行于 `http://127.0.0.1:4174`，固定 React �
 
 日常本地集成用 `pnpm check`（静态检查与 Vitest 单测），公开产物用 `pnpm check:artifacts`，完整本地回归用 `pnpm check:full`，发布候选用 `pnpm release:check`。组件单测（含源码 SSR）与浏览器消费测试在本地执行；CI 保留 `check:source`、Node 产物检查和发布职责。按影响选择，详见[验证入口](docs/testing/validation.md)。工程边界见[工作区架构](docs/architecture/workspace.md)，代理规则见 [AGENTS.md](AGENTS.md)。
 
-Nuxt 文档站及旧逐示例验收体系已移除。静态组件契约继续保留，退役范围与历史追溯见[说明](docs/documentation/README.md)。
+原 Nuxt 文档站及旧逐示例验收体系已移除。当前 VitePress 组件文档站使用 `pnpm docs:prepare` 准备依赖、`pnpm docs:dev` 本地启动，维护方式见[文档站说明](apps/docs/README.md)；退役范围与历史追溯见[说明](docs/documentation/README.md)。
 
 本项目使用 [MIT License](LICENSE)。发布包携带 Semi Design 及适用第三方许可证、归属声明和 SPDX SBOM。

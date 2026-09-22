@@ -1,4 +1,4 @@
-import type { CSSProperties, Component, VNodeChild } from 'vue';
+import type { CSSProperties, Component, HTMLAttributes, VNodeChild } from 'vue';
 
 import type { MarkdownRenderProps as BaseMarkdownRenderProps } from '../markdown-render';
 
@@ -170,6 +170,10 @@ export interface AIChatDialogueReasoningProps {
   thinkingText?: string;
 }
 
+export interface AIChatDialogueReasoningSlots {
+  default?: (props: { raw: string; status: string | undefined }) => VNodeChild;
+}
+
 export interface AIChatDialogueStepAction {
   summary?: string;
   description?: string;
@@ -180,6 +184,21 @@ export interface AIChatDialogueStepItem {
   summary?: string;
   status?: string;
   actions?: AIChatDialogueStepAction[];
+}
+
+export interface AIChatDialogueStepProps {
+  steps: AIChatDialogueStepItem[];
+}
+
+export interface AIChatDialogueAnnotationProps {
+  annotation: Annotation[];
+  maxCount?: number;
+  description?: string;
+  annotationText?: string;
+}
+
+export interface AIChatDialogueAnnotationEmits {
+  click: [annotation: Annotation[]];
 }
 
 export interface FullDialogueNodes {
@@ -243,7 +262,7 @@ export type DialogueContentItemRendererMap = Record<
 export interface AIChatDialogueProps {
   align?: 'leftRight' | 'leftAlign';
   chats?: Message[];
-  class?: unknown;
+  class?: HTMLAttributes['class'];
   className?: string;
   disabledFileItemClick?: boolean;
   escapeHtml?: boolean;
@@ -265,6 +284,34 @@ export interface AIChatDialogueProps {
     index: number;
     onHintClick: () => void;
   }) => VNodeChild;
+}
+
+export interface AIChatDialogueEmits {
+  'update:chats': [chats: Message[]];
+  'chats-change': [chats: Message[]];
+  select: [selectedIds: string[]];
+  'annotation-click': [annotation: Annotation[]];
+  'file-click': [file: InputFile];
+  'image-click': [image: InputImage];
+  'hint-click': [hint: string];
+  'reference-click': [reference: Reference];
+  'message-bad-feedback': [message: Message];
+  'message-copy': [message: Message];
+  'message-delete': [message: Message];
+  'message-edit': [message: Message];
+  'message-good-feedback': [message: Message];
+  'message-reset': [message: Message];
+  'message-share': [message: Message];
+}
+
+export interface AIChatDialogueSlots {
+  'dialogue-action'?: (props: RenderActionProps) => VNodeChild;
+  'dialogue-avatar'?: (props: RenderAvatarProps) => VNodeChild;
+  'dialogue-content'?: (props: RenderContentProps) => VNodeChild;
+  'dialogue-title'?: (props: RenderTitleProps) => VNodeChild;
+  'full-dialogue'?: (props: RenderFullDialogueProps) => VNodeChild;
+  hint?: (props: { content: string; index: number; onHintClick: () => void }) => VNodeChild;
+  'message-edit'?: (props: { value: unknown }) => VNodeChild;
 }
 
 export interface AIChatDialogueExpose {

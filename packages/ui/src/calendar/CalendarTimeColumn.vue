@@ -27,7 +27,7 @@ const timeLabels = computed(() =>
   <div :class="[props.className, 'semi-calendar-time']">
     <ul class="semi-calendar-time-items">
       <li v-for="(label, time) in timeLabels" :key="`time-${time}`" class="semi-calendar-time-item">
-        <span><CalendarNodeRenderer :content="label" /></span>
+        <span><CalendarNodeRenderer v-if="label !== ''" :content="label" /></span>
       </li>
     </ul>
   </div>

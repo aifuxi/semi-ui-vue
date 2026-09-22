@@ -3,9 +3,9 @@ import { IconChevronDown, IconChevronUp, IconStoryStroked } from '@aifuxi/semi-i
 import { ref, watch } from 'vue';
 
 import { Collapsible } from '../collapsible';
-import type { AIChatDialogueStepItem } from './types';
+import type { AIChatDialogueStepProps } from './types';
 
-const props = defineProps<{ steps: AIChatDialogueStepItem[] }>();
+const props = defineProps<AIChatDialogueStepProps>();
 const openIndexes = ref(new Set(props.steps.map((_, index) => index)));
 watch(
   () => props.steps,

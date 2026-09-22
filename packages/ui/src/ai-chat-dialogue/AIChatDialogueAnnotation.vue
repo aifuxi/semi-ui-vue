@@ -3,19 +3,13 @@ import { IconChevronRight } from '@aifuxi/semi-icons-vue';
 import { computed } from 'vue';
 
 import { Avatar } from '../avatar';
-import type { Annotation } from './types';
+import type { AIChatDialogueAnnotationEmits, AIChatDialogueAnnotationProps } from './types';
 
-const props = withDefaults(
-  defineProps<{
-    annotation: Annotation[];
-    maxCount?: number;
-    // eslint-disable-next-line vue/require-default-prop -- undefined selects the upstream generated description.
-    description?: string;
-    annotationText?: string;
-  }>(),
-  { maxCount: 15, annotationText: '篇资料' },
-);
-const emit = defineEmits<{ click: [annotation: Annotation[]] }>();
+const props = withDefaults(defineProps<AIChatDialogueAnnotationProps>(), {
+  maxCount: 15,
+  annotationText: '篇资料',
+});
+const emit = defineEmits<AIChatDialogueAnnotationEmits>();
 const visible = computed(() => props.annotation.slice(0, props.maxCount));
 const rest = computed(() => Math.max(0, props.annotation.length - visible.value.length));
 

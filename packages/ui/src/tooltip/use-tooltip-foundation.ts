@@ -29,6 +29,7 @@ interface TooltipFoundationOptions {
   onClickOutside: (event: MouseEvent) => void;
   onEscKeydown: (event: KeyboardEvent) => void;
   onVisibleChange: (visible: boolean) => void;
+  popupId: string;
   runtimeProps: ComputedRef<TooltipRuntimeProps>;
 }
 
@@ -87,18 +88,11 @@ function getFocusableElements(node: HTMLElement | null): HTMLElement[] {
   return Array.from(node.querySelectorAll<HTMLElement>(selectors.join(',')));
 }
 
-function randomPopupId(): string {
-  const characters = '0123456789abcdefghijklmnopqrstuvwxyz';
-  return Array.from({ length: 7 }, () =>
-    characters.charAt(Math.floor(Math.random() * characters.length)),
-  ).join('');
-}
-
 export function useTooltipFoundation(options: TooltipFoundationOptions) {
   const state = shallowReactive<TooltipState>({
     containerStyle: {},
     displayNone: false,
-    id: options.runtimeProps.value.wrapperId,
+    id: options.runtimeProps.value.wrapperId ?? options.popupId,
     isInsert: false,
     isPositionUpdated: false,
     placement: options.runtimeProps.value.position,
@@ -356,7 +350,7 @@ export function useTooltipFoundation(options: TooltipFoundationOptions) {
       if (callback) void nextTick(callback);
     },
     setId: () => {
-      state.id = randomPopupId();
+      state.id = options.popupId;
     },
     setInitialFocus: () => {
       const preventScroll = options.runtimeProps.value.preventScroll;

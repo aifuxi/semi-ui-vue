@@ -21,4 +21,4 @@ import IllustrationNoContentDirect from '@aifuxi/semi-illustrations-vue/illustra
 
 ## 许可与归属
 
-项目代码使用 MIT License。Semi Design 的原始 MIT 许可、第三方声明和 SPDX 2.3 SBOM 随包发布。
+项目代码使用 MIT License。Semi Design 的原始 MIT 许可、第三方声明和 SPDX 2.3 SBOM 随包发布，详见 `dist/THIRD_PARTY_NOTICES.md`、`dist/THIRD_PARTY_LICENSES/` 与 `dist/SBOM.spdx.json`。

@@ -43,4 +43,10 @@ describe('固定上游 live Demo 清单', () => {
       expect(upstreamLiveDemos(markdown).every((demo) => demo.code.trim())).toBe(true);
     });
   }
+
+  it('文档生成器不会把缩进代码围栏泄漏到正文', async () => {
+    await import('../apps/docs/scripts/prepare-content.mjs');
+    const image = await readFile(resolve('apps/docs/content/zh-CN/show/image.md'), 'utf8');
+    expect(image).not.toContain('import React');
+  });
 });

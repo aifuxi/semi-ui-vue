@@ -17,6 +17,25 @@ describe('InputNumber', () => {
     expect(wrapper.findAll('.semi-input-number-button')).toHaveLength(2);
   });
 
+  it('向内部 Input 转发继承的输入行为 props', async () => {
+    const wrapper = mount(InputNumber, {
+      props: {
+        defaultValue: 1,
+        getValueLength: (value) => [...value].length,
+        hideSuffix: true,
+        maxLength: 2,
+        mode: 'password',
+        showClear: true,
+        suffix: '元',
+      },
+    });
+
+    expect(wrapper.get('input').attributes('type')).toBe('password');
+    expect(wrapper.get('input').attributes('maxlength')).toBeUndefined();
+    await wrapper.get('.semi-input-wrapper').trigger('mouseenter');
+    expect(wrapper.get('.semi-input-suffix').classes()).toContain('semi-input-suffix-hidden');
+  });
+
   it('非受控输入同时通知 numberChange 与两个 Vue update 事件', async () => {
     const wrapper = mount(InputNumber);
     const input = wrapper.get('input');

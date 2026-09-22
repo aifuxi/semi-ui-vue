@@ -182,11 +182,12 @@ describe('Pagination', () => {
     expect(wrapper.get('[aria-current="page"]').text()).toBe('1');
   });
 
-  it('small、单页隐藏、disabled、prev/next slot 与 locale/RTL 保持公开契约', () => {
+  it('small、单页隐藏、disabled、prev/next slot 与 locale/RTL 保持公开契约', async () => {
     const small = mountPagination(
       { total: 90, size: 'small', disabled: true, showQuickJumper: true },
       { slots: { prev: () => '上页', next: () => '下页' } },
     );
+    await nextTick();
     expect(small.element.tagName).toBe('DIV');
     expect(small.classes()).toEqual(
       expect.arrayContaining(['semi-page-small', 'semi-page-disabled']),
@@ -194,6 +195,9 @@ describe('Pagination', () => {
     expect(small.text()).toContain('上页');
     expect(small.text()).toContain('1/9');
     expect(small.text()).toContain('下页');
+    expect(
+      Array.from(small.get('.semi-page-item-small').element.childNodes, (node) => node.textContent),
+    ).toEqual(['1', '/', '9', ' ']);
     expect(small.get('.semi-page-quickjump').classes()).toContain('semi-page-quickjump-disabled');
     expect(mountPagination({ total: 1, hideOnSinglePage: true }).find('.semi-page').exists()).toBe(
       false,
@@ -250,7 +254,18 @@ describe('Pagination', () => {
   });
 
   it('可无警告 hydration，并保持受控页码静态结构', async () => {
-    const Root = { render: () => h(Pagination, { currentPage: 3, total: 80, showTotal: true }) };
+    const Root = {
+      render: () =>
+        h('div', [
+          h(Pagination, {
+            currentPage: 3,
+            showSizeChanger: true,
+            showTotal: true,
+            total: 80,
+          }),
+          h(Pagination, { currentPage: 3, size: 'small', total: 80 }),
+        ]),
+    };
     const host = document.createElement('div');
     host.innerHTML = await renderToString(createSSRApp(Root));
     document.body.append(host);
@@ -261,6 +276,16 @@ describe('Pagination', () => {
     await nextTick();
     expect(warnings).toEqual([]);
     expect(host.querySelector('[aria-current="page"]')?.textContent).toBe('3');
+    expect(host.querySelector('.semi-page-small .semi-page-item-small')?.textContent).toBe('3/8 ');
+    expect(
+      Array.from(
+        host.querySelector('.semi-page-small .semi-page-item-small')?.childNodes ?? [],
+        (node) => node.textContent,
+      ),
+    ).toEqual(['3', '/', '8', ' ']);
+    expect(host.querySelector('.semi-page-switch .semi-select-selection-text')?.textContent).toBe(
+      '每页条数：10',
+    );
     app.unmount();
   });
 });

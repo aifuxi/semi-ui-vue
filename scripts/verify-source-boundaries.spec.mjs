@@ -17,6 +17,7 @@ it('独立于文档站允许正常依赖升级，同时拒绝公开包私有依�
     for (const directory of [
       'scripts',
       'apps/storybook-vue/src',
+      'apps/docs/.vitepress/theme',
       'packages/test-infra/src',
       ...packages.map((name) => `packages/${name}/src`),
     ]) {

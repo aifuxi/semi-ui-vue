@@ -4,9 +4,10 @@ import { computed, ref, watch } from 'vue';
 
 import { Collapsible } from '../collapsible';
 import { MarkdownRender } from '../markdown-render';
-import type { AIChatDialogueReasoningProps } from './types';
+import type { AIChatDialogueReasoningProps, AIChatDialogueReasoningSlots } from './types';
 
 const props = defineProps<AIChatDialogueReasoningProps>();
+defineSlots<AIChatDialogueReasoningSlots>();
 const isOpen = ref(props.status !== 'completed');
 watch(
   () => props.status,

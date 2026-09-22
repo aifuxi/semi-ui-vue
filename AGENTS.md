@@ -11,8 +11,15 @@
 
 ## 工具与执行
 
-- 代码定位与依赖分析优先 CodeGraph；配置、文档或索引遗漏用定向搜索/读取补足。
-- 编辑和运行优先 WebStorm MCP，`projectPath` 使用实际仓库或 worktree 的绝对路径。会话中确认一次项目和可用运行配置，复用 [.run](.run/)；临时参数用 IDE 终端。MCP 不可用时说明后用 CLI/补丁继续，权限拒绝不绕过。环境设置见[工具链](docs/architecture/toolchain.md)。
+## MCP 使用顺序
+
+- 代码定位、依赖分析、调用链调查：优先调用 `mcp__codegraph__codegraph_explore`。
+- 文件读取、项目诊断、运行配置和 IDE 执行：优先调用 `mcp__webstorm__*`，并始终传入当前仓库的绝对 `projectPath`。
+- 判断 MCP 是否可用时，不得只检查首屏或显式展开的工具列表；必须先检查完整工具目录，包括延迟加载工具（运行时提供 `ALL_TOOLS` 或等价工具搜索时必须使用）。
+- 只有完整工具目录中不存在对应工具，或找到工具后实际调用失败，才可声明 MCP 不可用并回退 CLI；不得将“首屏未显示”视为“未注册”。
+- 不要把 `vendor/semi-design` 中的 Semi MCP 文档或组件 API 当成当前会话已连接的 MCP server。
+
+- 会话中确认一次项目和可用运行配置，复用 [.run](.run/)；临时参数用 IDE 终端。权限拒绝不绕过。环境设置见[工具链](docs/architecture/toolchain.md)。
 - 本地浏览器探索与调试使用项目 [Playwright CLI skill](.agents/skills/playwright-cli/SKILL.md) 和 `pnpm playwright:cli`；默认完整 Chromium 的新 headless 模式。正式回归仍运行 Playwright Test，3 个并行 worker，CLI 操作记录不计作验收通过。
 - 本地实现、依赖准备、可丢弃测试、修复和提交已获授权，无需逐步确认。保护已有修改；共享服务和产物由一个执行者管理。超时先确认进程和日志，避免重复启动。
 - 验证以本次目标和影响为准，复用仍有效的证据；纯文案不跑整库构建或浏览器矩阵。不要用重试、固定延时、放宽断言或改旧指纹制造通过。
@@ -29,6 +36,7 @@
 | 选择检查范围              | [验证入口](docs/testing/validation.md)                         |
 | 包依赖、exports、构建边界 | [工作区架构](docs/architecture/workspace.md)                   |
 | 发布准备与上线            | [发布手册](docs/releasing.md)                                  |
+| 组件库文档站              | [文档站说明](apps/docs/README.md)                              |
 
 完成条件是目标已实现、受影响检查通过、剩余问题如实说明。完成后仅暂存本次文件并创建独立 commit；公开产物用 Changesets，纯文档/测试/内部工具用 `pnpm changeset --empty`。版本由机器人维护。组件状态及缺口写入对应组件契约，稳定发布剩余工作写入[发布审计](docs/release-audit-1.0.md)。
 

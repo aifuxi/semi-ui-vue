@@ -110,3 +110,9 @@
 固定 `pagination/index.tsx:312` 使用 `pageSize + pageSizeToken` 作为 Select key。Vue 同步该身份契约，在页大小或语言文案变化时重建选择器并释放旧焦点，避免关闭菜单后保留多余焦点 class/边框。公开受控页大小变更测试和双语明暗文档中的真实菜单选择共同验证此行为。
 
 相邻 Select 消费路径的 `updateScrollTop()` 已存在于固定 Foundation `select/foundation.ts:1198`，补齐集成层漏写的声明，不修改上游逻辑。
+
+## 稳定版复核（2026-09-22）
+
+- 状态：`ready`。固定基线、公开 API、已知差异、单元/SSR/hydration、Chromium 对照和发布入口均已复核，没有未解释差异。
+- 全量 Chromium 巡检捕获到 small 模式的文本节点被模板插值合并。SSR 首屏继续输出合并文本以保证 hydration 无警告，挂载后恢复固定 React 的 `currentPage`、`/`、`totalPageNum`、空格四个文本节点；文案、布局和事件不变。
+- 修复后 Pagination 单元/SSR 12 项、正式 Chromium 5 项通过；浏览器断言继续逐节点比较，没有放宽几何或像素阈值。

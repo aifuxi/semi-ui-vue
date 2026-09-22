@@ -90,6 +90,7 @@
 ## 验收结论
 
 - 状态：`ready`（2026-09-18 复核）。
+- 2026-09-20 文档校验补齐 `AIChatDialogueEmits`、`AIChatDialogueSlots` 及公开子组件的 props/emits/slots 类型；仅收拢既有运行时契约，不改变行为。
 - 单元/SSR：AIChatDialogue 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
 - Chromium：`tests/browser/components/ai-chat-dialogue.spec.ts` 5/5 通过，覆盖固定源码来源、DOM/computed style/几何、hint 受控更新、desktop light/dark 与 en-US RTL 截图。
 - 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、静态子组件一致性、类型、`ai-chat-dialogue.css`、tree-shaking、许可与 SBOM。

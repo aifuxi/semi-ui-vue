@@ -7,7 +7,7 @@ import { Modal } from './index';
 describe('Modal SSR', () => {
   it('hidden import/render 不访问 DOM，visible 输出稳定 dialog 语义', async () => {
     const hidden = await renderToString(h(Modal, { visible: false }));
-    expect(hidden).toContain('teleport start');
+    expect(hidden).not.toContain('teleport start');
     expect(hidden).not.toContain('role="dialog"');
 
     const visible = await renderToString(

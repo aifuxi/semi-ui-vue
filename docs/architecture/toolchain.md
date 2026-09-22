@@ -17,14 +17,15 @@ mise exec -- pnpm check:toolchain
 
 共享运行配置在 [.run](../../.run/)，打开项目即可识别：
 
-| 配置名称               | 用途                      |
-| ---------------------- | ------------------------- |
-| `pnpm check:toolchain` | 验证 IDE 的 Node/pnpm     |
-| `pnpm dev`             | 启动 Storybook Vue 场景站 |
-| `pnpm check`           | 日常源码集成              |
-| `pnpm check:artifacts` | 公开产物与真实包消费      |
-| `pnpm check:full`      | 全量回归                  |
-| `pnpm release:check`   | 发布候选验证，不发布      |
+| 配置名称               | 用途                               |
+| ---------------------- | ---------------------------------- |
+| `pnpm check:toolchain` | 验证 IDE 的 Node/pnpm              |
+| `pnpm dev`             | 启动 Storybook Vue 场景站          |
+| `pnpm docs:dev`        | 启动组件库文档站（127.0.0.1:4321） |
+| `pnpm check`           | 日常源码集成                       |
+| `pnpm check:artifacts` | 公开产物与真实包消费               |
+| `pnpm check:full`      | 全量回归                           |
+| `pnpm release:check`   | 发布候选验证，不发布               |
 
 配置使用 `$PROJECT_DIR$`、项目 Node runtime 和 `pnpm` 别名。首次设置项目 Node interpreter 与 package manager 时，分别选择 `mise which node`、`mise which pnpm` 返回的位置。升级版本后运行 `pnpm check:toolchain` 复核。
 
@@ -55,6 +56,6 @@ CLI 用于本地页面操作和问题定位；自动回归仍由 Playwright Test
 
 依赖由 pnpm workspace、catalog、overrides 和统一 lockfile 管理，保留严格 peer/engine 校验与 `allowBuilds`。pnpm v12 lockfile 的独立 YAML 文档记录包管理器依赖，升级时一并审阅。使用默认用户 store，位置由 `pnpm store path` 查询。
 
-React/Storybook 默认端口为 4173/4174，手动调试分别使用 `pnpm dev:reference`、`pnpm dev`；Storybook 单独构建使用 `pnpm build:storybook`。正式组件测试不复用已有服务，启动前先处理相同端口占用。并行工作共享代码和构建产物，由一个执行者管理服务。仓库内 worktree 放在已忽略的 `.worktrees/`。
+React/Storybook 默认端口为 4173/4174，手动调试分别使用 `pnpm dev:reference`、`pnpm dev`；Storybook 单独构建使用 `pnpm build:storybook`。组件库文档站使用端口 4321，首次运行前先执行一次 `pnpm docs:prepare` 构建公开包与主题包，之后使用 `pnpm docs:dev`、`pnpm docs:build`；仅 UI/主题变化时用 `pnpm docs:prepare:ui` 做增量准备。`DOCS_EXAMPLE_TIER=tN pnpm test:docs` 会完成一次文档生产构建、preview 与梯次页面聚合巡检；需要定位生产 hydration 差异时叠加 `DOCS_HYDRATION_DIAGNOSTICS=1`。站点生成物只写入 `apps/docs` 的已忽略目录。正式组件测试不复用已有服务，启动前先处理相同端口占用。并行工作共享代码和构建产物，由一个执行者管理服务。仓库内 worktree 放在已忽略的 `.worktrees/`。
 
 CI 从 mise.toml 读取工具版本，执行静态 `check:source`、按影响选择的 Node 产物检查与发布流程，不自动执行组件或 consumer 浏览器测试。升级同步 packageManager/engines，按[验证入口](../testing/validation.md)验证受影响工具链与产物。不要清理其他项目的全局工具或缓存。

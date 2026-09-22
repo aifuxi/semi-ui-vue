@@ -17,6 +17,10 @@ node_modules
 dist
 dist-ssr
 coverage
+# 文档站（apps/docs）的全部生成产物：正文、样式、字体、图标与检索索引都从只读基线生成。
+/apps/docs/content/
+/apps/docs/cache/
+/apps/docs/.vitepress/theme/generated/
 playwright-report
 test-results
 /.playwright-cli/

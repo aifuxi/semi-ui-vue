@@ -849,7 +849,7 @@ onBeforeUnmount(() => foundation.destroy());
                   : undefined,
               ]"
             >
-              <CascaderNodeRenderer :content="searchDisplay" />
+              <CascaderNodeRenderer v-if="searchDisplay !== ''" :content="searchDisplay" />
             </span>
             <Input
               v-if="state.showInput"
@@ -867,7 +867,10 @@ onBeforeUnmount(() => foundation.destroy());
           v-else-if="!multiple"
           :class="!singleDisplay ? 'semi-cascader-selection-placeholder' : undefined"
         >
-          <CascaderNodeRenderer :content="singleDisplay ?? placeholder" />
+          <CascaderNodeRenderer
+            v-if="(singleDisplay ?? placeholder) !== ''"
+            :content="singleDisplay ?? placeholder"
+          />
         </span>
         <template v-else-if="hasValue">
           <CascaderNodeRenderer
@@ -890,7 +893,9 @@ onBeforeUnmount(() => foundation.destroy());
             +{{ hiddenTagNodes.length }}
           </span>
         </template>
-        <span v-else class="semi-cascader-selection-placeholder">{{ placeholder }}</span>
+        <span v-else class="semi-cascader-selection-placeholder"
+          ><template v-if="placeholder !== ''">{{ placeholder }}</template></span
+        >
       </div>
       <div v-if="suffixContent != null" class="semi-cascader-suffix" x-semi-prop="suffix">
         <CascaderNodeRenderer :content="suffixContent" />

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, getCurrentInstance, inject, watch } from 'vue';
+import { computed, getCurrentInstance, inject, useId, watch } from 'vue';
 
 import { configContextKey, semiGlobal, type ConfigContextValue } from '../config-provider';
 
@@ -19,6 +19,7 @@ const props = defineProps<TooltipProps>();
 const emit = defineEmits<TooltipEmits>();
 defineSlots<TooltipSlots>();
 const instance = getCurrentInstance();
+const popupId = useId().replaceAll(':', '');
 
 const injectedConfig = inject(configContextKey, undefined);
 const config = computed<ConfigContextValue>(() =>
@@ -107,6 +108,7 @@ const {
     emit('visibleChange', visible);
     emit('update:visible', visible);
   },
+  popupId,
   runtimeProps,
 });
 

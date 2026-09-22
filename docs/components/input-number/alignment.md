@@ -36,6 +36,7 @@
 | `hideButtons/innerButtons/keepFocus`           | 同名 prop                                           | 均 `false`；inner buttons 仅 hover/focus 出现                         |
 | `pressTimeout/pressInterval`                   | 同名 prop                                           | `250 / 250`；长按定时器与 document mouseup 在卸载时清理               |
 | `showClear/prefix/suffix/insetLabel/clearIcon` | 复用 Input 同名 prop/slot                           | slot 优先，InputNumber 只接管 innerButtons 时的 suffix                |
+| `getValueLength/hideSuffix/mode/type`          | 复用 Input 同名 prop                                | 显式转发给内部 Input                                                  |
 | `onChange/onNumberChange`                      | `change/numberChange` emit                          | change 可为 number/string；另发 `update:value/update:modelValue`      |
 | `onUpClick/onDownClick`                        | `upClick/downClick` emit                            | 载荷为格式化值字符串和 MouseEvent                                     |
 | React forwardRef                               | Vue ref                                             | 暴露 `input`、`focus()`、`blur()`、`select()`                         |
