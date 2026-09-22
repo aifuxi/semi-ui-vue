@@ -134,6 +134,7 @@ for (const { component, route, expectedExamples } of pages) {
     await expect.soft(liveExamples).toHaveCount(expectedExamples);
     await expect.soft(liveExamples.locator('.demo-block-preview')).toHaveCount(expectedExamples);
     await expect.soft(liveExamples.locator('.demo-block-source')).toHaveCount(expectedExamples);
+    await expect.soft(page.locator('#main-content')).not.toContainText(/示例.*(?:仍在逐项|迁移中)/);
     expect.soft(clientErrors, `客户端错误：\n${clientErrors.join('\n')}`).toEqual([]);
   });
 }

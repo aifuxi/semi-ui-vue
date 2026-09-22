@@ -29,6 +29,7 @@ const demoBlockKinds = new Map([
   ['import', 'import'],
   ['live', 'live'],
 ]);
+const componentCompletionStatus = '本页 Vue API 契约与示例代码均已按当前公开实现校准。';
 
 /** 上游 MDX 专属块：首版没有对应实现，整块丢弃并记入来源清单。 */
 const droppedFenceLanguages = new Set(['overview', 'material', 'icon', 'changelog']);
@@ -395,7 +396,6 @@ function removeDanglingExampleReferences(text, recordRewrite) {
     ['如下图', ''],
     ['下图所示', ''],
     ['如下所示', ''],
-    ['点击运行', '示例迁移完成后可在线运行'],
   ];
   let result = text;
   for (const [from, to] of replacements) {
@@ -643,12 +643,9 @@ function transformBody(body, page, context) {
     recordRewrite('escape-mustache', '{{ → {&lbrace;');
   }
 
-  // 上游示例位置只留迁移状态，这里同时交代 Vue 引入方式、固定基线和契约状态。
+  // 组件页统一交代 Vue 引入方式、固定基线和完成状态。
   if (page.componentDirectory) {
-    const contractStatus = vueApiContracts.has(page.route)
-      ? '本页 Vue API 契约已按公开类型校准；示例代码仍在逐项迁移。'
-      : '示例代码与 Vue API 契约仍在逐项校准。';
-    const notice = `> **Vue 使用说明**：从 \`@aifuxi/semi-ui-vue/${page.componentDirectory}\` 子路径引入组件，全局样式由 \`@aifuxi/semi-theme-default\` 提供。正文基于固定 Semi Design v2.102.0 生成；${contractStatus}\n`;
+    const notice = `> **Vue 使用说明**：从 \`@aifuxi/semi-ui-vue/${page.componentDirectory}\` 子路径引入组件，全局样式由 \`@aifuxi/semi-theme-default\` 提供。正文基于固定 Semi Design v2.102.0 生成；${componentCompletionStatus}\n`;
     const anchorIndex = text.indexOf('## 代码演示');
     text =
       anchorIndex === -1
@@ -795,6 +792,19 @@ for (const entry of entries) {
 }
 
 entries.sort((left, right) => left.route.localeCompare(right.route));
+
+const componentPages = entries.filter((entry) => entry.componentDirectory);
+if (componentPages.length !== 82) {
+  throw new Error(`组件文档页数量应为 82，实际为 ${componentPages.length}`);
+}
+const incompleteComponentPage = componentPages.find(
+  (entry) =>
+    !entry.searchText?.includes(componentCompletionStatus) ||
+    /示例.*(?:仍在逐项|迁移中)/.test(entry.searchText),
+);
+if (incompleteComponentPage) {
+  throw new Error(`组件文档页仍含未完成状态：${incompleteComponentPage.route}`);
+}
 
 const nav = {
   baseline,
