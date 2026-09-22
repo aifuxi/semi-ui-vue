@@ -1,6 +1,6 @@
 # 工具链与 IDE
 
-Node.js 与 pnpm 的精确版本由根 `mise.toml` 管理；`package.json` 声明引擎和包管理器契约。`pnpm check:toolchain` 核对配置与实际版本，已纳入 check:source 与日常 check。
+Node.js 与 pnpm 的精确版本由根 `mise.toml` 管理；`package.json` 声明引擎和包管理器契约。`pnpm check:toolchain` 核对配置与实际版本，已纳入 `check:source`、`check:publish-source` 与日常 `check`。
 
 ## 本地准备
 
@@ -58,4 +58,4 @@ CLI 用于本地页面操作和问题定位；自动回归仍由 Playwright Test
 
 React/Storybook 默认端口为 4173/4174，手动调试分别使用 `pnpm dev:reference`、`pnpm dev`；Storybook 单独构建使用 `pnpm build:storybook`。组件库文档站使用端口 4321，首次运行前先执行一次 `pnpm docs:prepare` 构建公开包与主题包，之后使用 `pnpm docs:dev`、`pnpm docs:build`；仅 UI/主题变化时用 `pnpm docs:prepare:ui` 做增量准备。`DOCS_EXAMPLE_TIER=tN pnpm test:docs` 会完成一次文档生产构建、preview 与梯次页面聚合巡检；需要定位生产 hydration 差异时叠加 `DOCS_HYDRATION_DIAGNOSTICS=1`。站点生成物只写入 `apps/docs` 的已忽略目录。正式组件测试不复用已有服务，启动前先处理相同端口占用。并行工作共享代码和构建产物，由一个执行者管理服务。仓库内 worktree 放在已忽略的 `.worktrees/`。
 
-CI 从 mise.toml 读取工具版本，执行静态 `check:source`、按影响选择的 Node 产物检查与发布流程，不自动执行组件或 consumer 浏览器测试。升级同步 packageManager/engines，按[验证入口](../testing/validation.md)验证受影响工具链与产物。不要清理其他项目的全局工具或缓存。
+CI 从 mise.toml 读取工具版本；PR 执行全仓 `check:source` 与按影响选择的 Node 产物检查，发布流程执行不含文档站的 `check:publish-source`。CI 不自动执行组件或 consumer 浏览器测试。升级同步 packageManager/engines，按[验证入口](../testing/validation.md)验证受影响工具链与产物。不要清理其他项目的全局工具或缓存。

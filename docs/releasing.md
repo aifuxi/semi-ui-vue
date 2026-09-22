@@ -18,13 +18,13 @@ CI 使用官方 CLI 校验格式、包名和版本计划，并要求新增一份
 
 `master` push 触发 `publish.yml`。官方 select-mode 遇到待处理发布记录时维护版本 PR；空 changeset 不触发发布。`release:version` 只执行官方 version 和 lockfile 更新，不自动提交。机器人由官方 version Action 提交和更新 PR。
 
-版本 PR 合并后的候选需要完成对应的本地组件与产物验证：Vitest dom/node、Storybook/React 组件 Chromium、真实 tarball consumer 浏览器与公开产物检查。CI 自动职责限于 `check:source`、Changesets、依赖审计、构建、主题、Node SSR、Node 真实包验证及发布，不运行组件单测或浏览器矩阵。CI 通过不能代替候选所需本地组件结果。
+版本 PR 合并后的候选需要完成对应的本地组件与产物验证：Vitest dom/node、Storybook/React 组件 Chromium、真实 tarball consumer 浏览器与公开产物检查。PR CI 运行全仓 `check:source`；发布流水线只运行不含文档站的 `check:publish-source`，并继续执行 Changesets、依赖审计、构建、主题、Node SSR、Node 真实包验证及发布。CI 不运行组件单测或浏览器矩阵，不能代替候选所需本地组件结果。
 
 quality 传递构建产物，官方 pack 创建 artifact；pack-verify 下载该 artifact 的准确文件，执行 Node 隔离消费检查并记录候选 SHA、原计划摘要和五包 SHA-512。publish 只接收已通过验证的 artifact ID，不重建、不执行 workspace 生命周期脚本。
 
-Nuxt 文档站、站点部署和旧逐示例验收不再属于包发布门禁。静态 API 与迁移说明仍需准确，实际公开包继续保留独立品牌、MIT、第三方归属和 SBOM。
+文档站、站点部署和旧逐示例验收不属于包发布门禁。静态 API 与迁移说明仍需准确，实际公开包继续保留独立品牌、MIT、第三方归属和 SBOM。
 
-`release:check` 是完整本地只读验证入口，包含 `check:full` 的源码单测、组件与 consumer 浏览器回归；可按影响和执行阶段复用输入未变的有效结果，无须重复运行总命令。组件浏览器默认构建后 preview、完整 Chromium 新 headless、3 workers、0 retries。`PACK_DIR=/绝对路径 pnpm verify:pack-isolated` 验证官方 pack 输出，未指定 `PACK_DIR` 时保留日常本地打包模式。`release:verify` 检查包身份、许可、私有依赖与产物泄漏，不要求预先存在 Git 标签。
+`release:check` 是完整本地只读发布验证入口，组合公开包源码、单测、产物、组件与 consumer 浏览器回归，不运行文档站检查；可按影响和执行阶段复用输入未变的有效结果，无须重复运行总命令。组件浏览器默认构建后 preview、完整 Chromium 新 headless、3 workers、0 retries。`PACK_DIR=/绝对路径 pnpm verify:pack-isolated` 验证官方 pack 输出，未指定 `PACK_DIR` 时保留日常本地打包模式。`release:verify` 检查包身份、许可、私有依赖与产物泄漏，不要求预先存在 Git 标签。
 
 所有发布使用固定 concurrency，npm Environment 审批前可查看 `release-evidence` artifact 和 job summary。候选必须仍是 master 当前提交，发布前再次核对；渠道存在更新版本时拒绝回拨。旧 `v*` 标签保留为历史，不再触发发布。新标签和 GitHub Release 使用 `@aifuxi/包名@版本`，每次五包同版产生五个 Release。
 
