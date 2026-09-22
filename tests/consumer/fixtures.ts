@@ -78,6 +78,16 @@ export const test = base.extend<object, { packedConsumer: PackedConsumer }>({
           }
         }
         assert(files.has('/consumer.js') && files.has('/consumer.css'));
+        const css = String(files.get('/consumer.css'));
+        for (const selector of [
+          '.semi-button',
+          '.semi-input',
+          '.semi-select',
+          '.semi-codeHighlight',
+          '.semi-json-viewer',
+        ]) {
+          assert(css.includes(selector), 'Consumer bundle is missing ' + selector);
+        }
         server.on('request', (request, response) => {
           const pathname = new URL(request.url ?? '/', 'http://consumer.local').pathname;
           if (pathname === '/') {

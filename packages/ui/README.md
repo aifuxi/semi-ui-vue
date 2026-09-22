@@ -7,15 +7,14 @@
 ## 安装
 
 ```bash
-pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
+pnpm add @aifuxi/semi-ui-vue
 ```
 
 ```ts
 import { Button } from '@aifuxi/semi-ui-vue/button';
-import '@aifuxi/semi-theme-default/button.css';
 ```
 
-主包是 ESM-only，要求 Vue `>=3.5.0`。可以从根入口导入，也可以使用 `exports` 中列出的组件子路径。
+主包是 ESM-only，要求 Vue `>=3.5.0`。可以从根入口导入，也可以使用 `exports` 中列出的组件子路径；浏览器构建会自动按需加载默认主题，并自动安装主题、稳定/Lab 图标与插画包。
 
 预览版使用 `next` 渠道，后续稳定版使用 `latest`；五个公开包同步升版。发布记录随包提供，见 [CHANGELOG](CHANGELOG.md)。
 

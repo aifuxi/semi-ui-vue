@@ -64,10 +64,15 @@ async function assertExportTargets(packageRoot, value) {
   await Promise.all(Object.values(value).map((entry) => assertExportTargets(packageRoot, entry)));
 }
 
-const consumer = await preparePackedConsumer();
+const consumer = await preparePackedConsumer({ verifyUiTransitives: true });
 
 try {
   const { consumerRoot } = consumer;
+  for (const [packageName, version] of Object.entries(consumer.transitiveVersions)) {
+    if (version !== expectedVersion) {
+      throw new Error(`仅安装 UI 时的传递依赖版本不一致：${packageName}@${version}`);
+    }
+  }
   const upstreamLicense = await readFile(
     path.join(workspaceRoot, 'vendor', 'semi-design', 'LICENSE'),
     'utf8',
@@ -88,7 +93,12 @@ try {
       throw new Error(`${packageInfo.name} 的已安装 manifest 仍不是最终公开发布契约`);
     }
     if (packageInfo.name === '@aifuxi/semi-ui-vue') {
-      for (const dependency of ['@aifuxi/semi-icons-vue', '@aifuxi/semi-illustrations-vue']) {
+      for (const dependency of [
+        '@aifuxi/semi-icons-lab-vue',
+        '@aifuxi/semi-icons-vue',
+        '@aifuxi/semi-illustrations-vue',
+        '@aifuxi/semi-theme-default',
+      ]) {
         if (manifest.dependencies?.[dependency] !== manifest.version) {
           throw new Error(`@aifuxi/semi-ui-vue 未精确依赖同版本公开包：${dependency}`);
         }

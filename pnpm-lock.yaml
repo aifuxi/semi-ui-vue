@@ -514,12 +514,18 @@ importers:
 
   packages/ui:
     dependencies:
+      '@aifuxi/semi-icons-lab-vue':
+        specifier: workspace:*
+        version: link:../icons-lab
       '@aifuxi/semi-icons-vue':
         specifier: workspace:*
         version: link:../icons
       '@aifuxi/semi-illustrations-vue':
         specifier: workspace:*
         version: link:../illustrations
+      '@aifuxi/semi-theme-default':
+        specifier: workspace:*
+        version: link:../theme-default
       '@mdx-js/mdx':
         specifier: 3.0.1
         version: 3.0.1(supports-color@10.0.0)
