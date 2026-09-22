@@ -118,7 +118,7 @@ jobs:
           version: 2026.9.3
       - run: mise exec -- pnpm install --frozen-lockfile
       - run: mise exec -- pnpm audit:prod
-      - run: mise exec -- pnpm check:source
+      - run: mise exec -- pnpm check:publish-source
       - run: mise exec -- pnpm test:changesets
       - run: mise exec -- pnpm build
       - run: mise exec -- pnpm verify:theme-dist

@@ -65,7 +65,7 @@ mise exec -- pnpm dev
 
 Storybook Vue 场景站默认运行于 `http://127.0.0.1:4174`，固定 React 参考应用通过 `mise exec -- pnpm dev:reference` 启动于 `http://127.0.0.1:4173`。浏览器检查前运行 `mise exec -- pnpm playwright:install`。`pnpm test:browser` 自行构建并启动 React/Storybook preview，默认完整 Chromium 新 headless、3 workers、0 retries；请先关闭占用相同端口的手动服务。真实安装包浏览器消费使用独立的 `pnpm test:consumer`。WebStorm 可直接使用 [.run](.run/) 中的共享配置，环境准备见[工具链](docs/architecture/toolchain.md)。
 
-日常本地集成用 `pnpm check`（静态检查与 Vitest 单测），公开产物用 `pnpm check:artifacts`，完整本地回归用 `pnpm check:full`，发布候选用 `pnpm release:check`。组件单测（含源码 SSR）与浏览器消费测试在本地执行；CI 保留 `check:source`、Node 产物检查和发布职责。按影响选择，详见[验证入口](docs/testing/validation.md)。工程边界见[工作区架构](docs/architecture/workspace.md)，代理规则见 [AGENTS.md](AGENTS.md)。
+日常本地集成用 `pnpm check`（静态检查与 Vitest 单测），公开产物用 `pnpm check:artifacts`，完整本地回归用 `pnpm check:full`，发布候选用 `pnpm release:check`。组件单测（含源码 SSR）与浏览器消费测试在本地执行；PR CI 保留全仓 `check:source`，发布流水线使用不含文档站的 `check:publish-source`。按影响选择，详见[验证入口](docs/testing/validation.md)。工程边界见[工作区架构](docs/architecture/workspace.md)，代理规则见 [AGENTS.md](AGENTS.md)。
 
 原 Nuxt 文档站及旧逐示例验收体系已移除。当前 VitePress 组件文档站使用 `pnpm docs:prepare` 准备依赖、`pnpm docs:dev` 本地启动，维护方式见[文档站说明](apps/docs/README.md)；退役范围与历史追溯见[说明](docs/documentation/README.md)。
 
