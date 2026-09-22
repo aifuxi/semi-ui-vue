@@ -645,7 +645,7 @@ function transformBody(body, page, context) {
 
   // 组件页统一交代 Vue 引入方式、固定基线和完成状态。
   if (page.componentDirectory) {
-    const notice = `> **Vue 使用说明**：从 \`@aifuxi/semi-ui-vue/${page.componentDirectory}\` 子路径引入组件，全局样式由 \`@aifuxi/semi-theme-default\` 提供。正文基于固定 Semi Design v2.102.0 生成；${componentCompletionStatus}\n`;
+    const notice = `> **Vue 使用说明**：从 \`@aifuxi/semi-ui-vue/${page.componentDirectory}\` 子路径引入组件，浏览器构建会自动按需加载默认主题。正文基于固定 Semi Design v2.102.0 生成；${componentCompletionStatus}\n`;
     const anchorIndex = text.indexOf('## 代码演示');
     text =
       anchorIndex === -1
@@ -869,16 +869,16 @@ if (importSourceCount !== 72) {
   throw new Error(`引入示例数量应为 72，实际为 ${importSourceCount}`);
 }
 const staticSourceCount = codeSourceEntries.filter(([, entry]) => entry.kind === 'code').length;
-if (staticSourceCount !== 128) {
-  throw new Error(`静态代码示例数量应为 128，实际为 ${staticSourceCount}`);
+if (staticSourceCount !== 127) {
+  throw new Error(`静态代码示例数量应为 127，实际为 ${staticSourceCount}`);
 }
 if (context.generatedGuideStaticSourceCount !== 15) {
   throw new Error(
     `基线通用指南静态代码块数量应为 15，实际为 ${context.generatedGuideStaticSourceCount}`,
   );
 }
-if (context.guideSourceCount !== 22) {
-  throw new Error(`通用指南代码块数量应为 22，实际为 ${context.guideSourceCount}`);
+if (context.guideSourceCount !== 21) {
+  throw new Error(`通用指南代码块数量应为 21，实际为 ${context.guideSourceCount}`);
 }
 const invalidImportSource = codeSourceEntries.find(
   ([, entry]) => entry.kind === 'import' && /@douyinfe|from ['"]react['"]/.test(entry.source),

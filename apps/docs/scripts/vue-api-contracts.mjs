@@ -68,7 +68,6 @@ pnpm add @semi-bot/semi-theme-a11y`,
     vueCode(`
 <script setup lang="ts">
 import { Avatar } from '@aifuxi/semi-ui-vue/avatar';
-import '@aifuxi/semi-theme-default/avatar.css';
 </script>
 
 <template>
@@ -102,8 +101,7 @@ import '你的主题包名称/semi.min.css';`,
     'zh-CN-advanced-customize-theme-3',
     staticCode(
       'ts',
-      `// main.ts：本地覆盖文件放在默认主题之后
-import '@aifuxi/semi-theme-default/index.css';
+      `// main.ts：组件入口会先加载默认主题，本地文件负责覆盖
 import './local.scss';`,
     ),
   ],
@@ -149,8 +147,7 @@ import '你的主题包名称/semi.min.css';`,
     'zh-CN-advanced-customize-theme-8',
     staticCode(
       'ts',
-      `// main.ts：Vite 按标准样式顺序应用覆盖
-import '@aifuxi/semi-theme-default/index.css';
+      `// main.ts：Vite 会在组件默认主题之后应用本地覆盖
 import './local.scss';`,
     ),
   ],
@@ -209,7 +206,6 @@ import './local.scss';`,
     vueCode(`
 <script setup lang="ts">
 import { Button } from '@aifuxi/semi-ui-vue/button';
-import '@aifuxi/semi-theme-default/button.css';
 
 function switchMode() {
   const body = document.body;
@@ -244,7 +240,6 @@ colorScheme.addEventListener('change', syncMode);`,
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Button } from '@aifuxi/semi-ui-vue/button';
-import '@aifuxi/semi-theme-default/button.css';
 
 const mode = ref<'semi-always-dark' | 'semi-always-light'>('semi-always-dark');
 function switchMode() {

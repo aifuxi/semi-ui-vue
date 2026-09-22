@@ -25,6 +25,7 @@ function runPnpm(args, cwd) {
 export async function preparePackedConsumer({
   isolated = process.env.PACK_ISOLATED === '1',
   packDirectory = process.env.PACK_DIR,
+  verifyUiTransitives = false,
 } = {}) {
   const suppliedTarballs = packDirectory ? await inspectPackedRelease(packDirectory) : undefined;
   const temporaryRoot = await mkdtemp(path.join(tmpdir(), 'semi-ui-vue-pack-'));
@@ -259,6 +260,71 @@ export async function preparePackedConsumer({
       consumerRoot,
     );
 
+    const transitiveVersions = {};
+    if (verifyUiTransitives) {
+      const uiOnlyRoot = path.join(temporaryRoot, 'ui-only-consumer');
+      await mkdir(uiOnlyRoot);
+      await writeFile(
+        path.join(uiOnlyRoot, 'package.json'),
+        `${JSON.stringify(
+          {
+            name: 'ui-only-consumer',
+            private: true,
+            type: 'module',
+            dependencies: {
+              '@aifuxi/semi-ui-vue': `file:${tarballs.get('@aifuxi/semi-ui-vue')}`,
+              vue: dependencies.vue,
+            },
+          },
+          null,
+          2,
+        )}\n`,
+      );
+      await writeFile(
+        path.join(uiOnlyRoot, 'pnpm-workspace.yaml'),
+        `packages:\n  - .\noverrides:\n${[
+          ...[...tarballs].map(
+            ([packageName, tarballPath]) =>
+              `  ${JSON.stringify(packageName)}: ${JSON.stringify(`file:${tarballPath}`)}`,
+          ),
+          ...Object.entries(linkedRuntimeDependencies).map(
+            ([dependency, link]) => `  ${JSON.stringify(dependency)}: ${JSON.stringify(link)}`,
+          ),
+        ].join('\n')}\n`,
+      );
+      runPnpm(
+        [
+          'install',
+          '--ignore-scripts',
+          ...(isolated
+            ? [
+                '--registry=https://registry.npmjs.org/',
+                '--strict-peer-dependencies',
+                '--config.auto-install-peers=false',
+              ]
+            : [
+                '--offline',
+                '--strict-peer-dependencies=false',
+                '--config.auto-install-peers=false',
+              ]),
+          `--store-dir=${consumerStoreRoot}`,
+        ],
+        uiOnlyRoot,
+      );
+      const [uiOnlyGraph] = JSON.parse(runPnpm(['list', '--json', '--depth=2'], uiOnlyRoot));
+      const uiDependencies = uiOnlyGraph.dependencies?.['@aifuxi/semi-ui-vue']?.dependencies;
+      for (const packageName of [
+        '@aifuxi/semi-theme-default',
+        '@aifuxi/semi-icons-lab-vue',
+        '@aifuxi/semi-icons-vue',
+        '@aifuxi/semi-illustrations-vue',
+      ]) {
+        const dependency = uiDependencies?.[packageName];
+        if (!dependency) throw new Error(`仅安装 UI 时缺少传递依赖：${packageName}`);
+        transitiveVersions[packageName] = dependency.version;
+      }
+    }
+
     const installedVueManifest = JSON.parse(
       await readFile(path.join(consumerRoot, 'node_modules', 'vue', 'package.json'), 'utf8'),
     );
@@ -301,6 +367,7 @@ export async function preparePackedConsumer({
       installedPackages,
       tarballHashes,
       tarballs: Object.fromEntries(tarballs),
+      transitiveVersions,
       isolated,
       dispose: () => rm(temporaryRoot, { recursive: true, force: true }),
     };

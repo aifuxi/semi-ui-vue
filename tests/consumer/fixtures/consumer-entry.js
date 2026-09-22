@@ -1,11 +1,6 @@
 import { createApp, h, ref } from 'vue';
 import { Button, CodeHighlight, Input, Select } from '@aifuxi/semi-ui-vue';
 import { JsonViewer } from '@aifuxi/semi-ui-vue/json-viewer';
-import '@aifuxi/semi-theme-default/json-viewer.css';
-import '@aifuxi/semi-theme-default/button.css';
-import '@aifuxi/semi-theme-default/input.css';
-import '@aifuxi/semi-theme-default/select.css';
-import '@aifuxi/semi-theme-default/code-highlight.css';
 
 const input = ref('Initial');
 const selected = ref('first');

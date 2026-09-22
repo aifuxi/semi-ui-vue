@@ -19,13 +19,12 @@ Semi Design 的名称、Logo、图标、插画及项目引用的官方素材，�
 预览版使用 `next` 渠道；稳定版验收仍在推进，API 与发布结构可能调整。
 
 ```bash
-pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
+pnpm add @aifuxi/semi-ui-vue
 ```
 
 ```vue
 <script setup lang="ts">
 import { Button } from '@aifuxi/semi-ui-vue/button';
-import '@aifuxi/semi-theme-default/button.css';
 </script>
 
 <template>
@@ -33,7 +32,7 @@ import '@aifuxi/semi-theme-default/button.css';
 </template>
 ```
 
-主包为 ESM，支持根入口和逐组件导入；消费者无需克隆上游 submodule。
+主包为 ESM，支持根入口和逐组件导入；浏览器构建会自动按需加载默认主题，消费者无需克隆上游 submodule 或单独安装主题、图标与插画包。
 
 | 公开包                           | 内容               |
 | -------------------------------- | ------------------ |

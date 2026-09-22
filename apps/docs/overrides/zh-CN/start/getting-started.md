@@ -8,32 +8,25 @@ icon: doc-gettingstarted
 
 ## 1、安装
 
-组件库发布包为 `@aifuxi/semi-ui-vue`，默认主题为 `@aifuxi/semi-theme-default`，两者版本同步发布。
+组件库发布包为 `@aifuxi/semi-ui-vue`，默认主题、稳定/Lab 图标与插画包会作为同版本依赖自动安装。
 
 ```bash
-pnpm add @aifuxi/semi-ui-vue@next @aifuxi/semi-theme-default@next
+pnpm add @aifuxi/semi-ui-vue
 ```
 
-## 2、引入样式
+## 2、按需加载
 
-组件样式来自 `@aifuxi/semi-theme-default`。整包引入使用 `@aifuxi/semi-theme-default/index.css`；
-只需要部分组件时，可以按组件引入对应样式文件，例如按钮使用 `@aifuxi/semi-theme-default/button.css`。
-
-```ts
-import '@aifuxi/semi-theme-default/index.css';
-// 或仅引入单个组件样式
-import '@aifuxi/semi-theme-default/button.css';
-```
+在 Vite 或 Rspack 浏览器构建中，组件入口会自动关联对应的默认主题 CSS，无需增加样式配置或手工导入。
+从旧版本升级时应删除 `@aifuxi/semi-theme-default/index.css` 全量导入，避免重复样式。
 
 ## 3、使用组件
 
-组件从公开子路径导入，例如 `@aifuxi/semi-ui-vue/button`、`@aifuxi/semi-ui-vue/select`。
-根入口 `@aifuxi/semi-ui-vue` 会加载全量组件，业务代码建议使用子路径以保留按需加载能力。
+组件可以从根入口或公开子路径导入，例如 `@aifuxi/semi-ui-vue/button`、`@aifuxi/semi-ui-vue/select`；
+生产构建会移除未使用的组件代码与样式。
 
 ```vue
 <script setup lang="ts">
 import { Button } from '@aifuxi/semi-ui-vue/button';
-import '@aifuxi/semi-theme-default/button.css';
 </script>
 
 <template>
