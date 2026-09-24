@@ -86,9 +86,9 @@ components:
 
 ## Overview
 
-`semi-ui-vue` 是独立的 Vue 3 组件库，视觉与行为基线固定为 Semi Design `v2.102.0`。界面应保持清晰的信息层级、适度紧凑的企业应用密度，以及一致的交互和可访问性。此文件描述当前默认主题的视觉语言；具体组件 API 和完成状态以本仓库的公开导出、类型与组件契约为准。
+`@aifuxi/semi-ui-vue` 是独立的 Vue 3 组件库，视觉与行为基线固定为 Semi Design `v2.102.0`。界面应保持清晰的信息层级、适度紧凑的企业应用密度，以及一致的交互和可访问性。此文件描述默认主题的视觉语言；具体组件 API 和可用能力以消费项目实际安装的版本为准。
 
-本文件的 YAML 颜色是默认主题的已解析参考值；`fill-default-on-white` 是半透明填充叠在白色表面后的结果。应用代码应使用 `--semi-*` 语义变量，让浅色、深色和主题覆盖继续生效。主题来源是 `packages/theme-default/src/index.scss` 编译的 CSS，不以本文件替代 CSS。
+本文件的 YAML 颜色是默认主题的已解析参考值；`fill-default-on-white` 是半透明填充叠在白色表面后的结果。应用代码应使用 `--semi-*` 语义变量，让浅色、深色和主题覆盖继续生效。实际样式以已安装的 `@aifuxi/semi-theme-default` 编译 CSS 为准，不以本文件替代 CSS。
 
 ## Colors
 
@@ -115,7 +115,7 @@ components:
 
 ## Components
 
-优先组合 `@aifuxi/semi-ui-vue` 已公开的 Vue 组件。根入口和组件子路径以 `packages/ui/package.json` 的 `exports` 为准；组件用法、props、emits、slots、v-model 与已知差异查 `docs/components/<component>/` 和对应公开类型。样式来自 `@aifuxi/semi-theme-default` 的编译 CSS；按消费项目的构建方式确认是否需要显式导入，不重复注入默认主题。
+优先组合 `@aifuxi/semi-ui-vue` 已公开的 Vue 组件。根入口和组件子路径以消费项目实际安装包的 `exports` 为准；props、emits、slots、v-model 与可用能力以该版本的公开类型和组件说明为准。样式来自 `@aifuxi/semi-theme-default` 的编译 CSS；按消费项目的构建方式确认是否需要显式导入，不重复注入默认主题。
 
 - **Button：** `type` 表达动作语义，`theme` 表达 solid、light、outline、borderless 视觉层级；默认是 `type="primary"`、`theme="light"`，最强强调才使用 solid。图标按钮提供可访问名称。
 - **Input、Select、Form：** 使用已有的 32px 标准控件和验证状态；受控输入优先按该组件的 Vue `v-model` 契约使用。不要用颜色单独表达错误。
@@ -126,6 +126,6 @@ components:
 
 - 使用 `var(--semi-*)` 和已有组件状态，不把 YAML 中的浅色十六进制值硬编码到应用；扩展主题前核对默认 CSS 中现有变量。
 - 保留键盘焦点、语义标签、ARIA 与禁用状态；图标按钮必须有可访问名称。需要 RTL 时使用 `ConfigProvider` 的 `direction="rtl"`，不要只翻转 CSS。
-- 不把 `vendor/semi-design` 的 React API、上游 `DESIGN.md` 或未完成组件能力当作当前 Vue 公开契约。本项目是独立实现，不使用 Semi Design 官方品牌身份。
+- 不把 Semi Design 的 React API 或未确认的组件能力当作 Vue 公开契约。`@aifuxi/semi-ui-vue` 是独立实现，不代表 Semi Design 官方。
 
-依据：`packages/theme-default/src/index.scss`、`vendor/semi-design/packages/semi-theme-default/scss/`、`packages/ui/src/` 与 `docs/components/`；文档格式遵循 [Google Labs DESIGN.md alpha 规范](https://github.com/google-labs-code/design.md/blob/main/docs/spec.md)。
+取值依据：`@aifuxi/semi-theme-default` 的默认主题与 `@aifuxi/semi-ui-vue` 的公开组件；文档格式遵循 [Google Labs DESIGN.md alpha 规范](https://github.com/google-labs-code/design.md/blob/main/docs/spec.md)。
