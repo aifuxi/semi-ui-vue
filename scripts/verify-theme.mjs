@@ -629,18 +629,47 @@ if (JSON.stringify(actualDatePickerImports) !== JSON.stringify(expectedDatePicke
   throw new Error('DatePicker 逐组件样式入口顺序未与固定源码依赖对齐');
 }
 
-const expectedFormImports = [
+const formFieldStyles = [
+  'auto-complete',
+  'cascader',
+  'checkbox',
+  'date-picker',
+  'input',
+  'input-number',
+  'pin-code',
+  'radio',
+  'rating',
+  'select',
+  'slider',
+  'switch',
+  'tag-input',
+  'time-picker',
+  'tree-select',
+  'upload',
+];
+const formDependencies = new Set([
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
   vendorImport('semi-foundation/grid/grid.scss'),
   vendorImport('semi-foundation/form/form.scss'),
   vendorImport('semi-icons/src/styles/icons.scss'),
-];
+]);
+for (const entry of formFieldStyles) {
+  const source = await readFile(themeSource(`${entry}.scss`), 'utf8');
+  for (const match of source.matchAll(/@import\s+['"]([^'"]+)['"];/g)) {
+    formDependencies.add(match[1]);
+  }
+}
+const expectedFormImports = expectedImports.filter((entry) => formDependencies.has(entry));
 const formEntrySource = await readFile(themeSource('form.scss'), 'utf8');
 const actualFormImports = [...formEntrySource.matchAll(/@import\s+['"]([^'"]+)['"];/g)].map(
   (match) => match[1],
 );
-if (JSON.stringify(actualFormImports) !== JSON.stringify(expectedFormImports)) {
+if (
+  expectedFormImports.length !== formDependencies.size ||
+  JSON.stringify(actualFormImports) !== JSON.stringify(expectedFormImports)
+) {
   throw new Error('Form 逐组件样式入口顺序未与固定源码依赖对齐');
 }
 

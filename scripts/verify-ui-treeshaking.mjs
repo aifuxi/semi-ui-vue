@@ -60,12 +60,17 @@ async function rspackBuild(consumerRoot, entry, outputRoot) {
   };
 }
 
-function assertBuild(component, subpath, bundler, result, budget, selector) {
-  assert(
-    result.bytes > 0 && result.bytes <= budget,
-    `${bundler} ${component}${subpath}: ${result.bytes} bytes exceeds ${budget}`,
-  );
-  assert(result.css.includes(selector), `${bundler} ${component}${subpath}: 未生成对应组件样式`);
+function assertBuild(component, subpath, bundler, result, budget, selectors) {
+  assert(result.bytes > 0, `${bundler} ${component}${subpath}: 未生成 JavaScript`);
+  if (budget !== undefined) {
+    assert(
+      result.bytes <= budget,
+      `${bundler} ${component}${subpath}: ${result.bytes} bytes exceeds ${budget}`,
+    );
+  }
+  for (const selector of [selectors].flat()) {
+    assert(result.css.includes(selector), `${bundler} ${component}${subpath}: 缺少 ${selector}`);
+  }
   assert(
     !result.css.includes('.semi-table'),
     `${bundler} ${component}${subpath}: 包含无关 Table 样式`,
@@ -76,11 +81,16 @@ function assertBuild(component, subpath, bundler, result, budget, selector) {
 export async function verifyUiTreeshaking(consumerRoot) {
   const entry = path.join(consumerRoot, 'treeshaking-consumer.js');
   const outputRoot = await mkdtemp(path.join(consumerRoot, '.semi-ui-rspack-'));
+  const formSelectors = JSON.parse(
+    await readFile(new URL('./theme-contracts.json', import.meta.url), 'utf8'),
+  )['form.css'];
   try {
-    for (const [component, selector, budget] of [
+    for (const [component, selectors, budget, componentSubpath] of [
       ['Button', '.semi-button', 20000],
       ['Input', '.semi-input', 125000],
       ['Select', '.semi-select', 200000],
+      ['Form', formSelectors, undefined],
+      ['FormInput', formSelectors, undefined, 'form'],
     ]) {
       for (const [bundler, compile] of [
         ['Vite', () => viteBuild(consumerRoot, entry)],
@@ -95,13 +105,16 @@ export async function verifyUiTreeshaking(consumerRoot) {
         ],
       ]) {
         const builds = [];
-        for (const [index, subpath] of ['', `/${component.toLowerCase()}`].entries()) {
+        for (const [index, subpath] of [
+          '',
+          `/${componentSubpath ?? component.toLowerCase()}`,
+        ].entries()) {
           await writeFile(
             entry,
             `import { ${component} } from '@aifuxi/semi-ui-vue${subpath}'; console.log(${component});`,
           );
           const result = await compile(index);
-          assertBuild(component, subpath, bundler, result, budget, selector);
+          assertBuild(component, subpath, bundler, result, budget, selectors);
           builds.push(result);
         }
         assert(

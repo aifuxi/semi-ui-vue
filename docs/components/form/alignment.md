@@ -61,7 +61,7 @@
 - Label 保留 `.semi-form-field-label*`、`x-semi-prop=label`、required/disabled/optional/extra 结构；可选文案取 ConfigProvider Locale。
 - Error/help/extra 保留 `.semi-form-field-error-message`、`.semi-form-field-help-text`、`.semi-form-field-extra*` 与验证图标。
 - Field 将 `id`、`name`、`aria-required`、`aria-labelledby`、`aria-describedby`、`aria-errormessage`、`aria-invalid` 注入真实控件；inset label 使用 `insetLabel/insetLabelId`。
-- `labelCol + wrapperCol` 使用现有 Row/Col；逐组件 CSS 直接编译固定 `form.scss`，不更名 class/Token。
+- `labelCol + wrapperCol` 使用现有 Row/Col；`form.css` 按固定基线导入顺序覆盖全部公开 `Form.*` 字段及其控件依赖，单独引入即可使用，不更名 class/Token。
 
 ## ArrayField、RTL、国际化与 SSR
 
@@ -75,7 +75,7 @@
 - 单元：初值优先级、受控字段、事件顺序、嵌套路径、allowEmpty、同步/异步/rules 校验、trigger、silent、submit/fail/reset、keepState、ArrayField、hooks、HOC 映射、Label/Error/ARIA、裸 Boolean template/render host。
 - SSR：根/子路径安全 import、默认/水平/必填/错误结构，无浏览器全局访问。
 - Chromium：同一 BrowserContext 下 React/Vue 的请求来源、错误、computed style、bounding rect 与局部截图；desktop `1440x900`、mobile `390x844`、light/dark、RTL，并覆盖输入、错误和 submit 行为。
-- 发布：根导出、`@aifuxi/semi-ui-vue/form`、default/named 导出与 `Form.useForm`/`Form.Input` 等 compound 静态成员（单元用例从 `./index` 固定）、`@aifuxi/semi-theme-default/form.css`、声明、tree-shaking、SSR import、真实 tarball consumer、async-validator License/SBOM。
+- 发布：根导出、`@aifuxi/semi-ui-vue/form`、default/named 导出与 `Form.useForm`/`Form.Input` 等 compound 静态成员（单元用例从 `./index` 固定）、`@aifuxi/semi-theme-default/form.css` 的完整字段样式、声明、tree-shaking、SSR import、真实 tarball consumer、async-validator License/SBOM。
 
 ## Deviation
 

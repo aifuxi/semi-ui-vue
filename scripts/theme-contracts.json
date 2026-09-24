@@ -202,12 +202,30 @@
     ".semi-floatButtonGroup-item"
   ],
   "form.css": [
+    ".semi-autocomplete",
+    ".semi-cascader",
+    ".semi-checkbox-inner-checked",
+    ".semi-datepicker",
     ".semi-form-field-error-message",
     ".semi-form-field-label",
     ".semi-form-horizontal",
     ".semi-form-section",
     ".semi-form-vertical",
-    ".semi-rtl .semi-form"
+    ".semi-input-group",
+    ".semi-input-number",
+    ".semi-input-textarea-counter",
+    ".semi-input-wrapper",
+    ".semi-pincode-wrapper",
+    ".semi-radio-inner-checked",
+    ".semi-rating-star-full",
+    ".semi-rtl .semi-form",
+    ".semi-select-option-list",
+    ".semi-slider-wrapper",
+    ".semi-switch-checked",
+    ".semi-tagInput-wrapper-input",
+    ".semi-timepicker",
+    ".semi-tree-select",
+    ".semi-upload-file-card"
   ],
   "grid.css": [".semi-col-24", ".semi-col-lg-24", ".semi-row-flex"],
   "highlight.css": [
