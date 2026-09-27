@@ -1476,4 +1476,30 @@ for (const dependency of [
 }
 
 await verifyThemeCss(path.join(workspaceRoot, 'packages/theme-default/dist'));
+const defaultThemeCss = await readFile(
+  path.join(workspaceRoot, 'packages/theme-default/dist/index.css'),
+  'utf8',
+);
+const modernThemeCss = await readFile(
+  path.join(workspaceRoot, 'packages/theme-modern/dist/index.css'),
+  'utf8',
+);
+const radiusTokens = [
+  ['--semi-border-radius-extra-small', '3px', '4px'],
+  ['--semi-border-radius-small', '3px', '8px'],
+  ['--semi-border-radius-medium', '6px', '16px'],
+  ['--semi-border-radius-large', '12px', '24px'],
+];
+for (const [token, defaultValue, modernValue] of radiusTokens) {
+  const defaultValuePattern = defaultValue.replace('.', '\\.');
+  if (!new RegExp(`${token}:\\s*${defaultValuePattern};`).test(defaultThemeCss)) {
+    throw new Error(`默认主题圆角未保持 Semi 基线：${token}`);
+  }
+  if (!new RegExp(`${token}:\\s*${modernValue};`).test(modernThemeCss)) {
+    throw new Error(`现代主题缺少预期圆角：${token}=${modernValue}`);
+  }
+}
+if (/--semi-border-radius-(?:circle|full)\s*:/.test(modernThemeCss)) {
+  throw new Error('现代主题不应覆盖圆形或胶囊圆角');
+}
 process.stdout.write(`默认主题入口与逐组件样式通过：${expectedImports.length} 个根入口\n`);

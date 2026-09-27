@@ -1,0 +1,20 @@
+/* Semi UI Vue 现代主题：在默认主题之后导入，以 CSS token 覆盖圆角。 */
+body,
+body[theme-mode='dark'] .semi-always-light,
+:host,
+:host .semi-always-light {
+  --semi-border-radius-extra-small: 4px;
+  --semi-border-radius-small: 8px;
+  --semi-border-radius-medium: 16px;
+  --semi-border-radius-large: 24px;
+}
+
+body[theme-mode='dark'],
+body .semi-always-dark,
+:host([theme-mode='dark']),
+:host .semi-always-dark {
+  --semi-border-radius-extra-small: 4px;
+  --semi-border-radius-small: 8px;
+  --semi-border-radius-medium: 16px;
+  --semi-border-radius-large: 24px;
+}

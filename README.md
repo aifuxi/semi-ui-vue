@@ -34,13 +34,14 @@ import { Button } from '@aifuxi/semi-ui-vue/button';
 
 主包为 ESM，支持根入口和逐组件导入；浏览器构建会自动按需加载默认主题，消费者无需克隆上游 submodule 或单独安装主题、图标与插画包。
 
-| 公开包                           | 内容               |
-| -------------------------------- | ------------------ |
-| `@aifuxi/semi-ui-vue`            | Vue 组件           |
-| `@aifuxi/semi-theme-default`     | 根主题和逐组件 CSS |
-| `@aifuxi/semi-icons-vue`         | 稳定图标           |
-| `@aifuxi/semi-icons-lab-vue`     | 实验图标           |
-| `@aifuxi/semi-illustrations-vue` | light/dark 插画    |
+| 公开包                           | 内容                        |
+| -------------------------------- | --------------------------- |
+| `@aifuxi/semi-ui-vue`            | Vue 组件                    |
+| `@aifuxi/semi-theme-default`     | Semi 默认根主题和逐组件 CSS |
+| `@aifuxi/semi-theme-modern`      | 可选现代主题圆角覆盖 CSS    |
+| `@aifuxi/semi-icons-vue`         | 稳定图标                    |
+| `@aifuxi/semi-icons-lab-vue`     | 实验图标                    |
+| `@aifuxi/semi-illustrations-vue` | light/dark 插画             |
 
 ## 开发与发布状态
 

@@ -5,6 +5,7 @@
   "fixed": [
     [
       "@aifuxi/semi-theme-default",
+      "@aifuxi/semi-theme-modern",
       "@aifuxi/semi-icons-vue",
       "@aifuxi/semi-icons-lab-vue",
       "@aifuxi/semi-illustrations-vue",

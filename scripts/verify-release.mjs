@@ -112,7 +112,7 @@ for (const packageInfo of publicPackages) {
   }
 }
 
-assert(versions.size === 1, '五个公开包必须使用完全相同的版本');
+assert(versions.size === 1, '所有公开包必须使用完全相同的版本');
 
 const uiManifest = await readJson(path.join(workspaceRoot, 'packages', 'ui', 'package.json'));
 assert(

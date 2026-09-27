@@ -20,7 +20,7 @@ const sourceVersions = new Set(
   ),
 );
 if (sourceVersions.size !== 1) {
-  throw new Error('五个公开包的源码版本不一致');
+  throw new Error('公开包的源码版本不一致');
 }
 const [expectedVersion] = sourceVersions;
 const localeSourceNames = (

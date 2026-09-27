@@ -33,7 +33,7 @@ export async function inspectPackedRelease(packDirectory) {
   }
   if (tarballs.size !== publicPackages.length)
     throw new Error(
-      'Expected all five original tarballs; partial or missing artifacts cannot be rebuilt during recovery',
+      `Expected all ${publicPackages.length} public tarballs; partial or missing artifacts cannot be rebuilt during recovery`,
     );
   return tarballs;
 }
