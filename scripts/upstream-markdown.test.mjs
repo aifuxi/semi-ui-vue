@@ -44,9 +44,9 @@ describe('固定上游 live Demo 清单', () => {
     });
   }
 
-  it('文档生成器不会把缩进代码围栏泄漏到正文', async () => {
-    await import('../apps/docs/scripts/prepare-content.mjs');
+  it('独立维护的文档正文不包含上游 React 代码围栏', async () => {
     const image = await readFile(resolve('apps/docs/content/zh-CN/show/image.md'), 'utf8');
     expect(image).not.toContain('import React');
+    expect(image).not.toMatch(/```\s*jsx/);
   });
 });

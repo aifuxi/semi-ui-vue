@@ -206,7 +206,7 @@ test(
         assert.equal(data.versions['1.0.0-next.0'].dist.integrity, packed.get(name).integrity);
       }
       const tags = execFileSync('git', ['tag'], { cwd, encoding: 'utf8' }).trim().split('\n');
-      assert.equal(tags.length, 5);
+      assert.equal(tags.length, publicPackages.length);
       assert.ok(tags.every((tag) => tag.startsWith('@aifuxi/')));
       execFileSync('git', ['tag', '-d', ...tags], { cwd });
       execFileSync('git', ['config', 'tag.gpgSign', 'true'], { cwd });

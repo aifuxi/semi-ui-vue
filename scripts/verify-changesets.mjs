@@ -66,6 +66,7 @@ if (base) {
   if (!versionPr && !bootstrap) {
     for (const { directory } of publicPackages) {
       const file = `packages/${directory}/package.json`;
+      if (!git('ls-tree', base, '--', file)) continue;
       const previous = JSON.parse(git('show', `${base}:${file}`));
       const next = JSON.parse(git('show', `${head}:${file}`));
       if (previous.version !== next.version)

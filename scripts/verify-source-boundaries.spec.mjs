@@ -6,7 +6,7 @@ import { expect, it } from 'vitest';
 
 it('独立于文档站允许正常依赖升级，同时拒绝公开包私有依赖和源码 vendor 越界', async () => {
   const root = await mkdtemp(path.join(tmpdir(), 'source-boundaries-'));
-  const packages = ['ui', 'theme-default', 'icons', 'icons-lab', 'illustrations'];
+  const packages = ['ui', 'theme-default', 'theme-modern', 'icons', 'icons-lab', 'illustrations'];
   const write = (file, value) => writeFile(path.join(root, file), JSON.stringify(value));
   const verify = () =>
     execFileSync(process.execPath, [path.join(root, 'scripts/verify-source-boundaries.mjs')], {
@@ -29,7 +29,7 @@ it('独立于文档站允许正常依赖升级，同时拒绝公开包私有依�
     );
     for (const name of packages)
       await write(`packages/${name}/package.json`, {
-        peerDependencies: name === 'theme-default' ? {} : { vue: '>=3.5.0' },
+        peerDependencies: name.startsWith('theme-') ? {} : { vue: '>=3.5.0' },
       });
     await write('packages/ui/tsconfig.json', {
       compilerOptions: {
