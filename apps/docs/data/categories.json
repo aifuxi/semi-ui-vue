@@ -1,0 +1,46 @@
+[
+  {
+    "id": "start",
+    "label": "开始"
+  },
+  {
+    "id": "advanced",
+    "label": "设计协作"
+  },
+  {
+    "id": "experience",
+    "label": "体验增强"
+  },
+  {
+    "id": "ai",
+    "label": "AI 组件"
+  },
+  {
+    "id": "basic",
+    "label": "基础"
+  },
+  {
+    "id": "plus",
+    "label": "Plus 组件"
+  },
+  {
+    "id": "input",
+    "label": "输入类"
+  },
+  {
+    "id": "navigation",
+    "label": "导航类"
+  },
+  {
+    "id": "show",
+    "label": "展示类"
+  },
+  {
+    "id": "feedback",
+    "label": "反馈类"
+  },
+  {
+    "id": "other",
+    "label": "其他"
+  }
+]

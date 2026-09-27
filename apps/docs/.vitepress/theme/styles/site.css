@@ -7,7 +7,7 @@
 @import '@aifuxi/semi-theme-default/divider.css';
 @import '@aifuxi/semi-theme-modern/index.css';
 
-/* 站点外壳：DOM 与 class 复刻基线站点，样式在 /upstream/site.css 中由基线 SCSS 编译而来。 */
+/* 站点布局由本地样式维护，历史样式来源见文档站的第三方归属说明。 */
 *:not([class*='semi-'], [class*='semi-'] *) {
   box-sizing: border-box;
 }
@@ -290,12 +290,6 @@ body[theme-mode='dark'] .site-header {
 .prev-next-link.next {
   margin-left: auto;
   text-align: right;
-}
-
-.source-note {
-  margin: 24px 0 32px;
-  font-size: 12px;
-  color: var(--semi-color-text-2);
 }
 
 /* 右栏目录 */

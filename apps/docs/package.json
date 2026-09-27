@@ -5,14 +5,13 @@
   "type": "module",
   "scripts": {
     "prepare:packages": "pnpm -w build:public-js && pnpm --filter @aifuxi/semi-theme-default --filter @aifuxi/semi-theme-modern build",
-    "prepare:assets": "node scripts/prepare-assets.mjs",
-    "prepare:content": "node scripts/prepare-content.mjs",
-    "prepare:site": "pnpm prepare:assets && pnpm prepare:content",
+    "prepare:index": "node scripts/prepare-index.mjs",
+    "prepare:site": "pnpm prepare:index",
     "dev": "pnpm prepare:site && vitepress dev . --port 4321 --host 127.0.0.1",
     "build": "pnpm prepare:site && vitepress build .",
     "preview": "vitepress preview . --port 4321 --host 127.0.0.1",
     "typecheck": "pnpm prepare:packages && pnpm prepare:site && vue-tsc --noEmit -p tsconfig.json",
-    "clean": "rimraf content dist cache .vitepress/theme/generated"
+    "clean": "rimraf dist cache .vitepress/theme/generated content/public/search-index.json"
   },
   "dependencies": {
     "@aifuxi/semi-icons-lab-vue": "workspace:*",
@@ -26,10 +25,7 @@
     "vue": "catalog:"
   },
   "devDependencies": {
-    "@douyinfe/semi-site-doc-style": "0.0.5",
     "rimraf": "6.1.3",
-    "sass-legacy": "npm:sass@1.54.9",
-    "typeface-inconsolata": "1.1.13",
     "vue-tsc": "3.3.11",
     "yaml": "2.9.0"
   }

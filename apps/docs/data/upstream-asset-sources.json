@@ -1,0 +1,33 @@
+{
+  "baseline": {
+    "version": "v2.102.0",
+    "commit": "cdfba6e520fc83ad871b30f51f36d8af3aaa5a21"
+  },
+  "packages": {
+    "@douyinfe/semi-site-doc-style": "0.0.5",
+    "typeface-inconsolata": "1.1.13",
+    "sass-legacy": "1.54.9"
+  },
+  "sources": [
+    {
+      "source": "vendor/semi-design/src/styles/layout.scss",
+      "sha256": "aeb9d910673b2ac3ac0f2c81ac1762517e9437dfe3b321db498372b2fe5a6990"
+    },
+    {
+      "source": "vendor/semi-design/src/styles/index.scss",
+      "sha256": "395fcdc0fe0537414a080301494503c15fee4bd3693216acccaf7cd206418816"
+    },
+    {
+      "source": "vendor/semi-design/src/styles/doc.scss",
+      "sha256": "fed7b1a0289f6bc85e8b5512f01cc5f4b9befb4944194e9b2519e5e181a3199b"
+    },
+    {
+      "source": "vendor/semi-design/src/styles/docDemo.scss",
+      "sha256": "93e76d134a7ce25c32fedc0c0c8a282151afcf2c232de1bb0d4df1a765e0c715"
+    },
+    {
+      "source": "vendor/semi-design/src/components/PageAnchor/index.scss",
+      "sha256": "e5d19bbdd4cdf2c769a7159330f1011a755fb6e417779abf2bb08a5aa14a69f2"
+    }
+  ]
+}

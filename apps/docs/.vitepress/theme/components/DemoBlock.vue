@@ -8,8 +8,8 @@ import 'prismjs/components/prism-json.js';
 import 'prismjs/components/prism-markdown.js';
 import 'prismjs/components/prism-scss.js';
 import 'prismjs/components/prism-typescript.js';
-import { computed, onMounted, ref } from 'vue';
-import codeSources from '../generated/code-sources.json';
+import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue';
+import codeSources from '../../../data/code-sources.json';
 import { loadExampleManifest } from '../demo/types';
 
 interface CodeSource {
@@ -22,8 +22,10 @@ const manifest = computed(() => (props.id ? loadExampleManifest(props.id) : null
 const codeSource = computed(() =>
   props.id ? (codeSources as Record<string, CodeSource>)[props.id] : undefined,
 );
+const liveSource = shallowRef('');
+let sourceRevision = 0;
 const source = computed(() => {
-  if (manifest.value) return manifest.value.files[manifest.value.entry] ?? '';
+  if (manifest.value) return liveSource.value;
   return codeSource.value?.source ?? '';
 });
 const language = computed(() => (manifest.value ? 'vue' : codeSource.value?.language));
@@ -41,7 +43,20 @@ const highlightedSource = computed(() => {
 
 onMounted(() => {
   shouldHighlight.value = !manifest.value;
+  void loadLiveSource();
 });
+watch(manifest, () => void loadLiveSource());
+onBeforeUnmount(() => {
+  sourceRevision += 1;
+});
+
+async function loadLiveSource(): Promise<void> {
+  const revision = ++sourceRevision;
+  liveSource.value = '';
+  if (!manifest.value) return;
+  const loaded = await manifest.value.loadSource();
+  if (revision === sourceRevision) liveSource.value = loaded;
+}
 
 function handleToggle(event: Event): void {
   shouldHighlight.value = (event.currentTarget as HTMLDetailsElement).open;

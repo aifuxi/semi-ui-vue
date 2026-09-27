@@ -6,11 +6,10 @@ import type { Component } from 'vue';
 export interface ExampleManifest {
   id: string;
   title: string;
-  entry: string;
-  files: Record<string, string>;
   dependencies: Record<string, string>;
   cssUrls: string[];
   component: Component;
+  loadSource: () => Promise<string>;
   preview: {
     minHeight?: number;
     clientOnly?: boolean;
@@ -24,7 +23,6 @@ const exampleComponents = import.meta.glob<Component>('./examples/t*/**/zh-CN-*.
   import: 'default',
 });
 const exampleSources = import.meta.glob<string>('./examples/t*/**/zh-CN-*.vue', {
-  eager: true,
   import: 'default',
   query: '?raw',
 });
@@ -32,19 +30,18 @@ const exampleSources = import.meta.glob<string>('./examples/t*/**/zh-CN-*.vue', 
 const manifests = Object.fromEntries(
   Object.entries(exampleComponents).map(([path, component]) => {
     const id = path.slice(path.lastIndexOf('/') + 1, -'.vue'.length);
-    const source = exampleSources[path];
-    if (!source) throw new Error(`示例 ${id} 缺少源码`);
+    const loadSource = exampleSources[path];
+    if (!loadSource) throw new Error(`示例 ${id} 缺少源码`);
 
     return [
       id,
       {
         id,
         title: id,
-        entry: 'App.vue',
-        files: { 'App.vue': source },
         dependencies: {},
         cssUrls: [],
         component,
+        loadSource,
         preview: {},
       } satisfies ExampleManifest,
     ];
