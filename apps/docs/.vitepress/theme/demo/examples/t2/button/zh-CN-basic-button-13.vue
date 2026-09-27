@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Button } from '@aifuxi/semi-ui-vue/button';
+import { Divider } from '@aifuxi/semi-ui-vue/divider';
 import '@aifuxi/semi-theme-default/button.css';
+import '@aifuxi/semi-theme-default/divider.css';
 import { ref } from 'vue';
 import { IconDelete } from '@aifuxi/semi-icons-vue';
 const saveLoading = ref(false);
@@ -24,7 +26,7 @@ function reset(status: boolean) {
         ><Button @click="reset(true)">开启加载态</Button>
       </div>
     </div>
-    <hr />
+    <Divider :margin="12" />
     <Button :loading="saveLoading" style="margin-right: 14px" @click="saveLoading = true"
       >保存</Button
     ><Button
