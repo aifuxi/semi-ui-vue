@@ -1,5 +1,15 @@
 # @aifuxi/semi-ui-vue
 
+## 1.2.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@1.2.0
+  - @aifuxi/semi-icons-lab-vue@1.2.0
+  - @aifuxi/semi-illustrations-vue@1.2.0
+  - @aifuxi/semi-theme-default@1.2.0
+
 ## 1.1.2
 
 ### Patch Changes
