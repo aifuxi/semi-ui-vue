@@ -1506,6 +1506,9 @@ for (const token of [
   '--semi-modern-button-surface-shadow',
   '--semi-modern-button-solid-shadow',
   '--semi-modern-card-edge-shadow',
+  '--semi-modern-overlay-edge-shadow',
+  '--semi-modern-modal-edge-shadow',
+  '--semi-modern-tooltip-edge-shadow',
 ]) {
   if (defaultThemeCss.includes(token)) {
     throw new Error(`默认主题不应包含现代主题层次变量：${token}`);
@@ -1522,10 +1525,17 @@ for (const selector of [
   '.semi-card.semi-card-bordered:not(.semi-card-group-grid > .semi-card)',
   '.semi-card.semi-card-bordered.semi-card-shadows-always:not(.semi-card-group-grid > .semi-card)',
   '.semi-card.semi-card-bordered.semi-card-shadows-hover:not(.semi-card-group-grid > .semi-card):hover',
+  '.semi-dropdown-wrapper,',
+  '.semi-popover-wrapper {',
+  '.semi-tooltip-wrapper {',
+  '.semi-modal-content:not(.semi-modal-content-fullScreen)',
   'box-shadow: var(--semi-modern-button-solid-shadow)',
+  'box-shadow: var(--semi-modern-overlay-edge-shadow), var(--semi-shadow-elevated)',
+  'box-shadow: var(--semi-modern-tooltip-edge-shadow)',
+  'box-shadow: var(--semi-modern-modal-edge-shadow), var(--semi-shadow-elevated)',
 ]) {
   if (!modernThemeCss.includes(selector)) {
-    throw new Error(`现代主题缺少 Button 或 Card 层次样式：${selector}`);
+    throw new Error(`现代主题缺少组件层次样式：${selector}`);
   }
 }
 if (modernThemeCss.includes('box-shadow: var(--semi-modern-card-edge-shadow),')) {

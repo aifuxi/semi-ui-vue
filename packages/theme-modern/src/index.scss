@@ -16,6 +16,11 @@ body[theme-mode='dark'] .semi-always-light,
   --semi-modern-card-edge-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 0 0 1px rgba(0, 0, 0, 0.025),
     0 1px 3px rgba(0, 0, 0, 0.035);
+  --semi-modern-overlay-edge-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42), inset 0 0 0 1px rgba(0, 0, 0, 0.025);
+  --semi-modern-modal-edge-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.26);
+  --semi-modern-tooltip-edge-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
 }
 
 body[theme-mode='dark'],
@@ -35,6 +40,11 @@ body .semi-always-dark,
   --semi-modern-card-edge-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.045), inset 0 0 0 1px rgba(255, 255, 255, 0.045),
     0 1px 3px rgba(0, 0, 0, 0.16);
+  /* 深色基线的 elevated 阴影已有内描边，这里只补顶部高光。 */
+  --semi-modern-overlay-edge-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.075);
+  --semi-modern-modal-edge-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.055);
+  --semi-modern-tooltip-edge-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28), inset 0 0 0 1px rgba(0, 0, 0, 0.06);
 }
 
 /* 填充按钮增加层次，solid 按自身填充色使用更清晰的内侧高光。 */
@@ -63,4 +73,20 @@ body .semi-always-dark,
     .semi-card-group-grid > .semi-card
   ):hover {
   box-shadow: var(--semi-modern-card-edge-shadow);
+}
+
+/* Popconfirm 与选择面板复用 Popover 表面，只在最外层添加一次边缘效果。 */
+.semi-dropdown-wrapper,
+.semi-popover-wrapper {
+  box-shadow: var(--semi-modern-overlay-edge-shadow), var(--semi-shadow-elevated);
+}
+
+/* Tooltip 的灰色表面随明暗模式反转，单独配色且不新增外投影。 */
+.semi-tooltip-wrapper {
+  box-shadow: var(--semi-modern-tooltip-edge-shadow);
+}
+
+/* Modal 已有实体边框；全屏内容不需要额外的内侧高光。 */
+.semi-modal-content:not(.semi-modal-content-fullScreen) {
+  box-shadow: var(--semi-modern-modal-edge-shadow), var(--semi-shadow-elevated);
 }
