@@ -1518,6 +1518,7 @@ for (const token of [
 for (const selector of [
   '.semi-button.semi-button-solid:not(.semi-button-disabled):not(.semi-button-group .semi-button)',
   '.semi-button.semi-button-light:not(.semi-button-disabled):not(.semi-button-group .semi-button)',
+  '.semi-button.semi-button-borderless:not(.semi-button-disabled):not(.semi-button-group .semi-button):is(:hover, :active)',
   '.semi-card.semi-card-bordered:not(.semi-card-group-grid > .semi-card)',
   '.semi-card.semi-card-bordered.semi-card-shadows-always:not(.semi-card-group-grid > .semi-card)',
   '.semi-card.semi-card-bordered.semi-card-shadows-hover:not(.semi-card-group-grid > .semi-card):hover',

@@ -37,12 +37,19 @@ body .semi-always-dark,
     0 1px 3px rgba(0, 0, 0, 0.16);
 }
 
-/* 仅有填充面的按钮增加层次，solid 按自身填充色使用更清晰的内侧高光。 */
+/* 填充按钮增加层次，solid 按自身填充色使用更清晰的内侧高光。 */
 .semi-button.semi-button-solid:not(.semi-button-disabled):not(.semi-button-group .semi-button) {
   box-shadow: var(--semi-modern-button-solid-shadow);
 }
 
 .semi-button.semi-button-light:not(.semi-button-disabled):not(.semi-button-group .semi-button) {
+  box-shadow: var(--semi-modern-button-surface-shadow);
+}
+
+/* borderless 仅在交互时出现背景，此时沿用 light 的细边缘层次。 */
+.semi-button.semi-button-borderless:not(.semi-button-disabled):not(
+    .semi-button-group .semi-button
+  ):is(:hover, :active) {
   box-shadow: var(--semi-modern-button-surface-shadow);
 }
 

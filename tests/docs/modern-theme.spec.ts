@@ -4,7 +4,7 @@ async function shadowOf(locator: Locator): Promise<string> {
   return locator.evaluate((element) => getComputedStyle(element).boxShadow);
 }
 
-test('modern theme 的 Button 仅为独立填充按钮增加内侧层次', async ({ page }) => {
+test('modern theme 的 Button 为填充面及 borderless 交互态增加内侧层次', async ({ page }) => {
   await page.goto('/zh-CN/basic/button');
 
   const solid = page.locator('[data-demo-id="zh-CN-basic-button-5"] .semi-button-solid').first();
@@ -16,6 +16,9 @@ test('modern theme 的 Button 仅为独立填充按钮增加内侧层次', async
     .locator('[data-demo-id="zh-CN-basic-button-6"] .semi-button-borderless')
     .first();
   const disabled = page.locator('[data-demo-id="zh-CN-basic-button-12"] .semi-button-solid');
+  const disabledBorderless = page
+    .locator('[data-demo-id="zh-CN-basic-button-12"] .semi-button-borderless')
+    .first();
   const grouped = page
     .locator('[data-demo-id="zh-CN-basic-button-15"] .semi-button-group .semi-button')
     .first();
@@ -27,9 +30,18 @@ test('modern theme 的 Button 仅为独立填充按钮增加内侧层次', async
   const lightButtonShadow = await shadowOf(light);
   expect(lightButtonShadow).toContain('inset');
   expect(lightButtonShadow).not.toBe(lightModeShadow);
-  for (const button of [outline, borderless, disabled, grouped]) {
+  for (const button of [outline, borderless, disabled, disabledBorderless, grouped]) {
     await expect(button).toHaveCSS('box-shadow', 'none');
   }
+  await expect(borderless).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+  await borderless.hover();
+  await expect(borderless).toHaveCSS('box-shadow', lightButtonShadow);
+  await page.mouse.down();
+  await expect(borderless).toHaveCSS('box-shadow', lightButtonShadow);
+  await page.mouse.up();
+  await disabledBorderless.hover();
+  await expect(disabledBorderless).toHaveCSS('box-shadow', 'none');
+  await expect(borderless).toHaveCSS('box-shadow', 'none');
 
   const buttonRegion = solid.locator('..');
   await buttonRegion.evaluate((element) => element.classList.add('semi-always-dark'));
@@ -48,6 +60,14 @@ test('modern theme 的 Button 仅为独立填充按钮增加内侧层次', async
   const darkModeShadow = await shadowOf(solid);
   expect(darkModeShadow).toContain('inset');
   expect(darkModeShadow).not.toBe(lightModeShadow);
+  await borderless.hover();
+  const darkBorderlessShadow = await shadowOf(borderless);
+  expect(darkBorderlessShadow).toContain('inset');
+  expect(darkBorderlessShadow).not.toBe(lightButtonShadow);
+
+  const borderlessRegion = borderless.locator('..');
+  await borderlessRegion.evaluate((element) => element.classList.add('semi-always-light'));
+  expect(await shadowOf(borderless)).toBe(lightButtonShadow);
 
   await buttonRegion.evaluate((element) => element.classList.add('semi-always-light'));
   expect(await shadowOf(solid)).toBe(lightModeShadow);
