@@ -10,6 +10,9 @@ body[theme-mode='dark'] .semi-always-light,
   --semi-modern-button-surface-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 0 0 1px rgba(0, 0, 0, 0.035),
     0 1px 2px rgba(0, 0, 0, 0.04);
+  --semi-modern-button-solid-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.38), inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.1);
   --semi-modern-card-edge-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 0 0 1px rgba(0, 0, 0, 0.025),
     0 1px 3px rgba(0, 0, 0, 0.035);
@@ -26,19 +29,24 @@ body .semi-always-dark,
   --semi-modern-button-surface-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.05),
     0 1px 2px rgba(0, 0, 0, 0.16);
+  --semi-modern-button-solid-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.18),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.14), 0 2px 4px rgba(0, 0, 0, 0.22);
   --semi-modern-card-edge-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.045), inset 0 0 0 1px rgba(255, 255, 255, 0.045),
     0 1px 3px rgba(0, 0, 0, 0.16);
 }
 
-/* 仅有填充面的按钮增加层次，保留无边框按钮与按钮组原有的平面语义。 */
-.semi-button:is(.semi-button-solid, .semi-button-light):not(.semi-button-disabled):not(
-    .semi-button-group .semi-button
-  ) {
+/* 仅有填充面的按钮增加层次，solid 按自身填充色使用更清晰的内侧高光。 */
+.semi-button.semi-button-solid:not(.semi-button-disabled):not(.semi-button-group .semi-button) {
+  box-shadow: var(--semi-modern-button-solid-shadow);
+}
+
+.semi-button.semi-button-light:not(.semi-button-disabled):not(.semi-button-group .semi-button) {
   box-shadow: var(--semi-modern-button-surface-shadow);
 }
 
-/* 卡片的显式悬浮阴影与细边缘叠加，网格卡片保持原有分隔。 */
+/* 独立卡片只保留细边缘层次，网格卡片仍沿用组件本身的分隔。 */
 .semi-card.semi-card-bordered:not(.semi-card-group-grid > .semi-card) {
   box-shadow: var(--semi-modern-card-edge-shadow);
 }
@@ -47,5 +55,5 @@ body .semi-always-dark,
 .semi-card.semi-card-bordered.semi-card-shadows-hover:not(
     .semi-card-group-grid > .semi-card
   ):hover {
-  box-shadow: var(--semi-modern-card-edge-shadow), var(--semi-shadow-elevated);
+  box-shadow: var(--semi-modern-card-edge-shadow);
 }

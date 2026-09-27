@@ -13,7 +13,7 @@
 
 圆形和胶囊圆角沿用默认主题的 `50%` 与 `9999px`。
 
-Button 的 `solid`、`light` 状态增加内侧高光、细描边和轻微外投影；`outline`、`borderless`、禁用按钮与 ButtonGroup 保持原有阴影。独立且 `bordered` 的 Card 增加更淡的边缘效果，`shadows="always"` / `shadows="hover"` 仍保留原有悬浮阴影；无边框卡片与 CardGroup 网格不增加内描边。颜色随浅色、深色及局部主题切换，组件尺寸、背景色和焦点轮廓不变。
+Button 的 `solid`、`light` 状态增加内侧高光、细描边和轻微外投影；`solid` 按填充色使用单独且更清晰的层次。`outline`、`borderless`、禁用按钮与 ButtonGroup 保持原有阴影。独立且 `bordered` 的 Card 只使用较淡的边缘效果，包括 `shadows="always"` 与 `shadows="hover"` 的悬浮状态，不再叠加原有的大阴影；无边框卡片与 CardGroup 网格仍沿用组件原有样式。颜色随浅色、深色及局部主题切换，组件尺寸、背景色和焦点轮廓不变。
 
 先安装可选主题：
 

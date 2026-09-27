@@ -23,7 +23,10 @@ test('modern theme 的 Button 仅为独立填充按钮增加内侧层次', async
   await expect(solid).toBeVisible();
   const lightModeShadow = await shadowOf(solid);
   expect(lightModeShadow).toContain('inset');
-  expect(await shadowOf(light)).toBe(lightModeShadow);
+  expect(lightModeShadow).toContain('0px 2px 4px');
+  const lightButtonShadow = await shadowOf(light);
+  expect(lightButtonShadow).toContain('inset');
+  expect(lightButtonShadow).not.toBe(lightModeShadow);
   for (const button of [outline, borderless, disabled, grouped]) {
     await expect(button).toHaveCSS('box-shadow', 'none');
   }
@@ -50,7 +53,7 @@ test('modern theme 的 Button 仅为独立填充按钮增加内侧层次', async
   expect(await shadowOf(solid)).toBe(lightModeShadow);
 });
 
-test('modern theme 的 Card 保留悬浮阴影与网格边界', async ({ page }) => {
+test('modern theme 的独立 Card 仅使用细边缘阴影并保留网格边界', async ({ page }) => {
   await page.goto('/zh-CN/show/card');
 
   const bordered = page.locator('[data-demo-id="zh-CN-show-card-4"] .semi-card').first();
@@ -66,7 +69,7 @@ test('modern theme 的 Card 保留悬浮阴影与网格边界', async ({ page })
   expect(lightModeShadow).toContain('inset');
   await expect(borderless).toHaveCSS('box-shadow', 'none');
   await expect(grid).toHaveCSS('box-shadow', 'none');
-  await expect(always).toHaveCSS('box-shadow', /inset.*4px 14px/);
+  await expect(always).toHaveCSS('box-shadow', lightModeShadow);
   await expect(hover).toHaveCSS('box-shadow', lightModeShadow);
   const cardRegion = bordered.locator('..');
   await cardRegion.evaluate((element) => element.classList.add('semi-always-dark'));
@@ -78,7 +81,7 @@ test('modern theme 的 Card 保留悬浮阴影与网格边界', async ({ page })
   await expect(grid).toHaveCSS('box-shadow', /4px 14px/);
   expect(await shadowOf(grid)).not.toContain('inset');
   await hover.hover();
-  await expect(hover).toHaveCSS('box-shadow', /inset.*4px 14px/);
+  await expect(hover).toHaveCSS('box-shadow', lightModeShadow);
 
   await page.getByRole('button', { name: '切换到暗色模式' }).click();
   await expect(page.locator('body')).toHaveAttribute('theme-mode', 'dark');
