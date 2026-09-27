@@ -1502,4 +1502,24 @@ for (const [token, defaultValue, modernValue] of radiusTokens) {
 if (/--semi-border-radius-(?:circle|full)\s*:/.test(modernThemeCss)) {
   throw new Error('现代主题不应覆盖圆形或胶囊圆角');
 }
+for (const token of ['--semi-modern-button-surface-shadow', '--semi-modern-card-edge-shadow']) {
+  if (defaultThemeCss.includes(token)) {
+    throw new Error(`默认主题不应包含现代主题层次变量：${token}`);
+  }
+  const declarations = [...modernThemeCss.matchAll(new RegExp(`${token}:\\s*[^;]+;`, 'g'))];
+  if (declarations.length !== 2 || declarations.some(([value]) => !value.includes('inset'))) {
+    throw new Error(`现代主题缺少浅色或深色内侧层次变量：${token}`);
+  }
+}
+for (const selector of [
+  '.semi-button:is(.semi-button-solid, .semi-button-light):not(.semi-button-disabled):not(.semi-button-group .semi-button)',
+  '.semi-card.semi-card-bordered:not(.semi-card-group-grid > .semi-card)',
+  '.semi-card.semi-card-bordered.semi-card-shadows-always:not(.semi-card-group-grid > .semi-card)',
+  '.semi-card.semi-card-bordered.semi-card-shadows-hover:not(.semi-card-group-grid > .semi-card):hover',
+  'box-shadow: var(--semi-modern-card-edge-shadow), var(--semi-shadow-elevated)',
+]) {
+  if (!modernThemeCss.includes(selector)) {
+    throw new Error(`现代主题缺少 Button 或 Card 层次样式：${selector}`);
+  }
+}
 process.stdout.write(`默认主题入口与逐组件样式通过：${expectedImports.length} 个根入口\n`);

@@ -1,6 +1,6 @@
 # @aifuxi/semi-theme-modern
 
-本包是 Semi UI Vue 的可选现代主题样式，仅覆盖默认主题的圆角变量。它不是 Semi Design 官方发布的主题。
+本包是 Semi UI Vue 的可选现代主题样式，覆盖默认主题的圆角变量，并为 Button 与 Card 增加轻微的内侧层次。它不是 Semi Design 官方发布的主题。
 
 圆角比例如下：
 
@@ -12,6 +12,8 @@
 | `--semi-border-radius-large`       | `24px` |
 
 圆形和胶囊圆角沿用默认主题的 `50%` 与 `9999px`。
+
+Button 的 `solid`、`light` 状态增加内侧高光、细描边和轻微外投影；`outline`、`borderless`、禁用按钮与 ButtonGroup 保持原有阴影。独立且 `bordered` 的 Card 增加更淡的边缘效果，`shadows="always"` / `shadows="hover"` 仍保留原有悬浮阴影；无边框卡片与 CardGroup 网格不增加内描边。颜色随浅色、深色及局部主题切换，组件尺寸、背景色和焦点轮廓不变。
 
 先安装可选主题：
 

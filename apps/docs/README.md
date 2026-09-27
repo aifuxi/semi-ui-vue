@@ -73,7 +73,7 @@
 站点外壳的 CSS 由 `prepare-assets` 从只读基线编译：`vendor/semi-design/src/styles/{layout,index,doc,docDemo}.scss`、
 `PageAnchor/index.scss`，加上 `@douyinfe/semi-site-doc-style` 的正文排版。正文元素需要的 `md` / `gatsby-*`
 class 由 `.vitepress/theme/markdown/prose-classes.ts` 在 markdown-it 渲染阶段补上，项目不复制上游 CSS。
-组件基础样式来自 `@aifuxi/semi-theme-default`，圆角由其后的 `@aifuxi/semi-theme-modern` 覆盖，站点控件直接使用 `@aifuxi/semi-ui-vue`。
+组件基础样式来自 `@aifuxi/semi-theme-default`，圆角及 Button、Card 的轻微内侧层次由其后的 `@aifuxi/semi-theme-modern` 覆盖，站点控件直接使用 `@aifuxi/semi-ui-vue`。
 
 ## 当前示例边界
 
