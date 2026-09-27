@@ -1,5 +1,9 @@
 # @aifuxi/semi-theme-default
 
+## 1.2.0
+
+No changes in this release.
+
 ## 1.1.2
 
 ### Patch Changes
