@@ -18,7 +18,7 @@ import '@aifuxi/semi-theme-default/button.css';
 
 本包只发布编译后的 CSS，不要求消费者初始化上游 submodule 或安装 Sass。
 
-预览版使用 `next` 渠道，后续稳定版使用 `latest`；五个公开包同步升版。发布记录随包提供，见 [CHANGELOG](CHANGELOG.md)。
+预览版使用 `next` 渠道，后续稳定版使用 `latest`；六个公开包同步升版。发布记录随包提供，见 [CHANGELOG](CHANGELOG.md)。
 
 ## 许可与归属
 

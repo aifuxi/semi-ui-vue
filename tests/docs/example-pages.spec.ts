@@ -7,18 +7,18 @@ const tier = (process.env.DOCS_EXAMPLE_TIER ?? 't3').toLowerCase();
 if (!/^t[1-5]$/.test(tier)) throw new Error('DOCS_EXAMPLE_TIER 必须是 t1 至 t5');
 
 const examplesRoot = resolve(workspaceRoot, 'apps/docs/.vitepress/theme/demo/examples', tier);
-const vendorContentRoot = resolve(workspaceRoot, 'vendor/semi-design/content');
+const contentRoot = resolve(workspaceRoot, 'apps/docs/content/zh-CN');
 const routeSlugOverrides: Record<string, string> = { 'locale-provider': 'locale' };
 const normalizeSlug = (value: string) => value.toLowerCase().replaceAll(/[-_]/g, '');
 
-const vendorPages = (
+const localPages = (
   await Promise.all(
-    (await readdir(vendorContentRoot, { withFileTypes: true }))
+    (await readdir(contentRoot, { withFileTypes: true }))
       .filter((entry) => entry.isDirectory())
       .map(async (category) =>
-        (await readdir(resolve(vendorContentRoot, category.name), { withFileTypes: true }))
-          .filter((entry) => entry.isDirectory())
-          .map((entry) => ({ category: category.name, slug: entry.name })),
+        (await readdir(resolve(contentRoot, category.name), { withFileTypes: true }))
+          .filter((entry) => entry.isFile() && entry.name.endsWith('.md'))
+          .map((entry) => ({ category: category.name, slug: basename(entry.name, '.md') })),
       ),
   )
 ).flat();
@@ -28,7 +28,7 @@ const pages = await Promise.all(
     .filter((entry) => entry.isDirectory())
     .map(async (component) => {
       const routeSlug = routeSlugOverrides[component.name] ?? component.name;
-      const matches = vendorPages.filter(
+      const matches = localPages.filter(
         (page) => normalizeSlug(page.slug) === normalizeSlug(routeSlug),
       );
       const match = matches[0];

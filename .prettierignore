@@ -9,5 +9,6 @@ coverage
 playwright-report
 test-results
 pnpm-lock.yaml
+apps/docs/content/public/site/site.css
 docs/research
 docs/inventory/semi-v2.102.0.json

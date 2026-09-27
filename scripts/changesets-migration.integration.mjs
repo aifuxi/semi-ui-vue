@@ -8,9 +8,9 @@ import { test } from 'node:test';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const cli = path.join(root, 'node_modules/@changesets/cli/bin.js');
-const directories = ['theme-default', 'icons', 'icons-lab', 'illustrations', 'ui'];
+const directories = ['theme-default', 'theme-modern', 'icons', 'icons-lab', 'illustrations', 'ui'];
 
-test('真实 Changesets 从 alpha 进入 next、连续升版和退出，保持五包同版', async () => {
+test('真实 Changesets 从 alpha 进入 next、连续升版和退出，保持公开包同版', async () => {
   const cwd = await mkdtemp(path.join(tmpdir(), 'semi-changesets-'));
   const run = (...args) =>
     execFileSync(process.execPath, [cli, ...args], { cwd, encoding: 'utf8' });
@@ -81,17 +81,17 @@ test('真实 Changesets 从 alpha 进入 next、连续升版和退出，保持�
     // 此中间状态仅用于迁移，不是一次发布。
     await change('normalize-alpha', 'patch');
     run('version');
-    assert.deepEqual(await versions(), Array(5).fill('0.1.0'));
+    assert.deepEqual(await versions(), Array(directories.length).fill('0.1.0'));
     run('pre', 'enter', 'next');
     await change('first', 'major');
     run('version');
-    assert.deepEqual(await versions(), Array(5).fill('1.0.0-next.0'));
+    assert.deepEqual(await versions(), Array(directories.length).fill('1.0.0-next.0'));
     await change('second', 'patch');
     run('version');
-    assert.deepEqual(await versions(), Array(5).fill('1.0.0-next.1'));
+    assert.deepEqual(await versions(), Array(directories.length).fill('1.0.0-next.1'));
     run('pre', 'exit');
     run('version');
-    assert.deepEqual(await versions(), Array(5).fill('1.0.0'));
+    assert.deepEqual(await versions(), Array(directories.length).fill('1.0.0'));
     for (const [level, expected] of [
       ['patch', '1.0.1'],
       ['minor', '1.1.0'],
@@ -99,7 +99,7 @@ test('真实 Changesets 从 alpha 进入 next、连续升版和退出，保持�
     ]) {
       await change(level, level);
       run('version');
-      assert.deepEqual(await versions(), Array(5).fill(expected));
+      assert.deepEqual(await versions(), Array(directories.length).fill(expected));
     }
     assert.equal(
       JSON.parse(await readFile(path.join(cwd, 'packages/private/package.json'), 'utf8')).version,

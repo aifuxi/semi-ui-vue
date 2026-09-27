@@ -20,7 +20,14 @@ const importPatterns = [
   /\brequire\s*\(\s*['"]([^'"]+)['"]/g,
   /@import\s*['"]([^'"]+)['"]/g,
 ];
-const publicPackagePolicies = ['ui', 'theme-default', 'icons', 'icons-lab', 'illustrations'];
+const publicPackagePolicies = [
+  'ui',
+  'theme-default',
+  'theme-modern',
+  'icons',
+  'icons-lab',
+  'illustrations',
+];
 // 依赖版本由 package.json 与 lockfile 管理，此处只复制架构方向，普通升级无需同步修改。
 const allowedInternalDependencies = new Set([
   '@aifuxi/semi-icons-lab-vue',
@@ -108,7 +115,10 @@ for (const directory of publicPackagePolicies) {
       }
     }
   }
-  if (directory !== 'theme-default' && manifest.peerDependencies?.vue !== '>=3.5.0') {
+  if (
+    !['theme-default', 'theme-modern'].includes(directory) &&
+    manifest.peerDependencies?.vue !== '>=3.5.0'
+  ) {
     throw new Error(`${manifestPath} 必须声明 vue >=3.5.0 peer dependency`);
   }
 }

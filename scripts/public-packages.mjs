@@ -13,6 +13,11 @@ export const publicPackages = Object.freeze([
     type: 'style',
   }),
   Object.freeze({
+    directory: 'theme-modern',
+    name: '@aifuxi/semi-theme-modern',
+    type: 'style',
+  }),
+  Object.freeze({
     directory: 'icons',
     name: '@aifuxi/semi-icons-vue',
     type: 'javascript',

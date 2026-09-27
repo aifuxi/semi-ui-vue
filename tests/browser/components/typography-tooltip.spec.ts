@@ -120,7 +120,8 @@ for (const theme of ['light', 'dark'] as const)
           document.body.style.minHeight = '1800px';
           window.scrollTo(0, 70);
         });
-        // Scrolling moves the trigger out from under the mouse; keep the requested open state.
+        // 滚动使触发器离开指针，先等待旧浮层退出，再验证重新悬停后的状态。
+        await expect(page.locator(`.semi-${mode}-wrapper`)).toHaveCount(0);
         await page.locator('[data-parity-target="typography-css-ellipsis"]').hover();
         await expect(page.locator(`.semi-${mode}-wrapper`)).toBeVisible();
         await expect(page.locator(`.semi-${mode}-wrapper`)).toHaveCSS('transform', 'none');

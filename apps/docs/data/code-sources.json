@@ -1,0 +1,1002 @@
+{
+  "zh-CN-start-getting-started-1": {
+    "kind": "code",
+    "language": "bash",
+    "source": "pnpm add @aifuxi/semi-ui-vue"
+  },
+  "zh-CN-start-getting-started-2": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { Button } from '@aifuxi/semi-ui-vue/button';\n</script>\n\n<template>\n  <Button type=\"primary\">开始使用</Button>\n</template>"
+  },
+  "zh-CN-start-getting-started-3": {
+    "kind": "code",
+    "language": "ts",
+    "source": "function setDarkMode(enabled: boolean) {\n  if (enabled) document.body.setAttribute('theme-mode', 'dark');\n  else document.body.removeAttribute('theme-mode');\n}"
+  },
+  "zh-CN-start-getting-started-4": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { LocaleProvider } from '@aifuxi/semi-ui-vue/locale';\nimport en_GB from '@aifuxi/semi-ui-vue/locale/source/en_GB';\nimport { Pagination } from '@aifuxi/semi-ui-vue/pagination';\n</script>\n\n<template>\n  <LocaleProvider :locale=\"en_GB\">\n    <Pagination :total=\"100\" show-total />\n  </LocaleProvider>\n</template>"
+  },
+  "zh-CN-advanced-customize-theme-1": {
+    "kind": "code",
+    "language": "ts",
+    "source": "// main.ts：主题包提供编译后的 CSS，无需额外插件\nimport '你的主题包名称/semi.min.css';"
+  },
+  "zh-CN-advanced-customize-theme-2": {
+    "kind": "code",
+    "language": "scss",
+    "source": "// local.scss\n:root {\n  --semi-color-primary: rgb(0 100 250);\n}"
+  },
+  "zh-CN-advanced-customize-theme-3": {
+    "kind": "code",
+    "language": "ts",
+    "source": "// main.ts：组件入口会先加载默认主题，本地文件负责覆盖\nimport './local.scss';"
+  },
+  "zh-CN-advanced-customize-theme-4": {
+    "kind": "code",
+    "language": "css",
+    "source": ":root {\n  --semi-color-primary: rgb(0 100 250);\n  --semi-color-primary-hover: rgb(0 86 214);\n}"
+  },
+  "zh-CN-advanced-customize-theme-5": {
+    "kind": "code",
+    "language": "css",
+    "source": "/* .semi-* 是公开兼容契约；需要隔离时增加业务作用域。 */\n.custom-scope .semi-button {\n  border-radius: 999px;\n}"
+  },
+  "zh-CN-advanced-customize-theme-6": {
+    "kind": "code",
+    "language": "ts",
+    "source": "// main.ts：Vite 可直接加载主题包 CSS\nimport '你的主题包名称/semi.min.css';"
+  },
+  "zh-CN-advanced-customize-theme-7": {
+    "kind": "code",
+    "language": "scss",
+    "source": "// local.scss\n:root {\n  --semi-color-primary: rgb(0 100 250);\n}"
+  },
+  "zh-CN-advanced-customize-theme-8": {
+    "kind": "code",
+    "language": "ts",
+    "source": "// main.ts：Vite 会在组件默认主题之后应用本地覆盖\nimport './local.scss';"
+  },
+  "zh-CN-advanced-customize-theme-9": {
+    "kind": "code",
+    "language": "css",
+    "source": ":root {\n  --semi-color-primary: rgb(0 100 250);\n  --semi-color-primary-hover: rgb(0 86 214);\n}"
+  },
+  "zh-CN-advanced-customize-theme-10": {
+    "kind": "code",
+    "language": "css",
+    "source": "/* .semi-* 是公开兼容契约；需要隔离时增加业务作用域。 */\n.custom-scope .semi-button {\n  border-radius: 999px;\n}"
+  },
+  "zh-CN-advanced-customize-theme-11": {
+    "kind": "code",
+    "language": "css",
+    "source": "/* 组件级覆盖放在主题 CSS 之后。 */\n.semi-button {\n  border-radius: 8px;\n}"
+  },
+  "zh-CN-advanced-dark-mode-1": {
+    "kind": "code",
+    "language": "css",
+    "source": "body {\n  color: var(--semi-color-text-0);\n  background-color: var(--semi-color-bg-0);\n}"
+  },
+  "zh-CN-advanced-dark-mode-2": {
+    "kind": "code",
+    "language": "ts",
+    "source": "function setDarkMode(enabled: boolean) {\n  if (enabled) document.body.setAttribute('theme-mode', 'dark');\n  else document.body.removeAttribute('theme-mode');\n}"
+  },
+  "zh-CN-advanced-dark-mode-3": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { Button } from '@aifuxi/semi-ui-vue/button';\n\nfunction switchMode() {\n  const body = document.body;\n  if (body.getAttribute('theme-mode') === 'dark') body.removeAttribute('theme-mode');\n  else body.setAttribute('theme-mode', 'dark');\n}\n</script>\n\n<template>\n  <Button @click=\"switchMode\">切换亮暗模式</Button>\n</template>"
+  },
+  "zh-CN-advanced-dark-mode-4": {
+    "kind": "code",
+    "language": "ts",
+    "source": "const colorScheme = window.matchMedia('(prefers-color-scheme: dark)');\n\nfunction syncMode({ matches }: MediaQueryList | MediaQueryListEvent) {\n  if (matches) document.body.setAttribute('theme-mode', 'dark');\n  else document.body.removeAttribute('theme-mode');\n}\n\nsyncMode(colorScheme);\ncolorScheme.addEventListener('change', syncMode);"
+  },
+  "zh-CN-advanced-dark-mode-5": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { ref } from 'vue';\nimport { Button } from '@aifuxi/semi-ui-vue/button';\n\nconst mode = ref<'semi-always-dark' | 'semi-always-light'>('semi-always-dark');\nfunction switchMode() {\n  mode.value = mode.value === 'semi-always-dark' ? 'semi-always-light' : 'semi-always-dark';\n}\n</script>\n\n<template>\n  <section :class=\"mode\" style=\"padding: 16px; background: var(--semi-color-bg-0)\">\n    <Button @click=\"switchMode\">切换局部模式</Button>\n  </section>\n</template>"
+  },
+  "zh-CN-experience-accessibility-1": {
+    "kind": "code",
+    "language": "bash",
+    "source": "# 安装无障碍主题\npnpm add @semi-bot/semi-theme-a11y"
+  },
+  "zh-CN-experience-accessibility-2": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { Avatar } from '@aifuxi/semi-ui-vue/avatar';\n</script>\n\n<template>\n  <Avatar\n    alt=\"Person Name\"\n    src=\"https://lf9-static.bytednsdoc.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/a11y-img-alt-avatar.png\"\n    :style=\"{ margin: '4px' }\"\n  />\n</template>"
+  },
+  "zh-CN-ai-aiChatDialogue-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { AIChatDialogue } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-ai-aiChatDialogue-8": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { VNodeChild } from 'vue';\n\ntype renderHintBox = (props: {content: string; index: number,onHintClick: () => void}) => VNodeChild;"
+  },
+  "zh-CN-ai-aiChatDialogue-10": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { VNodeChild } from 'vue';\n\nexport interface RenderTitleProps {\n    message?: Message;\n    role?: Metadata;\n    defaultTitle?: VNodeChild\n}\n\nexport interface RenderAvatarProps {\n    message?: Message; \n    role?: Metadata, \n    defaultAvatar?: VNodeChild\n}\n\nexport interface RenderContentProps {\n    message?: Message;\n    role?: Metadata | Map<string, Metadata>;\n    defaultContent?: VNodeChild | VNodeChild[]; \n    className?: string;\n}\n\nexport interface DefaultActionNodeObj {\n    copyNode: VNodeChild;\n    likeNode: VNodeChild;\n    dislikeNode: VNodeChild;\n    resetNode: VNodeChild;\n    moreNode: VNodeChild;\n}\n\nexport interface RenderActionProps {\n    message?: Message;\n    defaultActions?: VNodeChild | VNodeChild[];\n    className: string;\n    defaultActionsObj?: DefaultActionNodeObj;\n};\n\nexport interface FullDialogueNodes {\n    avatar?: VNodeChild;\n    title?: VNodeChild; \n    content?: VNodeChild; \n    action?: VNodeChild\n}\n\nexport interface RenderFullDialogueProps {\n    message?: Message;\n    role?: Metadata;\n    defaultNodes?: FullDialogueNodes;\n    className: string\n}\n\n\nexport interface DialogueRenderConfig {\n    /* 自定义渲染标题 */\n    renderDialogueAction?: (props: RenderActionProps) => VNodeChild;\n    /* 自定义渲染头像 */\n    renderDialogueAvatar?: (props: RenderAvatarProps) => VNodeChild;\n    /* 自定义渲染内容区域 */\n    renderDialogueContent?: (props: RenderContentProps) => VNodeChild;\n    /* 自定义渲染消息操作栏 */\n    renderDialogueTitle?: (props: RenderTitleProps) => VNodeChild;\n    /* 完全自定义渲染整个聊天框 */\n    renderFullDialogue?: (props: RenderFullDialogueProps) => VNodeChild\n}"
+  },
+  "zh-CN-ai-aiChatDialogue-13": {
+    "kind": "code",
+    "language": "ts",
+    "source": "// 将 Chat Completion API 返回的数据转换为 Chat Dialogue 中的 Message 格式\nfunction chatCompletionToMessage(chatCompletion: ChatCompletion): Message[]\n\n// 将 Chat Completion API 流式返回数据转换为 Chat Dialogue 中的 Message 格式\nfunction streamingChatCompletionToMessage(chatCompletionChunks: ChatCompletionChunk[], state?: StreamingChatState): { messages: Message[]; state?: StreamingChatState }\n\n// 将 Response API 返回的数据转换为 Chat Dialogue 中的 Message 格式\nfunction responseToMessage(response: Response): Message\n\n// 将 Response API 返回流式数据转换为 Chat Dialogue 中的 Message 格式\nfunction streamingResponseToMessage(chunks: ResponseChunk[], prevState: StreamingResponseState): { messages: Message[]; state?: StreamingResponseState }\n\n// 将 Chat Input 数据转换为 Chat Dialogue 中的 Message 格式，（同 Response API Input Message 格式）\nfunction chatInputToMessage(inputContent: MessageContent): Message\n\n// 将 Chat Input 数据转换为 Chat Completion API 中的 Input Message 格式\nfunction chatInputToChatCompletion(inputContent: MessageContent): ChatCompletionInput"
+  },
+  "zh-CN-ai-aiChatDialogue-18": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import { AIChatDialogue } from '@aifuxi/semi-ui-vue/ai-chat-dialogue';\n\nconst markdownRenderProps = {\n  components: {\n    code: AIChatDialogue.defaultComponents.code,\n  },\n};"
+  },
+  "zh-CN-ai-aiChatDialogue-19": {
+    "kind": "code",
+    "language": "ts",
+    "source": "type ContentItem = InputContentItem | OutputContentItem;\n\ntype InputContentItem = InputMessage | ItemReference;\ntype OutputContentItem = OutputMessage | MCPToolCall | Reasoning | FileSearchToolCall | \n                        WebSearchToolCall | FunctionToolCall | CustomToolCall | ImageGenerationCall| CustomObject;\n\ninterface CommonContentItem {\n    id?: string;\n    type?: string;\n    status?: string;\n    role?: string\n}\n\ninterface CustomObject {\n    [key: string]: any\n}\n\n// input item\ninterface InputMessage extends CommonContentItem {\n    content?: string | (InputText | InputImage | InputFile)[]\n}\n\ninterface InputText extends CommonContentItem {\n    text?: string\n}\n\ninterface InputImage extends CommonContentItem {\n    detail?: string;\n    file_id?: string;\n    image_url?: string\n}\n\ninterface InputFile extends CommonContentItem {\n    file_id?: string;\n    file_data?: string;\n    file_url?: string;\n    filename?: string;\n    size?: string;\n    file_type?: string;\n    fileInstance?: any\n}\n\ninterface ItemReference extends CommonContentItem {\n    file_id?: string\n}\n\n\n// output item\ninterface OutputMessage extends CommonContentItem {\n    content?: (OutputText | Refusal)[]\n}\n\ninterface OutputText {\n    text?: string;\n    type?: string;\n    annotations?: Annotation[]\n}\n\ninterface Refusal extends CommonContentItem {\n    refusal?: string;\n    type?: string\n}\n\ntype Annotation = URLCitation | CustomObject;\n\ninterface URLCitation {\n    end_index?: number;\n    start_index?: number;\n    title?: string;\n    type?: string;\n    url?: string\n}\n\ninterface Reasoning extends CommonContentItem {\n    summary?: {\n        text?: string;\n        type?: string\n    }[];\n    content?: {\n        text?: string;\n        type?: string\n    }[]\n}\n\ninterface FileSearchToolCallResult {\n    attributes?: Map<string, string>;\n    score?: number;\n    file_id?: string;\n    filename?: string;\n    text?: string\n}\n\ninterface FileSearchToolCall extends CommonContentItem {\n    queries?: string[];\n    results?: FileSearchToolCallResult[]\n}\n\ninterface WebSearchToolCall extends CommonContentItem {\n    action?: SearchAction | OpenPageAction | FindAction\n}\n\ninterface SearchAction {\n    type?: string;\n    query?: string;\n    sources?: { type: string; url: string }[]\n}\n\ninterface OpenPageAction {\n    type?: string;\n    url?: string\n}\n\ninterface FindAction {\n    action?: string;\n    type?: string;\n    query?: string\n}\n\ninterface FunctionToolCall extends CommonContentItem {\n    call_id?: string;\n    name?: string;\n    arguments?: string\n}\n\ninterface CustomToolCall extends CommonContentItem {\n    call_id?: string;\n    name?: string;\n    input?: string\n}\n\ninterface ImageGenerationCall extends CommonContentItem {\n    result?: string\n}\n\ninterface MCPToolCall extends CommonContentItem {\n    arguments?: string;\n    server_label?: string;\n    name?: string;\n    result?: string;\n    output?: string\n}\n\ninterface FileUploadToolCall extends CommonContentItem {\n    result?: string\n}"
+  },
+  "zh-CN-ai-aiChatInput-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { AIChatInput } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-ai-aiChatInput-7": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { VNodeChild } from 'vue';\n\nfunction getConfigureItem(\n    component: VNodeChild,\n    opts: {\n        // 指定需要接管的组件的 value 对应的 key，默认是 value\n        valueKey?: string; \n        // 指定需要接管的组件的值变化对应的函数名，默认是 onChange\n        onKeyChangeFnName?: string;\n        // 指定需要接管的组件的值变化函数参数中 value 对应的路径，默认是 ''\n        valuePath?: string;\n        className?: string;\n        defaultProps?: Record<string, any>\n    }\n)"
+  },
+  "zh-CN-ai-aiChatInput-9": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { VNodeChild } from 'vue';\n\ninterface ActionAreaProps {\n    menuItem: VNodeChild[];\n    className: string\n}"
+  },
+  "zh-CN-ai-aiChatInput-14": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { VNodeChild } from 'vue';\n\ninterface Skill {\n    label?: string;\n    value?: string;\n    icon?: VNodeChild;\n    // 技能是否有模版，有模版的技能被选中后，将在输入框的底部展示模版按钮\n    hasTemplate?: boolean;\n}"
+  },
+  "zh-CN-ai-aiChatInput-15": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { VNodeChild } from 'vue';\n\ntype RenderTemplate = (\n    skill: Skill, \n    // 模版点击回调，点击模版后，将模版的内容插入到输入框中\n    onTemplateClick: (content: string) => void\n) => VNodeChild;"
+  },
+  "zh-CN-ai-aiChatInput-17": {
+    "kind": "code",
+    "language": "ts",
+    "source": "interface TopSlotProps {\n    // 引用\n    references: Reference[];\n    // 上传内容\n    attachments: Attachment[];\n    // 输入框消息\n    content: Content[];\n    handleUploadFileDelete: (attachment: Attachment) => void;\n    handleReferenceDelete: (reference: Reference) => void\n}"
+  },
+  "zh-CN-ai-sidebar-2": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { VNodeChild } from 'vue';\n\ninterface MCPOption {\n    icon?: VNodeChild;\n    label?: string;\n    value?: string;\n    desc?: VNodeChild;\n    active?: boolean;\n    disabled?: boolean; \n    configure?: boolean //是否显示配置按钮\n}"
+  },
+  "zh-CN-basic-button-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Button, SplitButtonGroup } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-basic-divider-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Divider } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-basic-floatbutton-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { FloatButton } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-basic-grid-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Col, Row } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-basic-icon-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import Icon, { IconHome } from '@aifuxi/semi-icons-vue';\nimport { IconAvatar, IconCard } from '@aifuxi/semi-icons-lab-vue';"
+  },
+  "zh-CN-basic-icon-9": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { Icon } from '@aifuxi/semi-ui-vue/icon';\nimport StarIcon from './StarIcon.vue';\n</script>\n\n<template>\n  <Icon><StarIcon /></Icon>\n</template>"
+  },
+  "zh-CN-basic-layout-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Layout } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-basic-layout-10": {
+    "kind": "code",
+    "language": "text",
+    "source": "{\n    xs: '(max-width: 575px)',\n    sm: '(min-width: 576px)',\n    md: '(min-width: 768px)',\n    lg: '(min-width: 992px)',\n    xl: '(min-width: 1200px)',\n    xxl: '(min-width: 1600px)',\n};"
+  },
+  "zh-CN-basic-resizable-1": {
+    "kind": "code",
+    "language": "js",
+    "source": "import { Resizable } from '@aifuxi/semi-ui-vue';\nimport { ResizeItem, ResizeHandler, ResizeGroup } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-basic-resizable-2": {
+    "kind": "code",
+    "language": "ts",
+    "source": "interface Size {\n    width: string | number;\n    height: string | number;\n}"
+  },
+  "zh-CN-basic-resizable-4": {
+    "kind": "code",
+    "language": "ts",
+    "source": "interface Enable {\n    left: Boolean;\n    right: Boolean;\n    top: Boolean;\n    bottom: Boolean;\n    topLeft: Boolean;\n    topRight: Boolean;\n    bottomLeft: Boolean;\n    bottomRight: Boolean;\n}"
+  },
+  "zh-CN-basic-resizable-12": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { StyleValue, VNodeChild } from 'vue';\n\ntype HandleNode = {\n    left: VNodeChild,\n    right: VNodeChild,\n    top: VNodeChild,\n    bottom: VNodeChild,\n    topLeft: VNodeChild,\n    topRight: VNodeChild,\n    bottomLeft: VNodeChild,\n    bottomRight: VNodeChild,\n};\n\ntype HandleStyle = {\n    left: StyleValue,\n    right: StyleValue,\n    top: StyleValue,\n    bottom: StyleValue,\n    topLeft: StyleValue,\n    topRight: StyleValue,\n    bottomLeft: StyleValue,\n    bottomRight: StyleValue,\n};\n\ntype HandleClass = {\n    left: string,\n    right: string,\n    top: string,\n    bottom: string,\n    topLeft: string,\n    topRight: string,\n    bottomLeft: string,\n    bottomRight: string,\n};"
+  },
+  "zh-CN-basic-resizable-14": {
+    "kind": "code",
+    "language": "ts",
+    "source": "interface Snap {\n    x: number[];\n    y: number[];\n}"
+  },
+  "zh-CN-basic-space-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Space } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-basic-typography-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Typography } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-basic-typography-12": {
+    "kind": "code",
+    "language": "scss",
+    "source": "// 按需配置 word-break\n\n.components-typography-demo {\n    word-break: break-word;\n    // 或\n    word-break: break-all;\n}"
+  },
+  "zh-CN-plus-audioPlayer-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { AudioPlayer } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-plus-chat-1": {
+    "kind": "code",
+    "language": "js",
+    "source": "import { Chat } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-plus-chat-6": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { VNodeChild } from 'vue';\n\nexport interface RenderTitleProps {\n    message?: Message;\n    role?: Metadata;\n    defaultTitle?: VNodeChild\n}\n\nexport interface RenderAvatarProps {\n    message?: Message; /* Supported in  2.69.0*/\n    role?: Metadata, \n    defaultAvatar?: VNodeChild\n}\n\nexport interface RenderContentProps {\n    message?: Message;\n    role?: Metadata;\n    defaultContent?: VNodeChild | VNodeChild[]; \n    className?: string;\n}\n\nexport interface DefaultActionNodeObj {\n    copyNode: VNodeChild;\n    likeNode: VNodeChild;\n    dislikeNode: VNodeChild;\n    resetNode: VNodeChild;\n    deleteNode: VNodeChild;\n}\n\nexport interface RenderActionProps {\n    message?: Message;\n    defaultActions?: VNodeChild | VNodeChild[];\n    className: string;\n    defaultActionsObj?: DefaultActionNodeObj; /* Supported in  2.69.0*/\n};\n\nexport interface FullChatBoxNodes {\n    avatar?: VNodeChild;\n    title?: VNodeChild; \n    content?: VNodeChild; \n    action?: VNodeChild\n}\n\nexport interface RenderFullChatBoxProps {\n    message?: Message;\n    role?: Metadata;\n    defaultNodes?: FullChatBoxNodes;\n    className: string;\n}\n\nexport interface ChatBoxRenderConfig {\n    /* 自定义渲染标题 */\n    renderChatBoxTitle?: (props: RenderTitleProps) => VNodeChild;\n    /* 自定义渲染头像 */\n    renderChatBoxAvatar?: (props: RenderAvatarProps) => VNodeChild;\n    /* 自定义渲染内容区域 */\n    renderChatBoxContent?: (props: RenderContentProps) => VNodeChild;\n    /* 自定义渲染消息操作栏 */\n    renderChatBoxAction?: (props: RenderActionProps) => VNodeChild;\n    /* 完全自定义渲染整个聊天框 */\n    renderFullChatBox?: (props: RenderFullChatBoxProps) => VNodeChild\n}"
+  },
+  "zh-CN-plus-chat-11": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { VNodeChild } from 'vue';\n\nexport interface RenderInputAreaProps {\n    /* 默认节点 */\n    defaultNode?: VNodeChild;\n    /* 如果自定义输入框，发送消息时需调用 */\n    onSend?: (content?: string, attachment?: FileItem[]) => void;\n    /* 如果自定义清除上下文按钮，点击清除上下文时需调用 */\n    onClear?: (e?: any) => void;\n    /* detailProps 自 2.69.0 版本开始支持 */\n    detailProps: {\n        /* 清除上下文按钮 */\n        clearContextNode?: VNodeChild;\n        /* 上传按钮 */\n        uploadNOde?: VNodeChild;\n        /* 文本输入框 */\n        inputNode?: VNodeChild;\n        /* 发送按钮 */\n        sendNode?: VNodeChild;\n        /* 点击触发聚焦文本输入框的处理函数*/\n        onClick?: (e?: MouseEvent) => void;\n    }\n}"
+  },
+  "zh-CN-plus-chat-12": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import { h, type VNodeChild } from 'vue';\nimport type { ChatRenderInputAreaProps } from '@aifuxi/semi-ui-vue/chat';\n\nfunction renderInputArea({ detailProps }: ChatRenderInputAreaProps): VNodeChild {\n  const { uploadNode, inputNode, sendNode, onClick } = detailProps;\n  return h(\n    'div',\n    {\n      style: {\n        margin: '8px 16px',\n        display: 'flex',\n        alignItems: 'flex-end',\n        padding: '10px',\n        border: '1px solid var(--semi-color-border)',\n        borderRadius: '16px',\n      },\n      onClick,\n    },\n    [uploadNode, inputNode, sendNode],\n  );\n}"
+  },
+  "zh-CN-plus-chat-15": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { VNodeChild } from 'vue';\n\ntype renderHintBox = (props: {content: string; index: number,onHintClick: () => void}) => VNodeChild;"
+  },
+  "zh-CN-plus-codehighlight-1": {
+    "kind": "code",
+    "language": "js",
+    "source": "import { CodeHighlight } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-plus-codehighlight-4": {
+    "kind": "code",
+    "language": "javascript",
+    "source": "import \"prismjs/components/prism-vala.js\""
+  },
+  "zh-CN-plus-dragMove-1": {
+    "kind": "code",
+    "language": "js",
+    "source": "import { DragMove } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-plus-hotkeys-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { HotKeys } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-plus-jsonviewer-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { JsonViewer } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-plus-lottie-1": {
+    "kind": "code",
+    "language": "js",
+    "source": "import { Lottie } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-plus-lottie-4": {
+    "kind": "code",
+    "language": "json",
+    "source": "//params\n{\n    container: element, // 渲染容器，不传则由 Semi Lottie 组件自动配置并生成\n    renderer: 'svg', // 渲染方式， 默认 SVG\n    loop: true, // 是否开启循环，默认 true\n    autoplay: true, // 是否自动播放，默认 true，设置为 false 时需要通过动画实例上的 play 方法手动播放\n    path: 'data.json' // 动画 JSON 文件的 URL 路径 （与 animationData 互斥）\n    animationData: {/*...*/} // 动画的 JSON 对象 （与 animationData 互斥）\n    /*...*/\n}"
+  },
+  "zh-CN-plus-markdownrender-1": {
+    "kind": "code",
+    "language": "js",
+    "source": "import { MarkdownRender } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-plus-markdownrender-5": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { MarkdownRender } from '@aifuxi/semi-ui-vue/markdown-render';\nimport rehypeRaw from 'rehype-raw';\n\nconst raw = '<span style=\"color:red\">红色文字</span>';\n</script>\n\n<template>\n  <MarkdownRender format=\"md\" :raw=\"raw\" :rehype-plugins=\"[rehypeRaw]\" />\n</template>"
+  },
+  "zh-CN-plus-videoPlayer-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { VideoPlayer } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-autocomplete-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { AutoComplete } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-cascader-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Cascader } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-cascader-7": {
+    "kind": "code",
+    "language": "ts",
+    "source": "interface FilterRenderProps {\n    className: string;\n    inputValue: string;     // 搜索栏搜索内容\n    disabled: boolean;      // 是否禁用\n    data: CascaderData[];   // 搜索结果数据\n    selected: boolean;      // 单选时的选中状态  \n    checkStatus:  {         // 多选时的选中状态\n        checked: boolean;\n        halfChecked: boolean;\n    };\n    onClick: (e: MouseEvent) => void;  // 单选点击选中回调\n    onCheck: (e: MouseEvent) => void; // 多选点击选中回调\n }"
+  },
+  "zh-CN-input-cascader-14": {
+    "kind": "code",
+    "language": "typescript",
+    "source": "interface Entity {\n    children?: Entity[];         // children list\n    data: CascaderData;              // treedata\n    ind: number;                 // index\n    key: string;                 // key\n    level: number;               // node level\n    parent?: Entity;             // parent data\n    parentKey?: string;          // parent key\n    path: string[];              // key path\n    valuePath: string[];         // value path\n}"
+  },
+  "zh-CN-input-cascader-30": {
+    "kind": "code",
+    "language": "css",
+    "source": ".components-cascader-demo {\n    .semi-cascader-option-lists {\n        max-width: 510px;\n        overflow-x: auto;\n    }\n}"
+  },
+  "zh-CN-input-cascader-31": {
+    "kind": "code",
+    "language": "typescript",
+    "source": "interface TriggerRenderProps {\n    /* Cascader 的 props */\n    componentProps: CascaderProps;\n    /* 是否禁用 Cascader */\n    disabled: boolean;\n    /**\n     * 已选中的 node 在 treeData 中的层级位置，如下例子，\n     * 当选中浙江省-杭州市-萧山区时，此处 value 为 '0-0-1'\n     */\n    value?: string | Set<string>;\n    /* 当前 Input 框的输入值 */\n    inputValue: string;\n    /**\n     * 用于更新 input 框值的函数，当你在 triggerRender 自定义的\n     * Input 组件值更新时，你应该调用该函数，用于向 Cascader 内部\n     * 同步状态, 使用时需要设置 filterTreeNode 参数非 false\n     */\n    onSearch: (inputValue: string) => void;\n    /* 用于清空值的函数 */\n    onClear: () => void;\n    /* Placeholder */\n    placeholder?: string;\n    /* 用于删除单个 item ， 入参为 value */\n    onRemove: (value) => void\n}"
+  },
+  "zh-CN-input-checkbox-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Checkbox, CheckboxGroup } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-colorpicker-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { ColorPicker } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-datepicker-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { DatePicker } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-datepicker-17": {
+    "kind": "code",
+    "language": "css",
+    "source": ".components-datepicker-demo-slot {\n    .semi-tabs-content {\n        padding: 0;\n    }\n\n    .semi-tabs-bar-line.semi-tabs-bar-top {\n        border-bottom: none;\n    }\n}"
+  },
+  "zh-CN-input-datepicker-26": {
+    "kind": "code",
+    "language": "md",
+    "source": "type DayStatusType = {\n    isToday?: boolean; // 当前日\n    isSelected?: boolean; // 被选中\n    isDisabled?: boolean; // 被禁用\n    isSelectedStart?: boolean; // 选中开始\n    isSelectedEnd?: boolean; // 选中结束\n    isInRange?: boolean; // 范围选中日期内\n    isHover?: boolean; // 日期在选择项和hover日期之间\n    isOffsetRangeStart?: boolean; // 周选择开始\n    isOffsetRangeEnd?: boolean; // 周选择结束\n    isHoverInOffsetRange?: boolean; // hover在周选择内\n};"
+  },
+  "zh-CN-input-datepicker-28": {
+    "kind": "code",
+    "language": "css",
+    "source": ".components-datepicker-demo-day-inrange,\n.components-datepicker-demo-day-hover {\n    background: var(--semi-color-primary-light-hover);\n}\n\n.components-datepicker-demo-day-selected,\n.components-datepicker-demo-day-selected-start,\n.components-datepicker-demo-day-selected-end {\n    color: var(--semi-color-bg-2);\n    background: var(--semi-color-primary);\n}"
+  },
+  "zh-CN-input-datepicker-30": {
+    "kind": "code",
+    "language": "typescript",
+    "source": "type BaseValueType = string | number | Date;\ntype ValueType = BaseValueType | BaseValueType[];\ntype DateType = Date | Date[];\ntype StringType = string | string[];\ntype TriggerRenderProps = {\n    value?: ValueType;\n    inputValue?: string;\n    placeholder?: string | string[];\n    autoFocus?: boolean;\n    size?: InputSize;\n    disabled?: boolean;\n    inputReadOnly?: boolean;\n    componentProps?: DatePickerProps;\n    [x: string]: any;\n};"
+  },
+  "zh-CN-input-form-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Form } from '@aifuxi/semi-ui-vue';\n// 具有数据同步功能的表单控件，在<Form></Form>内使用时，数据流会被Form自动接管\n// 从Form中导出表单控件时，你还可以进行重命名（这里命名为FormInput仅仅是为了在以下示例中跟普通Input做区分）\nconst FormInput = Form.Input;\nconst FormSelect = Form.Select;\nconst Option = FormSelect.Option;\n// 普通Input，在<Form></Form>内部使用时，Form不会对其做任何处理\nimport { Input } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-form-16": {
+    "kind": "code",
+    "language": "text",
+    "source": "import { Form } from '@aifuxi/semi-ui-vue';\nconst { Label, ErrorMessage } = Form;"
+  },
+  "zh-CN-input-form-33": {
+    "kind": "code",
+    "language": "js",
+    "source": "import { useFormApi, useFormState, useFieldApi, useFieldState } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-form-38": {
+    "kind": "code",
+    "language": "text",
+    "source": "import { withFormApi, withFormState, withField } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-form-41": {
+    "kind": "code",
+    "language": "js",
+    "source": "withField(YourComponent, withFieldOption);"
+  },
+  "zh-CN-input-form-45": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { Form, FormInput, useForm } from '@aifuxi/semi-ui-vue/form';\nimport { Button } from '@aifuxi/semi-ui-vue/button';\n\nconst [formApi] = useForm();\n\nfunction logForm() {\n  console.log(formApi.getFormState());\n}\n</script>\n\n<template>\n  <Form :form=\"formApi\">\n    <FormInput field=\"a\" />\n    <Button @click=\"logForm\">log</Button>\n  </Form>\n</template>"
+  },
+  "zh-CN-input-form-46": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { ref } from 'vue';\nimport { Form, type FormApi } from '@aifuxi/semi-ui-vue/form';\nimport { Button } from '@aifuxi/semi-ui-vue/button';\n\nconst formA = ref<{ formApi: FormApi } | null>(null);\nconst formB = ref<{ formApi: FormApi } | null>(null);\n\nfunction changeValues() {\n  formA.value?.formApi.setValues({ a: 1 });\n  formB.value?.formApi.setValues({ b: 2 });\n}\n</script>\n\n<template>\n  <Form ref=\"formA\" />\n  <Form ref=\"formB\" />\n  <Button @click=\"changeValues\">Change</Button>\n</template>"
+  },
+  "zh-CN-input-form-47": {
+    "kind": "code",
+    "language": "ts",
+    "source": "interface ArrayFieldChildrenProps {\n    arrayFields: ArrayFieldItem[];                               // 当前数组表单，可以用来执行map操作渲染出每一行\n    add: () => void;                                             // 新增空白行\n    addWithInitValue: (lineObject: Record<string, any>) => void; // 新增一个带初始值的行\n}\n\ninterface ArrayFieldItem {\n    key: string;        // 一个用于标识当前行的key，应当绑定在当前行的 wrapper 上\n    field: string;      // 本行 fieldPath, 它等同于 ArrayFieldProps.field + [index]\n    remove: () => void; // 移除本行的操作函数，调用时将直接删除本行\n}"
+  },
+  "zh-CN-input-form-48": {
+    "kind": "code",
+    "language": "js",
+    "source": "import { Form } from '@aifuxi/semi-ui-vue';\nconst { Section } = Form;"
+  },
+  "zh-CN-input-form-49": {
+    "kind": "code",
+    "language": "js",
+    "source": "import { Form } from '@aifuxi/semi-ui-vue';\nconst { Label } = Form;"
+  },
+  "zh-CN-input-form-50": {
+    "kind": "code",
+    "language": "js",
+    "source": "import { Form } from '@aifuxi/semi-ui-vue';\nconst { Slot } = Form;"
+  },
+  "zh-CN-input-form-51": {
+    "kind": "code",
+    "language": "js",
+    "source": "import { Form } from '@aifuxi/semi-ui-vue';\nconst { ErrorMessage } = Form;"
+  },
+  "zh-CN-input-input-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Input } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-inputnumber-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { InputNumber } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-pincode-1": {
+    "kind": "code",
+    "language": "js",
+    "source": "import { PinCode } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-radio-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Radio, RadioGroup } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-rating-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Rating } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-select-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Select } from '@aifuxi/semi-ui-vue';\nconst Option = Select.Option;"
+  },
+  "zh-CN-input-select-23": {
+    "kind": "code",
+    "language": "css",
+    "source": ".semi-select-option-list > div {\n    will-change: unset !important; // 由于 react-window自带样式是内联的，所以这里用 important 覆盖\n}"
+  },
+  "zh-CN-input-select-25": {
+    "kind": "code",
+    "language": "typescript",
+    "source": "interface TriggerRenderProps {\n  value: object[] // 当前所有已选中的options\n  inputValue: string; // 当前input框的输入值\n  onSearch: (inputValue: string) => void; // 用于更新 input框值的函数，当你在triggerRender自定义的Input组件值更新时你应该调用该函数，用于向Select内部同步状态。注意 filter 需同时设为true, v2.32 提供\n  onRemove: (option: object) => void; // 用于移除单个已选项，option至少需带有 label、value 两项，v2.32提供\n  onClear: () => void; // 用于清空值的函数\n  disabled: boolean; // 是否禁用Select\n  placeholder: string; // Select的placeholder\n  componentProps: object // 所有用户传给Select的props\n}"
+  },
+  "zh-CN-input-select-29": {
+    "kind": "code",
+    "language": "scss",
+    "source": ".components-select-demo-renderOptionItem {\n    .custom-option-render {\n        display: flex;\n        font-size: 14px;\n        line-height: 20px;\n        word-break: break-all;\n        padding-left: 12px;\n        padding-right: 12px;\n        padding-top: 8px;\n        padding-bottom: 8px;\n        color: var(--semi-color-text-0);\n        position: relative;\n        display: flex;\n        align-items: center;\n        cursor: pointer;\n        box-sizing: border-box;\n        .option-right {\n            margin-left: 8px;\n            display: inline-flex;\n            align-items: center;\n        }\n        &:active {\n            background-color: var(--semi-color-fill-1);\n        }\n        &-focused {\n            background-color: var(--semi-color-fill-0);\n        }\n        &-selected {\n            //font-weight: 700;\n        }\n        &-disabled {\n            color: var(--semi-color-disabled-text);\n            cursor: not-allowed;\n        }\n        &:first-of-type {\n            margin-top: 4px;\n        }\n        &:last-of-type {\n            margin-bottom: 4px;\n        }\n    }\n}"
+  },
+  "zh-CN-input-select-30": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import { shallowRef } from 'vue';\nimport type { SelectModelValue } from '@aifuxi/semi-ui-vue/select';\n\nconst selected = shallowRef<string[]>([]);\n\nfunction change(value: SelectModelValue) {\n  if (Array.isArray(value) && value.every((item) => typeof item === 'string')) {\n    selected.value = value;\n  }\n}"
+  },
+  "zh-CN-input-slider-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Slider } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-switch-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Switch } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-taginput-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { TagInput } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-timepicker-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { TimePicker } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-transfer-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Transfer } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-transfer-5": {
+    "kind": "code",
+    "language": "css",
+    "source": ".components-transfer-demo-selected-item {\n    .semi-icon-close {\n        visibility: hidden;\n        color: var(--semi-color-tertiary);\n    }\n    &:hover {\n        .semi-icon-close {\n            visibility: visible;\n        }\n    }\n}\n\n.components-transfer-demo-selected-item,\n.components-transfer-demo-source-item {\n    height: 52px;\n    box-sizing: border-box;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    padding: 10px 12px;\n    &:hover {\n        background-color: var(--semi-color-fill-0);\n    }\n    .info {\n        margin-left: 8px;\n        flex-grow: 1;\n    }\n    .name {\n        font-size: 14px;\n        line-height: 20px;\n    }\n    .email {\n        font-size: 12px;\n        line-height: 16px;\n        color: var(--semi-color-text-2);\n    }\n}"
+  },
+  "zh-CN-input-transfer-11": {
+    "kind": "code",
+    "language": "ts",
+    "source": "type SourceHeaderProps = {\n    num: number; // 数据总数或筛选结果数目\n    showButton: boolean; // 是否展示全选/取消全选按钮\n    allChecked: boolean; // 当前数据是否已全选\n    onAllClick: () => void; // 点击全选/取消全选按钮后应调用的函数\n    leafOnlyNum?: number; // 仅在 type 为 treeList 时有效，表示叶子节点数量 >=2.94.0\n}\n\ntype SelectedHeaderProps = {\n    num: number; // 已选中数据总数\n    showButton: boolean; // 是否展示清空按钮\n    onClear: () => void // 点击清空按钮后应调用的函数\n}"
+  },
+  "zh-CN-input-transfer-13": {
+    "kind": "code",
+    "language": "ts",
+    "source": "interface SourcePanelProps {\n  value: Array<string|number>; // 所有选中项的key\n  loading: boolean;  // 是否加载中\n  noMatch: boolean;  // 是否没有符合当前搜索值匹配的项\n  filterData: Array<Item> // 匹配当前搜索值的项\n  sourceData: Array<Item>; // 所有项\n  allChecked: boolean; // 是否全部选中\n  showNumber: number; // 筛选结果数量\n  inputValue: string; // input搜索框的值\n  onSearch: (searchString: string) => any; // 搜索框变化时应调用的函数，入参为搜索值\n  onAllClick: () => void; // 左侧全部按钮点击时应调用的函数\n  onSelectOrRemove: (item: Item) => any; //选择、删除单个选项时应调用的函数，入参应为当前操作item\n  onSelect: (value:Array<string|number>)=>void; // 受控批量选中key\n  selectedItem: Map, // 所有已选项的集合\n}"
+  },
+  "zh-CN-input-transfer-14": {
+    "kind": "code",
+    "language": "ts",
+    "source": "interface SelectedPanelProps {\n  length: number; // 已选项的数量\n  onClear: () => void; // 点击清空时应调用的回调函数\n  onRemove: (item: Item) => void; // 删除单个选项时应调用的函数\n  onSortEnd: ({ oldIndex, newIndex}) => void; // 对结果重新排序时应调用的函数\n  selectedData: Array<Item>; // 所有已选项集合\n}"
+  },
+  "zh-CN-input-transfer-16": {
+    "kind": "code",
+    "language": "scss",
+    "source": ".component-transfer-demo-custom-panel {\n\n    .sp-font {\n        color: rgba(var(--semi-grey-9), 1);\n        font-size: 12px;\n        font-weight: 500;\n        line-height: 20px;\n    }\n\n    .empty {\n        width: 100%;\n        height: 100%;\n        display: flex;\n        align-items: center;\n        justify-content: center;\n    }\n\n    .panel-item {\n        flex-shrink: 0;\n        height: 56px;\n        border-radius: 4px;\n        padding: 8px 12px;\n        flex-wrap: wrap;\n        background-color: rgba(22, 24, 35, .03);\n\n        &-main {\n            flex-grow: 1;\n        }\n\n        p {\n            margin: 0 12px;\n            flex-basis: 100%;\n        }\n\n        .panel-item-remove {\n            cursor: pointer;\n            color: var(--semi-color-primary);\n        }\n    }\n\n    .panel-header {\n        padding: 10px 12px;\n        border: 1px solid rgba(22, 24, 35, .16);\n        border-radius: 4px 4px 0 0;\n        height: 38px;\n        box-sizing: border-box;\n        background-color: var(--semi-color-tertiary-light-default);\n        display: flex;\n        align-items: center;\n        justify-content: space-between;\n\n        .clear {\n            cursor: pointer;\n            color: var(--semi-color-primary);\n        }\n    }\n\n    .source-panel {\n        display: flex;\n        flex-direction: column;\n        width: 482px;\n        height: 353px;\n\n        .panel-main {\n            border: 1px solid var(--semi-color-border);\n            border-top: none;\n\n            .panel-list {\n                display: flex;\n                flex-wrap: wrap;\n                row-gap: 8px;\n                column-gap: 8px;\n                overflow-y: auto;\n                height: 214px;\n                margin-left: 12px;\n                margin-right: 12px;\n                padding-bottom: 8px;\n            }\n        }\n\n        .panel-controls {\n            margin: 10px 12px;\n            font-size: 12px;\n            line-height: 20px;\n\n            .semi-button {\n                margin-left: 8px;\n                font-size: 12px;\n            }\n        }\n\n        .panel-item {\n            width: 176px;\n        }\n\n        margin-right: 16px;\n    }\n\n    .selected-panel {\n        width: 200px;\n        height: 353px;\n\n        .panel-main {\n            display: flex;\n            flex-direction: column;\n            overflow-y: auto;\n            padding: 12px;\n            border: 1px solid var(--semi-color-border);\n            border-top: none;\n            height: 323px;\n            box-sizing: border-box;\n            row-gap: 8px;\n        }\n    }\n}"
+  },
+  "zh-CN-input-transfer-18": {
+    "kind": "code",
+    "language": "text",
+    "source": "1. 作用：通过唯一标志 id 获取拖拽过程中必要信息\n2. 核心输入参数：\n    - id: 唯一标识, 以为数字或者字符串，但是不能为数字 0\n3. 核心返回值说明:\n\t- setNodeRef: 关联 dom 节点，使其成为一个可拖拽的项\n\t- listeners: 包含 onKeyDown，onPointerDown 等方法，主要让节点可以进行拖拽\n\t- transform：该节点被拖动时候的移动变化值\n\t- transition：过渡效果\n    - active: 被拖拽节点的相关信息，包括 id"
+  },
+  "zh-CN-input-transfer-20": {
+    "kind": "code",
+    "language": "text",
+    "source": "{\n    multiple:true,\n    disableStrictly:true,\n    leafOnly:true,\n    filterTreeNode:true,\n    searchRender:flase,\n\n}"
+  },
+  "zh-CN-input-treeselect-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { TreeSelect } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-treeselect-19": {
+    "kind": "code",
+    "language": "typescript",
+    "source": "interface TriggerRenderProps {\n    componentProps: TreeSelectProps;// 所有用户传给 TreeSelect 的 props\n    disabled: boolean;              // 是否禁用 TreeSelect\n    value: TreeNodeData[];              // 已选中的 node 的数据\n    inputValue: string;             // 当前 input 框的输入值\n    onClear: (event: Event) => void;             // 用于清空值的函数\n    placeholder: string;            // placeholder\n    /* 删除单个 item 时调用的函数，以 item 的 key 作为入参， \n     * 从 v2.32.0 版本开始支持 \n    */\n    onRemove: (key: string | number) => void;          \n    /**\n     * 用于在 Input 框值更新时候启动搜索，当你在 triggerRender 自定义的\n     * Input 组件值更新时，你应该调用该函数，用于向 TreeSelect 内部\n     * 同步状态, 使用同时需要设置 filterTreeNode 参数非 false, \n     * searchPosition 为 'trigger'\n     * 从 v2.32.0 版本开始支持\n    */\n    onSearch: (inputValue: string) => void;   \n}"
+  },
+  "zh-CN-input-treeselect-22": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { TreeSelect } from '@aifuxi/semi-ui-vue/tree-select';\n</script>\n\n<template>\n  <TreeSelect aria-label=\"示例树选择器\" />\n</template>"
+  },
+  "zh-CN-input-upload-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Upload } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-input-upload-8": {
+    "kind": "code",
+    "language": "css",
+    "source": ".avatar-upload .semi-upload-add {\n    border-radius: 50%; // 确保只有圆是点击热区\n}"
+  },
+  "zh-CN-input-upload-35": {
+    "kind": "code",
+    "language": "scss",
+    "source": ".components-upload-demo-drag-area {\n    border-radius: var(--semi-border-radius-small);\n    border: 2px dashed var(--semi-color-border);\n    width: 100%;\n    padding: 12px;\n    background-color: var(--semi-color-tertiary-light-default);\n    display: flex;\n    cursor: pointer;\n    flex-wrap: wrap;\n    justify-content: center;\n    &:hover {\n        background-color: var(--semi-color-primary-light-default);\n        border-color: var(--semi-color-primary);\n    }\n}"
+  },
+  "zh-CN-input-upload-36": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { VNodeChild } from 'vue';\n\ninterface BeforeUploadResult {\n    fileInstance?: File,\n    status?: 'success' | 'uploadFail' | 'validateFail' | 'validating' | 'uploading' | 'wait',\n    validateMessage?: VNodeChild | string, // 文件的校验信息\n    shouldUpload: boolean, // 是否需要上传。默认为true，如果为false，该fileItem只会被展示在列表中，不会触发上传操作\n    autoRemove: boolean, // 是否从fileList中移除该文件，默认为false\n}"
+  },
+  "zh-CN-input-upload-39": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { VNodeChild } from 'vue';\n\ninterface AfterUploadResult {\n    status?: 'success' | 'uploadFail' | 'validateFail' | 'validating' | 'uploading' | 'wait';\n    // 文件的校验信息\n    validateMessage?: VNodeChild | string;\n    // 是否从fileList中移除该文件，默认为false\n    autoRemove?: boolean;\n    // 文件的名称\n    name?: string;\n    // 预览文件的url，一般为当次上传请求中 Server 接收到文件后返回的存储地址，v2.63后支持传入。\n    // 之前的版本也可以通过 onChange 中结合 status 手动更新受控 fileList 中的属性实现\n    url?: string \n}"
+  },
+  "zh-CN-input-upload-41": {
+    "kind": "code",
+    "language": "ts",
+    "source": "interface CustomRequestArgs {\n    // 当前文件名称\n    fileName: string,\n    // 用户设置的props.data\n    data: object,\n    // FileItem，具体结构参考下面的文档\n    file: FileItem,\n    // original File Object which extends Blob, 浏览器实际获取到的文件对象(https://developer.mozilla.org/zh-CN/docs/Web/API/File)\n    fileInstance: File,\n    // 上传过程中应调用的函数，event需要包含 total、loaded属性\n    onProgress: (event: { total: number, loaded: number }) => any,\n    // 上传出错时应调用的函数\n    onError: (userXhr: { status: number }, e: Event) => any,\n     // 上传成功后应调用的函数, response为上传成功后的请求结果\n    onSuccess: (response: any, e?: event) => any,\n    // 用户设置的props.withCredentials\n    withCredentials: boolean,\n    // 用户设置的props.action\n    action: string,\n}"
+  },
+  "zh-CN-input-upload-49": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { VNodeChild } from 'vue';\n\ninterface FileItem {\n    event? : event,  // xhr event\n    fileInstance?: File, // original File Object which extends Blob, 浏览器实际获取到的文件对象(https://developer.mozilla.org/zh-CN/docs/Web/API/File)\n    name: string,\n    percent? : number, // 上传进度百分比\n    preview: boolean, // 是否根据url进行预览\n    response?: any, // xhr的response, 请求成功时为respoonse body，请求失败时为对应 error\n    shouldUpload?: boolean; // 是否应该继续上传\n    showReplace?: boolean, // 单独控制该file是否展示替换按钮\n    showRetry?: boolean, // 单独控制该file是否展示重试按钮\n    size: string, // 文件大小，单位kb\n    status: string, // 'success' | 'uploadFail' | 'validateFail' | 'validating' | 'uploading' | 'wait';\n    uid: string, // 文件唯一标识符，如果当前文件是通过upload选中添加的，会自动生成uid。如果是defaultFileList, 需要自行保证不会重复\n    url: string,\n    validateMessage?: VNodeChild | string,\n}"
+  },
+  "zh-CN-input-upload-50": {
+    "kind": "code",
+    "language": "ts",
+    "source": "interface RenderFileListTitleProps {\n    fileList: Array<FileItem>;  // 当前文件列表\n    onClear: () => void;        // 清空文件的回调函数\n    clearText: string;          // 清空按钮的默认文案（根据当前语言环境）\n}"
+  },
+  "zh-CN-input-upload-51": {
+    "kind": "code",
+    "language": "ts",
+    "source": "interface CropProps {\n    aspectRatio?: number;           // 裁切框宽高比，例如 16/9, 1, 4/3\n    shape?: 'rect' | 'round' | 'roundRect';  // 裁切框形状，默认 'rect'\n    minZoom?: number;               // 最小缩放比例\n    maxZoom?: number;               // 最大缩放比例\n    zoomStep?: number;              // 缩放步长\n    quality?: number;               // 输出图片质量 0-1，默认 0.92\n    fill?: string;                  // 填充颜色，默认 '#fff'\n    modalTitle?: string;            // 裁切弹窗标题\n    modalOkText?: string;           // 确认按钮文字\n    modalCancelText?: string;       // 取消按钮文字\n}"
+  },
+  "zh-CN-navigation-anchor-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Anchor } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-navigation-anchor-3": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { Anchor, AnchorLink } from '@aifuxi/semi-ui-vue/anchor';\n\nconst getContainer = () => document.querySelector<HTMLElement>('#scroll-container') ?? document.body;\n</script>\n\n<template>\n  <div id=\"scroll-container\">\n    <Anchor :get-container=\"getContainer\" :offset-top=\"100\" :target-offset=\"100\">\n      <AnchorLink href=\"#基本示例\" title=\"基本示例\" />\n      <AnchorLink href=\"#综合使用\" title=\"综合使用\" />\n      <AnchorLink href=\"#API参考\" title=\"API 参考\">\n        <AnchorLink href=\"#Anchor\" title=\"Anchor\" />\n        <AnchorLink href=\"#AnchorLink\" title=\"AnchorLink\" />\n      </AnchorLink>\n    </Anchor>\n  </div>\n</template>"
+  },
+  "zh-CN-navigation-backtop-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { BackTop } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-navigation-breadcrumb-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Breadcrumb } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-navigation-navigation-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Nav } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-navigation-navigation-5": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { h } from 'vue';\nimport { RouterLink } from 'vue-router';\nimport { Nav, type NavigationWrapperData } from '@aifuxi/semi-ui-vue/navigation';\n\nconst routes: Record<string, string> = {\n  Home: '/',\n  About: '/about',\n  Dashboard: '/dashboard',\n};\n\nfunction renderWrapper({ itemElement, props }: NavigationWrapperData) {\n  return h(RouterLink, { to: routes[String(props.itemKey)] ?? '/' }, () => itemElement);\n}\n\nconst items = [\n  { itemKey: 'Home', text: 'Home' },\n  { itemKey: 'About', text: 'About' },\n  { itemKey: 'Dashboard', text: 'Dashboard' },\n];\n</script>\n\n<template>\n  <Nav :items=\"items\" :render-wrapper=\"renderWrapper\" />\n</template>"
+  },
+  "zh-CN-navigation-pagination-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Pagination } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-navigation-steps-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Steps } from '@aifuxi/semi-ui-vue';\nconst Step = Steps.Step;"
+  },
+  "zh-CN-navigation-tabs-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Tabs, TabPane } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-navigation-tabs-17": {
+    "kind": "code",
+    "language": "bash",
+    "source": "npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities"
+  },
+  "zh-CN-navigation-tree-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Tree } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-navigation-tree-19": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { VNodeChild } from 'vue';\n\ntype ExpandIcon = VNodeChild | ((props: {\n    onClick: (e: MouseEvent) => void;\n    className: string;\n    expanded: boolean;\n}) => VNodeChild);"
+  },
+  "zh-CN-navigation-tree-25": {
+    "kind": "code",
+    "language": "text",
+    "source": "- onDragEnd: function({ event, node: DragTreeNode })\n- onDragEnter:function({ event, node: DragTreeNode, expandedKeys: string[] })\n- onDragLeave:function({ event, node: DragTreeNode })\n- onDragOver:function({ event, node: DragTreeNode })\n- onDragStart: function({ event, node: DragTreeNode })\n- onDrop:function({ event, node: DragTreeNode, dragNode: DragTreeNode, dragNodesKeys: string[], dropPosition: number, dropToGap: Boolean })"
+  },
+  "zh-CN-navigation-tree-26": {
+    "kind": "code",
+    "language": "text",
+    "source": "import type { VNodeChild } from 'vue';\n\nDragTreeNode {\n    expanded: Boolean,\n    pos: string\n    value?: string | number;\n    label?: VNodeChild;\n    disabled?: boolean;\n    isLeaf?: boolean;\n    [key: string]: any;\n}"
+  },
+  "zh-CN-navigation-tree-28": {
+    "kind": "code",
+    "language": "ts",
+    "source": "type RenderFullLabelProps = {\n    /* 节点数据 */\n    data: BasicTreeNodeData;\n    /* 层级 */\n    level: number;\n    /* 虚拟化情况下，该 style 必须给到 DOM 节点上*/\n    style: any;\n     /* 样式类名，包括内置样式，如缩进、展开按钮、过滤器、禁用、选择等。 */\n    className: string;\n    /* 展开按钮 */\n    expandIcon: any;\n    /* 选中状态 */\n    checkStatus: {\n        /* 是否选中 */\n        checked: boolean;\n        /* 是否半选 */\n        halfChecked: boolean\n    };\n    /* 展开状态 */\n    expandStatus: {\n        /* 是否展开 */\n        expanded: boolean;\n        /* 是否加载中 */\n        loading: boolean\n    };\n    /* 该节点是否符合筛选条件 */\n    filtered: boolean | undefined;\n    /* 当前搜索框输入值 */\n    searchWord: string | undefined;\n    /* 点击回调 */\n    onClick: (e: MouseEvent) => void;\n    /* 多选点击回调 */\n    onCheck: (e: MouseEvent) => void;\n    /* 右键点击回调 */\n    onContextMenu: (e: MouseEvent) => void; \n    /* 二次点击回调 */\n    onDoubleClick: (e: MouseEvent) => void;\n    /* 展开回调 */\n    onExpand: (e: MouseEvent) => void;\n}"
+  },
+  "zh-CN-navigation-tree-33": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { Tree } from '@aifuxi/semi-ui-vue/tree';\n</script>\n\n<template>\n  <Tree aria-label=\"示例树\" />\n</template>"
+  },
+  "zh-CN-show-avatar-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Avatar, AvatarGroup } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-avatar-17": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { Avatar } from '@aifuxi/semi-ui-vue/avatar';\n\nconst imageUrl = 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/dy.png';\n</script>\n\n<template>\n  <!-- 好：alt 描述人物或图片内容。 -->\n  <Avatar alt=\"一只可爱的猫咪\" :src=\"imageUrl\" />\n  <Avatar alt=\"姜鹏志\" :src=\"imageUrl\" />\n  <!-- 装饰图片使用空 alt；避免“某某的图片”这类冗余描述。 -->\n  <Avatar alt=\"\" :src=\"imageUrl\" />\n</template>"
+  },
+  "zh-CN-show-badge-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Badge } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-calendar-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Calendar } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-card-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Card } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-carousel-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Carousel } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-collapse-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Collapse } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-collapse-8": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { Collapse, CollapsePanel } from '@aifuxi/semi-ui-vue/collapse';\nimport { Input } from '@aifuxi/semi-ui-vue/input';\n</script>\n\n<template>\n  <Collapse>\n    <CollapsePanel item-key=\"1\">\n      <template #header>\n        <div style=\"display: inline-flex\" @click.stop>\n          <span>Panel header</span>\n          <Input />\n        </div>\n      </template>\n      <p>Hi, bytedance dance dance. This is the docsite of Semi UI.</p>\n    </CollapsePanel>\n  </Collapse>\n</template>"
+  },
+  "zh-CN-show-collapsible-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Collapsible } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-collapsible-6": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { shallowRef, useId } from 'vue';\nimport { Collapsible } from '@aifuxi/semi-ui-vue/collapsible';\nimport { Button } from '@aifuxi/semi-ui-vue/button';\n\nconst visible = shallowRef(false);\nconst collapseId = useId();\n</script>\n\n<template>\n  <Button :aria-controls=\"collapseId\" :aria-expanded=\"visible\" @click=\"visible = !visible\">\n    {{ visible ? 'hide' : 'show' }}\n  </Button>\n  <Collapsible :id=\"collapseId\" :is-open=\"visible\">\n    <div>hide content</div>\n  </Collapsible>\n</template>"
+  },
+  "zh-CN-show-cropper-1": {
+    "kind": "code",
+    "language": "js",
+    "source": "import { Cropper } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-descriptions-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Descriptions } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-dropdown-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Dropdown } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-empty-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Empty } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-highlight-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Highlight } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-image-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Image, ImagePreview } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-list-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { List } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-list-16": {
+    "kind": "code",
+    "language": "scss",
+    "source": ".component-list-demo-booklist {\n    .list-item {\n        &:hover {\n            background-color: var(--semi-color-fill-0);\n        }\n        &:active {\n            background-color: var(--semi-color-fill-1);\n        }\n    }\n}\n\n\nbody > .component-list-demo-drag-item {\n    font-size: 14px;\n}\n\n.component-list-demo-booklist-active-item {\n    background-color: var(--semi-color-fill-0);\n}"
+  },
+  "zh-CN-show-modal-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Modal } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-modal-14": {
+    "kind": "code",
+    "language": "text",
+    "source": "const modal = Modal.info();\n\nmodal.update({\n  title: '更新的标题',\n  content: '更新的内容',\n});\n\nmodal.destroy();"
+  },
+  "zh-CN-show-overflowlist-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { OverflowList } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-popover-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Popover } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-scrolllist-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { ScrollList, ScrollItem } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-sidesheet-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { SideSheet } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-table-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Table, Tag } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-table-13": {
+    "kind": "code",
+    "language": "typescript",
+    "source": "import type { VNodeChild } from 'vue';\n\ntype RenderFilterDropdown = (props: RenderFilterDropdownProps) => VNodeChild;\ninterface RenderFilterDropdownProps {\n    /** 临时筛选值，初始值为 `filteredValue` 或 `defaultFilteredValue`  */\n    tempFilteredValue: any[];\n    /** 设置临时筛选值  */\n    setTempFilteredValue: (tempFilteredValue: any[]) => void;\n    /** `confirm` 默认会将 `tempFilteredValue` 赋值给 `filteredValue` 并触发 `onChange` 事件。你也可以通过传入 `filteredValue` 直接设置筛选值  */\n    confirm: (props?: { closeDropdown?: boolean; filteredValue?: any[] }) => void;\n    /** 清除筛选值、临时筛选值  */\n    clear: (props?: { closeDropdown?: boolean }) => void;\n    /** 关闭 dropdown  */\n    close: () => void;\n    /** 筛选器配置项，如不需要可以不传  */\n    filters?: RenderDropdownProps['filters']\n}"
+  },
+  "zh-CN-show-table-27": {
+    "kind": "code",
+    "language": "css",
+    "source": ".component-table-demo-cell-hover-custom {\n  .semi-table-tbody {\n    // remove origin style of row hover\n    .semi-table-row:hover {\n      .semi-table-row-cell {\n        background-color: transparent;\n        background-image: none;\n        &.semi-table-cell-fixed-left::before {\n          background-color: transparent;\n        }\n      }\n      // add style of single cell\n      .semi-table-row-cell:hover {\n        background-color: rgba(var(--semi-light-green-1), 1);\n      }\n    }\n  }\n}"
+  },
+  "zh-CN-show-table-33": {
+    "kind": "code",
+    "language": "css",
+    "source": "#components-table-demo-resizable-column .my-resizing {\n    border-right: 2px solid red;\n}\n\n#components-table-demo-resizable-column .react-resizable-handle:hover {\n    background-color: red;\n}\n\n#components-table-demo-resizable-column .my-resizing:hover .react-resizable-handle {\n    background-color: inherit;\n}"
+  },
+  "zh-CN-show-table-39": {
+    "kind": "code",
+    "language": "text",
+    "source": "import type { VNodeChild } from 'vue';\n\n{\n    filter: VNodeChild, // 筛选按钮\n    sorter: VNodeChild, // 排序按钮\n    selection: VNodeChild, // 选择按钮\n}"
+  },
+  "zh-CN-show-table-40": {
+    "kind": "code",
+    "language": "text",
+    "source": "import type { VNodeChild } from 'vue';\n\n{\n    expandIcon: VNodeChild, // 展开按钮\n    selection: VNodeChild, // 选择按钮\n    indentTex: VNodeChild, // 缩进\n}"
+  },
+  "zh-CN-show-table-44": {
+    "kind": "code",
+    "language": "text",
+    "source": "import type { VNodeChild } from 'vue';\n\ntype Render = (text: string, record: Object, index: number, options?: RenderOptions) => {\n    children: VNodeChild;\n    props: {\n        colSpan?: number,\n        rowSpan?: number,\n    },\n    [x: string]: any;\n}\n\ninterface RenderOptions {\n    expandIcon?: VNodeChild;\n    isHovering?: boolean;\n}"
+  },
+  "zh-CN-show-table-46": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { Table } from '@aifuxi/semi-ui-vue/table';\n\nconst columns = [\n  { title: '姓名', dataIndex: 'name', width: 180, fixed: 'left' },\n  { title: '年龄', dataIndex: 'age', width: 120 },\n  { title: '地址', dataIndex: 'address', width: 280 },\n  { title: '公司', dataIndex: 'company', width: 280 },\n];\nconst dataSource = Array.from({ length: 6 }, (_, index) => ({\n  key: index,\n  name: 'Edward ' + index,\n  age: 20 + index,\n  address: '西湖区湖底公园 1 号',\n  company: 'Semi Design',\n}));\n</script>\n\n<template>\n  <Table\n    :columns=\"columns\"\n    :data-source=\"dataSource\"\n    :scroll=\"{ x: 900 }\"\n    :header-style=\"{ backgroundColor: '#F5F6F7', fontWeight: 600 }\"\n  />\n</template>"
+  },
+  "zh-CN-show-table-47": {
+    "kind": "code",
+    "language": "typescript",
+    "source": "// PaginationProps 为 Pagination 组件支持的 props\ninterface TablePaginationProps extends PaginationProps {\n    position?: PaginationPosition;\n    formatPageText?: FormatPageText;\n}\n\ntype VirtualizedItemSizeFn = (index?: number) => number;\ntype VirtualizedOnScrollArgs = {\n    scrollDirection?: 'forward' | 'backward';\n    scrollOffset?: number;\n    scrollUpdateWasRequested?: boolean;\n};\ntype VirtualizedOnScroll = (object: VirtualizedOnScrollArgs) => void;\n\ntype Virtualized =\n    | boolean\n    | {\n          itemSize?: number | VirtualizedItemSizeFn;\n          onScroll?: VirtualizedOnScroll;\n      };"
+  },
+  "zh-CN-show-table-48": {
+    "kind": "code",
+    "language": "ts",
+    "source": "import type { TableColumnProps } from '@aifuxi/semi-ui-vue/table';\n\ninterface RecordItem {\n  key: string;\n  name: string;\n  age: number;\n  address: string;\n}\n\nconst columns: TableColumnProps<RecordItem>[] = [\n  { title: 'Name', dataIndex: 'name', width: 200 },\n];\n\nconst dataSource: RecordItem[] = [\n  { key: '1', name: 'John Brown', age: 32, address: 'New York No. 1 Lake Park' },\n];"
+  },
+  "zh-CN-show-table-49": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { Table, type TableProps } from '@aifuxi/semi-ui-vue/table';\n\nconst onRow: TableProps['onRow'] = (_record, index, rowStatus) => ({\n  onClick: () => {\n    if (rowStatus?.disabled) return;\n    console.log('点击行', index, rowStatus);\n  },\n  onMouseenter: () => {},\n  onMouseleave: () => {},\n});\n\nconst onHeaderRow: TableProps['onHeaderRow'] = () => ({\n  onClick: () => {},\n  onMouseenter: () => {},\n  onMouseleave: () => {},\n});\n</script>\n\n<template>\n  <Table :on-row=\"onRow\" :on-header-row=\"onHeaderRow\" />\n</template>"
+  },
+  "zh-CN-show-table-50": {
+    "kind": "code",
+    "language": "typescript",
+    "source": "import type { VNodeChild } from 'vue';\n\ntype Filter = {\n    value: any;\n    text: VNodeChild;\n    children?: Filter[];\n};"
+  },
+  "zh-CN-show-table-51": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { onMounted, ref } from 'vue';\nimport { Table, type TableExposed } from '@aifuxi/semi-ui-vue/table';\n\nconst tableRef = ref<TableExposed | null>(null);\nconst columns = [];\nconst dataSource = [];\n\nonMounted(() => {\n  console.log(tableRef.value?.getCurrentPageData());\n});\n</script>\n\n<template>\n  <Table ref=\"tableRef\" :columns=\"columns\" :data-source=\"dataSource\" />\n</template>"
+  },
+  "zh-CN-show-tag-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Tag, TagGroup, SplitTagGroup } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-timeline-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Timeline } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-timeline-10": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { Timeline, TimelineItem } from '@aifuxi/semi-ui-vue/timeline';\n</script>\n\n<template>\n  <Timeline aria-label=\"事故处理过程时间线\">\n    <TimelineItem time=\"2015-09-01\">创建服务现场</TimelineItem>\n    <TimelineItem time=\"2015-09-02\">初步排除网络异常</TimelineItem>\n    <TimelineItem time=\"2015-09-03\">技术测试异常</TimelineItem>\n    <TimelineItem time=\"2015-09-05\">网络异常正在修复</TimelineItem>\n  </Timeline>\n</template>"
+  },
+  "zh-CN-show-tooltip-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Tooltip } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-show-tooltip-11": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { Tooltip } from '@aifuxi/semi-ui-vue/tooltip';\nimport { IconSetting } from '@aifuxi/semi-icons-vue';\n</script>\n\n<template>\n  <Tooltip>\n    <template #content><p id=\"description\">编辑设置</p></template>\n    <IconSetting aria-label=\"设置\" />\n  </Tooltip>\n</template>"
+  },
+  "zh-CN-show-userGuide-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { UserGuide } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-feedback-banner-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Banner } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-feedback-banner-5": {
+    "kind": "code",
+    "language": "text",
+    "source": ".components-banner-demo {\n    .semi-banner-info.semi-banner-bordered {\n        border: 1px solid var(--semi-color-primary-disabled);\n    }\n    .semi-banner-warning.semi-banner-bordered {\n        border: 1px solid var(--semi-color-warning-light-active);\n    }\n    .semi-banner-danger.semi-banner-bordered {\n        border: 1px solid var(--semi-color-danger-light-active);\n    }\n    .semi-banner-success.semi-banner-bordered {\n        border: 1px solid var(--semi-color-success-light-active);\n    }\n}"
+  },
+  "zh-CN-feedback-feedback-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Feedback } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-feedback-notification-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Notification } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-feedback-popconfirm-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Popconfirm } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-feedback-progress-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Progress } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-feedback-progress-14": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { Progress } from '@aifuxi/semi-ui-vue/progress';\n</script>\n\n<template>\n  <p id=\"progressbar-label\">磁盘使用量</p>\n  <Progress aria-labelledby=\"progressbar-label\" :percent=\"80\" />\n  <Progress aria-label=\"文件下载\" :percent=\"80\" />\n  <Progress aria-label=\"磁盘使用量\" :percent=\"80\" aria-valuetext=\"步骤 2：正在复制文件…\" />\n</template>"
+  },
+  "zh-CN-feedback-skeleton-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Skeleton } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-feedback-spin-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Spin } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-feedback-toast-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { Toast } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-other-configprovider-1": {
+    "kind": "import",
+    "language": "js",
+    "source": "import { ConfigProvider } from '@aifuxi/semi-ui-vue';"
+  },
+  "zh-CN-other-configprovider-4": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { ConfigProvider, ConfigConsumer } from '@aifuxi/semi-ui-vue/config-provider';\n\nconst responsiveMap = ConfigProvider.defaultResponsiveMap;\n</script>\n\n<template>\n  <ConfigProvider responsive-observe :responsive-map=\"responsiveMap\">\n    <ConfigConsumer v-slot=\"{ screens }\">\n      <pre>{{ screens }}</pre>\n    </ConfigConsumer>\n  </ConfigProvider>\n</template>"
+  },
+  "zh-CN-other-configprovider-6": {
+    "kind": "code",
+    "language": "css",
+    "source": "/* Vue 包固定保留 .semi-* / --semi-* 兼容契约，不提供全局 prefixCls 改写。 */\n.semi-button {\n  /* 在业务作用域中按需覆盖样式。 */\n}"
+  },
+  "zh-CN-other-configprovider-7": {
+    "kind": "code",
+    "language": "js",
+    "source": "import { semiGlobal } from \"@douiyinfe/semi-ui\";\n\nsemiGlobal.config.overrideDefaultProps = {\n    Select: {\n        zIndex: 2000,\n    },\n    Tooltip: {\n        zIndex: 2001,\n        trigger: 'click'\n    },\n};"
+  },
+  "zh-CN-other-locale-1": {
+    "kind": "code",
+    "language": "vue",
+    "source": "<script setup lang=\"ts\">\nimport { LocaleProvider } from '@aifuxi/semi-ui-vue/locale';\nimport enGB from '@aifuxi/semi-ui-vue/locale/source/en_GB';\nimport App from './App.vue';\n</script>\n\n<template>\n  <LocaleProvider :locale=\"enGB\">\n    <App />\n  </LocaleProvider>\n</template>"
+  }
+}

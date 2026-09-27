@@ -1505,4 +1505,69 @@ for (const dependency of [
 }
 
 await verifyThemeCss(path.join(workspaceRoot, 'packages/theme-default/dist'));
+const defaultThemeCss = await readFile(
+  path.join(workspaceRoot, 'packages/theme-default/dist/index.css'),
+  'utf8',
+);
+const modernThemeCss = await readFile(
+  path.join(workspaceRoot, 'packages/theme-modern/dist/index.css'),
+  'utf8',
+);
+const radiusTokens = [
+  ['--semi-border-radius-extra-small', '3px', '4px'],
+  ['--semi-border-radius-small', '3px', '8px'],
+  ['--semi-border-radius-medium', '6px', '16px'],
+  ['--semi-border-radius-large', '12px', '24px'],
+];
+for (const [token, defaultValue, modernValue] of radiusTokens) {
+  const defaultValuePattern = defaultValue.replace('.', '\\.');
+  if (!new RegExp(`${token}:\\s*${defaultValuePattern};`).test(defaultThemeCss)) {
+    throw new Error(`默认主题圆角未保持 Semi 基线：${token}`);
+  }
+  if (!new RegExp(`${token}:\\s*${modernValue};`).test(modernThemeCss)) {
+    throw new Error(`现代主题缺少预期圆角：${token}=${modernValue}`);
+  }
+}
+if (/--semi-border-radius-(?:circle|full)\s*:/.test(modernThemeCss)) {
+  throw new Error('现代主题不应覆盖圆形或胶囊圆角');
+}
+for (const token of [
+  '--semi-modern-button-surface-shadow',
+  '--semi-modern-button-solid-shadow',
+  '--semi-modern-card-edge-shadow',
+  '--semi-modern-overlay-edge-shadow',
+  '--semi-modern-modal-edge-shadow',
+  '--semi-modern-tooltip-edge-shadow',
+]) {
+  if (defaultThemeCss.includes(token)) {
+    throw new Error(`默认主题不应包含现代主题层次变量：${token}`);
+  }
+  const declarations = [...modernThemeCss.matchAll(new RegExp(`${token}:\\s*[^;]+;`, 'g'))];
+  if (declarations.length !== 2 || declarations.some(([value]) => !value.includes('inset'))) {
+    throw new Error(`现代主题缺少浅色或深色内侧层次变量：${token}`);
+  }
+}
+for (const selector of [
+  '.semi-button.semi-button-solid:not(.semi-button-disabled):not(.semi-button-group .semi-button)',
+  '.semi-button.semi-button-light:not(.semi-button-disabled):not(.semi-button-group .semi-button)',
+  '.semi-button.semi-button-borderless:not(.semi-button-disabled):not(.semi-button-group .semi-button):is(:hover, :active)',
+  '.semi-card.semi-card-bordered:not(.semi-card-group-grid > .semi-card)',
+  '.semi-card.semi-card-bordered.semi-card-shadows-always:not(.semi-card-group-grid > .semi-card)',
+  '.semi-card.semi-card-bordered.semi-card-shadows-hover:not(.semi-card-group-grid > .semi-card):hover',
+  '.semi-dropdown-wrapper,',
+  '.semi-popover-wrapper {',
+  '.semi-tooltip-wrapper {',
+  '.semi-modal-content:not(.semi-modal-content-fullScreen)',
+  'box-shadow: var(--semi-modern-button-solid-shadow)',
+  'box-shadow: var(--semi-modern-overlay-edge-shadow), var(--semi-shadow-elevated)',
+  'box-shadow: var(--semi-modern-tooltip-edge-shadow)',
+  'box-shadow: var(--semi-modern-modal-edge-shadow), var(--semi-shadow-elevated)',
+]) {
+  if (!modernThemeCss.includes(selector)) {
+    throw new Error(`现代主题缺少组件层次样式：${selector}`);
+  }
+}
+if (modernThemeCss.includes('box-shadow: var(--semi-modern-card-edge-shadow),')) {
+  throw new Error('现代主题的 Card 不应叠加原有悬浮阴影');
+}
 process.stdout.write(`默认主题入口与逐组件样式通过：${expectedImports.length} 个根入口\n`);

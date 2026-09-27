@@ -1,5 +1,4 @@
 import navData from '../generated/nav.json';
-import sourcesData from '../generated/sources.json';
 
 export interface DocsNavPage {
   title: string;
@@ -7,8 +6,6 @@ export interface DocsNavPage {
   path: string;
   icon?: string | null;
   order: number;
-  source?: string;
-  origin?: string;
 }
 
 export interface DocsNavCategory {
@@ -18,23 +15,10 @@ export interface DocsNavCategory {
 }
 
 export interface DocsNav {
-  baseline: { version: string; commit: string };
   categories: DocsNavCategory[];
 }
 
-interface DocsSourceEntry {
-  origin: string;
-  source: string;
-  sha256: string | null;
-}
-
-interface DocsSources {
-  baseline: { version: string; commit: string };
-  pages: Record<string, DocsSourceEntry>;
-}
-
 export const docsNav = navData as DocsNav;
-export const docsSources = sourcesData as DocsSources;
 
 export const docsPages: DocsNavPage[] = docsNav.categories.flatMap((category) => category.pages);
 
@@ -68,16 +52,12 @@ export function neighbors(path: string): {
   };
 }
 
-export function sourceOf(path: string): DocsSourceEntry | undefined {
-  return docsSources.pages[normalizeRoute(path)];
-}
-
 export function iconUrl(icon: string | null | undefined): string | undefined {
   return icon ? `/doc-icons/${icon}.svg` : undefined;
 }
 
 export function splitPageTitle(title: string): { englishTitle: string; chineseTitle: string } {
-  /** 与基线站点一致：按最后一个空格切分英文名与中文名。 */
+  /** 按最后一个空格切分英文名与中文名。 */
   const splitIndex = title.lastIndexOf(' ');
   if (splitIndex === -1) return { englishTitle: title, chineseTitle: title };
   return { englishTitle: title.slice(0, splitIndex), chineseTitle: title.slice(splitIndex + 1) };

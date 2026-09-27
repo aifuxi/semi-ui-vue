@@ -17,7 +17,7 @@ import IllustrationNoContentDirect from '@aifuxi/semi-illustrations-vue/illustra
 
 本包为 ESM-only，要求 Vue `>=3.5.0`，支持根入口、`Illustration` 工厂和逐插画子路径。
 
-预览版使用 `next` 渠道，后续稳定版使用 `latest`；五个公开包同步升版。发布记录随包提供，见 [CHANGELOG](CHANGELOG.md)。
+预览版使用 `next` 渠道，后续稳定版使用 `latest`；六个公开包同步升版。发布记录随包提供，见 [CHANGELOG](CHANGELOG.md)。
 
 ## 许可与归属
 

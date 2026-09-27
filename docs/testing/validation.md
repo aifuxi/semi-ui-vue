@@ -28,7 +28,7 @@
 
 ## 构建与证据复用
 
-`typecheck` 检查当前 workspace；文档站会先通过 `prepare:packages` 重建五个公开包，再按真实 exports 检查类型。`typecheck:source`、`check:source` 与 `check` 均复用 `typecheck:clean`，先清理旧产物，避免本地残留的 `dist` 掩盖冷启动错误。
+`typecheck` 检查当前 workspace；文档站会先通过 `prepare:packages` 重建六个公开包，再按真实 exports 检查类型。`typecheck:source`、`check:source` 与 `check` 均复用 `typecheck:clean`，先清理旧产物，避免本地残留的 `dist` 掩盖冷启动错误。
 
 `build` 构建公开 JavaScript 包与主题；`pnpm dev` 启动 Storybook，`pnpm build:storybook` 单独构建场景站。浏览器测试自行管理所需参考服务，避免在同一验证链中重复准备产物。按需运行入口，不依次重复执行 check、artifacts、full、release。
 

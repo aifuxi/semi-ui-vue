@@ -7,7 +7,7 @@ const hydrationDiagnostics = process.env.DOCS_HYDRATION_DIAGNOSTICS === '1';
 
 export default defineConfig({
   title: 'Semi UI Vue',
-  description: 'Semi UI Vue 组件库文档，使用说明对齐 Semi Design v2.102.0 官方文档。',
+  description: 'Semi UI Vue 组件库文档，提供 Vue 3 组件用法、示例与公开 API。',
   lang: 'zh-CN',
   cleanUrls: true,
   appearance: false,
@@ -21,15 +21,15 @@ export default defineConfig({
   },
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
-    ['link', { rel: 'stylesheet', href: '/upstream/site.css' }],
+    ['link', { rel: 'stylesheet', href: '/site/site.css' }],
     ['script', {}, themeBootScript],
   ],
   markdown: {
     theme: { light: 'github-light', dark: 'github-dark' },
-    // 上游正文里存在 `{ width?: number | string }` 这类类型描述，
+    // 文档正文里存在 `{ width?: number | string }` 这类类型描述，
     // markdown-it-attrs 会把它们当成行内属性，这里关闭该语法。
     attrs: { disable: true },
-    // 右栏页内目录与上游官网一致，只取二级、三级标题。
+    // 右栏页内目录只取二级、三级标题。
     headers: { level: [2, 3] },
     config: (md) => applyProseClasses(md as unknown as MarkdownItLike),
   },

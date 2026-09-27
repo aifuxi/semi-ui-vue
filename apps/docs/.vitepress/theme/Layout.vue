@@ -6,7 +6,6 @@ import SidebarNavigation from './components/SidebarNavigation.vue';
 import SearchDialog from './components/SearchDialog.vue';
 import PageOutline from './components/PageOutline.vue';
 import PrevNext from './components/PrevNext.vue';
-import SourceNote from './components/SourceNote.vue';
 import {
   categoryOf,
   findNavPage,
@@ -63,7 +62,6 @@ watch(routePath, () => {
           </div>
           <div class="main-article">
             <div class="markdown"><Content /></div>
-            <SourceNote :path="routePath" />
             <PrevNext :path="routePath" />
           </div>
         </template>

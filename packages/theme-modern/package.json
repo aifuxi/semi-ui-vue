@@ -1,0 +1,54 @@
+{
+  "name": "@aifuxi/semi-theme-modern",
+  "version": "1.1.2",
+  "description": "面向 @aifuxi/semi-ui-vue 的可选现代主题圆角覆盖样式。",
+  "license": "MIT",
+  "author": "aifuxi",
+  "keywords": [
+    "semi-design",
+    "vue",
+    "theme",
+    "css",
+    "modern"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aifuxi/semi-ui-vue.git",
+    "directory": "packages/theme-modern"
+  },
+  "homepage": "https://github.com/aifuxi/semi-ui-vue#readme",
+  "bugs": {
+    "url": "https://github.com/aifuxi/semi-ui-vue/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "type": "module",
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss"
+  ],
+  "style": "./dist/index.css",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "style": "./dist/index.css",
+      "default": "./dist/index.css"
+    },
+    "./index.css": "./dist/index.css",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "rimraf dist && sass --no-source-map --no-charset src/index.scss dist/index.css && node ../../scripts/write-compliance-artifacts.mjs .",
+    "clean": "rimraf dist"
+  },
+  "devDependencies": {
+    "sass": "1.54.9"
+  }
+}
