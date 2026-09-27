@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prepare:packages": "pnpm -w build:public-js && pnpm --filter @aifuxi/semi-theme-default build",
+    "prepare:packages": "pnpm -w build:public-js && pnpm --filter @aifuxi/semi-theme-default --filter @aifuxi/semi-theme-modern build",
     "prepare:assets": "node scripts/prepare-assets.mjs",
     "prepare:content": "node scripts/prepare-content.mjs",
     "prepare:site": "pnpm prepare:assets && pnpm prepare:content",
@@ -19,6 +19,7 @@
     "@aifuxi/semi-icons-vue": "workspace:*",
     "@aifuxi/semi-illustrations-vue": "workspace:*",
     "@aifuxi/semi-theme-default": "workspace:*",
+    "@aifuxi/semi-theme-modern": "workspace:*",
     "@aifuxi/semi-ui-vue": "workspace:*",
     "prismjs": "1.30.0",
     "vitepress": "1.6.4",

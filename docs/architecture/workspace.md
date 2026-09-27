@@ -35,7 +35,7 @@ JsonViewer 的固定 core 与 jsonc-parser 经私有构建插件编入内联 Wor
 Nuxt 文档应用及其构建、REPL、站点资源和逐示例验收已移除，退役范围见[说明](../documentation/README.md)。
 `apps/docs` 是不参与发布的私有 VitePress 应用：站点外壳使用基线站点 SCSS 与 `@douyinfe/semi-site-doc-style`
 的构建期编译产物，正文、导航、检索索引和来源清单由 `apps/docs/scripts/*.mjs` 从只读基线生成到已忽略目录，
-仓库不保存派生正文；站点控件与样式来自公开包 `@aifuxi/semi-ui-vue`、`@aifuxi/semi-theme-default`。
+仓库不保存派生正文；站点控件与样式来自公开包 `@aifuxi/semi-ui-vue`、`@aifuxi/semi-theme-default` 和 `@aifuxi/semi-theme-modern`。
 首版只交付组件使用说明与示例占位，不含示例代码、REPL 与自动化测试，验收由人工 UI 走查完成，
 入口见 [apps/docs/README.md](../../apps/docs/README.md)。
 

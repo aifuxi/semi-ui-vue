@@ -278,6 +278,9 @@ importers:
       '@aifuxi/semi-theme-default':
         specifier: workspace:*
         version: link:../../packages/theme-default
+      '@aifuxi/semi-theme-modern':
+        specifier: workspace:*
+        version: link:../../packages/theme-modern
       '@aifuxi/semi-ui-vue':
         specifier: workspace:*
         version: link:../../packages/ui

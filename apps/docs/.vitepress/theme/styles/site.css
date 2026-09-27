@@ -5,6 +5,7 @@
 @import '@aifuxi/semi-theme-default/popover.css';
 @import '@aifuxi/semi-theme-default/dropdown.css';
 @import '@aifuxi/semi-theme-default/divider.css';
+@import '@aifuxi/semi-theme-modern/index.css';
 
 /* 站点外壳：DOM 与 class 复刻基线站点，样式在 /upstream/site.css 中由基线 SCSS 编译而来。 */
 *:not([class*='semi-'], [class*='semi-'] *) {
