@@ -70,6 +70,44 @@ if (JSON.stringify(actualImports) !== JSON.stringify(expectedImports)) {
   );
 }
 
+const styleDependencies = JSON.parse(
+  await readFile(themeSource('../style-dependencies.json'), 'utf8'),
+);
+const componentSourceNames = Object.keys(styleDependencies.components).sort();
+for (const name of componentSourceNames) {
+  const source = await readFile(themeSource(`${name}.scss`), 'utf8');
+  const actualModules = [...source.matchAll(/@import\s+['"]([^'"]+)['"];?/g)]
+    .map(([, specifier]) => {
+      const marker = 'vendor/semi-design/packages/';
+      const markerIndex = specifier.indexOf(marker);
+      return markerIndex < 0 ? null : specifier.slice(markerIndex + marker.length);
+    })
+    .filter(
+      (specifier) =>
+        specifier?.startsWith('semi-foundation/') || specifier?.startsWith('semi-icons/'),
+    );
+  const manifestEntry = styleDependencies.components[name];
+  if (JSON.stringify([...new Set(actualModules)]) !== JSON.stringify(manifestEntry.modules)) {
+    throw new Error(`${name}.css 的依赖清单与固定 Foundation imports 不一致`);
+  }
+  if (manifestEntry.main && !manifestEntry.modules.includes(manifestEntry.main)) {
+    throw new Error(`${name}.css 的主样式不在依赖清单中`);
+  }
+}
+
+const baseSource = await readFile(themeSource('base.scss'), 'utf8');
+const baseImports = [...baseSource.matchAll(/@import\s+['"]([^'"]+)['"];?/g)].map(
+  ([, specifier]) => specifier,
+);
+const expectedBaseImports = [
+  vendorImport('semi-theme-default/scss/index.scss'),
+  vendorImport('semi-theme-default/scss/global.scss'),
+  vendorImport('semi-theme-default/scss/animation.scss'),
+];
+if (JSON.stringify(baseImports) !== JSON.stringify(expectedBaseImports)) {
+  throw new Error('基础主题入口必须只编译一次 tokens、global 与 animation');
+}
+
 const expectedAnchorImports = [
   vendorImport('semi-theme-default/scss/index.scss'),
   vendorImport('semi-theme-default/scss/global.scss'),
@@ -1570,4 +1608,6 @@ for (const selector of [
 if (modernThemeCss.includes('box-shadow: var(--semi-modern-card-edge-shadow),')) {
   throw new Error('现代主题的 Card 不应叠加原有悬浮阴影');
 }
-process.stdout.write(`默认主题入口与逐组件样式通过：${expectedImports.length} 个根入口\n`);
+process.stdout.write(
+  `默认主题入口与逐组件样式通过：${componentSourceNames.length} 个组件入口 + 全量主题入口\n`,
+);

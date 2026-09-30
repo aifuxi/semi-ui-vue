@@ -1,5 +1,7 @@
 import 'normalize.css';
 import 'typeface-inter';
+import 'virtual:workspace-base-styles.css';
+import 'virtual:workspace-shared-styles.css';
 import 'virtual:workspace-anchor-styles.css';
 import 'virtual:workspace-avatar-styles.css';
 import 'virtual:workspace-badge-styles.css';

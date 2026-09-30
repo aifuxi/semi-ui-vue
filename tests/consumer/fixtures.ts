@@ -85,9 +85,21 @@ export const test = base.extend<object, { packedConsumer: PackedConsumer }>({
           '.semi-select',
           '.semi-codeHighlight',
           '.semi-json-viewer',
+          '.semi-navigation',
+          '.semi-modal',
+          '.semi-toast',
         ]) {
           assert(css.includes(selector), 'Consumer bundle is missing ' + selector);
         }
+        const buttonBaseRules =
+          css.match(
+            /\.semi-button\s*\{(?=[^}]*box-shadow:none)(?=[^}]*height:32px)(?=[^}]*display:inline-flex)[^}]*\}/g,
+          ) ?? [];
+        assert.equal(
+          buttonBaseRules.length,
+          1,
+          'Shared Button base rules must be emitted once across component CSS imports',
+        );
         server.on('request', (request, response) => {
           const pathname = new URL(request.url ?? '/', 'http://consumer.local').pathname;
           if (pathname === '/') {

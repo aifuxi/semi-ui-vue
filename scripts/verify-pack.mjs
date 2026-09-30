@@ -401,6 +401,19 @@ try {
 	const rootTheme = import.meta.resolve('@aifuxi/semi-theme-default');
 const cssTheme = import.meta.resolve('@aifuxi/semi-theme-default/index.css');
 if (rootTheme !== cssTheme) throw new Error('默认主题根导出未指向 index.css');
+if (!import.meta.resolve('@aifuxi/semi-theme-default/base.css').endsWith('/dist/base.css')) {
+	throw new Error('默认主题基础 CSS 未指向 dist/base.css');
+}
+if (
+	!import.meta
+		.resolve('@aifuxi/semi-theme-default/shared/foundation-portal-portal.css')
+		.endsWith('/dist/shared/foundation-portal-portal.css')
+) {
+	throw new Error('默认主题共享 Portal CSS 未指向 dist/shared');
+}
+if (!import.meta.resolve('@aifuxi/semi-theme-default/style-dependencies.json').endsWith('/dist/style-dependencies.json')) {
+	throw new Error('默认主题依赖清单未发布');
+}
 		if (!import.meta.resolve('@aifuxi/semi-theme-default/anchor.css').endsWith('/dist/anchor.css')) {
 		  throw new Error('Anchor 逐组件样式导出未指向 dist/anchor.css');
 		}

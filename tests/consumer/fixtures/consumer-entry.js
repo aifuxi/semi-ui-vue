@@ -1,6 +1,9 @@
 import { createApp, h, ref } from 'vue';
-import { Button, CodeHighlight, Input, Select } from '@aifuxi/semi-ui-vue';
+import { Button, CodeHighlight, Input, Modal, Nav, Select, Toast } from '@aifuxi/semi-ui-vue';
 import { JsonViewer } from '@aifuxi/semi-ui-vue/json-viewer';
+
+// 保留这些组件的真实包入口及其 CSS，用于验证不同共享样式依赖的组合。
+const styleCoverage = [Nav, Modal, Toast];
 
 const input = ref('Initial');
 const selected = ref('first');
@@ -39,3 +42,5 @@ createApp({
       h(JsonViewer, { value: '{"name":"Semi"}', width: 600, height: 160 }),
     ]),
 }).mount('#app');
+
+console.log(styleCoverage.length);

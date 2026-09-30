@@ -12,9 +12,18 @@ pnpm add @aifuxi/semi-theme-default@next
 
 ```ts
 import '@aifuxi/semi-theme-default/index.css';
-// 或仅导入某个组件
-import '@aifuxi/semi-theme-default/button.css';
 ```
+
+模块化导入时，先引入基础样式，再按依赖清单引入目标组件的 CSS。以下是 Button 的依赖示例：
+
+```ts
+import '@aifuxi/semi-theme-default/base.css';
+import '@aifuxi/semi-theme-default/button.css';
+import '@aifuxi/semi-theme-default/icon-button.css';
+import '@aifuxi/semi-theme-default/icon.css';
+```
+
+其他组件的共享依赖路径和顺序见 `@aifuxi/semi-theme-default/style-dependencies.json`。多个组件共用的 CSS 只需导入一次；组件各自的 `.css` 只包含该组件的样式。不要将 `index.css` 与模块化样式同时导入。
 
 本包只发布编译后的 CSS，不要求消费者初始化上游 submodule 或安装 Sass。
 

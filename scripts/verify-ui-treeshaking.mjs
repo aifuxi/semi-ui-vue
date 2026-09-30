@@ -121,11 +121,9 @@ export async function verifyUiTreeshaking(consumerRoot) {
           Math.abs(builds[0].bytes - builds[1].bytes) < 1000,
           `${bundler} ${component}: 根入口保留了无关模块`,
         );
-        assert.equal(
-          builds[0].css,
-          builds[1].css,
-          `${bundler} ${component}: 根入口与子路径样式不同`,
-        );
+        // 逐组件 CSS 现在有独立的基础样式和共享依赖入口；不同入口经打包器
+        // 展开后的 CSS 顺序可以不同。上面的断言分别验证两种入口都含组件规则、
+        // 不含无关 Table 规则，JS 体积预算则检查根入口没有保留无关组件。
         console.log(
           `${bundler} ${component}: root ${builds[0].bytes} / subpath ${builds[1].bytes} bytes`,
         );

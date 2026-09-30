@@ -1,3 +1,5 @@
+import { readFileSync, readdirSync } from 'node:fs';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Plugin } from 'vite';
 import sass from 'sass';
@@ -164,6 +166,95 @@ const resolvedVirtualTransferStyleId = `\0${virtualTransferStyleId}`;
 const resolvedVirtualUploadStyleId = `\0${virtualUploadStyleId}`;
 const resolvedVirtualNavigationStyleId = `\0${virtualNavigationStyleId}`;
 const resolvedVirtualTypographyStyleId = `\0${virtualTypographyStyleId}`;
+export const virtualBaseStyleId = 'virtual:workspace-base-styles.css';
+export const virtualSharedStylesId = 'virtual:workspace-shared-styles.css';
+const resolvedVirtualBaseStyleId = `\0${virtualBaseStyleId}`;
+const resolvedVirtualSharedStylesId = `\0${virtualSharedStylesId}`;
+const themeRoot = path.dirname(fileURLToPath(import.meta.url));
+const sourceRoot = path.join(themeRoot, 'src');
+const vendorPackages = path.resolve(themeRoot, '../../vendor/semi-design/packages');
+const themeScssRoot = path.join(vendorPackages, 'semi-theme-default/scss');
+const styleManifest = JSON.parse(
+  readFileSync(path.join(themeRoot, 'style-dependencies.json'), 'utf8'),
+) as {
+  components: Record<string, { main: string | null; modules: string[] }>;
+};
+const sharedModules = new Set(
+  Object.values(styleManifest.components).flatMap(({ main, modules }) =>
+    modules.filter((modulePath) => modulePath !== main),
+  ),
+);
+const moduleOwners = new Map(
+  Object.entries(styleManifest.components)
+    .filter(([, component]) => component.main)
+    .map(([name, component]) => [component.main as string, name]),
+);
+
+function collectVariableFiles(directory: string): string[] {
+  return readdirSync(directory, { withFileTypes: true })
+    .flatMap((entry) => {
+      const target = path.join(directory, entry.name);
+      if (entry.isDirectory()) return collectVariableFiles(target);
+      return entry.name === 'variables.scss' ? [target] : [];
+    })
+    .sort();
+}
+
+const compileContext = [
+  path.join(themeScssRoot, 'mixin.scss'),
+  path.join(themeScssRoot, 'variables.scss'),
+  path.join(themeScssRoot, '_font.scss'),
+  ...collectVariableFiles(path.join(vendorPackages, 'semi-foundation')),
+];
+const baseStyleEntry = path.join(sourceRoot, 'base.scss');
+
+function compileModule(modulePath: string): string {
+  const context = compileContext.map((file) => `@import ${JSON.stringify(file)};`).join('\n');
+  return sass
+    .renderSync({
+      data: `${context}\n@import ${JSON.stringify(path.join(vendorPackages, modulePath))};`,
+      file: path.join(sourceRoot, `_shared-${path.basename(modulePath)}`),
+      outputStyle: 'expanded',
+      includePaths: [sourceRoot],
+    })
+    .css.toString();
+}
+
+function compileComponent(name: string, styleEntry: string): string {
+  const source = readFileSync(styleEntry, 'utf8');
+  const component = styleManifest.components[name];
+  if (!component) throw new Error(`缺少主题样式依赖清单：${name}`);
+  const ownModules = component.main ? [component.main] : [];
+  const selected = new Set(ownModules);
+  const transformed = source.replace(
+    /@import\s+(['"])([^'"]+)\1\s*;?/g,
+    (statement, _quote, specifier: string) => {
+      const marker = 'vendor/semi-design/packages/';
+      const markerIndex = specifier.indexOf(marker);
+      if (markerIndex < 0) return statement;
+      const modulePath = specifier.slice(markerIndex + marker.length);
+      if (
+        modulePath.startsWith('semi-theme-default/scss/') ||
+        modulePath.startsWith('semi-foundation/') ||
+        modulePath.startsWith('semi-icons/')
+      ) {
+        return selected.has(modulePath)
+          ? `@import ${JSON.stringify(path.join(vendorPackages, modulePath))};`
+          : '';
+      }
+      return statement;
+    },
+  );
+  const context = compileContext.map((file) => `@import ${JSON.stringify(file)};`).join('\n');
+  return sass
+    .renderSync({
+      data: `${context}\n${transformed}`,
+      file: styleEntry,
+      outputStyle: 'expanded',
+      includePaths: [sourceRoot],
+    })
+    .css.toString();
+}
 const anchorStyleEntry = fileURLToPath(new URL('./src/anchor.scss', import.meta.url));
 const avatarStyleEntry = fileURLToPath(new URL('./src/avatar.scss', import.meta.url));
 const badgeStyleEntry = fileURLToPath(new URL('./src/badge.scss', import.meta.url));
@@ -344,6 +435,8 @@ export function compilePinnedComponentStyles(): Plugin {
     name: 'compile-pinned-component-styles',
     enforce: 'pre',
     resolveId(source) {
+      if (source === virtualBaseStyleId) return resolvedVirtualBaseStyleId;
+      if (source === virtualSharedStylesId) return resolvedVirtualSharedStylesId;
       if (source === virtualAnchorStyleId) return resolvedVirtualAnchorStyleId;
       if (source === virtualAvatarStyleId) return resolvedVirtualAvatarStyleId;
       if (source === virtualBadgeStyleId) return resolvedVirtualBadgeStyleId;
@@ -428,14 +521,19 @@ export function compilePinnedComponentStyles(): Plugin {
       return null;
     },
     load(id) {
+      if (id === resolvedVirtualBaseStyleId) {
+        return sass.renderSync({ file: baseStyleEntry, outputStyle: 'expanded' }).css.toString();
+      }
+      if (id === resolvedVirtualSharedStylesId) {
+        return [...sharedModules]
+          .filter((modulePath) => !moduleOwners.has(modulePath))
+          .map(compileModule)
+          .join('\n');
+      }
       const styleEntry = styleEntries.get(id);
       if (!styleEntry) return null;
-      return sass
-        .renderSync({
-          file: styleEntry,
-          outputStyle: 'expanded',
-        })
-        .css.toString();
+      const name = path.basename(styleEntry, '.scss');
+      return compileComponent(name, styleEntry);
     },
   };
 }

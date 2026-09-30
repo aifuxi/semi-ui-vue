@@ -31,7 +31,24 @@ it('生成按组件加载主题且保留运行时导出的 browser 入口', asyn
       ),
       writeFile(
         path.join(themeRoot, 'package.json'),
-        JSON.stringify({ exports: { './button.css': './dist/button.css' } }),
+        JSON.stringify({
+          exports: {
+            './base.css': './dist/base.css',
+            './button.css': './dist/button.css',
+            './shared/*.css': './dist/shared/*.css',
+          },
+        }),
+      ),
+      writeFile(
+        path.join(themeRoot, 'style-dependencies.json'),
+        JSON.stringify({
+          components: {
+            button: {
+              main: 'semi-foundation/button/button.scss',
+              modules: ['semi-foundation/button/button.scss', 'semi-icons/src/styles/icons.scss'],
+            },
+          },
+        }),
       ),
       writeFile(
         path.join(uiRoot, 'src/index.ts'),
@@ -51,7 +68,7 @@ it('生成按组件加载主题且保留运行时导出的 browser 入口', asyn
     await generateUiBrowserEntries({ uiRoot, themeRoot });
 
     expect(await readFile(path.join(uiRoot, 'dist/_browser/button.js'), 'utf8')).toBe(
-      "import '@aifuxi/semi-theme-default/button.css';\nimport * as componentModule from '../button/index.js';\nconst { Button } = componentModule;\nexport { Button };\nexport default componentModule.default;\n",
+      "import '@aifuxi/semi-theme-default/base.css';\nimport '@aifuxi/semi-theme-default/button.css';\nimport '@aifuxi/semi-theme-default/shared/icons.css';\nimport * as componentModule from '../button/index.js';\nconst { Button } = componentModule;\nexport { Button };\nexport default componentModule.default;\n",
     );
     const rootEntry = await readFile(path.join(uiRoot, 'dist/_browser/index.js'), 'utf8');
     expect(rootEntry).toContain('export { Base } from "../_base/index.js";');
