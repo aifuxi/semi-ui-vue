@@ -6,7 +6,7 @@
 | ---------------------------------------------- | ---------------------------------------------------- |
 | `packages/ui`                                  | Vue 组件；通过私有 Foundation 集成层使用固定上游逻辑 |
 | `packages/foundation-integration`              | 唯一 Foundation/特殊运行时编译边界，永不发布         |
-| `packages/theme-default`                       | 从固定 SCSS 编译根与逐组件 CSS                       |
+| `packages/theme-default`                       | 从固定 SCSS 编译全量主题及去重的模块化 CSS           |
 | `packages/theme-modern`                        | 可选现代主题，覆盖圆角及组件与浮层的轻微层次         |
 | `packages/icons`、`icons-lab`、`illustrations` | 从固定 TSX AST 生成 Vue 资产，生成检查防止漂移       |
 | `packages/test-infra`                          | 场景、环境、阈值和对照 helper，永不发布              |
@@ -24,7 +24,7 @@
 
 UI 与资产包使用 Rslib 多入口 ESM；Vue 保持 external，稳定图标/插画以公开包身份依赖。UI 内联所需 Foundation，公开声明使用自包含 facade。共享 ESM 模块可拆分，Prism 注册等副作用由精确 sideEffects 元数据保护。
 
-主题包发布编译 CSS，`src/index.scss` 仅供仓库构建。`semi-theme-modern` 作为可选覆盖包，需在默认主题之后导入；Button、Card 及浮层的内侧层次只在此包生效。固定上游 SCSS 使用 Sass 1.54.9，应用中通过 `sass-legacy` 别名隔离；Vite 的新版可选 Sass peer 用途不同。
+主题包发布编译 CSS：`index.css` 是全量主题；模块化入口由 `base.css`、复用的 Foundation CSS 和逐组件 CSS 组成，依赖与导入顺序见包内 `style-dependencies.json`。固定上游 SCSS 使用 Sass 1.54.9，应用中通过 `sass-legacy` 别名隔离；Vite 的新版可选 Sass peer 用途不同。`semi-theme-modern` 作为可选覆盖包，需在默认主题之后导入；Button、Card 及浮层的内侧层次只在此包生效。
 
 JsonViewer 的固定 core 与 jsonc-parser 经私有构建插件编入内联 Worker；公开包不泄漏外置 vendor 路径。其他特殊第三方运行时同样在集成边界处理 SSR 延迟加载、类型和归属，不复制 vendor 后独立维护。
 

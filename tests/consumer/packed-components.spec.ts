@@ -28,7 +28,10 @@ test('真实 tarball 支持组件交互、Prism 高亮与 JsonViewer Worker 搜�
   try {
     await page.goto(packedConsumer.url);
     await test.step('Button、Input 与 Select 使用真实安装包响应交互', async () => {
-      await page.getByRole('button', { name: 'Packed button', exact: true }).click();
+      const button = page.getByRole('button', { name: 'Packed button', exact: true });
+      await expect(button).toHaveCSS('height', '32px');
+      await expect(button).toHaveCSS('display', 'inline-flex');
+      await button.click();
       await expect(page.getByRole('textbox', { name: 'Packed input' })).toHaveValue('Clicked');
       await page.getByRole('textbox', { name: 'Packed input' }).fill('Edited');
       await expect(page.locator('#packed-state')).toHaveText('Edited:first');

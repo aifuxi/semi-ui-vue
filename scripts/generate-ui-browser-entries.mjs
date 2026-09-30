@@ -77,9 +77,10 @@ export async function generateUiBrowserEntries({
   uiRoot = path.join(workspaceRoot, 'packages/ui'),
   themeRoot = path.join(workspaceRoot, 'packages/theme-default'),
 } = {}) {
-  const [uiManifest, themeManifest, rootSource] = await Promise.all([
+  const [uiManifest, themeManifest, styleManifest, rootSource] = await Promise.all([
     readFile(path.join(uiRoot, 'package.json'), 'utf8').then(JSON.parse),
     readFile(path.join(themeRoot, 'package.json'), 'utf8').then(JSON.parse),
+    readFile(path.join(themeRoot, 'style-dependencies.json'), 'utf8').then(JSON.parse),
     readFile(path.join(uiRoot, 'src/index.ts'), 'utf8'),
   ]);
   const uiExports = uiManifest.exports;
@@ -87,6 +88,25 @@ export async function generateUiBrowserEntries({
   const styledSubpaths = Object.keys(uiExports).filter(
     (subpath) => subpath !== '.' && themeExports[`${subpath}.css`],
   );
+  const sharedModules = new Set();
+  const moduleOwners = new Map();
+  for (const { main, modules } of Object.values(styleManifest.components)) {
+    for (const modulePath of modules) if (modulePath !== main) sharedModules.add(modulePath);
+  }
+  for (const [componentName, { main }] of Object.entries(styleManifest.components)) {
+    if (main) moduleOwners.set(main, componentName);
+  }
+  const sharedAsset = (modulePath) => {
+    if (modulePath.startsWith('semi-icons/')) return 'icons.css';
+    const name = modulePath
+      .replace(/^semi-foundation\//, '')
+      .replace(/\.scss$/, '')
+      .replaceAll('/', '-')
+      .replaceAll('_', '')
+      .replace(/[^a-zA-Z0-9-]/g, '-')
+      .replace(/-+/g, '-');
+    return `foundation-${name}.css`;
+  };
   const browserDirectory = path.join(uiRoot, 'dist/_browser');
 
   if (uiExports['.']?.browser !== './dist/_browser/index.js') {
@@ -114,6 +134,22 @@ export async function generateUiBrowserEntries({
       const source = await readFile(sourcePath, 'utf8');
       const importPath = relativeImport(browserDirectory, sourcePath);
       const exportNames = runtimeExportNames(source, sourcePath);
+      const styleEntry = styleManifest.components[name];
+      if (!styleEntry) throw new Error(`缺少主题样式依赖清单：${name}`);
+      const styleImports = ['@aifuxi/semi-theme-default/base.css'];
+      for (const modulePath of styleEntry.modules) {
+        if (sharedModules.has(modulePath)) {
+          const owner = moduleOwners.get(modulePath);
+          styleImports.push(
+            owner
+              ? `@aifuxi/semi-theme-default/${owner}.css`
+              : `@aifuxi/semi-theme-default/shared/${sharedAsset(modulePath)}`,
+          );
+        } else if (modulePath === styleEntry.main) {
+          styleImports.push(`@aifuxi/semi-theme-default/${name}.css`);
+        }
+      }
+      styleImports.push(`@aifuxi/semi-theme-default/${name}.css`);
       const namedExports = exportNames.filter((name) => name !== 'default');
       const namedSource = namedExports.length
         ? `const { ${namedExports.join(', ')} } = componentModule;\nexport { ${namedExports.join(', ')} };\n`
@@ -123,7 +159,7 @@ export async function generateUiBrowserEntries({
         : '';
       await writeFile(
         path.join(browserDirectory, `${name}.js`),
-        `import '@aifuxi/semi-theme-default/${name}.css';\nimport * as componentModule from '${importPath}';\n${namedSource}${defaultSource}`,
+        `${[...new Set(styleImports)].map((styleImport) => `import '${styleImport}';`).join('\n')}\nimport * as componentModule from '${importPath}';\n${namedSource}${defaultSource}`,
       );
     }),
   );

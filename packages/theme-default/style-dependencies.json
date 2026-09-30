@@ -1,0 +1,754 @@
+{
+  "version": "2.102.0",
+  "components": {
+    "ai-chat-dialogue": {
+      "main": "semi-foundation/aiChatDialogue/aiChatDialogue.scss",
+      "modules": [
+        "semi-foundation/button/button.scss",
+        "semi-foundation/checkbox/checkbox.scss",
+        "semi-foundation/avatar/avatar.scss",
+        "semi-foundation/image/image.scss",
+        "semi-foundation/collapsible/collapsible.scss",
+        "semi-foundation/dropdown/dropdown.scss",
+        "semi-foundation/modal/modal.scss",
+        "semi-foundation/toast/toast.scss",
+        "semi-foundation/typography/typography.scss",
+        "semi-foundation/table/table.scss",
+        "semi-foundation/pagination/pagination.scss",
+        "semi-foundation/codeHighlight/codeHighlight.scss",
+        "semi-foundation/markdownRender/markdownRender.scss",
+        "semi-foundation/chat/chat.scss",
+        "semi-foundation/aiChatDialogue/aiChatDialogue.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "ai-chat-input": {
+      "main": "semi-foundation/aiChatInput/aiChatInput.scss",
+      "modules": [
+        "semi-foundation/button/button.scss",
+        "semi-foundation/select/select.scss",
+        "semi-foundation/radio/radio.scss",
+        "semi-foundation/dropdown/dropdown.scss",
+        "semi-foundation/upload/upload.scss",
+        "semi-foundation/progress/progress.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/aiChatInput/aiChatInput.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "anchor": {
+      "main": "semi-foundation/anchor/anchor.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/typography/typography.scss",
+        "semi-foundation/anchor/anchor.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "audio-player": {
+      "main": "semi-foundation/audioPlayer/audioPlayer.scss",
+      "modules": ["semi-foundation/audioPlayer/audioPlayer.scss"]
+    },
+    "auto-complete": {
+      "main": "semi-foundation/autoComplete/autoComplete.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/spin/spin.scss",
+        "semi-foundation/autoComplete/autoComplete.scss"
+      ]
+    },
+    "avatar": {
+      "main": "semi-foundation/avatar/avatar.scss",
+      "modules": ["semi-foundation/avatar/avatar.scss", "semi-icons/src/styles/icons.scss"]
+    },
+    "back-top": {
+      "main": "semi-foundation/backtop/backtop.scss",
+      "modules": [
+        "semi-foundation/button/button.scss",
+        "semi-foundation/button/iconButton.scss",
+        "semi-foundation/backtop/backtop.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "badge": {
+      "main": "semi-foundation/badge/badge.scss",
+      "modules": ["semi-foundation/badge/badge.scss"]
+    },
+    "banner": {
+      "main": "semi-foundation/banner/banner.scss",
+      "modules": [
+        "semi-foundation/button/button.scss",
+        "semi-foundation/typography/typography.scss",
+        "semi-foundation/banner/banner.scss",
+        "semi-icons/src/styles/icons.scss",
+        "semi-foundation/button/iconButton.scss"
+      ]
+    },
+    "breadcrumb": {
+      "main": "semi-foundation/breadcrumb/breadcrumb.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/typography/typography.scss",
+        "semi-foundation/breadcrumb/breadcrumb.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "button": {
+      "main": "semi-foundation/button/button.scss",
+      "modules": [
+        "semi-foundation/button/button.scss",
+        "semi-foundation/button/iconButton.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "calendar": {
+      "main": "semi-foundation/calendar/calendar.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/button/button.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/calendar/calendar.scss",
+        "semi-icons/src/styles/icons.scss",
+        "semi-foundation/button/iconButton.scss"
+      ]
+    },
+    "card": {
+      "main": "semi-foundation/card/card.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/card/card.scss",
+        "semi-foundation/skeleton/skeleton.scss",
+        "semi-foundation/space/space.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/typography/typography.scss"
+      ]
+    },
+    "carousel": {
+      "main": "semi-foundation/carousel/carousel.scss",
+      "modules": ["semi-foundation/carousel/carousel.scss", "semi-icons/src/styles/icons.scss"]
+    },
+    "cascader": {
+      "main": "semi-foundation/cascader/cascader.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/tag/tag.scss",
+        "semi-foundation/overflowList/overflowList.scss",
+        "semi-foundation/tagInput/tagInput.scss",
+        "semi-foundation/checkbox/checkbox.scss",
+        "semi-foundation/spin/spin.scss",
+        "semi-foundation/cascader/cascader.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "chat": {
+      "main": "semi-foundation/chat/chat.scss",
+      "modules": [
+        "semi-foundation/button/button.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/input/textarea.scss",
+        "semi-foundation/avatar/avatar.scss",
+        "semi-foundation/divider/divider.scss",
+        "semi-foundation/image/image.scss",
+        "semi-foundation/progress/progress.scss",
+        "semi-foundation/upload/upload.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/popconfirm/popconfirm.scss",
+        "semi-foundation/toast/toast.scss",
+        "semi-foundation/chat/chat.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "checkbox": {
+      "main": "semi-foundation/checkbox/checkbox.scss",
+      "modules": ["semi-foundation/checkbox/checkbox.scss", "semi-icons/src/styles/icons.scss"]
+    },
+    "code-highlight": {
+      "main": "semi-foundation/codeHighlight/codeHighlight.scss",
+      "modules": ["semi-foundation/codeHighlight/codeHighlight.scss"]
+    },
+    "collapse": {
+      "main": "semi-foundation/collapse/collapse.scss",
+      "modules": [
+        "semi-foundation/collapsible/collapsible.scss",
+        "semi-foundation/collapse/collapse.scss"
+      ]
+    },
+    "collapsible": {
+      "main": "semi-foundation/collapsible/collapsible.scss",
+      "modules": ["semi-foundation/collapsible/collapsible.scss"]
+    },
+    "color-picker": {
+      "main": "semi-foundation/colorPicker/colorPicker.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/inputNumber/inputNumber.scss",
+        "semi-foundation/tag/tag.scss",
+        "semi-foundation/overflowList/overflowList.scss",
+        "semi-foundation/spin/spin.scss",
+        "semi-foundation/select/select.scss",
+        "semi-foundation/button/button.scss",
+        "semi-foundation/colorPicker/colorPicker.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "config-provider": { "main": null, "modules": [] },
+    "cropper": {
+      "main": "semi-foundation/cropper/cropper.scss",
+      "modules": ["semi-foundation/cropper/cropper.scss"]
+    },
+    "date-picker": {
+      "main": "semi-foundation/datePicker/datePicker.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/button/button.scss",
+        "semi-foundation/button/iconButton.scss",
+        "semi-foundation/scrollList/scrollList.scss",
+        "semi-foundation/timePicker/timePicker.scss",
+        "semi-foundation/datePicker/datePicker.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "descriptions": {
+      "main": "semi-foundation/descriptions/descriptions.scss",
+      "modules": ["semi-foundation/descriptions/descriptions.scss"]
+    },
+    "divider": {
+      "main": "semi-foundation/divider/divider.scss",
+      "modules": ["semi-foundation/divider/divider.scss"]
+    },
+    "drag-move": { "main": null, "modules": [] },
+    "dropdown": {
+      "main": "semi-foundation/dropdown/dropdown.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/dropdown/dropdown.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "empty": {
+      "main": "semi-foundation/empty/empty.scss",
+      "modules": ["semi-foundation/empty/empty.scss", "semi-foundation/typography/typography.scss"]
+    },
+    "feedback": {
+      "main": "semi-foundation/feedback/feedback.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/button/button.scss",
+        "semi-foundation/typography/typography.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/checkbox/checkbox.scss",
+        "semi-foundation/modal/modal.scss",
+        "semi-foundation/radio/radio.scss",
+        "semi-foundation/sideSheet/sideSheet.scss",
+        "semi-foundation/feedback/feedback.scss",
+        "semi-icons/src/styles/icons.scss",
+        "semi-foundation/button/iconButton.scss",
+        "semi-foundation/input/textarea.scss"
+      ]
+    },
+    "float-button": {
+      "main": "semi-foundation/floatButton/floatButton.scss",
+      "modules": [
+        "semi-foundation/floatButton/floatButton.scss",
+        "semi-foundation/badge/badge.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "form": {
+      "main": "semi-foundation/form/form.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/autoComplete/autoComplete.scss",
+        "semi-foundation/button/button.scss",
+        "semi-foundation/cascader/cascader.scss",
+        "semi-foundation/checkbox/checkbox.scss",
+        "semi-foundation/collapsible/collapsible.scss",
+        "semi-foundation/cropper/cropper.scss",
+        "semi-foundation/datePicker/datePicker.scss",
+        "semi-foundation/form/form.scss",
+        "semi-foundation/grid/grid.scss",
+        "semi-foundation/highlight/highlight.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/inputNumber/inputNumber.scss",
+        "semi-foundation/modal/modal.scss",
+        "semi-foundation/overflowList/overflowList.scss",
+        "semi-foundation/pincode/pincode.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/progress/progress.scss",
+        "semi-foundation/radio/radio.scss",
+        "semi-foundation/rating/rating.scss",
+        "semi-foundation/scrollList/scrollList.scss",
+        "semi-foundation/select/select.scss",
+        "semi-foundation/slider/slider.scss",
+        "semi-foundation/spin/spin.scss",
+        "semi-foundation/switch/switch.scss",
+        "semi-foundation/tag/tag.scss",
+        "semi-foundation/tagInput/tagInput.scss",
+        "semi-foundation/timePicker/timePicker.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/tree/tree.scss",
+        "semi-foundation/treeSelect/treeSelect.scss",
+        "semi-foundation/typography/typography.scss",
+        "semi-foundation/upload/upload.scss",
+        "semi-icons/src/styles/icons.scss",
+        "semi-foundation/button/iconButton.scss",
+        "semi-foundation/input/textarea.scss"
+      ]
+    },
+    "grid": {
+      "main": "semi-foundation/grid/grid.scss",
+      "modules": ["semi-foundation/grid/grid.scss"]
+    },
+    "highlight": {
+      "main": "semi-foundation/highlight/highlight.scss",
+      "modules": ["semi-foundation/highlight/highlight.scss"]
+    },
+    "hot-keys": {
+      "main": "semi-foundation/hotKeys/hotKeys.scss",
+      "modules": ["semi-foundation/hotKeys/hotKeys.scss"]
+    },
+    "icon-button": {
+      "main": "semi-foundation/button/iconButton.scss",
+      "modules": [
+        "semi-foundation/button/button.scss",
+        "semi-foundation/button/iconButton.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "icon": {
+      "main": "semi-icons/src/styles/icons.scss",
+      "modules": ["semi-icons/src/styles/icons.scss"]
+    },
+    "image": {
+      "main": "semi-foundation/image/image.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/image/image.scss",
+        "semi-foundation/skeleton/skeleton.scss",
+        "semi-foundation/spin/spin.scss",
+        "semi-foundation/slider/slider.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/divider/divider.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "input-number": {
+      "main": "semi-foundation/inputNumber/inputNumber.scss",
+      "modules": [
+        "semi-foundation/input/input.scss",
+        "semi-foundation/inputNumber/inputNumber.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "input": {
+      "main": "semi-foundation/input/input.scss",
+      "modules": [
+        "semi-foundation/input/input.scss",
+        "semi-foundation/input/textarea.scss",
+        "semi-foundation/form/form.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "json-viewer": {
+      "main": "semi-foundation/jsonViewer/jsonViewer.scss",
+      "modules": [
+        "semi-foundation/button/button.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/jsonViewer/jsonViewer.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "layout": {
+      "main": "semi-foundation/layout/layout.scss",
+      "modules": ["semi-foundation/layout/layout.scss"]
+    },
+    "list": {
+      "main": "semi-foundation/list/list.scss",
+      "modules": [
+        "semi-foundation/list/list.scss",
+        "semi-foundation/grid/grid.scss",
+        "semi-foundation/spin/spin.scss"
+      ]
+    },
+    "locale": { "main": null, "modules": [] },
+    "lottie": { "main": null, "modules": [] },
+    "markdown-render": {
+      "main": "semi-foundation/markdownRender/markdownRender.scss",
+      "modules": [
+        "semi-foundation/typography/typography.scss",
+        "semi-foundation/image/image.scss",
+        "semi-foundation/table/table.scss",
+        "semi-foundation/pagination/pagination.scss",
+        "semi-foundation/codeHighlight/codeHighlight.scss",
+        "semi-foundation/markdownRender/markdownRender.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "modal": {
+      "main": "semi-foundation/modal/modal.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/button/button.scss",
+        "semi-foundation/typography/typography.scss",
+        "semi-foundation/modal/modal.scss",
+        "semi-icons/src/styles/icons.scss",
+        "semi-foundation/button/iconButton.scss"
+      ]
+    },
+    "navigation": {
+      "main": "semi-foundation/navigation/navigation.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/button/button.scss",
+        "semi-foundation/button/iconButton.scss",
+        "semi-foundation/collapsible/collapsible.scss",
+        "semi-foundation/dropdown/dropdown.scss",
+        "semi-foundation/navigation/navigation.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "notification": {
+      "main": "semi-foundation/notification/notification.scss",
+      "modules": [
+        "semi-foundation/button/button.scss",
+        "semi-foundation/notification/notification.scss",
+        "semi-icons/src/styles/icons.scss",
+        "semi-foundation/button/iconButton.scss"
+      ]
+    },
+    "overflow-list": {
+      "main": "semi-foundation/overflowList/overflowList.scss",
+      "modules": ["semi-foundation/overflowList/overflowList.scss"]
+    },
+    "pagination": {
+      "main": "semi-foundation/pagination/pagination.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/inputNumber/inputNumber.scss",
+        "semi-foundation/tag/tag.scss",
+        "semi-foundation/overflowList/overflowList.scss",
+        "semi-foundation/spin/spin.scss",
+        "semi-foundation/select/select.scss",
+        "semi-foundation/pagination/pagination.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "pin-code": {
+      "main": "semi-foundation/pincode/pincode.scss",
+      "modules": ["semi-foundation/input/input.scss", "semi-foundation/pincode/pincode.scss"]
+    },
+    "popconfirm": {
+      "main": "semi-foundation/popconfirm/popconfirm.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/button/button.scss",
+        "semi-foundation/popconfirm/popconfirm.scss",
+        "semi-icons/src/styles/icons.scss",
+        "semi-foundation/button/iconButton.scss"
+      ]
+    },
+    "popover": {
+      "main": "semi-foundation/popover/popover.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/popover/popover.scss"
+      ]
+    },
+    "progress": {
+      "main": "semi-foundation/progress/progress.scss",
+      "modules": ["semi-foundation/progress/progress.scss"]
+    },
+    "radio": {
+      "main": "semi-foundation/radio/radio.scss",
+      "modules": ["semi-foundation/radio/radio.scss", "semi-icons/src/styles/icons.scss"]
+    },
+    "rating": {
+      "main": "semi-foundation/rating/rating.scss",
+      "modules": ["semi-foundation/rating/rating.scss", "semi-icons/src/styles/icons.scss"]
+    },
+    "resizable": {
+      "main": "semi-foundation/resizable/resizable.scss",
+      "modules": ["semi-foundation/resizable/resizable.scss", "semi-icons/src/styles/icons.scss"]
+    },
+    "scroll-list": {
+      "main": "semi-foundation/scrollList/scrollList.scss",
+      "modules": ["semi-foundation/scrollList/scrollList.scss"]
+    },
+    "select": {
+      "main": "semi-foundation/select/select.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/tag/tag.scss",
+        "semi-foundation/overflowList/overflowList.scss",
+        "semi-foundation/spin/spin.scss",
+        "semi-foundation/select/select.scss"
+      ]
+    },
+    "side-sheet": {
+      "main": "semi-foundation/sideSheet/sideSheet.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/button/button.scss",
+        "semi-foundation/sideSheet/sideSheet.scss",
+        "semi-icons/src/styles/icons.scss",
+        "semi-foundation/button/iconButton.scss"
+      ]
+    },
+    "sidebar": {
+      "main": "semi-foundation/sidebar/sidebar.scss",
+      "modules": [
+        "semi-foundation/button/button.scss",
+        "semi-foundation/divider/divider.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/radio/radio.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/empty/empty.scss",
+        "semi-foundation/resizable/resizable.scss",
+        "semi-foundation/collapsible/collapsible.scss",
+        "semi-foundation/collapse/collapse.scss",
+        "semi-foundation/codeHighlight/codeHighlight.scss",
+        "semi-foundation/jsonViewer/jsonViewer.scss",
+        "semi-foundation/upload/upload.scss",
+        "semi-foundation/sidebar/sidebar.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "skeleton": {
+      "main": "semi-foundation/skeleton/skeleton.scss",
+      "modules": ["semi-foundation/skeleton/skeleton.scss"]
+    },
+    "slider": {
+      "main": "semi-foundation/slider/slider.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/slider/slider.scss"
+      ]
+    },
+    "space": {
+      "main": "semi-foundation/space/space.scss",
+      "modules": ["semi-foundation/space/space.scss"]
+    },
+    "spin": {
+      "main": "semi-foundation/spin/spin.scss",
+      "modules": ["semi-foundation/spin/spin.scss"]
+    },
+    "steps": {
+      "main": "semi-foundation/steps/steps.scss",
+      "modules": [
+        "semi-foundation/grid/grid.scss",
+        "semi-foundation/steps/steps.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "switch": {
+      "main": "semi-foundation/switch/switch.scss",
+      "modules": ["semi-foundation/switch/switch.scss", "semi-foundation/spin/spin.scss"]
+    },
+    "table": {
+      "main": "semi-foundation/table/table.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/button/button.scss",
+        "semi-foundation/checkbox/checkbox.scss",
+        "semi-foundation/dropdown/dropdown.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/inputNumber/inputNumber.scss",
+        "semi-foundation/pagination/pagination.scss",
+        "semi-foundation/radio/radio.scss",
+        "semi-foundation/select/select.scss",
+        "semi-foundation/spin/spin.scss",
+        "semi-foundation/table/table.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-icons/src/styles/icons.scss",
+        "semi-foundation/button/iconButton.scss",
+        "semi-foundation/input/textarea.scss"
+      ]
+    },
+    "tabs": {
+      "main": "semi-foundation/tabs/tabs.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/dropdown/dropdown.scss",
+        "semi-foundation/button/button.scss",
+        "semi-foundation/overflowList/overflowList.scss",
+        "semi-foundation/tabs/tabs.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "tag-input": {
+      "main": "semi-foundation/tagInput/tagInput.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/tag/tag.scss",
+        "semi-foundation/typography/typography.scss",
+        "semi-foundation/tagInput/tagInput.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "tag": {
+      "main": "semi-foundation/tag/tag.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/avatar/avatar.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/tag/tag.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "time-picker": {
+      "main": "semi-foundation/timePicker/timePicker.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/scrollList/scrollList.scss",
+        "semi-foundation/timePicker/timePicker.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "timeline": {
+      "main": "semi-foundation/timeline/timeline.scss",
+      "modules": ["semi-foundation/timeline/timeline.scss"]
+    },
+    "toast": {
+      "main": "semi-foundation/toast/toast.scss",
+      "modules": [
+        "semi-foundation/button/button.scss",
+        "semi-foundation/toast/toast.scss",
+        "semi-icons/src/styles/icons.scss",
+        "semi-foundation/button/iconButton.scss"
+      ]
+    },
+    "tooltip": {
+      "main": "semi-foundation/tooltip/tooltip.scss",
+      "modules": ["semi-foundation/_portal/portal.scss", "semi-foundation/tooltip/tooltip.scss"]
+    },
+    "transfer": {
+      "main": "semi-foundation/transfer/transfer.scss",
+      "modules": [
+        "semi-foundation/button/button.scss",
+        "semi-foundation/button/iconButton.scss",
+        "semi-foundation/checkbox/checkbox.scss",
+        "semi-foundation/collapsible/collapsible.scss",
+        "semi-foundation/highlight/highlight.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/spin/spin.scss",
+        "semi-foundation/tree/tree.scss",
+        "semi-foundation/pagination/pagination.scss",
+        "semi-foundation/transfer/transfer.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "tree-select": {
+      "main": "semi-foundation/treeSelect/treeSelect.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/checkbox/checkbox.scss",
+        "semi-foundation/collapsible/collapsible.scss",
+        "semi-foundation/highlight/highlight.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/tag/tag.scss",
+        "semi-foundation/overflowList/overflowList.scss",
+        "semi-foundation/tagInput/tagInput.scss",
+        "semi-foundation/tree/tree.scss",
+        "semi-foundation/treeSelect/treeSelect.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "tree": {
+      "main": "semi-foundation/tree/tree.scss",
+      "modules": [
+        "semi-foundation/checkbox/checkbox.scss",
+        "semi-foundation/collapsible/collapsible.scss",
+        "semi-foundation/highlight/highlight.scss",
+        "semi-foundation/input/input.scss",
+        "semi-foundation/spin/spin.scss",
+        "semi-foundation/tree/tree.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "typography": {
+      "main": "semi-foundation/typography/typography.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/typography/typography.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "upload": {
+      "main": "semi-foundation/upload/upload.scss",
+      "modules": [
+        "semi-foundation/button/button.scss",
+        "semi-foundation/button/iconButton.scss",
+        "semi-foundation/cropper/cropper.scss",
+        "semi-foundation/modal/modal.scss",
+        "semi-foundation/progress/progress.scss",
+        "semi-foundation/spin/spin.scss",
+        "semi-foundation/tooltip/tooltip.scss",
+        "semi-foundation/typography/typography.scss",
+        "semi-foundation/upload/upload.scss",
+        "semi-icons/src/styles/icons.scss"
+      ]
+    },
+    "user-guide": {
+      "main": "semi-foundation/userGuide/userGuide.scss",
+      "modules": [
+        "semi-foundation/_portal/portal.scss",
+        "semi-foundation/button/button.scss",
+        "semi-foundation/typography/typography.scss",
+        "semi-foundation/popover/popover.scss",
+        "semi-foundation/modal/modal.scss",
+        "semi-foundation/userGuide/userGuide.scss",
+        "semi-icons/src/styles/icons.scss",
+        "semi-foundation/button/iconButton.scss"
+      ]
+    },
+    "video-player": {
+      "main": "semi-foundation/videoPlayer/videoPlayer.scss",
+      "modules": [
+        "semi-foundation/audioPlayer/audioPlayer.scss",
+        "semi-foundation/videoPlayer/videoPlayer.scss"
+      ]
+    }
+  }
+}
