@@ -1,5 +1,11 @@
 # @aifuxi/semi-theme-default
 
+## 2.0.0
+
+### Major Changes
+
+- [#24](https://github.com/aifuxi/semi-ui-vue/pull/24) [`1754b97`](https://github.com/aifuxi/semi-ui-vue/commit/1754b979690628dd66e0b4179afb93655f2e5c6f) Thanks [@aifuxi](https://github.com/aifuxi)! - 逐组件 CSS 改为通过 `base.css` 和共享样式资源组合依赖。手动导入逐组件 CSS 的使用者需按 `style-dependencies.json` 同时导入对应依赖；`index.css` 全量导入保持不变。
+
 ## 1.2.0
 
 No changes in this release.
