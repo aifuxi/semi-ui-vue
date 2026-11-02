@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.1
+
+### Patch Changes
+
+- [#26](https://github.com/aifuxi/semi-ui-vue/pull/26) [`81ef2bb`](https://github.com/aifuxi/semi-ui-vue/commit/81ef2bbc26f773690904637713a88a063b24e3f7) Thanks [@aifuxi](https://github.com/aifuxi)! - 现代主题仅保留四档圆角覆盖，移除 Button、Card 和浮层的额外阴影与内侧层次，其他样式沿用默认主题。
+
 ## 2.0.0
 
 No changes in this release.
