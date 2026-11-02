@@ -1,10 +1,7 @@
-import { expect, test, type Locator } from '@playwright/test';
+import { expect, test } from '@playwright/test';
+import { expectElevatedShadow } from './theme-assertions';
 
-async function shadowOf(locator: Locator): Promise<string> {
-  return locator.evaluate((element) => getComputedStyle(element).boxShadow);
-}
-
-test('modern theme 的 Button 为填充面及 borderless 交互态增加内侧层次', async ({ page }) => {
+test('modern theme 保留各主题下的圆角，Button 沿用默认阴影与焦点轮廓', async ({ page }) => {
   await page.goto('/zh-CN/basic/button');
 
   const solid = page.locator('[data-demo-id="zh-CN-basic-button-5"] .semi-button-solid').first();
@@ -23,57 +20,54 @@ test('modern theme 的 Button 为填充面及 borderless 交互态增加内侧�
     .locator('[data-demo-id="zh-CN-basic-button-15"] .semi-button-group .semi-button')
     .first();
 
-  await expect(solid).toBeVisible();
-  const lightModeShadow = await shadowOf(solid);
-  expect(lightModeShadow).toContain('inset');
-  expect(lightModeShadow).toContain('0px 2px 4px');
-  const lightButtonShadow = await shadowOf(light);
-  expect(lightButtonShadow).toContain('inset');
-  expect(lightButtonShadow).not.toBe(lightModeShadow);
-  for (const button of [outline, borderless, disabled, disabledBorderless, grouped]) {
-    await expect(button).toHaveCSS('box-shadow', 'none');
-  }
-  await expect(borderless).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
-  await borderless.hover();
-  await expect(borderless).toHaveCSS('box-shadow', lightButtonShadow);
-  await page.mouse.down();
-  await expect(borderless).toHaveCSS('box-shadow', lightButtonShadow);
-  await page.mouse.up();
-  await disabledBorderless.hover();
-  await expect(disabledBorderless).toHaveCSS('box-shadow', 'none');
-  await expect(borderless).toHaveCSS('box-shadow', 'none');
+  for (const mode of ['light', 'dark'] as const) {
+    if (mode === 'dark') await page.getByRole('button', { name: '切换到暗色模式' }).click();
+    const body = page.locator('body');
+    await expect(body).toHaveAttribute('theme-mode', mode);
+    for (const scope of ['', 'semi-always-dark', 'semi-always-light']) {
+      const region = scope ? solid.locator('..') : body;
+      if (scope) await region.evaluate((element, name) => element.classList.add(name), scope);
+      const radii = await region.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return ['extra-small', 'small', 'medium', 'large', 'circle', 'full'].map((size) =>
+          style.getPropertyValue(`--semi-border-radius-${size}`).trim(),
+        );
+      });
+      expect(radii).toEqual(['4px', '8px', '16px', '24px', '50%', '9999px']);
+      await expect(solid).toHaveCSS('border-radius', '8px');
+      await expect(solid).toHaveCSS('box-shadow', 'none');
+      if (scope) await region.evaluate((element, name) => element.classList.remove(name), scope);
+    }
 
-  const buttonRegion = solid.locator('..');
-  await buttonRegion.evaluate((element) => element.classList.add('semi-always-dark'));
-  expect(await shadowOf(solid)).not.toBe(lightModeShadow);
-  await buttonRegion.evaluate((element) => element.classList.remove('semi-always-dark'));
-  expect(await shadowOf(solid)).toBe(lightModeShadow);
+    for (const button of [
+      solid,
+      light,
+      outline,
+      borderless,
+      disabled,
+      disabledBorderless,
+      grouped,
+    ]) {
+      await expect(button).toHaveCSS('box-shadow', 'none');
+    }
+    await expect(borderless).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+    await borderless.hover();
+    await expect(borderless).toHaveCSS('box-shadow', 'none');
+    await page.mouse.down();
+    await expect(borderless).toHaveCSS('box-shadow', 'none');
+    await page.mouse.up();
+    await disabledBorderless.hover();
+    await expect(disabledBorderless).toHaveCSS('box-shadow', 'none');
+  }
 
   await solid.focus();
   await page.keyboard.press('Tab');
   await expect(
     page.locator('[data-demo-id="zh-CN-basic-button-5"] .semi-button-solid').nth(1),
   ).toHaveCSS('outline-style', 'solid');
-
-  await page.getByRole('button', { name: '切换到暗色模式' }).click();
-  await expect(page.locator('body')).toHaveAttribute('theme-mode', 'dark');
-  const darkModeShadow = await shadowOf(solid);
-  expect(darkModeShadow).toContain('inset');
-  expect(darkModeShadow).not.toBe(lightModeShadow);
-  await borderless.hover();
-  const darkBorderlessShadow = await shadowOf(borderless);
-  expect(darkBorderlessShadow).toContain('inset');
-  expect(darkBorderlessShadow).not.toBe(lightButtonShadow);
-
-  const borderlessRegion = borderless.locator('..');
-  await borderlessRegion.evaluate((element) => element.classList.add('semi-always-light'));
-  expect(await shadowOf(borderless)).toBe(lightButtonShadow);
-
-  await buttonRegion.evaluate((element) => element.classList.add('semi-always-light'));
-  expect(await shadowOf(solid)).toBe(lightModeShadow);
 });
 
-test('modern theme 的独立 Card 仅使用细边缘阴影并保留网格边界', async ({ page }) => {
+test('modern theme 保留 Card 圆角及默认的常驻、悬浮和网格阴影', async ({ page }) => {
   await page.goto('/zh-CN/show/card');
 
   const bordered = page.locator('[data-demo-id="zh-CN-show-card-4"] .semi-card').first();
@@ -84,31 +78,20 @@ test('modern theme 的独立 Card 仅使用细边缘阴影并保留网格边界'
     .locator('[data-demo-id="zh-CN-show-card-15"] .semi-card-group-grid > .semi-card')
     .first();
 
-  await expect(bordered).toBeVisible();
-  const lightModeShadow = await shadowOf(bordered);
-  expect(lightModeShadow).toContain('inset');
-  await expect(borderless).toHaveCSS('box-shadow', 'none');
-  await expect(grid).toHaveCSS('box-shadow', 'none');
-  await expect(always).toHaveCSS('box-shadow', lightModeShadow);
-  await expect(hover).toHaveCSS('box-shadow', lightModeShadow);
-  const cardRegion = bordered.locator('..');
-  await cardRegion.evaluate((element) => element.classList.add('semi-always-dark'));
-  expect(await shadowOf(bordered)).not.toBe(lightModeShadow);
-  await cardRegion.evaluate((element) => element.classList.remove('semi-always-dark'));
-  expect(await shadowOf(bordered)).toBe(lightModeShadow);
-
-  await grid.hover();
-  await expect(grid).toHaveCSS('box-shadow', /4px 14px/);
-  expect(await shadowOf(grid)).not.toContain('inset');
-  await hover.hover();
-  await expect(hover).toHaveCSS('box-shadow', lightModeShadow);
-
-  await page.getByRole('button', { name: '切换到暗色模式' }).click();
-  await expect(page.locator('body')).toHaveAttribute('theme-mode', 'dark');
-  const darkModeShadow = await shadowOf(bordered);
-  expect(darkModeShadow).toContain('inset');
-  expect(darkModeShadow).not.toBe(lightModeShadow);
-
-  await cardRegion.evaluate((element) => element.classList.add('semi-always-light'));
-  expect(await shadowOf(bordered)).toBe(lightModeShadow);
+  for (const mode of ['light', 'dark'] as const) {
+    if (mode === 'dark') await page.getByRole('button', { name: '切换到暗色模式' }).click();
+    await expect(page.locator('body')).toHaveAttribute('theme-mode', mode);
+    await expect(bordered).toHaveCSS('border-radius', '16px');
+    for (const card of [bordered, borderless, grid, hover]) {
+      await expect(card).toHaveCSS('box-shadow', 'none');
+    }
+    await expect(grid).toHaveCSS('border-radius', '0px');
+    await expectElevatedShadow(always);
+    await grid.hover();
+    await expectElevatedShadow(grid);
+    await hover.hover();
+    await expectElevatedShadow(hover);
+    await page.mouse.move(0, 0);
+    await expect(hover).toHaveCSS('box-shadow', 'none');
+  }
 });
