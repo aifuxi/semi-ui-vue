@@ -1,5 +1,16 @@
 # @aifuxi/semi-ui-vue
 
+## 2.0.2
+
+### Patch Changes
+
+- [#28](https://github.com/aifuxi/semi-ui-vue/pull/28) [`08ecb56`](https://github.com/aifuxi/semi-ui-vue/commit/08ecb56c71333463145c0c6abd415eda0fe340d5) Thanks [@aifuxi](https://github.com/aifuxi)! - 将 Markdown 渲染依赖 markdown-it 更新至 14.3.3，修复特殊输入导致的同步渲染阻塞；同步更新开发与文档环境的 Vue、Vite 和 source-map-js 安全补丁。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.0.2
+  - @aifuxi/semi-icons-lab-vue@2.0.2
+  - @aifuxi/semi-illustrations-vue@2.0.2
+  - @aifuxi/semi-theme-default@2.0.2
+
 ## 2.0.1
 
 ### Patch Changes
