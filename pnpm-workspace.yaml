@@ -10,8 +10,8 @@ sharedWorkspaceLockfile: true
 strictPeerDependencies: true
 
 catalog:
-  vue: 3.5.41
-  '@vue/server-renderer': 3.5.41
+  vue: 3.5.42
+  '@vue/server-renderer': 3.5.42
   react: 16.14.0
   react-dom: 16.14.0
   normalize.css: 8.0.1
@@ -30,7 +30,9 @@ peerDependencyRules:
 overrides:
   '@types/react': 18.0.5
   # VitePress 1 的 Vite 5 已停止安全更新；官方维护者确认 v1 可覆盖到 Vite 6。
-  'vitepress>vite': 6.4.3
+  'vitepress>vite': 6.4.5
+  # 修复传递依赖中 indexed source map 偏移导致的事件循环阻塞。
+  'source-map-js@<1.2.2': 1.2.2
 
 allowBuilds:
   '@parcel/watcher': true
