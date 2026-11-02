@@ -1,27 +1,22 @@
 import { expect, test, type Locator } from '@playwright/test';
+import { expectElevatedShadow } from './theme-assertions';
 
 async function shadowOf(locator: Locator): Promise<string> {
   return locator.evaluate((element) => getComputedStyle(element).boxShadow);
 }
 
-function expectElevatedEdge(shadow: string): void {
-  expect(shadow).toContain('inset');
-  expect(shadow).toContain('4px 14px');
-}
-
-test('modern theme 的 Dropdown 保留层级投影，局部主题不重复内描边', async ({ page }) => {
+test('modern theme 的 Dropdown 保留圆角及默认的全局与局部主题阴影', async ({ page }) => {
   await page.goto('/zh-CN/show/dropdown');
   await page.locator('[data-demo-id="zh-CN-show-dropdown-2"] .semi-button').hover();
 
   const dropdown = page.locator('.semi-dropdown-wrapper-show').filter({ hasText: 'Menu Item 1' });
   await expect(dropdown).toBeVisible();
-  const lightShadow = await shadowOf(dropdown);
-  expectElevatedEdge(lightShadow);
+  const lightShadow = await expectElevatedShadow(dropdown);
+  await expect(dropdown).toHaveCSS('border-radius', '16px');
 
   const portal = dropdown.locator('..');
   await portal.evaluate((element) => element.classList.add('semi-always-dark'));
-  const darkShadow = await shadowOf(dropdown);
-  expectElevatedEdge(darkShadow);
+  const darkShadow = await expectElevatedShadow(dropdown);
   expect(darkShadow).not.toBe(lightShadow);
   expect(darkShadow.match(/0px 0px 0px 1px inset/g)).toHaveLength(1);
 
@@ -31,7 +26,7 @@ test('modern theme 的 Dropdown 保留层级投影，局部主题不重复内描
   expect(await shadowOf(dropdown)).toBe(lightShadow);
 });
 
-test('modern theme 的 Popover 与 Popconfirm 复用同一表面', async ({ page }) => {
+test('modern theme 的 Popover 与 Popconfirm 保留默认浮层阴影', async ({ page }) => {
   await page.goto('/zh-CN/show/popover');
   await page.locator('[data-demo-id="zh-CN-show-popover-2"] span:has-text("DOM")').hover();
   const popover = page
@@ -39,13 +34,14 @@ test('modern theme 的 Popover 与 Popconfirm 复用同一表面', async ({ page
     .filter({ hasText: '先进的设计' })
     .first();
   await expect(popover).toBeVisible();
-  expectElevatedEdge(await shadowOf(popover));
+  await expectElevatedShadow(popover);
+  await expect(popover).toHaveCSS('border-radius', '16px');
 
   const arrowPopover = page.locator(
     '[data-demo-id="zh-CN-show-popover-9"] .semi-popover-wrapper-show',
   );
   await expect(arrowPopover).toBeVisible();
-  expectElevatedEdge(await shadowOf(arrowPopover));
+  await expectElevatedShadow(arrowPopover);
   await expect(arrowPopover.locator('svg')).toBeVisible();
   await expect(arrowPopover.locator('svg')).toHaveCSS('box-shadow', 'none');
 
@@ -56,17 +52,16 @@ test('modern theme 的 Popover 与 Popconfirm 复用同一表面', async ({ page
     .filter({ hasText: '确定是否要保存此修改？' })
     .first();
   await expect(popconfirm).toBeVisible();
-  expectElevatedEdge(await shadowOf(popconfirm));
+  await expectElevatedShadow(popconfirm);
 });
 
-test('modern theme 的 Tooltip 按反转背景分别配色', async ({ page }) => {
+test('modern theme 的 Tooltip 在亮暗模式下只保留圆角覆盖', async ({ page }) => {
   await page.goto('/zh-CN/show/tooltip');
   await page.locator('[data-demo-id="zh-CN-show-tooltip-2"] span:has-text("DOM")').hover();
   const tooltip = page.locator('.semi-tooltip-wrapper-show').filter({ hasText: 'semi design' });
   await expect(tooltip).toBeVisible();
-  const lightShadow = await shadowOf(tooltip);
-  expect(lightShadow).toContain('inset');
-  expect(lightShadow).not.toContain('4px 14px');
+  await expect(tooltip).toHaveCSS('border-radius', '16px');
+  await expect(tooltip).toHaveCSS('box-shadow', 'none');
 
   await page.getByRole('button', { name: '切换到暗色模式' }).click();
   await expect(page.locator('body')).toHaveAttribute('theme-mode', 'dark');
@@ -74,37 +69,36 @@ test('modern theme 的 Tooltip 按反转背景分别配色', async ({ page }) =>
   await expect(page.locator('body')).toHaveAttribute('theme-mode', 'dark');
   await page.locator('[data-demo-id="zh-CN-show-tooltip-2"] span:has-text("DOM")').hover();
   await expect(tooltip).toBeVisible();
-  const darkShadow = await shadowOf(tooltip);
-  expect(darkShadow).toContain('inset');
-  expect(darkShadow).not.toBe(lightShadow);
+  await expect(tooltip).toHaveCSS('border-radius', '16px');
+  await expect(tooltip).toHaveCSS('box-shadow', 'none');
 });
 
-test('modern theme 的普通 Modal 保留边框与外投影，全屏 Modal 沿用原样', async ({ page }) => {
+test('modern theme 的 Modal 保留默认边框与阴影，普通和全屏圆角分别生效', async ({ page }) => {
   await page.goto('/zh-CN/show/modal');
   await page.locator('[data-demo-id="zh-CN-show-modal-2"] .semi-button').click();
   const modal = page.locator('.semi-modal-content:not(.semi-modal-content-fullScreen)');
   await expect(modal).toBeVisible();
-  const lightShadow = await shadowOf(modal);
-  expectElevatedEdge(lightShadow);
+  const lightShadow = await expectElevatedShadow(modal);
+  await expect(modal).toHaveCSS('border-radius', '24px');
   await expect(modal).toHaveCSS('border-top-style', 'solid');
 
   await page.goto('/zh-CN/show/modal');
   await page.locator('[data-demo-id="zh-CN-show-modal-10"] .semi-button').click();
   const fullScreen = page.locator('.semi-modal-content-fullScreen');
   await expect(fullScreen).toBeVisible();
-  expect(await shadowOf(fullScreen)).not.toContain('inset');
+  await expectElevatedShadow(fullScreen);
+  await expect(fullScreen).toHaveCSS('border-radius', '0px');
 
   await page.goto('/zh-CN/show/modal');
   await page.getByRole('button', { name: '切换到暗色模式' }).click();
   await page.locator('[data-demo-id="zh-CN-show-modal-2"] .semi-button').click();
   await expect(modal).toBeVisible();
-  const darkShadow = await shadowOf(modal);
-  expectElevatedEdge(darkShadow);
+  const darkShadow = await expectElevatedShadow(modal);
   expect(darkShadow).not.toBe(lightShadow);
   expect(darkShadow.match(/0px 0px 0px 1px inset/g)).toHaveLength(1);
 });
 
-test('复用 Popover 的选择面板获得同一边缘效果', async ({ page }) => {
+test('复用 Popover 的选择面板保留现代圆角与默认阴影', async ({ page }) => {
   const panels = [
     ['/zh-CN/input/select', 'zh-CN-input-select-2', '.semi-select:first-child', 'keyboard'],
     ['/zh-CN/input/autocomplete', 'zh-CN-input-autocomplete-2', 'input', 'fill'],
@@ -125,6 +119,7 @@ test('复用 Popover 的选择面板获得同一边缘效果', async ({ page }) 
 
     const panel = page.locator('.semi-popover-wrapper-show').first();
     await expect(panel, `${demoId} 应显示 Popover 面板`).toBeVisible();
-    expectElevatedEdge(await shadowOf(panel));
+    await expectElevatedShadow(panel);
+    await expect(panel).toHaveCSS('border-radius', '16px');
   }
 });

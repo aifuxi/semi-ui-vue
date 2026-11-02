@@ -1569,44 +1569,12 @@ for (const [token, defaultValue, modernValue] of radiusTokens) {
 if (/--semi-border-radius-(?:circle|full)\s*:/.test(modernThemeCss)) {
   throw new Error('现代主题不应覆盖圆形或胶囊圆角');
 }
-for (const token of [
-  '--semi-modern-button-surface-shadow',
-  '--semi-modern-button-solid-shadow',
-  '--semi-modern-card-edge-shadow',
-  '--semi-modern-overlay-edge-shadow',
-  '--semi-modern-modal-edge-shadow',
-  '--semi-modern-tooltip-edge-shadow',
-]) {
-  if (defaultThemeCss.includes(token)) {
-    throw new Error(`默认主题不应包含现代主题层次变量：${token}`);
+// 编译产物只能声明这四档圆角，防止再次引入阴影或其他视觉覆盖。
+const modernRadiusTokens = new Set(radiusTokens.map(([token]) => token));
+for (const [, property] of modernThemeCss.matchAll(/[{;]\s*([-\w]+)\s*:/g)) {
+  if (!modernRadiusTokens.has(property)) {
+    throw new Error(`现代主题不应覆盖圆角以外的样式：${property}`);
   }
-  const declarations = [...modernThemeCss.matchAll(new RegExp(`${token}:\\s*[^;]+;`, 'g'))];
-  if (declarations.length !== 2 || declarations.some(([value]) => !value.includes('inset'))) {
-    throw new Error(`现代主题缺少浅色或深色内侧层次变量：${token}`);
-  }
-}
-for (const selector of [
-  '.semi-button.semi-button-solid:not(.semi-button-disabled):not(.semi-button-group .semi-button)',
-  '.semi-button.semi-button-light:not(.semi-button-disabled):not(.semi-button-group .semi-button)',
-  '.semi-button.semi-button-borderless:not(.semi-button-disabled):not(.semi-button-group .semi-button):is(:hover, :active)',
-  '.semi-card.semi-card-bordered:not(.semi-card-group-grid > .semi-card)',
-  '.semi-card.semi-card-bordered.semi-card-shadows-always:not(.semi-card-group-grid > .semi-card)',
-  '.semi-card.semi-card-bordered.semi-card-shadows-hover:not(.semi-card-group-grid > .semi-card):hover',
-  '.semi-dropdown-wrapper,',
-  '.semi-popover-wrapper {',
-  '.semi-tooltip-wrapper {',
-  '.semi-modal-content:not(.semi-modal-content-fullScreen)',
-  'box-shadow: var(--semi-modern-button-solid-shadow)',
-  'box-shadow: var(--semi-modern-overlay-edge-shadow), var(--semi-shadow-elevated)',
-  'box-shadow: var(--semi-modern-tooltip-edge-shadow)',
-  'box-shadow: var(--semi-modern-modal-edge-shadow), var(--semi-shadow-elevated)',
-]) {
-  if (!modernThemeCss.includes(selector)) {
-    throw new Error(`现代主题缺少组件层次样式：${selector}`);
-  }
-}
-if (modernThemeCss.includes('box-shadow: var(--semi-modern-card-edge-shadow),')) {
-  throw new Error('现代主题的 Card 不应叠加原有悬浮阴影');
 }
 process.stdout.write(
   `默认主题入口与逐组件样式通过：${componentSourceNames.length} 个组件入口 + 全量主题入口\n`,
