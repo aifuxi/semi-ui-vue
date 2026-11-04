@@ -152,9 +152,12 @@ describe('Tooltip', () => {
       await nextTick();
       expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(false);
       expect(popup.textContent).toContain('动画内容');
+      const portal = popup.closest('.semi-portal-inner')!;
+      expect(portal.hasAttribute('inert')).toBe(false);
       await wrapper.setProps({ visible: false });
       await flushTooltip();
       expect(popup.classList.contains('semi-tooltip-animation-hide')).toBe(true);
+      expect(portal.hasAttribute('inert')).toBe(true);
       popup.dispatchEvent(new Event('animationstart'));
       popup.dispatchEvent(new Event('animationend'));
       await flushTooltip();
@@ -163,6 +166,7 @@ describe('Tooltip', () => {
       await wrapper.setProps({ visible: true });
       await flushTooltip();
       expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
+      expect(portal.hasAttribute('inert')).toBe(false);
       popup.dispatchEvent(new Event('animationend'));
       await nextTick();
       expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(false);

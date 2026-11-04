@@ -77,7 +77,7 @@ Select 是 Tooltip PoC 后的第二道复杂度门槛，用来验证搜索、多
 
 ## Deviation
 
-无 accepted deviation。
+关闭动画期间的旧 Portal 设为 `inert`，避免吞掉相邻字段的下一次点击；差异及固定源码依据见 [Tooltip 交互边界](../tooltip/alignment.md#收起动画的交互边界2026-11-04)。选择与 change 事件顺序保持原 Foundation 契约。
 
 ## Locale/Pagination 菜单回归（2026-09-06）
 

@@ -202,9 +202,11 @@ watch(
 
 <template>
   <Teleport :to="portalTarget">
+    <!-- 收起动画保留视觉 DOM，但立即停止命中测试与焦点，避免遮挡相邻触发器。 -->
     <div
       :ref="setPortalElement"
       tabindex="-1"
+      :inert="state.visible ? undefined : true"
       class="semi-portal-inner"
       :style="portalInnerStyle"
       @click="handleClick"

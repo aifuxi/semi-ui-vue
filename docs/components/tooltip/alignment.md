@@ -132,3 +132,9 @@ Escape 在 `closeOnEsc=true` 时关闭并通知；ArrowDown/ArrowUp 将焦点移
 Popover 文档 InitialFocus 的真实对照发现 `initialFocusRef` 绑定 Input 实例时 Vue 未聚焦。固定 React `tooltip/index.tsx:545–551` 直接调用 ref 的公开 `focus`；Vue 原先只保存组件 `$el`，Input 的根 div 无法聚焦。现在浅引用优先保存具有公开 `focus` 的组件实例并以成员调用保留 this；HTMLElement 路径不变，无公开方法才回退 HTMLElement `$el`，收到 null 时清理。公开 TooltipInitialFocusRef 类型不变。
 
 新增回归在目标 Input 前放置另一 Button，以公开 ref 绑定 Input，初次打开与关闭重开均验证实际 activeElement 是 Input 内部 input；从 input 发出 Escape 后验证销毁与触发器回焦，不由测试调用 focus。此用例在修复前于 activeElement 断言失败；修复后 Tooltip/Popover/Popconfirm 三文件共42项通过，保留原生 DOM ref 用例。jsdom 证明适配调用与公开状态，真实焦点及视觉仍以本轮完整文档 Chromium 矩阵为准，不复用失效旧证据。
+
+## 收起动画的交互边界（2026-11-04）
+
+业务表单中复现了收起中的 Select 浮层仍遮挡相邻负责人字段的问题。固定 React Adapter 保留动画 DOM；Vue Portal 额外按逻辑 `visible` 设置 `inert`，使已关闭内容立即退出鼠标命中、键盘焦点和可访问性树，仍保留退出动画与原有 `afterClose` 时序。这是为关闭阶段交互补充的明确差异，不修改定位、视觉、公开 props 或 Select 选择事件顺序。
+
+回归覆盖 `Escape` 和选择选项两种关闭方式：退出动画仍在播放时，浏览器命中测试必须穿过旧选项；重新展开恢复交互。

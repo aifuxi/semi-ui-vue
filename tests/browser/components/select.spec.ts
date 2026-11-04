@@ -6,6 +6,7 @@ import {
   REFERENCE_SOURCE_PATHS,
 } from '../../../packages/test-infra/src';
 import {
+  createVueScenarioUrl,
   expectComparableTarget,
   expectScreenshotPixelsToMatch,
   openParityPages,
@@ -135,3 +136,43 @@ test('Select React/Vue RTL 截图一致', async ({ context }) => {
   ]);
   await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
 });
+
+for (const closeAction of ['escape', 'select'] as const) {
+  test(`Select ${closeAction} 收起动画中的旧选项不拦截下一次点击`, async ({ page }) => {
+    await page.goto(
+      createVueScenarioUrl({
+        scenarioId: 'select',
+        theme: 'light',
+        direction: 'ltr',
+        locale: 'zh-CN',
+      }),
+    );
+    // 延长退出动画以稳定观察关闭与移除 DOM 之间的窗口，不等待或跳过动画。
+    await page.addStyleTag({
+      content: '.semi-tooltip-animation-hide { animation-duration: 10s !important; }',
+    });
+    const trigger = page.locator('[data-parity-target="select-basic"]');
+    await trigger.click();
+    const listId = await trigger.getAttribute('aria-controls');
+    expect(listId).toBeTruthy();
+    const list = page.locator(`[id="${listId}"]`);
+    const option = list.getByRole('option', { name: 'tick 轻颜相机', exact: true });
+    const box = await option.boundingBox();
+    expect(box).not.toBeNull();
+    const point = { x: box!.x + box!.width / 2, y: box!.y + box!.height / 2 };
+    if (closeAction === 'escape') await trigger.press('Escape');
+    else await option.click();
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    // 旧浮层仍可播放视觉动画，但命中测试必须穿过旧内容，不能选到已关闭的选项。
+    const hit = await page.evaluate(
+      ({ listId, point }) => {
+        const popup = document.getElementById(listId!);
+        const target = document.elementFromPoint(point.x, point.y);
+        return { retained: !!popup, intercepts: !!popup && !!target && popup.contains(target) };
+      },
+      { listId, point },
+    );
+    expect(hit.retained).toBe(true);
+    expect(hit.intercepts).toBe(false);
+  });
+}
