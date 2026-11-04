@@ -1,5 +1,16 @@
 # @aifuxi/semi-ui-vue
 
+## 2.0.3
+
+### Patch Changes
+
+- [#30](https://github.com/aifuxi/semi-ui-vue/pull/30) [`0d25ed9`](https://github.com/aifuxi/semi-ui-vue/commit/0d25ed96091875a61c04ad9748bc59a2910a0681) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复下拉浮层收起动画期间仍拦截鼠标和焦点，导致相邻字段选择未生效的问题；关闭内容立即停止交互，保留动画和关闭事件时序。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.0.3
+  - @aifuxi/semi-icons-lab-vue@2.0.3
+  - @aifuxi/semi-illustrations-vue@2.0.3
+  - @aifuxi/semi-theme-default@2.0.3
+
 ## 2.0.2
 
 ### Patch Changes
