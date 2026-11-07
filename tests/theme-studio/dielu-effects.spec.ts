@@ -59,6 +59,7 @@ for (const dark of [false, true]) {
       ['交互多行输入', '.semi-input-textarea-wrapper', false],
       ['交互多行错误', '.semi-input-textarea-wrapper', false],
       ['交互多行警告', '.semi-input-textarea-wrapper', false],
+      ['交互只读输入', '.semi-input-wrapper', false],
       ['主题状态', '.semi-select', true],
       ['错误选择', '.semi-select', true],
       ['警告选择', '.semi-select', true],
@@ -80,7 +81,17 @@ for (const dark of [false, true]) {
       /** hover 背景应与迁移前的 hover 比较，不和默认态混用。 */
       const hoverBefore = await surfaces(originalWrapper);
       await wrapper.hover();
-      await expect(wrapper).toHaveCSS('box-shadow', /2px/);
+      // 来源 common.css/interactions.css：hover 与 focus 共用 4px 单层外扩。
+      await expect(wrapper).toHaveCSS('box-shadow', / 0px 0px 0px 4px$/);
+      /** 保存悬浮光晕，聚焦时不应自行扩大范围或增加显色比例。 */
+      const hoverShadow = await wrapper.evaluate(
+        /** 浏览器实际绘制值用于同一控件的状态切换对照。 */
+        (element) => getComputedStyle(element).boxShadow,
+      );
+      if (!name.includes('多行') || name === '交互多行输入') {
+        // 来源 light.css/dark.css 的光晕 alpha；TextArea 校验使用语义浅色，单独保留其来源规则。
+        expect(hoverShadow).toContain(dark ? '/ 0.18)' : '/ 0.1)');
+      }
       expect(await surfaces(wrapper)).toEqual(hoverBefore);
       if (select) {
         await original.click();
@@ -89,7 +100,8 @@ for (const dark of [false, true]) {
         await original.focus();
         await control.focus();
       }
-      await expect(wrapper).toHaveCSS('box-shadow', /4px/);
+      await expect(wrapper).toHaveCSS('box-shadow', / 0px 0px 0px 4px$/);
+      await expect(wrapper).toHaveCSS('box-shadow', hoverShadow);
       expect(await surfaces(wrapper)).toEqual(await surfaces(originalWrapper));
       glows.push(
         await wrapper.evaluate(
@@ -102,7 +114,7 @@ for (const dark of [false, true]) {
       await expect(wrapper).toHaveCSS('box-shadow', 'none');
     }
     expect(new Set(glows.slice(0, 3)).size).toBe(3);
-    for (const name of ['交互禁用输入', '交互只读输入', '交互无边框输入']) {
+    for (const name of ['交互禁用输入', '交互无边框输入']) {
       /** 这些控件不参与新增交互反馈，但仍保留库自身的背景状态。 */
       const input = page.getByRole('textbox', { name, exact: true });
       /** 每个输入具有独立 wrapper。 */
@@ -122,68 +134,96 @@ for (const dark of [false, true]) {
   });
 }
 
-/** 卡片和默认 Portal 使用分层阴影，表面背景、遮罩以及提示箭头继续由当前主题提供。 */
-test('卡片、下拉、提示和弹窗只适配阴影且保留现有背景', async ({ page, context }) => {
-  /** 对照页面不启用新效果。 */
-  const before = await context.newPage();
-  await prepare(before, true, false);
-  await prepare(page, true, true);
-  /** 悬浮卡片的 API 仍生效，默认态不提前绘制阴影。 */
-  const card = page.locator('.semi-card-shadows-hover');
-  await expect(card).toHaveCSS('box-shadow', 'none');
-  await card.hover();
-  await expect(card).not.toHaveCSS('box-shadow', 'none');
-  for (const [trigger, target] of [
-    ['global主题提示', '.semi-tooltip-wrapper'],
-    ['global打开弹窗', '.semi-modal-content'],
-  ] as const) {
-    await before.getByRole('button', { name: trigger, exact: true }).click();
-    await page.getByRole('button', { name: trigger, exact: true }).click();
-    /** 排除关闭后的留存节点，比较当前可见的真实浮层。 */
-    const current = page.locator(target!).filter({ visible: true });
-    /** 相同模式的 Portal 对照。 */
-    const original = before.locator(target!).filter({ visible: true });
-    if (target === '.semi-modal-content') {
-      // 默认 Portal 通过观察器同步主题，先确认内部开关已采用深色再比较全部背景。
-      await expect(current.locator('.semi-switch')).toHaveCSS(
-        'background-color',
-        'rgb(93, 194, 100)',
-      );
-      await expect(original.locator('.semi-switch')).toHaveCSS(
-        'background-color',
-        'rgb(93, 194, 100)',
-      );
-    }
-    expect(await surfaces(current)).toEqual(await surfaces(original));
-    await expect(current).not.toHaveCSS(
-      'box-shadow',
-      await original.evaluate(
+/** 卡片与默认 Portal 共用来源阴影，背景、遮罩及提示箭头继续由当前主题提供。 */
+for (const dark of [false, true]) {
+  /** 每种模式核对原始几何，不能用三个自定层级代替来源的统一阴影。 */
+  test(`${dark ? '深色' : '浅色'}卡片与浮层保持来源阴影几何且不改变背景`, async ({
+    page,
+    context,
+  }) => {
+    /** 对照页面不启用新效果。 */
+    const before = await context.newPage();
+    await prepare(before, dark, false);
+    await prepare(page, dark, true);
+    /** 悬浮卡片的 API 仍生效，默认态不提前绘制阴影。 */
+    const card = page.locator('.semi-card-shadows-hover');
+    await expect(card).toHaveCSS('box-shadow', 'none');
+    await card.hover();
+    await expect(card).toHaveCSS('transition-duration', '0.3s');
+    await expect(card).toHaveCSS('box-shadow', dark ? /0px 8px 28px 0px/ : /0px 4px 14px 0px/);
+    for (const [trigger, target] of [
+      ['global主题提示', '.semi-tooltip-wrapper'],
+      ['global打开弹窗', '.semi-modal-content'],
+    ] as const) {
+      await before.getByRole('button', { name: trigger, exact: true }).click();
+      await page.getByRole('button', { name: trigger, exact: true }).click();
+      /** 排除关闭后的留存节点，比较当前可见的真实浮层。 */
+      const current = page.locator(target!).filter({ visible: true });
+      /** 相同模式的 Portal 对照。 */
+      const original = before.locator(target!).filter({ visible: true });
+      if (target === '.semi-modal-content') {
+        // 默认 Portal 通过观察器同步主题，先确认内部开关已采用目标模式再比较全部背景。
+        await expect(current.locator('.semi-switch')).toHaveCSS(
+          'background-color',
+          dark ? 'rgb(93, 194, 100)' : 'rgba(46, 50, 56, 0.05)',
+        );
+        await expect(original.locator('.semi-switch')).toHaveCSS(
+          'background-color',
+          dark ? 'rgb(93, 194, 100)' : 'rgba(46, 50, 56, 0.05)',
+        );
+      }
+      expect(await surfaces(current)).toEqual(await surfaces(original));
+      /** 来源 Tooltip 不消费 elevated 阴影，Modal 才采用这套覆盖。 */
+      const originalShadow = await original.evaluate(
         /** 阴影必须实际变化，不能只有预设变量存在。 */
         (element) => getComputedStyle(element).boxShadow,
-      ),
-    );
-    if (target === '.semi-modal-content') {
-      await expect(page.locator('.semi-modal-mask')).toHaveCSS(
-        'background-color',
-        await before.locator('.semi-modal-mask').evaluate(
-          /** 遮罩属于背景范围，必须保持原值。 */
-          (element) => getComputedStyle(element).backgroundColor,
-        ),
       );
-      await page.keyboard.press('Escape');
-      await before.keyboard.press('Escape');
-    } else {
-      await page.getByRole('button', { name: '关闭提示', exact: true }).click();
-      await before.getByRole('button', { name: '关闭提示', exact: true }).click();
+      if (target === '.semi-tooltip-wrapper') {
+        await expect(current).toHaveCSS('box-shadow', originalShadow);
+      } else {
+        if (dark) await expect(current).not.toHaveCSS('box-shadow', originalShadow);
+        // 来源 light.css 的 1/14px 模糊，dark.css 的 8/28px 与外侧 1px 描边。
+        await expect(current).toHaveCSS(
+          'box-shadow',
+          dark ? /0px 8px 28px 0px/ : /0px 0px 1px 0px/,
+        );
+        await expect(current).toHaveCSS(
+          'box-shadow',
+          dark ? /0px 0px 0px 1px/ : /0px 4px 14px 0px/,
+        );
+        expect(
+          await current.evaluate(
+            /** 原实现没有内阴影，避免用 inset 模拟外侧细边。 */
+            (element) => getComputedStyle(element).boxShadow,
+          ),
+        ).not.toContain('inset');
+      }
+      if (target === '.semi-modal-content') {
+        await expect(page.locator('.semi-modal-mask')).toHaveCSS(
+          'background-color',
+          await before.locator('.semi-modal-mask').evaluate(
+            /** 遮罩属于背景范围，必须保持原值。 */
+            (element) => getComputedStyle(element).backgroundColor,
+          ),
+        );
+        await page.keyboard.press('Escape');
+        await before.keyboard.press('Escape');
+      } else {
+        await page.getByRole('button', { name: '关闭提示', exact: true }).click();
+        await before.getByRole('button', { name: '关闭提示', exact: true }).click();
+      }
     }
-  }
-  await page.getByRole('combobox', { name: '主题状态', exact: true }).click();
-  await before.getByRole('combobox', { name: '主题状态', exact: true }).click();
-  expect(await surfaces(page.locator('.semi-popover-wrapper'))).toEqual(
-    await surfaces(before.locator('.semi-popover-wrapper')),
-  );
-  await expect(page.locator('.semi-popover-wrapper')).toHaveCSS('box-shadow', /32px/);
-});
+    await page.getByRole('combobox', { name: '主题状态', exact: true }).click();
+    await before.getByRole('combobox', { name: '主题状态', exact: true }).click();
+    expect(await surfaces(page.locator('.semi-popover-wrapper'))).toEqual(
+      await surfaces(before.locator('.semi-popover-wrapper')),
+    );
+    await expect(page.locator('.semi-popover-wrapper')).toHaveCSS(
+      'box-shadow',
+      dark ? /0px 8px 28px 0px/ : /0px 0px 1px 0px/,
+    );
+  });
+}
 
 /** 新效果跟随当前品牌且尊重系统减少动态效果偏好，不改变背景状态切换。 */
 test('光晕跟随当前焦点色并支持减少动态效果', async ({ page }) => {
@@ -197,7 +237,7 @@ test('光晕跟随当前焦点色并支持减少动态效果', async ({ page }) 
   const wrapper = page.locator('.semi-input-wrapper').filter({ has: input });
   await input.focus();
   await expect(wrapper).toHaveCSS('transition-duration', '0.15s');
-  await expect(wrapper).toHaveCSS('box-shadow', /4px/);
+  await expect(wrapper).toHaveCSS('box-shadow', / 0px 0px 0px 4px$/);
   /** 同一控件改变当前焦点色后必须重新解析光晕，不能固定为来源紫色。 */
   const first = await wrapper.evaluate(
     /** 保存实际绘制值供后续比较。 */
@@ -209,7 +249,7 @@ test('光晕跟随当前焦点色并支持减少动态效果', async ({ page }) 
   await expect(wrapper).not.toHaveCSS('box-shadow', first);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(wrapper).toHaveCSS('transition-duration', '0s');
-  await expect(wrapper).toHaveCSS('box-shadow', /4px/);
+  await expect(wrapper).toHaveCSS('box-shadow', / 0px 0px 0px 4px$/);
 });
 
 /** 效果可撤销和导入，导出的覆盖只包含阴影/过渡，不夹带背景变量。 */
@@ -226,7 +266,7 @@ test('效果迁移保留自定义填充并通过 JSON 与 CSS 交付', async ({ 
   const wrapper = page.locator('.semi-input-wrapper').filter({ has: input });
   await input.focus();
   await expect(wrapper).toHaveCSS('background-color', 'rgb(233, 237, 247)');
-  await expect(wrapper).toHaveCSS('box-shadow', /4px/);
+  await expect(wrapper).toHaveCSS('box-shadow', / 0px 0px 0px 4px$/);
   await page.getByRole('button', { name: '撤销修改', exact: true }).click();
   await input.focus();
   await expect(wrapper).toHaveCSS('box-shadow', 'none');
@@ -255,7 +295,7 @@ test('效果迁移保留自定义填充并通过 JSON 与 CSS 交付', async ({ 
   await expect(page.getByRole('status')).toHaveText('已导入主题');
   await input.focus();
   await expect(wrapper).toHaveCSS('background-color', 'rgb(233, 237, 247)');
-  await expect(wrapper).toHaveCSS('box-shadow', /4px/);
+  await expect(wrapper).toHaveCSS('box-shadow', / 0px 0px 0px 4px$/);
   /** 独立页面只消费默认 CSS 与导出的样式，不包含工作台 Vue 状态。 */
   const consumer = await context.newPage();
   /** 公开主题结构样式供消费者使用。 */
@@ -264,7 +304,10 @@ test('效果迁移保留自定义填充并通过 JSON 与 CSS 交付', async ({ 
     `<style>${base}</style><style>${files.CSS}</style><div class="theme-studio-theme" theme-mode="light"><div class="semi-input-wrapper"><input aria-label="consumer" class="semi-input"></div><div data-semi-theme="studio-local"><div class="semi-input-wrapper"><input aria-label="local" class="semi-input"></div></div></div>`,
   );
   await consumer.getByRole('textbox', { name: 'consumer', exact: true }).focus();
-  await expect(consumer.locator('.semi-input-wrapper').first()).toHaveCSS('box-shadow', /4px/);
+  await expect(consumer.locator('.semi-input-wrapper').first()).toHaveCSS(
+    'box-shadow',
+    / 0px 0px 0px 4px$/,
+  );
   await consumer.getByRole('textbox', { name: 'local', exact: true }).focus();
   await expect(consumer.locator('[data-semi-theme=studio-local] .semi-input-wrapper')).toHaveCSS(
     'box-shadow',
