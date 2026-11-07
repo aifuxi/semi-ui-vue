@@ -6,6 +6,11 @@ order: 4
 icon: 'doc-theme'
 ---
 
+<script setup lang="ts">
+/** 独立工作台部署地址在文档构建时注入；本地开发使用约定的独立端口。 */
+const themeStudioUrl = `${(import.meta.env.VITE_THEME_STUDIO_URL || 'http://localhost:4322/').replace(/\/$/, '')}/#/tokens`;
+</script>
+
 ## 从默认主题开始
 
 Semi UI Vue 的默认主题固定对齐 Semi Design `v2.102.0`。导入默认 CSS 后，使用普通 CSS 自定义属性调整排版，或使用独立颜色生成器创建品牌主题。用户侧无需编写 SCSS、安装 Sass 或配置专用 Vite/Webpack 插件。
@@ -18,11 +23,13 @@ import './brand.css';
 
 只导入颜色工具或调用生成函数不会修改页面。默认 CSS 不调用生成器；只有加载业务生成的 CSS 才启用品牌颜色。
 
-## 交互预览
+## 独立主题工作台
 
-切换品牌色、预览模式和局部主题，观察按钮、输入框、文字与弹层的变化。排版调整通过公开 CSS 变量生效；变化只作用于预览区，不修改文档导航或站点全局主题。
+<a :href="themeStudioUrl" target="_blank" rel="noopener noreferrer">打开主题工作台</a>，编辑品牌色、字体、字号、字重和行高，比较深浅模式、固定 Semi 基线与局部继承，并查看默认弹层的主题效果。
 
-<DemoBlock title="品牌与排版主题" id="zh-CN-advanced-theme-playground" kind="live" />
+工作台是与文档站平级的 `apps/theme-studio` 独立应用，拥有自己的入口、路由和主题状态。本地运行 `pnpm theme-studio:dev` 后使用上方入口；文档站保留公开 API、使用说明与代码示例，不嵌入编辑面板。颜色和排版均使用本页公开 API 与 CSS 变量，定制主题无需 SCSS、Sass 或专用构建插件。
+
+首期组件样式定制限定于已公开的颜色与排版能力。圆角、间距、阴影编辑、云服务、主题发布与 Figma 接入不在当前范围内。
 
 ## CSS 排版主题
 

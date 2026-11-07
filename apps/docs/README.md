@@ -19,10 +19,16 @@
 
 - 直接编辑 `content/**/*.md`。每页的 `title`、`description`、`type`、`order` 和可选 `icon` 写在 frontmatter 中；页面路径即站点路由。首页为 `content/index.md`。
 - 分类名称及侧栏顺序在 `data/categories.json` 中维护。`scripts/prepare-index.mjs` 从本地 Markdown 生成导航和搜索索引，并检查路由、分类、图标及示例引用。
-- 可运行示例放在 `.vitepress/theme/demo/examples/`，文件名就是 `<DemoBlock id="…" kind="live" />` 的 ID；非运行示例源码在 `data/code-sources.json` 中维护。修改示例时保持 Markdown 引用与源码一致。排版及品牌主题的交互示例位于 `examples/t1/customize-theme/`，正文入口为 `content/zh-CN/advanced/customize-theme.md`。
+- 可运行示例放在 `.vitepress/theme/demo/examples/`，文件名就是 `<DemoBlock id="…" kind="live" />` 的 ID；非运行示例源码在 `data/code-sources.json` 中维护。修改示例时保持 Markdown 引用与源码一致。
 - 站点样式与字体位于 `content/public/site/`，侧栏图标位于 `content/public/doc-icons/`，其余演示资源位于 `content/public/demos/`。历史素材的来源与许可见 [第三方归属](THIRD_PARTY.md)。
 
 `content/public/search-index.json`、`.vitepress/theme/generated/nav.json`、`cache/` 和 `dist/` 是可再生的忽略产物。`pnpm --filter @workspace/docs clean` 只清理这些产物，不删除正文或静态资源。
+
+## 主题工作台入口
+
+品牌与排版编辑由独立的 [`apps/theme-studio`](../theme-studio/README.md) 提供，文档站只保留 API、使用说明、代码示例和外部入口，不导入工作台布局或状态。入口位于 `content/zh-CN/advanced/customize-theme.md`。
+
+本地先运行 `pnpm theme-studio:dev`，默认链接为 <http://localhost:4322/#/tokens>。部署时通过 `VITE_THEME_STUDIO_URL` 指定工作台的公开根地址，例如 `https://themes.example.com/`；该变量在文档站开发服务启动或生产构建时读取，修改后需重新启动或构建。工作台独立部署，不随 `docs:build` 构建，也不要求文档站服务作为运行依赖。
 
 ## 验收
 

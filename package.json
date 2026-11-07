@@ -74,7 +74,11 @@
     "check": "pnpm check:source && pnpm test:unit",
     "check:artifacts": "pnpm build && pnpm verify:theme-dist && pnpm verify:ssr-dist && pnpm verify:pack-dist",
     "check:full": "pnpm check && pnpm check:artifacts && pnpm test:browser && pnpm test:consumer",
-    "check:toolchain": "node scripts/verify-toolchain.mjs"
+    "check:toolchain": "node scripts/verify-toolchain.mjs",
+    "theme-studio:prepare": "pnpm --filter @workspace/theme-studio prepare:packages",
+    "theme-studio:dev": "pnpm --filter @workspace/theme-studio dev",
+    "theme-studio:build": "pnpm --filter @workspace/theme-studio build",
+    "test:theme-studio": "playwright test --config playwright.theme-studio.config.ts"
   },
   "devDependencies": {
     "@changesets/changelog-github": "1.0.1",

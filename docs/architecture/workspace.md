@@ -13,6 +13,7 @@
 | `apps/reference-react`                         | 从固定 vendor 运行真实 React 参考场景                |
 | `apps/storybook-vue`                           | Storybook Vue 3/Vite 场景站，从公开组件子路径导入    |
 | `apps/docs`                                    | VitePress 组件库文档站，正文从固定基线构建期生成     |
+| `apps/theme-studio`                            | 独立主题工作台，只消费公开 Vue 组件、图标与主题包    |
 | `tests/browser`                                | 锁定 Chromium 的组件对照验收                         |
 | `tests/consumer`                               | 真实 tarball 的独立 Chromium 消费测试                |
 | `docs/components`                              | 静态组件契约、API 说明与已知差异                     |
@@ -33,6 +34,8 @@ JsonViewer 的固定 core 与 jsonc-parser 经私有构建插件编入内联 Wor
 每个公开包携带 MIT、第三方声明和 SPDX SBOM。可复现构建使用 `SOURCE_DATE_EPOCH`。版本、依赖和构建入口以各 package.json、lockfile 与 mise.toml 为准，组件进度与实现细节见[组件目录](../components/)。
 
 ## Storybook、参考应用、文档站与测试
+
+`apps/theme-studio` 是与 docs 平级的私有 Vue/Vite 应用，具有独立入口、hash 路由、状态、开发端口与构建产物；不依赖 docs 的布局或示例基础设施。文档仅保留 API、代码和可配置的工作台入口。工作台通过公开颜色 API、编译 CSS 与排版变量实时预览默认和局部主题，不要求用户使用 Sass 或专用主题插件；入口、首期范围及验证见[应用说明](../../apps/theme-studio/README.md)。
 
 Nuxt 文档应用及其构建、REPL、站点资源和逐示例验收已移除，退役范围见[说明](../documentation/README.md)。
 `apps/docs` 是不参与发布的私有 VitePress 应用：站点外壳使用基线站点 SCSS 与 `@douyinfe/semi-site-doc-style`

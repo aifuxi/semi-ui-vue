@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "../..",
+    "paths": {
+      "@aifuxi/semi-ui-vue": ["packages/ui/src/index.ts"],
+      "@aifuxi/semi-icons-vue": ["packages/icons/src/index.ts"],
+      "@aifuxi/semi-illustrations-vue": ["packages/illustrations/src/index.ts"],
+      "@aifuxi/semi-theme-default/colors": ["packages/theme-default/colors/index.d.mts"]
+    },
+    "types": ["vite/client", "node"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.vue", "vite.config.ts"]
+}

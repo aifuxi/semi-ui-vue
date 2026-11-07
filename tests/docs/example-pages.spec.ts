@@ -88,8 +88,8 @@ test('静态代码示例展示 Vue 代码且不运行预览', async ({ page }) =
   await expect(faq.locator('code')).not.toContainText('@douyinfe');
 });
 
-// 定制主题现在提供独立 live 示例；其余指南静态代码继续采用 code-only。
-test('通用指南的静态代码与主题交互示例按各自类型展示', async ({ page }) => {
+// 主题交互迁入独立应用；指南继续展示静态代码和工作台入口。
+test('通用指南保留静态代码并将主题交互交给独立工作台', async ({ page }) => {
   // 当前静态示例数量来自各指南的公开展示契约。
   const guides = [
     ['/zh-CN/start/getting-started', 4],
@@ -108,7 +108,8 @@ test('通用指南的静态代码与主题交互示例按各自类型展示', as
     if (route === '/zh-CN/advanced/customize-theme') {
       await expect(
         page.locator('.demo-block[data-demo-kind="live"] .demo-block-preview'),
-      ).toHaveCount(1);
+      ).toHaveCount(0);
+      await expect(page.getByRole('link', { name: '打开主题工作台', exact: true })).toBeVisible();
     }
     expect((await examples.locator('code').allTextContents()).join('\n')).not.toMatch(
       /@douyinfe|\bReact(?:DOM)?\b/,
