@@ -26,6 +26,8 @@ export default defineConfig({
   ],
   markdown: {
     theme: { light: 'github-light', dark: 'github-dark' },
+    // 自定义站点保留 VitePress 的复制行为，并提供中文可访问名称。
+    codeCopyButtonTitle: '复制代码',
     // 文档正文里存在 `{ width?: number | string }` 这类类型描述，
     // markdown-it-attrs 会把它们当成行内属性，这里关闭该语法。
     attrs: { disable: true },

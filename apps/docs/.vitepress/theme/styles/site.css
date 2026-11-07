@@ -6,6 +6,7 @@
 @import '@aifuxi/semi-theme-default/dropdown.css';
 @import '@aifuxi/semi-theme-default/divider.css';
 @import '@aifuxi/semi-theme-modern/index.css';
+@import './code.css';
 
 /* 站点布局由本地样式维护，历史样式来源见文档站的第三方归属说明。 */
 *:not([class*='semi-'], [class*='semi-'] *) {
@@ -194,11 +195,6 @@ body[theme-mode='dark'] .site-header {
   white-space: nowrap;
   overflow-wrap: normal;
   word-break: keep-all;
-}
-
-.markdown div[class*='language-'] {
-  max-width: 100%;
-  overflow-x: auto;
 }
 
 .markdown a {

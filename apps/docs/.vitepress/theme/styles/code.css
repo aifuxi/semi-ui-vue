@@ -1,0 +1,118 @@
+/* 文档围栏由 VitePress/Shiki 渲染，示例源码由 Prism 渲染；均只在文档容器内适配。
+ * 不导入 VitePress 默认主题，也不改变组件库 CodeHighlight 的固定 Semi 基线。
+ */
+.markdown .vp-adaptive-theme {
+  position: relative;
+  max-width: 100%;
+  margin: 16px 0 24px;
+  border: 1px solid var(--semi-color-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--semi-color-fill-0);
+}
+
+/* 顶部为语言与复制按钮预留 40px；长行仅在 pre 内横向滚动。 */
+.markdown .vp-adaptive-theme pre.shiki.vp-code {
+  margin: 0;
+  padding: 40px 16px 16px;
+  overflow: auto;
+  background: transparent;
+}
+
+/* 清除全局 code 的行内背景，使用公开等宽字体入口，并保留源码空白。 */
+.markdown .vp-adaptive-theme pre.shiki code {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--semi-color-text-0);
+  font-family: var(
+    --semi-font-family-monospace,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace
+  );
+  font-size: 13px;
+  line-height: 1.5;
+  text-shadow: none;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+  tab-size: 4;
+}
+
+/* Shiki 输出双模式变量而非直接 color；站点使用 theme-mode，不依赖 .dark。 */
+.markdown .vp-adaptive-theme .shiki span {
+  color: var(--shiki-light, inherit);
+  font-style: var(--shiki-light-font-style, inherit);
+  font-weight: var(--shiki-light-font-weight, inherit);
+  text-decoration: var(--shiki-light-text-decoration, inherit);
+}
+
+body[theme-mode='dark'] .markdown .vp-adaptive-theme .shiki span {
+  color: var(--shiki-dark, inherit);
+  font-style: var(--shiki-dark-font-style, inherit);
+  font-weight: var(--shiki-dark-font-weight, inherit);
+  text-decoration: var(--shiki-dark-text-decoration, inherit);
+}
+
+.markdown .vp-adaptive-theme > .lang {
+  position: absolute;
+  top: 10px;
+  left: 16px;
+  color: var(--semi-color-text-2);
+  font-size: 12px;
+  line-height: 20px;
+  pointer-events: none;
+}
+
+/* 保留 VitePress 原生复制行为；文字按钮不依赖未加载的默认主题图标。 */
+.markdown .vp-adaptive-theme > button.copy {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  min-width: 52px;
+  min-height: 28px;
+  padding: 4px 8px;
+  border: 1px solid var(--semi-color-border);
+  border-radius: 4px;
+  background: var(--semi-color-bg-0);
+  color: var(--semi-color-text-1);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.markdown .vp-adaptive-theme > button.copy::before {
+  content: attr(title);
+}
+
+.markdown .vp-adaptive-theme > button.copy.copied::before {
+  content: '已复制';
+}
+
+.markdown .vp-adaptive-theme > button.copy:hover {
+  background: var(--semi-color-fill-1);
+}
+
+.markdown .vp-adaptive-theme > button.copy:focus-visible {
+  outline: 2px solid var(--semi-color-focus-border);
+  outline-offset: 2px;
+}
+
+/* 示例源码使用同样的容器底色，避免多层半透明背景叠加成亮灰色条带。 */
+.demo-block-source .semi-codeHighlight-defaultTheme pre[class*='language-'] {
+  margin: 0;
+  padding: 16px;
+  background: transparent;
+}
+
+/* Prism 的固定注释灰在暗色下对比不足；只调整文档源码，不影响组件预览。 */
+body[theme-mode='dark'] .demo-block-source .token:is(.comment, .prolog, .doctype, .cdata) {
+  color: var(--semi-color-text-2);
+}
