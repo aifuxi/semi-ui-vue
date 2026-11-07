@@ -53,14 +53,14 @@ function effect(
   };
 }
 
-/** 输入 hover 只用 2px 轻提示，focus/open 使用来源的 4px 外扩；明暗强度独立适配。 */
+/** 保留 hover 2px、focus/open 4px 的窄范围，仅通过显色比例加强反馈。 */
 function glow(role: 'normal' | 'danger' | 'warning', focused: boolean): TokenDefinition {
   /** 正常状态跟随当前焦点色，校验反馈保持原有语义。 */
   const color = role === 'normal' ? '--semi-color-focus-border' : `--semi-color-${role}`;
-  /** 在当前浅色表面保持轻量，深色表面增加可见度，均为本工作台适配值。 */
-  const lightAlpha = focused ? (role === 'normal' ? 14 : 18) : role === 'normal' ? 8 : 12;
-  /** 深色光晕更明显，但不以实色浅底代替透明光晕。 */
-  const darkAlpha = focused ? (role === 'normal' ? 22 : 26) : role === 'normal' ? 14 : 18;
+  /** 浅色表面提高品牌/校验色占比，使光晕明显区别于控件原有细描边。 */
+  const lightAlpha = focused ? (role === 'normal' ? 28 : 32) : role === 'normal' ? 18 : 22;
+  /** 深色表面使用更高显色比例，避免透明叠加后只剩微弱边缘。 */
+  const darkAlpha = focused ? (role === 'normal' ? 40 : 44) : role === 'normal' ? 28 : 32;
   /** box-shadow 不参与布局，不改变控件尺寸或背景。 */
   const width = focused ? 4 : 2;
   /** 仅匹配当前校验角色；focus/open 的规则排在 hover 后。 */
@@ -96,27 +96,27 @@ const animated = [
   '.semi-card-shadows',
 ];
 
-/** 三种悬浮层级使用中性阴影；深色细边引用当前文字色，不引入来源表面色。 */
+/** 加深三档中性阴影的接触层和扩散层；深色边缘增强对比，不引入来源表面色。 */
 export const dieluEffectsTokens: TokenDefinition[] = [
   effect(
     'card-shadow',
     '卡片阴影',
-    '0 1px 3px rgb(0 0 0 / 8%), 0 6px 20px rgb(0 0 0 / 10%)',
-    '0 8px 24px rgb(0 0 0 / 38%), inset 0 0 0 1px color-mix(in srgb, var(--semi-color-text-0) 8%, transparent)',
+    '0 1px 3px rgb(0 0 0 / 16%), 0 6px 20px rgb(0 0 0 / 20%)',
+    '0 8px 24px rgb(0 0 0 / 56%), inset 0 0 0 1px color-mix(in srgb, var(--semi-color-text-0) 16%, transparent)',
     ['.semi-card-shadows-always', '.semi-card-shadows-hover:hover'],
   ),
   effect(
     'popup-shadow',
     '下拉与提示阴影',
-    '0 1px 3px rgb(0 0 0 / 10%), 0 8px 24px rgb(0 0 0 / 12%)',
-    '0 12px 32px rgb(0 0 0 / 44%), inset 0 0 0 1px color-mix(in srgb, var(--semi-color-text-0) 12%, transparent)',
+    '0 1px 3px rgb(0 0 0 / 20%), 0 8px 24px rgb(0 0 0 / 24%)',
+    '0 12px 32px rgb(0 0 0 / 64%), inset 0 0 0 1px color-mix(in srgb, var(--semi-color-text-0) 20%, transparent)',
     ['.semi-popover-wrapper', '.semi-tooltip-wrapper'],
   ),
   effect(
     'modal-shadow',
     '弹窗阴影',
-    '0 2px 6px rgb(0 0 0 / 12%), 0 16px 48px rgb(0 0 0 / 18%)',
-    '0 20px 56px rgb(0 0 0 / 50%), inset 0 0 0 1px color-mix(in srgb, var(--semi-color-text-0) 12%, transparent)',
+    '0 2px 6px rgb(0 0 0 / 24%), 0 16px 48px rgb(0 0 0 / 30%)',
+    '0 20px 56px rgb(0 0 0 / 72%), inset 0 0 0 1px color-mix(in srgb, var(--semi-color-text-0) 22%, transparent)',
     ['.semi-modal-content'],
   ),
   glow('normal', false),
