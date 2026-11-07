@@ -132,3 +132,10 @@
 ## Dropdown 公开入口锁定（2026-09-18）
 
 - `Dropdown.test.ts` 从 `./index` 同时覆盖默认导出、命名 `Dropdown` 与 `Dropdown.Item/Menu/Title/Divider` 复合静态成员，锁定根/子路径公开入口关系。SSR 与 hydration 测试已通过公开入口挂载，继续覆盖无 DOM 导入、稳定 trigger ARIA、Portal 接管和卸载清理。
+
+## 可选参数防溢出修复（2026-11-07，BUG-000074）
+
+- `autoAdjustOverflow` 未传或为 `undefined` 时，不能把 Vue 的缺省 Boolean 转换结果 `false` 当成显式配置传给 Tooltip。可选参数按显式非 `undefined` 值 → `semiGlobal.config.overrideDefaultProps.Dropdown` → Tooltip 全局覆盖/默认值解析；没有覆盖时 Tooltip 默认开启防溢出。显式 `false` 仍保留关闭能力。
+- 同一解析器负责的可选 Boolean 均保留“未提供”语义，包括 `arrowPointAtCenter`、`condition`、`transformFromCenter`、`wrapWhenSpecial`。原始参数存在性更新沿用 SideSheet 的 `onBeforeUpdate` 版本追踪，覆盖 Vue 将未传和显式 `false` 解析为相同值的动态切换。公开 `autoAdjustOverflow` 类型明确允许显式 `undefined`。
+- 新单测在原实现上 3 失败/5 通过；修复后 Dropdown 单测、SSR、hydration 共 32 项通过。真实 tarball 消费新增 8 项，覆盖 1100×728、760×528、1440×900，四角、较宽内容、开关、缩放、菜单点击/键盘、Escape/外部关闭、焦点返回及真实根滚动区尺寸；消费全套 11 项通过。Dropdown 固定 React 基线浏览器专项 5 项通过，未更新截图基线。
+- 占位滚动条测试移除 Playwright headless 默认 `--hide-scrollbars`，校准实际宽度 15px；另测默认 headless 零占位几何。后者不冒充系统原生浮动滚动条验证。原应用少量数据及 57 列表格、Electron 与 Windows/Linux 实机复测仍待消费方集成，应用代码和依赖未修改。
