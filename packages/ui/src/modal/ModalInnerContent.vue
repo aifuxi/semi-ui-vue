@@ -40,26 +40,38 @@ interface Props {
   width?: string | number | undefined;
 }
 
+/** 渲染层配置；dialogId 由父级 useId 提供，SSR 与客户端保持一致。 */
 const props = defineProps<Props>();
+/** 将内容层事件交回父级 Foundation，保持原关闭和动效路径。 */
 const emit = defineEmits<{
   animationEnd: [event: AnimationEvent];
   close: [event: MouseEvent];
   mousedown: [event: MouseEvent];
 }>();
+/** 暴露实际 dialog 给父级管理焦点。 */
 const dialogElement = useTemplateRef<HTMLDivElement>('dialog');
+/** 仅 title 非空时渲染标准标题；自定义 header 仍优先。 */
 const hasDefaultHeader = computed(() => props.title !== null && props.title !== undefined);
+/** header 决定正文布局，不决定正文的可访问性关联是否存在。 */
 const hasHeader = computed(() => props.headerProvided || hasDefaultHeader.value);
+/** 使用实例 ID 派生名称引用，防止多弹窗解析到文档中的第一个标题。 */
+const titleId = computed(() => `semi-modal-title-${props.dialogId}`);
+/** 描述同样必须指向本实例正文，避免与标题发生同类碰撞。 */
+const bodyId = computed(() => `semi-modal-body-${props.dialogId}`);
 
+/** 数字尺寸按 CSS 像素转换，字符串保留调用方单位。 */
 function cssSize(value: string | number | undefined): string | undefined {
   return typeof value === 'number' ? `${value}px` : value;
 }
 
+/** 全屏覆盖显式宽高，与原尺寸定位规则一致。 */
 const outerStyle = computed<StyleValue>(() => [
   props.outerStyle,
   props.width === undefined ? undefined : { width: cssSize(props.width) },
   props.height === undefined ? undefined : { height: cssSize(props.height) },
   props.fullScreen ? { width: '100%', height: '100%', margin: 'unset' } : undefined,
 ]);
+/** 保留固定基线的内容、全屏和显式高度 class。 */
 const contentClasses = computed(() => [
   'semi-modal-content',
   props.contentClass,
@@ -68,6 +80,7 @@ const contentClasses = computed(() => [
     'semi-modal-content-height-set': props.height !== undefined,
   },
 ]);
+/** 图标存在时启用固定基线正文缩进。 */
 const bodyClasses = computed(() => [
   'semi-modal-body',
   { 'semi-modal-withIcon': props.icon !== null && props.icon !== undefined },
@@ -93,8 +106,8 @@ defineExpose({ element: dialogElement });
         ref="dialog"
         role="dialog"
         aria-modal="true"
-        aria-labelledby="semi-modal-title"
-        aria-describedby="semi-modal-body"
+        :aria-labelledby="!props.headerProvided && hasDefaultHeader ? titleId : undefined"
+        :aria-describedby="bodyId"
         :class="contentClasses"
         @animationend="emit('animationEnd', $event)"
       >
@@ -107,7 +120,7 @@ defineExpose({ element: dialogElement });
           >
             <ModalNodeRenderer :content="props.icon" />
           </span>
-          <Title id="semi-modal-title" :heading="5" class="semi-modal-title" x-semi-prop="title">
+          <Title :id="titleId" :heading="5" class="semi-modal-title" x-semi-prop="title">
             <ModalNodeRenderer :content="props.title" />
           </Title>
           <Button
@@ -131,7 +144,7 @@ defineExpose({ element: dialogElement });
 
         <div
           v-if="hasHeader"
-          id="semi-modal-body"
+          :id="bodyId"
           :class="bodyClasses"
           :style="props.bodyStyle"
           x-semi-prop="children"
@@ -146,7 +159,7 @@ defineExpose({ element: dialogElement });
           >
             <ModalNodeRenderer :content="props.icon" />
           </span>
-          <div :class="bodyClasses" :style="props.bodyStyle" x-semi-prop="children">
+          <div :id="bodyId" :class="bodyClasses" :style="props.bodyStyle" x-semi-prop="children">
             <ModalNodeRenderer :content="props.body" />
           </div>
           <Button

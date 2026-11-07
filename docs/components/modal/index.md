@@ -108,7 +108,7 @@ Modal.destroyAll();
 
 ## 可访问性、焦点与键盘
 
-- 对话框保留 `role="dialog"`、`aria-modal="true"`、`aria-labelledby="semi-modal-title"` 与 `aria-describedby="semi-modal-body"`；无标题时不制造不可见的空 header。
+- 对话框保留 `role="dialog"` 与 `aria-modal="true"`；`aria-labelledby` 和 `aria-describedby` 引用各实例自己的标准标题及正文 ID，嵌套或多个弹窗并存时不会串读。无标题或自定义 header 时省略标准标题引用，不制造空 header。请使用 `.semi-modal-title` / `.semi-modal-body` 选择样式节点，不依赖生成的 ID 值。
 - 打开时记录先前 `activeElement`、锁定 body 滚动（仅 body portal）并建立焦点陷阱：优先聚焦 `autofocus` 元素或默认取消按钮，`Tab`/`Shift+Tab` 循环，关闭终态恢复焦点。
 - `closeOnEsc={false}` 不创建 ESC 关闭路径；遮罩、关闭按钮与取消按钮分别由 `maskClosable`/`closable`/`hasCancel` 控制。
 

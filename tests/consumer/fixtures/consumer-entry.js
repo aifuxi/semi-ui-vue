@@ -33,6 +33,74 @@ const dropdownQuery = new URLSearchParams(location.search);
 const dropdownCase = dropdownQuery.get('dropdown');
 // 排版专项复用真实安装包，仅切换测试页面，不注入组件实现。
 const typographyThemeCase = dropdownQuery.has('typography-theme');
+// 可访问性专项只使用公开 Modal，不注入 DOM ID 或业务样式补丁。
+const modalA11yCase = dropdownQuery.has('modal-a11y');
+// 模拟详情内部的状态操作，默认关闭内层，保留原始入场与退场动效。
+const nestedModalVisible = ref(false);
+
+/** 渲染真实安装包的详情、嵌套确认与命令式确认入口。 */
+function renderPackedModalA11y() {
+  return h(
+    Modal,
+    {
+      visible: true,
+      title: '详情外层',
+      // 详情在内层 Esc 关闭时保持打开，模拟业务详情的关闭保护。
+      closeOnEsc: false,
+      maskClosable: false,
+      footer: null,
+    },
+    {
+      // 内层由真实控件切换 visible，Portal 和焦点全部由库自身管理。
+      default: () => [
+        h('p', '外层正文'),
+        h(
+          Button,
+          {
+            // 公开可见性状态驱动嵌套组件。
+            onClick: () => {
+              nestedModalVisible.value = true;
+            },
+          },
+          {
+            // 保留稳定的用户操作名称。
+            default: () => '打开操作确认',
+          },
+        ),
+        h(
+          Button,
+          {
+            // 两次静态调用创建两个 app，覆盖 useId 的跨 app 边界。
+            onClick: () => {
+              Modal.confirm({ title: '命令确认', content: '命令确认正文' });
+              Modal.info({ title: '命令提示', content: '命令提示正文' });
+            },
+          },
+          {
+            // 提供独立入口，不与声明式内层状态混用。
+            default: () => '打开命令式弹窗',
+          },
+        ),
+        h(
+          Modal,
+          {
+            visible: nestedModalVisible.value,
+            title: '操作确认',
+            maskClosable: false,
+            // 用户取消或 Esc 只改变内层的公开 visible。
+            'onUpdate:visible': (visible) => {
+              nestedModalVisible.value = visible;
+            },
+          },
+          {
+            // 不使用自定义 header，直接复现工单的标准标题路径。
+            default: () => '内层正文',
+          },
+        ),
+      ],
+    },
+  );
+}
 // 页面操作控制主题和新挂载对照，用于验证已挂载组件的自动重测。
 const typographyThemeEnabled = ref(false);
 const typographyReference = ref(0);
@@ -746,49 +814,51 @@ function renderPackedColorTheme() {
 createApp({
   // 根消费示例保留原有组件交互，并加入直接调用的错误提示区域。
   render: () =>
-    colorThemeCase
-      ? renderPackedColorTheme()
-      : typographyThemeCase
-        ? renderPackedTypographyTheme()
-        : dropdownCase !== null
-          ? renderPackedDropdown()
-          : h('main', [
-              h(
-                Button,
-                {
-                  // 按钮驱动现有输入状态。
-                  onClick: () => {
-                    input.value = 'Clicked';
+    modalA11yCase
+      ? renderPackedModalA11y()
+      : colorThemeCase
+        ? renderPackedColorTheme()
+        : typographyThemeCase
+          ? renderPackedTypographyTheme()
+          : dropdownCase !== null
+            ? renderPackedDropdown()
+            : h('main', [
+                h(
+                  Button,
+                  {
+                    // 按钮驱动现有输入状态。
+                    onClick: () => {
+                      input.value = 'Clicked';
+                    },
                   },
-                },
-                // 保留真实 Button 默认插槽。
-                () => 'Packed button',
-              ),
-              h(Input, {
-                value: input.value,
-                'aria-label': 'Packed input',
-                // 原样同步输入的公开 change 值。
-                onChange: (value) => {
-                  input.value = value;
-                },
-              }),
-              h(Select, {
-                value: selected.value,
-                'aria-label': 'Packed select',
-                optionList: [
-                  { label: 'First', value: 'first' },
-                  { label: 'Second', value: 'second' },
-                ],
-                // 原样同步选择器的公开 change 值。
-                onChange: (value) => {
-                  selected.value = value;
-                },
-              }),
-              h('output', { id: 'packed-state' }, input.value + ':' + selected.value),
-              h(CodeHighlight, { code: 'const ready = true;\nready();', language: 'javascript' }),
-              h(JsonViewer, { value: '{"name":"Semi"}', width: 600, height: 160 }),
-              renderPackedErrorCases(),
-            ]),
+                  // 保留真实 Button 默认插槽。
+                  () => 'Packed button',
+                ),
+                h(Input, {
+                  value: input.value,
+                  'aria-label': 'Packed input',
+                  // 原样同步输入的公开 change 值。
+                  onChange: (value) => {
+                    input.value = value;
+                  },
+                }),
+                h(Select, {
+                  value: selected.value,
+                  'aria-label': 'Packed select',
+                  optionList: [
+                    { label: 'First', value: 'first' },
+                    { label: 'Second', value: 'second' },
+                  ],
+                  // 原样同步选择器的公开 change 值。
+                  onChange: (value) => {
+                    selected.value = value;
+                  },
+                }),
+                h('output', { id: 'packed-state' }, input.value + ':' + selected.value),
+                h(CodeHighlight, { code: 'const ready = true;\nready();', language: 'javascript' }),
+                h(JsonViewer, { value: '{"name":"Semi"}', width: 600, height: 160 }),
+                renderPackedErrorCases(),
+              ]),
 }).mount('#app');
 
 console.log(styleCoverage.length);
