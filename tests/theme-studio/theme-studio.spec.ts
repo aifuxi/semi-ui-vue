@@ -224,13 +224,20 @@ test('局部边界隔离主题并在关闭后恢复自然继承', async ({ page 
 });
 
 /** 提示始终保持打开，通过 body Portal 验证主题桥接。 */
-test('默认 Tooltip 打开时同步外侧品牌、模式与排版编辑', async ({ page }) => {
+test('主题 Popover 打开时同步背景、箭头、品牌与排版编辑', async ({ page }) => {
   /** 主题之外的页面属性必须在整个编辑周期保持原样。 */
   const before = await rootTheme(page);
   await page.getByRole('button', { name: 'global主题提示', exact: true }).click();
   /** 链接和普通文字分别证明颜色与排版进入真实浮层。 */
   const link = page.getByTestId('global-tooltip-link');
+  /** 带操作的主题气泡使用正向浮层背景，箭头填充必须与表面一致。 */
+  const bubble = page.locator('.semi-popover-wrapper').filter({ has: link });
+  /** 第二个 path 是箭头背景，第一个 path 负责描边。 */
+  const arrow = bubble.locator('.semi-popover-icon-arrow path').nth(1);
   await expect(link).toBeVisible();
+  await expect(bubble).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+  await expect(arrow).toHaveCSS('fill', 'rgb(255, 255, 255)');
+  await expect(page.getByTestId('global-tooltip-text')).toHaveCSS('color', 'rgb(28, 31, 35)');
   await expect(link).toHaveCSS('color', baselinePrimary.light);
   expect(
     await link.evaluate(
@@ -243,6 +250,16 @@ test('默认 Tooltip 打开时同步外侧品牌、模式与排版编辑', async
   await expect(link).toHaveCSS('color', primary('#7c3aed', 'light'));
   await page.getByRole('switch', { name: '全局深色模式', exact: true }).check();
   await expect(link).toHaveCSS('color', primary('#7c3aed', 'dark'));
+  await expect(bubble).toHaveCSS('background-color', 'rgb(67, 68, 74)');
+  await expect(arrow).toHaveCSS('fill', 'rgb(67, 68, 74)');
+  await expect(page.getByTestId('global-tooltip-text')).toHaveCSS('color', 'rgb(249, 249, 249)');
+  // 保持气泡打开，验证编辑浮层背景 token 后也同步到箭头。
+  await page.getByRole('textbox', { name: '搜索设计变量', exact: true }).fill('--semi-color-bg-3');
+  await page.getByRole('button', { name: '--semi-color-bg-3', exact: true }).click();
+  await page.getByRole('textbox', { name: 'CSS 变量值', exact: true }).fill('#273449');
+  await page.getByRole('button', { name: '应用变量', exact: true }).click();
+  await expect(bubble).toHaveCSS('background-color', 'rgb(39, 52, 73)');
+  await expect(arrow).toHaveCSS('fill', 'rgb(39, 52, 73)');
   await page.getByRole('button', { name: '字体排版', exact: true }).click();
   await choose(page, '全局字体', '等宽 / Monospace');
   await number(page, '全局正文字号', 17);

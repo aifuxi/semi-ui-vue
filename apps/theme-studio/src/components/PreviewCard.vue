@@ -7,14 +7,14 @@ import {
   Select,
   Switch,
   Tag,
-  Tooltip,
+  Popover,
   Typography,
 } from '@aifuxi/semi-ui-vue';
 import { IconPlus, IconArrowRight, IconInfoCircle } from '@aifuxi/semi-icons-vue';
 import type { ThemeSettings } from '../studio';
 import QuickControls from './QuickControls.vue';
 
-/** 同一组真实组件用于全局、局部与固定基线比较；不仿制组件 DOM。 */
+/** 全局与局部主题使用相同真实组件，预览直接消费公开 API。 */
 defineProps<{
   name: string;
   title: string;
@@ -32,7 +32,7 @@ const team = ref('design');
 const notifications = ref(true);
 /** 默认 body Portal 的声明式弹窗。 */
 const modalVisible = ref(false);
-/** 自定义触发让 Tooltip 在操作外侧编辑区时保持打开，容器仍使用默认值。 */
+/** 主题气泡保持打开以观察外侧编辑，内容带操作，因此使用同色系 Popover。 */
 const tooltipVisible = ref(false);
 /** 固定的业务选项，避免把主题状态混入预览表单。 */
 const teams = [
@@ -96,8 +96,10 @@ function toggleTooltip(): void {
       <Button disabled>已归档</Button>
     </div>
     <div v-if="theme" class="sample-popups">
-      <Tooltip
+      <Popover
         trigger="custom"
+        position="top"
+        show-arrow
         :visible="tooltipVisible"
         :motion="false"
         :close-on-esc="true"
@@ -115,7 +117,7 @@ function toggleTooltip(): void {
             ><Button size="small" @click="toggleTooltip">关闭提示</Button>
           </div></template
         >
-      </Tooltip>
+      </Popover>
       <Button type="tertiary" :aria-label="`${name}打开弹窗`" @click="openModal">打开弹窗</Button>
     </div>
     <!-- 使用 Modal 的公开 width 支持手机视口，保留桌面 520px 内容宽度。 -->
