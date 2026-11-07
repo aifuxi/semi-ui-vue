@@ -59,7 +59,12 @@ function toggleTooltip(): void {
       <span class="sample-eyebrow">表单预览</span><Tag color="green">进行中</Tag>
     </div>
     <Typography.Title :heading="4" :data-testid="`${name}-title`">{{ title }}</Typography.Title>
-    <Typography.Text :data-testid="`${name}-text`">正文与链接的排版效果。</Typography.Text>
+    <Typography.Text :data-testid="`${name}-text`"
+      >正文排版预览 · Theme Studio 0123456789</Typography.Text
+    >
+    <Typography.Text v-if="!compact" code :data-testid="`${name}-code`"
+      >font-size: 14px;</Typography.Text
+    >
     <Typography.Text v-if="!compact" type="tertiary" class="sample-description"
       >调整变量后，这里的组件会实时更新。</Typography.Text
     >

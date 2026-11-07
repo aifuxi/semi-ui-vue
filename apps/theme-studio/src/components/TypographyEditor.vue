@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { InputNumber, Select } from '@aifuxi/semi-ui-vue';
 import { baselineFont, type TypographySettings } from '../studio';
+import { dieluUiFont } from '../dielu-foreground-preset';
 
-/** 仅编辑公开的排版变量，字体文件仍由使用方提供。 */
+/** 编辑公开排版变量；迭鹿预设字体随本应用部署，其他字体由本机提供。 */
 defineProps<{ value: TypographySettings; label: string }>();
 /** 排版编辑只发出修改字段，由会话所有者统一应用。 */
 const emit = defineEmits<{ change: [value: Partial<TypographySettings>] }>();
-/** 本机字体栈无需额外网络请求；固定栈与 serif/monospace 可直观看到差异。 */
+/** 本机回退和已本地打包的迭鹿字体都不请求外部字体 CDN。 */
 const fonts = [
   { label: 'Semi 默认字体栈', value: baselineFont },
+  { label: '迭鹿 / Space Grotesk', value: dieluUiFont },
   { label: '宋体 / Serif', value: 'Georgia, "Songti SC", serif' },
   { label: '等宽 / Monospace', value: 'Menlo, Consolas, monospace' },
 ];
@@ -16,7 +18,7 @@ const fonts = [
 function updateNumber(key: keyof Omit<TypographySettings, 'family'>, value: number | string): void {
   if (typeof value === 'number' && Number.isFinite(value)) emit('change', { [key]: value });
 }
-/** 字体选择来自固定公开选项，不加载外部字体资源。 */
+/** 字体选择只来自固定选项，不加载任意外部字体。 */
 function updateFamily(value: unknown): void {
   if (typeof value === 'string') emit('change', { family: value });
 }

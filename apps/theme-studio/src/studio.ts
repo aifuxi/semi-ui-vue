@@ -1,6 +1,7 @@
 import { computed, inject, reactive, ref, watch, type InjectionKey } from 'vue';
 import { tokens, baselineVariables, type TokenDefinition } from './token-catalog';
 import { dieluPreset } from './dielu-preset';
+import { dieluForegroundVariables, dieluTypography } from './dielu-foreground-preset';
 import {
   colorThemeToCss,
   createColorTheme,
@@ -293,6 +294,18 @@ export function createStudio() {
     settings.revision += 1;
     message.value = '已应用迭鹿品牌色与圆角';
   }
+  /** 本轮单独迁移排版和前景，不重新应用上轮含填充色的品牌预设。 */
+  function applyDieluForegroundPreset(): void {
+    Object.assign(global.typography, dieluTypography);
+    /** 新排版接替同层基础排版覆盖，组件专属编辑继续保留。 */
+    const typographyKeys = Object.keys(typographyVariables(global.typography));
+    for (const mode of ['light', 'dark'] as const) {
+      for (const name of typographyKeys) delete overrides[mode][name];
+      overrides[mode] = { ...overrides[mode], ...dieluForegroundVariables(mode) };
+    }
+    settings.revision += 1;
+    message.value = '已应用迭鹿排版、文字与描边，背景保持不变';
+  }
   /** 变量列表生成普通 CSS 声明，不将编辑器状态带入产物。 */
   function declarations(values: Record<string, string>): string {
     return Object.entries(values)
@@ -578,6 +591,7 @@ export function createStudio() {
     setToken,
     resetToken,
     applyDieluPreset,
+    applyDieluForegroundPreset,
     canUndo,
     canRedo,
     moveHistory,
