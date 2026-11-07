@@ -56,6 +56,12 @@ export const dieluForegroundTokens: TokenDefinition[] = [
     '.semi-select:not(.semi-select-disabled) .semi-select-selection-text',
     '.semi-table-row-head',
     '.semi-table-row-cell',
+    '.semi-select-option',
+    '.semi-checkbox:not(.semi-checkbox-disabled)',
+    '.semi-checkbox:not(.semi-checkbox-disabled) .semi-checkbox-addon',
+    '.semi-radio:not(.semi-radio-disabled)',
+    '.semi-radio:not(.semi-radio-disabled) .semi-radio-addon',
+    '.semi-card-header',
   ]),
   foreground('text-secondary', '迭鹿 · 次级前景', '#4e5969', '#c4cbd5', [
     '.semi-typography-secondary:not(.semi-typography-disabled):not(.semi-typography-link)',

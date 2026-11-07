@@ -62,6 +62,9 @@ export function typographyVariables(value: TypographySettings): Record<string, s
     '--semi-font-weight-strong': String(value.strong),
     '--semi-font-size-header-4': `${value.titleSize}px`,
     '--semi-line-height-header-4': `${value.titleLineHeight}px`,
+    // 编译组件的公开排版覆盖变量默认带固定回退，这里将其接回全局角色。
+    '--semi-checkbox-label-line-height': 'var(--semi-line-height-regular)',
+    '--semi-card-default-line-height': 'var(--semi-line-height-regular)',
   };
 }
 /** 创建应用自身编辑会话；只有显式保存/恢复才访问本地草稿。 */
@@ -472,6 +475,8 @@ export function createStudio() {
         /** 文件只能包含本工具实际支持的变量。 */
         const token = tokenByName.get(name);
         if (!token || typeof cssValue !== 'string') throw new Error(`不支持的变量 ${name}。`);
+        // 旧主题文件保留同一外观，但默认排版不再锁死后续全局编辑。
+        if (cssValue === token.legacyPresetValue) items[name] = token.defaultValue;
       }
       validateReferences(items as Record<string, string>, mode as ColorMode);
     }

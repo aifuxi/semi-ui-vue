@@ -30,7 +30,58 @@ function binding(selector: string, property: string, media?: string): TokenBindi
   };
 }
 
-/** 所有新增值只消费文字或 outline 属性，不重写共享颜色、尺寸或背景。 */
+/** 已有全局字号角色；默认值与固定 Semi 相同，预设不再固化成 px。 */
+const sizeRoles: Record<number, string> = {
+  11: 'calc(var(--semi-font-size-small) - 1px)',
+  12: 'var(--semi-font-size-small)',
+  13: 'calc(var(--semi-font-size-regular) - 1px)',
+  14: 'var(--semi-font-size-regular)',
+  16: 'var(--semi-font-size-header-6)',
+  18: 'var(--semi-font-size-header-5)',
+  20: 'var(--semi-font-size-header-4)',
+  24: 'var(--semi-font-size-header-3)',
+  28: 'var(--semi-font-size-header-2)',
+  32: 'var(--semi-font-size-header-1)',
+};
+/** 行高仅替换原来数值相同的角色；输入控件的固定对齐行高另行保留。 */
+const heightRoles: Record<number, string> = {
+  16: 'small',
+  20: 'regular',
+  22: 'header-6',
+  24: 'header-5',
+  28: 'header-4',
+  32: 'header-3',
+  40: 'header-2',
+  44: 'header-1',
+};
+
+/** 将生成预设中的默认排版接回语义变量，显式编辑的 font 字符串不经此函数。 */
+function responsiveTypography(name: string, value: string, property: string): string {
+  if (property === 'font-weight') {
+    if (value === '400') return 'var(--semi-font-weight-regular)';
+    if (value === '600') return 'var(--semi-font-weight-strong)';
+  }
+  /** 标题专用变量保留自己的层级，不与其他相同数值的角色混用。 */
+  const heading = name.match(/^heading-(\d)-(size|height)$/);
+  if (heading)
+    return `var(--semi-${heading[2] === 'size' ? 'font-size' : 'line-height'}-header-${heading[1]})`;
+  if (property !== 'font') return value;
+  /** 只转换可信预设中的固定片段，保留比例行高与用户控件尺寸。 */
+  let font = value;
+  for (const [size, reference] of Object.entries(sizeRoles))
+    font = font.replace(`${size}px/`, `${reference}/`);
+  if (!name.startsWith('input-')) {
+    for (const [height, role] of Object.entries(heightRoles))
+      font = font.replace(`/${height}px `, `/var(--semi-line-height-${role}) `);
+  }
+  font = font
+    .replace(/^400 /, 'var(--semi-font-weight-regular) ')
+    .replace(/^600 /, 'var(--semi-font-weight-strong) ');
+  if (/^\d+px\//.test(value)) font = `var(--semi-font-weight-regular) ${font}`;
+  return font;
+}
+
+/** 所有新增值只消费文字或 outline 属性；旧默认字符串同时用于版本 1 文件升级。 */
 function textToken(
   name: string,
   label: string,
@@ -38,13 +89,16 @@ function textToken(
   property: string,
   selectors: string[],
 ): TokenDefinition {
+  /** 显式预设角色仍可单独编辑，默认值则跟随全局主题。 */
+  const responsive = responsiveTypography(name, value, property);
   return {
     name: `--studio-dielu-${name}`,
     label: `迭鹿 · ${label}`,
     category: 'typography',
     kind: 'text',
     source: 'studio',
-    defaultValue: value,
+    defaultValue: responsive,
+    ...(responsive !== value ? { legacyPresetValue: value } : {}),
     bindings: selectors.map(
       /** 每个选择器单独输出，避免逗号分支逃离主题边界。 */
       (selector) => binding(selector, property),

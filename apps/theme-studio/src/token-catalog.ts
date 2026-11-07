@@ -21,6 +21,8 @@ export interface TokenDefinition {
   category: TokenCategory;
   defaultValue: string;
   darkValue?: string;
+  /** 旧版生成预设的精确值，用于导入时升级为等价的主题引用；手工编辑值保留。 */
+  legacyPresetValue?: string;
   kind: 'color' | 'number' | 'text';
   unit?: string;
   min?: number;
@@ -188,6 +190,7 @@ const spacingValues: [string, number, TokenBinding[]][] = [
     8,
     [
       { selector: '.semi-tag', property: 'padding-inline' },
+      { selector: '.semi-checkbox, .semi-radio', property: 'column-gap' },
       { selector: '.semi-tooltip-wrapper', property: 'padding-block' },
     ],
   ],

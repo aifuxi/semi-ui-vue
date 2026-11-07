@@ -147,7 +147,7 @@ for (const dark of [false, true]) {
     await expect(card).toHaveCSS('transition-duration', '0.3s');
     await expect(card).toHaveCSS('box-shadow', dark ? /0px 8px 28px 0px/ : /0px 4px 14px 0px/);
     for (const [trigger, target] of [
-      ['global主题提示', '.semi-tooltip-wrapper'],
+      ['global主题提示', '.semi-popover-wrapper'],
       ['global打开弹窗', '.semi-modal-content'],
     ] as const) {
       await before.getByRole('button', { name: trigger, exact: true }).click();
@@ -168,31 +168,20 @@ for (const dark of [false, true]) {
         );
       }
       expect(await surfaces(current)).toEqual(await surfaces(original));
-      /** 来源 Tooltip 不消费 elevated 阴影，Modal 才采用这套覆盖。 */
+      /** 主题提示现为交互 Popover，与 Modal 一样消费来源 elevated 阴影。 */
       const originalShadow = await original.evaluate(
-        /** 阴影必须实际变化，不能只有预设变量存在。 */
+        /** 深色投影应不同于未应用效果的默认主题。 */
         (element) => getComputedStyle(element).boxShadow,
       );
-      if (target === '.semi-tooltip-wrapper') {
-        await expect(current).toHaveCSS('box-shadow', originalShadow);
-      } else {
-        if (dark) await expect(current).not.toHaveCSS('box-shadow', originalShadow);
-        // 来源 light.css 的 1/14px 模糊，dark.css 的 8/28px 与外侧 1px 描边。
-        await expect(current).toHaveCSS(
-          'box-shadow',
-          dark ? /0px 8px 28px 0px/ : /0px 0px 1px 0px/,
-        );
-        await expect(current).toHaveCSS(
-          'box-shadow',
-          dark ? /0px 0px 0px 1px/ : /0px 4px 14px 0px/,
-        );
-        expect(
-          await current.evaluate(
-            /** 原实现没有内阴影，避免用 inset 模拟外侧细边。 */
-            (element) => getComputedStyle(element).boxShadow,
-          ),
-        ).not.toContain('inset');
-      }
+      if (dark) await expect(current).not.toHaveCSS('box-shadow', originalShadow);
+      await expect(current).toHaveCSS('box-shadow', dark ? /0px 8px 28px 0px/ : /0px 0px 1px 0px/);
+      await expect(current).toHaveCSS('box-shadow', dark ? /0px 0px 0px 1px/ : /0px 4px 14px 0px/);
+      expect(
+        await current.evaluate(
+          /** 原来源使用外侧细边，不能用 inset 替代。 */
+          (element) => getComputedStyle(element).boxShadow,
+        ),
+      ).not.toContain('inset');
       if (target === '.semi-modal-content') {
         await expect(page.locator('.semi-modal-mask')).toHaveCSS(
           'background-color',
