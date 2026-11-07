@@ -108,7 +108,7 @@ Modal.destroyAll();
 
 ## Accessibility, focus and keyboard
 
-- The dialog keeps `role="dialog"`, `aria-modal="true"`, `aria-labelledby="semi-modal-title"` and `aria-describedby="semi-modal-body"`; without a title no invisible header is rendered.
+- The dialog keeps `role="dialog"` and `aria-modal="true"`. Its `aria-labelledby` and `aria-describedby` reference instance-specific title and body IDs, including nested dialogs. The standard title reference is omitted when no title is rendered or a custom header is provided; no empty header is added. Use `.semi-modal-title` / `.semi-modal-body` for styling rather than generated ID values.
 - Opening records the previous `activeElement`, locks body scrolling (body portal only) and installs a focus trap: `autofocus` or the default cancel button receives focus first, `Tab`/`Shift+Tab` cycle, and the hidden state restores focus.
 - `closeOnEsc={false}` removes the ESC path; mask, close button and cancel button are controlled by `maskClosable`/`closable`/`hasCancel`.
 
