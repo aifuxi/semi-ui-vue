@@ -3,6 +3,10 @@ import { computed, h } from 'vue';
 import { Tag } from '@aifuxi/semi-ui-vue';
 import { typographyVariables, useStudio } from '../studio';
 import PreviewCard from './PreviewCard.vue';
+import ComponentGallery from './ComponentGallery.vue';
+
+/** 组件预览与场景切换不会创建新的主题。 */
+defineProps<{ scene?: string | undefined; component?: string | undefined }>();
 
 /** 预览仅消费当前应用提供的状态。 */
 const studio = useStudio();
@@ -21,15 +25,21 @@ const localClass = computed(() =>
     : [],
 );
 /** 组件级只覆盖已公开的 Button 排版能力。 */
-const buttonStyle = computed(() =>
-  studio.settings.componentEnabled
+const buttonStyle = computed(() => ({
+  ...(studio.settings.componentEnabled
     ? {
         '--semi-button-font-size': `${studio.settings.buttonSize}px`,
         '--semi-button-font-weight': String(studio.settings.buttonWeight),
         '--semi-button-line-height': `${studio.settings.buttonLineHeight}px`,
       }
-    : {},
-);
+    : {}),
+  ...Object.fromEntries(
+    Object.entries(studio.overrides[studio.global.mode]).filter(
+      /** 单项变量编辑优先于便捷排版设置，保证检查器与真实按钮一致。 */
+      ([name]) => name.startsWith('--semi-button-'),
+    ),
+  ),
+}));
 /** 当前品牌十级色阶来自真实公开生成器；固定基线不伪造为生成色盘。 */
 const scale = computed(() => studio.globalTheme.value?.palette[studio.global.mode].brand);
 /** Vue 客户端以普通 style 元素承载 CSS，不注入全局主题状态。 */
@@ -49,13 +59,22 @@ function ThemeStyles() {
       data-semi-theme="studio-global"
       :theme-mode="studio.global.mode"
       :class="globalClass"
-      :style="typographyVariables(studio.global.typography)"
+      :style="{
+        ...typographyVariables(studio.global.typography),
+        ...buttonStyle,
+        ...studio.overrides[studio.global.mode],
+      }"
       data-testid="global-scope"
       aria-label="当前主题预览"
     >
+      <ComponentGallery
+        v-if="component || (scene && scene !== 'scopes')"
+        :scene="scene"
+        :component="component"
+      />
       <PreviewCard
         name="global"
-        title="为团队留出专注的空间"
+        title="主题表单"
         :theme="studio.global"
         :button-style="buttonStyle"
         @change="Object.assign(studio.global, $event)"
@@ -79,7 +98,7 @@ function ThemeStyles() {
         </div>
         <PreviewCard
           name="local"
-          title="同一页面，另一种表达"
+          title="局部主题表单"
           :theme="studio.settings.localEnabled ? studio.local : studio.global"
           compact
           :button-style="buttonStyle"
@@ -99,11 +118,11 @@ function ThemeStyles() {
         <span>{{ index }}</span>
       </div>
     </div>
-    <p v-else class="baseline-note">固定 Semi v2.102.0 · 默认色盘未经过生成器。</p>
+
     <!-- 固定对照与品牌主题互为兄弟，永远不继承用户变量。 -->
-    <aside class="baseline-preview semi-always-light" aria-label="固定 Semi 基线对照">
-      <div class="preview-caption"><span>固定基线对照</span><Tag>SEMI v2.102.0 / LIGHT</Tag></div>
-      <PreviewCard name="baseline" title="为团队留出专注的空间" compact />
+    <aside class="baseline-preview semi-always-light" aria-label="默认主题对照">
+      <div class="preview-caption"><span>默认主题对照</span><Tag>浅色</Tag></div>
+      <PreviewCard name="baseline" title="主题表单" compact />
     </aside>
   </div>
 </template>

@@ -36,8 +36,8 @@ const modalVisible = ref(false);
 const tooltipVisible = ref(false);
 /** 固定的业务选项，避免把主题状态混入预览表单。 */
 const teams = [
-  { label: '设计团队', value: 'design' },
-  { label: '研发团队', value: 'engineering' },
+  { label: '设计主题', value: 'design' },
+  { label: '组件主题', value: 'engineering' },
 ];
 /** 显示弹窗并保留当前主题。 */
 function openModal(): void {
@@ -56,20 +56,20 @@ function toggleTooltip(): void {
 <template>
   <article class="sample-card" :class="{ 'sample-compact': compact }" :data-testid="`${name}-card`">
     <div class="sample-topline">
-      <span class="sample-eyebrow">WORKSPACE / 01</span><Tag color="green">进行中</Tag>
+      <span class="sample-eyebrow">表单预览</span><Tag color="green">进行中</Tag>
     </div>
     <Typography.Title :heading="4" :data-testid="`${name}-title`">{{ title }}</Typography.Title>
-    <Typography.Text :data-testid="`${name}-text`">把想法变成团队的下一步。</Typography.Text>
+    <Typography.Text :data-testid="`${name}-text`">正文与链接的排版效果。</Typography.Text>
     <Typography.Text v-if="!compact" type="tertiary" class="sample-description"
-      >邀请成员、整理项目，在同一个工作区协作。</Typography.Text
+      >调整变量后，这里的组件会实时更新。</Typography.Text
     >
     <div class="sample-form">
       <label
-        ><Typography.Text strong>项目名称</Typography.Text
-        ><Input v-model="project" :aria-label="`${name}项目名称`"
+        ><Typography.Text strong>主题名称</Typography.Text
+        ><Input v-model="project" :aria-label="`${name}主题名称`"
       /></label>
       <label
-        ><Typography.Text :id="`${name}-team-label`" strong>所属团队</Typography.Text
+        ><Typography.Text :id="`${name}-team-label`" strong>主题分类</Typography.Text
         ><Select
           v-model="team"
           :aria-labelledby="`${name}-team-label`"
@@ -78,15 +78,15 @@ function toggleTooltip(): void {
       /></label>
     </div>
     <div class="sample-notification">
-      <Typography.Text>接收项目更新</Typography.Text
-      ><Switch v-model="notifications" :aria-label="`${name}接收项目更新`" />
+      <Typography.Text>启用主题预览</Typography.Text
+      ><Switch v-model="notifications" :aria-label="`${name}启用主题预览`" />
     </div>
     <div class="sample-actions" :style="buttonStyle">
       <Button theme="solid" :data-testid="`${name}-primary`"
-        ><template #icon><IconPlus /></template>创建项目</Button
+        ><template #icon><IconPlus /></template>应用主题</Button
       >
       <Button
-        ><template #icon><IconArrowRight /></template>查看项目</Button
+        ><template #icon><IconArrowRight /></template>查看主题</Button
       >
       <Button disabled>已归档</Button>
     </div>
@@ -117,7 +117,7 @@ function toggleTooltip(): void {
     <Modal
       v-if="theme"
       :visible="modalVisible"
-      title="继续创建项目"
+      title="继续应用主题"
       :motion="false"
       width="min(520px, calc(100vw - 32px))"
       @cancel="closeModal"
@@ -126,8 +126,8 @@ function toggleTooltip(): void {
       <div class="modal-preview" :data-testid="`${name}-modal`">
         <Typography.Text>在弹窗里调整主题，源预览和默认弹层会同步更新。</Typography.Text>
         <QuickControls :theme="theme" @change="emit('change', $event)" />
-        <Button theme="solid" :data-testid="`${name}-modal-primary`">保存项目</Button>
-        <Typography.Text link :data-testid="`${name}-modal-link`">查看项目详情</Typography.Text>
+        <Button theme="solid" :data-testid="`${name}-modal-primary`">保存主题</Button>
+        <Typography.Text link :data-testid="`${name}-modal-link`">查看主题详情</Typography.Text>
       </div>
     </Modal>
   </article>
