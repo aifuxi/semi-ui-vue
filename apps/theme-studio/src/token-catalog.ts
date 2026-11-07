@@ -235,7 +235,7 @@ const spacingTokens: TokenDefinition[] = spacingValues.map(
   }),
 );
 
-/** 固定样式映射为工作台私有 token，不将其伪装成组件已公开的 CSS 变量。 */
+/** 固定样式映射为工作台私有 token；附加绑定用于背景与箭头等多节点联动。 */
 function bound(
   component: string,
   name: string,
@@ -244,6 +244,7 @@ function bound(
   defaultValue: string,
   selector: string,
   property: string,
+  additionalBindings: TokenBinding[] = [],
 ): TokenDefinition {
   /** 单数值与通用公开变量使用同一编辑单位约定。 */
   const numeric = defaultValue.match(/^(-?\d+(?:\.\d+)?)(px|ms|%)?$/);
@@ -268,7 +269,7 @@ function bound(
         }
       : {}),
     component,
-    bindings: [{ selector, property }],
+    bindings: [{ selector, property }, ...additionalBindings],
   };
 }
 /** 排版变量已由主题包公开，不需要额外选择器覆盖。 */
@@ -645,6 +646,8 @@ export const componentTokens: TokenDefinition[] = [
     'rgba(var(--semi-grey-7), 1)',
     '.semi-tooltip-wrapper',
     'background-color',
+    // 默认 SVG 箭头使用 currentColor，必须与气泡背景消费同一份覆盖。
+    [{ selector: '.semi-tooltip-wrapper .semi-tooltip-icon-arrow', property: 'color' }],
   ),
   bound(
     'tooltip',

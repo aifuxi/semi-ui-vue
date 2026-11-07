@@ -210,6 +210,24 @@ test('Tooltip 默认浮层的字号和背景消费私有适配变量', async ({ 
     'background-color',
     'rgb(22, 78, 99)',
   );
+  await expect(page.locator('.semi-tooltip-icon-arrow')).toHaveCSS('color', 'rgb(22, 78, 99)');
+  await page.getByRole('switch', { name: '全局深色模式', exact: true }).check();
+  await editAttribute(page, '提示背景', '#fef3c7');
+  await editAttribute(page, '提示文字', '#1c1f23');
+  await page.getByRole('button', { name: '悬停查看提示', exact: true }).hover();
+  await expect(page.locator('.semi-tooltip-wrapper')).toHaveCSS(
+    'background-color',
+    'rgb(254, 243, 199)',
+  );
+  await expect(page.locator('.semi-tooltip-icon-arrow')).toHaveCSS('color', 'rgb(254, 243, 199)');
+  await expect(page.locator('.semi-tooltip-wrapper')).toHaveCSS('color', 'rgb(28, 31, 35)');
+  await page.getByRole('switch', { name: '全局深色模式', exact: true }).uncheck();
+  await page.getByRole('button', { name: '悬停查看提示', exact: true }).hover();
+  await expect(page.locator('.semi-tooltip-wrapper')).toHaveCSS(
+    'background-color',
+    'rgb(22, 78, 99)',
+  );
+  await expect(page.locator('.semi-tooltip-icon-arrow')).toHaveCSS('color', 'rgb(22, 78, 99)');
 });
 
 /** 将下载 CSS 放入没有工作台 DOM 的页面，证明主题交付边界可独立消费。 */
