@@ -163,6 +163,10 @@ const placeholder = computed(
 const inputValidateStatus = computed(() =>
   state.invalid ? 'error' : (runtimeProps.value.validateStatus ?? 'default'),
 );
+// 固定 React 基线为 Popover 覆盖专用前缀，避免套用通用浮层背景、圆角和第二层阴影。
+const popupPrefix = computed(
+  () => `semi-timepicker-panel semi-timepicker-panel-${runtimeProps.value.size}`,
+);
 const popupClass = computed(() => {
   let count = 0;
   if (/HH|hh|H|h/.test(format.value)) count += 1;
@@ -328,7 +332,7 @@ defineExpose<TimePickerExposed>({ blur, close: () => close(), focus, open });
       :auto-adjust-overflow="Boolean(runtimeProps.autoAdjustOverflow)"
       :motion="runtimeProps.motion !== false"
       :position="(runtimeProps.position ?? 'bottomLeft') as TooltipPosition"
-      prefix-cls="semi-popover"
+      :prefix-cls="popupPrefix"
       role="dialog"
       :show-arrow="false"
       :spacing="4"
@@ -340,7 +344,7 @@ defineExpose<TimePickerExposed>({ blur, close: () => close(), focus, open });
     >
       <template #content>
         <div :class="popupClass" :style="runtimeProps.popupStyle">
-          <div class="semi-popover-content">
+          <div :class="`${popupPrefix}-content`">
             <div :class="type === 'timeRange' ? 'semi-timepicker-lists' : undefined">
               <TimePickerPanel
                 v-for="index in type === 'timeRange' ? 2 : 1"

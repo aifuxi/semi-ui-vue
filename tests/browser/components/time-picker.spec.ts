@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import type { Locator } from '@playwright/test';
 import {
   assertScenarioComparable,
   createParityScenarioUrl,
@@ -13,6 +14,95 @@ import {
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
 } from '../parity-harness';
+
+// 外扩 24px 覆盖上游 14px 模糊与 4px 偏移的阴影外沿，同时保留圆角和边框。
+const POPUP_SHADOW_PADDING = 24;
+
+/** 截取完整弹层及其外沿，防止仅比较内容区而遗漏祖先容器的额外阴影。 */
+async function capturePopupWithShadow(popup: Locator): Promise<Buffer> {
+  // 以可见内容的实际几何范围定位，空面板不能伪装成有效截图。
+  const box = await popup.boundingBox();
+  if (!box) throw new Error('TimePicker 弹层不可测量');
+  return popup.page().screenshot({
+    animations: 'disabled',
+    clip: {
+      x: box.x - POPUP_SHADOW_PADDING,
+      y: box.y - POPUP_SHADOW_PADDING,
+      width: box.width + POPUP_SHADOW_PADDING * 2,
+      height: box.height + POPUP_SHADOW_PADDING * 2,
+    },
+  });
+}
+
+for (const theme of ['light', 'dark'] as const) {
+  // 同时覆盖单值、范围及三种尺寸，防止专用前缀仅在默认尺寸生效。
+  test(`TimePicker React/Vue 完整弹层阴影与圆角一致：${theme}`, async ({ context }, testInfo) => {
+    // 两端使用相同场景、主题、方向、语言与真实固定基线来源。
+    const pair = await openParityPages(context, {
+      scenarioId: 'time-picker',
+      theme,
+      direction: 'ltr',
+      locale: 'zh-CN',
+    });
+    for (const [target, size] of [
+      ['basic', 'default'],
+      ['small', 'small'],
+      ['large', 'large'],
+      ['range', 'default'],
+    ] as const) {
+      await pair.react.page.locator(`[data-parity-target="time-picker-${target}"]`).click();
+      await pair.vue.page.locator(`[data-parity-target="time-picker-${target}"]`).click();
+      // React 将含尺寸的 TimePicker 前缀传至 Tooltip，外层不应匹配通用 Popover。
+      const wrapperSelector = `.semi-timepicker-panel-${size}-wrapper`;
+      const reactWrapper = pair.react.page.locator(wrapperSelector);
+      const vueWrapper = pair.vue.page.locator(wrapperSelector);
+      await expect(reactWrapper).toBeVisible();
+      await expect(vueWrapper).toBeVisible();
+      await expect(pair.vue.page.locator('.semi-popover-wrapper')).toHaveCount(0);
+      // 外层保持透明且无阴影，由 ScrollList 或范围列表承担基线规定的菜单样式。
+      const styleProperties = ['boxShadow', 'backgroundColor', 'borderRadius'] as const;
+      expect(await captureComputedStyle(vueWrapper, [...styleProperties])).toEqual(
+        await captureComputedStyle(reactWrapper, [...styleProperties]),
+      );
+      await expect(reactWrapper).toHaveCSS('box-shadow', 'none');
+      await expect(vueWrapper).toHaveCSS('box-shadow', 'none');
+      // 对齐内容层的公开 class，范围截图保留完整双列表而非单侧列。
+      const contentSelector = target === 'range' ? '.semi-timepicker-lists' : '.semi-scrolllist';
+      const reactPopup = reactWrapper.locator(contentSelector);
+      const vuePopup = vueWrapper.locator(contentSelector);
+      await expect(vueWrapper.locator(`.semi-timepicker-panel-${size}-content`)).toHaveCount(1);
+      expect(await captureComputedStyle(vuePopup, [...styleProperties])).toEqual(
+        await captureComputedStyle(reactPopup, [...styleProperties]),
+      );
+      expect(await vuePopup.boundingBox()).toEqual(await reactPopup.boundingBox());
+      // 选中项居中只允许滚动时间列，范围左面板不应因分割线溢出而横向偏移。
+      for (const popup of [reactPopup, vuePopup]) {
+        await expect(popup.locator('.semi-scrolllist-body').first()).toHaveJSProperty(
+          'scrollLeft',
+          0,
+        );
+      }
+      // 实时像素比较包含边缘，截图作为诊断附件保存，不覆盖已有快照基线。
+      const reactScreenshot = await capturePopupWithShadow(reactPopup);
+      const vueScreenshot = await capturePopupWithShadow(vuePopup);
+      await testInfo.attach(`${target}-reference-${theme}`, {
+        body: reactScreenshot,
+        contentType: 'image/png',
+      });
+      await testInfo.attach(`${target}-vue-${theme}`, {
+        body: vueScreenshot,
+        contentType: 'image/png',
+      });
+      await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
+      await pair.react.page.getByRole('heading', { name: 'TimePicker 时间选择器' }).click();
+      await pair.vue.page.getByRole('heading', { name: 'TimePicker 时间选择器' }).click();
+      await expect(reactWrapper).toBeHidden();
+      await expect(vueWrapper).toBeHidden();
+    }
+    expect(pair.react.runtimeErrors).toEqual([]);
+    expect(pair.vue.runtimeErrors).toEqual([]);
+  });
+}
 
 test('TimePicker 参考场景来自本地 v2.102.0 并保留输入、范围与状态 DOM', async ({ page }) => {
   const requestedUrls: string[] = [];
@@ -82,7 +172,7 @@ test('TimePicker React/Vue 输入、面板选择、焦点、Portal、样式与�
     vuePanel.boundingBox(),
   ]);
   if (!reactPanelBox || !vuePanelBox) throw new Error('TimePicker 面板不可测量');
-  // 两端 Popover wrapper 深度不同会让四个圆角各产生一个抗锯齿像素；内缩 2px 保留完整内容区。
+  // 保留历史内缩 2px 的内容区快照；完整边框、圆角与阴影由上方弹层专项独立比较。
   const [reactPanelScreenshot, vuePanelScreenshot] = await Promise.all([
     pair.react.page.screenshot({
       animations: 'disabled',

@@ -54,14 +54,24 @@ function select(index: number): void {
   emit('select', option.value);
 }
 
+/** 与 React ScrollItem 一样仅纵向滚动当前列，避免原生 scrollIntoView 连带移动范围面板或页面。 */
 function scrollSelectedIntoView(): void {
-  const selected = wrapper.value?.querySelector<HTMLElement>(
+  // normal 模式滚动列本身，wheel 模式滚动其 list-outer 容器。
+  const scrollContainer = wrapper.value;
+  if (!scrollContainer) return;
+  // 两种模式保留各自选中项 class；不存在选中项时不改变滚动位置。
+  const selected = scrollContainer.querySelector<HTMLElement>(
     props.mode === 'normal' ? '.semi-scrolllist-item-sel' : '[data-selected="true"]',
   );
-  selected?.scrollIntoView?.({
-    behavior: props.motion ? 'smooth' : 'auto',
-    block: 'center',
-  });
+  if (!selected) return;
+  // 以当前可视位置换算 scrollTop，兼容 wheel 中 offsetParent 并非滚动容器的结构。
+  const targetTop =
+    scrollContainer.scrollTop +
+    selected.getBoundingClientRect().top -
+    scrollContainer.getBoundingClientRect().top -
+    (scrollContainer.clientHeight - selected.offsetHeight) / 2;
+  if (props.motion) scrollContainer.scrollTo?.({ top: targetTop, behavior: 'smooth' });
+  else scrollContainer.scrollTop = targetTop;
 }
 
 function nearestWheelIndex(outer: HTMLDivElement): number {
