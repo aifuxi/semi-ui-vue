@@ -2554,6 +2554,12 @@ declare module '@semi-v2.102.0/form' {
 
   export const Form: ComponentType<FormProps> & {
     Input: ComponentType<FormFieldProps>;
+    ErrorMessage: ComponentType<{
+      error?: ReactNode;
+      helpText?: ReactNode;
+      showValidateIcon?: boolean;
+      validateStatus?: string;
+    }>;
   };
 }
 

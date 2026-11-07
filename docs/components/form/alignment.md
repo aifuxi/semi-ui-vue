@@ -54,6 +54,9 @@
 - 子 VNode 的裸 `disabled`/布尔字段值按“键存在且值不是显式 false”解释；SFC 裸属性、`:disabled="false"`、`h()` true/false 均有测试。
 - Field 的 `stopValidateWithError`、`disabled` 等继承项从原始 VNode props 判断是否显式传入，优先级为 Field 显式值 > Form 值 > 固定默认值。
 - 包装器不修改调用方 VNode；新 props 合并到本次渲染的控件 VNode，调用方事件仍只触发一次。
+- `Form.ErrorMessage.error` 是可渲染数据，不使用 Vue Boolean props 转换；`''`、`undefined`、`false` 和无有效项的错误数组在无帮助文案时不渲染错误区域或图标。
+- `error=''` 且 `validateStatus='error'` 遵循上游隐藏错误文案约定，即使传入 `helpText` 也不回退显示帮助文案；普通无错误仍可显示帮助文案。
+- 显式 `true` 或 truthy 数字错误沿用上游空错误容器语义，不输出文本或图标。只有字符串、有效错误数组或 VNode 内容才参与图标显示，`showValidateIcon=false` 仍关闭图标。
 
 ## DOM、class、样式与 ARIA
 
@@ -80,3 +83,11 @@
 ## Deviation
 
 - React render props/function children 统一映射为 Vue scoped slot；`render`/`component` 仅作兼容入口。React HOC 统一映射为 Vue wrapper/composable。这些是框架原生语义差异，不改变 FormState、FormApi、字段事件、DOM 或视觉结果。
+
+## BUG-000069 空错误回归
+
+2026-11-07 实际对照固定 React 与 Vue：React 的空字符串不产生错误区域或图标；Vue 由类型声明生成 Boolean 优先的 props，空字符串在进入隐藏判断前已转为 `true`，属于移植偏差。改为显式保留原始错误值，并按实际可渲染内容控制图标。消费者无需值转换、额外 `v-if` 或 CSS 覆盖。
+
+单元覆盖空值、布尔/数字错误、隐藏错误与帮助文案、数组/VNode 及错误→清除→再次错误；真实浏览器场景通过公开 `Form.ErrorMessage` 直接传入相同参数，保留内置字段回归与旧快照基线。生产 tarball 消费另行验证编译后的同一输入和更新路径。具体执行结果见本次修复报告。
+
+本次验证：Form 单元/SSR 18 项、正式 Chromium 7 项、真实 tarball 浏览器消费 3 项均通过；产物、类型、lint、格式和 Changesets 意图检查通过。尚未发布新版本或升级迭鹿业务现场。
