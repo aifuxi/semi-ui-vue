@@ -10,6 +10,7 @@
 | 发布源码检查                     | `pnpm check:publish-source`：仅检查公开包、发布工具与公开生成资产，不运行文档站                       |
 | 日常本地源码集成                 | `pnpm check`：静态源码检查与 Vitest 单测                                                              |
 | 静态组件文档                     | 格式、链接与公开契约核对；示例代码变化按实际行为选择类型或组件测试                                    |
+| 独立主题工作台                   | `pnpm theme-studio:build`、应用 lint 与 `pnpm test:theme-studio`；文档入口迁移另跑受影响 docs 测试    |
 | 文档示例梯次                     | 先定向 hydration 单测，再以 `DOCS_EXAMPLE_TIER=tN pnpm test:docs` 做一次生产构建与全部页面聚合巡检    |
 | 公开 API、样式、依赖、构建链变化 | `pnpm check:artifacts`：构建、主题、SSR 与 Node tarball 消费；浏览器消费风险另跑 `pnpm test:consumer` |
 | 共享行为全量回归或全仓审计       | `pnpm check:full`：check、artifacts、组件 Chromium 与真实安装包浏览器消费                             |

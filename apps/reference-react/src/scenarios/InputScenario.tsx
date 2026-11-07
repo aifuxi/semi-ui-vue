@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import Input from '@semi-v2.102.0/input';
 import InputGroup from '@semi-v2.102.0/input-group';
 import TextArea from '@semi-v2.102.0/textarea';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 export function InputScenario(): React.ReactElement {
+  /** 仅审查 query 覆盖第一个真实输入框，用于查看缺少的小尺寸及状态。 */
+  const reviewProps = readInputReviewProps(['size', 'disabled', 'readOnly', 'validateStatus']);
   const [lastValue, setLastValue] = useState('none');
 
   return (
@@ -12,6 +15,7 @@ export function InputScenario(): React.ReactElement {
         <h3>基础输入框</h3>
         <div className="input-scenario__grid">
           <Input
+            {...reviewProps}
             defaultValue="hi"
             className="input-target-basic"
             aria-label="基本输入框"
@@ -85,6 +89,11 @@ export function InputScenario(): React.ReactElement {
         </InputGroup>
         <div className="input-scenario__textareas">
           <TextArea
+            {...(reviewProps.disabled === undefined ? {} : { disabled: reviewProps.disabled })}
+            {...(reviewProps.readOnly === undefined ? {} : { readonly: reviewProps.readOnly })}
+            {...(reviewProps.validateStatus === undefined
+              ? {}
+              : { validateStatus: reviewProps.validateStatus })}
             defaultValue={'Semi Design\nVue parity'}
             className="input-target-textarea-counter"
             showCounter

@@ -1,6 +1,6 @@
 # 组件库文档站
 
-`apps/docs` 是基于 VitePress 的私有文档应用。92 个页面（其中 82 个组件页）、855 个可运行 Vue 示例与 200 个仅展示源码的示例均由本仓库维护。文档站构建只读取本地页面、示例与静态资源，不从 `vendor/semi-design` 生成内容。
+`apps/docs` 是基于 VitePress 的私有文档应用。页面、可运行 Vue 示例与仅展示源码的示例均由本仓库维护，数量由本地索引生成时统计。文档站构建只读取本地页面、示例与静态资源，不从 `vendor/semi-design` 生成内容。
 
 ## 常用命令
 
@@ -23,6 +23,12 @@
 - 站点样式与字体位于 `content/public/site/`，侧栏图标位于 `content/public/doc-icons/`，其余演示资源位于 `content/public/demos/`。历史素材的来源与许可见 [第三方归属](THIRD_PARTY.md)。
 
 `content/public/search-index.json`、`.vitepress/theme/generated/nav.json`、`cache/` 和 `dist/` 是可再生的忽略产物。`pnpm --filter @workspace/docs clean` 只清理这些产物，不删除正文或静态资源。
+
+## 主题工作台入口
+
+品牌与排版编辑由独立的 [`apps/theme-studio`](../theme-studio/README.md) 提供，文档站只保留 API、使用说明、代码示例和外部入口，不导入工作台布局或状态。入口位于 `content/zh-CN/advanced/customize-theme.md`。
+
+本地先运行 `pnpm theme-studio:dev`，默认链接为 <http://localhost:4322/#/tokens>。部署时通过 `VITE_THEME_STUDIO_URL` 指定工作台的公开根地址，例如 `https://themes.example.com/`；该变量在文档站开发服务启动或生产构建时读取，修改后需重新启动或构建。工作台独立部署，不随 `docs:build` 构建，也不要求文档站服务作为运行依赖。
 
 ## 验收
 

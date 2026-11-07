@@ -94,3 +94,7 @@
 - 单元/SSR：AIChatDialogue 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
 - Chromium：`tests/browser/components/ai-chat-dialogue.spec.ts` 5/5 通过，覆盖固定源码来源、DOM/computed style/几何、hint 受控更新、desktop light/dark 与 en-US RTL 截图。
 - 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、静态子组件一致性、类型、`ai-chat-dialogue.css`、tree-shaking、许可与 SBOM。
+
+## 主题视觉复核（2026-11-07）
+
+更多菜单对齐固定 `dialogueAction.tsx`：使用受控 custom 触发，间距 12px，点击外部或 Escape 可关闭；打开删除确认框时立即关闭菜单，防止它遗留在 Modal 遮罩上方。真实 light/dark 页面已对照菜单、删除确认与公开 `messageEditRender` 提供的 Input/保存取消编辑区。浏览器回归固定确认框显示时原菜单隐藏；不修改既有默认内容 renderer 的快照指纹。

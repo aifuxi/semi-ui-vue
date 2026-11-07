@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Button from '@semi-v2.102.0/button';
+import { buttonReview } from '../../../../packages/test-infra/src/root-theme-review';
 
 const BUTTON_TYPES = [
   { type: 'primary', label: '主要按钮' },
@@ -10,6 +11,8 @@ const BUTTON_TYPES = [
 ] as const;
 
 export function ButtonTypesScenario(): React.ReactElement {
+  /** 与 Vue 使用相同查询，但始终渲染固定 vendor Button。 */
+  const review = buttonReview(window.location.search);
   const [lastAction, setLastAction] = useState('尚未触发');
 
   return (
@@ -19,6 +22,7 @@ export function ButtonTypesScenario(): React.ReactElement {
           <Button
             key={item.type}
             type={item.type}
+            {...review}
             data-parity-target={`button-${item.type}`}
             onClick={() => setLastAction(item.label)}
           >

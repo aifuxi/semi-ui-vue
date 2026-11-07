@@ -5,9 +5,19 @@ import { ConfigProvider, type SemiLocale } from '@aifuxi/semi-ui-vue/config-prov
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>();
+// 与 React 基线同源查询，状态矩阵使用默认内容渲染，避免覆盖 loading/error 样式。
+const query = new URLSearchParams(window.location.search);
+const requestedMode = query.get('chatMode');
+const reviewMode =
+  requestedMode === 'noBubble' || requestedMode === 'userBubble' ? requestedMode : 'bubble';
+const reviewAlign = query.get('chatAlign') === 'leftAlign' ? 'leftAlign' : 'leftRight';
+// 仅状态矩阵显式禁用发送；普通场景保留 canSend 缺省的空输入判定。
+const reviewStates = query.get('chatState') === 'matrix';
+const reviewDefaultRender = reviewStates || query.get('reviewDefaultRender') === 'true';
 const localeMap: Record<ParityLocale, SemiLocale> = {
   'zh-CN': {
     code: 'zh-CN',
+    Typography: { copy: '复制', copied: '复制成功', expand: '展开', collapse: '收起' },
     Chat: {
       deleteConfirm: '确认删除该会话吗？',
       clearContext: '上下文已清除',
@@ -20,6 +30,7 @@ const localeMap: Record<ParityLocale, SemiLocale> = {
   },
   'en-US': {
     code: 'en-US',
+    Typography: { copy: 'Copy', copied: 'Copied', expand: 'Expand', collapse: 'Collapse' },
     Chat: {
       deleteConfirm: 'Delete this message?',
       clearContext: 'Context cleared',
@@ -57,6 +68,14 @@ const chats = ref<ChatMessage[]>([
     content: '**Ready** for the next question.',
     status: 'complete',
   },
+  ...(reviewStates
+    ? (['loading', 'incomplete', 'error'] as const).map((status) => ({
+        id: `state-${status}`,
+        role: 'assistant',
+        content: status === 'loading' ? '' : `回答状态：${status}`,
+        status,
+      }))
+    : []),
 ]);
 const chatBoxRenderConfig = {
   renderChatBoxContent: ({ message, className }: { message?: ChatMessage; className?: string }) =>
@@ -74,16 +93,22 @@ const renderHintBox = ({ content, onHintClick }: { content: string; onHintClick:
     <div class="chat-scenario" data-testid="chat-vue">
       <Chat
         v-model:chats="chats"
+        :mode="reviewMode"
+        :align="reviewAlign"
+        :show-stop-generate="reviewStates"
         :hints="[labels.hint]"
         :enable-upload="false"
         :style="{
-          height: '430px',
+          height: reviewStates ? '850px' : '430px',
           width: '100%',
           border: '1px solid var(--semi-color-border)',
           borderRadius: '16px',
         }"
         :role-config="{ assistant: { name: labels.assistant }, user: { name: labels.user } }"
-        :chat-box-render-config="chatBoxRenderConfig"
+        v-bind="{
+          ...(reviewStates ? { canSend: false } : {}),
+          ...(reviewDefaultRender ? {} : { chatBoxRenderConfig }),
+        }"
         :render-hint-box="renderHintBox"
       />
     </div>

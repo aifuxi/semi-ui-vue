@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { TagInput } from '@aifuxi/semi-ui-vue/tag-input';
 import { shallowRef } from 'vue';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
+
+/** 与 React 固定参考一致，只选择公开样式状态。 */
+const reviewProps = readInputReviewProps(['size', 'disabled', 'validateStatus']);
 
 const status = shallowRef('none');
 </script>
@@ -11,6 +15,7 @@ const status = shallowRef('none');
       <h3>基础、尺寸与状态</h3>
       <div class="tag-input-scenario__stack">
         <TagInput
+          v-bind="reviewProps"
           :default-value="['抖音', '火山', '西瓜视频']"
           placeholder="请输入..."
           :show-content-tooltip="false"

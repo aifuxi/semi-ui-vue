@@ -70,6 +70,54 @@ test('Chat React/Vue 基础 DOM、样式、几何与 hint 受控更新一致', a
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
+test('Chat 默认 Markdown 的真实 strong、气泡文字与尺寸对齐固定基线', async ({ context }) => {
+  for (const theme of ['light', 'dark'] as const) {
+    const pair = await openParityPages(context, {
+      scenarioId: 'chat',
+      theme,
+      direction: 'ltr',
+      locale: 'zh-CN',
+    });
+    for (const parityPage of [pair.react.page, pair.vue.page]) {
+      // 原场景保留自定义 renderer；独立入口确保默认 Markdown 不被测试替身掩盖。
+      const url = new URL(parityPage.url());
+      url.searchParams.set('reviewDefaultRender', 'true');
+      await parityPage.goto(url.toString());
+      await expectChatReady(parityPage);
+      await expect(parityPage.locator('.semi-markdownRender strong')).toHaveText('Ready');
+      await expect(parityPage.locator('.semi-markdownRender .semi-typography')).toHaveCount(3);
+    }
+    const metrics = async (page: Page) =>
+      page.locator('.semi-chat-chatBox-content').evaluateAll((elements) =>
+        elements.map((element) => {
+          const paragraph = element.querySelector('p')!;
+          const style = getComputedStyle(paragraph);
+          const rect = element.getBoundingClientRect();
+          return {
+            color: style.color,
+            fontSize: style.fontSize,
+            lineHeight: style.lineHeight,
+            width: rect.width,
+            height: rect.height,
+          };
+        }),
+      );
+    const [reference, actual] = await Promise.all([
+      metrics(pair.react.page),
+      metrics(pair.vue.page),
+    ]);
+    expect(actual).toEqual(reference);
+    const [reactScreenshot, vueScreenshot] = await Promise.all([
+      pair.react.page.getByTestId('chat-reference').screenshot({ animations: 'disabled' }),
+      pair.vue.page.getByTestId('chat-vue').screenshot({ animations: 'disabled' }),
+    ]);
+    await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
+    expect(pair.react.runtimeErrors).toEqual([]);
+    expect(pair.vue.runtimeErrors).toEqual([]);
+    await Promise.all([pair.react.page.close(), pair.vue.page.close()]);
+  }
+});
+
 for (const viewportName of ['desktop'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`Chat React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {

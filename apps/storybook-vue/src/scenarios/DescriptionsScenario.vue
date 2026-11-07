@@ -2,6 +2,14 @@
 import { h } from 'vue';
 import { Descriptions, type DescriptionsDataItem } from '@aifuxi/semi-ui-vue/descriptions';
 
+/** 对齐变体只在专项 query 设置，默认场景保持原始 props。 */
+const requestedAlign = new URLSearchParams(window.location.search).get('reviewAlign');
+/** plain 与 left 已在默认场景覆盖，补齐 center/justify。 */
+const reviewProps =
+  requestedAlign === 'center' || requestedAlign === 'justify'
+    ? ({ align: requestedAlign } as const)
+    : {};
+
 const profileData: DescriptionsDataItem[] = [
   { key: h('strong', '项目名称'), value: 'Semi UI Vue' },
   { key: '当前版本', value: () => 'v2.102.0' },
@@ -26,7 +34,11 @@ const horizontalData: DescriptionsDataItem[] = [
   <div class="descriptions-scenario" data-testid="descriptions-vue">
     <section class="descriptions-scenario__section">
       <h3>基础与节点内容</h3>
-      <Descriptions :data="profileData" data-parity-target="descriptions-default" />
+      <Descriptions
+        v-bind="reviewProps"
+        :data="profileData"
+        data-parity-target="descriptions-default"
+      />
     </section>
 
     <section class="descriptions-scenario__section descriptions-scenario__section--plain">
@@ -37,9 +49,9 @@ const horizontalData: DescriptionsDataItem[] = [
     <section class="descriptions-scenario__section descriptions-scenario__section--double">
       <h3>双行尺寸</h3>
       <div class="descriptions-scenario__sizes" data-parity-target="descriptions-double">
-        <Descriptions row size="small" :data="profileData.slice(0, 2)" />
-        <Descriptions row :data="profileData.slice(0, 2)" />
-        <Descriptions row size="large" :data="profileData.slice(0, 2)" />
+        <Descriptions row v-bind="reviewProps" size="small" :data="profileData.slice(0, 2)" />
+        <Descriptions row v-bind="reviewProps" :data="profileData.slice(0, 2)" />
+        <Descriptions row v-bind="reviewProps" size="large" :data="profileData.slice(0, 2)" />
       </div>
     </section>
 

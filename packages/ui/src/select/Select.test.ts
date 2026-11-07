@@ -23,6 +23,15 @@ function options() {
 }
 
 describe('Select', () => {
+  it('展开加载面板渲染真实 Spin SVG 而非空样式占位', async () => {
+    const wrapper = mount(Select, {
+      attachTo: document.body,
+      props: { defaultOpen: true, loading: true, motion: false },
+    });
+    await nextTick();
+    expect(document.querySelector('.semi-select-loading-wrapper .semi-spin svg')).not.toBeNull();
+    wrapper.unmount();
+  });
   it('公开入口保持 default、named 与复合 Option/OptGroup 一致', () => {
     expect(DefaultSelect).toBe(Select);
     expect(Select.Option).toBe(SelectOption);

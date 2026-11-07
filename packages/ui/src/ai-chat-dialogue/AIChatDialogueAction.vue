@@ -9,7 +9,7 @@ import {
   IconShareStroked,
   IconThumbUpStroked,
 } from '@aifuxi/semi-icons-vue';
-import { computed, h, type Component, type VNodeChild } from 'vue';
+import { computed, h, shallowRef, type Component, type VNodeChild } from 'vue';
 
 import { Button } from '../button';
 import { Dropdown, DropdownItem, DropdownMenu } from '../dropdown';
@@ -41,6 +41,7 @@ const emit = defineEmits<{
   dislike: [message: Message];
   delete: [message: Message];
 }>();
+const moreVisible = shallowRef(false);
 
 function textContent(): string {
   if (typeof props.message.content === 'string') return props.message.content;
@@ -91,6 +92,8 @@ async function copyMessage(): Promise<void> {
 
 function confirmDelete(): void {
   if (typeof document === 'undefined') return;
+  // 固定基线在打开确认框时关闭菜单，避免菜单留在 Modal 遮罩之上。
+  moreVisible.value = false;
   Modal.warning({
     title: props.locale?.deleteConfirm ?? '确认要删除吗？',
     content: props.locale?.deleteContent ?? '删除后将无法恢复！',
@@ -192,16 +195,23 @@ const actionNodes = computed(() => {
   object.moreNode = h(
     Dropdown,
     {
-      trigger: 'click',
+      trigger: 'custom',
+      visible: moreVisible.value,
       position: 'bottomLeft',
+      spacing: 12,
+      'onUpdate:visible': (visible: boolean) => (moreVisible.value = visible),
+      onClickOutside: () => (moreVisible.value = false),
+      onEscKeydown: () => (moreVisible.value = false),
       contentClassName: 'semi-ai-chat-dialogue-action-dropdown',
     },
     {
       default: () =>
-        h('span', [iconButton('more', IconMoreStroked, 'more actions', () => undefined)]),
+        h('span', [
+          iconButton('more', IconMoreStroked, 'more actions', () => (moreVisible.value = true)),
+        ]),
       content: () =>
         h(DropdownMenu, null, () =>
-          h(DropdownItem, { type: 'danger', onClick: confirmDelete }, () => [
+          h(DropdownItem, { onClick: confirmDelete }, () => [
             h(IconDeleteStroked),
             ` ${props.locale?.delete ?? '删除'}`,
           ]),

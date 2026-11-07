@@ -90,6 +90,20 @@ describe('Cascader', () => {
     );
   });
 
+  it('禁用时仍保留 defaultOpen 的初始展开和焦点样式', async () => {
+    const wrapper = mount(Cascader, {
+      attachTo: document.body,
+      props: { treeData, defaultOpen: true, disabled: true, motion: false },
+    });
+    await nextTick();
+    await flushPromises();
+    const trigger = wrapper.get('.semi-cascader');
+    expect(trigger.classes()).toContain('semi-cascader-disabled');
+    expect(trigger.classes()).toContain('semi-cascader-focus');
+    expect(trigger.attributes('aria-expanded')).toBe('true');
+    expect(document.querySelector('.semi-cascader-popover')).not.toBeNull();
+  });
+
   it('opens in a stable custom container and closes with Escape', async () => {
     const container = document.createElement('div');
     document.body.append(container);

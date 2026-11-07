@@ -5,6 +5,8 @@ import { JsonViewer, type JsonViewerOptions } from '@aifuxi/semi-ui-vue/json-vie
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>();
+/** 非法 JSON 由编辑器真实解析并显示错误行，不伪造错误提示 DOM。 */
+const reviewError = new URLSearchParams(window.location.search).get('reviewError') === '1';
 const value = `{
   "project": "Semi UI Vue",
   "version": "2.102.0",
@@ -42,7 +44,7 @@ const customOptions: JsonViewerOptions = {
         <h3>Editable / search</h3>
         <JsonViewer
           data-parity-target="json-viewer-main"
-          :value="value"
+          :value="reviewError ? '{\n  &quot;broken&quot;: }' : value"
           :width="640"
           :height="300"
           :options="editableOptions"

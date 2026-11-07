@@ -13,6 +13,7 @@
 | `apps/reference-react`                         | 从固定 vendor 运行真实 React 参考场景                |
 | `apps/storybook-vue`                           | Storybook Vue 3/Vite 场景站，从公开组件子路径导入    |
 | `apps/docs`                                    | VitePress 组件库文档站，正文从固定基线构建期生成     |
+| `apps/theme-studio`                            | 独立主题工作台，只消费公开 Vue 组件、图标与主题包    |
 | `tests/browser`                                | 锁定 Chromium 的组件对照验收                         |
 | `tests/consumer`                               | 真实 tarball 的独立 Chromium 消费测试                |
 | `docs/components`                              | 静态组件契约、API 说明与已知差异                     |
@@ -26,11 +27,15 @@ UI 与资产包使用 Rslib 多入口 ESM；Vue 保持 external，稳定图标/�
 
 主题包发布编译 CSS：`index.css` 是全量主题；模块化入口由 `base.css`、复用的 Foundation CSS 和逐组件 CSS 组成，依赖与导入顺序见包内 `style-dependencies.json`。固定上游 SCSS 使用 Sass 1.54.9，应用中通过 `sass-legacy` 别名隔离；Vite 的新版可选 Sass peer 用途不同。`semi-theme-modern` 作为可选覆盖包，需在默认主题之后导入，仅覆盖四档圆角变量，其他样式沿用默认主题。
 
+R-000072 的公开排版主题通过 CSS 自定义属性消费，业务自定义主题不依赖 Sass 或构建插件。内部主题适配器只读解析固定 vendor 的变量引用和声明语义，在内存中注入 CSS fallback；构建产物与开发虚拟样式共用编译入口，不复制维护上游样式。默认值保留固定基线，颜色生成器独立于本项。变量、局部作用域和弹层继承契约见[主题包说明](../../packages/theme-default/README.md#css-排版主题)。
+
 JsonViewer 的固定 core 与 jsonc-parser 经私有构建插件编入内联 Worker；公开包不泄漏外置 vendor 路径。其他特殊第三方运行时同样在集成边界处理 SSR 延迟加载、类型和归属，不复制 vendor 后独立维护。
 
 每个公开包携带 MIT、第三方声明和 SPDX SBOM。可复现构建使用 `SOURCE_DATE_EPOCH`。版本、依赖和构建入口以各 package.json、lockfile 与 mise.toml 为准，组件进度与实现细节见[组件目录](../components/)。
 
 ## Storybook、参考应用、文档站与测试
+
+`apps/theme-studio` 是与 docs 平级的私有 Vue/Vite 应用，具有独立入口、hash 路由、状态、开发端口与构建产物；不依赖 docs 的布局或示例基础设施。文档仅保留 API、代码和可配置的工作台入口。工作台通过公开颜色 API、编译 CSS 与排版变量实时预览默认和局部主题，不要求用户使用 Sass 或专用主题插件；入口、首期范围及验证见[应用说明](../../apps/theme-studio/README.md)。
 
 Nuxt 文档应用及其构建、REPL、站点资源和逐示例验收已移除，退役范围见[说明](../documentation/README.md)。
 `apps/docs` 是不参与发布的私有 VitePress 应用：站点外壳使用基线站点 SCSS 与 `@douyinfe/semi-site-doc-style`
@@ -44,3 +49,9 @@ Vue 场景由 Storybook Vue 3/Vite 承载，React 参考继续使用 Rsbuild、R
 源码测试与实现共置于各包 `src` 下，`.test.ts` / `.spec.ts` 纳入类型检查。Vitest dom project 使用 Vue Test Utils/jsdom，Node project 验证无 DOM SSR、纯工具和私有集成；hydration 与普通客户端 mount 分开命名。SFC 使用 Vue/Vite 编译，Prism 与 JSON Worker 通过私有集成插件适配。旧 Rstest 配置及覆盖率补丁、App 外壳测试与专用 stubs、测试 alias 生成器已移除。
 
 组件与 consumer 浏览器测试仅本地执行。组件 Playwright 配置通过标准 webServer 构建 React/Storybook 并 preview；consumer 配置独立验证真实 tarball，不加载 Storybook。CI 保留静态源码、Node 产物与发布职责。工具切换不代表全部组件验收完成；组件契约见[组件契约](../testing/component-contract.md)，执行范围见[验证入口](../testing/validation.md)，环境与 IDE 见[工具链](toolchain.md)。
+
+### 可选颜色生成入口
+
+`@aifuxi/semi-theme-default/colors` 提供独立、零依赖的纯 ESM 颜色生成器和类型。HSV 算法以固定 DSM 参考结果验收，默认 CSS 仍来自固定 Semi v2.102.0；品牌生成算法不参与默认主题构建。构建时只读编译 vendor 的全局颜色语义，生成包内静态数据，消费者不依赖 Sass、vendor 或构建插件。
+
+公开入口包含单色阶、完整色盘、双模式主题及 CSS 序列化。完整主题同时声明基础色和语义引用，私有双模式载体支持嵌套 always-light/dark；默认 Portal 桥接颜色、排版与模式，显式容器优先。输入、输出及使用方式见[颜色主题契约](../../packages/theme-default/README.md#品牌颜色生成器)。

@@ -2,6 +2,11 @@
 import { shallowRef } from 'vue';
 import { TabPane, Tabs } from '@aifuxi/semi-ui-vue/tabs';
 
+/** 与固定 React 场景共用查询值，通过公开 prop 查看三档尺寸，缺省保持 large。 */
+const requestedSize = new URLSearchParams(window.location.search).get('tabsSize');
+/** 未识别值不改变已有默认场景，也不向组件传入非法 size。 */
+const reviewSize =
+  requestedSize === 'small' || requestedSize === 'medium' ? requestedSize : 'large';
 const status = shallowRef('等待操作');
 const labels = ['文档', '快速起步', '帮助'];
 </script>
@@ -10,7 +15,11 @@ const labels = ['文档', '快速起步', '帮助'];
   <div class="tabs-scenario" data-testid="tabs-vue">
     <div class="tabs-scenario__section">
       <span class="tabs-scenario__label">Line / 文档首例</span>
-      <Tabs data-parity-target="tabs-line" @change="(key: string) => (status = `Line：${key}`)">
+      <Tabs
+        :size="reviewSize"
+        data-parity-target="tabs-line"
+        @change="(key: string) => (status = `Line：${key}`)"
+      >
         <TabPane
           v-for="(label, index) in labels"
           :key="`line${index + 1}`"
@@ -28,7 +37,7 @@ const labels = ['文档', '快速起步', '帮助'];
         class="tabs-scenario__section"
       >
         <span class="tabs-scenario__label">{{ type }}</span>
-        <Tabs :data-parity-target="`tabs-${type}`" :type="type">
+        <Tabs :size="reviewSize" :data-parity-target="`tabs-${type}`" :type="type">
           <TabPane
             v-for="(label, index) in labels"
             :key="`${type}${index + 1}`"
@@ -43,6 +52,7 @@ const labels = ['文档', '快速起步', '帮助'];
     <div class="tabs-scenario__section tabs-scenario__left">
       <span class="tabs-scenario__label">Left / disabled / closable</span>
       <Tabs
+        :size="reviewSize"
         data-parity-target="tabs-left"
         default-active-key="behavior1"
         tab-position="left"
@@ -59,7 +69,7 @@ const labels = ['文档', '快速起步', '帮助'];
     <div class="tabs-scenario__types">
       <div class="tabs-scenario__section">
         <span class="tabs-scenario__label">More</span>
-        <Tabs data-parity-target="tabs-more" :more="2" type="card">
+        <Tabs :size="reviewSize" data-parity-target="tabs-more" :more="2" type="card">
           <TabPane v-for="index in 6" :key="index" :item-key="`more${index}`" :tab="`Tab-${index}`">
             More content {{ index }}
           </TabPane>
@@ -67,7 +77,7 @@ const labels = ['文档', '快速起步', '帮助'];
       </div>
       <div class="tabs-scenario__section tabs-scenario__collapsed">
         <span class="tabs-scenario__label">Collapsible</span>
-        <Tabs collapsible data-parity-target="tabs-collapsible" type="card">
+        <Tabs :size="reviewSize" collapsible data-parity-target="tabs-collapsible" type="card">
           <TabPane
             v-for="index in 7"
             :key="index"

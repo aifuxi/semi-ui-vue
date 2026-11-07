@@ -7,3 +7,5 @@ Semi Design 采用 MIT License，Copyright (c) 2021 DouyinFE。其完整许可�
 本项目自身代码及六个公开包使用 MIT License。各发布包同时携带项目 `LICENSE`、`dist/THIRD_PARTY_NOTICES.md`、`dist/THIRD_PARTY_LICENSES/` 与 `dist/SBOM.spdx.json`；私有 workspace 工具不进入公开包。
 
 项目开发工具包含由 Playwright 1.62.1 安装器提供的 `playwright-cli` skill（Microsoft Corporation，Apache-2.0），其来源为 [microsoft/playwright-cli](https://github.com/microsoft/playwright-cli)。完整许可证保存在 `.agents/skills/playwright-cli/LICENSE`；项目适配在 skill 入口和 `references/project.md` 中注明。这些文件仅用于仓库开发，不进入公开组件包。
+
+Theme Studio 的迭鹿排版预设使用 `@fontsource-variable/space-grotesk` 和 `@fontsource-variable/jetbrains-mono`，均锁定为 `5.3.0`，采用 SIL Open Font License 1.1。字体通过 npm 包随私有应用本地部署，不进入公开组件包。完整授权随应用提供于 [Space Grotesk](apps/theme-studio/public/fonts/LICENSE-Space-Grotesk.txt) 和 [JetBrains Mono](apps/theme-studio/public/fonts/LICENSE-JetBrains-Mono.txt)。

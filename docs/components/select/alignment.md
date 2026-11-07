@@ -100,3 +100,9 @@ Select 是 Tooltip PoC 后的第二道复杂度门槛，用来验证搜索、多
 - 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、复合 `Select.Option`/`Select.OptGroup`、类型、`select.css`、tree-shaking、许可与 SBOM。
 - 静态文档：本轮补齐仓库内 [index.md](./index.md)、[index.en-US.md](./index.en-US.md) 与 [react-to-vue.md](./react-to-vue.md)，覆盖 Props/Option/OptGroup/Events/Slots/Methods、受控与非受控、搜索/远程/创建、Portal/虚拟化、键盘/ARIA、主题/RTL/SSR 与 React→Vue 映射；`coverage.md` 保留退役站点的历史映射。
 - 状态：`ready`。公开入口、复合 `Select.Option`/`Select.OptGroup`、受控/非受控、搜索与远程、多选/折叠/N 标签、Portal/虚拟化、键盘/ARIA、SSR、双语文档与迁移表、React/Vue Chromium 对照、主题与发布子路径证据均已闭合。
+
+## 主题改动视觉复核（2026-11-07）
+
+- 在真实 Chromium 页面逐图查看 small/default/large × light/dark 的普通、error/warning、disabled、loading、hover/focus/active，以及打开候选面板、多选和分组搜索。
+- 实看发现 loading 弹层只有空 `semi-spin-spinIcon` span，没有真实 SVG；改用已发布 Spin 组件，保留固定加载 wrapper 层级。新增回归断言真实加载 SVG，防止仅凭样式 class 误判图标存在。
+- 修复前、后图分别保存在本地忽略目录 `test-results/ui-theme-review/inputs/select-{light,dark}-loading-open-interaction-pair.png` 与 `select-{light,dark}-loading-open-fixed-interaction-pair.png`；尺寸/状态总览为 `select-{light,dark}-{small,default,large}-states.png`。这些图已实际查看，详细范围与边界见同目录 `coverage.md`；正式浏览器门禁单独运行。

@@ -4,6 +4,17 @@ import { ConfigProvider, type ConfigDirection } from '@aifuxi/semi-ui-vue/config
 import { Feedback, type FeedbackValue } from '@aifuxi/semi-ui-vue/feedback';
 
 defineProps<{ direction: ConfigDirection }>();
+// 与 React 固定基线使用相同公开 props，补齐反馈内容和容器变体。
+const query = new URLSearchParams(window.location.search);
+const requestedType = query.get('feedbackType');
+const reviewType =
+  requestedType === 'text' ||
+  requestedType === 'radio' ||
+  requestedType === 'checkbox' ||
+  requestedType === 'custom'
+    ? requestedType
+    : 'emoji';
+const reviewMode = query.get('feedbackMode') === 'modal' ? 'modal' : 'popup';
 const container = useTemplateRef<HTMLDivElement>('container');
 const mounted = ref(false);
 const popupVisible = ref(true);
@@ -45,15 +56,31 @@ function closeModal(): void {
           v-if="mounted"
           v-model:visible="popupVisible"
           data-parity-target="feedback-basic"
-          mode="popup"
-          type="emoji"
+          :mode="reviewMode"
+          :type="reviewType"
+          :radio-group-props="{
+            options: [
+              { label: '交互不够清晰', value: 'interaction' },
+              { label: '响应速度较慢', value: 'performance' },
+              { label: '功能不符合预期', value: 'feature' },
+            ],
+          }"
+          :checkbox-group-props="{
+            options: [
+              { label: '交互不够清晰', value: 'interaction' },
+              { label: '响应速度较慢', value: 'performance' },
+              { label: '功能不符合预期', value: 'feature' },
+            ],
+          }"
           title="这次体验怎么样？"
           :motion="false"
           :get-popup-container="() => container!"
           @value-change="recordValue"
           @cancel="closePopup"
           @ok="closePopup"
-        />
+        >
+          <p v-if="reviewType === 'custom'">请留下你的使用建议。</p>
+        </Feedback>
         <Feedback
           v-if="mounted"
           v-model:visible="modalVisible"

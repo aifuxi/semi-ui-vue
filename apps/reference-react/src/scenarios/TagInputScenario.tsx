@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import TagInput from '@semi-v2.102.0/tag-input';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 export function TagInputScenario(): React.ReactElement {
+  /** 标签数据不变，query 只选择真实尺寸、禁用和校验分支。 */
+  const reviewProps = readInputReviewProps(['size', 'disabled', 'validateStatus']);
   const [status, setStatus] = useState('none');
 
   return (
@@ -10,6 +13,7 @@ export function TagInputScenario(): React.ReactElement {
         <h3>基础、尺寸与状态</h3>
         <div className="tag-input-scenario__stack">
           <TagInput
+            {...reviewProps}
             defaultValue={['抖音', '火山', '西瓜视频']}
             placeholder="请输入..."
             showContentTooltip={false}

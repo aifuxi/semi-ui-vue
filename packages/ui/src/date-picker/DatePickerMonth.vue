@@ -12,6 +12,7 @@ import type { DatePickerDayStatus, DatePickerLocale, DatePickerRangeType } from 
 
 const props = defineProps<{
   disabledDate: (date: Date, options?: Record<string, unknown>) => boolean;
+  focusRecords: { rangeStart: boolean; rangeEnd: boolean };
   hoverDate: Date | undefined;
   isRange: boolean;
   locale: DatePickerLocale;
@@ -35,7 +36,6 @@ const emit = defineEmits<{
 const table = computed(() => getDatePickerMonthTable(props.month, props.weekStartsOn));
 const weekKeys = computed(() => getDatePickerDayOfWeek({ weekStartsOn: props.weekStartsOn }));
 const weekdays = computed(() => weekKeys.value.map((key) => props.locale.weeks[key] ?? key));
-const weeksHeight = computed(() => `${table.value.weeks.length * 36}px`);
 const today = format(new Date(), 'yyyy-MM-dd');
 
 function parseDay(day: DatePickerMonthDay): Date | undefined {
@@ -51,11 +51,16 @@ function status(day: DatePickerMonthDay): DatePickerDayStatus {
   if (!date) return {};
   const [rangeStart, rangeEnd] = props.rangeValue;
   const selected = props.selected.some((item) => sameDay(item, date));
-  const disabled = props.disabledDate(date, {
+  let disabled = props.disabledDate(date, {
     rangeStart: rangeStart ? format(rangeStart, 'yyyy-MM-dd') : '',
     rangeEnd: rangeEnd ? format(rangeEnd, 'yyyy-MM-dd') : '',
     rangeInputFocus: props.rangeFocus,
   });
+  // 两端均曾聚焦后，编辑起止值时禁止跨越另一端，沿用固定 Month 的焦点记录语义。
+  if (!disabled && props.rangeFocus === 'rangeStart' && rangeEnd && props.focusRecords.rangeEnd)
+    disabled = day.fullDate > format(rangeEnd, 'yyyy-MM-dd');
+  if (!disabled && props.rangeFocus === 'rangeEnd' && rangeStart && props.focusRecords.rangeStart)
+    disabled = day.fullDate < format(rangeStart, 'yyyy-MM-dd');
   const inRange = Boolean(
     rangeStart && rangeEnd && isAfter(date, rangeStart) && isBefore(date, rangeEnd),
   );
@@ -110,7 +115,8 @@ function clickDay(day: DatePickerMonthDay): void {
         {{ weekday }}
       </div>
     </div>
-    <div class="semi-datepicker-weeks" :style="{ height: weeksHeight }">
+    <!-- 行高由固定主题决定；compact 使用 28px，不再强制默认密度的 36px。 -->
+    <div class="semi-datepicker-weeks">
       <div
         v-for="(week, weekIndex) in table.weeks"
         :key="weekIndex"

@@ -7,21 +7,17 @@ import {
   IconDoubleChevronLeft,
   IconDoubleChevronRight,
 } from '@aifuxi/semi-icons-vue';
-import {
-  addMonths,
-  addYears,
-  format,
-  isAfter,
-  setMonth,
-  setYear,
-  subMonths,
-  subYears,
-} from 'date-fns';
-import { computed, ref, watch, type VNodeChild } from 'vue';
+import { addMonths, addYears, format, isAfter, subMonths, subYears } from 'date-fns';
+import { computed, inject, ref, useTemplateRef, watch, type VNodeChild } from 'vue';
 
 import { Button } from '../button';
-import { TimePicker } from '../time-picker';
+import { configContextKey } from '../config-provider';
+import TimePickerPanel from '../time-picker/TimePickerPanel.vue';
+import type { TimePickerLocale } from '../time-picker/types';
 import DatePickerMonth from './DatePickerMonth.vue';
+import DatePickerInsetInputs from './DatePickerInsetInputs.vue';
+import DatePickerYearMonth from './DatePickerYearMonth.vue';
+import type { InsetInputChange, YearAndMonthSelection } from '@workspace/foundation-integration';
 import DatePickerNodeRenderer from './DatePickerNodeRenderer';
 import type {
   DatePickerDayStatus,
@@ -34,6 +30,8 @@ import type {
 const props = defineProps<{
   bottomContent: VNodeChild;
   cachedValue: Array<Date | null>;
+  focusRecords: { rangeStart: boolean; rangeEnd: boolean };
+  insetInputValue: unknown;
   leftContent: VNodeChild;
   locale: DatePickerLocale;
   localeCode: string;
@@ -48,6 +46,10 @@ const props = defineProps<{
   value: Date[];
 }>();
 
+const injectedConfig = inject(configContextKey, undefined);
+const insetInputs = useTemplateRef<{ focus(index: number): void }>('insetInputs');
+/** 暴露给上层 Foundation 适配器，在 Popover ready 后移动真实输入焦点。 */
+defineExpose({ focusInsetInput: (index: number) => insetInputs.value?.focus(index) });
 const emit = defineEmits<{
   cancel: [];
   confirm: [];
@@ -55,6 +57,9 @@ const emit = defineEmits<{
   panelChange: [date: Date | Date[], dateString: string | string[]];
   presetClick: [preset: DatePickerPreset, event: MouseEvent];
   select: [dates: Array<Date | null>];
+  yearMonthSelect: [selection: YearAndMonthSelection];
+  insetInputChange: [value: InsetInputChange];
+  insetInputFocus: [event: FocusEvent, rangeType: 'rangeStart' | 'rangeEnd'];
 }>();
 
 const type = computed(() => props.props.type ?? 'date');
@@ -93,6 +98,10 @@ const selected = computed(() =>
   props.cachedValue.filter((item): item is Date => item instanceof Date),
 );
 const displayRange = computed(() => (isRange.value ? pendingRange.value : props.cachedValue));
+/** 固定基线的紧凑导航使用 small Button，图标尺寸与按钮尺寸分别控制。 */
+const navigationButtonSize = computed(() =>
+  props.props.density === 'compact' ? 'small' : 'default',
+);
 const panelClasses = computed(() => [
   'semi-datepicker',
   isYearOrMonth.value ? 'semi-datepicker-panel-yam' : undefined,
@@ -180,15 +189,62 @@ function selectDay(date: Date): void {
   emit('select', pair);
 }
 
-function selectYearMonth(year: number, month?: number): void {
-  const date =
-    month === undefined ? setYear(seed.value, year) : setMonth(setYear(seed.value, year), month);
-  if (type.value === 'monthRange') selectDay(date);
-  else emit('select', [date]);
+/** 年月导航只改变当前面板月份，回到日期网格后再选择具体日期。 */
+function navigateYearMonth(selection: YearAndMonthSelection, panel: 'left' | 'right'): void {
+  const date = new Date(selection.currentYear.left, selection.currentMonth.left - 1, 1);
+  leftMonth.value = panel === 'left' ? date : subMonths(date, 1);
+  announcePanel();
 }
 
 function choosePreset(preset: DatePickerPreset, event: MouseEvent): void {
   emit('presetClick', preset, event);
+}
+
+/** 时间切换面板直接复用内部滚动列，避免错误地再次渲染一个触发输入框。 */
+function timePanelProps(panel: 'left' | 'right') {
+  const options = props.props.timePickerOpts ?? {};
+  const value =
+    props.cachedValue[panel === 'left' ? 0 : 1] ??
+    (panel === 'left' ? leftMonth.value : rightMonth.value);
+  const zh = props.localeCode.startsWith('zh');
+  const locale: TimePickerLocale = options.locale ??
+    (injectedConfig?.value.locale.TimePicker as TimePickerLocale | undefined) ?? {
+      AM: zh ? '上午' : 'AM',
+      PM: zh ? '下午' : 'PM',
+      begin: zh ? '开始时间' : 'Start Time',
+      end: zh ? '结束时间' : 'End Time',
+      hour: zh ? '时' : '',
+      minute: zh ? '分' : '',
+      second: zh ? '秒' : '',
+      placeholder: { time: '', timeRange: '' },
+    };
+  return {
+    ...options,
+    format: options.format ?? (props.props.format?.split(' ')[1] || 'HH:mm:ss'),
+    hideDisabledOptions: Boolean(props.props.hideDisabledOptions),
+    index: panel === 'left' ? 0 : 1,
+    isAM: value.getHours() < 12,
+    locale,
+    panelType: panel,
+    showFooter: Boolean(options.panelFooter),
+    showHeader: Boolean(options.panelHeader ?? props.locale.selectTime),
+    panelHeader: options.panelHeader ?? props.locale.selectTime,
+    timeStampValue: value,
+    use12Hours: Boolean(options.use12Hours),
+    // DatePicker 范围回调接收完整日期数组；其结果覆盖 timePickerOpts 的同名禁用函数。
+    disabledOptions: {
+      ...(options.disabledHours ? { disabledHours: options.disabledHours } : {}),
+      ...(options.disabledMinutes ? { disabledMinutes: options.disabledMinutes } : {}),
+      ...(options.disabledSeconds ? { disabledSeconds: options.disabledSeconds } : {}),
+      ...(props.props.disabledTime?.(isRange.value ? selected.value : selected.value[0], panel) ??
+        {}),
+    },
+    scrollItemProps: {
+      ...options.scrollItemProps,
+      mode: options.scrollItemProps?.mode ?? 'normal',
+      motion: options.scrollItemProps?.motion ?? props.props.motion ?? true,
+    },
+  };
 }
 
 function updateTime(value: unknown, panel: 'left' | 'right'): void {
@@ -242,38 +298,29 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
           </div>
         </div>
 
-        <div v-if="isYearOrMonth" class="semi-datepicker-yearmonth-body">
-          <div class="semi-datepicker-yam-column">
-            <Button
-              v-for="year in Array.from(
-                {
-                  length:
-                    (props.props.endYear ?? new Date().getFullYear() + 100) -
-                    (props.props.startYear ?? new Date().getFullYear() - 100) +
-                    1,
-                },
-                (_, index) => (props.props.startYear ?? new Date().getFullYear() - 100) + index,
-              )"
-              :key="year"
-              size="small"
-              theme="borderless"
-              @click="
-                type === 'year' ? selectYearMonth(year) : (leftMonth = setYear(leftMonth, year))
-              "
-              >{{ year }}{{ localeCode.startsWith('zh') ? '年' : '' }}</Button
-            >
-          </div>
-          <div v-if="type !== 'year'" class="semi-datepicker-yam-column">
-            <Button
-              v-for="month in 12"
-              :key="month"
-              size="small"
-              theme="borderless"
-              @click="selectYearMonth(leftMonth.getFullYear(), month - 1)"
-              >{{ locale.fullMonths[month] }}</Button
-            >
-          </div>
-        </div>
+        <DatePickerInsetInputs
+          v-if="props.props.insetInput"
+          ref="insetInputs"
+          :picker-props="props.props"
+          :value="selected"
+          :input-value="insetInputValue"
+          @change="emit('insetInputChange', $event)"
+          @focus="
+            (kind, index, event) => {
+              timeOpen = kind === 'time' ? (index === 0 ? 'left' : 'right') : false;
+              yearMonthOpen = false;
+              emit('insetInputFocus', event, index === 0 ? 'rangeStart' : 'rangeEnd');
+            }
+          "
+        />
+        <DatePickerYearMonth
+          v-if="isYearOrMonth"
+          :locale="locale"
+          :locale-code="localeCode"
+          :picker-props="props.props"
+          :value="props.cachedValue"
+          @select="emit('yearMonthSelect', $event)"
+        />
 
         <div v-else style="display: flex">
           <div
@@ -299,24 +346,42 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
             >
               <div
                 class="semi-datepicker-month-grid-left"
+                :class="{
+                  'semi-datepicker-yam-showing': timeOpen === 'left' || yearMonthOpen === 'left',
+                }"
                 :x-open-type="
                   timeOpen === 'left' ? 'time' : yearMonthOpen === 'left' ? 'year' : 'date'
                 "
               >
                 <div v-if="yearMonthOpen === 'left'" class="semi-datepicker-yam">
                   <div class="semi-datepicker-yearmonth-header">
-                    <Button theme="borderless" @click="yearMonthOpen = false"
-                      ><IconChevronLeft />{{ locale.selectDate }}</Button
+                    <Button
+                      theme="light"
+                      :size="navigationButtonSize"
+                      @click="yearMonthOpen = false"
+                      ><template #icon
+                        ><IconChevronLeft
+                          :size="
+                            props.props.density === 'compact' ? 'default' : 'large'
+                          " /></template
+                      ><span>{{ locale.selectDate }}</span></Button
                     >
                   </div>
+                  <DatePickerYearMonth
+                    :locale="locale"
+                    :locale-code="localeCode"
+                    :picker-props="{ ...props.props, type: 'month' }"
+                    :value="[leftMonth]"
+                    @select="navigateYearMonth($event, 'left')"
+                  />
                 </div>
                 <div v-if="timeOpen === 'left'" class="semi-datepicker-tpk">
-                  <TimePicker
-                    v-bind="props.props.timePickerOpts"
-                    :open="false"
-                    :value="props.cachedValue[0] ?? leftMonth"
-                    @change="updateTime($event, 'left')"
-                  />
+                  <div class="semi-datepicker-time">
+                    <TimePickerPanel
+                      v-bind="timePanelProps('left')"
+                      @change="updateTime(new Date($event.timeStampValue), 'left')"
+                    />
+                  </div>
                 </div>
                 <div
                   :style="
@@ -327,6 +392,7 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
                 >
                   <div class="semi-datepicker-navigation">
                     <Button
+                      :size="navigationButtonSize"
                       aria-label="Previous year"
                       theme="borderless"
                       type="tertiary"
@@ -339,6 +405,7 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
                           " /></template
                     ></Button>
                     <Button
+                      :size="navigationButtonSize"
                       aria-label="Previous month"
                       theme="borderless"
                       type="tertiary"
@@ -351,11 +418,16 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
                           " /></template
                     ></Button>
                     <div class="semi-datepicker-navigation-month">
-                      <Button theme="borderless" type="tertiary" @click="yearMonthOpen = 'left'"
+                      <Button
+                        :size="navigationButtonSize"
+                        theme="borderless"
+                        type="tertiary"
+                        @click="yearMonthOpen = 'left'"
                         ><span>{{ monthText(leftMonth) }}</span></Button
                       >
                     </div>
                     <Button
+                      :size="navigationButtonSize"
                       aria-label="Next month"
                       theme="borderless"
                       type="tertiary"
@@ -373,6 +445,7 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
                           " /></template
                     ></Button>
                     <Button
+                      :size="navigationButtonSize"
                       aria-label="Next year"
                       theme="borderless"
                       type="tertiary"
@@ -392,6 +465,7 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
                   </div>
                   <DatePickerMonth
                     :disabled-date="isDisabledDate"
+                    :focus-records="focusRecords"
                     :hover-date="hoverDate"
                     :is-range="isRange"
                     :locale="locale"
@@ -417,14 +491,17 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
                     ]"
                     @click="timeOpen = false"
                   >
-                    <IconCalendar /><span class="semi-datepicker-switch-text">{{
-                      props.cachedValue[0]
-                        ? format(
-                            props.cachedValue[0] as Date,
-                            locale.localeFormatToken.FORMAT_SWITCH_DATE,
-                          )
-                        : monthText(leftMonth)
-                    }}</span>
+                    <IconCalendar v-if="props.props.density !== 'compact'" /><span
+                      class="semi-datepicker-switch-text"
+                      >{{
+                        props.cachedValue[0]
+                          ? format(
+                              props.cachedValue[0] as Date,
+                              locale.localeFormatToken.FORMAT_SWITCH_DATE,
+                            )
+                          : monthText(leftMonth)
+                      }}</span
+                    >
                   </div>
                   <div
                     role="button"
@@ -436,9 +513,12 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
                     ]"
                     @click="!props.props.disabledTimePicker && (timeOpen = 'left')"
                   >
-                    <IconClock /><span class="semi-datepicker-switch-text">{{
-                      format((props.cachedValue[0] as Date | null) ?? leftMonth, 'HH:mm:ss')
-                    }}</span>
+                    <IconClock v-if="props.props.density !== 'compact'" /><span
+                      class="semi-datepicker-switch-text"
+                      >{{
+                        format((props.cachedValue[0] as Date | null) ?? leftMonth, 'HH:mm:ss')
+                      }}</span
+                    >
                   </div>
                 </div>
               </div>
@@ -446,15 +526,18 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
               <div
                 v-if="isRange"
                 class="semi-datepicker-month-grid-right"
+                :class="{
+                  'semi-datepicker-yam-showing': timeOpen === 'right' || yearMonthOpen === 'right',
+                }"
                 :x-open-type="timeOpen === 'right' ? 'time' : 'date'"
               >
                 <div v-if="timeOpen === 'right'" class="semi-datepicker-tpk">
-                  <TimePicker
-                    v-bind="props.props.timePickerOpts"
-                    :open="false"
-                    :value="props.cachedValue[1] ?? rightMonth"
-                    @change="updateTime($event, 'right')"
-                  />
+                  <div class="semi-datepicker-time">
+                    <TimePickerPanel
+                      v-bind="timePanelProps('right')"
+                      @change="updateTime(new Date($event.timeStampValue), 'right')"
+                    />
+                  </div>
                 </div>
                 <div
                   :style="
@@ -465,6 +548,7 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
                 >
                   <div class="semi-datepicker-navigation">
                     <Button
+                      :size="navigationButtonSize"
                       aria-label="Previous year"
                       theme="borderless"
                       type="tertiary"
@@ -478,6 +562,7 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
                           " /></template
                     ></Button>
                     <Button
+                      :size="navigationButtonSize"
                       aria-label="Previous month"
                       theme="borderless"
                       type="tertiary"
@@ -491,11 +576,12 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
                           " /></template
                     ></Button>
                     <div class="semi-datepicker-navigation-month">
-                      <Button theme="borderless" type="tertiary"
+                      <Button :size="navigationButtonSize" theme="borderless" type="tertiary"
                         ><span>{{ monthText(rightMonth) }}</span></Button
                       >
                     </div>
                     <Button
+                      :size="navigationButtonSize"
                       aria-label="Next month"
                       theme="borderless"
                       type="tertiary"
@@ -508,6 +594,7 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
                           " /></template
                     ></Button>
                     <Button
+                      :size="navigationButtonSize"
                       aria-label="Next year"
                       theme="borderless"
                       type="tertiary"
@@ -522,6 +609,7 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
                   </div>
                   <DatePickerMonth
                     :disabled-date="isDisabledDate"
+                    :focus-records="focusRecords"
                     :hover-date="hoverDate"
                     :is-range="isRange"
                     :locale="locale"
@@ -547,14 +635,17 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
                     ]"
                     @click="timeOpen = false"
                   >
-                    <IconCalendar /><span class="semi-datepicker-switch-text">{{
-                      props.cachedValue[1]
-                        ? format(
-                            props.cachedValue[1] as Date,
-                            locale.localeFormatToken.FORMAT_SWITCH_DATE,
-                          )
-                        : monthText(rightMonth)
-                    }}</span>
+                    <IconCalendar v-if="props.props.density !== 'compact'" /><span
+                      class="semi-datepicker-switch-text"
+                      >{{
+                        props.cachedValue[1]
+                          ? format(
+                              props.cachedValue[1] as Date,
+                              locale.localeFormatToken.FORMAT_SWITCH_DATE,
+                            )
+                          : monthText(rightMonth)
+                      }}</span
+                    >
                   </div>
                   <div
                     role="button"
@@ -566,9 +657,12 @@ function isDisabledDate(date: Date, options?: Record<string, unknown>): boolean 
                     ]"
                     @click="!props.props.disabledTimePicker && (timeOpen = 'right')"
                   >
-                    <IconClock /><span class="semi-datepicker-switch-text">{{
-                      format((props.cachedValue[1] as Date | null) ?? rightMonth, 'HH:mm:ss')
-                    }}</span>
+                    <IconClock v-if="props.props.density !== 'compact'" /><span
+                      class="semi-datepicker-switch-text"
+                      >{{
+                        format((props.cachedValue[1] as Date | null) ?? rightMonth, 'HH:mm:ss')
+                      }}</span
+                    >
                   </div>
                 </div>
               </div>

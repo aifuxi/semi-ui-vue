@@ -2,7 +2,7 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, nextTick } from 'vue';
 
-import { semiGlobal } from '../config-provider';
+import { ConfigProvider, semiGlobal } from '../config-provider';
 import DefaultDatePicker, { DatePicker } from './index';
 
 afterEach(() => {
@@ -19,6 +19,128 @@ async function settle(): Promise<void> {
 }
 
 describe('DatePicker', () => {
+  it('年月范围使用四个真实滚动列并禁止右端选择更早月份', async () => {
+    const wrapper = mount(DatePicker, {
+      attachTo: document.body,
+      props: {
+        type: 'monthRange',
+        defaultOpen: true,
+        defaultValue: [new Date(2024, 4, 1), new Date(2024, 5, 1)],
+        motion: false,
+      },
+    });
+    await settle();
+    const columns = document.querySelectorAll(
+      '.semi-datepicker-yearmonth-body .semi-scrolllist-item',
+    );
+    expect(columns).toHaveLength(4);
+    const rightMonths = columns[3]?.querySelectorAll('li');
+    expect(rightMonths?.[0]?.classList.contains('semi-scrolllist-item-disabled')).toBe(true);
+    expect(rightMonths?.[4]?.classList.contains('semi-scrolllist-item-disabled')).toBe(false);
+    rightMonths?.[6]?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await settle();
+    expect(wrapper.emitted('change')?.at(-1)?.[1]).toEqual(['2024-05', '2024-07']);
+    wrapper.unmount();
+  });
+
+  it('内嵌输入经固定解析器更新日期并保留公开 change', async () => {
+    const wrapper = mount(DatePicker, {
+      attachTo: document.body,
+      props: {
+        insetInput: true,
+        defaultOpen: true,
+        defaultValue: new Date(2024, 4, 10),
+        motion: false,
+      },
+    });
+    await settle();
+    const inset = document.querySelector<HTMLInputElement>(
+      '.semi-datepicker-inset-input-wrapper input',
+    );
+    expect(inset?.value).toBe('2024-05-10');
+    if (inset) {
+      inset.value = '2024-05-12';
+      inset.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    await settle();
+    expect(wrapper.emitted('change')?.at(-1)?.[1]).toBe('2024-05-12');
+    wrapper.unmount();
+  });
+  it('时间面板继承配置语言并按完整范围调用 disabledTime，保留 timePickerOpts 禁用函数', async () => {
+    const disabledTime = vi.fn(() => ({ disabledMinutes: () => [15] }));
+    const Host = {
+      components: { ConfigProvider, DatePicker },
+      setup: () => ({
+        values: [new Date(2024, 4, 10), new Date(2024, 5, 15)],
+        disabledTime,
+        options: { disabledHours: () => [2] },
+        locale: {
+          code: 'fr-FR',
+          TimePicker: {
+            begin: 'début',
+            end: 'fin',
+            hour: 'h-FR',
+            minute: 'm-FR',
+            second: 's-FR',
+            placeholder: { time: 'temps', timeRange: 'plage' },
+          },
+        },
+      }),
+      template:
+        '<ConfigProvider :locale="locale"><DatePicker type="dateTimeRange" :default-value="values" default-open :motion="false" :disabled-time="disabledTime" :time-picker-opts="options" /></ConfigProvider>',
+    };
+    const wrapper = mount(Host, { attachTo: document.body });
+    await settle();
+    document.querySelector<HTMLElement>('[aria-label="Switch to time panel"]')?.click();
+    await settle();
+    expect(disabledTime).toHaveBeenCalledWith(
+      [new Date(2024, 4, 10), new Date(2024, 5, 15)],
+      'left',
+    );
+    const hours = document.querySelector('.semi-timepicker-panel-list-hour');
+    expect(hours?.textContent).toContain('00h-FR');
+    expect(
+      hours?.querySelectorAll('li')[2]?.classList.contains('semi-scrolllist-item-disabled'),
+    ).toBe(true);
+    wrapper.unmount();
+  });
+
+  it('内嵌范围输入聚焦保留在面板而非被移回即将禁用的触发器', async () => {
+    const wrapper = mount(DatePicker, {
+      attachTo: document.body,
+      props: {
+        type: 'dateTimeRange',
+        insetInput: true,
+        defaultOpen: true,
+        defaultValue: [new Date(2024, 4, 10), new Date(2024, 5, 15)],
+        motion: false,
+      },
+    });
+    await settle();
+    const inputs = document.querySelectorAll<HTMLInputElement>(
+      '.semi-datepicker-inset-input-wrapper input',
+    );
+    inputs[0]?.focus();
+    await settle();
+    expect(document.activeElement).toBe(inputs[0]);
+    inputs[2]?.focus();
+    await settle();
+    expect(document.activeElement).toBe(inputs[2]);
+    expect(
+      document
+        .querySelector('[role="gridcell"][aria-label="2024-05-09"]')
+        ?.getAttribute('aria-disabled'),
+    ).toBe('true');
+    inputs[0]?.focus();
+    await settle();
+    expect(
+      document
+        .querySelector('[role="gridcell"][aria-label="2024-06-16"]')
+        ?.getAttribute('aria-disabled'),
+    ).toBe('true');
+    wrapper.unmount();
+  });
+
   it('公开入口保持 default 与 named 导出一致', () => {
     expect(DefaultDatePicker).toBe(DatePicker);
   });
@@ -60,6 +182,24 @@ describe('DatePicker', () => {
     expect(input.element).toHaveProperty('value', '2024-05-10');
     expect(input.attributes('aria-describedby')).toBe('booking-help');
     expect(wrapper.find('.semi-icon-calendar').exists()).toBe(true);
+  });
+
+  it('紧凑面板使用 small 导航按钮且周区高度由主题行高决定', async () => {
+    const wrapper = mount(DatePicker, {
+      attachTo: document.body,
+      props: {
+        defaultOpen: true,
+        defaultPickerValue: new Date(2024, 4, 1),
+        density: 'compact',
+        motion: false,
+      },
+    });
+    await settle();
+    const navigation = document.querySelector('.semi-datepicker-navigation');
+    expect(navigation?.querySelectorAll('.semi-button-size-small')).toHaveLength(5);
+    const weeks = document.querySelector<HTMLElement>('.semi-datepicker-weeks');
+    expect(weeks?.style.height).toBe('');
+    wrapper.unmount();
   });
 
   it('opens, selects a date and emits change then both Vue update events', async () => {

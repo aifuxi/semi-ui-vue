@@ -7,6 +7,7 @@ import { preparePackedConsumer } from './packed-consumer.mjs';
 import { verifyThemeCss } from './theme-contracts.mjs';
 import ts from 'typescript';
 import { verifyUiTreeshaking } from './verify-ui-treeshaking.mjs';
+import { verifyColorTools } from './verify-color-tools.mjs';
 
 const workspaceRoot = fileURLToPath(new URL('..', import.meta.url));
 const sourceVersions = new Set(
@@ -1218,6 +1219,8 @@ h(Button, { type, htmlType: 'submit' });
 
   await verifyThemeCss(path.join(consumerRoot, 'node_modules/@aifuxi/semi-theme-default/dist'));
 
+  // 真实 tarball 的颜色子路径可独立运行，不依赖 DOM 或主题构建插件。
+  await verifyColorTools(consumerRoot);
   await verifyUiTreeshaking(consumerRoot);
   process.stdout.write(
     '真实 tarball 的安装、exports、ESM、类型、样式、SSR import 与 tree-shaking 均通过\n',

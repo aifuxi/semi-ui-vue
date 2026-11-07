@@ -35,7 +35,10 @@ test('Form 参考场景来自本地 v2.102.0 并保留字段、标签、帮助�
   await expect.poll(() => referenceSourceWasRequested(requestedUrls, 'form')).toBe(true);
   await expect(page.getByTestId('form-reference')).toBeVisible();
   await expect(page.locator('[x-field-id="description"] input')).toHaveValue('Semi Vue');
-  await expect(page.locator('.semi-form-field-help-text')).toHaveText('用于识别当前方案');
+  // 独立 ErrorMessage 示例也含帮助文案；此处继续断言原 description 字段的帮助状态。
+  await expect(page.locator('[x-field-id="description"] .semi-form-field-help-text')).toHaveText(
+    '用于识别当前方案',
+  );
   await page.getByRole('button', { name: '提交' }).click();
   await expect(page.locator('[x-field-id="name"] .semi-form-field-error-message')).toHaveText(
     '请输入名称',
@@ -67,8 +70,13 @@ test('Form React/Vue 样式、几何、输入、校验与提交同步一致', as
     pair.vue.page.getByRole('button', { name: '提交' }).click(),
   ]);
   await Promise.all([
-    expect(pair.react.page.locator('.semi-form-field-error-message')).toHaveCount(0),
-    expect(pair.vue.page.locator('.semi-form-field-error-message')).toHaveCount(0),
+    // 只验收本次提交的 Form 内置字段，独立错误提示区域有意展示真实错误。
+    expect(
+      pair.react.page.getByTestId('form-reference').locator('.semi-form-field-error-message'),
+    ).toHaveCount(0),
+    expect(
+      pair.vue.page.getByTestId('form-vue').locator('.semi-form-field-error-message'),
+    ).toHaveCount(0),
   ]);
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);

@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { PinCode } from '@aifuxi/semi-ui-vue/pin-code';
 import { shallowRef } from 'vue';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
+/** 未指定审查 query 时保持默认场景。 */
+const reviewProps = readInputReviewProps(['size', 'disabled']);
 const lastValue = shallowRef('none');
 </script>
 
@@ -23,6 +26,7 @@ const lastValue = shallowRef('none');
           默认尺寸
           <PinCode
             class-name="pin-code-target-default"
+            v-bind="reviewProps"
             default-value="123456"
             @change="lastValue = $event"
           />

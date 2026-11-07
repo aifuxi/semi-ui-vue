@@ -5,6 +5,10 @@ import {
   type TimePickerFormattedValue,
 } from '@aifuxi/semi-ui-vue/time-picker';
 import { shallowRef } from 'vue';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
+
+/** query 与 React 相同，补看首个真实时间控件的校验和禁用状态。 */
+const reviewProps = readInputReviewProps(['size', 'disabled', 'validateStatus']);
 
 const status = shallowRef('none');
 const stableScroll = { mode: 'normal' as const, cycled: false, motion: false };
@@ -23,6 +27,7 @@ function handleChange(
       <h3>基础、尺寸与状态</h3>
       <div class="time-picker-scenario__stack">
         <TimePicker
+          v-bind="reviewProps"
           default-value="10:24:18"
           :motion="false"
           :scroll-item-props="stableScroll"

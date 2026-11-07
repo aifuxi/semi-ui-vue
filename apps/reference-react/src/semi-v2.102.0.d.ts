@@ -563,6 +563,10 @@ declare module '@semi-v2.102.0/feedback' {
     radioGroupProps?: {
       options?: Array<{ label: ReactNode; value: string | number }>;
     };
+    /** 固定 Feedback 支持与 radio 相同格式的多选项。 */
+    checkboxGroupProps?: {
+      options?: Array<{ label: ReactNode; value: string | number }>;
+    };
     title?: ReactNode;
     type?: FeedbackType;
     visible?: boolean;
@@ -1750,6 +1754,10 @@ declare module '@semi-v2.102.0/tree' {
     defaultExpandedKeys?: string[];
     defaultValue?: unknown;
     directory?: boolean;
+    /** 固定 Tree 的原生拖拽、异步展开及虚拟列表可见状态。 */
+    draggable?: boolean;
+    loadData?: (node?: TreeNodeData) => Promise<void>;
+    virtualize?: { itemSize: number; height?: number | string; width?: number | string };
     filterTreeNode?: boolean;
     multiple?: boolean;
     onChange?: (value?: unknown) => void;
@@ -2248,6 +2256,8 @@ declare module '@semi-v2.102.0/modal' {
     className?: string;
     closable?: boolean;
     closeOnEsc?: boolean;
+    /** 固定 Modal 的确认按钮加载态，供真实尺寸/状态对照使用。 */
+    confirmLoading?: boolean;
     direction?: 'ltr' | 'rtl';
     footer?: ReactNode;
     fullScreen?: boolean;
@@ -2286,9 +2296,27 @@ declare module '@semi-v2.102.0/table' {
     bordered?: boolean;
     columns?: TableColumnProps<RecordType>[];
     dataSource?: RecordType[];
+    /** 固定 Table 支持默认展开行及分组，供结构状态视觉审查使用。 */
+    defaultExpandedRowKeys?: (string | number)[];
+    defaultExpandAllGroupRows?: boolean;
+    expandedRowRender?: (record?: RecordType, index?: number, expanded?: boolean) => ReactNode;
+    groupBy?: string;
+    hideExpandedColumn?: boolean;
+    renderGroupSection?: (groupKey?: string | number, group?: (string | number)[]) => ReactNode;
+    /** 固定 Table 的列伸缩入口；审查场景使用内置宽度更新。 */
+    resizable?: boolean;
+    /** 使用固定行高驱动真实 react-window 虚拟列表。 */
+    virtualized?: boolean | { itemSize?: number; estimatedItemSize?: number };
     direction?: 'ltr' | 'rtl';
+    /** 固定 Table 支持在表格上显示加载遮罩。 */
+    loading?: boolean;
     pagination?: boolean | Record<string, unknown>;
-    rowSelection?: { selectedRowKeys?: (string | number)[]; width?: string | number };
+    rowSelection?: {
+      /** 固定基线允许整组禁选，用于审查表头与行选择的禁用样式。 */
+      disabled?: boolean;
+      selectedRowKeys?: (string | number)[];
+      width?: string | number;
+    };
     scroll?: { x?: string | number; y?: string | number };
     size?: 'small' | 'default' | 'middle';
     [key: `data-${string}`]: string | number | boolean | undefined;
@@ -2384,6 +2412,8 @@ declare module '@semi-v2.102.0/tag-group' {
     maxTagCount?: number;
     restCount?: number;
     showPopover?: boolean;
+    /** 与固定 TagGroup 的 tagSize 契约一致，审查三档真实标签尺寸。 */
+    size?: 'small' | 'default' | 'large';
     tagList: TagProps[];
   }
   const TagGroup: ComponentType<TagGroupProps>;
@@ -2407,6 +2437,7 @@ declare module '@semi-v2.102.0/popconfirm' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 
   interface PopconfirmProps {
+    okButtonProps?: { loading?: boolean };
     cancelText?: string;
     cancelType?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
     children?: ReactNode;
@@ -2554,6 +2585,12 @@ declare module '@semi-v2.102.0/form' {
 
   export const Form: ComponentType<FormProps> & {
     Input: ComponentType<FormFieldProps>;
+    ErrorMessage: ComponentType<{
+      error?: ReactNode;
+      helpText?: ReactNode;
+      showValidateIcon?: boolean;
+      validateStatus?: string;
+    }>;
   };
 }
 
@@ -2604,6 +2641,9 @@ declare module '@semi-v2.102.0/navigation' {
     footer?: { collapseButton?: boolean };
     header?: { text?: ReactNode };
     items?: NavigationItem[];
+    /** 两种布局直接使用固定 Navigation 公开 mode。 */
+    mode?: 'horizontal' | 'vertical';
+    style?: CSSProperties;
   }
 
   const Navigation: ComponentType<NavigationProps>;
@@ -2794,12 +2834,18 @@ declare module '@semi-v2.102.0/ai-chat-input' {
   }
 
   export interface AIChatInputProps {
+    /** 固定输入框公开的发送、生成和按钮形状状态。 */
+    canSend?: boolean;
+    generating?: boolean;
+    round?: boolean;
     defaultContent?: string | Record<string, unknown>;
     placeholder?: string;
     references?: AIChatInputReference[];
     skills?: Array<{ value?: string; label?: string; hasTemplate?: boolean }>;
     skillHotKey?: string;
     suggestions?: Array<string | string[] | { content: string }>;
+    showTemplateButton?: boolean;
+    renderTemplate?: (skill: unknown, onTemplateClick: (content: string) => void) => ReactNode;
     uploadProps?: Record<string, unknown>;
     children?: ReactNode;
   }
@@ -2818,6 +2864,9 @@ declare module '@semi-v2.102.0/chat' {
     status?: 'loading' | 'incomplete' | 'complete' | 'error';
   }
   export interface ChatProps {
+    /** 固定 Chat 公开输入发送和停止生成状态。 */
+    canSend?: boolean;
+    showStopGenerate?: boolean;
     align?: 'leftRight' | 'leftAlign';
     mode?: 'bubble' | 'noBubble' | 'userBubble';
     chats?: ChatMessage[];
@@ -2867,6 +2916,8 @@ declare module '@semi-v2.102.0/sidebar' {
 
   export interface SidebarProps {
     activeKey?: string;
+    /** 固定 Sidebar 的 code/file 详情数据。 */
+    detailContent?: SidebarCodeItemProps | { name?: string; content?: string; type?: string };
     className?: string;
     fileEditable?: boolean;
     mode?: string;
@@ -2919,6 +2970,11 @@ declare module '@semi-v2.102.0/ai-chat-dialogue' {
     [key: string]: unknown;
   }
   export interface AIChatDialogueProps {
+    /** 固定 AIChatDialogue 的布局与多选状态。 */
+    align?: 'leftRight' | 'leftAlign';
+    mode?: 'bubble' | 'noBubble' | 'userBubble';
+    selecting?: boolean;
+    messageEditRender?: (value: unknown) => ReactNode;
     chats?: Message[];
     hints?: string[];
     style?: CSSProperties;

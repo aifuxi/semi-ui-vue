@@ -80,6 +80,55 @@ test('AIChatDialogue React/Vue DOM、样式、几何与 hint 受控更新一致'
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 
+test('AIChatDialogue 编辑及删除确认关闭原菜单，与固定基线一致', async ({ context }) => {
+  for (const theme of ['light', 'dark'] as const) {
+    const pair = await openParityPages(context, {
+      scenarioId: 'ai-chat-dialogue',
+      theme,
+      direction: 'ltr',
+      locale: 'zh-CN',
+    });
+    for (const page of [pair.react.page, pair.vue.page]) {
+      const url = new URL(page.url());
+      url.searchParams.set('dialogueEditor', 'true');
+      await page.goto(url.toString());
+      await expectAIChatDialogueReady(page);
+      const user = page.locator('.semi-ai-chat-dialogue-wrapper').nth(1);
+      await user.hover();
+      await user.locator('button:has(.semi-icon-edit_stroked)').click();
+      await expect(page.locator('.semi-ai-chat-dialogue-content-editing input')).toHaveValue(
+        '请介绍 Semi',
+      );
+      await page.getByRole('button', { name: '取消', exact: true }).click();
+      await expect(page.locator('.semi-ai-chat-dialogue-content-editing')).toHaveCount(0);
+
+      await page
+        .locator('.semi-ai-chat-dialogue-wrapper button:has(.semi-icon-more_stroked)')
+        .last()
+        .click();
+      const item = page.locator('.semi-ai-chat-dialogue-action-dropdown .semi-dropdown-item');
+      await expect(item).toBeVisible();
+      await item.click();
+      await expect(page.getByRole('dialog', { name: '确认要删除吗？', exact: true })).toBeVisible();
+      // 旧实现会让删除菜单留在确认框遮罩上方。
+      await expect(item).toBeHidden();
+      await expect(page.locator('.semi-modal-confirm-title-text')).toHaveText('确认要删除吗？');
+    }
+    const [reactScreenshot, vueScreenshot] = await Promise.all([
+      pair.react.page
+        .getByRole('dialog', { name: '确认要删除吗？', exact: true })
+        .screenshot({ animations: 'disabled' }),
+      pair.vue.page
+        .getByRole('dialog', { name: '确认要删除吗？', exact: true })
+        .screenshot({ animations: 'disabled' }),
+    ]);
+    await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
+    expect(pair.react.runtimeErrors).toEqual([]);
+    expect(pair.vue.runtimeErrors).toEqual([]);
+    await Promise.all([pair.react.page.close(), pair.vue.page.close()]);
+  }
+});
+
 for (const viewportName of ['desktop'] as const) {
   for (const theme of ['light', 'dark'] as const) {
     test(`AIChatDialogue React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {

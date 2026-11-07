@@ -310,15 +310,22 @@ export type {
 } from './sidebar.js';
 export {
   DatePickerFoundation,
+  DateInputFoundation,
   datePickerCssClasses,
   datePickerNumbers,
   datePickerStrings,
   getDatePickerDayOfWeek,
   getDatePickerDefaultFormat,
   getDatePickerMonthTable,
+  getDatePickerYearAndMonth,
+  getDatePickerYears,
+  YearAndMonthFoundation,
 } from './date-picker.js';
 export type {
   DatePickerAdapter,
+  DateInputAdapter,
+  InsetInputValue,
+  InsetInputChange,
   DatePickerBaseValue,
   DatePickerFoundationValue,
   DatePickerMonthDay,
@@ -326,6 +333,12 @@ export type {
   DatePickerRangeFocus,
   FoundationDatePickerProps,
   FoundationDatePickerState,
+  YearAndMonthAdapter,
+  YearAndMonthFoundationProps,
+  YearAndMonthFoundationState,
+  YearAndMonthSelection,
+  YearScrollItem,
+  MonthScrollItem,
 } from './date-picker.js';
 export {
   formCssClasses,

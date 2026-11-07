@@ -1,7 +1,8 @@
 import { mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import sass from 'sass';
+import { compileTypographyTheme } from './typography-theme.mjs';
+import { buildColors } from './build-colors.mjs';
 
 const themeRoot = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(themeRoot, '../..');
@@ -66,16 +67,10 @@ function moduleAsset(modulePath) {
   return `foundation-${name}.css`;
 }
 
+/** 共享排版编译入口，保持开发与发布 CSS 的主题行为一致。 */
 function compile(data, fileName) {
-  return sass
-    .renderSync({
-      data,
-      file: fileName,
-      outputStyle: 'expanded',
-      sourceMap: false,
-      includePaths: [sourceRoot],
-    })
-    .css.toString();
+  // 统一经过源语义适配，公开产物只包含可直接消费的 CSS。
+  return compileTypographyTheme({ data, file: fileName, includePaths: [sourceRoot] });
 }
 
 function compileComponent(name, modules) {
@@ -163,3 +158,6 @@ await writeFile(
   path.join(distRoot, 'style-dependencies.json'),
   `${JSON.stringify({ version: sourceManifest.version, base: 'base.css', shared: Object.fromEntries(sharedAssets), components }, null, 2)}\n`,
 );
+
+// 独立颜色工具不参与默认 CSS 生成，只作为可选公开子路径发布。
+await buildColors();

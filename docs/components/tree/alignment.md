@@ -39,6 +39,7 @@
 
 - 根为 `.semi-tree-wrapper`；可搜索时先渲染 `.semi-tree-search-wrapper`，随后是 `.semi-tree-option-list[role=tree]`。无数据时列表 `role=none`。
 - 节点为 `li.semi-tree-option[role=treeitem]`，顺序为 indent → expand/spin/empty icon → label → Checkbox（多选）→ item icon → label text；保留 level、collapsed、selected、active、disabled、ellipsis、draggable、drop 与 last-leaf class。
+- 异步 loading 使用标准 `Spin` 的渐变与旋转，并保留 `semi-tree-option-spin-icon` 包装类；虚拟列表保留 `semi-tree-auto-wrapper`，按固定 AutoSizer 观察父列表、扣除垂直 padding 后更新 viewport 高度，不能只使用初始 `virtualize.height`。
 - Enter 等价节点点击；Checkbox Enter 只切换 checked；`expandAction=click/doubleClick` 保留选中、展开、双击通知顺序。disabled 节点不选择、不勾选且不拖拽。
 - 搜索命中文字保留 `.semi-tree-option-highlight`；`showFilteredOnly` 只渲染命中、祖先与后代。
 - Foundation、DOM 节点、Timer 和拖拽身份对象使用 `markRaw`/`shallowReactive`，卸载时销毁 Foundation 并清理拖拽延时/节流。

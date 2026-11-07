@@ -51,7 +51,7 @@ const DEFAULT_ZH_CN_LOCALE: Readonly<DatePickerLocale> = Object.freeze({
     dateTimeRange: ['开始日期', '结束日期'],
     monthRange: ['开始月份', '结束月份'],
     month: '请选择月份',
-    year: '请选择年份',
+    year: '',
   },
   presets: '快捷选择',
   footer: { confirm: '确定', cancel: '取消' },
@@ -78,7 +78,7 @@ const DEFAULT_EN_US_LOCALE: Readonly<DatePickerLocale> = Object.freeze({
     dateTimeRange: ['Start date', 'End date'],
     monthRange: ['Start month', 'End month'],
     month: 'Select month',
-    year: 'Select year',
+    year: '',
   },
   presets: 'Presets',
   footer: { confirm: 'Confirm', cancel: 'Cancel' },
@@ -128,6 +128,7 @@ const attrs = useAttrs();
 const slots = useSlots() as Readonly<DatePickerSlots>;
 const instance = getCurrentInstance();
 const inputComponent = useTemplateRef<InputExposed>('inputComponent');
+const panelComponent = useTemplateRef<{ focusInsetInput(index: number): void }>('panelComponent');
 const rangeStartComponent = useTemplateRef<InputExposed>('rangeStartComponent');
 const rangeEndComponent = useTemplateRef<InputExposed>('rangeEndComponent');
 const injectedConfig = inject(configContextKey, undefined);
@@ -217,7 +218,7 @@ const runtimeProps = computed<DatePickerProps>(
       rangeSeparator: props.rangeSeparator ?? ' ~ ',
       showClear: resolveProp('showClear', true),
       size: props.size ?? 'default',
-      spacing: props.spacing ?? (props.insetInput ? 1 : 4),
+      spacing: props.spacing ?? 4,
       stopPropagation: resolveProp('stopPropagation', true),
       syncSwitchMonth: props.syncSwitchMonth ?? false,
       timeZone: hasRawProp('timeZone') ? props.timeZone : config.value.timeZone,
@@ -236,12 +237,15 @@ const state = shallowReactive<FoundationDatePickerState>({
   cachedSelectedValue: [],
   prevTimeZone: null,
   rangeInputFocus: undefined,
-  autofocus: Boolean(props.autoFocus || (isRange.value && (props.open || props.defaultOpen))),
+  // monthRange 使用单输入框，仍遵循上游范围类型初始展开时的 autofocus。
+  autofocus: Boolean(
+    props.autoFocus || (type.value.includes('Range') && (props.open || props.defaultOpen)),
+  ),
   insetInputValue: null,
   triggerDisabled: undefined,
 });
 const cache = new Map<unknown, unknown>();
-const focusRecords = { rangeStart: false, rangeEnd: false };
+const focusRecords = shallowReactive({ rangeStart: false, rangeEnd: false });
 
 function foundationProps(): FoundationDatePickerProps {
   const output = { ...runtimeProps.value } as FoundationDatePickerProps;
@@ -322,12 +326,14 @@ const adapter: DatePickerAdapter<FoundationDatePickerProps, FoundationDatePicker
   setRangeInputFocus: (focus) => {
     state.rangeInputFocus = focus;
     if (focus === 'rangeStart') {
-      rangeStartComponent.value?.focus();
+      if (runtimeProps.value.insetInput) panelComponent.value?.focusInsetInput(0);
+      else rangeStartComponent.value?.focus();
       setTimeout(() => {
         focusRecords.rangeStart = true;
       }, 0);
     } else if (focus === 'rangeEnd') {
-      rangeEndComponent.value?.focus();
+      if (runtimeProps.value.insetInput) panelComponent.value?.focusInsetInput(1);
+      else rangeEndComponent.value?.focus();
       setTimeout(() => {
         focusRecords.rangeEnd = true;
       }, 0);
@@ -339,10 +345,12 @@ const adapter: DatePickerAdapter<FoundationDatePickerProps, FoundationDatePicker
   updateInsetInputValue: (value) => {
     state.insetInputValue = value;
   },
-  setInsetInputFocus: () =>
-    state.rangeInputFocus === 'rangeEnd'
-      ? rangeEndComponent.value?.focus()
-      : rangeStartComponent.value?.focus(),
+  setInsetInputFocus: () => {
+    if (runtimeProps.value.insetInput)
+      panelComponent.value?.focusInsetInput(state.rangeInputFocus === 'rangeEnd' ? 1 : 0);
+    else if (state.rangeInputFocus === 'rangeEnd') rangeEndComponent.value?.focus();
+    else rangeStartComponent.value?.focus();
+  },
   setTriggerDisabled: (disabled) => {
     state.triggerDisabled = disabled;
   },
@@ -615,8 +623,11 @@ watch(
     >
       <template #content>
         <DatePickerPanel
+          ref="panelComponent"
           :bottom-content="bottomContent"
           :cached-value="state.cachedSelectedValue"
+          :focus-records="focusRecords"
+          :inset-input-value="state.insetInputValue"
           :left-content="leftContent"
           :locale="locale"
           :locale-code="localeCode"
@@ -633,6 +644,9 @@ watch(
           @panel-change="handlePanelChange"
           @preset-click="handlePreset"
           @select="handleSelect"
+          @year-month-select="foundation.handleYMSelectedChange($event)"
+          @inset-input-change="foundation.handleInsetInputChange($event)"
+          @inset-input-focus="(event, rangeType) => foundation.handleInputFocus(event, rangeType)"
         />
       </template>
       <div

@@ -2,6 +2,7 @@ import React from 'react';
 import Cascader from '@semi-v2.102.0/cascader';
 import ConfigProvider from '@semi-v2.102.0/config-provider';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 const treeData = [
   {
@@ -37,10 +38,13 @@ export function CascaderScenario({
   direction: ParityDirection;
   locale: ParityLocale;
 }): React.ReactElement {
+  /** 对照同一已展开路径的三档触发器和公开校验、禁用状态。 */
+  const reviewProps = readInputReviewProps(['size', 'disabled', 'validateStatus']);
   return (
     <ConfigProvider direction={direction} locale={localeMap[locale]}>
       <div className="cascader-scenario" data-testid="cascader-reference">
         <Cascader
+          {...reviewProps}
           aria-label="Cascader"
           data-parity-target="cascader-root"
           defaultOpen

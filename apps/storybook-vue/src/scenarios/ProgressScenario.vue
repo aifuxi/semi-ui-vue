@@ -1,6 +1,22 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { Progress } from '@aifuxi/semi-ui-vue/progress';
+import { Progress, type ProgressSize } from '@aifuxi/semi-ui-vue/progress';
+
+/** 专项参数用于看三档进度尺寸及空/满边界，不改变默认截图。 */
+const reviewQuery = new URLSearchParams(window.location.search);
+/** 三档公开尺寸。 */
+const reviewSize = (
+  ['small', 'default', 'large'].includes(reviewQuery.get('reviewSize') ?? '')
+    ? reviewQuery.get('reviewSize')
+    : undefined
+) as ProgressSize | undefined;
+/** 只额外接受明确的零和百分之百边界。 */
+const reviewPercent =
+  reviewQuery.get('reviewPercent') === '0'
+    ? 0
+    : reviewQuery.get('reviewPercent') === '100'
+      ? 100
+      : undefined;
 
 const gradientStroke = [
   { percent: 50, color: '#fff' },
@@ -18,7 +34,8 @@ const motionPercent = shallowRef(50);
       <Progress
         aria-label="Default progress"
         data-parity-target="progress-line-default"
-        :percent="motionPercent"
+        :percent="reviewPercent ?? motionPercent"
+        :size="reviewSize ?? 'default'"
         show-info
         style="width: 100%"
       />
@@ -27,9 +44,9 @@ const motionPercent = shallowRef(50);
         data-parity-target="progress-line-info"
         :motion="false"
         orbit-stroke="var(--semi-color-warning-light-default)"
-        :percent="80"
+        :percent="reviewPercent ?? 80"
         show-info
-        size="large"
+        :size="reviewSize ?? 'large'"
         stroke="var(--semi-color-warning)"
         style="width: 100%"
       />
@@ -40,9 +57,9 @@ const motionPercent = shallowRef(50);
         data-parity-target="progress-vertical"
         direction="vertical"
         :motion="false"
-        :percent="65"
+        :percent="reviewPercent ?? 65"
         show-info
-        size="large"
+        :size="reviewSize ?? 'large'"
       />
     </div>
     <div class="progress-scenario__circles">
@@ -50,7 +67,8 @@ const motionPercent = shallowRef(50);
         aria-label="Circular progress"
         data-parity-target="progress-circle-default"
         :motion="false"
-        :percent="65"
+        :percent="reviewPercent ?? 65"
+        :size="reviewSize ?? 'default'"
         show-info
         type="circle"
       />
@@ -59,7 +77,8 @@ const motionPercent = shallowRef(50);
         data-parity-target="progress-circle-gradient"
         :format="(percent) => `${percent}‰`"
         :motion="false"
-        :percent="51"
+        :percent="reviewPercent ?? 51"
+        :size="reviewSize ?? 'default'"
         show-info
         :stroke="gradientStroke"
         stroke-gradient
@@ -72,9 +91,9 @@ const motionPercent = shallowRef(50);
         aria-label="Small progress"
         data-parity-target="progress-circle-small"
         :motion="false"
-        :percent="30"
+        :percent="reviewPercent ?? 30"
         show-info
-        size="small"
+        :size="reviewSize ?? 'small'"
         type="circle"
       />
     </div>

@@ -1,11 +1,39 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
 import { ConfigProvider, type SemiLocale } from '@aifuxi/semi-ui-vue/config-provider';
-import { Tree, type TreeNodeData, type TreeValue } from '@aifuxi/semi-ui-vue/tree';
+import { Tree, type TreeNodeData, type TreeProps, type TreeValue } from '@aifuxi/semi-ui-vue/tree';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>();
 const status = shallowRef('等待操作');
+/** 专项 query 只替换首棵树，默认场景的四种用法不变。 */
+const reviewTree = new URLSearchParams(window.location.search).get('reviewTree');
+/** 八十个实际节点覆盖虚拟窗口首部、中部及底部。 */
+const virtualData: TreeNodeData[] = Array.from(
+  { length: 80 },
+  /** 行序号用于确认滚动后确实切换了可见节点。 */
+  (_, index) => ({
+    key: `virtual-${index}`,
+    value: index,
+    label: `节点 ${String(index + 1).padStart(2, '0')}`,
+  }),
+);
+/** 未完成的公开 loadData Promise 保持 loading，避免靠时间制造瞬态截图。 */
+const reviewProps: TreeProps =
+  reviewTree === 'drag'
+    ? { draggable: true }
+    : reviewTree === 'loading'
+      ? {
+          /** 本地专项状态只观察加载指示器，不代表远端接口联调。 */
+          loadData: () =>
+            new Promise<void>(
+              /** 保持 pending，供两端在相同加载态审查。 */
+              () => undefined,
+            ),
+        }
+      : reviewTree === 'virtual'
+        ? { virtualize: { itemSize: 28, height: 180, width: 360 } }
+        : {};
 const treeData: TreeNodeData[] = [
   {
     label: '亚洲',
@@ -38,10 +66,17 @@ const localeMap: Record<ParityLocale, SemiLocale> = {
       <div class="tree-scenario__section">
         <span class="tree-scenario__label">基础 / 禁用</span>
         <Tree
+          v-bind="reviewProps"
           data-parity-target="tree-basic"
-          default-expand-all
+          :default-expand-all="reviewTree !== 'loading'"
           default-value="Beijing"
-          :tree-data="treeData"
+          :tree-data="
+            reviewTree === 'virtual'
+              ? virtualData
+              : reviewTree === 'loading'
+                ? [{ key: 'async', value: 'async', label: '异步节点', isLeaf: false }]
+                : treeData
+          "
           @change="(value: TreeValue | undefined) => (status = `选择：${String(value)}`)"
         />
       </div>

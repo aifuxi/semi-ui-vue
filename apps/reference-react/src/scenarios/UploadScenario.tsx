@@ -1,6 +1,10 @@
 import React from 'react';
 import Button from '@semi-v2.102.0/button';
 import Upload from '@semi-v2.102.0/upload';
+import {
+  readInputReviewProps,
+  readUploadReviewFiles,
+} from '../../../../packages/test-infra/src/input-theme-review';
 
 const files = [
   { uid: 'guide', name: 'product-guide.pdf', size: '1.2MB', status: 'success' },
@@ -19,12 +23,17 @@ const pictureFiles = [
 ];
 
 export function UploadScenario(): React.ReactElement {
+  /** 禁用与文件卡状态均通过固定组件公开 API 提供，默认文件不变。 */
+  const reviewProps = readInputReviewProps(['disabled', 'validateStatus']);
+  /** 扩展文件不包含 File 实例，不会产生真实上传请求。 */
+  const reviewFiles = readUploadReviewFiles() ?? files;
   return (
     <div className="upload-scenario" data-testid="upload-reference">
       <Upload
+        {...reviewProps}
         action="/upload"
         data-parity-target="upload-list-root"
-        defaultFileList={files}
+        defaultFileList={reviewFiles}
         prompt="PDF or PNG, up to 5 MB"
       >
         <Button>选择文件</Button>

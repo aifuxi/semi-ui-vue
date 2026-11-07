@@ -9,11 +9,17 @@ const centerData = [
 
 export function TimelineScenario(): React.ReactElement {
   const [lastAction, setLastAction] = useState('暂无操作');
+  /** 与 Vue 端相同 query 补充右对齐及交错模式。 */
+  const requestedMode = new URLSearchParams(window.location.search).get('reviewMode');
+  /** 缺省 left 与默认场景相同。 */
+  const reviewMode =
+    requestedMode === 'right' || requestedMode === 'alternate' ? requestedMode : 'left';
 
   return (
     <div className="timeline-scenario" data-testid="timeline-reference">
       <Timeline
         aria-label="处理进度"
+        mode={reviewMode}
         data-parity-target="timeline-basic"
         className="timeline-scenario__column"
       >

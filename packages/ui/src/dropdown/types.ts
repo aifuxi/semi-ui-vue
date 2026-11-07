@@ -93,6 +93,7 @@ export type DropdownMenuItem =
 
 export interface DropdownProps extends Omit<
   TooltipProps,
+  | 'autoAdjustOverflow'
   | 'class'
   | 'content'
   | 'mouseLeaveDelay'
@@ -107,6 +108,8 @@ export interface DropdownProps extends Omit<
   | 'visible'
   | 'wrapperClassName'
 > {
+  /** undefined 与未提供均沿用全局覆盖或 Tooltip 的防溢出默认值。 */
+  autoAdjustOverflow?: boolean | undefined;
   class?: HTMLAttributes['class'];
   contentClassName?: HTMLAttributes['class'];
   menu?: readonly DropdownMenuItem[];

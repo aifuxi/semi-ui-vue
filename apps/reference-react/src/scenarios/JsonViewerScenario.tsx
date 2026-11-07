@@ -28,6 +28,8 @@ export function JsonViewerScenario({
   direction: ParityDirection;
   locale: ParityLocale;
 }): React.ReactElement {
+  /** 和 Vue 使用同一非法 JSON，直接观察固定解析器的错误提示。 */
+  const reviewError = new URLSearchParams(window.location.search).get('reviewError') === '1';
   return (
     <ConfigProvider direction={direction} locale={localeMap[locale]}>
       <div className="json-viewer-scenario" data-testid="json-viewer-reference">
@@ -35,7 +37,7 @@ export function JsonViewerScenario({
           <h3>Editable / search</h3>
           <JsonViewer
             data-parity-target="json-viewer-main"
-            value={value}
+            value={reviewError ? '{\n  "broken": }' : value}
             width={640}
             height={300}
             options={{ readOnly: false, autoWrap: true }}

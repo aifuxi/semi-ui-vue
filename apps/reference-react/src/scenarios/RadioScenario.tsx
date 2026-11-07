@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import Radio from '@semi-v2.102.0/radio';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 export function RadioScenario(): React.ReactElement {
+  /** 按钮组使用自身 buttonSize API，未提供 query 时仍为原来的 large。 */
+  const reviewProps = readInputReviewProps(['size']);
+  /** RadioGroup 的中档名称是 middle，与常规输入框 default 等价。 */
+  const reviewButtonSize =
+    reviewProps.size === 'default' ? 'middle' : (reviewProps.size ?? 'large');
   const [lastValue, setLastValue] = useState('none');
   const Group = Radio.Group;
 
@@ -48,7 +54,7 @@ export function RadioScenario(): React.ReactElement {
         />
         <Group
           type="button"
-          buttonSize="large"
+          buttonSize={reviewButtonSize}
           defaultValue="即时推送"
           name="radio-button"
           aria-label="按钮单选框组"

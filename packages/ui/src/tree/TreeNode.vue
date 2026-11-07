@@ -12,6 +12,7 @@ import {
 import { IconFile, IconFolder, IconFolderOpen, IconTreeTriangleDown } from '@aifuxi/semi-icons-vue';
 
 import { Checkbox } from '../checkbox';
+import { Spin } from '../spin';
 import TreeNodeRenderer from './TreeNodeRenderer';
 import type {
   TreeExpandAction,
@@ -220,20 +221,11 @@ function handleDrag(
   else props.onDrop(event, payload);
 }
 
+/** 展开、叶子占位和异步加载均沿用固定 TreeNode 的图标及空间约定。 */
 const defaultExpandIcon = computed<VNodeChild>(() => {
   if (props.loading) {
-    return h('span', { class: 'semi-tree-option-spin-icon', 'aria-label': 'loading' }, [
-      h('svg', { class: 'semi-icon semi-spin-icon', viewBox: '0 0 16 16', 'aria-hidden': 'true' }, [
-        h('circle', {
-          cx: 8,
-          cy: 8,
-          r: 6,
-          fill: 'none',
-          stroke: 'currentColor',
-          'stroke-width': 2,
-        }),
-      ]),
-    ]);
+    // 固定 treeNode 使用真实 Spin；自画圆圈缺失渐变/旋转，且占位宽度导致标签左移。
+    return h(Spin, { wrapperClassName: 'semi-tree-option-spin-icon' });
   }
   if (leaf.value) {
     return props.showLine
@@ -242,13 +234,16 @@ const defaultExpandIcon = computed<VNodeChild>(() => {
         ])
       : h('span', { class: 'semi-tree-option-empty-icon' });
   }
+  /** 自定义展开图标获得真实展开状态与相同点击处理器。 */
   const iconProps: TreeExpandIconSlotProps = {
     className: 'semi-tree-option-expand-icon',
     expanded: props.expanded,
     onClick: handleExpand,
   };
+  /** 公开 prop 可为节点或渲染函数，保留其优先级。 */
   const expandIcon = props.expandIcon as
     VNodeChild | ((props: TreeExpandIconSlotProps) => VNodeChild) | undefined;
+  /** 插槽优先，缺省才渲染固定小号三角图标。 */
   const custom =
     props.renderExpandIcon?.(iconProps) ??
     (typeof expandIcon === 'function' ? expandIcon(iconProps) : expandIcon);

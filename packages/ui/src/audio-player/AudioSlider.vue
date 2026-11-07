@@ -44,8 +44,14 @@ const progress = computed(() => {
   return Math.min(Math.max(props.value / props.max, 0), 1);
 });
 const popupStyle = computed(() => ({
-  [props.vertical ? 'top' : 'left']: state.movingInfo?.offset,
+  [props.vertical ? 'top' : 'left']:
+    state.movingInfo === null ? undefined : `${state.movingInfo.offset}px`,
 }));
+
+// Vue 原生 style 的数值尺寸需要显式单位；垂直音量轨道依赖公开 height。
+function cssLength(value: number | string): string {
+  return typeof value === 'number' ? `${value}px` : value;
+}
 
 function handleMouseEvent(event: MouseEvent, shouldSetValue = true): void {
   if (!sliderRef.value || props.disabled) return;
@@ -113,8 +119,8 @@ function handleMouseLeave(): void {
             : 'semi-audio-player-slider-horizontal',
         ]"
         :style="{
-          width: props.vertical ? (state.isHovering ? 8 : 4) : props.width,
-          height: props.vertical ? props.height : state.isHovering ? 8 : 4,
+          width: cssLength(props.vertical ? (state.isHovering ? 8 : 4) : props.width),
+          height: cssLength(props.vertical ? props.height : state.isHovering ? 8 : 4),
         }"
       >
         <div

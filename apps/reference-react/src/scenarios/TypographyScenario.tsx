@@ -6,6 +6,8 @@ const { Numeral, Paragraph, Text, Title } = Typography;
 export function TypographyScenario(): React.ReactElement {
   const query = new URLSearchParams(typeof window === 'undefined' ? '' : window.location.search);
   const tipMode = query.get('typographyTip');
+  /** 与 Vue 使用相同公开 props 显示额外排版维度。 */
+  const review = query.has('reviewTypography');
   const [wide, setWide] = useState(false);
   const [textMounted, setTextMounted] = useState(true);
   const tipOptions = tipMode
@@ -19,6 +21,35 @@ export function TypographyScenario(): React.ReactElement {
     : true;
   return (
     <div className="typography-scenario" data-testid="typography-reference">
+      {review ? (
+        <section className="typography-scenario__section" aria-label="完整排版审查">
+          {([1, 2, 3, 4, 5, 6] as const).map((heading) => (
+            <Title key={heading} heading={heading} style={{ margin: 0 }}>
+              Heading {heading} 标题
+            </Title>
+          ))}
+          {(['light', 'regular', 'medium', 'semibold', 'bold'] as const).map((weight) => (
+            <Title key={weight} heading={6} weight={weight} style={{ margin: 0 }}>
+              {weight} 字重
+            </Title>
+          ))}
+          <Text size="small">Small 小号文本</Text>
+          <Text size="normal">Normal 正常文本</Text>
+          <div style={{ fontSize: 20, lineHeight: '32px' }}>
+            <Text size="inherit">Inherit 继承文本</Text>
+          </div>
+          <Text mark>Mark 标记</Text>
+          <Text code>Code 代码</Text>
+          <Text strong>Strong 加粗</Text>
+          <Text underline>Underline 下划线</Text>
+          <Text delete>Delete 删除线</Text>
+          <Text disabled>Disabled 禁用</Text>
+          <Paragraph ellipsis={{ rows: 2, expandable: true }} style={{ width: 260 }}>
+            这是一段用于检查两行省略和展开状态的长文本。Typography provides readable rhythm and
+            consistent hierarchy across product content. 展开后应显示完整内容。
+          </Paragraph>
+        </section>
+      ) : null}
       <section className="typography-scenario__section" aria-label="标题层级">
         <Title heading={2} style={{ margin: '0px' }} data-parity-target="typography-title">
           Typography 版式

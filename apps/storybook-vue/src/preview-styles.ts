@@ -23,7 +23,6 @@ import 'virtual:workspace-user-guide-styles.css';
 import 'virtual:workspace-json-viewer-styles.css';
 import 'virtual:workspace-ai-chat-input-styles.css';
 import 'virtual:workspace-ai-chat-dialogue-styles.css';
-import 'virtual:workspace-sidebar-styles.css';
 import 'virtual:workspace-collapsible-styles.css';
 import 'virtual:workspace-color-picker-styles.css';
 import 'virtual:workspace-date-picker-styles.css';
@@ -52,6 +51,8 @@ import 'virtual:workspace-back-top-styles.css';
 import 'virtual:workspace-breadcrumb-styles.css';
 import 'virtual:workspace-auto-complete-styles.css';
 import 'virtual:workspace-button-styles.css';
+// Button 同时支持 icon/loading；只载入 button.scss 会遗漏 16px 图标和对应间距。
+import 'virtual:workspace-icon-button-styles.css';
 import 'virtual:workspace-checkbox-styles.css';
 import 'virtual:workspace-config-provider-styles.css';
 import 'virtual:workspace-divider-styles.css';
@@ -79,6 +80,8 @@ import 'virtual:workspace-time-picker-styles.css';
 import 'virtual:workspace-tooltip-styles.css';
 import 'virtual:workspace-transfer-styles.css';
 import 'virtual:workspace-upload-styles.css';
+// Sidebar 工具栏覆盖 Button/Input 等基础控件，依赖须先加载，保留固定基线的级联优先级。
+import 'virtual:workspace-sidebar-styles.css';
 import 'virtual:workspace-navigation-styles.css';
 import 'virtual:workspace-typography-styles.css';
 import 'virtual:workspace-chat-styles.css';

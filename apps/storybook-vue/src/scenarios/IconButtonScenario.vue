@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
 import { IconButton } from '@aifuxi/semi-ui-vue/icon-button';
+import { buttonReview } from '../../../../packages/test-infra/src/root-theme-review';
+
+/** 通过公开 size/theme/state 补齐既有图标与文本组合的审查。 */
+const review = buttonReview(window.location.search);
 
 const lastAction = shallowRef('尚未触发');
 
@@ -13,6 +17,7 @@ function normalizeFill(fill: string | readonly string[] | undefined): string | u
   <div class="icon-button-scenario" data-testid="icon-button-vue">
     <div class="icon-button-scenario__row">
       <IconButton
+        v-bind="review"
         aria-label="收藏"
         data-parity-target="icon-button-default"
         @click="lastAction = '收藏'"

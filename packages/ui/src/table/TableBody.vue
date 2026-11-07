@@ -104,10 +104,9 @@ function checkboxProps(row: FlatTableRecord<Record<string, unknown>>) {
   return (props.rowSelection && props.rowSelection.getCheckboxProps?.(row.record)) || {};
 }
 
+/** 固定 Semi 的行 Checkbox 只消费 getCheckboxProps；全选 disabled 不扩散到行。 */
 function rowDisabled(row: FlatTableRecord<Record<string, unknown>>): boolean {
-  return Boolean(
-    props.rowSelection && (props.rowSelection.disabled || checkboxProps(row).disabled),
-  );
+  return Boolean(checkboxProps(row).disabled);
 }
 
 function rowCustom(row: FlatTableRecord<Record<string, unknown>>): TableRowAttributes {
@@ -269,9 +268,15 @@ function selectionNode(row: FlatTableRecord<Record<string, unknown>>): VNodeChil
   );
 }
 
+/** 行点击选择另外尊重 rowSelection.disabled，保持与固定 Semi 的独立禁用边界一致。 */
 function handleRowClick(row: FlatTableRecord<Record<string, unknown>>, event: MouseEvent): void {
   rowCustom(row).onClick?.(event);
-  if (props.rowSelection && props.rowSelection.clickRow && !rowDisabled(row)) {
+  if (
+    props.rowSelection &&
+    props.rowSelection.clickRow &&
+    !props.rowSelection.disabled &&
+    !rowDisabled(row)
+  ) {
     emit('select', row, !props.selectedKeys.has(row.key), event);
   }
   if (props.rowSelection && props.rowSelection.clickRow) return;

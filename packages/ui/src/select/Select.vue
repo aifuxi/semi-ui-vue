@@ -28,6 +28,7 @@ import {
 } from 'vue';
 
 import { configContextKey, semiGlobal, type ConfigContextValue } from '../config-provider';
+import { Spin } from '../spin';
 import Tooltip from '../tooltip/Tooltip.vue';
 import SelectNodeRenderer from './SelectNodeRenderer';
 import SelectOptionCollector from './SelectOptionCollector';
@@ -620,9 +621,7 @@ defineExpose<SelectExposed>({
             <slot name="innerTop" />
           </div>
           <div v-if="runtimeProps.loading" class="semi-select-loading-wrapper">
-            <span class="semi-spin semi-spin-middle"
-              ><span class="semi-spin-wrapper"><span class="semi-spin-spinIcon" /></span
-            ></span>
+            <Spin size="middle" />
           </div>
           <template v-else-if="visibleOptions.length">
             <div

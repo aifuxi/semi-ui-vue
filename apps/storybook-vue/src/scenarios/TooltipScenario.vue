@@ -6,7 +6,12 @@ import { Tooltip, type TooltipPosition } from '@aifuxi/semi-ui-vue/tooltip';
 const host = ref<HTMLElement | null>(null);
 const clickVisible = shallowRef(false);
 const lastChange = shallowRef('none');
+/** 补齐十二方位以及无箭头审查，默认四方位不变。 */
+const reviewQuery = new URLSearchParams(window.location.search);
+const reviewPosition = reviewQuery.get('reviewTooltipPosition') as TooltipPosition | null;
+const showArrow = !reviewQuery.has('reviewTooltipNoArrow');
 const placements: Array<{ position: TooltipPosition; label: string }> = [
+  ...(reviewPosition ? [{ position: reviewPosition, label: reviewPosition }] : []),
   { position: 'top', label: 'Top' },
   { position: 'right', label: 'Right' },
   { position: 'bottom', label: 'Bottom' },
@@ -29,13 +34,14 @@ function handleClickVisibleChange(visible: boolean): void {
       <h3>固定方位</h3>
       <div class="tooltip-scenario__placements">
         <Tooltip
-          v-for="item in placements"
+          v-for="item in reviewPosition ? placements.slice(0, 1) : placements"
           :key="item.position"
           :class="`tooltip-target-${item.position}`"
           :content="`${item.label} 提示`"
           :get-popup-container="getPopupContainer"
           :motion="false"
           :position="item.position"
+          :show-arrow="showArrow"
           trigger="custom"
           :visible="true"
           :wrapper-id="`tooltip-${item.position}`"
@@ -52,6 +58,7 @@ function handleClickVisibleChange(visible: boolean): void {
       <div class="tooltip-scenario__actions">
         <Tooltip
           content="Hover 提示"
+          :trigger="reviewQuery.has('reviewTooltipFocus') ? 'focus' : 'hover'"
           :get-popup-container="getPopupContainer"
           :motion="false"
           wrapper-id="tooltip-hover"

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
 import { Button, type ButtonType } from '@aifuxi/semi-ui-vue/button';
+import { buttonReview } from '../../../../packages/test-infra/src/root-theme-review';
+
+/** 仅显式审查 query 会覆盖按钮 props，既有默认对照保持原样。 */
+const review = buttonReview(window.location.search);
 
 const BUTTON_TYPES: readonly { type: ButtonType; label: string }[] = [
   { type: 'primary', label: '主要按钮' },
@@ -20,6 +24,7 @@ const lastAction = shallowRef('尚未触发');
         v-for="item in BUTTON_TYPES"
         :key="item.type"
         :type="item.type"
+        v-bind="review"
         :data-parity-target="`button-${item.type}`"
         @click="lastAction = item.label"
       >

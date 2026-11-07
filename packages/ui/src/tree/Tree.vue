@@ -103,6 +103,16 @@ const slots = useSlots();
 const instance = getCurrentInstance();
 const inputRef = useTemplateRef<InputExposed>('input');
 const virtualListRef = useTemplateRef<HTMLElement>('virtualList');
+/** 固定 AutoSizer 保留默认高度的包装层，并观察其父列表的可用高度。 */
+const virtualWrapperRef = useTemplateRef<HTMLElement>('virtualWrapper');
+/** 父列表测量完成后覆盖初始 virtualize.height，与固定 AutoSizer 一致。 */
+const measuredVirtualHeight = shallowRef<number>();
+/** 原生 Vue style 不为长度数值补单位；包装层须保留 React 默认高度的 CSS 语义。 */
+const virtualWrapperHeight = computed(() => {
+  /** 百分比或其他 CSS 长度字符串原样透传，数值明确转换成 px。 */
+  const height = props.virtualize?.height ?? '100%';
+  return typeof height === 'number' ? `${height}px` : height;
+});
 const injectedConfig = inject(configContextKey, undefined);
 const config = computed<ConfigContextValue>(
   () =>
@@ -584,7 +594,10 @@ const renderedNodeList = computed<VNodeChild>(() =>
 );
 
 const itemSize = computed(() => props.virtualize?.itemSize ?? 32);
-const virtualHeight = computed(() => props.virtualize?.height ?? '100%');
+/** 初始高度来自公开配置，后续使用父列表扣除垂直 padding 的测量值。 */
+const virtualHeight = computed(
+  () => measuredVirtualHeight.value ?? props.virtualize?.height ?? '100%',
+);
 const virtualWidth = computed(() => props.virtualize?.width ?? '100%');
 const numericHeight = computed(() =>
   typeof virtualHeight.value === 'number' ? virtualHeight.value : 240,
@@ -695,6 +708,27 @@ watch(
     }),
 );
 
+/** 同时观察包装层和父列表，复用固定 AutoSizer 的父容器测高边界。 */
+watch(virtualWrapperRef, (wrapper, _previous, onCleanup) => {
+  measuredVirtualHeight.value = undefined;
+  if (!wrapper || typeof ResizeObserver === 'undefined') return;
+  /** ResizeObserver 的第二个条目来自父列表，和固定包装层的观察顺序一致。 */
+  const observer = new ResizeObserver((entries) => {
+    /** 不用 viewport 自身反推高度，避免滚动内容影响父容器测量。 */
+    const parent = entries[1]?.target;
+    if (!(parent instanceof HTMLElement)) return;
+    /** 固定基线使用 offsetHeight，保留边框参与测量的原语义。 */
+    const style = getComputedStyle(parent);
+    measuredVirtualHeight.value =
+      parent.offsetHeight -
+      (Number.parseInt(style.paddingTop, 10) || 0) -
+      (Number.parseInt(style.paddingBottom, 10) || 0);
+  });
+  observer.observe(wrapper);
+  if (wrapper.parentElement) observer.observe(wrapper.parentElement);
+  onCleanup(() => observer.disconnect());
+});
+
 onBeforeUnmount(() => foundation.destroy());
 </script>
 
@@ -752,44 +786,52 @@ onBeforeUnmount(() => foundation.destroy());
       </template>
       <div
         v-else
-        ref="virtualList"
-        class="semi-tree-virtual-list"
-        :style="{
-          direction: config.direction,
-          height: typeof virtualHeight === 'number' ? `${virtualHeight}px` : virtualHeight,
-          width: typeof virtualWidth === 'number' ? `${virtualWidth}px` : virtualWidth,
-          overflow: 'auto',
-          position: 'relative',
-        }"
-        @scroll="handleVirtualScroll"
+        ref="virtualWrapper"
+        class="semi-tree-auto-wrapper"
+        :style="{ height: virtualWrapperHeight, overflow: 'visible' }"
       >
-        <div :style="{ height: `${state.flattenNodes.length * itemSize}px`, position: 'relative' }">
-          <TreeNode
-            v-for="(node, index) in visibleNodes"
-            :key="String(node.key)"
-            v-bind="normalizedNode(node) ?? {}"
-            :data="node.data"
-            :event-key="String(node.key)"
-            :icon="resolvedIcon"
-            :style="virtualNodeStyle(index)"
-            :render-expand-icon="slots.expandIcon ? renderExpandIcon : undefined"
-            :render-full-label="
-              slots.fullLabel || props.renderFullLabel ? renderFullLabel : undefined
-            "
-            :render-icon="slots.icon ? renderIcon : undefined"
-            :render-label="slots.label || props.renderLabel ? renderLabel : undefined"
-            @check="handleNodeCheck"
-            @context-menu="handleNodeContextMenu"
-            @double-click="handleNodeDoubleClick"
-            @drag-end="handleNodeDragEnd"
-            @drag-enter="handleNodeDragEnter"
-            @drag-leave="handleNodeDragLeave"
-            @drag-over="handleNodeDragOver"
-            @drag-start="handleNodeDragStart"
-            @drop="handleNodeDrop"
-            @expand="handleNodeExpand"
-            @select="handleNodeSelect"
-          />
+        <div
+          ref="virtualList"
+          class="semi-tree-virtual-list"
+          :style="{
+            direction: config.direction,
+            height: typeof virtualHeight === 'number' ? `${virtualHeight}px` : virtualHeight,
+            width: typeof virtualWidth === 'number' ? `${virtualWidth}px` : virtualWidth,
+            overflow: 'auto',
+            position: 'relative',
+          }"
+          @scroll="handleVirtualScroll"
+        >
+          <div
+            :style="{ height: `${state.flattenNodes.length * itemSize}px`, position: 'relative' }"
+          >
+            <TreeNode
+              v-for="(node, index) in visibleNodes"
+              :key="String(node.key)"
+              v-bind="normalizedNode(node) ?? {}"
+              :data="node.data"
+              :event-key="String(node.key)"
+              :icon="resolvedIcon"
+              :style="virtualNodeStyle(index)"
+              :render-expand-icon="slots.expandIcon ? renderExpandIcon : undefined"
+              :render-full-label="
+                slots.fullLabel || props.renderFullLabel ? renderFullLabel : undefined
+              "
+              :render-icon="slots.icon ? renderIcon : undefined"
+              :render-label="slots.label || props.renderLabel ? renderLabel : undefined"
+              @check="handleNodeCheck"
+              @context-menu="handleNodeContextMenu"
+              @double-click="handleNodeDoubleClick"
+              @drag-end="handleNodeDragEnd"
+              @drag-enter="handleNodeDragEnter"
+              @drag-leave="handleNodeDragLeave"
+              @drag-over="handleNodeDragOver"
+              @drag-start="handleNodeDragStart"
+              @drop="handleNodeDrop"
+              @expand="handleNodeExpand"
+              @select="handleNodeSelect"
+            />
+          </div>
         </div>
       </div>
     </div>

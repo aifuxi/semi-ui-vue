@@ -1,6 +1,18 @@
 <script setup lang="ts">
 import { Input, InputGroup, TextArea } from '@aifuxi/semi-ui-vue/input';
 import { shallowRef } from 'vue';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
+
+/** 与 React 同一 query 进入真实公开 props；默认示例保持不变。 */
+const reviewProps = readInputReviewProps(['size', 'disabled', 'readOnly', 'validateStatus']);
+/** TextArea 使用 readonly，且缺省 query 不传入显式 undefined。 */
+const textareaReviewProps = {
+  ...(reviewProps.disabled === undefined ? {} : { disabled: reviewProps.disabled }),
+  ...(reviewProps.readOnly === undefined ? {} : { readonly: reviewProps.readOnly }),
+  ...(reviewProps.validateStatus === undefined
+    ? {}
+    : { validateStatus: reviewProps.validateStatus }),
+};
 
 const lastValue = shallowRef('none');
 
@@ -19,6 +31,7 @@ function textareaChanged(value: string): void {
       <h3>基础输入框</h3>
       <div class="input-scenario__grid">
         <Input
+          v-bind="reviewProps"
           default-value="hi"
           class-name="input-target-basic"
           aria-label="基本输入框"
@@ -92,6 +105,7 @@ function textareaChanged(value: string): void {
       </InputGroup>
       <div class="input-scenario__textareas">
         <TextArea
+          v-bind="textareaReviewProps"
           :default-value="'Semi Design\nVue parity'"
           class-name="input-target-textarea-counter"
           show-counter

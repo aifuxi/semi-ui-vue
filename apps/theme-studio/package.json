@@ -1,0 +1,27 @@
+{
+  "name": "@workspace/theme-studio",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare:packages": "pnpm -w build:public-js && pnpm --filter @aifuxi/semi-theme-default build",
+    "dev": "vite --host 127.0.0.1 --port 4322 --strictPort",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4322 --strictPort",
+    "typecheck": "vue-tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@aifuxi/semi-icons-vue": "workspace:*",
+    "@aifuxi/semi-theme-default": "workspace:*",
+    "@aifuxi/semi-ui-vue": "workspace:*",
+    "@fontsource-variable/jetbrains-mono": "5.3.0",
+    "@fontsource-variable/space-grotesk": "5.3.0",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "6.0.8",
+    "vite": "8.2.4",
+    "vue-tsc": "3.3.11"
+  }
+}

@@ -75,6 +75,16 @@
 
 没有 accepted visual/behavior deviation。React children、ReactNode 和 ref 分别迁移为默认/命名 slot、VNodeChild 与 template ref；`renderTooltip` 迁移为 scoped slot，属于框架原生 API 映射。
 
+## R-000072：公开 CSS 排版主题
+
+在固定默认排版之外，新增字体、字号、字重和行高的 CSS 主题覆盖，完整变量和作用域契约见[主题包说明](../../../packages/theme-default/README.md#css-排版主题)。这是 Vue 版的公开主题增强，不改变默认字号/行高、标题命名字重或数值型 weight 的含义。普通 Text 仍保留原有字重继承，Input/Select 的尺寸对齐规则不由 Typography 正文行高控制。
+
+省略测量按实际 strong 节点的计算字重执行，替代固定 600。开启省略时共享观察主题祖先属性、样式表与字体加载事件；CSS 变量改变但容器尺寸不变时也会重新测量。根节点替换、运行时切换 ellipsis 和卸载会重建或释放订阅，纯排版变化保留用户展开状态。默认 Portal 沿用源局部主题，显式容器使用实际容器主题。
+
+验收（2026-11-07）：受影响的主题、组件、SSR 与 hydration 共 30 文件 211 项测试通过；真实 tarball consumer 全部 18 项通过，其中新增排版专项 7 项。公开包构建、83 个主题入口、SSR import、exports/类型/tree-shaking、源码边界和类型检查通过。原生 Sass 独立编译对照确认全量默认 CSS 原有声明保持一致。
+
+代表组件 Chromium 回归共 47 项，40 项通过；Button 4 项、Modal 3 项未通过。在未修改的 `c8283848` HEAD 隔离副本中，同样 7 项失败且错误与像素差值一致，属于既有问题，未改旧快照或放宽断言。本次不将该结果记为全套浏览器回归通过，稳定发布前须处理的项目见[发布审计](../../release-audit-1.0.md)。
+
 ## 公开入口证据
 
 - `./typography` 子路径公开入口提供 default `Typography`、named `Typography`、`Text`、`Title`、`Paragraph`、`Numeral`、常量与类型；单元与 SSR 均从公开入口导入。

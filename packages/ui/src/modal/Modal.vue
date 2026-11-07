@@ -26,6 +26,7 @@ import { configContextKey, DEFAULT_CONFIG_LOCALE, semiGlobal } from '../config-p
 import ModalDefaultFooter from './ModalDefaultFooter.vue';
 import ModalDialog, { type ModalDialogExposed } from './ModalDialog.vue';
 import type { ModalActionHandler, ModalEmits, ModalLocale, ModalProps, ModalSlots } from './types';
+import { usePortalThemeScope } from '../_utils/theme-scope';
 
 defineOptions({ name: 'Modal', inheritAttrs: false });
 const props = defineProps<ModalProps>();
@@ -37,6 +38,8 @@ const instance = getCurrentInstance();
 const injectedConfig = inject(configContextKey, undefined);
 const dialog = useTemplateRef<ModalDialogExposed>('dialog');
 const teleportTarget = shallowRef<HTMLElement | null>(null);
+/** 仅用于默认 body Portal 的排版主题镜像，不改变公开 Modal DOM。 */
+const themePortal = shallowRef<HTMLElement | null>(null);
 const mounted = shallowRef(false);
 const haveRendered = shallowRef(false);
 const contentAnimating = shallowRef(true);
@@ -165,6 +168,15 @@ const popupGetter = computed(() => {
   if (explicit) return explicit;
   return config.value?.getPopupContainer;
 });
+usePortalThemeScope(
+  /** Teleport 起始注释保留在声明位置，可据此找到局部主题祖先。 */
+  () => instance?.vnode.el?.parentElement ?? null,
+  /** 模板宿主存在时才创建镜像订阅。 */
+  () => themePortal.value,
+  /** 显式容器保留自己的级联，命令式 Modal 没有局部源时沿用全局主题。 */
+  () =>
+    !popupGetter.value && typeof document !== 'undefined' && teleportTarget.value === document.body,
+);
 const customContainer = computed(
   () => typeof document !== 'undefined' && teleportTarget.value !== document.body,
 );
@@ -321,6 +333,7 @@ onBeforeUnmount(() => {
 <template>
   <Teleport v-if="shouldRender" :to="teleportTarget ?? 'body'" :disabled="teleportTarget === null">
     <div
+      ref="themePortal"
       class="semi-portal"
       :class="{ 'semi-portal-rtl': direction === 'rtl' }"
       :style="portalStyle"

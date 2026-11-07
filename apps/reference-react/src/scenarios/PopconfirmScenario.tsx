@@ -10,6 +10,7 @@ export function PopconfirmScenario({
 }: {
   direction: ParityDirection;
 }): React.ReactElement {
+  const loading = new URLSearchParams(window.location.search).get('popconfirmLoading') === 'true';
   const host = useRef<HTMLDivElement>(null);
   const [defaultVisible, setDefaultVisible] = useState(true);
   const getPopupContainer = () => host.current ?? document.body;
@@ -19,6 +20,7 @@ export function PopconfirmScenario({
       <div ref={host} className="popconfirm-scenario" data-testid="popconfirm-reference">
         <div className="popconfirm-scenario__triggers">
           <Popconfirm
+            okButtonProps={{ loading }}
             className="popconfirm-scenario__default"
             content="This change cannot be undone."
             getPopupContainer={getPopupContainer}
@@ -32,6 +34,7 @@ export function PopconfirmScenario({
             <Button data-parity-target="popconfirm-trigger-default">Default</Button>
           </Popconfirm>
           <Popconfirm
+            okButtonProps={{ loading }}
             cancelText="Back"
             className="popconfirm-scenario__danger"
             content="The selected record will be removed."

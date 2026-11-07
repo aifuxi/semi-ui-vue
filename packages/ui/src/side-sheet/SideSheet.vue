@@ -25,6 +25,7 @@ import {
 import { configContextKey, semiGlobal } from '../config-provider';
 import SideSheetContent from './SideSheetContent.vue';
 import type { SideSheetEmits, SideSheetProps, SideSheetSlots } from './types';
+import { usePortalThemeScope } from '../_utils/theme-scope';
 
 defineOptions({ name: 'SideSheet', inheritAttrs: false });
 const props = defineProps<SideSheetProps>();
@@ -35,6 +36,8 @@ const slots = useSlots();
 const instance = getCurrentInstance();
 const injectedConfig = inject(configContextKey, undefined);
 const teleportTarget = shallowRef<HTMLElement | null>(null);
+/** 默认 body Portal 在此宿主接收声明位置的局部排版主题。 */
+const themePortal = shallowRef<HTMLElement | null>(null);
 // Keep unresolved client Teleport anchors away from other portals without remounting content.
 const pendingTarget = shallowRef<DocumentFragment | null>(null);
 onBeforeMount(() => {
@@ -158,6 +161,15 @@ const foundation = markRaw(new SideSheetFoundation(adapter));
 const config = computed(() => injectedConfig?.value);
 const popupGetter = computed(
   () => resolveOptional('getPopupContainer') ?? config.value?.getPopupContainer,
+);
+usePortalThemeScope(
+  /** 保留在原位置的 Teleport 锚点提供声明作用域。 */
+  () => instance?.vnode.el?.parentElement ?? null,
+  /** 隐藏销毁时模板 ref 归空并自动释放订阅。 */
+  () => themePortal.value,
+  /** 配置过容器时使用实际挂载位置的主题。 */
+  () =>
+    !popupGetter.value && typeof document !== 'undefined' && teleportTarget.value === document.body,
 );
 const customContainer = computed(
   () => typeof document !== 'undefined' && teleportTarget.value !== document.body,
@@ -300,6 +312,7 @@ onBeforeUnmount(() => {
   <Teleport :to="teleportTarget ?? pendingTarget ?? 'body'" :disabled="teleportTarget === null">
     <div
       v-if="shouldRender"
+      ref="themePortal"
       class="semi-portal"
       :class="{ 'semi-portal-rtl': direction === 'rtl' }"
       :style="portalStyle"

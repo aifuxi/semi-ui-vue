@@ -74,7 +74,7 @@
 - React render props 映射为类型化 scoped slots，并保留同名函数 prop；这是框架原生适配。
 - React `RefObject` 上传入口映射为 Vue 内部 template ref，公开方法通过组件 ref 暴露。
 - hint 的 clickable div 改为原生 button，以补足键盘和可访问名称；保留固定 class、视觉和点击 payload。
-- Chat 内部 Markdown 使用与后续公开 `MarkdownRender` 相同的 `markdown-it` 解析内核；`customMarkDownComponents` 在 Vue 中接受标签到 Vue 组件的映射，并可由 `chat-box-content` slot 完全替代。MDX 中的 React JSX 组件实例不能跨框架直接复用。
+- Chat 内部 Markdown 保留 `markdown-it` 安全解析，并复用公开 `MarkdownRender` 的默认 Typography 标签映射；`customMarkDownComponents` 在 Vue 中接受标签到 Vue 组件的映射，并可由 `chat-box-content` slot 完全替代。MDX 中的 React JSX 组件实例不能跨框架直接复用。
 - 固定 React 基线在 `escapeHtml=false` 时允许 Markdown 渲染器解释原始 HTML；Vue 不使用 `v-html`，因此所有消息 HTML 仍显示为文本。该安全 deviation 避免未经清洗的消息执行脚本；可信富内容需经业务层清洗后由 `chat-box-content` slot 渲染。
 
 ## 文档补齐回归（2026-09-08）
@@ -89,3 +89,7 @@
 - 单元/SSR：Chat 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
 - Chromium：`tests/browser/components/chat.spec.ts` 5/5 通过，覆盖固定源码来源、DOM/computed style/几何、hint 受控更新、desktop light/dark 与 en-US RTL 截图。
 - 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、`CHAT_*` 枚举、类型、`chat.css`、tree-shaking、许可与 SBOM。
+
+## 主题视觉复核（2026-11-07）
+
+默认 Markdown 内容复用公开 MarkdownRender 的 Typography 标签映射；段落保持 `.semi-markdownRender-component-p`，字号、段距及 user/error 气泡文字颜色按固定样式继承。组件映射以默认注册表为底，再由 `customMarkDownComponents` 覆盖，现有安全解析与自定义内容渲染入口保留。固定 React 参考必须加载真实 MarkdownRender，禁止将其替换为原始文本 div；独立 `reviewDefaultRender` 场景验证真实 `strong`、段落颜色和气泡尺寸，原自定义 renderer 基线保持不变。light/dark 的默认内容及 complete/loading/incomplete/error 已实际看页面对照；本轮正式浏览器与发布检查由统一生产回归提供。

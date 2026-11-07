@@ -9,8 +9,7 @@ icon: 'doc-darkmode'
 
 大多数情况下，深色模式是浅色模式的补充。默认选用值，更多取决于用户的审美选择或业务场景，用户可以根据自己的需要选择使用哪一个模式。
 
-🤩 Semi 的默认主题或任意通过 [Semi DSM](https://semi.design/dsm) 配置的定制主题都自带了亮色模式与暗色模式，可以方便地进行切换。
-🌒 Semi 也支持在页面的局部范围使用亮/暗色模式。
+Semi UI Vue 的默认主题同时提供亮色与暗色模式，固定对齐 Semi Design `v2.102.0`。独立颜色生成器也会生成深浅两套品牌主题，使用方式及独立主题工作台入口见[定制主题](./customize-theme)。
 
 ## 推荐设置
 
@@ -43,6 +42,20 @@ macOS 下的系统主题可以通过 `系统偏好设置 -> 通用 -> 外观` �
 
 Semi 2.0 原生支持局部暗色/亮色模式。使用时，在顶级元素上添加 `.semi-always-dark` 或 `.semi-always-light` 类，这个类下的组件会使用对应模式的颜色变量。
 
-注意：由于弹出层默认是插入到 body 中，局部暗色/亮色对弹出层元素不生效。若你希望对弹出层也生效，应通过 `ConfigProvider` 的 `getPopupContainer` prop（模板中使用 `:get-popup-container`）把弹出层挂载到带有 `.semi-always-dark` 或 `.semi-always-light` 的元素内部
+仅使用强制模式类而未声明 `data-semi-theme` 时，默认 body 弹层仍按其物理宿主取色，可通过 `ConfigProvider` 的 `getPopupContainer` prop（模板中使用 `:get-popup-container`）选择对应的局部容器。对于带有 `data-semi-theme` 的主题边界，默认声明式弹层会桥接触发源的颜色、排版与模式；显式 `getPopupContainer` 仍优先使用实际容器的主题。
 
 <DemoBlock id="zh-CN-advanced-dark-mode-5" title="局部暗色/亮色模式" kind="code" />
+
+### 生成品牌主题的局部模式
+
+颜色生成器的局部边界同时设置 `data-semi-theme` 与 `theme-mode`，并为深浅模式输出明确的 CSS 选择器。只在普通容器添加 `theme-mode` 不会自动创建局部色盘；默认局部模式使用上面的强制模式类，生成品牌主题则使用与输出 CSS 匹配的模式属性。
+
+```html
+<!-- 此边界需加载匹配的品牌主题 CSS；不会修改 body 或文档站全局模式。 -->
+<section data-semi-theme="brand" theme-mode="dark">
+  <!-- 内部强制浅色使用同一品牌的浅色色盘，排版设置继续继承。 -->
+  <div class="semi-always-light">局部浅色内容</div>
+</section>
+```
+
+嵌套的品牌边界也明确指定模式。模式选择及系统偏好由应用管理，生成器不读取 `prefers-color-scheme`。完整生成方式见[定制主题](./customize-theme)，可切换预览使用[独立主题工作台](./customize-theme#独立主题工作台)。

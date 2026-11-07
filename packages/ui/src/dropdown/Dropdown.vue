@@ -7,6 +7,7 @@ import {
   markRaw,
   nextTick,
   onBeforeUnmount,
+  onBeforeUpdate,
   provide,
   shallowRef,
   useTemplateRef,
@@ -39,6 +40,12 @@ const props = defineProps<DropdownProps>();
 const emit = defineEmits<DropdownEmits>();
 const slots = defineSlots<DropdownSlots>();
 const instance = getCurrentInstance();
+// Vue 会把未传 Boolean 与显式 false 解析为同值；原始参数变化也需要使绑定失效。
+const rawPropsRevision = shallowRef(0);
+// 与项目 SideSheet 的原始参数解析一致，每次父组件更新重新检查参数是否存在。
+onBeforeUpdate(() => {
+  rawPropsRevision.value += 1;
+});
 const parentContext = inject(dropdownContextKey, undefined);
 const tooltipRef = useTemplateRef<TooltipExposed>('tooltip');
 const triggerElement = shallowRef<HTMLElement | null>(null);
@@ -72,10 +79,15 @@ function resolveProp<Key extends keyof DropdownProps>(
   return (globalValue === undefined ? fallback : globalValue) as NonNullable<DropdownProps[Key]>;
 }
 
+/** 按显式非 undefined 值、Dropdown 全局覆盖、下层默认值的顺序解析可选参数。 */
 function resolveOptional<Key extends keyof DropdownProps>(key: Key): DropdownProps[Key] {
-  if (hasRawProp(key)) return props[key] as DropdownProps[Key];
+  void rawPropsRevision.value;
+  // 保留响应式读取，与原始参数版本共同追踪显式值及参数存在性的变化。
+  const currentValue = props[key];
+  if (hasRawProp(key) && currentValue !== undefined) return currentValue as DropdownProps[Key];
+  // 缺省 Boolean 会被 Vue 转为 false，不能将该转换值当作调用者的配置。
   const globalValue = semiGlobal.config.overrideDefaultProps?.Dropdown?.[key];
-  return (globalValue === undefined ? props[key] : globalValue) as DropdownProps[Key];
+  return globalValue as DropdownProps[Key];
 }
 
 const runtimeTrigger = computed(() => resolveProp('trigger', 'hover'));

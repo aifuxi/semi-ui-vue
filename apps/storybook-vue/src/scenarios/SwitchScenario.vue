@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
 import { Switch } from '@aifuxi/semi-ui-vue/switch';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
+/** 未指定审查 query 时保持默认场景。 */
+const reviewProps = readInputReviewProps(['size', 'disabled', 'loading']);
 const controlled = shallowRef(false);
 const lastChange = shallowRef('none');
 
@@ -23,6 +26,7 @@ function handleControlledChange(checked: boolean): void {
         <Switch
           aria-label="默认关闭"
           data-parity-target="switch-default"
+          v-bind="reviewProps"
           @change="handleDefaultChange"
         />
         <Switch default-checked aria-label="默认开启" data-parity-target="switch-checked" />

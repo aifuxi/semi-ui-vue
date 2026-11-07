@@ -15,10 +15,21 @@ const items = [
 ];
 
 export function NavigationScenario(): React.ReactElement {
+  /** 两端通过同一只读查询展示公开模式，默认仍为原来的垂直导航。 */
+  const reviewMode =
+    new URLSearchParams(window.location.search).get('navigationMode') === 'horizontal'
+      ? 'horizontal'
+      : 'vertical';
   return (
-    <div className="navigation-scenario" data-testid="navigation-reference">
+    <div
+      className="navigation-scenario"
+      data-testid="navigation-reference"
+      style={reviewMode === 'horizontal' ? { width: '100%' } : {}}
+    >
       <Navigation
-        bodyStyle={{ height: 224 }}
+        mode={reviewMode}
+        bodyStyle={reviewMode === 'horizontal' ? {} : { height: 224 }}
+        style={reviewMode === 'horizontal' ? { width: '100%' } : {}}
         data-parity-target="navigation-root"
         defaultOpenKeys={['workspace']}
         defaultSelectedKeys={['projects']}

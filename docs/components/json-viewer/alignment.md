@@ -109,3 +109,7 @@ Worker 专属构建同时固定 `common/worker.ts` 为 DedicatedWorker 环境，
 - Chromium：`tests/browser/components/json-viewer.spec.ts` 5/5 通过，覆盖固定源码来源、Worker 搜索/替换、公开 DOM、computed style/几何与 light/dark、RTL 对照截图。
 - 发布：`pnpm check:artifacts` 通过，覆盖构建（含 Worker 入口保留）、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、`json-viewer.css`、tree-shaking、许可与 SBOM。
 - 静态文档：本轮补齐仓库内 [index.md](./index.md)、[index.en-US.md](./index.en-US.md) 与 [react-to-vue.md](./react-to-vue.md)，覆盖 props/events/slots/methods、options/自定义渲染、搜索与替换、可访问性/键盘、主题/RTL/SSR 与 Worker 发布边界；`coverage.md` 保留退役站点的历史映射。
+
+## 主题视觉复核（2026-11-07）
+
+普通搜索输入与 composition end 一样，在核心更新搜索高亮后通过 nextTick 恢复查找输入框焦点，对齐固定 `jsonViewer/index.tsx` 的 onChange 行为。真实 light/dark 页面复核搜索匹配、输入框焦点边框及替换栏；浏览器回归继续输入字符，验证焦点不会被 JSON contenteditable 核心抢走。

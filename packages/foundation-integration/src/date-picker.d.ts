@@ -2,6 +2,89 @@ export type DatePickerBaseValue = string | number | Date;
 export type DatePickerFoundationValue = DatePickerBaseValue | DatePickerBaseValue[];
 export type DatePickerRangeFocus = 'rangeStart' | 'rangeEnd' | false;
 
+export interface YearAndMonthSelection {
+  currentYear: { left: number; right: number };
+  currentMonth: { left: number; right: number };
+}
+export interface YearScrollItem {
+  [key: string]: unknown;
+  value: number;
+  year: number;
+  disabled?: boolean;
+}
+export interface MonthScrollItem {
+  [key: string]: unknown;
+  value: string;
+  month: number;
+  disabled?: boolean;
+}
+export interface YearAndMonthFoundationState extends YearAndMonthSelection {
+  years: YearScrollItem[];
+  months: Array<{ value: number; month: number }>;
+}
+export interface YearAndMonthFoundationProps extends Record<string, unknown> {
+  type: string;
+  disabledDate: (date: Date) => boolean;
+}
+export interface YearAndMonthAdapter extends DefaultAdapter<
+  YearAndMonthFoundationProps,
+  YearAndMonthFoundationState
+> {
+  setCurrentYear(year: YearAndMonthSelection['currentYear'], callback?: () => void): void;
+  setCurrentMonth(month: YearAndMonthSelection['currentMonth']): void;
+  setCurrentYearAndMonth(
+    year: YearAndMonthSelection['currentYear'],
+    month: YearAndMonthSelection['currentMonth'],
+  ): void;
+  notifySelectYear(year: YearAndMonthSelection['currentYear']): void;
+  notifySelectMonth(month: YearAndMonthSelection['currentMonth']): void;
+  notifySelectYearAndMonth(
+    year: YearAndMonthSelection['currentYear'],
+    month: YearAndMonthSelection['currentMonth'],
+  ): void;
+  notifyBackToMain(): void;
+}
+export class YearAndMonthFoundation {
+  constructor(adapter: YearAndMonthAdapter);
+  selectYear(item: YearScrollItem, panelType: 'left' | 'right'): void;
+  selectMonth(item: MonthScrollItem, panelType: 'left' | 'right'): void;
+  init(): void;
+  destroy(): void;
+}
+export function getDatePickerYears(startYear?: number, endYear?: number): number[];
+export function getDatePickerYearAndMonth(
+  year: { left: number; right: number },
+  month: { left: number; right: number },
+): { year: YearAndMonthSelection['currentYear']; month: YearAndMonthSelection['currentMonth'] };
+
+export interface InsetInputValue {
+  monthLeft: { dateInput: string; timeInput: string };
+  monthRight: { dateInput: string; timeInput: string };
+}
+export interface InsetInputChange {
+  insetInputStr: string;
+  format: string;
+  insetInputValue: InsetInputValue;
+}
+export interface DateInputAdapter extends DefaultAdapter<
+  Record<string, unknown>,
+  Record<string, unknown>
+> {
+  updateIsFocusing(value: boolean): void;
+  notifyInsetInputChange(options: InsetInputChange): void;
+}
+export class DateInputFoundation {
+  constructor(adapter: DateInputAdapter);
+  getInsetInputValue(options: { value: Date[]; insetInputValue: unknown }): InsetInputValue;
+  getInsetInputPlaceholder(): { datePlaceholder?: string; timePlaceholder?: string };
+  handleInsetInputChange(options: {
+    value: string;
+    valuePath: string;
+    insetInputValue: InsetInputValue;
+    event: unknown;
+  }): void;
+}
+
 interface DefaultAdapter<Props, State> {
   getContext(key: string): unknown;
   getContexts(): unknown;
@@ -115,6 +198,8 @@ export class DatePickerFoundation<
     options?: { fromPreset?: boolean; needCheckFocusRecord?: boolean },
   ): void;
   handleConfirm(): void;
+  handleInsetInputChange(options: InsetInputChange): void;
+  handleYMSelectedChange(selection: YearAndMonthSelection): void;
   handleCancel(): void;
   handlePresetClick(item: Record<string, unknown>, event: unknown): void;
   handleTriggerWrapperClick(event: unknown): void;

@@ -52,7 +52,7 @@
 ## DOM、事件、焦点与 ARIA
 
 - Portal 根为 `.semi-portal`；其内顺序为 mask、wrap、dialog。dialog 固定为 `.semi-modal > .semi-modal-content`，header/body/footer class 与 v2.102.0 相同。
-- `role="dialog"`、`aria-modal="true"`、`aria-labelledby="semi-modal-title"`、`aria-describedby="semi-modal-body"` 保留；无标题/自定义 header 时不制造可见空 header。
+- 保留 `role="dialog"`、`aria-modal="true"`；`aria-labelledby` 与 `aria-describedby` 分别引用实例内的标准标题和正文 ID。标题、正文 ID 由 SSR 稳定的 dialog ID 派生，不使用全局固定值。无标题或自定义 header 时省略标准标题引用，不制造空 header。
 - close、mask、ESC 都走 cancel 顺序：发出 `update:visible(false)`，再调用 `onCancel(event)`；OK 发出 `onOk(event)`，不替受控调用方自动关闭。
 - 点击从 dialog 内 mousedown、在 mask mouseup/click 的序列不得误关；只有 wrap 自身 target 且未记录 dialog mousedown 才关闭。
 - 打开时记录先前 activeElement，锁定 body（仅 body portal），创建固定 FocusTrapHandle，并优先聚焦用户 autofocus/默认 cancel；Tab/Shift+Tab 循环。关闭终态或卸载时移除 keydown、销毁 trap、恢复焦点和 body 样式。
@@ -73,7 +73,7 @@
 - 静态文档：仓库内 [index.md](./index.md)、[index.en-US.md](./index.en-US.md) 与 [react-to-vue.md](./react-to-vue.md) 覆盖 props/slots/events、命令式 API、Portal/遮罩/滚动、焦点陷阱/ARIA、主题/RTL/SSR 与 React→Vue 映射；`coverage.md` 保留退役站点的历史映射。
 - 真实 tarball 验证 ESM、声明、根/子路径、根 CSS/`modal.css`、tree-shaking、SSR-safe import、许可证与 SPDX SBOM；公开 `.d.ts` 不得出现 `vendor/**` 或私有 workspace Foundation 类型。
 - React `children` 映射默认 slot，ReactNode props 同时提供 Vue 命名 slot；React `useModal` 的 ReactNode holder 映射为 Vue 动态组件 holder，能力与上下文语义保留。
-- 暂无 accepted deviation；任何浏览器或静态 API 差异必须在完成状态前补录证据与影响。
+- 可访问性修正：固定 React v2.102.0 的 `ModalContent.tsx` 使用固定标题/正文 ID，多实例会错误关联到首个节点；Vue 使用实例独立 ID。该差异修复 BUG-000077，保留原 class、DOM 布局、公开 API、焦点、关闭和动效路径。
 
 ## 完成证据
 
@@ -82,7 +82,7 @@
 - Chromium：Modal 来源、交互、desktop/mobile light/dark 与 RTL 共 7 个场景通过；全量 313 个 Chromium 场景通过。6 个不透明节点逐项完成 computed style、`≤0.5 CSS px` 几何与独立字节对照，遮罩透明层单独比较 computed style；正文裁剪的 React/Vue PNG 在全部矩阵直接字节相等。
 - 视觉基线：React/Vue 分别保留 desktop/mobile light/dark 与 RTL 裁剪截图，阈值继续为 `threshold ≤ 0.1`、`maxDiffPixelRatio ≤ 0.001`，无 mask。
 - 发布：完整 `pnpm check` 通过，包含 vendor/inventory/assets/source-boundary、format、lint、typecheck、unit、全部 workspace build、主题入口、Modal 子路径 SSR import 与真实 tarball 安装/ESM/声明/样式/SBOM consumer 验证。
-- Deviation：无 accepted deviation。
+- 上述历史完成证据早于 BUG-000077；当前标题/正文 ID 的可访问性差异及本次验证见本文末尾的 BUG-000077 记录。
 
 ## ConfigProvider 命令式反馈续验
 
@@ -103,3 +103,11 @@
 2026-09-17 补充修复：数字 `width`/`height` 在 `.semi-modal` 外层显式转换为 CSS `px`，字符串尺寸（如 `40vw`、`50%`）继续原样保留；公开回归覆盖数字与字符串路径。该修复不改变 `modalRender` 作用边界、默认尺寸、fullScreen 覆盖或 Portal 结构。
 
 同轮 diagnostic-17 的 Imperative 第六个自定义 IconSend 发现 24px→16px 及蓝色→正文色差异。固定 ConfirmModal 对 elementType=Icon 的自定义节点 cloneElement，覆盖 size=extra-large 与两项 Modal 图标 className；Vue 原直接返回自定义 icon。现复用 isSemiIcon，只克隆 Semi Icon 并覆盖 size/class，保留原 VNode、其他 props 和普通节点/null。Vue cloneVNode 的 class 合并与 React 覆盖不同，故只替换克隆的 class props。公开回归先红后绿，覆盖传入 small/custom class 仍被覆盖、原 VNode 不修改、update 为普通 span 或 null 保持对应内容。Modal Unit/SSR 最终 11 项通过；不在 Demo 添加 size/class 绕过组件契约。
+
+## BUG-000077：多实例可访问名称（2026-11-08）
+
+- 标准标题和正文改用基于父级 `useId()` 的实例 ID；dialog 引用自己的节点。标题动态更新、嵌套/同级多实例、keepDOM 保留与销毁重开、SSR/hydration 均覆盖。无标题或自定义 header 时不保留悬空的标准标题引用，正文始终有对应 ID。
+- 命令式方法每次创建独立 Vue app，为 app 配置唯一 `idPrefix`，避免仅使用 `useId()` 时跨 app 重复编号；`useModal` holder 仍使用调用方 app 的编号空间。保留原焦点、事件、退出动效和清理路径。
+- 接受与固定 React v2.102.0 的上述 ID 差异，不修改 vendor；所有 `.semi-*` class 与 CSS 布局保持原样。
+- 验证：新增 5 项单测先红后绿；Modal、SideSheet、UserGuide 共 48 项单元/SSR/hydration 测试通过。原有 Modal Chromium 5 项通过，旧明暗/RTL 快照未修改。真实生产 tarball 的嵌套明暗、重开、焦点恢复、Esc/遮罩关闭保护和多个命令式弹窗共 3 项通过。公开产物、SSR import 与 tarball 消费检查通过。
+- 尚未发布或升级迭鹿依赖，业务原现场需在消费修复版本后复验；未执行实体屏幕阅读器人工测试。完整说明见 [修复记录](../../../ai-work/20261108-modal-instance-aria.md)。

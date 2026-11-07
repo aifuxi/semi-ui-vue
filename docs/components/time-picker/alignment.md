@@ -60,7 +60,9 @@
 ## DOM / class / 样式
 
 - 根：`.semi-timepicker`；输入区：`.semi-timepicker-header > .semi-timepicker-input-wrap > .semi-input-wrapper`，输入附加 `.semi-timepicker-input`、invalid/readonly class。
-- Portal：`.semi-portal > .semi-popover-wrapper > .semi-popover-content > .semi-timepicker-panel`；范围增加 `.semi-timepicker-range-panel` 与 `.semi-timepicker-lists`。
+- Portal：外层 Tooltip 使用 `semi-timepicker-panel semi-timepicker-panel-{size}` 专用前缀，输出 `.semi-timepicker-panel-{size}-wrapper`；`.semi-tooltip-content` 内保留面板及 `.semi-timepicker-panel-{size}-content`，范围增加 `.semi-timepicker-range-panel` 与 `.semi-timepicker-lists`。不套用通用 `.semi-popover-wrapper` 的背景、圆角或阴影。
+- 阴影：范围列表沿用上游 `$shadow-timePicker_range_panel` 的固定 `0 4px 14px rgba(0, 0, 0, .1)`，明暗主题均不随 `--semi-shadow-elevated` 改变；这是固定基线的现有行为。外层 wrapper 透明、无阴影，由 ScrollList 或范围列表提供菜单外观。
+- 选中项居中：只纵向滚动当前时间列，不滚动祖先容器；范围左面板的分割线造成 1px 水平溢出时，也不得连带设置其 `scrollLeft`。
 - 面板：`.semi-scrolllist`、header/body/footer；列保留 `.semi-timepicker-panel-list-{ampm,hour,minute,second}`、`.semi-scrolllist-item`、selected/disabled class。
 - popup 按实际列数增加 `.semi-timepicker-panel-column-N`；缺列且非 12 小时制增加 narrow class；尺寸增加 `.semi-timepicker-panel-{small,default,large}`。
 - 主题逐组件入口编译固定 TimePicker、Input、Popover、Portal、ScrollList 与 Icon SCSS，保留 `.semi-*` / `--semi-*`。
@@ -96,7 +98,7 @@
 ## 验收结果
 
 - TimePicker 单元与 SSR 共 10 项通过，覆盖受控/非受控 value/open、默认 true Boolean 三态、输入/清空/事件顺序、range/12h/step/disabled、wheel/cycled 滚动选择、稳定 Portal、ConfigProvider locale/RTL/timeZone 与 SSR-safe 输出。
-- React/Vue 固定 Chromium 专项 7 项通过：7 个公开场景目标的 computed style 与 bounding rect 对齐；桌面/移动 light/dark、RTL 共 5 组页面截图以及独立面板裁剪截图均字节一致。面板仅为消除两端父级 Popover wrapper 圆角的 4 个抗锯齿像素内缩 2px，完整内容区未 mask。
+- 历史 React/Vue Chromium 验证仅覆盖场景目标和内缩 2px 的面板内容区，未覆盖范围弹层的完整外沿；原记录不能证明弹层阴影对齐。2026-11-07 对照发现并修正了误用通用 Popover 前缀的额外阴影，以及原生 `scrollIntoView()` 连带导致范围左面板横向滚动 1px 的移植偏差。完整阴影与圆角专项改为外扩 24px，包含全部边框和阴影；保留原有内容区快照，不覆盖旧指纹。
 - 全仓 `pnpm check` 通过：固定 vendor/inventory/icons/source-boundary、格式、lint、全部 workspace 类型检查、38 个测试文件共 304 项 Vitest、全量构建、主题产物与 SSR import 均通过。
 - 全量 Chromium 161 项单次通过；根/`time-picker` ESM 与声明、`time-picker.css`、许可证/SBOM、真实 tarball 安装/导入/类型/样式验证均通过。
 
@@ -105,3 +107,9 @@
 ## ConfigProvider 时区更新回归
 
 固定 `timePicker/TimePicker.tsx:305` 使用 value-first 的互斥分支。合并 Vue value/timeZone watcher：新 value 不传 __prevTimeZone；仅时区变化时从 state.value 重投影，避免受控值被当成旧 zoned value，且同 tick 更新只转换一次。新增受控/非受控连续时区与同时更新 value/timeZone 的回归。
+
+## 2026-11-07 弹层阴影回归
+
+- 固定 React/Vue 明暗主题实际对照确认：原版内层固定阴影应保留，Vue 额外通用 Popover 阴影及左面板 1px 横向滚动属于移植问题，均已修复。
+- TimePicker 单元与 SSR 共 11 项、Chromium 专项 7 项通过；新增完整外沿对照覆盖默认、小、大尺寸与范围面板，两端 8 组截图内容一致。既有内容区及关闭状态快照保持不变。
+- 定向 ESLint、工具与公开 UI 类型检查、`pnpm check:artifacts` 通过，包含主题、SSR import 和真实 tarball Node 消费验证。未执行整库组件浏览器矩阵或 consumer 浏览器套件。

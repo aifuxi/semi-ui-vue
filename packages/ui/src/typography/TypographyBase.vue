@@ -19,6 +19,8 @@ import {
   isVNode,
 } from 'vue';
 
+import { getTypographySignature, observeThemeChanges } from '../_utils/theme-scope';
+
 import { useRenderComputed } from '../_utils';
 import TypographyTooltip from './TypographyTooltip';
 import TypographyCopyable from './TypographyCopyable.vue';
@@ -95,6 +97,10 @@ let resizeObserver: ResizeObserver | undefined;
 let animationFrame: number | undefined;
 let lastMeasuredContent = '';
 let lastMeasurementKey = '';
+// 记录实际排版，避免固定宽度下的主题变化遗漏省略重算。
+let lastTypographySignature = '';
+// 根节点替换和卸载时释放共享主题观察订阅。
+let stopThemeObservation: (() => void) | undefined;
 
 const contentNodes = useRenderComputed<VNodeChild[]>(
   () => props.content ?? slots.default?.() ?? [],
@@ -246,21 +252,27 @@ function shouldTruncate(): boolean {
   return rows <= 1 ? compareSingleRow() : element.scrollHeight > element.offsetHeight;
 }
 
+/** DOM 更新后，按当前排版重新计算 CSS 溢出状态或 JS 截断结果。 */
 async function updateEllipsis(): Promise<void> {
   await nextTick();
+  // 根节点可能因 Tooltip 包装发生替换，始终取本次实际元素。
   const element = root.value;
   if (!props.ellipsis || !element || expanded.value) return;
   lastMeasuredContent = contentText.value;
   lastMeasurementKey = measurementKey.value;
+  lastTypographySignature = getTypographySignature(element);
   if (canUseCssEllipsis.value) {
     isOverflowed.value = shouldTruncate();
     isTruncated.value = false;
     return;
   }
+  // 展开、复制入口占据的宽度也参与截断测量。
   const fixedNodes: Node[] = [];
   if (expandElement.value) fixedNodes.push(expandElement.value);
+  // 复制组件的真实根节点会被克隆到测量容器。
   const copyRoot = copyElement.value?.$el as Node | undefined;
   if (copyRoot) fixedNodes.push(copyRoot);
+  // 使用真实字号、行高及装饰字重得到可展示的文本。
   const measured = measureTypographyEllipsis(
     element,
     ellipsisOptions.value.rows,
@@ -275,12 +287,35 @@ async function updateEllipsis(): Promise<void> {
   isOverflowed.value = false;
 }
 
+/** 合并同一帧的布局失效，避免主题更新重复执行同步测量。 */
 function scheduleEllipsisUpdate(): void {
   if (typeof window === 'undefined') return;
   if (animationFrame !== undefined) window.cancelAnimationFrame(animationFrame);
+  // 浏览器完成本帧样式更新后再读取布局。
   animationFrame = window.requestAnimationFrame(() => {
     animationFrame = undefined;
     void updateEllipsis();
+  });
+}
+
+/** 为当前根节点绑定尺寸与主题观察，支持运行时开启省略。 */
+function observeTypographyLayout(): void {
+  resizeObserver?.disconnect();
+  stopThemeObservation?.();
+  stopThemeObservation = undefined;
+  // 未开启省略时不订阅全局字体及样式变化。
+  const element = root.value;
+  if (!element || !props.ellipsis) return;
+  if (typeof ResizeObserver !== 'undefined') {
+    resizeObserver ??= new ResizeObserver(scheduleEllipsisUpdate);
+    resizeObserver.observe(element);
+    if (element.parentElement) resizeObserver.observe(element.parentElement);
+  }
+  // 字体加载可能保持相同的 CSS 字体名，仍必须强制重算字形宽度。
+  stopThemeObservation = observeThemeChanges(element, (reason) => {
+    if (reason !== 'attributes' || getTypographySignature(element) !== lastTypographySignature) {
+      scheduleEllipsisUpdate();
+    }
   });
 }
 
@@ -320,26 +355,27 @@ function onContentMouseenter(): void {
   if (canUseCssEllipsis.value) isOverflowed.value = shouldTruncate();
 }
 
+// 挂载后才访问排版和布局，SSR 保持无 DOM。
 onMounted(() => {
   ellipsisContent.value = contentText.value;
   if (!props.ellipsis) return;
+  observeTypographyLayout();
   scheduleEllipsisUpdate();
-  if (typeof ResizeObserver !== 'undefined' && root.value) {
-    resizeObserver = new ResizeObserver(scheduleEllipsisUpdate);
-    resizeObserver.observe(root.value);
-    if (root.value.parentElement) resizeObserver.observe(root.value.parentElement);
-  }
 });
 
-// Wrapping or unwrapping the text can replace its DOM node; observe the current root.
-watch(root, (element) => {
-  resizeObserver?.disconnect();
-  if (element && resizeObserver) {
-    resizeObserver.observe(element);
-    if (element.parentElement) resizeObserver.observe(element.parentElement);
-  }
-});
+// Tooltip 包装会替换根节点，省略配置也可以在挂载后开启或关闭。
+watch(
+  // 只在根节点或省略开关改变时重建订阅。
+  [root, () => Boolean(props.ellipsis)],
+  // 订阅新根后调度一次实际布局测量。
+  () => {
+    observeTypographyLayout();
+    if (props.ellipsis) scheduleEllipsisUpdate();
+  },
+  { flush: 'post' },
+);
 
+// 内容与配置变化沿用原有收起行为，纯排版变化保留用户展开状态。
 onUpdated(() => {
   if (
     props.ellipsis &&
@@ -347,11 +383,19 @@ onUpdated(() => {
   ) {
     expanded.value = false;
     scheduleEllipsisUpdate();
+  } else if (
+    props.ellipsis &&
+    root.value &&
+    getTypographySignature(root.value) !== lastTypographySignature
+  ) {
+    scheduleEllipsisUpdate();
   }
 });
 
+// 清理元素观察和未执行的帧回调，避免卸载后继续读取布局。
 onBeforeUnmount(() => {
   resizeObserver?.disconnect();
+  stopThemeObservation?.();
   if (animationFrame !== undefined && typeof window !== 'undefined') {
     window.cancelAnimationFrame(animationFrame);
   }
