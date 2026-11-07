@@ -19,61 +19,6 @@
     "language": "vue",
     "source": "<script setup lang=\"ts\">\nimport { LocaleProvider } from '@aifuxi/semi-ui-vue/locale';\nimport en_GB from '@aifuxi/semi-ui-vue/locale/source/en_GB';\nimport { Pagination } from '@aifuxi/semi-ui-vue/pagination';\n</script>\n\n<template>\n  <LocaleProvider :locale=\"en_GB\">\n    <Pagination :total=\"100\" show-total />\n  </LocaleProvider>\n</template>"
   },
-  "zh-CN-advanced-customize-theme-1": {
-    "kind": "code",
-    "language": "ts",
-    "source": "// main.ts：主题包提供编译后的 CSS，无需额外插件\nimport '你的主题包名称/semi.min.css';"
-  },
-  "zh-CN-advanced-customize-theme-2": {
-    "kind": "code",
-    "language": "scss",
-    "source": "// local.scss\n:root {\n  --semi-color-primary: rgb(0 100 250);\n}"
-  },
-  "zh-CN-advanced-customize-theme-3": {
-    "kind": "code",
-    "language": "ts",
-    "source": "// main.ts：组件入口会先加载默认主题，本地文件负责覆盖\nimport './local.scss';"
-  },
-  "zh-CN-advanced-customize-theme-4": {
-    "kind": "code",
-    "language": "css",
-    "source": ":root {\n  --semi-color-primary: rgb(0 100 250);\n  --semi-color-primary-hover: rgb(0 86 214);\n}"
-  },
-  "zh-CN-advanced-customize-theme-5": {
-    "kind": "code",
-    "language": "css",
-    "source": "/* .semi-* 是公开兼容契约；需要隔离时增加业务作用域。 */\n.custom-scope .semi-button {\n  border-radius: 999px;\n}"
-  },
-  "zh-CN-advanced-customize-theme-6": {
-    "kind": "code",
-    "language": "ts",
-    "source": "// main.ts：Vite 可直接加载主题包 CSS\nimport '你的主题包名称/semi.min.css';"
-  },
-  "zh-CN-advanced-customize-theme-7": {
-    "kind": "code",
-    "language": "scss",
-    "source": "// local.scss\n:root {\n  --semi-color-primary: rgb(0 100 250);\n}"
-  },
-  "zh-CN-advanced-customize-theme-8": {
-    "kind": "code",
-    "language": "ts",
-    "source": "// main.ts：Vite 会在组件默认主题之后应用本地覆盖\nimport './local.scss';"
-  },
-  "zh-CN-advanced-customize-theme-9": {
-    "kind": "code",
-    "language": "css",
-    "source": ":root {\n  --semi-color-primary: rgb(0 100 250);\n  --semi-color-primary-hover: rgb(0 86 214);\n}"
-  },
-  "zh-CN-advanced-customize-theme-10": {
-    "kind": "code",
-    "language": "css",
-    "source": "/* .semi-* 是公开兼容契约；需要隔离时增加业务作用域。 */\n.custom-scope .semi-button {\n  border-radius: 999px;\n}"
-  },
-  "zh-CN-advanced-customize-theme-11": {
-    "kind": "code",
-    "language": "css",
-    "source": "/* 组件级覆盖放在主题 CSS 之后。 */\n.semi-button {\n  border-radius: 8px;\n}"
-  },
   "zh-CN-advanced-dark-mode-1": {
     "kind": "code",
     "language": "css",

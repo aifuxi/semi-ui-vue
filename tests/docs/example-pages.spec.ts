@@ -88,20 +88,28 @@ test('静态代码示例展示 Vue 代码且不运行预览', async ({ page }) =
   await expect(faq.locator('code')).not.toContainText('@douyinfe');
 });
 
-test('通用指南的 22 个代码块全部使用 code-only 展示', async ({ page }) => {
+// 定制主题现在提供独立 live 示例；其余指南静态代码继续采用 code-only。
+test('通用指南的静态代码与主题交互示例按各自类型展示', async ({ page }) => {
+  // 当前静态示例数量来自各指南的公开展示契约。
   const guides = [
     ['/zh-CN/start/getting-started', 4],
     ['/zh-CN/experience/accessibility', 2],
-    ['/zh-CN/advanced/customize-theme', 11],
+    ['/zh-CN/advanced/customize-theme', 0],
     ['/zh-CN/advanced/dark-mode', 5],
   ] as const;
 
   for (const [route, expected] of guides) {
     await page.goto(route);
+    // 当前页面静态示例保持源码展示，不误运行退役主题代码。
     const examples = page.locator('.demo-block[data-demo-kind="code"]');
     await expect(examples).toHaveCount(expected);
     await expect(examples.locator('.demo-block-source')).toHaveCount(expected);
     await expect(examples.locator('.demo-block-footer')).toHaveCount(0);
+    if (route === '/zh-CN/advanced/customize-theme') {
+      await expect(
+        page.locator('.demo-block[data-demo-kind="live"] .demo-block-preview'),
+      ).toHaveCount(1);
+    }
     expect((await examples.locator('code').allTextContents()).join('\n')).not.toMatch(
       /@douyinfe|\bReact(?:DOM)?\b/,
     );
@@ -118,7 +126,9 @@ test('通用指南正文只描述当前 Vue 公开能力', async ({ page }) => {
   );
 
   await page.goto('/zh-CN/advanced/customize-theme');
-  await expect(page.locator('#main-content')).toContainText('Semi UI Vue 不要求安装额外主题插件');
+  await expect(page.locator('#main-content')).toContainText(
+    '无需编写 SCSS、安装 Sass 或配置专用 Vite/Webpack 插件',
+  );
   await expect(page.locator('#main-content')).not.toContainText('@douyinfe/semi-vite-plugin');
   await expect(page.locator('#main-content')).not.toContainText('SemiVitePlugin');
 });
