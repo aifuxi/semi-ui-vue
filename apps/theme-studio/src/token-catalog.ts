@@ -2,6 +2,7 @@ import baselineCss from '@aifuxi/semi-theme-default/base.css?raw';
 import { dieluBrandTokens } from './dielu-preset';
 import { dieluForegroundTokens } from './dielu-foreground-preset';
 import { dieluTypographyTokens } from './dielu-typography-preset';
+import { dieluEffectsTokens } from './dielu-effects-preset';
 
 /** 工作台按固定基线的样式职责组织变量。 */
 export type TokenCategory =
@@ -718,6 +719,7 @@ export const globalTokens: TokenDefinition[] = [
   ...dieluBrandTokens,
   ...dieluForegroundTokens,
   ...dieluTypographyTokens,
+  ...dieluEffectsTokens,
 ];
 /** 全目录用于导入校验、按名称定位和变更计数。 */
 export const tokens: TokenDefinition[] = [...globalTokens, ...componentTokens];

@@ -3,6 +3,7 @@ import { tokens, baselineVariables, type TokenDefinition } from './token-catalog
 import { dieluPreset } from './dielu-preset';
 import { dieluForegroundVariables, dieluTypography } from './dielu-foreground-preset';
 import { dieluTypographyVariables } from './dielu-typography-preset';
+import { dieluEffectsVariables } from './dielu-effects-preset';
 import {
   colorThemeToCss,
   createColorTheme,
@@ -311,6 +312,14 @@ export function createStudio() {
     settings.revision += 1;
     message.value = '已应用迭鹿排版、前景与键盘轮廓，背景保持不变';
   }
+  /** 阴影与交互是独立增量，不重新应用品牌、排版或来源背景。 */
+  function applyDieluEffectsPreset(): void {
+    for (const mode of ['light', 'dark'] as const) {
+      overrides[mode] = { ...overrides[mode], ...dieluEffectsVariables(mode) };
+    }
+    settings.revision += 1;
+    message.value = '已适配阴影、光晕与交互，保留当前背景和填充';
+  }
   /** 变量列表生成普通 CSS 声明，不将编辑器状态带入产物。 */
   function declarations(values: Record<string, string>): string {
     return Object.entries(values)
@@ -600,6 +609,7 @@ export function createStudio() {
     resetToken,
     applyDieluPreset,
     applyDieluForegroundPreset,
+    applyDieluEffectsPreset,
     canUndo,
     canRedo,
     moveHistory,

@@ -34,6 +34,7 @@ const routes = [
 const scenes = [
   { value: 'overview', label: '组件总览' },
   { value: 'typography', label: '文字排版' },
+  { value: 'effects', label: '阴影与交互' },
   { value: 'form', label: '数据表单' },
   { value: 'table', label: '数据表格' },
   { value: 'scopes', label: '局部主题对照' },

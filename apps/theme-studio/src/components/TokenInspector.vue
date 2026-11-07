@@ -157,6 +157,9 @@ function pick(value: ColorValue): void {
         <span /><span /><span />
       </div>
     </div>
+    <p v-else-if="token.bindings?.[0]?.property === 'transition'" class="field-help">
+      在预览区悬浮或聚焦控件，查看过渡。
+    </p>
     <div v-else-if="token.category === 'motion'" class="property-preview">
       <div :key="replay" class="motion-example" :style="motionStyle" />
       <Button size="small" @click="replay++">重播动效</Button>

@@ -115,6 +115,56 @@ function closeModal(): void {
         <Radio default-checked aria-label="使用当前主题">使用当前主题</Radio>
       </div>
     </section>
+    <section v-if="scene === 'effects'" class="gallery-section effects-section">
+      <h3>状态与光晕</h3>
+      <div class="gallery-form">
+        <label
+          >警告输入<Input
+            validate-status="warning"
+            placeholder="检查主题名称"
+            aria-label="交互警告输入"
+        /></label>
+        <label
+          ><span id="effects-warning-select-label">警告选择</span
+          ><Select
+            :option-list="options"
+            value="draft"
+            validate-status="warning"
+            :motion="false"
+            aria-labelledby="effects-warning-select-label"
+        /></label>
+        <label
+          ><span id="effects-error-select-label">错误选择</span
+          ><Select
+            :option-list="options"
+            value="draft"
+            validate-status="error"
+            :motion="false"
+            aria-labelledby="effects-error-select-label"
+        /></label>
+        <label>禁用输入<Input disabled value="不可编辑" aria-label="交互禁用输入" /></label>
+        <label>只读输入<Input readonly value="仅供查看" aria-label="交互只读输入" /></label>
+        <label
+          >无边框输入<Input borderless placeholder="透明背景保持原样" aria-label="交互无边框输入"
+        /></label>
+        <label>多行输入<Input.TextArea placeholder="主题说明" aria-label="交互多行输入" /></label>
+        <label
+          >多行警告<Input.TextArea
+            validate-status="warning"
+            placeholder="检查主题说明"
+            aria-label="交互多行警告"
+        /></label>
+        <label
+          >多行错误<Input.TextArea
+            validate-status="error"
+            placeholder="请修改主题说明"
+            aria-label="交互多行错误"
+        /></label>
+      </div>
+      <Card title="悬浮阴影" shadows="hover"
+        ><Typography.Text>悬浮查看卡片层次变化。</Typography.Text></Card
+      >
+    </section>
     <section v-if="!component || component === 'tag'" class="gallery-section">
       <h3>标签与反馈</h3>
       <div class="component-example">

@@ -28,6 +28,8 @@ const attributes = computed(() =>
       <p class="field-help">仅应用品牌色与圆角，保留其他编辑。</p>
       <Button @click="studio.applyDieluForegroundPreset">应用排版与前景</Button>
       <p class="field-help">包含排版角色、组件文字与键盘轮廓，保留背景、填充和光晕。</p>
+      <Button @click="studio.applyDieluEffectsPreset">应用阴影与交互</Button>
+      <p class="field-help">按当前主题适配光晕和层次，保留背景与填充。</p>
     </section>
     <template v-if="route === 'components'">
       <div class="panel-heading">
