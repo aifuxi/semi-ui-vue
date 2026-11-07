@@ -4,6 +4,7 @@ import { Tag } from '@aifuxi/semi-ui-vue';
 import { typographyVariables, useStudio } from '../studio';
 import PreviewCard from './PreviewCard.vue';
 import ComponentGallery from './ComponentGallery.vue';
+import TypographyPreview from './TypographyPreview.vue';
 
 /** 组件预览与场景切换不会创建新的主题。 */
 defineProps<{ scene?: string | undefined; component?: string | undefined }>();
@@ -67,8 +68,9 @@ function ThemeStyles() {
       data-testid="global-scope"
       aria-label="当前主题预览"
     >
+      <TypographyPreview v-if="scene === 'typography'" />
       <ComponentGallery
-        v-if="component || (scene && scene !== 'scopes')"
+        v-else-if="component || (scene && scene !== 'scopes')"
         :scene="scene"
         :component="component"
       />

@@ -2,6 +2,7 @@ import { computed, inject, reactive, ref, watch, type InjectionKey } from 'vue';
 import { tokens, baselineVariables, type TokenDefinition } from './token-catalog';
 import { dieluPreset } from './dielu-preset';
 import { dieluForegroundVariables, dieluTypography } from './dielu-foreground-preset';
+import { dieluTypographyVariables } from './dielu-typography-preset';
 import {
   colorThemeToCss,
   createColorTheme,
@@ -294,17 +295,21 @@ export function createStudio() {
     settings.revision += 1;
     message.value = '已应用迭鹿品牌色与圆角';
   }
-  /** 本轮单独迁移排版和前景，不重新应用上轮含填充色的品牌预设。 */
+  /** 排版与前景独立于品牌填充预设，合并后仍可整体撤销和继续编辑。 */
   function applyDieluForegroundPreset(): void {
     Object.assign(global.typography, dieluTypography);
     /** 新排版接替同层基础排版覆盖，组件专属编辑继续保留。 */
     const typographyKeys = Object.keys(typographyVariables(global.typography));
     for (const mode of ['light', 'dark'] as const) {
       for (const name of typographyKeys) delete overrides[mode][name];
-      overrides[mode] = { ...overrides[mode], ...dieluForegroundVariables(mode) };
+      overrides[mode] = {
+        ...overrides[mode],
+        ...dieluForegroundVariables(mode),
+        ...dieluTypographyVariables(),
+      };
     }
     settings.revision += 1;
-    message.value = '已应用迭鹿排版、文字与描边，背景保持不变';
+    message.value = '已应用迭鹿排版、前景与键盘轮廓，背景保持不变';
   }
   /** 变量列表生成普通 CSS 声明，不将编辑器状态带入产物。 */
   function declarations(values: Record<string, string>): string {
@@ -332,8 +337,11 @@ export function createStudio() {
       if (!(token.name in values) || !token.bindings) continue;
       for (const binding of token.bindings) {
         // 每个逗号分隔选择器都必须带边界，避免未限定分支污染编辑器与默认对照。
-        for (const selector of binding.selector.split(','))
-          rules.push(`${scope} ${selector.trim()} { ${binding.property}: var(${token.name}); }`);
+        for (const selector of binding.selector.split(',')) {
+          /** 同一条规则用于在线预览和 CSS 导出，响应式值不固化为当前窗口尺寸。 */
+          const rule = `${scope} ${selector.trim()} { ${binding.property}: var(${token.name}); }`;
+          rules.push(binding.media ? `@media ${binding.media} { ${rule} }` : rule);
+        }
       }
     }
     return rules.join('\n');

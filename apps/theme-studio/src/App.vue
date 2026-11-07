@@ -33,6 +33,7 @@ const routes = [
 /** 预览场景使用实际 Vue 组件，无作者资料或无关业务介绍。 */
 const scenes = [
   { value: 'overview', label: '组件总览' },
+  { value: 'typography', label: '文字排版' },
   { value: 'form', label: '数据表单' },
   { value: 'table', label: '数据表格' },
   { value: 'scopes', label: '局部主题对照' },
@@ -301,7 +302,13 @@ function focusWorkspace(): void {
           </div>
           <ThemePreview
             :key="route"
-            :scene="route === 'preview' ? scene : 'scopes'"
+            :scene="
+              route === 'preview'
+                ? scene
+                : route === 'tokens' && studio.settings.category === 'typography'
+                  ? 'typography'
+                  : 'scopes'
+            "
             :component="route === 'components' ? studio.settings.component : undefined"
           />
         </section>

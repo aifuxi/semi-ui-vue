@@ -7,6 +7,7 @@ import {
   Input,
   Modal,
   Progress,
+  Radio,
   Select,
   Switch,
   Table,
@@ -104,9 +105,14 @@ function closeModal(): void {
             aria-label="预览禁用选择器"
         /></label>
       </div>
+      <div v-if="component === 'input'" class="gallery-form">
+        <label>小号输入<Input size="small" value="紧凑主题" aria-label="预览小号输入" /></label>
+        <label>大号输入<Input size="large" value="主题标题" aria-label="预览大号输入" /></label>
+      </div>
       <div class="component-example">
         <Checkbox v-model="checked">保存当前模式</Checkbox
         ><Switch v-model="enabled" aria-label="预览启用主题" />
+        <Radio default-checked aria-label="使用当前主题">使用当前主题</Radio>
       </div>
     </section>
     <section v-if="!component || component === 'tag'" class="gallery-section">

@@ -924,6 +924,28 @@ summary:focus-visible {
   padding-bottom: 24px;
   border-bottom: 1px solid var(--semi-color-border);
 }
+/* 排版样本只管理排列；字体由主题角色绑定，样本本身不引入底色。 */
+.typography-gallery {
+  display: grid;
+  gap: 24px;
+  margin-bottom: 32px;
+  min-width: 0;
+}
+.type-role-row {
+  min-width: 0;
+}
+.type-role-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+.type-role-row p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
 .gallery-section {
   min-width: 0;
 }

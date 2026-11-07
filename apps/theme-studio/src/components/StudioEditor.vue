@@ -27,7 +27,7 @@ const attributes = computed(() =>
       <Button @click="studio.applyDieluPreset">应用迭鹿预设</Button>
       <p class="field-help">仅应用品牌色与圆角，保留其他编辑。</p>
       <Button @click="studio.applyDieluForegroundPreset">应用排版与前景</Button>
-      <p class="field-help">迁移文字与描边，保留背景、填充和光晕。</p>
+      <p class="field-help">包含排版角色、组件文字与键盘轮廓，保留背景、填充和光晕。</p>
     </section>
     <template v-if="route === 'components'">
       <div class="panel-heading">

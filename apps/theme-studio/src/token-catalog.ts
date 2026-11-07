@@ -1,6 +1,7 @@
 import baselineCss from '@aifuxi/semi-theme-default/base.css?raw';
 import { dieluBrandTokens } from './dielu-preset';
 import { dieluForegroundTokens } from './dielu-foreground-preset';
+import { dieluTypographyTokens } from './dielu-typography-preset';
 
 /** 工作台按固定基线的样式职责组织变量。 */
 export type TokenCategory =
@@ -9,6 +10,8 @@ export type TokenCategory =
 export interface TokenBinding {
   selector: string;
   property: string;
+  /** 响应式角色与普通覆盖共用生成器，导出时保留同一断点。 */
+  media?: string;
 }
 /** defaultValue / darkValue 均是可直接输出的 CSS 值；RGB 通道保持 Semi 原始格式。 */
 export interface TokenDefinition {
@@ -714,6 +717,7 @@ export const globalTokens: TokenDefinition[] = [
   ...spacingTokens,
   ...dieluBrandTokens,
   ...dieluForegroundTokens,
+  ...dieluTypographyTokens,
 ];
 /** 全目录用于导入校验、按名称定位和变更计数。 */
 export const tokens: TokenDefinition[] = [...globalTokens, ...componentTokens];
