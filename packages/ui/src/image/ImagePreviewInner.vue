@@ -6,6 +6,7 @@ import {
 import { IconArrowLeft, IconArrowRight } from '@aifuxi/semi-icons-vue';
 import {
   computed,
+  getCurrentInstance,
   inject,
   markRaw,
   nextTick,
@@ -22,6 +23,7 @@ import {
 
 import { configContextKey, type ConfigContextValue } from '../config-provider';
 import { useRenderComputed } from '../_utils';
+import { usePortalThemeScope } from '../_utils/theme-scope';
 import ImageNodeRenderer from './ImageNodeRenderer';
 import ImagePreviewFooter from './ImagePreviewFooter.vue';
 import ImagePreviewHeader from './ImagePreviewHeader.vue';
@@ -82,6 +84,8 @@ const props = withDefaults(defineProps<ImagePreviewProps>(), {
 const emit = defineEmits<ImagePreviewEmits>();
 defineSlots<ImagePreviewSlots>();
 const slots = useSlots();
+/** 预览 Teleport 的原始锚点用于定位声明处的局部主题。 */
+const instance = getCurrentInstance();
 const group = inject(imagePreviewContextKey, undefined);
 const injectedConfig = inject(configContextKey, undefined);
 const config = computed<ConfigContextValue>(() =>
@@ -111,6 +115,20 @@ const state = shallowReactive<ImagePreviewInnerState>({
 });
 const cache = new Map<unknown, unknown>();
 const portalTarget = shallowRef<HTMLElement | null>(null);
+/** 默认预览 Portal 只在该宿主携带主题，不改变图片和工具栏的内联样式。 */
+const themePortal = shallowRef<HTMLElement | null>(null);
+usePortalThemeScope(
+  /** Image 或 ImagePreview 的原始 DOM 位置决定局部主题来源。 */
+  () => instance?.vnode.el?.parentElement ?? null,
+  /** 首次打开或关闭销毁时跟随宿主 ref 建立、释放观察。 */
+  () => themePortal.value,
+  /** 显式容器沿用自己的物理主题级联。 */
+  () =>
+    !props.getPopupContainer &&
+    !config.value.getPopupContainer &&
+    typeof document !== 'undefined' &&
+    portalTarget.value === document.body,
+);
 const imageWrap = useTemplateRef<HTMLDivElement>('imageWrap');
 const header = useTemplateRef<ComponentPublicInstance<{ element: HTMLElement | null }>>('header');
 const footer = useTemplateRef<ComponentPublicInstance<{ element: HTMLElement | null }>>('footer');
@@ -328,6 +346,7 @@ onBeforeUnmount(() => {
 <template>
   <Teleport v-if="state.visible && portalTarget" :to="portalTarget">
     <div
+      ref="themePortal"
       :class="['semi-portal', config.direction === 'rtl' ? 'semi-portal-rtl' : undefined]"
       :style="portalStyle"
     >

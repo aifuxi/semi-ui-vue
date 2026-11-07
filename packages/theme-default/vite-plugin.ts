@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Plugin } from 'vite';
-import sass from 'sass';
+import { compileTypographyTheme } from './typography-theme.mjs';
 
 export const virtualAnchorStyleId = 'virtual:workspace-anchor-styles.css';
 export const virtualAvatarStyleId = 'virtual:workspace-avatar-styles.css';
@@ -208,30 +208,45 @@ const compileContext = [
 ];
 const baseStyleEntry = path.join(sourceRoot, 'base.scss');
 
+/** 编译共享 Foundation 样式，并接入与公开产物一致的排版变量。 */
 function compileModule(modulePath: string): string {
-  const context = compileContext.map((file) => `@import ${JSON.stringify(file)};`).join('\n');
-  return sass
-    .renderSync({
-      data: `${context}\n@import ${JSON.stringify(path.join(vendorPackages, modulePath))};`,
-      file: path.join(sourceRoot, `_shared-${path.basename(modulePath)}`),
-      outputStyle: 'expanded',
-      includePaths: [sourceRoot],
-    })
-    .css.toString();
+  // 组件变量仍以原始 Sass 值参与计算，公开变量只出现在消费声明。
+  // 固定编译上下文维持基线的变量声明顺序。
+  const context = compileContext
+    .map(
+      // 原始变量上下文不做组件筛选。
+      (file) => `@import ${JSON.stringify(file)};`,
+    )
+    .join('\n');
+  return compileTypographyTheme({
+    data: `${context}\n@import ${JSON.stringify(path.join(vendorPackages, modulePath))};`,
+    file: path.join(sourceRoot, `_shared-${path.basename(modulePath)}`),
+    includePaths: [sourceRoot],
+  });
 }
 
+/** 仅编译组件自身样式，依赖继续由清单去重导入。 */
 function compileComponent(name: string, styleEntry: string): string {
+  // 自有入口只保存固定上游 import，不复制上游样式。
   const source = readFileSync(styleEntry, 'utf8');
+  // 主模块来自生成的依赖清单。
   const component = styleManifest.components[name];
   if (!component) throw new Error(`缺少主题样式依赖清单：${name}`);
+  // 共享模块由独立 CSS 承载，避免组件输出重复样式。
   const ownModules = component.main ? [component.main] : [];
+  // import 过滤使用完整模块路径进行精确匹配。
   const selected = new Set(ownModules);
+  // 保留组件补充样式，仅筛选固定上游 import。
   const transformed = source.replace(
     /@import\s+(['"])([^'"]+)\1\s*;?/g,
+    // 只有当前组件主模块直接进入编译，其余依赖仍由清单加载。
     (statement, _quote, specifier: string) => {
+      // 入口路径前缀仅用于定位固定 vendor 内的模块。
       const marker = 'vendor/semi-design/packages/';
+      // 自有 import 维持原样，由共享编译器继续解析。
       const markerIndex = specifier.indexOf(marker);
       if (markerIndex < 0) return statement;
+      // 模块标识使用 vendor packages 相对路径。
       const modulePath = specifier.slice(markerIndex + marker.length);
       if (
         modulePath.startsWith('semi-theme-default/scss/') ||
@@ -245,15 +260,18 @@ function compileComponent(name: string, styleEntry: string): string {
       return statement;
     },
   );
-  const context = compileContext.map((file) => `@import ${JSON.stringify(file)};`).join('\n');
-  return sass
-    .renderSync({
-      data: `${context}\n${transformed}`,
-      file: styleEntry,
-      outputStyle: 'expanded',
-      includePaths: [sourceRoot],
-    })
-    .css.toString();
+  // 固定编译上下文维持基线的变量声明顺序。
+  const context = compileContext
+    .map(
+      // 原始变量上下文不做组件筛选。
+      (file) => `@import ${JSON.stringify(file)};`,
+    )
+    .join('\n');
+  return compileTypographyTheme({
+    data: `${context}\n${transformed}`,
+    file: styleEntry,
+    includePaths: [sourceRoot],
+  });
 }
 const anchorStyleEntry = fileURLToPath(new URL('./src/anchor.scss', import.meta.url));
 const avatarStyleEntry = fileURLToPath(new URL('./src/avatar.scss', import.meta.url));
@@ -520,18 +538,24 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualTypographyStyleId) return resolvedVirtualTypographyStyleId;
       return null;
     },
+    /** 开发服务器直接使用同一编译器，避免与发布 CSS 产生主题差异。 */
     load(id) {
       if (id === resolvedVirtualBaseStyleId) {
-        return sass.renderSync({ file: baseStyleEntry, outputStyle: 'expanded' }).css.toString();
+        return compileTypographyTheme({ file: baseStyleEntry });
       }
       if (id === resolvedVirtualSharedStylesId) {
-        return [...sharedModules]
-          .filter((modulePath) => !moduleOwners.has(modulePath))
-          .map(compileModule)
-          .join('\n');
+        return (
+          [...sharedModules]
+            // 已有组件主入口的共享依赖由组件 CSS 自身承载。
+            .filter((modulePath) => !moduleOwners.has(modulePath))
+            .map(compileModule)
+            .join('\n')
+        );
       }
+      // 虚拟入口只接受显式注册的组件。
       const styleEntry = styleEntries.get(id);
       if (!styleEntry) return null;
+      // 文件名与依赖清单中的组件名称一致。
       const name = path.basename(styleEntry, '.scss');
       return compileComponent(name, styleEntry);
     },

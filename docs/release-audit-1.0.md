@@ -5,6 +5,7 @@
 ## 剩余工作
 
 1. 将已退出预发布模式的流程提交合并到 `master`，由机器人生成五包 `1.0.0` 稳定版本 PR；审核该候选并复核相同门禁后发布到 latest。
+2. 处理 2026-11-07 R-000072 验证中复现的既有 Button/Modal 浏览器失败：Button 加载/禁用状态的 cursor、pointer-events 比较及 3 个截图用例，Modal header 像素比较及 2 个截图用例，共 7 项。在未修改的 `c8283848` HEAD 隔离副本中得到相同失败与像素差值；不是排版主题引入的新增差异。本次未修改快照或阈值，稳定发布前需修复并重新验证。
 
 外部接入与 next 发布已在 2026-09-18 完成：GitHub App、仓库变量/secret、master 保护、npm Environment 和五包 Trusted Publisher 都在真实发布中生效，机器人版本 PR 的创建与更新都实测触发了 CI；next 候选的质量、Chromium、隔离消费门禁、provenance、五包版本与精确依赖、包级标签/Release 和 registry 安装均已核对，见下方历史证据。
 

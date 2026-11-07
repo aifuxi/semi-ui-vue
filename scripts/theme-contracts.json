@@ -230,7 +230,7 @@
   "grid.css": [".semi-col-24", ".semi-col-lg-24", ".semi-row-flex"],
   "highlight.css": [
     ".semi-highlight-tag",
-    "font-weight: 600",
+    "font-weight: var(--semi-highlight-text-font-weight, 600)",
     "var(--semi-color-highlight)",
     "var(--semi-color-highlight-bg)"
   ],

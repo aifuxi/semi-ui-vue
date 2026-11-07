@@ -18,6 +18,7 @@ import {
 import type { ConfigContextValue } from '../config-provider';
 
 import type { TooltipPosition, TooltipRuntimeProps, TooltipState } from './types';
+import { mirrorThemeScope } from '../_utils/theme-scope';
 
 interface InitialFocusTarget {
   focus: (options?: FocusOptions) => void;
@@ -122,6 +123,19 @@ export function useTooltipFoundation(options: TooltipFoundationOptions) {
   let popupResizeTimer: ReturnType<typeof setTimeout> | undefined;
   let popupSafetyTimer: ReturnType<typeof setTimeout> | undefined;
   let containerPositionFrame: number | undefined;
+  /** 默认 body Portal 的局部主题订阅，随宿主销毁一并释放。 */
+  let stopThemeScope: (() => void) | undefined;
+
+  /** 只为默认容器传递触发源主题，显式容器使用自身的级联。 */
+  function syncPortalTheme(): void {
+    stopThemeScope?.();
+    stopThemeScope = undefined;
+    /** 共享 Portal 宿主独立于用户传入的 popup style。 */
+    const host = portalTarget.value;
+    /** 触发器提供实际 DOM 声明位置及局部主题祖先。 */
+    const source = triggerElement.value;
+    if (host && source && !popupContainerGetter) stopThemeScope = mirrorThemeScope(source, host);
+  }
 
   function getFoundationProps(): TooltipRuntimeProps {
     return options.runtimeProps.value;
@@ -139,6 +153,7 @@ export function useTooltipFoundation(options: TooltipFoundationOptions) {
     host.style.zIndex = String(options.runtimeProps.value.zIndex);
   }
 
+  /** 创建默认或显式容器内的宿主，并为默认宿主关联触发源主题。 */
   function ensurePortalHost(): HTMLElement | null {
     if (typeof document === 'undefined') return null;
     if (portalTarget.value?.isConnected) {
@@ -150,6 +165,7 @@ export function useTooltipFoundation(options: TooltipFoundationOptions) {
     portalTarget.value = host;
     updatePortalHost();
     popupContainer.appendChild(host);
+    syncPortalTheme();
     return host;
   }
 
@@ -162,7 +178,10 @@ export function useTooltipFoundation(options: TooltipFoundationOptions) {
     popupSafetyTimer = undefined;
   }
 
+  /** 释放宿主观察和 DOM，避免 keepDOM 之外留下主题订阅。 */
   function removePortalHost(): void {
+    stopThemeScope?.();
+    stopThemeScope = undefined;
     disconnectPopupResizeObserver();
     const host = portalTarget.value;
     if (host?.parentNode) host.parentNode.removeChild(host);
@@ -409,8 +428,11 @@ export function useTooltipFoundation(options: TooltipFoundationOptions) {
   };
   const foundation = markRaw(new TooltipFoundation<TooltipRuntimeProps, TooltipState>(adapter));
 
+  /** 触发器换根时将现有弹层重新关联到新的主题祖先。 */
   function setTriggerElement(element: HTMLElement | null): void {
+    if (triggerElement.value === element) return;
     triggerElement.value = element;
+    syncPortalTheme();
   }
 
   function setPortalElement(element: HTMLDivElement | null): void {

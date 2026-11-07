@@ -26,6 +26,8 @@ UI 与资产包使用 Rslib 多入口 ESM；Vue 保持 external，稳定图标/�
 
 主题包发布编译 CSS：`index.css` 是全量主题；模块化入口由 `base.css`、复用的 Foundation CSS 和逐组件 CSS 组成，依赖与导入顺序见包内 `style-dependencies.json`。固定上游 SCSS 使用 Sass 1.54.9，应用中通过 `sass-legacy` 别名隔离；Vite 的新版可选 Sass peer 用途不同。`semi-theme-modern` 作为可选覆盖包，需在默认主题之后导入，仅覆盖四档圆角变量，其他样式沿用默认主题。
 
+R-000072 的公开排版主题通过 CSS 自定义属性消费，业务自定义主题不依赖 Sass 或构建插件。内部主题适配器只读解析固定 vendor 的变量引用和声明语义，在内存中注入 CSS fallback；构建产物与开发虚拟样式共用编译入口，不复制维护上游样式。默认值保留固定基线，颜色生成器独立于本项。变量、局部作用域和弹层继承契约见[主题包说明](../../packages/theme-default/README.md#css-排版主题)。
+
 JsonViewer 的固定 core 与 jsonc-parser 经私有构建插件编入内联 Worker；公开包不泄漏外置 vendor 路径。其他特殊第三方运行时同样在集成边界处理 SSR 延迟加载、类型和归属，不复制 vendor 后独立维护。
 
 每个公开包携带 MIT、第三方声明和 SPDX SBOM。可复现构建使用 `SOURCE_DATE_EPOCH`。版本、依赖和构建入口以各 package.json、lockfile 与 mise.toml 为准，组件进度与实现细节见[组件目录](../components/)。
