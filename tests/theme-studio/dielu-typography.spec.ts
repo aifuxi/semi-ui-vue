@@ -47,7 +47,7 @@ test('完整排版角色支持明暗、窄屏和变量编辑', async ({ page }) 
       name === 'code' ? /JetBrains Mono/ : /Space Grotesk/,
     );
   }
-  await page.getByRole('switch', { name: '工作区深色模式', exact: true }).check();
+  await page.getByRole('switch', { name: '全局深色模式', exact: true }).check();
   await expect(page.getByTestId('type-label')).toHaveCSS('font-weight', '500');
   await page.setViewportSize({ width: 640, height: 1000 });
   await expect(page.getByTestId('type-document-title')).toHaveCSS('font-size', '24px');
@@ -138,7 +138,7 @@ test('组件文字适配保留输入尺寸并响应按钮单项编辑', async ({
   await page.getByRole('textbox', { name: 'CSS 变量值', exact: true }).fill('18px');
   await page.getByRole('button', { name: '应用变量', exact: true }).click();
   await expect(button).toHaveCSS('font-size', '18px');
-  await expect(page.getByTestId('baseline-primary')).toHaveCSS('font-size', '14px');
+
   await page.getByRole('button', { name: 'Select 选择器', exact: true }).click();
   await page.getByRole('combobox', { name: '主题状态', exact: true }).click();
   await expect(page.locator('.semi-select-option-selected')).toHaveCSS('font-weight', '600');
@@ -150,7 +150,7 @@ for (const dark of [false, true]) {
   test(`${dark ? '深色' : '浅色'}键盘轮廓覆盖按钮、开关、复选与单选`, async ({ page }) => {
     await applyTypography(page);
     await page.getByRole('button', { name: '组件样式定制', exact: true }).click();
-    await page.getByRole('switch', { name: '工作区深色模式', exact: true }).setChecked(dark);
+    await page.getByRole('switch', { name: '全局深色模式', exact: true }).setChecked(dark);
     /** 按钮在可访问原生节点上绘制轮廓。 */
     const button = page
       .getByTestId('component-gallery')
@@ -164,7 +164,7 @@ for (const dark of [false, true]) {
       'outline-color',
       dark ? 'rgb(84, 169, 255)' : 'rgb(0, 100, 250)',
     );
-    await expect(page.getByTestId('baseline-primary')).not.toHaveCSS('outline-width', '2px');
+
     await page.getByRole('button', { name: 'Input 输入框', exact: true }).click();
     for (const [role, name, selector] of [
       ['checkbox', '保存当前模式', '.semi-checkbox'],

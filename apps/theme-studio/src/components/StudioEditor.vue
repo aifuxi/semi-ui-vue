@@ -9,7 +9,7 @@ import TokenInspector from './TokenInspector.vue';
 
 /** 路由由外壳决定，变量与预览始终共用同一会话。 */
 defineProps<{ route: string }>();
-/** 检查器不接管外壳或全局页面主题。 */
+/** 编辑器与导航、预览共用工作台主题。 */
 const studio = useStudio();
 /** 当前组件的变量列表只展示能作用于真实组件的属性。 */
 const attributes = computed(() =>
@@ -124,14 +124,6 @@ const attributes = computed(() =>
           label="全局"
           @change="Object.assign(studio.global, $event)"
         />
-        <div class="setting-row">
-          <span>深色模式</span
-          ><Switch
-            :checked="studio.global.mode === 'dark'"
-            aria-label="全局深色模式"
-            @change="studio.global.mode = $event ? 'dark' : 'light'"
-          />
-        </div>
       </section>
       <details v-if="studio.settings.category === 'typography'" class="quick-settings" open>
         <summary>基础排版</summary>

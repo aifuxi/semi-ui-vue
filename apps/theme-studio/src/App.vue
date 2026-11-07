@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, provide, ref } from 'vue';
-import { Button, Modal, Switch } from '@aifuxi/semi-ui-vue';
+import { computed, h, onBeforeUnmount, provide, ref } from 'vue';
+import { Button, Modal } from '@aifuxi/semi-ui-vue';
 import {
   IconColorPalette,
   IconUndo,
@@ -12,16 +12,33 @@ import {
   IconLayers,
   IconGridRectangle,
   IconEyeOpened,
+  IconMoon,
+  IconSun,
 } from '@aifuxi/semi-icons-vue';
-import { createStudio, studioKey } from './studio';
+import { createStudio, studioKey, typographyVariables } from './studio';
 import { categories, components, globalTokens, componentTokens } from './token-catalog';
 import StudioEditor from './components/StudioEditor.vue';
 import ThemePreview from './components/ThemePreview.vue';
 import TokenBrowser from './components/TokenBrowser.vue';
 
-/** 一个页面拥有一个主题会话，不修改 body、文档站或其他应用。 */
+/** 整个工作台共用主题会话，默认 Portal 由组件库的主题桥接同步。 */
 const studio = createStudio();
 provide(studioKey, studio);
+/** 主题边界覆盖导航、编辑器与预览，模式只在顶部切换。 */
+const themeClass = computed(() => [
+  `theme-brand-${studio.global.fixed ? 'fixed' : studio.global.brand.slice(1)}`,
+  studio.global.mode === 'dark' ? 'semi-always-dark' : 'semi-always-light',
+]);
+/** 单项覆盖优先于共享排版设置，保持实际界面与检查器一致。 */
+const themeStyle = computed(() => ({
+  ...typographyVariables(studio.global.typography),
+  ...studio.buttonStyle.value,
+  ...studio.overrides[studio.global.mode],
+}));
+/** 样式节点常驻工作台，切换路由不会卸载主题 CSS。 */
+function ThemeStyles() {
+  return h('style', { 'data-studio-styles': '', textContent: studio.css.value });
+}
 /** 静态部署使用 hash 路由，浏览器前进后退可恢复工作区。 */
 const route = ref(readRoute());
 /** 工作台只包含样式设计和预览，不提供主题包发布入口。 */
@@ -153,7 +170,14 @@ function focusWorkspace(): void {
 </script>
 
 <template>
-  <div class="studio-shell">
+  <div
+    class="studio-shell"
+    data-semi-theme="studio-global"
+    :theme-mode="studio.global.mode"
+    :class="themeClass"
+    :style="themeStyle"
+  >
+    <ThemeStyles />
     <a class="skip-link" href="#studio-content" @click.prevent="focusWorkspace">跳转到样式工作区</a>
     <header class="studio-header">
       <a class="studio-wordmark" href="#/tokens" aria-label="Theme Studio 首页"
@@ -171,6 +195,16 @@ function focusWorkspace(): void {
         >
       </nav>
       <div class="header-actions">
+        <Button
+          type="tertiary"
+          role="switch"
+          aria-label="全局深色模式"
+          :aria-checked="studio.global.mode === 'dark'"
+          :title="studio.global.mode === 'dark' ? '切换为浅色模式' : '切换为深色模式'"
+          @click="studio.global.mode = studio.global.mode === 'dark' ? 'light' : 'dark'"
+          ><template #icon
+            ><IconSun v-if="studio.global.mode === 'dark'" /><IconMoon v-else /></template
+        ></Button>
         <Button
           type="tertiary"
           aria-label="撤销修改"
@@ -284,14 +318,7 @@ function focusWorkspace(): void {
             }}</span
           >
           <div>
-            <span class="change-count">{{ changes ? `${changes} 个变量已修改` : '默认变量' }}</span
-            ><label class="mode-control"
-              >深色<Switch
-                :checked="studio.global.mode === 'dark'"
-                aria-label="工作区深色模式"
-                size="small"
-                @change="studio.global.mode = $event ? 'dark' : 'light'"
-            /></label>
+            <span class="change-count">{{ changes ? `${changes} 个变量已修改` : '默认变量' }}</span>
           </div>
         </div>
         <TokenBrowser v-if="route === 'tokens' && studio.settings.category !== 'local'" />
@@ -308,7 +335,7 @@ function focusWorkspace(): void {
                 ? scene
                 : route === 'tokens' && studio.settings.category === 'typography'
                   ? 'typography'
-                  : 'scopes'
+                  : undefined
             "
             :component="route === 'components' ? studio.settings.component : undefined"
           />

@@ -1,9 +1,8 @@
-/* 编辑器固定浅色，用户主题只作用于预览边界。 */
+/* 工作台外壳、编辑器与预览共用公开主题变量。 */
 :root {
-  color-scheme: light;
   font-family: var(--semi-font-family-regular);
-  color: #1c1f23;
-  background: #f7f8fa;
+  color: var(--semi-color-text-0);
+  background: var(--semi-color-bg-1);
 }
 * {
   box-sizing: border-box;
@@ -24,10 +23,14 @@ button {
 button:focus-visible,
 a:focus-visible,
 summary:focus-visible {
-  outline: 2px solid #0064fa;
+  outline: 2px solid var(--semi-color-primary);
   outline-offset: 3px;
 }
 .studio-shell {
+  color: var(--semi-color-text-0);
+  background: var(--semi-color-bg-1);
+  font-size: var(--semi-font-size-regular);
+  line-height: var(--semi-line-height-regular);
   min-height: 100vh;
 }
 .skip-link {
@@ -36,7 +39,7 @@ summary:focus-visible {
   left: 12px;
   z-index: 2000;
   padding: 12px;
-  background: #fff;
+  background: var(--semi-color-bg-0);
 }
 .skip-link:focus {
   top: 8px;
@@ -50,8 +53,8 @@ summary:focus-visible {
   align-items: center;
   gap: 32px;
   padding: 0 24px;
-  background: #fff;
-  border-bottom: 1px solid #e7e9eb;
+  background: var(--semi-color-bg-0);
+  border-bottom: 1px solid var(--semi-color-border);
 }
 .studio-wordmark {
   display: flex;
@@ -63,7 +66,7 @@ summary:focus-visible {
   letter-spacing: -0.5px;
 }
 .studio-wordmark > .semi-icon {
-  color: #0064fa;
+  color: var(--semi-color-primary);
 }
 .studio-wordmark strong {
   font-weight: 650;
@@ -82,8 +85,8 @@ summary:focus-visible {
   font-weight: 500;
 }
 .studio-tabs > .active {
-  color: #0064fa;
-  border-bottom-color: #0064fa;
+  color: var(--semi-color-primary);
+  border-bottom-color: var(--semi-color-primary);
 }
 .header-actions {
   margin-left: auto;
@@ -97,7 +100,7 @@ summary:focus-visible {
 .toolbar-divider {
   height: 20px;
   width: 1px;
-  background: #e7e9eb;
+  background: var(--semi-color-border);
   margin: 0 4px;
 }
 .file-input {
@@ -113,8 +116,8 @@ summary:focus-visible {
   position: sticky;
   top: 64px;
   min-height: calc(100vh - 64px);
-  background: #fff;
-  border-right: 1px solid #e7e9eb;
+  background: var(--semi-color-bg-0);
+  border-right: 1px solid var(--semi-color-border);
   padding: 28px 12px 16px;
   display: flex;
   flex-direction: column;
@@ -123,7 +126,7 @@ summary:focus-visible {
 .rail-label {
   padding: 0 12px 14px;
   font-size: 12px;
-  color: #8a8e94;
+  color: var(--semi-color-text-2);
 }
 .category-rail > .semi-button {
   background: transparent;
@@ -134,14 +137,14 @@ summary:focus-visible {
   padding: 0 12px;
 }
 .category-rail > .active {
-  color: #0064fa;
-  background: #eaf3ff;
+  color: var(--semi-color-primary);
+  background: var(--semi-color-primary-light-default);
   font-weight: 600;
 }
 .category-count {
   margin-left: auto;
   font-size: 11px;
-  color: #8a8e94;
+  color: var(--semi-color-text-2);
   font-variant-numeric: tabular-nums;
 }
 .category-rail .semi-button-content {
@@ -152,7 +155,7 @@ summary:focus-visible {
 }
 .rail-separator {
   height: 1px;
-  background: #e7e9eb;
+  background: var(--semi-color-border);
   margin: 16px 12px;
 }
 .rail-bottom {
@@ -165,7 +168,7 @@ summary:focus-visible {
 }
 .rail-bottom > span {
   font-size: 11px;
-  color: #8a8e94;
+  color: var(--semi-color-text-2);
   padding-left: 12px;
 }
 .rail-bottom .semi-button {
@@ -183,10 +186,10 @@ summary:focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  border-bottom: 1px solid #e7e9eb;
-  background: #fff;
+  border-bottom: 1px solid var(--semi-color-border);
+  background: var(--semi-color-bg-0);
   font-size: 12px;
-  color: #6b7075;
+  color: var(--semi-color-text-1);
 }
 .workspace-toolbar > span,
 .workspace-toolbar > div {
@@ -194,19 +197,14 @@ summary:focus-visible {
   gap: 14px;
   align-items: center;
 }
-.mode-control {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
 .change-count {
   font-size: 11px;
-  color: #8a8e94;
+  color: var(--semi-color-text-2);
 }
 .token-browser {
-  background: #fff;
+  background: var(--semi-color-bg-0);
   padding: 28px;
-  border-bottom: 1px solid #e7e9eb;
+  border-bottom: 1px solid var(--semi-color-border);
 }
 .section-heading {
   display: flex;
@@ -223,7 +221,7 @@ summary:focus-visible {
 }
 .section-heading > span {
   font-size: 12px;
-  color: #8a8e94;
+  color: var(--semi-color-text-2);
 }
 .token-search {
   display: flex;
@@ -240,7 +238,7 @@ summary:focus-visible {
   align-items: center;
   white-space: nowrap;
   font-size: 12px;
-  color: #6b7075;
+  color: var(--semi-color-text-1);
 }
 .variable-list,
 .palette-list {
@@ -257,9 +255,9 @@ summary:focus-visible {
   align-items: center;
   gap: 14px;
   padding: 12px 14px;
-  border: 1px solid #e7e9eb;
+  border: 1px solid var(--semi-color-border);
   border-radius: 6px;
-  background: #fff;
+  background: var(--semi-color-bg-0);
   margin-bottom: 8px;
   text-align: left;
   transition:
@@ -267,13 +265,13 @@ summary:focus-visible {
     background 0.15s;
 }
 .variable-row:hover {
-  background: #f8fafc;
-  border-color: #bed6fa;
+  background: var(--semi-color-fill-0);
+  border-color: var(--semi-color-primary-light-hover);
 }
 .variable-row.selected {
-  border-color: #0064fa;
-  background: #f6faff;
-  box-shadow: inset 0 0 0 1px #0064fa;
+  border-color: var(--semi-color-primary);
+  background: var(--semi-color-primary-light-default);
+  box-shadow: inset 0 0 0 1px var(--semi-color-primary);
 }
 .token-swatch,
 .radius-swatch {
@@ -281,11 +279,11 @@ summary:focus-visible {
   width: 36px;
   height: 36px;
   border-radius: 5px;
-  border: 1px solid #0000000a;
+  border: 1px solid var(--semi-color-border);
 }
 .radius-swatch {
-  border: 2px solid #0064fa;
-  background: #eaf3ff;
+  border: 2px solid var(--semi-color-primary);
+  background: var(--semi-color-primary-light-default);
 }
 .token-type {
   display: grid;
@@ -294,8 +292,8 @@ summary:focus-visible {
   height: 36px;
   flex-shrink: 0;
   font-size: 17px;
-  color: #6b7075;
-  background: #f3f4f6;
+  color: var(--semi-color-text-1);
+  background: var(--semi-color-fill-0);
   border-radius: 5px;
 }
 .variable-name {
@@ -308,10 +306,10 @@ summary:focus-visible {
 .variable-name strong {
   font-size: 12px;
   font-weight: 500;
-  color: #31353b;
+  color: var(--semi-color-text-0);
 }
 .variable-name code {
-  color: #8a8e94;
+  color: var(--semi-color-text-2);
   font-size: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -322,14 +320,14 @@ summary:focus-visible {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #6b7075;
+  color: var(--semi-color-text-1);
   font-size: 11px;
   font-family: ui-monospace, monospace;
 }
 .changed-dot {
   width: 6px;
   height: 6px;
-  background: #0064fa;
+  background: var(--semi-color-primary);
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -347,7 +345,7 @@ summary:focus-visible {
   font-weight: 500;
 }
 .palette-group-heading > span {
-  color: #8a8e94;
+  color: var(--semi-color-text-2);
   font-size: 11px;
 }
 .color-scale {
@@ -370,7 +368,7 @@ summary:focus-visible {
 }
 .color-scale > button:hover,
 .color-scale > .selected {
-  outline: 2px solid #0064fa;
+  outline: 2px solid var(--semi-color-primary);
   outline-offset: 3px;
   z-index: 1;
 }
@@ -387,7 +385,7 @@ summary:focus-visible {
   font-size: 13px;
 }
 .empty-state p {
-  color: #8a8e94;
+  color: var(--semi-color-text-2);
 }
 .studio-editor {
   min-width: 0;
@@ -396,9 +394,9 @@ summary:focus-visible {
   max-height: calc(100vh - 64px);
   overflow-y: auto;
   scrollbar-width: thin;
-  border-left: 1px solid #e7e9eb;
+  border-left: 1px solid var(--semi-color-border);
   padding: 24px;
-  background: #fff;
+  background: var(--semi-color-bg-0);
   min-height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
@@ -425,17 +423,17 @@ summary:focus-visible {
 }
 .panel-heading > span {
   font-size: 11px;
-  color: #8a8e94;
+  color: var(--semi-color-text-2);
 }
 .brand-settings {
   display: flex;
   flex-direction: column;
   gap: 18px;
-  border-bottom: 1px solid #e7e9eb;
+  border-bottom: 1px solid var(--semi-color-border);
   padding-bottom: 24px;
 }
 .quick-settings {
-  border-bottom: 1px solid #e7e9eb;
+  border-bottom: 1px solid var(--semi-color-border);
   padding-bottom: 20px;
 }
 .quick-settings summary {
@@ -457,7 +455,7 @@ summary:focus-visible {
 .component-attributes button {
   border: 0;
   border-radius: 4px;
-  background: #fff;
+  background: var(--semi-color-bg-0);
   padding: 10px;
   display: flex;
   justify-content: space-between;
@@ -467,11 +465,11 @@ summary:focus-visible {
   font-size: 12px;
 }
 .component-attributes button.selected {
-  background: #eaf3ff;
-  color: #0064fa;
+  background: var(--semi-color-primary-light-default);
+  color: var(--semi-color-primary);
 }
 .component-attributes code {
-  color: #8a8e94;
+  color: var(--semi-color-text-2);
   font-size: 10px;
   max-width: 40%;
   overflow: hidden;
@@ -487,20 +485,20 @@ summary:focus-visible {
 .selected-token-name {
   overflow-wrap: anywhere;
   font-size: 11px;
-  color: #8a8e94;
+  color: var(--semi-color-text-2);
   margin-top: -10px;
 }
 .color-sample {
   height: 104px;
-  border: 1px solid #e7e9eb;
+  border: 1px solid var(--semi-color-border);
   border-radius: 6px;
   display: flex;
   align-items: flex-end;
   padding: 10px;
 }
 .color-sample > span {
-  background: #fff;
-  color: #31353b;
+  background: var(--semi-color-bg-0);
+  color: var(--semi-color-text-0);
   padding: 4px 6px;
   border-radius: 3px;
   font-size: 10px;
@@ -528,7 +526,7 @@ summary:focus-visible {
 }
 .inspector-apply > span {
   font-size: 11px;
-  color: #8a8e94;
+  color: var(--semi-color-text-2);
 }
 .token-details {
   font-size: 11px;
@@ -542,18 +540,18 @@ summary:focus-visible {
   gap: 12px;
 }
 .token-details dt {
-  color: #8a8e94;
+  color: var(--semi-color-text-2);
   flex: 0 0 48px;
 }
 .token-details dd {
   margin: 0;
   overflow-wrap: anywhere;
-  color: #6b7075;
+  color: var(--semi-color-text-1);
   line-height: 18px;
 }
 .contrast-panel,
 .reference-panel {
-  border-top: 1px solid #e7e9eb;
+  border-top: 1px solid var(--semi-color-border);
   padding-top: 20px;
   display: flex;
   flex-direction: column;
@@ -570,7 +568,7 @@ summary:focus-visible {
 }
 .contrast-example {
   padding: 22px 12px;
-  border: 1px solid #e7e9eb;
+  border: 1px solid var(--semi-color-border);
   border-radius: 4px;
   font-size: 20px;
   text-align: center;
@@ -587,17 +585,17 @@ summary:focus-visible {
   font-variant-numeric: tabular-nums;
 }
 .pass {
-  color: #22863a;
+  color: var(--semi-color-success);
 }
 .fail {
-  color: #bd421c;
+  color: var(--semi-color-danger);
 }
 .reference-panel button {
   border: 0;
-  background: #f5f6f8;
+  background: var(--semi-color-fill-0);
   padding: 8px;
   text-align: left;
-  color: #0064fa;
+  color: var(--semi-color-primary);
   font-size: 10px;
   border-radius: 3px;
   overflow-wrap: anywhere;
@@ -609,7 +607,7 @@ summary:focus-visible {
   justify-content: center;
   gap: 16px;
   height: 120px;
-  background: #f7f8fa;
+  background: var(--semi-color-bg-1);
   border-radius: 6px;
   padding: 20px;
 }
@@ -617,11 +615,11 @@ summary:focus-visible {
 .shadow-example {
   width: 88px;
   height: 72px;
-  background: #fff;
+  background: var(--semi-color-bg-0);
 }
 .radius-example {
-  border: 2px solid #0064fa;
-  background: #eaf3ff;
+  border: 2px solid var(--semi-color-primary);
+  background: var(--semi-color-primary-light-default);
 }
 .spacing-example {
   display: flex;
@@ -632,12 +630,12 @@ summary:focus-visible {
   height: 48px;
   flex-shrink: 0;
   border-radius: 3px;
-  background: #70a7fb;
+  background: var(--semi-color-primary-hover);
 }
 .motion-example {
   height: 24px;
   width: 24px;
-  background: #0064fa;
+  background: var(--semi-color-primary);
   border-radius: 4px;
   animation: token-move 600ms ease-in-out both;
 }
@@ -672,7 +670,7 @@ summary:focus-visible {
 }
 .workspace-heading > span {
   font-size: 11px;
-  color: #8a8e94;
+  color: var(--semi-color-text-2);
 }
 .preview-caption,
 .scope-caption {
@@ -682,7 +680,7 @@ summary:focus-visible {
   gap: 12px;
   font-size: 11px;
   margin-bottom: 14px;
-  color: #8a8e94;
+  color: var(--semi-color-text-2);
 }
 .studio-editor label,
 .brand-editor,
@@ -846,25 +844,6 @@ summary:focus-visible {
   padding: 1px 4px;
   border-radius: 3px;
 }
-.baseline-note {
-  font-size: 12px;
-  color: var(--semi-color-text-2);
-  margin-top: 14px;
-}
-.baseline-preview {
-  margin-top: 28px;
-  padding-top: 24px;
-  border-top: 1px solid var(--semi-color-border);
-}
-.baseline-preview .sample-card {
-  padding: 24px;
-  border: 1px solid var(--semi-color-border);
-  background: var(--semi-color-bg-0);
-  border-radius: 8px;
-}
-.baseline-preview .sample-form {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
 .tooltip-content {
   display: flex;
   flex-direction: column;
@@ -890,7 +869,7 @@ summary:focus-visible {
   justify-content: space-between;
 }
 
-/* 预览使用主题自身变量；固定对照始终为兄弟边界。 */
+/* 预览继承整个工作台的当前主题。 */
 .global-preview {
   display: flex;
   flex-direction: column;
@@ -913,9 +892,6 @@ summary:focus-visible {
 }
 .sample-card {
   gap: 14px;
-}
-.baseline-preview {
-  margin-top: 24px;
 }
 .component-gallery {
   display: flex;
@@ -1001,8 +977,8 @@ summary:focus-visible {
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
-  background: #23272f;
-  color: #fff;
+  background: var(--semi-color-bg-3);
+  color: var(--semi-color-text-0);
   border-radius: 6px;
   padding: 12px 20px;
   box-shadow: 0 4px 24px #0002;
@@ -1016,7 +992,7 @@ summary:focus-visible {
   padding-bottom: 16px;
 }
 .export-options section + section {
-  border-top: 1px solid #e7e9eb;
+  border-top: 1px solid var(--semi-color-border);
   padding-top: 20px;
 }
 .export-options h3 {
@@ -1024,7 +1000,7 @@ summary:focus-visible {
   margin: 0;
 }
 .export-options p {
-  color: #6b7075;
+  color: var(--semi-color-text-1);
   font-size: 13px;
   line-height: 22px;
 }
@@ -1083,7 +1059,7 @@ summary:focus-visible {
     flex-wrap: wrap;
     gap: 4px;
     padding: 12px;
-    border-bottom: 1px solid #e7e9eb;
+    border-bottom: 1px solid var(--semi-color-border);
   }
   .category-rail > .semi-button {
     min-height: 36px;
@@ -1150,7 +1126,7 @@ summary:focus-visible {
     min-height: 0;
     max-height: none;
     border-left: 0;
-    border-bottom: 1px solid #e7e9eb;
+    border-bottom: 1px solid var(--semi-color-border);
     padding: 24px;
   }
   .studio-center {
@@ -1167,8 +1143,7 @@ summary:focus-visible {
   .global-preview {
     padding: 20px;
   }
-  .sample-form,
-  .baseline-preview .sample-form {
+  .sample-form {
     grid-template-columns: minmax(0, 1fr);
   }
   .local-preview {

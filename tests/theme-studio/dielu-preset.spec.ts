@@ -31,11 +31,7 @@ test('迭鹿预设保留品牌三态与圆角，并保持其他主题值', async
     'rgb(91, 90, 247)',
   );
   await expect(page.getByTestId('global-primary')).toHaveCSS('border-radius', '8px');
-  await expect(page.getByTestId('baseline-primary')).toHaveCSS(
-    'background-color',
-    'rgb(0, 100, 250)',
-  );
-  await expect(page.getByTestId('baseline-primary')).toHaveCSS('border-radius', '3px');
+
   expect(await outsidePreset(page)).toEqual(before);
   await page.getByTestId('global-primary').hover();
   await expect(page.getByTestId('global-primary')).toHaveCSS(
@@ -48,7 +44,7 @@ test('迭鹿预设保留品牌三态与圆角，并保持其他主题值', async
     'rgb(55, 53, 173)',
   );
   await page.mouse.up();
-  await page.getByRole('switch', { name: '工作区深色模式', exact: true }).check();
+  await page.getByRole('switch', { name: '全局深色模式', exact: true }).check();
   // 源主题深色实心仍是品牌紫；文字前景使用单独设计的较亮紫色。
   await expect(page.getByTestId('global-primary')).toHaveCSS(
     'background-color',

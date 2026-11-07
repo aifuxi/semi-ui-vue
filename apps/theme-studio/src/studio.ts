@@ -10,6 +10,13 @@ import {
   type ColorMode,
 } from '@aifuxi/semi-theme-default/colors';
 
+/** 目录在构建时固定，名称查找复用同一索引。 */
+const tokenByName = new Map(
+  tokens.map(
+    /** 保留完整 CSS 变量名称作为唯一键。 */
+    (token) => [token.name, token],
+  ),
+);
 /** 固定 Semi v2.102.0 的公开字体栈，不从颜色生成器推导默认主题。 */
 export const baselineFont =
   '"Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif';
@@ -114,6 +121,22 @@ export function createStudio() {
       overrides: { light: { ...overrides.light }, dark: { ...overrides.dark } },
     };
   }
+  /** 组件级只覆盖已公开的 Button 排版能力。 */
+  const buttonStyle = computed(() => ({
+    ...(settings.componentEnabled
+      ? {
+          '--semi-button-font-size': `${settings.buttonSize}px`,
+          '--semi-button-font-weight': String(settings.buttonWeight),
+          '--semi-button-line-height': `${settings.buttonLineHeight}px`,
+        }
+      : {}),
+    ...Object.fromEntries(
+      Object.entries(overrides[global.mode]).filter(
+        /** 单项变量编辑优先于便捷排版设置，保证检查器与真实按钮一致。 */
+        ([name]) => name.startsWith('--semi-button-'),
+      ),
+    ),
+  }));
   /** 已确认文档结构供导入、草稿和历史共用。 */
   type StudioDocument = ReturnType<typeof documentValue>;
   /** 历史保存完整文档，避免撤销后遗留另一种模式的变量。 */
@@ -190,13 +213,7 @@ export function createStudio() {
                     : undefined);
     if (property && !CSS.supports(property, value)) throw new Error('该值不能用于此样式属性。');
     for (const match of value.matchAll(/var\(\s*(--[\w-]+)/g)) {
-      if (
-        !tokens.some(
-          /** 引用仅指向已知变量，避免拼错后静默失效。 */
-          (item) => item.name === match[1],
-        )
-      )
-        throw new Error(`找不到引用变量 ${match[1]}。`);
+      if (!tokenByName.has(match[1]!)) throw new Error(`找不到引用变量 ${match[1]}。`);
       if (match[1] === token.name) throw new Error('变量不能引用自身。');
     }
     /** RGB 通道 token 需要三个 0–255 通道，不能当作完整 HEX 写入。 */
@@ -238,7 +255,6 @@ export function createStudio() {
   }
   /** 单项编辑经过校验后进入对应模式；默认值用删除覆盖表达。 */
   function setToken(token: TokenDefinition, value: string): void {
-    validateToken(token, value);
     validateReferences({ ...overrides[global.mode], [token.name]: value }, global.mode);
     overrides[global.mode][token.name] = value.trim();
     message.value = '';
@@ -254,10 +270,7 @@ export function createStudio() {
       if (path.has(name)) throw new Error('变量引用形成循环，请选择其他变量。');
       if (done.has(name)) return resolved.get(name)!;
       /** 目录保证每个进入此函数的变量都已存在。 */
-      const definition = tokens.find(
-        /** 引用名称经过 validateToken 白名单校验。 */
-        (item) => item.name === name,
-      );
+      const definition = tokenByName.get(name);
       if (!definition) throw new Error(`找不到引用变量 ${name}。`);
       /** 当前文档覆盖优先于品牌生成结果和固定默认值。 */
       const current =
@@ -266,6 +279,7 @@ export function createStudio() {
         (mode === 'dark'
           ? (definition.darkValue ?? definition.defaultValue)
           : definition.defaultValue);
+      validateToken(definition, current);
       /** 路径分别复制，兄弟分支共享同一引用不算循环。 */
       const nextPath = new Set(path).add(name);
       for (const match of current.matchAll(/var\(\s*(--[\w-]+)/g)) visit(match[1]!, nextPath);
@@ -275,7 +289,7 @@ export function createStudio() {
         /** 子路径已完成循环检测，返回同模式的解析结果。 */
         (_match, target: string) => resolved.get(target)!,
       );
-      validateToken(definition, output);
+      if (output !== current) validateToken(definition, output);
       resolved.set(name, output);
       done.add(name);
       return output;
@@ -345,7 +359,7 @@ export function createStudio() {
     for (const token of tokens) {
       if (!(token.name in values) || !token.bindings) continue;
       for (const binding of token.bindings) {
-        // 每个逗号分隔选择器都必须带边界，避免未限定分支污染编辑器与默认对照。
+        // 每个逗号分隔选择器都必须带边界，避免影响工作台之外的界面。
         for (const selector of binding.selector.split(',')) {
           /** 同一条规则用于在线预览和 CSS 导出，响应式值不固化为当前窗口尺寸。 */
           const rule = `${scope} ${selector.trim()} { ${binding.property}: var(${token.name}); }`;
@@ -456,12 +470,8 @@ export function createStudio() {
       if (!isRecord(items)) throw new Error('模式变量配置无效。');
       for (const [name, cssValue] of Object.entries(items)) {
         /** 文件只能包含本工具实际支持的变量。 */
-        const token = tokens.find(
-          /** 按完整 CSS 变量名称匹配。 */
-          (item) => item.name === name,
-        );
+        const token = tokenByName.get(name);
         if (!token || typeof cssValue !== 'string') throw new Error(`不支持的变量 ${name}。`);
-        validateToken(token, cssValue);
       }
       validateReferences(items as Record<string, string>, mode as ColorMode);
     }
@@ -535,7 +545,7 @@ export function createStudio() {
       message.value = '无法读取草稿，请使用 JSON 导入。';
     }
   }
-  /** CSS 只选择工作台的两个预览边界，并输出公开 API 提供的双模式载体。 */
+  /** CSS 选择整个工作台和独立局部边界，输出公开 API 提供的双模式载体。 */
   const css = computed(() => {
     /** 逐边界生成普通 CSS，固定基线分支不序列化颜色。 */
     return (
@@ -601,6 +611,7 @@ export function createStudio() {
     globalTheme,
     localTheme,
     css,
+    buttonStyle,
     reset,
     overrides,
     selection,
@@ -623,8 +634,8 @@ export function createStudio() {
 }
 /** 跨面板共享当前应用的会话，不依赖 docs 或全局单例。 */
 export type Studio = ReturnType<typeof createStudio>;
-/** 注入标识只在本应用内可见。 */
-export const studioKey: InjectionKey<Studio> = Symbol('theme-studio');
+/** 热更新模块后保持注入标识稳定，避免旧组件丢失当前工作台会话。 */
+export const studioKey: InjectionKey<Studio> = Symbol.for('theme-studio');
 /** 子面板获取 App 创建的会话；缺少 Provider 是应用编程错误。 */
 export function useStudio(): Studio {
   /** 每个工作台实例独立提供状态。 */

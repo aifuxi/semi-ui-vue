@@ -75,8 +75,8 @@ test.afterEach(async ({ page }) => {
   expect(errorsByPage.get(page)).toEqual([]);
 });
 
-/** 语义色必须作用到实际组件，搜索与错误输入不能污染固定对照。 */
-test('搜索并编辑公开语义颜色，默认对照保持独立', async ({ page }) => {
+/** 语义色必须作用到实际组件，错误输入保持上一次有效主题。 */
+test('搜索并编辑公开语义颜色，界面与预览同步', async ({ page }) => {
   await expect(page).toHaveTitle('Theme Studio');
   await expect(page.locator('body')).not.toContainText(/AIFUXI|@aifuxi/);
   await selectToken(page, '色盘', '--semi-color-primary');
@@ -85,10 +85,7 @@ test('搜索并编辑公开语义颜色，默认对照保持独立', async ({ pa
     'background-color',
     'rgb(232, 89, 12)',
   );
-  await expect(page.getByTestId('baseline-primary')).toHaveCSS(
-    'background-color',
-    baselinePrimary.light,
-  );
+
   await expect(page.locator('.variable-row[aria-label="--semi-color-primary"]')).toContainText(
     '#e8590c',
   );
@@ -106,7 +103,7 @@ test('搜索并编辑公开语义颜色，默认对照保持独立', async ({ pa
 test('深浅模式的颜色覆盖独立保存并跟随切换', async ({ page }) => {
   await selectToken(page, '色盘', '--semi-color-primary');
   await applyValue(page, '#e8590c');
-  await page.getByRole('switch', { name: '工作区深色模式', exact: true }).check();
+  await page.getByRole('switch', { name: '全局深色模式', exact: true }).check();
   await expect(page.getByTestId('global-primary')).toHaveCSS(
     'background-color',
     baselinePrimary.dark,
@@ -116,7 +113,7 @@ test('深浅模式的颜色覆盖独立保存并跟随切换', async ({ page }) 
     'background-color',
     'rgb(0, 166, 150)',
   );
-  await page.getByRole('switch', { name: '工作区深色模式', exact: true }).uncheck();
+  await page.getByRole('switch', { name: '全局深色模式', exact: true }).uncheck();
   await expect(page.getByRole('textbox', { name: 'CSS 变量值', exact: true })).toHaveValue(
     '#e8590c',
   );
@@ -124,14 +121,10 @@ test('深浅模式的颜色覆盖独立保存并跟随切换', async ({ page }) 
     'background-color',
     'rgb(232, 89, 12)',
   );
-  await page.getByRole('switch', { name: '工作区深色模式', exact: true }).check();
+  await page.getByRole('switch', { name: '全局深色模式', exact: true }).check();
   await expect(page.getByTestId('global-primary')).toHaveCSS(
     'background-color',
     'rgb(0, 166, 150)',
-  );
-  await expect(page.getByTestId('baseline-primary')).toHaveCSS(
-    'background-color',
-    baselinePrimary.light,
   );
 });
 
@@ -182,10 +175,7 @@ test('基础色阶通道沿引用更新主色且拒绝超范围 RGB', async ({ p
     'background-color',
     'rgb(10, 120, 130)',
   );
-  await expect(page.getByTestId('baseline-primary')).toHaveCSS(
-    'background-color',
-    baselinePrimary.light,
-  );
+
   await applyValue(page, '999, 0, 0');
   await expect(page.getByRole('alert')).toContainText('0–255');
   await expect(page.getByTestId('global-primary')).toHaveCSS(
@@ -195,11 +185,11 @@ test('基础色阶通道沿引用更新主色且拒绝超范围 RGB', async ({ p
 });
 
 /** 公共圆角和工作台私有组件适配必须改变真实组件，而非仅更新色样或变量表。 */
-test('公共圆角与组件私有尺寸覆盖作用于按钮且不影响默认对照', async ({ page }) => {
+test('公共圆角与组件私有尺寸覆盖作用于真实按钮', async ({ page }) => {
   await selectToken(page, '圆角', '--semi-border-radius-small');
   await applyValue(page, '15px');
   await expect(page.getByTestId('global-primary')).toHaveCSS('border-radius', '15px');
-  await expect(page.getByTestId('baseline-primary')).toHaveCSS('border-radius', '3px');
+
   await page.getByRole('button', { name: '组件样式定制', exact: true }).click();
   await page.getByRole('button', { name: '编辑默认按钮高度', exact: true }).click();
   await expect(page.locator('.token-inspector')).toContainText('--studio-height-button-default');
@@ -211,7 +201,6 @@ test('公共圆角与组件私有尺寸覆盖作用于按钮且不影响默认�
   await expect(
     page.getByTestId('component-gallery').getByRole('button', { name: '小尺寸', exact: true }),
   ).toHaveCSS('height', '24px');
-  await expect(page.getByTestId('baseline-primary')).toHaveCSS('height', '32px');
 });
 
 /** 导出与导入走真实文件操作，草稿恢复走本地持久化；二者都应恢复主题效果。 */
@@ -257,10 +246,6 @@ test('CSS 与 JSON 下载、JSON 往返和已保存草稿恢复保持设计值',
     'background-color',
     'rgb(232, 89, 12)',
   );
-  await expect(page.getByTestId('baseline-primary')).toHaveCSS(
-    'background-color',
-    baselinePrimary.light,
-  );
 });
 
 /** 文件必须完整校验后原子应用，后面一项错误不能让前面的合法值部分生效。 */
@@ -296,10 +281,6 @@ test('无效 JSON、未知变量和无效颜色导入均不污染当前主题', 
   await expect(page.getByTestId('global-primary')).toHaveCSS(
     'background-color',
     'rgb(232, 89, 12)',
-  );
-  await expect(page.getByTestId('baseline-primary')).toHaveCSS(
-    'background-color',
-    baselinePrimary.light,
   );
 });
 

@@ -39,7 +39,7 @@ async function number(page: Page, label: string, value: number): Promise<void> {
 /** 比较全局主题所有权，忽略 Modal 正常的滚动锁属性。 */
 async function rootTheme(page: Page) {
   return page.locator('body').evaluate(
-    /** 工作台只能更改预览边界，不能污染 body 或 html。 */
+    /** 工作台拥有独立主题根，不改写 body 或 html。 */
     (body) => ({
       mode: body.getAttribute('theme-mode'),
       scope: body.getAttribute('data-semi-theme'),
@@ -50,15 +50,11 @@ async function rootTheme(page: Page) {
   );
 }
 
-/** 固定对照在品牌、模式、共享排版和组件覆盖变化后都保持默认值。 */
+/** 工作台不再常驻显示固定浅色对照。 */
 async function expectBaseline(page: Page): Promise<void> {
-  await expect(page.getByTestId('baseline-primary')).toHaveCSS(
-    'background-color',
-    baselinePrimary.light,
+  await expect(page.getByRole('complementary', { name: '默认主题对照', exact: true })).toHaveCount(
+    0,
   );
-  await expect(page.getByTestId('baseline-primary')).toHaveCSS('font-size', '14px');
-  await expect(page.getByTestId('baseline-text')).toHaveCSS('line-height', '20px');
-  await expect(page.getByTestId('baseline-title')).toHaveCSS('font-size', '20px');
 }
 
 /** 桌面与移动端均以实际布局宽度验收，不能用隐藏整块预览制造通过。 */
@@ -70,8 +66,9 @@ async function expectNoOverflow(page: Page): Promise<void> {
     ),
   ).toBe(true);
   await expect(page.getByTestId('global-card')).toBeVisible();
-  await expect(page.getByTestId('local-card')).toBeVisible();
-  await expect(page.getByTestId('baseline-card')).toBeVisible();
+  // 局部主题仅在主动选择其编辑或预览入口时显示。
+  if (await page.getByTestId('local-card').count())
+    await expect(page.getByTestId('local-card')).toBeVisible();
 }
 
 /** 每例捕获客户端未处理异常，使页面错误不能被样式断言掩盖。 */
@@ -95,8 +92,8 @@ test.afterEach(async ({ page }) => {
 });
 
 /** 固定默认、生成品牌、非法 HEX 与无色相错误都是公开可观察行为。 */
-test('品牌预设、HEX 和模式实时生效且默认基线保持固定', async ({ page }) => {
-  /** 全局主题不应被编辑面板接管。 */
+test('品牌预设、HEX 和模式实时生效且可复原固定基线', async ({ page }) => {
+  /** body/html 不属于工作台主题边界。 */
   const before = await rootTheme(page);
   /** 实心按钮证明组件真正消费 primary 语义。 */
   const button = page.getByTestId('global-primary');
@@ -226,7 +223,7 @@ test('局部边界隔离主题并在关闭后恢复自然继承', async ({ page 
   await expect(link).toHaveCount(0);
 });
 
-/** 提示始终保持打开，编辑面板位于预览边界外，防止 DOM 继承碰巧满足断言。 */
+/** 提示始终保持打开，通过 body Portal 验证主题桥接。 */
 test('默认 Tooltip 打开时同步外侧品牌、模式与排版编辑', async ({ page }) => {
   /** 主题之外的页面属性必须在整个编辑周期保持原样。 */
   const before = await rootTheme(page);

@@ -6,7 +6,7 @@ async function prepare(page: Page, dark: boolean, effects: boolean): Promise<voi
   await page.goto('/#/tokens');
   await page.getByRole('button', { name: '应用迭鹿预设', exact: true }).click();
   await page.getByRole('button', { name: '应用排版与前景', exact: true }).click();
-  await page.getByRole('switch', { name: '工作区深色模式', exact: true }).setChecked(dark);
+  await page.getByRole('switch', { name: '全局深色模式', exact: true }).setChecked(dark);
   if (effects) await page.getByRole('button', { name: '应用阴影与交互', exact: true }).click();
   await page.getByRole('button', { name: '主题预览', exact: true }).click();
   await page.getByRole('button', { name: '阴影与交互', exact: true }).click();
@@ -125,11 +125,6 @@ for (const dark of [false, true]) {
     await expect(page.getByRole('textbox', { name: '交互只读输入', exact: true })).toHaveAttribute(
       'readonly',
       '',
-    );
-    await expect(page.getByTestId('local-primary')).not.toHaveCSS('transition-duration', '0.15s');
-    await expect(page.getByTestId('baseline-primary')).not.toHaveCSS(
-      'transition-duration',
-      '0.15s',
     );
   });
 }
