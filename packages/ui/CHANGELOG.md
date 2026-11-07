@@ -1,5 +1,35 @@
 # @aifuxi/semi-ui-vue
 
+## 2.1.0
+
+### Minor Changes
+
+- [#32](https://github.com/aifuxi/semi-ui-vue/pull/32) [`da74d73`](https://github.com/aifuxi/semi-ui-vue/commit/da74d73f689c02f9eaf4126b0c5178771ed44b2a) Thanks [@aifuxi](https://github.com/aifuxi)! - 增加独立的颜色生成器公开入口，提供与固定 Semi DSM 算法结果一致的单色阶和全色盘生成、双模式语义主题及普通 CSS 输出。支持局部主题、强制深浅模式和弹层颜色继承，消费者无需 Sass 或专用构建插件；默认主题继续保持固定 Semi v2.102.0 基线。
+
+- [#32](https://github.com/aifuxi/semi-ui-vue/pull/32) [`c5575dd`](https://github.com/aifuxi/semi-ui-vue/commit/c5575ddd2866ee556099478c06a5c49245afe310) Thanks [@aifuxi](https://github.com/aifuxi)! - 提供字体、字号、字重及行高的公开 CSS 主题变量，默认排版保持 Semi v2.102.0 基线。支持局部主题、默认弹层的排版继承，以及主题和字体变化后的 Typography 省略重算；用户定制主题无需 Sass 或专用构建插件。
+
+### Patch Changes
+
+- [#32](https://github.com/aifuxi/semi-ui-vue/pull/32) [`c828384`](https://github.com/aifuxi/semi-ui-vue/commit/c8283848ca186305c1ab1b521e471725f5ba4f25) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Dropdown 未提供可选 Boolean 参数时将 false 透传给 Tooltip、关闭默认防溢出的问题。未传或显式 undefined 的 autoAdjustOverflow 继续使用全局覆盖与下层默认值，保留显式 false，并支持运行时参数切换。
+
+- [#32](https://github.com/aifuxi/semi-ui-vue/pull/32) [`69ed5de`](https://github.com/aifuxi/semi-ui-vue/commit/69ed5de357f94188fc47f4fc47cbff2a8d7fbf13) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Form.ErrorMessage 将空字符串错误转换为 true、在无错误时显示红色图标的问题；对齐 React Semi v2.102.0 的空值、帮助文案及布尔错误显示契约，并保持错误清除和再次显示同步。
+
+- [#32](https://github.com/aifuxi/semi-ui-vue/pull/32) [`11a6791`](https://github.com/aifuxi/semi-ui-vue/commit/11a67915f6f35f72a349ed59902372106a1f70a1) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复多实例和嵌套 Modal 共用标题、正文 ID 导致可访问名称与描述错误关联的问题。每个弹窗引用自身节点，命令式弹窗使用独立 app ID 前缀，SSR/hydration 保持关联稳定；无标题或自定义 header 时不再输出悬空的标准标题引用。
+
+- [#32](https://github.com/aifuxi/semi-ui-vue/pull/32) [`27f9fd5`](https://github.com/aifuxi/semi-ui-vue/commit/27f9fd55ca4a17fefe861b0f14f31c689010f9f6) Thanks [@aifuxi](https://github.com/aifuxi)! - 对齐 React Semi v2.102.0 的 TimePicker 专用弹层前缀，移除明暗主题下额外套用的 Popover 阴影、背景和圆角，保留原版时间范围列表的固定阴影。
+
+  选中时间居中时仅纵向滚动当前时间列，避免范围面板被连带横向滚动而产生 1px 内容偏移。
+
+- [#32](https://github.com/aifuxi/semi-ui-vue/pull/32) [`5d5daed`](https://github.com/aifuxi/semi-ui-vue/commit/5d5daed74283bd66661e337701b6a2667661989e) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复普通 Typography 字重覆盖 Upload 文件名强调的级联回归。
+
+  通过固定 Semi 基线的实际深浅模式与尺寸、状态对照，修复日期选择器面板、Select 加载指示、Cascader 初始展开、Tree 加载与虚拟布局、Table 选择禁用、虚拟列宽及分组标题、AI 输入菜单宽度与模板图标、AI 对话删除菜单、Sidebar 链接状态、Chat 默认 Markdown 排版及样式依赖、JSON 搜索焦点与音视频音量轨道尺寸差异。
+
+- Updated dependencies [[`da74d73`](https://github.com/aifuxi/semi-ui-vue/commit/da74d73f689c02f9eaf4126b0c5178771ed44b2a), [`c5575dd`](https://github.com/aifuxi/semi-ui-vue/commit/c5575ddd2866ee556099478c06a5c49245afe310), [`5d5daed`](https://github.com/aifuxi/semi-ui-vue/commit/5d5daed74283bd66661e337701b6a2667661989e)]:
+  - @aifuxi/semi-theme-default@2.1.0
+  - @aifuxi/semi-icons-vue@2.1.0
+  - @aifuxi/semi-icons-lab-vue@2.1.0
+  - @aifuxi/semi-illustrations-vue@2.1.0
+
 ## 2.0.3
 
 ### Patch Changes
