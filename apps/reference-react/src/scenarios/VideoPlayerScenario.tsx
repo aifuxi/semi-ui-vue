@@ -54,6 +54,8 @@ export function VideoPlayerScenario({
   const popupContainerRef = useRef<HTMLDivElement | null>(null);
   if (typeof document !== 'undefined' && popupContainerRef.current === null) {
     popupContainerRef.current = document.createElement('div');
+    // Tooltip 按容器计算局部坐标，Portal 容器需建立定位上下文。
+    popupContainerRef.current.style.position = 'relative';
     popupContainerRef.current.dataset.testid = 'video-player-popup-reference';
     document.body.appendChild(popupContainerRef.current);
   }

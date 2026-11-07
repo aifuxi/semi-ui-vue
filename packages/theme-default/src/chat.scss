@@ -2,6 +2,14 @@
 @import '../../../vendor/semi-design/packages/semi-theme-default/scss/index.scss';
 @import '../../../vendor/semi-design/packages/semi-theme-default/scss/global.scss';
 @import '../../../vendor/semi-design/packages/semi-foundation/button/button.scss';
+// Chat 默认 Markdown 与加载入口需要这些真实组件样式；模块化消费不能依赖预览全量 CSS。
+@import '../../../vendor/semi-design/packages/semi-foundation/button/iconButton.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/typography/typography.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/table/table.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/pagination/pagination.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/codeHighlight/codeHighlight.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/markdownRender/markdownRender.scss';
+@import '../../../vendor/semi-design/packages/semi-foundation/spin/spin.scss';
 @import '../../../vendor/semi-design/packages/semi-foundation/input/input.scss';
 @import '../../../vendor/semi-design/packages/semi-foundation/input/textarea.scss';
 @import '../../../vendor/semi-design/packages/semi-foundation/avatar/avatar.scss';

@@ -13,6 +13,110 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
+for (const theme of ['light', 'dark'] as const) {
+  /** 结构分支实际渲染后逐帧比较固定参考，补齐普通三行表格看不到的布局。 */
+  test(`Table 展开、树、分组、虚拟及列伸缩结构：${theme}`, async ({ context }) => {
+    /** 两端复用相同工作台及主题，后续仅更换公开 props query。 */
+    const pair = await openParityPages(context, {
+      scenarioId: 'table',
+      theme,
+      direction: 'ltr',
+      locale: 'zh-CN',
+    });
+    /** 捕获真实 Table 根区域，直接对照固定 Semi，避免建立 Vue 自身基线。 */
+    async function compare(): Promise<void> {
+      /** 页面字体准备与布局由 screenshot 的稳定检查处理。 */
+      const react = await pair.react.page
+        .locator('.table-scenario')
+        .screenshot({ animations: 'disabled' });
+      /** 相同区域保留虚拟表格右侧留白，可发现外框错误拉伸。 */
+      const vue = await pair.vue.page
+        .locator('.table-scenario')
+        .screenshot({ animations: 'disabled' });
+      await expectScreenshotPixelsToMatch(pair.react.page, vue, react);
+    }
+    for (const variant of ['expanded', 'tree', 'group', 'virtual', 'resizable']) {
+      for (const page of [pair.react.page, pair.vue.page]) {
+        /** 同一数据、列宽和展开状态均由两端实际组件管理。 */
+        const url = new URL(page.url());
+        url.searchParams.set('reviewVariant', variant);
+        await page.goto(url.toString());
+        await expect(page.locator('.table-scenario')).toBeVisible();
+      }
+      await compare();
+      if (variant === 'virtual') {
+        for (const page of [pair.react.page, pair.vue.page]) {
+          /** 数值 scroll.x=560 应约束整个虚拟外框，表体列宽保持50/220/120/160。 */
+          await expect(page.locator('.table-scenario .semi-table-wrapper')).toHaveCSS(
+            'width',
+            '560px',
+          );
+          /** 浏览器原生滚动触发真实窗口切换，不能只验首屏。 */
+          await page
+            .locator('.table-scenario .semi-table-body')
+            .evaluate((body) => body.scrollTo({ top: body.scrollHeight }));
+          await expect(
+            page.locator('.table-scenario .semi-table-tbody').getByText('资源 40', { exact: true }),
+          ).toBeVisible();
+        }
+        await compare();
+      } else if (variant === 'resizable') {
+        for (const page of [pair.react.page, pair.vue.page]) {
+          /** 第二个句柄是资源名称列；两端都实际拖宽80px。 */
+          const handle = await page
+            .locator('.table-scenario .react-resizable-handle')
+            .nth(1)
+            .boundingBox();
+          if (!handle) throw new Error('Table resize handle is missing');
+          await page.mouse.move(handle.x + handle.width / 2, handle.y + handle.height / 2);
+          await page.mouse.down();
+          await page.mouse.move(handle.x + handle.width / 2 + 80, handle.y + handle.height / 2, {
+            steps: 5,
+          });
+          await page.mouse.up();
+        }
+        await compare();
+      } else {
+        for (const page of [pair.react.page, pair.vue.page]) {
+          await page.locator('.table-scenario .semi-table-expand-icon').first().click();
+        }
+        await compare();
+      }
+    }
+  });
+
+  /** 全局 disabled 只关闭全选，不改变各行 Checkbox 的禁用层级或半选外观。 */
+  test(`Table 全选禁用保留半选及行选择：${theme}`, async ({ context }) => {
+    /** 同一 query 为固定 React 和 Vue 注入真实 rowSelection.disabled。 */
+    const pair = await openParityPages(context, {
+      scenarioId: 'table',
+      theme,
+      direction: 'ltr',
+      locale: 'zh-CN',
+    });
+    for (const page of [pair.react.page, pair.vue.page]) {
+      /** 默认场景不变，仅此回归打开专项状态。 */
+      const url = new URL(page.url());
+      url.searchParams.set('reviewState', 'disabled');
+      await page.goto(url.toString());
+      /** 选择列应保持首行选中、表头半选，而非所有行都变灰。 */
+      const table = page.locator('[data-parity-target="table-basic"]');
+      await expect(table.locator('thead input[type="checkbox"]')).toBeDisabled();
+      await expect(table.locator('thead .semi-checkbox')).toHaveClass(
+        /semi-checkbox-indeterminate/,
+      );
+      for (const checkbox of await table.locator('tbody input[type="checkbox"]').all()) {
+        await expect(checkbox).toBeEnabled();
+      }
+    }
+    /** 像素比较直接锁定固定组件外观，不为该状态建立 Vue 自身快照。 */
+    const reactScreenshot = await pair.react.page.locator('.table-scenario').screenshot();
+    /** 两端实际截图同时验证禁用透明度、半选标记和行颜色。 */
+    const vueScreenshot = await pair.vue.page.locator('.table-scenario').screenshot();
+    await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
+  });
+}
+
 test('Table 参考场景来自本地 v2.102.0 并保留表格、选择与滚动契约', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];

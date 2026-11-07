@@ -38,6 +38,8 @@ const prefixCls = 'semi-json-viewer';
 function handleSearchChange(value: string): void {
   searchValue.value = value;
   if (!isComposing.value) emit('search', value);
+  // 固定 Semi 会在核心更新搜索高亮后把焦点还给查找框，允许连续输入。
+  void nextTick(() => searchInputRef.value?.focus());
 }
 
 function handleCompositionStart(): void {

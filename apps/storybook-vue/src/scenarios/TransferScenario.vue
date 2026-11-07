@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { Transfer } from '@aifuxi/semi-ui-vue/transfer';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
+
+/** 加载和禁用直接进入 Transfer API，默认不增加任何属性。 */
+const reviewProps = readInputReviewProps(['disabled', 'loading']);
 
 const data = [
   { key: 'design', label: 'Design', value: 'design' },
@@ -14,6 +18,7 @@ const data = [
 <template>
   <div class="transfer-scenario" data-testid="transfer-vue">
     <Transfer
+      v-bind="reviewProps"
       data-parity-target="transfer-root"
       :data-source="data"
       :default-value="['design', 'product']"

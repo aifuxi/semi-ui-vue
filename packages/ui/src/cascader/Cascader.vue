@@ -167,7 +167,8 @@ interface CascaderState {
 
 const state = shallowReactive<CascaderState>({
   emptyContentMinWidth: null,
-  isOpen: false,
+  // 固定 Semi 在构造阶段保留 defaultOpen，禁用只阻止后续交互。
+  isOpen: props.defaultOpen,
   rePosKey: 0,
   keyEntities: {},
   selectedKeys: new Set(),

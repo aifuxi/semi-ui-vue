@@ -3,6 +3,10 @@ import { shallowRef } from 'vue';
 import { Numeral, Paragraph, Text, Title } from '@aifuxi/semi-ui-vue/typography';
 const query = new URLSearchParams(typeof window === 'undefined' ? '' : window.location.search);
 const tipMode = query.get('typographyTip');
+/** 额外排版维度只在审查时显示，默认验收场景保持原样。 */
+const review = query.has('reviewTypography');
+const headings = [1, 2, 3, 4, 5, 6] as const;
+const weights = ['light', 'regular', 'medium', 'semibold', 'bold'] as const;
 const wide = shallowRef(false);
 const textMounted = shallowRef(true);
 const tipOptions = tipMode
@@ -18,6 +22,26 @@ const tipOptions = tipMode
 
 <template>
   <div class="typography-scenario" data-testid="typography-vue">
+    <section v-if="review" class="typography-scenario__section" aria-label="完整排版审查">
+      <Title v-for="heading in headings" :key="heading" :heading="heading" style="margin: 0"
+        >Heading {{ heading }} 标题</Title
+      >
+      <Title v-for="weight in weights" :key="weight" :heading="6" :weight="weight" style="margin: 0"
+        >{{ weight }} 字重</Title
+      >
+      <Text size="small">Small 小号文本</Text>
+      <Text size="normal">Normal 正常文本</Text>
+      <div style="font-size: 20px; line-height: 32px">
+        <Text size="inherit">Inherit 继承文本</Text>
+      </div>
+      <Text mark>Mark 标记</Text><Text code>Code 代码</Text><Text strong>Strong 加粗</Text
+      ><Text underline>Underline 下划线</Text><Text delete>Delete 删除线</Text
+      ><Text disabled>Disabled 禁用</Text>
+      <Paragraph :ellipsis="{ rows: 2, expandable: true }" style="width: 260px"
+        >这是一段用于检查两行省略和展开状态的长文本。Typography provides readable rhythm and
+        consistent hierarchy across product content. 展开后应显示完整内容。</Paragraph
+      >
+    </section>
     <section class="typography-scenario__section" aria-label="标题层级">
       <Title :heading="2" style="margin: 0px" data-parity-target="typography-title">
         Typography 版式

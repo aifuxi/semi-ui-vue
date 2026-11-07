@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, shallowRef } from 'vue';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 import {
   Select,
   SelectOption,
@@ -10,6 +11,8 @@ import {
 const host = shallowRef<HTMLElement | null>(null);
 const ready = shallowRef(false);
 const lastValue = shallowRef('none');
+/** query 与 React 一致，使用真实公开 API 补足尺寸与状态审查。 */
+const reviewProps = readInputReviewProps(['size', 'disabled', 'validateStatus', 'loading']);
 
 onMounted(() => {
   ready.value = true;
@@ -29,6 +32,7 @@ function handleChange(value: SelectModelValue): void {
         <h3>基础选择</h3>
         <div class="select-scenario__row">
           <Select
+            v-bind="reviewProps"
             default-value="douyin"
             :style="{ width: '160px' }"
             data-parity-target="select-basic"

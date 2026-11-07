@@ -7,6 +7,7 @@ import { Popconfirm } from '@aifuxi/semi-ui-vue/popconfirm';
 import type { ParityDirection } from '@workspace/test-infra';
 
 const props = defineProps<{ direction: ParityDirection }>();
+const loading = new URLSearchParams(window.location.search).get('popconfirmLoading') === 'true';
 const host = useTemplateRef<HTMLDivElement>('host');
 const defaultVisible = shallowRef(true);
 const getPopupContainer = () => host.value ?? document.body;
@@ -18,6 +19,7 @@ const getPopupContainer = () => host.value ?? document.body;
       <div v-if="host" class="popconfirm-scenario__triggers">
         <Popconfirm
           v-model:visible="defaultVisible"
+          :ok-button-props="{ loading }"
           class="popconfirm-scenario__default"
           content="This change cannot be undone."
           :get-popup-container="getPopupContainer"
@@ -29,6 +31,7 @@ const getPopupContainer = () => host.value ?? document.body;
           <Button data-parity-target="popconfirm-trigger-default">Default</Button>
         </Popconfirm>
         <Popconfirm
+          :ok-button-props="{ loading }"
           cancel-text="Back"
           class="popconfirm-scenario__danger"
           content="The selected record will be removed."

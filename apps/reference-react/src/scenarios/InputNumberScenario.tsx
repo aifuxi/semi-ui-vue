@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import InputNumber from '@semi-v2.102.0/input-number';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 export function InputNumberScenario(): React.ReactElement {
+  /** 第一个输入框用于双端查看真实尺寸、只读和校验状态。 */
+  const reviewProps = readInputReviewProps(['size', 'disabled', 'readOnly', 'validateStatus']);
   const [lastValue, setLastValue] = useState('none');
 
   return (
@@ -12,6 +15,7 @@ export function InputNumberScenario(): React.ReactElement {
           <label>
             基础
             <InputNumber
+              {...reviewProps}
               defaultValue={1}
               className="input-number-target-basic"
               data-parity-target="input-number-basic"

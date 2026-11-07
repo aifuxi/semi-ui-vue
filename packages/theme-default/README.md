@@ -92,6 +92,7 @@ R-000072 为字体、字号、字重和行高提供公开 CSS 自定义属性。
 - 有组件独立语义的原变量提供对应 CSS 覆盖，例如 `--semi-button-font-size`、`--semi-button-font-weight`、`--semi-button-line-height`、`--semi-table-base-font-size`。原组件变量中的下划线转为短横线、camelCase 转为 kebab-case，例如 Button small 字号为 `--semi-button-small-font-size`。
 - 组件覆盖优先于共享变量，Button 尺寸级覆盖又优先于通用 Button 覆盖。组件消费处建立 fallback，不在根节点预先计算组件别名，因此局部覆盖能正确继承。
 - 直接的组件样式、数值型 `weight` 和命名字重保留现有优先级；同一元素上的变量声明仍遵循正常 CSS 级联，不需要 `!important`。数值型 `weight` 继续覆盖同一 Typography 的 `style.fontWeight`。
+- 普通 Text 的可选字重使用零优先级选择器，避免覆盖同一节点上的组件语义样式。例如 Upload 文件名仍使用自身的 `600`，不因 Typography 样式后加载而退回父级字重。
 - Input/Select 用于垂直对齐的行高继续由控件尺寸决定；正文行高不会改变控件高度、图标尺寸或点击区域。代码块等具有独立排版的区域也保留原默认行高。
 - Modal 的实际标题沿用原版 `Typography.Title heading=5`，默认 `18px/24px`，消费 header-5 排版变量；header 容器原有的 `14px` 并不是标题最终字号。
 

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { Form } from '@aifuxi/semi-ui-vue/form';
 import { ref } from 'vue';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
+
+/** 与 React 一致，经字段集成层查看真实输入排版。 */
+const reviewProps = readInputReviewProps(['size', 'disabled', 'readOnly']);
 
 // 动态错误初始值与 React 相同，保留快捷编辑直接传空字符串的用法。
 const error = ref('');
@@ -31,6 +35,7 @@ function clearError(): void {
   <div class="form-scenario" data-testid="form-vue">
     <Form class-name="form-scenario__form">
       <Form.Input
+        v-bind="reviewProps"
         data-parity-target="form-name"
         field="name"
         label="名称"

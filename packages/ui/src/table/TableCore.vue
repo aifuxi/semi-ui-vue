@@ -3,7 +3,9 @@ import {
   computed,
   getCurrentInstance,
   inject,
+  isVNode,
   nextTick,
+  normalizeStyle,
   onBeforeUnmount,
   onMounted,
   shallowRef,
@@ -501,9 +503,11 @@ const selectionEntities = computed(() => {
   return entities;
 });
 
+/** 参与全选/关联选择计算的禁用集合仅由逐行 Checkbox 配置决定。 */
 function selectionEntityDisabled(entity: SelectionEntity): boolean {
+  /** rowSelection.disabled 只限制表头全选和 clickRow，不改变行选择集合。 */
   const config = rowSelection.value;
-  return Boolean(config && (config.disabled || config.getCheckboxProps?.(entity.record).disabled));
+  return Boolean(config && config.getCheckboxProps?.(entity.record).disabled);
 }
 
 const halfSelectedKeys = computed(() => {
@@ -852,6 +856,7 @@ function measureTableWidth(): void {
     measuredTableWidth.value = width;
 }
 
+/** 按固定 TableHeaderRow.cacheRef 优先缓存数值列宽，未指定时才读取实际表头几何。 */
 function measureHeaderWidths(): void {
   if ((!anyFixed.value && !props.virtualized) || !wrapperRef.value) return;
   const head = wrapperRef.value.querySelector(`.${prefix.value}-thead`);
@@ -859,8 +864,13 @@ function measureHeaderWidths(): void {
   const widths = new Map<TableRowKey, number>();
   [...head.children].forEach((row, rowIndex) => {
     const cells = row.querySelectorAll(`.${prefix.value}-row-head`);
+    /** 声明数值宽度不能被浏览器为填满表头分摊的剩余宽度替换。 */
     headerRows.value[rowIndex]?.forEach(({ column }, index) => {
-      const width = cells[index]?.getBoundingClientRect().width;
+      const configuredWidth = column.__width ?? column.width;
+      const width =
+        typeof configuredWidth === 'number'
+          ? configuredWidth
+          : cells[index]?.getBoundingClientRect().width;
       if (width) widths.set(column.key, width);
     });
   });
@@ -957,6 +967,18 @@ const tableStyle = computed<StyleValue>(() => ({
 const rootDataAttrs = computed(() =>
   Object.fromEntries(Object.entries(attrs).filter(([key]) => key.startsWith('data-'))),
 );
+/** 固定虚拟表格以 scroll.x 约束外层宽度，显式数值 style.width 优先。 */
+const rootStyle = computed<StyleValue>(() => {
+  if (!props.virtualized) return [attrs.style as StyleValue, props.style];
+  /** normalizeStyle 仅用于读取用户合并后的数值宽度，原始 style 仍完整透传。 */
+  const merged = normalizeStyle([attrs.style, props.style]);
+  /** 固定 Table.render 对非数值宽度使用 scroll.x，不能让 min-width 拉满容器。 */
+  const width =
+    merged && typeof merged === 'object' && typeof merged.width === 'number'
+      ? merged.width
+      : props.scroll?.x;
+  return [attrs.style as StyleValue, props.style, { width: toCssSize(width) }];
+});
 const rootClass = computed(() => [
   `${prefix.value}-wrapper`,
   `${prefix.value}-wrapper-${direction.value}`,
@@ -1047,18 +1069,19 @@ function renderExpandedRow(args: {
   return slots.expandedRow?.(args);
 }
 
+/** 分组 prop 与固定 SectionRow 一样仅接受元素或 children 对象；Vue slot 保留原生节点语义。 */
 function renderGroupSection(args: { group: RecordType[]; groupKey: TableRowKey }): VNodeChild {
-  const result =
-    slots.groupSection?.(args) ??
-    props.renderGroupSection?.(
-      args.groupKey,
-      args.group.map((record) => getRecordKey(record, rowKey.value)),
-    ) ??
-    args.groupKey;
+  if (slots.groupSection) return slots.groupSection(args);
+  /** 固定 SectionRow 对字符串、数字或缺省返回值保持空白，不回退显示 groupKey。 */
+  const result = props.renderGroupSection?.(
+    args.groupKey,
+    args.group.map((record) => getRecordKey(record, rowKey.value)),
+  );
+  if (isVNode(result)) return result;
   if (result && typeof result === 'object' && !('__v_isVNode' in result) && 'children' in result) {
     return result.children as VNodeChild;
   }
-  return result as VNodeChild;
+  return null;
 }
 
 function tableComponent(
@@ -1183,7 +1206,7 @@ onBeforeUnmount(() => {
     ref="wrapper"
     :class="rootClass"
     :data-column-fixed="anyFixed"
-    :style="[attrs.style, props.style]"
+    :style="rootStyle"
   >
     <TableSpin :spinning="Boolean(props.loading)">
       <div :class="tableWrapClass">

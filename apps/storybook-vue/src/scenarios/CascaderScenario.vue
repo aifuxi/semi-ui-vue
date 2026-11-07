@@ -2,6 +2,10 @@
 import { Cascader, type CascaderData } from '@aifuxi/semi-ui-vue/cascader';
 import { ConfigProvider, type SemiLocale } from '@aifuxi/semi-ui-vue/config-provider';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
+
+/** 与固定 React 同一输入，不用 class 或内联样式模拟尺寸和校验。 */
+const reviewProps = readInputReviewProps(['size', 'disabled', 'validateStatus']);
 
 const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>();
 const treeData: CascaderData[] = [
@@ -36,6 +40,7 @@ const localeMap: Record<ParityLocale, SemiLocale> = {
   <ConfigProvider :direction="props.direction" :locale="localeMap[props.locale]">
     <div class="cascader-scenario" data-testid="cascader-vue">
       <Cascader
+        v-bind="reviewProps"
         aria-label="Cascader"
         data-parity-target="cascader-root"
         default-open

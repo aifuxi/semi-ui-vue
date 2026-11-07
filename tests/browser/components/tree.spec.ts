@@ -177,3 +177,58 @@ test('Tree React/Vue RTL 与 en-US 搜索文案、样式、几何和截图一致
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
+
+for (const theme of ['light', 'dark'] as const) {
+  /** 专项页面通过公开 props 驱动异步与虚拟状态，保护实看发现的两个回归。 */
+  test(`Tree 加载图标与虚拟滚动父容器测高一致：${theme}`, async ({ context }) => {
+    /** 两端共用固定来源与相同桌面 viewport。 */
+    const pair = await openParityPages(
+      context,
+      { scenarioId: 'tree', theme, direction: 'ltr', locale: 'zh-CN' },
+      PARITY_VIEWPORTS.desktop,
+    );
+    for (const variant of ['loading', 'virtual']) {
+      for (const entry of [pair.react, pair.vue]) {
+        /** 仅补充状态 query，保留来源、语言、主题与方向。 */
+        const url = new URL(entry.page.url());
+        url.searchParams.set('reviewTree', variant);
+        await entry.page.goto(url.toString());
+        /** 场景中的第一个树才受专项 query 影响。 */
+        const root = entry.page.locator('[data-parity-target="tree-basic"]');
+        if (variant === 'loading') {
+          await root.locator('.semi-tree-option-expand-icon').click();
+          await expect(root.locator('.semi-tree-option-spin-icon')).toHaveClass(/semi-spin-middle/);
+          await expect(root.locator('.semi-tree-option-spin-icon svg linearGradient')).toHaveCount(
+            1,
+          );
+          // 固定旋转相位，只消除不同时启动的动画时间差。
+          await entry.page.addStyleTag({
+            content:
+              '.semi-tree-option-spin-icon svg { animation: none !important; transform: rotate(0deg) !important; }',
+          });
+        } else {
+          await expect(root.locator('.semi-tree-auto-wrapper')).toHaveCount(1);
+          // 包装层保持默认高度，子 viewport 才使用父列表的实际可用高度。
+          await expect(root.locator('.semi-tree-auto-wrapper')).toHaveAttribute(
+            'style',
+            /height:\s*180px;/,
+          );
+          await expect(root.locator('.semi-tree-auto-wrapper')).toHaveCSS('height', '180px');
+          await expect(root.locator('.semi-tree-virtual-list')).toHaveCSS('height', '232px');
+          await root
+            .locator('.semi-tree-virtual-list')
+            .evaluate((element) => element.scrollTo({ top: element.scrollHeight }));
+          await expect(root.getByText('节点 80', { exact: true })).toBeVisible();
+        }
+      }
+      /** 同一真实状态使用固定 React 当轮渲染作为像素比较来源。 */
+      const screenshots = await Promise.all([
+        pair.react.page.locator('.tree-scenario').screenshot({ animations: 'disabled' }),
+        pair.vue.page.locator('.tree-scenario').screenshot({ animations: 'disabled' }),
+      ]);
+      await expectScreenshotPixelsToMatch(pair.react.page, screenshots[1], screenshots[0]);
+    }
+    expect(pair.react.runtimeErrors).toEqual([]);
+    expect(pair.vue.runtimeErrors).toEqual([]);
+  });
+}

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Image, ImagePreview } from '@aifuxi/semi-ui-vue/image';
 
+/** Review query 通过真实图片请求观察 loading/error，不伪造组件状态 class。 */
+const reviewState = new URLSearchParams(window.location.search).get('reviewState');
+
 const blueImage =
   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="160" height="100" viewBox="0 0 160 100"%3E%3Crect width="160" height="100" rx="12" fill="%230066ff"/%3E%3Ccircle cx="122" cy="28" r="13" fill="%23fff" fill-opacity=".82"/%3E%3Cpath d="M16 84l38-40 25 25 18-17 47 32z" fill="%23d9f0ff"/%3E%3C/svg%3E';
 const greenImage =
@@ -17,7 +20,13 @@ const greenImage =
         data-parity-target="image-basic"
         :height="100"
         :preview="false"
-        :src="blueImage"
+        :src="
+          reviewState === 'loading'
+            ? '/__review_image_pending.svg'
+            : reviewState === 'error'
+              ? 'data:image/png;base64,broken'
+              : blueImage
+        "
         :width="160"
       />
     </section>

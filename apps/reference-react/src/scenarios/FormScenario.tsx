@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form } from '@semi-v2.102.0/form';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 /** 独立覆盖公开 ErrorMessage 的空值、布尔错误及错误清除，避免字段包装层掩盖值转换。 */
 function ErrorMessageCases(): React.ReactElement {
@@ -58,11 +59,14 @@ function ErrorMessageCases(): React.ReactElement {
 
 /** 同时提供内置字段集成和独立 ErrorMessage 场景，保留原 Form 截图目标。 */
 export function FormScenario(): React.ReactElement {
+  /** 经真实 Form 字段入口审查尺寸、只读与禁用，不能只看裸 Input。 */
+  const reviewProps = readInputReviewProps(['size', 'disabled', 'readOnly']);
   return (
     <>
       <div className="form-scenario" data-testid="form-reference">
         <Form className="form-scenario__form">
           <Form.Input
+            {...reviewProps}
             data-parity-target="form-name"
             field="name"
             label="名称"

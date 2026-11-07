@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { Nav, type NavigationItems } from '@aifuxi/semi-ui-vue/navigation';
 
+/** 与固定 React 场景一致，使用公开模式 prop 覆盖水平/垂直两种真实排版。 */
+const reviewMode =
+  new URLSearchParams(window.location.search).get('navigationMode') === 'horizontal'
+    ? 'horizontal'
+    : 'vertical';
 const items: NavigationItems = [
   { itemKey: 'home', text: '首页' },
   {
@@ -16,9 +21,15 @@ const items: NavigationItems = [
 </script>
 
 <template>
-  <div class="navigation-scenario" data-testid="navigation-vue">
+  <div
+    class="navigation-scenario"
+    data-testid="navigation-vue"
+    :style="reviewMode === 'horizontal' ? { width: '100%' } : {}"
+  >
     <Nav
-      :body-style="{ height: '224px' }"
+      :mode="reviewMode"
+      :body-style="reviewMode === 'horizontal' ? {} : { height: '224px' }"
+      :style="reviewMode === 'horizontal' ? { width: '100%' } : {}"
       data-parity-target="navigation-root"
       :default-open-keys="['workspace']"
       :default-selected-keys="['projects']"

@@ -76,6 +76,12 @@ test('JsonViewer React/Vue DOM、搜索替换、自定义渲染、样式与几�
     await expect(
       parityPage.locator('.json-viewer-scenario__main .semi-json-viewer-search-result'),
     ).toHaveCount(2);
+    // 核心重绘搜索高亮后仍应保留输入焦点，后续键入不能落到 JSON 编辑器。
+    await expect(search).toBeFocused();
+    await search.press('End');
+    await parityPage.keyboard.type('x');
+    await expect(search).toHaveValue('Vuex');
+    await search.fill('Vue');
     await parityPage
       .locator('.json-viewer-scenario__main .semi-json-viewer-replace-bar-input input')
       .fill('Adapter');

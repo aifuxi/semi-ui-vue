@@ -57,6 +57,8 @@ export const virtualBreadcrumbStyleId = 'virtual:workspace-breadcrumb-styles.css
 export const virtualPaginationStyleId = 'virtual:workspace-pagination-styles.css';
 export const virtualAutoCompleteStyleId = 'virtual:workspace-auto-complete-styles.css';
 export const virtualButtonStyleId = 'virtual:workspace-button-styles.css';
+/** Button 的图标布局有独立样式所有者，预览也必须显式载入，不能被共享去重遗漏。 */
+export const virtualIconButtonStyleId = 'virtual:workspace-icon-button-styles.css';
 export const virtualCheckboxStyleId = 'virtual:workspace-checkbox-styles.css';
 export const virtualConfigProviderStyleId = 'virtual:workspace-config-provider-styles.css';
 export const virtualDividerStyleId = 'virtual:workspace-divider-styles.css';
@@ -138,6 +140,8 @@ const resolvedVirtualBreadcrumbStyleId = `\0${virtualBreadcrumbStyleId}`;
 const resolvedVirtualPaginationStyleId = `\0${virtualPaginationStyleId}`;
 const resolvedVirtualAutoCompleteStyleId = `\0${virtualAutoCompleteStyleId}`;
 const resolvedVirtualButtonStyleId = `\0${virtualButtonStyleId}`;
+/** 图标按钮与普通按钮分开编译，保持与发布产物的模块划分一致。 */
+const resolvedVirtualIconButtonStyleId = `\0${virtualIconButtonStyleId}`;
 const resolvedVirtualCheckboxStyleId = `\0${virtualCheckboxStyleId}`;
 const resolvedVirtualConfigProviderStyleId = `\0${virtualConfigProviderStyleId}`;
 const resolvedVirtualDividerStyleId = `\0${virtualDividerStyleId}`;
@@ -332,6 +336,8 @@ const breadcrumbStyleEntry = fileURLToPath(new URL('./src/breadcrumb.scss', impo
 const paginationStyleEntry = fileURLToPath(new URL('./src/pagination.scss', import.meta.url));
 const autoCompleteStyleEntry = fileURLToPath(new URL('./src/auto-complete.scss', import.meta.url));
 const buttonStyleEntry = fileURLToPath(new URL('./src/button.scss', import.meta.url));
+/** 固定基线 iconButton.scss 控制加载图标大小、旋转、文字间距及仅图标按钮尺寸。 */
+const iconButtonStyleEntry = fileURLToPath(new URL('./src/icon-button.scss', import.meta.url));
 const checkboxStyleEntry = fileURLToPath(new URL('./src/checkbox.scss', import.meta.url));
 const configProviderStyleEntry = fileURLToPath(
   new URL('./src/config-provider.scss', import.meta.url),
@@ -417,6 +423,7 @@ const styleEntries = new Map([
   [resolvedVirtualPaginationStyleId, paginationStyleEntry],
   [resolvedVirtualAutoCompleteStyleId, autoCompleteStyleEntry],
   [resolvedVirtualButtonStyleId, buttonStyleEntry],
+  [resolvedVirtualIconButtonStyleId, iconButtonStyleEntry],
   [resolvedVirtualCheckboxStyleId, checkboxStyleEntry],
   [resolvedVirtualConfigProviderStyleId, configProviderStyleEntry],
   [resolvedVirtualDividerStyleId, dividerStyleEntry],
@@ -508,6 +515,7 @@ export function compilePinnedComponentStyles(): Plugin {
       if (source === virtualPaginationStyleId) return resolvedVirtualPaginationStyleId;
       if (source === virtualAutoCompleteStyleId) return resolvedVirtualAutoCompleteStyleId;
       if (source === virtualButtonStyleId) return resolvedVirtualButtonStyleId;
+      if (source === virtualIconButtonStyleId) return resolvedVirtualIconButtonStyleId;
       if (source === virtualCheckboxStyleId) return resolvedVirtualCheckboxStyleId;
       if (source === virtualConfigProviderStyleId) return resolvedVirtualConfigProviderStyleId;
       if (source === virtualDividerStyleId) return resolvedVirtualDividerStyleId;

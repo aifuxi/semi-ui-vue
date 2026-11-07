@@ -99,6 +99,18 @@ test('AudioPlayer React/Vue DOM、交互、Portal、样式与几何一致', asyn
         `[data-testid="audio-player-popup-${framework}"] .semi-audio-player-control-volume`,
       ),
     ).toBeVisible();
+    const volumeSlider = parityPage.locator(
+      `[data-testid="audio-player-popup-${framework}"] .semi-audio-player-slider-vertical`,
+    );
+    // 可见弹层仍可能包含零尺寸轨道，验证真实滑条及其中点交互。
+    await expect(volumeSlider).toHaveCSS('height', '120px');
+    await expect(volumeSlider).toHaveCSS('width', '4px');
+    await volumeSlider.click({ position: { x: 2, y: 60 } });
+    await expect(
+      parityPage.locator(
+        `[data-testid="audio-player-popup-${framework}"] .semi-audio-player-control-volume-title`,
+      ),
+    ).toHaveText('50%');
 
     await main.locator('.semi-audio-player-control-speed').hover();
     await parityPage
@@ -174,7 +186,12 @@ test('AudioPlayer React/Vue RTL、英文 Locale 与截图一致', async ({ conte
       .getByRole('button')
       .nth(1)
       .hover();
-    await expect(parityPage.getByText('Backward 1s', { exact: true }).last()).toBeVisible();
+    const tooltip = parityPage.getByText('Backward 1s', { exact: true }).last();
+    await expect(tooltip).toBeVisible();
+    await expect(tooltip).toBeInViewport();
+    // Locale 浮层验证后回到静态基线状态；原基线不包含 hover 内容。
+    await parityPage.mouse.move(0, 0);
+    await expect(tooltip).toBeHidden();
   }
   const reactTarget = pair.react.page.getByTestId('audio-player-reference');
   const vueTarget = pair.vue.page.getByTestId('audio-player-vue');

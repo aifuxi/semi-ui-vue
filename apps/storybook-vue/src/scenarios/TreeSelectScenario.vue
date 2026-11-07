@@ -2,6 +2,10 @@
 import { ConfigProvider, type SemiLocale } from '@aifuxi/semi-ui-vue/config-provider';
 import { TreeSelect, type TreeNodeData } from '@aifuxi/semi-ui-vue/tree-select';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
+
+/** 默认值与展开内容不变，仅在审查 query 中切换公开样式分支。 */
+const reviewProps = readInputReviewProps(['size', 'disabled', 'validateStatus']);
 
 const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>();
 const treeData: TreeNodeData[] = [
@@ -39,6 +43,7 @@ const localeMap: Record<ParityLocale, SemiLocale> = {
   <ConfigProvider :direction="props.direction" :locale="localeMap[props.locale]">
     <div class="tree-select-scenario" data-testid="tree-select-vue">
       <TreeSelect
+        v-bind="reviewProps"
         data-parity-target="tree-select-root"
         default-open
         default-expand-all

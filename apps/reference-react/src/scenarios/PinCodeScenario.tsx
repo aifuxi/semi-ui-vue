@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import PinCode from '@semi-v2.102.0/pin-code';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
+/** 用两端一致的真实 props 补齐尺寸及禁用状态的视觉审查。 */
 export function PinCodeScenario(): React.ReactElement {
+  const reviewProps = readInputReviewProps(['size', 'disabled']);
   const [lastValue, setLastValue] = useState('none');
 
   return (
@@ -22,6 +25,7 @@ export function PinCodeScenario(): React.ReactElement {
             默认尺寸
             <PinCode
               className="pin-code-target-default"
+              {...reviewProps}
               defaultValue="123456"
               onChange={setLastValue}
             />

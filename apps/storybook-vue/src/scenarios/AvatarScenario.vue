@@ -3,6 +3,8 @@ import { shallowRef } from 'vue';
 import { Avatar, AvatarGroup } from '@aifuxi/semi-ui-vue/avatar';
 
 const status = shallowRef('等待操作');
+/** medium 为默认尺寸别名，专项 query 显式验证该公开取值。 */
+const reviewMedium = new URLSearchParams(window.location.search).get('reviewSize') === 'medium';
 const avatarImage =
   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"%3E%3Crect width="96" height="96" rx="48" fill="%236B5CE7"/%3E%3Ccircle cx="48" cy="37" r="17" fill="white"/%3E%3Cpath d="M18 88c3-20 14-30 30-30s27 10 30 30" fill="white"/%3E%3C/svg%3E';
 </script>
@@ -19,6 +21,7 @@ const avatarImage =
         <Avatar data-parity-target="avatar-default" alt="User">U</Avatar>
         <Avatar size="large" alt="User">U</Avatar>
         <Avatar size="extra-large" alt="User">U</Avatar>
+        <Avatar v-if="reviewMedium" size="medium" alt="Medium">M</Avatar>
       </div>
     </section>
     <section class="avatar-scenario__section">

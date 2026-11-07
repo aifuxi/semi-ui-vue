@@ -47,6 +47,11 @@ function restoreBaseline(source) {
   return restoreFallbacks(
     source
       .replace(/\[data-semi-theme\]\s*\{[^}]*\}/g, '')
+      // 新增的零优先级普通文本规则不是固定 vendor 原声明，单独移除再比较其余默认值。
+      .replace(
+        /:where\(\.semi-typography\)\s*\{\s*font-weight:\s*var\(--semi-typography-font-weight,\s*inherit\);\s*\}/g,
+        '',
+      )
       .replace(/\s*font-weight: var\(--semi-typography-font-weight, inherit\);/g, '')
       .replace(/\s*--semi-(?:font-|line-height-)[\w-]+:[^;]+;/g, '')
       .replace(/body, :host\s*\{\s*\}/g, ''),
@@ -114,5 +119,8 @@ describe('公开排版主题', () => {
       file: path.join(themeRoot, 'src/typography.scss'),
     });
     expect(typography).toContain('font-weight: var(--semi-typography-font-weight, inherit);');
+    expect(typography).toMatch(
+      /:where\(\.semi-typography\)\s*\{\s*font-weight: var\(--semi-typography-font-weight, inherit\);/,
+    );
   });
 });

@@ -44,9 +44,11 @@
 - columns 和 records 始终克隆/派生，不修改调用方对象；`Table.Column` 只识别真实 Column VNode，递归展开 Fragment，忽略空白/注释/意外子节点。声明式 Column 不挂载，读取 VNode 时按其声明将 kebab-case props 转为 camelCase，并遵循 String/Boolean 类型顺序转换裸 Boolean；保留缺省、显式 false 与 true 的区别。真实 SFC 与 `h()` 均有门禁。
 - 排序顺序为 `false -> ascend -> descend -> false`；受控 `sortOrder` 只上报，非受控保存内部 query。过滤先于排序，树节点在配置允许时递归过滤/排序。
 - `onChange` 在 sorter/filter/pagination 完成内部派生后触发，payload 保留 `pagination/filters/sorter/extra.changeType`；设置 `scroll.y` 时回到 body 顶部，否则只在客户端调用 table wrapper `scrollIntoView`。
-- 选择先计算 keys/rows，再依次调用 rowSelection 对应回调和 change；受控 `selectedRowKeys` 不被内部覆盖。全选跳过 disabled 行；radio 仅保留一项；`clickRow` 与 checkbox 原生事件不重复触发。
+- 选择先计算 keys/rows，再依次调用 rowSelection 对应回调和 change；受控 `selectedRowKeys` 不被内部覆盖。全选跳过 `getCheckboxProps(record).disabled` 指定的行；`rowSelection.disabled` 仅禁用全选及行点击选择，不向逐行 Checkbox 传播，也不移除其选中/半选计算资格（固定 `Table.tsx` 的 `renderSelection` / `handleRowClickSelection`）。radio 仅保留一项；`clickRow` 与 checkbox 原生事件不重复触发。
 - 展开点击先计算新 keys，再触发 `onExpand`/`expand`，最后触发 `onExpandedRowsChange`/emit；受控 keys 只上报。树子行与 expandedRow 都在父行之后，DOM key 稳定。
 - 分页默认 pageSize=10/currentPage=1；本地过滤/排序后再切页。受控页码变化上报但渲染继续服从 prop。默认分页入口统一调用 Table 的处理器，再依次通知配置 `onChange`、`pageChange` 与 Table `change`；top/bottom/both 每次操作只调用一次配置回调。
+
+虚拟表格外框沿用固定 `Table.tsx` 的宽度规则：显式数值 `style.width` 优先，否则使用 `scroll.x`（包括覆盖字符串宽度）。表头宽度缓存遵循固定 `TableHeaderRow.cacheRef`：数值列宽优先，未指定数值时才测量实际单元格；虚拟表体不能使用浏览器为了填满表头额外分摊的宽度。`renderGroupSection` prop 与固定 `SectionRow.tsx` 一样只显示元素及对象的 `children`，缺省、字符串、数字返回值为空，不自动显示 `groupKey`；Vue 的 `#groupSection` 保留原生插槽节点语义。
 
 ## DOM、样式、主题、滚动、动效与 RTL
 

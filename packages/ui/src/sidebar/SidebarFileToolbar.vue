@@ -48,13 +48,11 @@ const headingIcons = [IconH1, IconH2, IconH3, IconH4, IconH5, IconH6] as const;
 
 const editorState = computed(() => {
   void revision.value;
-  const { from, to } = props.editor.state.selection;
   return {
     canImage: props.editor.can().insertContent({ type: 'imageUpload' }),
     canItalic: props.editor.can().chain().toggleItalic().run(),
     canStrike: props.editor.can().chain().toggleStrike().run(),
     canCode: props.editor.can().chain().toggleCode().run(),
-    canLink: from !== to || props.editor.isFocused,
     canRedo: props.editor.can().chain().redo().run(),
     canUndo: props.editor.can().chain().undo().run(),
     isBlockquote: props.editor.isActive('blockquote'),
@@ -316,7 +314,6 @@ onBeforeUnmount(() => {
             type="tertiary"
             class="semi-sidebar-file-menu-bar-btn"
             :class="{ 'semi-sidebar-file-menu-bar-btn-active': editorState.isLink }"
-            :disabled="!editorState.canLink"
             ><template #icon><IconLink /></template
           ></Button>
         </span>

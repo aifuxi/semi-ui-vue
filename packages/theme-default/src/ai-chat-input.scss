@@ -2,6 +2,8 @@
 @import '../../../vendor/semi-design/packages/semi-theme-default/scss/index.scss';
 @import '../../../vendor/semi-design/packages/semi-theme-default/scss/global.scss';
 @import '../../../vendor/semi-design/packages/semi-foundation/button/button.scss';
+// 模板及配置按钮的图标插槽需要独立布局规则，模块化 CSS 同样必须包含依赖。
+@import '../../../vendor/semi-design/packages/semi-foundation/button/iconButton.scss';
 @import '../../../vendor/semi-design/packages/semi-foundation/select/select.scss';
 @import '../../../vendor/semi-design/packages/semi-foundation/radio/radio.scss';
 @import '../../../vendor/semi-design/packages/semi-foundation/dropdown/dropdown.scss';

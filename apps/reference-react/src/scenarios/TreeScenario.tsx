@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Tree from '@semi-v2.102.0/tree';
+import Tree, { type TreeProps } from '@semi-v2.102.0/tree';
 import ConfigProvider from '@semi-v2.102.0/config-provider';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
@@ -37,16 +37,51 @@ export function TreeScenario({
   locale: ParityLocale;
 }): React.ReactElement {
   const [status, setStatus] = useState('等待操作');
+  /** 与 Vue 同一 query，默认场景保留。 */
+  const reviewTree = new URLSearchParams(window.location.search).get('reviewTree');
+  /** 固定行高和八十节点用于真实虚拟滚动。 */
+  const virtualData = Array.from(
+    { length: 80 },
+    /** 序号使首/中/尾窗口可以从页面内容核实。 */
+    (_, index) => ({
+      key: `virtual-${index}`,
+      value: index,
+      label: `节点 ${String(index + 1).padStart(2, '0')}`,
+    }),
+  );
+  /** 只通过公开参数开启拖拽、pending loading 或虚拟列表。 */
+  const reviewProps: TreeProps =
+    reviewTree === 'drag'
+      ? { draggable: true }
+      : reviewTree === 'loading'
+        ? {
+            /** Pending Promise 保证实际加载态可重复观察，不用固定延时。 */
+            loadData: () =>
+              new Promise<void>(
+                /** 专项视觉场景保持请求未完成。 */
+                () => undefined,
+              ),
+          }
+        : reviewTree === 'virtual'
+          ? { virtualize: { itemSize: 28, height: 180, width: 360 } }
+          : {};
   return (
     <ConfigProvider direction={direction} locale={localeMap[locale]}>
       <div className="tree-scenario" data-testid="tree-reference">
         <div className="tree-scenario__section">
           <span className="tree-scenario__label">基础 / 禁用</span>
           <Tree
+            {...reviewProps}
             data-parity-target="tree-basic"
-            defaultExpandAll
+            defaultExpandAll={reviewTree !== 'loading'}
             defaultValue="Beijing"
-            treeData={treeData}
+            treeData={
+              reviewTree === 'virtual'
+                ? virtualData
+                : reviewTree === 'loading'
+                  ? [{ key: 'async', value: 'async', label: '异步节点', isLeaf: false }]
+                  : treeData
+            }
             onChange={(value) => setStatus(`选择：${String(value)}`)}
           />
         </div>

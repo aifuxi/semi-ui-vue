@@ -3,6 +3,11 @@ import { shallowRef } from 'vue';
 import { Timeline, TimelineItem, type TimelineData } from '@aifuxi/semi-ui-vue/timeline';
 
 const lastAction = shallowRef('暂无操作');
+/** 额外模式复用相同内容，默认 left 与原 center 列保持不变。 */
+const requestedMode = new URLSearchParams(window.location.search).get('reviewMode');
+/** 仅允许固定 Semi 枚举中的两档补充模式。 */
+const reviewMode =
+  requestedMode === 'right' || requestedMode === 'alternate' ? requestedMode : 'left';
 const centerData: TimelineData[] = [
   { content: '需求确认', time: '09:00', type: 'success' },
   { content: '开发完成', time: '11:30', type: 'ongoing', position: 'right' },
@@ -14,6 +19,7 @@ const centerData: TimelineData[] = [
   <div class="timeline-scenario" data-testid="timeline-vue">
     <Timeline
       aria-label="处理进度"
+      :mode="reviewMode"
       data-parity-target="timeline-basic"
       class="timeline-scenario__column"
     >

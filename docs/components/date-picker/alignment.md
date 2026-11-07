@@ -85,3 +85,11 @@
 ## ConfigProvider 时区更新回归
 
 固定 `datePicker/datePicker.tsx:417` 与 Foundation `initFromProps` 区分 value 更新和 timeZone 更新：新公开 value 作为 UTC 输入，不传 prevTimeZone；仅时区变化时传当前 state.value 和旧时区，受控/非受控均执行。新增连续 GMT+08→00→-11→+14→+08、同时更新 value/timeZone、随后更新 value 及不发出 change 的公开行为测试。
+
+## 主题改动视觉复核（2026-11-07）
+
+- 在真实 Chromium 页面逐图对照固定 React，覆盖七种 `type`、default/compact 密度、small/default/large 触发器和 light/dark；另看 error/warning/disabled/readOnly、borderless、多选、内嵌输入、日期时间切换及年月导航。原图与修复后图存于本地忽略目录 `test-results/ui-theme-review/inputs/`，详细实际覆盖见该目录 `coverage.md`，不将生成截图或测试通过等同于看过页面。
+- 紧凑导航使用真实 small Button，日期行高由主题 SCSS 决定，移除固定 36px 行高；年月面板复用私有固定 `YearAndMonthFoundation` 与真实 ScrollList，保留禁用年月及范围先后关系。固定基线 `type=year` 同样输出左右年/月列，保持该结构。
+- 内嵌输入接入固定 DateInputFoundation，Popover ready 后通过真实 Input ref 聚焦；时间切换直接渲染滚动列，继承 ConfigProvider 完整 TimePicker 语言，保留 `timePickerOpts`/`yearAndMonthOpts` 覆盖优先级与 `disabledTime` 完整范围上下文。
+- 实际复看证据包括 `date-picker-{light,dark}-{type}-{density}-fixed-panel-pair.png`、`*-time-panel-fixed-interaction-pair.png`、`*-year-navigation-fixed-interaction-pair.png`、`*-inset-fixed-interaction-pair.png`；年月范围还补看最终 focus/clear 状态。单元补充年月范围选择、内嵌输入解析、语言继承及禁用时间合并；正式浏览器回归另由共享门禁验证。
+- 生产回归进一步发现双端均曾聚焦后的范围编辑边界：编辑起始端时禁用晚于结束值的日期，编辑结束端时禁用早于起始值的日期。现由共享 focusRecords 向日期格传递固定 Month 的禁用语义，保留用户 disabledDate 优先；内嵌面板间距沿用固定默认 4px。年月选择后测试按选中行真实居中位置等待滚动终态，不用固定延迟或扩大像素阈值。

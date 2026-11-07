@@ -3,6 +3,8 @@ import { shallowRef } from 'vue';
 import { Step, Steps } from '@aifuxi/semi-ui-vue/steps';
 
 const status = shallowRef('等待操作');
+// 查询仅扩展视觉复核尺寸，保留默认场景原有大小。
+const small = new URLSearchParams(window.location.search).get('stepsSize') === 'small';
 </script>
 
 <template>
@@ -10,6 +12,7 @@ const status = shallowRef('等待操作');
     <div class="steps-scenario__section">
       <span class="steps-scenario__label">Fill</span>
       <Steps
+        :size="small ? 'small' : 'default'"
         aria-label="Fill progress"
         :current="1"
         data-parity-target="steps-fill"
@@ -39,6 +42,7 @@ const status = shallowRef('等待操作');
       <Steps
         :current="1"
         data-parity-target="steps-vertical"
+        :size="small ? 'small' : 'default'"
         direction="vertical"
         status="error"
         :style="{ width: '300px' }"
@@ -54,6 +58,7 @@ const status = shallowRef('等待操作');
       <Steps
         :current="1"
         data-parity-target="steps-nav"
+        :size="small ? 'small' : 'default'"
         type="nav"
         @change="(index: number) => (status = `Nav：${index}`)"
       >

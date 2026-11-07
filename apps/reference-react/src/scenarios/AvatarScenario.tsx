@@ -5,8 +5,13 @@ import AvatarGroup from '@semi-v2.102.0/avatar-group';
 const avatarImage =
   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"%3E%3Crect width="96" height="96" rx="48" fill="%236B5CE7"/%3E%3Ccircle cx="48" cy="37" r="17" fill="white"/%3E%3Cpath d="M18 88c3-20 14-30 30-30s27 10 30 30" fill="white"/%3E%3C/svg%3E';
 
+/** 覆盖头像尺寸、装饰与交互，review query 补充 medium 公开别名。 */
 export function AvatarScenario(): React.ReactElement {
+  /** 专项参数不影响原有默认参考场景。 */
+  const reviewMedium = new URLSearchParams(window.location.search).get('reviewSize') === 'medium';
+  /** 交互输出用于观察 hover/click 后的状态。 */
   const [status, setStatus] = useState('等待操作');
+  /** 两端相同的真实遮罩内容。 */
   const hoverMask = <span className="avatar-scenario__mask">编辑</span>;
   return (
     <div className="avatar-scenario" data-testid="avatar-reference">
@@ -34,6 +39,11 @@ export function AvatarScenario(): React.ReactElement {
           <Avatar size="extra-large" alt="User">
             U
           </Avatar>
+          {reviewMedium && (
+            <Avatar size="medium" alt="Medium">
+              M
+            </Avatar>
+          )}
         </div>
       </section>
       <section className="avatar-scenario__section">

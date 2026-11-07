@@ -10,6 +10,12 @@ const placements: Array<{ position: TooltipPosition; label: string }> = [
 ];
 
 export function TooltipScenario(): React.ReactElement {
+  /** 查询只驱动公开 position/showArrow；不修改弹层 DOM。 */
+  const reviewQuery = new URLSearchParams(window.location.search);
+  const reviewPosition = reviewQuery.get('reviewTooltipPosition') as TooltipPosition | null;
+  const reviewPlacements = reviewPosition
+    ? [{ position: reviewPosition, label: reviewPosition }]
+    : placements;
   const host = useRef<HTMLDivElement>(null);
   const [clickVisible, setClickVisible] = useState(false);
   const [lastChange, setLastChange] = useState('none');
@@ -20,7 +26,7 @@ export function TooltipScenario(): React.ReactElement {
       <section className="tooltip-scenario__section" aria-label="固定方位">
         <h3>固定方位</h3>
         <div className="tooltip-scenario__placements">
-          {placements.map(({ position, label }) => (
+          {reviewPlacements.map(({ position, label }) => (
             <Tooltip
               key={position}
               className={`tooltip-target-${position}`}
@@ -28,6 +34,7 @@ export function TooltipScenario(): React.ReactElement {
               getPopupContainer={getPopupContainer}
               motion={false}
               position={position}
+              showArrow={!reviewQuery.has('reviewTooltipNoArrow')}
               trigger="custom"
               visible
               wrapperId={`tooltip-${position}`}
@@ -43,6 +50,7 @@ export function TooltipScenario(): React.ReactElement {
         <div className="tooltip-scenario__actions">
           <Tooltip
             content="Hover 提示"
+            trigger={reviewQuery.has('reviewTooltipFocus') ? 'focus' : 'hover'}
             getPopupContainer={getPopupContainer}
             motion={false}
             wrapperId="tooltip-hover"

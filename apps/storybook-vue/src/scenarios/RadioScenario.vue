@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { Radio, RadioGroup, type RadioChangeEvent } from '@aifuxi/semi-ui-vue/radio';
 import { shallowRef } from 'vue';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
+
+/** 和固定参考一样通过按钮组公开尺寸 API 查看三档文字布局。 */
+const reviewProps = readInputReviewProps(['size']);
+/** RadioGroup 的三档为 small/middle/large，未审查时保留原 large。 */
+const reviewButtonSize = reviewProps.size === 'default' ? 'middle' : (reviewProps.size ?? 'large');
 
 const lastValue = shallowRef('none');
 
@@ -56,7 +62,7 @@ function groupChanged(event: RadioChangeEvent): void {
       />
       <RadioGroup
         type="button"
-        button-size="large"
+        :button-size="reviewButtonSize"
         default-value="即时推送"
         name="radio-button"
         aria-label="按钮单选框组"

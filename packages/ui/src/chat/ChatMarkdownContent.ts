@@ -2,6 +2,7 @@ import MarkdownIt, { type Token } from 'markdown-it';
 import { defineComponent, h, type Component, type PropType, type VNodeChild } from 'vue';
 
 import { CodeHighlight } from '../code-highlight';
+import { markdownRenderDefaultComponents } from '../markdown-render/components';
 
 import type { ChatMarkdownRenderProps } from './types';
 
@@ -92,7 +93,7 @@ function renderTokens(tokens: Token[], components: Record<string, unknown>): VNo
         const close = token.type.replace(/_open$/, '_close');
         const [children, next] = visit(index + 1, close);
         const tag = (components[token.tag] as Component | undefined) ?? token.tag;
-        nodes.push(h(tag, attrs(token), children as never));
+        nodes.push(h(tag, attrs(token), typeof tag === 'string' ? children : () => children));
         index = next;
         continue;
       }
@@ -127,7 +128,11 @@ export default defineComponent({
       return h(
         'div',
         { class: 'semi-markdownRender' },
-        renderTokens(parser.parse(props.raw, {}), props.components),
+        // 复用公开 Markdown 的 Typography 映射，保持字号、段距与气泡文字继承一致。
+        renderTokens(parser.parse(props.raw, {}), {
+          ...markdownRenderDefaultComponents,
+          ...props.components,
+        }),
       );
     };
   },

@@ -192,6 +192,10 @@ const locale = computed<AIChatInputLocale>(() => {
 const panelVisible = computed(
   () => state.templateVisible || state.skillVisible || state.suggestionVisible,
 );
+// Foundation 返回的测量宽度是数值；Vue 原生 style 不会像 React 一样自动补 px。
+const popupWidth = computed(() =>
+  typeof state.popupWidth === 'number' ? `${state.popupWidth}px` : state.popupWidth,
+);
 const rootClass = computed(() => ['semi-aiChatInput', props.class, props.className, attrs.class]);
 const rootStyle = computed(() => [props.style, attrs.style]);
 const popoverClass = computed(() => ({
@@ -594,7 +598,7 @@ onBeforeUnmount(() => {
         <div
           v-if="state.templateVisible"
           :class="['semi-aiChatInput-template', props.templatesCls]"
-          :style="[{ width: state.popupWidth, maxHeight: '500px' }, props.templatesStyle]"
+          :style="[{ width: popupWidth, maxHeight: '500px' }, props.templatesStyle]"
         >
           <AIChatInputNodeRenderer :content="templateNode()" />
         </div>
@@ -603,7 +607,7 @@ onBeforeUnmount(() => {
           :id="`semi-aiChatInput-skill-${popupId}`"
           class="semi-aiChatInput-skill"
           role="listbox"
-          :style="{ width: state.popupWidth, maxHeight: '270px' }"
+          :style="{ width: popupWidth, maxHeight: '270px' }"
         >
           <template
             v-for="(skill, index) in props.skills ?? []"
@@ -634,7 +638,7 @@ onBeforeUnmount(() => {
           :id="`semi-aiChatInput-suggestion-${popupId}`"
           class="semi-aiChatInput-suggestion"
           role="listbox"
-          :style="{ width: state.popupWidth, maxHeight: '270px' }"
+          :style="{ width: popupWidth, maxHeight: '270px' }"
         >
           <template v-for="(suggestion, index) in props.suggestions ?? []" :key="index">
             <AIChatInputNodeRenderer
@@ -816,9 +820,9 @@ onBeforeUnmount(() => {
             <AIChatInputConfigureButton
               v-if="props.showTemplateButton || state.skill?.hasTemplate"
               field="template"
-              :icon="IconTemplateStroked"
               @click="changeTemplateVisible"
             >
+              <template #icon><IconTemplateStroked /></template>
               {{ locale.template }}
             </AIChatInputConfigureButton>
           </AIChatInputConfigure>

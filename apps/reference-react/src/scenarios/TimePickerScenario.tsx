@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import TimePicker from '@semi-v2.102.0/time-picker';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 const stableScroll = { mode: 'normal' as const, cycled: false, motion: false };
 
 export function TimePickerScenario(): React.ReactElement {
+  /** 真实公开 props 补足校验与禁用分支，不改变固定时间。 */
+  const reviewProps = readInputReviewProps(['size', 'disabled', 'validateStatus']);
   const [status, setStatus] = useState('none');
 
   return (
@@ -12,6 +15,7 @@ export function TimePickerScenario(): React.ReactElement {
         <h3>基础、尺寸与状态</h3>
         <div className="time-picker-scenario__stack">
           <TimePicker
+            {...reviewProps}
             defaultValue="10:24:18"
             motion={false}
             scrollItemProps={stableScroll}

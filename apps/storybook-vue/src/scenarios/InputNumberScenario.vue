@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { InputNumber } from '@aifuxi/semi-ui-vue/input-number';
 import { shallowRef } from 'vue';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
+
+/** 双端相同输入只改变公开 props，不以样式模拟尺寸与状态。 */
+const reviewProps = readInputReviewProps(['size', 'disabled', 'readOnly', 'validateStatus']);
 
 const lastValue = shallowRef('none');
 </script>
@@ -13,6 +17,7 @@ const lastValue = shallowRef('none');
         <label>
           基础
           <InputNumber
+            v-bind="reviewProps"
             :default-value="1"
             class-name="input-number-target-basic"
             data-parity-target="input-number-basic"

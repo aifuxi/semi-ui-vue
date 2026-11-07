@@ -179,7 +179,9 @@ export function transformTypographySource(source, file) {
     if (file.endsWith('/typography/typography.scss')) {
       transformed = transformed.replace(
         '.#{$module} {',
-        '.#{$module} {\n    font-weight: var(--semi-typography-font-weight, inherit);',
+        // 普通 Text 的默认字重不能盖过 Upload 文件名等组件复用 Typography 时的专用类。
+        // :where 保持零 specificity，使 CSS 的加载先后不改变已有组件的强调语义。
+        ':where(.#{$module}) {\n    font-weight: var(--semi-typography-font-weight, inherit);\n}\n.#{$module} {',
       );
     }
   }

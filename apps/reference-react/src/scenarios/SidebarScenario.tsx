@@ -30,6 +30,14 @@ export function SidebarScenario({
   direction: ParityDirection;
   locale: ParityLocale;
 }): React.ReactElement {
+  // 使用公开详情模式审查代码与文件页，默认主面板继续维持原场景。
+  const requestedMode = new URLSearchParams(window.location.search).get('sidebarMode');
+  const reviewMode = requestedMode === 'code' || requestedMode === 'file' ? requestedMode : 'main';
+  /** 专项 query 开启真实 Sidebar 边缘 resize。 */
+  const reviewResizable =
+    new URLSearchParams(window.location.search).get('reviewResizable') === '1';
+  /** 文件编辑工具栏由真实 fileEditable prop 驱动。 */
+  const reviewEditable = new URLSearchParams(window.location.search).get('reviewEditable') === '1';
   const [activeKey, setActiveKey] = useState('code');
   const labels =
     locale === 'zh-CN'
@@ -41,8 +49,15 @@ export function SidebarScenario({
       <div className="sidebar-scenario" data-testid="sidebar-reference">
         <Sidebar
           visible
+          mode={reviewMode}
+          detailContent={
+            reviewMode === 'file'
+              ? { name: '说明.md', content: '# 开发资源\n\n主题与排版说明。', type: 'text' }
+              : codes[0]!
+          }
+          fileEditable={reviewEditable}
           motion={false}
-          resizable={false}
+          resizable={reviewResizable}
           showClose={false}
           title={labels.title}
           activeKey={activeKey}

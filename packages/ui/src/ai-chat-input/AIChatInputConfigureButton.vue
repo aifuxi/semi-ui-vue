@@ -41,6 +41,7 @@ function toggle(): void {
     ]"
     @click="toggle"
   >
+    <template v-if="$slots.icon" #icon><slot name="icon" /></template>
     <slot />
   </Button>
 </template>

@@ -131,7 +131,6 @@ const feedbackDependenciesId = '\0semi-reference-feedback-dependencies';
 const aiChatInputDependenciesId = '\0semi-reference-ai-chat-input-dependencies';
 const aiChatDialogueDependenciesId = '\0semi-reference-ai-chat-dialogue-dependencies';
 const chatDependenciesId = '\0semi-reference-chat-dependencies';
-const chatMarkdownRenderId = '\0semi-reference-chat-markdown-render';
 const sidebarDependenciesId = '\0semi-reference-sidebar-dependencies';
 const capturedUpstreamStyleImports = new Set([
   '@douyinfe/semi-foundation/anchor/anchor.scss',
@@ -318,9 +317,6 @@ function compilePinnedReferenceStyles(): Plugin {
       if (/^(?:\.\.\/)+index$/.test(source) && importer?.includes('/semi-ui/chat/')) {
         return chatDependenciesId;
       }
-      if (/^(?:\.\.\/)+markdownRender$/.test(source) && importer?.includes('/semi-ui/chat/')) {
-        return chatMarkdownRenderId;
-      }
       if (/^(?:\.\.\/)+index$/.test(source) && importer?.includes('/semi-ui/sideBar/')) {
         return sidebarDependenciesId;
       }
@@ -377,14 +373,6 @@ function compilePinnedReferenceStyles(): Plugin {
           `export { default as Progress } from ${JSON.stringify(progressPublicEntry)};`,
           `export { default as Popconfirm } from ${JSON.stringify(popconfirmPublicEntry)};`,
           `export { default as Toast } from ${JSON.stringify(toastPublicEntry)};`,
-        ].join('\n');
-      }
-      if (id === chatMarkdownRenderId) {
-        return [
-          `import React from 'react';`,
-          `export default function ChatMarkdownRender({ raw = '' }) {`,
-          `  return React.createElement('div', { className: 'semi-markdownRender' }, raw);`,
-          `}`,
         ].join('\n');
       }
       if (id === sidebarDependenciesId) {

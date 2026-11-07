@@ -44,6 +44,7 @@
 - Collapse 的 `activeKey` 沿用受控语义；Code/File/Annotation 只转发公开 `change`，不读取内部 Foundation state。
 - Sidebar 详情默认 close 触发 `back-ward(event, 'main')`；copy 先尝试剪贴板，再触发 `detail-content-copy(event, content, result)`，成功提示挂在当前 Sidebar 容器内。
 - FileItem `editable` 缺省为 true；编辑更新发出 HTML 字符串；只读模式不渲染工具栏。
+- 文件编辑工具栏的链接按钮沿用固定 ConfigureButton 的可用状态，未聚焦或无选区时也可打开链接输入；不得额外按 `canLink` 禁用。CB 按钮使用 Sidebar 的 12px 字号与 8px padding，样式入口须先载入 Button 等依赖再载入 Sidebar。
 
 ## DOM / class / 样式
 

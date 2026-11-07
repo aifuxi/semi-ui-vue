@@ -2,6 +2,7 @@ import React from 'react';
 import ConfigProvider from '@semi-v2.102.0/config-provider';
 import TreeSelect from '@semi-v2.102.0/tree-select';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 const treeData = [
   {
@@ -40,10 +41,13 @@ export function TreeSelectScenario({
   direction: ParityDirection;
   locale: ParityLocale;
 }): React.ReactElement {
+  /** 补足触发器的公开尺寸与校验、禁用分支，树内容保持同一基线数据。 */
+  const reviewProps = readInputReviewProps(['size', 'disabled', 'validateStatus']);
   return (
     <ConfigProvider direction={direction} locale={localeMap[locale]}>
       <div className="tree-select-scenario" data-testid="tree-select-reference">
         <TreeSelect
+          {...reviewProps}
           data-parity-target="tree-select-root"
           defaultOpen
           defaultExpandAll

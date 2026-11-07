@@ -61,6 +61,8 @@ const localeMap: Record<ParityLocale, SemiLocale> = {
 
 const popupContainer = typeof document === 'undefined' ? null : document.createElement('div');
 if (popupContainer) {
+  // Tooltip 按容器计算局部坐标，Portal 容器需建立定位上下文。
+  popupContainer.style.position = 'relative';
   popupContainer.dataset.testid = 'audio-player-popup-vue';
   document.body.appendChild(popupContainer);
 }

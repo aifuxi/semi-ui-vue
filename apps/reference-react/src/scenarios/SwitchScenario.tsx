@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import Switch from '@semi-v2.102.0/switch';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
+/** 使用公开 props 补齐开关各尺寸状态，不修改组件样式。 */
 export function SwitchScenario(): React.ReactElement {
+  const reviewProps = readInputReviewProps(['size', 'disabled', 'loading']);
   const [controlled, setControlled] = useState(false);
   const [lastChange, setLastChange] = useState('none');
 
@@ -13,6 +16,7 @@ export function SwitchScenario(): React.ReactElement {
           <Switch
             aria-label="默认关闭"
             data-parity-target="switch-default"
+            {...reviewProps}
             onChange={(checked) => setLastChange(`default:${String(checked)}`)}
           />
           <Switch defaultChecked aria-label="默认开启" data-parity-target="switch-checked" />

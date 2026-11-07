@@ -1,9 +1,12 @@
 import React, { useRef, useState } from 'react';
 import Select from '@semi-v2.102.0/select';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 const { Option, OptGroup } = Select;
 
 export function SelectScenario(): React.ReactElement {
+  /** 第一个选择器补足三档尺寸和校验、加载等独立样式分支。 */
+  const reviewProps = readInputReviewProps(['size', 'disabled', 'validateStatus', 'loading']);
   const host = useRef<HTMLDivElement>(null);
   const [lastValue, setLastValue] = useState('none');
   const getPopupContainer = (): HTMLElement => host.current ?? document.body;
@@ -13,6 +16,7 @@ export function SelectScenario(): React.ReactElement {
         <h3>基础选择</h3>
         <div className="select-scenario__row">
           <Select
+            {...reviewProps}
             defaultValue="douyin"
             style={{ width: '160px' }}
             data-parity-target="select-basic"

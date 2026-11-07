@@ -9,9 +9,35 @@ export interface BadgeScenarioProps {
 
 export function BadgeScenario({ direction }: BadgeScenarioProps): React.ReactElement {
   const [status, setStatus] = useState('等待操作');
+  /** 与 Vue 端使用相同 query，仅专项 review 增加真实 Badge 变体。 */
+  const reviewVariants =
+    new URLSearchParams(window.location.search).get('reviewVariants') === 'all';
+  /** 固定 Semi 六种语义色。 */
+  const reviewTypes = ['primary', 'secondary', 'tertiary', 'danger', 'warning', 'success'] as const;
+  /** 三个 theme 与语义色交叉，避免只看各一例。 */
+  const reviewThemes = ['solid', 'light', 'inverted'] as const;
   return (
     <ConfigProvider direction={direction}>
       <div className="badge-scenario" data-testid="badge-reference">
+        {reviewVariants &&
+          reviewThemes.map(
+            /** 每行展示一种真实组件 theme。 */
+            (theme) => (
+              <section key={theme} className="badge-scenario__section">
+                <span className="badge-scenario__label">{theme}</span>
+                <div className="badge-scenario__row badge-scenario__row--surface">
+                  {reviewTypes.map(
+                    /** 类型名首字母仅作为被包裹内容，不影响 Badge 自身样式。 */
+                    (type) => (
+                      <Badge key={type} theme={theme} type={type} count={6}>
+                        <Avatar size="small">{type.slice(0, 1)}</Avatar>
+                      </Badge>
+                    ),
+                  )}
+                </div>
+              </section>
+            ),
+          )}
         <section className="badge-scenario__section">
           <span className="badge-scenario__label">基础 / 溢出</span>
           <div className="badge-scenario__row">

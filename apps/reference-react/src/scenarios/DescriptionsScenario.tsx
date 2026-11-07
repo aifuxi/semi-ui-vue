@@ -21,11 +21,22 @@ const horizontalData = [
 ];
 
 export function DescriptionsScenario(): React.ReactElement {
+  /** 补齐默认场景之外的 center/justify，与 Vue query 相同。 */
+  const requestedAlign = new URLSearchParams(window.location.search).get('reviewAlign');
+  /** 使用条件 props 保留默认场景与固定 Semi 的缺省行为。 */
+  const reviewProps =
+    requestedAlign === 'center' || requestedAlign === 'justify'
+      ? ({ align: requestedAlign } as const)
+      : {};
   return (
     <div className="descriptions-scenario" data-testid="descriptions-reference">
       <section className="descriptions-scenario__section">
         <h3>基础与节点内容</h3>
-        <Descriptions data={profileData} data-parity-target="descriptions-default" />
+        <Descriptions
+          {...reviewProps}
+          data={profileData}
+          data-parity-target="descriptions-default"
+        />
       </section>
 
       <section className="descriptions-scenario__section descriptions-scenario__section--plain">
@@ -36,9 +47,9 @@ export function DescriptionsScenario(): React.ReactElement {
       <section className="descriptions-scenario__section descriptions-scenario__section--double">
         <h3>双行尺寸</h3>
         <div className="descriptions-scenario__sizes" data-parity-target="descriptions-double">
-          <Descriptions row size="small" data={profileData.slice(0, 2)} />
-          <Descriptions row data={profileData.slice(0, 2)} />
-          <Descriptions row size="large" data={profileData.slice(0, 2)} />
+          <Descriptions {...reviewProps} row size="small" data={profileData.slice(0, 2)} />
+          <Descriptions {...reviewProps} row data={profileData.slice(0, 2)} />
+          <Descriptions {...reviewProps} row size="large" data={profileData.slice(0, 2)} />
         </div>
       </section>
 

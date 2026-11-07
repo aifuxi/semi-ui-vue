@@ -6,7 +6,10 @@ const BLUE_IMAGE =
 const GREEN_IMAGE =
   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="160" height="100" viewBox="0 0 160 100"%3E%3Crect width="160" height="100" rx="12" fill="%2300a870"/%3E%3Ccircle cx="38" cy="30" r="14" fill="%23fff" fill-opacity=".8"/%3E%3Cpath d="M14 84l46-33 29 21 19-14 38 26z" fill="%23d7f5e8"/%3E%3C/svg%3E';
 
+/** 对照图片成功、请求进行中与真实解码错误，默认截图保持成功状态。 */
 export function ImageScenario(): React.ReactElement {
+  /** loading 请求由浏览器 review 脚本暂缓返回；error 使用无法解码的同源数据。 */
+  const state = new URLSearchParams(window.location.search).get('reviewState');
   return (
     <div className="image-scenario" data-testid="image-reference">
       <section className="image-scenario__cell">
@@ -17,7 +20,13 @@ export function ImageScenario(): React.ReactElement {
           data-parity-target="image-basic"
           height={100}
           preview={false}
-          src={BLUE_IMAGE}
+          src={
+            state === 'loading'
+              ? '/__review_image_pending.svg'
+              : state === 'error'
+                ? 'data:image/png;base64,broken'
+                : BLUE_IMAGE
+          }
           width={160}
         />
       </section>

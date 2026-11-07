@@ -122,3 +122,7 @@ truthiness 覆盖显式 false。
 - 本切片未修改共享 Playwright 比较算法、全局主题 Token 或测试配置，按分级策略未重跑
   全部组件浏览器回归；已覆盖当前场景、共享 harness 与工作台 smoke。
 - 除上述两项 accepted deviation 外无未解释差异，AudioPlayer 垂直切片标记为 `ready`。
+
+## 主题视觉复核（2026-11-07）
+
+进度与音量滑块的数值 width/height 显式转换为 px，提示偏移同样带单位。固定基线垂直音量轨道为 120px，通常宽 4px、hover 为 8px；不能只以音量弹层外壳可见判断可交互。真实 light/dark 页面已对照音量轨道、百分比和倍速菜单，浏览器回归增加轨道几何及中点设置 50% 的断言。VideoPlayer 复用该私有滑块，同受修复。两端媒体场景的自定义 Portal 容器建立 position:relative，以匹配 Foundation 使用容器局部坐标的定位契约。

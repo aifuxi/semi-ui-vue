@@ -7,6 +7,17 @@ export interface FeedbackScenarioProps {
 }
 
 export function FeedbackScenario({ direction }: FeedbackScenarioProps): React.ReactElement {
+  // 通过公开 props 补齐反馈内容与容器变体，缺省继续保留原来的 emoji popup。
+  const query = new URLSearchParams(window.location.search);
+  const requestedType = query.get('feedbackType');
+  const reviewType =
+    requestedType === 'text' ||
+    requestedType === 'radio' ||
+    requestedType === 'checkbox' ||
+    requestedType === 'custom'
+      ? requestedType
+      : 'emoji';
+  const reviewMode = query.get('feedbackMode') === 'modal' ? 'modal' : 'popup';
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const [popupVisible, setPopupVisible] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
@@ -43,15 +54,31 @@ export function FeedbackScenario({ direction }: FeedbackScenarioProps): React.Re
               <Feedback
                 data-parity-target="feedback-basic"
                 visible={popupVisible}
-                mode="popup"
-                type="emoji"
+                mode={reviewMode}
+                type={reviewType}
+                radioGroupProps={{
+                  options: [
+                    { label: '交互不够清晰', value: 'interaction' },
+                    { label: '响应速度较慢', value: 'performance' },
+                    { label: '功能不符合预期', value: 'feature' },
+                  ],
+                }}
+                checkboxGroupProps={{
+                  options: [
+                    { label: '交互不够清晰', value: 'interaction' },
+                    { label: '响应速度较慢', value: 'performance' },
+                    { label: '功能不符合预期', value: 'feature' },
+                  ],
+                }}
                 title="这次体验怎么样？"
                 motion={false}
                 getPopupContainer={() => container}
                 onValueChange={(value) => setLastValue(JSON.stringify(value))}
                 onCancel={() => setPopupVisible(false)}
                 onOk={() => setPopupVisible(false)}
-              />
+              >
+                {reviewType === 'custom' ? <p>请留下你的使用建议。</p> : null}
+              </Feedback>
               <Feedback
                 visible={modalVisible}
                 mode="modal"

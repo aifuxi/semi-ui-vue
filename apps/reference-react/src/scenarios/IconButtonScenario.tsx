@@ -35,12 +35,18 @@ function ScenarioIcon({ fill, kind }: ScenarioIconProps): React.ReactElement {
 }
 
 export function IconButtonScenario(): React.ReactElement {
+  /** 与 Vue 一致使用真实组件 props。 */
+  const query = new URLSearchParams(window.location.search);
+  const size = query.get('reviewButtonSize');
+  const review =
+    size === 'small' || size === 'large' || size === 'default' ? ({ size } as const) : {};
   const [lastAction, setLastAction] = useState('尚未触发');
 
   return (
     <div className="icon-button-scenario" data-testid="icon-button-reference">
       <div className="icon-button-scenario__row">
         <IconButton
+          {...review}
           icon={<ScenarioIcon kind="star" />}
           aria-label="收藏"
           data-parity-target="icon-button-default"

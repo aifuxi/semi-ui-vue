@@ -26,6 +26,7 @@
       "main": "semi-foundation/aiChatInput/aiChatInput.scss",
       "modules": [
         "semi-foundation/button/button.scss",
+        "semi-foundation/button/iconButton.scss",
         "semi-foundation/select/select.scss",
         "semi-foundation/radio/radio.scss",
         "semi-foundation/dropdown/dropdown.scss",
@@ -156,6 +157,13 @@
       "main": "semi-foundation/chat/chat.scss",
       "modules": [
         "semi-foundation/button/button.scss",
+        "semi-foundation/button/iconButton.scss",
+        "semi-foundation/typography/typography.scss",
+        "semi-foundation/table/table.scss",
+        "semi-foundation/pagination/pagination.scss",
+        "semi-foundation/codeHighlight/codeHighlight.scss",
+        "semi-foundation/markdownRender/markdownRender.scss",
+        "semi-foundation/spin/spin.scss",
         "semi-foundation/input/input.scss",
         "semi-foundation/input/textarea.scss",
         "semi-foundation/avatar/avatar.scss",

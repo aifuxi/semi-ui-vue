@@ -6,6 +6,10 @@ import {
   type AutoCompleteItem,
 } from '@aifuxi/semi-ui-vue/auto-complete';
 import { onMounted, shallowRef } from 'vue';
+import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
+
+/** 仅覆盖首个实例的公开 props，与 React 使用完全相同的审查 query。 */
+const reviewProps = readInputReviewProps(['size', 'disabled', 'validateStatus']);
 
 const domains = ['gmail.com', '163.com', 'qq.com'];
 const people: AutoCompleteDataItem[] = [
@@ -43,6 +47,7 @@ function person(item: AutoCompleteItem): AutoCompleteDataItem {
         <h3>基础自动完成</h3>
         <div class="auto-complete-scenario__row">
           <AutoComplete
+            v-bind="reviewProps"
             v-model="value"
             :data="data"
             show-clear

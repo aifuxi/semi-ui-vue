@@ -106,3 +106,9 @@
 - 单元/SSR/类型、搜索、多选、键盘/ARIA、Portal/locale/RTL、桌面/移动 light/dark 浏览器对照。
 - 关键 computed style 精确相等、几何误差不超过 `0.5 CSS px`；阈值截图通过后再直接比较成对 PNG。
 - 真实 tarball 安装、根/子路径 ESM、声明、样式、tree-shaking、SSR import、许可与 SBOM 验证。
+
+## 主题改动视觉复核（2026-11-07）
+
+- 真实 Chromium 对照固定 React，逐图查看 small/default/large、light/dark 的普通、error/warning、disabled、hover/focus/active 触发器，以及展开列、选中/禁用节点、多选与搜索空结果。
+- 修复 `defaultOpen=true` 与 `disabled=true` 同时传入时初始浮层和 focus 样式丢失：初始 isOpen 与固定 React constructor 一样取公开 defaultOpen，disabled 仍阻止后续用户打开。当前 Cascader 未实现全局默认覆盖，初始化没有绕过既有全局解析。
+- 实际修复后双模式对照图为本地忽略目录 `test-results/ui-theme-review/inputs/cascader-{light,dark}-disabled-after-panel-pair.png`；尺寸/状态组合在 `cascader-{light,dark}-{small,default,large}-states.png`，实际覆盖边界见同目录 `coverage.md`。新增单元断言默认展开禁用触发器的 focused class、ARIA 和真实浮层。

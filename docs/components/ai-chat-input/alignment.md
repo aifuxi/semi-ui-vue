@@ -112,3 +112,9 @@ Vue render prop 使用 scoped slots；同时保留函数 prop 作为迁移兼容
 - 单元/SSR：AIChatInput 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例），含新增的 `getConfigureItem` 8 项公开回归。
 - Chromium：`tests/browser/components/ai-chat-input.spec.ts` 5/5 通过，覆盖固定源码来源、DOM/computed style/几何与交互、desktop light/dark 与 en-US RTL 截图。
 - 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出（含 `getConfigureItem`）、类型、`ai-chat-input.css`、tree-shaking、许可与 SBOM。
+
+## 主题视觉复核（2026-11-07）
+
+Foundation 测量的 `popupWidth` 数值在 Vue 原生 style 中显式转换为 px，并统一用于建议、技能、模板面板；原字符串宽度保持其单位。真实 `/` 技能面板在 light/dark 下已与固定基线逐图对照，默认匹配输入框宽度，不再收缩为内容宽度。浏览器交互回归比较面板与实际输入框的宽度；默认、空输入、显式 canSend=false、generating 及 round=false 状态另由真实对照场景覆盖。
+
+模板按钮通过 `Configure.Button` 的 `#icon` 插槽向 Button 传递模板图标，避免把组件对象当作原生 icon 属性而丢失图标及对应宽度。真实建议、技能和模板面板均已在 light/dark 下打开对照；新增浏览器回归同时检查模板图标、三个建议、面板匹配输入框宽度与选择模板后的内容更新。

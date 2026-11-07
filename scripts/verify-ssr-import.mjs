@@ -72,7 +72,29 @@ const chatHtml = await renderToString(
     }),
   ),
 );
-assert.match(chatHtml, /<a href="https:\/\/example\.com" title="title">link<\/a>/);
-assert.match(chatHtml, /<strong>bold<\/strong>/);
-assert.match(chatHtml, /<a href="http:\/\/www\.example\.com">www\.example\.com<\/a>/);
+// 渲染结束后才解析结果；不向全局注入 DOM，公开入口与 SSR 仍在无 DOM 环境完成。
+assert.equal(typeof globalThis.document, 'undefined');
+const { JSDOM } = await import('jsdom');
+const parsed = new JSDOM(chatHtml);
+try {
+  const markdown = parsed.window.document.querySelector('.semi-markdownRender');
+  assert.ok(markdown, 'Chat 必须实际渲染默认 Markdown 内容');
+  // Typography.Link 包含内层 span，按真实锚点语义验证地址、标题和文字。
+  assert.deepEqual(
+    [...markdown.querySelectorAll('a')].map((anchor) => ({
+      href: anchor.getAttribute('href'),
+      title: anchor.getAttribute('title'),
+      text: anchor.textContent,
+    })),
+    [
+      { href: 'https://example.com', title: 'title', text: 'link' },
+      { href: 'http://www.example.com', title: null, text: 'www.example.com' },
+    ],
+  );
+  assert.equal(markdown.querySelector('strong')?.textContent, 'bold');
+  assert.equal(markdown.querySelectorAll('p.semi-typography-paragraph').length, 2);
+} finally {
+  parsed.window.close();
+}
+assert.equal(typeof globalThis.document, 'undefined');
 process.stdout.write('SSR Chat Markdown 的链接、格式与自动链接渲染通过\n');
