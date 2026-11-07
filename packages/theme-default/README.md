@@ -25,7 +25,7 @@ import '@aifuxi/semi-theme-default/icon.css';
 
 其他组件的共享依赖路径和顺序见 `@aifuxi/semi-theme-default/style-dependencies.json`。多个组件共用的 CSS 只需导入一次；组件各自的 `.css` 只包含该组件的样式。不要将 `index.css` 与模块化样式同时导入。
 
-本包只发布编译后的 CSS，不要求消费者初始化上游 submodule 或安装 Sass。
+本包的样式以编译后的 CSS 发布，不要求消费者初始化上游 submodule 或安装 Sass。独立颜色工具通过 `./colors` 子路径提供，不会在导入默认 CSS 时执行。
 
 预览版使用 `next` 渠道，后续稳定版使用 `latest`；六个公开包同步升版。发布记录随包提供，见 [CHANGELOG](CHANGELOG.md)。
 
@@ -102,6 +102,58 @@ R-000072 为字体、字号、字重和行高提供公开 CSS 自定义属性。
 默认挂到 `body` 的声明式弹层沿用声明位置或触发源的局部排版主题，并跟随源主题更新。显式 `getPopupContainer` 优先，使用实际容器的主题。Toast、Notification 等独立命令式实例默认使用全局主题，通过已有容器配置可以选择局部主题。
 
 Typography 的省略测量使用当前计算样式及真实强调字重。主题边界的 class、style、`theme-mode`、`data-semi-theme` 变化、样式表加载和字体加载完成后自动重算；固定宽度下的字体变化也会使测量失效。未开启省略的文本不订阅测量更新，用户已展开的文本不会因纯排版变化自动收起。
+
+## 品牌颜色生成器
+
+从 `@aifuxi/semi-theme-default/colors` 独立导入零依赖 ESM 和 TypeScript 类型。工具在 Node、浏览器和 SSR 中均可使用，不读取 DOM、不自动注入样式；消费者无需 Sass、上游 submodule 或专用构建插件。
+
+```js
+import { writeFile } from 'node:fs/promises';
+import { createColorTheme, colorThemeToCss } from '@aifuxi/semi-theme-default/colors';
+
+// 由业务主动生成品牌主题；默认 index.css 不调用生成器。
+const theme = createColorTheme({ brand: '#7c3aed' });
+// 模式选择器由应用明确提供；此处沿用 Semi 的全局 theme-mode 属性。
+const css = colorThemeToCss(theme, {
+  selectors: { light: 'body', dark: 'body[theme-mode="dark"]' },
+});
+// 作为普通 CSS 保存，在默认主题之后加载即可；无需接入构建插件。
+await writeFile('brand.css', css);
+```
+
+### API 与数据契约
+
+| API                                     | 输入与默认值                                                        | 输出                                                          |
+| --------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `generateColorScale(color, options?)`   | 不透明 `#RGB` / `#RRGGBB`；`options.mode` 默认 `light`，可选 `dark` | 只读十级 HEX 序列，下标为 `0…9`                               |
+| `generateColorPalette(brand, options?)` | 同上；品牌色须具有非零饱和度                                        | 17 组命名色阶                                                 |
+| `createColorTheme({ brand })`           | 品牌色须具有非零饱和度                                              | `version: 1`、规范化 `brand`、双模式 `palette` 与 `variables` |
+| `colorThemeToCss(theme, { selectors })` | 必须明确提供非空 `light`、`dark` CSS 选择器                         | 稳定的普通 CSS 字符串                                         |
+
+颜色输出统一为小写六位 HEX。色盘包含 `red`、`pink`、`purple`、`violet`、`indigo`、`blue`、`light-blue`、`cyan`、`teal`、`green`、`light-green`、`lime`、`yellow`、`amber`、`orange`、`grey` 和独立 `brand`。每个模式包括 160 个传统基础色及 10 个品牌色。
+
+`palette.light/dark` 保存 HEX 色阶；`variables.light/dark` 保存 CSS 变量名到字符串值的映射。基础色仍为 `--semi-blue-5: 0, 119, 250` 这类 RGB 通道串，品牌色增加 `--semi-brand-0…9`；语义色使用 `rgba(var(--semi-brand-5), 1)` 等现有格式。结果可直接 JSON 序列化；返回数据不与其他调用共享可变状态。
+
+格式错误或非法模式抛出 `TypeError`。单色阶支持灰、黑、白；整盘遇到无色相品牌色抛出 `RangeError`，避免参考算法的无色相轮盘退化。首期不接受 alpha、颜色名、`var()`、`currentColor`、手工锁色或可调算法参数。
+
+### 语义与固定默认值
+
+- primary、link、focus-border 引用独立 `brand`；info 继续引用 `blue`，secondary 引用 `light-blue`，success/danger/warning 分别引用 green/red/orange，灰阶语义引用 grey。
+- 状态级别、透明度及深浅模式差异取自固定 Semi `v2.102.0`。浅色 primary 默认/hover/active 引用品牌 `5/6/7`；深色浅版背景引用品牌第 5 级与基线透明度。
+- AI 渐变、数据可视化专用色、背景及浮层阴影沿用固定基线的规则和值。颜色主题不输出排版、圆角或布局覆盖。
+- 算法参考固定 DSM 发布脚本，独立实现 HSV、取整及色轮排序；它不等同于仓库保存的默认色盘。例如算法 `#0077fa` 的浅色第 5 级是 `0,119,250`，固定默认 `--semi-blue-5` 是 `0,100,250`。导入工具或创建主题均不会改写默认 CSS；只有业务加载生成结果才启用品牌主题。
+
+### 局部主题与强制模式
+
+局部颜色边界同时明确主题名称和模式，例如 `<section data-semi-theme="brand" theme-mode="light">`，序列化时分别提供 `[data-semi-theme="brand"][theme-mode="light"]`、`[data-semi-theme="brand"][theme-mode="dark"]`。模式由业务设置，不隐式跟随系统偏好；嵌套边界也明确模式。
+
+生成 CSS 在每个模式边界同时声明基础色盘和语义变量，防止只修改基础色而语义颜色仍使用祖先的计算结果。普通业务 CSS 在生成主题后覆盖；组件自身覆盖遵循正常级联，不需要 `!important`。
+
+输出包含私有 `--semi-theme-light-*` / `--semi-theme-dark-*` 双模式载体，用于 `.semi-always-light` / `.semi-always-dark` 消费最近主题的颜色。这些载体名称不是可定制的公开入口；业务修改完整主题时重新生成结果即可。
+
+默认 body 弹层桥接源位置的颜色、排版与模式，并跟随主题变化。显式 `getPopupContainer` 使用实际容器主题；关闭、取消边界或卸载后撤回桥接属性。Toast、Notification 等独立实例沿用已有容器配置。纯颜色变化不改变 Typography 的排版签名。
+
+算法与语义验收见 `scripts/color-palette.spec.mjs`、`scripts/color-theme.spec.mjs`，冻结参考数据及来源见[参考说明](../../scripts/fixtures/semi-color-reference.md)。浏览器验收使用真实 tarball 的 `tests/consumer/color-theme.spec.ts`，涵盖深浅模式、局部嵌套、强制模式、运行时更新与弹层容器。
 
 ## 许可与归属
 

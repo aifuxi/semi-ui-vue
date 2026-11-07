@@ -2,6 +2,7 @@ import { mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { compileTypographyTheme } from './typography-theme.mjs';
+import { buildColors } from './build-colors.mjs';
 
 const themeRoot = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(themeRoot, '../..');
@@ -157,3 +158,6 @@ await writeFile(
   path.join(distRoot, 'style-dependencies.json'),
   `${JSON.stringify({ version: sourceManifest.version, base: 'base.css', shared: Object.fromEntries(sharedAssets), components }, null, 2)}\n`,
 );
+
+// 独立颜色工具不参与默认 CSS 生成，只作为可选公开子路径发布。
+await buildColors();

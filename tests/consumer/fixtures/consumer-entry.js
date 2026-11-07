@@ -8,6 +8,7 @@ import {
   Nav,
   Select,
   Table,
+  Tag,
   Toast,
   Tooltip,
   Typography,
@@ -16,6 +17,7 @@ import { JsonViewer } from '@aifuxi/semi-ui-vue/json-viewer';
 import { Form } from '@aifuxi/semi-ui-vue/form';
 import { Dropdown } from '@aifuxi/semi-ui-vue/dropdown';
 import { semiGlobal } from '@aifuxi/semi-ui-vue/config-provider';
+import { createColorTheme, colorThemeToCss } from '@aifuxi/semi-theme-default/colors';
 
 // 保留这些组件的真实包入口及其 CSS，用于验证不同共享样式依赖的组合。
 const styleCoverage = [Nav, Modal, Toast];
@@ -444,50 +446,349 @@ function renderPackedTypographyTheme() {
   ]);
 }
 
-createApp({
-  // 根消费示例保留原有组件交互，并加入直接调用的错误提示区域。
-  render: () =>
-    typographyThemeCase
-      ? renderPackedTypographyTheme()
-      : dropdownCase !== null
-        ? renderPackedDropdown()
-        : h('main', [
+// 颜色专项从真实安装包导入纯函数，其他专项页面不主动生成或加载颜色主题。
+const colorThemeCase = dropdownQuery.has('color-theme');
+// 两个独立品牌用于核对并列、嵌套及实时切换，默认 CSS 不参与生成。
+const colorThemes = colorThemeCase
+  ? [createColorTheme({ brand: '#7c3aed' }), createColorTheme({ brand: '#e8590c' })]
+  : [];
+// 公开属性变化驱动真实主题刷新，不调用组件私有更新方法。
+const colorThemeMode = ref('light');
+const colorThemeAlternate = ref(false);
+const colorThemeEnabled = ref(true);
+// Modal 分别覆盖正常关闭与直接卸载后的重新创建。
+const colorModalVisible = ref(false);
+const colorModalCustom = ref(false);
+const colorModalMounted = ref(true);
+
+/** 返回有独立品牌和深色模式的显式弹层容器。 */
+function packedColorPopupContainer() {
+  return document.getElementById('packed-color-popup-container');
+}
+
+/** 渲染主题中实际消费 primary 的按钮，保持组件默认尺寸和字体。 */
+function renderPackedColorButton(id, text) {
+  return h(
+    Button,
+    { theme: 'solid', 'data-testid': id },
+    // 普通文字插槽不声明业务颜色，全部由公开主题变量决定。
+    () => text,
+  );
+}
+
+/** 将实际生成的色盘暴露为测试输入，消费断言独立验证语义绑定和组件最终样式。 */
+function renderPackedColorExpected(id, theme, mode) {
+  return h(
+    'output',
+    { 'data-testid': id, style: { display: 'none' } },
+    JSON.stringify(theme.palette[mode]),
+  );
+}
+
+/** 使用普通 CSS 输出和公开组件验证完整的真实包颜色主题路径。 */
+function renderPackedColorTheme() {
+  // 初始紫色与切换后的橙色同时生成，class 变化只改变级联，不替换样式表文本。
+  const initialTheme = colorThemes[0];
+  const alternateTheme = colorThemes[1];
+  const selectedTheme = colorThemeAlternate.value ? alternateTheme : initialTheme;
+  const mainSelector = '[data-semi-theme="color-main"]';
+  // 模式选择器显式声明，生成器不推断文档中任意嵌套边界的模式。
+  const colorCss = [
+    colorThemeToCss(initialTheme, {
+      selectors: {
+        light: `${mainSelector}:not(.packed-color-alternate)[theme-mode="light"]`,
+        dark: `${mainSelector}:not(.packed-color-alternate)[theme-mode="dark"]`,
+      },
+    }),
+    colorThemeToCss(alternateTheme, {
+      selectors: {
+        light: `${mainSelector}.packed-color-alternate[theme-mode="light"]`,
+        dark: `${mainSelector}.packed-color-alternate[theme-mode="dark"]`,
+      },
+    }),
+    colorThemeToCss(alternateTheme, {
+      selectors: {
+        light: '[data-semi-theme="color-independent"][theme-mode="light"]',
+        dark: '[data-semi-theme="color-independent"][theme-mode="dark"]',
+      },
+    }),
+    colorThemeToCss(initialTheme, {
+      selectors: {
+        light: 'body[data-color-global="on"]:not([theme-mode="dark"])',
+        dark: 'body[data-color-global="on"][theme-mode="dark"]',
+      },
+    }),
+  ].join('\n');
+  return h('main', { style: { padding: '24px' } }, [
+    h('style', colorCss),
+    renderPackedColorExpected('packed-color-expected', selectedTheme, colorThemeMode.value),
+    renderPackedColorExpected('packed-color-expected-light', selectedTheme, 'light'),
+    renderPackedColorExpected('packed-color-expected-dark', selectedTheme, 'dark'),
+    renderPackedColorExpected(
+      'packed-color-alternate-expected',
+      alternateTheme,
+      colorThemeMode.value,
+    ),
+    renderPackedColorExpected('packed-color-independent-expected', alternateTheme, 'dark'),
+    renderPackedColorExpected('packed-color-global-expected', initialTheme, colorThemeMode.value),
+    h('div', {
+      id: 'packed-color-popup-container',
+      'data-semi-theme': 'color-independent',
+      'theme-mode': 'dark',
+    }),
+    h(
+      'button',
+      {
+        type: 'button',
+        // 用户操作改变普通 class，保持已打开的 Portal 节点不被重新挂载。
+        onClick: () => {
+          colorThemeAlternate.value = !colorThemeAlternate.value;
+        },
+      },
+      '切换品牌颜色',
+    ),
+    h(
+      'button',
+      {
+        type: 'button',
+        // 全局和局部模式一起改变，检验跨 body Portal 的显式模式桥接。
+        onClick: () => {
+          colorThemeMode.value = colorThemeMode.value === 'light' ? 'dark' : 'light';
+          document.body.setAttribute('theme-mode', colorThemeMode.value);
+        },
+      },
+      '切换颜色模式',
+    ),
+    h(
+      'button',
+      {
+        type: 'button',
+        // 撤销主题边界后，默认 body Portal 必须恢复全局颜色而非残留旧变量。
+        onClick: () => {
+          colorThemeEnabled.value = !colorThemeEnabled.value;
+        },
+      },
+      '切换局部颜色边界',
+    ),
+    h(
+      'button',
+      {
+        type: 'button',
+        // 主题显式启用后才覆盖 body，单纯导入生成器不能改变默认颜色。
+        onClick: () => {
+          document.body.setAttribute('data-color-global', 'on');
+        },
+      },
+      '启用全局颜色主题',
+    ),
+    h(
+      'section',
+      {
+        'data-testid': 'packed-color-root',
+        'data-semi-theme': colorThemeEnabled.value ? 'color-main' : undefined,
+        'theme-mode': colorThemeMode.value,
+        class: colorThemeAlternate.value ? 'packed-color-alternate' : undefined,
+        style: { padding: '16px', display: 'grid', gap: '12px', maxWidth: '480px' },
+      },
+      [
+        renderPackedColorButton('packed-color-button', '品牌主要按钮'),
+        h(
+          Typography.Text,
+          { link: true, 'data-testid': 'packed-color-link' },
+          // 链接和焦点使用 brand，info 仍使用独立 blue 色阶。
+          () => '品牌链接',
+        ),
+        h(
+          Typography.Text,
+          { 'data-testid': 'packed-color-text' },
+          // 正文验证生成灰阶与默认排版分别保持自己的契约。
+          () => '品牌正文',
+        ),
+        h(Input, { 'aria-label': '颜色输入框', value: '保持默认字体与高度' }),
+        h(Select, {
+          value: 'first',
+          motion: false,
+          optionList: [
+            { label: '颜色选项 First', value: 'first' },
+            { label: '颜色选项 Second', value: 'second' },
+          ],
+        }),
+        h(
+          Tag,
+          { color: 'blue', type: 'solid', 'data-testid': 'packed-color-tag' },
+          // 显式蓝色标签应使用生成 blue，而不是将所有蓝色强行替换为 brand。
+          () => '独立信息蓝标签',
+        ),
+        h(
+          Tooltip,
+          {
+            trigger: 'click',
+            motion: false,
+            position: 'bottom',
+            content: h(
+              Typography.Text,
+              { link: true, 'data-testid': 'packed-color-tooltip-link' },
+              // Portal 内真实链接消费其物理宿主的语义颜色。
+              () => '默认颜色提示链接',
+            ),
+          },
+          {
+            // 默认 Tooltip 保持 body Portal，必须由库本身桥接局部颜色。
+            default: () => h(Button, {}, () => '打开颜色提示'),
+          },
+        ),
+        h(
+          Tooltip,
+          {
+            trigger: 'click',
+            motion: false,
+            position: 'bottom',
+            getPopupContainer: packedColorPopupContainer,
+            content: h(
+              Typography.Text,
+              { link: true, 'data-testid': 'packed-color-custom-link' },
+              // 显式容器故意处于不同品牌与模式，不能复制源主题覆盖它。
+              () => '独立容器提示链接',
+            ),
+          },
+          {
+            // 第二个真实触发器区分显式容器路径。
+            default: () => h(Button, {}, () => '打开独立颜色提示'),
+          },
+        ),
+        h('div', { class: 'semi-always-light' }, [
+          renderPackedColorButton('packed-color-always-light', '固定浅色品牌按钮'),
+        ]),
+        h('div', { class: 'semi-always-dark' }, [
+          renderPackedColorButton('packed-color-always-dark', '固定深色品牌按钮'),
+          h(
+            Tooltip,
+            {
+              trigger: 'click',
+              motion: false,
+              position: 'bottom',
+              // 触发源被强制为深色，内容跨 body Portal 后仍需保留该实际计算模式。
+              content: h('div', [
+                renderPackedColorButton('packed-color-force-popup-dark', '提示中的深色品牌按钮'),
+                h('div', { class: 'semi-always-light' }, [
+                  // Portal 内再次强制浅色，验证两套 carrier 均跨边界保留。
+                  renderPackedColorButton('packed-color-force-popup-light', '提示中的浅色品牌按钮'),
+                ]),
+              ]),
+            },
+            {
+              // 独立触发器避免默认提示覆盖后续控件，专项用例单独打开该弹层。
+              default: () => h(Button, {}, () => '打开固定深色颜色提示'),
+            },
+          ),
+        ]),
+        h('section', { 'data-semi-theme': 'color-independent', 'theme-mode': 'dark' }, [
+          renderPackedColorButton('packed-color-nested', '嵌套独立品牌按钮'),
+        ]),
+        // 两个公开入口复用相同声明位置，仅显式容器配置不同。
+        ...[false, true].map(
+          // 用户点击时重新挂载已卸载的 Modal，覆盖完整生命周期。
+          (custom) =>
             h(
               Button,
               {
-                // 按钮驱动现有输入状态。
+                // 每次用户打开均从当前主题和显式容器配置创建弹层。
                 onClick: () => {
-                  input.value = 'Clicked';
+                  colorModalMounted.value = true;
+                  colorModalCustom.value = custom;
+                  colorModalVisible.value = true;
                 },
               },
-              // 保留真实 Button 默认插槽。
-              () => 'Packed button',
+              // 插槽文案明确区分实际容器。
+              () => (custom ? '打开独立颜色弹窗' : '打开默认颜色弹窗'),
             ),
-            h(Input, {
-              value: input.value,
-              'aria-label': 'Packed input',
-              // 原样同步输入的公开 change 值。
-              onChange: (value) => {
-                input.value = value;
+        ),
+        colorModalMounted.value
+          ? h(
+              Modal,
+              {
+                visible: colorModalVisible.value,
+                motion: false,
+                title: '颜色主题弹窗',
+                getPopupContainer: colorModalCustom.value ? packedColorPopupContainer : undefined,
+                // 正常关闭仍保留声明位置，重开需使用当前主题。
+                onCancel: () => {
+                  colorModalVisible.value = false;
+                },
               },
-            }),
-            h(Select, {
-              value: selected.value,
-              'aria-label': 'Packed select',
-              optionList: [
-                { label: 'First', value: 'first' },
-                { label: 'Second', value: 'second' },
-              ],
-              // 原样同步选择器的公开 change 值。
-              onChange: (value) => {
-                selected.value = value;
+              {
+                // 内容按钮使用真实组件变量，不能由测试专用 style 代替主题消费。
+                default: () => [
+                  renderPackedColorButton('packed-color-modal-button', '弹窗品牌按钮'),
+                  h(
+                    Button,
+                    {
+                      // 直接卸载可见实例，检验镜像属性与订阅同时释放。
+                      onClick: () => {
+                        colorModalMounted.value = false;
+                      },
+                    },
+                    // 保留用户可见的卸载控件。
+                    () => '卸载颜色弹窗',
+                  ),
+                ],
               },
-            }),
-            h('output', { id: 'packed-state' }, input.value + ':' + selected.value),
-            h(CodeHighlight, { code: 'const ready = true;\nready();', language: 'javascript' }),
-            h(JsonViewer, { value: '{"name":"Semi"}', width: 600, height: 160 }),
-            renderPackedErrorCases(),
-          ]),
+            )
+          : null,
+      ],
+    ),
+    h('section', { 'data-testid': 'packed-color-neighbor' }, [
+      renderPackedColorButton('packed-color-neighbor-button', '相邻全局按钮'),
+    ]),
+  ]);
+}
+
+createApp({
+  // 根消费示例保留原有组件交互，并加入直接调用的错误提示区域。
+  render: () =>
+    colorThemeCase
+      ? renderPackedColorTheme()
+      : typographyThemeCase
+        ? renderPackedTypographyTheme()
+        : dropdownCase !== null
+          ? renderPackedDropdown()
+          : h('main', [
+              h(
+                Button,
+                {
+                  // 按钮驱动现有输入状态。
+                  onClick: () => {
+                    input.value = 'Clicked';
+                  },
+                },
+                // 保留真实 Button 默认插槽。
+                () => 'Packed button',
+              ),
+              h(Input, {
+                value: input.value,
+                'aria-label': 'Packed input',
+                // 原样同步输入的公开 change 值。
+                onChange: (value) => {
+                  input.value = value;
+                },
+              }),
+              h(Select, {
+                value: selected.value,
+                'aria-label': 'Packed select',
+                optionList: [
+                  { label: 'First', value: 'first' },
+                  { label: 'Second', value: 'second' },
+                ],
+                // 原样同步选择器的公开 change 值。
+                onChange: (value) => {
+                  selected.value = value;
+                },
+              }),
+              h('output', { id: 'packed-state' }, input.value + ':' + selected.value),
+              h(CodeHighlight, { code: 'const ready = true;\nready();', language: 'javascript' }),
+              h(JsonViewer, { value: '{"name":"Semi"}', width: 600, height: 160 }),
+              renderPackedErrorCases(),
+            ]),
 }).mount('#app');
 
 console.log(styleCoverage.length);

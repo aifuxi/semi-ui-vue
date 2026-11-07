@@ -41,6 +41,11 @@
       "style": "./dist/index.css",
       "default": "./dist/index.css"
     },
+    "./colors": {
+      "types": "./dist/colors/index.d.mts",
+      "import": "./dist/colors/index.mjs",
+      "default": "./dist/colors/index.mjs"
+    },
     "./index.css": "./dist/index.css",
     "./base.css": "./dist/base.css",
     "./shared/*.css": "./dist/shared/*.css",

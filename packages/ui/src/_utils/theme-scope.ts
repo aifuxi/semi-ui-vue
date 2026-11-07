@@ -180,9 +180,25 @@ export function getTypographySignature(element: HTMLElement): string {
   ]);
 }
 
-/** 识别共享排版变量及组件独立排版变量，不扩散颜色或布局变量。 */
+/** 识别共享排版变量及组件独立排版变量，保持排版来源为最近主题边界。 */
 function isTypographyToken(name: string): boolean {
   return name.startsWith('--semi-') && (name.includes('font-') || name.includes('line-height'));
+}
+
+/** 固定 Semi 基础色盘及独立品牌色的十级变量；不能把任意布局变量带入弹层。 */
+const COLOR_PALETTE_TOKEN =
+  /^--semi-(?:(?:red|pink|purple|violet|indigo|blue|light-blue|cyan|teal|green|light-green|lime|yellow|amber|orange|grey|brand)-[0-9]|black|white)$/;
+
+/** 只传播颜色、颜色模式载体及模式相关阴影，不扩大为所有 Semi 设计变量。 */
+function isColorToken(name: string): boolean {
+  /** 模式载体只允许承载同一组颜色变量，不能借此前缀扩散布局声明。 */
+  const token = name.replace(/^--semi-theme-(?:light|dark)-/, '--semi-');
+  return (
+    COLOR_PALETTE_TOKEN.test(token) ||
+    token.startsWith('--semi-color-') ||
+    token.startsWith('--semi-ai-') ||
+    token === '--semi-shadow-elevated'
+  );
 }
 
 /** 将默认 body Portal 接回声明位置的局部主题，释放时还原工具写入的属性。 */
@@ -193,8 +209,63 @@ export function mirrorThemeScope(source: HTMLElement, target: HTMLElement): () =
   const writtenStyles = new Set<string>();
   /** 最后写入值用于清理时识别调用方后续自行覆盖的声明。 */
   const lastWrittenValues = new Map<string, string>();
-  /** 作用域标记保留调用方原始属性。 */
-  const originalScope = target.getAttribute('data-semi-theme');
+  /** 工具管理的属性只在仍等于最后写入值时恢复，保护调用方的后续修改。 */
+  const originalAttributes = new Map<string, string | null>();
+  /** 每个已写入属性的最后值用于辨认当前所有权。 */
+  const lastWrittenAttributes = new Map<string, string | null>();
+  /** 强制模式只镜像这两个公开类名，不能复制触发器的业务 class。 */
+  const forceClasses = ['semi-always-light', 'semi-always-dark'];
+  /** 原始强制模式类及最后写入状态用于对称清理。 */
+  const originalClasses = new Map<string, boolean>();
+  /** 当前由镜像机制管理的强制模式类。 */
+  const lastWrittenClasses = new Map<string, boolean>();
+  /** 设置或移除主题属性，同时留存工具第一次接管前的值。 */
+  const writeAttribute = (name: string, value: string | null): void => {
+    if (!originalAttributes.has(name)) originalAttributes.set(name, target.getAttribute(name));
+    if (value === null) target.removeAttribute(name);
+    else if (target.getAttribute(name) !== value) target.setAttribute(name, value);
+    lastWrittenAttributes.set(name, value);
+  };
+  /** 恢复仍由工具管理的属性；业务自行改变后的值保持原样。 */
+  const restoreAttributes = (): void => {
+    for (const [name, lastValue] of lastWrittenAttributes) {
+      if (target.getAttribute(name) !== lastValue) continue;
+      /** 已写入属性保证这里存在对应的原始值。 */
+      const originalValue = originalAttributes.get(name)!;
+      if (originalValue === null) target.removeAttribute(name);
+      else target.setAttribute(name, originalValue);
+    }
+    lastWrittenAttributes.clear();
+  };
+  /** 最近的有效模式边界同时决定 Portal 的显式 mode 和强制模式类。 */
+  const writeMode = (): void => {
+    /** 最近边界允许内层显式模式覆盖外层深浅模式或强制模式。 */
+    const modeSource = source.closest(
+      '[theme-mode="light"], [theme-mode="dark"], .semi-always-light, .semi-always-dark',
+    );
+    /** 同节点同时具有两个强制类时，沿用固定基线后声明的 dark 规则。 */
+    const forcedMode = modeSource?.classList.contains('semi-always-dark')
+      ? 'dark'
+      : modeSource?.classList.contains('semi-always-light')
+        ? 'light'
+        : null;
+    writeAttribute('theme-mode', forcedMode ?? modeSource?.getAttribute('theme-mode') ?? null);
+    for (const name of forceClasses) {
+      if (!originalClasses.has(name)) originalClasses.set(name, target.classList.contains(name));
+      /** 只复制当前生效的强制模式；普通显式 mode 不附加 force 类。 */
+      const enabled = name === `semi-always-${forcedMode}`;
+      target.classList.toggle(name, enabled);
+      lastWrittenClasses.set(name, enabled);
+    }
+  };
+  /** 释放或退出局部主题时恢复工具仍拥有的强制模式类。 */
+  const restoreClasses = (): void => {
+    for (const [name, enabled] of lastWrittenClasses) {
+      if (target.classList.contains(name) !== enabled) continue;
+      target.classList.toggle(name, originalClasses.get(name)!);
+    }
+    lastWrittenClasses.clear();
+  };
   /** 写入前留存原始值，并避免相同声明引起重复 MutationObserver 通知。 */
   const writeStyle = (name: string, value: string): void => {
     if (!originalStyles.has(name)) {
@@ -228,11 +299,18 @@ export function mirrorThemeScope(source: HTMLElement, target: HTMLElement): () =
     /** 此次需要继续保留的内联声明。 */
     const currentStyles = new Set<string>();
     if (scope && !scope.contains(target)) {
-      /** 只把计算后的排版值跨 Portal 边界传递。 */
+      /** 排版沿最近主题边界传播，避免把触发按钮的局部字号当成弹层字号。 */
       const style = source.ownerDocument.defaultView!.getComputedStyle(scope);
       for (const name of Array.from(style)) {
         if (!isTypographyToken(name)) continue;
         writeStyle(name, style.getPropertyValue(name));
+        currentStyles.add(name);
+      }
+      /** 颜色取实际源节点，才能保留主题内部更近的 always-light/dark 边界。 */
+      const colorStyle = source.ownerDocument.defaultView!.getComputedStyle(source);
+      for (const name of Array.from(colorStyle)) {
+        if (!isColorToken(name)) continue;
+        writeStyle(name, colorStyle.getPropertyValue(name));
         currentStyles.add(name);
       }
       for (const name of ['font-family', 'font-weight']) {
@@ -241,10 +319,12 @@ export function mirrorThemeScope(source: HTMLElement, target: HTMLElement): () =
       }
       /** 标记让嵌套 Portal 和主题选择器继续识别同一局部边界。 */
       const scopeName = scope.getAttribute('data-semi-theme')!;
-      if (target.getAttribute('data-semi-theme') !== scopeName)
-        target.setAttribute('data-semi-theme', scopeName);
-    } else if (originalScope === null) target.removeAttribute('data-semi-theme');
-    else target.setAttribute('data-semi-theme', originalScope);
+      writeAttribute('data-semi-theme', scopeName);
+      writeMode();
+    } else {
+      restoreAttributes();
+      restoreClasses();
+    }
     for (const name of [...writtenStyles]) {
       if (!currentStyles.has(name)) restoreStyle(name);
     }
@@ -256,8 +336,8 @@ export function mirrorThemeScope(source: HTMLElement, target: HTMLElement): () =
   return () => {
     unsubscribe();
     for (const name of [...writtenStyles]) restoreStyle(name);
-    if (originalScope === null) target.removeAttribute('data-semi-theme');
-    else target.setAttribute('data-semi-theme', originalScope);
+    restoreAttributes();
+    restoreClasses();
   };
 }
 

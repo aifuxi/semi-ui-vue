@@ -13,7 +13,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-/** 创建真实局部主题元素，颜色变量用于确认排版镜像不会扩散其他 token。 */
+/** 创建真实局部主题元素；颜色继承由浏览器消费者测试覆盖。 */
 function createScope(name: string, size: string): HTMLDivElement {
   /** 内联变量在 jsdom 中可直接读取，不依赖其尚未实现的 var() 布局计算。 */
   const scope = document.createElement('div');
@@ -26,7 +26,7 @@ function createScope(name: string, size: string): HTMLDivElement {
 }
 
 /** 这些测试验证主题传播的可观察 DOM 与通知边界，不复刻 CSS 变量求值逻辑。 */
-describe('局部排版主题作用域', () => {
+describe('局部主题作用域', () => {
   /** 嵌套边界、动态取消及原始样式恢复属于 Portal 生命周期契约。 */
   it('镜像最近主题并跟随变更，退出主题后撤回覆盖且保留原宿主样式', async () => {
     /** 两层不同字号验证选择的是最近主题。 */
@@ -47,7 +47,6 @@ describe('局部排版主题作用域', () => {
     try {
       expect(target.dataset.semiTheme).toBe('inner');
       expect(target.style.getPropertyValue('--semi-font-size-regular')).toBe('22px');
-      expect(target.style.getPropertyValue('--semi-color-primary')).toBe('');
       expect(target.style.fontFamily).toBe('serif');
       expect(target.style.fontWeight).toBe('500');
       inner.style.setProperty('--semi-button-font-size', '24px');
@@ -67,6 +66,137 @@ describe('局部排版主题作用域', () => {
     } finally {
       stop();
     }
+  });
+
+  /** 颜色从实际源节点读取，模式载体保留后代强制模式所需数据，布局始终隔离。 */
+  it('镜像源节点的颜色和模式载体，动态撤回旧颜色且不传播布局', async () => {
+    /** 局部主题边界继续决定排版来源。 */
+    const scope = createScope('colors', '18px');
+    /** jsdom 不继承自定义属性，因此显式在源节点设置浏览器计算后应有的颜色。 */
+    const source = document.createElement('button');
+    source.style.setProperty('--semi-brand-5', '1, 2, 3');
+    source.style.setProperty('--semi-color-primary', 'rgb(1, 2, 3)');
+    source.style.setProperty('--semi-ai-general-5', 'linear-gradient(red, blue)');
+    source.style.setProperty('--semi-shadow-elevated', '0 0 1px black');
+    source.style.setProperty('--semi-theme-dark-brand-5', '4, 5, 6');
+    source.style.setProperty('--semi-theme-light-color-primary', 'rgb(1, 2, 3)');
+    source.style.setProperty('--semi-border-radius-small', '20px');
+    source.style.setProperty('--semi-theme-dark-border-radius-small', '30px');
+    source.style.setProperty('--business-color', 'green');
+    /** Portal 的原始颜色和位置属性均须在退出镜像后保留。 */
+    const target = document.createElement('div');
+    target.style.setProperty('--semi-color-primary', 'purple');
+    target.style.zIndex = '1000';
+    scope.append(source);
+    document.body.append(scope, target);
+    /** 对称释放覆盖和订阅，避免测试泄漏观察器。 */
+    const stop = mirrorThemeScope(source, target);
+    try {
+      expect(target.style.getPropertyValue('--semi-brand-5')).toBe('1, 2, 3');
+      expect(target.style.getPropertyValue('--semi-color-primary')).toBe('rgb(1, 2, 3)');
+      expect(target.style.getPropertyValue('--semi-ai-general-5')).toBe(
+        'linear-gradient(red, blue)',
+      );
+      expect(target.style.getPropertyValue('--semi-shadow-elevated')).toBe('0 0 1px black');
+      expect(target.style.getPropertyValue('--semi-theme-dark-brand-5')).toBe('4, 5, 6');
+      expect(target.style.getPropertyValue('--semi-theme-light-color-primary')).toBe(
+        'rgb(1, 2, 3)',
+      );
+      expect(target.style.getPropertyValue('--semi-border-radius-small')).toBe('');
+      expect(target.style.getPropertyValue('--semi-theme-dark-border-radius-small')).toBe('');
+      expect(target.style.getPropertyValue('--business-color')).toBe('');
+      source.style.setProperty('--semi-color-primary', 'rgb(4, 5, 6)');
+      source.style.removeProperty('--semi-brand-5');
+      await flushPromises();
+      expect(target.style.getPropertyValue('--semi-color-primary')).toBe('rgb(4, 5, 6)');
+      expect(target.style.getPropertyValue('--semi-brand-5')).toBe('');
+      scope.removeAttribute('data-semi-theme');
+      await flushPromises();
+      expect(target.style.getPropertyValue('--semi-color-primary')).toBe('purple');
+      expect(target.style.getPropertyValue('--semi-theme-dark-brand-5')).toBe('');
+      expect(target.style.zIndex).toBe('1000');
+    } finally {
+      stop();
+    }
+  });
+
+  /** Portal 不在原强制模式祖先内，需镜像最近有效模式并正确恢复宿主初始状态。 */
+  it('镜像最近显式或强制模式，退出局部主题后恢复原属性和模式类', async () => {
+    /** 外层显式深色与内部强制浅色构成有意的模式冲突。 */
+    const scope = createScope('mode', '18px');
+    scope.setAttribute('theme-mode', 'dark');
+    /** 比主题边界更近的强制模式必须获胜。 */
+    const force = document.createElement('div');
+    force.classList.add('semi-always-light');
+    /** 实际源节点位于强制模式子树中。 */
+    const source = document.createElement('button');
+    /** 原宿主状态在局部主题取消后完整恢复。 */
+    const target = document.createElement('div');
+    target.setAttribute('theme-mode', 'light');
+    target.classList.add('business-portal', 'semi-always-dark');
+    force.append(source);
+    scope.append(force);
+    document.body.append(scope, target);
+    /** 对称释放覆盖和订阅。 */
+    const stop = mirrorThemeScope(source, target);
+    try {
+      expect(target.getAttribute('theme-mode')).toBe('light');
+      expect(target.classList.contains('semi-always-light')).toBe(true);
+      expect(target.classList.contains('semi-always-dark')).toBe(false);
+      force.classList.remove('semi-always-light');
+      await flushPromises();
+      expect(target.getAttribute('theme-mode')).toBe('dark');
+      expect(target.classList.contains('semi-always-light')).toBe(false);
+      expect(target.classList.contains('semi-always-dark')).toBe(false);
+      force.setAttribute('theme-mode', 'light');
+      await flushPromises();
+      expect(target.getAttribute('theme-mode')).toBe('light');
+      scope.removeAttribute('data-semi-theme');
+      await flushPromises();
+      expect(target.getAttribute('theme-mode')).toBe('light');
+      expect(target.classList.contains('semi-always-dark')).toBe(true);
+      expect(target.classList.contains('business-portal')).toBe(true);
+    } finally {
+      stop();
+    }
+  });
+
+  /** 调用方可在镜像存活期间自行调整宿主，释放不应覆盖这类后续业务修改。 */
+  it('释放模式镜像时保留宿主后续业务属性与强制类修改', () => {
+    /** 主题初始显式模式使目标获得工具写入的 dark。 */
+    const scope = createScope('ownership', '18px');
+    scope.setAttribute('theme-mode', 'dark');
+    /** 源和目标分属不同 DOM 子树。 */
+    const source = document.createElement('button');
+    /** 业务宿主的初始状态应与后续覆盖区分。 */
+    const target = document.createElement('div');
+    scope.append(source);
+    document.body.append(scope, target);
+    /** 保留释放函数以模拟调用方卸载弹层。 */
+    const stop = mirrorThemeScope(source, target);
+    target.setAttribute('theme-mode', 'light');
+    target.dataset.semiTheme = 'business';
+    target.classList.add('semi-always-dark');
+    stop();
+    expect(target.getAttribute('theme-mode')).toBe('light');
+    expect(target.dataset.semiTheme).toBe('business');
+    expect(target.classList.contains('semi-always-dark')).toBe(true);
+  });
+
+  /** 颜色属于视觉主题，不能单独改变用于省略布局的排版签名。 */
+  it('纯颜色和模式载体更新不改变排版签名', () => {
+    /** 根元素提供浏览器计算样式的稳定排版属性。 */
+    const root = document.createElement('span');
+    root.style.fontFamily = 'serif';
+    root.style.fontSize = '14px';
+    root.style.lineHeight = '20px';
+    document.body.append(root);
+    /** 只对比实际排版字段，不将颜色 token 加入测量条件。 */
+    const original = getTypographySignature(root);
+    root.style.color = 'red';
+    root.style.setProperty('--semi-color-primary', 'green');
+    root.style.setProperty('--semi-theme-dark-brand-5', '1, 2, 3');
+    expect(getTypographySignature(root)).toBe(original);
   });
 
   /** 共享观察器只通知当前元素祖先的变化，并按字体、样式表分别标注失效原因。 */

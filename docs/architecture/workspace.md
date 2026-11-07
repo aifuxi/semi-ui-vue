@@ -46,3 +46,9 @@ Vue 场景由 Storybook Vue 3/Vite 承载，React 参考继续使用 Rsbuild、R
 源码测试与实现共置于各包 `src` 下，`.test.ts` / `.spec.ts` 纳入类型检查。Vitest dom project 使用 Vue Test Utils/jsdom，Node project 验证无 DOM SSR、纯工具和私有集成；hydration 与普通客户端 mount 分开命名。SFC 使用 Vue/Vite 编译，Prism 与 JSON Worker 通过私有集成插件适配。旧 Rstest 配置及覆盖率补丁、App 外壳测试与专用 stubs、测试 alias 生成器已移除。
 
 组件与 consumer 浏览器测试仅本地执行。组件 Playwright 配置通过标准 webServer 构建 React/Storybook 并 preview；consumer 配置独立验证真实 tarball，不加载 Storybook。CI 保留静态源码、Node 产物与发布职责。工具切换不代表全部组件验收完成；组件契约见[组件契约](../testing/component-contract.md)，执行范围见[验证入口](../testing/validation.md)，环境与 IDE 见[工具链](toolchain.md)。
+
+### 可选颜色生成入口
+
+`@aifuxi/semi-theme-default/colors` 提供独立、零依赖的纯 ESM 颜色生成器和类型。HSV 算法以固定 DSM 参考结果验收，默认 CSS 仍来自固定 Semi v2.102.0；品牌生成算法不参与默认主题构建。构建时只读编译 vendor 的全局颜色语义，生成包内静态数据，消费者不依赖 Sass、vendor 或构建插件。
+
+公开入口包含单色阶、完整色盘、双模式主题及 CSS 序列化。完整主题同时声明基础色和语义引用，私有双模式载体支持嵌套 always-light/dark；默认 Portal 桥接颜色、排版与模式，显式容器优先。输入、输出及使用方式见[颜色主题契约](../../packages/theme-default/README.md#品牌颜色生成器)。
