@@ -5,8 +5,21 @@ import { expect, test, type Page } from '@playwright/test';
 async function backgrounds(page: Page) {
   return page.getByTestId('global-scope').evaluate(
     /** 排版可能改变尺寸，因此只比较背景色和背景图的最终值。 */
-    (scope) =>
-      [...scope.querySelectorAll('*')].map(
+    async (scope) => {
+      // 新增状态样本也有原生颜色过渡；采样前等待实际过渡结束，不记录中间帧。
+      await Promise.all(
+        scope
+          .getAnimations({ subtree: true })
+          .filter(
+            /** 只等待有限的 CSS transition，不等待无关的循环动画。 */
+            (animation) => animation instanceof CSSTransition,
+          )
+          .map(
+            /** finished 由浏览器完成事件驱动，无固定等待。 */
+            (animation) => animation.finished,
+          ),
+      );
+      return [...scope.querySelectorAll('*')].map(
         /** 伪元素也可能消费共享 text/border 变量，必须一起检查。 */
         (element) =>
           ['', '::before', '::after'].map(
@@ -17,13 +30,14 @@ async function backgrounds(page: Page) {
               return [style.backgroundColor, style.backgroundImage, style.boxShadow];
             },
           ),
-      ),
+      );
+    },
   );
 }
 
-/** 把指针停在工作区标题，避免读取样式时无意保持某个组件的 hover。 */
+/** 把指针停在固定页眉，避免字体加载或布局变化后落到场景控件上。 */
 async function restPointer(page: Page): Promise<void> {
-  await page.getByRole('heading', { name: '主题效果总览', exact: true }).hover();
+  await page.getByRole('link', { name: 'Theme Studio 首页', exact: true }).hover();
 }
 
 /** 页面使用真实字体文件，中文继续由来源字体栈的系统回退处理。 */

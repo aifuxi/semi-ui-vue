@@ -33,6 +33,7 @@ const visible = ref(false);
 const options = [
   { label: '草稿', value: 'draft' },
   { label: '已保存', value: 'saved' },
+  { label: '已归档', value: 'archived', disabled: true },
 ];
 /** 表格数据只展示主题相关内容。 */
 const rows = [
@@ -40,6 +41,12 @@ const rows = [
   { key: '2', name: '基础排版', type: '排版', state: '默认' },
   { key: '3', name: '组件圆角', type: '形状', state: '默认' },
 ];
+/** 第一行默认选中，第三行不可选，用真实 Table API 展示选择和禁用状态。 */
+const rowSelection = {
+  defaultSelectedRowKeys: ['1'],
+  /** 使用已存在的第三条样式记录演示不可选项，不改变表格数据。 */
+  getCheckboxProps: (record: Record<string, unknown>) => ({ disabled: record.key === '3' }),
+};
 /** 不使用渲染回调，表格直接消费列定义。 */
 const columns = [
   { title: '样式', dataIndex: 'name' },
@@ -114,6 +121,11 @@ function closeModal(): void {
         ><Switch v-model="enabled" aria-label="预览启用主题" />
         <Radio default-checked aria-label="使用当前主题">使用当前主题</Radio>
       </div>
+      <div class="component-example">
+        <Checkbox disabled default-checked>禁用复选框</Checkbox>
+        <Switch disabled default-checked aria-label="预览禁用开关" />
+        <Radio disabled default-checked>禁用单选框</Radio>
+      </div>
     </section>
     <section v-if="scene === 'effects'" class="gallery-section effects-section">
       <h3>状态与光晕</h3>
@@ -178,7 +190,13 @@ function closeModal(): void {
       class="gallery-section"
     >
       <h3>样式列表</h3>
-      <Table :columns="columns" :data-source="rows" :pagination="false" size="small" />
+      <Table
+        :columns="columns"
+        :data-source="rows"
+        :row-selection="rowSelection"
+        :pagination="false"
+        size="small"
+      />
     </section>
     <section v-if="!component || component === 'card'" class="gallery-section">
       <h3>主题卡片</h3>

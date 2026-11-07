@@ -122,7 +122,7 @@ const attributes = computed(() =>
         <BrandEditor
           :theme="studio.global"
           label="全局"
-          @change="Object.assign(studio.global, $event)"
+          @change="studio.updateGlobalTheme($event)"
         />
       </section>
       <details v-if="studio.settings.category === 'typography'" class="quick-settings" open>

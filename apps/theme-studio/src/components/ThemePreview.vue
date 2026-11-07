@@ -45,7 +45,7 @@ const scale = computed(() => studio.globalTheme.value?.palette[studio.global.mod
         title="主题表单"
         :theme="studio.global"
         :button-style="studio.buttonStyle.value"
-        @change="Object.assign(studio.global, $event)"
+        @change="studio.updateGlobalTheme($event)"
       />
       <section
         v-if="scene === 'scopes' || studio.settings.category === 'local'"
@@ -72,7 +72,9 @@ const scale = computed(() => studio.globalTheme.value?.palette[studio.global.mod
           compact
           :button-style="studio.buttonStyle.value"
           @change="
-            Object.assign(studio.settings.localEnabled ? studio.local : studio.global, $event)
+            studio.settings.localEnabled
+              ? Object.assign(studio.local, $event)
+              : studio.updateGlobalTheme($event)
           "
         />
       </section>

@@ -303,6 +303,32 @@ export function createStudio() {
   function resetToken(token: TokenDefinition): void {
     delete overrides[global.mode][token.name];
   }
+  /** 品牌编辑接替预设生成的主色三态，用户另行编辑的覆盖与其他主题角色保留。 */
+  function updateGlobalTheme(value: Partial<ThemeSettings>): void {
+    if (
+      value.brand !== undefined &&
+      (value.brand !== global.brand || (global.fixed && value.fixed === false))
+    ) {
+      for (const mode of ['light', 'dark'] as const) {
+        for (const [name, presetValue] of Object.entries(dieluPreset.variables[mode])) {
+          /** 只撤回与原预设完全一致的主色、链接、焦点和主按钮覆盖，保留圆角与其他品牌。 */
+          const primary =
+            name.startsWith('--semi-color-primary') ||
+            name.startsWith('--semi-color-link') ||
+            name === '--semi-color-focus-border' ||
+            name.startsWith('--studio-color-button-primary-');
+          if (primary && overrides[mode][name] === presetValue) delete overrides[mode][name];
+        }
+        /** 预设的固定焦点描边交还当前品牌；用户修改后的焦点描边继续优先。 */
+        const focus = tokenByName.get('--studio-dielu-focus-border-color')!;
+        if (
+          overrides[mode][focus.name] === (mode === 'dark' ? focus.darkValue : focus.defaultValue)
+        )
+          delete overrides[mode][focus.name];
+      }
+    }
+    Object.assign(global, value);
+  }
   /** 只合并迁移范围内的变量，其他编辑和模式保留；一次操作可整体撤销。 */
   function applyDieluPreset(): void {
     // 保持固定基线，避免整盘算法连带更改信息、成功、警告与危险色。
@@ -623,6 +649,7 @@ export function createStudio() {
     tokenValue,
     setToken,
     resetToken,
+    updateGlobalTheme,
     applyDieluPreset,
     applyDieluForegroundPreset,
     applyDieluEffectsPreset,

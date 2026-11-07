@@ -173,8 +173,11 @@ for (const dark of [false, true]) {
     ] as const) {
       /** 原生焦点节点与绘制节点分别定位，不能只检查 focus-visible 布尔值。 */
       const input = page.getByTestId('component-gallery').getByRole(role, { name, exact: true });
-      /** 当前组件场景每类只有一个可见外层，与原生焦点分别检查。 */
-      const wrapper = page.getByTestId('component-gallery').locator(selector);
+      /** 场景也包含禁用样本，用原生焦点节点确定对应可见外层。 */
+      const wrapper = page
+        .getByTestId('component-gallery')
+        .locator(selector)
+        .filter({ has: page.getByRole(role, { name, exact: true }) });
       await keyboardFocus(page, input);
       await expect(wrapper).toHaveCSS('outline-width', '2px');
       await expect(wrapper).toHaveCSS('outline-offset', '2px');
