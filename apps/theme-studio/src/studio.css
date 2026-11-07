@@ -404,6 +404,11 @@ summary:focus-visible {
   flex-direction: column;
   gap: 24px;
 }
+/* 检查器内容由侧栏滚动承载，不能把属性列表压成零高度。 */
+.studio-editor > *,
+.component-attributes > button {
+  flex-shrink: 0;
+}
 .panel-heading,
 .inspector-title {
   display: flex;

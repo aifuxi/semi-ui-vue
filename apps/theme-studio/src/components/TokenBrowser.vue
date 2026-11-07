@@ -34,7 +34,9 @@ const palettes = computed(() => {
   const groups = new Map<string, typeof filtered.value>();
   for (const token of filtered.value) {
     /** 非数值后缀如 black/white 仍拥有独立分组。 */
-    const group = token.name.replace('--semi-', '').replace(/-\d$/, '');
+    const group = token.name.startsWith('--dielu-brand-')
+      ? '迭鹿品牌原色'
+      : token.name.replace('--dielu-color-', '迭鹿 · ').replace('--semi-', '').replace(/-\d$/, '');
     groups.set(group, [...(groups.get(group) ?? []), token]);
   }
   return [...groups];

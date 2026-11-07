@@ -1,4 +1,5 @@
 import baselineCss from '@aifuxi/semi-theme-default/base.css?raw';
+import { dieluBrandTokens } from './dielu-preset';
 
 /** 工作台按固定基线的样式职责组织变量。 */
 export type TokenCategory =
@@ -676,6 +677,19 @@ export const componentTokens: TokenDefinition[] = [
     '.semi-tooltip-wrapper',
     'padding-top',
   ),
+  ...(['default', 'hover', 'active'] as const).map(
+    /** 辅助品牌实心按钮保留独立三态，不能拿语义前景代替深色按钮填充。 */
+    (state) =>
+      bound(
+        'button',
+        `$color-button_secondary-bg-${state}`,
+        `次要按钮背景${state === 'default' ? '' : state === 'hover' ? ' · 悬浮' : ' · 按下'}`,
+        'color',
+        `var(--semi-color-secondary${state === 'default' ? '' : `-${state}`})`,
+        `.semi-button-secondary:not(.semi-button-light):not(.semi-button-borderless):not(.semi-button-outline):not(:disabled)${state === 'default' ? '' : `:${state}`}`,
+        'background-color',
+      ),
+  ),
 ];
 /** 品牌生成器公开输出十级 RGB 载体；固定模式尚未启用品牌时以默认蓝作编辑起点。 */
 const brandTokens: TokenDefinition[] = Array.from(
@@ -693,6 +707,11 @@ const brandTokens: TokenDefinition[] = Array.from(
   }),
 );
 /** 全局目录不会混入组件属性，便于独立展示和导出。 */
-export const globalTokens: TokenDefinition[] = [...brandTokens, ...publicTokens, ...spacingTokens];
+export const globalTokens: TokenDefinition[] = [
+  ...brandTokens,
+  ...publicTokens,
+  ...spacingTokens,
+  ...dieluBrandTokens,
+];
 /** 全目录用于导入校验、按名称定位和变更计数。 */
 export const tokens: TokenDefinition[] = [...globalTokens, ...componentTokens];

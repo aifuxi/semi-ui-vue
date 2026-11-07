@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { InputNumber, Switch } from '@aifuxi/semi-ui-vue';
+import { Button, InputNumber, Switch } from '@aifuxi/semi-ui-vue';
 import { useStudio } from '../studio';
 import { componentTokens } from '../token-catalog';
 import BrandEditor from './BrandEditor.vue';
@@ -22,6 +22,11 @@ const attributes = computed(() =>
 
 <template>
   <aside class="studio-editor" aria-label="主题编辑面板">
+    <section class="brand-settings">
+      <div class="panel-heading"><h2>主题预设</h2></div>
+      <Button @click="studio.applyDieluPreset">应用迭鹿预设</Button>
+      <p class="field-help">仅应用品牌色与圆角，保留其他编辑。</p>
+    </section>
     <template v-if="route === 'components'">
       <div class="panel-heading">
         <h2>组件属性</h2>

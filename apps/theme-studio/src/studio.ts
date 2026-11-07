@@ -1,5 +1,6 @@
 import { computed, inject, reactive, ref, watch, type InjectionKey } from 'vue';
 import { tokens, baselineVariables, type TokenDefinition } from './token-catalog';
+import { dieluPreset } from './dielu-preset';
 import {
   colorThemeToCss,
   createColorTheme,
@@ -281,6 +282,16 @@ export function createStudio() {
   /** 恢复单项默认值，不影响其他变量或另一模式。 */
   function resetToken(token: TokenDefinition): void {
     delete overrides[global.mode][token.name];
+  }
+  /** 只合并迁移范围内的变量，其他编辑和模式保留；一次操作可整体撤销。 */
+  function applyDieluPreset(): void {
+    // 保持固定基线，避免整盘算法连带更改信息、成功、警告与危险色。
+    Object.assign(global, { brand: dieluPreset.brand, fixed: true });
+    for (const mode of ['light', 'dark'] as const) {
+      overrides[mode] = { ...overrides[mode], ...dieluPreset.variables[mode] };
+    }
+    settings.revision += 1;
+    message.value = '已应用迭鹿品牌色与圆角';
   }
   /** 变量列表生成普通 CSS 声明，不将编辑器状态带入产物。 */
   function declarations(values: Record<string, string>): string {
@@ -566,6 +577,7 @@ export function createStudio() {
     tokenValue,
     setToken,
     resetToken,
+    applyDieluPreset,
     canUndo,
     canRedo,
     moveHistory,
