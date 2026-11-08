@@ -1,5 +1,16 @@
 # @aifuxi/semi-ui-vue
 
+## 2.1.3
+
+### Patch Changes
+
+- [#39](https://github.com/aifuxi/semi-ui-vue/pull/39) [`ebca03f`](https://github.com/aifuxi/semi-ui-vue/commit/ebca03f26434aaa7ac7233f16ef7c5fff3077028) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复公开组件及静态子组件在 TSX 中遗漏事件属性的问题，保留原组件的事件、插槽和实例方法类型，并补齐 Form 字段监听器及 change 追加表单值的类型。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.1.3
+  - @aifuxi/semi-icons-lab-vue@2.1.3
+  - @aifuxi/semi-illustrations-vue@2.1.3
+  - @aifuxi/semi-theme-default@2.1.3
+
 ## 2.1.2
 
 ### Patch Changes
