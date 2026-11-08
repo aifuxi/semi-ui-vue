@@ -18,6 +18,8 @@ import { Form } from '@aifuxi/semi-ui-vue/form';
 import { Dropdown } from '@aifuxi/semi-ui-vue/dropdown';
 import { semiGlobal } from '@aifuxi/semi-ui-vue/config-provider';
 import { createColorTheme, colorThemeToCss } from '@aifuxi/semi-theme-default/colors';
+import { SideSheet } from '@aifuxi/semi-ui-vue/side-sheet';
+import { Popover } from '@aifuxi/semi-ui-vue/popover';
 
 // 保留这些组件的真实包入口及其 CSS，用于验证不同共享样式依赖的组合。
 const styleCoverage = [Nav, Modal, Toast];
@@ -43,6 +45,90 @@ const nestedModalVisible = ref(false);
 const outerModalVisible = ref(true);
 // 模拟 Dropdown 菜单项打开确认后从文档移除。
 const modalOpenerVisible = ref(true);
+
+/** 与业务现场相同，初始打开已有详情，保留默认动效。 */
+const sideSheetVisible = ref(true);
+/** 名称由公开 aria-label 和 title 插槽共享，模拟切换工作项。 */
+const sideSheetName = ref('工作项详情');
+
+/** 只在受控用例中作为 visible 输入，其他用例由组件持有状态。 */
+const popoverVisible = ref(false);
+/** 公开事件轨迹用于识别关闭后又重新发出 true 的回归。 */
+const popoverEvents = ref([]);
+
+/** 以原生按钮与公开属性复现重复点击，不添加业务 toggle 或关闭补丁。 */
+function renderPackedPopoverRepeat() {
+  /** omitted 与显式 false 分开验证，默认行为保持不变。 */
+  const hide = dropdownQuery.get('hide');
+  return h('main', { style: { padding: '32px' } }, [
+    h(
+      Popover,
+      {
+        trigger: 'click',
+        ...(hide === 'omitted' ? {} : { clickTriggerToHide: hide === 'true' }),
+        ...(dropdownQuery.has('controlled') ? { visible: popoverVisible.value } : {}),
+        // 默认保留真实动效，仅显式专项同时覆盖 motion=false。
+        ...(dropdownQuery.has('no-motion') ? { motion: false } : {}),
+        content: h('button', { type: 'button' }, '面板操作'),
+        // 只同步公开模型并记录事件，不从消费侧决定是否关闭。
+        'onUpdate:visible': (visible) => {
+          popoverVisible.value = visible;
+          popoverEvents.value.push(visible);
+        },
+      },
+      {
+        // 触发器本身没有 toggle 事件，状态变化必须来自组件库。
+        default: () => h('button', { type: 'button' }, '排序'),
+      },
+    ),
+    h('button', { type: 'button', style: { marginLeft: '240px' } }, '外部区域'),
+    h('output', { 'data-testid': 'popover-events' }, popoverEvents.value.join(',')),
+  ]);
+}
+
+/** 渲染真实安装包的侧边详情，仅通过公开属性与插槽驱动状态。 */
+function renderPackedSideSheet() {
+  return h('main', [
+    h(
+      'button',
+      {
+        // 关闭退出后通过原入口重新打开，不操作内部 DOM。
+        onClick: () => {
+          sideSheetVisible.value = true;
+        },
+      },
+      '打开详情',
+    ),
+    h(
+      SideSheet,
+      {
+        visible: sideSheetVisible.value,
+        mask: false,
+        'aria-label': sideSheetName.value,
+        // 沿用组件公开的可见性事件，保留真实退出时机。
+        'onUpdate:visible': (value) => {
+          sideSheetVisible.value = value;
+        },
+      },
+      {
+        // 标题插槽与显式名称同时存在，复现原始调用方式。
+        title: () => h('h2', sideSheetName.value),
+        // 通过真实控件更新公开名称，检查生产包的响应式链路。
+        default: () =>
+          h(
+            'button',
+            {
+              // 切换详情内容时应同步更新可访问名称。
+              onClick: () => {
+                sideSheetName.value = '更新后的详情';
+              },
+            },
+            '切换工作项',
+          ),
+      },
+    ),
+  ]);
+}
 
 // 仅改变外层 CSS，不更换 columns/rowSelection/scroll 的对象身份，确保重测来自 ResizeObserver。
 const packedTableWideColumns = ref(false);
@@ -916,59 +1002,68 @@ function renderPackedColorTheme() {
   ]);
 }
 
+/** 两个浮层专项复用真实包服务，其他组件消费页面保持原入口。 */
+const overlayRender = dropdownQuery.has('popover-repeat')
+  ? renderPackedPopoverRepeat
+  : dropdownQuery.has('side-sheet-a11y')
+    ? renderPackedSideSheet
+    : undefined;
+
 createApp({
   // 根消费示例保留原有组件交互，并加入直接调用的错误提示区域。
   render: () =>
-    tableFixedCase
-      ? renderPackedTableFixedWidths()
-      : modalA11yCase
-        ? renderPackedModalA11y()
-        : colorThemeCase
-          ? renderPackedColorTheme()
-          : typographyThemeCase
-            ? renderPackedTypographyTheme()
-            : dropdownCase !== null
-              ? renderPackedDropdown()
-              : h('main', [
-                  h(
-                    Button,
-                    {
-                      // 按钮驱动现有输入状态。
-                      onClick: () => {
-                        input.value = 'Clicked';
+    overlayRender
+      ? overlayRender()
+      : tableFixedCase
+        ? renderPackedTableFixedWidths()
+        : modalA11yCase
+          ? renderPackedModalA11y()
+          : colorThemeCase
+            ? renderPackedColorTheme()
+            : typographyThemeCase
+              ? renderPackedTypographyTheme()
+              : dropdownCase !== null
+                ? renderPackedDropdown()
+                : h('main', [
+                    h(
+                      Button,
+                      {
+                        // 按钮驱动现有输入状态。
+                        onClick: () => {
+                          input.value = 'Clicked';
+                        },
                       },
-                    },
-                    // 保留真实 Button 默认插槽。
-                    () => 'Packed button',
-                  ),
-                  h(Input, {
-                    value: input.value,
-                    'aria-label': 'Packed input',
-                    // 原样同步输入的公开 change 值。
-                    onChange: (value) => {
-                      input.value = value;
-                    },
-                  }),
-                  h(Select, {
-                    value: selected.value,
-                    'aria-label': 'Packed select',
-                    optionList: [
-                      { label: 'First', value: 'first' },
-                      { label: 'Second', value: 'second' },
-                    ],
-                    // 原样同步选择器的公开 change 值。
-                    onChange: (value) => {
-                      selected.value = value;
-                    },
-                  }),
-                  h('output', { id: 'packed-state' }, input.value + ':' + selected.value),
-                  h(CodeHighlight, {
-                    code: 'const ready = true;\nready();',
-                    language: 'javascript',
-                  }),
-                  h(JsonViewer, { value: '{"name":"Semi"}', width: 600, height: 160 }),
-                  renderPackedErrorCases(),
-                ]),
+                      // 保留真实 Button 默认插槽。
+                      () => 'Packed button',
+                    ),
+                    h(Input, {
+                      value: input.value,
+                      'aria-label': 'Packed input',
+                      // 原样同步输入的公开 change 值。
+                      onChange: (value) => {
+                        input.value = value;
+                      },
+                    }),
+                    h(Select, {
+                      value: selected.value,
+                      'aria-label': 'Packed select',
+                      optionList: [
+                        { label: 'First', value: 'first' },
+                        { label: 'Second', value: 'second' },
+                      ],
+                      // 原样同步选择器的公开 change 值。
+                      onChange: (value) => {
+                        selected.value = value;
+                      },
+                    }),
+                    h('output', { id: 'packed-state' }, input.value + ':' + selected.value),
+                    h(CodeHighlight, {
+                      code: 'const ready = true;\nready();',
+                      language: 'javascript',
+                    }),
+                    h(JsonViewer, { value: '{"name":"Semi"}', width: 600, height: 160 }),
+                    renderPackedErrorCases(),
+                  ]),
 }).mount('#app');
 
 console.log(styleCoverage.length);

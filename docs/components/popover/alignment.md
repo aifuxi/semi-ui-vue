@@ -45,6 +45,7 @@
 | `getPopupContainer`                              | 同名函数 prop                                      | 显式 prop → ConfigProvider → body                       | 等价         |
 | `margin` / `rePosKey` / `zIndex`                 | 同名 prop                                          | zIndex 默认 1030                                        | 等价         |
 | `clickToHide` / `stopPropagation` / `keepDOM`    | 同名 prop                                          | false / false / false                                   | 等价         |
+| `clickTriggerToHide`                             | 同名公开 Boolean prop                              | `false`；显式值 → Popover 全局配置 → 默认值             | 已补齐       |
 | `onClickOutSide` / `onEscKeyDown` / `afterClose` | `@clickOutside` / `@escKeydown` / `@afterClose`    | 原事件透传                                              | Vue 原生映射 |
 | `focusTrigger()`                                 | 组件 ref 的同名公开方法                            | 委托 Tooltip                                            | 等价         |
 
@@ -89,4 +90,12 @@ Popover 具有多个默认值为 true 的可选 Boolean prop。实现必须通�
 - Popover 定向 Playwright 回归 10/10 通过；完整 `pnpm test:browser` 327/327 通过，锁定 Chromium 覆盖 Portal、bottom/right 定位、click/hover/custom、ArrowUp/ArrowDown、Escape、焦点恢复、Element/Document scroll 重定位、桌面/移动 light/dark 与 RTL。
 - 五组 React/Vue Popover 裁剪截图已在测试中执行直接 Buffer 等值断言，并在测试外分别使用 `cmp` 复核；desktop/light、desktop/dark、mobile/light、mobile/dark、RTL 均字节完全相等。
 - 真实 tarball 的安装、根与 `popover` exports、ESM、公开类型、`popover.css`、许可证/SBOM 和 SSR import 全部通过；发布声明保留 `.vue` 组件边界，不泄露全局组件映射到消费端签名。
-- 当前没有 accepted visual/behavior deviation。
+- 默认行为没有新增视觉差异。显式 `clickTriggerToHide=true` 时，click 模式由触发器的 click 统一关闭，避免固定 Foundation 的 mousedown 关闭后被后续 click 再次打开；支持键盘产生的 click。
+
+## 重复点击关闭修复（2026-11-08）
+
+- 固定 React 的 Popover 类型没有显式声明该字段，但运行时会传给 Tooltip；Vue 已继承公开 TooltipProps，本次补齐其运行时实现。
+- Popover 将公开 `clickTriggerToHide` 解析后传给真实 Tooltip，缺省为 false，显式 false/true 优先于 Popover 全局覆盖。
+- Tooltip 在 click 模式由触发器 click 执行关闭，外部区域继续使用 window mousedown；其他 trigger 保留原有 mousedown 处理。状态仍由 Foundation 管理，没有增加业务 toggle、定时器或第二套 visible 状态。
+- 单测检查实际属性链路、动态 false 和精确的 `update:visible` 事件序列；真实 tarball 浏览器用例覆盖浅深主题、受控/非受控、默认/无动效、重复点击、键盘、Escape 与外部点击。
+- 具体结果与未覆盖范围见 [修复记录](../../../ai-work/2026-11-08-popover-click-trigger.md)，上述历史全量验收不代替本次结果。

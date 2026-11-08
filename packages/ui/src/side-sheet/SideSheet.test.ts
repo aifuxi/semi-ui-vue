@@ -1,3 +1,4 @@
+/* eslint-disable vue/one-component-per-file -- 多个独立测试宿主分别验证动态属性与关闭状态。 */
 import { mount, type VueWrapper } from '@vue/test-utils';
 import { defineComponent, h, nextTick, ref } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -38,6 +39,69 @@ describe('SideSheet', () => {
     document.body.style.width = '';
     delete semiGlobal.config.overrideDefaultProps;
     vi.restoreAllMocks();
+  });
+
+  // 使用公开连字符属性与标题插槽，检查最终 dialog，而不是只检查组件收到的 props。
+  it('aria-label 随标题插槽动态更新、清除并在重开后保留', async () => {
+    /** 独立于可见标题的名称，undefined 表示父组件移除整个属性。 */
+    const label = ref<string | undefined>('工作项详情');
+    /** 模拟父组件关闭和重新打开同一详情。 */
+    const visible = ref(true);
+    /** 使用真实父级渲染覆盖动态增加、更新和删除 prop 的路径。 */
+    const Host = defineComponent({
+      // 移除属性时省略键，符合公开类型与 Vue 动态绑定语义。
+      render: () =>
+        h(
+          SideSheet,
+          {
+            ...(label.value === undefined ? {} : { 'aria-label': label.value }),
+            visible: visible.value,
+            mask: false,
+            motion: false,
+          },
+          {
+            // 自定义标题不能吞掉公开可访问名称。
+            title: () => h('h2', '自定义标题'),
+          },
+        ),
+    });
+    /** 挂载真实父子组件，不替换 SideSheetContent 或 Portal。 */
+    const wrapper = mount(Host, { attachTo: document.body });
+    await settle();
+    expect(document.querySelector('[role="dialog"]')?.getAttribute('aria-label')).toBe(
+      '工作项详情',
+    );
+    label.value = '更新后的详情';
+    await settle();
+    expect(document.querySelector('[role="dialog"]')?.getAttribute('aria-label')).toBe(
+      '更新后的详情',
+    );
+    visible.value = false;
+    await settle();
+    visible.value = true;
+    await settle();
+    expect(document.querySelector('[role="dialog"]')?.getAttribute('aria-label')).toBe(
+      '更新后的详情',
+    );
+    label.value = undefined;
+    await settle();
+    expect(document.querySelector('[role="dialog"]')?.hasAttribute('aria-label')).toBe(false);
+    wrapper.unmount();
+  });
+
+  // 省略实例属性时继承全局名称，显式空字符串仍优先于全局值。
+  it('aria-label 保留全局默认、实例覆盖与显式空值的优先级', async () => {
+    semiGlobal.config.overrideDefaultProps = { SideSheet: { 'aria-label': '全局详情' } };
+    /** 未传名称的实例应该使用全局配置。 */
+    const inherited = await mountVisible();
+    expect(document.querySelector('[role="dialog"]')?.getAttribute('aria-label')).toBe('全局详情');
+    inherited.unmount();
+    /** 实例名称不能被全局配置覆盖。 */
+    const explicit = await mountVisible({ 'aria-label': '实例详情' });
+    expect(document.querySelector('[role="dialog"]')?.getAttribute('aria-label')).toBe('实例详情');
+    await explicit.setProps({ 'aria-label': '' });
+    expect(document.querySelector('[role="dialog"]')?.getAttribute('aria-label')).toBe('');
+    explicit.unmount();
   });
 
   it('公开入口保持 default、named 与固定常量导出一致', () => {

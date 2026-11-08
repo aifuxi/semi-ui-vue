@@ -6,6 +6,7 @@ import { renderToString } from 'vue/server-renderer';
 
 import { Button } from '../button';
 import { ConfigProvider, semiGlobal } from '../config-provider';
+import { Tooltip } from '../tooltip';
 
 import DefaultPopover, { Popover } from './index';
 import type { PopoverExposed } from './types';
@@ -30,6 +31,92 @@ describe('Popover', () => {
     document.body.replaceChildren();
     delete semiGlobal.config.overrideDefaultProps;
     vi.restoreAllMocks();
+  });
+
+  // 显式 true 必须到达真实 Tooltip，同时在公开交互中产生关闭结果。
+  it('clickTriggerToHide 透传并允许再次点击关闭，动态 false 保持打开', async () => {
+    /** 真实 Popover 与 Tooltip 均参与，不使用子组件 stub。 */
+    const wrapper = mount(Popover, {
+      attachTo: document.body,
+      props: { clickTriggerToHide: true, trigger: 'click', content: '排序设置', motion: false },
+      slots: { default: '<button id="repeat-trigger">排序</button>' },
+    });
+    await flushPopover();
+    expect(wrapper.findComponent(Tooltip).props('clickTriggerToHide')).toBe(true);
+    /** 原生按钮保留真实 mousedown 冒泡及随后 click 的事件顺序。 */
+    const trigger = wrapper.get('#repeat-trigger');
+    await trigger.trigger('click');
+    await flushPopover();
+    expect(document.querySelector('.semi-popover-wrapper')).not.toBeNull();
+    await trigger.trigger('mousedown');
+    await trigger.trigger('click');
+    await flushPopover();
+    expect(document.querySelector('.semi-popover-wrapper')).toBeNull();
+    expect(wrapper.emitted('update:visible')).toEqual([[true], [false]]);
+    await trigger.trigger('click');
+    await flushPopover();
+    await wrapper.setProps({ clickTriggerToHide: false });
+    expect(wrapper.findComponent(Tooltip).props('clickTriggerToHide')).toBe(false);
+    await trigger.trigger('mousedown');
+    await trigger.trigger('click');
+    await flushPopover();
+    expect(document.querySelector('.semi-popover-wrapper')).not.toBeNull();
+    wrapper.unmount();
+  });
+
+  // 受控父级回传内部状态时，不应在退出动效仍保留 Portal 期间重复通知 false。
+  it('clickTriggerToHide 在受控动效关闭时只发出一次 false', async () => {
+    /** 真实父级同步 v-model 的公开值。 */
+    const visible = shallowRef(false);
+    /** 默认动效保留离场 Portal，以覆盖重复 hide 的触发条件。 */
+    const Host = defineComponent({
+      // 使用父级渲染回传状态，不能在断言中直接替代组件状态。
+      render: () =>
+        h(
+          Popover,
+          {
+            visible: visible.value,
+            clickTriggerToHide: true,
+            trigger: 'click',
+            content: '排序设置',
+            // 只回传组件发出的模型值，不添加业务开关判断。
+            'onUpdate:visible': (value: boolean) => {
+              visible.value = value;
+            },
+          },
+          {
+            // 原生按钮覆盖真实事件冒泡。
+            default: () => h('button', { id: 'controlled-repeat-trigger' }, '排序'),
+          },
+        ),
+    });
+    /** 同时挂载真实 Popover、Tooltip 和 Portal。 */
+    const wrapper = mount(Host, { attachTo: document.body });
+    await flushPopover();
+    await wrapper.get('button').trigger('click');
+    await flushPopover();
+    await wrapper.get('button').trigger('click');
+    await flushPopover();
+    expect(wrapper.findComponent(Popover).emitted('update:visible')).toEqual([[true], [false]]);
+    expect(visible.value).toBe(false);
+    wrapper.unmount();
+  });
+
+  // 缺省 Boolean 不能被 Vue 转换的 false 抢先覆盖全局配置，显式 false 则应优先。
+  it('clickTriggerToHide 区分缺省、全局 true 与显式 false', async () => {
+    /** 缺省沿用不允许重复点击关闭的既有行为。 */
+    const defaults = mount(Popover);
+    expect(defaults.findComponent(Tooltip).props('clickTriggerToHide')).toBe(false);
+    defaults.unmount();
+    semiGlobal.config.overrideDefaultProps = { Popover: { clickTriggerToHide: true } };
+    /** 未配置实例值时应继承 Popover 全局默认。 */
+    const inherited = mount(Popover);
+    expect(inherited.findComponent(Tooltip).props('clickTriggerToHide')).toBe(true);
+    inherited.unmount();
+    /** 显式 false 必须覆盖全局 true，不能使用 truthiness 回退。 */
+    const explicit = mount(Popover, { props: { clickTriggerToHide: false } });
+    expect(explicit.findComponent(Tooltip).props('clickTriggerToHide')).toBe(false);
+    explicit.unmount();
   });
 
   it('公开入口保持 default 与 named 导出一致', () => {

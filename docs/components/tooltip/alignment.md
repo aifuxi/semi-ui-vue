@@ -111,7 +111,7 @@ Escape 在 `closeOnEsc=true` 时关闭并通知；ArrowDown/ArrowUp 将焦点移
 - 全仓 155 项 Vitest、85 项 Chromium、格式、lint、全部 workspace 类型检查、vendor/inventory/icons/source-boundary 均通过。
 - 根/`tooltip` ESM 与声明、`tooltip.css`、SSR-safe import、主题顺序、许可证/SBOM 和真实 tarball 离线安装均通过。
 
-当前没有 accepted deviation，Tooltip 状态为 `ready`。
+Tooltip 状态为 `ready`。显式 `clickTriggerToHide=true` 且 trigger 为 click 时，关闭由触发器 click 统一处理，避免 mousedown 关闭后同一次 click 又打开；键盘生成的 click 也可关闭。其他 trigger 与外部区域继续使用原 mousedown 语义。该修正及回归范围见 [Popover 修复记录](../../../ai-work/2026-11-08-popover-click-trigger.md)。
 
 ## 文档组合场景补充
 
