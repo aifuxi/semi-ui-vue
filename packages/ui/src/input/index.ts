@@ -1,17 +1,17 @@
-import type { DefineComponent } from 'vue';
-
 import InputBase from './Input.vue';
 import InputGroupBase from './InputGroup';
 import TextAreaBase from './TextArea.vue';
-import type { InputGroupProps, InputProps, TextAreaProps } from './types';
 
-export type InputCompoundComponent = DefineComponent<InputProps> & {
-  Group: DefineComponent<InputGroupProps>;
-  TextArea: DefineComponent<TextAreaProps>;
+/** 保留 InputCompoundComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type InputCompoundComponent = typeof InputBase & {
+  Group: typeof InputGroupBase;
+  TextArea: typeof TextAreaBase;
 };
 
-export const InputGroup = InputGroupBase as unknown as DefineComponent<InputGroupProps>;
-export const TextArea = TextAreaBase as unknown as DefineComponent<TextAreaProps>;
+/** 保留 InputGroup 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const InputGroup: typeof InputGroupBase = InputGroupBase;
+/** 保留 TextArea 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const TextArea: typeof TextAreaBase = TextAreaBase;
 export const Input = Object.assign(InputBase, {
   Group: InputGroup,
   TextArea,

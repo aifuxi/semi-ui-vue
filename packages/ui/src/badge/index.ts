@@ -1,9 +1,7 @@
-import type { DefineComponent } from 'vue';
-
 import BadgeComponent from './Badge.vue';
-import type { BadgeProps } from './types';
 
-export const Badge = BadgeComponent as unknown as DefineComponent<BadgeProps>;
+/** 保留 Badge 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const Badge: typeof BadgeComponent = BadgeComponent;
 
 export { BADGE_POSITIONS, BADGE_THEMES, BADGE_TYPES } from './types';
 export type {

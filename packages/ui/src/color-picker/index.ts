@@ -1,9 +1,8 @@
-import type { DefineComponent } from 'vue';
-
 import ColorPickerBase, { colorStringToValue } from './ColorPicker.vue';
-import type { ColorPickerProps, ColorValue } from './types';
+import type { ColorValue } from './types';
 
-export type ColorPickerComponent = DefineComponent<ColorPickerProps> & {
+/** 保留 ColorPickerComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type ColorPickerComponent = typeof ColorPickerBase & {
   colorStringToValue(raw: string): ColorValue;
 };
 

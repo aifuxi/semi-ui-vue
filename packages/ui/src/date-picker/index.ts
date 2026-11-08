@@ -1,10 +1,7 @@
-import type { DefineComponent } from 'vue';
-
 import DatePickerBase from './DatePicker.vue';
-import type { DatePickerExposed, DatePickerProps } from './types';
 
-export const DatePicker = DatePickerBase as unknown as DefineComponent<DatePickerProps> &
-  DatePickerExposed;
+/** 保留 DatePicker 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const DatePicker: typeof DatePickerBase = DatePickerBase;
 
 export type {
   DatePickerBaseValue,

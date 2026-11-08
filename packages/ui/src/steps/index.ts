@@ -1,14 +1,13 @@
-import type { DefineComponent } from 'vue';
-
 import StepBase from './Step.vue';
 import StepsBase from './Steps.vue';
-import type { StepProps, StepsProps } from './types';
 
-export type StepsCompoundComponent = DefineComponent<StepsProps> & {
-  Step: DefineComponent<StepProps>;
+/** 保留 StepsCompoundComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type StepsCompoundComponent = typeof StepsBase & {
+  Step: typeof StepBase;
 };
 
-export const Step = StepBase as unknown as DefineComponent<StepProps>;
+/** 保留 Step 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const Step: typeof StepBase = StepBase;
 export const Steps = Object.assign(StepsBase, { Step }) as unknown as StepsCompoundComponent;
 
 export default Steps;

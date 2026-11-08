@@ -1,9 +1,7 @@
-import type { DefineComponent } from 'vue';
-
 import FeedbackComponent from './Feedback.vue';
-import type { FeedbackProps } from './types';
 
-export const Feedback = FeedbackComponent as unknown as DefineComponent<FeedbackProps>;
+/** 保留 Feedback 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const Feedback: typeof FeedbackComponent = FeedbackComponent;
 
 export { FEEDBACK_EMOJIS, FEEDBACK_MODES, FEEDBACK_TYPES } from './types';
 export type {

@@ -1,9 +1,7 @@
-import type { DefineComponent } from 'vue';
-
 import TimePickerBase from './TimePicker.vue';
-import type { TimePickerProps } from './types';
 
-export const TimePicker = TimePickerBase as unknown as DefineComponent<TimePickerProps>;
+/** 保留 TimePicker 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const TimePicker: typeof TimePickerBase = TimePickerBase;
 
 export type {
   TimePickerBaseValue,

@@ -1,14 +1,13 @@
-import type { DefineComponent } from 'vue';
-
 import ScrollItemBase from './ScrollItem.vue';
 import ScrollListBase from './ScrollList.vue';
-import type { ScrollItemProps } from './types';
 
+/** 保留 ScrollListCompoundComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
 export type ScrollListCompoundComponent = typeof ScrollListBase & {
-  Item: DefineComponent<ScrollItemProps>;
+  Item: typeof ScrollItemBase;
 };
 
-export const ScrollItem = ScrollItemBase as unknown as DefineComponent<ScrollItemProps>;
+/** 保留 ScrollItem 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const ScrollItem: typeof ScrollItemBase = ScrollItemBase;
 export const ScrollList = Object.assign(ScrollListBase, {
   Item: ScrollItem,
 }) as ScrollListCompoundComponent;

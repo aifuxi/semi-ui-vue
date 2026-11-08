@@ -5,13 +5,14 @@ import LayoutContent from './LayoutContent.vue';
 import LayoutFooter from './LayoutFooter.vue';
 import LayoutHeader from './LayoutHeader.vue';
 import LayoutSider from './LayoutSider.vue';
-import type { LayoutProps, LayoutSectionProps, LayoutSiderProps } from './types';
+import type { LayoutSectionProps } from './types';
 
-export type LayoutCompoundComponent = DefineComponent<LayoutProps> & {
+/** 保留 LayoutCompoundComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type LayoutCompoundComponent = typeof LayoutComponent & {
   Header: DefineComponent<LayoutSectionProps>;
   Footer: DefineComponent<LayoutSectionProps>;
   Content: DefineComponent<LayoutSectionProps>;
-  Sider: DefineComponent<LayoutSiderProps>;
+  Sider: typeof LayoutSider;
 };
 
 export const Layout = Object.assign(LayoutComponent, {

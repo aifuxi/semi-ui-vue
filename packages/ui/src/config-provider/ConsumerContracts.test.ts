@@ -71,7 +71,8 @@ it('Steps is only clickable when a change listener is provided', async () => {
   const enabled = shallowRef(false);
   const dynamic = mount(
     defineComponent({
-      setup: () => () => h(Steps, { onChange: enabled.value ? onChange : undefined }, children),
+      // exactOptionalPropertyTypes 下以缺省属性表达无监听器，保持动态启停场景。
+      setup: () => () => h(Steps, enabled.value ? { onChange } : {}, children),
     }),
   );
   wrappers.push(dynamic);

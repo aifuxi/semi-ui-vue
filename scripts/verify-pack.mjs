@@ -1188,6 +1188,11 @@ h(Button, { type, htmlType: 'submit' });
 	convertIllustration((props) => h('svg', props), 'IllustrationConsumer');
 	`,
   );
+  // TSX 通过真实 exports 检查事件属性；h() 的宽松重载无法替代这项回归。
+  await writeFile(
+    path.join(consumerRoot, 'public-events.tsx'),
+    await readFile(new URL('./fixtures/public-events.tsx', import.meta.url), 'utf8'),
+  );
   await writeFile(
     path.join(consumerRoot, 'tsconfig.json'),
     `${JSON.stringify(
@@ -1199,9 +1204,11 @@ h(Button, { type, htmlType: 'submit' });
           strict: true,
           noEmit: true,
           skipLibCheck: false,
+          jsx: 'preserve',
+          jsxImportSource: 'vue',
           types: [],
         },
-        include: ['type-smoke.ts'],
+        include: ['type-smoke.ts', 'public-events.tsx'],
       },
       null,
       2,

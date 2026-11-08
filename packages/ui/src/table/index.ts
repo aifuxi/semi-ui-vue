@@ -3,12 +3,13 @@ import type { DefineComponent } from 'vue';
 import TableBase from './Table.vue';
 import { TableColumnComponent } from './TableColumn';
 import { tableStrings } from '@workspace/foundation-integration';
-import type { TableColumn as TableColumnProps, TableExposed, TableProps } from './types';
+import type { TableColumn as TableColumnProps } from './types';
 
 export const DEFAULT_KEY_COLUMN_SELECTION = tableStrings.DEFAULT_KEY_COLUMN_SELECTION;
 export const DEFAULT_KEY_COLUMN_EXPAND = tableStrings.DEFAULT_KEY_COLUMN_EXPAND;
 
-export type TableComponent = DefineComponent<TableProps, TableExposed> & {
+/** 保留 TableComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type TableComponent = typeof TableBase & {
   Column: DefineComponent<TableColumnProps>;
   DEFAULT_KEY_COLUMN_SELECTION: typeof DEFAULT_KEY_COLUMN_SELECTION;
   DEFAULT_KEY_COLUMN_EXPAND: typeof DEFAULT_KEY_COLUMN_EXPAND;

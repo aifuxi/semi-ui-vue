@@ -1,9 +1,7 @@
-import type { DefineComponent } from 'vue';
-
 import OverflowListBase from './OverflowList.vue';
-import type { OverflowListProps } from './types';
 
-export const OverflowList = OverflowListBase as unknown as DefineComponent<OverflowListProps>;
+/** 保留 OverflowList 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const OverflowList: typeof OverflowListBase = OverflowListBase;
 export default OverflowList;
 export type {
   OverflowItem,

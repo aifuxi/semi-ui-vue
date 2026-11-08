@@ -2,12 +2,14 @@ import type { DefineComponent } from 'vue';
 
 import TreeBase from './Tree.vue';
 import TreeNodeBase from './TreeNode.vue';
-import type { TreeNodeProps, TreeProps } from './types';
+import type { TreeNodeProps } from './types';
 
-export type TreeCompoundComponent = DefineComponent<TreeProps> & {
+/** 保留 TreeCompoundComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type TreeCompoundComponent = typeof TreeBase & {
   TreeNode: DefineComponent<TreeNodeProps>;
 };
 
+// TreeNode 没有公开事件；继续限制为公开 Props，避免泄漏内部渲染参数。
 export const TreeNode = TreeNodeBase as unknown as DefineComponent<TreeNodeProps>;
 export const Tree = Object.assign(TreeBase, { TreeNode }) as unknown as TreeCompoundComponent;
 

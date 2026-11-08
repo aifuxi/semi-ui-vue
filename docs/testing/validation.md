@@ -29,6 +29,8 @@
 
 ## 构建与证据复用
 
+公开事件声明由 `scripts/fixtures/public-events.tsx` 在真实 tarball 消费者内回归：Vue 标准 `jsx: preserve` / `jsxImportSource: vue`，覆盖根入口、代表性子路径、复合静态成员、19 种 Form 字段、事件参数推导、错误签名拒绝与 expose 方法。该检查随 `verify:pack-dist` 和 `check:artifacts` 执行；`h()` 类型检查不能替代 TSX 的事件属性检查。
+
 `typecheck` 检查当前 workspace；文档站会先通过 `prepare:packages` 重建六个公开包，再按真实 exports 检查类型。`typecheck:source`、`check:source` 与 `check` 均复用 `typecheck:clean`，先清理旧产物，避免本地残留的 `dist` 掩盖冷启动错误。
 
 `build` 构建公开 JavaScript 包与主题；`verify:artifacts` 对已准备的准确产物执行主题、SSR 和真实包消费验证；`check:artifacts` 先构建再调用它。PR CI 复用冷启动 `check:source` 的文档消费者类型检查所生成的六包 dist，保留同一组产物断言。`pnpm dev` 启动 Storybook，`pnpm build:storybook` 单独构建场景站。浏览器测试自行管理所需参考服务，避免在同一验证链中重复准备产物。按需运行入口，不依次重复执行 check、artifacts、full、release。

@@ -1,9 +1,7 @@
-import type { DefineComponent } from 'vue';
-
 import UserGuideComponent from './UserGuide.vue';
-import type { UserGuideProps } from './types';
 
-export const UserGuide = UserGuideComponent as unknown as DefineComponent<UserGuideProps>;
+/** 保留 UserGuide 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const UserGuide: typeof UserGuideComponent = UserGuideComponent;
 
 export { USER_GUIDE_MODES, USER_GUIDE_THEMES } from './types';
 export type {

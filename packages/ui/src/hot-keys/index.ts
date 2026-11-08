@@ -1,10 +1,8 @@
-import type { DefineComponent } from 'vue';
-
 import HotKeysBase from './HotKeys.vue';
 import { HOT_KEYS } from './types';
-import type { HotKeysProps } from './types';
 
-export type HotKeysComponent = DefineComponent<HotKeysProps> & {
+/** 保留 HotKeysComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type HotKeysComponent = typeof HotKeysBase & {
   Keys: typeof HOT_KEYS;
 };
 

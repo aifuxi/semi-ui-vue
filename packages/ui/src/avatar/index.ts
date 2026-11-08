@@ -1,14 +1,13 @@
-import type { DefineComponent } from 'vue';
-
 import AvatarBase from './Avatar.vue';
 import AvatarGroupBase from './AvatarGroup';
-import type { AvatarGroupProps, AvatarProps } from './types';
 
-export type AvatarCompoundComponent = DefineComponent<AvatarProps> & {
-  Group: DefineComponent<AvatarGroupProps>;
+/** 保留 AvatarCompoundComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type AvatarCompoundComponent = typeof AvatarBase & {
+  Group: typeof AvatarGroupBase;
 };
 
-export const AvatarGroup = AvatarGroupBase as unknown as DefineComponent<AvatarGroupProps>;
+/** 保留 AvatarGroup 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const AvatarGroup: typeof AvatarGroupBase = AvatarGroupBase;
 export const Avatar = Object.assign(AvatarBase, {
   Group: AvatarGroup,
 }) as unknown as AvatarCompoundComponent;
