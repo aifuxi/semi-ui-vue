@@ -62,7 +62,7 @@ const { chats, respond, roleConfig, uploadProps } = useMockChat(
               ><Avatar
                 size="extra-small"
                 shape="square"
-                :src="typeof role?.avatar === 'string' ? role.avatar : undefined" /><NodeContent
+                v-bind="typeof role?.avatar === 'string' ? { src: role.avatar } : {}" /><NodeContent
                 :content="defaultNodes?.title"
             /></span>
             <div style="width: fit-content"><NodeContent :content="defaultNodes?.content" /></div>

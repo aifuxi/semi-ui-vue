@@ -44,7 +44,7 @@ const optionList = [
           @click="option.onClick"
           @mouseenter="option.onMouseenter"
         >
-          <Checkbox :checked="option.selected" :disabled="option.disabled" />
+          <Checkbox :checked="option.selected" :disabled="option.disabled ?? false" />
           <div class="option-right">
             <Highlight :source-string="String(option.label)" :search-words="[inputValue]" />
           </div></div></template></Select
@@ -74,7 +74,7 @@ const optionList = [
           @click="option.onClick"
           @mouseenter="option.onMouseenter"
         >
-          <Checkbox :checked="option.selected" :disabled="option.disabled" />
+          <Checkbox :checked="option.selected" :disabled="option.disabled ?? false" />
           <div class="option-right">
             <Highlight :source-string="String(option.label)" :search-words="[inputValue]" />
           </div></div></template

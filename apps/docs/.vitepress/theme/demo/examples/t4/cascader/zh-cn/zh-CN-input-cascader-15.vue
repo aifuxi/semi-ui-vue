@@ -52,7 +52,7 @@ const treeData = [
       ><template #display="{ selected, index }"
         ><Tag
           v-if="!Array.isArray(selected)"
-          :key="index"
+          :key="index ?? String(selected.data.value)"
           style="margin-right: 4px"
           color="white"
           >{{ selected.data.label }}</Tag
