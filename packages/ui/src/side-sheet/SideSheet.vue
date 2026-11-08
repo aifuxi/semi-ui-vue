@@ -75,9 +75,13 @@ function resolveProp<Key extends keyof SideSheetProps>(
   return (globalValue === undefined ? fallback : globalValue) as NonNullable<SideSheetProps[Key]>;
 }
 
+/** 从 Vue 运行时属性读取实例值，保留公开属性名对应的全局配置及显式空值。 */
 function resolveOptional<Key extends keyof SideSheetProps>(key: Key): SideSheetProps[Key] {
-  const currentValue = props[key];
+  // Vue 将已声明的 aria-label 规范化为 ariaLabel；公开类型和全局配置仍使用 aria-label。
+  const currentValue =
+    key === 'aria-label' ? (props as Readonly<{ ariaLabel?: string }>).ariaLabel : props[key];
   if (hasRawProp(key)) return currentValue as SideSheetProps[Key];
+  /** 未显式提供实例属性时，按公开键名读取全局默认值。 */
   const globalValue = semiGlobal.config.overrideDefaultProps?.SideSheet?.[key];
   return (globalValue === undefined ? undefined : globalValue) as SideSheetProps[Key];
 }

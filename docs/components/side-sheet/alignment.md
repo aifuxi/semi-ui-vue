@@ -75,8 +75,14 @@
 ## Deviation 与状态
 
 - React `children/ReactNode/className` 映射为 Vue `slots/VNodeChild/class`，并增加原生 `v-model:visible` 与 emits；这是框架原生映射，不构成能力损失。
-- 当前没有 accepted visual/behavior deviation。任一未解释的 DOM、样式、几何、事件或截图差异均阻止 `pending -> ready`。
+- 可访问名称存在明确的行为修正：固定 React 基线声明并下传 `aria-label`，但 `SideSheetContent` 没有将其输出到 dialog；Vue 按公开 API 将显式名称输出到 `role=dialog`，不复刻该缺陷。其他未解释的 DOM、样式、几何、事件或截图差异仍阻止 `pending -> ready`。
 - 当前状态：`ready`；固定源码、单元/SSR、主题/打包与 Chromium 全量门禁均已通过。
+
+## 可访问名称修复（2026-11-08）
+
+- Vue 会将已声明的 `aria-label` 规范化为运行时 `ariaLabel`；可选属性解析按该键读取实例值，公开类型与全局默认配置仍使用 `aria-label`。名称最终落到 dialog，而非外层 Portal。
+- 显式名称（包括空字符串）优先于全局默认；动态更新、清除、标题插槽和关闭重开均由回归测试覆盖。不自动用可见标题补全未传入的名称，不改变焦点、键盘和动效契约。
+- 本次验证范围与结果见 [修复记录](../../../ai-work/2026-11-08-sidesheet-accessible-name.md)，历史全量门禁不作为本次已执行的证据。
 
 ## Feedback 文档运行修复（2026-09-07）
 
