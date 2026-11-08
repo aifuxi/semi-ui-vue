@@ -52,10 +52,10 @@
 ## DOM、事件、焦点与 ARIA
 
 - Portal 根为 `.semi-portal`；其内顺序为 mask、wrap、dialog。dialog 固定为 `.semi-modal > .semi-modal-content`，header/body/footer class 与 v2.102.0 相同。
-- 保留 `role="dialog"`、`aria-modal="true"`；`aria-labelledby` 与 `aria-describedby` 分别引用实例内的标准标题和正文 ID。标题、正文 ID 由 SSR 稳定的 dialog ID 派生，不使用全局固定值。无标题或自定义 header 时省略标准标题引用，不制造空 header。
-- close、mask、ESC 都走 cancel 顺序：发出 `update:visible(false)`，再调用 `onCancel(event)`；OK 发出 `onOk(event)`，不替受控调用方自动关闭。
+- 保留 `role="dialog"`、`aria-modal="true"`；`aria-labelledby` 与 `aria-describedby` 分别引用实例内的标准标题和正文 ID。标题、正文 ID 由 SSR 稳定的 dialog ID 派生，不使用全局固定值。自定义 header 仍通过隐藏的实例标题引用公开 title；缺省 title 时不制造名称或空 header。
+- Esc 仅路由到最高 zIndex 的活动 Modal，同 zIndex 取 DOM 中后绘制者；顶层 closeOnEsc=false 或正在退场时不穿透，keepDOM 隐藏及卸载后释放所有权。close、mask、ESC 都走 cancel 顺序：发出 `update:visible(false)`，再调用 `onCancel(event)`；OK 发出 `onOk(event)`，不替受控调用方自动关闭。
 - 点击从 dialog 内 mousedown、在 mask mouseup/click 的序列不得误关；只有 wrap 自身 target 且未记录 dialog mousedown 才关闭。
-- 打开时记录先前 activeElement，锁定 body（仅 body portal），创建固定 FocusTrapHandle，并优先聚焦用户 autofocus/默认 cancel；Tab/Shift+Tab 循环。关闭终态或卸载时移除 keydown、销毁 trap、恢复焦点和 body 样式。
+- 打开时记录先前 activeElement，锁定 body（仅 body portal），创建固定 FocusTrapHandle，并优先聚焦用户 autofocus/默认 cancel；Tab/Shift+Tab 循环。关闭终态或卸载时释放共享 keydown 注册、销毁 trap 并恢复 body 样式；仅顶层关闭恢复入口焦点，入口失效时聚焦剩余顶层 dialog。
 - `closeOnEsc=false`、`maskClosable=false`、`closable=false` 分别不创建对应关闭路径；缺省/显式值门禁均覆盖。
 
 ## Portal、动效、主题、RTL、国际化与 SSR
@@ -111,3 +111,11 @@
 - 接受与固定 React v2.102.0 的上述 ID 差异，不修改 vendor；所有 `.semi-*` class 与 CSS 布局保持原样。
 - 验证：新增 5 项单测先红后绿；Modal、SideSheet、UserGuide 共 48 项单元/SSR/hydration 测试通过。原有 Modal Chromium 5 项通过，旧明暗/RTL 快照未修改。真实生产 tarball 的嵌套明暗、重开、焦点恢复、Esc/遮罩关闭保护和多个命令式弹窗共 3 项通过。公开产物、SSR import 与 tarball 消费检查通过。
 - 尚未发布或升级迭鹿依赖，业务原现场需在消费修复版本后复验；未执行实体屏幕阅读器人工测试。完整说明见 [修复记录](../../../ai-work/20261108-modal-instance-aria.md)。
+
+## BUG-000077：2.1.0 复测剩余项（2026-11-08）
+
+- 原固定 ID 冲突已修复。本次进一步修正自定义 header 与 title 同时提供时的未命名问题：保留可见 header，通过隐藏的实例标题提供名称，不要求业务添加固定 ID，不改变布局。
+- 各 Modal 不再独立向 document 广播 Esc；同文档共享一个监听器，按 zIndex 与 DOM 绘制顺序选择一个 Foundation。顶层禁止 Esc、受控调用方保持打开及退出动效期间均不穿透到底层；最后一层退出后释放监听。
+- 顶层关闭仅恢复仍连接且位于剩余顶层内的原入口，否则聚焦剩余 dialog；底层卸载不抢焦点。dialog 的 tabindex=-1 支持入口消失后的回归焦点。
+- 固定 React v2.102.0 同样缺少自定义 header 的有效名称契约及 Esc 顶层判断；本次接受这些可访问性差异，vendor 保持只读，默认 class、主题、遮罩、关闭回调与动效继续复用。
+- 旧 consumer 将外层固定为 closeOnEsc=false，不能证明两层均允许 Esc 的场景已通过；新回归恢复外层默认值，并覆盖自定义 header、入口移除、keepDOM 及顶层关闭保护。实际验证与交付边界见 [修复记录](../../../ai-work/20261108-modal-instance-aria.md) 的剩余项章节。

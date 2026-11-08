@@ -108,9 +108,9 @@ Modal.destroyAll();
 
 ## Accessibility, focus and keyboard
 
-- The dialog keeps `role="dialog"` and `aria-modal="true"`. Its `aria-labelledby` and `aria-describedby` reference instance-specific title and body IDs, including nested dialogs. The standard title reference is omitted when no title is rendered or a custom header is provided; no empty header is added. Use `.semi-modal-title` / `.semi-modal-body` for styling rather than generated ID values.
-- Opening records the previous `activeElement`, locks body scrolling (body portal only) and installs a focus trap: `autofocus` or the default cancel button receives focus first, `Tab`/`Shift+Tab` cycle, and the hidden state restores focus.
-- `closeOnEsc={false}` removes the ESC path; mask, close button and cancel button are controlled by `maskClosable`/`closable`/`hasCancel`.
+- The dialog keeps `role="dialog"` and `aria-modal="true"`. Its `aria-labelledby` and `aria-describedby` reference instance-specific title and body IDs, including nested dialogs. A custom `header` keeps `title` as the accessible name through an instance-specific hidden title; consumers do not need to manage title IDs. Without `title`, no name or empty header is generated. Use `.semi-modal-title` / `.semi-modal-body` for styling rather than generated ID values.
+- Opening records the previous `activeElement`, locks body scrolling (body portal only) and installs a focus trap: `autofocus` or the default cancel button receives focus first, `Tab`/`Shift+Tab` cycle, and closing the top dialog restores focus to its opener. If the opener was removed, focus returns to the remaining outer dialog; unmounting a lower dialog does not steal focus.
+- Escape is delivered only to the visible Modal with the highest `zIndex`, using DOM painting order to break ties. A top dialog with `closeOnEsc={false}` blocks Escape from reaching lower dialogs; exit motion also blocks repeated cancellation. The mask, close button and cancel button are controlled by `maskClosable`/`closable`/`hasCancel`.
 
 ## Theme, RTL and SSR
 

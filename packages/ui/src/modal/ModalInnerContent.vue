@@ -50,7 +50,7 @@ const emit = defineEmits<{
 }>();
 /** 暴露实际 dialog 给父级管理焦点。 */
 const dialogElement = useTemplateRef<HTMLDivElement>('dialog');
-/** 仅 title 非空时渲染标准标题；自定义 header 仍优先。 */
+/** title 非空时提供名称；自定义 header 仍决定可见头部。 */
 const hasDefaultHeader = computed(() => props.title !== null && props.title !== undefined);
 /** header 决定正文布局，不决定正文的可访问性关联是否存在。 */
 const hasHeader = computed(() => props.headerProvided || hasDefaultHeader.value);
@@ -105,12 +105,17 @@ defineExpose({ element: dialogElement });
       <div
         ref="dialog"
         role="dialog"
+        tabindex="-1"
         aria-modal="true"
-        :aria-labelledby="!props.headerProvided && hasDefaultHeader ? titleId : undefined"
+        :aria-labelledby="hasDefaultHeader ? titleId : undefined"
         :aria-describedby="bodyId"
         :class="contentClasses"
         @animationend="emit('animationEnd', $event)"
       >
+        <!-- 自定义 header 不受库控制；隐藏的 title 仅供名称引用，不改变可见布局或要求业务维护 ID。 -->
+        <span v-if="props.headerProvided && hasDefaultHeader" :id="titleId" hidden>
+          <ModalNodeRenderer :content="props.title" />
+        </span>
         <ModalNodeRenderer v-if="props.headerProvided" :content="props.header" />
         <div v-else-if="hasDefaultHeader" class="semi-modal-header">
           <span

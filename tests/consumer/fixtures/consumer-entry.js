@@ -37,36 +37,52 @@ const typographyThemeCase = dropdownQuery.has('typography-theme');
 const modalA11yCase = dropdownQuery.has('modal-a11y');
 // 模拟详情内部的状态操作，默认关闭内层，保留原始入场与退场动效。
 const nestedModalVisible = ref(false);
+// 外层也保持受控，不能用 closeOnEsc=false 掩盖两层同时取消的错误。
+const outerModalVisible = ref(true);
+// 模拟 Dropdown 菜单项打开确认后从文档移除。
+const modalOpenerVisible = ref(true);
 
 /** 渲染真实安装包的详情、嵌套确认与命令式确认入口。 */
 function renderPackedModalA11y() {
   return h(
     Modal,
     {
-      visible: true,
+      visible: outerModalVisible.value,
       title: '详情外层',
-      // 详情在内层 Esc 关闭时保持打开，模拟业务详情的关闭保护。
-      closeOnEsc: false,
+      // 外层用默认 Esc 行为，取消应当只在它成为顶层后发生。
+      'onUpdate:visible': (visible) => {
+        outerModalVisible.value = visible;
+      },
       maskClosable: false,
       footer: null,
     },
     {
+      // 与工单相同，同时提供 title 和自定义 header；不添加固定 ID。
+      ...(dropdownQuery.has('custom-header')
+        ? {
+            // 自定义头部只决定视觉结构，名称继续由公开 title 提供。
+            header: () => h('header', [h('h2', '详情外层'), h('span', '附加操作')]),
+          }
+        : {}),
       // 内层由真实控件切换 visible，Portal 和焦点全部由库自身管理。
       default: () => [
         h('p', '外层正文'),
-        h(
-          Button,
-          {
-            // 公开可见性状态驱动嵌套组件。
-            onClick: () => {
-              nestedModalVisible.value = true;
-            },
-          },
-          {
-            // 保留稳定的用户操作名称。
-            default: () => '打开操作确认',
-          },
-        ),
+        modalOpenerVisible.value
+          ? h(
+              Button,
+              {
+                // 公开可见性状态驱动嵌套组件。
+                onClick: () => {
+                  nestedModalVisible.value = true;
+                  if (dropdownQuery.has('removed-opener')) modalOpenerVisible.value = false;
+                },
+              },
+              {
+                // 保留稳定的用户操作名称。
+                default: () => '打开操作确认',
+              },
+            )
+          : null,
         h(
           Button,
           {
@@ -87,6 +103,8 @@ function renderPackedModalA11y() {
             visible: nestedModalVisible.value,
             title: '操作确认',
             maskClosable: false,
+            closeOnEsc: !dropdownQuery.has('inner-protected'),
+            keepDOM: dropdownQuery.has('keep-dom'),
             // 用户取消或 Esc 只改变内层的公开 visible。
             'onUpdate:visible': (visible) => {
               nestedModalVisible.value = visible;

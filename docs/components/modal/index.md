@@ -108,9 +108,9 @@ Modal.destroyAll();
 
 ## 可访问性、焦点与键盘
 
-- 对话框保留 `role="dialog"` 与 `aria-modal="true"`；`aria-labelledby` 和 `aria-describedby` 引用各实例自己的标准标题及正文 ID，嵌套或多个弹窗并存时不会串读。无标题或自定义 header 时省略标准标题引用，不制造空 header。请使用 `.semi-modal-title` / `.semi-modal-body` 选择样式节点，不依赖生成的 ID 值。
-- 打开时记录先前 `activeElement`、锁定 body 滚动（仅 body portal）并建立焦点陷阱：优先聚焦 `autofocus` 元素或默认取消按钮，`Tab`/`Shift+Tab` 循环，关闭终态恢复焦点。
-- `closeOnEsc={false}` 不创建 ESC 关闭路径；遮罩、关闭按钮与取消按钮分别由 `maskClosable`/`closable`/`hasCancel` 控制。
+- 对话框保留 `role="dialog"` 与 `aria-modal="true"`；`aria-labelledby` 和 `aria-describedby` 引用各实例自己的标准标题及正文 ID，嵌套或多个弹窗并存时不会串读。提供自定义 `header` 时，仍用 `title` 作为可访问名称（通过实例独立的隐藏标题关联），无需业务维护标题 ID；未提供 `title` 时不制造名称或空 header。请使用 `.semi-modal-title` / `.semi-modal-body` 选择样式节点，不依赖生成的 ID 值。
+- 打开时记录先前 `activeElement`、锁定 body 滚动（仅 body portal）并建立焦点陷阱：优先聚焦 `autofocus` 元素或默认取消按钮，`Tab`/`Shift+Tab` 循环，关闭顶层的终态恢复入口焦点；入口已移除时回到仍打开的外层对话框，底层卸载不会抢走顶层焦点。
+- Esc 仅交给最高 `zIndex` 的可见 Modal，相同层级按 DOM 绘制顺序选择；顶层设置 `closeOnEsc={false}` 时不会穿透关闭底层，退出动效期间也不会重复取消。遮罩、关闭按钮与取消按钮分别由 `maskClosable`/`closable`/`hasCancel` 控制。
 
 ## 主题、RTL 与 SSR
 
