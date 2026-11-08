@@ -1,0 +1,14 @@
+name: Cache the pinned pnpm store
+description: Cache immutable dependency contents; each job still installs and verifies its lockfile.
+runs:
+  using: composite
+  steps:
+    - id: location
+      shell: bash
+      # 由当前 mise/pnpm 决定实际 store；不缓存 node_modules，避免跨 job 混用安装状态。
+      run: echo "path=$(mise exec -- pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+    - uses: actions/cache@v4
+      with:
+        path: ${{ steps.location.outputs.path }}
+        key: ${{ runner.os }}-pnpm-12-${{ hashFiles('pnpm-lock.yaml') }}
+        restore-keys: ${{ runner.os }}-pnpm-12-

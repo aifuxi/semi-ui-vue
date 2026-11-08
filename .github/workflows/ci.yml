@@ -9,39 +9,61 @@ concurrency:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   quality:
     name: Source quality and tooling
     runs-on: ubuntu-latest
+    env:
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      PR_HEAD_REF: ${{ github.head_ref }}
+      PR_HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+      PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+      RELEASE_BOT_LOGIN: ${{ vars.RELEASE_BOT_LOGIN }}
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          submodules: recursive
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
         with:
           version: 2026.9.3
-      - run: mise exec -- pnpm install --frozen-lockfile
-      - run: mise exec -- pnpm check:changesets
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-          PR_HEAD_REF: ${{ github.head_ref }}
-          PR_HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
-          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
-          RELEASE_BOT_LOGIN: ${{ vars.RELEASE_BOT_LOGIN }}
-      - run: mise exec -- pnpm test:changesets
-      - run: mise exec -- pnpm check:source
-      - name: Verify affected build and package contracts
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      - name: Install locked release tools
+        # 普通 PR 直接进入完整安装，避免先装轻量工具再装完整依赖。
+        if: github.head_ref == 'changeset-release/master'
         run: |
-          set -euo pipefail
-          changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
-          if grep -qE '^(packages/|apps/|scripts/|tests/|vendor/|package.json$|pnpm-|tsconfig|vite|mise.toml$|\.npmrc$|\.github/workflows/)' <<< "$changed"; then
-            mise exec -- pnpm check:artifacts
-          else
-            echo '未触及构建或包契约路径，跳过 check:artifacts'
-          fi
+          mise exec -- pnpm --filter @workspace/release-tools install --prod --frozen-lockfile --ignore-scripts
+          mise exec -- node scripts/setup-release-tools.mjs
+      - id: quality-plan
+        name: Verify version-only scope and prior quality evidence
+        if: github.head_ref == 'changeset-release/master'
+        run: mise exec -- node scripts/ci-quality-plan.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: ./.github/actions/pnpm-store
+        if: steps.quality-plan.outputs.reuse != 'true'
+      - name: Prepare full workspace
+        if: steps.quality-plan.outputs.reuse != 'true'
+        run: |
+          git submodule update --init --recursive
+          mise exec -- pnpm install --frozen-lockfile
+      - run: mise exec -- pnpm check:changesets
+      - run: mise exec -- pnpm test:changesets
+        if: steps.quality-plan.outputs.reuse != 'true'
+      - run: mise exec -- pnpm check:source
+        if: steps.quality-plan.outputs.reuse != 'true'
+      - name: Verify existing build and package contracts
+        if: steps.quality-plan.outputs.reuse != 'true'
+        # 冷启动 check:source 的 docs typecheck 已构建六包；继续执行全部产物检查，不重复构建。
+        run: mise exec -- pnpm verify:artifacts
+      - name: Record full quality evidence
+        if: steps.quality-plan.outputs.reuse != 'true'
+        run: mise exec -- node scripts/ci-quality-plan.mjs record "$RUNNER_TEMP/quality-evidence.json"
+      - uses: actions/upload-artifact@v4
+        if: steps.quality-plan.outputs.reuse != 'true'
+        with:
+          name: source-quality-evidence
+          path: ${{ runner.temp }}/quality-evidence.json
+          if-no-files-found: error
+          retention-days: 30

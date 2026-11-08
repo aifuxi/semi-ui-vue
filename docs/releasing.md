@@ -18,11 +18,28 @@ CI 使用官方 CLI 校验格式、包名和版本计划，并要求新增一份
 
 `master` push 触发 `publish.yml`。官方 select-mode 遇到待处理发布记录时维护版本 PR；空 changeset 不触发发布。`release:version` 只执行官方 version 和 lockfile 更新，不自动提交。机器人由官方 version Action 提交和更新 PR。
 
-版本 PR 合并后的候选需要完成对应的本地组件与产物验证：Vitest dom/node、Storybook/React 组件 Chromium、真实 tarball consumer 浏览器与公开产物检查。PR CI 运行全仓 `check:source`；发布流水线只运行不含文档站的 `check:publish-source`，并继续执行 Changesets、依赖审计、构建、主题、Node SSR、Node 真实包验证及发布。CI 不运行组件单测或浏览器矩阵，不能代替候选所需本地组件结果。
+版本 PR 合并后的候选需要完成对应的本地组件与产物验证：Vitest dom/node、Storybook/React 组件 Chromium、真实 tarball consumer 浏览器与公开产物检查。普通 PR CI 运行全仓 `check:source`；可信的纯版本 PR 按下节复用成功证据。发布流水线继续运行不含文档站的 `check:publish-source`、Changesets、依赖审计、构建、主题、Node SSR、Node 原始 tarball 隔离验证及发布。CI 不运行组件单测或浏览器矩阵，不能代替候选所需本地组件结果。
 
 quality 传递构建产物，官方 pack 创建 artifact；pack-verify 下载该 artifact 的准确文件，执行 Node 隔离消费检查并记录候选 SHA、原计划摘要和六包 SHA-512。publish 只接收已通过验证的 artifact ID，不重建、不执行 workspace 生命周期脚本。
 
 文档站、站点部署和旧逐示例验收不属于包发布门禁。静态 API 与迁移说明仍需准确，实际公开包继续保留独立品牌、MIT、第三方归属和 SBOM。
+
+### 构建与检查证据复用
+
+- 普通 PR 的冷启动 `check:source` 会清理旧产物，文档消费者类型检查随后构建六包；CI 使用 `verify:artifacts` 继续验证这些准确产物，不再执行第二次 build。手动 `check:artifacts` 仍先构建再验证，不能把任意残留 dist 当作有效输入。
+- 完整源码与产物检查成功后，CI 上传 `source-quality-evidence`，记录仓库、run、PR head、实际 checkout SHA 与整个 Git tree。只有完整路径生成证据，复用路径不生成新的全量通过记录。
+- 纯版本 PR 必须同时满足同仓库机器人身份、固定版本分支、六包统一向前升版、清单除 version 外完全相同、CHANGELOG 仅前置新版本且保留历史、仅删除已消费 changeset。源码、依赖、exports、lockfile、工具或工作流的改动均执行完整检查。
+- 复用还要求近期成功的本仓库 `ci.yml` 运行提供唯一且未过期的 receipt；run、PR head、受测提交 tree 均独立核对，且 tree 与版本 PR 的 base 完全相同。缺少匹配证据时执行完整检查。当前版本差异及原有 Changesets 意图校验始终执行，正式发布的候选、构建和 tarball 验证不因 PR 复用而省略。
+- pnpm store 只缓存内容寻址依赖，仍执行 frozen-lockfile 安装和既有供应链策略；不缓存 node_modules 或构建产物。`tools/release` 是私有工具工作区，Changesets CLI、GitHub CHANGELOG 插件、semver 和 Prettier 四个依赖版本与根清单一致，保留官方升版的自动格式化。select-mode、version、publish、postcheck 以 `--filter @workspace/release-tools install --prod` 排除根开发依赖，再暴露官方 CLI 的根解析入口；quality 和 pack-verify 保留完整安装。
+- 恢复历史候选时，发布与后验保留原完整安装路径，避免旧候选缺少新增工具；原候选、master 祖先、`packages/` 不变、原 tarball 和 integrity 等恢复约束继续生效。
+
+轻量工具安装成功并核对版本后，仅在当前 Actions job 的后续命令中设置 `pnpm_config_verify_deps_before_run=false`。pnpm 12 默认会在 run/exec 前自动补装省略的开发依赖；这里禁止隐式补装，仍保留前一步 frozen-lockfile 安装及格式化。开发者环境与完整安装门禁不改变。版本基准同时断言官方升版前后安装规模不增长。
+
+### 实际耗时对照
+
+`release-benchmark.yml` 在修改该基准的 PR 上运行，也可手动触发。它在独立 runner 上对比同一 checkout 的普通 PR 检查、官方 CLI 生成的纯版本变更和轻量发布工具安装。两个源码方案使用相同验证器；版本快路径必须找到实际成功 CI 证据，否则基准失败。
+
+后验对照读取指定成功发布 run 的 `release-evidence`，真实执行官方 registry 完整性、provenance、签名、隔离安装与 SSR 导入。默认 run `42470122055` 对应 2.1.2；证据过期或比较后续发布时显式提供新的成功 run ID。基准只有 contents/actions 读取权限，不推送演练提交、不创建版本 PR、不执行 npm publish。其数据只能代表测得的 CI 阶段，不能将已完成传播的后验耗时宣称为新版本传播耗时。
 
 `release:check` 是完整本地只读发布验证入口，组合公开包源码、单测、产物、组件与 consumer 浏览器回归，不运行文档站检查；可按影响和执行阶段复用输入未变的有效结果，无须重复运行总命令。组件浏览器默认构建后 preview、完整 Chromium 新 headless、3 workers、0 retries。`PACK_DIR=/绝对路径 pnpm verify:pack-isolated` 验证官方 pack 输出，未指定 `PACK_DIR` 时保留日常本地打包模式。`release:verify` 检查包身份、许可、私有依赖与产物泄漏，不要求预先存在 Git 标签。
 

@@ -1,0 +1,13 @@
+{
+  "name": "@workspace/release-tools",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "发布轻量 job 的锁定依赖；版本与根工作区保持一致。",
+  "dependencies": {
+    "@changesets/changelog-github": "1.0.1",
+    "@changesets/cli": "3.0.2",
+    "prettier": "3.9.6",
+    "semver": "7.8.5"
+  }
+}

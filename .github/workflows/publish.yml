@@ -60,7 +60,10 @@ jobs:
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
         with:
           version: 2026.9.3
-      - run: mise exec -- pnpm install --frozen-lockfile --ignore-scripts
+      - name: Install locked release tools
+        run: |
+          mise exec -- pnpm --filter @workspace/release-tools install --prod --frozen-lockfile --ignore-scripts
+          mise exec -- node scripts/setup-release-tools.mjs
       - id: recovery
         if: github.event_name == 'workflow_dispatch'
         run: mise exec -- node scripts/resolve-release-recovery.mjs
@@ -83,7 +86,10 @@ jobs:
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
         with:
           version: 2026.9.3
-      - run: mise exec -- pnpm install --frozen-lockfile --ignore-scripts
+      - name: Install locked release tools
+        run: |
+          mise exec -- pnpm --filter @workspace/release-tools install --prod --frozen-lockfile --ignore-scripts
+          mise exec -- node scripts/setup-release-tools.mjs
       - uses: actions/create-github-app-token@v2
         id: app
         with:
@@ -98,7 +104,7 @@ jobs:
           github-token: ${{ steps.app.outputs.token }}
           script: pnpm release:version
           pr-base-branch: master
-          pr-title: 'Release: version the five public packages'
+          pr-title: 'Release: version the six public packages'
         env:
           GITHUB_TOKEN: ${{ steps.app.outputs.token }}
 
@@ -116,6 +122,8 @@ jobs:
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
         with:
           version: 2026.9.3
+      - uses: ./.github/actions/pnpm-store
+        if: hashFiles('.github/actions/pnpm-store/action.yml') != ''
       - run: mise exec -- pnpm install --frozen-lockfile
       - run: mise exec -- pnpm audit:prod
       - run: mise exec -- pnpm check:publish-source
@@ -147,6 +155,8 @@ jobs:
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
         with:
           version: 2026.9.3
+      - uses: ./.github/actions/pnpm-store
+        if: hashFiles('.github/actions/pnpm-store/action.yml') != ''
       - run: mise exec -- pnpm install --frozen-lockfile --ignore-scripts
       - uses: actions/download-artifact@v4
         with:
@@ -224,7 +234,13 @@ jobs:
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
         with:
           version: 2026.9.3
+      - name: Install locked release tools
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          mise exec -- pnpm --filter @workspace/release-tools install --prod --frozen-lockfile --ignore-scripts
+          mise exec -- node scripts/setup-release-tools.mjs
       - run: mise exec -- pnpm install --frozen-lockfile --ignore-scripts
+        if: github.event_name == 'workflow_dispatch'
       - uses: actions/download-artifact@v4
         with:
           artifact-ids: ${{ needs.pack-verify.outputs.evidence }}
@@ -255,7 +271,13 @@ jobs:
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
         with:
           version: 2026.9.3
+      - name: Install locked release tools
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          mise exec -- pnpm --filter @workspace/release-tools install --prod --frozen-lockfile --ignore-scripts
+          mise exec -- node scripts/setup-release-tools.mjs
       - run: mise exec -- pnpm install --frozen-lockfile --ignore-scripts
+        if: github.event_name == 'workflow_dispatch'
       - uses: actions/download-artifact@v4
         with:
           artifact-ids: ${{ needs.pack-verify.outputs.evidence }}

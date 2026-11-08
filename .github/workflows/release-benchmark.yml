@@ -1,0 +1,140 @@
+name: Release pipeline benchmark
+
+on:
+  pull_request:
+    paths: ['.github/workflows/release-benchmark.yml']
+  workflow_dispatch:
+    inputs:
+      published-run-id:
+        description: Successful publish run providing release-evidence (read-only postcheck)
+        type: string
+        required: true
+        default: '42470122055'
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  npm_config_registry: https://registry.npmjs.org/
+  # 原 2.1.2 发布提供同一份后验证据；演练不创建版本 PR、不审批 npm、不执行 publish。
+  PUBLISHED_RUN_ID: ${{ inputs.published-run-id || '42470122055' }}
+
+jobs:
+  source:
+    name: source / ${{ matrix.mode }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [baseline, optimized]
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
+        with:
+          version: 2026.9.3
+      - uses: ./.github/actions/pnpm-store
+        if: matrix.mode == 'optimized'
+      - run: mise exec -- pnpm install --frozen-lockfile
+      - run: mise exec -- pnpm test:changesets
+      - run: mise exec -- pnpm check:source
+      - name: Verify all package contracts
+        # 两个方案运行相同验证器；区别只是 baseline 重建、optimized 使用上一步冷启动构建。
+        run: |
+          if [ "$MODE" = baseline ]; then
+            mise exec -- pnpm check:artifacts
+          else
+            mise exec -- pnpm verify:artifacts
+          fi
+        env:
+          MODE: ${{ matrix.mode }}
+
+  version:
+    name: version / ${{ matrix.mode }}
+    needs: source
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [baseline, optimized]
+    env:
+      PR_HEAD_REF: changeset-release/master
+      PR_HEAD_REPO: ${{ github.repository }}
+      PR_AUTHOR: ${{ vars.RELEASE_BOT_LOGIN }}
+      RELEASE_BOT_LOGIN: ${{ vars.RELEASE_BOT_LOGIN }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
+        with:
+          version: 2026.9.3
+      - name: Install dependencies
+        run: |
+          if [ "$MODE" = baseline ]; then
+            git submodule update --init --recursive
+            mise exec -- pnpm install --frozen-lockfile
+          else
+            mise exec -- pnpm --filter @workspace/release-tools install --prod --frozen-lockfile --ignore-scripts
+            mise exec -- node scripts/setup-release-tools.mjs
+          fi
+        env:
+          MODE: ${{ matrix.mode }}
+      - name: Generate an official version-only fixture
+        run: mise exec -- node scripts/benchmark-version-pr.mjs
+      - id: plan
+        if: matrix.mode == 'optimized'
+        name: Require real prior CI evidence
+        run: |
+          mise exec -- node scripts/ci-quality-plan.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Verify reuse is justified
+        if: matrix.mode == 'optimized'
+        # 没有成功证据就让基准失败，不能将完整检查误当作版本快路径的测量结果。
+        run: test "$REUSE" = true
+        env:
+          REUSE: ${{ steps.plan.outputs.reuse }}
+      - run: mise exec -- pnpm check:changesets
+      - run: mise exec -- pnpm test:changesets
+        if: matrix.mode == 'baseline'
+      - run: mise exec -- pnpm check:source
+        if: matrix.mode == 'baseline'
+      - run: mise exec -- pnpm check:artifacts
+        if: matrix.mode == 'baseline'
+
+  tools:
+    name: release-tools / ${{ matrix.mode }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [baseline, optimized]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
+        with:
+          version: 2026.9.3
+      - name: Install dependencies
+        run: |
+          if [ "$MODE" = baseline ]; then
+            mise exec -- pnpm install --frozen-lockfile --ignore-scripts
+          else
+            mise exec -- pnpm --filter @workspace/release-tools install --prod --frozen-lockfile --ignore-scripts
+            mise exec -- node scripts/setup-release-tools.mjs
+          fi
+        env:
+          MODE: ${{ matrix.mode }}
+      - run: mise exec -- pnpm changeset --version
+      - name: Download the same published release evidence
+        run: gh run download "$PUBLISHED_RUN_ID" --name release-evidence --dir "$RUNNER_TEMP/evidence"
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Run real registry postcheck
+        # 仍执行 provenance、签名、隔离安装和 SSR，只读取已发布的 2.1.2，不重新发布。
+        run: mise exec -- pnpm release:postcheck "$RUNNER_TEMP/evidence/release-evidence.json"
+        env:
+          GH_TOKEN: ${{ github.token }}
