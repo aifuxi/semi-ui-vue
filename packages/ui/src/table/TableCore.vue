@@ -90,6 +90,8 @@ const currentPage = shallowRef(1);
 const pageSize = shallowRef(tableNumbers.DEFAULT_PAGE_SIZE);
 const scrollPosition = shallowRef<'both' | 'left' | 'middle' | 'right'>('both');
 let resizeObserver: ResizeObserver | undefined;
+/** CSS 列宽可以独立于根容器变化；跟踪当前表头节点以复用现有重测生命周期。 */
+const observedHeaderCells = new Set<Element>();
 let resizeFrame: number | undefined;
 let resizeDisposed = false;
 let previousVirtualNativeTop: number | undefined;
@@ -334,15 +336,18 @@ const displayColumns = computed<NormalizedTableColumn<RecordType>[]>(() => {
 });
 const flatColumns = computed(() => flattenColumns(displayColumns.value));
 const headerRows = computed(() => buildHeaderRows(displayColumns.value));
+/** 与表头保持相同优先级：数值伸缩/声明宽度优先，CSS 字符串必须使用实际几何。 */
 const fixedOffsets = computed(() =>
   calculateFixedOffsets(
+    // __width 也可能保存 CSS 字符串，非空不代表可用于数值累加。
     flatColumns.value.map((column) => ({
       ...column,
       __width:
-        column.__width ??
-        (typeof column.width === 'number'
-          ? column.width
-          : measuredHeaderWidths.value.get(column.key)),
+        typeof column.__width === 'number'
+          ? column.__width
+          : typeof column.width === 'number'
+            ? column.width
+            : measuredHeaderWidths.value.get(column.key),
     })),
   ),
 );
@@ -1130,6 +1135,7 @@ watch(
   },
 );
 
+/** 复用根容器的帧内重测，并同步需要实际几何的表头观察，覆盖纯 CSS 变量更新。 */
 function ensureResizeObserver(): void {
   if (
     !resizeDisposed &&
@@ -1140,9 +1146,11 @@ function ensureResizeObserver(): void {
       props.virtualized ||
       (showHeader.value && Boolean(props.scroll?.y || props.sticky)))
   ) {
+    // 根容器或表头的通知合并到同一帧，统一刷新表头与正文的数值缓存。
     resizeObserver = new ResizeObserver(() => {
       if (resizeDisposed) return;
       if (resizeFrame !== undefined) window.cancelAnimationFrame(resizeFrame);
+      // 在浏览器布局稳定后测量，保留原滚动边界更新时机。
       resizeFrame = window.requestAnimationFrame(() => {
         resizeFrame = undefined;
         if (resizeDisposed) return;
@@ -1152,6 +1160,28 @@ function ensureResizeObserver(): void {
       });
     });
     resizeObserver.observe(wrapperRef.value);
+  }
+  if (!resizeObserver || !wrapperRef.value) return;
+  /** 数值列维持声明宽度契约；仅 CSS 字符串列需要独立于根容器的重测。 */
+  const needsHeaderMeasurement =
+    (anyFixed.value || props.virtualized) &&
+    // CSS var/calc/百分比等字符串只能在浏览器布局后解析。
+    flatColumns.value.some((column) => typeof (column.__width ?? column.width) === 'string');
+  /** 只选择当前 Table 的首个表头，避免把展开行内嵌套 Table 的列当作自身宽度。 */
+  const header = wrapperRef.value.querySelector(`.${prefix.value}-thead`);
+  /** 列变化和 showHeader 切换后释放旧节点；新节点进入同一 Observer。 */
+  const targets = new Set(
+    needsHeaderMeasurement && header ? header.querySelectorAll(`.${prefix.value}-row-head`) : [],
+  );
+  for (const cell of observedHeaderCells) {
+    if (targets.has(cell)) continue;
+    resizeObserver.unobserve(cell);
+    observedHeaderCells.delete(cell);
+  }
+  for (const cell of targets) {
+    if (observedHeaderCells.has(cell)) continue;
+    resizeObserver.observe(cell, { box: 'border-box' });
+    observedHeaderCells.add(cell);
   }
 }
 

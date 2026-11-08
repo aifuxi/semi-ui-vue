@@ -55,6 +55,8 @@ const dataSource = [
 
 ## 固定列、滚动、尺寸与虚拟化
 
+`columns[].width` 与 `rowSelection.width` 支持数值及 CSS 字符串（如 `var(...)`、`calc(...)`）。数值宽度沿用声明或拖动后的值；字符串宽度由浏览器布局后测量，表头和正文共用实测值计算左右固定偏移。CSS 变量或容器尺寸变化后会重新测量，无需业务转换成像素数值。SSR 不执行几何测量，客户端挂载后建立观察并校准。
+
 - `scroll.x`/`scroll.y` 开启横向/纵向滚动（含固定表头），`scrollToFirstRowOnChange` 控制翻页回顶；列的 `fixed`/`ellipsis` 与 `rowSpanHover` 保留固定列与省略态。
 - `sticky` 让表头吸顶；`resizable` 传 `true` 或 `{ handlerClassName, onResize, onResizeStart, onResizeStop }` 调整列宽。
 - `size` 取 `'small' | 'default' | 'middle'`；`bordered`、`showHeader`、`headerStyle`、`indentSize` 控制外观。
