@@ -153,3 +153,11 @@ Dynamic 首次排序的完整 sorter 经消费者回填 columns 后，其空 fil
 - 修复：新增 `packages/ui/src/_utils` 的 `useRenderComputed`（每次组件更新失效一次，插槽仍然只在渲染期求值），`packages/ui/src` 内全部读取插槽的 computed 改用它；`TableCore` 的声明式列、标题/页脚/空态一并转换，`TableCell` 与 `shouldCellUpdate` 语义保持不变。表头标题改按列实例标识，表头/表体/`colgroup` 的 `v-for` key 改为位置唯一；公开 `column.key`（`key ?? dataIndex`）与 `change` 载荷保持不变。
 - 门禁：`pnpm check:slots`（`scripts/verify-slot-render-usage.mjs`）扫描 `packages/ui/src` 与 `apps/storybook-vue/src`，禁止 `computed`/`watch` 回调直接调用插槽或引用读取插槽的本地函数，例外需显式 `slots-render-allow:` 标注。
 - 证据：`Tag.test.ts`、`Typography.test.ts`、`Table.test.ts` 新增用例在修复前失败、修复后通过（逐条以回退源码验证）；全量 `pnpm test:unit` 226 文件 / 1300 用例通过；`pnpm check:slots` 0 命中。
+
+## BUG-000078：CSS 字符串列宽的固定偏移（2026-11-08）
+
+- `displayColumns` 保留字符串 `width/__width` 供 colgroup 渲染；正文 fixedOffsets 原先将非空字符串当作可累加的数值来源，跳过 measuredHeaderWidths，最终被工具函数按 0 累加。现与表头采用同一优先级：数值 __width → 数值 width → 实测表头宽度，保留数值和拖动后的既有契约。
+- CSS var/calc 等宽度变化可能不改变 wrapper 几何。存在字符串列且需要固定/虚拟测量时，复用已有 ResizeObserver 观察当前表头单元格的 border-box，并合并到原 animation frame 重测。列/表头重建时同步目标，卸载继续断开 observer 和取消帧；纯数值表格不增加表头观察。
+- 固定 React `TableHeaderRow.cacheRef` 同样对字符串读取 getBoundingClientRect，初始及滚动时双侧固定偏移是正确对照。其 componentDidUpdate 仅在 columns 身份变化时刷新缓存，实测在纯 CSS 变量变化并缩窄容器后仍保留旧偏移；Vue 的动态表头观察是满足本工单验收的明确修正差异，不修改 vendor 或接受旧偏移作为正确值。
+- 新回归覆盖左右固定列、LTR/RTL、CSS var/calc/px、声明数值优先、独立表头重测、表头销毁重建及卸载清理。真实 tarball 使用不变的 columns/rowSelection/scroll 对象，确保主题切换不能通过 prop watcher 掩盖测量缺口；明暗和 RTL 下检查横纵滚动、20/14 条分页、选择列可点击及整页宽度。旧视觉快照保持原样。
+- 实际验证与未升级业务依赖的边界见 [修复记录](../../../ai-work/20261108-table-css-fixed-offsets.md)。

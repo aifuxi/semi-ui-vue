@@ -138,19 +138,63 @@ export function TableScenario({ direction }: TableScenarioProps): React.ReactEle
                 : column,
         )
       : columns;
+  /** 与 Vue 相同的 CSS var/calc 宽度和双侧固定列，参考直接消费只读基线。 */
+  const fixedCssColumns: TableProps['columns'] = [
+    {
+      key: 'name',
+      dataIndex: 'name',
+      title: '资源名称',
+      width: 'var(--table-name-width)',
+      fixed: 'left',
+    },
+    { key: 'status', dataIndex: 'status', title: '状态', width: 480 },
+    { key: 'owner', dataIndex: 'owner', title: '负责人', width: 'calc(48px * 2)', fixed: 'right' },
+    {
+      key: 'last',
+      dataIndex: 'status',
+      title: '末列',
+      width: 'var(--table-end-width)',
+      fixed: 'right',
+    },
+  ];
   return (
     <ConfigProvider direction={direction}>
-      <div className="table-scenario" data-testid="table-reference">
+      <div
+        className="table-scenario"
+        data-testid="table-reference"
+        style={
+          variant === 'fixed-css'
+            ? ({
+                width: 600,
+                '--table-selection-width': '56px',
+                '--table-name-width': '240px',
+                '--table-end-width': '80px',
+              } as React.CSSProperties)
+            : undefined
+        }
+      >
         <Table
           {...structureProps}
           data-parity-target="table-basic"
           bordered
-          columns={reviewColumns}
+          columns={variant === 'fixed-css' ? fixedCssColumns : reviewColumns}
           dataSource={reviewData}
           loading={state === 'loading'}
           pagination={false}
-          rowSelection={{ selectedRowKeys: ['gateway'], width: 50, disabled: state === 'disabled' }}
-          scroll={structureProps.scroll ?? { x: 560 }}
+          rowSelection={{
+            selectedRowKeys: ['gateway'],
+            width: variant === 'fixed-css' ? 'var(--table-selection-width)' : 50,
+            ...(variant === 'fixed-css' ? { fixed: 'left' as const } : {}),
+            disabled: state === 'disabled',
+          }}
+          scroll={
+            variant === 'fixed-css'
+              ? {
+                  x: 'calc(var(--table-selection-width) + var(--table-name-width) + 480px + 96px + var(--table-end-width))',
+                  y: 200,
+                }
+              : (structureProps.scroll ?? { x: 560 })
+          }
           size={size}
         />
       </div>

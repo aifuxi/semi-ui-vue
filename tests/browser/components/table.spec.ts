@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { expectFixedColumnAlignment } from '../table-fixed-widths';
 import {
   assertScenarioComparable,
   createParityScenarioUrl,
@@ -219,3 +220,60 @@ test('Table React/Vue RTL 几何与像素一致', async ({ context }) => {
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
+
+// 固定 React 的缓存会将字符串列宽转换为实测数值，Vue 必须沿用同一偏移结果。
+for (const direction of ['ltr', 'rtl'] as const) {
+  // 默认结构/快照保持原样，专项 query 只改变公开 Table 输入。
+  test(`Table CSS 字符串宽度初始对照及动态重测差异：${direction}`, async ({ context }) => {
+    /** 两端使用完全一致的 CSS 变量与 var/calc 列宽。 */
+    const pair = await openParityPages(context, {
+      scenarioId: 'table',
+      theme: 'light',
+      direction,
+      locale: 'zh-CN',
+    });
+    for (const page of [pair.react.page, pair.vue.page]) {
+      /** 使用当前已核验的来源 URL 切换专项场景。 */
+      const url = new URL(page.url());
+      url.searchParams.set('reviewVariant', 'fixed-css');
+      await page.goto(url.toString());
+      /** 实际组件根节点，无业务 sticky 或数值列宽转换。 */
+      const table = page.locator('.table-scenario .semi-table-wrapper');
+      await expectFixedColumnAlignment(table, direction, 56, 80);
+      // 原生横向滚动会同步独立表头，RTL 原生 scrollLeft 使用负值。
+      await table.locator('.semi-table-body').evaluate((body, rtl) => {
+        body.scrollLeft = rtl ? -body.scrollWidth : body.scrollWidth;
+      }, direction === 'rtl');
+      await expectFixedColumnAlignment(table, direction, 56, 80);
+      // 固定 React 只在列对象更新时刷新表头缓存；动态 CSS 的已知限制必须明确记录。
+      await page.locator('.table-scenario').evaluate((host) => {
+        host.style.setProperty('--table-selection-width', '72px');
+        host.style.setProperty('--table-end-width', '112px');
+        host.style.width = '560px';
+      });
+      if (page === pair.react.page) {
+        // 实际 CSS 宽度已变化，但固定基线仍保存初始偏移；不把此结果当作正确预期交给 Vue。
+        // 表头有 padding/border，以 border-box 实测宽度核对 CSS 变量的结果。
+        await expect
+          .poll(
+            // 与固定缓存读取 getBoundingClientRect 的方式一致。
+            async () =>
+              table
+                .locator('thead th')
+                .first()
+                .evaluate((head) => head.getBoundingClientRect().width),
+          )
+          .toBe(72);
+        await expect(table.locator('thead th').nth(1)).toHaveCSS(
+          direction === 'rtl' ? 'right' : 'left',
+          '56px',
+        );
+      } else {
+        // Vue 补充表头 ResizeObserver，按新几何满足工单的主题重测要求。
+        await expectFixedColumnAlignment(table, direction, 72, 112);
+      }
+    }
+    expect(pair.react.runtimeErrors).toEqual([]);
+    expect(pair.vue.runtimeErrors).toEqual([]);
+  });
+}

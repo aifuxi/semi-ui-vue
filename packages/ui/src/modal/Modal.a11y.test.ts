@@ -139,18 +139,18 @@ it('标准 Modal 与多个命令式确认框并存时名称和描述不碰撞', 
   ]);
 });
 
-// 不制造空标题；无标题与自定义 header 的正文仍然有有效描述引用。
-it('无标题或自定义 header 时没有悬空的标题引用', async () => {
+// 自定义 header 不抹去调用方通过 title 提供的名称。
+it('无标题时不制造引用，自定义 header 保留 title 的名称关联', async () => {
   /** 同一宿主同时渲染无标题与自定义 header 的公开组件。 */
   const wrapper = mount(
     {
-      // 自定义 header 不约定用户节点的 ID，库只负责标准标题的命名。
+      // 自定义 header 不需要调用方提供或维护 DOM ID。
       render: () => [
         h(Modal, { visible: true, motion: false, content: '无标题正文' }),
         h(Modal, {
           visible: true,
           motion: false,
-          title: '被替换的标题',
+          title: '自定义标题',
           header: h('header', '自定义标题'),
           content: '自定义正文',
         }),
@@ -162,7 +162,7 @@ it('无标题或自定义 header 时没有悬空的标题引用', async () => {
   await nextTick();
   expectAssociations([
     { title: null, body: '无标题正文' },
-    { title: null, body: '自定义正文' },
+    { title: '自定义标题', body: '自定义正文' },
   ]);
 });
 
@@ -174,7 +174,17 @@ it('多个可见 Modal 的标题和正文 ID 在 hydration 前后保持一致', 
     render: () =>
       ['详情外层', '操作确认'].map(
         // 标题与正文均由公开 props 提供。
-        (title) => h(Modal, { visible: true, motion: false, title, content: `${title}正文` }),
+        (title) =>
+          h(
+            Modal,
+            { visible: true, motion: false, title, content: `${title}正文` },
+            title === '详情外层'
+              ? {
+                  // 自定义头部与隐藏名称节点也必须在 hydration 时保留同一 ID。
+                  header: () => h('header', title),
+                }
+              : undefined,
+          ),
       ),
   };
   /** SSR HTML 容器在挂载后会将弹窗内容迁移到 body Portal。 */

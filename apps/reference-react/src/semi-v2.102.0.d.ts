@@ -2286,6 +2286,8 @@ declare module '@semi-v2.102.0/table' {
 
   export interface TableColumnProps<RecordType = Record<string, unknown>> {
     dataIndex?: string;
+    /** 固定基线列的 sticky 侧，true 等价于 left。 */
+    fixed?: boolean | 'left' | 'right';
     key?: string | number;
     render?: (value: unknown, record: RecordType, index: number) => ReactNode;
     title?: ReactNode;
@@ -2312,6 +2314,8 @@ declare module '@semi-v2.102.0/table' {
     loading?: boolean;
     pagination?: boolean | Record<string, unknown>;
     rowSelection?: {
+      /** 选择列沿用固定源码的左右固定配置。 */
+      fixed?: boolean | 'left' | 'right';
       /** 固定基线允许整组禁选，用于审查表头与行选择的禁用样式。 */
       disabled?: boolean;
       selectedRowKeys?: (string | number)[];

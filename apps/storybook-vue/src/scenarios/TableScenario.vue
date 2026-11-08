@@ -110,6 +110,25 @@ const columns: TableColumnProps[] = [
   },
   { dataIndex: 'owner', key: 'owner', title: '负责人', width: 160 },
 ];
+/** 字符串宽度专项：左侧选择/名称与右侧双固定列共同验证实际宽度累积。 */
+const fixedCssColumns: TableColumnProps[] = [
+  {
+    key: 'name',
+    dataIndex: 'name',
+    title: '资源名称',
+    width: 'var(--table-name-width)',
+    fixed: 'left',
+  },
+  { key: 'status', dataIndex: 'status', title: '状态', width: 480 },
+  { key: 'owner', dataIndex: 'owner', title: '负责人', width: 'calc(48px * 2)', fixed: 'right' },
+  {
+    key: 'last',
+    dataIndex: 'status',
+    title: '末列',
+    width: 'var(--table-end-width)',
+    fixed: 'right',
+  },
+];
 /** 仅专项场景显示真实排序与筛选控件，默认字段结构保持不变。 */
 const reviewColumns: TableColumnProps[] =
   reviewState === 'sort-filter'
@@ -134,21 +153,42 @@ const reviewColumns: TableColumnProps[] =
 
 <template>
   <ConfigProvider :direction="direction">
-    <div class="table-scenario" data-testid="table-vue">
+    <div
+      class="table-scenario"
+      data-testid="table-vue"
+      :style="
+        reviewVariant === 'fixed-css'
+          ? {
+              width: '600px',
+              '--table-selection-width': '56px',
+              '--table-name-width': '240px',
+              '--table-end-width': '80px',
+            }
+          : undefined
+      "
+    >
       <Table
         v-bind="structureProps"
         data-parity-target="table-basic"
         bordered
-        :columns="reviewColumns"
+        :columns="reviewVariant === 'fixed-css' ? fixedCssColumns : reviewColumns"
         :data-source="reviewData"
         :loading="reviewState === 'loading'"
         :pagination="false"
         :row-selection="{
           selectedRowKeys: ['gateway'],
-          width: 50,
+          width: reviewVariant === 'fixed-css' ? 'var(--table-selection-width)' : 50,
+          ...(reviewVariant === 'fixed-css' ? { fixed: 'left' as const } : {}),
           disabled: reviewState === 'disabled',
         }"
-        :scroll="structureProps.scroll ?? { x: 560 }"
+        :scroll="
+          reviewVariant === 'fixed-css'
+            ? {
+                x: 'calc(var(--table-selection-width) + var(--table-name-width) + 480px + 96px + var(--table-end-width))',
+                y: 200,
+              }
+            : (structureProps.scroll ?? { x: 560 })
+        "
         :size="reviewSize"
       />
     </div>

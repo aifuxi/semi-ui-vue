@@ -33,40 +33,143 @@ const dropdownQuery = new URLSearchParams(location.search);
 const dropdownCase = dropdownQuery.get('dropdown');
 // 排版专项复用真实安装包，仅切换测试页面，不注入组件实现。
 const typographyThemeCase = dropdownQuery.has('typography-theme');
+// 固定列专项通过 CSS 变量和公开 columns.width 复现，不注入组件补丁。
+const tableFixedCase = dropdownQuery.has('table-fixed-widths');
 // 可访问性专项只使用公开 Modal，不注入 DOM ID 或业务样式补丁。
 const modalA11yCase = dropdownQuery.has('modal-a11y');
 // 模拟详情内部的状态操作，默认关闭内层，保留原始入场与退场动效。
 const nestedModalVisible = ref(false);
+// 外层也保持受控，不能用 closeOnEsc=false 掩盖两层同时取消的错误。
+const outerModalVisible = ref(true);
+// 模拟 Dropdown 菜单项打开确认后从文档移除。
+const modalOpenerVisible = ref(true);
+
+// 仅改变外层 CSS，不更换 columns/rowSelection/scroll 的对象身份，确保重测来自 ResizeObserver。
+const packedTableWideColumns = ref(false);
+// 容器缩窄独立于主题列宽，分别验证两条浏览器布局路径。
+const packedTableNarrowContainer = ref(false);
+// 三十四条记录与工单相同，默认每页二十条，以验证换页和纵向滚动。
+const packedFixedTableData = Array.from(
+  { length: 34 },
+  // 内容使用稳定编号，分页不得由测试直接重写数据。
+  (_, index) => ({
+    key: index,
+    name: `工作项 ${index + 1}`,
+    status: '待处理',
+    owner: '研发',
+    last: '操作',
+  }),
+);
+// 保持 props 身份不变，防止父级更新触发列 watcher 而掩盖 CSS 独立重测缺失。
+const packedFixedTableProps = {
+  direction: dropdownQuery.get('direction') === 'rtl' ? 'rtl' : 'ltr',
+  columns: [
+    {
+      key: 'name',
+      dataIndex: 'name',
+      title: '名称',
+      width: 'var(--table-name-width)',
+      fixed: 'left',
+    },
+    { key: 'status', dataIndex: 'status', title: '状态', width: 480 },
+    { key: 'owner', dataIndex: 'owner', title: '负责人', width: 'calc(48px * 2)', fixed: 'right' },
+    {
+      key: 'last',
+      dataIndex: 'last',
+      title: '操作',
+      width: 'var(--table-end-width)',
+      fixed: 'right',
+    },
+  ],
+  dataSource: packedFixedTableData,
+  rowSelection: { fixed: 'left', width: 'var(--table-selection-width)' },
+  scroll: {
+    x: 'calc(var(--table-selection-width) + var(--table-name-width) + 480px + 96px + var(--table-end-width))',
+    y: 260,
+  },
+  pagination: { pageSize: 20 },
+};
+
+/** 标准 Table 的真实包消费，列宽仅由祖先 CSS 变量与容器尺寸决定。 */
+function renderPackedTableFixedWidths() {
+  return h('main', [
+    h(
+      Button,
+      {
+        // 只切换祖先主题变量；Table props 引用保持原样。
+        onClick: () => {
+          packedTableWideColumns.value = !packedTableWideColumns.value;
+        },
+      },
+      { /* 通过可见控件触发主题列宽变更。 */ default: () => '切换列宽' },
+    ),
+    h(
+      Button,
+      {
+        // 根容器宽度变化应复用原 Observer 路径。
+        onClick: () => {
+          packedTableNarrowContainer.value = !packedTableNarrowContainer.value;
+        },
+      },
+      { /* 容器变化与纯 CSS 变量变化独立。 */ default: () => '切换容器宽度' },
+    ),
+    h(
+      'section',
+      {
+        'data-testid': 'packed-fixed-table-host',
+        style: {
+          width: packedTableNarrowContainer.value ? '560px' : '600px',
+          '--table-selection-width': packedTableWideColumns.value ? '72px' : '56px',
+          '--table-name-width': '240px',
+          '--table-end-width': packedTableWideColumns.value ? '112px' : '80px',
+        },
+      },
+      [h(Table, packedFixedTableProps)],
+    ),
+  ]);
+}
 
 /** 渲染真实安装包的详情、嵌套确认与命令式确认入口。 */
 function renderPackedModalA11y() {
   return h(
     Modal,
     {
-      visible: true,
+      visible: outerModalVisible.value,
       title: '详情外层',
-      // 详情在内层 Esc 关闭时保持打开，模拟业务详情的关闭保护。
-      closeOnEsc: false,
+      // 外层用默认 Esc 行为，取消应当只在它成为顶层后发生。
+      'onUpdate:visible': (visible) => {
+        outerModalVisible.value = visible;
+      },
       maskClosable: false,
       footer: null,
     },
     {
+      // 与工单相同，同时提供 title 和自定义 header；不添加固定 ID。
+      ...(dropdownQuery.has('custom-header')
+        ? {
+            // 自定义头部只决定视觉结构，名称继续由公开 title 提供。
+            header: () => h('header', [h('h2', '详情外层'), h('span', '附加操作')]),
+          }
+        : {}),
       // 内层由真实控件切换 visible，Portal 和焦点全部由库自身管理。
       default: () => [
         h('p', '外层正文'),
-        h(
-          Button,
-          {
-            // 公开可见性状态驱动嵌套组件。
-            onClick: () => {
-              nestedModalVisible.value = true;
-            },
-          },
-          {
-            // 保留稳定的用户操作名称。
-            default: () => '打开操作确认',
-          },
-        ),
+        modalOpenerVisible.value
+          ? h(
+              Button,
+              {
+                // 公开可见性状态驱动嵌套组件。
+                onClick: () => {
+                  nestedModalVisible.value = true;
+                  if (dropdownQuery.has('removed-opener')) modalOpenerVisible.value = false;
+                },
+              },
+              {
+                // 保留稳定的用户操作名称。
+                default: () => '打开操作确认',
+              },
+            )
+          : null,
         h(
           Button,
           {
@@ -87,6 +190,8 @@ function renderPackedModalA11y() {
             visible: nestedModalVisible.value,
             title: '操作确认',
             maskClosable: false,
+            closeOnEsc: !dropdownQuery.has('inner-protected'),
+            keepDOM: dropdownQuery.has('keep-dom'),
             // 用户取消或 Esc 只改变内层的公开 visible。
             'onUpdate:visible': (visible) => {
               nestedModalVisible.value = visible;
@@ -814,51 +919,56 @@ function renderPackedColorTheme() {
 createApp({
   // 根消费示例保留原有组件交互，并加入直接调用的错误提示区域。
   render: () =>
-    modalA11yCase
-      ? renderPackedModalA11y()
-      : colorThemeCase
-        ? renderPackedColorTheme()
-        : typographyThemeCase
-          ? renderPackedTypographyTheme()
-          : dropdownCase !== null
-            ? renderPackedDropdown()
-            : h('main', [
-                h(
-                  Button,
-                  {
-                    // 按钮驱动现有输入状态。
-                    onClick: () => {
-                      input.value = 'Clicked';
+    tableFixedCase
+      ? renderPackedTableFixedWidths()
+      : modalA11yCase
+        ? renderPackedModalA11y()
+        : colorThemeCase
+          ? renderPackedColorTheme()
+          : typographyThemeCase
+            ? renderPackedTypographyTheme()
+            : dropdownCase !== null
+              ? renderPackedDropdown()
+              : h('main', [
+                  h(
+                    Button,
+                    {
+                      // 按钮驱动现有输入状态。
+                      onClick: () => {
+                        input.value = 'Clicked';
+                      },
                     },
-                  },
-                  // 保留真实 Button 默认插槽。
-                  () => 'Packed button',
-                ),
-                h(Input, {
-                  value: input.value,
-                  'aria-label': 'Packed input',
-                  // 原样同步输入的公开 change 值。
-                  onChange: (value) => {
-                    input.value = value;
-                  },
-                }),
-                h(Select, {
-                  value: selected.value,
-                  'aria-label': 'Packed select',
-                  optionList: [
-                    { label: 'First', value: 'first' },
-                    { label: 'Second', value: 'second' },
-                  ],
-                  // 原样同步选择器的公开 change 值。
-                  onChange: (value) => {
-                    selected.value = value;
-                  },
-                }),
-                h('output', { id: 'packed-state' }, input.value + ':' + selected.value),
-                h(CodeHighlight, { code: 'const ready = true;\nready();', language: 'javascript' }),
-                h(JsonViewer, { value: '{"name":"Semi"}', width: 600, height: 160 }),
-                renderPackedErrorCases(),
-              ]),
+                    // 保留真实 Button 默认插槽。
+                    () => 'Packed button',
+                  ),
+                  h(Input, {
+                    value: input.value,
+                    'aria-label': 'Packed input',
+                    // 原样同步输入的公开 change 值。
+                    onChange: (value) => {
+                      input.value = value;
+                    },
+                  }),
+                  h(Select, {
+                    value: selected.value,
+                    'aria-label': 'Packed select',
+                    optionList: [
+                      { label: 'First', value: 'first' },
+                      { label: 'Second', value: 'second' },
+                    ],
+                    // 原样同步选择器的公开 change 值。
+                    onChange: (value) => {
+                      selected.value = value;
+                    },
+                  }),
+                  h('output', { id: 'packed-state' }, input.value + ':' + selected.value),
+                  h(CodeHighlight, {
+                    code: 'const ready = true;\nready();',
+                    language: 'javascript',
+                  }),
+                  h(JsonViewer, { value: '{"name":"Semi"}', width: 600, height: 160 }),
+                  renderPackedErrorCases(),
+                ]),
 }).mount('#app');
 
 console.log(styleCoverage.length);

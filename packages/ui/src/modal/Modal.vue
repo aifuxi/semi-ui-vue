@@ -370,6 +370,7 @@ onBeforeUnmount(() => {
         :title="titleContent()"
         :visible="runtimeVisible"
         :width="resolveOptional('width')"
+        :z-index="runtimeProps.zIndex"
         @animation-end="handleAnimationEnd"
         @close="(event) => foundation.handleCancel(event)"
       />

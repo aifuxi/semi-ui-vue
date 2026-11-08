@@ -55,6 +55,8 @@ const dataSource = [
 
 ## Fixed columns, scrolling, size and virtualization
 
+`columns[].width` and `rowSelection.width` accept numbers and CSS strings such as `var(...)` and `calc(...)`. Numeric widths retain their configured or resized values. CSS widths are measured after browser layout, and the header and body use those measurements for both fixed sides. CSS variable and container size changes trigger remeasurement without consumer-side pixel conversion. SSR does not measure geometry; observation and alignment start after client mount.
+
 - `scroll.x`/`scroll.y` enable horizontal/vertical scrolling (including a fixed header) and `scrollToFirstRowOnChange` returns to the top after pagination; column `fixed`/`ellipsis` plus `rowSpanHover` keep the pinned fixed/ellipsis behavior.
 - `sticky` sticks the header, and `resizable` accepts `true` or `{ handlerClassName, onResize, onResizeStart, onResizeStop }`.
 - `size` accepts `'small' | 'default' | 'middle'`; `bordered`, `showHeader`, `headerStyle` and `indentSize` control appearance.

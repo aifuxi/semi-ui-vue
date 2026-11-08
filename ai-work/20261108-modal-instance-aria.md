@@ -38,3 +38,39 @@
 组件技能入口指向的 semi-ui-vue-vertical-slice 文件已不存在，本次按现行组件契约、固定源码与验证入口执行。工作区没有 CodeGraph 索引，完整工具目录没有 WebStorm MCP，使用项目 mise/CLI；不初始化索引或改动 IDE 配置。
 
 诊断输出、浏览器报告与构建日志保留在本地临时路径及已忽略的 test-results/playwright-report 中，不随 Git 提交。
+
+## 2.1.0 复测剩余项修复（2026-11-08）
+
+### 现象与复现
+
+已读取 BUG-000077 后续复测：原标准标题 ID 冲突已修复；同时提供 `title` 与 `header` 插槽时外层 dialog 未命名；内外层都允许 Esc 时，一次 Escape 同时触发两层取消。内层取消后还观察到焦点退回 BODY。本次只修复组件库，不操作工单字段或提交业务状态。
+
+在库工作区新增等价公开组件回归：自定义 header 与 title 同时提供；同时显示两个默认允许 Esc 的 Modal；较高 zIndex 先挂载、较低层后挂载；内层打开后移除入口并关闭。初轮新增/调整用例出现 5 项预期失败，分别暴露名称缺失、Esc 广播和无效焦点恢复。随后扩展 keepDOM 与保留入口组合。
+
+### 已确认根因与原验证遗漏
+
+- `ModalInnerContent.vue` 的 aria-labelledby 明确排除了 headerProvided，自定义头部覆盖可见布局的同时也丢弃了公开 title 的名称。
+- `ModalDialog.vue` 为每个实例分别安装 document keydown；固定 Foundation 的 stopPropagation 不阻止同一 document 上的其他监听，所以所有允许 Esc 的实例均收到取消。
+- 原焦点恢复直接调用保存元素的 focus，没有验证元素是否仍在文档，也没有剩余顶层的焦点归属检查。等价的入口移除路径可复现 BODY 焦点；未升级实际业务服务，不能据此断言业务现场唯一原因就是入口卸载。
+- 旧 consumer 虽声称覆盖嵌套 Esc，但把外层设为 closeOnEsc=false，因而不能发现 Esc 同时取消两层；旧自定义 header 单测则直接接受缺少名称。这两项预期和场景已纠正。
+- 只读固定 Semi v2.102.0 的 ModalContent.tsx 与 modalContentFoundation.ts 同样没有完整的自定义头部命名和顶层 Esc 判断。此次接受可访问性修正差异，不修改 vendor。
+
+### 实际修改与取舍
+
+- 自定义 header 时，使用独立隐藏 title 节点作为 dialog 的名称引用。可见 header 及布局不变，不依赖业务固定 semi-modal-title，不克隆、改写用户 header，也无需新增公开 API。缺省 title 时不凭空生成名称。
+- 新增私有的按 Document 隔离的 Modal 注册表，每个文档一个 keydown 监听器。按公开 zIndex 与同层 DOM 绘制顺序选择单个 Foundation，保留其取消回调与 closeOnEsc 规则。顶层禁止 Esc、仍处于受控打开状态或正在退场时都不向下广播。隐藏 keepDOM 或卸载释放注册，最后一层退出后移除监听；模块导入不访问 DOM。
+- 仅顶层关闭恢复焦点。保留原入口仍连接、且属于剩余顶层时恢复入口；否则优先聚焦外层现有可操作控件，保持其 Tab 循环，无控件时回到 tabindex=-1 的 dialog。卸载底层不会抢走仍打开顶层的焦点。
+- 扩展真实 tarball 消费场景，外层恢复默认允许 Esc，覆盖标准/自定义 header 的明暗主题、重开、遮罩关闭保护、命令式多 app、入口移除、keepDOM、顶层 Esc 保护及外层 Shift+Tab。补充自定义 header 的 SSR/hydration ID 稳定断言。
+- 同步组件契约、中英文公开文档及 UI patch Changeset。版本号继续由发布机器人维护。
+
+### 实际验证
+
+- `pnpm test:unit packages/ui/src/modal packages/ui/src/side-sheet packages/ui/src/user-guide`：最终 11 个文件、54 项通过；含名称关联、层级、关闭/卸载、入口保留/移除、keepDOM、SSR/hydration 及相邻消费方。
+- `pnpm exec playwright test tests/browser/components/modal.spec.ts`：5 项通过；固定 React 来源、DOM/交互、明暗及 RTL 几何/像素对照通过，原快照未修改。
+- `pnpm test:consumer tests/consumer/modal-a11y.spec.ts`：最终生产 tarball 的 6 项通过，保留真实动效，0 重试；包含外层默认允许 Esc 的标准/自定义 header 明暗四项、多个命令式实例命名及入口移除/关闭保护/keepDOM/Shift+Tab。随后对命令式用例补充 Esc 逐层关闭断言，并通过 `pnpm test:consumer tests/consumer/modal-a11y.spec.ts -g 多个命令式` 的 1 项定向复验。
+- `pnpm check:artifacts`：公开包与主题构建、主题入口、SSR import、真实 tarball 安装/exports/ESM/类型/样式/tree-shaking 全部通过。随后细化焦点 fallback 后重新构建 UI、生成声明并执行 verify:ssr-dist，均通过，再以新产物通过上述 consumer 测试。复用本机 pnpm store，不声称隔离下载验证。
+- UI 类型检查、根工具类型检查、受影响源码和测试的 ESLint、Prettier、Git diff 空白检查通过。本次文件暂存后执行 `pnpm check:changesets` 通过，按项目 fixed 版本组识别 patch 发布意图。
+
+### 交付边界
+
+修复只在组件库工作区和新生产 tarball 验证。原 localhost:48273 业务仍消费已发布的 2.1.0，尚未发布新版本、升级业务依赖或回到该业务服务验证草稿离开等路径；不把库侧回归通过称为原业务整体验收通过。未执行实体屏幕阅读器或逐帧动效人工验收。工单及业务仓库未修改，旧原始问题记录保留；所有日志、截图和构建输出留在已忽略目录或本机临时路径。
