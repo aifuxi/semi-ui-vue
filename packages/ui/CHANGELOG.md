@@ -1,5 +1,18 @@
 # @aifuxi/semi-ui-vue
 
+## 2.1.1
+
+### Patch Changes
+
+- [#34](https://github.com/aifuxi/semi-ui-vue/pull/34) [`f35756b`](https://github.com/aifuxi/semi-ui-vue/commit/f35756b2cc75a72d87bf459f0bef85e23cde38e4) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Table 使用 CSS 字符串列宽时正文固定列偏移归零、与表头错位的问题；主题变量或容器尺寸变化后重新测量字符串列宽，保持左右固定列对齐。
+
+- [#34](https://github.com/aifuxi/semi-ui-vue/pull/34) [`d793c0f`](https://github.com/aifuxi/semi-ui-vue/commit/d793c0fbb09c415124b03a0ca82bad0f3b0d29e1) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Modal 自定义 header 丢失 title 可访问名称的问题；嵌套或多个 Modal 的 Esc 仅作用于顶层，关闭后恢复有效入口或外层焦点，并保留顶层关闭保护及退出动效。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.1.1
+  - @aifuxi/semi-icons-lab-vue@2.1.1
+  - @aifuxi/semi-illustrations-vue@2.1.1
+  - @aifuxi/semi-theme-default@2.1.1
+
 ## 2.1.0
 
 ### Minor Changes
