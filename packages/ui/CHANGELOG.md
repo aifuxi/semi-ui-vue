@@ -1,5 +1,18 @@
 # @aifuxi/semi-ui-vue
 
+## 2.1.2
+
+### Patch Changes
+
+- [#36](https://github.com/aifuxi/semi-ui-vue/pull/36) [`2042af0`](https://github.com/aifuxi/semi-ui-vue/commit/2042af0570c51d3264e0af27ecfadeb1de44799b) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Popover 未透传 clickTriggerToHide 的问题，并修正 Tooltip 在同一次操作中先关闭后重开的事件顺序，确保再次点击或键盘激活触发器时可靠关闭。
+
+- [#36](https://github.com/aifuxi/semi-ui-vue/pull/36) [`9000212`](https://github.com/aifuxi/semi-ui-vue/commit/90002120b34caf4dc0e1d41bc06087e6642eadac) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 SideSheet 的公开 aria-label 在 Vue 属性名规范化后读取失败的问题，确保自定义标题插槽、动态名称和重开时 dialog 保留正确的可访问名称。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.1.2
+  - @aifuxi/semi-icons-lab-vue@2.1.2
+  - @aifuxi/semi-illustrations-vue@2.1.2
+  - @aifuxi/semi-theme-default@2.1.2
+
 ## 2.1.1
 
 ### Patch Changes
