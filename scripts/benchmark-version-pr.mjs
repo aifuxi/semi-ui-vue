@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { appendFile, readFile, rm, writeFile } from 'node:fs/promises';
+import { appendFile, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { publicPackages } from './public-packages.mjs';
 
 // 只用于 Actions 的可丢弃 checkout，不允许在开发者工作区中运行升版演练。
@@ -17,6 +17,8 @@ const originalConfig = await readFile('.changeset/config.json', 'utf8');
 const config = { ...JSON.parse(originalConfig), changelog: ['@changesets/cli/changelog', {}] };
 /** 非空 changeset 由官方 version 消费；基准演练不计算或手改包版本。 */
 const changeset = '.changeset/performance-benchmark.md';
+/** 记录实际安装规模，防止官方格式化子进程意外补装依赖而使轻量测量失真。 */
+const installedBefore = await readdir('node_modules/.pnpm');
 await writeFile(
   changeset,
   "---\n'@aifuxi/semi-ui-vue': patch\n---\n\n发布流程性能演练，不发布 npm。\n",
@@ -30,6 +32,7 @@ try {
   await writeFile('.changeset/config.json', originalConfig);
   await rm(changeset, { force: true });
 }
+assert.deepEqual(await readdir('node_modules/.pnpm'), installedBefore, '升版过程不应补装依赖');
 execFileSync('git', [
   'add',
   '--',

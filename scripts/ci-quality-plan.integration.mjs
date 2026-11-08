@@ -54,7 +54,7 @@ test('版本 PR 复用同时要求机器人身份、严格版本差异与匹配�
       );
       await writeFile(
         path.join(directory, 'packages', folder, 'CHANGELOG.md'),
-        `# ${name}\n\n## 2.1.2\n\nprevious\n`,
+        `# ${folder === 'theme-modern' ? 'Changelog' : name}\n\n## 2.1.2\n\nprevious\n`,
       );
     }
     git('init', '-b', 'master');
@@ -67,7 +67,7 @@ test('版本 PR 复用同时要求机器人身份、严格版本差异与匹配�
       );
       await writeFile(
         path.join(directory, 'packages', folder, 'CHANGELOG.md'),
-        `# ${name}\n\n## 2.1.3\n\nfix\n\n## 2.1.2\n\nprevious\n`,
+        `# ${folder === 'theme-modern' ? 'Changelog' : name}\n\n## 2.1.3\n\nfix\n\n## 2.1.2\n\nprevious\n`,
       );
     }
     await rm(path.join(directory, '.changeset/fix.md'));

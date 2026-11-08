@@ -81,10 +81,10 @@ export function isVersionOnlyDiff(base, head) {
     if (!isDeepStrictEqual(previousFields, nextFields)) return false;
     /** 官方 CHANGELOG 在固定包标题之后追加新版本，旧记录必须完整保留。 */
     const changelog = `packages/${directory}/CHANGELOG.md`;
-    /** 固定包标题用于校验追加位置，避免复用时悄悄删除历史记录。 */
-    const header = `# ${name}\n\n`;
     /** 历史正文去除固定标题后应作为新文件的完整后缀。 */
     const oldLog = git('show', `${base}:${changelog}`);
+    /** 保留仓库已有的两种官方标题；modern 主题使用通用 Changelog，禁止变更标题或历史。 */
+    const header = oldLog.startsWith(`# ${name}\n\n`) ? `# ${name}\n\n` : '# Changelog\n\n';
     /** 只允许当前新版本位于最前，不允许将任意 Markdown 修改视为版本 PR。 */
     const newLog = git('show', `${head}:${changelog}`);
     if (
@@ -209,14 +209,18 @@ if (process.argv[1] && path.basename(process.argv[1]) === 'ci-quality-plan.mjs')
     await recordSourceEvidence(process.argv[3]);
   } else {
     /** 复用必须同时满足身份、严格差异与成功检查三条条件。 */
-    const eligible =
-      isTrustedVersionPr(process.env) &&
-      isVersionOnlyDiff(process.env.BASE_SHA, process.env.HEAD_SHA);
+    const trusted = isTrustedVersionPr(process.env);
+    /** 分别记录门禁结果，避免排查时无法区分身份、差异与证据缺失。 */
+    const versionOnly = trusted && isVersionOnlyDiff(process.env.BASE_SHA, process.env.HEAD_SHA);
     /** 未满足条件时不查 API，也不跳过任何既有质量检查。 */
-    const runId = eligible
+    const runId = versionOnly
       ? await findSourceEvidence(process.env.BASE_SHA, process.env.GITHUB_REPOSITORY)
       : undefined;
-    console.log(runId ? `复用全量质量证据：run ${runId}` : '执行完整源码和产物检查');
+    console.log(
+      runId
+        ? `复用全量质量证据：run ${runId}`
+        : `执行完整源码和产物检查（身份=${trusted}，纯升版=${versionOnly}，成功证据=false）`,
+    );
     if (process.env.GITHUB_OUTPUT) {
       await appendFile(
         process.env.GITHUB_OUTPUT,

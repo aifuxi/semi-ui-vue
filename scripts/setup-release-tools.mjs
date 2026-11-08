@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { lstat, mkdir, readFile, realpath, symlink } from 'node:fs/promises';
+import { appendFile, lstat, mkdir, readFile, realpath, symlink } from 'node:fs/promises';
 import path from 'node:path';
 
 /** 将按统一 lockfile 安装的发布工具暴露在仓库根目录，供官方 Action 按 cwd 解析。 */
@@ -47,4 +47,9 @@ async function link(destination, target) {
 
 if (process.argv[1] && path.basename(process.argv[1]) === 'setup-release-tools.mjs') {
   await setupReleaseTools();
+  // 已显式 frozen 安装并校验工具版本；防止 pnpm run/exec 因刻意省略开发依赖而自动补装全仓。
+  // 仅影响此 Actions job 的后续步骤，不改开发者配置、lockfile 或正式安装校验。
+  if (process.env.GITHUB_ENV) {
+    await appendFile(process.env.GITHUB_ENV, 'pnpm_config_verify_deps_before_run=false\n');
+  }
 }

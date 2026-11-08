@@ -33,6 +33,8 @@ quality 传递构建产物，官方 pack 创建 artifact；pack-verify 下载该
 - pnpm store 只缓存内容寻址依赖，仍执行 frozen-lockfile 安装和既有供应链策略；不缓存 node_modules 或构建产物。`tools/release` 是私有工具工作区，Changesets CLI、GitHub CHANGELOG 插件、semver 和 Prettier 四个依赖版本与根清单一致，保留官方升版的自动格式化。select-mode、version、publish、postcheck 以 `--filter @workspace/release-tools install --prod` 排除根开发依赖，再暴露官方 CLI 的根解析入口；quality 和 pack-verify 保留完整安装。
 - 恢复历史候选时，发布与后验保留原完整安装路径，避免旧候选缺少新增工具；原候选、master 祖先、`packages/` 不变、原 tarball 和 integrity 等恢复约束继续生效。
 
+轻量工具安装成功并核对版本后，仅在当前 Actions job 的后续命令中设置 `pnpm_config_verify_deps_before_run=false`。pnpm 12 默认会在 run/exec 前自动补装省略的开发依赖；这里禁止隐式补装，仍保留前一步 frozen-lockfile 安装及格式化。开发者环境与完整安装门禁不改变。版本基准同时断言官方升版前后安装规模不增长。
+
 ### 实际耗时对照
 
 `release-benchmark.yml` 在修改该基准的 PR 上运行，也可手动触发。它在独立 runner 上对比同一 checkout 的普通 PR 检查、官方 CLI 生成的纯版本变更和轻量发布工具安装。两个源码方案使用相同验证器；版本快路径必须找到实际成功 CI 证据，否则基准失败。
