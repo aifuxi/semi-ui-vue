@@ -1,17 +1,17 @@
-import type { DefineComponent } from 'vue';
-
 import TabItemBase from './TabItem.vue';
 import TabPaneBase from './TabPane.vue';
 import TabsBase from './Tabs.vue';
-import type { TabItemProps, TabPaneProps, TabsProps } from './types';
 
-export type TabsCompoundComponent = DefineComponent<TabsProps> & {
-  TabPane: DefineComponent<TabPaneProps>;
-  TabItem: DefineComponent<TabItemProps>;
+/** 保留 TabsCompoundComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type TabsCompoundComponent = typeof TabsBase & {
+  TabPane: typeof TabPaneBase;
+  TabItem: typeof TabItemBase;
 };
 
-export const TabPane = TabPaneBase as unknown as DefineComponent<TabPaneProps>;
-export const TabItem = TabItemBase as unknown as DefineComponent<TabItemProps>;
+/** 保留 TabPane 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const TabPane: typeof TabPaneBase = TabPaneBase;
+/** 保留 TabItem 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const TabItem: typeof TabItemBase = TabItemBase;
 export const Tabs = Object.assign(TabsBase, {
   TabPane,
   TabItem,

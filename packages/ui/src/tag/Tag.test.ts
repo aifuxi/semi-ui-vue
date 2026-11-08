@@ -10,6 +10,7 @@ import DefaultTag, {
   TAG_TYPES,
   Tag,
   TagGroup,
+  type TagEmits,
 } from './index';
 import SplitTagGroupBase from './SplitTagGroup';
 import TagBase from './Tag.vue';
@@ -79,7 +80,8 @@ describe('Tag', () => {
 
   it('按顺序处理关闭、preventDefault、点击与键盘', async () => {
     const order: string[] = [];
-    const onClose = vi.fn((_content, event: MouseEvent) => {
+    // 关闭回调也支持键盘事件，沿用组件公开签名而不是收窄成 MouseEvent。
+    const onClose = vi.fn<(...args: TagEmits['close']) => void>((_content, event) => {
       order.push('close');
       event.preventDefault();
     });

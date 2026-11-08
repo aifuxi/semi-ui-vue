@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { createSSRApp, defineComponent, h, nextTick, shallowRef } from 'vue';
+import { createSSRApp, defineComponent, h, isVNode, nextTick, shallowRef } from 'vue';
 import { renderToString } from '@vue/server-renderer';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -142,10 +142,15 @@ describe('Pagination', () => {
       onChange: (page: number, size: number) => order.push(`change:${page}:${size}`),
     });
     const select = wrapper.getComponent(Select);
-    const optionFragment = select.vm.$slots.default?.()[0];
-    const optionNodes = Array.isArray(optionFragment?.children) ? optionFragment.children : [];
+    // 公开 slot 可以返回单个 VNodeChild 或数组；仅展开实际的 Fragment 子节点。
+    const defaultChildren = select.vm.$slots.default?.();
+    const optionFragment = Array.isArray(defaultChildren) ? defaultChildren[0] : defaultChildren;
+    const optionNodes =
+      isVNode(optionFragment) && Array.isArray(optionFragment.children)
+        ? optionFragment.children
+        : [];
     expect(
-      optionNodes.map((option) => (option as { props?: { value?: number } }).props?.value),
+      optionNodes.map((option) => (isVNode(option) ? option.props?.value : undefined)),
     ).toEqual([10, 20, 30, 40]);
     select.vm.$emit('change', 40);
     await nextTick();

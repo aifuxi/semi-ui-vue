@@ -91,7 +91,8 @@ const events = computed<CalendarEvent[]>(() => {
     },
   ];
 });
-function changeDate(value: DatePickerValue) {
+/** 清空日期时保留当前日历视图，只接收实际 Date 值。 */
+function changeDate(value: DatePickerValue | undefined) {
   if (value instanceof Date) displayValue.value = value;
 }
 </script>

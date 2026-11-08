@@ -8,15 +8,10 @@ import AIChatInputConfigureMcpBase from './AIChatInputConfigureMcp.vue';
 import AIChatInputConfigureRadioButtonBase from './AIChatInputConfigureRadioButton.vue';
 import AIChatInputConfigureSelectBase from './AIChatInputConfigureSelect.vue';
 import { getConfigureItem as getConfigureItemBase } from './get-configure-item';
-import type {
-  AIChatInputConfigureProps,
-  AIChatInputConfigureItemProps,
-  AIChatInputExposed,
-  AIChatInputGetConfigureItemOptions,
-  AIChatInputProps,
-} from './types';
+import type { AIChatInputConfigureItemProps, AIChatInputGetConfigureItemOptions } from './types';
 
-export type AIChatInputConfigureComponent = DefineComponent<AIChatInputConfigureProps> & {
+/** 保留 AIChatInputConfigureComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type AIChatInputConfigureComponent = typeof AIChatInputConfigureBase & {
   Item: AIChatInputConfigureItemComponent;
   Button: typeof AIChatInputConfigureButtonBase;
   Mcp: typeof AIChatInputConfigureMcpBase;
@@ -54,7 +49,8 @@ export const AIChatInputConfigure = Object.assign(AIChatInputConfigureBase, {
   Select: AIChatInputConfigureSelectBase,
 }) as unknown as AIChatInputConfigureComponent;
 
-export type AIChatInputComponent = DefineComponent<AIChatInputProps, AIChatInputExposed> & {
+/** 保留 AIChatInputComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type AIChatInputComponent = typeof AIChatInputBase & {
   Configure: AIChatInputConfigureComponent;
   getCustomSlotAttribute(): Record<string, unknown>;
 };

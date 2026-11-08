@@ -1,9 +1,7 @@
-import type { DefineComponent } from 'vue';
-
 import CalendarComponent from './Calendar.vue';
-import type { CalendarProps } from './types';
 
-export const Calendar = CalendarComponent as unknown as DefineComponent<CalendarProps>;
+/** 保留 Calendar 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const Calendar: typeof CalendarComponent = CalendarComponent;
 
 export { CALENDAR_MODES } from './types';
 export type {

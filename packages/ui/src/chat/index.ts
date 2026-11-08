@@ -1,9 +1,7 @@
-import type { DefineComponent } from 'vue';
-
 import ChatBase from './Chat.vue';
-import type { ChatProps } from './types';
 
-export const Chat = ChatBase as unknown as DefineComponent<ChatProps>;
+/** 保留 Chat 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const Chat: typeof ChatBase = ChatBase;
 export { CHAT_ALIGNS, CHAT_MESSAGE_STATUSES, CHAT_MODES, CHAT_SEND_HOT_KEYS } from './types';
 export type {
   ChatAlign,

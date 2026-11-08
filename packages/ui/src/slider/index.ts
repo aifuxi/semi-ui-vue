@@ -1,9 +1,7 @@
-import type { DefineComponent } from 'vue';
-
 import SliderBase from './Slider.vue';
-import type { SliderProps } from './types';
 
-export const Slider = SliderBase as unknown as DefineComponent<SliderProps>;
+/** 保留 Slider 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const Slider: typeof SliderBase = SliderBase;
 
 export type {
   SliderEmits,

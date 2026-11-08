@@ -1,14 +1,13 @@
-import type { DefineComponent } from 'vue';
-
 import CollapseBase from './Collapse.vue';
 import CollapsePanelBase from './CollapsePanel.vue';
-import type { CollapsePanelProps, CollapseProps } from './types';
 
-export type CollapseCompoundComponent = DefineComponent<CollapseProps> & {
-  Panel: DefineComponent<CollapsePanelProps>;
+/** 保留 CollapseCompoundComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type CollapseCompoundComponent = typeof CollapseBase & {
+  Panel: typeof CollapsePanelBase;
 };
 
-export const CollapsePanel = CollapsePanelBase as unknown as DefineComponent<CollapsePanelProps>;
+/** 保留 CollapsePanel 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const CollapsePanel: typeof CollapsePanelBase = CollapsePanelBase;
 export const Collapse = Object.assign(CollapseBase, {
   Panel: CollapsePanel,
 }) as unknown as CollapseCompoundComponent;

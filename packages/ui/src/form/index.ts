@@ -1,4 +1,4 @@
-import type { Component, DefineComponent } from 'vue';
+import type { Component } from 'vue';
 
 import { AutoComplete, AutoCompleteOption } from '../auto-complete';
 import { Cascader } from '../cascader';
@@ -25,18 +25,15 @@ import FormLabel from './FormLabel.vue';
 import FormSection from './FormSection.vue';
 import FormSlot from './FormSlot';
 import type {
-  ArrayFieldProps,
   FormAutoCompleteProps,
   FormCascaderProps,
   FormCheckboxGroupProps,
   FormCheckboxProps,
   FormDatePickerProps,
   FormFieldComponent,
-  FormInputGroupProps,
   FormInputNumberProps,
   FormInputProps,
   FormPinCodeProps,
-  FormProps,
   FormRadioGroupProps,
   FormRadioProps,
   FormRatingProps,
@@ -103,9 +100,13 @@ export const FormUpload = createFormField<FormUploadProps>(Upload, {
 export const FormTagInput = createFormField<FormTagInputProps>(TagInput);
 export const FormPinCode = createFormField<FormPinCodeProps>(PinCode);
 
-export const ArrayField = ArrayFieldBase as unknown as DefineComponent<ArrayFieldProps>;
+/** 保留 ArrayField 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const ArrayField: typeof ArrayFieldBase = ArrayFieldBase;
 
-export interface FormCompoundComponent extends DefineComponent<FormProps> {
+/** 主表单保留 SFC 的事件与实例类型，不重新展开 Vue 内部泛型。 */
+type FormComponentBase = typeof FormBase;
+/** 保留可扩展的公开 interface，字段成员沿用各自的包装契约。 */
+export interface FormCompoundComponent extends FormComponentBase {
   AutoComplete: typeof FormAutoComplete;
   Cascader: typeof FormCascader;
   Checkbox: typeof FormCheckbox;
@@ -113,7 +114,7 @@ export interface FormCompoundComponent extends DefineComponent<FormProps> {
   DatePicker: typeof FormDatePicker;
   ErrorMessage: typeof FormErrorMessage;
   Input: typeof FormInput;
-  InputGroup: DefineComponent<FormInputGroupProps>;
+  InputGroup: typeof FormInputGroup;
   InputNumber: typeof FormInputNumber;
   Label: typeof FormLabel;
   PinCode: typeof FormPinCode;

@@ -1,9 +1,7 @@
-import type { DefineComponent } from 'vue';
-
 import CarouselBase from './Carousel.vue';
-import type { CarouselProps } from './types';
 
-export const Carousel = CarouselBase as unknown as DefineComponent<CarouselProps>;
+/** 保留 Carousel 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const Carousel: typeof CarouselBase = CarouselBase;
 
 export {
   CAROUSEL_ANIMATIONS,

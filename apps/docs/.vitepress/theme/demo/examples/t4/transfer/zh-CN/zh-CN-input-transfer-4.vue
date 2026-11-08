@@ -67,8 +67,20 @@ const data: Contact[] = [
   },
 ];
 
+/** 插槽控制参数只保证公共字段；按 key 读取本例原始联系人，保留自定义字段的准确类型。 */
+function getContact(item: TransferDataItem): Contact {
+  // data 是本例唯一数据源，插槽和过滤器中的 key 必须能回到原始联系人。
+  const contact = data.find(
+    // Transfer 拷贝条目时保留公开 key。
+    (entry) => entry.key === item.key,
+  );
+  if (!contact) throw new Error('Transfer 示例中找不到对应联系人');
+  return contact;
+}
+
+/** 用原始联系人字段匹配姓名或邮箱。 */
 function customFilter(input: string, item: TransferDataItem): boolean {
-  const contact = item as Contact;
+  const contact = getContact(item);
   return contact.value.includes(input) || contact.label.includes(input);
 }
 
@@ -94,15 +106,13 @@ function handleChange(values: TransferPrimitive[], items: TransferDataItem[]): v
           style="height: 52px; align-items: center"
           @change="item.onChange()"
         >
-          <Avatar :color="(item as Contact).color" size="small">{{
-            (item as Contact).abbr
-          }}</Avatar>
+          <Avatar :color="getContact(item).color" size="small">{{ getContact(item).abbr }}</Avatar>
           <div class="info">
             <div class="name">
-              <Highlight :source-string="(item as Contact).label" :search-words="[searchText]" />
+              <Highlight :source-string="getContact(item).label" :search-words="[searchText]" />
             </div>
             <div class="email">
-              <Highlight :source-string="(item as Contact).value" :search-words="[searchText]" />
+              <Highlight :source-string="getContact(item).value" :search-words="[searchText]" />
             </div>
           </div>
         </Checkbox>
@@ -110,7 +120,7 @@ function handleChange(values: TransferPrimitive[], items: TransferDataItem[]): v
     </template>
     <template #selectedItem="item">
       <div class="components-transfer-demo-selected-item">
-        <Avatar :color="(item as Contact).color" size="small">{{ (item as Contact).abbr }}</Avatar>
+        <Avatar :color="getContact(item).color" size="small">{{ getContact(item).abbr }}</Avatar>
         <div class="info">
           <div class="name">{{ item.label }}</div>
           <div class="email">{{ item.value }}</div>

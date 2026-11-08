@@ -1,32 +1,27 @@
-import type { DefineComponent } from 'vue';
-
 import DropdownBase from './Dropdown.vue';
 import DropdownDividerBase from './DropdownDivider.vue';
 import DropdownItemBase from './DropdownItem.vue';
 import DropdownMenuBase from './DropdownMenu.vue';
 import DropdownTitleBase from './DropdownTitle.vue';
-import type {
-  DropdownDividerProps,
-  DropdownExposed,
-  DropdownItemProps,
-  DropdownMenuProps,
-  DropdownProps,
-  DropdownTitleProps,
-} from './types';
 
-export type DropdownComponent = DefineComponent<DropdownProps, DropdownExposed>;
+/** 保留 DropdownComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type DropdownComponent = typeof DropdownBase;
+/** 保留 DropdownCompoundComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
 export type DropdownCompoundComponent = DropdownComponent & {
-  Divider: DefineComponent<DropdownDividerProps>;
-  Item: DefineComponent<DropdownItemProps>;
-  Menu: DefineComponent<DropdownMenuProps>;
-  Title: DefineComponent<DropdownTitleProps>;
+  Divider: typeof DropdownDividerBase;
+  Item: typeof DropdownItemBase;
+  Menu: typeof DropdownMenuBase;
+  Title: typeof DropdownTitleBase;
 };
 
-export const DropdownDivider =
-  DropdownDividerBase as unknown as DefineComponent<DropdownDividerProps>;
-export const DropdownItem = DropdownItemBase as unknown as DefineComponent<DropdownItemProps>;
-export const DropdownMenu = DropdownMenuBase as unknown as DefineComponent<DropdownMenuProps>;
-export const DropdownTitle = DropdownTitleBase as unknown as DefineComponent<DropdownTitleProps>;
+/** 保留 DropdownDivider 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const DropdownDivider: typeof DropdownDividerBase = DropdownDividerBase;
+/** 保留 DropdownItem 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const DropdownItem: typeof DropdownItemBase = DropdownItemBase;
+/** 保留 DropdownMenu 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const DropdownMenu: typeof DropdownMenuBase = DropdownMenuBase;
+/** 保留 DropdownTitle 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const DropdownTitle: typeof DropdownTitleBase = DropdownTitleBase;
 export const Dropdown = Object.assign(DropdownBase, {
   Divider: DropdownDivider,
   Item: DropdownItem,

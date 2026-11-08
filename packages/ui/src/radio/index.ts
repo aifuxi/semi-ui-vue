@@ -1,14 +1,13 @@
-import type { DefineComponent } from 'vue';
-
 import RadioBase from './Radio.vue';
 import RadioGroupBase from './RadioGroup';
-import type { RadioGroupProps, RadioProps } from './types';
 
-export type RadioCompoundComponent = DefineComponent<RadioProps> & {
-  Group: DefineComponent<RadioGroupProps>;
+/** 保留 RadioCompoundComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type RadioCompoundComponent = typeof RadioBase & {
+  Group: typeof RadioGroupBase;
 };
 
-export const RadioGroup = RadioGroupBase as unknown as DefineComponent<RadioGroupProps>;
+/** 保留 RadioGroup 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const RadioGroup: typeof RadioGroupBase = RadioGroupBase;
 export const Radio = Object.assign(RadioBase, {
   Group: RadioGroup,
 }) as unknown as RadioCompoundComponent;

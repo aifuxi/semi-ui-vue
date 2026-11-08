@@ -1,9 +1,7 @@
-import type { DefineComponent } from 'vue';
-
 import TagInputBase from './TagInput.vue';
-import type { TagInputProps } from './types';
 
-export const TagInput = TagInputBase as unknown as DefineComponent<TagInputProps>;
+/** 保留 TagInput 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const TagInput: typeof TagInputBase = TagInputBase;
 
 export type {
   TagInputEmits,

@@ -1,14 +1,13 @@
-import type { DefineComponent } from 'vue';
-
 import CheckboxBase from './Checkbox.vue';
 import CheckboxGroupBase from './CheckboxGroup';
-import type { CheckboxGroupProps, CheckboxProps } from './types';
 
-export type CheckboxCompoundComponent = DefineComponent<CheckboxProps> & {
-  Group: DefineComponent<CheckboxGroupProps>;
+/** 保留 CheckboxCompoundComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type CheckboxCompoundComponent = typeof CheckboxBase & {
+  Group: typeof CheckboxGroupBase;
 };
 
-export const CheckboxGroup = CheckboxGroupBase as unknown as DefineComponent<CheckboxGroupProps>;
+/** 保留 CheckboxGroup 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const CheckboxGroup: typeof CheckboxGroupBase = CheckboxGroupBase;
 export const Checkbox = Object.assign(CheckboxBase, {
   Group: CheckboxGroup,
 }) as unknown as CheckboxCompoundComponent;

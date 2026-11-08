@@ -1,5 +1,3 @@
-import type { DefineComponent } from 'vue';
-
 import TreeSelectBase from './TreeSelect.vue';
 import type {
   TreeSelectEmits,
@@ -14,7 +12,8 @@ import type {
   TreeSelectValidateStatus,
 } from './types';
 
-export const TreeSelect = TreeSelectBase as unknown as DefineComponent<TreeSelectProps>;
+/** 保留 TreeSelect 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const TreeSelect: typeof TreeSelectBase = TreeSelectBase;
 export default TreeSelect;
 export type {
   TreeSelectEmits,

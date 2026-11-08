@@ -1,11 +1,9 @@
-import type { DefineComponent } from 'vue';
-
 import AutoComplete from './AutoComplete.vue';
 import AutoCompleteOption from './AutoCompleteOption.vue';
-import type { AutoCompleteOptionProps, AutoCompleteProps } from './types';
 
-export type AutoCompleteCompoundComponent = DefineComponent<AutoCompleteProps> & {
-  Option: DefineComponent<AutoCompleteOptionProps>;
+/** 保留 AutoCompleteCompoundComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type AutoCompleteCompoundComponent = typeof AutoComplete & {
+  Option: typeof AutoCompleteOption;
 };
 
 const AutoCompleteWithOption = Object.assign(AutoComplete, {

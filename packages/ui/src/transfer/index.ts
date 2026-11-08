@@ -1,9 +1,7 @@
-import type { DefineComponent } from 'vue';
-
 import TransferBase from './Transfer.vue';
-import type { TransferProps } from './types';
 
-export const Transfer = TransferBase as unknown as DefineComponent<TransferProps>;
+/** 保留 Transfer 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const Transfer: typeof TransferBase = TransferBase;
 
 export type {
   TransferDataItem,

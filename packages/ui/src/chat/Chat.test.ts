@@ -67,8 +67,9 @@ describe('Chat', () => {
     const wrapper = mount(Chat, {
       props: { chats: source, enableUpload: false },
       slots: {
+        // slot 契约允许省略 defaultNodes；下方内容和按钮断言仍要求本场景实际提供节点。
         'chat-box': ({ defaultNodes }) =>
-          h('div', { class: 'custom-box' }, [defaultNodes.content, defaultNodes.action]),
+          h('div', { class: 'custom-box' }, [defaultNodes?.content, defaultNodes?.action]),
       },
     });
     expect(wrapper.find('.custom-box').text()).toContain('Answer');

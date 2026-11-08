@@ -1,9 +1,7 @@
-import type { DefineComponent } from 'vue';
-
 import SwitchBase from './Switch.vue';
-import type { SwitchProps } from './types';
 
-export type SwitchComponent = DefineComponent<SwitchProps>;
+/** 保留 SwitchComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export type SwitchComponent = typeof SwitchBase;
 
 export const Switch = SwitchBase as unknown as SwitchComponent;
 

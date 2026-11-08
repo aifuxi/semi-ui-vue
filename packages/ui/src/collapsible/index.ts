@@ -1,9 +1,7 @@
-import type { DefineComponent } from 'vue';
-
 import CollapsibleBase from './Collapsible.vue';
-import type { CollapsibleProps } from './types';
 
-export const Collapsible = CollapsibleBase as unknown as DefineComponent<CollapsibleProps>;
+/** 保留 Collapsible 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const Collapsible: typeof CollapsibleBase = CollapsibleBase;
 
 export type {
   CollapsibleEmits,

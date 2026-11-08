@@ -9,23 +9,34 @@ import type {
   VNodeChild,
 } from 'vue';
 
-import type { AutoCompleteProps } from '../auto-complete';
-import type { CascaderProps } from '../cascader';
-import type { CheckboxGroupProps, CheckboxProps } from '../checkbox';
-import type { DatePickerProps } from '../date-picker';
+import type { AutoCompleteEmits, AutoCompleteProps } from '../auto-complete';
+import type { CascaderEmits, CascaderProps } from '../cascader';
+import type {
+  CheckboxGroupEmits,
+  CheckboxGroupProps,
+  CheckboxEmits,
+  CheckboxProps,
+} from '../checkbox';
+import type { DatePickerEmits, DatePickerProps } from '../date-picker';
 import type { ColProps } from '../grid';
-import type { InputGroupProps, InputProps, TextAreaProps } from '../input';
-import type { InputNumberProps } from '../input-number';
-import type { PinCodeProps } from '../pin-code';
-import type { RadioGroupProps, RadioProps } from '../radio';
-import type { RatingProps } from '../rating';
-import type { SelectProps } from '../select';
-import type { SliderProps } from '../slider';
-import type { SwitchProps } from '../switch';
-import type { TagInputProps } from '../tag-input';
-import type { TimePickerProps } from '../time-picker';
-import type { TreeSelectProps } from '../tree-select';
-import type { UploadProps } from '../upload';
+import type {
+  InputGroupProps,
+  InputEmits,
+  InputProps,
+  TextAreaEmits,
+  TextAreaProps,
+} from '../input';
+import type { InputNumberEmits, InputNumberProps } from '../input-number';
+import type { PinCodeEmits, PinCodeProps } from '../pin-code';
+import type { RadioGroupEmits, RadioGroupProps, RadioEmits, RadioProps } from '../radio';
+import type { RatingEmits, RatingProps } from '../rating';
+import type { SelectEmits, SelectProps } from '../select';
+import type { SliderEmits, SliderProps } from '../slider';
+import type { SwitchEmits, SwitchProps } from '../switch';
+import type { TagInputEmits, TagInputProps } from '../tag-input';
+import type { TimePickerEmits, TimePickerProps } from '../time-picker';
+import type { TreeSelectEmits, TreeSelectProps } from '../tree-select';
+import type { UploadEmits, UploadProps } from '../upload';
 
 export type FormLayout = 'vertical' | 'horizontal';
 export type FormLabelPosition = 'top' | 'left' | 'inset';
@@ -244,6 +255,24 @@ export type FieldValidator = (
   values: Record<string, unknown>,
 ) => string | undefined | Promise<string | undefined>;
 
+/** 将底层控件事件映射为字段监听器；change 会额外收到当前表单值。 */
+type FormFieldListeners<Emits, OptionalValues extends boolean = false> = {
+  [
+    EventName in keyof Emits & string as `on${Capitalize<EventName>}`
+  ]?: Emits[EventName] extends unknown[]
+    ? (
+        ...args: EventName extends 'change'
+          ? [
+              ...Emits[EventName],
+              ...(OptionalValues extends true
+                ? [values?: Record<string, unknown>]
+                : [values: Record<string, unknown>]),
+            ]
+          : Emits[EventName]
+      ) => void
+    : never;
+};
+
 type StandardFieldProps<Props> = Omit<Props, 'defaultValue' | 'modelValue' | 'value'> &
   CommonFieldProps;
 type CheckedFieldProps<Props> = Omit<Props, 'checked' | 'defaultChecked' | 'modelValue'> &
@@ -252,25 +281,37 @@ type UploadFieldProps<Props> = Omit<Props, 'defaultFileList' | 'fileList' | 'mod
   CommonFieldProps;
 type OptionalField<Props> = Omit<Props, 'field'> & { field?: string };
 
-export type FormInputProps = StandardFieldProps<InputProps>;
-export type FormTextAreaProps = StandardFieldProps<TextAreaProps>;
-export type FormInputNumberProps = StandardFieldProps<InputNumberProps>;
-export type FormSelectProps = StandardFieldProps<SelectProps>;
-export type FormCheckboxProps = OptionalField<CheckedFieldProps<CheckboxProps>>;
-export type FormCheckboxGroupProps = StandardFieldProps<CheckboxGroupProps>;
-export type FormRadioProps = OptionalField<CheckedFieldProps<RadioProps>>;
-export type FormRadioGroupProps = StandardFieldProps<RadioGroupProps>;
-export type FormDatePickerProps = StandardFieldProps<DatePickerProps>;
-export type FormSwitchProps = CheckedFieldProps<SwitchProps>;
-export type FormSliderProps = StandardFieldProps<SliderProps>;
-export type FormTimePickerProps = StandardFieldProps<TimePickerProps>;
-export type FormTreeSelectProps = StandardFieldProps<TreeSelectProps>;
-export type FormCascaderProps = StandardFieldProps<CascaderProps>;
-export type FormRatingProps = StandardFieldProps<RatingProps>;
-export type FormAutoCompleteProps = StandardFieldProps<AutoCompleteProps>;
-export type FormUploadProps = UploadFieldProps<UploadProps>;
-export type FormTagInputProps = StandardFieldProps<TagInputProps>;
-export type FormPinCodeProps = StandardFieldProps<PinCodeProps>;
+export type FormInputProps = StandardFieldProps<InputProps> & FormFieldListeners<InputEmits>;
+export type FormTextAreaProps = StandardFieldProps<TextAreaProps> &
+  FormFieldListeners<TextAreaEmits>;
+export type FormInputNumberProps = StandardFieldProps<InputNumberProps> &
+  FormFieldListeners<InputNumberEmits>;
+export type FormSelectProps = StandardFieldProps<SelectProps> & FormFieldListeners<SelectEmits>;
+export type FormCheckboxProps = OptionalField<CheckedFieldProps<CheckboxProps>> &
+  FormFieldListeners<CheckboxEmits, true>;
+export type FormCheckboxGroupProps = StandardFieldProps<CheckboxGroupProps> &
+  FormFieldListeners<CheckboxGroupEmits>;
+export type FormRadioProps = OptionalField<CheckedFieldProps<RadioProps>> &
+  FormFieldListeners<RadioEmits, true>;
+export type FormRadioGroupProps = StandardFieldProps<RadioGroupProps> &
+  FormFieldListeners<RadioGroupEmits>;
+export type FormDatePickerProps = StandardFieldProps<DatePickerProps> &
+  FormFieldListeners<DatePickerEmits>;
+export type FormSwitchProps = CheckedFieldProps<SwitchProps> & FormFieldListeners<SwitchEmits>;
+export type FormSliderProps = StandardFieldProps<SliderProps> & FormFieldListeners<SliderEmits>;
+export type FormTimePickerProps = StandardFieldProps<TimePickerProps> &
+  FormFieldListeners<TimePickerEmits>;
+export type FormTreeSelectProps = StandardFieldProps<TreeSelectProps> &
+  FormFieldListeners<TreeSelectEmits>;
+export type FormCascaderProps = StandardFieldProps<CascaderProps> &
+  FormFieldListeners<CascaderEmits>;
+export type FormRatingProps = StandardFieldProps<RatingProps> & FormFieldListeners<RatingEmits>;
+export type FormAutoCompleteProps = StandardFieldProps<AutoCompleteProps> &
+  FormFieldListeners<AutoCompleteEmits>;
+export type FormUploadProps = UploadFieldProps<UploadProps> & FormFieldListeners<UploadEmits>;
+export type FormTagInputProps = StandardFieldProps<TagInputProps> &
+  FormFieldListeners<TagInputEmits>;
+export type FormPinCodeProps = StandardFieldProps<PinCodeProps> & FormFieldListeners<PinCodeEmits>;
 
 export interface FormSectionProps {
   className?: HTMLAttributes['class'];

@@ -1,14 +1,13 @@
-import type { DefineComponent } from 'vue';
-
 import ListBase from './List.vue';
 import ListItemBase from './ListItem.vue';
-import type { ListItemProps } from './types';
 
+/** 保留 ListCompoundComponent 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
 export type ListCompoundComponent = typeof ListBase & {
-  Item: DefineComponent<ListItemProps>;
+  Item: typeof ListItemBase;
 };
 
-export const ListItem = ListItemBase as unknown as DefineComponent<ListItemProps>;
+/** 保留 ListItem 的原始组件类型，使事件、插槽与实例方法随公开导出同步。 */
+export const ListItem: typeof ListItemBase = ListItemBase;
 export const List = Object.assign(ListBase, { Item: ListItem }) as ListCompoundComponent;
 export default List;
 
