@@ -8,7 +8,7 @@ export async function setupReleaseTools(root = process.cwd()) {
   root = await realpath(root);
   /** 根清单仍是工具版本的权威入口，不允许轻量安装悄悄使用另一套版本。 */
   const manifest = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'));
-  /** 私有工作区只声明发布脚本和官方 Changesets Action 所需的三个依赖。 */
+  /** 私有工作区只声明发布脚本、官方 Action 与升版自动格式化所需的依赖。 */
   const tools = JSON.parse(await readFile(path.join(root, 'tools/release/package.json'), 'utf8'));
   for (const [name, version] of Object.entries(tools.dependencies)) {
     assert.equal(manifest.devDependencies[name], version, `${name}: 发布工具版本与根清单不一致`);
@@ -20,6 +20,11 @@ export async function setupReleaseTools(root = process.cwd()) {
   await link(
     path.join(root, 'node_modules/.bin/changeset'),
     path.join(root, 'node_modules/@changesets/cli/bin.js'),
+  );
+  // 官方 version 会按仓库的 Prettier 配置调用 pnpm exec prettier，必须保留该格式化步骤。
+  await link(
+    path.join(root, 'node_modules/.bin/prettier'),
+    path.join(root, 'node_modules/prettier/bin/prettier.cjs'),
   );
 }
 

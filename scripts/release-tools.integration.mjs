@@ -14,7 +14,7 @@ test('轻量发布工具从仓库根解析官方 CLI，并拒绝与根清单不�
   const root = await mkdtemp(path.join(tmpdir(), 'semi-release-tools-'));
   /** 读取项目已锁定的依赖，不在测试里安装另一套工具版本。 */
   const workspace = fileURLToPath(new URL('..', import.meta.url));
-  /** 子包的三个运行依赖必须与根 devDependencies 逐项一致。 */
+  /** 子包的四个运行依赖必须与根 devDependencies 逐项一致。 */
   const tools = JSON.parse(
     await readFile(path.join(workspace, 'tools/release/package.json'), 'utf8'),
   );
@@ -43,6 +43,12 @@ test('轻量发布工具从仓库根解析官方 CLI，并拒绝与根清单不�
       /3\.0\.2/,
     );
     assert.equal(require('semver').gt('2.1.3', '2.1.2'), true);
+    assert.match(
+      execFileSync(process.execPath, [path.join(root, 'node_modules/.bin/prettier'), '--version'], {
+        encoding: 'utf8',
+      }),
+      /3\.9\.6/,
+    );
     await writeFile(path.join(root, 'package.json'), JSON.stringify({ devDependencies: {} }));
     await assert.rejects(
       // 锁定版本漂移时不能用旧缓存继续执行。

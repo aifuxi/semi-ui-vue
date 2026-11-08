@@ -30,7 +30,7 @@ quality 传递构建产物，官方 pack 创建 artifact；pack-verify 下载该
 - 完整源码与产物检查成功后，CI 上传 `source-quality-evidence`，记录仓库、run、PR head、实际 checkout SHA 与整个 Git tree。只有完整路径生成证据，复用路径不生成新的全量通过记录。
 - 纯版本 PR 必须同时满足同仓库机器人身份、固定版本分支、六包统一向前升版、清单除 version 外完全相同、CHANGELOG 仅前置新版本且保留历史、仅删除已消费 changeset。源码、依赖、exports、lockfile、工具或工作流的改动均执行完整检查。
 - 复用还要求近期成功的本仓库 `ci.yml` 运行提供唯一且未过期的 receipt；run、PR head、受测提交 tree 均独立核对，且 tree 与版本 PR 的 base 完全相同。缺少匹配证据时执行完整检查。当前版本差异及原有 Changesets 意图校验始终执行，正式发布的候选、构建和 tarball 验证不因 PR 复用而省略。
-- pnpm store 只缓存内容寻址依赖，仍执行 frozen-lockfile 安装和既有供应链策略；不缓存 node_modules 或构建产物。`tools/release` 是私有工具工作区，三个依赖版本与根清单一致。select-mode、version、publish、postcheck 以 `--filter @workspace/release-tools install --prod` 排除根开发依赖，再暴露官方 CLI 的根解析入口；quality 和 pack-verify 保留完整安装。
+- pnpm store 只缓存内容寻址依赖，仍执行 frozen-lockfile 安装和既有供应链策略；不缓存 node_modules 或构建产物。`tools/release` 是私有工具工作区，Changesets CLI、GitHub CHANGELOG 插件、semver 和 Prettier 四个依赖版本与根清单一致，保留官方升版的自动格式化。select-mode、version、publish、postcheck 以 `--filter @workspace/release-tools install --prod` 排除根开发依赖，再暴露官方 CLI 的根解析入口；quality 和 pack-verify 保留完整安装。
 - 恢复历史候选时，发布与后验保留原完整安装路径，避免旧候选缺少新增工具；原候选、master 祖先、`packages/` 不变、原 tarball 和 integrity 等恢复约束继续生效。
 
 ### 实际耗时对照
