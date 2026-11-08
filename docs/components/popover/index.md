@@ -71,6 +71,7 @@ click/custom 使用 `dialog` 角色；hover/focus/contextMenu 使用 `tooltip` �
 | `returnFocusOnClose`   | `boolean`                                                    | `true`                | 关闭后恢复 trigger 焦点        |
 | `disableFocusListener` | `boolean`                                                    | `true`                | hover 模式不因 focus 打开      |
 | `clickToHide`          | `boolean`                                                    | `false`               | 点击面板内容关闭               |
+| `clickTriggerToHide`   | `boolean`                                                    | `false`               | 再次点击触发器关闭             |
 | `keepDOM`              | `boolean`                                                    | `false`               | 关闭后保留内容 DOM             |
 | `contentClassName`     | `ClassValue`                                                 | -                     | 内部 `.semi-popover` class     |
 | `class` / `style`      | Vue class / `StyleValue`                                     | -                     | 定位 wrapper class/style       |

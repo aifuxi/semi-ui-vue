@@ -71,6 +71,7 @@ The custom container must exist before the Popover is first shown and should use
 | `returnFocusOnClose`   | `boolean`                                                    | `true`                | Restore trigger focus                    |
 | `disableFocusListener` | `boolean`                                                    | `true`                | Ignore focus in hover mode               |
 | `clickToHide`          | `boolean`                                                    | `false`               | Close after clicking content             |
+| `clickTriggerToHide`   | `boolean`                                                    | `false`               | Close on repeat trigger click            |
 | `keepDOM`              | `boolean`                                                    | `false`               | Keep content DOM after close             |
 | `contentClassName`     | `ClassValue`                                                 | -                     | Class for the inner `.semi-popover` card |
 | `class` / `style`      | Vue class / `StyleValue`                                     | -                     | Positioning wrapper class/style          |

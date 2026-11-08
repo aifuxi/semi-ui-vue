@@ -45,11 +45,14 @@ function resolveProp<Key extends keyof PopoverProps>(
 }
 
 const showArrow = computed(() => resolveProp('showArrow', false));
+/** 将实例值、Popover 全局默认与固定默认合并后传给 Tooltip，避免可选 Boolean 在封装层丢失。 */
 const runtimeProps = computed(() => ({
   arrowBounding: resolveProp('arrowBounding', { ...popoverNumbers.ARROW_BOUNDING }),
   arrowPointAtCenter: resolveProp('arrowPointAtCenter', true),
   autoAdjustOverflow: resolveProp('autoAdjustOverflow', true),
   clickToHide: resolveProp('clickToHide', false),
+  // 默认仍不因重复点击触发器关闭；显式 true/false 优先于全局配置。
+  clickTriggerToHide: resolveProp('clickTriggerToHide', false),
   closeOnEsc: resolveProp('closeOnEsc', true),
   condition: resolveProp('condition', true),
   disableArrowKeyDown: resolveProp('disableArrowKeyDown', false),
@@ -108,6 +111,7 @@ defineExpose<PopoverExposed>({ focusTrigger });
     :auto-adjust-overflow="runtimeProps.autoAdjustOverflow"
     :class="popupClass"
     :click-to-hide="runtimeProps.clickToHide"
+    :click-trigger-to-hide="runtimeProps.clickTriggerToHide"
     :close-on-esc="runtimeProps.closeOnEsc"
     :condition="runtimeProps.condition"
     :disable-arrow-key-down="runtimeProps.disableArrowKeyDown"

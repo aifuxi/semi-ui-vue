@@ -296,24 +296,34 @@ export function useTooltipFoundation(options: TooltipFoundationOptions) {
     off: bus.off,
     on: bus.on,
     persistEvent: () => undefined,
+    // click 模式的触发器关闭交给自身 click，其他模式仍按原 mousedown 语义处理。
     registerClickOutsideHandler: (callback) => {
       adapter.unregisterClickOutsideHandler();
+      // 每次注册替换旧监听，闭包只引用当前实例的元素与选项。
       clickOutsideHandler = (event) => {
         if (!mounted) return;
+        /** 实际按下位置，用于判断是否属于触发器或 Portal。 */
         const target = event.target;
+        /** composedPath 保留 Shadow DOM 内的触发器归属。 */
         const path = event.composedPath?.() ?? (target ? [target] : []);
+        /** 当前触发器可能由插槽更新，不能缓存旧节点。 */
         const trigger = triggerElement.value;
+        /** 当前浮层节点，在默认或显式 Portal 容器内均按包含关系判断。 */
         const popup = portalElement.value;
+        /** 原生包含关系与跨 Shadow DOM 的路径共同确定触发器内部操作。 */
         const inTrigger = Boolean(
           (target instanceof Node && trigger?.contains(target)) ||
           (trigger && path.includes(trigger)),
         );
+        /** 浮层内部操作不应走外部点击关闭。 */
         const inPopup = Boolean(
           (target instanceof Node && popup?.contains(target)) || (popup && path.includes(popup)),
         );
         if (
           (!inTrigger && !inPopup) ||
-          (options.runtimeProps.value.clickTriggerToHide && inTrigger)
+          (options.runtimeProps.value.clickTriggerToHide &&
+            inTrigger &&
+            options.runtimeProps.value.trigger !== 'click')
         ) {
           options.onClickOutside(event);
           callback();
@@ -355,8 +365,26 @@ export function useTooltipFoundation(options: TooltipFoundationOptions) {
       };
       window.addEventListener('scroll', scrollHandler, true);
     },
+    // 包装 Foundation 的 click 打开行为，让同一次点击只负责打开或关闭之一。
     registerTriggerEvent: (events) => {
-      state.triggerEventSet = events as TooltipState['triggerEventSet'];
+      /** 固定 Foundation 产生的原始事件集，其他触发方式原样保留。 */
+      const eventSet = events as TooltipState['triggerEventSet'];
+      state.triggerEventSet = {
+        ...eventSet,
+        ...(options.runtimeProps.value.trigger === 'click'
+          ? {
+              // 同时支持鼠标点击与键盘生成的 click；避免 mousedown 关闭后又被 click 打开。
+              onClick: (...args: unknown[]) => {
+                if (options.runtimeProps.value.clickTriggerToHide && state.visible) {
+                  options.onClickOutside(args[0] as MouseEvent);
+                  foundation.hide();
+                  return;
+                }
+                eventSet.onClick?.(...args);
+              },
+            }
+          : {}),
+      };
     },
     removePortal: () => {
       state.isInsert = false;
@@ -493,9 +521,14 @@ export function useTooltipFoundation(options: TooltipFoundationOptions) {
   }
 
   watch(
+    // 受控父级通过公开 visible 回传状态。
     () => options.runtimeProps.value.visible,
+    // 仅在内部尚未处于相同方向的状态切换时驱动 Foundation。
     (visible, previous) => {
       if (!mounted || visible === previous) return;
+      // v-model 回传不应重复执行 hide/show；入场尚未变为 visible 时仍允许外部取消。
+      if (visible === state.visible && state.transitionState === (visible ? 'enter' : 'leave'))
+        return;
       if (
         options.runtimeProps.value.trigger === 'hover' ||
         options.runtimeProps.value.trigger === 'focus'

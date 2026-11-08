@@ -19,6 +19,7 @@ import { Dropdown } from '@aifuxi/semi-ui-vue/dropdown';
 import { semiGlobal } from '@aifuxi/semi-ui-vue/config-provider';
 import { createColorTheme, colorThemeToCss } from '@aifuxi/semi-theme-default/colors';
 import { SideSheet } from '@aifuxi/semi-ui-vue/side-sheet';
+import { Popover } from '@aifuxi/semi-ui-vue/popover';
 
 // 保留这些组件的真实包入口及其 CSS，用于验证不同共享样式依赖的组合。
 const styleCoverage = [Nav, Modal, Toast];
@@ -49,6 +50,41 @@ const modalOpenerVisible = ref(true);
 const sideSheetVisible = ref(true);
 /** 名称由公开 aria-label 和 title 插槽共享，模拟切换工作项。 */
 const sideSheetName = ref('工作项详情');
+
+/** 只在受控用例中作为 visible 输入，其他用例由组件持有状态。 */
+const popoverVisible = ref(false);
+/** 公开事件轨迹用于识别关闭后又重新发出 true 的回归。 */
+const popoverEvents = ref([]);
+
+/** 以原生按钮与公开属性复现重复点击，不添加业务 toggle 或关闭补丁。 */
+function renderPackedPopoverRepeat() {
+  /** omitted 与显式 false 分开验证，默认行为保持不变。 */
+  const hide = dropdownQuery.get('hide');
+  return h('main', { style: { padding: '32px' } }, [
+    h(
+      Popover,
+      {
+        trigger: 'click',
+        ...(hide === 'omitted' ? {} : { clickTriggerToHide: hide === 'true' }),
+        ...(dropdownQuery.has('controlled') ? { visible: popoverVisible.value } : {}),
+        // 默认保留真实动效，仅显式专项同时覆盖 motion=false。
+        ...(dropdownQuery.has('no-motion') ? { motion: false } : {}),
+        content: h('button', { type: 'button' }, '面板操作'),
+        // 只同步公开模型并记录事件，不从消费侧决定是否关闭。
+        'onUpdate:visible': (visible) => {
+          popoverVisible.value = visible;
+          popoverEvents.value.push(visible);
+        },
+      },
+      {
+        // 触发器本身没有 toggle 事件，状态变化必须来自组件库。
+        default: () => h('button', { type: 'button' }, '排序'),
+      },
+    ),
+    h('button', { type: 'button', style: { marginLeft: '240px' } }, '外部区域'),
+    h('output', { 'data-testid': 'popover-events' }, popoverEvents.value.join(',')),
+  ]);
+}
 
 /** 渲染真实安装包的侧边详情，仅通过公开属性与插槽驱动状态。 */
 function renderPackedSideSheet() {
@@ -966,11 +1002,18 @@ function renderPackedColorTheme() {
   ]);
 }
 
+/** 两个浮层专项复用真实包服务，其他组件消费页面保持原入口。 */
+const overlayRender = dropdownQuery.has('popover-repeat')
+  ? renderPackedPopoverRepeat
+  : dropdownQuery.has('side-sheet-a11y')
+    ? renderPackedSideSheet
+    : undefined;
+
 createApp({
   // 根消费示例保留原有组件交互，并加入直接调用的错误提示区域。
   render: () =>
-    dropdownQuery.has('side-sheet-a11y')
-      ? renderPackedSideSheet()
+    overlayRender
+      ? overlayRender()
       : tableFixedCase
         ? renderPackedTableFixedWidths()
         : modalA11yCase
