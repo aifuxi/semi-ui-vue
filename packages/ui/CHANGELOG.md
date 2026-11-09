@@ -1,5 +1,16 @@
 # @aifuxi/semi-ui-vue
 
+## 2.1.4
+
+### Patch Changes
+
+- [#43](https://github.com/aifuxi/semi-ui-vue/pull/43) [`c021374`](https://github.com/aifuxi/semi-ui-vue/commit/c0213746298c9f8b904425ac64327b83c57b40b0) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Dropdown 菜单项通过 Enter 打开 Modal 后立即触发取消的问题。Enter/Space 手动激活菜单项前取消浏览器默认动作，防止焦点移入弹窗后重复点击；保留原生键盘事件冒泡、调用方监听和菜单内输入控件的默认动作。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.1.4
+  - @aifuxi/semi-icons-lab-vue@2.1.4
+  - @aifuxi/semi-illustrations-vue@2.1.4
+  - @aifuxi/semi-theme-default@2.1.4
+
 ## 2.1.3
 
 ### Patch Changes

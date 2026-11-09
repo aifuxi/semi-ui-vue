@@ -1,5 +1,9 @@
 # @aifuxi/semi-icons-vue
 
+## 2.1.4
+
+No changes in this release.
+
 ## 2.1.3
 
 No changes in this release.
