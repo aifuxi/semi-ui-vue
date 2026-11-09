@@ -24,9 +24,11 @@ test(
     const port = socket.address().port;
     await new Promise((resolve) => socket.close(resolve));
     const registry = `http://127.0.0.1:${port}`;
+    // 测试只访问临时 Verdaccio；同时覆盖 npm 与 pnpm，避免继承 CI 的官方源。
     const env = {
       ...process.env,
       npm_config_manage_package_manager_versions: 'false',
+      pnpm_config_registry: registry,
       npm_config_registry: registry,
       npm_config_userconfig: path.join(cwd, '.npmrc'),
       npm_config_cache: path.join(cwd, 'cache'),
