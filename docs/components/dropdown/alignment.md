@@ -90,11 +90,11 @@
 - `render={<Dropdown.Menu />}` 映射为 `#content`；`children` 映射为 trigger 默认 slot；`icon`/`name` 可传 VNodeChild 或 renderer 函数。
 - React `className` 映射 Vue 原生 `class`；事件 prop 映射 Vue emits/listeners；复合静态成员调用形式保持 `Dropdown.Menu/Item/Title/Divider`。
 - React 文档把 Item `type` 写成 `tertiary` 默认值，但固定 Adapter 未设置该默认值；本实现按运行时源码保留 `undefined`，默认文本由 `.semi-dropdown-item` Token 决定。
-- 上述均为框架原生映射或源码/文档冲突裁决，不构成能力损失。当前无 accepted visual/behavior deviation；任一未解释差异均阻止 `pending -> ready`。
+- 上述均为框架原生映射或源码/文档冲突裁决，不构成能力损失。另有下文 BUG-000137 的菜单激活默认动作修正；其余未解释差异仍阻止 `pending -> ready`。
 
 ## 验收状态
 
-- 当前状态：`ready`；无 accepted visual/behavior deviation。
+- 当前状态：`ready`；键盘默认动作修正见 BUG-000137，其余无 accepted visual/behavior deviation。
 - 行为门禁：Dropdown 专项单元/SSR 2 个文件、11 项通过，覆盖模板与 `h()` trigger 装饰、缺省/显式 Boolean、菜单数组/slot、受控/非受控、hover/focus/click/custom/contextMenu、outside click、事件顺序、disabled/nested、键盘/焦点/ARIA、稳定自定义 Portal、卸载清理与 SSR/hydration；仓库全量为 68 个文件、507 项通过。
 - 视觉门禁：同 Chromium 的 desktop 1440×900 与 mobile 390×844，DPR 1，light/dark，并追加 RTL；Dropdown 专项 7/7、仓库浏览器回归 266/266 通过。6 个关键目标的 computed style 精确相等、bounding rect 各轴差值不超过 0.5 CSS px；5 组成对场景共 10 张独立 PNG 经测试内 `Buffer.equals` 与命令行 `cmp` 双重确认逐字节相同。
 - 发布门禁：`pnpm check` 通过固定 vendor/inventory、源码边界、格式、lint、类型、全量构建、主题和 SSR；真实 tarball 的根/子路径 ESM、公开声明、逐组件 CSS、隔离安装/import、许可证与 SPDX SBOM 全部通过。
@@ -139,3 +139,12 @@
 - 同一解析器负责的可选 Boolean 均保留“未提供”语义，包括 `arrowPointAtCenter`、`condition`、`transformFromCenter`、`wrapWhenSpecial`。原始参数存在性更新沿用 SideSheet 的 `onBeforeUpdate` 版本追踪，覆盖 Vue 将未传和显式 `false` 解析为相同值的动态切换。公开 `autoAdjustOverflow` 类型明确允许显式 `undefined`。
 - 新单测在原实现上 3 失败/5 通过；修复后 Dropdown 单测、SSR、hydration 共 32 项通过。真实 tarball 消费新增 8 项，覆盖 1100×728、760×528、1440×900，四角、较宽内容、开关、缩放、菜单点击/键盘、Escape/外部关闭、焦点返回及真实根滚动区尺寸；消费全套 11 项通过。Dropdown 固定 React 基线浏览器专项 5 项通过，未更新截图基线。
 - 占位滚动条测试移除 Playwright headless 默认 `--hide-scrollbars`，校准实际宽度 15px；另测默认 headless 零占位几何。后者不冒充系统原生浮动滚动条验证。原应用少量数据及 57 列表格、Electron 与 Windows/Linux 实机复测仍待消费方集成，应用代码和依赖未修改。
+
+## 菜单键盘激活打开 Modal（2026-11-09，BUG-000137）
+
+- 问题：2.1.3 业务页与隔离样例中，通过 Enter 激活菜单项，同步关闭受控 Dropdown 并打开 Modal，执行一次菜单操作后立即取消；鼠标对照正常。
+- 根因：固定 `menuFoundation.ts` 在 Enter/Space 的 `keydown` 内调用 `event.target.click()`，未取消默认动作。Vue 更新使 Modal 的默认取消按钮获得焦点后，同次 Enter 又产生浏览器原生 click。Chrome 的公开 `onCancel` 收到 `type=click`、`target=BUTTON`、`isTrusted=true`，不能将它误判为额外的业务取消逻辑。新增真实 tarball Enter 回归在原实现上，默认动效与无动效两项均失败。
+- 修复：`DropdownMenu.vue` 在直接聚焦的 `role=menuitem` 上处理 Enter/Space 时，先 `preventDefault()` 再调用原 Foundation。继续手动激活一次，不修改 vendor 或 Modal，不延迟弹窗、不改变默认焦点、不阻断事件传播；调用方 Menu 与 document 仍收到同一个键盘事件。菜单内输入框等非 menuitem 目标保留默认输入动作。
+- 与固定 React 基线的显式差异：Menu 激活事件的 `defaultPrevented` 变为 true，用于保证单次激活后的浏览器默认动作不会点击新获得焦点的控件；打印字符、导航、Esc、事件冒泡及公开 props/emits/slots 保持原契约。
+- 验证：Dropdown 单元/SSR/hydration 4 个文件、35 项通过；真实生产 tarball 的 Dropdown→Modal、默认防溢出和 Modal 可访问性共 20 项通过，3 workers、0 retries。新增 6 项覆盖 Enter/Space/鼠标、默认/关闭动效、单次动作、无意外取消、默认取消按钮焦点、编辑、Esc、重开和显式取消。固定 React 基线 Dropdown Chromium 对照 5 项通过，未更新快照。
+- 边界：当前源码与新构建 tarball 已验证；原业务服务尚未升级依赖，发布和消费方集成后仍需按原入口复测。BUG-000074 沿用既有修复，本轮仅复跑回归，不追加组件实现或应用绕过。

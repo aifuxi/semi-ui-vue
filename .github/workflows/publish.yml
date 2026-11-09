@@ -23,6 +23,8 @@ permissions:
 
 env:
   CANDIDATE_SHA: ${{ inputs.candidate-sha || github.sha }}
+  # pnpm 12 只识别 pnpm_config_*；npm 子进程仍保留自己的官方源设置。
+  pnpm_config_registry: https://registry.npmjs.org/
   npm_config_registry: https://registry.npmjs.org/
 
 jobs:

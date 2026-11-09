@@ -391,6 +391,61 @@ describe('Dropdown', () => {
     expect(document.activeElement).toBe(trigger.element);
   });
 
+  // 两种激活键均由 Foundation 手动 click，不能再执行浏览器原生激活。
+  for (const key of ['Enter', ' ']) {
+    // jsdom 检查事件默认动作与传播契约；真实默认点击另由 consumer Chromium 覆盖。
+    it(`菜单 ${JSON.stringify(key)} 激活一次并保留菜单及 document 键盘监听`, async () => {
+      /** 公开菜单项动作，不直接调用组件私有处理器。 */
+      const click = vi.fn();
+      /** 调用方 Menu 的原生监听应继续收到同一个事件。 */
+      const menuKeydown = vi.fn();
+      /** document 监听用于确认修复没有 stopPropagation。 */
+      const documentKeydown = vi.fn();
+      /** 独立 Menu 的公开 DOM 插槽隔离 Foundation 激活，不依赖 Tooltip 挂载时机。 */
+      const wrapper = mount(DropdownMenu, {
+        attachTo: document.body,
+        attrs: { onKeydown: menuKeydown },
+        slots: {
+          // 原生菜单项用于观察手动 click，完整 DropdownItem/Modal 组合由 consumer 覆盖。
+          default: () => h('li', { role: 'menuitem', tabindex: 0, onClick: click }, '重命名'),
+        },
+      });
+      document.addEventListener('keydown', documentKeydown);
+      try {
+        await flushDropdown();
+        /** 可取消的真实 DOM 事件锁定默认动作标记；合成事件自身不产生浏览器默认点击。 */
+        const event = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
+        wrapper.get('[role="menuitem"]').element.dispatchEvent(event);
+        expect(click).toHaveBeenCalledOnce();
+        expect(event.defaultPrevented).toBe(true);
+        expect(menuKeydown).toHaveBeenCalledExactlyOnceWith(event);
+        expect(documentKeydown).toHaveBeenCalledExactlyOnceWith(event);
+      } finally {
+        document.removeEventListener('keydown', documentKeydown);
+        wrapper.unmount();
+      }
+    });
+  }
+
+  // Menu 可包含输入控件，激活菜单项的保护不能阻止其正常输入空格。
+  it('菜单内输入框仍保留空格的原生默认动作', () => {
+    /** 保留调用方原生输入节点，不将其伪装为 menuitem。 */
+    const wrapper = mount(DropdownMenu, {
+      slots: {
+        // li 保持菜单结构；实际键盘目标是其输入框。
+        default: () => h('li', [h('input')]),
+      },
+    });
+    try {
+      /** jsdom 不模拟输入默认动作，在这里检查公开事件未被取消。 */
+      const event = new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true });
+      wrapper.get('input').element.dispatchEvent(event);
+      expect(event.defaultPrevented).toBe(false);
+    } finally {
+      wrapper.unmount();
+    }
+  });
+
   it('键盘打开请求保留宿主事件，定位后的 visibleChange 晚于同步宿主处理', async () => {
     const order: string[] = [];
     const Host = defineComponent({

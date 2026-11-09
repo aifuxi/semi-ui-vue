@@ -16,6 +16,8 @@ permissions:
   actions: read
 
 env:
+  # 与正式发布一致；pnpm 12 不再读取 npm_config_*。
+  pnpm_config_registry: https://registry.npmjs.org/
   npm_config_registry: https://registry.npmjs.org/
   # 原 2.1.2 发布提供同一份后验证据；演练不创建版本 PR、不审批 npm、不执行 publish。
   PUBLISHED_RUN_ID: ${{ inputs.published-run-id || '42470122055' }}
