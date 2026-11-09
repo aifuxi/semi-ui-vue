@@ -1002,12 +1002,83 @@ function renderPackedColorTheme() {
   ]);
 }
 
-/** 两个浮层专项复用真实包服务，其他组件消费页面保持原入口。 */
-const overlayRender = dropdownQuery.has('popover-repeat')
-  ? renderPackedPopoverRepeat
-  : dropdownQuery.has('side-sheet-a11y')
-    ? renderPackedSideSheet
-    : undefined;
+/** 菜单及弹窗均使用公开受控值，复现菜单关闭与弹窗打开的同一轮更新。 */
+const dropdownModalMenuVisible = ref(false);
+/** 不添加 autofocus 或延时，保留 Modal 默认聚焦取消按钮的行为。 */
+const dropdownModalVisible = ref(false);
+/** 公开回调的执行次数用于发现重复激活及意外取消。 */
+const dropdownModalActions = ref(0);
+/** 只有用户明确取消后才应增加。 */
+const dropdownModalCancels = ref(0);
+
+/** 使用公开 Dropdown/Modal 复现键盘激活，不加业务侧事件拦截。 */
+function renderPackedDropdownModal() {
+  /** 默认动效与关闭动效都必须保持同样的键盘契约。 */
+  const motion = !dropdownQuery.has('no-motion');
+  return h('main', [
+    h(
+      Dropdown,
+      {
+        trigger: 'click',
+        motion,
+        visible: dropdownModalMenuVisible.value,
+        // 公开 v-model 回写，不使用 visibleChange 替代请求事件。
+        'onUpdate:visible': (visible) => {
+          dropdownModalMenuVisible.value = visible;
+        },
+      },
+      {
+        // 使用真实 Button，浏览器负责产生完整键盘默认动作。
+        default: () => h(Button, null, () => '打开管理菜单'),
+        content: () =>
+          h(Dropdown.Menu, null, () =>
+            h(
+              Dropdown.Item,
+              {
+                // 与业务现场一致：同步关闭菜单并打开 Modal。
+                onClick: () => {
+                  dropdownModalActions.value += 1;
+                  dropdownModalMenuVisible.value = false;
+                  dropdownModalVisible.value = true;
+                },
+              },
+              // 菜单项名称供键盘和鼠标对照共用。
+              () => '重命名',
+            ),
+          ),
+      },
+    ),
+    h(
+      Modal,
+      {
+        title: '管理表单',
+        visible: dropdownModalVisible.value,
+        motion,
+        // 仅记录公开取消回调，不从测试写入内部状态。
+        onCancel: () => {
+          dropdownModalCancels.value += 1;
+          dropdownModalVisible.value = false;
+        },
+      },
+      // 不声明 autofocus，确保测试覆盖原缺陷的默认焦点路径。
+      () => h('input', { 'aria-label': '名称' }),
+    ),
+    h(
+      'output',
+      { 'data-testid': 'dropdown-modal-state' },
+      `actions=${dropdownModalActions.value};cancels=${dropdownModalCancels.value};visible=${dropdownModalVisible.value}`,
+    ),
+  ]);
+}
+
+/** 浮层专项复用真实包服务，其他组件消费页面保持原入口。 */
+const overlayRender = dropdownQuery.has('dropdown-modal')
+  ? renderPackedDropdownModal
+  : dropdownQuery.has('popover-repeat')
+    ? renderPackedPopoverRepeat
+    : dropdownQuery.has('side-sheet-a11y')
+      ? renderPackedSideSheet
+      : undefined;
 
 createApp({
   // 根消费示例保留原有组件交互，并加入直接调用的错误提示区域。
