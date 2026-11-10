@@ -4,7 +4,7 @@
 
 Changesets 负责版本计算、六包联动、CHANGELOG、版本 PR、打包及发布。六个公开包使用 fixed 分组：默认主题、现代主题、稳定图标、实验图标、插画和主组件包始终同版。`workspace:*` 保留在源码中，真实 tarball 的内部依赖必须转换为同版本精确值。
 
-当前处于迁移接入期：本地 `0.1.0` 是官方命令清除旧 alpha 计数产生的未发布基线，必须与待处理 major changeset 及 next 状态一起合并。首个版本 PR 的目标是六个公开包 `1.0.0-next.0`。不能直接发布迁移基线，也不能把流程迁移视为 1.0 产品验收完成。
+每次准备候选时，从六个公开包的 `package.json`、待处理 Changesets 和 `.changeset/pre.json` 读取源码版本、版本计划及预发布状态。版本 PR 的目标由官方 CLI 计算；实际 registry 版本、dist-tag 与外部接入在发布前另行核对，源码版本不代表已经发布。
 
 ## 开发者提交变更
 
@@ -47,9 +47,9 @@ quality 传递构建产物，官方 pack 创建 artifact；pack-verify 下载该
 
 ## next 与稳定版
 
-当前 next 状态已经建立。日常提交 changeset 即可推进 `1.0.0-next.N`，不要重复进入 pre 模式。未来新预发布周期使用 `pnpm changeset pre enter next`。
+计划新的预发布周期时使用 `pnpm changeset pre enter next`；先核对 `.changeset/pre.json` 与 Changesets 状态，已有周期继续提交 changeset，不重复进入。预发布版本号由当前源码版本和官方 CLI 的版本计划决定。
 
-产品验收闭环后执行 `pnpm changeset pre exit`，并用 `pnpm changeset --empty` 记录本次流程变更意图，然后一起提交。机器人将生成稳定版本 PR；当前周期预期为六个公开包 `1.0.0`，审核后经相同门禁发布到 latest。预发布不会自动改写 latest，稳定发布也不会自动改写 next。对退出模式的归档 changeset 应按官方提示审阅。
+预发布周期的产品验收闭环后执行 `pnpm changeset pre exit`，并用 `pnpm changeset --empty` 记录本次流程变更意图，然后一起提交。机器人按官方版本计划生成六包同版的稳定版本 PR，审核后经相同门禁发布到 latest。常规稳定版变更直接沿用 Changesets 流程。预发布不会自动改写 latest，稳定发布也不会自动改写 next。对退出模式的归档 changeset 应按官方提示审阅。
 
 ## 失败恢复
 

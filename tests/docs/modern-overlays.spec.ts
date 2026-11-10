@@ -98,17 +98,50 @@ test('modern theme 的 Modal 保留默认边框与阴影，普通和全屏圆角
   expect(darkShadow.match(/0px 0px 0px 1px inset/g)).toHaveLength(1);
 });
 
+// 选择面板沿用各组件的固定前缀，不能把专用 TimePicker 面板误判为未打开。
 test('复用 Popover 的选择面板保留现代圆角与默认阴影', async ({ page }) => {
+  /** 路由、示例与操作固定到现有页面；TimePicker 的菜单样式按基线由内层 ScrollList 承载。 */
   const panels = [
-    ['/zh-CN/input/select', 'zh-CN-input-select-2', '.semi-select:first-child', 'keyboard'],
-    ['/zh-CN/input/autocomplete', 'zh-CN-input-autocomplete-2', 'input', 'fill'],
-    ['/zh-CN/input/datepicker', 'zh-CN-input-datepicker-2', 'input', 'click'],
-    ['/zh-CN/input/timepicker', 'zh-CN-input-timepicker-2', 'input', 'click'],
-    ['/zh-CN/input/cascader', 'zh-CN-input-cascader-2', '.semi-cascader', 'click'],
+    [
+      '/zh-CN/input/select',
+      'zh-CN-input-select-2',
+      '.semi-select:first-child',
+      'keyboard',
+      '.semi-popover-wrapper-show',
+    ],
+    [
+      '/zh-CN/input/autocomplete',
+      'zh-CN-input-autocomplete-2',
+      'input',
+      'fill',
+      '.semi-popover-wrapper-show',
+    ],
+    [
+      '/zh-CN/input/datepicker',
+      'zh-CN-input-datepicker-2',
+      'input',
+      'click',
+      '.semi-popover-wrapper-show',
+    ],
+    [
+      '/zh-CN/input/timepicker',
+      'zh-CN-input-timepicker-2',
+      'input',
+      'click',
+      '.semi-timepicker-panel-default-wrapper-show .semi-scrolllist',
+    ],
+    [
+      '/zh-CN/input/cascader',
+      'zh-CN-input-cascader-2',
+      '.semi-cascader',
+      'click',
+      '.semi-popover-wrapper-show',
+    ],
   ] as const;
 
-  for (const [route, demoId, triggerSelector, action] of panels) {
+  for (const [route, demoId, triggerSelector, action, panelSelector] of panels) {
     await page.goto(route);
+    /** 每个示例只操作第一个真实触发器，不触碰应用内部状态。 */
     const trigger = page.locator(`[data-demo-id="${demoId}"] ${triggerSelector}`).first();
     await expect(trigger).toBeVisible();
     if (action === 'fill') await trigger.fill('semi');
@@ -117,8 +150,16 @@ test('复用 Popover 的选择面板保留现代圆角与默认阴影', async ({
       await trigger.press('ArrowDown');
     } else await trigger.click();
 
-    const panel = page.locator('.semi-popover-wrapper-show').first();
+    /** 检查真正承载圆角与阴影的浮层；可见性和样式断言保持原有精度。 */
+    const panel = page.locator(panelSelector).first();
     await expect(panel, `${demoId} 应显示 Popover 面板`).toBeVisible();
+    if (demoId === 'zh-CN-input-timepicker-2') {
+      // 固定基线的外层仅负责定位，保持无阴影，避免内外两层重复叠加。
+      await expect(page.locator('.semi-timepicker-panel-default-wrapper-show')).toHaveCSS(
+        'box-shadow',
+        'none',
+      );
+    }
     await expectElevatedShadow(panel);
     await expect(panel).toHaveCSS('border-radius', '16px');
   }

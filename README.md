@@ -16,7 +16,7 @@ Semi Design 的名称、Logo、图标、插画及项目引用的官方素材，�
 
 ## 安装与使用
 
-预览版使用 `next` 渠道；稳定版验收仍在推进，API 与发布结构可能调整。
+下列命令从当前配置的 registry 安装默认渠道；需要预发布版本时显式选择 `@next`，需要固定版本时指定版本号。可用版本与渠道以安装时的 registry 元数据为准。
 
 ```bash
 pnpm add @aifuxi/semi-ui-vue
@@ -45,11 +45,11 @@ import { Button } from '@aifuxi/semi-ui-vue/button';
 
 ## 开发与发布状态
 
-固定基线的 85 个公开根模块已具备组件切片记录（含 `_base`、`_utils`），资产覆盖 57 个语言源、稳定/Lab 图标和公开插画。组件 ready 不等于稳定版已可发布，发布候选仍需有效的组件与产物验证。
+固定基线的 85 个公开根模块已具备组件切片记录（含 `_base`、`_utils`），资产覆盖 57 个语言源、稳定/Lab 图标和公开插画。源码版本以六个公开包的 `package.json` 为准，预发布模式以 `.changeset/pre.json` 与 Changesets 状态为准；每个发布候选仍需有效的组件与产物验证。
 
 - [组件契约与记录](docs/components/)：公开 API、对齐矩阵和已知差异。
 - [测试体系迁移方案](docs/testing/vue-testing-strategy-proposal.md)：已实施并验证的 Vitest、Storybook 与本地 Playwright 分层。
-- [发布审计](docs/release-audit-1.0.md)：稳定版剩余工作。
+- [发布审计](docs/release-audit-1.0.md)：当前候选准备事项与历史证据。
 - [发布手册](docs/releasing.md)：Changesets 版本流程、渠道与外部接入状态；仓库中的版本号不代表 npm 已发布版本。
 
 ## 本地开发
