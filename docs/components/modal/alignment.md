@@ -125,3 +125,8 @@
 固定 v2.102.0 的原生关闭 Button 写死 `size="small"`。Vue 新增 `closeButtonSize?: ButtonSize`，默认 small，复用 Button 的 default/large 档位和主题样式，不修改 vendor。现有 closeIcon prop/slot 独立控制图形，默认尺寸、关闭事件、键盘、Portal 与焦点契约保持原规则。该属性是有意增加的能力，不要求 React 基线提供同名 API。
 
 新增回归覆盖默认 small、undefined、实例/全局优先级、动态尺寸、VNode/slot 图形、命令式 Modal 更新，以及真实 tarball 下的明暗主题、方形尺寸、窄容器、鼠标/Enter/Esc。执行结果见 [修复记录](../../../ai-work/2026-11-11-overlay-close-size.md)。SideSheet 保留基线无自动焦点返回的契约。
+
+## Vue 动态更新修复（2026-11-11）
+
+- 初次未传 `visible`、`closable` 等参数时，后续显式传入仍重新解析参数存在性；`closable` 缺省与显式 false 即使经 Vue 规范化为同值，也保持默认关闭入口与显式隐藏的区别。新增 `Modal.test.ts` 覆盖显示、隐藏及关闭入口更新。
+- 本轮复现、修复依据及实际验证见[渲染响应性修复记录](../../../ai-work/2026-11-11-vue-reactivity-audit.md)，历史验收记录不替代后续候选验证。

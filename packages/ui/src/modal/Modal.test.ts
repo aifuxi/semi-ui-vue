@@ -29,6 +29,27 @@ async function mountVisible(props: Record<string, unknown> = {}): Promise<VueWra
 }
 
 describe('Modal', () => {
+  // 同一实例从缺省 visible 切换到受控显示，并区分缺省与显式 false 的 Boolean 参数。
+  it('首次省略的 visible 和 closable 支持后续动态传入', async () => {
+    /** 初始不传 visible/closable，覆盖 Vue 缺省 Boolean 与原始参数集合的差异。 */
+    const wrapper = mount(Modal, {
+      attachTo: document.body,
+      props: { motion: false },
+    });
+    expect(document.querySelector('.semi-modal')).toBeNull();
+    await wrapper.setProps({ visible: true });
+    await flushPromises();
+    expect(document.querySelector('.semi-modal')).not.toBeNull();
+    expect(document.querySelector('.semi-modal-close')).not.toBeNull();
+
+    await wrapper.setProps({ closable: false });
+    expect(document.querySelector('.semi-modal-close')).toBeNull();
+    await wrapper.setProps({ visible: false });
+    await flushPromises();
+    expect(document.querySelector('.semi-modal')).toBeNull();
+    wrapper.unmount();
+  });
+
   it('公开入口保持 default、named、命令式方法与固定枚举常量', () => {
     expect(DefaultModal).toBe(Modal);
     expect(Modal.confirm).toBeTypeOf('function');

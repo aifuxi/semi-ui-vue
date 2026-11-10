@@ -17,6 +17,18 @@ import TagBase from './Tag.vue';
 import TagGroupBase from './TagGroup';
 
 describe('Tag', () => {
+  // 从初始缺省状态添加 visible，公开参数应立即取得可见性控制权。
+  it('首次省略 visible 后支持动态隐藏和显示', async () => {
+    /** 不在首次挂载时提供 visible，确保覆盖未受控到受控的转换。 */
+    const wrapper = mount(Tag, { props: { content: '动态标签' } });
+    expect(wrapper.classes()).not.toContain('semi-tag-invisible');
+    await wrapper.setProps({ visible: false });
+    expect(wrapper.classes()).toContain('semi-tag-invisible');
+    await wrapper.setProps({ visible: true });
+    expect(wrapper.classes()).not.toContain('semi-tag-invisible');
+    wrapper.unmount();
+  });
+
   it('公开入口保持 default、named 与复合 Group 一致，并固定枚举常量', () => {
     expect(DefaultTag).toBe(Tag);
     expect(Tag).toBe(TagBase);

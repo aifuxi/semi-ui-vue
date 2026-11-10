@@ -98,3 +98,8 @@
 ## 公开入口契约锁
 
 - `Banner.test.ts` 从 `./index` 消费公开入口，固定 default 与 named 导出一致及 `BANNER_TYPES` 枚举；`pnpm check` 持续覆盖格式、lint、类型与该断言。
+
+## Vue 动态更新修复（2026-11-11）
+
+- 初次未传 `closeIcon` 后动态传入 `null`，同一 Banner 实例会移除关闭按钮。默认图标及关闭入口的参数存在性随父渲染更新，不缓存初次 VNode 参数集合。新增 `Banner.test.ts` 回归。
+- 本轮复现、修复依据及实际验证见[渲染响应性修复记录](../../../ai-work/2026-11-11-vue-reactivity-audit.md)，历史验收记录不替代后续候选验证。

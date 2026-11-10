@@ -24,6 +24,24 @@ const nativeMatches = Element.prototype.matches;
 let pointerOverTrigger = true;
 
 describe('Dropdown', () => {
+  // 首次缺省 trigger 时，后续传入 click 必须替换 hover 的事件绑定。
+  it('首次省略 trigger 后支持动态切换到 click', async () => {
+    /** 使用真实触发按钮观察公开 update:visible 事件，不依赖内部 computed。 */
+    const wrapper = mount(Dropdown, {
+      props: { motion: false },
+      slots: {
+        // 提供可点击触发节点，避免将事件直接派发到组件包装层。
+        default: () => h('button', '打开菜单'),
+        // 弹层内容保持稳定，使本测试只关注触发方式更新。
+        content: () => h('span', '菜单内容'),
+      },
+    });
+    await wrapper.setProps({ trigger: 'click' });
+    await wrapper.get('button').trigger('click');
+    expect(wrapper.emitted('update:visible')).toEqual([[true]]);
+    wrapper.unmount();
+  });
+
   beforeEach(() => {
     vi.useFakeTimers();
     pointerOverTrigger = true;

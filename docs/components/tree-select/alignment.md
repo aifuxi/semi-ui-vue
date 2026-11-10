@@ -82,3 +82,8 @@
 ## Deviation
 
 没有 accepted deviation。React/Vue 触发器与浮层的独立 PNG 在桌面/移动 light/dark 及桌面 RTL 场景均直接字节相等；单元/SSR、主题、根与子路径导入、真实 tarball consumer 门禁均已通过。
+
+## Vue 多选插槽刷新修复（2026-11-11）
+
+- 多选值不变、父 render 替换 `selectedItem` 插槽闭包时，多选标签内容也会刷新。`multipleTagList` 与单选展示统一使用现有 `useRenderComputed`，不改选中顺序、标签关闭或 Foundation 选择规则。`TreeSelect.test.ts` 已新增真实多选标签回归并先红后绿。
+- 复现、修复依据与实际验证见[渲染响应性修复记录](../../../ai-work/2026-11-11-vue-reactivity-audit.md)。

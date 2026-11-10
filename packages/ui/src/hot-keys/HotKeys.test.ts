@@ -32,6 +32,20 @@ afterEach(() => {
 });
 
 describe('HotKeys', () => {
+  // preventDefault 初次缺省时也应追踪后续实例参数，而非永久使用全局或内置默认值。
+  it('首次省略 preventDefault 后支持动态启用', async () => {
+    /** 验证快捷键仍命中，避免把未触发监听误判为 preventDefault 问题。 */
+    const onHotKey = vi.fn();
+    /** r 是单个普通键，排除修饰键兼容行为对本回归的影响。 */
+    const wrapper = mount(HotKeys, { props: { hotKeys: ['r'], onHotKey } });
+    await wrapper.setProps({ preventDefault: true });
+    expect(keydown(document.body, 'r', 'KeyR').event.defaultPrevented).toBe(true);
+    expect(onHotKey).toHaveBeenCalledOnce();
+    await wrapper.setProps({ preventDefault: false });
+    expect(keydown(document.body, 'r', 'KeyR').event.defaultPrevented).toBe(false);
+    wrapper.unmount();
+  });
+
   it('公开入口导出默认 HotKeys、命名 HotKeys、静态 Keys 与 HOT_KEYS 常量', () => {
     expect(NamedHotKeys).toBe(HotKeys);
     expect(HotKeys.Keys).toBe(HOT_KEYS);

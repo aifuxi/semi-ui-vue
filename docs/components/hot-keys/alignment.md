@@ -131,3 +131,8 @@ prop 在此基线是可接受的已知 no-op，不擅自实现更新版本语义
 - 单元/SSR：HotKeys 单测、SSR 与 hydration 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
 - Chromium：`tests/browser/components/hot-keys.spec.ts` 5/5 通过，覆盖固定源码来源、快捷键捕获与公开 DOM、computed style/几何与 light/dark、RTL 对照截图。
 - 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、样式入口、tree-shaking、许可与 SBOM。
+
+## Vue 动态更新修复（2026-11-11）
+
+- 初次未传 `preventDefault` 后动态传入 `true`，下一次命中快捷键会阻止默认动作；改回 false 后恢复原生动作。参数解析先订阅实例值，再按实例与全局默认值优先级选择，Boolean 参数继续显式使用 `default: undefined`。新增 `HotKeys.test.ts` 回归。
+- 本轮复现、修复依据及实际验证见[渲染响应性修复记录](../../../ai-work/2026-11-11-vue-reactivity-audit.md)，历史验收记录不替代后续候选验证。

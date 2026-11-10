@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils';
-import { defineComponent, h, nextTick } from 'vue';
+import { flushPromises, mount } from '@vue/test-utils';
+import { defineComponent, h, nextTick, shallowRef } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import Button from '../button/Button.vue';
@@ -49,6 +49,116 @@ afterEach(() => {
 });
 
 describe('Upload', () => {
+  // 捕获父 render 的当前值；slot 函数本身没有响应式读取，必须随父更新重新求值。
+  it('文件列表未变时仍刷新父级替换的 fileItem 和 fileListTitle 插槽', async () => {
+    /** 两次父渲染使用不同文本，但保留文件列表身份以排除列表变更造成的失效。 */
+    const text = shallowRef('旧插槽');
+    /** 一条成功文件即可同时渲染文件与列表标题。 */
+    const files = [successFile];
+    /** 宿主模拟父模板更新局部作用域后，替换两个命名插槽闭包。 */
+    // eslint-disable-next-line vue/one-component-per-file -- 父 render 宿主专门验证 Upload 插槽闭包更新。
+    const Host = defineComponent({
+      // 每次父 render 捕获文本，确保子 computed 无法间接订阅父 ref。
+      setup() {
+        // 渲染同一个 Upload 实例，只替换插槽内容。
+        return () => {
+          /** 当前 render 的局部值必须由下一次插槽求值才能观察到。 */
+          const captured = text.value;
+          return h(
+            Upload,
+            { action: '/upload', defaultFileList: files },
+            {
+              // 分别检查列表项目与标题，防止只修复其中一个缓存。
+              fileItem: () => h('span', { class: 'slot-file-update' }, captured),
+              // 标题与文件项目使用独立选择器，保留各自断言。
+              fileListTitle: () => h('span', { class: 'slot-title-update' }, captured),
+            },
+          );
+        };
+      },
+    });
+    /** 挂载真实组件层级，验证对消费者可见的内容。 */
+    const wrapper = mount(Host);
+    expect(wrapper.get('.slot-file-update').text()).toBe('旧插槽');
+    expect(wrapper.get('.slot-title-update').text()).toBe('旧插槽');
+    text.value = '新插槽';
+    await nextTick();
+    expect(wrapper.get('.slot-file-update').text()).toBe('新插槽');
+    expect(wrapper.get('.slot-title-update').text()).toBe('新插槽');
+    wrapper.unmount();
+  });
+
+  // Vue emit 已调用 onCropError；beforeCrop 拒绝不能再手动调用同一监听器。
+  it('beforeCrop 拒绝只通知一次 cropError', async () => {
+    /** 保留异常身份，确认监听器收到原始裁切异常。 */
+    const error = new Error('裁切前置检查失败');
+    /** 同时检查调用次数和错误参数，覆盖 props 与 emits 的重合入口。 */
+    const onCropError = vi.fn();
+    /** custom 模式避免诊断裁切错误时发出实际网络上传请求。 */
+    const wrapper = mount(Upload, {
+      props: {
+        action: '/upload',
+        crop: true,
+        // 模拟公开异步前置回调的正常拒绝路径。
+        beforeCrop: () => Promise.reject(error),
+        onCropError,
+        uploadTrigger: 'custom',
+      },
+    });
+    /** 图像 MIME 类型使输入进入裁切前置检查，而非普通文件上传。 */
+    const file = new File(['image'], 'crop.png', { type: 'image/png' });
+    /** 使用真实文件输入 change 事件触发组件行为。 */
+    const input = wrapper.get('input[type="file"]');
+    setInputFiles(input.element as HTMLInputElement, [file]);
+    await input.trigger('change');
+    await flushPromises();
+    expect(onCropError).toHaveBeenCalledOnce();
+    expect(onCropError).toHaveBeenCalledWith(error);
+    expect(wrapper.emitted('cropError')).toEqual([[error]]);
+    wrapper.unmount();
+  });
+
+  // 画布导出的异常与 beforeCrop 拒绝走不同 catch，二者都只能通知一次。
+  it('确认裁切时的画布异常只通知一次 cropError', async () => {
+    /** 模拟画布导出阶段失败，不依赖 jsdom 未实现的 canvas API。 */
+    const error = new Error('画布导出失败');
+    /** 观察同名 props 监听器是否被 emits 重复调用。 */
+    const onCropError = vi.fn();
+    /** 仅替换 Cropper 的画布导出边界，Upload 与 Modal 仍使用真实实现。 */
+    // eslint-disable-next-line vue/one-component-per-file -- 本地 stub 只控制画布导出异常。
+    const CropperStub = defineComponent({
+      name: 'Cropper',
+      // 对外暴露和真实 Cropper 相同的导出方法。
+      setup(_props, { expose }) {
+        expose({
+          // 确认操作调用导出方法后抛错，进入 Upload.confirmCrop 的 catch。
+          getCropperCanvas: () => {
+            throw error;
+          },
+        });
+        // 保留可挂载节点，避免无渲染组件带来的无关警告。
+        return () => h('div');
+      },
+    });
+    /** custom 模式避免异常测试触发网络上传；Teleport stub 保持弹窗在本地树中。 */
+    const wrapper = mount(Upload, {
+      props: { action: '/upload', crop: true, onCropError, uploadTrigger: 'custom' },
+      global: { stubs: { Cropper: CropperStub, Teleport: true } },
+    });
+    /** 图像文件使输入真正打开裁切 Modal。 */
+    const file = new File(['image'], 'crop.png', { type: 'image/png' });
+    /** 文件选择后等待前置检查和 Modal 挂载，再调用其公开确认回调。 */
+    const input = wrapper.get('.semi-upload-hidden-input');
+    setInputFiles(input.element as HTMLInputElement, [file]);
+    await input.trigger('change');
+    await flushPromises();
+    await wrapper.findComponent({ name: 'Modal' }).props('onOk')();
+    expect(onCropError).toHaveBeenCalledOnce();
+    expect(onCropError).toHaveBeenCalledWith(error);
+    expect(wrapper.emitted('cropError')).toEqual([[error]]);
+    wrapper.unmount();
+  });
+
   it('公开入口保持 default、named、compound FileCard 与固定枚举常量', () => {
     expect(DefaultUpload).toBe(Upload);
     expect(Upload.FileCard).toBe(UploadFileCard);
