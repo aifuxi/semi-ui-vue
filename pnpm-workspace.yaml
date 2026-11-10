@@ -41,3 +41,6 @@ allowBuilds:
 
 minimumReleaseAgeExclude:
   - '@rsbuild/core@2.2.5'
+# 公开产物内联播放器；固定 5.13.0 的就绪轮询必须随所属 window 销毁。
+patchedDependencies:
+  lottie-web@5.13.0: patches/lottie-web@5.13.0.patch

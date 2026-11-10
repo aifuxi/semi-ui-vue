@@ -128,6 +128,9 @@ overrides:
   vitepress>vite: 6.4.5
   source-map-js@<1.2.2: 1.2.2
 
+patchedDependencies:
+  lottie-web@5.13.0: 365b720ef5aeb63de495b3969a71f8475df5c5f7b6d7991962549bf50efcdfaa
+
 importers:
 
   .:
@@ -215,7 +218,7 @@ importers:
         version: 4.18.1
       lottie-web:
         specifier: 5.13.0
-        version: 5.13.0
+        version: 5.13.0(patch_hash=365b720ef5aeb63de495b3969a71f8475df5c5f7b6d7991962549bf50efcdfaa)
       prettier:
         specifier: 3.9.6
         version: 3.9.6
@@ -369,7 +372,7 @@ importers:
         version: 4.18.1
       lottie-web:
         specifier: 5.13.0
-        version: 5.13.0
+        version: 5.13.0(patch_hash=365b720ef5aeb63de495b3969a71f8475df5c5f7b6d7991962549bf50efcdfaa)
       normalize.css:
         specifier: 'catalog:'
         version: 8.0.1
@@ -504,7 +507,7 @@ importers:
         version: 3.3.1
       lottie-web:
         specifier: 5.13.0
-        version: 5.13.0
+        version: 5.13.0(patch_hash=365b720ef5aeb63de495b3969a71f8475df5c5f7b6d7991962549bf50efcdfaa)
       prismjs:
         specifier: 1.30.0
         version: 1.30.0
@@ -617,7 +620,7 @@ importers:
         version: 4.18.1
       lottie-web:
         specifier: 5.13.0
-        version: 5.13.0
+        version: 5.13.0(patch_hash=365b720ef5aeb63de495b3969a71f8475df5c5f7b6d7991962549bf50efcdfaa)
       markdown-it:
         specifier: 14.3.3
         version: 14.3.3
@@ -10095,7 +10098,7 @@ snapshots:
     dependencies:
       js-tokens: 3.0.0
 
-  lottie-web@5.13.0: {}
+  lottie-web@5.13.0(patch_hash=365b720ef5aeb63de495b3969a71f8475df5c5f7b6d7991962549bf50efcdfaa): {}
 
   loupe@3.2.1: {}
 
