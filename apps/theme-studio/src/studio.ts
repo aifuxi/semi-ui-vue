@@ -252,8 +252,12 @@ export function createStudio() {
         (token.max !== undefined && numeric > token.max)
       )
         throw new Error('数值超出允许范围或单位无效。');
-      if (token.unit && !value.endsWith(token.unit) && numeric !== 0)
-        throw new Error(`请使用 ${token.unit} 单位。`);
+      if (token.unit !== undefined) {
+        /** 空单位明确表示字重等纯数值；仅无单位的零保留原有长度/时间兼容。 */
+        const unit = value.match(/[a-z%]+$/)?.[0] ?? '';
+        if (unit !== token.unit && !(numeric === 0 && unit === ''))
+          throw new Error(token.unit ? `请使用 ${token.unit} 单位。` : '请输入不带单位的数值。');
+      }
     }
   }
   /** 单项编辑经过校验后进入对应模式；默认值用删除覆盖表达。 */
@@ -301,6 +305,10 @@ export function createStudio() {
   }
   /** 恢复单项默认值，不影响其他变量或另一模式。 */
   function resetToken(token: TokenDefinition): void {
+    /** 复原可能重新接回默认引用；先验证完整候选，避免留下循环并锁住后续编辑。 */
+    const candidate = { ...overrides[global.mode] };
+    delete candidate[token.name];
+    validateReferences(candidate, global.mode);
     delete overrides[global.mode][token.name];
   }
   /** 品牌编辑接替预设生成的主色三态，用户另行编辑的覆盖与其他主题角色保留。 */
@@ -383,8 +391,29 @@ export function createStudio() {
         ([name]) => /^--semi-(?:color-|ai-|(?:[a-z-]+-\d|black|white)$)/.test(name),
       ),
     );
+    /** 私有默认变量只在被引用时补充声明，不激活其组件属性绑定。 */
+    const declarationsByName = { ...colors, ...values };
+    /** 引用在写入边界已通过循环校验；先记录声明，再遍历其依赖以复用共享目标。 */
+    function includeReferences(value: string): void {
+      for (const match of value.matchAll(/var\(\s*(--[\w-]+)/g)) {
+        /** 完整变量名来自已校验的引用表达式。 */
+        const name = match[1]!;
+        if (name in declarationsByName) continue;
+        /** 公开变量由默认主题提供；只有工作台私有默认值需要随导出补齐。 */
+        const definition = tokenByName.get(name)!;
+        if (definition.source !== 'studio') continue;
+        /** 模式默认值与检查器相同；依赖声明不写回用户覆盖或历史。 */
+        const defaultValue =
+          mode === 'dark'
+            ? (definition.darkValue ?? definition.defaultValue)
+            : definition.defaultValue;
+        declarationsByName[name] = defaultValue;
+        includeReferences(defaultValue);
+      }
+    }
+    for (const value of Object.values(values)) includeReferences(value);
     /** scoped CSS 只补充当前实际修改的绑定。 */
-    const rules = [`${scope} {\n${declarations({ ...colors, ...values })}\n}`];
+    const rules = [`${scope} {\n${declarations(declarationsByName)}\n}`];
     for (const token of tokens) {
       if (!(token.name in values) || !token.bindings) continue;
       for (const binding of token.bindings) {

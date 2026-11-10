@@ -18,6 +18,13 @@ const attributes = computed(() =>
     (token) => token.component === studio.settings.component,
   ),
 );
+/** 清空 InputNumber 的临时字符串不进入主题文件，保留上次有效数值。 */
+function updateButtonNumber(
+  key: 'buttonSize' | 'buttonWeight' | 'buttonLineHeight',
+  value: number | string,
+): void {
+  if (typeof value === 'number' && Number.isFinite(value)) studio.settings[key] = value;
+}
 </script>
 
 <template>
@@ -58,28 +65,31 @@ const attributes = computed(() =>
         <div class="field-grid">
           <label
             >按钮字号<InputNumber
-              v-model="studio.settings.buttonSize"
+              :value="studio.settings.buttonSize"
               aria-label="按钮字号"
               :min="10"
               :max="32"
               :disabled="!studio.settings.componentEnabled"
+              @change="updateButtonNumber('buttonSize', $event)"
           /></label>
           <label
             >按钮字重<InputNumber
-              v-model="studio.settings.buttonWeight"
+              :value="studio.settings.buttonWeight"
               aria-label="按钮字重"
               :min="100"
               :max="900"
               :step="100"
               :disabled="!studio.settings.componentEnabled"
+              @change="updateButtonNumber('buttonWeight', $event)"
           /></label>
           <label
             >按钮行高<InputNumber
-              v-model="studio.settings.buttonLineHeight"
+              :value="studio.settings.buttonLineHeight"
               aria-label="按钮行高"
               :min="12"
               :max="48"
               :disabled="!studio.settings.componentEnabled"
+              @change="updateButtonNumber('buttonLineHeight', $event)"
           /></label>
         </div>
       </details>
