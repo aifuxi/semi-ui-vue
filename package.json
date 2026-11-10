@@ -74,7 +74,7 @@
     "check": "pnpm check:source && pnpm test:unit",
     "verify:artifacts": "pnpm verify:theme-dist && pnpm verify:ssr-dist && pnpm verify:pack-dist",
     "check:artifacts": "pnpm build && pnpm verify:artifacts",
-    "check:full": "pnpm check && pnpm check:artifacts && pnpm test:browser && pnpm test:consumer",
+    "check:full": "pnpm check && pnpm verify:artifacts && pnpm test:browser && pnpm test:consumer",
     "check:toolchain": "node scripts/verify-toolchain.mjs",
     "theme-studio:prepare": "pnpm --filter @workspace/theme-studio prepare:packages",
     "theme-studio:dev": "pnpm --filter @workspace/theme-studio dev",
