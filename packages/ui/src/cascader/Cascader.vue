@@ -577,12 +577,17 @@ function renderTag(key: string, index: number): VNodeChild {
     { default: () => entityTagContent(entity, index) },
   );
 }
-const visibleTagNodes = computed(() => {
+/** 父 render 替换 display 插槽时重建可见标签，避免复用 VNode 跳过子 Tag 更新。 */
+const visibleTagNodes = useRenderComputed(() => {
+  /** 未配置数量限制时保留全部可见标签，不产生折叠项。 */
   const count = props.maxTagCount ?? Number.POSITIVE_INFINITY;
   return displayKeys.value.slice(0, count).map(renderTag);
 });
-const hiddenTagNodes = computed(() => {
+/** 已打开的折叠浮层也需要重建标签 VNode，保持延后执行的 display 插槽同步。 */
+const hiddenTagNodes = useRenderComputed(() => {
+  /** 使用与可见列表相同的分界，保持原有选择顺序与折叠数量。 */
   const count = props.maxTagCount ?? Number.POSITIVE_INFINITY;
+  // 折叠项继续接收完整选择列表中的索引，不能从零重新编号。
   return displayKeys.value.slice(count).map((key, index) => renderTag(key, index + count));
 });
 const triggerRenderProps = computed<CascaderTriggerRenderProps>(() => {
