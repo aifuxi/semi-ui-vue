@@ -1228,6 +1228,19 @@ h(Button, { type, htmlType: 'submit' });
 
   // 真实 tarball 的颜色子路径可独立运行，不依赖 DOM 或主题构建插件。
   await verifyColorTools(consumerRoot);
+  // 在首次导入真实 tarball 的独立进程中复现 jsdom 退出，避免 SSR 导入缓存掩盖轮询泄漏。
+  for (const entry of ['@aifuxi/semi-ui-vue', '@aifuxi/semi-ui-vue/lottie']) {
+    run(
+      process.execPath,
+      [
+        '--experimental-import-meta-resolve',
+        fileURLToPath(new URL('./fixtures/lottie-import-teardown.mjs', import.meta.url)),
+        consumerRoot,
+        entry,
+      ],
+      consumerRoot,
+    );
+  }
   await verifyUiTreeshaking(consumerRoot);
   process.stdout.write(
     '真实 tarball 的安装、exports、ESM、类型、样式、SSR import 与 tree-shaking 均通过\n',

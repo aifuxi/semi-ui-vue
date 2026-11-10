@@ -86,6 +86,10 @@ ConfigProvider 的 `overrideDefaultProps.Lottie` 位于显式 prop 与缺省值�
 
 ## Deviation
 
+- `lottie-web@5.13.0` 的公开 main 入口通过 pnpm patch 将就绪轮询的创建与清理绑定到
+  `window`，保持固定基线的 100 ms 周期和完成后扫描语义。浏览器与 Node 全局计时器
+  并存的 jsdom 环境中，窗口销毁会释放轮询，避免组件库根入口导入后遗留回调。
+  修复内联到 UI 发布产物，消费者不需要配置 pnpm patch；固定 vendor 不修改。
 - 无未解释的视觉、行为、生命周期或公开 API 差异。
 - Vue 原生 `class`、`style` 与非 prop attrs 只在内部容器模式下合并；外部容器模式仍
   与固定 React Adapter 一致不转移这些属性。该映射只补充 Vue 原生写法，不改变
@@ -127,3 +131,12 @@ ConfigProvider 的 `overrideDefaultProps.Lottie` 位于显式 prop 与缺省值�
 - 单元/SSR：Lottie 单测、SSR 与 hydration 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
 - Chromium：`tests/browser/components/lottie.spec.ts` 5/5 通过，覆盖固定源码来源、播放器实例与公开 DOM、computed style/几何与 light/dark、RTL 对照截图。
 - 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 exports、类型、`lottie.css`、tree-shaking、`lottie-web` 许可与 SBOM。
+
+## 就绪轮询修复验证（2026-11-10）
+
+- 真实 `lottie-web` 在 loading/complete 首次轮询前退出不再泄漏计时器，完成后仅扫描一次；
+  固定 2.1.4 实际消费包可用相同夹具复现旧异常，修复后的真实 tarball 根／子路径均通过。
+- 全量单测 249 个文件、1534 项通过；Lottie/Checkbox Chromium 对照 10 项及真实 tarball
+  浏览器消费 57 项通过。未改快照、公开 API、视觉或动画控制行为。
+- 公开源码、类型、主题、SSR、tarball 与发布合规检查通过；本地旧 Rspack 缓存失效原因、
+  精确检查范围及发布边界见[缺陷记录](../../../ai-work/2026-11-10-lottie-timer-lifecycle.md)。
