@@ -20,6 +20,7 @@ import { semiGlobal } from '@aifuxi/semi-ui-vue/config-provider';
 import { createColorTheme, colorThemeToCss } from '@aifuxi/semi-theme-default/colors';
 import { SideSheet } from '@aifuxi/semi-ui-vue/side-sheet';
 import { Popover } from '@aifuxi/semi-ui-vue/popover';
+import { IconClose } from '@aifuxi/semi-icons-vue';
 
 // 保留这些组件的真实包入口及其 CSS，用于验证不同共享样式依赖的组合。
 const styleCoverage = [Nav, Modal, Toast];
@@ -1071,14 +1072,66 @@ function renderPackedDropdownModal() {
   ]);
 }
 
+/** 关闭尺寸专项由公开 visible 驱动，不重建业务 header 或覆盖组件样式。 */
+const closeSizeVisible = ref(false);
+
+/** 渲染真实包的原生关闭入口，参数只决定组件、尺寸与图形来源。 */
+function renderPackedCloseSize() {
+  /** Modal 有标题/无标题分支及 SideSheet 共用相同用户操作。 */
+  const kind = dropdownQuery.get('overlay-close-size');
+  /** 省略尺寸时保持原有 small，显式 undefined 走组件默认解析。 */
+  const size = dropdownQuery.get('button-size');
+  /** 图形独立于按钮配置，覆盖默认图形、VNode prop 和 slot。 */
+  const icon = dropdownQuery.get('close-icon');
+  return h('main', [
+    h(
+      'button',
+      {
+        type: 'button',
+        // 原生入口用于核对 Modal 关闭后的焦点返回。
+        onClick: () => {
+          closeSizeVisible.value = true;
+        },
+      },
+      '打开尺寸示例',
+    ),
+    h(
+      kind === 'side-sheet' ? SideSheet : Modal,
+      {
+        visible: closeSizeVisible.value,
+        title: kind === 'modal-no-title' ? undefined : '尺寸示例',
+        'aria-label': kind === 'side-sheet' ? '尺寸示例' : undefined,
+        ...(size === null ? {} : { closeButtonSize: size === 'undefined' ? undefined : size }),
+        closeIcon: icon === 'prop' ? h(IconClose, { size: 'large' }) : undefined,
+        // 窄视口使用公开宽度，验证标题与按钮在实际布局中的几何关系。
+        width: dropdownQuery.has('narrow') ? 320 : undefined,
+        closeOnEsc: true,
+        footer: null,
+        // 使用原取消回调同步 visible；保留默认真实动画。
+        onCancel: () => {
+          closeSizeVisible.value = false;
+        },
+      },
+      {
+        // 正文不给关闭按钮增加任何 CSS 或布局适配。
+        default: () => h('p', '正文内容'),
+        // 图形插槽应与 prop 一样只改变图形尺寸。
+        ...(icon === 'slot' ? { closeIcon: () => h(IconClose, { size: 'large' }) } : {}),
+      },
+    ),
+  ]);
+}
+
 /** 浮层专项复用真实包服务，其他组件消费页面保持原入口。 */
-const overlayRender = dropdownQuery.has('dropdown-modal')
-  ? renderPackedDropdownModal
-  : dropdownQuery.has('popover-repeat')
-    ? renderPackedPopoverRepeat
-    : dropdownQuery.has('side-sheet-a11y')
-      ? renderPackedSideSheet
-      : undefined;
+const overlayRender = dropdownQuery.has('overlay-close-size')
+  ? renderPackedCloseSize
+  : dropdownQuery.has('dropdown-modal')
+    ? renderPackedDropdownModal
+    : dropdownQuery.has('popover-repeat')
+      ? renderPackedPopoverRepeat
+      : dropdownQuery.has('side-sheet-a11y')
+        ? renderPackedSideSheet
+        : undefined;
 
 createApp({
   // 根消费示例保留原有组件交互，并加入直接调用的错误提示区域。

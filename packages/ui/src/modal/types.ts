@@ -1,6 +1,6 @@
 import type { Component, HTMLAttributes, StyleValue, VNodeChild } from 'vue';
 
-import type { ButtonProps, ButtonType } from '../button';
+import type { ButtonProps, ButtonSize, ButtonType } from '../button';
 import type { ConfigDirection } from '../config-provider';
 
 export const MODAL_SIZES = ['small', 'medium', 'large', 'full-width'] as const;
@@ -26,6 +26,8 @@ export interface ModalProps {
   class?: HTMLAttributes['class'];
   className?: HTMLAttributes['class'];
   closable?: boolean;
+  /** 原生关闭按钮尺寸，默认 small；图形尺寸仍由 closeIcon prop/slot 控制。 */
+  closeButtonSize?: ButtonSize;
   closeIcon?: VNodeChild;
   closeOnEsc?: boolean;
   confirmLoading?: boolean;

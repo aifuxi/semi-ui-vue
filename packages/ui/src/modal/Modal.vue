@@ -345,6 +345,7 @@ onBeforeUnmount(() => {
         :centered="runtimeProps.centered"
         :class="modalClasses"
         :closable="runtimeProps.closable"
+        :close-button-size="resolveProp('closeButtonSize', 'small')"
         :close-icon="closeIconContent()"
         :close-on-esc="runtimeProps.closeOnEsc"
         :content-class="contentClass"

@@ -119,3 +119,9 @@
 - 顶层关闭仅恢复仍连接且位于剩余顶层内的原入口，否则聚焦剩余 dialog；底层卸载不抢焦点。dialog 的 tabindex=-1 支持入口消失后的回归焦点。
 - 固定 React v2.102.0 同样缺少自定义 header 的有效名称契约及 Esc 顶层判断；本次接受这些可访问性差异，vendor 保持只读，默认 class、主题、遮罩、关闭回调与动效继续复用。
 - 旧 consumer 将外层固定为 closeOnEsc=false，不能证明两层均允许 Esc 的场景已通过；新回归恢复外层默认值，并覆盖自定义 header、入口移除、keepDOM 及顶层关闭保护。实际验证与交付边界见 [修复记录](../../../ai-work/20261108-modal-instance-aria.md) 的剩余项章节。
+
+## 关闭按钮尺寸扩展（BUG-000139）
+
+固定 v2.102.0 的原生关闭 Button 写死 `size="small"`。Vue 新增 `closeButtonSize?: ButtonSize`，默认 small，复用 Button 的 default/large 档位和主题样式，不修改 vendor。现有 closeIcon prop/slot 独立控制图形，默认尺寸、关闭事件、键盘、Portal 与焦点契约保持原规则。该属性是有意增加的能力，不要求 React 基线提供同名 API。
+
+新增回归覆盖默认 small、undefined、实例/全局优先级、动态尺寸、VNode/slot 图形、命令式 Modal 更新，以及真实 tarball 下的明暗主题、方形尺寸、窄容器、鼠标/Enter/Esc。执行结果见 [修复记录](../../../ai-work/2026-11-11-overlay-close-size.md)。SideSheet 保留基线无自动焦点返回的契约。

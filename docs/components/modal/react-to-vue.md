@@ -23,3 +23,7 @@ Vue 追加的原生能力（不改变固定基线行为）：
 - 具名 slot 与同名 VNode prop 并存，模板与 render function 都能自定义结构。
 
 样式、Portal、焦点、ARIA 与动效契约不随迁移改变；逐项证据见[对齐矩阵](./alignment.md)。
+
+## Vue 扩展：关闭按钮尺寸
+
+固定 React v2.102.0 没有独立关闭按钮尺寸配置。Vue 的 `closeButtonSize` 使用 Button 的 `small/default/large` 档位，默认 `small`；`closeIcon` 仍映射为同名 prop/slot 并独立决定图形。此扩展也支持现有 `semiGlobal.config.overrideDefaultProps`，无需业务覆盖私有样式。

@@ -122,3 +122,28 @@ Modal.destroyAll();
 ## React → Vue
 
 见 [React → Vue 迁移表](./react-to-vue.md)。完整公开行为、视觉与发布证据见[对齐矩阵](./alignment.md)。
+
+## 原生关闭按钮尺寸
+
+`closeButtonSize` 是 Vue 扩展属性，类型为 `ButtonSize`（`'small' | 'default' | 'large'`），默认 `'small'`，默认主题下分别为 24、32、40px 方形按钮。按钮档位与弹层 `size`、图形尺寸独立；现有 `closeIcon` prop/slot 继续控制图形，默认图形为 16px。
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Modal } from '@aifuxi/semi-ui-vue';
+import { IconClose } from '@aifuxi/semi-icons-vue';
+
+/** 由关闭事件同步可见状态。 */
+const visible = ref(true);
+</script>
+
+<template>
+  <!-- 32px 点击区域配合 20px 图形，分别通过两个公开入口控制。 -->
+  <Modal v-model:visible="visible" close-button-size="default" title="标题">
+    <template #closeIcon><IconClose size="large" /></template>
+    正文
+  </Modal>
+</template>
+```
+
+也可通过 `semiGlobal.config.overrideDefaultProps.Modal` 设置 `closeButtonSize` 统一产品规范，显式实例属性优先；省略或 `undefined` 使用全局配置，再回退 `'small'`。`closable=false` 仍隐藏原生入口，自定义 header 的关闭控件仍由调用方负责。尺寸来自主题，定制主题可能使用其他像素值。

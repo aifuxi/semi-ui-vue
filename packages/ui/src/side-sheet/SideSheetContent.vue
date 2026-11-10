@@ -3,6 +3,7 @@ import { computed, type HTMLAttributes, type StyleValue, type VNodeChild } from 
 import { IconClose } from '@aifuxi/semi-icons-vue';
 
 import { Button } from '../button';
+import type { ButtonSize } from '../button';
 import SideSheetNodeRenderer from './SideSheetNodeRenderer';
 import type { SideSheetCancelEvent, SideSheetPlacement, SideSheetSize } from './types';
 
@@ -12,6 +13,7 @@ interface Props {
   bodyStyle?: StyleValue | undefined;
   class?: HTMLAttributes['class'];
   closable: boolean;
+  closeButtonSize: ButtonSize;
   closeIcon: VNodeChild;
   customContainer: boolean;
   dataAttrs: Record<string, unknown>;
@@ -109,7 +111,7 @@ function handleMaskClick(event: MouseEvent): void {
             class="semi-sidesheet-close"
             type="tertiary"
             theme="borderless"
-            size="small"
+            :size="props.closeButtonSize"
             @click="emit('close', $event)"
           >
             <template #icon>

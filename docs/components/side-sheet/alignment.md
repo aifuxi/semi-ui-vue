@@ -103,3 +103,9 @@
 - Vue Teleport 在 target 改变时移动 targetAnchor，初始 targetStart 仍在原目标；renderer 的 getNextHostNode 遇到该 start 会跳到对应 end 后的节点。原先所有 SideSheet 未挂载时都指定 body，随后 Container 改目标，使相邻 body SideSheet 的分支替换取得容器内 anchor。
 - 客户端在 onBeforeMount 创建实例私有、离线的 DocumentFragment，供未解析目标阶段的 disabled Teleport 使用；SSR 仍保留 body selector 和可见内容。原始 VNode 及 DOM 经 Teleport 移动，不通过 key 重建；初始 start 锚点始终留在离线片段，不影响实际容器的其他 Portal。片段无全局引用，卸载时由 Teleport 清理。
 - 双实例 SFC 回归先复现相同 NotFoundError，修复后首开、外部编辑、关闭和重开通过。增加有效目标切换与 keepDOM 隐藏重开的输入节点身份和值保持断言；SSR hydration 验证挂载前已输入的值及原 DOM 节点迁移后保持。14 项单元/SSR通过，正式浏览器由主 agent 统一重验。
+
+## 关闭按钮尺寸扩展（BUG-000139）
+
+固定 v2.102.0 的原生关闭 Button 写死 `size="small"`。Vue 新增 `closeButtonSize?: ButtonSize`，默认 small，复用 Button 的 default/large 档位和主题样式，不修改 vendor。现有 closeIcon prop/slot 独立控制图形，默认尺寸、关闭事件、键盘、Portal 与焦点契约保持原规则。该属性是有意增加的能力，不要求 React 基线提供同名 API。
+
+新增回归覆盖默认 small、undefined、实例/全局优先级、动态尺寸、VNode/slot 图形、命令式 Modal 更新，以及真实 tarball 下的明暗主题、方形尺寸、窄容器、鼠标/Enter/Esc。执行结果见 [修复记录](../../../ai-work/2026-11-11-overlay-close-size.md)。SideSheet 保留基线无自动焦点返回的契约。

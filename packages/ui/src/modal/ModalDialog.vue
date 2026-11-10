@@ -24,6 +24,7 @@ import ModalInnerContent, { type ModalInnerContentExposed } from './ModalInnerCo
 import ModalNodeRenderer from './ModalNodeRenderer';
 import type { ConfigDirection } from '../config-provider';
 import type { ModalSize } from './types';
+import type { ButtonSize } from '../button';
 import { getTopModalLayer, registerModalLayer } from './modal-layers';
 
 interface Props {
@@ -32,6 +33,7 @@ interface Props {
   centered: boolean;
   class?: HTMLAttributes['class'];
   closable: boolean;
+  closeButtonSize: ButtonSize;
   closeIcon: VNodeChild;
   closeOnEsc: boolean;
   contentClass: HTMLAttributes['class'];
@@ -186,6 +188,7 @@ const rootClasses = computed(() => [
     'semi-modal-rtl': props.direction === 'rtl',
   },
 ]);
+/** 透传内容层配置，关闭按钮与弹窗尺寸独立；事件继续交由原 Foundation 处理。 */
 const innerVNode = computed(() =>
   h(ModalInnerContent, {
     ref: inner,
@@ -193,6 +196,7 @@ const innerVNode = computed(() =>
     bodyStyle: props.bodyStyle,
     centered: props.centered,
     closable: props.closable,
+    closeButtonSize: props.closeButtonSize,
     closeIcon: props.closeIcon,
     contentClass: props.contentClass,
     dialogId,
@@ -207,8 +211,11 @@ const innerVNode = computed(() =>
     size: props.size,
     title: props.title,
     width: props.width,
+    // 将真实动效终态交回父级控制 Portal 生命周期。
     onAnimationEnd: (event: AnimationEvent) => emit('animationEnd', event),
+    // 按钮只产生关闭请求，保留原取消顺序及受控行为。
     onClose: (event: MouseEvent) => foundation.close(event),
+    // 保留遮罩拖放保护，防止 dialog 内按下后误触遮罩。
     onMousedown: () => foundation.handleDialogMouseDown(),
   }),
 );

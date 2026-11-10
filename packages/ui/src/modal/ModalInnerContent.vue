@@ -9,6 +9,7 @@ import {
 import { IconClose } from '@aifuxi/semi-icons-vue';
 
 import { Button } from '../button';
+import type { ButtonSize } from '../button';
 import { Title } from '../typography';
 import ModalContentRenderer from './ModalContentRenderer';
 import ModalNodeRenderer from './ModalNodeRenderer';
@@ -23,6 +24,7 @@ interface Props {
   bodyStyle?: StyleValue | undefined;
   centered: boolean;
   closable: boolean;
+  closeButtonSize: ButtonSize;
   closeIcon: VNodeChild;
   contentClass: HTMLAttributes['class'];
   dialogId: string;
@@ -134,7 +136,7 @@ defineExpose({ element: dialogElement });
             class="semi-modal-close"
             type="tertiary"
             theme="borderless"
-            size="small"
+            :size="props.closeButtonSize"
             @click="emit('close', $event)"
           >
             <template #icon>
@@ -173,7 +175,7 @@ defineExpose({ element: dialogElement });
             class="semi-modal-close"
             type="tertiary"
             theme="borderless"
-            size="small"
+            :size="props.closeButtonSize"
             @click="emit('close', $event)"
           >
             <template #icon>
