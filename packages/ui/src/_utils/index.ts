@@ -140,6 +140,7 @@ export function getFocusableElements(node: HTMLElement): HTMLElement[] {
   return Array.from(node.querySelectorAll<HTMLElement>(focusableSelectors));
 }
 
+/** 等待指定次数的 macrotask 后执行回调，并将同步异常或异步拒绝交给调用方。 */
 export async function runAfterTicks(
   callback: (...args: never[]) => unknown,
   numberOfTicks: number,
@@ -148,11 +149,12 @@ export async function runAfterTicks(
     await callback();
     return;
   }
+  // 定时器只负责等待；递归返回值留在 async 调用链中，避免异常被悬空的 Promise 吞掉。
   await new Promise<void>((resolve) => {
-    setTimeout(() => {
-      void runAfterTicks(callback, numberOfTicks - 1).then(resolve);
-    }, 0);
+    // 零延迟定时器用于跨越一次 macrotask，不代表固定的实际等待时长。
+    setTimeout(resolve, 0);
   });
+  return runAfterTicks(callback, numberOfTicks - 1);
 }
 
 export function getScrollbarWidth(): number {
