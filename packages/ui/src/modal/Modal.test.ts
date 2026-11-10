@@ -29,6 +29,37 @@ async function mountVisible(props: Record<string, unknown> = {}): Promise<VueWra
 }
 
 describe('Modal', () => {
+  // 动画完成后的状态更新会触发组件重渲染，但不能因此再次添加入场动画类。
+  it('独立结束遮罩和内容动画后，无关参数更新不重新启动入场动画', async () => {
+    /** 使用真实动效开关，覆盖原始参数版本刷新与动画局部状态更新的交互。 */
+    const wrapper = mount(Modal, {
+      attachTo: document.body,
+      props: { visible: true, motion: true, title: '初始标题' },
+    });
+    try {
+      await flushPromises();
+      /** 遮罩与内容有独立 animationend，各自结束后保留另一方的动效状态。 */
+      const mask = document.querySelector('.semi-modal-mask')!;
+      /** 保留当前内容节点，确认参数更新不通过重挂载掩盖动效状态。 */
+      const content = document.querySelector('.semi-modal-content')!;
+      mask.dispatchEvent(new Event('animationend', { bubbles: true }));
+      await nextTick();
+      expect(mask.classList.contains('semi-modal-mask-animate-show')).toBe(false);
+      expect(content.classList.contains('semi-modal-content-animate-show')).toBe(true);
+      content.dispatchEvent(new Event('animationend', { bubbles: true }));
+      await nextTick();
+      expect(content.classList.contains('semi-modal-content-animate-show')).toBe(false);
+
+      await wrapper.setProps({ title: '更新标题', closable: false });
+      expect(document.querySelector('.semi-modal-content')).toBe(content);
+      expect(mask.classList.contains('semi-modal-mask-animate-show')).toBe(false);
+      expect(content.classList.contains('semi-modal-content-animate-show')).toBe(false);
+      expect(document.querySelector('.semi-modal-close')).toBeNull();
+    } finally {
+      wrapper.unmount();
+    }
+  });
+
   // 同一实例从缺省 visible 切换到受控显示，并区分缺省与显式 false 的 Boolean 参数。
   it('首次省略的 visible 和 closable 支持后续动态传入', async () => {
     /** 初始不传 visible/closable，覆盖 Vue 缺省 Boolean 与原始参数集合的差异。 */

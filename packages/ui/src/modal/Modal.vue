@@ -309,7 +309,13 @@ function handleAnimationEnd(event: AnimationEvent): void {
 }
 
 watch(
-  () => [runtimeVisible.value, runtimeProps.value.motion],
+  [
+    // 分别比较标量，避免原始参数版本刷新时新数组身份误触发动效重置。
+    () => runtimeVisible.value,
+    // 仅实际 motion 变化才开始新动效周期，普通渲染不重启已完成的动画。
+    () => runtimeProps.value.motion,
+  ],
+  // 显隐或动效开关确实改变时，遮罩与内容仍独立等待各自的 animationend。
   () => {
     contentAnimating.value = true;
     maskAnimating.value = true;

@@ -130,3 +130,8 @@
 
 - 初次未传 `visible`、`closable` 等参数时，后续显式传入仍重新解析参数存在性；`closable` 缺省与显式 false 即使经 Vue 规范化为同值，也保持默认关闭入口与显式隐藏的区别。新增 `Modal.test.ts` 覆盖显示、隐藏及关闭入口更新。
 - 本轮复现、修复依据及实际验证见[渲染响应性修复记录](../../../ai-work/2026-11-11-vue-reactivity-audit.md)，历史验收记录不替代后续候选验证。
+
+### 动画结束状态补充修复
+
+- 动态参数存在性刷新不重新启动已完成的入场动画；动效 watcher 分别比较 visible 与 motion，只有实际值改变才创建新周期。遮罩与内容仍独立处理 `animationend`，关闭后重开继续启动动画。
+- 最终全量检查暴露的本轮回归、已确认链路及定向验证见[动画状态修复记录](../../../ai-work/2026-11-11-modal-animation-update.md)。既有 PendingConsumers 动画断言及动态 visible/closable 回归均保留。
