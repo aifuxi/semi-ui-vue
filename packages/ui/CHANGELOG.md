@@ -1,5 +1,30 @@
 # @aifuxi/semi-ui-vue
 
+## 2.2.0
+
+### Minor Changes
+
+- [#47](https://github.com/aifuxi/semi-ui-vue/pull/47) [`7e63ccb`](https://github.com/aifuxi/semi-ui-vue/commit/7e63ccb7b8ca419b84b73b5dc26bb291a9f5e5e6) Thanks [@aifuxi](https://github.com/aifuxi)! - 为 Modal 和 SideSheet 新增 closeButtonSize，支持独立设置原生关闭按钮的 small/default/large 尺寸；保留默认 small，并允许通过全局默认配置统一产品规范。
+
+### Patch Changes
+
+- [#47](https://github.com/aifuxi/semi-ui-vue/pull/47) [`9455f5d`](https://github.com/aifuxi/semi-ui-vue/commit/9455f5d36ed2b35be5b95cb73c870d6547e31d92) Thanks [@aifuxi](https://github.com/aifuxi)! - 第三方通知改用许可证所属的实际安装版本，修正 markdown-it 版本说明过期的问题。
+
+- [#47](https://github.com/aifuxi/semi-ui-vue/pull/47) [`cefe80a`](https://github.com/aifuxi/semi-ui-vue/commit/cefe80a8f2397c1990fdd5a0f241a9ac1525a582) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Cascader 多选值不变时，父级更新 display 插槽后可见标签和已打开折叠浮层仍显示旧内容的问题。
+
+- [#47](https://github.com/aifuxi/semi-ui-vue/pull/47) [`a99ed05`](https://github.com/aifuxi/semi-ui-vue/commit/a99ed0596a67ac44b60c9670719f49205e31f1d7) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Modal 动态参数更新机制触发普通重渲染时，已结束的遮罩或内容入场动画被重新启动的问题，保留首次缺省参数的动态更新能力。
+
+- [#47](https://github.com/aifuxi/semi-ui-vue/pull/47) [`4f245c3`](https://github.com/aifuxi/semi-ui-vue/commit/4f245c39da378c45b9d368bd360c55c5e2ee1a07) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Modal、Banner、Tag、Dropdown 和 HotKeys 在首次省略参数后动态传入配置不生效的问题；同步刷新 Upload 的文件与标题插槽、TreeSelect 多选标签插槽，并避免裁切错误监听器被重复调用。
+
+- [#47](https://github.com/aifuxi/semi-ui-vue/pull/47) [`98915b6`](https://github.com/aifuxi/semi-ui-vue/commit/98915b64231e9b965499cb15b884c9a5a57b2c44) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 runAfterTicks 延迟回调失败时返回的 Promise 永久等待，并将同步异常和异步拒绝一致地传递给调用方。
+
+- [#47](https://github.com/aifuxi/semi-ui-vue/pull/47) [`e69dc6b`](https://github.com/aifuxi/semi-ui-vue/commit/e69dc6bfbde237111716bc4c3b0e63d0612d7d84) Thanks [@aifuxi](https://github.com/aifuxi)! - 为未显式设置 width 的 Modal 增加容器宽度上限，避免窄屏中的关闭与确认按钮超出视口；保留桌面默认宽度、显式宽度、全屏和原生动效。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.2.0
+  - @aifuxi/semi-icons-lab-vue@2.2.0
+  - @aifuxi/semi-illustrations-vue@2.2.0
+  - @aifuxi/semi-theme-default@2.2.0
+
 ## 2.1.5
 
 ### Patch Changes
