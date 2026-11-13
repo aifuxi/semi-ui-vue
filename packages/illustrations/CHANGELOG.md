@@ -1,5 +1,9 @@
 # @aifuxi/semi-illustrations-vue
 
+## 2.2.0
+
+No changes in this release.
+
 ## 2.1.5
 
 No changes in this release.
