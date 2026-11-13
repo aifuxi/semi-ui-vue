@@ -135,3 +135,9 @@
 
 - 动态参数存在性刷新不重新启动已完成的入场动画；动效 watcher 分别比较 visible 与 motion，只有实际值改变才创建新周期。遮罩与内容仍独立处理 `animationend`，关闭后重开继续启动动画。
 - 最终全量检查暴露的本轮回归、已确认链路及定向验证见[动画状态修复记录](../../../ai-work/2026-11-11-modal-animation-update.md)。既有 PendingConsumers 动画断言及动态 visible/closable 回归均保留。
+
+## 窄容器自动尺寸修正（BUG-000204）
+
+固定基线 small 为 448px，未设置 max-width，390px 视口中关闭和确认入口超出可视区。本轮真实 tarball 在修改前复现 right=448px；Vue 对省略 width 的非全屏弹窗增加 max-width:100%，以实际 Portal 容器为上限。保留桌面尺寸、显式 width、style.maxWidth 覆盖及全屏；不增加窗口监听，不修改 vendor 或消费方样式。
+
+这是有意接受的窄容器行为差异，不把固定基线的溢出当作正确预期。真实包回归覆盖 390/320px、明暗主题、自动 size、显式宽度、全屏、自定义容器、长标题正文、纵向滚动、关闭及回焦；桌面 React/Vue 几何、像素和 RTL 对照保持通过。结果与业务升级边界见[修复记录](../../../ai-work/2026-11-13-modal-viewport.md)。

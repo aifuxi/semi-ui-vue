@@ -1122,16 +1122,80 @@ function renderPackedCloseSize() {
   ]);
 }
 
+/** 窄屏专项仅通过公开 Modal 参数配置，不加载业务样式或宽度补丁。 */
+const viewportModalVisible = ref(false);
+
+/** 使用相同入口验证默认尺寸、显式宽度、长内容和局部 Portal。 */
+function renderPackedModalViewport() {
+  /** 显式 width 是调用方的布局选择，不应被自动尺寸上限覆盖。 */
+  const width = dropdownQuery.get('width');
+  /** 长内容同时覆盖标题换行与外层纵向滚动。 */
+  const long = dropdownQuery.has('long');
+  /** 自定义宿主用于证明上限相对于实际容器，而不是全局 window。 */
+  const custom = dropdownQuery.has('custom');
+  return h('main', [
+    h(
+      'button',
+      {
+        type: 'button',
+        // 真实点击打开并记录焦点恢复目标。
+        onClick: () => {
+          viewportModalVisible.value = true;
+        },
+      },
+      '打开窄屏弹窗',
+    ),
+    h('div', {
+      id: 'viewport-modal-host',
+      // 280px 小于专项的 320/390px 视口；600px 保留可见的局部浮层空间。
+      style: { position: 'relative', width: '280px', height: '600px' },
+    }),
+    h(
+      Modal,
+      {
+        visible: viewportModalVisible.value,
+        title: long ? '需要核对的较长标题，关闭入口应保持完整可见' : '窄屏确认',
+        size: dropdownQuery.get('size') ?? 'small',
+        width: width === null ? undefined : Number(width),
+        centered: dropdownQuery.has('centered'),
+        fullScreen: dropdownQuery.has('fullscreen'),
+        // 通过公开 getter 选择已挂载宿主，避免用窗口尺寸假冒容器尺寸。
+        getPopupContainer: custom
+          ? () => document.getElementById('viewport-modal-host')
+          : undefined,
+        // 由调用方同步受控状态，不改变库的关闭与焦点行为。
+        onCancel: () => {
+          viewportModalVisible.value = false;
+        },
+        // 确认按钮仍走公开 OK 事件。
+        onOk: () => {
+          viewportModalVisible.value = false;
+        },
+      },
+      {
+        // 每段是普通正文；不使用私有 CSS 限制弹窗宽度或溢出。
+        default: () =>
+          // 40 段用于超过 844px 视口；回调逐段创建真实文本节点。
+          Array.from({ length: long ? 40 : 1 }, (_, index) =>
+            h('p', `第${index + 1}段：请核对内容后选择取消或确认。`),
+          ),
+      },
+    ),
+  ]);
+}
+
 /** 浮层专项复用真实包服务，其他组件消费页面保持原入口。 */
 const overlayRender = dropdownQuery.has('overlay-close-size')
   ? renderPackedCloseSize
-  : dropdownQuery.has('dropdown-modal')
-    ? renderPackedDropdownModal
-    : dropdownQuery.has('popover-repeat')
-      ? renderPackedPopoverRepeat
-      : dropdownQuery.has('side-sheet-a11y')
-        ? renderPackedSideSheet
-        : undefined;
+  : dropdownQuery.has('modal-viewport')
+    ? renderPackedModalViewport
+    : dropdownQuery.has('dropdown-modal')
+      ? renderPackedDropdownModal
+      : dropdownQuery.has('popover-repeat')
+        ? renderPackedPopoverRepeat
+        : dropdownQuery.has('side-sheet-a11y')
+          ? renderPackedSideSheet
+          : undefined;
 
 createApp({
   // 根消费示例保留原有组件交互，并加入直接调用的错误提示区域。

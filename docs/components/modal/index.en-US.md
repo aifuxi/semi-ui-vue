@@ -128,3 +128,9 @@ See the [React → Vue mapping](./react-to-vue.md). Full public behavior, visual
 `closeButtonSize` is a Vue extension accepting `ButtonSize`: `'small' | 'default' | 'large'`, with `'small'` as the default. The default theme gives square 24/32/40px hit targets. This is independent of the overlay `size` and of `closeIcon` (prop or slot). To obtain a 32px button with a 20px glyph, set `closeButtonSize="default"` and render `<IconClose size="large" />` through `#closeIcon`. The default glyph stays 16px; custom themes may change pixel dimensions.
 
 `semiGlobal.config.overrideDefaultProps.Modal` also accepts this property. Explicit instance values take precedence; omitted/undefined values use the global setting, then `'small'`. `closable=false` still hides the native button. Controls inside a custom header remain consumer-owned.
+
+## Automatic width in narrow containers
+
+When `width` is omitted, the width selected by `size` is capped at 100% of the actual overlay container. Small remains 448px on desktop and shrinks within 390px or 320px containers so close and footer controls remain reachable. Custom popup containers use their own width; long content retains the existing vertical scrolling behavior.
+
+This is an intentional Vue layout correction relative to React v2.102.0. Explicit `width` retains its original size, including intentional overflow; `style.maxWidth` can override the automatic cap. Full screen, centering, padding, themes and animations retain their behavior. This does not imply full mobile support.

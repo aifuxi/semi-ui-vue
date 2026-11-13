@@ -147,3 +147,9 @@ const visible = ref(true);
 ```
 
 也可通过 `semiGlobal.config.overrideDefaultProps.Modal` 设置 `closeButtonSize` 统一产品规范，显式实例属性优先；省略或 `undefined` 使用全局配置，再回退 `'small'`。`closable=false` 仍隐藏原生入口，自定义 header 的关闭控件仍由调用方负责。尺寸来自主题，定制主题可能使用其他像素值。
+
+## 自动尺寸与窄容器
+
+未设置 `width` 时，`size` 对应宽度以实际弹层容器的 100% 为上限，默认 small 在桌面仍为 448px；390px 或 320px 容器中收缩到容器宽度，避免关闭和页尾操作超出可视区。`getPopupContainer` 使用实际容器宽度，长正文继续由原有外层纵向滚动。
+
+这是相对固定 React v2.102.0 的 Vue 布局修正。显式 `width` 保留原尺寸，即使大于容器；`style.maxWidth` 可覆盖自动上限。`fullScreen` 保持填满容器，`centered`、主题、内边距和动效不变。此修正不代表完整移动端适配承诺。
