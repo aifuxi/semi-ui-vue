@@ -105,6 +105,16 @@ function apply(): void {
     error.value = cause instanceof Error ? cause.message : '变量值无效。';
   }
 }
+/** 复原与直接编辑使用相同错误区域；失败时保留当前合法覆盖。 */
+function reset(): void {
+  if (!token.value) return;
+  try {
+    studio.resetToken(token.value);
+    error.value = '';
+  } catch (cause) {
+    error.value = cause instanceof Error ? cause.message : '无法恢复此变量。';
+  }
+}
 /** 选择引用后保存原表达式，而非固化解析后的色值。 */
 function reference(value: unknown): void {
   if (typeof value !== 'string') return;
@@ -138,7 +148,7 @@ function pick(value: ColorValue): void {
         type="tertiary"
         aria-label="恢复当前变量默认值"
         :disabled="!(token.name in studio.overrides[studio.global.mode])"
-        @click="studio.resetToken(token)"
+        @click="reset"
         ><template #icon><IconRefresh /></template
       ></Button>
     </div>

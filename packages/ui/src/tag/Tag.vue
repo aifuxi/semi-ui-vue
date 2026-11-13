@@ -3,6 +3,7 @@ import { IconClose } from '@aifuxi/semi-icons-vue';
 import {
   computed,
   getCurrentInstance,
+  onBeforeUpdate,
   shallowRef,
   Text,
   useAttrs,
@@ -31,10 +32,20 @@ defineSlots<TagSlots>();
 const attrs = useAttrs();
 const slots = useSlots();
 const instance = getCurrentInstance();
+/** visible 是否显式传入决定受控模式，事件监听存在性也会影响键盘语义。 */
+const rawPropsRevision = shallowRef(0);
+// 每次父更新重新读取参数集合，避免初次缺省后永久保持未受控状态。
+onBeforeUpdate(() => {
+  rawPropsRevision.value += 1;
+});
 const internalVisible = shallowRef(true);
 
+/** 返回当前父渲染是否显式提供参数，并让使用该判断的 computed 跟随父更新。 */
 function hasRawProp(name: string): boolean {
+  void rawPropsRevision.value;
+  /** 原始参数集合保留缺省与显式 false 的区别。 */
   const raw = instance?.vnode.props;
+  /** 转换回调用于兼容 Vue 模板的 kebab-case 参数。 */
   const kebabName = name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
   return Boolean(
     raw &&

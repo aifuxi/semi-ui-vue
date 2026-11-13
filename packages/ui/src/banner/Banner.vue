@@ -14,8 +14,10 @@ import {
   getCurrentInstance,
   markRaw,
   onBeforeUnmount,
+  onBeforeUpdate,
   onMounted,
   shallowReactive,
+  shallowRef,
   useAttrs,
   useSlots,
   type Component,
@@ -41,6 +43,12 @@ defineSlots<BannerSlots>();
 const attrs = useAttrs();
 const slots = useSlots();
 const instance = getCurrentInstance();
+/** 关闭入口和默认图标取决于参数是否存在，不能只追踪规范化后的参数值。 */
+const rawPropsRevision = shallowRef(0);
+// 父组件替换原始参数集合时，重新求值纯存在性 computed。
+onBeforeUpdate(() => {
+  rawPropsRevision.value += 1;
+});
 
 interface BannerState {
   visible: boolean;
@@ -76,8 +84,12 @@ function hasSlotTruthyContent(content: VNodeChild): boolean {
   return hasReactTruthyContent(content);
 }
 
+/** 识别当前渲染中显式提供的图标参数，确保 null 可以动态隐藏相应入口。 */
 function hasRawProp(name: keyof BannerProps): boolean {
+  void rawPropsRevision.value;
+  /** 当前 VNode 随父更新替换；版本依赖负责使纯存在性判断重新执行。 */
   const raw = instance?.vnode.props;
+  /** 兼容模板参数名，转换回调将大写字母映射为连字符形式。 */
   const kebabName = String(name).replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
   return Boolean(
     raw &&

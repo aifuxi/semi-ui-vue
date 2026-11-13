@@ -55,3 +55,9 @@ const visible = ref(false);
 | `aria-label`                                        | `string`                                 | -                  |
 
 See `alignment.md` for source evidence, event order, SSR, and deviations, and `react-to-vue.md` for migration details.
+
+## Native close button size
+
+`closeButtonSize` is a Vue extension accepting `ButtonSize`: `'small' | 'default' | 'large'`, with `'small'` as the default. The default theme gives square 24/32/40px hit targets. This is independent of the overlay `size` and of `closeIcon` (prop or slot). To obtain a 32px button with a 20px glyph, set `closeButtonSize="default"` and render `<IconClose size="large" />` through `#closeIcon`. The default glyph stays 16px; custom themes may change pixel dimensions.
+
+`semiGlobal.config.overrideDefaultProps.SideSheet` also accepts this property. Explicit instance values take precedence; omitted/undefined values use the global setting, then `'small'`. `closable=false` still hides the native button.

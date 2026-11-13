@@ -79,3 +79,28 @@ const visible = ref(true);
 | `aria-label`                                        | `string`                                 | -                 |
 
 完整源码矩阵、事件顺序、SSR 与偏差结论见 `alignment.md`，React 迁移见 `react-to-vue.md`。
+
+## 原生关闭按钮尺寸
+
+`closeButtonSize` 是 Vue 扩展属性，类型为 `ButtonSize`（`'small' | 'default' | 'large'`），默认 `'small'`，默认主题下分别为 24、32、40px 方形按钮。按钮档位与弹层 `size`、图形尺寸独立；现有 `closeIcon` prop/slot 继续控制图形，默认图形为 16px。
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { SideSheet } from '@aifuxi/semi-ui-vue';
+import { IconClose } from '@aifuxi/semi-icons-vue';
+
+/** 由关闭事件同步可见状态。 */
+const visible = ref(true);
+</script>
+
+<template>
+  <!-- 32px 点击区域配合 20px 图形，分别通过两个公开入口控制。 -->
+  <SideSheet v-model:visible="visible" close-button-size="default" title="标题">
+    <template #closeIcon><IconClose size="large" /></template>
+    正文
+  </SideSheet>
+</template>
+```
+
+也可通过 `semiGlobal.config.overrideDefaultProps.SideSheet` 设置 `closeButtonSize` 统一产品规范，显式实例属性优先；省略或 `undefined` 使用全局配置，再回退 `'small'`。`closable=false` 仍隐藏原生入口。尺寸来自主题，定制主题可能使用其他像素值。

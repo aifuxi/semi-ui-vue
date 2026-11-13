@@ -1,4 +1,5 @@
 import type { HTMLAttributes, StyleValue, VNodeChild } from 'vue';
+import type { ButtonSize } from '../button';
 
 export const SIDE_SHEET_PLACEMENTS = ['top', 'right', 'bottom', 'left'] as const;
 export const SIDE_SHEET_SIZES = ['small', 'medium', 'large'] as const;
@@ -15,6 +16,8 @@ export interface SideSheetProps {
   class?: HTMLAttributes['class'];
   className?: HTMLAttributes['class'];
   closable?: boolean;
+  /** 原生关闭按钮尺寸，默认 small；图形尺寸仍由 closeIcon prop/slot 控制。 */
+  closeButtonSize?: ButtonSize;
   closeIcon?: VNodeChild;
   closeOnEsc?: boolean;
   disableScroll?: boolean;

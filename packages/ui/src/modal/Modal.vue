@@ -7,6 +7,7 @@ import {
   markRaw,
   nextTick,
   onBeforeUnmount,
+  onBeforeUpdate,
   onMounted,
   shallowReactive,
   shallowRef,
@@ -35,6 +36,12 @@ defineSlots<ModalSlots>();
 const attrs = useAttrs();
 const slots = useSlots();
 const instance = getCurrentInstance();
+/** 原始 VNode 参数集合不响应式；父更新时同步其存在性，区分缺省与显式 false。 */
+const rawPropsRevision = shallowRef(0);
+// 在本次渲染前使依赖参数存在性的 computed 失效，不改变 Foundation 的状态语义。
+onBeforeUpdate(() => {
+  rawPropsRevision.value += 1;
+});
 const injectedConfig = inject(configContextKey, undefined);
 const dialog = useTemplateRef<ModalDialogExposed>('dialog');
 const teleportTarget = shallowRef<HTMLElement | null>(null);
@@ -50,8 +57,12 @@ let hideTimer: ReturnType<typeof setTimeout> | undefined;
 let originalBodyOverflow: string | null = null;
 let originalBodyWidth = '';
 
+/** 按当前父渲染判断参数是否显式传入，保留驼峰和 kebab-case 两种调用方式。 */
 function hasRawProp(key: keyof ModalProps): boolean {
+  void rawPropsRevision.value;
+  /** Vue 模板会使用 kebab-case，转换回调仅规范化待检查的公开键。 */
   const kebabKey = String(key).replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
+  /** 从本次 VNode 读取集合，不缓存初次挂载的参数。 */
   const raw = instance?.vnode.props;
   return Boolean(
     raw &&
@@ -298,7 +309,13 @@ function handleAnimationEnd(event: AnimationEvent): void {
 }
 
 watch(
-  () => [runtimeVisible.value, runtimeProps.value.motion],
+  [
+    // 分别比较标量，避免原始参数版本刷新时新数组身份误触发动效重置。
+    () => runtimeVisible.value,
+    // 仅实际 motion 变化才开始新动效周期，普通渲染不重启已完成的动画。
+    () => runtimeProps.value.motion,
+  ],
+  // 显隐或动效开关确实改变时，遮罩与内容仍独立等待各自的 animationend。
   () => {
     contentAnimating.value = true;
     maskAnimating.value = true;
@@ -345,6 +362,7 @@ onBeforeUnmount(() => {
         :centered="runtimeProps.centered"
         :class="modalClasses"
         :closable="runtimeProps.closable"
+        :close-button-size="resolveProp('closeButtonSize', 'small')"
         :close-icon="closeIconContent()"
         :close-on-esc="runtimeProps.closeOnEsc"
         :content-class="contentClass"

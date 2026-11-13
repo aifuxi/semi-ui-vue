@@ -401,6 +401,7 @@ async function collectManifest(packageDirectory) {
   };
 }
 
+/** 核验只读基线后收集公开 API、依赖及文档和测试资产，供生成与逐字检查共用。 */
 async function buildInventory() {
   verifyVendor();
 
@@ -428,6 +429,9 @@ async function buildInventory() {
     ...new Set(rootExports.map((entry) => rootModuleKey(entry.source)).filter(Boolean)),
   ].sort();
   const modules = [];
+
+  // 固定只读基线的 Cypress 文件列表供全部模块复用，避免对相同目录重复递归扫描。
+  const cypressFiles = await listFiles(path.join(vendorRoot, 'cypress/e2e'));
 
   for (const moduleKey of moduleKeys) {
     const adapterRoot = path.join(uiRoot, moduleKey);
@@ -460,7 +464,6 @@ async function buildInventory() {
     const docKey = moduleKey === 'icons' ? 'icon' : normalizeKey(moduleKey);
     const matchedDocs = docsByKey.get(docKey) ?? [];
     const allModuleFiles = await listFiles(adapterRoot);
-    const cypressFiles = await listFiles(path.join(vendorRoot, 'cypress/e2e'));
     const cypressKeys = new Set([
       normalizeKey(moduleKey),
       ...(moduleKey === 'input' ? ['textarea'] : []),

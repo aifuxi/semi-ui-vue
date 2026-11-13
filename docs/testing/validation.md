@@ -33,7 +33,7 @@
 
 `typecheck` 检查当前 workspace；文档站会先通过 `prepare:packages` 重建六个公开包，再按真实 exports 检查类型。`typecheck:source`、`check:source` 与 `check` 均复用 `typecheck:clean`，先清理旧产物，避免本地残留的 `dist` 掩盖冷启动错误。
 
-`build` 构建公开 JavaScript 包与主题；`verify:artifacts` 对已准备的准确产物执行主题、SSR 和真实包消费验证；`check:artifacts` 先构建再调用它。PR CI 复用冷启动 `check:source` 的文档消费者类型检查所生成的六包 dist，保留同一组产物断言。`pnpm dev` 启动 Storybook，`pnpm build:storybook` 单独构建场景站。浏览器测试自行管理所需参考服务，避免在同一验证链中重复准备产物。按需运行入口，不依次重复执行 check、artifacts、full、release。
+`build` 构建公开 JavaScript 包与主题；`verify:artifacts` 对已准备的准确产物执行主题、SSR 和真实包消费验证；`check:artifacts` 先构建再调用它。PR CI 复用冷启动 `check:source` 的文档消费者类型检查所生成的六包 dist，保留同一组产物断言。本地 `check:full` 同样在 `check` 成功后直接运行 `verify:artifacts`：`check` 内的 `typecheck:clean` 先清理旧产物，docs typecheck 再构建六包，中间不清理或更换产物；后续若调整此准备链，须同步维护 `check:full` 的输入契约。独立运行 `check:artifacts` 仍会重新构建。`pnpm dev` 启动 Storybook，`pnpm build:storybook` 单独构建场景站。浏览器测试自行管理所需参考服务，避免在同一验证链中重复准备产物。按需运行入口，不依次重复执行 check、artifacts、full、release。
 
 文档梯次开发使用“定向 hydration 单测 → 一次生产构建与浏览器巡检”的顺序。首次准备或资源包变化运行 `pnpm docs:prepare`；仅 UI/主题变化运行 `pnpm docs:prepare:ui`，随后 `test:docs` 只构建文档应用，不重复构建所有公开包。生产环境只输出笼统 hydration 警告时，给同一次巡检增加 `DOCS_HYDRATION_DIAGNOSTICS=1`，构建会启用 Vue 的详细 mismatch 信息。
 

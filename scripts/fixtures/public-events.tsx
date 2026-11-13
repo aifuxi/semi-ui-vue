@@ -1,3 +1,5 @@
+import { Modal as SizedModal } from '@aifuxi/semi-ui-vue/modal';
+import { SideSheet as SizedSideSheet } from '@aifuxi/semi-ui-vue/side-sheet';
 import * as UI from '@aifuxi/semi-ui-vue';
 import {
   Checkbox,
@@ -683,3 +685,15 @@ declare const checkboxRef: InstanceType<typeof Checkbox>;
 declare const dropdownRef: InstanceType<typeof Dropdown>;
 expectType<CheckboxExposed>(checkboxRef);
 expectType<DropdownExposed>(dropdownRef);
+
+/** 根入口与子路径均须公开关闭按钮尺寸，合法档位可用于模板及 TSX。 */
+export const overlayCloseSizes = [
+  <UI.Modal closeButtonSize="default" />,
+  <UI.SideSheet closeButtonSize="large" />,
+  <SizedModal closeButtonSize="small" />,
+  <SizedSideSheet closeButtonSize="default" />,
+];
+// @ts-expect-error ButtonSize 不支持 medium，不能将弹层 size 枚举混入关闭按钮。
+export const invalidModalCloseSize = <SizedModal closeButtonSize="medium" />;
+// @ts-expect-error SideSheet 同样必须限制为 ButtonSize。
+export const invalidSideSheetCloseSize = <SizedSideSheet closeButtonSize="medium" />;

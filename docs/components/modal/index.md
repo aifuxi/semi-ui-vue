@@ -122,3 +122,34 @@ Modal.destroyAll();
 ## React → Vue
 
 见 [React → Vue 迁移表](./react-to-vue.md)。完整公开行为、视觉与发布证据见[对齐矩阵](./alignment.md)。
+
+## 原生关闭按钮尺寸
+
+`closeButtonSize` 是 Vue 扩展属性，类型为 `ButtonSize`（`'small' | 'default' | 'large'`），默认 `'small'`，默认主题下分别为 24、32、40px 方形按钮。按钮档位与弹层 `size`、图形尺寸独立；现有 `closeIcon` prop/slot 继续控制图形，默认图形为 16px。
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Modal } from '@aifuxi/semi-ui-vue';
+import { IconClose } from '@aifuxi/semi-icons-vue';
+
+/** 由关闭事件同步可见状态。 */
+const visible = ref(true);
+</script>
+
+<template>
+  <!-- 32px 点击区域配合 20px 图形，分别通过两个公开入口控制。 -->
+  <Modal v-model:visible="visible" close-button-size="default" title="标题">
+    <template #closeIcon><IconClose size="large" /></template>
+    正文
+  </Modal>
+</template>
+```
+
+也可通过 `semiGlobal.config.overrideDefaultProps.Modal` 设置 `closeButtonSize` 统一产品规范，显式实例属性优先；省略或 `undefined` 使用全局配置，再回退 `'small'`。`closable=false` 仍隐藏原生入口，自定义 header 的关闭控件仍由调用方负责。尺寸来自主题，定制主题可能使用其他像素值。
+
+## 自动尺寸与窄容器
+
+未设置 `width` 时，`size` 对应宽度以实际弹层容器的 100% 为上限，默认 small 在桌面仍为 448px；390px 或 320px 容器中收缩到容器宽度，避免关闭和页尾操作超出可视区。`getPopupContainer` 使用实际容器宽度，长正文继续由原有外层纵向滚动。
+
+这是相对固定 React v2.102.0 的 Vue 布局修正。显式 `width` 保留原尺寸，即使大于容器；`style.maxWidth` 可覆盖自动上限。`fullScreen` 保持填满容器，`centered`、主题、内边距和动效不变。此修正不代表完整移动端适配承诺。

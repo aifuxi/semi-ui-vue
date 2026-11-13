@@ -11,6 +11,16 @@ afterEach(() => {
 });
 
 describe('Banner', () => {
+  // closeIcon 的参数存在性不能被首次渲染缓存，显式 null 应移除关闭入口。
+  it('首次省略 closeIcon 后仍可动态传入 null', async () => {
+    /** 保持同一实例，避免重新挂载掩盖参数存在性缓存。 */
+    const wrapper = mount(Banner, { props: { description: '动态关闭入口' } });
+    expect(wrapper.find('.semi-banner-close').exists()).toBe(true);
+    await wrapper.setProps({ closeIcon: null });
+    expect(wrapper.find('.semi-banner-close').exists()).toBe(false);
+    wrapper.unmount();
+  });
+
   it('公开入口导出组件与固定类型枚举', () => {
     expect(PublicBanner).toBe(Banner);
     expect(BANNER_TYPES).toEqual(['info', 'success', 'danger', 'warning']);

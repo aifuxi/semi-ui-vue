@@ -24,6 +24,7 @@ import {
 } from 'vue';
 
 import { configContextKey, type ConfigContextValue } from '../config-provider';
+import { useRenderComputed } from '../_utils';
 import Cropper from '../cropper/Cropper.vue';
 import type { CropperMethods } from '../cropper';
 import Modal from '../modal/Modal.vue';
@@ -512,7 +513,9 @@ function renderFileItem(file: UploadFileItem, index: number): VNodeChild | undef
   return slots.fileItem?.(cardProps) ?? props.renderFileItem?.(cardProps);
 }
 
-const fileRenderEntries = computed(() =>
+/** 文件数据未变时，父组件仍可能替换 fileItem 插槽闭包；每次渲染同步其结果。 */
+const fileRenderEntries = useRenderComputed(() =>
+  // 为每个文件构造独立的渲染条目和操作参数，沿用同一次渲染的插槽内容。
   visibleFileList.value.map((file, index) => ({
     file,
     cardProps: fileCardProps(file, index),
@@ -536,7 +539,8 @@ function renderFileListTitle(): VNodeChild | undefined {
   );
 }
 
-const renderedFileListTitle = computed(() => renderFileListTitle());
+/** 列表标题也可来自父插槽，使用共享渲染失效机制避免复用旧 VNode。 */
+const renderedFileListTitle = useRenderComputed(renderFileListTitle);
 
 const cropVisible = shallowRef(false);
 const cropFile = shallowRef<File | null>(null);
@@ -551,13 +555,14 @@ function dispatchCroppedFiles(files: File[], isReplaceOperation: boolean): void 
   else foundation.handleChange(files);
 }
 
+/** 执行公开裁切前置检查；异常经 cropError 统一通知，拒绝后保留普通上传流程。 */
 async function shouldCropFile(file: File, files: File[]): Promise<boolean> {
   if (!props.beforeCrop) return true;
   try {
     return (await props.beforeCrop(file, files)) !== false;
   } catch (error) {
+    /** 将非 Error 拒绝值规范化；Vue emit 会调用同名 onCropError 监听器。 */
     const resolved = error instanceof Error ? error : new Error(String(error));
-    props.onCropError?.(resolved);
     emit('cropError', resolved);
     return false;
   }
@@ -587,23 +592,32 @@ async function handleCropFiles(files: File[], isReplaceOperation = false): Promi
   cropVisible.value = true;
 }
 
+/** 导出当前裁切结果并推进待裁切队列，完成后交回 Foundation 上传或替换文件。 */
 async function confirmCrop(): Promise<void> {
   if (!cropFile.value || !cropperRef.value) return;
   try {
+    /** 从当前 Cropper 读取画布，保留其公开导出契约。 */
     const canvas = cropperRef.value.getCropperCanvas();
+    /** Boolean crop 使用内置配置；对象形式可以覆盖导出质量。 */
     const config = typeof props.crop === 'object' ? props.crop : {};
+    /** 将浏览器异步 Blob 导出转换为可等待操作，空结果作为裁切错误上报。 */
     const blob = await new Promise<Blob>((resolve, reject) =>
       canvas.toBlob(
+        // 浏览器可能返回 null，不能据此构造一个无效的上传文件。
         (value) => (value ? resolve(value) : reject(new Error('Failed to create blob'))),
         cropFile.value?.type || 'image/png',
+        // 沿用裁切契约的默认导出质量；仅在调用者未提供 quality 时生效。
         config.quality ?? 0.92,
       ),
     );
+    /** 沿用源文件元数据，仅替换裁切后的二进制内容。 */
     const file = new File([blob], cropFile.value.name, {
       type: cropFile.value.type,
       lastModified: cropFile.value.lastModified,
     });
+    /** 累积本次批量选择中已确认的裁切文件。 */
     const croppedFiles = [...state.croppedFiles, file];
+    /** 每次仅显示一张图，确认后再推进到下一张待裁切图像。 */
     const next = state.pendingImageFiles[0];
     if (next) {
       if (cropSource.value) URL.revokeObjectURL(cropSource.value);
@@ -613,13 +627,16 @@ async function confirmCrop(): Promise<void> {
       state.croppedFiles = croppedFiles;
       return;
     }
+    /** 非图像文件不参与裁切，但需和已裁切图像一起交回上传队列。 */
     const completedFiles = [...croppedFiles, ...state.nonImageFiles];
+    /** closeCrop 会复位操作状态，因此先保留本次是否为替换操作。 */
     const isReplaceOperation = state.isReplaceOperation;
     closeCrop();
     dispatchCroppedFiles(completedFiles, isReplaceOperation);
   } catch (error) {
+    /** 保持前置检查与画布导出错误的公开 payload 类型一致。 */
     const resolved = error instanceof Error ? error : new Error(String(error));
-    props.onCropError?.(resolved);
+    // 统一通过 emits 通知，避免再手动调用与 cropError 对应的 onCropError 参数。
     emit('cropError', resolved);
   }
 }

@@ -68,3 +68,8 @@
 - Vue Fragment 在 SplitTagGroup 中按模板直接子元素展开；React Fragment 是单个可克隆元素但 class 不落 DOM。Vue 映射避免无效 class 丢失，并保持可见边界语义。
 - 复杂内容缺省 key 使用稳定索引而非 React 侧 `Math.random()`；仅改善 Vue patch 稳定性，不改变 DOM、事件或公开 payload。
 - 当前没有 accepted visual/behavior deviation。当前状态：`ready`；固定源码、单元/SSR、主题/打包与 Chromium 全量门禁均已通过。
+
+## Vue 动态更新修复（2026-11-11）
+
+- 初次未传 `visible` 后动态传入 `false`，同一实例立即进入受控隐藏状态；随后 `true` 可恢复显示。存在性判断随父渲染更新，保留既有 `.semi-tag-invisible` 语义。新增 `Tag.test.ts` 回归。
+- 本轮复现、修复依据及实际验证见[渲染响应性修复记录](../../../ai-work/2026-11-11-vue-reactivity-audit.md)，历史验收记录不替代后续候选验证。

@@ -70,13 +70,13 @@ const runtimeDependencies = Object.fromEntries(
 const dependencyEntries = Object.entries(runtimeDependencies).sort(([left], [right]) =>
   left.localeCompare(right),
 );
+/** 许可证文件及其安装位置；通知版本从相同位置的 package.json 获取，不重复维护版本号。 */
 const licensedDependencies = [
   {
     licenseFile: 'license',
     licenseRoot: path.join(workspaceRoot, 'packages', 'ui', 'node_modules'),
     name: '@mdx-js/mdx',
     noticeName: '@mdx-js/mdx',
-    version: '3.0.1',
   },
   ...[
     '@tiptap/core',
@@ -91,74 +91,73 @@ const licensedDependencies = [
     '@tiptap/pm',
     '@tiptap/starter-kit',
     '@tiptap/vue-3',
-  ].map((name) => ({
-    licenseFile: name === '@tiptap/pm' ? 'LICENSE' : 'LICENSE.md',
-    licenseRoot: path.join(workspaceRoot, 'packages', 'ui', 'node_modules'),
-    name,
-    noticeName: name,
-    version: runtimeDependencies[name],
-  })),
+  ].map(
+    /** Tiptap 的包级许可证命名不同，但版本说明与其他依赖使用同一读取规则。 */
+    (name) => ({
+      licenseFile: name === '@tiptap/pm' ? 'LICENSE' : 'LICENSE.md',
+      licenseRoot: path.join(workspaceRoot, 'packages', 'ui', 'node_modules'),
+      name,
+      noticeName: name,
+    }),
+  ),
   {
     licenseFile: 'LICENSE.md',
     name: 'async-validator',
     noticeName: 'async-validator',
-    version: '3.5.2',
   },
   {
     licenseFile: 'LICENSE',
     name: 'bezier-easing',
     noticeName: 'bezier-easing',
-    version: '2.1.0',
   },
   {
     licenseFile: 'license',
     licenseRoot: path.join(workspaceRoot, 'packages', 'ui', 'node_modules'),
     name: 'remark-gfm',
     noticeName: 'remark-gfm',
-    version: '4.0.0',
   },
-  { licenseFile: 'LICENSE', name: 'classnames', noticeName: 'classnames', version: '2.5.1' },
-  { licenseFile: 'LICENSE.md', name: 'date-fns', noticeName: 'date-fns', version: '2.30.0' },
+  { licenseFile: 'LICENSE', name: 'classnames', noticeName: 'classnames' },
+  { licenseFile: 'LICENSE.md', name: 'date-fns', noticeName: 'date-fns' },
   {
     licenseFile: 'LICENSE.md',
     name: 'date-fns-tz',
     noticeName: 'date-fns-tz',
-    version: '1.3.8',
   },
-  { licenseFile: 'LICENSE', name: 'lodash', noticeName: 'Lodash', version: '4.18.1' },
+  { licenseFile: 'LICENSE', name: 'lodash', noticeName: 'Lodash' },
   {
     licenseFile: 'LICENSE',
     licenseRoot: path.join(workspaceRoot, 'packages', 'ui', 'node_modules'),
     name: 'markdown-it',
     noticeName: 'markdown-it',
-    version: '14.3.1',
   },
   {
     licenseFile: 'LICENSE.md',
     licenseRoot: path.join(workspaceRoot, 'packages', 'foundation-integration', 'node_modules'),
     name: 'jsonc-parser',
     noticeName: 'jsonc-parser',
-    version: '3.3.1',
   },
   {
     licenseFile: 'LICENSE.md',
     name: 'lottie-web',
     noticeName: 'lottie-web',
-    version: '5.13.0',
   },
-  { licenseFile: 'LICENSE', name: 'prismjs', noticeName: 'PrismJS', version: '1.30.0' },
+  { licenseFile: 'LICENSE', name: 'prismjs', noticeName: 'PrismJS' },
   {
     licenseFile: 'LICENSE',
     name: 'scroll-into-view-if-needed',
     noticeName: 'scroll-into-view-if-needed',
-    version: '2.2.31',
   },
-].filter(({ name }) => Object.hasOwn(runtimeDependencies, name));
-// Tiptap accepts compatible upgrades; notices identify the installed license version.
+].filter(
+  /** 各公开包只附带实际声明或内联使用的依赖许可证。 */
+  ({ name }) => Object.hasOwn(runtimeDependencies, name),
+);
+// 通知识别实际附带许可证所属版本；SBOM 继续使用清单声明的依赖范围。
 for (const dependency of licensedDependencies) {
-  if (!dependency.name.startsWith('@tiptap/')) continue;
+  /** 沿用复制许可证时的解析位置，兼容根依赖与包内依赖。 */
+  const dependencyRoot = dependency.licenseRoot ?? path.join(workspaceRoot, 'node_modules');
+  /** 已安装清单与下方复制的许可证必须属于同一依赖实例。 */
   const installedManifest = JSON.parse(
-    await readFile(path.join(dependency.licenseRoot, dependency.name, 'package.json'), 'utf8'),
+    await readFile(path.join(dependencyRoot, dependency.name, 'package.json'), 'utf8'),
   );
   dependency.version = installedManifest.version;
 }

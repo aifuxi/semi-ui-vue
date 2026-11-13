@@ -22,20 +22,20 @@
 
 ## API 与行为矩阵
 
-| React v2.102.0                                 | Vue 映射                                     | 关键行为                                       |
-| ---------------------------------------------- | -------------------------------------------- | ---------------------------------------------- |
-| `stopPropagation`                              | 同名原生/包装事件工具                        | `noImmediate` 只跳过 immediate stop            |
-| `cloneDeep`                                    | 保留函数、Vue VNode、Error 身份              | 其余数据深拷贝；customizer 优先                |
-| `registerMediaQuery`                           | 同名                                         | 初始回调、match/unmatch、现代与 legacy 清理    |
-| `isSemiIcon`                                   | 检查 Vue VNode `type.elementType === 'Icon'` | 与本仓库图标工厂契约一致                       |
-| `getActiveElement`                             | 同名                                         | SSR 返回 `null`                                |
-| `isNodeContainsFocus` / `getFocusableElements` | 同名                                         | 选择器集合与固定基线一致，不额外过滤不可见节点 |
-| `runAfterTicks`                                | 同名                                         | 非正数立即执行，正数逐个 macrotask 执行        |
-| `getScrollbarWidth`                            | 同名                                         | 非浏览器为 `0`                                 |
-| `getDefaultPropsFromGlobalConfig`              | 同名泛型 Proxy                               | global 显式键覆盖局部默认值，枚举键合并        |
-| `usePrevFocus`                                 | `[readonly shallowRef, setter]`              | 替换时 blur 旧元素，卸载时 blur 当前元素       |
-| ReactDOM `render/unmount`                      | Vue `render/unmount`                         | 同一容器命令式挂载/清理                        |
-| `resolveDOM/getRef`                            | Vue 实例 `$el` / VNode `ref`                 | SSR 安全，非 Element 返回 `null`               |
+| React v2.102.0                                 | Vue 映射                                     | 关键行为                                                                |
+| ---------------------------------------------- | -------------------------------------------- | ----------------------------------------------------------------------- |
+| `stopPropagation`                              | 同名原生/包装事件工具                        | `noImmediate` 只跳过 immediate stop                                     |
+| `cloneDeep`                                    | 保留函数、Vue VNode、Error 身份              | 其余数据深拷贝；customizer 优先                                         |
+| `registerMediaQuery`                           | 同名                                         | 初始回调、match/unmatch、现代与 legacy 清理                             |
+| `isSemiIcon`                                   | 检查 Vue VNode `type.elementType === 'Icon'` | 与本仓库图标工厂契约一致                                                |
+| `getActiveElement`                             | 同名                                         | SSR 返回 `null`                                                         |
+| `isNodeContainsFocus` / `getFocusableElements` | 同名                                         | 选择器集合与固定基线一致，不额外过滤不可见节点                          |
+| `runAfterTicks`                                | 同名                                         | 非正数立即执行，正数逐个 macrotask 执行；回调失败始终拒绝返回的 Promise |
+| `getScrollbarWidth`                            | 同名                                         | 非浏览器为 `0`                                                          |
+| `getDefaultPropsFromGlobalConfig`              | 同名泛型 Proxy                               | global 显式键覆盖局部默认值，枚举键合并                                 |
+| `usePrevFocus`                                 | `[readonly shallowRef, setter]`              | 替换时 blur 旧元素，卸载时 blur 当前元素                                |
+| ReactDOM `render/unmount`                      | Vue `render/unmount`                         | 同一容器命令式挂载/清理                                                 |
+| `resolveDOM/getRef`                            | Vue 实例 `$el` / VNode `ref`                 | SSR 安全，非 Element 返回 `null`                                        |
 
 ## DOM、主题、可访问性与视觉
 
@@ -62,6 +62,10 @@
 - 发布：根/子路径运行时和类型 consumer、tree-shaking、真实安装、许可证/SBOM。
 
 ## 完成证据
+
+- 2026-11-11 全仓审计修复延迟回调失败时 Promise 永久 pending 的问题；同步异常和异步拒绝在
+  0、1、2 次 tick 后均传递原始错误。工具 DOM/SSR 与新增回归共 3 个文件、16 项通过。
+  固定 React 基线同样遗漏拒绝传播，本仓库明确修正此异常路径；正常调度语义保持一致。
 
 - `_base` / `_utils` 定向共 4 个测试文件、16 项行为与 SSR 测试通过；覆盖事件、复制、
   modern/legacy media query、焦点、tick、global Proxy、composable 清理和命令式 render。

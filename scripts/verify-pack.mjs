@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { access, readFile, readdir, writeFile } from 'node:fs/promises';
+import { readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { publicPackages as packages } from './public-packages.mjs';
@@ -8,6 +8,7 @@ import { verifyThemeCss } from './theme-contracts.mjs';
 import ts from 'typescript';
 import { verifyUiTreeshaking } from './verify-ui-treeshaking.mjs';
 import { verifyColorTools } from './verify-color-tools.mjs';
+import { assertExportTargets } from './public-export-entries.mjs';
 
 const workspaceRoot = fileURLToPath(new URL('..', import.meta.url));
 const sourceVersions = new Set(
@@ -40,29 +41,6 @@ function run(command, args, cwd) {
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
   }).trim();
-}
-
-async function assertExportTargets(packageRoot, value) {
-  if (typeof value === 'string') {
-    if (value.startsWith('./')) {
-      const target = value.slice(2);
-      if (target.includes('*')) {
-        const wildcardIndex = target.indexOf('*');
-        const directory = path.join(packageRoot, path.dirname(target.slice(0, wildcardIndex)));
-        const suffix = target.slice(wildcardIndex + 1);
-        const candidates = await readdir(directory);
-        if (!candidates.some((candidate) => candidate.endsWith(suffix))) {
-          throw new Error(`通配导出没有匹配产物：${value}`);
-        }
-      } else {
-        await access(path.join(packageRoot, target));
-      }
-    }
-    return;
-  }
-
-  if (!value || typeof value !== 'object') return;
-  await Promise.all(Object.values(value).map((entry) => assertExportTargets(packageRoot, entry)));
 }
 
 const consumer = await preparePackedConsumer({ verifyUiTransitives: true });

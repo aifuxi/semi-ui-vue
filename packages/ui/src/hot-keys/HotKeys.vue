@@ -54,8 +54,11 @@ function hasRawProp(name: keyof HotKeysProps): boolean {
   );
 }
 
+/** 先订阅实例值，再按显式参数和全局默认值解析，避免初次缺省时漏掉响应式依赖。 */
 function configuredValue<Key extends keyof HotKeysProps>(key: Key): HotKeysProps[Key] | undefined {
-  if (hasRawProp(key)) return props[key] as HotKeysProps[Key];
+  /** 此组件的 Boolean 参数显式 default: undefined，值变化即可区分缺省与显式 false。 */
+  const currentValue = props[key];
+  if (hasRawProp(key)) return currentValue as HotKeysProps[Key];
   return semiGlobal.config.overrideDefaultProps?.HotKeys?.[key] as HotKeysProps[Key] | undefined;
 }
 

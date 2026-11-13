@@ -13,3 +13,7 @@
 | `getPopupContainer`                                                | 同名函数 prop；也可由 ConfigProvider 提供 |
 
 `placement`、`size`、`width`、`height`、`mask`、`maskClosable`、`closable`、`closeOnEsc`、`disableScroll`、`motion`、`keepDOM`、`zIndex` 以及 style props 保持同名。Vue 版本额外提供类型化 props/emits/slots 和 `v-model:visible`，不会把 React children/render 语义字面搬入公开 API。
+
+## Vue 扩展：关闭按钮尺寸
+
+固定 React v2.102.0 没有独立关闭按钮尺寸配置。Vue 的 `closeButtonSize` 使用 Button 的 `small/default/large` 档位，默认 `small`；`closeIcon` 仍映射为同名 prop/slot 并独立决定图形。此扩展也支持现有 `semiGlobal.config.overrideDefaultProps`，无需业务覆盖私有样式。

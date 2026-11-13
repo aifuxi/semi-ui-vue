@@ -327,6 +327,7 @@ onBeforeUnmount(() => {
         :body-style="resolveOptional('bodyStyle')"
         :class="rootClasses"
         :closable="runtimeProps.closable"
+        :close-button-size="resolveProp('closeButtonSize', 'small')"
         :close-icon="closeIconContent()"
         :custom-container="customContainer"
         :data-attrs="dataAttrs"

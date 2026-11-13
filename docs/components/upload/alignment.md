@@ -101,3 +101,8 @@
 - Upload 定向 unit/SSR 为 13 项通过；应用、场景注册与测试基础设施定向合计 160 项通过，类型与构建门禁通过。
 - Chromium 定向 7 项通过，覆盖桌面/移动、light/dark、RTL；7 个目标的 computed style/geometry 对齐，React/Vue 独立裁剪截图直接字节相等，无 accepted visual deviation。
 - 根/`upload` 子路径、独立 `upload.css`、SSR dist 与真实 tarball 安装/导入/类型/样式/合规验收通过。
+
+## Vue 动态更新修复（2026-11-11）
+
+- 文件列表身份不变、父 render 替换 `fileItem` / `fileListTitle` 插槽闭包时，两类内容均刷新，复用现有 `useRenderComputed`。`beforeCrop` 拒绝与确认裁切时的画布异常统一经 `cropError` emit 通知，每次异常只调用一次同名监听器，保留 `onCropError` 类型。新增 `Upload.test.ts` 插槽与两条错误路径回归。
+- 本轮复现、修复依据及实际验证见[渲染响应性修复记录](../../../ai-work/2026-11-11-vue-reactivity-audit.md)，历史验收记录不替代后续候选验证。

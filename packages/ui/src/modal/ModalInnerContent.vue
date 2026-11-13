@@ -9,6 +9,7 @@ import {
 import { IconClose } from '@aifuxi/semi-icons-vue';
 
 import { Button } from '../button';
+import type { ButtonSize } from '../button';
 import { Title } from '../typography';
 import ModalContentRenderer from './ModalContentRenderer';
 import ModalNodeRenderer from './ModalNodeRenderer';
@@ -23,6 +24,7 @@ interface Props {
   bodyStyle?: StyleValue | undefined;
   centered: boolean;
   closable: boolean;
+  closeButtonSize: ButtonSize;
   closeIcon: VNodeChild;
   contentClass: HTMLAttributes['class'];
   dialogId: string;
@@ -64,8 +66,11 @@ function cssSize(value: string | number | undefined): string | undefined {
   return typeof value === 'number' ? `${value}px` : value;
 }
 
-/** 全屏覆盖显式宽高，与原尺寸定位规则一致。 */
+/** 自动尺寸不超出实际 Portal 容器；显式 width、style 与全屏保留调用方布局控制。 */
 const outerStyle = computed<StyleValue>(() => [
+  // 固定基线 small=448px；只约束自动尺寸，避免窄屏将关闭及页尾操作推出视口。
+  // 使用父容器百分比而非视口单位，兼容 getPopupContainer；style.maxWidth 可显式覆盖。
+  props.width === undefined && !props.fullScreen ? { maxWidth: '100%' } : undefined,
   props.outerStyle,
   props.width === undefined ? undefined : { width: cssSize(props.width) },
   props.height === undefined ? undefined : { height: cssSize(props.height) },
@@ -134,7 +139,7 @@ defineExpose({ element: dialogElement });
             class="semi-modal-close"
             type="tertiary"
             theme="borderless"
-            size="small"
+            :size="props.closeButtonSize"
             @click="emit('close', $event)"
           >
             <template #icon>
@@ -173,7 +178,7 @@ defineExpose({ element: dialogElement });
             class="semi-modal-close"
             type="tertiary"
             theme="borderless"
-            size="small"
+            :size="props.closeButtonSize"
             @click="emit('close', $event)"
           >
             <template #icon>

@@ -148,3 +148,8 @@
 - 与固定 React 基线的显式差异：Menu 激活事件的 `defaultPrevented` 变为 true，用于保证单次激活后的浏览器默认动作不会点击新获得焦点的控件；打印字符、导航、Esc、事件冒泡及公开 props/emits/slots 保持原契约。
 - 验证：Dropdown 单元/SSR/hydration 4 个文件、35 项通过；真实生产 tarball 的 Dropdown→Modal、默认防溢出和 Modal 可访问性共 20 项通过，3 workers、0 retries。新增 6 项覆盖 Enter/Space/鼠标、默认/关闭动效、单次动作、无意外取消、默认取消按钮焦点、编辑、Esc、重开和显式取消。固定 React 基线 Dropdown Chromium 对照 5 项通过，未更新快照。
 - 边界：当前源码与新构建 tarball 已验证；原业务服务尚未升级依赖，发布和消费方集成后仍需按原入口复测。BUG-000074 沿用既有修复，本轮仅复跑回归，不追加组件实现或应用绕过。
+
+## Vue 动态更新修复（2026-11-11）
+
+- 初次未传 `trigger` 后动态设置 `click`，会替换 hover 的触发绑定。已有原始参数版本机制扩展到共享的 `hasRawProp`，防止 `resolveProp` 路径继续缓存初次缺省状态；新增 `Dropdown.test.ts` 观察公开 `update:visible` 事件。
+- 本轮复现、修复依据及实际验证见[渲染响应性修复记录](../../../ai-work/2026-11-11-vue-reactivity-audit.md)，历史验收记录不替代后续候选验证。

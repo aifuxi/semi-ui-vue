@@ -1,6 +1,6 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { defineComponent, nextTick } from 'vue';
+import { defineComponent, h, nextTick, shallowRef } from 'vue';
 
 import { Popover } from '../popover';
 import DefaultCascader, { Cascader } from './index';
@@ -37,6 +37,57 @@ afterEach(() => {
 });
 
 describe('Cascader', () => {
+  // 同时挂载可见与折叠标签，确保缓存 VNode 不会阻止子 Tag 中的延后插槽刷新。
+  it('选择值未变时刷新可见和折叠标签的 display 插槽', async () => {
+    /** 父 render 捕获文本后替换插槽闭包，插槽自身不直接订阅该 ref。 */
+    const text = shallowRef('旧内容');
+    /** 两个互不隶属的叶子节点避免父子合并改变可见与折叠项的数量。 */
+    const data: CascaderData[] = [
+      { label: 'A', value: 'a' },
+      { label: 'B', value: 'b' },
+    ];
+    /** 固定两个选择路径，整个更新过程都不替换列表或选中值。 */
+    const defaultValue = [['a'], ['b']];
+    /** 函数式父宿主每次 render 捕获局部值，仅替换 display 插槽函数。 */
+    const Host = () => {
+      /** 当前 render 的文本只有重新执行 display 插槽才能显示。 */
+      const captured = text.value;
+      return h(
+        Cascader,
+        {
+          treeData: data,
+          defaultValue,
+          multiple: true,
+          // 仅一个标签直接显示，另一项进入折叠 Popover。
+          maxTagCount: 1,
+          motion: false,
+          showRestTagsPopover: true,
+          // 保持折叠浮层已挂载，避免重新打开浮层掩盖旧 VNode 的更新问题。
+          restTagsPopoverProps: { visible: true, trigger: 'custom', motion: false },
+        },
+        {
+          // 按传入索引分别定位可见项与折叠项，检查两条渲染路径。
+          display: ({ index }: { index?: number }) =>
+            h('span', { 'data-display-index': index }, `${captured}-${index}`),
+        },
+      );
+    };
+    /** 挂载到真实 document，覆盖折叠 Popover 的 Teleport 内容。 */
+    const wrapper = mount(Host, { attachTo: document.body });
+    try {
+      await flushPromises();
+      expect(document.querySelector('[data-display-index="0"]')?.textContent).toBe('旧内容-0');
+      expect(document.querySelector('[data-display-index="1"]')?.textContent).toBe('旧内容-1');
+      text.value = '新内容';
+      await nextTick();
+      await flushPromises();
+      expect.soft(document.querySelector('[data-display-index="0"]')?.textContent).toBe('新内容-0');
+      expect.soft(document.querySelector('[data-display-index="1"]')?.textContent).toBe('新内容-1');
+    } finally {
+      wrapper.unmount();
+    }
+  });
+
   it('公开入口保持 default 与 named 导出一致', () => {
     expect(DefaultCascader).toBe(Cascader);
   });

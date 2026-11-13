@@ -119,3 +119,25 @@
 - 顶层关闭仅恢复仍连接且位于剩余顶层内的原入口，否则聚焦剩余 dialog；底层卸载不抢焦点。dialog 的 tabindex=-1 支持入口消失后的回归焦点。
 - 固定 React v2.102.0 同样缺少自定义 header 的有效名称契约及 Esc 顶层判断；本次接受这些可访问性差异，vendor 保持只读，默认 class、主题、遮罩、关闭回调与动效继续复用。
 - 旧 consumer 将外层固定为 closeOnEsc=false，不能证明两层均允许 Esc 的场景已通过；新回归恢复外层默认值，并覆盖自定义 header、入口移除、keepDOM 及顶层关闭保护。实际验证与交付边界见 [修复记录](../../../ai-work/20261108-modal-instance-aria.md) 的剩余项章节。
+
+## 关闭按钮尺寸扩展（BUG-000139）
+
+固定 v2.102.0 的原生关闭 Button 写死 `size="small"`。Vue 新增 `closeButtonSize?: ButtonSize`，默认 small，复用 Button 的 default/large 档位和主题样式，不修改 vendor。现有 closeIcon prop/slot 独立控制图形，默认尺寸、关闭事件、键盘、Portal 与焦点契约保持原规则。该属性是有意增加的能力，不要求 React 基线提供同名 API。
+
+新增回归覆盖默认 small、undefined、实例/全局优先级、动态尺寸、VNode/slot 图形、命令式 Modal 更新，以及真实 tarball 下的明暗主题、方形尺寸、窄容器、鼠标/Enter/Esc。执行结果见 [修复记录](../../../ai-work/2026-11-11-overlay-close-size.md)。SideSheet 保留基线无自动焦点返回的契约。
+
+## Vue 动态更新修复（2026-11-11）
+
+- 初次未传 `visible`、`closable` 等参数时，后续显式传入仍重新解析参数存在性；`closable` 缺省与显式 false 即使经 Vue 规范化为同值，也保持默认关闭入口与显式隐藏的区别。新增 `Modal.test.ts` 覆盖显示、隐藏及关闭入口更新。
+- 本轮复现、修复依据及实际验证见[渲染响应性修复记录](../../../ai-work/2026-11-11-vue-reactivity-audit.md)，历史验收记录不替代后续候选验证。
+
+### 动画结束状态补充修复
+
+- 动态参数存在性刷新不重新启动已完成的入场动画；动效 watcher 分别比较 visible 与 motion，只有实际值改变才创建新周期。遮罩与内容仍独立处理 `animationend`，关闭后重开继续启动动画。
+- 最终全量检查暴露的本轮回归、已确认链路及定向验证见[动画状态修复记录](../../../ai-work/2026-11-11-modal-animation-update.md)。既有 PendingConsumers 动画断言及动态 visible/closable 回归均保留。
+
+## 窄容器自动尺寸修正（BUG-000204）
+
+固定基线 small 为 448px，未设置 max-width，390px 视口中关闭和确认入口超出可视区。本轮真实 tarball 在修改前复现 right=448px；Vue 对省略 width 的非全屏弹窗增加 max-width:100%，以实际 Portal 容器为上限。保留桌面尺寸、显式 width、style.maxWidth 覆盖及全屏；不增加窗口监听，不修改 vendor 或消费方样式。
+
+这是有意接受的窄容器行为差异，不把固定基线的溢出当作正确预期。真实包回归覆盖 390/320px、明暗主题、自动 size、显式宽度、全屏、自定义容器、长标题正文、纵向滚动、关闭及回焦；桌面 React/Vue 几何、像素和 RTL 对照保持通过。结果与业务升级边界见[修复记录](../../../ai-work/2026-11-13-modal-viewport.md)。

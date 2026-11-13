@@ -12,7 +12,7 @@
 | `packages/test-infra`                          | 场景、环境、阈值和对照 helper，永不发布              |
 | `apps/reference-react`                         | 从固定 vendor 运行真实 React 参考场景                |
 | `apps/storybook-vue`                           | Storybook Vue 3/Vite 场景站，从公开组件子路径导入    |
-| `apps/docs`                                    | VitePress 组件库文档站，正文从固定基线构建期生成     |
+| `apps/docs`                                    | VitePress 文档站，维护本地正文、Vue 示例与静态资源   |
 | `apps/theme-studio`                            | 独立主题工作台，只消费公开 Vue 组件、图标与主题包    |
 | `tests/browser`                                | 锁定 Chromium 的组件对照验收                         |
 | `tests/consumer`                               | 真实 tarball 的独立 Chromium 消费测试                |
@@ -38,11 +38,12 @@ JsonViewer 的固定 core 与 jsonc-parser 经私有构建插件编入内联 Wor
 `apps/theme-studio` 是与 docs 平级的私有 Vue/Vite 应用，具有独立入口、hash 路由、状态、开发端口与构建产物；不依赖 docs 的布局或示例基础设施。文档仅保留 API、代码和可配置的工作台入口。工作台通过公开颜色 API、编译 CSS 与排版变量实时预览默认和局部主题，不要求用户使用 Sass 或专用主题插件；入口、首期范围及验证见[应用说明](../../apps/theme-studio/README.md)。
 
 Nuxt 文档应用及其构建、REPL、站点资源和逐示例验收已移除，退役范围见[说明](../documentation/README.md)。
-`apps/docs` 是不参与发布的私有 VitePress 应用：站点外壳使用基线站点 SCSS 与 `@douyinfe/semi-site-doc-style`
-的构建期编译产物，正文、导航、检索索引和来源清单由 `apps/docs/scripts/*.mjs` 从只读基线生成到已忽略目录，
-仓库不保存派生正文；站点控件与样式来自公开包 `@aifuxi/semi-ui-vue`、`@aifuxi/semi-theme-default` 和 `@aifuxi/semi-theme-modern`。
-首版只交付组件使用说明与示例占位，不含示例代码、REPL 与自动化测试，验收由人工 UI 走查完成，
-入口见 [apps/docs/README.md](../../apps/docs/README.md)。
+`apps/docs` 是不参与公开包发布的私有 VitePress 应用。仓库维护 `content/**/*.md` 正文、
+`.vitepress/theme/demo/examples/` 中的可运行 Vue 示例、`data/code-sources.json` 中的展示源码和本地静态资源。
+`scripts/prepare-index.mjs` 只读取这些本地内容，校验页面、分类与示例引用，并生成已忽略的导航和检索索引；构建不从 vendor 生成正文。
+站点保留已编译的上游站点排版素材及归属说明，控件与主题消费公开包 `@aifuxi/semi-ui-vue`、
+`@aifuxi/semi-theme-default` 和 `@aifuxi/semi-theme-modern`。类型与文档生产态 Playwright 测试按影响运行，
+入口和编辑方式见 [apps/docs/README.md](../../apps/docs/README.md)。
 
 Vue 场景由 Storybook Vue 3/Vite 承载，React 参考继续使用 Rsbuild、React 16 classic JSX；两端共享 harness CSS。React 的 Rspack 模块图与 Storybook 的 Vite 模块图分别生成来源证明，核对页面实际请求的代码。Vue 场景保持 pending，直到契约可对照；场景从组件子路径导入，避免根入口加载全库。Storybook 仅承载场景和调试，交互、布局和像素断言统一由 Playwright Test 执行。
 

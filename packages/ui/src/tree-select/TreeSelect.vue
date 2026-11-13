@@ -609,7 +609,9 @@ function renderTagForNode(node: TreeNodeData, index: number): VNodeChild {
     { default: () => resolved.content },
   );
 }
-const multipleTagList = computed(() =>
+/** 多选值不变时也刷新 selectedItem 插槽，避免缓存父 render 捕获的旧内容。 */
+const multipleTagList = useRenderComputed(() =>
+  // 每次渲染按当前插槽逐项生成标签，保留原来的选中顺序与关闭行为。
   selectedNodes.value.map((node, index) => renderTagForNode(node, index)),
 );
 function renderTriggerTag(value: string, index: number): VNodeChild {

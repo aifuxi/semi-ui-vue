@@ -38,8 +38,9 @@ watch(routePath, () => {
   <div class="docs-layout">
     <a class="skip-to-content-link" href="#main-content">跳转到主内容</a>
     <SiteHeader @menu="navigationOpen = true" @search="searchOpen = true" />
+    <!-- 首页不常驻侧栏，移动端显式打开时仍需挂载导航。 -->
     <SidebarNavigation
-      v-if="!isHome"
+      v-if="!isHome || navigationOpen"
       :open="navigationOpen"
       :path="routePath"
       @close="navigationOpen = false"

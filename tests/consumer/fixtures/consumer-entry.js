@@ -20,6 +20,7 @@ import { semiGlobal } from '@aifuxi/semi-ui-vue/config-provider';
 import { createColorTheme, colorThemeToCss } from '@aifuxi/semi-theme-default/colors';
 import { SideSheet } from '@aifuxi/semi-ui-vue/side-sheet';
 import { Popover } from '@aifuxi/semi-ui-vue/popover';
+import { IconClose } from '@aifuxi/semi-icons-vue';
 
 // 保留这些组件的真实包入口及其 CSS，用于验证不同共享样式依赖的组合。
 const styleCoverage = [Nav, Modal, Toast];
@@ -1071,14 +1072,130 @@ function renderPackedDropdownModal() {
   ]);
 }
 
+/** 关闭尺寸专项由公开 visible 驱动，不重建业务 header 或覆盖组件样式。 */
+const closeSizeVisible = ref(false);
+
+/** 渲染真实包的原生关闭入口，参数只决定组件、尺寸与图形来源。 */
+function renderPackedCloseSize() {
+  /** Modal 有标题/无标题分支及 SideSheet 共用相同用户操作。 */
+  const kind = dropdownQuery.get('overlay-close-size');
+  /** 省略尺寸时保持原有 small，显式 undefined 走组件默认解析。 */
+  const size = dropdownQuery.get('button-size');
+  /** 图形独立于按钮配置，覆盖默认图形、VNode prop 和 slot。 */
+  const icon = dropdownQuery.get('close-icon');
+  return h('main', [
+    h(
+      'button',
+      {
+        type: 'button',
+        // 原生入口用于核对 Modal 关闭后的焦点返回。
+        onClick: () => {
+          closeSizeVisible.value = true;
+        },
+      },
+      '打开尺寸示例',
+    ),
+    h(
+      kind === 'side-sheet' ? SideSheet : Modal,
+      {
+        visible: closeSizeVisible.value,
+        title: kind === 'modal-no-title' ? undefined : '尺寸示例',
+        'aria-label': kind === 'side-sheet' ? '尺寸示例' : undefined,
+        ...(size === null ? {} : { closeButtonSize: size === 'undefined' ? undefined : size }),
+        closeIcon: icon === 'prop' ? h(IconClose, { size: 'large' }) : undefined,
+        // 窄视口使用公开宽度，验证标题与按钮在实际布局中的几何关系。
+        width: dropdownQuery.has('narrow') ? 320 : undefined,
+        closeOnEsc: true,
+        footer: null,
+        // 使用原取消回调同步 visible；保留默认真实动画。
+        onCancel: () => {
+          closeSizeVisible.value = false;
+        },
+      },
+      {
+        // 正文不给关闭按钮增加任何 CSS 或布局适配。
+        default: () => h('p', '正文内容'),
+        // 图形插槽应与 prop 一样只改变图形尺寸。
+        ...(icon === 'slot' ? { closeIcon: () => h(IconClose, { size: 'large' }) } : {}),
+      },
+    ),
+  ]);
+}
+
+/** 窄屏专项仅通过公开 Modal 参数配置，不加载业务样式或宽度补丁。 */
+const viewportModalVisible = ref(false);
+
+/** 使用相同入口验证默认尺寸、显式宽度、长内容和局部 Portal。 */
+function renderPackedModalViewport() {
+  /** 显式 width 是调用方的布局选择，不应被自动尺寸上限覆盖。 */
+  const width = dropdownQuery.get('width');
+  /** 长内容同时覆盖标题换行与外层纵向滚动。 */
+  const long = dropdownQuery.has('long');
+  /** 自定义宿主用于证明上限相对于实际容器，而不是全局 window。 */
+  const custom = dropdownQuery.has('custom');
+  return h('main', [
+    h(
+      'button',
+      {
+        type: 'button',
+        // 真实点击打开并记录焦点恢复目标。
+        onClick: () => {
+          viewportModalVisible.value = true;
+        },
+      },
+      '打开窄屏弹窗',
+    ),
+    h('div', {
+      id: 'viewport-modal-host',
+      // 280px 小于专项的 320/390px 视口；600px 保留可见的局部浮层空间。
+      style: { position: 'relative', width: '280px', height: '600px' },
+    }),
+    h(
+      Modal,
+      {
+        visible: viewportModalVisible.value,
+        title: long ? '需要核对的较长标题，关闭入口应保持完整可见' : '窄屏确认',
+        size: dropdownQuery.get('size') ?? 'small',
+        width: width === null ? undefined : Number(width),
+        centered: dropdownQuery.has('centered'),
+        fullScreen: dropdownQuery.has('fullscreen'),
+        // 通过公开 getter 选择已挂载宿主，避免用窗口尺寸假冒容器尺寸。
+        getPopupContainer: custom
+          ? () => document.getElementById('viewport-modal-host')
+          : undefined,
+        // 由调用方同步受控状态，不改变库的关闭与焦点行为。
+        onCancel: () => {
+          viewportModalVisible.value = false;
+        },
+        // 确认按钮仍走公开 OK 事件。
+        onOk: () => {
+          viewportModalVisible.value = false;
+        },
+      },
+      {
+        // 每段是普通正文；不使用私有 CSS 限制弹窗宽度或溢出。
+        default: () =>
+          // 40 段用于超过 844px 视口；回调逐段创建真实文本节点。
+          Array.from({ length: long ? 40 : 1 }, (_, index) =>
+            h('p', `第${index + 1}段：请核对内容后选择取消或确认。`),
+          ),
+      },
+    ),
+  ]);
+}
+
 /** 浮层专项复用真实包服务，其他组件消费页面保持原入口。 */
-const overlayRender = dropdownQuery.has('dropdown-modal')
-  ? renderPackedDropdownModal
-  : dropdownQuery.has('popover-repeat')
-    ? renderPackedPopoverRepeat
-    : dropdownQuery.has('side-sheet-a11y')
-      ? renderPackedSideSheet
-      : undefined;
+const overlayRender = dropdownQuery.has('overlay-close-size')
+  ? renderPackedCloseSize
+  : dropdownQuery.has('modal-viewport')
+    ? renderPackedModalViewport
+    : dropdownQuery.has('dropdown-modal')
+      ? renderPackedDropdownModal
+      : dropdownQuery.has('popover-repeat')
+        ? renderPackedPopoverRepeat
+        : dropdownQuery.has('side-sheet-a11y')
+          ? renderPackedSideSheet
+          : undefined;
 
 createApp({
   // 根消费示例保留原有组件交互，并加入直接调用的错误提示区域。

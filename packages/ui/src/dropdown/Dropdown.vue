@@ -58,8 +58,12 @@ const pendingUpdate = shallowRef<boolean | undefined>(undefined);
 let enterTimer: ReturnType<typeof setTimeout> | undefined;
 let leaveTimer: ReturnType<typeof setTimeout> | undefined;
 
+/** 让全部参数存在性判断共享父更新版本，包括 trigger 与默认 Boolean 参数。 */
 function hasRawProp(key: keyof DropdownProps): boolean {
+  void rawPropsRevision.value;
+  /** 转换回调兼容模板使用的 kebab-case 参数名。 */
   const kebabKey = String(key).replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
+  /** 本次 VNode 中的参数集合保留缺省信息，不能以 Vue Boolean 默认值代替。 */
   const rawProps = instance?.vnode.props;
   return Boolean(
     rawProps &&

@@ -112,3 +112,8 @@
 - 真实 Chromium 对照固定 React，逐图查看 small/default/large、light/dark 的普通、error/warning、disabled、hover/focus/active 触发器，以及展开列、选中/禁用节点、多选与搜索空结果。
 - 修复 `defaultOpen=true` 与 `disabled=true` 同时传入时初始浮层和 focus 样式丢失：初始 isOpen 与固定 React constructor 一样取公开 defaultOpen，disabled 仍阻止后续用户打开。当前 Cascader 未实现全局默认覆盖，初始化没有绕过既有全局解析。
 - 实际修复后双模式对照图为本地忽略目录 `test-results/ui-theme-review/inputs/cascader-{light,dark}-disabled-after-panel-pair.png`；尺寸/状态组合在 `cascader-{light,dark}-{small,default,large}-states.png`，实际覆盖边界见同目录 `coverage.md`。新增单元断言默认展开禁用触发器的 focused class、ARIA 和真实浮层。
+
+## 多选展示插槽刷新（2026-11-11）
+
+- 多选值和列表数据未变、父 render 仅替换 `display` 插槽闭包时，可见标签与已打开折叠浮层中的标签均刷新。两份标签 VNode 列表改用已有 `useRenderComputed`；保留选择顺序、完整索引、`maxTagCount` 分界及标签关闭行为。
+- 正式回归同时挂载可见与折叠项，防止通过重新打开浮层掩盖缓存问题。复现、已确认根因与实际验证见[修复记录](../../../ai-work/2026-11-11-cascader-slot-update.md)。

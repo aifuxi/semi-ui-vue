@@ -9,7 +9,6 @@ import {
   isVNode,
   markRaw,
   onBeforeUnmount,
-  onBeforeUpdate,
   provide,
   shallowReactive,
   useAttrs,
@@ -21,6 +20,7 @@ import {
 import { TabsFoundation, type TabsAdapter } from '@workspace/foundation-integration';
 
 import { configContextKey, type ConfigContextValue } from '../config-provider';
+import { useRenderComputed } from '../_utils';
 import TabBar from './TabBar.vue';
 import TabPane from './TabPane.vue';
 import TabsNodeRenderer from './TabsNodeRenderer';
@@ -100,14 +100,8 @@ function vnodeSlot(node: VNode, name: 'tab' | 'icon'): VNodeChild {
   return typeof slot === 'function' ? (slot as () => VNodeChild)() : undefined;
 }
 
-const renderVersion = shallowReactive({ value: 0 });
-const sourceNodes = computed(() => {
-  void renderVersion.value;
-  return collectSourceNodes();
-});
-onBeforeUpdate(() => {
-  renderVersion.value += 1;
-});
+// 与其他插槽派生内容共用逐次渲染失效机制，保持父级替换插槽后的面板更新。
+const sourceNodes = useRenderComputed(collectSourceNodes);
 
 const collectedPanes = computed<PlainTab[]>(() => {
   if (Array.isArray(props.tabList) && props.tabList.length) return props.tabList;

@@ -1,6 +1,6 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { defineComponent, h, nextTick } from 'vue';
+import { defineComponent, h, nextTick, shallowRef } from 'vue';
 
 import { ConfigProvider } from '../config-provider';
 import DefaultTreeSelect, { TreeSelect } from './index';
@@ -31,6 +31,34 @@ afterEach(() => {
 });
 
 describe('TreeSelect', () => {
+  // 多选值不变时，父 render 仍可能替换 selectedItem 插槽闭包。
+  it('多选值未变时刷新父级替换的 selectedItem 插槽', async () => {
+    /** 文本在父 render 中读取，使插槽闭包没有对子 ref 的直接响应式依赖。 */
+    const text = shallowRef('旧选中项');
+    /** 固定一个叶子节点，排除选中值变化和父子合并对渲染失效的影响。 */
+    const defaultValue = ['europe'];
+    /** 函数式父宿主每次 render 捕获局部值，保持真实 TreeSelect 和选择列表身份。 */
+    const Host = () => {
+      /** 当前局部文本由下次插槽执行时才会显示。 */
+      const captured = text.value;
+      return h(
+        TreeSelect,
+        { treeData, multiple: true, defaultValue },
+        {
+          // 在真实 Tag 内渲染可定位节点，避免依赖内部 computed。
+          selectedItem: () => h('span', { class: 'selected-item-update' }, captured),
+        },
+      );
+    };
+    /** 不打开弹层即可检查触发区域中的多选标签。 */
+    const wrapper = mount(Host);
+    expect(wrapper.get('.selected-item-update').text()).toBe('旧选中项');
+    text.value = '新选中项';
+    await nextTick();
+    expect(wrapper.get('.selected-item-update').text()).toBe('新选中项');
+    wrapper.unmount();
+  });
+
   it('公开入口保持 default 与 named 导出一致', () => {
     expect(DefaultTreeSelect).toBe(TreeSelect);
   });
