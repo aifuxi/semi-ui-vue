@@ -75,8 +75,11 @@ test('Transfer React/Vue DOM、样式、几何、键盘与选择行为一致', a
 
 for (const viewportName of ['desktop'] as const) {
   for (const theme of ['light', 'dark'] as const) {
+    // Locator 截图断言等待连续画面稳定，避免把一次性 Buffer 的字形绘制中间态当作终态。
     test(`Transfer React/Vue 基线截图：${viewportName}/${theme}`, async ({ context }) => {
+      /** 保持现有桌面视口与固定数据，不改变失败场景的输入。 */
       const viewport = PARITY_VIEWPORTS[viewportName];
+      /** 同一 Chromium context 中的固定 React 与当前 Vue 来源。 */
       const pair = await openParityPages(
         context,
         {
@@ -88,17 +91,29 @@ for (const viewportName of ['desktop'] as const) {
         { width: viewport.width, height: viewport.height },
       );
       for (const target of assertScenarioComparable('transfer').targets) {
+        // 继续检查每个目标的样式、几何和当前 React/Vue 像素差异。
         await test.step(target.id, () => expectComparableTarget(pair, 'transfer', target.id));
       }
+      /** 完整双面板裁剪，不用整页面积稀释差异。 */
       const reactTarget = pair.react.page.getByTestId('transfer-reference');
+      /** Vue 与参考图使用相同的裁剪范围。 */
       const vueTarget = pair.vue.page.getByTestId('transfer-vue');
+      /** 独立的 React/Vue 截图仍用于当轮跨框架比较。 */
       const [reactScreenshot, vueScreenshot] = await Promise.all([
         reactTarget.screenshot({ animations: 'disabled' }),
         vueTarget.screenshot({ animations: 'disabled' }),
       ]);
       await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
-      expect(reactScreenshot).toMatchSnapshot(`transfer-reference-${viewportName}-${theme}.png`);
-      expect(vueScreenshot).toMatchSnapshot(`transfer-vue-${viewportName}-${theme}.png`);
+      /** 仍要求零个差异像素；0.1 颜色阈值比旧 Buffer 断言默认的 0.2 更严格。 */
+      const snapshotOptions = { threshold: 0.1, maxDiffPixels: 0, maxDiffPixelRatio: 0 };
+      await expect(reactTarget).toHaveScreenshot(
+        `transfer-reference-${viewportName}-${theme}.png`,
+        snapshotOptions,
+      );
+      await expect(vueTarget).toHaveScreenshot(
+        `transfer-vue-${viewportName}-${theme}.png`,
+        snapshotOptions,
+      );
       expect(pair.react.runtimeErrors).toEqual([]);
       expect(pair.vue.runtimeErrors).toEqual([]);
     });
