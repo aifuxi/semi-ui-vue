@@ -188,8 +188,13 @@ usePortalThemeScope(
   () =>
     !popupGetter.value && typeof document !== 'undefined' && teleportTarget.value === document.body,
 );
+/** 固定 ModalContent 仅用 Modal 自身的 getter 启用 popup；Provider 只改变挂载位置。 */
 const customContainer = computed(
-  () => typeof document !== 'undefined' && teleportTarget.value !== document.body,
+  /** 按最终挂载点排除显式 body，同时保留全局 Modal 默认参数的优先级。 */
+  () =>
+    Boolean(resolveOptional('getPopupContainer')) &&
+    typeof document !== 'undefined' &&
+    teleportTarget.value !== document.body,
 );
 const direction = computed(() => resolveOptional('direction') ?? config.value?.direction ?? 'ltr');
 const locale = computed<ModalLocale>(() => {
@@ -257,6 +262,7 @@ const shouldRender = computed(() => {
     (runtimeProps.value.motion && !state.displayNone)
   );
 });
+/** 仅显式局部容器使用 static Portal；继承 Provider 时沿用上游默认 Portal 样式。 */
 const portalStyle = computed(() => ({
   zIndex: runtimeProps.value.zIndex,
   ...(customContainer.value ? { position: 'static' as const } : {}),

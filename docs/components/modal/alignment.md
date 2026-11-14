@@ -33,7 +33,7 @@
 | `lazyRender`                                                       | `true`         | 同名 Boolean prop                                                        | 仅与 keepDOM 协作；显式 false 可预渲染隐藏 DOM        |
 | `size`                                                             | `small`        | `small \| medium \| large \| full-width`                                 | 保留 `.semi-modal-{size}`                             |
 | `width` / `height`                                                 | 无             | `string \| number`；number 按 Vue style 转 px                            | fullScreen 覆盖二者                                   |
-| `zIndex` / `maskStyle` / `bodyStyle` / `style`                     | `1000` / 无    | 同名；style 落 dialog，zIndex 落 portal                                  | 自定义容器 portal position 为 static                  |
+| `zIndex` / `maskStyle` / `bodyStyle` / `style`                     | `1000` / 无    | 同名；style 落 dialog，zIndex 落 portal                                  | Modal 显式容器 portal position 为 static              |
 | `title` / `header` / `footer` / `icon` / `closeIcon` / `content`   | 无             | 同名 VNodeChild prop，并提供对应命名 slot；默认 slot 为 body             | slot 优先；显式 null 可移除 header/footer             |
 | `okText` / `cancelText`                                            | Locale         | 同名 string；读取 `ConfigProvider.locale.Modal`                          | zh-CN/en-US 与用户 locale 覆盖                        |
 | `okType`                                                           | `primary`      | ButtonType                                                               | error 命令式默认 danger，显式 okButtonProps 仍优先    |
@@ -60,7 +60,7 @@
 
 ## Portal、动效、主题、RTL、国际化与 SSR
 
-- 自定义 `getPopupContainer` 必须在首次 visible 时将 `.semi-portal` 放入稳定容器；不得先挂 body 再迁移。自定义容器使用 popup/absolute 语义，`maskFixed=true` 恢复 fixed。
+- 自定义 `getPopupContainer` 必须在首次 visible 时将 `.semi-portal` 放入稳定容器；不得先挂 body 再迁移。只有 Modal 自身显式传入非 body 容器时使用 popup/absolute 语义，`maskFixed=true` 恢复 fixed；仅继承 ConfigProvider 时不添加 popup，保留 fixed 定位。
 - show content 动画 120ms、mask 90ms；hide 终态由真实 animationend 收敛。`motion=false` 同步隐藏；keepDOM 使用 `.semi-modal-displayNone`。
 - 默认主题直接编译固定 Modal + Portal SCSS。light/dark 由 `--semi-color-bg-2`、overlay、text、border、shadow Token 驱动；RTL 保留 `.semi-modal-rtl`、`.semi-modal-confirm-rtl`、`.semi-portal-rtl`。
 - 默认视觉矩阵覆盖 desktop `1440×900`、mobile `390×844`、light/dark 与 RTL；交互证据覆盖 open、mask、ESC、focus trap/restore、自定义容器和 Promise loading。
@@ -141,3 +141,12 @@
 固定基线 small 为 448px，未设置 max-width，390px 视口中关闭和确认入口超出可视区。本轮真实 tarball 在修改前复现 right=448px；Vue 对省略 width 的非全屏弹窗增加 max-width:100%，以实际 Portal 容器为上限。保留桌面尺寸、显式 width、style.maxWidth 覆盖及全屏；不增加窗口监听，不修改 vendor 或消费方样式。
 
 这是有意接受的窄容器行为差异，不把固定基线的溢出当作正确预期。真实包回归覆盖 390/320px、明暗主题、自动 size、显式宽度、全屏、自定义容器、长标题正文、纵向滚动、关闭及回焦；桌面 React/Vue 几何、像素和 RTL 对照保持通过。结果与业务升级边界见[修复记录](../../../ai-work/2026-11-13-modal-viewport.md)。
+
+## BUG-000286：Provider 容器误触发局部定位（2026-11-14）
+
+- 现象：ConfigProvider 将 Portal 挂到应用末尾的零高度 relative 节点后，Modal 页尾按钮落到视口外且被裁切。1280×900 独立场景中，修复前 dialog y≈1032、wrap 为 absolute/hidden；修复后 dialog y=80，并保持 Portal 在原自定义宿主。
+- 根因：Vue 将最终 Teleport 目标是否为 body 同时用作挂载和局部定位判断。固定 `Modal.tsx:359` 与 `ModalContent.tsx:315` 仅依据 Modal 自身的 getPopupContainer 设置 static Portal 与 popup；`_portal/index.tsx:77` 才在未显式提供时读取 Provider 容器。Provider 的 DOM 归属不应触发局部定位。
+- 修复：局部定位增加 Modal 自身 getter 的条件；保留 prop/global 默认值优先级、显式局部容器、maskFixed、主题与挂载目标，不修改 vendor、CSS 或业务调用方。
+- 验证：Modal/ConfigProvider/Feedback 的 14 个文件、80 项 Unit/SSR/hydration 通过，新增单测在旧实现先失败。正式 Chromium 的 8 项通过，包含默认 light/dark、RTL、1280×900 的 Provider/显式容器 computed style、几何及像素对照，以及 Vue 390px 的视口边界和取消/确认正常点击。窄屏沿用既有 maxWidth 修正，不与固定 React 的 448px 默认宽度作相等断言。
+- 产物：`pnpm check:artifacts` 通过主题、全部公开入口无 DOM 导入、真实 tarball 安装、exports、类型、样式与 tree-shaking 检查；真实 tarball 的 Modal 焦点/ARIA、窄屏/长内容及 Dropdown 打开 Modal 共 20 项 Chromium 回归通过。UI、React/Storybook 场景与根工具类型检查及本次文件 lint 通过。截图、运行日志与平台操作回执仅保留在本地忽略目录。
+- 边界：组件库修复不代表迭鹿 J3 恢复流程已联调验收；消费项目安装新版本并复测前保持业务验收待完成。

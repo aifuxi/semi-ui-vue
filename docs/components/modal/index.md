@@ -57,7 +57,7 @@ Modal.destroyAll();
 
 ## Portal、遮罩与滚动
 
-- `getPopupContainer` 指定挂载容器，缺省 `document.body`；非 body 容器不锁定 body 滚动。
+- `getPopupContainer` 指定挂载容器，缺省 `document.body`；非 body 容器不锁定 body 滚动。仅从 `ConfigProvider` 继承容器时，弹窗和遮罩仍相对视口 fixed 定位，容器可以为空的 relative 节点。Modal 自身显式设置非 body 容器时，按固定上游使用容器内 absolute 定位，容器应提供实际尺寸；`maskFixed=true` 可将显式容器的弹窗与遮罩改为 fixed。
 - `mask` / `maskClosable` / `maskFixed` 控制遮罩渲染、点击关闭与固定定位；`maskStyle` 自定义遮罩样式。
 - `closeOnEsc` 缺省 `true`；`preventScroll` 传递给聚焦调用；`zIndex` 缺省 `1000`。
 - `keepDOM` 保留关闭后的 DOM，`lazyRender` 缺省 `true` 且只在首次可见后渲染内容，`afterClose`/`onAfterClose` 在隐藏终态后触发。

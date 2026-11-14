@@ -2261,6 +2261,8 @@ declare module '@semi-v2.102.0/modal' {
     direction?: 'ltr' | 'rtl';
     footer?: ReactNode;
     fullScreen?: boolean;
+    /** 固定 Modal 自身的容器参数启用 popup 定位，区别于 Provider 挂载设置。 */
+    getPopupContainer?: () => HTMLElement;
     hasCancel?: boolean;
     keepDOM?: boolean;
     mask?: boolean;
