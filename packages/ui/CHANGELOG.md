@@ -1,5 +1,18 @@
 # @aifuxi/semi-ui-vue
 
+## 2.2.1
+
+### Patch Changes
+
+- [#49](https://github.com/aifuxi/semi-ui-vue/pull/49) [`2187f6d`](https://github.com/aifuxi/semi-ui-vue/commit/2187f6d7498403b188de954bc997f53eef2affa4) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 SideSheet 与 Image.Preview 继承 ConfigProvider 自定义容器时误用局部 absolute 定位的问题，保留原挂载宿主和组件显式容器语义；Feedback popup 在长页面中同步恢复视口内显示与操作。
+
+- [#49](https://github.com/aifuxi/semi-ui-vue/pull/49) [`14fc3b8`](https://github.com/aifuxi/semi-ui-vue/commit/14fc3b8b8ccdf91b3c1a35f6d0e555563c08fc9c) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Modal 继承 ConfigProvider 自定义容器时错误启用局部 absolute 定位，避免空 relative 宿主导致弹窗裁切及页尾按钮超出视口；保留 Modal 显式容器的局部定位行为。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.2.1
+  - @aifuxi/semi-icons-lab-vue@2.2.1
+  - @aifuxi/semi-illustrations-vue@2.2.1
+  - @aifuxi/semi-theme-default@2.2.1
+
 ## 2.2.0
 
 ### Minor Changes
