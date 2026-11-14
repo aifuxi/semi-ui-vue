@@ -16,6 +16,9 @@ import {
 import { JsonViewer } from '@aifuxi/semi-ui-vue/json-viewer';
 import { Form } from '@aifuxi/semi-ui-vue/form';
 import { Dropdown } from '@aifuxi/semi-ui-vue/dropdown';
+import { ImagePreview } from '@aifuxi/semi-ui-vue/image';
+import { Feedback } from '@aifuxi/semi-ui-vue/feedback';
+import { ConfigProvider } from '@aifuxi/semi-ui-vue/config-provider';
 import { semiGlobal } from '@aifuxi/semi-ui-vue/config-provider';
 import { createColorTheme, colorThemeToCss } from '@aifuxi/semi-theme-default/colors';
 import { SideSheet } from '@aifuxi/semi-ui-vue/side-sheet';
@@ -1184,18 +1187,109 @@ function renderPackedModalViewport() {
   ]);
 }
 
+/** 仅为容器专项创建稳定宿主；返回渲染函数，避免每次 visible 更新更换 DOM 身份。 */
+function createPackedOverlayContainer() {
+  /** 三个公开入口分别覆盖侧栏、预览和 SideSheet 的 Feedback 消费方。 */
+  const kind = dropdownQuery.get('overlay-container');
+  /** body/provider 使用长页面；explicit 使用有尺寸的局部容器。 */
+  const mode = dropdownQuery.get('container') ?? 'provider';
+  /** 外部宿主位于 app 后；长页面保证零高度宿主处于视口外。 */
+  const host = document.createElement('div');
+  host.dataset.testid = 'overlay-popup-host';
+  host.style.cssText =
+    mode === 'explicit'
+      ? 'position:relative;width:900px;max-width:100%;height:700px'
+      : 'position:relative';
+  document.body.appendChild(host);
+  /** 显示状态完全由公开事件驱动。 */
+  const visible = ref(false);
+  /** 挂载参数用于 Provider 或组件自身，保证 DOM 归属不被改为 body。 */
+  const getPopupContainer = () => host;
+  /** 相同图片用于检查图片加载、切换及旋转，完全不依赖外网。 */
+  const image =
+    'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="320" height="180"%3E%3Crect width="320" height="180" fill="%233976e8"/%3E%3C/svg%3E';
+  /** 将取消、保存与预览关闭转换为受控 visible 更新。 */
+  const close = () => {
+    visible.value = false;
+  };
+  /** 每次渲染创建新 VNode，避免重开时复用已卸载的 slot 内容。 */
+  return () => {
+    /** 组件仅在 explicit 场景获得自身 getter，Provider 场景只从上下文继承。 */
+    const common = {
+      visible: visible.value,
+      ...(mode === 'explicit' ? { getPopupContainer } : {}),
+      onCancel: close,
+      onClose: close,
+      /** 公开模型同步保留组件本身的关闭逻辑。 */
+      'onUpdate:visible': (value) => {
+        visible.value = value;
+      },
+    };
+    /** 各组件使用公开 props/slots，不加入私有定位或事件覆盖。 */
+    const overlay =
+      kind === 'image'
+        ? h(ImagePreview, { ...common, src: [image, image], previewTitle: '容器图片' })
+        : kind === 'feedback'
+          ? h(Feedback, {
+              ...common,
+              mode: 'popup',
+              type: 'text',
+              title: '体验反馈',
+              motion: false,
+              textAreaProps: { placeholder: '反馈内容' },
+              onOk: close,
+            })
+          : h(
+              SideSheet,
+              {
+                ...common,
+                title: '容器详情',
+                motion: false,
+                footer: h('button', { onClick: close }, '保存并关闭'),
+              },
+              /** 正常正文插槽不改变侧栏容器布局。 */
+              () => h('p', '待处理详情'),
+            );
+    return h(ConfigProvider, mode === 'provider' ? { getPopupContainer } : {}, {
+      /** 只设置页面和宿主尺寸，复现布局条件，保留组件全部默认样式。 */
+      default: () =>
+        h('main', { style: { minHeight: mode === 'explicit' ? '100px' : '200vh' } }, [
+          h('h1', '浮层容器检查'),
+          h(
+            'button',
+            {
+              /** 原生入口重开，测试不得通过内部 DOM 操作显示浮层。 */
+              onClick: () => {
+                visible.value = true;
+              },
+            },
+            '打开浮层',
+          ),
+          overlay,
+        ]),
+    });
+  };
+}
+
+/** 专项仅创建一次宿主，其余消费页面不新增 Portal 或 DOM。 */
+const overlayContainerRender = dropdownQuery.has('overlay-container')
+  ? createPackedOverlayContainer()
+  : undefined;
+
 /** 浮层专项复用真实包服务，其他组件消费页面保持原入口。 */
-const overlayRender = dropdownQuery.has('overlay-close-size')
-  ? renderPackedCloseSize
-  : dropdownQuery.has('modal-viewport')
-    ? renderPackedModalViewport
-    : dropdownQuery.has('dropdown-modal')
-      ? renderPackedDropdownModal
-      : dropdownQuery.has('popover-repeat')
-        ? renderPackedPopoverRepeat
-        : dropdownQuery.has('side-sheet-a11y')
-          ? renderPackedSideSheet
-          : undefined;
+const overlayRender =
+  overlayContainerRender ??
+  (dropdownQuery.has('overlay-close-size')
+    ? renderPackedCloseSize
+    : dropdownQuery.has('modal-viewport')
+      ? renderPackedModalViewport
+      : dropdownQuery.has('dropdown-modal')
+        ? renderPackedDropdownModal
+        : dropdownQuery.has('popover-repeat')
+          ? renderPackedPopoverRepeat
+          : dropdownQuery.has('side-sheet-a11y')
+            ? renderPackedSideSheet
+            : undefined);
 
 createApp({
   // 根消费示例保留原有组件交互，并加入直接调用的错误提示区域。

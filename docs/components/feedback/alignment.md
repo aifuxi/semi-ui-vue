@@ -81,3 +81,7 @@
 - `Feedback.ssr.test.ts` 在真实 `createSSRApp` hydration 后，选择→提交→`animationend`→重开→再次提交。popup/modal 两路修复前失败，修复后通过；单纯 `motion=false` 不能覆盖此缺陷。
 - `Feedback.test.ts` 覆盖完成提示的动态 `footer: null` 和撤销覆盖后恢复默认按钮；修复 Modal 对 raw prop 存在性的陈旧缓存。英文示例传入完整 en_US locale，而不是仅传 code。
 - 三组件 30 项单元/SSR、直接消费者 39 项回归、15 项组件 Chromium 对照、真实 tarball 与 SSR import 通过。双语两容器的独立时序检查在 1499ms 保留感谢信息，1700ms 关闭并复原内容；没有调整截图门禁或更新基线。
+
+## Provider 长页面宿主续验（2026-11-14）
+
+Feedback popup 直接复用 SideSheet。此次在 SideSheet 层修复 Provider 宿主误触发局部定位后，Feedback 不增加业务覆盖或额外参数。1280×900、200vh 长页面的真实包测试覆盖明暗主题、body/Provider/显式容器，以及填写、提交、重开、取消；Provider 的实际面板矩形与 body 对照相等，原取消按钮 y=1744 的问题恢复。相关单测、默认 React/Vue 对照和产物验证见 [SideSheet 修复记录](../side-sheet/alignment.md#provider-自定义宿主定位修复2026-11-14)。本轮不代表迭鹿业务项目已升级联调。

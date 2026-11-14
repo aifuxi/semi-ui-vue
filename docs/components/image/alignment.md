@@ -69,7 +69,7 @@ Teleport target
       section.semi-image-preview-footer.semi-image-preview-footer-wrapper
 ```
 
-- 默认 Portal 首次可见即挂到 body；显式 `getPopupContainer` 优先于 ConfigProvider 容器并在首次可见时解析，容器场景使用 `position: static` 的 portal wrapper 与 `position:absolute` 的 preview。
+- 默认 Portal 首次可见即挂到 body；显式 `getPopupContainer` 优先于 ConfigProvider 容器并在首次可见时解析，只有预览自身的 getter 启用 `position: static` 的 portal wrapper 与 `position:absolute` 的 preview；仅继承 Provider 时保留 fixed 视口定位。
 - 默认容器打开时记录 body 原 overflow/width，锁定滚动并补偿 scrollbar；自定义容器不修改 body。关闭与卸载必须恢复原值、移除 keydown/resize/wheel、timer、IntersectionObserver 和预加载回调引用。
 - preview 全屏 fixed、overlay Token、opacity 500ms；header 60px、footer 48px，左右按钮 40px；页脚复用固定 Slider/Divider/Icon class 与几何。
 - viewer 无操作超时只给 header/footer/左右按钮增加 `.semi-image-preview-hide`，图片仍显示；有效鼠标移动恢复并重启 timer。
@@ -125,3 +125,11 @@ diagnostic-16 的 Group 默认态只有 `.semi-image-preview-group` 缺少固定
 新增公开 DOM 测试覆盖同宿主三实例默认 ID 非空且不同、响应式更新后稳定、显式 ID 保留；既有 SSR 场景追加默认 ID 存在断言。文档 Container 外层恢复固定 `id="container"`，实际 Portal 解析仍使用该元素 ref。真实默认态视觉和完整矩阵待统一诊断，不删除 ID 测量或改历史证据。
 
 本次 Group ID 修复已通过 UI vue-tsc、修改文件 ESLint/Prettier，以及 Image 12 项单元 + 2 项 SSR（共14项，无失败/跳过）。真实浏览器默认态仍由统一诊断完成。
+
+## Provider 自定义宿主定位修复（2026-11-14）
+
+- 复现：1280×900，Provider 指向应用末尾零高度 relative 宿主。SideSheet 和 Image.Preview 原先误用 absolute，根层 y=900、height=0；Feedback popup 在 200vh 长页面中取消按钮 y=1744，默认 body 对照 y=844。
+- 固定依据：`sideSheet/index.tsx:224/236` 与 `image/previewInner.tsx:391/401` 仅根据组件自身的 getPopupContainer 设置 static Portal 和 popup class；`_portal/index.tsx` 才负责 Provider 容器回退。现将挂载点与局部定位请求分开；保留显式容器、SideSheet 全局默认参数及既有滚动、主题和动效行为，不修改 vendor 或 CSS。
+- 验证：新增 9 项公开 DOM 配置边界用例（含显式 body getter），其中三个继承 Provider 的路径在旧实现先失败。相关 Modal/SideSheet/Image/Feedback/ConfigProvider 的 20 个文件、123 项 Unit/SSR/hydration 通过；三组件 15 项固定 React/Vue Chromium 对照通过，未更新旧快照。
+- 安装包：8 项 Chromium 回归通过，包括 SideSheet 名称与重开，以及三组件在 light/dark、body/Provider/显式容器中的几何、DOM 归属和正常操作。图片可旋转、切换和重开；Feedback 可填写、提交、重开及取消；侧栏可保存、重开及关闭。Provider 对照仍挂在原宿主，实际矩形与 body 对照相等；显式容器继续保持局部定位。
+- 产物与边界：`pnpm check:artifacts` 通过主题、无 DOM 导入及真实 tarball 的 exports/类型/样式/tree-shaking 检查。诊断截图和日志留在本地忽略目录。本轮没有发布或升级迭鹿业务项目，业务联调验收仍需在消费升级后执行。

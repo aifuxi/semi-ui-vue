@@ -175,9 +175,8 @@ usePortalThemeScope(
   () =>
     !popupGetter.value && typeof document !== 'undefined' && teleportTarget.value === document.body,
 );
-const customContainer = computed(
-  () => typeof document !== 'undefined' && teleportTarget.value !== document.body,
-);
+/** 固定 SideSheet 只用自身 getter 启用 popup；Provider 容器仅改变 Portal 挂载点。 */
+const customContainer = computed(() => Boolean(resolveOptional('getPopupContainer')));
 const direction = computed(() => config.value?.direction ?? 'ltr');
 // Slot VNodes carry mounted DOM state; evaluate them in each render, not across Portal lifetimes.
 const bodyContent = (): VNodeChild => slots.default?.();
@@ -222,6 +221,7 @@ const shouldRender = computed(
     runtimeProps.value.keepDOM ||
     (runtimeProps.value.motion && !state.displayNone),
 );
+/** 显式局部容器使用 static Portal；继承 Provider 时保留视口定位。 */
 const portalStyle = computed(() => ({
   zIndex: runtimeProps.value.zIndex,
   ...(customContainer.value ? { position: 'static' as const } : {}),

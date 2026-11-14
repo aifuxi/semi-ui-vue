@@ -244,18 +244,17 @@ const showNext = computed(
 const hideViewerClass = computed(() =>
   state.viewerVisible ? undefined : 'semi-image-preview-hide',
 );
+/** 与固定 PreviewInner 一致，仅组件自身的 getter 请求容器内 absolute 定位。 */
 const previewClasses = computed(() => [
   'semi-image-preview',
   !state.visible ? 'semi-image-hide' : undefined,
-  props.getPopupContainer || config.value.getPopupContainer
-    ? 'semi-image-preview-popup'
-    : undefined,
+  props.getPopupContainer ? 'semi-image-preview-popup' : undefined,
   props.class,
   props.className,
 ]);
+/** Provider 只决定 DOM 归属，默认 Portal 样式与 fixed 预览仍相对视口。 */
 const portalStyle = computed(() => ({
-  position:
-    props.getPopupContainer || config.value.getPopupContainer ? ('static' as const) : undefined,
+  position: props.getPopupContainer ? ('static' as const) : undefined,
   zIndex: props.zIndex,
 }));
 const title = computed<VNodeChild>(() =>

@@ -37,7 +37,7 @@ import '@aifuxi/semi-theme-default/image.css';
 - 浏览：`infinite=false`、`closable=true`、`closeOnEsc=true`、`maskClosable=true`。
 - 缩放：`zoomStep=0.1`、`minZoom=0.1`、`maxZoom=5`、`initialZoom`。
 - 加载：`lazyLoad=true`、`lazyLoadMargin="0px 100px 100px 0px"`、`preLoad=true`、`preLoadGap=2`。
-- Portal：`getPopupContainer`、`zIndex=1070`；默认挂载 body 并在打开期间锁定 body 滚动。
+- Portal：`getPopupContainer`、`zIndex=1070`；默认挂载 body 并在打开期间锁定 body 滚动。仅从 `ConfigProvider` 继承容器时，预览仍相对视口 fixed 定位；预览自身显式传入 getter 时采用容器内 absolute 定位，容器应提供实际尺寸。
 - 菜单与文本：`showTooltip`、各 `*Tip`、`disableDownload`、`setDownloadName`。
 
 事件包括 `visibleChange`、`change`、`close`、`prev`、`next`、`zoomIn`、`zoomOut`、`ratioChange`、`rotateLeft`、`download`、`downloadError`。自定义内容可使用 `#header`、`#previewMenu`、`#leftIcon`、`#rightIcon`、`#closeIcon`。

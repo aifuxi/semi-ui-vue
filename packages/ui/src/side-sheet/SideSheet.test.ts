@@ -417,23 +417,33 @@ describe('SideSheet', () => {
     disabled.unmount();
   });
 
-  it('稳定自定义容器首次 visible 即为 Portal 父节点、继承 RTL 且不锁 body', async () => {
+  // 固定上游只在 SideSheet 自身 getter 存在时启用 popup；Provider 仍保留 fixed。
+  it('Provider 容器首次挂载保留视口定位、继承 RTL 且不锁 body', async () => {
+    /** 稳定 relative 宿主只改变 DOM 归属。 */
     const target = document.createElement('div');
     target.style.position = 'relative';
     document.body.appendChild(target);
+    /** 通过真实配置上下文验证 RTL 与首次挂载。 */
     const wrapper = mount(ConfigProvider, {
       attachTo: document.body,
-      props: { direction: 'rtl', getPopupContainer: () => target },
+      props: { direction: 'rtl', /** Provider 的挂载宿主。 */ getPopupContainer: () => target },
       slots: {
-        default: () => h(SideSheet, { motion: false, title: 'RTL', visible: true }, () => '正文'),
+        /** 仅继承配置，不给 SideSheet 显式传入 getter。 */
+        default: () =>
+          h(
+            SideSheet,
+            { motion: false, title: 'RTL', visible: true },
+            /** 普通正文不影响定位。 */ () => '正文',
+          ),
       },
     });
     await settle();
 
+    /** 验证真实 Portal 样式及其子树，而非只检查容器存在。 */
     const portal = target.querySelector<HTMLElement>(':scope > .semi-portal');
     expect(portal).not.toBeNull();
-    expect(portal?.style.position).toBe('static');
-    expect(portal?.querySelector('.semi-sidesheet-popup')).not.toBeNull();
+    expect(portal?.style.position).toBe('');
+    expect(portal?.querySelector('.semi-sidesheet-popup')).toBeNull();
     expect(portal?.querySelector('.semi-sidesheet-rtl')).not.toBeNull();
     expect(document.body.style.overflow).toBe('');
     wrapper.unmount();

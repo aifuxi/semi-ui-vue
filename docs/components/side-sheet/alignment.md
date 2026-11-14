@@ -15,29 +15,29 @@
 
 ## 公开 API 与 Vue 映射
 
-| v2.102.0 React API                      | 默认值               | Vue API / 验收                                                                                     |
-| --------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------- |
-| `visible`                               | `false`              | 同名 prop + `v-model:visible`；取消时先 emit `update:visible(false)`，再 emit `cancel(event)`      |
-| `placement`                             | `right`              | `top/right/bottom/left`；保留 `.semi-sidesheet-{placement}` 与对应位移动效                         |
-| `size`                                  | `small`              | `small/medium/large`；垂直位置为 448/684/920px                                                     |
-| `width`                                 | size 宽度            | left/right 设置 inner；top/bottom 固定 `100%`；`mask=false` 时外层持有宽度、inner 为 `100%`        |
-| `height`                                | 水平位置 `448`       | top/bottom 生效；left/right 为 `100%`                                                              |
-| `mask`                                  | `true`               | 同名 prop；保留 `.semi-sidesheet-mask` 与 `aria-hidden=true`                                       |
-| `maskClosable`                          | `true`               | 仅点击 mask 自身关闭，子内容冒泡不关闭                                                             |
-| `closable`                              | `true`               | 标题栏 IconButton；`closeIcon` prop 或 `#closeIcon`，显式 null 保留上游默认 IconClose 语义         |
-| `closeOnEsc`                            | `false`              | Window keydown；仅显式/全局开启时拦截 Escape 并取消                                                |
-| `disableScroll`                         | `true`               | 仅默认 body Portal 锁定 body；自定义容器不锁；关闭/卸载完整恢复 overflow 与 width                  |
-| `motion`                                | `true`               | 保留 mask/content 180ms class；`false` 立即卸载；离场结束后触发隐藏回调                            |
-| `keepDOM`                               | `false`              | 关闭后保留并添加 `.semi-sidesheet-hidden`                                                          |
-| `getPopupContainer`                     | body                 | 显式 prop > ConfigProvider；稳定容器首次可见即为 Portal 父节点，Portal style 为 `position: static` |
-| `zIndex`                                | `1000`               | 应用于 `.semi-portal`                                                                              |
-| `title/footer/children`                 | 无/null              | `#title/#footer/default` 优先于同名 prop；保留 `x-semi-prop`                                       |
-| `bodyStyle/headerStyle/maskStyle/style` | 无                   | 同名 StyleValue；`style` 落在 inner，attrs style 不吞掉固定布局                                    |
-| `className`                             | 无                   | `class`/`className` 合并到 `.semi-sidesheet`                                                       |
-| `afterVisibleChange`                    | noop                 | prop 回调 + `afterVisibleChange` emit；打开进入渲染态、关闭完成离场后触发                          |
-| `onCancel`                              | 无                   | `cancel` emit；兼容同名 prop，并避免同一函数重复调用                                               |
-| `aria-label`                            | 无                   | 透传到 `role=dialog` 的 inner 节点                                                                 |
-| `canVerticalSetWidth`                   | 无，内部公开类型存在 | 保留同名 prop；为 true 时允许 top/bottom 使用显式 width                                            |
+| v2.102.0 React API                      | 默认值               | Vue API / 验收                                                                                                |
+| --------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `visible`                               | `false`              | 同名 prop + `v-model:visible`；取消时先 emit `update:visible(false)`，再 emit `cancel(event)`                 |
+| `placement`                             | `right`              | `top/right/bottom/left`；保留 `.semi-sidesheet-{placement}` 与对应位移动效                                    |
+| `size`                                  | `small`              | `small/medium/large`；垂直位置为 448/684/920px                                                                |
+| `width`                                 | size 宽度            | left/right 设置 inner；top/bottom 固定 `100%`；`mask=false` 时外层持有宽度、inner 为 `100%`                   |
+| `height`                                | 水平位置 `448`       | top/bottom 生效；left/right 为 `100%`                                                                         |
+| `mask`                                  | `true`               | 同名 prop；保留 `.semi-sidesheet-mask` 与 `aria-hidden=true`                                                  |
+| `maskClosable`                          | `true`               | 仅点击 mask 自身关闭，子内容冒泡不关闭                                                                        |
+| `closable`                              | `true`               | 标题栏 IconButton；`closeIcon` prop 或 `#closeIcon`，显式 null 保留上游默认 IconClose 语义                    |
+| `closeOnEsc`                            | `false`              | Window keydown；仅显式/全局开启时拦截 Escape 并取消                                                           |
+| `disableScroll`                         | `true`               | 仅默认 body Portal 锁定 body；自定义容器不锁；关闭/卸载完整恢复 overflow 与 width                             |
+| `motion`                                | `true`               | 保留 mask/content 180ms class；`false` 立即卸载；离场结束后触发隐藏回调                                       |
+| `keepDOM`                               | `false`              | 关闭后保留并添加 `.semi-sidesheet-hidden`                                                                     |
+| `getPopupContainer`                     | body                 | 显式 prop > ConfigProvider；稳定容器首次可见即为 Portal 父节点；仅组件自身 getter 启用 static Portal 与 popup |
+| `zIndex`                                | `1000`               | 应用于 `.semi-portal`                                                                                         |
+| `title/footer/children`                 | 无/null              | `#title/#footer/default` 优先于同名 prop；保留 `x-semi-prop`                                                  |
+| `bodyStyle/headerStyle/maskStyle/style` | 无                   | 同名 StyleValue；`style` 落在 inner，attrs style 不吞掉固定布局                                               |
+| `className`                             | 无                   | `class`/`className` 合并到 `.semi-sidesheet`                                                                  |
+| `afterVisibleChange`                    | noop                 | prop 回调 + `afterVisibleChange` emit；打开进入渲染态、关闭完成离场后触发                                     |
+| `onCancel`                              | 无                   | `cancel` emit；兼容同名 prop，并避免同一函数重复调用                                                          |
+| `aria-label`                            | 无                   | 透传到 `role=dialog` 的 inner 节点                                                                            |
+| `canVerticalSetWidth`                   | 无，内部公开类型存在 | 保留同名 prop；为 true 时允许 top/bottom 使用显式 width                                                       |
 
 默认值优先级统一为：当前 VNode 显式 camelCase/kebab-case prop > `semiGlobal.overrideDefaultProps.SideSheet` > 固定上游默认值。`closable/mask/maskClosable/motion/disableScroll/keepDOM/closeOnEsc/visible` 均覆盖缺省、显式 false、显式 true；不得使用 truthiness 推断是否传入。
 
@@ -109,3 +109,11 @@
 固定 v2.102.0 的原生关闭 Button 写死 `size="small"`。Vue 新增 `closeButtonSize?: ButtonSize`，默认 small，复用 Button 的 default/large 档位和主题样式，不修改 vendor。现有 closeIcon prop/slot 独立控制图形，默认尺寸、关闭事件、键盘、Portal 与焦点契约保持原规则。该属性是有意增加的能力，不要求 React 基线提供同名 API。
 
 新增回归覆盖默认 small、undefined、实例/全局优先级、动态尺寸、VNode/slot 图形、命令式 Modal 更新，以及真实 tarball 下的明暗主题、方形尺寸、窄容器、鼠标/Enter/Esc。执行结果见 [修复记录](../../../ai-work/2026-11-11-overlay-close-size.md)。SideSheet 保留基线无自动焦点返回的契约。
+
+## Provider 自定义宿主定位修复（2026-11-14）
+
+- 复现：1280×900，Provider 指向应用末尾零高度 relative 宿主。SideSheet 和 Image.Preview 原先误用 absolute，根层 y=900、height=0；Feedback popup 在 200vh 长页面中取消按钮 y=1744，默认 body 对照 y=844。
+- 固定依据：`sideSheet/index.tsx:224/236` 与 `image/previewInner.tsx:391/401` 仅根据组件自身的 getPopupContainer 设置 static Portal 和 popup class；`_portal/index.tsx` 才负责 Provider 容器回退。现将挂载点与局部定位请求分开；保留显式容器、SideSheet 全局默认参数及既有滚动、主题和动效行为，不修改 vendor 或 CSS。
+- 验证：新增 9 项公开 DOM 配置边界用例（含显式 body getter），其中三个继承 Provider 的路径在旧实现先失败。相关 Modal/SideSheet/Image/Feedback/ConfigProvider 的 20 个文件、123 项 Unit/SSR/hydration 通过；三组件 15 项固定 React/Vue Chromium 对照通过，未更新旧快照。
+- 安装包：8 项 Chromium 回归通过，包括 SideSheet 名称与重开，以及三组件在 light/dark、body/Provider/显式容器中的几何、DOM 归属和正常操作。图片可旋转、切换和重开；Feedback 可填写、提交、重开及取消；侧栏可保存、重开及关闭。Provider 对照仍挂在原宿主，实际矩形与 body 对照相等；显式容器继续保持局部定位。
+- 产物与边界：`pnpm check:artifacts` 通过主题、无 DOM 导入及真实 tarball 的 exports/类型/样式/tree-shaking 检查。诊断截图和日志留在本地忽略目录。本轮没有发布或升级迭鹿业务项目，业务联调验收仍需在消费升级后执行。

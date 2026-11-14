@@ -37,7 +37,7 @@ Events are `click`, `load`, and `error`. Unconsumed native attributes such as `a
 - Navigation: `infinite=false`, `closable=true`, `closeOnEsc=true`, and `maskClosable=true`.
 - Zoom: `zoomStep=0.1`, `minZoom=0.1`, `maxZoom=5`, and `initialZoom`.
 - Loading: `lazyLoad=true`, `lazyLoadMargin="0px 100px 100px 0px"`, `preLoad=true`, and `preLoadGap=2`.
-- Portal: `getPopupContainer` and `zIndex=1070`; the default body portal locks body scrolling while open.
+- Portal: `getPopupContainer` and `zIndex=1070`; the default body portal locks body scrolling while open. A container inherited only from `ConfigProvider` preserves fixed viewport positioning. An explicit getter on the preview uses absolute positioning inside the target and requires usable container dimensions.
 - Menu and copy: `showTooltip`, the `*Tip` props, `disableDownload`, and `setDownloadName`.
 
 Events include `visibleChange`, `change`, `close`, `prev`, `next`, `zoomIn`, `zoomOut`, `ratioChange`, `rotateLeft`, `download`, and `downloadError`. Customize content through `#header`, `#previewMenu`, `#leftIcon`, `#rightIcon`, and `#closeIcon`.
