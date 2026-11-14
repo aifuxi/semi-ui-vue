@@ -27,7 +27,7 @@ const visible = ref(false);
 - left/right 使用 `size=small|medium|large`（448/684/920px）或自定义 `width`。
 - top/bottom 默认高 448px，可设置 `height`。
 - `mask=false` 允许操作外部区域；如还需滚动页面，请同时设置 `disableScroll=false`。
-- `getPopupContainer` 可把 SideSheet 首次挂载到稳定容器；容器应设置 `position: relative` 和 `overflow: hidden`。
+- `getPopupContainer` 可把 SideSheet 首次挂载到稳定容器。组件自身显式设置时采用容器内 absolute 定位，容器应提供实际尺寸并设置 `position: relative` 和 `overflow: hidden`；仅从 `ConfigProvider` 继承时只改变 DOM 挂载点，仍相对视口 fixed 定位，支持空的 relative 宿主。
 
 ```vue
 <script setup lang="ts">

@@ -57,7 +57,7 @@ Modal.destroyAll();
 
 ## Portal, mask and scrolling
 
-- `getPopupContainer` selects the mount target and defaults to `document.body`; non-body targets do not lock body scrolling.
+- `getPopupContainer` selects the mount target and defaults to `document.body`; non-body targets do not lock body scrolling. A container inherited from `ConfigProvider` only changes DOM placement: the dialog and mask remain fixed to the viewport, even in an empty relative host. An explicit non-body container on Modal uses absolute positioning inside that container, matching the pinned upstream implementation, and requires usable container dimensions. Set `maskFixed=true` to use fixed positioning with an explicit container.
 - `mask` / `maskClosable` / `maskFixed` control mask rendering, click-to-close and fixed positioning; `maskStyle` customizes the mask.
 - `closeOnEsc` defaults to `true`; `preventScroll` is forwarded to focus calls; `zIndex` defaults to `1000`.
 - `keepDOM` keeps the closed DOM, `lazyRender` (default `true`) renders content only after the first open, and `afterClose`/`onAfterClose` fire once the hidden state is reached.

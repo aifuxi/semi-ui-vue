@@ -27,7 +27,7 @@ const visible = ref(false);
 - left/right use `size=small|medium|large` (448/684/920px) or a custom `width`.
 - top/bottom have a default height of 448px and accept `height`.
 - `mask=false` keeps the outside area interactive; also set `disableScroll=false` if the page must remain scrollable.
-- `getPopupContainer` mounts SideSheet into a stable custom container. Give that container `position: relative` and `overflow: hidden`.
+- An explicit `getPopupContainer` on SideSheet uses absolute positioning inside a stable container with usable dimensions, `position: relative` and `overflow: hidden`. A container inherited only from `ConfigProvider` changes DOM placement while preserving fixed viewport positioning, including an empty relative host.
 
 ## Slots and events
 

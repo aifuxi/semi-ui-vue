@@ -1,5 +1,5 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils';
-import { defineComponent, h, nextTick, onMounted } from 'vue';
+import { defineComponent, h, nextTick, onMounted, shallowRef } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { IconSend } from '@aifuxi/semi-icons-vue';
@@ -159,6 +159,54 @@ describe('Modal', () => {
     expect(document.querySelector('.semi-modal-mask')).not.toBeNull();
     expect(document.querySelector('.semi-modal-close')).not.toBeNull();
     explicitTrue.unmount();
+  });
+
+  // Provider 仅改变 Portal 挂载点；上游只有 Modal 自身的容器参数启用局部定位。
+  it('ConfigProvider 容器保留视口定位，Modal 显式容器仍优先并启用 popup', async () => {
+    /** 模拟 body 末尾无高度的组织浮层宿主。 */
+    const providerHost = document.createElement('div');
+    providerHost.style.position = 'relative';
+    document.body.appendChild(providerHost);
+    /** 显式容器用于验证挂载优先级与局部定位语义。 */
+    const explicitHost = document.createElement('div');
+    explicitHost.style.position = 'relative';
+    document.body.appendChild(explicitHost);
+    /** 由父级响应式更新显式容器，覆盖参数的新增与移除。 */
+    const explicitGetter = shallowRef<(() => HTMLElement) | undefined>();
+    /** 使用公开 Provider 与 Modal，避免用内部注入代替真实调用路径。 */
+    const wrapper = mount(ConfigProvider, {
+      attachTo: document.body,
+      props: {
+        /** Provider 只决定 DOM 归属。 */
+        getPopupContainer: () => providerHost,
+      },
+      slots: {
+        /** 初始仅继承 Provider，后续通过子组件公开 prop 切换。 */
+        default: () =>
+          h(Modal, {
+            visible: true,
+            motion: false,
+            title: '组织确认',
+            ...(explicitGetter.value ? { getPopupContainer: explicitGetter.value } : {}),
+          }),
+      },
+    });
+    await flushPromises();
+    expect(providerHost.querySelector(':scope > .semi-portal')).not.toBeNull();
+    expect(providerHost.querySelector<HTMLElement>('.semi-portal')?.style.position).toBe('');
+    expect(providerHost.querySelector('.semi-modal-popup')).toBeNull();
+    /** 显式参数覆盖 Provider，保持上游支持的容器内弹窗。 */
+    // 仅此参数才请求局部 absolute 定位。
+    explicitGetter.value = () => explicitHost;
+    await flushPromises();
+    expect(explicitHost.querySelector('.semi-modal-popup')).not.toBeNull();
+    expect(explicitHost.querySelector<HTMLElement>('.semi-portal')?.style.position).toBe('static');
+    expect(providerHost.querySelector('.semi-portal')).toBeNull();
+    explicitGetter.value = undefined;
+    await flushPromises();
+    expect(providerHost.querySelector('.semi-portal')).not.toBeNull();
+    expect(providerHost.querySelector('.semi-modal-popup')).toBeNull();
+    wrapper.unmount();
   });
 
   it('稳定自定义容器首次 visible 即为 portal 父节点并保留 popup/maskFixed 语义', async () => {

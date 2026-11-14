@@ -47,6 +47,6 @@ const visible = ref(true);
 
 `value-change` emits a string for text/radio, an array for checkbox, or `{ emoji, text? }` for emoji. Submit stays disabled for an empty value or empty checkbox array. Popup actions do not mutate the parent's `visible`; close it in the callback. Modal keeps its established async-close behavior.
 
-`getPopupContainer` can target an existing mount container. Cancel/submit labels come from the `Feedback` locale supplied by `LocaleProvider` or `ConfigProvider`. Imports are SSR-safe; Portals and browser listeners are created only after mounting and are cleaned up on unmount.
+`getPopupContainer` can target an existing mount container. Inheriting the container only from `ConfigProvider` preserves viewport positioning in both popup and modal modes, including an empty relative host at the end of a long page. An explicit component getter retains the local positioning behavior of SideSheet or Modal. Cancel/submit labels come from the `Feedback` locale supplied by `LocaleProvider` or `ConfigProvider`. Imports are SSR-safe; Portals and browser listeners are created only after mounting and are cleaned up on unmount.
 
 See [react-to-vue.md](./react-to-vue.md) for migration and [alignment.md](./alignment.md) for the evidence matrix.

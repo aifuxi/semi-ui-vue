@@ -66,6 +66,6 @@ const visible = ref(true);
 
 ## Portal、国际化与 SSR
 
-可通过 `getPopupContainer` 指定首次挂载时已存在的容器。取消/提交文案来自 `LocaleProvider` 或 `ConfigProvider` 的 `Feedback` locale。模块导入 SSR-safe；Portal 和浏览器监听只在挂载后创建并在卸载时清理。
+可通过 `getPopupContainer` 指定首次挂载时已存在的容器。仅从 `ConfigProvider` 继承容器时，popup 和 modal 模式均保留视口定位，长页面末尾的空 relative 宿主不会把按钮推到视口外；组件自身显式指定容器时保留对应 SideSheet/Modal 的局部定位语义。取消/提交文案来自 `LocaleProvider` 或 `ConfigProvider` 的 `Feedback` locale。模块导入 SSR-safe；Portal 和浏览器监听只在挂载后创建并在卸载时清理。
 
 React 迁移见 [react-to-vue.md](./react-to-vue.md)，完整对齐证据见 [alignment.md](./alignment.md)。
