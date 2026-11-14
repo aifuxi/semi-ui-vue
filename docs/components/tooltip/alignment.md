@@ -138,3 +138,7 @@ Popover 文档 InitialFocus 的真实对照发现 `initialFocusRef` 绑定 Input
 业务表单中复现了收起中的 Select 浮层仍遮挡相邻负责人字段的问题。固定 React Adapter 保留动画 DOM；Vue Portal 额外按逻辑 `visible` 设置 `inert`，使已关闭内容立即退出鼠标命中、键盘焦点和可访问性树，仍保留退出动画与原有 `afterClose` 时序。这是为关闭阶段交互补充的明确差异，不修改定位、视觉、公开 props 或 Select 选择事件顺序。
 
 回归覆盖 `Escape` 和选择选项两种关闭方式：退出动画仍在播放时，浏览器命中测试必须穿过旧选项；重新展开恢复交互。
+
+### 受控菜单在退场中重开（2026-11-15）
+
+固定 Foundation `show` 会在 `getAnimatingState()` 为真时忽略展示请求。Select 同步通知新值后，立即重开会出现 trigger 已展开而旧弹层随后被移除的情况。Vue Adapter 仅在 `trigger=custom`、显式 `visible=true` 且当前为 `leave` 时允许展示打断退场；入场、其他触发方式与普通关闭继续沿用原门禁。该项是明确的交互差异，不延长或关闭动效，也不伪造关闭完成事件；回归由 Tooltip 单测和真实包 Select 连续选择覆盖。

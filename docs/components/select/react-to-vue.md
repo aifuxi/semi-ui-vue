@@ -26,6 +26,7 @@
 Vue 追加的原生能力（不改变固定基线行为）：
 
 - `update:modelValue` 与 `update:value`，用于 `v-model` 与显式回写；`change` 顺序与载荷保持 Semi 契约。
+- 受控单选的 `change` 和模型更新在选择时同步通知，不等关闭动画结束；这是为避免快速提交读取旧值而相对固定 React 基线调整的通知时机。事件顺序、载荷及父级回写语义保持不变。
 - `ariaLabelledby` / `ariaDescribedby` / `ariaErrormessage` / `ariaInvalid` / `ariaRequired` / `id` 等透传 props，用于把 ARIA 直接写在 Select 上。
 - `selectAll` / `deselectAll` 等多选方法沿用 `SelectExposed` 命名，仅通过 ref 暴露。
 

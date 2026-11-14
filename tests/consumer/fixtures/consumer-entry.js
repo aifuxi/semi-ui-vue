@@ -35,6 +35,46 @@ const packedError = ref('');
 
 // 专项页面复用同一真实 tarball 服务，以 query 选择受控的测试输入。
 const dropdownQuery = new URLSearchParams(location.search);
+/** 角色选择专项保留公开 v-model 与默认动效，提交只读取模型。 */
+const selectRole = ref('READER');
+/** 模拟业务提交快照，避免只检查选项视觉状态。 */
+const submittedRole = ref('');
+
+/** 用实际发布包复现 label 包裹和独立 ARIA 标题两种表单写法。 */
+function renderPackedSelectModel() {
+  /** 只在显式无动效分支传 false，默认分支不覆盖库配置。 */
+  const select = h(Select, {
+    modelValue: selectRole.value,
+    ariaLabelledby: 'role-label',
+    ...(dropdownQuery.has('no-motion') ? { motion: false } : {}),
+    optionList: [
+      { label: '阅读', value: 'READER' },
+      { label: '编辑', value: 'EDITOR' },
+    ],
+    // 等价于 SFC 的 v-model，不监听 select 或在业务侧补写模型。
+    'onUpdate:modelValue': (value) => {
+      selectRole.value = value;
+    },
+  });
+  return h('main', { style: { padding: '32px' } }, [
+    h('h1', '申请目录权限'),
+    dropdownQuery.has('label-wrap')
+      ? h('label', [h('span', { id: 'role-label' }, '申请角色'), select])
+      : h('div', [h('span', { id: 'role-label' }, '申请角色'), select]),
+    h('output', { 'data-testid': 'select-model' }, selectRole.value),
+    h(
+      'button',
+      {
+        // 提交结果必须来自公开模型，不读取组件内部状态。
+        onClick: () => {
+          submittedRole.value = selectRole.value;
+        },
+      },
+      '提交申请',
+    ),
+    h('output', { 'data-testid': 'select-submitted' }, submittedRole.value),
+  ]);
+}
 // 未指定专项参数时，原消费测试页面保持原来的组件组合。
 const dropdownCase = dropdownQuery.get('dropdown');
 // 排版专项复用真实安装包，仅切换测试页面，不注入组件实现。
@@ -1278,6 +1318,7 @@ const overlayContainerRender = dropdownQuery.has('overlay-container')
 
 /** 浮层专项复用真实包服务，其他组件消费页面保持原入口。 */
 const overlayRender =
+  (dropdownQuery.has('select-model') ? renderPackedSelectModel : undefined) ??
   overlayContainerRender ??
   (dropdownQuery.has('overlay-close-size')
     ? renderPackedCloseSize

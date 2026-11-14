@@ -22,6 +22,8 @@ const value = ref('douyin');
 
 `v-model` binds `modelValue`. A selection notifies in the order `select → change → update:modelValue → update:value`; when both `value` and `modelValue` are present, `value` wins, and the Vue update events do not change the Semi `change` payload.
 
+Controlled single selection notifies synchronously so an immediate form submission reads the selected value without waiting for the closing animation. Display still follows the props written back by the parent, and the default animation continues.
+
 ## Array options, multiple and groups
 
 Pass `option-list` with `{ value, label }` items; the default slot carries declarative children through `Select.Option`, and `Select.OptGroup` groups them.
