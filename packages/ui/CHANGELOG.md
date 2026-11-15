@@ -1,5 +1,18 @@
 # @aifuxi/semi-ui-vue
 
+## 2.2.2
+
+### Patch Changes
+
+- [#51](https://github.com/aifuxi/semi-ui-vue/pull/51) [`317f21e`](https://github.com/aifuxi/semi-ui-vue/commit/317f21ea3276af85a2de944ca058a65265696241) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Tooltip / Popover 在退出动画期间忽略快速重开的问题；保留入场动画保护、默认动效及正常关闭和 keepDOM 生命周期。
+
+- [#51](https://github.com/aifuxi/semi-ui-vue/pull/51) [`317f21e`](https://github.com/aifuxi/semi-ui-vue/commit/317f21ea3276af85a2de944ca058a65265696241) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Select 受控单选等待关闭动画才通知新值，导致选择后立即提交表单时读取旧角色的问题；保留默认动效、事件顺序与父级回写语义。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.2.2
+  - @aifuxi/semi-icons-lab-vue@2.2.2
+  - @aifuxi/semi-illustrations-vue@2.2.2
+  - @aifuxi/semi-theme-default@2.2.2
+
 ## 2.2.1
 
 ### Patch Changes
