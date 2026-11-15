@@ -23,6 +23,65 @@ function options() {
 }
 
 describe('Select', () => {
+  // 受控模型在选择时提交，视觉退场继续使用真实生命周期，不因修复关闭动效。
+  it.each([false, true])(
+    '默认动效在关闭动画结束前更新模型且不重复通知，filter=%s',
+    async (filter) => {
+      /** 宿主只绑定公开模型，并将提交时读取的值单独呈现。 */
+      const Host = {
+        components: { Select },
+        // 使用真实 SFC 模板语义的 v-model；业务不监听 select 事件补写值。
+        data() {
+          return {
+            role: 'READER',
+            submitted: '',
+            filter,
+            options: [
+              { value: 'READER', label: '阅读' },
+              { value: 'EDITOR', label: '编辑' },
+            ],
+          };
+        },
+        template: `<form @submit.prevent="submitted = role">
+        <Select v-model="role" :filter="filter" :option-list="options" aria-label="申请权限" />
+        <output data-testid="model">{{ role }}</output>
+        <button type="submit">提交</button>
+        <output data-testid="submitted">{{ submitted }}</output>
+      </form>`,
+      };
+      /** 挂载到文档以保留 Portal、焦点与真实 Select 实例。 */
+      const wrapper = mount(Host, { attachTo: document.body });
+      try {
+        await wrapper.get('[role="combobox"]').trigger('click');
+        await nextTick();
+        /** 真实弹层包装器接收 CSS 动画完成事件，不对 Select 使用 stub。 */
+        const popup = document.querySelector<HTMLElement>('.semi-popover-wrapper')!;
+        popup.dispatchEvent(new Event('animationend'));
+        await nextTick();
+        /** 通过公开 option 的文字定位编辑项。 */
+        const editor = [...document.querySelectorAll<HTMLElement>('[role="option"]')].find(
+          // 角色文本来自与工单一致的 optionList，避免依赖内部选项下标。
+          (option) => option.textContent?.includes('编辑'),
+        )!;
+        editor.click();
+        await nextTick();
+        expect(wrapper.findComponent(Select).emitted('select')?.[0]?.[0]).toBe('EDITOR');
+        expect(wrapper.get('[data-testid="model"]').text()).toBe('EDITOR');
+        expect(popup.classList.contains('semi-tooltip-animation-hide')).toBe(true);
+        await wrapper.get('form').trigger('submit');
+        expect(wrapper.get('[data-testid="submitted"]').text()).toBe('EDITOR');
+        popup.dispatchEvent(new Event('animationend'));
+        await nextTick();
+        expect(wrapper.get('[data-testid="model"]').text()).toBe('EDITOR');
+        expect(wrapper.findComponent(Select).emitted('change')).toEqual([['EDITOR']]);
+        expect(wrapper.findComponent(Select).emitted('update:modelValue')).toEqual([['EDITOR']]);
+        expect(wrapper.findComponent(Select).emitted('update:value')).toEqual([['EDITOR']]);
+      } finally {
+        wrapper.unmount();
+      }
+    },
+  );
+
   it('展开加载面板渲染真实 Spin SVG 而非空样式占位', async () => {
     const wrapper = mount(Select, {
       attachTo: document.body,

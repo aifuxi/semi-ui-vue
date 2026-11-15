@@ -242,7 +242,8 @@ export function useTooltipFoundation(options: TooltipFoundationOptions) {
     containerIsRelativeOrAbsolute: () =>
       containerPosition === 'relative' || containerPosition === 'absolute',
     getActiveElement: () => document.activeElement,
-    getAnimatingState: () => isAnimating,
+    // show 的新请求应打断旧退场；入场中的重复 show 仍由固定 Foundation 门禁拦截。
+    getAnimatingState: () => isAnimating && state.transitionState !== 'leave',
     getCache: (key) => cache.get(key),
     getCaches: () => cache,
     getContainer: () => portalElement.value,

@@ -138,3 +138,11 @@ Popover 文档 InitialFocus 的真实对照发现 `initialFocusRef` 绑定 Input
 业务表单中复现了收起中的 Select 浮层仍遮挡相邻负责人字段的问题。固定 React Adapter 保留动画 DOM；Vue Portal 额外按逻辑 `visible` 设置 `inert`，使已关闭内容立即退出鼠标命中、键盘焦点和可访问性树，仍保留退出动画与原有 `afterClose` 时序。这是为关闭阶段交互补充的明确差异，不修改定位、视觉、公开 props 或 Select 选择事件顺序。
 
 回归覆盖 `Escape` 和选择选项两种关闭方式：退出动画仍在播放时，浏览器命中测试必须穿过旧选项；重新展开恢复交互。
+
+### 受控菜单在退场中重开（2026-11-15）
+
+固定 Foundation `show` 会在 `getAnimatingState()` 为真时忽略展示请求。Select 同步通知新值后，立即重开会出现 trigger 已展开而旧弹层随后被移除的情况。初次修复仅为 `custom` 的显式 `visible=true` 放行；随后排查确认 `click` 触发的 Tooltip / Popover 仍会吞掉退场中的重开。
+
+Vue Adapter 现统一在当前阶段为 `leave` 时允许新的 `show` 打断退场，包括受控 `visible` 和组件自行发起的展示；入场中的重复 `show` 仍受原门禁约束。新入场继续播放，恢复命中与 ARIA；被取消的退场不发 `afterClose`，后续正常关闭仍按 `keepDOM` 保留或销毁 Portal。该项明确偏离固定 React 基线的退场门禁，不修改 vendor、不关闭动效，也不伪造关闭完成事件。
+
+回归覆盖 Tooltip 五种 trigger 的显式重开、Popover 真实点击及两种 `keepDOM`；真实包 Chromium 覆盖 Tooltip / Popover × 受控/非受控 × light/dark。专项仅延长测试中的 CSS 退场时长以稳定覆盖重开窗口，不添加固定等待、重试或修改库的默认时长。

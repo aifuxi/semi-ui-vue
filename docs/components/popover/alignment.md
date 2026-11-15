@@ -20,6 +20,8 @@
 
 组件保持薄适配层：状态唯一来源仍是 Tooltip/Foundation，Popover 不复制第二套 visible、Portal 或定位状态；props 向下、事件向上。内容、箭头分别拆分，避免根组件同时承担 SVG 表现职责。
 
+退场动画未完成时，点击触发器或更新 `visible=true` 可打断退场并重新展示。该行为由共享 Tooltip Adapter 提供，沿用 [Tooltip 退场重开契约](../tooltip/alignment.md#受控菜单在退场中重开2026-11-15)；取消的退场不触发 `afterClose`，下一次正常关闭仍遵守 `keepDOM`。这是相对固定 React 基线的明确交互差异。
+
 ## 公开 API、默认值与 Vue 映射
 
 | React v2.102.0                                   | Vue 契约                                           | 默认值 / 映射                                           | 结论         |

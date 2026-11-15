@@ -79,6 +79,15 @@ Select 是 Tooltip PoC 后的第二道复杂度门槛，用来验证搜索、多
 
 关闭动画期间的旧 Portal 设为 `inert`，避免吞掉相邻字段的下一次点击；差异及固定源码依据见 [Tooltip 交互边界](../tooltip/alignment.md#收起动画的交互边界2026-11-04)。选择与 change 事件顺序保持原 Foundation 契约。
 
+### 受控单选同步通知（2026-11-15，BUG-000308）
+
+- 固定 `select/foundation.ts` 的 `_handleSingleSelect` 在受控分支把 `_notifyChange` 放入 `closeCb`，`close` 又等 `popoverClose` 才执行它。默认关闭动画为 100ms，期间立即提交表单会捕获旧值；真实 tarball + Chromium 已复现选择 EDITOR 后提交 READER。
+- 私有集成层继承固定 Foundation，仅在受控单选调用栈中将本次 `closeCb` 提前到选择时结算，不复制状态机、不修改 vendor。`select → change → update:modelValue → update:value` 顺序和载荷不变；显示仍等待父级 props 回写。非受控、多选、普通关闭与 Portal 清理保留原生命周期，默认动画继续播放。
+- 同步通知后立即重开菜单，Tooltip 必须接受新的展示请求，不能被旧退场的 `getAnimatingState` 门禁吞掉。Select 沿用共享的 [Tooltip 退场重开契约](../tooltip/alignment.md#受控菜单在退场中重开2026-11-15)，新入场打断旧退场，入场中的重复请求仍受门禁保护。
+- 此处明确偏离固定 React 基线的通知时机，避免 Vue 表单提交依赖视觉动画；不是关闭动效或在业务侧替换选择器。jsdom 不会自行播放 CSS 动画，未派发 `animationend` 的旧最小用例只能证明通知尚未到达，不能单独证明浏览器永久丢失更新。
+- 工单原业务申请缺少选择到提交之间的时序记录；本轮证实了可产生同样错误结果的快速提交路径，不将它扩大为原申请的唯一原因。原账号、目录、待审批申请和 UUID 保留；业务安装修复版后的原页面复验仍需进行。
+- 本轮验证：Select/Tooltip/Pagination/Form 共 78 项单元、SSR 和 hydration 测试通过；真实 tarball 消费 19 项通过；Select/Tooltip/Popover/Dropdown 的 React/Vue Chromium 对照 22 项通过（3 workers、0 retries，包含 light/dark、RTL 与现有截图基线）。公开产物、SSR 入口、包消费类型、样式和 tree-shaking 检查通过；未重跑未受影响的全库组件矩阵。
+
 ## Locale/Pagination 菜单回归（2026-09-06）
 
 固定 option.tsx 仅为字符串 children 添加 semi-select-option-text；VNode/数字内容直接作为 option 子节点。补充字符串与 VNode 菜单结构及选择行为回归，消除分页大小菜单多出的包裹节点；不更改过滤/选中值或默认 true 的处理。

@@ -22,6 +22,8 @@ const value = ref('douyin');
 
 `v-model` 绑定 `modelValue`，选中时按 `select → change → update:modelValue → update:value` 的顺序通知；`value` 与 `modelValue` 同时存在时 `value` 优先，新增的 Vue 更新事件不改变 Semi 的 `change` 载荷。
 
+受控单选在选择时同步通知新值，随后立即提交表单也能读到本次选择；通知不等待关闭动画。显示仍以父级回写的 props 为准，默认动效继续播放。
+
 ## 数组选项、多选与分组
 
 `option-list` 传入 `{ value, label }` 数组；默认 slot 承载声明式候选项，使用 `Select.Option`，分组使用 `Select.OptGroup`。
