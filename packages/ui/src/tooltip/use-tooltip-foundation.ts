@@ -242,14 +242,8 @@ export function useTooltipFoundation(options: TooltipFoundationOptions) {
     containerIsRelativeOrAbsolute: () =>
       containerPosition === 'relative' || containerPosition === 'absolute',
     getActiveElement: () => document.activeElement,
-    // custom 的显式重开必须打断退场；否则固定 Foundation.show 会忽略 true，留下空菜单。
-    getAnimatingState: () =>
-      isAnimating &&
-      !(
-        options.runtimeProps.value.trigger === 'custom' &&
-        options.runtimeProps.value.visible &&
-        state.transitionState === 'leave'
-      ),
+    // show 的新请求应打断旧退场；入场中的重复 show 仍由固定 Foundation 门禁拦截。
+    getAnimatingState: () => isAnimating && state.transitionState !== 'leave',
     getCache: (key) => cache.get(key),
     getCaches: () => cache,
     getContainer: () => portalElement.value,

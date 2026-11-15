@@ -104,9 +104,11 @@ const popoverEvents = ref([]);
 function renderPackedPopoverRepeat() {
   /** omitted 与显式 false 分开验证，默认行为保持不变。 */
   const hide = dropdownQuery.get('hide');
+  /** 同一真实交互宿主覆盖两个共享动效状态机的公开组件；既有页面默认仍是 Popover。 */
+  const Overlay = dropdownQuery.get('popover-kind') === 'tooltip' ? Tooltip : Popover;
   return h('main', { style: { padding: '32px' } }, [
     h(
-      Popover,
+      Overlay,
       {
         trigger: 'click',
         ...(hide === 'omitted' ? {} : { clickTriggerToHide: hide === 'true' }),

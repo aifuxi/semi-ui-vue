@@ -141,4 +141,8 @@ Popover 文档 InitialFocus 的真实对照发现 `initialFocusRef` 绑定 Input
 
 ### 受控菜单在退场中重开（2026-11-15）
 
-固定 Foundation `show` 会在 `getAnimatingState()` 为真时忽略展示请求。Select 同步通知新值后，立即重开会出现 trigger 已展开而旧弹层随后被移除的情况。Vue Adapter 仅在 `trigger=custom`、显式 `visible=true` 且当前为 `leave` 时允许展示打断退场；入场、其他触发方式与普通关闭继续沿用原门禁。该项是明确的交互差异，不延长或关闭动效，也不伪造关闭完成事件；回归由 Tooltip 单测和真实包 Select 连续选择覆盖。
+固定 Foundation `show` 会在 `getAnimatingState()` 为真时忽略展示请求。Select 同步通知新值后，立即重开会出现 trigger 已展开而旧弹层随后被移除的情况。初次修复仅为 `custom` 的显式 `visible=true` 放行；随后排查确认 `click` 触发的 Tooltip / Popover 仍会吞掉退场中的重开。
+
+Vue Adapter 现统一在当前阶段为 `leave` 时允许新的 `show` 打断退场，包括受控 `visible` 和组件自行发起的展示；入场中的重复 `show` 仍受原门禁约束。新入场继续播放，恢复命中与 ARIA；被取消的退场不发 `afterClose`，后续正常关闭仍按 `keepDOM` 保留或销毁 Portal。该项明确偏离固定 React 基线的退场门禁，不修改 vendor、不关闭动效，也不伪造关闭完成事件。
+
+回归覆盖 Tooltip 五种 trigger 的显式重开、Popover 真实点击及两种 `keepDOM`；真实包 Chromium 覆盖 Tooltip / Popover × 受控/非受控 × light/dark。专项仅延长测试中的 CSS 退场时长以稳定覆盖重开窗口，不添加固定等待、重试或修改库的默认时长。

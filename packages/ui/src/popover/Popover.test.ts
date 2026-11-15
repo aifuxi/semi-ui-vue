@@ -33,6 +33,55 @@ describe('Popover', () => {
     vi.restoreAllMocks();
   });
 
+  // 真实点击驱动非受控状态；保留默认动效，同时验证保留与销毁 DOM 两种生命周期。
+  it.each([false, true])('退场中再次点击可重开且不误发 afterClose，keepDOM=%s', async (keepDOM) => {
+    /** 不提供 visible，也不在宿主中手动 toggle，状态必须由 Popover 自己更新。 */
+    const wrapper = mount(Popover, {
+      attachTo: document.body,
+      props: { trigger: 'click', clickTriggerToHide: true, content: '排序设置', keepDOM },
+      slots: { default: '<button id="reopen-trigger">排序</button>' },
+    });
+    try {
+      await flushPopover();
+      /** 原生按钮依次接收 mousedown 和 click，保留外部点击识别的真实顺序。 */
+      const trigger = wrapper.get('#reopen-trigger');
+      await trigger.trigger('click');
+      await flushPopover();
+      /** jsdom 不播放 CSS，动画事件只用来推进真实 Portal 的阶段。 */
+      const popup = document.querySelector<HTMLElement>('.semi-popover-wrapper')!;
+      popup.dispatchEvent(new Event('animationstart'));
+      popup.dispatchEvent(new Event('animationend'));
+      await trigger.trigger('mousedown');
+      await trigger.trigger('click');
+      await flushPopover();
+      popup.dispatchEvent(new Event('animationstart'));
+      expect(popup.classList.contains('semi-tooltip-animation-hide')).toBe(true);
+      await trigger.trigger('mousedown');
+      await trigger.trigger('click');
+      await flushPopover();
+      expect(popup.classList.contains('semi-popover-wrapper-show')).toBe(true);
+      expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
+      expect(popup.closest('.semi-portal-inner')?.hasAttribute('inert')).toBe(false);
+      popup.dispatchEvent(new Event('animationend'));
+      await flushPopover();
+      expect(popup.isConnected).toBe(true);
+      expect(wrapper.emitted('update:visible')).toEqual([[true], [false], [true]]);
+      expect(wrapper.emitted('afterClose')).toBeUndefined();
+      // 被取消的退场不能完成关闭；下一次真正退出仍必须通知并按 keepDOM 清理。
+      await trigger.trigger('mousedown');
+      await trigger.trigger('click');
+      await flushPopover();
+      popup.dispatchEvent(new Event('animationstart'));
+      popup.dispatchEvent(new Event('animationend'));
+      await flushPopover();
+      expect(wrapper.emitted('afterClose')).toHaveLength(1);
+      if (keepDOM) expect(popup.style.display).toBe('none');
+      else expect(popup.isConnected).toBe(false);
+    } finally {
+      wrapper.unmount();
+    }
+  });
+
   // 显式 true 必须到达真实 Tooltip，同时在公开交互中产生关闭结果。
   it('clickTriggerToHide 透传并允许再次点击关闭，动态 false 保持打开', async () => {
     /** 真实 Popover 与 Tooltip 均参与，不使用子组件 stub。 */

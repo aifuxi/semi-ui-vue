@@ -29,37 +29,51 @@ async function flushTooltip(): Promise<void> {
 }
 
 describe('Tooltip', () => {
-  // 选择值同步后，用户可在退场阶段重开受控菜单，不应被 Foundation 的动效门禁吞掉。
-  it('custom 受控浮层可在退出动画未结束时重新打开', async () => {
-    /** 保留默认动效，公开 visible 驱动两次展示。 */
-    const wrapper = mount(Tooltip, {
-      props: { content: '菜单', trigger: 'custom', visible: true, motion: true },
-      slots: { default: '<button>菜单</button>' },
-      attachTo: document.body,
-    });
-    try {
-      await flushTooltip();
-      /** jsdom 不播放 CSS 动画，通过真实事件开启和完成每个阶段。 */
-      const popup = document.querySelector<HTMLElement>('.semi-tooltip-wrapper')!;
-      popup.dispatchEvent(new Event('animationstart'));
-      popup.dispatchEvent(new Event('animationend'));
-      await wrapper.setProps({ visible: false });
-      await flushTooltip();
-      popup.dispatchEvent(new Event('animationstart'));
-      expect(popup.classList.contains('semi-tooltip-animation-hide')).toBe(true);
-      await wrapper.setProps({ visible: true });
-      await flushTooltip();
-      expect(popup.classList.contains('semi-tooltip-wrapper-show')).toBe(true);
-      expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
-      expect(popup.closest('.semi-portal-inner')?.hasAttribute('inert')).toBe(false);
-      popup.dispatchEvent(new Event('animationend'));
-      await flushTooltip();
-      expect(popup.isConnected).toBe(true);
-      expect(wrapper.emitted('afterClose')).toBeUndefined();
-    } finally {
-      wrapper.unmount();
-    }
-  });
+  // 每种触发方式都必须接受退场中的显式重开，不能仅对 custom 兑现受控状态。
+  it.each(['hover', 'focus', 'click', 'contextMenu', 'custom'] as const)(
+    '%s 受控浮层可在退出动画未结束时重新打开',
+    async (trigger) => {
+      if (trigger === 'hover') {
+        /** jsdom 没有指针命中；仅为当前触发器提供真实悬停前提，保留其他选择器语义。 */
+        const matches = HTMLElement.prototype.matches;
+        vi.spyOn(HTMLElement.prototype, 'matches').mockImplementation(function (
+          this: HTMLElement,
+          selector: string,
+        ) {
+          if (selector === ':hover' && this.id === 'reopen-hover-trigger') return true;
+          return matches.call(this, selector);
+        });
+      }
+      /** 保留默认动效，公开 visible 驱动两次展示。 */
+      const wrapper = mount(Tooltip, {
+        props: { content: '菜单', trigger, visible: true, motion: true },
+        slots: { default: '<button id="reopen-hover-trigger">菜单</button>' },
+        attachTo: document.body,
+      });
+      try {
+        await flushTooltip();
+        /** jsdom 不播放 CSS 动画，通过真实事件开启和完成每个阶段。 */
+        const popup = document.querySelector<HTMLElement>('.semi-tooltip-wrapper')!;
+        popup.dispatchEvent(new Event('animationstart'));
+        popup.dispatchEvent(new Event('animationend'));
+        await wrapper.setProps({ visible: false });
+        await flushTooltip();
+        popup.dispatchEvent(new Event('animationstart'));
+        expect(popup.classList.contains('semi-tooltip-animation-hide')).toBe(true);
+        await wrapper.setProps({ visible: true });
+        await flushTooltip();
+        expect(popup.classList.contains('semi-tooltip-wrapper-show')).toBe(true);
+        expect(popup.classList.contains('semi-tooltip-animation-show')).toBe(true);
+        expect(popup.closest('.semi-portal-inner')?.hasAttribute('inert')).toBe(false);
+        popup.dispatchEvent(new Event('animationend'));
+        await flushTooltip();
+        expect(popup.isConnected).toBe(true);
+        expect(wrapper.emitted('afterClose')).toBeUndefined();
+      } finally {
+        wrapper.unmount();
+      }
+    },
+  );
 
   beforeEach(() => {
     vi.useFakeTimers();
