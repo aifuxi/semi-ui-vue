@@ -256,6 +256,26 @@ function isItemDisabled(kind: 'prev' | 'next'): boolean {
   return Boolean(props.disabled || (kind === 'prev' ? state.prevDisabled : state.nextDisabled));
 }
 
+function handlePageButtonKey(event: KeyboardEvent): void {
+  const { currentTarget, target, key, type } = event;
+  if (currentTarget !== target || (key !== 'Enter' && key !== ' ')) return;
+
+  event.preventDefault();
+  if (type === (key === 'Enter' ? 'keydown' : 'keyup')) {
+    (currentTarget as HTMLElement).click();
+  }
+}
+
+function pageButtonAttrs(disabled: boolean) {
+  return {
+    role: 'button',
+    tabindex: disabled ? -1 : 0,
+    'aria-disabled': disabled,
+    onKeydown: handlePageButtonKey,
+    onKeyup: handlePageButtonKey,
+  };
+}
+
 function selectPage(page: PaginationPage): void {
   if (!props.disabled) foundation.goPage(page);
 }
@@ -301,8 +321,7 @@ function handleQuickJumpKeydown(event: KeyboardEvent): void {
     }}</span>
 
     <li
-      role="button"
-      :aria-disabled="isItemDisabled('prev')"
+      v-bind="pageButtonAttrs(isItemDisabled('prev'))"
       aria-label="Previous"
       class="semi-page-item semi-page-prev"
       :class="{ 'semi-page-item-disabled': isItemDisabled('prev') }"
@@ -353,7 +372,10 @@ function handleQuickJumpKeydown(event: KeyboardEvent): void {
     </template>
 
     <template v-else>
-      <template v-for="(page, index) in state.pageList" :key="`${page}-${index}`">
+      <template
+        v-for="(page, index) in state.pageList"
+        :key="page === '...' ? `more-${index}` : page"
+      >
         <PaginationPopover v-if="page === '...' && !props.disabled" v-bind="popoverBindings()">
           <li class="semi-page-item" aria-label="More" aria-current="false">...</li>
           <template #content>
@@ -366,6 +388,7 @@ function handleQuickJumpKeydown(event: KeyboardEvent): void {
         </PaginationPopover>
         <li
           v-else
+          v-bind="page === '...' ? undefined : pageButtonAttrs(Boolean(props.disabled))"
           class="semi-page-item"
           :class="{
             'semi-page-item-active': state.currentPage === page,
@@ -382,8 +405,7 @@ function handleQuickJumpKeydown(event: KeyboardEvent): void {
     </template>
 
     <li
-      role="button"
-      :aria-disabled="isItemDisabled('next')"
+      v-bind="pageButtonAttrs(isItemDisabled('next'))"
       aria-label="Next"
       class="semi-page-item semi-page-next"
       :class="{ 'semi-page-item-disabled': isItemDisabled('next') }"

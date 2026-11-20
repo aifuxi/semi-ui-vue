@@ -67,7 +67,7 @@
 
 - 默认根为 `ul.semi-page`；small 根为 `div.semi-page.semi-page-small`；disabled 增加 `.semi-page-disabled`。
 - 前后按钮为 `li.semi-page-item.semi-page-prev|next[role=button][aria-disabled]`，保留 `x-semi-prop`。
-- 页码为 `li.semi-page-item[aria-label]`；激活项增加 `-active` 与 `aria-current="page"`；disabled 增加 `-all-disabled`/`-all-disabled-active`。
+- 页码为 `li.semi-page-item[aria-label]`，数字页码有 `role=button`；激活项增加 `-active` 与 `aria-current="page"`；disabled 增加 `-all-disabled`/`-all-disabled-active`。
 - 总页数是根内 `span.semi-page-total`；容量选择包在 `.semi-page-switch`；快速跳转保持 `.semi-page-quickjump` 与 InputNumber class。
 - 省略页 Popover 保留 `.semi-portal > .semi-popover-wrapper > .semi-popover-content`，内部 `.semi-page-rest-list` 宽 78px、最多显示 5 行，每行 32px；大范围页码保持窗口化渲染。
 - 主题直接编译固定 Pagination SCSS，并纳入 Select/Input/InputNumber、Tooltip/Popover/Portal、Icon；light/dark 只由同一 `--semi-*` Token 链驱动。
@@ -75,8 +75,8 @@
 
 ## 键盘、焦点与 ARIA
 
-- 上游页码与前后按钮以 click 为唯一交互入口；Foundation `handleKeyDown` 在固定版本为空。Vue 保留其 DOM/ARIA 与可聚焦性，不额外发明与基线不同的 roving tabindex 或快捷键。
-- 前后按钮公开 `role=button`、`aria-label=Previous|Next`、`aria-disabled`；数字页公开 `aria-label="Page N"`，省略项 `aria-label=More`，当前页公开 `aria-current=page`。
+- Vue 将启用的数字页码和前后按钮纳入 Tab 顺序，按 Enter 或松开空格时沿用点击翻页逻辑。禁用项标记为 `aria-disabled=true` 并从 Tab 顺序中跳过。
+- 前后按钮保留 `aria-label=Previous|Next`，数字页保留 `aria-label="Page N"`，省略项保留 `aria-label=More`，当前页保留 `aria-current=page`。数字页的 DOM 身份随页码保持稳定，截断列表重排时焦点仍在当前操作的页码上。
 - Select 与 InputNumber 沿用各自已验收的键盘、焦点和 ARIA；快速跳页 Enter 由 InputNumber keydown 提交。
 
 ## Portal、动效、国际化、RTL 与 SSR
@@ -99,7 +99,7 @@
 
 - Accepted：Vue 用 `modelValue`/`update:modelValue` 提供原生 `v-model`，同时保留 `currentPage`/`update:currentPage`；这是 React 受控 prop 的 Vue 原生映射，不改变页码与事件语义。
 - Accepted：React 用 `react-window` 渲染省略页列表；Vue 使用等价固定行高窗口化组件，保持 78px 宽、32px 行高、5 行 viewport、滚动可达范围和公开 DOM class，不引入 React 运行时依赖。
-- Accepted parity limitation：固定上游的 `handleKeyDown` 是空实现且页码项未提供 tabindex；Vue 不额外添加新的键盘导航契约。Select、InputNumber 与 Popover 自身的键盘/焦点能力照常保留。
+- Accepted（BUG-000399）：固定上游的 `handleKeyDown` 是空实现且数字页码及前后按钮未纳入 Tab 顺序。Vue 为这些翻页控件提供键盘焦点和激活能力，沿用固定 Foundation 的翻页状态和事件规则。
 
 ## Locale 文档消费者回归（2026-09-06）
 

@@ -8,6 +8,7 @@ import {
 } from '../../../packages/test-infra/src';
 import {
   captureComputedStyle,
+  createVueScenarioUrl,
   expectComparableTarget,
   expectScreenshotPixelsToMatch,
   openParityPages,
@@ -51,6 +52,74 @@ test('Pagination 参考场景来自本地 v2.102.0 并保留截断、容量、�
   await expect(scenario.locator('.semi-page-quickjump')).toHaveCount(1);
   await expect(scenario.locator('.semi-page-small')).toHaveCount(1);
   expect(runtimeErrors).toEqual([]);
+});
+
+test('Pagination 可用 Tab、Enter 和空格操作页码与前后翻页', async ({ page }) => {
+  await page.goto(
+    createVueScenarioUrl({
+      scenarioId: 'pagination',
+      theme: 'light',
+      direction: 'ltr',
+      locale: 'zh-CN',
+    }),
+  );
+
+  const pagination = page.locator('[data-parity-target="pagination-basic"]');
+  const button = (name: string) => pagination.getByRole('button', { name, exact: true });
+  const previous = button('Previous');
+  const next = button('Next');
+  const current = pagination.locator('[aria-current="page"]');
+  await expect(current).toHaveText('4');
+
+  await page.keyboard.press('Tab');
+  await expect(previous).toBeFocused();
+  await expect(previous).not.toHaveCSS('outline-style', 'none');
+  await page.keyboard.press('Tab');
+  await expect(button('Page 1')).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(current).toHaveText('1');
+  await expect(previous).toBeDisabled();
+  await expect(previous).toHaveAttribute('tabindex', '-1');
+  await expect(button('Page 1')).toBeFocused();
+  await expect(button('Page 1')).not.toHaveCSS('outline-style', 'none');
+
+  await page.keyboard.press('Tab');
+  await expect(button('Page 2')).toBeFocused();
+  await page.keyboard.down('Space');
+  await expect(current).toHaveText('1');
+  await page.keyboard.up('Space');
+  await expect(current).toHaveText('2');
+  await expect(previous).toBeEnabled();
+  await expect(next).toBeEnabled();
+  await previous.press('Space');
+  await expect(current).toHaveText('1');
+
+  await button('Page 4').press('Enter');
+  await button('Page 5').press('Enter');
+  await expect(current).toHaveText('5');
+  await expect(button('Page 5')).toBeFocused();
+  await button('Page 20').press('Space');
+  await expect(current).toHaveText('20');
+  await expect(next).toBeDisabled();
+  await page.keyboard.press('Tab');
+  await expect(
+    page.locator('[data-parity-target="pagination-complete"] .semi-page-prev'),
+  ).toBeFocused();
+
+  await previous.click();
+  await expect(current).toHaveText('19');
+  await button('Page 20').focus();
+  await page.keyboard.press('Tab');
+  await expect(next).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(current).toHaveText('20');
+  await expect(next).toBeFocused();
+  await page.keyboard.press('Space');
+  await expect(current).toHaveText('20');
+
+  const disabled = page.locator('[data-parity-target="pagination-disabled"]');
+  await expect(disabled.getByRole('button', { disabled: true })).toHaveCount(5);
+  await expect(disabled.locator('[tabindex="0"]')).toHaveCount(0);
 });
 
 test('Pagination React/Vue 页码、快速跳页、容量 Select、Popover、样式与几何一致', async ({
