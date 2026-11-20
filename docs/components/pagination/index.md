@@ -113,4 +113,6 @@ Popover 和 Select 使用 ConfigProvider 的稳定 `getPopupContainer`。容器�
 | `prevText` / `nextText` ReactNode | 同名 VNodeChild prop，或 `#prev` / `#next`     |
 | `className`                       | `class`；兼容 `className`                      |
 
-SSR 会输出稳定的分页 DOM，不创建 Portal。固定上游未实现数字页键盘导航，Vue 不额外发明不同的 tabindex/快捷键契约；Select 与 InputNumber 保留各自键盘能力。
+用 Tab 聚焦数字页码、上一页或下一页，再按 Enter 或空格翻页。禁用的翻页项会从 Tab 顺序中跳过。Select 与 InputNumber 保留各自键盘操作。
+
+SSR 会输出稳定的分页 DOM，不创建 Portal。
