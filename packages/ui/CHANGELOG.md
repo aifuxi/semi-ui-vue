@@ -1,5 +1,16 @@
 # @aifuxi/semi-ui-vue
 
+## 2.2.3
+
+### Patch Changes
+
+- [#53](https://github.com/aifuxi/semi-ui-vue/pull/53) [`0c166af`](https://github.com/aifuxi/semi-ui-vue/commit/0c166afebef15179ef1294719e33dae6b8e4b264) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Pagination 页码及前后翻页按钮的键盘操作，支持 Tab 聚焦和 Enter、空格翻页。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.2.3
+  - @aifuxi/semi-icons-lab-vue@2.2.3
+  - @aifuxi/semi-illustrations-vue@2.2.3
+  - @aifuxi/semi-theme-default@2.2.3
+
 ## 2.2.2
 
 ### Patch Changes
