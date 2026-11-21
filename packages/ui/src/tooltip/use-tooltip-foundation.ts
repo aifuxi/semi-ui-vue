@@ -366,13 +366,23 @@ export function useTooltipFoundation(options: TooltipFoundationOptions) {
       };
       window.addEventListener('scroll', scrollHandler, true);
     },
-    // 包装 Foundation 的 click 打开行为，让同一次点击只负责打开或关闭之一。
     registerTriggerEvent: (events) => {
-      /** 固定 Foundation 产生的原始事件集，其他触发方式原样保留。 */
       const eventSet = events as TooltipState['triggerEventSet'];
+      const { trigger } = getFoundationProps();
       state.triggerEventSet = {
         ...eventSet,
-        ...(options.runtimeProps.value.trigger === 'click'
+        ...(trigger === 'custom'
+          ? {
+              onKeydown: (event: unknown) => {
+                // 受控浮层一旦收起，Esc 就应交给外层（如 Modal），不等退场动效结束。
+                if ((event as KeyboardEvent).key === 'Escape' && !getFoundationProps().visible) {
+                  return;
+                }
+                eventSet.onKeydown?.(event);
+              },
+            }
+          : {}),
+        ...(trigger === 'click'
           ? {
               // 同时支持鼠标点击与键盘生成的 click；避免 mousedown 关闭后又被 click 打开。
               onClick: (...args: unknown[]) => {

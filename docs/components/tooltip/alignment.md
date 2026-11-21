@@ -74,7 +74,7 @@
 | disabled/loading | 子节点 pointer-events none，外层 span 承担触发；disabled span cursor not-allowed                                                 |
 | 动效             | `semi-tooltip-animation-show/hide`，zoom 0.8↔1 与 opacity，进入/离开均 100ms cubic-bezier(0.215,0.61,0.355,1)                    |
 
-Escape 在 `closeOnEsc=true` 时关闭并通知；ArrowDown/ArrowUp 将焦点移动到弹层首/末可聚焦元素；`guardFocus=true` 时 Tab/Shift+Tab 在弹层内部循环。`initialFocusRef` 在显示完成后聚焦，`preventScroll` 透传给 focus。`returnFocusOnClose` 仅对非 custom trigger 生效。所有全局事件、timer、RAF 与 ResizeObserver 在关闭/卸载时清理。
+Escape 在 `closeOnEsc=true` 时关闭并通知；受控 `custom` 浮层在 `visible` 不为 `true` 时不拦截触发器上的 Escape，即使仍在播放退场动效（见 [Select 的 Modal 组合回归](../select/alignment.md#modal-内的-escape-路由bug-000394)）。ArrowDown/ArrowUp 将焦点移动到弹层首/末可聚焦元素；`guardFocus=true` 时 Tab/Shift+Tab 在弹层内部循环。`initialFocusRef` 在显示完成后聚焦，`preventScroll` 透传给 focus。`returnFocusOnClose` 仅对非 custom trigger 生效。所有全局事件、timer、RAF 与 ResizeObserver 在关闭/卸载时清理。
 
 ## 主题、暗色、RTL、国际化与 SSR
 

@@ -75,6 +75,39 @@ function renderPackedSelectModel() {
     h('output', { 'data-testid': 'select-submitted' }, submittedRole.value),
   ]);
 }
+const selectEscapeModalVisible = ref(true);
+
+/** 只用 Modal 与 Select 的公开接口复现两层浮层的 Esc 行为。 */
+function renderPackedSelectEscape() {
+  return h(
+    Modal,
+    {
+      visible: selectEscapeModalVisible.value,
+      title: '分享设置',
+      footer: null,
+      onCancel: () => {
+        selectEscapeModalVisible.value = false;
+      },
+    },
+    {
+      default: () => [
+        h('span', { id: 'permission-label' }, '分享权限'),
+        h(Select, {
+          ariaLabelledby: 'permission-label',
+          modelValue: selectRole.value,
+          'onUpdate:modelValue': (value) => {
+            selectRole.value = value;
+          },
+          optionList: [
+            { label: '阅读', value: 'READER' },
+            { label: '编辑', value: 'EDITOR' },
+          ],
+        }),
+      ],
+    },
+  );
+}
+
 // 未指定专项参数时，原消费测试页面保持原来的组件组合。
 const dropdownCase = dropdownQuery.get('dropdown');
 // 排版专项复用真实安装包，仅切换测试页面，不注入组件实现。
@@ -1321,6 +1354,7 @@ const overlayContainerRender = dropdownQuery.has('overlay-container')
 /** 浮层专项复用真实包服务，其他组件消费页面保持原入口。 */
 const overlayRender =
   (dropdownQuery.has('select-model') ? renderPackedSelectModel : undefined) ??
+  (dropdownQuery.has('select-escape') ? renderPackedSelectEscape : undefined) ??
   overlayContainerRender ??
   (dropdownQuery.has('overlay-close-size')
     ? renderPackedCloseSize

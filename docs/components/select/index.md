@@ -155,7 +155,8 @@ React 的 render props 在 Vue 中映射为具名 slot，函数 prop 兼容写�
 ## 可访问性与键盘
 
 - trigger 使用 `role="combobox"`、`aria-expanded`、`aria-controls` 与 `aria-activedescendant`；列表为 `role="listbox"`，候选项为 `role="option"` 并输出 `aria-selected` / `aria-disabled`。
-- `ArrowDown` / `ArrowUp` 移动高亮，`Enter` 选中，`Escape` 关闭并把焦点留在 trigger，`Tab` 离开；多选下 `Backspace` 删除最后一个标签。
+- `ArrowDown` / `ArrowUp` 移动高亮，`Enter` 选中，`Tab` 离开；多选下 `Backspace` 删除最后一个标签。
+- 下拉展开时，在触发器上按 `Escape` 只收起下拉并保留焦点；下拉已收起时，`Escape` 交给外层（例如 Modal 的关闭逻辑）。
 - 关闭浮层不移动焦点：这是固定 v2.17.0 之后的行为，选中单项不会触发 `blur`。
 
 ## 主题、RTL 与 SSR
