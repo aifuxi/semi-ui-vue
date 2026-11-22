@@ -1,5 +1,16 @@
 # @aifuxi/semi-ui-vue
 
+## 2.2.4
+
+### Patch Changes
+
+- [#55](https://github.com/aifuxi/semi-ui-vue/pull/55) [`929f020`](https://github.com/aifuxi/semi-ui-vue/commit/929f020bc955e2434f5069e66a61e105d1920c4e) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Select 下拉已收起时仍拦截 Escape，导致外层 Modal 无法响应键盘关闭的问题。下拉展开时，Escape 仍只收起下拉。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.2.4
+  - @aifuxi/semi-icons-lab-vue@2.2.4
+  - @aifuxi/semi-illustrations-vue@2.2.4
+  - @aifuxi/semi-theme-default@2.2.4
+
 ## 2.2.3
 
 ### Patch Changes
