@@ -95,6 +95,7 @@ InputGroup 必须装饰直接子 VNode，模板无法准确表达 `React.Childre
 - 子项 size、disabled 与 focus/blur 合并不修改原 VNode；业务监听显式存在时先保留业务监听，组事件仍可通过原生 focusin/focusout 的 Vue group handler 观察。
 - `value/modelValue` 受控性按原始 VNode key 存在判断，显式空字符串、0、undefined 重置和缺省必须区分。
 - TextArea Observer、RAF 和节流回调只能在客户端存在；切换 showLineNumber/resize 与卸载后必须断开或取消，不得污染 SSR import。
+- TextArea 卸载后，已排队的 prop 更新回调不得再安排 autosize 测量。切换详情替换 TextArea 时，新实例应继续自动增高；真实 tarball 的 Chromium 消费测试覆盖该时序。
 
 ## 测试与视觉矩阵
 

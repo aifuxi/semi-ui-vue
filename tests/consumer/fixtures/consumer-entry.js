@@ -1,5 +1,5 @@
 /* global document, location -- 此入口只在真实浏览器消费页面运行。 */
-import { createApp, h, ref } from 'vue';
+import { createApp, h, onUpdated, ref } from 'vue';
 import {
   Button,
   CodeHighlight,
@@ -9,6 +9,7 @@ import {
   Select,
   Table,
   Tag,
+  TextArea,
   Toast,
   Tooltip,
   Typography,
@@ -76,6 +77,37 @@ function renderPackedSelectModel() {
   ]);
 }
 const selectEscapeModalVisible = ref(true);
+
+const PackedTextAreaAutosize = {
+  setup() {
+    const switching = ref(false);
+    const showOriginal = ref(false);
+
+    // 先更新旧输入框的 placeholder，再在同一次 Vue 刷新中替换详情。
+    onUpdated(() => {
+      if (switching.value) showOriginal.value = true;
+    });
+
+    return () =>
+      h('main', [
+        h(
+          'button',
+          {
+            onClick: () => {
+              switching.value = true;
+            },
+          },
+          '查看原缺陷',
+        ),
+        h(TextArea, {
+          key: showOriginal.value ? 'original' : 'duplicate',
+          ariaLabel: showOriginal.value ? '原缺陷备注' : '重复缺陷备注',
+          autosize: { minRows: 1, maxRows: 4 },
+          placeholder: switching.value ? '追加备注' : '输入备注',
+        }),
+      ]);
+  },
+};
 
 /** 只用 Modal 与 Select 的公开接口复现两层浮层的 Esc 行为。 */
 function renderPackedSelectEscape() {
@@ -1351,8 +1383,9 @@ const overlayContainerRender = dropdownQuery.has('overlay-container')
   ? createPackedOverlayContainer()
   : undefined;
 
-/** 浮层专项复用真实包服务，其他组件消费页面保持原入口。 */
-const overlayRender =
+/** 交互专项通过查询参数选择场景，共用真实包服务。 */
+const interactionRender =
+  (dropdownQuery.has('textarea-autosize') ? () => h(PackedTextAreaAutosize) : undefined) ??
   (dropdownQuery.has('select-model') ? renderPackedSelectModel : undefined) ??
   (dropdownQuery.has('select-escape') ? renderPackedSelectEscape : undefined) ??
   overlayContainerRender ??
@@ -1371,8 +1404,8 @@ const overlayRender =
 createApp({
   // 根消费示例保留原有组件交互，并加入直接调用的错误提示区域。
   render: () =>
-    overlayRender
-      ? overlayRender()
+    interactionRender
+      ? interactionRender()
       : tableFixedCase
         ? renderPackedTableFixedWidths()
         : modalA11yCase

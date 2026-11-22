@@ -6,7 +6,7 @@ import path from 'node:path';
 import { registryState } from './release-evidence.mjs';
 import { publicPackages, NPM_REGISTRY } from './public-packages.mjs';
 import { verifyReleaseMetadata } from './release-metadata.mjs';
-import { propagationTimeoutMs, waitForRegistryMetadata } from './release-propagation.mjs';
+import { propagationTimeoutMs, waitForRegistryAvailability } from './release-propagation.mjs';
 
 const evidence = JSON.parse(await readFile(process.argv[2] ?? 'release-evidence.json', 'utf8'));
 assert.deepEqual(
@@ -15,23 +15,23 @@ assert.deepEqual(
 );
 const results = [];
 try {
-  // npm 在 publish 之后异步传播元数据：本次实测 ui 比发布报告晚 3 分钟以上，
-  // 因此并行轮询到共享预算用尽，再交给下面的断言判定。
-  const propagation = await waitForRegistryMetadata({
+  const propagation = await waitForRegistryAvailability({
     packages: evidence.packages,
     tag: evidence.tag,
     readState: registryState,
     timeoutMs: propagationTimeoutMs(),
   });
   for (const expected of evidence.packages) {
-    const { state, missing } = propagation.get(expected.name);
-    const manifest = state.versions[expected.version];
-    assert.ok(
-      manifest,
-      `${expected.name}: version missing${missing ? ` (${missing} not propagated within the wait budget)` : ''}`,
+    const { missing } = propagation.get(expected.name);
+    assert.equal(
+      missing,
+      null,
+      `${expected.name}@${expected.version}: ${missing} not available within the propagation wait budget`,
     );
-    assert.equal(manifest.dist.integrity, expected.integrity);
-    assert.equal(state['dist-tags'][evidence.tag], expected.version);
+  }
+  for (const expected of evidence.packages) {
+    const { state } = propagation.get(expected.name);
+    const manifest = state.versions[expected.version];
     if (expected.name === '@aifuxi/semi-ui-vue') {
       assert.equal(manifest.dependencies?.['@aifuxi/semi-icons-vue'], expected.version);
     }
