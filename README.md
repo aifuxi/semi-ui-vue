@@ -60,8 +60,8 @@ import { Button } from '@aifuxi/semi-ui-vue/button';
 git submodule update --init --recursive
 mise trust
 mise install
-mise exec -- pnpm install --frozen-lockfile
-mise exec -- pnpm dev
+mise run deps:install
+mise run dev
 ```
 
 Storybook Vue 场景站默认运行于 `http://127.0.0.1:4174`，固定 React 参考应用通过 `mise exec -- pnpm dev:reference` 启动于 `http://127.0.0.1:4173`。浏览器检查前运行 `mise exec -- pnpm playwright:install`。`pnpm test:browser` 自行构建并启动 React/Storybook preview，默认完整 Chromium 新 headless、3 workers、0 retries；请先关闭占用相同端口的手动服务。真实安装包浏览器消费使用独立的 `pnpm test:consumer`。WebStorm 可直接使用 [.run](.run/) 中的共享配置，环境准备见[工具链](docs/architecture/toolchain.md)。
