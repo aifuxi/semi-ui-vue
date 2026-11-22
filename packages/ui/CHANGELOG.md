@@ -1,5 +1,16 @@
 # @aifuxi/semi-ui-vue
 
+## 2.2.5
+
+### Patch Changes
+
+- [#57](https://github.com/aifuxi/semi-ui-vue/pull/57) [`ba385a4`](https://github.com/aifuxi/semi-ui-vue/commit/ba385a4e477aab09bf53bab51d973c25c8f06f88) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复启用 autosize 的 TextArea 在详情切换时卸载后仍读取输入节点，导致浏览器抛出 TypeError 的问题。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.2.5
+  - @aifuxi/semi-icons-lab-vue@2.2.5
+  - @aifuxi/semi-illustrations-vue@2.2.5
+  - @aifuxi/semi-theme-default@2.2.5
+
 ## 2.2.4
 
 ### Patch Changes
