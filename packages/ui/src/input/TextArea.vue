@@ -254,11 +254,12 @@ function select(): void {
 }
 
 function scheduleAutosize(): void {
-  if (!props.autosize || typeof window === 'undefined') return;
+  // prop watcher 排入的 nextTick 可能在组件卸载后才执行。
+  if (!props.autosize || !textarea.value || typeof window === 'undefined') return;
   if (resizeTimer !== undefined) clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
     resizeTimer = undefined;
-    foundation.resizeTextarea();
+    if (props.autosize && textarea.value) foundation.resizeTextarea();
   }, 10);
 }
 
