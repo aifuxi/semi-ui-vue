@@ -609,6 +609,39 @@ describe('Tooltip', () => {
     }
   });
 
+  it('custom 浮层仅在受控展开时拦截触发器上的 Esc', async () => {
+    const parentKeydown = vi.fn();
+    const esc = vi.fn();
+    const wrapper = mount(Tooltip, {
+      props: {
+        trigger: 'custom',
+        visible: false,
+        motion: false,
+        closeOnEsc: true,
+        onEscKeydown: esc,
+      },
+      slots: { default: () => h('button', '打开'), content: () => '自定义浮层' },
+    });
+    wrapper.get('button').element.parentElement!.addEventListener('keydown', parentKeydown);
+    await flushTooltip();
+
+    const pressEscape = () => wrapper.get('button').trigger('keydown', { key: 'Escape' });
+    await pressEscape();
+    expect(parentKeydown).toHaveBeenCalledTimes(1);
+    expect(esc).not.toHaveBeenCalled();
+
+    await wrapper.setProps({ visible: true });
+    await flushTooltip();
+    await pressEscape();
+    expect(parentKeydown).toHaveBeenCalledTimes(1);
+    expect(esc).toHaveBeenCalledOnce();
+
+    await wrapper.setProps({ visible: false });
+    await pressEscape();
+    expect(parentKeydown).toHaveBeenCalledTimes(2);
+    expect(esc).toHaveBeenCalledOnce();
+  });
+
   it('closeOnEsc、initialFocusRef、guardFocus、keepDOM 与 afterClose', async () => {
     const afterClose = vi.fn();
     const esc = vi.fn();

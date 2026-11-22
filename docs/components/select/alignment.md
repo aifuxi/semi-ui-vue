@@ -88,6 +88,10 @@ Select 是 Tooltip PoC 后的第二道复杂度门槛，用来验证搜索、多
 - 工单原业务申请缺少选择到提交之间的时序记录；本轮证实了可产生同样错误结果的快速提交路径，不将它扩大为原申请的唯一原因。原账号、目录、待审批申请和 UUID 保留；业务安装修复版后的原页面复验仍需进行。
 - 本轮验证：Select/Tooltip/Pagination/Form 共 78 项单元、SSR 和 hydration 测试通过；真实 tarball 消费 19 项通过；Select/Tooltip/Popover/Dropdown 的 React/Vue Chromium 对照 22 项通过（3 workers、0 retries，包含 light/dark、RTL 与现有截图基线）。公开产物、SSR 入口、包消费类型、样式和 tree-shaking 检查通过；未重跑未受影响的全库组件矩阵。
 
+## Modal 内的 Escape 路由（BUG-000394）
+
+固定 Tooltip Foundation 的 `_handleTriggerKeydown` 在检查 `closeOnEsc` 前无条件拦截 Escape。Select 用受控 `custom` Tooltip 包裹触发器，导致已收起时事件也无法到达 Modal。Vue 适配层对已收起的 `custom` 浮层放行触发器上的 Escape，以受控 `visible` 为准，不等待退场动效；展开时仍由固定 Foundation 处理。真实 tarball 的 Chromium 回归覆盖连续两次 Escape 以及鼠标、键盘选中后按 Escape。
+
 ## Locale/Pagination 菜单回归（2026-09-06）
 
 固定 option.tsx 仅为字符串 children 添加 semi-select-option-text；VNode/数字内容直接作为 option 子节点。补充字符串与 VNode 菜单结构及选择行为回归，消除分页大小菜单多出的包裹节点；不更改过滤/选中值或默认 true 的处理。

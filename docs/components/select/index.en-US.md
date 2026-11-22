@@ -155,7 +155,8 @@ Through the component ref: `open()`, `close()`, `focus()`, `search(value, event?
 ## Accessibility and keyboard
 
 - The trigger uses `role="combobox"`, `aria-expanded`, `aria-controls` and `aria-activedescendant`; the list is `role="listbox"`, options are `role="option"` with `aria-selected` / `aria-disabled`.
-- `ArrowDown` / `ArrowUp` move the highlight, `Enter` selects, `Escape` closes and keeps focus on the trigger, `Tab` leaves; in multiple mode `Backspace` removes the last tag.
+- `ArrowDown` / `ArrowUp` move the highlight, `Enter` selects, and `Tab` leaves. In multiple mode, `Backspace` removes the last tag.
+- Pressing `Escape` on the trigger closes an open dropdown and keeps focus on the trigger. When the dropdown is already closed, `Escape` bubbles to the surrounding UI, such as a Modal.
 - Closing the panel does not move focus: this follows the pinned post-v2.17.0 behavior, so selecting a single option does not emit `blur`.
 
 ## Theme, RTL and SSR
