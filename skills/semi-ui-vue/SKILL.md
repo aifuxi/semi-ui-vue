@@ -13,11 +13,13 @@ description: 在 Vue 3 项目中使用 @aifuxi/semi-ui-vue 搭建页面、选择
 
 ## 查证与验证
 
-1. 从消费项目的实际安装、锁文件或依赖声明确认 `@aifuxi/semi-ui-vue` 版本。组件库参考的 Semi Design `v2.102.0` 是 React 基线，Vue 包使用自己的版本号。
-2. 按任务只读所用组件的参考页。参考页标注了核对版本，包含公开导入、事件参数和完整 Vue 单文件组件。
+1. 从使用组件的应用目录解析 `@aifuxi/semi-ui-vue`。用 `node -p "require('@aifuxi/semi-ui-vue/package.json').version"` 查看实际安装版本，用 `require.resolve` 定位同一份包元数据。解析不到该入口时，用项目的包管理器或锁文件查这个应用解析出的完整版本。
+2. 读所用组件的参考页，了解常见导入、事件和示例。参考页里的签名用已安装包的公开类型核对。
    - [Table](references/table.md) 用于表格、排序、筛选、分页或行选择。
    - [Form](references/form.md) 用于表单字段、校验、提交按钮或表单状态。
-3. 对于其他组件或不同版本，查对应版本的 [Vue 组件契约](https://github.com/aifuxi/semi-ui-vue/tree/master/docs/components) 和已安装包的 `exports`、类型声明。优先采用消费项目已有的公开导入方式。涉及双向绑定时，先确认组件确实提供对应的 `v-model` 和更新事件。遇到上游 React 示例时，用 Vue 契约确认事件、插槽和模板写法。
+3. 从该版本包的 `package.json` 查看 `exports`，沿公开入口的 `types` 核对 props、事件参数、插槽和 `v-model` 对应的更新事件。Vue 的版本要求看 `peerDependencies`。
+   - 需要查行为和示例时，在 [Semi UI Vue 仓库](https://github.com/aifuxi/semi-ui-vue) 查找 `@aifuxi/semi-ui-vue@<version>` 标签，以实际解析的版本替换 `<version>`。标签存在时从该标签打开 `docs/components/`。工作区包可读当前检出的契约。
+   - 找不到同版本文档时，以包的公开声明和实际交互验证为准。Semi Design 官方 React 文档使用独立版本号。
 4. 检查 Vue 模板里的组件选型，再用消费项目的类型检查和相关交互验证导入、事件参数和实际行为。
 
-组件库面向 Vue 3.5+。项目可从 `@aifuxi/semi-ui-vue` 根入口或公开组件子路径导入，浏览器构建会按需加载默认主题。要复现本 Skill 的示例，在 Vue 3.5+ 的 Vite 项目中执行 `pnpm add @aifuxi/semi-ui-vue@2.2.5`，然后把对应 `.vue` 文件复制为 `src/App.vue`。
+复现示例时，沿用已有项目的依赖版本和样式入口。使用 pnpm 的新 Vite 项目可执行 `pnpm add @aifuxi/semi-ui-vue`，然后把示例复制为 `src/App.vue`，按安装版本的声明和使用说明调整导入、样式及 API。

@@ -1,6 +1,6 @@
 # Form 表单
 
-以下用法按 `@aifuxi/semi-ui-vue@2.2.5` 核对。
+根据 [版本查证流程](../SKILL.md#查证与验证) 核对安装包的 `/form`、`/button` 导出与类型。
 
 ```ts
 import { Button } from '@aifuxi/semi-ui-vue/button';
@@ -24,4 +24,4 @@ import { Form, type FormApi, type FormEmits } from '@aifuxi/semi-ui-vue/form';
 
 [可运行示例 FormExample.vue](../assets/FormExample.vue) 演示字段注册、必填校验和提交事件。示例通过 `trigger="custom"` 将自动校验推迟到提交。留空提交应显示「请输入姓名」。填写姓名再提交应显示成功状态，其中的姓名来自 `@submit` 的第一个参数。
 
-[Vue 组件契约](https://github.com/aifuxi/semi-ui-vue/blob/ea1d94ff/docs/components/form/index.md) · [React → Vue 迁移说明](https://github.com/aifuxi/semi-ui-vue/blob/ea1d94ff/docs/components/form/react-to-vue.md) · [文档站 Vue 示例](https://github.com/aifuxi/semi-ui-vue/tree/ea1d94ff/apps/docs/.vitepress/theme/demo/examples/t5/form/zh-CN) · [Button 契约](https://github.com/aifuxi/semi-ui-vue/blob/ea1d94ff/docs/components/button/index.md)
+仓库中的 Form 契约和迁移说明位于 `docs/components/form/`，Button 契约位于 `docs/components/button/index.md`。文档站示例可从 `apps/docs/content/zh-CN/input/form.md` 查找。

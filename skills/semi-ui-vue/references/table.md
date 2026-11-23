@@ -1,6 +1,6 @@
 # Table 表格
 
-以下用法按 `@aifuxi/semi-ui-vue@2.2.5` 核对。
+根据 [版本查证流程](../SKILL.md#查证与验证) 核对安装包的 `/table` 导出与类型。
 
 ```ts
 import { Table, type TableChangeInfo, type TableColumnProps } from '@aifuxi/semi-ui-vue/table';
@@ -16,10 +16,10 @@ import { Table, type TableChangeInfo, type TableColumnProps } from '@aifuxi/semi
 
 `@change` 接收一个对象，`pagination`、`filters`、`sorter` 和 `extra` 是其中的可选字段。通过 `extra?.changeType` 可以区分 `'sorter'`、`'filter'` 和 `'pagination'`。需要分页、筛选和排序共同触发一次查询时，可集中监听 `@change`。行选择通过 `:row-selection` 开启，受控选中项写入 `rowSelection.selectedRowKeys`。
 
-`2.2.5` 的 `<Table>` 组件声明中，表内的 `Row` 是 `Record<string, unknown>`。在严格 TypeScript 项目中，示例使用 `TableColumnProps[]` 和 `TableChangeInfo<Record<string, unknown>>` 对齐组件声明，应用自身的行模型仍可以单独定义。
+示例用 `TableColumnProps[]` 和 `TableChangeInfo<Record<string, unknown>>` 对齐采用通用行类型的 `<Table>` 声明。安装包提供其他行类型时，以该声明为准。
 
 需要局部自定义单元格时可用 `#cell="{ column, record, rowIndex, text }"`。该列配置了 `render` 时，列级 `render` 优先。
 
-[可运行示例 TableExample.vue](../assets/TableExample.vue) 使用默认主题，演示数字排序、分页和统一 `@change`。运行后点击「分数」列标题，表格下方应显示 `sorter`。切换页码后应显示 `pagination`。
+[可运行示例 TableExample.vue](../assets/TableExample.vue) 演示数字排序、分页和统一 `@change`。运行后点击「分数」列标题，表格下方应显示 `sorter`。切换页码后应显示 `pagination`。
 
-[Vue 组件契约](https://github.com/aifuxi/semi-ui-vue/blob/ea1d94ff/docs/components/table/index.md) · [React → Vue 迁移说明](https://github.com/aifuxi/semi-ui-vue/blob/ea1d94ff/docs/components/table/react-to-vue.md) · [文档站 Vue 示例](https://github.com/aifuxi/semi-ui-vue/tree/ea1d94ff/apps/docs/.vitepress/theme/demo/examples/t5/table/zh-cn)
+仓库中的 Table 契约和迁移说明位于 `docs/components/table/`，文档站示例可从 `apps/docs/content/zh-CN/show/table.md` 查找。
