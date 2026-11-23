@@ -26,7 +26,22 @@
 
 ## 发布到自有服务器
 
-文档站按独立子域名的根路径 `/` 构建。使用 Nginx 托管时，参考 [站点配置](deploy/nginx.conf)，将 `server_name` 改为实际子域名，并沿用服务器现有的 HTTPS 入口。确认 `http` 配置加载了 `mime.types`，且 Nginx 可以读取 `/srv/semi-ui-vue-docs/current` 指向的目录。配置生效前执行 `nginx -t`。
+文档站按独立子域名的根路径 `/` 构建。静态服务器从 `/srv/semi-ui-vue-docs/current` 读取当前版本，服务账号需要有权读取该路径指向的目录。
+
+### 配置静态服务器
+
+使用 Nginx 时，参考 [Nginx 配置](deploy/nginx.conf)，将 `server_name` 改为实际子域名，并沿用服务器现有的 HTTPS 入口。确认 `http` 配置加载了 `mime.types`。配置生效前执行 `nginx -t`。
+
+使用 Caddy 时，将 [Caddyfile](deploy/Caddyfile) 中的站点区块加入服务器的 `/etc/caddy/Caddyfile`，将 `docs.example.com` 替换为实际子域名。Caddy 作为公网入口时，将子域名解析到服务器并开放 TCP 80 和 443，以便 Caddy 自动签发和续期 HTTPS 证书。配置会将无后缀路由映射到对应的 `.html` 或目录的 `index.html`，缺失路径返回站点的 404 页面。
+
+在 Linux 上使用 systemd 管理 Caddy 时，校验配置后重载已运行的服务。
+
+```bash
+sudo caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+sudo systemctl reload caddy
+```
+
+Caddy 部署沿用下方的打包、发布和回滚流程。每次发布只需切换 `current`，Caddy 无需为切换版本重载配置。
 
 ### 获取构建产物
 
