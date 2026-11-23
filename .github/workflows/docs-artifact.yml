@@ -1,0 +1,37 @@
+name: Build docs artifact
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
+        with:
+          version: 2026.9.3
+      - uses: ./.github/actions/pnpm-store
+      - name: Install workspace and build docs
+        env:
+          pnpm_config_registry: https://registry.npmjs.org/
+          VITE_THEME_STUDIO_URL: ${{ vars.VITE_THEME_STUDIO_URL }}
+        run: |
+          mise run deps:install
+          mise exec -- pnpm docs:prepare
+          mise exec -- pnpm docs:build
+      - name: Package static site
+        run: bash apps/docs/deploy/package.sh "$RUNNER_TEMP/docs-artifact"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: semi-ui-vue-docs-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/docs-artifact/site.tar.gz
+            ${{ runner.temp }}/docs-artifact/site.tar.gz.sha256
+          if-no-files-found: error

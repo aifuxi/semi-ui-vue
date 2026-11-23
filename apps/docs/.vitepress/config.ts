@@ -9,6 +9,7 @@ export default defineConfig({
   title: 'Semi UI Vue',
   description: 'Semi UI Vue 组件库文档，提供 Vue 3 组件用法、示例与公开 API。',
   lang: 'zh-CN',
+  base: '/',
   cleanUrls: true,
   appearance: false,
   srcDir: 'content',

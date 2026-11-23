@@ -24,6 +24,75 @@
 
 `content/public/search-index.json`、`content/public/example-files/`、`.vitepress/theme/generated/`、`cache/` 和 `dist/` 是可再生的忽略产物。`pnpm --filter @workspace/docs clean` 可清理这些产物。示例的安装依赖、可下载辅助文件和 `/demos/` 资源引用由索引脚本从源码提取。
 
+## 发布到自有服务器
+
+文档站按独立子域名的根路径 `/` 构建。使用 Nginx 托管时，参考 [站点配置](deploy/nginx.conf)，将 `server_name` 改为实际子域名，并沿用服务器现有的 HTTPS 入口。确认 `http` 配置加载了 `mime.types`，且 Nginx 可以读取 `/srv/semi-ui-vue-docs/current` 指向的目录。配置生效前执行 `nginx -t`。
+
+### 获取构建产物
+
+`Build docs artifact` 工作流进入默认分支后，可在 GitHub Actions 手动选择待构建的分支。构建结果是名为 `semi-ui-vue-docs-<提交 SHA>` 的 artifact，其中包含 `site.tar.gz` 和对应的 SHA-256 校验文件。下载并解开外层 artifact 后，将这两个文件一起传到服务器。
+
+也可在仓库根目录本地构建并打包，使用该检出对应的提交 SHA 标记版本。
+
+```bash
+git submodule update --init --recursive
+mise run deps:install
+mise exec -- pnpm docs:prepare
+mise exec -- pnpm docs:build
+artifact_dir=$(mktemp -d)
+bash apps/docs/deploy/package.sh "$artifact_dir"
+printf '%s\n' "$artifact_dir"
+```
+
+### 在服务器上发布
+
+以下命令使用 Bash、GNU coreutils 和 GNU tar。替换上传目录与提交 SHA 后，以有权写入站点目录的账号执行。校验文件通过后，先解包到临时目录，再用符号链接一次切换整个站点。
+
+```bash
+(
+  set -euo pipefail
+  umask 022
+  site_root=/srv/semi-ui-vue-docs
+  artifact_dir=/tmp/semi-docs-upload
+  release_sha=填入完整的提交SHA
+  [[ "$release_sha" =~ ^[0-9a-f]{40}$ ]]
+  release_dir="$site_root/releases/$release_sha"
+  (cd "$artifact_dir" && sha256sum -c site.tar.gz.sha256)
+  mkdir -p "$site_root/releases"
+  if [[ -e "$release_dir" || -L "$release_dir" ]]; then
+    printf '版本目录已存在：%s\n' "$release_dir" >&2
+    exit 1
+  fi
+  staging=$(mktemp -d "$site_root/.stage.XXXXXX")
+  trap 'rm -rf -- "$staging"' EXIT
+  mkdir "$staging/site"
+  tar --no-same-owner -xzf "$artifact_dir/site.tar.gz" -C "$staging/site"
+  test -s "$staging/site/index.html"
+  mv -T "$staging/site" "$release_dir"
+  ln -s "$release_dir" "$staging/current"
+  mv -Tf "$staging/current" "$site_root/current"
+)
+```
+
+切换后，从真实域名直接访问 `/zh-CN/start/getting-started` 和 `/zh-CN/components`，确认无后缀 URL 返回 200。检查搜索索引、示例文件下载和字体许可，访问不存在的路径确认返回 404。
+
+回滚时，把 `current` 切回上一个已保留的版本目录。站点根路径配置保持固定。
+
+```bash
+(
+  set -euo pipefail
+  site_root=/srv/semi-ui-vue-docs
+  previous_sha=填入上一版本的完整提交SHA
+  [[ "$previous_sha" =~ ^[0-9a-f]{40}$ ]]
+  previous_dir="$site_root/releases/$previous_sha"
+  test -s "$previous_dir/index.html"
+  staging=$(mktemp -d "$site_root/.stage.XXXXXX")
+  trap 'rm -rf -- "$staging"' EXIT
+  ln -s "$previous_dir" "$staging/current"
+  mv -Tf "$staging/current" "$site_root/current"
+)
+```
+
 ## 主题工作台入口
 
 品牌与排版编辑由独立的 [`apps/theme-studio`](../theme-studio/README.md) 提供，文档站只保留 API、使用说明、代码示例和外部入口，不导入工作台布局或状态。入口位于 `content/zh-CN/advanced/customize-theme.md`。
