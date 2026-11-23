@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { Button } from '@aifuxi/semi-ui-vue/button';
 import { Form, type FormEmits } from '@aifuxi/semi-ui-vue/form';
 
 const message = ref('');
@@ -17,7 +18,7 @@ const handleSubmit: (...args: FormEmits['submit']) => void = (values) => {
       autocomplete="name"
       :rules="[{ required: true, message: '请输入姓名' }]"
     />
-    <button type="submit">提交</button>
+    <Button html-type="submit">提交</Button>
   </Form>
   <p role="status">{{ message }}</p>
 </template>

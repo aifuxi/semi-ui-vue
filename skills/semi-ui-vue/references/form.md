@@ -3,6 +3,7 @@
 以下用法按 `@aifuxi/semi-ui-vue@2.2.5` 核对。
 
 ```ts
+import { Button } from '@aifuxi/semi-ui-vue/button';
 import { Form, type FormApi, type FormEmits } from '@aifuxi/semi-ui-vue/form';
 ```
 
@@ -17,8 +18,10 @@ import { Form, type FormApi, type FormEmits } from '@aifuxi/semi-ui-vue/form';
 | `@error-change` | `errors, changedErrors`                       | 字段错误变化   |
 | `@reset`        | 无                                            | 表单重置       |
 
-`values` 是完整的表单值对象，`changedValues` 是本次变更的部分。`@submit` 的第一个参数可以直接读取字段值。使用 `type="submit"` 的按钮触发表单校验。需要在模板中读取状态或调用 API 时，可以在 `<Form>` 上使用 `v-slot="{ formApi, formState, values }"`，也可以通过 `:get-form-api` 接收实例 API。
+`values` 是完整的表单值对象，`changedValues` 是本次变更的部分。`@submit` 的第一个参数可以直接读取字段值。需要在模板中读取状态或调用 API 时，可以在 `<Form>` 上使用 `v-slot="{ formApi, formState, values }"`，也可以通过 `:get-form-api` 接收实例 API。
+
+在 `<Form>` 内用 `<Button html-type="submit">提交</Button>` 触发表单校验。`html-type` 会写到原生按钮的 `type`，默认值是 `button`。需要原生重置时用 `html-type="reset"`。Button 的 `type="primary"` 等取值用于视觉样式。提交成功和失败逻辑分别绑定在 Form 的 `@submit` 和 `@submit-fail`。
 
 [可运行示例 FormExample.vue](../assets/FormExample.vue) 演示字段注册、必填校验和提交事件。示例通过 `trigger="custom"` 将自动校验推迟到提交。留空提交应显示「请输入姓名」。填写姓名再提交应显示成功状态，其中的姓名来自 `@submit` 的第一个参数。
 
-[Vue 组件契约](https://github.com/aifuxi/semi-ui-vue/blob/ea1d94ff/docs/components/form/index.md) · [React → Vue 迁移说明](https://github.com/aifuxi/semi-ui-vue/blob/ea1d94ff/docs/components/form/react-to-vue.md) · [文档站 Vue 示例](https://github.com/aifuxi/semi-ui-vue/tree/ea1d94ff/apps/docs/.vitepress/theme/demo/examples/t5/form/zh-CN)
+[Vue 组件契约](https://github.com/aifuxi/semi-ui-vue/blob/ea1d94ff/docs/components/form/index.md) · [React → Vue 迁移说明](https://github.com/aifuxi/semi-ui-vue/blob/ea1d94ff/docs/components/form/react-to-vue.md) · [文档站 Vue 示例](https://github.com/aifuxi/semi-ui-vue/tree/ea1d94ff/apps/docs/.vitepress/theme/demo/examples/t5/form/zh-CN) · [Button 契约](https://github.com/aifuxi/semi-ui-vue/blob/ea1d94ff/docs/components/button/index.md)
