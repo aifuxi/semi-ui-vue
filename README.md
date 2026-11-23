@@ -43,6 +43,8 @@ import { Button } from '@aifuxi/semi-ui-vue/button';
 | `@aifuxi/semi-icons-lab-vue`     | 实验图标                    |
 | `@aifuxi/semi-illustrations-vue` | light/dark 插画             |
 
+支持 Agent Skills 的 AI 编码客户端可以加载 [Semi UI Vue Skill](skills/semi-ui-vue/SKILL.md) 所在的目录，按用途查找组件，并核对安装版本的 API 和示例。
+
 ## 开发与发布状态
 
 固定基线的 85 个公开根模块已具备组件切片记录（含 `_base`、`_utils`），资产覆盖 57 个语言源、稳定/Lab 图标和公开插画。源码版本以六个公开包的 `package.json` 为准，预发布模式以 `.changeset/pre.json` 与 Changesets 状态为准；每个发布候选仍需有效的组件与产物验证。
@@ -60,8 +62,8 @@ import { Button } from '@aifuxi/semi-ui-vue/button';
 git submodule update --init --recursive
 mise trust
 mise install
-mise exec -- pnpm install --frozen-lockfile
-mise exec -- pnpm dev
+mise run deps:install
+mise run dev
 ```
 
 Storybook Vue 场景站默认运行于 `http://127.0.0.1:4174`，固定 React 参考应用通过 `mise exec -- pnpm dev:reference` 启动于 `http://127.0.0.1:4173`。浏览器检查前运行 `mise exec -- pnpm playwright:install`。`pnpm test:browser` 自行构建并启动 React/Storybook preview，默认完整 Chromium 新 headless、3 workers、0 retries；请先关闭占用相同端口的手动服务。真实安装包浏览器消费使用独立的 `pnpm test:consumer`。WebStorm 可直接使用 [.run](.run/) 中的共享配置，环境准备见[工具链](docs/architecture/toolchain.md)。

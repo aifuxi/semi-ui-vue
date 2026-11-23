@@ -6,7 +6,7 @@ order: 56
 icon: 'doc-breadcrumb'
 ---
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/breadcrumb` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/breadcrumb` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -120,7 +120,7 @@ Breadcrumb 支持通过 routes 传入路由对象 `route: { name, path, href, ic
 | moreType     | 内置的...区域的渲染类型，可选值为 'default'、'popover'                                                            | BreadcrumbMoreType                                       | 'default'                                                                                    | 1.27.0 |
 | renderItem   | 自定义链接函数，配合 routes 使用                                                                                  | (route: BreadcrumbRoute, index: number) =&gt; VNodeChild | -                                                                                            | 0.27.0 |
 | renderMore   | 自定义...区域的渲染                                                                                               | (items: VNodeChild[]) =&gt; VNodeChild                   | -                                                                                            | 1.27.0 |
-| routes       | router 的路由信息，由路由对象或字符串组成的数组，路由对象格式参考: [Route](#Route)                                | Array&lt;BreadcrumbRoute \| string&gt;                   | -                                                                                            |        |
+| routes       | router 的路由信息，由路由对象或字符串组成的数组，路由对象格式参考: [Route](#route)                                | Array&lt;BreadcrumbRoute \| string&gt;                   | -                                                                                            |        |
 | separator    | 自定义的分隔符                                                                                                    | VNodeChild                                               | '/'                                                                                          |        |
 | showTooltip  | 是否展示 Tooltip 及相关配置: width，溢出宽度； ellipsisPos，截断方式，从中间/末尾截断； opts，透传给Tooltip的属性 | boolean \| BreadcrumbShowTooltip                         | {width: 150, ellipsisPos: 'end', opts: { autoAdjustOverflow: true, position: "bottomLeft" }} | 0.34.0 |
 | style        | 内联样式                                                                                                          | CSSProperties                                            | -                                                                                            |        |

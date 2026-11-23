@@ -6,7 +6,7 @@ order: 51
 icon: 'doc-transfer'
 ---
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/transfer` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/transfer` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -128,7 +128,7 @@ Semi 提供了 `renderSourcePanel`、`renderSelectedPanel` 入参，允许你完
 
 传入 type 为`treeList`，使用[`Tree`](/zh-CN/navigation/tree)组件作为自定义渲染列表。**v1.20.0 提供**
 
-可通过treeProps([TreeProps](/zh-CN/navigation/tree#Tree))来覆盖默认树的属性，左侧树默认属性为
+可通过treeProps([TreeProps](/zh-CN/navigation/tree#tree))来覆盖默认树的属性，左侧树默认属性为
 
 <DemoBlock id="zh-CN-input-transfer-20" title="树穿梭框" kind="code" />
 

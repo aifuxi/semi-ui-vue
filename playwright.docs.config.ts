@@ -27,6 +27,7 @@ export default defineConfig({
     cwd: fileURLToPath(new URL('./apps/docs', import.meta.url)),
     command: `pnpm build && pnpm exec vitepress preview . --port ${port} --host 127.0.0.1`,
     url: `http://127.0.0.1:${port}`,
+    env: { VITE_THEME_STUDIO_URL: '' },
     stdout: 'pipe',
     reuseExistingServer: false,
     timeout: 120_000,

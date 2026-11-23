@@ -13,11 +13,11 @@ order: 0
       公开 API、主题变量和迁移说明。
     </p>
     <div class="docs-home-actions">
-      <a class="docs-home-action docs-home-action-primary" href="/zh-CN/start/introduction">开始使用</a>
+      <a class="docs-home-action docs-home-action-primary" href="/zh-CN/start/getting-started">开始使用</a>
       <a class="docs-home-action docs-home-action-secondary" href="/zh-CN/components">浏览组件</a>
     </div>
     <ul class="docs-home-facts" aria-label="项目特性">
-      <li><strong>Vue 3</strong><span>Composition API</span></li>
+      <li><strong>Vue 3.5+</strong><span>Composition API</span></li>
       <li><strong>TypeScript</strong><span>完整类型定义</span></li>
       <li><strong>Semi 兼容</strong><span>主题与类名契约</span></li>
     </ul>

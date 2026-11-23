@@ -58,4 +58,4 @@ Semi 2.0 原生支持局部暗色/亮色模式。使用时，在顶级元素上�
 </section>
 ```
 
-嵌套的品牌边界也明确指定模式。模式选择及系统偏好由应用管理，生成器不读取 `prefers-color-scheme`。完整生成方式见[定制主题](./customize-theme)，可切换预览使用[独立主题工作台](./customize-theme#独立主题工作台)。
+嵌套的品牌边界也明确指定模式。模式选择及系统偏好由应用管理，生成器不读取 `prefers-color-scheme`。完整生成方式见[定制主题](./customize-theme)。

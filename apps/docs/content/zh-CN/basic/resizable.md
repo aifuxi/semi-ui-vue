@@ -6,13 +6,11 @@ order: 21
 icon: 'doc-steps'
 ---
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/resizable` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/resizable` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
 ### 如何引入
-
-Resizable 从 2.69.0 开始支持
 
 <DemoBlock id="zh-CN-basic-resizable-1" title="如何引入" kind="code" />
 

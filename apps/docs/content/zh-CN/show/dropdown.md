@@ -6,7 +6,7 @@ order: 70
 icon: 'doc-dropdown'
 ---
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/dropdown` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/dropdown` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -115,11 +115,11 @@ contextMenu 方式在 v2.42 后提供
 | closeOnEsc           | 在 trigger 或 弹出层按 Esc 键是否关闭面板，受控时不生效                                                                      | boolean                             | true ｜ **2.13.0**     |            |
 | condition            | —                                                                                                                            | boolean                             | —                      |            |
 | disableArrowKeyDown  | —                                                                                                                            | boolean                             | —                      |            |
-| disableFocusListener | trigger为`hover`时，不响应键盘聚焦弹出浮层事件，详见[issue#977](https://github.com/aifuxi/semi-ui-vue/issues/977)            | boolean                             | false                  | **2.17.0** |
+| disableFocusListener | trigger为`hover`时，不响应键盘聚焦弹出浮层事件，详见[issue#977](https://github.com/DouyinFE/semi-design/issues/977)          | boolean                             | false                  | **2.17.0** |
 | getPopupContainer    | 指定父级 DOM，弹层将会渲染至该 DOM 中，自定义需要设置 `position: relative` 这会改变浮层 DOM 树位置，但不会改变视图渲染位置。 | () =&gt; HTMLElement                | () =&gt; document.body |            |
 | guardFocus           | —                                                                                                                            | boolean                             | —                      |            |
 | keepDOM              | 关闭时是否保留内部组件 DOM 不销毁                                                                                            | boolean                             | false                  | **2.31.0** |
-| margin               | 弹出层计算溢出时的增加的冗余值，详见[issue#549](https://github.com/aifuxi/semi-ui-vue/issues/549)，作用同 Tooltip margin     | number \| TooltipMargin             | —                      | **2.25.0** |
+| margin               | 弹出层计算溢出时的增加的冗余值，详见[issue#549](https://github.com/DouyinFE/semi-design/issues/549)，作用同 Tooltip margin   | number \| TooltipMargin             | —                      | **2.25.0** |
 | motion               | —                                                                                                                            | boolean                             | —                      |            |
 | mouseEnterDelay      | 鼠标移入 Trigger 后，延迟显示的时间，单位毫秒（仅当 trigger 为 hover/focus 时生效）                                          | number                              | 50                     |            |
 | preventScroll        | —                                                                                                                            | boolean                             | —                      |            |
@@ -210,4 +210,4 @@ contextMenu 方式在 v2.42 后提供
 ## FAQ
 
 - **为什么 Dropdown 浮层在靠近屏幕边界宽度不够时，丢失宽度意外换行?**
-  在 chromium 104 后 对于屏幕边界文本宽度不够时的换行渲染策略发生变化，详细原因可查看 [issue #1022](https://github.com/aifuxi/semi-ui-vue/issues/1022)，semi 侧已经在 v2.17.0 版本修复了这个问题。
+  在 chromium 104 后 对于屏幕边界文本宽度不够时的换行渲染策略发生变化，详细原因可查看 [issue #1022](https://github.com/DouyinFE/semi-design/issues/1022)，semi 侧已经在 v2.17.0 版本修复了这个问题。

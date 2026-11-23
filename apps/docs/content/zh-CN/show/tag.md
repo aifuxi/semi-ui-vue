@@ -6,7 +6,7 @@ order: 82
 icon: 'doc-tag'
 ---
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/tag` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/tag` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -162,7 +162,7 @@ v2.44 后支持通过配置 prefixIcon、suffixIcon， 可以在 children 内容
 | className    | 类名                                                                                                         | HTMLAttributes['class']            | —         |      |
 | maxTagCount  | 最大数量限制，超出后显示为 +N                                                                                | number                             | —         |      |
 | mode         | —                                                                                                            | string                             | —         |      |
-| popoverProps | popover 的配置属性，可以控制 direction, zIndex, trigger 等，具体参考 [Popover](/zh-CN/show/popover#API_参考) | PopoverProps                       | {}        |      |
+| popoverProps | popover 的配置属性，可以控制 direction, zIndex, trigger 等，具体参考 [Popover](/zh-CN/show/popover#api-参考) | PopoverProps                       | {}        |      |
 | restCount    | —                                                                                                            | number                             | —         |      |
 | showPopover  | hover 到 +N 时，是否通过 Popover 显示剩余内容                                                                | boolean                            | false     |      |
 | size         | 标签的尺寸，可选 `small`、 `default`、 `large`                                                               | TagSize                            | `default` |      |

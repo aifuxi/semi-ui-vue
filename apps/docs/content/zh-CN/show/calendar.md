@@ -6,7 +6,7 @@ order: 64
 icon: 'doc-calendar'
 ---
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/calendar` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/calendar` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -140,5 +140,5 @@ icon: 'doc-calendar'
 ## 文案规范
 
 - 当需要显示时间时，12 小时制和 24 小时制都是可以使用的
-- 如果采用12小时制，需要搭配 AM/PM 一起使用，具体内容可参考 [时间规范](/zh-CN/experience/content-guidelines#8.%20%E6%97%A5%E6%9C%9F%E4%B8%8E%E6%97%B6%E9%97%B4)
-- 关于月份、星期、时间的缩写使用规则，可参考 [缩写规范](/zh-CN/experience/content-guidelines#1.%20%E7%BC%A9%E5%86%99)
+- 如果采用12小时制，需要搭配 AM/PM 一起使用，具体内容可参考 [时间规范](/zh-CN/experience/content-guidelines#_8-日期与时间)
+- 关于月份、星期、时间的缩写使用规则，可参考 [缩写规范](/zh-CN/experience/content-guidelines#_1-缩写)

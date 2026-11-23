@@ -258,6 +258,15 @@ body[theme-mode='dark'] .site-header {
   border-radius: 0;
 }
 
+.demo-block-dependencies {
+  padding: 0 16px 12px;
+  overflow-wrap: anywhere;
+}
+
+.demo-block-dependencies samp {
+  display: block;
+}
+
 .prev-next {
   display: flex;
   gap: 24px;

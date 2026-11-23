@@ -12,7 +12,7 @@ icon: 'doc-table'
 
 <DemoBlock id="zh-CN-show-table-1" title="如何使用" kind="import" />
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/table` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/table` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -32,7 +32,7 @@ icon: 'doc-table'
 
 ### 行选择操作
 
-往 Table 传入 [rowSelection](#rowSelection) 即可打开此功能。
+往 Table 传入 [rowSelection](#rowselection) 即可打开此功能。
 
 - 点击表头的选择框，会选择 `dataSource` 里所有不是 `disabled` 状态的行。选择所有行回调函数为 `onSelectAll`；
 - 点击行的选择框会选中当前行。它的回调函数为 `onSelect`；
@@ -281,7 +281,7 @@ Table 默认为整行配置 Hover 样式，如果你需要修改相关样式可�
 
 ### 拖拽排序
 
-使用 [dnd-kit](https://github.com/clauderic/dnd-kit/tree/master) 搭配 [`components`](https://github.com/aifuxi/semi-ui-vue/blob/340c93e4e1612a879be869c43ad7a9a85ab5a302/packages/semi-ui/table/interface.ts#L200) API 可轻松实现拖拽排序。v2.58 版本支持。
+下面的示例使用浏览器原生拖拽事件，在放置后更新表格数据顺序。
 
 <DemoBlock id="zh-CN-show-table-34" title="拖拽排序" kind="live" />
 
@@ -400,7 +400,7 @@ Table 默认为整行配置 Hover 样式，如果你需要修改相关样式可�
 | class                     | —                                                                                                               | HTMLAttributes['class']                                                                                                      | —                  |            |
 | className                 | 最外层样式名                                                                                                    | HTMLAttributes['class']                                                                                                      | —                  |            |
 | clickGroupedRowToExpand   | 点击分组表头行时分组内容展开或收起                                                                              | boolean                                                                                                                      | —                  | -          |
-| columns                   | 表格列的配置描述，详见[Column](#Column)                                                                         | TableColumn&lt;RecordType&gt;[]                                                                                              | []                 |            |
+| columns                   | 表格列的配置描述，详见[Column](#column)                                                                         | TableColumn&lt;RecordType&gt;[]                                                                                              | []                 |            |
 | components                | 覆盖 Table 的组成元素，如 table, body，row，td，th 等                                                           | TableComponents                                                                                                              | —                  |            |
 | dataSource                | 数据。**请为每一条数据分配一个独立的 key，或使用 rowKey 指定一个作为主键的属性名**                              | RecordType[]                                                                                                                 | []                 |            |
 | defaultExpandAllGroupRows | 默认是否展开分组行，动态加载数据时不生效                                                                        | boolean                                                                                                                      | false              | -          |
@@ -434,7 +434,7 @@ Table 默认为整行配置 Hover 样式，如果你需要修改相关样式可�
 | resizable                 | 是否开启伸缩列功能，需要进行伸缩的列必须要提供 width 的值                                                       | boolean \| TableResizable&lt;RecordType&gt;                                                                                  | false              |            |
 | rowExpandable             | 传入该参数时，Table 作行渲染时会调用该函数，返回值用于判断该行是否可展开，返回值为 false 时关闭可展开按钮的渲染 | (record?: RecordType) =&gt; boolean                                                                                          | —                  | -          |
 | rowKey                    | 表格行 key 的取值，可以是字符串或一个函数                                                                       | string \| number \| ((record?: RecordType) =&gt; TableRowKey)                                                                | 'key'              |            |
-| rowSelection              | 表格行是否可选择，详见 [rowSelection](#rowSelection)                                                            | boolean \| TableRowSelection&lt;RecordType&gt;                                                                               | -                  |            |
+| rowSelection              | 表格行是否可选择，详见 [rowSelection](#rowselection)                                                            | boolean \| TableRowSelection&lt;RecordType&gt;                                                                               | -                  |            |
 | rowSpanHover              | —                                                                                                               | boolean                                                                                                                      | —                  |            |
 | scroll                    | 表格是否可滚动，配置滚动区域的宽或高，详见 [scroll](#scroll)                                                    | TableScroll                                                                                                                  | -                  |            |
 | showHeader                | 是否显示表头                                                                                                    | boolean                                                                                                                      | true               |            |
@@ -481,8 +481,8 @@ RecordType 为 Table 和 Column 的泛型参数，默认为 object 类型。你�
 | filterChildrenRecord          | 是否需要对子级数据进行本地过滤，开启该功能后如果子级符合过滤标准，父级即使不符合仍然会保留                                                                                                 | boolean                                                                                                        | —           | -          |
 | filterConfirmMode             | 筛选确认模式。`immediate` 为点击筛选项立即生效；`confirm` 为点击筛选项后需点击确定按钮才生效，此时下拉面板底部会显示确定和重置按钮                                                         | TableFilterConfirmMode                                                                                         | 'immediate' |            |
 | filterDropdown                | 可以自定义筛选菜单，此函数只负责渲染图层，需要自行编写各种交互                                                                                                                             | VNodeChild                                                                                                     | —           |            |
-| filterDropdownProps           | 透传给 Dropdown 的属性，详情点击[Dropdown API](/zh-CN/show/dropdown#Dropdown)                                                                                                              | Record&lt;string, unknown&gt;                                                                                  | —           |            |
-| filterDropdownVisible         | 控制 Dropdown 的 visible，详情点击[Dropdown API](/zh-CN/show/dropdown#Dropdown)                                                                                                            | boolean                                                                                                        | —           |            |
+| filterDropdownProps           | 透传给 Dropdown 的属性，详情点击[Dropdown API](/zh-CN/show/dropdown#dropdown)                                                                                                              | Record&lt;string, unknown&gt;                                                                                  | —           |            |
+| filterDropdownVisible         | 控制 Dropdown 的 visible，详情点击[Dropdown API](/zh-CN/show/dropdown#dropdown)                                                                                                            | boolean                                                                                                        | —           |            |
 | filterIcon                    | 自定义 filter 图标                                                                                                                                                                         | boolean \| VNodeChild \| ((filtered: boolean) =&gt; VNodeChild)                                                | —           |            |
 | filterMultiple                | 是否多选                                                                                                                                                                                   | boolean                                                                                                        | true        |            |
 | filteredValue                 | 筛选的受控属性，外界可用此控制列的筛选状态，值为已筛选的 value 数组                                                                                                                        | unknown[] \| undefined                                                                                         | —           |            |
@@ -564,7 +564,7 @@ RecordType 为 Table 和 Column 的泛型参数，默认为 object 类型。你�
 | total                             | 数据总数                                                                                                                                                        | number                                                                                         | 0        | -    |
 | preventPageChangeOnPageSizeChange | 切换 pageSize 时是否阻止自动调整 currentPage。默认情况下，切换 pageSize 时组件会自动计算新的 currentPage 以保持当前数据位置，设为 true 后由用户自行控制页码变化 | boolean                                                                                        | false    | -    |
 
-其他配置详见[Pagination](/zh-CN/navigation/pagination#API参考)
+其他配置详见[Pagination](/zh-CN/navigation/pagination#api-参考)
 
 ## Resizable
 

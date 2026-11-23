@@ -21,8 +21,6 @@ Lottie 组件能够便捷简单地渲染 Lottie 动画，同时提供方式获�
 
 ### 如何引入
 
-Lottie 从 v2.62.0 开始支持
-
 <DemoBlock id="zh-CN-plus-lottie-1" title="如何引入" kind="code" />
 
 ### 基本用法

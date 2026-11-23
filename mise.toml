@@ -1,3 +1,27 @@
 [tools]
 node = "24.18.0"
 pnpm = "12.3.4"
+
+[tasks."deps:install"]
+description = "按工作区锁文件安装依赖"
+run = "pnpm install --frozen-lockfile"
+
+[tasks."check:toolchain"]
+description = "核对项目声明与实际工具版本"
+run = "pnpm run check:toolchain"
+
+[tasks.check]
+description = "运行日常源码检查和单测"
+run = "pnpm run check"
+
+[tasks."test:unit"]
+description = "运行 Vitest 单测，可指定文件或项目"
+run = "pnpm run test:unit"
+
+[tasks.build]
+description = "构建公开包和主题包"
+run = "pnpm run build"
+
+[tasks.dev]
+description = "启动 Storybook Vue 场景站"
+run = "pnpm run dev"

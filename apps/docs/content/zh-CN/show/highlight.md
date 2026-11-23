@@ -12,8 +12,6 @@ icon: 'doc-highlight'
 
 ### 如何引入
 
-Highlight 从 v2.24.0 版本开始支持
-
 <DemoBlock id="zh-CN-show-highlight-1" title="如何引入" kind="import" />
 
 ### 基本用法

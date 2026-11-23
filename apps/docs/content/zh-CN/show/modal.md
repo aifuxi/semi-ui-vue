@@ -230,7 +230,7 @@ icon: 'doc-modal'
 使用 Modal.destroyAll() 可以销毁命令式及以上`.info()`等创建的弹窗。
 
 - `Modal.useModal`
-  当你需要使用 Context 时，可以通过 Modal.useModal 创建一个 contextHolder 插入相应的节点中。此时通过 hooks 创建的 Modal 将会得到 contextHolder 所在位置的所有上下文。创建的 modal 对象拥有与 [Modal.method](<#Modal.method()>) 相同的创建通知方法。
+  当你需要使用 Context 时，可以通过 Modal.useModal 创建一个 contextHolder 插入相应的节点中。此时通过 hooks 创建的 Modal 将会得到 contextHolder 所在位置的所有上下文。创建的 modal 对象拥有与 [Modal.method](#modal-method) 相同的创建通知方法。
 
 ## Accessibility
 

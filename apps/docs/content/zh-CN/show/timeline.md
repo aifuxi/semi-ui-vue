@@ -6,7 +6,7 @@ order: 83
 icon: 'doc-timeline'
 ---
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/timeline` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/timeline` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 

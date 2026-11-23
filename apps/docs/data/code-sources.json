@@ -44,11 +44,6 @@
     "language": "vue",
     "source": "<script setup lang=\"ts\">\nimport { ref } from 'vue';\nimport { Button } from '@aifuxi/semi-ui-vue/button';\n\nconst mode = ref<'semi-always-dark' | 'semi-always-light'>('semi-always-dark');\nfunction switchMode() {\n  mode.value = mode.value === 'semi-always-dark' ? 'semi-always-light' : 'semi-always-dark';\n}\n</script>\n\n<template>\n  <section :class=\"mode\" style=\"padding: 16px; background: var(--semi-color-bg-0)\">\n    <Button @click=\"switchMode\">切换局部模式</Button>\n  </section>\n</template>"
   },
-  "zh-CN-experience-accessibility-1": {
-    "kind": "code",
-    "language": "bash",
-    "source": "# 安装无障碍主题\npnpm add @semi-bot/semi-theme-a11y"
-  },
   "zh-CN-experience-accessibility-2": {
     "kind": "code",
     "language": "vue",
@@ -272,7 +267,7 @@
   "zh-CN-plus-markdownrender-5": {
     "kind": "code",
     "language": "vue",
-    "source": "<script setup lang=\"ts\">\nimport { MarkdownRender } from '@aifuxi/semi-ui-vue/markdown-render';\nimport rehypeRaw from 'rehype-raw';\n\nconst raw = '<span style=\"color:red\">红色文字</span>';\n</script>\n\n<template>\n  <MarkdownRender format=\"md\" :raw=\"raw\" :rehype-plugins=\"[rehypeRaw]\" />\n</template>"
+    "source": "<script setup lang=\"ts\">\nimport { MarkdownRender } from '@aifuxi/semi-ui-vue/markdown-render';\nimport rehypeRaw from 'rehype-raw';\n\nconst raw = '<mark>高亮文字</mark>';\n</script>\n\n<template>\n  <MarkdownRender format=\"md\" :raw=\"raw\" :rehype-plugins=\"[rehypeRaw]\" />\n</template>"
   },
   "zh-CN-plus-videoPlayer-1": {
     "kind": "import",
@@ -937,7 +932,7 @@
   "zh-CN-other-configprovider-7": {
     "kind": "code",
     "language": "js",
-    "source": "import { semiGlobal } from \"@douiyinfe/semi-ui\";\n\nsemiGlobal.config.overrideDefaultProps = {\n    Select: {\n        zIndex: 2000,\n    },\n    Tooltip: {\n        zIndex: 2001,\n        trigger: 'click'\n    },\n};"
+    "source": "import { semiGlobal } from '@aifuxi/semi-ui-vue/config-provider';\n\nsemiGlobal.config.overrideDefaultProps = {\n  Button: { type: 'warning' },\n  Select: { zIndex: 2000 },\n  Tooltip: { zIndex: 2001, trigger: 'click' },\n};"
   },
   "zh-CN-other-locale-1": {
     "kind": "code",

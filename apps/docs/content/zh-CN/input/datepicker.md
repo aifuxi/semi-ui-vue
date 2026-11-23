@@ -6,7 +6,7 @@ order: 39
 icon: 'doc-datepicker'
 ---
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/date-picker` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/date-picker` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -134,7 +134,7 @@ dateRange 搭配 startDateOffset 和 endDateOffset 可以进行单击范围选�
 
 传入 `disabledDate` 可以禁用指定日期，传入 `disabledTime` 可以禁用指定时间，配合 `defaultPickerValue` 可以指定面板打开时所处的年月。
 
-`disabledDate` 和 `disabledTime`，接受的入参都为当前日期，前者返回一个 `boolean` 值，后者返回一个[对象](/zh-CN/input/timepicker#API_参考)，将会透传给 `TimePicker` 组件。
+`disabledDate` 和 `disabledTime`，接受的入参都为当前日期，前者返回一个 `boolean` 值，后者返回一个[对象](/zh-CN/input/timepicker#api-参考)，将会透传给 `TimePicker` 组件。
 
 <DemoBlock id="zh-CN-input-datepicker-19" title="禁用部分日期或时间" kind="live" />
 
@@ -266,7 +266,7 @@ dateRange 搭配 startDateOffset 和 endDateOffset 可以进行单击范围选�
 | disabledTime          | —                                                                                                                            | ( date?: Date \| Date[], panelType?: 'left' \| 'right', ) =&gt; DatePickerDisabledTimeOptions | —                                               |            |
 | disabledTimePicker    | 是否禁止时间选择                                                                                                             | boolean                                                                                       | —                                               |            |
 | dropdownClassName     | 下拉列表的 CSS 类名                                                                                                          | HTMLAttributes['class']                                                                       | —                                               |            |
-| dropdownMargin        | 下拉列表算溢出时的增加的冗余值，详见[issue#549](https://github.com/aifuxi/semi-ui-vue/issues/549)，作用同 Tooltip margin     | PopoverMargin                                                                                 | —                                               | **2.25.0** |
+| dropdownMargin        | 下拉列表算溢出时的增加的冗余值，详见[issue#549](https://github.com/DouyinFE/semi-design/issues/549)，作用同 Tooltip margin   | PopoverMargin                                                                                 | —                                               | **2.25.0** |
 | dropdownStyle         | 下拉列表的内联样式                                                                                                           | StyleValue                                                                                    | —                                               |            |
 | endDateOffset         | type 为 dateRange 时，设置单击选择范围的结束日期                                                                             | (selectedDate?: Date) =&gt; Date                                                              | -                                               |            |
 | endYear               | 滚轮的结束年，结束年需要大于开始年                                                                                           | number                                                                                        | 当前年后 100 年                                 | **2.36.0** |
@@ -290,7 +290,7 @@ dateRange 搭配 startDateOffset 和 endDateOffset 可以进行单击范围选�
 | onChangeWithDateFirst | 控制 `change` 事件参数顺序；设为 `false` 时先传格式化字符串，再传日期值                                                      | boolean                                                                                       | true                                            |            |
 | open                  | 面板显示或隐藏的受控属性                                                                                                     | boolean                                                                                       | —                                               |            |
 | placeholder           | 输入框提示文字                                                                                                               | string \| string[]                                                                            | 'Select date'                                   |            |
-| position              | 浮层位置，可选值同[Popover#API 参考·position 参数](/zh-CN/show/popover#API参考)                                              | PopoverPosition                                                                               | 'bottomLeft'                                    |            |
+| position              | 浮层位置，可选值同[Popover#API 参考·position 参数](/zh-CN/show/popover#api-参考)                                             | PopoverPosition                                                                               | 'bottomLeft'                                    |            |
 | prefix                | 前缀内容                                                                                                                     | VNodeChild                                                                                    | —                                               |            |
 | presetPosition        | 日期时间快捷方式面板位置, 可选值'left', 'right', 'top', 'bottom'                                                             | DatePickerPresetPosition                                                                      | 'bottom'                                        | **2.18.0** |
 | presets               | —                                                                                                                            | Array&lt;DatePickerPreset \| (() =&gt; DatePickerPreset)&gt;                                  | —                                               |            |
@@ -308,7 +308,7 @@ dateRange 搭配 startDateOffset 和 endDateOffset 可以进行单击范围选�
 | stopPropagation       | 是否阻止弹出层上的点击事件冒泡                                                                                               | boolean \| string                                                                             | true                                            |            |
 | style                 | 自定义样式                                                                                                                   | StyleValue                                                                                    | —                                               |            |
 | syncSwitchMonth       | 在范围选择的场景中，支持同步切换双面板的月份                                                                                 | boolean                                                                                       | false                                           |            |
-| timePickerOpts        | 其他可以透传给时间选择器的参数，详见 [TimePicker·API 参考](/zh-CN/input/timepicker#API_参考)                                 | TimePickerProps                                                                               | object                                          |            |
+| timePickerOpts        | 其他可以透传给时间选择器的参数，详见 [TimePicker·API 参考](/zh-CN/input/timepicker#api-参考)                                 | TimePickerProps                                                                               | object                                          |            |
 | timeZone              | —                                                                                                                            | string \| number                                                                              | —                                               |            |
 | topSlot               | 渲染顶部额外区域                                                                                                             | VNodeChild                                                                                    | —                                               |            |
 | triggerRender         | 自定义触发器渲染方法，第一个参数是个 Object，详情看下方类型定义                                                              | (props: DatePickerTriggerSlotProps) =&gt; VNodeChild                                          | —                                               |            |
@@ -316,7 +316,7 @@ dateRange 搭配 startDateOffset 和 endDateOffset 可以进行单击范围选�
 | validateStatus        | 校验状态，可选值 default、error、warning，默认 default。仅影响展示样式                                                       | InputValidateStatus                                                                           | —                                               |            |
 | value                 | 受控的值                                                                                                                     | DatePickerValue                                                                               | —                                               |            |
 | weekStartsOn          | 以周几作为每周第一天，0 代表周日，1 代表周一，以此类推                                                                       | 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6                                                               | 0                                               |            |
-| yearAndMonthOpts      | 其他可以透传给年月选择器的参数，详见 [ScrollList#API](/zh-CN/show/scrolllist#ScrollItem)                                     | Record&lt;string, unknown&gt;                                                                 | object                                          | **2.20.0** |
+| yearAndMonthOpts      | 其他可以透传给年月选择器的参数，详见 [ScrollList#API](/zh-CN/show/scrolllist#scrollitem)                                     | Record&lt;string, unknown&gt;                                                                 | object                                          | **2.20.0** |
 | zIndex                | 弹出面板的 zIndex                                                                                                            | number                                                                                        | 1030                                            |            |
 
 ## Methods
@@ -348,7 +348,7 @@ dateRange 搭配 startDateOffset 和 endDateOffset 可以进行单击范围选�
 
 - 日期选择器建议搭配标签使用
 - 使用简洁的标签来表明日期选择所指的内容
-- 日期选择器中日期格式请参考[日期与时间](/zh-CN/experience/content-guidelines#8.%20%E6%97%A5%E6%9C%9F%E4%B8%8E%E6%97%B6%E9%97%B4)的规范
+- 日期选择器中日期格式请参考[日期与时间](/zh-CN/experience/content-guidelines#_8-日期与时间)的规范
 
 ## 日期时间格式
 

@@ -7,11 +7,13 @@ Node.js 与 pnpm 的精确版本由根 `mise.toml` 管理；`package.json` 声�
 ```bash
 mise trust
 mise install
-mise exec -- pnpm install --frozen-lockfile
-mise exec -- pnpm check:toolchain
+mise run deps:install
+mise run check:toolchain
 ```
 
-个人终端可用 `mise activate zsh` 自动切换；未激活时使用 `mise exec -- pnpm …`。无需额外启用 corepack 或全局安装 pnpm。
+`mise tasks` 可查看项目入口。日常集成用 `mise run check`，定向单测可用 `mise run test:unit --project node`。`mise run build` 构建公开包和主题包，`mise run dev` 启动 Storybook Vue，可在启动任务的终端按 Ctrl+C 停止。
+
+个人终端可用 `mise activate zsh` 自动切换。mise 任务会使用项目固定版本，其他 pnpm 脚本也可通过 `mise exec -- pnpm …` 执行。无需额外启用 corepack 或全局安装 pnpm。
 
 ## WebStorm
 
@@ -27,7 +29,7 @@ mise exec -- pnpm check:toolchain
 | `pnpm check:full`      | 全量回归                           |
 | `pnpm release:check`   | 发布候选验证，不发布               |
 
-配置使用 `$PROJECT_DIR$`、项目 Node runtime 和 `pnpm` 别名。首次设置项目 Node interpreter 与 package manager 时，分别选择 `mise which node`、`mise which pnpm` 返回的位置。升级版本后运行 `pnpm check:toolchain` 复核。
+配置使用 `$PROJECT_DIR$`、项目 Node runtime 和 `pnpm` 别名。首次设置或版本检查发现偏差时，分别选择 `mise which node`、`mise which pnpm` 返回的位置，再运行 `pnpm check:toolchain` 复核。也可以直接在 IDE 终端运行 mise 任务，由 mise 选择工具版本。
 
 MCP 先用 `get_run_configurations` 获取名称，再用 `execute_run_configuration` 执行。npm 配置不支持动态参数覆盖；指定单测文件、浏览器 spec 或一次性环境变量时用 IDE 终端。长任务以实际退出码和日志判断结束，不能把启动成功当作检查通过。
 

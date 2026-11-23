@@ -1,6 +1,7 @@
 import { access, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { basename, relative, resolve } from 'node:path';
 import { parse } from 'yaml';
+import { prepareExampleDependencies } from './example-dependencies.mjs';
 
 const appRoot = resolve(import.meta.dirname, '..');
 const contentRoot = resolve(appRoot, 'content');
@@ -144,6 +145,17 @@ const searchIndex = pages
   });
 
 await mkdir(generatedRoot, { recursive: true });
+const exampleDependencies = await prepareExampleDependencies({
+  appRoot,
+  examplesRoot,
+  exampleFiles,
+  codeSources,
+  collectFiles,
+});
+await writeFile(
+  resolve(generatedRoot, 'example-dependencies.json'),
+  `${JSON.stringify(exampleDependencies)}\n`,
+);
 await writeFile(resolve(generatedRoot, 'nav.json'), `${JSON.stringify(nav, null, 2)}\n`);
 await writeFile(
   resolve(contentRoot, 'public/search-index.json'),
