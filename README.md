@@ -43,7 +43,7 @@ import { Button } from '@aifuxi/semi-ui-vue/button';
 | `@aifuxi/semi-icons-lab-vue`     | 实验图标                    |
 | `@aifuxi/semi-illustrations-vue` | light/dark 插画             |
 
-支持 Agent Skills 的 AI 编码客户端可以加载 [Semi UI Vue Skill](skills/semi-ui-vue/SKILL.md) 所在的目录，查询 Table、Form 的 Vue API 和可运行示例。
+支持 Agent Skills 的 AI 编码客户端可以加载 [Semi UI Vue Skill](skills/semi-ui-vue/SKILL.md) 所在的目录，按用途查找组件，并核对安装版本的 API 和示例。
 
 ## 开发与发布状态
 

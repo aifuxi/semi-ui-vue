@@ -1,6 +1,6 @@
 ---
 name: semi-ui-vue
-description: 在 Vue 3 项目中使用 @aifuxi/semi-ui-vue 搭建页面、选择组件或排查用法，核对安装版本、公开导入、props、事件和插槽。内含 Table 表格和 Form 表单的 Vue 用法及可运行示例。
+description: 在 Vue 3 项目中使用 @aifuxi/semi-ui-vue 搭建页面、按用途查找组件或排查用法，核对安装版本、公开导入、props、事件、插槽和示例。
 ---
 
 # Semi UI Vue
@@ -14,11 +14,11 @@ description: 在 Vue 3 项目中使用 @aifuxi/semi-ui-vue 搭建页面、选择
 ## 查证与验证
 
 1. 从使用组件的应用目录解析 `@aifuxi/semi-ui-vue`。用 `node -p "require('@aifuxi/semi-ui-vue/package.json').version"` 查看实际安装版本，用 `require.resolve` 定位同一份包元数据。解析不到该入口时，用项目的包管理器或锁文件查这个应用解析出的完整版本。
-2. 读所用组件的参考页，了解常见导入、事件和示例。参考页里的签名用已安装包的公开类型核对。
+2. 用 [组件用途索引](references/components.md) 从需求找到候选组件和公开子路径。Table 和 Form 还提供针对常见场景的参考页，签名以安装包的公开类型为准。
    - [Table](references/table.md) 用于表格、排序、筛选、分页或行选择。
    - [Form](references/form.md) 用于表单字段、校验、提交按钮或表单状态。
 3. 从该版本包的 `package.json` 查看 `exports`，沿公开入口的 `types` 核对 props、事件参数、插槽和 `v-model` 对应的更新事件。Vue 的版本要求看 `peerDependencies`。
-   - 需要查行为和示例时，在 [Semi UI Vue 仓库](https://github.com/aifuxi/semi-ui-vue) 查找 `@aifuxi/semi-ui-vue@<version>` 标签，以实际解析的版本替换 `<version>`。标签存在时从该标签打开 `docs/components/`。工作区包可读当前检出的契约。
+   - 需要查行为和示例时，在 [Semi UI Vue 仓库](https://github.com/aifuxi/semi-ui-vue) 查找 `@aifuxi/semi-ui-vue@<version>` 标签，以实际解析的版本替换 `<version>`。标签存在时从该标签打开组件契约及文档示例，具体目录见索引。工作区包可读当前检出的契约。
    - 找不到同版本文档时，以包的公开声明和实际交互验证为准。Semi Design 官方 React 文档使用独立版本号。
 4. 检查 Vue 模板里的组件选型，再用消费项目的类型检查和相关交互验证导入、事件参数和实际行为。
 
