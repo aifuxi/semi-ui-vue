@@ -6,7 +6,7 @@ order: 57
 icon: 'doc-navigation'
 ---
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/navigation` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/navigation` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -24,13 +24,13 @@ icon: 'doc-navigation'
 - `text`：导航文案
 - `icon`：导航图标，你可以从 `@aifuxi/semi-icons-vue`、`@aifuxi/semi-icons-lab-vue` 中自由选择你喜欢的图标，详情可查阅 [Icon 组件文档](/zh-CN/basic/icon)
 
-参数含义详见 [Nav.Item](#Nav.Item) 或 [Nav.Sub](#Nav.Sub)
+参数含义详见 [Nav.Item](#nav-item) 或 [Nav.Sub](#nav-sub)
 
 开发者可能会经常定义 Logo 区域和收起按钮区域，Navigation 则提供了这样的容器方便开发者快速定义导航头部和底部，你仅需按要求传入 `header` 或 `footer` 即可。
 
 对于 `footer`，semi-ui 额外封装了一个收起功能按钮，开发者可以通过传递 `collapseButton = true` 开启此功能，不过该参数仅在 `mode = "vertical"` （垂直导航）生效。
 
-参数详见 [Nav.Header](#Nav.Header) 和 [Nav.Footer](#Nav.Footer)。
+参数详见 [Nav.Header](#nav-header) 和 [Nav.Footer](#nav-footer)。
 
 <DemoBlock id="zh-CN-navigation-navigation-2" title="基本使用" kind="live" />
 
@@ -52,7 +52,7 @@ Navigation 目前提供了个两个参数用于定义导航样式：`style` 和 
 
 配合 vue-router 时，可使用 `#itemWrapper` 把 Nav.Item 包裹在 RouterLink 中，由路由组件处理导航。
 
-使用 `#itemWrapper` 作用域插槽在每个导航项外包裹自定义路由组件。
+在已注册 Vue Router 的应用中，可用 `renderWrapper` 给每个导航项套上 `RouterLink`。模板写法可使用 `#itemWrapper` 作用域插槽。
 
 <DemoBlock id="zh-CN-navigation-navigation-5" title="配合 vue-router 等路由组件" kind="code" />
 
@@ -209,9 +209,9 @@ Navigation 组件提供了几个受控属性，配合各种回调，可以很轻
 | defaultOpenKeys     | 初始打开的子导航 `itemKey` 数组，仅 `mode = "vertical"` 且侧边栏处于展开状态时有效                                                             | readonly ItemKey[]                             | []         |
 | defaultSelectedKeys | 初始选中的导航项 `itemKey` 数组                                                                                                                | readonly ItemKey[]                             | []         |
 | expandIcon          | 默认下拉箭头Icon, v&gt;=2.36                                                                                                                   | NavigationContent                              | —          |
-| footer              | 底部区域配置对象或元素，详见 [Nav.Footer](#Nav.Footer)                                                                                         | NavigationContent \| NavFooterProps            | —          |
+| footer              | 底部区域配置对象或元素，详见 [Nav.Footer](#nav-footer)                                                                                         | NavigationContent \| NavFooterProps            | —          |
 | getPopupContainer   | 垂直 Nav 折叠或 水平 Nav中 Dropdown 的 getPopupContainer 配置，可指定弹出层容器 这会改变浮层 DOM 树位置，但不会改变视图渲染位置。 v&gt;=2.24.0 | () =&gt; HTMLElement                           | —          |
-| header              | 头部区域配置对象或元素，详见 [Nav.Header](#Nav.Header)                                                                                         | NavigationContent \| NavHeaderProps            | —          |
+| header              | 头部区域配置对象或元素，详见 [Nav.Header](#nav-header)                                                                                         | NavigationContent \| NavHeaderProps            | —          |
 | isCollapsed         | 是否处于收起状态的受控属性，仅 `mode = "vertical"` 时有效                                                                                      | boolean                                        | —          |
 | items               | 导航项目列表，每一项可以继续带有 items 属性。如果为 string 数组，则会取每一项作为 text 和 itemKey                                              | NavigationItems                                | —          |
 | limitIndent         | 解除缩进限制，可使用 level 自定义导航项缩进，水平模式只能为true                                                                                | boolean                                        | true       |
@@ -324,4 +324,4 @@ Navigation 组件提供了几个受控属性，配合各种回调，可以很轻
   请保持 `items` 的引用稳定；在 Vue 中可使用 `shallowRef` 或 `computed` 管理数组。
 
 - **当子菜单高度超过999px，部分导航消失？**
-  请查看 [此 issue](https://github.com/aifuxi/semi-ui-vue/issues/563)
+  请查看 [此 issue](https://github.com/DouyinFE/semi-design/issues/563)

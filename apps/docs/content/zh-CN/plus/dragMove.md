@@ -16,8 +16,6 @@ icon: 'doc-dragmove'
 
 ### 如何引入
 
-DragMove 从 v2.71.0 开始支持
-
 <DemoBlock id="zh-CN-plus-dragMove-1" title="如何引入" kind="code" />
 
 ### 基本用法

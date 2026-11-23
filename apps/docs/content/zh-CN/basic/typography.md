@@ -11,7 +11,7 @@ icon: 'doc-typography'
 - 对文章、博客、日志等的文本内容进行展示时。
 - 对文本进行复制和省略等基础操作时。
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/typography` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/typography` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -82,7 +82,7 @@ Numeral 组件在Text组件的基础上，添加了属性: `rule`, `precision`, 
 
 ### 省略文本
 
-支持文本的省略，可以通过 `ellipsis` 配置相关参数，具体参考 [Ellipsis Config](#Ellipsis-Config)。
+支持文本的省略，可以通过 `ellipsis` 配置相关参数，具体参考 [Ellipsis Config](#ellipsis-config)。
 
 <DemoBlock id="zh-CN-basic-typography-10" title="省略文本" kind="live" />
 

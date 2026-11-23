@@ -6,7 +6,7 @@ order: 90
 icon: 'doc-popconfirm'
 ---
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/popconfirm` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/popconfirm` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -43,7 +43,7 @@ content 支持传入函数，它的入参是一个对象，将 `initialFocusRef`
 
 ### 搭配 Tooltip 或 Popover 使用
 
-请参考[搭配使用](/zh-CN/show/tooltip#%E6%90%AD%E9%85%8D%20Popover%20%E6%88%96%20Popconfirm%20%E4%BD%BF%E7%94%A8)
+请参考[搭配使用](/zh-CN/show/tooltip#搭配-popover-或-popconfirm-使用)
 
 ## API 参考
 
@@ -139,7 +139,7 @@ content 支持传入函数，它的入参是一个对象，将 `initialFocusRef`
 
 ### ARIA
 
-语义化请参考 [Popover](/zh-CN/show/popover#ARIA)
+语义化请参考 [Popover](/zh-CN/show/popover#aria)
 
 ### 键盘和焦点
 
@@ -153,4 +153,4 @@ content 支持传入函数，它的入参是一个对象，将 `initialFocusRef`
 ## FAQ
 
 - **为什么 Popconfirm 浮层在靠近屏幕边界宽度不够时，丢失宽度意外换行?**
-  在 chromium 104 后 对于屏幕边界文本宽度不够时的换行渲染策略发生变化，详细原因可查看 [issue #1022](https://github.com/aifuxi/semi-ui-vue/issues/1022)，semi侧已经在v2.17.0版本修复了这个问题。
+  在 chromium 104 后 对于屏幕边界文本宽度不够时的换行渲染策略发生变化，详细原因可查看 [issue #1022](https://github.com/DouyinFE/semi-design/issues/1022)，semi侧已经在v2.17.0版本修复了这个问题。

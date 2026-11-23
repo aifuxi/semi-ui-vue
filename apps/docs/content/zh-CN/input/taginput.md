@@ -6,7 +6,7 @@ order: 49
 icon: 'doc-tagInput'
 ---
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/tag-input` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/tag-input` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -193,7 +193,7 @@ icon: 'doc-tagInput'
 | prefix                | 前缀 VNode；prefix 插槽优先                                                                                                          | VNodeChild                                                            | -         | -      |
 | preventScroll         | 指示浏览器是否应滚动文档以显示新聚焦的元素，作用于组件内的 focus 方法                                                                | boolean                                                               | —         |        |
 | renderTagItem         | 标签渲染 callback prop；tag 插槽优先                                                                                                 | (value: string, index: number, close: () =&gt; void) =&gt; VNodeChild | —         |        |
-| restTagsPopoverProps  | Popover 的配置属性，可以控制弹出方向、zIndex、trigger等，具体参考[Popover](/zh-CN/show/popover#API_参考)                             | TagInputRestPopoverProps                                              | {}        | -      |
+| restTagsPopoverProps  | Popover 的配置属性，可以控制弹出方向、zIndex、trigger等，具体参考[Popover](/zh-CN/show/popover#api-参考)                             | TagInputRestPopoverProps                                              | {}        | -      |
 | separator             | 设置批量输入时的分隔符                                                                                                               | TagInputSeparator                                                     | `','`     | -      |
 | showClear             | 是否支持一键删除所有标签和输入内容                                                                                                   | boolean                                                               | false     | -      |
 | showContentTooltip    | 当标签长度过长发生截断时，hover 标签的时候，是否通过 Tooltip 显示全部内容, 支持 Tooltip\|Popover；opts，其他需要透传给浮层组件的属性 | boolean \| TagInputTooltipOptions                                     | true      | -      |

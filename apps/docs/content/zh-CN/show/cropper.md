@@ -16,8 +16,6 @@ Cropper 用于裁切图片，支持自定义裁切框样式，可通过拖动调
 
 ### 如何引入
 
-Cropper 从 v2.73.0 开始支持
-
 <DemoBlock id="zh-CN-show-cropper-1" title="如何引入" kind="code" />
 
 ### 基本用法

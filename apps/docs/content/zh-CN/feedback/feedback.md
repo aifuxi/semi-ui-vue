@@ -12,8 +12,6 @@ icon: 'doc-feedback'
 
 ### 如何引入
 
-Feedback 自 2.85.0 支持。
-
 <DemoBlock id="zh-CN-feedback-feedback-1" title="如何引入" kind="import" />
 
 ### 基本使用
@@ -96,8 +94,8 @@ Feedback 自 2.85.0 支持。
 
 ### FeedbackProps
 
-除去下面参数列表所列参数外，当 `mode` 为 `modal` 时, FeedbackProps 还支持 [ModalProps](/zh-CN/show/modal#Modal) 中的参数，
-当 `mode` 为 `popup` 时, FeedbackProps 还支持 [SideSheetProps](/zh-CN/show/sidesheet#API%20%E5%8F%82%E8%80%83) 中的参数
+除去下面参数列表所列参数外，当 `mode` 为 `modal` 时, FeedbackProps 还支持 [ModalProps](/zh-CN/show/modal#modal) 中的参数，
+当 `mode` 为 `popup` 时, FeedbackProps 还支持 [SideSheetProps](/zh-CN/show/sidesheet#api-参考) 中的参数
 
 | 属性                | 说明                                            | 类型                                                   | 默认值  |
 | ------------------- | ----------------------------------------------- | ------------------------------------------------------ | ------- |

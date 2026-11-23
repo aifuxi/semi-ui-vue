@@ -16,7 +16,7 @@ icon: 'doc-autocomplete'
 - 点击展开时，Select 会将输入框的值全部清空，而 AutoComplete 会保留上次选中的值
 - Select 的已选项渲染（renderSelectedItem）可定制化程度更高，可以为任意类型的 VNodeChild，而 AutoComplete 只允许为字符串
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/auto-complete` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/auto-complete` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 

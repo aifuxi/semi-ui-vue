@@ -6,7 +6,7 @@ order: 58
 icon: 'doc-pagination'
 ---
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/pagination` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/pagination` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -115,7 +115,7 @@ showQuickJumper于 v1.31后提供
 | nextText                          | 下一页文本                                                                                                                                                      | VNodeChild              | —                 |        |
 | pageSize                          | 每页条数                                                                                                                                                        | number                  | 10                |        |
 | pageSizeOpts                      | 指定每页显示多少条                                                                                                                                              | number[]                | [10, 20, 40, 100] |        |
-| popoverPosition                   | 浮层方向，具体可见 [Popover·API 参考·position](/zh-CN/show/popover#API参考)                                                                                     | TooltipPosition         | "bottomLeft"      |        |
+| popoverPosition                   | 浮层方向，具体可见 [Popover·API 参考·position](/zh-CN/show/popover#api-参考)                                                                                    | TooltipPosition         | "bottomLeft"      |        |
 | popoverZIndex                     | 浮层 z-index 值                                                                                                                                                 | number                  | 1030              |        |
 | preventPageChangeOnPageSizeChange | 切换 pageSize 时是否阻止自动调整 currentPage。默认情况下，切换 pageSize 时组件会自动计算新的 currentPage 以保持当前数据位置，设为 true 后由用户自行控制页码变化 | boolean                 | false             | -      |
 | prevText                          | 上一页文本                                                                                                                                                      | VNodeChild              | —                 |        |

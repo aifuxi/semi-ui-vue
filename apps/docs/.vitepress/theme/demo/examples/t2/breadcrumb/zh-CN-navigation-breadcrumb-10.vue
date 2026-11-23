@@ -4,10 +4,10 @@ import '@aifuxi/semi-theme-default/breadcrumb.css';
 import { h } from 'vue';
 import { IconHome, IconArticle } from '@aifuxi/semi-icons-vue';
 const iconRoutes = [
-  { path: '/zh-cn/', href: '/zh-cn/', icon: h(IconHome, { size: 'small', 'aria-label': '首页' }) },
+  { path: '/', href: '/', icon: h(IconHome, { size: 'small', 'aria-label': '首页' }) },
   {
-    path: '/zh-cn/components/breadcrumb/',
-    href: '/zh-cn/components/breadcrumb/',
+    path: '/zh-CN/navigation/breadcrumb',
+    href: '/zh-CN/navigation/breadcrumb',
     name: 'breadcrumb',
     icon: h(IconArticle, { size: 'small' }),
   },

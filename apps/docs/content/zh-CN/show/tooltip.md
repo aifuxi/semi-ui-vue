@@ -6,7 +6,7 @@ order: 84
 icon: 'doc-tooltip'
 ---
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/tooltip` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/tooltip` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -128,7 +128,7 @@ Semi 为这种场景提供了 Typography 组件，可以更简单快捷地满足
 | condition            | 是否允许 Tooltip 触发显示。仅当显式设置为 false 时，hover/click/focus 等触发行为不生效（trigger='custom' 场景不受影响）                                          | boolean                  | true                   |            |
 | content              | 弹出层内容                                                                                                                                                       | VNodeChild               | —                      |            |
 | disableArrowKeyDown  | —                                                                                                                                                                | boolean                  | —                      |            |
-| disableFocusListener | trigger为`hover`时，不响应键盘聚焦弹出浮层事件，详见[issue#977](https://github.com/aifuxi/semi-ui-vue/issues/977)                                                | boolean                  | false                  | **2.17.0** |
+| disableFocusListener | trigger为`hover`时，不响应键盘聚焦弹出浮层事件，详见[issue#977](https://github.com/DouyinFE/semi-design/issues/977)                                              | boolean                  | false                  | **2.17.0** |
 | getPopupContainer    | 指定父级 DOM，弹层将会渲染至该 DOM 中，自定义需要设置 `position: relative` 这会改变浮层 DOM 树位置，但不会改变视图渲染位置。                                     | () =&gt; HTMLElement     | () =&gt; document.body |            |
 | guardFocus           | —                                                                                                                                                                | boolean                  | —                      |            |
 | keepDOM              | 关闭时是否保留内部组件不销毁                                                                                                                                     | boolean                  | false                  | **2.31.0** |

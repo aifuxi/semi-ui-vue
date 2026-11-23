@@ -16,8 +16,6 @@ icon: 'doc-configprovider'
 
 ### 如何引入
 
-HotKeys 从 2.66.0 开始支持
-
 <DemoBlock id="zh-CN-plus-hotkeys-1" title="如何引入" kind="import" />
 
 ### 说明

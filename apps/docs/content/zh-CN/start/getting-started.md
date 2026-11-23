@@ -8,14 +8,13 @@ icon: 'doc-gettingstarted'
 
 ## 1、安装
 
-组件库发布包为 `@aifuxi/semi-ui-vue`，默认主题、稳定/Lab 图标与插画包会作为同版本依赖自动安装。
+组件库发布包为 `@aifuxi/semi-ui-vue`，要求 Vue 3.5 或更高版本。组件内部使用的默认主题、稳定图标、Lab 图标与插画包随主包安装。应用源码直接从这些包导入时，请把对应的包加入应用的直接依赖，并与主包使用相同版本。
 
 <DemoBlock id="zh-CN-start-getting-started-1" title="1、安装" kind="code" />
 
 ## 2、按需加载
 
-在 Vite 或 Rspack 浏览器构建中，组件入口会自动关联对应的默认主题 CSS，无需增加样式配置或手工导入。
-从旧版本升级时应删除 `@aifuxi/semi-theme-default/index.css` 全量导入，避免重复样式。
+在 Vite 或 Rspack 浏览器构建中，组件入口会自动加载所需的默认主题 CSS。已有全量 CSS 导入的项目可在确认浏览器构建使用组件浏览器入口后移除全量导入。自定义主题见[定制主题](../advanced/customize-theme)。
 
 ## 3、使用组件
 
@@ -23,6 +22,8 @@ icon: 'doc-gettingstarted'
 生产构建会移除未使用的组件代码与样式。
 
 <DemoBlock id="zh-CN-start-getting-started-2" title="3、使用组件" kind="code" />
+
+复制组件页示例时，按代码下方列出的依赖和文件准备项目。示例中的模拟数据、图片和请求可以替换成实际业务资源。
 
 ## 4、Vue 版本与 SSR
 

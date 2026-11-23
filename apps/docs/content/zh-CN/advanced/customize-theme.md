@@ -7,29 +7,53 @@ icon: 'doc-theme'
 ---
 
 <script setup lang="ts">
-/** 独立工作台部署地址在文档构建时注入；本地开发使用约定的独立端口。 */
-const themeStudioUrl = `${(import.meta.env.VITE_THEME_STUDIO_URL || 'http://localhost:4322/').replace(/\/$/, '')}/#/tokens`;
+function getThemeStudioUrl(value: string | undefined): string | undefined {
+  if (!value?.trim()) return;
+  try {
+    const url = new URL(value);
+    if (
+      url.protocol !== 'https:' ||
+      url.username ||
+      url.password ||
+      /(?:^|\.)(?:localhost|local)\.?$/.test(url.hostname) ||
+      url.hostname === '[::1]' ||
+      url.hostname.startsWith('127.')
+    ) return;
+    url.pathname = `${url.pathname.replace(/\/+$/, '')}/`;
+    url.hash = '/tokens';
+    return url.href;
+  } catch {
+    return;
+  }
+}
+
+const themeStudioUrl = getThemeStudioUrl(import.meta.env.VITE_THEME_STUDIO_URL);
 </script>
 
 ## 从默认主题开始
 
-Semi UI Vue 的默认主题固定对齐 Semi Design `v2.102.0`。导入默认 CSS 后，使用普通 CSS 自定义属性调整排版，或使用独立颜色生成器创建品牌主题。用户侧无需编写 SCSS、安装 Sass 或配置专用 Vite/Webpack 插件。
+Semi UI Vue 的默认主题以 Semi Design `v2.102.0` 为基线。使用 CSS 自定义属性调整排版，或使用下方的颜色生成器创建品牌主题。Vite 和 Rspack 的浏览器构建会随组件加载默认样式，在组件导入之后加载业务 CSS 即可。定制主题无需编写 SCSS、安装 Sass 或配置专用 Vite/Webpack 插件。
 
-```ts
-// 默认主题先加载，业务主题随后参与正常 CSS 级联。
-import '@aifuxi/semi-theme-default/index.css';
+```vue
+<script setup lang="ts">
+import { Button } from '@aifuxi/semi-ui-vue/button';
 import './brand.css';
+</script>
+
+<template>
+  <Button>品牌按钮</Button>
+</template>
 ```
+
+如果构建链需要手动引入全量默认样式，请先安装与主包同版本的 `@aifuxi/semi-theme-default`，再依次加载 `@aifuxi/semi-theme-default/index.css` 和业务 CSS。
 
 只导入颜色工具或调用生成函数不会修改页面。默认 CSS 不调用生成器；只有加载业务生成的 CSS 才启用品牌颜色。
 
 ## 独立主题工作台
 
-<a :href="themeStudioUrl" target="_blank" rel="noopener noreferrer">打开主题工作台</a>，编辑品牌色、字体、字号、字重和行高，比较深浅模式、固定 Semi 基线与局部继承，并查看默认弹层的主题效果。
+<a v-if="themeStudioUrl" :href="themeStudioUrl" target="_blank" rel="noopener noreferrer">打开主题工作台</a>
 
-工作台是与文档站平级的 `apps/theme-studio` 独立应用，拥有自己的入口、路由和主题状态。本地运行 `pnpm theme-studio:dev` 后使用上方入口；文档站保留公开 API、使用说明与代码示例，不嵌入编辑面板。颜色和排版均使用本页公开 API 与 CSS 变量，定制主题无需 SCSS、Sass 或专用构建插件。
-
-首期组件样式定制限定于已公开的颜色与排版能力。圆角、间距、阴影编辑、云服务、主题发布与 Figma 接入不在当前范围内。
+工作台用于预览和导出深浅主题，支持品牌色、排版、圆角、间距与阴影等设置。组件包的公开主题 API 见下文。工作台还可生成面向指定选择器的普通 CSS，其中的 `--studio-*` 变量由导出的 CSS 消费。
 
 ## CSS 排版主题
 
@@ -114,7 +138,11 @@ import { Button, Typography } from '@aifuxi/semi-ui-vue';
 
 ## 品牌颜色生成器
 
-颜色工具从独立子路径导入，提供零依赖 ESM 与 TypeScript 类型，可在 Node、浏览器和 SSR 中调用，不访问 DOM 或自动注入样式。
+颜色工具从独立子路径导入，提供零依赖 ESM 与 TypeScript 类型，可在 Node、浏览器和 SSR 中调用。请将主题包加入直接依赖，下例使用 `2.2.5`，接入时替换成已安装的 UI 包版本。
+
+```bash
+pnpm add @aifuxi/semi-theme-default@2.2.5
+```
 
 ```js
 import { writeFile } from 'node:fs/promises';

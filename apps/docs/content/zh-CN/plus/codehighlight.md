@@ -17,8 +17,6 @@ Semi 代码高亮组件基于 prismjs 封装，支持297 种编程语言的高�
 
 ### 如何引入
 
-CodeHighlight 从 v2.62.0 开始支持
-
 <DemoBlock id="zh-CN-plus-codehighlight-1" title="如何引入" kind="code" />
 
 ### 基本用法

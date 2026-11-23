@@ -9,16 +9,27 @@ import 'prismjs/components/prism-markdown.js';
 import 'prismjs/components/prism-scss.js';
 import 'prismjs/components/prism-typescript.js';
 import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue';
+import { withBase } from 'vitepress';
 import codeSources from '../../../data/code-sources.json';
 import { loadExampleManifest } from '../demo/types';
+import exampleDependencies from '../generated/example-dependencies.json';
 
 interface CodeSource {
   language: string;
   source: string;
 }
 
+interface ExampleDependencies {
+  packages: string[];
+  files: { name: string; url: string }[];
+  assets: string[];
+}
+
 const props = defineProps<{ title: string; kind?: 'live' | 'import' | 'code'; id?: string }>();
 const manifest = computed(() => (props.id ? loadExampleManifest(props.id) : null));
+const dependencies = computed(() =>
+  props.id ? (exampleDependencies as Record<string, ExampleDependencies>)[props.id] : undefined,
+);
 const codeSource = computed(() =>
   props.id ? (codeSources as Record<string, CodeSource>)[props.id] : undefined,
 );
@@ -79,6 +90,28 @@ function handleToggle(event: Event): void {
           :class="`language-${highlightLanguage}`"
           v-html="highlightedSource"
         /><code v-else :class="`language-${highlightLanguage}`">{{ source }}</code></pre>
+      </div>
+      <div v-if="dependencies" class="demo-block-dependencies">
+        <p v-if="dependencies.packages.length">
+          安装示例依赖（Semi 包请与 UI 主包使用相同版本）
+          <samp>pnpm add {{ dependencies.packages.join(' ') }}</samp>
+        </p>
+        <template v-if="dependencies.files.length">
+          <p>下载示例文件并保留以下相对路径。</p>
+          <ul>
+            <li v-for="file in dependencies.files" :key="file.url">
+              <a :href="withBase(file.url)" download>{{ file.name }}</a>
+            </li>
+          </ul>
+        </template>
+        <template v-if="dependencies.assets.length">
+          <p>将所需资源保存到项目的 public/demos/ 下。</p>
+          <ul>
+            <li v-for="asset in dependencies.assets" :key="asset">
+              <a :href="withBase(asset)" download>{{ asset.slice(1) }}</a>
+            </li>
+          </ul>
+        </template>
       </div>
     </details>
   </figure>

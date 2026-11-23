@@ -12,8 +12,6 @@ icon: 'doc-colorPlatteNew'
 
 ### 如何引入
 
-ColorPicker 从 v2.64.0 开始支持
-
 <DemoBlock id="zh-CN-input-colorpicker-1" title="如何引入" kind="import" />
 
 ### 基本用法

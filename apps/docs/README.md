@@ -22,13 +22,13 @@
 - 可运行示例放在 `.vitepress/theme/demo/examples/`，文件名就是 `<DemoBlock id="…" kind="live" />` 的 ID；非运行示例源码在 `data/code-sources.json` 中维护。修改示例时保持 Markdown 引用与源码一致。
 - 站点样式与字体位于 `content/public/site/`，侧栏图标位于 `content/public/doc-icons/`，其余演示资源位于 `content/public/demos/`。历史素材的来源与许可见 [第三方归属](THIRD_PARTY.md)。
 
-`content/public/search-index.json`、`.vitepress/theme/generated/nav.json`、`cache/` 和 `dist/` 是可再生的忽略产物。`pnpm --filter @workspace/docs clean` 只清理这些产物，不删除正文或静态资源。
+`content/public/search-index.json`、`content/public/example-files/`、`.vitepress/theme/generated/`、`cache/` 和 `dist/` 是可再生的忽略产物。`pnpm --filter @workspace/docs clean` 可清理这些产物。示例的安装依赖、可下载辅助文件和 `/demos/` 资源引用由索引脚本从源码提取。
 
 ## 主题工作台入口
 
 品牌与排版编辑由独立的 [`apps/theme-studio`](../theme-studio/README.md) 提供，文档站只保留 API、使用说明、代码示例和外部入口，不导入工作台布局或状态。入口位于 `content/zh-CN/advanced/customize-theme.md`。
 
-本地先运行 `pnpm theme-studio:dev`，默认链接为 <http://localhost:4322/#/tokens>。部署时通过 `VITE_THEME_STUDIO_URL` 指定工作台的公开根地址，例如 `https://themes.example.com/`；该变量在文档站开发服务启动或生产构建时读取，修改后需重新启动或构建。工作台独立部署，不随 `docs:build` 构建，也不要求文档站服务作为运行依赖。
+本地运行 `pnpm theme-studio:dev` 后可直接访问 <http://localhost:4322/#/tokens>。部署时通过 `VITE_THEME_STUDIO_URL` 指定工作台的公开 HTTPS 根地址，例如 `https://themes.example.com/`。文档站仅在配置了可用的 HTTPS 地址时显示入口。该变量在开发服务启动或生产构建时读取，修改后需重新启动或构建。工作台独立部署，不随 `docs:build` 构建。
 
 ## 验收
 

@@ -12,7 +12,7 @@ Popover 气泡卡片是由用户自主打开的临时性浮层卡片，能够承
 
 和 Tooltip 的区别是，它可以承载更复杂的内容，而不仅仅是提示文本。
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/popover` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/popover` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -85,7 +85,7 @@ Popover content 支持传入函数，它的入参是一个对象，将 `initialF
 
 ### 搭配 Tooltip 或 Popconfirm 使用
 
-请参考[搭配使用](/zh-CN/show/tooltip#%E6%90%AD%E9%85%8D%20Popover%20%E6%88%96%20Popconfirm%20%E4%BD%BF%E7%94%A8)
+请参考[搭配使用](/zh-CN/show/tooltip#搭配-popover-或-popconfirm-使用)
 
 ## API 参考
 
@@ -125,11 +125,11 @@ Popover content 支持传入函数，它的入参是一个对象，将 `initialF
 | closeOnEsc           | 在 trigger 或 弹出层按 Esc 键是否关闭面板，受控时不生效                                                                                     | boolean                  | true                   | **2.8.0**  |
 | condition            | 是否允许 Popover 触发显示。仅当显式设置为 false 时，hover/click/focus 等触发行为不生效（trigger='custom' 场景不受影响）                     | boolean                  | true                   |            |
 | disableArrowKeyDown  | —                                                                                                                                           | boolean                  | —                      |            |
-| disableFocusListener | trigger为`hover`时，不响应键盘聚焦弹出浮层事件，详见[issue#977](https://github.com/aifuxi/semi-ui-vue/issues/977)                           | boolean                  | true                   | **2.17.0** |
+| disableFocusListener | trigger为`hover`时，不响应键盘聚焦弹出浮层事件，详见[issue#977](https://github.com/DouyinFE/semi-design/issues/977)                         | boolean                  | true                   | **2.17.0** |
 | getPopupContainer    | 指定父级 DOM，弹层将会渲染至该 DOM 中，自定义需要设置 `position: relative` 这会改变浮层 DOM 树位置，但不会改变视图渲染位置。                | () =&gt; HTMLElement     | () =&gt; document.body |            |
 | guardFocus           | 当焦点处于弹出层内时，切换 Tab 是否让焦点在弹出层内循环                                                                                     | boolean                  | true                   | **2.8.0**  |
 | keepDOM              | 关闭时是否保留内部组件不销毁                                                                                                                | boolean                  | false                  | **2.31.0** |
-| margin               | 弹出层计算溢出时的增加的冗余值，详见[issue#549](https://github.com/aifuxi/semi-ui-vue/issues/549)，作用同 Tooltip margin                    | number \| TooltipMargin  | —                      | **2.25.0** |
+| margin               | 弹出层计算溢出时的增加的冗余值，详见[issue#549](https://github.com/DouyinFE/semi-design/issues/549)，作用同 Tooltip margin                  | number \| TooltipMargin  | —                      | **2.25.0** |
 | motion               | —                                                                                                                                           | boolean                  | —                      |            |
 | mouseEnterDelay      | 鼠标移入后，延迟显示的时间，单位毫秒（仅当 trigger 为 hover/focus 时生效）                                                                  | number                   | 50                     |            |
 | mouseLeaveDelay      | 鼠标移出后，延迟消失的时间，单位毫秒（仅当 trigger 为 hover/focus 时生效）                                                                  | number                   | 50                     |            |
@@ -189,4 +189,4 @@ Popover content 支持传入函数，它的入参是一个对象，将 `initialF
 若触发元素根节点的宽高并未覆盖全部可见内容，则位置可能有出入。例如设置了 prefix、suffix 的 Input，Popover位置仍是相对于不包含前缀部分的 input 框进行定位，此时只要在 Input 外层再套一个 div 就能解决问题。
 
 - **为什么 Popover 浮层卡片在靠近屏幕边界宽度不够时，丢失宽度意外换行?**
-  在 chromium 104 后 对于屏幕边界文本宽度不够时的换行渲染策略发生变化，详细原因可查看 [issue #1022](https://github.com/aifuxi/semi-ui-vue/issues/1022)，semi侧已经在v2.17.0版本修复了这个问题。
+  在 chromium 104 后 对于屏幕边界文本宽度不够时的换行渲染策略发生变化，详细原因可查看 [issue #1022](https://github.com/DouyinFE/semi-design/issues/1022)，semi侧已经在v2.17.0版本修复了这个问题。

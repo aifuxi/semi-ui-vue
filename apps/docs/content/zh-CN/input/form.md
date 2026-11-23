@@ -31,7 +31,7 @@ Semi 将所有自带的输入控件（文本输入框、下拉选择、复选框
 Form 提供的 Field 级别组件，它的 value（或者 valueKey 指定的其他属性）、onChange（或 onKeyChangeFnName 指定的其他回调函数）
 属性都会被 Form 劫持，所以
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/form` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/form` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -121,7 +121,7 @@ Form 的默认插槽可以接收 `formState`、`formApi` 与 `values`，并返�
 ### wrapperCol / labelCol
 
 需要为 Form 内的所有 Field 设置统一的布局时，可以在 Form 上设置 wrapperCol 、labelCol 快速生成布局，无需手动使用 Row、Col 手动布局
-`wrapperCol`、`labelCol`属性配置参考[Col 组件](/zh-CN/basic/grid#Col)
+`wrapperCol`、`labelCol`属性配置参考[Col 组件](/zh-CN/basic/grid#col)
 
 <DemoBlock id="zh-CN-input-form-13" title="wrapperCol / labelCol" kind="live" />
 
@@ -142,8 +142,8 @@ Form 会自动为 Field 控件插入 Label。如果你不需要自动插入 Labe
 
 如果你需要 Form.Label、Form.ErrorMessage 模块自行组合使用，可以从 Form 中导出
 
-- Label 的 API 详见 [Label](#Form.Label)
-- ErrorMessage 的 API 详见 [ErrorMessage](#Form.ErrorMessage)
+- Label 的 API 详见 [Label](#form-label)
+- ErrorMessage 的 API 详见 [ErrorMessage](#form-errormessage)
 
 例如：当自带的 Label、ErrorMessage 布局不满足业务需求，需要自行组合位置，但又希望能直接使用 Label、ErrorMessage 的默认样式时
 
@@ -153,7 +153,7 @@ Form 会自动为 Field 控件插入 Label。如果你不需要自动插入 Labe
 
 当你的自定义组件，需要与 Field 组件保持同样的布局样式时，你可以通过 Form.Slot 放置你的自定义组件
 在 Form 组件上设置的 `labelWidth`、`labelAlign`、`wrapperCol`、`labelCol` 会自动作用在 Form.Slot 上
-Slot 属性配置详见[Form.Slot](#Form.Slot)
+Slot 属性配置详见[Form.Slot](#form-slot)
 
 <DemoBlock id="zh-CN-input-form-17" title="使用 Form.Slot 放置自定义组件" kind="live" />
 
@@ -176,7 +176,7 @@ Slot 属性配置详见[Form.Slot](#Form.Slot)
 当你需要将一些表单控件组合起来使用时，你可以用`Form.InputGroup`将其包裹起来
 当你给`Select`、`Input`等表单控件加上 field 属性时，`Form`会默认给每个 Field 控件自动插入`Label`
 而在`InputGroup`中一般仅需要一个属于整个 Group 的 Label，你可以在 InputGroup 中设置 label 属性，插入一个属于 Group 的`Label`
-`label`可配置属性详见[Label](#Form.Label)
+`label`可配置属性详见[Label](#form-label)
 
 <DemoBlock id="zh-CN-input-form-20" title="使用 InputGroup 组合多个 Field" kind="live" />
 
@@ -332,7 +332,7 @@ withField 主要做了以下事情
 - 负责在表单控件下方插入 Field 的``
 - 负责在表单控件下方插入 Field 的 extraText
 
-withFieldOption 具体配置可参考 [withField Option](#withFieldOption)
+withFieldOption 具体配置可参考 [withField Option](#withfieldoption)
 
 你的自定义受控组件需要做以下事情：
 
@@ -389,12 +389,12 @@ withFieldOption 具体配置可参考 [withField Option](#withFieldOption)
 | component             | 用于声明表单控件，不可与 `render` 或默认插槽同时使用                                                                                                                                                                           | Component                                             | —          |
 | disabled              | 统一应用在每个 Field 的 disabled 属性                                                                                                                                                                                          | boolean                                               | false      |
 | extraTextPosition     | 统一应用在每个 Field 上的extraTextPosition属性，控制extraText的显示位置，可选`middle`（垂直方向以Label、extraText、Field主体的顺序显示）、`bottom` (垂直方向以Label、Field主体、extraText的顺序显示)                           | 'middle' \| 'bottom'                                  | 'bottom'   |
-| form                  | 外部传入的 formApi 实例，可通过 `Form.useForm()` 创建。用于在 Form 外部控制表单状态。**&gt;=2.94.0**                                                                                                                           | FormApi&lt;Values&gt;                                 | —          |
+| form                  | 外部传入的 formApi 实例，可通过 `Form.useForm()` 创建。用于在 Form 外部控制表单状态。                                                                                                                                          | FormApi&lt;Values&gt;                                 | —          |
 | getFormApi            | form mounted 时会回调该函数，将 formAPI 作为参数传入。formApi 可用于修改 form 内部状态（值、校验状态、错误信息）                                                                                                               | (formApi: FormApi&lt;Values&gt;) =&gt; void           | —          |
 | id                    | —                                                                                                                                                                                                                              | string                                                | —          |
 | initValues            | 用于统一设置表单初始值（仅会在组件挂载时消费一次），例如{fieldA:'hello', fieldB:['arr1', 'arr2']}                                                                                                                              | Partial&lt;Values&gt;                                 | —          |
 | labelAlign            | 统一配置label 的 text-align 值                                                                                                                                                                                                 | FormLabelAlign                                        | 'left'     |
-| labelCol              | 统一应用在每个 Field 的 label 标签布局，同[Col 组件](/zh-CN/basic/grid#Col)，设置`span`、`offset`值，如{span: 6, offset: 2}                                                                                                    | ColProps                                              | —          |
+| labelCol              | 统一应用在每个 Field 的 label 标签布局，同[Col 组件](/zh-CN/basic/grid#col)，设置`span`、`offset`值，如{span: 6, offset: 2}                                                                                                    | ColProps                                              | —          |
 | labelPosition         | 统一配置Field 中 label 的位置，可选'top'、'left'、'inset'(inset 标签内嵌仅部分组件支持)                                                                                                                                        | FormLabelPosition                                     | 'top'      |
 | labelWidth            | 统一配置label 宽度                                                                                                                                                                                                             | number \| string                                      | —          |
 | layout                | Form 表单控件间的布局，目前支持水平(horizontal)、垂直(vertical)两种                                                                                                                                                            | FormLayout                                            | 'vertical' |
@@ -406,7 +406,7 @@ withFieldOption 具体配置可参考 [withField Option](#withFieldOption)
 | trigger               | 统一应用在每个 Field 的 trigger，使用说明详见 Field props中同名 API（v2.42后提供）                                                                                                                                             | FormTrigger \| FormTrigger[]                          | 'change'   |
 | validateFields        | Form 级别的自定义校验函数（已废弃，建议使用 validator；仍保持兼容）。submit 时或 formApi.validate 时会被调用（配置 Form 级别校验器后，Field 级别校验器在 submit 或 formApi.validate() 时不会再被触发）。支持同步校验、异步校验 | FormValidator&lt;Values&gt;                           | —          |
 | validator             | Form 级别的自定义校验函数（推荐，v2.97.0 后提供），submit 时或 formApi.validate 时会被调用（配置 Form 级别校验器后，Field 级别校验器在 submit 或 formApi.validate() 时不会再被触发）。支持同步校验、异步校验                   | FormValidator&lt;Values&gt;                           | —          |
-| wrapperCol            | 统一应用在每个 Field 上的布局，同[Col 组件](/zh-CN/basic/grid#Col)，设置`span`、`offset`值，如{span: 20, offset: 4}                                                                                                            | ColProps                                              | —          |
+| wrapperCol            | 统一应用在每个 Field 上的布局，同[Col 组件](/zh-CN/basic/grid#col)，设置`span`、`offset`值，如{span: 20, offset: 4}                                                                                                            | ColProps                                              | —          |
 
 ## FormState
 
@@ -424,8 +424,8 @@ FormState 存储了所有 Form 内部的状态值，包括各表单控件的值�
 - 通过调用 formApi.getFormState()，在 Form 外部也可以获取 formState
 - 通过 [默认插槽方式声明表单](#支持的其他写法)，formState 会作为参数注入
 - 通过 [render props 方式声明表单](#支持的其他写法)，formState 会作为参数注入
-- 通过 [useFormState](#useFormState) hook，Functional Component 访问父级 Form 的 formState，无需繁琐的引用传递
-- 通过 [withFormState](#HOC-withFormState) HOC
+- 通过 [useFormState](#useformstate) hook，Functional Component 访问父级 Form 的 formState，无需繁琐的引用传递
+- 通过 [withFormState](#hoc-withformstate) HOC
 
 ## FormApi
 
@@ -438,7 +438,7 @@ FormState 存储了所有 Form 内部的状态值，包括各表单控件的值�
 | getFormState  | 获取 FormState                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | formApi.getFormState()                                                                                                                                                                               |
 | submitForm    | 可手动触发 submit 提交操作                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | formApi.submitForm()                                                                                                                                                                                 |
 | reset         | 可手动对 form 进行重置                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | formApi.reset(fields?: Array )                                                                                                                                                                       |
-| validate      | 可手动触发对表单的校验，不传参时默认触发整全体Field的校验（配置Form级别校验器后，Field级别校验器在submit或formApi.validate()时不会再被触发），若想触发部分field的校验，将目标field数组传入即可 **v2.94.0 版本后支持静默校验**：传入 `{ silent: true }` 可在不触发 UI 更新（不显示错误提示、不设置 touched 状态）的情况下获取校验结果，也可通过 `{ fields: ['fieldA'], silent: true }` 对指定字段进行静默校验                                                                                                                                                                                    | formApi.validate() .then(values=>{}) .catch(errors=>{}) 或 formApi.validate(\['fieldA','fieldB'\]) 或 formApi.validate({ silent: true }) 或 formApi.validate({ fields: \['fieldA'\], silent: true }) |
+| validate      | 可手动触发对表单的校验，不传参时默认触发整全体Field的校验（配置Form级别校验器后，Field级别校验器在submit或formApi.validate()时不会再被触发），若想触发部分field的校验，将目标field数组传入即可。静默校验时，传入 `{ silent: true }` 可在不触发 UI 更新（不显示错误提示、不设置 touched 状态）的情况下获取校验结果，也可通过 `{ fields: ['fieldA'], silent: true }` 对指定字段进行静默校验                                                                                                                                                                                                       | formApi.validate() .then(values=>{}) .catch(errors=>{}) 或 formApi.validate(\['fieldA','fieldB'\]) 或 formApi.validate({ silent: true }) 或 formApi.validate({ fields: \['fieldA'\], silent: true }) |
 | setValues     | 设置整个表单的值。第二个参数中的 isOverride 默认为 false **isOverride 为 false 时**：遍历 Form 中所有已注册的 field，从 `newValues` 中取对应字段的值更新到 `formState.values` 中。如果 `newValues` 中不包含某个已注册 field 的值，该字段会被设置为 undefined。 **isOverride 为 true 时**：直接用 `newValues` 整体替换 `formState.values`，包括 `newValues` 中存在但表单中没有对应 field 的额外 key 也会写入。 **推荐用法**：如果只需要更新部分字段，建议使用 `formApi.setValue(field, value)` 逐个更新，或者先获取当前值再合并：`formApi.setValues({ ...formApi.getValues(), name: newValue })` | formApi.setValues(newValues: object, { isOverride: boolean })                                                                                                                                        |
 | setValue      | 提供直接修改 formState.values 方法，与 setValues 的区别是它仅修改单个 field                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | formApi.setValue(field: string, newFieldValue: any)                                                                                                                                                  |
 | getValue      | 获取 单个 Field 的值                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | formApi.getValue() formApi.getValue(field: string)                                                                                                                                                   |
@@ -458,12 +458,12 @@ FormState 存储了所有 Form 内部的状态值，包括各表单控件的值�
 - 通过 ref 的方式获取 Form 组件实例，直接访问实例上的 formApi
 - 通过 [默认插槽方式声明表单](#支持的其他写法)，formApi 会作为参数注入
 - 通过 [render props 方式声明表单](#支持的其他写法)，formApi 会作为参数注入
-- 通过 [useFormApi](#useFormApi) hook
-- 通过 [withFormApi](#HOC-withFormApi) HOC
+- 通过 [useFormApi](#useformapi) hook
+- 通过 [withFormApi](#hoc-withformapi) HOC
 
 #### 使用 Form.useForm()
 
-`Form.useForm()` 用于在 Form 组件**外部创建** formApi 实例，适合需要在 Form 渲染前就控制表单的场景。它返回一个数组 `[formApi, formState, formValues]`。**>=2.94.0**
+`Form.useForm()` 用于在 Form 组件**外部创建** formApi 实例，适合需要在 Form 渲染前就控制表单的场景。它返回一个数组 `[formApi, formState, formValues]`。
 
 使用示例：
 
@@ -490,7 +490,7 @@ v1.30后可直接通过ref获取底层控件实例，例如给Form.Input、Form.
 | helpText              | 自定义提示信息，与校验信息公用同一区块展示，两者均有值时，优先展示校验信息                                                                                                                                                            | VNodeChild                     | —         |
 | initValue             | 该表单控件的初始值（仅在 Field mounted 时消费一次，后续更新无效），相比 Form 的 initValues 中的值，它的优先级更高                                                                                                                     | unknown                        | —         |
 | keepState             | 是否在 Field 卸载后保留其状态（value、error、touched）。为 true 时，Field 卸载后其值、校验信息、交互状态不会丢失，再次挂载时会自动恢复                                                                                                | boolean                        | false     |
-| label                 | 该表单控件的 label 标签文本，不传的时候默认与 field 同名, 传入 object 时会将其透传给 Form.Label，具体配置请参考[Label](#Form.Label)                                                                                                   | FormLabelProps \| VNodeChild   | —         |
+| label                 | 该表单控件的 label 标签文本，不传的时候默认与 field 同名, 传入 object 时会将其透传给 Form.Label，具体配置请参考[Label](#form-label)                                                                                                   | FormLabelProps \| VNodeChild   | —         |
 | labelAlign            | 该表单控件的 label 文本的 text-align。在Form与Field上同时传入时，以Field props为准                                                                                                                                                    | FormLabelAlign                 | —         |
 | labelCol              | —                                                                                                                                                                                                                                     | ColProps                       | —         |
 | labelPosition         | 该表单控件的 label 位置，可选'top'/'left'/'inset'。在Form与Field上同时传入时，以Field props为准                                                                                                                                       | FormLabelPosition              | —         |
@@ -569,7 +569,7 @@ v1.30后可直接通过ref获取底层控件实例，例如给Form.Input、Form.
 
 | 属性          | 说明                                                                                                                               | 类型                     |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
-| label         | slot 的[Label 配置](#Form.Label), 例如{ text: 'semi', align: 'left' }；也可以直接传入 string，Slot 内部会自动封装成合法 Label 格式 | object\|string           |
+| label         | slot 的[Label 配置](#form-label), 例如{ text: 'semi', align: 'left' }；也可以直接传入 string，Slot 内部会自动封装成合法 Label 格式 | object\|string           |
 | labelPosition | slot 的 label 位置，默认情况下继承自 Form props，也可单独覆盖。可选'top'、'left'                                                   | string                   |     |
 | className     | slot 样式类名                                                                                                                      | string                   |
 | style         | slot 内联样式                                                                                                                      | object                   |

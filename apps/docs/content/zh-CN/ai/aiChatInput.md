@@ -12,7 +12,7 @@ icon: 'doc-aiInput'
 
 `AIChatInput` 的富文本输入是基于 [tiptap](https://tiptap.dev/docs/editor/getting-started/overview) 实现，`tiptap` 是一款现代的富文本编辑器开发框架，支持 React、Vue 前端框架，具备极强的可定制性和扩展性。其组件化能力优秀，性能优良，内置多种常用拓展，并支持用户自定义节点、命令、插件与菜单，使复杂 AI 场景下的富文本输入能力能够灵活适配和扩展。Semi 的 `AIChatInput` 组件对 tiptap 进行了封装，开发者可开箱即用或按需按业务扩展。
 
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/ai-chat-input` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/ai-chat-input` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
@@ -24,7 +24,7 @@ icon: 'doc-aiInput'
 
 支持文本输入以及文件上传，使用时可按需配置以下参数：
 
-- `uploadProps` 配置文件上传相关的参数，详见 [UploadProps](/zh-CN/input/upload#API)
+- `uploadProps` 配置文件上传相关的参数，详见 [UploadProps](/zh-CN/input/upload#api-参考)
 - `upload-change` 事件获取文件上传变化
 - 删除上传文件时，会触发 `uploadProps.onRemove`，并遵循 `uploadProps.beforeRemove`（支持 Promise）
 - `placeholder` 输入框的占位符
@@ -308,11 +308,11 @@ AIChatInput 使用 [tiptap](https://tiptap.dev/docs/editor/getting-started/overv
 
 ### Configure.Button
 
-同 [ButtonProps](/zh-CN/basic/button#Button)
+同 [ButtonProps](/zh-CN/basic/button#button)
 
 ### Configure.RadioButton
 
-同 [RadioGroupProps](/zh-CN/input/radio#RadioGroup)
+同 [RadioGroupProps](/zh-CN/input/radio#radiogroup)
 
 ### Configure.Mcp
 

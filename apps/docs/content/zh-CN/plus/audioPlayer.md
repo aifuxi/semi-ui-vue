@@ -17,7 +17,7 @@ icon: 'doc-audioplayer'
 ### 基本用法
 
 基本使用，通过`audioUrl`传入音频地址
-audioUrl 可以传入字符串，字符串数组，对象，对象数组， 具体参数参考 [AudioPlayer](#AudioPlayer)
+audioUrl 可以传入字符串，字符串数组，对象，对象数组， 具体参数参考 [AudioPlayer](#audioplayer)
 
 <DemoBlock id="zh-CN-plus-audioPlayer-2" title="基本用法" kind="live" />
 

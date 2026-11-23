@@ -16,7 +16,7 @@ icon: 'doc-sidebar'
 
 ### 基础容器
 
-侧边信息栏的基础容器，基础容器是[MCP 配置](#mcp-配置)、[参考来源](#参考来源)、以及[侧边消息栏](#侧边消息栏)的基础容器。
+侧边信息栏的基础容器，基础容器是[MCP 配置](#mcp-配置)、[参考来源](#参考来源)、以及[侧边消息栏](#侧边信息栏)的基础容器。
 
 - `visible` 控制显示状态，`cancel` 事件处理关闭请求
 - `title`设置标题
@@ -35,7 +35,7 @@ icon: 'doc-sidebar'
 - 监听 `add-click` 事件处理自定义 MCP 页的新增操作
 - 通过 `configure-click` 监听内置 MCP 工具配置，通过 `edit-click` 监听自定义 MCP 工具配置
 
-其他 MCPConfigure 的 API 见 [MCPConfigureProps](#MCPConfigureProps)
+其他 MCPConfigure 的 API 见 [MCPConfigureProps](#mcpconfigure)
 
 传入 MCP 工具项的类型如下
 
@@ -234,7 +234,7 @@ icon: 'doc-sidebar'
 
 ### MCPConfigure
 
-支持 [Container](#Container) 的所有参数
+支持 [Container](#container) 的所有参数
 
 | 属性          | 说明                                                    | 类型                                                                    | 默认值 |
 | ------------- | ------------------------------------------------------- | ----------------------------------------------------------------------- | ------ |
@@ -272,7 +272,7 @@ icon: 'doc-sidebar'
 
 ### Annotation
 
-支持 [Container](#Container) 的所有参数
+支持 [Container](#container) 的所有参数
 
 | 属性         | 说明                                                    | 类型                                                 | 默认值 |
 | ------------ | ------------------------------------------------------- | ---------------------------------------------------- | ------ |

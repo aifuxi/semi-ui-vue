@@ -8,23 +8,13 @@ icon: 'doc-jsonviewer'
 
 ## 使用场景
 
-JsonViewer 组件可用于 JSON 数据的展示与编辑。
-Semi 重点参考了 [VS Code](https://github.com/microsoft/vscode)的 text-buffer 数据结构设计思路，复用了部分 utils与数据类型定义（Token解析，语言服务等），结合我们的功能/样式定制需求，实现了 JsonViewer 组件, 视觉上会与 Semi Design 体系内的其他组件更协调，对于特定数据类型的定制化渲染定制会更方便。
-相比于直接使用 MonacoEditor，Semi JsonViewer 在工程化构建上做了额外处理，使用更为简单，无需关注 Webpack插件、worker loader等复杂的配置。
-同时由于我们仅关注 Json 数据格式，更轻量化，在开箱即用的同时，拥有更小的体积**（📦 -96%）**，更极致的加载速度**（🚀 -53.5%）**，更少的内存占用**（⬇️ 71.6%）**。
-对于五百万行及以下的数据，均可以做到1s内完成数据加载与解析。
-详细的对比数据可查阅 [Performance](#Performance) 章节
+JsonViewer 用于展示和编辑 JSON，支持格式化、搜索替换和自定义渲染规则。批量展示大数据时，请使用实际数据量和目标浏览器测量加载及交互耗时。
 
-- 如果你仅需要对 Json 做预览/编辑，无需对更复杂的其他编程语言作修改，我们建议你选用 JsonViewer
-- 如果你还需要处理其他格式的数据/代码文件，完整的代码编辑器能力（语法高亮、代码补全、错误提示、复杂编辑等）是刚需，构建产物体积不是关注重点，我们建议你选用 Monaco Editor
-
-> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/json-viewer` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。
+> **Vue 使用说明**：从 `@aifuxi/semi-ui-vue/json-viewer` 子路径引入组件，浏览器构建会自动按需加载默认主题。本页 Vue API 与示例以当前公开实现为准。文中功能版本与 API 表的版本列记录 Semi Design 上游历史。
 
 ## 代码演示
 
 ### 如何引入
-
-JsonViewer 从 v2.71.0 开始支持
 
 <DemoBlock id="zh-CN-plus-jsonviewer-1" title="如何引入" kind="import" />
 
@@ -215,25 +205,3 @@ JsonViewer 内部编辑器保持非受控；`value` prop 更新时会重建编�
 | nextSearch(step?: number)                                                                 | 导航到下一个搜索结果，可选步长参数                     |
 | replace(replaceText: string)                                                              | 替换当前搜索匹配项                                     |
 | replaceAll(replaceText: string)                                                           | 替换所有搜索匹配项                                     |
-
-### Performance
-
-#### Bundle Size
-
-| 组件         | 体积      | 体积(Gzip) |
-| ------------ | --------- | ---------- |
-| JsonViewer   | 203.14kb  | 51.23kb    |
-| MonacoEditor | 5102.0 KB | 1322.7 KB  |
-
-#### 渲染不同量级数据耗时
-
-> 注：
->
-> - 测试数据生成方式详情可查阅 [url](https://github.com/aifuxi/semi-ui-vue/blob/main/apps/storybook-vue/src/stories/json-viewer.stories.ts)
-> - 当数据量级超出50w行时，MonacoEditor 默认关闭高亮等行为，数据对比不遵循单一变量原则
-
-| 组件         | 1k行    | 5k行    | 1w行    | 10w行   | 50w行    | 100w行   | 300w行   |
-| ------------ | ------- | ------- | ------- | ------- | -------- | -------- | -------- |
-| JsonViewer   | 30.42ms | 30.66ms | 36.87ms | 52.73ms | 111.02ms | 178.81ms | 506.25ms |
-| MonacoEditor | 72.01ms | 73.76ms | 76.64ms | 97.89ms | 133.31ms | 202.79ms | 495.53ms |
-| 性能提升     | 57.70%  | 58.41%  | 51.87%  | 46.11%  | -        | -        | -        |

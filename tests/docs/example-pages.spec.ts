@@ -86,14 +86,18 @@ test('静态代码示例展示 Vue 代码且不运行预览', async ({ page }) =
   const faq = page.locator('[data-demo-id="zh-CN-other-configprovider-6"]');
   await expect(faq.locator('code')).toContainText('固定保留 .semi-* / --semi-* 兼容契约');
   await expect(faq.locator('code')).not.toContainText('@douyinfe');
+  const globalDefaults = page.locator('[data-demo-id="zh-CN-other-configprovider-7"]');
+  await expect(globalDefaults.locator('code')).toContainText(
+    "import { semiGlobal } from '@aifuxi/semi-ui-vue/config-provider';",
+  );
 });
 
-// 主题交互迁入独立应用；指南继续展示静态代码和工作台入口。
+// 主题交互由独立应用提供，公共文档保留静态代码。
 test('通用指南保留静态代码并将主题交互交给独立工作台', async ({ page }) => {
   // 当前静态示例数量来自各指南的公开展示契约。
   const guides = [
     ['/zh-CN/start/getting-started', 4],
-    ['/zh-CN/experience/accessibility', 2],
+    ['/zh-CN/experience/accessibility', 1],
     ['/zh-CN/advanced/customize-theme', 0],
     ['/zh-CN/advanced/dark-mode', 5],
   ] as const;
@@ -109,12 +113,33 @@ test('通用指南保留静态代码并将主题交互交给独立工作台', as
       await expect(
         page.locator('.demo-block[data-demo-kind="live"] .demo-block-preview'),
       ).toHaveCount(0);
-      await expect(page.getByRole('link', { name: '打开主题工作台', exact: true })).toBeVisible();
     }
     expect((await examples.locator('code').allTextContents()).join('\n')).not.toMatch(
       /@douyinfe|\bReact(?:DOM)?\b/,
     );
   }
+});
+
+test('示例代码附带可从发布站点下载的依赖文件与资源', async ({ page, request }) => {
+  await page.goto('/zh-CN/input/upload');
+  const upload = page.locator('[data-demo-id="zh-CN-input-upload-2"]');
+  await upload.locator('summary').click();
+  await expect(upload.locator('samp')).toContainText(/pnpm add.*@aifuxi\/semi-icons-vue@/);
+  await expect(upload.getByRole('link', { name: 'zh-CN/zh-CN-input-upload-2.vue' })).toBeVisible();
+  const helper = upload.getByRole('link', { name: 'simulateUpload.ts', exact: true });
+  await expect(helper).toHaveAttribute('download', '');
+  const helperResponse = await request.get((await helper.getAttribute('href'))!);
+  expect(helperResponse.ok()).toBe(true);
+  expect(await helperResponse.text()).toContain('export function useUploadSimulation');
+
+  await page.goto('/zh-CN/show/cropper');
+  const cropper = page.locator('[data-demo-id="zh-CN-show-cropper-4"]');
+  await cropper.locator('summary').click();
+  const asset = cropper.getByRole('link', { name: 'demos/cropper-image.svg', exact: true });
+  await expect(asset).toHaveAttribute('download', '');
+  const imageResponse = await request.get((await asset.getAttribute('href'))!);
+  expect(imageResponse.ok()).toBe(true);
+  expect(await imageResponse.text()).toContain('<svg');
 });
 
 test('通用指南正文只描述当前 Vue 公开能力', async ({ page }) => {

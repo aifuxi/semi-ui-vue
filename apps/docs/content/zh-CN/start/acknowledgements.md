@@ -24,7 +24,7 @@ Semi Design 的名称、Logo、图标、插画及本站引用的官方素材，�
 
 项目自身代码及第三方内容继续遵循仓库现有的 MIT License 与第三方归属声明，本节不扩大或替代任何已有许可条款。
 
-站点中保留的上游样式、字体和图标的来源及许可记录见 [文档站第三方归属](https://github.com/aifuxi/semi-ui-vue/blob/main/apps/docs/THIRD_PARTY.md)；对应的 Semi Design MIT 许可文本也随站点资源保留。
+站点中保留的上游样式、字体和图标的来源及许可记录见 [文档站第三方归属](https://github.com/aifuxi/semi-ui-vue/blob/master/apps/docs/THIRD_PARTY.md)；对应的 Semi Design MIT 许可文本也随站点资源保留。
 
 ## 官方资源
 
