@@ -129,7 +129,7 @@ overrides:
   source-map-js@<1.2.2: 1.2.2
 
 patchedDependencies:
-  lottie-web@5.13.0: 365b720ef5aeb63de495b3969a71f8475df5c5f7b6d7991962549bf50efcdfaa
+  lottie-web@5.13.0: f0e5007ebd4de8101672b6fc69ed31192be788ed24fe49941a96a3cf88b0a5d9
 
 importers:
 
@@ -218,7 +218,7 @@ importers:
         version: 4.18.1
       lottie-web:
         specifier: 5.13.0
-        version: 5.13.0(patch_hash=365b720ef5aeb63de495b3969a71f8475df5c5f7b6d7991962549bf50efcdfaa)
+        version: 5.13.0(patch_hash=f0e5007ebd4de8101672b6fc69ed31192be788ed24fe49941a96a3cf88b0a5d9)
       prettier:
         specifier: 3.9.6
         version: 3.9.6
@@ -372,7 +372,7 @@ importers:
         version: 4.18.1
       lottie-web:
         specifier: 5.13.0
-        version: 5.13.0(patch_hash=365b720ef5aeb63de495b3969a71f8475df5c5f7b6d7991962549bf50efcdfaa)
+        version: 5.13.0(patch_hash=f0e5007ebd4de8101672b6fc69ed31192be788ed24fe49941a96a3cf88b0a5d9)
       normalize.css:
         specifier: 'catalog:'
         version: 8.0.1
@@ -507,7 +507,7 @@ importers:
         version: 3.3.1
       lottie-web:
         specifier: 5.13.0
-        version: 5.13.0(patch_hash=365b720ef5aeb63de495b3969a71f8475df5c5f7b6d7991962549bf50efcdfaa)
+        version: 5.13.0(patch_hash=f0e5007ebd4de8101672b6fc69ed31192be788ed24fe49941a96a3cf88b0a5d9)
       prismjs:
         specifier: 1.30.0
         version: 1.30.0
@@ -620,7 +620,7 @@ importers:
         version: 4.18.1
       lottie-web:
         specifier: 5.13.0
-        version: 5.13.0(patch_hash=365b720ef5aeb63de495b3969a71f8475df5c5f7b6d7991962549bf50efcdfaa)
+        version: 5.13.0(patch_hash=f0e5007ebd4de8101672b6fc69ed31192be788ed24fe49941a96a3cf88b0a5d9)
       markdown-it:
         specifier: 14.3.3
         version: 14.3.3
@@ -10098,7 +10098,7 @@ snapshots:
     dependencies:
       js-tokens: 3.0.0
 
-  lottie-web@5.13.0(patch_hash=365b720ef5aeb63de495b3969a71f8475df5c5f7b6d7991962549bf50efcdfaa): {}
+  lottie-web@5.13.0(patch_hash=f0e5007ebd4de8101672b6fc69ed31192be788ed24fe49941a96a3cf88b0a5d9): {}
 
   loupe@3.2.1: {}
 

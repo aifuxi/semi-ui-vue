@@ -17,7 +17,7 @@ function createPlayerEnvironment() {
     /** 播放器导入时只使用透明像素探测，不模拟动画逻辑。 */
     () => ({ fillRect: vi.fn() }),
   );
-  /** 模拟测试环境中 Node 全局计时器与 jsdom window 计时器并存。 */
+  /** 模拟 Node 全局计时器与原生 jsdom window 计时器并存。 */
   const globals = {
     window: dom.window,
     document: dom.window.document,
@@ -45,6 +45,24 @@ it.each(['loading', 'complete'])('真实 Lottie 导入后立即销毁 %s 文档�
       /** 销毁后再执行原轮询周期，直接验证不存在越界回调。 */
       () => vi.advanceTimersByTime(100),
     ).not.toThrow();
+    expect(vi.getTimerCount()).toBe(0);
+  } finally {
+    dom.window.close();
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  }
+});
+
+it('真实 Lottie 在文档被替换后释放轮询，不扫描新文档', () => {
+  vi.useFakeTimers();
+  const { dom, globals } = createPlayerEnvironment();
+  try {
+    const replacement = dom.window.document.implementation.createHTMLDocument();
+    vi.spyOn(replacement, 'readyState', 'get').mockReturnValue('complete');
+    const scan = vi.spyOn(replacement, 'getElementsByClassName');
+    globals.document = replacement;
+    vi.advanceTimersByTime(100);
+    expect(scan).not.toHaveBeenCalled();
     expect(vi.getTimerCount()).toBe(0);
   } finally {
     dom.window.close();

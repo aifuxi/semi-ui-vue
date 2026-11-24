@@ -1,26 +1,39 @@
 diff --git a/build/player/lottie.js b/build/player/lottie.js
-index ecaaf2d0022c4d8f9d5bd2cfe8e948669eb9f5f3..db3754a3410219c3d246880d092bcec79ebe0a95 100644
+index ecaaf2d0022c4d8f9d5bd2cfe8e948669eb9f5f3..401daba31690c7e9e2c3d4d821aab5568323faa7 100644
 --- a/build/player/lottie.js
 +++ b/build/player/lottie.js
-@@ -4437,9 +4437,10 @@
+@@ -4437,11 +4437,20 @@
    lottie.setIDPrefix = setPrefix;
    lottie.__getFactory = getFactory;
    lottie.version = '5.13.0';
-+  // 文档完成后停止所属窗口的轮询，再执行上游动画自动发现。
-   function checkReady() {
-     if (document.readyState === 'complete') {
+-  function checkReady() {
+-    if (document.readyState === 'complete') {
 -      clearInterval(readyStateCheckInterval);
-+      window.clearInterval(readyStateCheckInterval);
-       searchAnimations();
-     }
+-      searchAnimations();
+-    }
++  function startReadyStateCheck() {
++    // Vitest 的 Node 计时器可能在原文档和全局 window 被撤下后继续执行。
++    var readyStateDocument = document;
++    var clearReadyStateInterval = window.clearInterval.bind(window);
++    var readyStateCheckInterval = window.setInterval(function checkReady() {
++      if (typeof document === 'undefined' || document !== readyStateDocument) {
++        clearReadyStateInterval(readyStateCheckInterval);
++        return;
++      }
++      if (readyStateDocument.readyState === 'complete') {
++        clearReadyStateInterval(readyStateCheckInterval);
++        searchAnimations();
++      }
++    }, 100);
    }
-@@ -4464,7 +4465,8 @@
+   function getQueryVariable(variable) {
+     var vars = queryString.split('&');
+@@ -4464,7 +4473,7 @@
      queryString = myScript.src ? myScript.src.replace(/^[^\?]+\??/, '') : ''; // eslint-disable-line no-useless-escape
      renderer = getQueryVariable('renderer');
    }
 -  var readyStateCheckInterval = setInterval(checkReady, 100);
-+  // 保留上游 100 ms 就绪检查；窗口销毁时由窗口释放，避免 jsdom 退出后 Node 计时器访问 document。
-+  var readyStateCheckInterval = window.setInterval(checkReady, 100);
++  startReadyStateCheck();
  
    // this adds bodymovin to the window object for backwards compatibility
    try {

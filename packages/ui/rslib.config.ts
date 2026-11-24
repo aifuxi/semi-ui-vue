@@ -280,7 +280,13 @@ export default defineConfig({
       },
     },
   },
-  performance: { printFileSize: { detail: false } },
+  performance: {
+    // workspace 补丁会改变内联依赖，即使 UI 的 manifest 保持原样。
+    buildCache: {
+      buildDependencies: [fileURLToPath(new URL('../../pnpm-lock.yaml', import.meta.url))],
+    },
+    printFileSize: { detail: false },
+  },
   output: {
     target: 'web',
     autoExternal: { dependencies: false, optionalDependencies: false, peerDependencies: false },
