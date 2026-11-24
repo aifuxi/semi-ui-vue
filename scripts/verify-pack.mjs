@@ -35,11 +35,12 @@ if (localeSourceNames.length !== 57) {
   throw new Error(`公开 Locale 源码数量错误：${localeSourceNames.length}`);
 }
 
-function run(command, args, cwd) {
+function run(command, args, cwd, timeout) {
   return execFileSync(command, args, {
     cwd,
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
+    timeout,
   }).trim();
 }
 
@@ -1219,6 +1220,16 @@ h(Button, { type, htmlType: 'submit' });
       consumerRoot,
     );
   }
+  run(
+    process.execPath,
+    [
+      '--experimental-import-meta-resolve',
+      fileURLToPath(new URL('./fixtures/checkbox-vitest-teardown.mjs', import.meta.url)),
+      consumerRoot,
+    ],
+    consumerRoot,
+    15_000,
+  );
   await verifyUiTreeshaking(consumerRoot);
   process.stdout.write(
     '真实 tarball 的安装、exports、ESM、类型、样式、SSR import 与 tree-shaking 均通过\n',

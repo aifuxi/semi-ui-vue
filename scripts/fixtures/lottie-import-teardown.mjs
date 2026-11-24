@@ -10,7 +10,7 @@ const parentUrl = pathToFileURL(path.join(process.argv[2], 'package.json')).href
 const entry = import.meta.resolve(process.argv[3], parentUrl);
 /** Node 虚拟时钟直接跨过固定播放器的 100 ms 轮询点，无需真实等待。 */
 mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
-/** 与 Vitest 一样并存 Node 计时器和由 jsdom 管理的 window 计时器。 */
+/** 此处使用原生 jsdom 窗口，计时器随该窗口关闭。 */
 const dom = new JSDOM();
 Object.defineProperty(dom.window.document, 'readyState', { value: 'loading' });
 /** 仅补齐 jsdom 不支持的透明像素探测，不替换播放器。 */

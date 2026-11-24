@@ -86,10 +86,9 @@ ConfigProvider 的 `overrideDefaultProps.Lottie` 位于显式 prop 与缺省值�
 
 ## Deviation
 
-- `lottie-web@5.13.0` 的公开 main 入口通过 pnpm patch 将就绪轮询的创建与清理绑定到
-  `window`，保持固定基线的 100 ms 周期和完成后扫描语义。浏览器与 Node 全局计时器
-  并存的 jsdom 环境中，窗口销毁会释放轮询，避免组件库根入口导入后遗留回调。
-  修复内联到 UI 发布产物，消费者不需要配置 pnpm patch；固定 vendor 不修改。
+- `lottie-web@5.13.0` 的公开 main 入口通过 pnpm patch 使用创建时的窗口计时器，
+  保留 100 ms 周期和文档完成后扫描语义。Vitest 把 `window` 映射到 Node 全局时，
+  剩余回调会在原文档被移除或替换后清除轮询。补丁随 UI 发布产物内联。
 - 无未解释的视觉、行为、生命周期或公开 API 差异。
 - Vue 原生 `class`、`style` 与非 prop attrs 只在内部容器模式下合并；外部容器模式仍
   与固定 React Adapter 一致不转移这些属性。该映射只补充 Vue 原生写法，不改变
@@ -107,6 +106,8 @@ ConfigProvider 的 `overrideDefaultProps.Lottie` 位于显式 prop 与缺省值�
   computed style、几何、确定帧截图、实例控制与 params 重建行为。
 - 发布：根/子路径 default/named 运行时与声明、空样式入口、真实 tarball consumer、许可证/SBOM、
   source-boundary 与 tree-shaking/SSR-safe import。
+- 导入退出：`verify:pack-dist` 和发布门禁在独立进程中使用 Vitest 的 jsdom 环境导入
+  真实 tarball 的 Checkbox 子路径，再立即销毁环境，验证进程能正常退出。
 
 ## 完成证据
 
