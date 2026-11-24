@@ -174,8 +174,9 @@ jobs:
           artifact-ids: ${{ steps.pack.outputs.pack-dir-artifact-id || needs.select-mode.outputs.original-pack }}
           path: verified-pack
           merge-multiple: true
-          github-token: ${{ github.token }}
-          run-id: ${{ inputs.recover-run-id || github.run_id }}
+          # 同次运行使用 Actions 内部产物通道，避免新产物尚未同步到 REST。
+          github-token: ${{ github.event_name == 'workflow_dispatch' && github.token || '' }}
+          run-id: ${{ inputs.recover-run-id }}
       - uses: actions/download-artifact@v4
         if: github.event_name == 'workflow_dispatch'
         with:
@@ -253,8 +254,8 @@ jobs:
           artifact-ids: ${{ needs.pack-verify.outputs.original-pack }}
           path: verified-pack
           merge-multiple: true
-          github-token: ${{ github.token }}
-          run-id: ${{ inputs.recover-run-id || github.run_id }}
+          github-token: ${{ github.event_name == 'workflow_dispatch' && github.token || '' }}
+          run-id: ${{ inputs.recover-run-id }}
       - run: mise exec -- node scripts/release-evidence.mjs guard verified-pack evidence/release-evidence.json
       - uses: changesets/action/publish@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
