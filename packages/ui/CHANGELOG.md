@@ -1,5 +1,16 @@
 # @aifuxi/semi-ui-vue
 
+## 2.2.6
+
+### Patch Changes
+
+- [#60](https://github.com/aifuxi/semi-ui-vue/pull/60) [`a38f437`](https://github.com/aifuxi/semi-ui-vue/commit/a38f4376d37e5a969b04e95fcddff474565842fd) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复在 Vitest/jsdom 中导入 Checkbox 后立即销毁测试环境时，Lottie 就绪轮询访问已释放的 document 并抛出未捕获异常的问题。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.2.6
+  - @aifuxi/semi-icons-lab-vue@2.2.6
+  - @aifuxi/semi-illustrations-vue@2.2.6
+  - @aifuxi/semi-theme-default@2.2.6
+
 ## 2.2.5
 
 ### Patch Changes
