@@ -1,5 +1,16 @@
 # @aifuxi/semi-ui-vue
 
+## 2.2.10
+
+### Patch Changes
+
+- [#71](https://github.com/aifuxi/semi-ui-vue/pull/71) [`8fa600f`](https://github.com/aifuxi/semi-ui-vue/commit/8fa600f31bd234e3d23934ffb3273276fac745bc) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复纵向滚动条占宽时，Table 固定表头与正文横滚到边界出现错位的问题。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.2.10
+  - @aifuxi/semi-icons-lab-vue@2.2.10
+  - @aifuxi/semi-illustrations-vue@2.2.10
+  - @aifuxi/semi-theme-default@2.2.10
+
 ## 2.2.9
 
 ### Patch Changes
