@@ -1,5 +1,5 @@
 /* eslint-disable vue/one-component-per-file */
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, inject, nextTick, onMounted, shallowRef } from 'vue';
 
@@ -129,6 +129,11 @@ describe('ConfigProvider', () => {
   });
 
   it('统一 locale 注入可驱动 Typography，并响应 locale prop 变化', async () => {
+    const writeText = vi
+      .fn()
+      .mockRejectedValueOnce(new DOMException('Clipboard access denied', 'NotAllowedError'))
+      .mockResolvedValueOnce(undefined);
+    vi.stubGlobal('navigator', { clipboard: { writeText } });
     const english: SemiLocale = {
       code: 'en-US',
       Typography: { copy: 'Copy', copied: 'Copied', expand: 'Expand', collapse: 'Collapse' },
@@ -139,6 +144,11 @@ describe('ConfigProvider', () => {
     });
     expect(wrapper.get('[role="button"]').attributes('aria-label')).toBe('copy');
     await wrapper.get('[role="button"]').trigger('keydown', { key: 'Enter' });
+    await flushPromises();
+    expect(wrapper.get('[role="status"]').text()).toBe('Copy failed');
+
+    await wrapper.get('[role="button"]').trigger('keydown', { key: 'Enter' });
+    await flushPromises();
     expect(wrapper.text()).toContain('Copied');
 
     await wrapper.setProps({

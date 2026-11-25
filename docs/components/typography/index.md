@@ -53,6 +53,8 @@ const { Title, Text, Paragraph, Numeral } = Typography;
 
 可用 `copyIcon` 和 `copied` slots 自定义复制前后节点；`copyIcon` scoped slot 提供 `copy` 与 `copied`。
 
+`copyable.onCopy` 和 `@copy` 在写入结果确定后收到布尔结果。失败时，默认渲染显示「复制失败」并保留原复制入口，可立即重试。可通过 `locale.Typography.copyFailed` 自定义失败文案。
+
 ## 截断
 
 ```vue

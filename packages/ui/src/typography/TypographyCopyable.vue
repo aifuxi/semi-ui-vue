@@ -2,9 +2,14 @@
 import { IconCopy, IconTick } from '@aifuxi/semi-icons-vue';
 import { cloneVNode, computed, inject, isVNode, onBeforeUnmount, shallowRef, unref } from 'vue';
 
+import { configContextKey } from '../config-provider/config-context';
 import Tooltip from '../tooltip/Tooltip.vue';
 import TypographyNodeRenderer from './TypographyNodeRenderer';
-import { DEFAULT_TYPOGRAPHY_LOCALE, typographyLocaleKey } from './typography-locale';
+import {
+  DEFAULT_TYPOGRAPHY_LOCALE,
+  EN_US_TYPOGRAPHY_LOCALE,
+  typographyLocaleKey,
+} from './typography-locale';
 import type { TypographyCopyableConfig } from './types';
 
 const props = defineProps<{ config: TypographyCopyableConfig; content: string }>();
@@ -17,13 +22,23 @@ defineSlots<{
 }>();
 
 const injectedLocale = inject(typographyLocaleKey, DEFAULT_TYPOGRAPHY_LOCALE);
+const configContext = inject(configContextKey, undefined);
 const locale = computed(() => unref(injectedLocale));
-const copied = shallowRef(false);
+const copyResult = shallowRef<boolean | null>(null);
+const copied = computed(() => copyResult.value === true);
 let resetTimer: ReturnType<typeof setTimeout> | undefined;
+let latestAttempt = 0;
+let unmounted = false;
 const classes = computed(() =>
   copied.value ? 'semi-typography-action-copied' : 'semi-typography-action-copy',
 );
 const copyTip = computed(() => props.config.copyTip ?? locale.value.copy);
+const copyFailedTip = computed(() => {
+  const code = configContext?.value.locale.code;
+  const fallback =
+    code && !code.startsWith('zh') ? EN_US_TYPOGRAPHY_LOCALE : DEFAULT_TYPOGRAPHY_LOCALE;
+  return locale.value.copyFailed ?? fallback.copyFailed;
+});
 const customIcon = computed(() => {
   const icon = props.config.icon;
   if (!isVNode(icon)) return icon;
@@ -35,49 +50,64 @@ const customIcon = computed(() => {
   });
 });
 
-function writeToClipboard(content: string): boolean {
-  if (typeof document === 'undefined') return false;
+function copyWithExecCommand(content: string): boolean {
+  if (typeof document === 'undefined' || typeof document.execCommand !== 'function') return false;
+  const focusedElement = document.activeElement;
   const textarea = document.createElement('textarea');
   textarea.value = content;
   textarea.setAttribute('readonly', '');
   textarea.style.position = 'fixed';
   textarea.style.opacity = '0';
   document.body.append(textarea);
-  textarea.select();
-  let result: boolean;
   try {
-    result = typeof document.execCommand === 'function' && document.execCommand('copy');
+    textarea.select();
+    return document.execCommand('copy');
   } catch {
-    result = false;
+    return false;
+  } finally {
+    textarea.remove();
+    if (focusedElement instanceof HTMLElement && document.activeElement !== focusedElement) {
+      focusedElement.focus({ preventScroll: true });
+    }
   }
-  textarea.remove();
-  if (!result && typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
-    void navigator.clipboard.writeText(content);
-    result = true;
-  }
-  return result;
 }
 
-function copy(event: MouseEvent | KeyboardEvent): void {
-  const result = writeToClipboard(props.content);
-  props.config.onCopy?.(event, props.content, result);
-  emit('copy', event, props.content, result);
-  copied.value = true;
+async function copyWithClipboard(content: string): Promise<boolean> {
+  try {
+    if (typeof navigator === 'undefined' || !navigator.clipboard) return false;
+    await navigator.clipboard.writeText(content);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function copy(event: MouseEvent | KeyboardEvent): Promise<void> {
+  const attempt = ++latestAttempt;
+  const { content } = props;
+  const result = copyWithExecCommand(content) || (await copyWithClipboard(content));
+  if (unmounted) return;
+  props.config.onCopy?.(event, content, result);
+  emit('copy', event, content, result);
+  // 并发写入仍逐次报告结果，提示只跟随最近一次操作。
+  if (unmounted || attempt !== latestAttempt) return;
+  copyResult.value = result;
   if (resetTimer) clearTimeout(resetTimer);
   resetTimer = setTimeout(
     () => {
-      copied.value = false;
+      copyResult.value = null;
       resetTimer = undefined;
     },
     (props.config.duration ?? 3) * 1000,
   );
 }
 
-function onKeydown(event: KeyboardEvent): void {
-  if (event.key === 'Enter') copy(event);
+function onKeydown(event: KeyboardEvent): Promise<void> | undefined {
+  if (event.key === 'Enter') return copy(event);
 }
 
 onBeforeUnmount(() => {
+  unmounted = true;
   if (resetTimer) clearTimeout(resetTimer);
 });
 
@@ -112,5 +142,8 @@ defineExpose({ copy, copied });
         </slot>
       </a>
     </Tooltip>
+    <span role="status" :style="copyResult === false ? { marginInlineStart: '4px' } : undefined">
+      {{ copyResult === false ? copyFailedTip : '' }}
+    </span>
   </span>
 </template>

@@ -189,6 +189,43 @@ describe('Typography', () => {
     expect(wrapper.find('.semi-typography-action-copy').exists()).toBe(true);
   });
 
+  it('copyable 等待剪贴板写入，拒绝后报告失败并允许重试', async () => {
+    vi.mocked(document.execCommand).mockReturnValue(false);
+    let rejectWrite!: (error: DOMException) => void;
+    const pendingWrite = new Promise<void>((_resolve, reject) => {
+      rejectWrite = reject;
+    });
+    const writeText = vi.fn().mockReturnValueOnce(pendingWrite).mockResolvedValueOnce(undefined);
+    vi.stubGlobal('navigator', { clipboard: { writeText } });
+    const onCopy = vi.fn();
+    const wrapper = mount(Typography.Text, {
+      props: { copyable: { onCopy } },
+      slots: { default: 'Copy fixture' },
+    });
+
+    await wrapper.get('[role="button"]').trigger('click');
+    expect(writeText).toHaveBeenCalledExactlyOnceWith('Copy fixture');
+    expect(onCopy).not.toHaveBeenCalled();
+    expect(wrapper.emitted('copy')).toBeUndefined();
+    expect(wrapper.text()).not.toContain('复制成功');
+
+    rejectWrite(new DOMException('Clipboard access denied', 'NotAllowedError'));
+    await flushPromises();
+    expect(onCopy).toHaveBeenCalledExactlyOnceWith(expect.any(MouseEvent), 'Copy fixture', false);
+    expect(wrapper.emitted('copy')?.[0]?.slice(1)).toEqual(['Copy fixture', false]);
+    expect(wrapper.get('[role="status"]').text()).toBe('复制失败');
+    expect(wrapper.text()).not.toContain('复制成功');
+
+    await wrapper.get('[role="button"]').trigger('keydown', { key: 'Enter' });
+    await flushPromises();
+    expect(writeText).toHaveBeenCalledTimes(2);
+    expect(onCopy).toHaveBeenLastCalledWith(expect.any(KeyboardEvent), 'Copy fixture', true);
+    expect(wrapper.emitted('copy')?.[1]?.slice(1)).toEqual(['Copy fixture', true]);
+    expect(wrapper.text()).toContain('复制成功');
+    expect(wrapper.text()).not.toContain('复制失败');
+    wrapper.unmount();
+  });
+
   it('copyable 自定义 icon prop 与 copyIcon slot 保持可键盘触发', async () => {
     const customIcon = mount(Text, {
       props: { copyable: { icon: h('span', { class: 'custom-copy-icon' }, 'C') } },
