@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.7
+
+No changes in this release.
+
 ## 2.2.6
 
 No changes in this release.
