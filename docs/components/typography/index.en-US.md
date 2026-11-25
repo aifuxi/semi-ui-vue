@@ -35,6 +35,8 @@ The compound members are also available through `Typography.Title`, `.Text`, `.P
 </Paragraph>
 ```
 
+`copyable.onCopy` and `@copy` receive the boolean result once the clipboard write settles. On failure, the default rendering shows a failure message and leaves the copy control available for retry. Set `locale.Typography.copyFailed` to customize the message.
+
 Simple end ellipsis uses CSS. Middle ellipsis, expandable content, suffixes, and copyable text use measured JavaScript truncation. As in v2.102.0, ellipsis is supported for plain text.
 
 ## Numeral

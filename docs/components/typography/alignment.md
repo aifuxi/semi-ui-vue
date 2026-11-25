@@ -17,7 +17,7 @@
 - `Typography.vue` 是默认 `article` 的无状态聚合根。
 - `Title.vue`、`Text.vue`、`Paragraph.vue`、`Numeral.vue` 只负责各自默认标签和专属 props。
 - `TypographyBase.vue` 统一装饰顺序、尺寸继承、link、copyable、CSS/JS ellipsis、Tooltip/Popover 和 attrs。
-- `TypographyCopyable.vue` 管理复制、键盘触发、成功状态与计时器清理。
+- `TypographyCopyable.vue` 管理复制、键盘触发、结果反馈与计时器清理。
 - `typography-utils.ts` 负责 VNode 文本提取、递归数值格式化和 Chromium 测量截断。
 - `packages/foundation-integration/src/typography.js` 是固定 `FormatNumeral` 的唯一运行时入口；发布构建会将逻辑内联。
 
@@ -53,11 +53,11 @@
 
 ## 状态、事件与运行环境
 
-- copy 点击或 Enter：写入剪贴板 → 调用配置 `onCopy` → 发出 Vue `copy(event, content, result)` → 进入 copied 状态；默认 3 秒复位，卸载时清理计时器。
+- copy 点击或 Enter 后，等待剪贴板结果，依次调用 `onCopy` 和发出 Vue `copy(event, content, result)`。固定 React 版在写入失败时也进入成功状态，Vue 版按实际结果显示反馈。失败时保留入口和键盘焦点，可立即重试。提示默认 3 秒复位，卸载时清理计时器。
 - expand 点击或 Enter：先调用配置 `onExpand(next, event)`，再发出 Vue `expand(next, event)`，最后更新展开状态。
 - CSS ellipsis 用 Range/scroll 几何判断溢出；JS ellipsis 使用与固定源码一致的隐藏测量容器和二分截断。
 - ResizeObserver 同时观察根与父元素宽度，卸载时 disconnect；SSR import/render 不访问 DOM、window、navigator 或 ResizeObserver。
-- 默认 Typography locale 为 zh-CN；同一注入键提供 en-US 文案，并为后续 ConfigProvider/Locale 复用。全部 Locale 的公开导出与完整性仍由 Locale 垂直切片统一交付，不在本组件复制 57 份上游数据。
+- 默认 Typography locale 为 zh-CN，同一注入键提供 en-US 文案。已有 locale 可以通过可选的 `copyFailed` 覆盖失败文案。未提供时，中文和未指定语言默认用中文，其他已指定语言回退到英文。
 
 ## 验收矩阵
 

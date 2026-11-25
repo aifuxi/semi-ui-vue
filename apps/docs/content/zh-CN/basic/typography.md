@@ -78,6 +78,8 @@ Numeral 组件在Text组件的基础上，添加了属性: `rule`, `precision`, 
 当 copyable 配置为对象时，可通过 `copyable.content` 指定复制内容；默认插槽可使用任意 VNode，但 `copyable.content` 仍须为 string。
 可以通过 `copyable.render` 属性，自定义复制按钮的渲染逻辑
 
+`copyable.onCopy` 和 `@copy` 会在剪贴板写入结果确定后收到布尔结果。默认复制入口在失败时显示「复制失败」并允许立即重试。可通过 `locale.Typography.copyFailed` 自定义失败文案。
+
 <DemoBlock id="zh-CN-basic-typography-9" title="可复制文本" kind="live" />
 
 ### 省略文本

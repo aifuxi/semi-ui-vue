@@ -43,6 +43,7 @@ export type TypographyLink = boolean | Record<string, unknown>;
 export interface TypographyLocale {
   copy: string;
   copied: string;
+  copyFailed?: string;
   expand: string;
   collapse: string;
 }

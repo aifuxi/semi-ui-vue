@@ -6,6 +6,7 @@ import {
   REFERENCE_SOURCE_PATHS,
 } from '../../../packages/test-infra/src';
 import {
+  createVueScenarioUrl,
   expectComparableTarget,
   expectScreenshotPixelsToMatch,
   openParityPages,
@@ -43,6 +44,45 @@ test('Typography 参考场景来自本地 v2.102.0 公开源码并保留 DOM 契
   await expect(scenario.locator('[data-parity-target="typography-numeral"]')).toHaveText(
     '1.50 KiB',
   );
+  expect(runtimeErrors).toEqual([]);
+});
+
+test('Typography 剪贴板拒绝写入后显示失败并保留键盘重试入口', async ({ page }) => {
+  const runtimeErrors: string[] = [];
+  page.on('pageerror', (error) => runtimeErrors.push(error.message));
+  await page.addInitScript(() => {
+    let firstWrite = true;
+    Object.defineProperty(document, 'execCommand', { value: () => false });
+    Object.defineProperty(navigator, 'clipboard', {
+      value: {
+        async writeText() {
+          if (firstWrite) {
+            firstWrite = false;
+            throw new DOMException('Clipboard access denied', 'NotAllowedError');
+          }
+        },
+      },
+    });
+  });
+  await page.goto(
+    createVueScenarioUrl({
+      scenarioId: 'typography',
+      theme: 'light',
+      direction: 'ltr',
+      locale: 'zh-CN',
+    }),
+  );
+  const copyable = page.locator('[data-parity-target="typography-copyable"]');
+  const copy = copyable.getByRole('button');
+
+  await copy.press('Enter');
+  await expect(copyable.getByRole('status')).toHaveText('复制失败');
+  await expect(copyable).not.toContainText('复制成功');
+  await expect(copy).toBeFocused();
+
+  await page.keyboard.press('Enter');
+  await expect(copyable).toContainText('复制成功');
+  await expect(copyable).not.toContainText('复制失败');
   expect(runtimeErrors).toEqual([]);
 });
 
