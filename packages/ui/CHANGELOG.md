@@ -1,5 +1,16 @@
 # @aifuxi/semi-ui-vue
 
+## 2.2.9
+
+### Patch Changes
+
+- [#69](https://github.com/aifuxi/semi-ui-vue/pull/69) [`66de6d7`](https://github.com/aifuxi/semi-ui-vue/commit/66de6d7bfdcc4038db2a776a0398a78429519884) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复用 Enter 或空格展开 Dropdown 时的重复点击，避免误执行菜单首项或立即关闭菜单。Tag 触发器的 Enter 仅处理一次，文本输入触发器保留空格输入和表单提交。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.2.9
+  - @aifuxi/semi-icons-lab-vue@2.2.9
+  - @aifuxi/semi-illustrations-vue@2.2.9
+  - @aifuxi/semi-theme-default@2.2.9
+
 ## 2.2.8
 
 ### Patch Changes
