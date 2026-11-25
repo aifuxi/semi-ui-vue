@@ -7,12 +7,45 @@ import {
   REFERENCE_SOURCE_PATHS,
 } from '../../../packages/test-infra/src';
 import {
+  createVueScenarioUrl,
   expectComparableTarget,
   expectScreenshotPixelsToMatch,
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
 } from '../parity-harness';
+
+test('Table 键盘选择时 Chromium 无障碍树报告表头的三种选中状态', async ({ page }) => {
+  const url = new URL(
+    createVueScenarioUrl({
+      scenarioId: 'table',
+      theme: 'light',
+      direction: 'ltr',
+      locale: 'zh-CN',
+    }),
+  );
+  url.searchParams.set('reviewState', 'uncontrolled-selection');
+  await page.goto(url.toString());
+
+  const cdp = await page.context().newCDPSession(page);
+  async function checkedInAccessibilityTree(name: string) {
+    const { nodes } = await cdp.send('Accessibility.getFullAXTree');
+    const checkbox = nodes.find(
+      (node) => node.role?.value === 'checkbox' && node.name?.value === name,
+    );
+    return checkbox?.properties?.find((property) => property.name === 'checked')?.value.value;
+  }
+
+  const table = page.getByTestId('table-vue');
+  const header = table.locator('thead').getByRole('checkbox');
+  await expect.poll(() => checkedInAccessibilityTree('Select all rows')).toBe('false');
+  await table.locator('tbody').getByRole('checkbox').first().press('Space');
+  await expect.poll(() => checkedInAccessibilityTree('Select all rows')).toBe('mixed');
+  await header.press('Space');
+  await expect.poll(() => checkedInAccessibilityTree('Deselect all rows')).toBe('true');
+  await header.press('Space');
+  await expect.poll(() => checkedInAccessibilityTree('Select all rows')).toBe('false');
+});
 
 for (const theme of ['light', 'dark'] as const) {
   /** 结构分支实际渲染后逐帧比较固定参考，补齐普通三行表格看不到的布局。 */

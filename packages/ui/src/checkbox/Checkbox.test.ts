@@ -56,6 +56,24 @@ describe('Checkbox', () => {
     expect(wrapper.classes()).toContain('semi-checkbox-checked');
   });
 
+  it('原生 input 的半选状态随 prop 更新，激活时保留独立的布尔选择值', async () => {
+    const wrapper = mount(Checkbox, { props: { indeterminate: true } });
+    const input = wrapper.get('input').element;
+    expect(input.indeterminate).toBe(true);
+    expect(input.checked).toBe(false);
+
+    input.click();
+    await nextTick();
+    expect(input.indeterminate).toBe(true);
+    expect(input.checked).toBe(true);
+    expect(wrapper.emitted('update:checked')).toEqual([[true]]);
+
+    await wrapper.setProps({ indeterminate: false });
+    expect(input.indeterminate).toBe(false);
+    expect(input.checked).toBe(true);
+    wrapper.unmount();
+  });
+
   it('disabled、indeterminate、addon/extra ARIA 与 card/pureCard DOM 对齐', async () => {
     const onChange = vi.fn();
     const wrapper = mount(Checkbox, {

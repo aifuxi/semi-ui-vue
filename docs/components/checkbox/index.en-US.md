@@ -27,6 +27,8 @@ function changed(event: CheckboxChangeEvent) {
 <Checkbox indeterminate>Partially selected</Checkbox>
 ```
 
+`indeterminate` controls the partially selected appearance and exposes `mixed` in the accessibility tree. Use `checked` or `v-model` to manage the Boolean selection independently.
+
 ## Extra text and cards
 
 ```vue
