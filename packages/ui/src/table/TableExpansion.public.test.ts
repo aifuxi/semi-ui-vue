@@ -114,7 +114,7 @@ describe('Table 公开展开列契约', () => {
   for (const scrollbarWidth of [0, 15]) {
     it(`${scrollbarWidth ? '固定选择列' : '分组固定列'}的展开宽度使用根容器与独立滚动条测量`, async () => {
       let rootWidth = 750;
-      let observed: Element | undefined;
+      const observed = new Set<Element>();
       let notify: (() => void) | undefined;
       const disconnect = vi.fn();
       class TestResizeObserver {
@@ -122,7 +122,7 @@ describe('Table 公开展开列契约', () => {
           notify = () => callback([], this);
         }
         observe(target: Element) {
-          observed = target;
+          observed.add(target);
         }
         unobserve() {}
         disconnect() {
@@ -180,7 +180,8 @@ describe('Table 公开展开列契约', () => {
       const width = () =>
         (wrapper.get('.semi-table-expand-inner').element as HTMLElement).style.width;
       expect(width()).toBe(`${716 - scrollbarWidth}px`);
-      expect(observed).toBe(wrapper.element);
+      expect(observed).toContain(wrapper.element);
+      expect(observed).toContain(wrapper.get('.semi-table-body').element);
       const probe = appended.mock.calls.find(
         ([node]) => node instanceof HTMLElement && node.style.overflowY === 'scroll',
       )?.[0];
