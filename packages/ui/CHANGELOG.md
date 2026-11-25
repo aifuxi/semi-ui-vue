@@ -1,5 +1,16 @@
 # @aifuxi/semi-ui-vue
 
+## 2.2.7
+
+### Patch Changes
+
+- [#64](https://github.com/aifuxi/semi-ui-vue/pull/64) [`ab7bbf5`](https://github.com/aifuxi/semi-ui-vue/commit/ab7bbf53cc79ff2d7a5dc9c2c4cb2e26186cfbe4) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Checkbox 的半选无障碍语义，使 Table 表头等控件在无障碍树中报告 mixed 状态。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.2.7
+  - @aifuxi/semi-icons-lab-vue@2.2.7
+  - @aifuxi/semi-illustrations-vue@2.2.7
+  - @aifuxi/semi-theme-default@2.2.7
+
 ## 2.2.6
 
 ### Patch Changes
