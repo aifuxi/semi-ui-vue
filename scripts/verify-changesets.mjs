@@ -1,15 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { publicPackages } from './public-packages.mjs';
-
-// 空 changeset 只有 frontmatter 分隔符、没有 release 条目。
-function isEmptyChangeset(source) {
-  const lines = source.split('\n');
-  if (lines[0]?.trim() !== '---') return false;
-  const end = lines.findIndex((line, index) => index > 0 && line.trim() === '---');
-  if (end === -1) return false;
-  return lines.slice(1, end).every((line) => line.trim() === '');
-}
+import { isEmptyChangeset } from './release-changesets.mjs';
 
 const base = process.env.BASE_SHA;
 const head = process.env.HEAD_SHA ?? 'HEAD';

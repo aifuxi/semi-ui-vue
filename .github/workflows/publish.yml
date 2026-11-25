@@ -72,6 +72,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RECOVERY_RUN_ID: ${{ inputs.recover-run-id }}
+      - name: Ignore empty changesets in the selection checkout
+        if: github.event_name != 'workflow_dispatch'
+        run: mise exec -- node scripts/release-changesets.mjs
       - id: select
         if: github.event_name != 'workflow_dispatch'
         uses: changesets/action/select-mode@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
@@ -145,6 +148,9 @@ jobs:
     name: Pack and verify original tarballs
     needs: [select-mode, quality]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     outputs:
       pack: ${{ steps.recovery-pack.outputs.artifact-id || steps.pack.outputs.pack-dir-artifact-id }}
       original-pack: ${{ steps.pack.outputs.pack-dir-artifact-id || needs.select-mode.outputs.original-pack }}
@@ -169,14 +175,32 @@ jobs:
         uses: changesets/action/pack@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
           publish-plan-artifact-id: ${{ needs.select-mode.outputs.plan }}
+      - name: Wait for the exact packed artifact to be listed
+        if: github.event_name != 'workflow_dispatch'
+        timeout-minutes: 2
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PACK_ARTIFACT_ID: ${{ steps.pack.outputs.pack-dir-artifact-id }}
+        run: |
+          [[ "$PACK_ARTIFACT_ID" =~ ^[0-9]+$ ]]
+          for attempt in {1..12}; do
+            listed=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?per_page=100" \
+              --jq ".artifacts[] | select(.id == $PACK_ARTIFACT_ID and .expired == false) | .id")
+            if [[ "$listed" == "$PACK_ARTIFACT_ID" ]]; then
+              echo "Artifact $PACK_ARTIFACT_ID is listed in run $GITHUB_RUN_ID."
+              exit 0
+            fi
+            if (( attempt < 12 )); then sleep 5; fi
+          done
+          echo "::error::Artifact $PACK_ARTIFACT_ID did not appear in run $GITHUB_RUN_ID."
+          exit 1
       - uses: actions/download-artifact@v4
         with:
           artifact-ids: ${{ steps.pack.outputs.pack-dir-artifact-id || needs.select-mode.outputs.original-pack }}
           path: verified-pack
           merge-multiple: true
-          # 同次运行使用 Actions 内部产物通道，避免新产物尚未同步到 REST。
-          github-token: ${{ github.event_name == 'workflow_dispatch' && github.token || '' }}
-          run-id: ${{ inputs.recover-run-id }}
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.recover-run-id || github.run_id }}
       - uses: actions/download-artifact@v4
         if: github.event_name == 'workflow_dispatch'
         with:
