@@ -53,7 +53,7 @@
 ## DOM、样式、主题、滚动、动效与 RTL
 
 - 根为 `.semi-table-wrapper`；标题、分页、`.semi-table-container`、row/head/cell class 与固定 `x-semi-prop/x-type/data-*` 保持 v2.102.0 结构。普通表体使用 table/thead/tbody，虚拟表体使用独立 header table 与 div 表体。
-- 非虚拟模式下，未设置 `scroll.y` 时使用单表结构；设置时保持同宽 header/body 容器、colgroup 与同步 scrollLeft。body scroll 位置产生 `-scroll-position-left/middle/right`；ResizeObserver/window resize 只在客户端创建并完整清理。
+- 非虚拟模式下，未设置 `scroll.y` 时使用单表结构；设置时使用独立表头和正文，保留相同的列定义并同步 `scrollLeft`。独立表头跟随正文实际左右占宽，纵向滚动条出现或消失后重新对齐可视区，横滚到边界时仍保持列对齐。body scroll 位置产生 `-scroll-position-left/middle/right`；ResizeObserver/window resize 只在客户端创建并完整清理。
 - fixed 列使用固定源码的 sticky class、left/right offset 和边界阴影；RTL 方向下偏移与滚动位置语义翻转。`sticky` 仅改变 header top 与 sticky class。
 - `resizable` 只在允许列显示固定 `.react-resizable-handle`；pointer 拖动按物理指针水平位移更新（RTL 不反转 delta）临时宽度并依序回调 start/resize/stop，不修改 column。
 - `virtualized` 使用 `.semi-table-virtualized` 与 div 表体窗口，表体没有 table/colgroup 或上下 spacer 行；行按各自累计偏移绝对定位，LTR 从 left、RTL 从 right 起算，单元格宽度与实际列宽同步。默认尺寸行高取固定常量 53px，small/middle 使用各自固定常量；显式数字或函数 `itemSize` 决定逐行高度，函数接收虚拟索引及 expandedRow/sectionRow 元数据。

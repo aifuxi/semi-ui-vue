@@ -90,8 +90,7 @@ const currentPage = shallowRef(1);
 const pageSize = shallowRef(tableNumbers.DEFAULT_PAGE_SIZE);
 const scrollPosition = shallowRef<'both' | 'left' | 'middle' | 'right'>('both');
 let resizeObserver: ResizeObserver | undefined;
-/** CSS 列宽可以独立于根容器变化；跟踪当前表头节点以复用现有重测生命周期。 */
-const observedHeaderCells = new Set<Element>();
+const observedResizeTargets = new Set<Element>();
 let resizeFrame: number | undefined;
 let resizeDisposed = false;
 let previousVirtualNativeTop: number | undefined;
@@ -839,6 +838,19 @@ function updateScrollPosition(target = bodyRef.value): void {
   else scrollPosition.value = 'middle';
 }
 
+function syncHeaderViewport(): void {
+  const body = bodyRef.value;
+  const header = headerRef.value;
+  if (!body || !header) return;
+
+  // clientLeft 包含分配在左侧的滚动条空间。按实际左右占宽对齐滚动区，兼容 RTL。
+  const leftInset = body.clientLeft;
+  const rightInset = body.offsetWidth - body.clientWidth - leftInset;
+  header.style.marginLeft = leftInset > 0 ? `${leftInset}px` : '';
+  header.style.marginRight = rightInset > 0 ? `${rightInset}px` : '';
+  header.scrollLeft = body.scrollLeft;
+}
+
 function measureTableWidth(): void {
   if (!anyFixed.value || !wrapperRef.value) return;
   if (verticalScrollbarWidth.value === undefined) {
@@ -1154,6 +1166,7 @@ function ensureResizeObserver(): void {
       resizeFrame = window.requestAnimationFrame(() => {
         resizeFrame = undefined;
         if (resizeDisposed) return;
+        syncHeaderViewport();
         measureTableWidth();
         measureHeaderWidths();
         updateScrollPosition();
@@ -1169,19 +1182,21 @@ function ensureResizeObserver(): void {
     flatColumns.value.some((column) => typeof (column.__width ?? column.width) === 'string');
   /** 只选择当前 Table 的首个表头，避免把展开行内嵌套 Table 的列当作自身宽度。 */
   const header = wrapperRef.value.querySelector(`.${prefix.value}-thead`);
-  /** 列变化和 showHeader 切换后释放旧节点；新节点进入同一 Observer。 */
   const targets = new Set(
     needsHeaderMeasurement && header ? header.querySelectorAll(`.${prefix.value}-row-head`) : [],
   );
-  for (const cell of observedHeaderCells) {
-    if (targets.has(cell)) continue;
-    resizeObserver.unobserve(cell);
-    observedHeaderCells.delete(cell);
+  // 正文的 content-box 随滚动条显隐变化，即使外层尺寸相同也需要重测。
+  const body = headerRef.value && bodyRef.value;
+  if (body) targets.add(body);
+  for (const target of observedResizeTargets) {
+    if (targets.has(target)) continue;
+    resizeObserver.unobserve(target);
+    observedResizeTargets.delete(target);
   }
-  for (const cell of targets) {
-    if (observedHeaderCells.has(cell)) continue;
-    resizeObserver.observe(cell, { box: 'border-box' });
-    observedHeaderCells.add(cell);
+  for (const target of targets) {
+    if (observedResizeTargets.has(target)) continue;
+    resizeObserver.observe(target, target === body ? undefined : { box: 'border-box' });
+    observedResizeTargets.add(target);
   }
 }
 
@@ -1199,6 +1214,7 @@ watch(
     void nextTick(() => {
       if (resizeDisposed) return;
       ensureResizeObserver();
+      syncHeaderViewport();
       measureTableWidth();
       measureHeaderWidths();
     });
@@ -1217,6 +1233,7 @@ onMounted(() => {
       });
   });
   ensureResizeObserver();
+  syncHeaderViewport();
   measureTableWidth();
   updateScrollPosition();
   measureHeaderWidths();
