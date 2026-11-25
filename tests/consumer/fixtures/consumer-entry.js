@@ -1,5 +1,5 @@
 /* global document, location -- 此入口只在真实浏览器消费页面运行。 */
-import { createApp, h, onUpdated, ref } from 'vue';
+import { createApp, h, nextTick, onUpdated, ref } from 'vue';
 import {
   Button,
   CodeHighlight,
@@ -1182,6 +1182,83 @@ function renderPackedDropdownModal() {
   ]);
 }
 
+const dropdownActivationItem = ref(null);
+const dropdownActivationClicks = ref(0);
+const dropdownActivationActions = ref(0);
+const dropdownActivationVisible = ref(false);
+const dropdownActivationSubmits = ref(0);
+
+function renderPackedDropdownActivation() {
+  const scenario = dropdownQuery.get('dropdown-activation');
+  const builtIn = scenario === 'built-in';
+  const controlled = scenario === 'controlled';
+  const trigger = { span: 'span', tag: Tag, input: 'input' }[scenario] ?? Button;
+  const activateItem = () => {
+    dropdownActivationActions.value += 1;
+  };
+  return h(
+    'form',
+    {
+      onSubmit(event) {
+        event.preventDefault();
+        dropdownActivationSubmits.value += 1;
+      },
+    },
+    [
+      h(
+        Dropdown,
+        {
+          trigger: controlled ? 'custom' : 'click',
+          ...(controlled ? { visible: dropdownActivationVisible.value } : {}),
+          onVisibleChange(visible) {
+            if (visible && !builtIn && scenario !== 'no-focus') {
+              void nextTick(() => dropdownActivationItem.value?.$el.focus());
+            }
+          },
+        },
+        {
+          default: () =>
+            h(
+              trigger,
+              {
+                'data-testid': 'dropdown-activation-trigger',
+                ...(scenario === 'span' ? { role: 'button' } : {}),
+                ...(scenario === 'input' ? { 'aria-label': '搜索操作' } : {}),
+                onClick: () => {
+                  dropdownActivationClicks.value += 1;
+                  if (controlled)
+                    dropdownActivationVisible.value = !dropdownActivationVisible.value;
+                },
+              },
+              trigger === 'input' ? undefined : () => '打开操作菜单',
+            ),
+          content: () =>
+            builtIn
+              ? h(Dropdown.Menu, null, () =>
+                  h(Dropdown.Item, { onClick: activateItem }, () => '首项'),
+                )
+              : h('div', { role: 'menu' }, [
+                  h(
+                    Button,
+                    { ref: dropdownActivationItem, role: 'menuitem', onClick: activateItem },
+                    () => '首项',
+                  ),
+                ]),
+        },
+      ),
+      h(
+        'output',
+        `trigger=${dropdownActivationClicks.value};actions=${dropdownActivationActions.value}`,
+      ),
+      h(
+        'output',
+        { 'data-testid': 'dropdown-activation-submits' },
+        dropdownActivationSubmits.value,
+      ),
+    ],
+  );
+}
+
 /** 关闭尺寸专项由公开 visible 驱动，不重建业务 header 或覆盖组件样式。 */
 const closeSizeVisible = ref(false);
 
@@ -1388,6 +1465,7 @@ const interactionRender =
   (dropdownQuery.has('textarea-autosize') ? () => h(PackedTextAreaAutosize) : undefined) ??
   (dropdownQuery.has('select-model') ? renderPackedSelectModel : undefined) ??
   (dropdownQuery.has('select-escape') ? renderPackedSelectEscape : undefined) ??
+  (dropdownQuery.has('dropdown-activation') ? renderPackedDropdownActivation : undefined) ??
   overlayContainerRender ??
   (dropdownQuery.has('overlay-close-size')
     ? renderPackedCloseSize

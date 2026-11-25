@@ -69,7 +69,8 @@
 
 ## 键盘、焦点与 ARIA
 
-- click trigger 的 Enter/Space 等价 click；打开后首个非 disabled Item 获得焦点。trigger 上 ArrowDown/ArrowUp 聚焦首/末可用项并在已打开时阻止默认滚动。
+- click trigger 的 Enter/Space 只激活一次触发器；打开后首个非 disabled Item 获得焦点。trigger 上 ArrowDown/ArrowUp 聚焦首/末可用项并在已打开时阻止默认滚动。
+- 固定 Foundation 在 Enter/Space 的 `keydown` 中同步点击触发器。Vue 适配层在调用前取消同一按键的浏览器默认动作，防止点击刚获得焦点的自定义菜单首项，或再次点击仍聚焦的触发器。已消费事件由触发器处理（例如 Tag 的 Enter），表单控件和可编辑内容使用原生按键行为。调用方仍可接收原键盘事件。
 - Menu 内 ArrowDown/ArrowUp 循环移动可用 Item，Enter/Space 激活，打印字符按首字符跳转；disabled Item 排除在导航集合。
 - Esc 关闭 popup，调用 `escKeydown`，并由 Tooltip `returnFocusOnClose` 把焦点还给 trigger。
 - Menu 固定 `role=menu` / `aria-orientation=vertical`，Item 固定 `role=menuitem` / `aria-disabled`；不擅自增加 `aria-selected`。
