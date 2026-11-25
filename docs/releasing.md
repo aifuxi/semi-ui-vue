@@ -16,11 +16,11 @@ CI 使用官方 CLI 校验格式、包名和版本计划，并要求新增一份
 
 ## 版本 PR 与发布
 
-`master` push 触发 `publish.yml`。官方 select-mode 遇到待处理发布记录时维护版本 PR；空 changeset 不触发发布。`release:version` 只执行官方 version 和 lockfile 更新，不自动提交。机器人由官方 version Action 提交和更新 PR。
+`master` push 触发 `publish.yml`。官方 select-mode 遇到待处理发布记录时维护版本 PR。模式选择在临时 checkout 忽略空 changeset，使已有待发布版本仍可进入官方发布计划。`release:version` 只执行官方 version 和 lockfile 更新，不自动提交。机器人由官方 version Action 提交和更新 PR。
 
 版本 PR 合并后的候选需要完成对应的本地组件与产物验证：Vitest dom/node、Storybook/React 组件 Chromium、真实 tarball consumer 浏览器与公开产物检查。普通 PR CI 运行全仓 `check:source`；可信的纯版本 PR 按下节复用成功证据。发布流水线继续运行不含文档站的 `check:publish-source`、Changesets、依赖审计、构建、主题、Node SSR、Node 原始 tarball 隔离验证及发布。CI 不运行组件单测或浏览器矩阵，不能代替候选所需本地组件结果。
 
-quality 传递构建产物，官方 pack 创建 artifact；pack-verify 下载该 artifact 的准确文件，执行 Node 隔离消费检查并记录候选 SHA、原计划摘要和六包 SHA-512。publish 只接收已通过验证的 artifact ID，不重建、不执行 workspace 生命周期脚本。
+quality 传递构建产物，官方 pack 创建 artifact。pack-verify 等待本次运行列出该 artifact ID，再按同一 ID 下载文件，执行 Node 隔离消费检查并记录候选 SHA、原计划摘要和六包 SHA-512。publish 只接收已通过验证的 artifact ID，不重建、不执行 workspace 生命周期脚本。
 
 文档站、站点部署和旧逐示例验收不属于包发布门禁。静态 API 与迁移说明仍需准确，实际公开包继续保留独立品牌、MIT、第三方归属和 SBOM。
 
