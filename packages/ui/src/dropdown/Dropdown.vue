@@ -209,6 +209,20 @@ function handleTriggerKeydown(event: KeyboardEvent): void {
     requestVisible(false);
     return;
   }
+  if (event.key === 'Enter' || event.key === ' ') {
+    const target = event.target;
+    // Tag 等触发器可能已处理按键；表单控件和可编辑内容保留原生键盘行为。
+    if (
+      event.defaultPrevented ||
+      !(target instanceof HTMLElement) ||
+      target.isContentEditable ||
+      target.matches('input, textarea, select')
+    ) {
+      return;
+    }
+    // Foundation 会同步点击触发器，取消默认动作可防止浏览器再次点击当前焦点。
+    event.preventDefault();
+  }
   foundation.handleKeyDown(event);
 }
 
