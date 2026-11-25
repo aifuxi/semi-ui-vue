@@ -33,7 +33,7 @@ Group 需要装饰直接子 VNode，模板无法准确表达 `React.Children.toA
 | React v2.102.0               | Vue API                                               | 默认值/结论                                                            |
 | ---------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------- |
 | `checked` / `defaultChecked` | `checked`、`v-model` / `modelValue`、`defaultChecked` | `false`；checked 优先于 modelValue；按原始 VNode prop 是否存在判断受控 |
-| `disabled` / `indeterminate` | 同名 prop                                             | `false`；indeterminate 只控制 class/icon，不改 checked 值              |
+| `disabled` / `indeterminate` | 同名 prop                                             | `false`。半选同步外观和原生状态，`checked` 取值独立。                  |
 | `value`                      | 同名 prop                                             | 只有调用方显式传入 value 时才加入最近 CheckboxGroup                    |
 | `type`                       | 同名 prop                                             | `default`；支持 `card` / `pureCard`                                    |
 | `extra`                      | `extra` slot，兼容同名 VNodeChild prop                | 无；生成 extra DOM 与 `aria-describedby`                               |
@@ -70,7 +70,7 @@ Group 需要装饰直接子 VNode，模板无法准确表达 `React.Children.toA
 | 单项事件  | 点击/Enter 经 Foundation：先聚焦 input；非受控先更新 checked，再发 item change/update；受控只通知；disabled 不通知                                                                                                                          |
 | 组事件    | item 先发 change，再由 Group 计算数组并发 group change/update；非受控提交数组，受控保持旧视觉直至父级回写                                                                                                                                   |
 | 焦点/键盘 | 原生 input 支持 Tab/Shift+Tab/Space；固定 Adapter 额外支持 Enter；只在 `:focus-visible` 时添加 focus class，鼠标点击不留下 focus-visible                                                                                                    |
-| ARIA      | input 保留 checkbox 原生语义、aria-checked/disabled/labelledby/describedby；Group=`list`，直接子节点=`listitem`；disabled input 不可聚焦                                                                                                    |
+| ARIA      | 半选由 `input.indeterminate` 映射为 `mixed`，其余状态保留布尔 `aria-checked`。input 保留 disabled/labelledby/describedby 语义。Group=`list`，直接子节点=`listitem`。disabled input 不可聚焦                                                 |
 | 卡片      | card/pureCard 保留固定 class；pureCard 仅将 inner 设为透明零宽，input 仍参与焦点与无障碍                                                                                                                                                    |
 | 动效      | 固定 transition token 默认 0ms，不新增 Vue Transition                                                                                                                                                                                       |
 | 暗色/RTL  | 默认主题 Token 原样编译；`.semi-rtl` / `.semi-portal-rtl` 使用固定 RTL 选择器，不自行镜像 DOM                                                                                                                                               |
@@ -97,7 +97,8 @@ Group 需要装饰直接子 VNode，模板无法准确表达 `React.Children.toA
 ## Deviation
 
 - 固定 `checkbox/index.tsx` 用 `class CheckboxWithGroup extends Checkbox { static Group = Group }` 承载 `Group` 静态成员并作为默认导出，同时具名导出 `Checkbox`；该子类没有独立行为。Vue 入口把 `Group` 直接挂在 `Checkbox` 复合对象上（默认导出即复合组件）并具名导出 `CheckboxGroup`，不重复发布 `CheckboxWithGroup` 名字。用户影响：`Checkbox.Group` 用法不变，额外类名不可用；DOM、class、ARIA 与事件不变。
-- 固定 React v2.102.0 与 Vue 场景已在同一 Chromium 进程中完成行为、ARIA、computed style、geometry、桌面/移动明暗主题及 RTL 对照；对应 React/Vue 截图字节一致；以上 React 类包装映射是唯一的具名差异记录。
+- 固定 React v2.102.0 的 `checkboxInner.tsx` 通过布尔 `aria-checked` 表达选择状态。Vue 在客户端同步原生 `input.indeterminate`，半选时由浏览器向无障碍树报告 `mixed`。Table 表头以键盘回归覆盖未选、半选和全选。
+- 固定 React v2.102.0 与 Vue 场景曾在同一 Chromium 进程中完成行为、ARIA、computed style、geometry、桌面/移动明暗主题及 RTL 对照。对应 React/Vue 截图字节一致。
 
 ## 验收结论
 

@@ -15,6 +15,7 @@ import {
   useSlots,
   useTemplateRef,
   watch,
+  watchPostEffect,
 } from 'vue';
 
 import CheckboxNodeRenderer from './CheckboxNodeRenderer';
@@ -224,9 +225,13 @@ function blur(): void {
 
 function handleChange(event: Event): void {
   foundation.handleChange(event);
-  if (controlled.value || inGroup.value) {
+  const restoreChecked = controlled.value || inGroup.value;
+  if (restoreChecked || props.indeterminate) {
     void nextTick(() => {
-      if (input.value) input.value.checked = effectiveChecked.value;
+      if (!input.value) return;
+      if (restoreChecked) input.value.checked = effectiveChecked.value;
+      // 原生复选框激活时会清除半选，按最新 prop 恢复。
+      input.value.indeterminate = Boolean(props.indeterminate);
     });
   }
 }
@@ -246,6 +251,9 @@ watch(
     if (extraId !== undefined) state.extraId = extraId;
   },
 );
+watchPostEffect(() => {
+  if (input.value) input.value.indeterminate = Boolean(props.indeterminate);
+});
 
 onMounted(() => foundation.init());
 onBeforeUnmount(() => foundation.destroy());
@@ -287,7 +295,7 @@ defineExpose<CheckboxExposed>({
               ? false
               : undefined
         "
-        :aria-checked="effectiveChecked"
+        :aria-checked="props.indeterminate ? undefined : effectiveChecked"
         :aria-labelledby="hasAddon ? state.addonId : undefined"
         :aria-describedby="hasExtra ? state.extraId : props.ariaDescribedby"
         :aria-invalid="ariaInvalidValue"

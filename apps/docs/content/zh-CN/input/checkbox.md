@@ -146,7 +146,7 @@ Checkbox.Group 内嵌 Checkbox 并与 Grid 组件一起使用，可以实现灵�
 | extra            | 副文本                                                                                   | VNodeChild                                              | -         |
 | extraId          | 副文本的 id，aria-describedby 指向这个 id，若无设置会随机生成一个 id **v2.11.0 后提供**  | string                                                  | -         |
 | id               | —                                                                                        | string                                                  | —         |
-| indeterminate    | 设置 indeterminate 状态，只负责样式控制                                                  | boolean                                                 | false     |
+| indeterminate    | 设置半选外观，并在无障碍树中表达部分选中                                                 | boolean                                                 | false     |
 | prefixCls        | —                                                                                        | string                                                  | —         |
 | preventScroll    | 指示浏览器是否应滚动文档以显示新聚焦的元素，作用于组件内的 focus 方法                    | boolean                                                 | —         |
 | role             | —                                                                                        | string                                                  | —         |

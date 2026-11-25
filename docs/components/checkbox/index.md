@@ -27,6 +27,8 @@ function changed(event: CheckboxChangeEvent) {
 <Checkbox indeterminate>部分选中</Checkbox>
 ```
 
+`indeterminate` 同时控制半选外观和无障碍树中的 `mixed` 状态。使用 `checked` 或 `v-model` 独立管理布尔选择值。
+
 ## 辅助文本与卡片
 
 ```vue

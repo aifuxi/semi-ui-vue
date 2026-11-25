@@ -176,7 +176,7 @@ const reviewColumns: TableColumnProps[] =
         :loading="reviewState === 'loading'"
         :pagination="false"
         :row-selection="{
-          selectedRowKeys: ['gateway'],
+          ...(reviewState === 'uncontrolled-selection' ? {} : { selectedRowKeys: ['gateway'] }),
           width: reviewVariant === 'fixed-css' ? 'var(--table-selection-width)' : 50,
           ...(reviewVariant === 'fixed-css' ? { fixed: 'left' as const } : {}),
           disabled: reviewState === 'disabled',
