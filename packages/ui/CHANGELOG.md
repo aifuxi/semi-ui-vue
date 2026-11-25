@@ -1,5 +1,16 @@
 # @aifuxi/semi-ui-vue
 
+## 2.2.8
+
+### Patch Changes
+
+- [#67](https://github.com/aifuxi/semi-ui-vue/pull/67) [`d2f8c2c`](https://github.com/aifuxi/semi-ui-vue/commit/d2f8c2ca4f9395d9dbb2499e03da6193dcc80231) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Typography 在剪贴板写入失败时误报复制成功的问题，按实际结果触发回调，并允许用户在收到失败提示后立即重试。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.2.8
+  - @aifuxi/semi-icons-lab-vue@2.2.8
+  - @aifuxi/semi-illustrations-vue@2.2.8
+  - @aifuxi/semi-theme-default@2.2.8
+
 ## 2.2.7
 
 ### Patch Changes
