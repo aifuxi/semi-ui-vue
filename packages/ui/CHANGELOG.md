@@ -1,5 +1,16 @@
 # @aifuxi/semi-ui-vue
 
+## 2.2.11
+
+### Patch Changes
+
+- [#73](https://github.com/aifuxi/semi-ui-vue/pull/73) [`7017cbf`](https://github.com/aifuxi/semi-ui-vue/commit/7017cbfb7320efb5c8eabe8708e79b0507fc3d05) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Modal 内的 Input 自动聚焦后，关闭弹窗未将焦点恢复到入口的问题。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.2.11
+  - @aifuxi/semi-icons-lab-vue@2.2.11
+  - @aifuxi/semi-illustrations-vue@2.2.11
+  - @aifuxi/semi-theme-default@2.2.11
+
 ## 2.2.10
 
 ### Patch Changes
