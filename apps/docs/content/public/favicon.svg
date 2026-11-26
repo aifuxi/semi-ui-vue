@@ -1,7 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="287 -107 960 960">
-  <view id="header" viewBox="287 129 960 488"/>
-  <rect x="287" y="-107" width="960" height="960" rx="192" fill="#fff"/>
-  <path fill="#1C1F23" d="
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="287 -107 960 960" fill="#1C1F23">
+  <style>
+    @media (prefers-color-scheme: dark) {
+      :root { fill: #fff; }
+    }
+  </style>
+  <path id="sv" d="
     M509 163.7H770
     C781 163.7 792.2 163.7 795.4 169.6
     L927.4 431.6 1058.7 169

@@ -23,13 +23,16 @@ const themeLabel = computed(() => `切换到${isDark.value ? '亮色' : '暗色'
 <template>
   <header class="site-header">
     <a class="site-brand" :href="withBase('/')" aria-label="Semi UI Vue">
-      <img
+      <svg
         class="site-brand-mark"
-        :src="withBase('/favicon.svg#header')"
-        alt=""
         width="44"
         height="22"
-      />
+        viewBox="287 129 960 488"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <use :href="withBase('/favicon.svg#sv')" />
+      </svg>
       <span>Semi UI Vue</span>
     </a>
     <nav class="header-links" aria-label="主导航">

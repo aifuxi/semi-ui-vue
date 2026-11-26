@@ -21,7 +21,6 @@ export default defineConfig({
     },
   },
   head: [
-    ['link', { rel: 'icon', sizes: '16x16 32x32 48x48', href: '/favicon.ico' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', sizes: 'any', href: '/favicon.svg' }],
     ['link', { rel: 'stylesheet', href: '/site/site.css' }],
     ['script', {}, themeBootScript],
