@@ -148,6 +148,7 @@ const typographyThemeCase = dropdownQuery.has('typography-theme');
 const tableFixedCase = dropdownQuery.has('table-fixed-widths');
 // 可访问性专项只使用公开 Modal，不注入 DOM ID 或业务样式补丁。
 const modalA11yCase = dropdownQuery.has('modal-a11y');
+const autofocusModalVisible = ref(false);
 // 模拟详情内部的状态操作，默认关闭内层，保留原始入场与退场动效。
 const nestedModalVisible = ref(false);
 // 外层也保持受控，不能用 closeOnEsc=false 掩盖两层同时取消的错误。
@@ -322,6 +323,23 @@ function renderPackedTableFixedWidths() {
         },
       },
       [h(Table, packedFixedTableProps)],
+    ),
+  ]);
+}
+
+function renderPackedModalAutofocus() {
+  return h('main', [
+    h(Button, { onClick: () => (autofocusModalVisible.value = true) }, () => '编辑资料'),
+    h(
+      Modal,
+      {
+        title: '编辑资料',
+        visible: autofocusModalVisible.value,
+        'onUpdate:visible': (visible) => {
+          autofocusModalVisible.value = visible;
+        },
+      },
+      () => h(Input, { autoFocus: true, 'aria-label': '名称' }),
     ),
   ]);
 }
@@ -1462,6 +1480,7 @@ const overlayContainerRender = dropdownQuery.has('overlay-container')
 
 /** 交互专项通过查询参数选择场景，共用真实包服务。 */
 const interactionRender =
+  (dropdownQuery.has('modal-autofocus') ? renderPackedModalAutofocus : undefined) ??
   (dropdownQuery.has('textarea-autosize') ? () => h(PackedTextAreaAutosize) : undefined) ??
   (dropdownQuery.has('select-model') ? renderPackedSelectModel : undefined) ??
   (dropdownQuery.has('select-escape') ? renderPackedSelectEscape : undefined) ??
