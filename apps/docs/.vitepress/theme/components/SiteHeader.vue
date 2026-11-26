@@ -8,7 +8,6 @@ import {
   IconMenu,
   IconMoon,
   IconSearch,
-  IconSemiLogo,
   IconSun,
 } from '@aifuxi/semi-icons-vue';
 import { withBase } from 'vitepress';
@@ -24,7 +23,17 @@ const themeLabel = computed(() => `切换到${isDark.value ? '亮色' : '暗色'
 <template>
   <header class="site-header">
     <a class="site-brand" :href="withBase('/')" aria-label="Semi UI Vue">
-      <IconSemiLogo style="font-size: 32px" /><span>Semi UI Vue</span>
+      <svg
+        class="site-brand-mark"
+        width="44"
+        height="22"
+        viewBox="287 129 960 488"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <use :href="withBase('/favicon.svg#sv')" />
+      </svg>
+      <span>Semi UI Vue</span>
     </a>
     <nav class="header-links" aria-label="主导航">
       <a :href="withBase('/zh-CN/start/introduction')">指南</a>

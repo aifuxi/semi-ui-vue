@@ -24,6 +24,23 @@ async function expectOwnReferences(page: Page) {
   ).toBe(true);
 }
 
+test('真实 tarball Modal 内的 Input 自动聚焦后，Escape 将焦点归还入口', async ({
+  page,
+  packedConsumer,
+}) => {
+  await page.goto(packedConsumer.url + '?modal-autofocus');
+  const opener = page.getByRole('button', { name: '编辑资料' });
+  await opener.focus();
+  await page.keyboard.press('Enter');
+
+  const dialog = page.getByRole('dialog', { name: '编辑资料' });
+  await expect(dialog.getByRole('textbox', { name: '名称' })).toBeFocused();
+  await page.keyboard.press('Escape');
+
+  await expect(page.getByRole('dialog', { includeHidden: true })).toHaveCount(0);
+  await expect(opener).toBeFocused();
+});
+
 // 浅色与深色均通过浏览器可访问性计算验证，并保留真实动效。
 for (const mode of ['light', 'dark']) {
   // 标准与自定义 header 都必须具有正确名称，且外层允许 Esc。

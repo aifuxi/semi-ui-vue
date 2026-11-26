@@ -4,6 +4,7 @@ import {
   h,
   markRaw,
   nextTick,
+  onBeforeMount,
   onBeforeUnmount,
   onMounted,
   shallowReactive,
@@ -221,10 +222,11 @@ const innerVNode = computed(() =>
 );
 
 /** 每次打开记录入口并在 Portal 就绪后获取键盘所有权及焦点陷阱。 */
-async function activate(): Promise<void> {
+async function activate(previousFocus?: HTMLElement | null): Promise<void> {
   if (active || typeof document === 'undefined') return;
   active = true;
-  state.prevFocusElement = ModalFocusTrapHandle.getActiveElement();
+  state.prevFocusElement =
+    previousFocus === undefined ? ModalFocusTrapHandle.getActiveElement() : previousFocus;
   await nextTick();
   if (!active) return;
   foundation.handleKeyDownEventListenerMount();
@@ -261,8 +263,14 @@ function handleMaskMouseUp(): void {
   if (props.maskClosable) foundation.handleMaskMouseUp();
 }
 
+onBeforeMount(() => {
+  // 子组件可能在挂载时自动聚焦，必须提前记录入口。
+  if (props.visible && !props.hidden) {
+    state.prevFocusElement = ModalFocusTrapHandle.getActiveElement();
+  }
+});
 onMounted(() => {
-  if (props.visible && !props.hidden) void activate();
+  if (props.visible && !props.hidden) void activate(state.prevFocusElement);
 });
 watch(
   () => props.visible,
