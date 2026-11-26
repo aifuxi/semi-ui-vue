@@ -14,6 +14,8 @@ test('切换详情后卸载的 TextArea 停止测量，新的 TextArea 正常自
   await expect(duplicate).toHaveCount(0);
   const original = page.getByRole('textbox', { name: '原缺陷备注' });
   await expect(original).toBeVisible();
+  // 可见时浏览器可能仍按原生 rows 布局，等自动测量写入初始高度。
+  await expect.poll(() => original.evaluate((element) => element.style.height)).not.toBe('');
   const height = () => original.evaluate((element) => element.getBoundingClientRect().height);
   const initialHeight = await height();
   await original.fill('第一行\n第二行\n第三行');
