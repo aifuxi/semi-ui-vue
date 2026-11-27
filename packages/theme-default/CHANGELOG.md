@@ -1,5 +1,9 @@
 # @aifuxi/semi-theme-default
 
+## 2.2.12
+
+No changes in this release.
+
 ## 2.2.11
 
 No changes in this release.
