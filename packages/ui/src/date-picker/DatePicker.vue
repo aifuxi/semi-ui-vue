@@ -230,7 +230,7 @@ const runtimeProps = computed<DatePickerProps>(
 );
 
 const state = shallowReactive<FoundationDatePickerState>({
-  panelShow: Boolean(props.open ?? props.defaultOpen),
+  panelShow: Boolean(!runtimeProps.value.disabled && (props.open ?? props.defaultOpen)),
   isRange: isRange.value,
   inputValue: null,
   value: [],
@@ -516,10 +516,12 @@ function handleRangeEndChange(value: string, event: Event): void {
   handleRangeChange(1, value, event);
 }
 function handleSelect(dates: Array<Date | null>): void {
+  if (runtimeProps.value.disabled) return;
   foundation.handleSelectedChange(dates as Date[], { needCheckFocusRecord: false });
   if (isRange.value && dates.length === 1) foundation.handleSetRangeFocus('rangeEnd');
 }
 function handleOutside(event: MouseEvent): void {
+  if (runtimeProps.value.disabled) return;
   emit('clickOutside', event);
   if (!adapter.needConfirm()) foundation.closePanel();
 }
@@ -562,7 +564,7 @@ function handlePanelChange(date: Date | Date[], text: string | string[]): void {
 }
 
 function open(): void {
-  foundation.open();
+  if (!runtimeProps.value.disabled) foundation.open();
 }
 function close(): void {
   foundation.close();
@@ -587,9 +589,12 @@ defineExpose<DatePickerExposed>({
 onMounted(() => foundation.init());
 onBeforeUnmount(() => foundation.destroy());
 watch(
-  () => [controlledOpen.value, props.open] as const,
-  ([controlled, open]) => {
-    if (controlled) state.panelShow = Boolean(open);
+  [controlledOpen, () => props.open, () => runtimeProps.value.disabled],
+  ([controlled, , disabled]) => {
+    if (controlled || disabled) {
+      foundation.initPanelOpenStatus();
+      if (!state.panelShow) foundation.clearRangeInputFocus();
+    }
   },
 );
 watch(
@@ -627,6 +632,7 @@ watch(
           :bottom-content="bottomContent"
           :cached-value="state.cachedSelectedValue"
           :focus-records="focusRecords"
+          :inert="runtimeProps.disabled || undefined"
           :inset-input-value="state.insetInputValue"
           :left-content="leftContent"
           :locale="locale"

@@ -1,10 +1,20 @@
 import type { HTMLAttributes, StyleValue } from 'vue';
 
-import type { InputSize } from '../input';
+import type { InputProps, InputSize } from '../input';
 
 export type PinCodeFormat = 'number' | 'mixed' | RegExp | ((character: string) => boolean);
 
-export interface PinCodeProps {
+export interface PinCodeProps extends Pick<
+  InputProps,
+  | 'ariaDescribedby'
+  | 'ariaErrormessage'
+  | 'ariaInvalid'
+  | 'ariaLabel'
+  | 'ariaLabelledby'
+  | 'ariaRequired'
+  | 'id'
+  | 'validateStatus'
+> {
   autoFocus?: boolean;
   className?: HTMLAttributes['class'];
   count?: number;
@@ -14,6 +24,7 @@ export interface PinCodeProps {
   modelValue?: string | undefined;
   size?: InputSize;
   style?: StyleValue;
+  tabIndex?: HTMLAttributes['tabindex'];
   value?: string | undefined;
 }
 

@@ -1,7 +1,8 @@
-import { mount } from '@vue/test-utils';
-import { nextTick } from 'vue';
+import { flushPromises, mount } from '@vue/test-utils';
+import { h, nextTick } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
+import { Form, type FormApi } from '../form';
 import PinCode, { PinCode as PinCodeNamed } from './index';
 import type { PinCodeExposed } from './types';
 
@@ -23,6 +24,74 @@ function paste(element: HTMLInputElement, text: string): Event {
 }
 
 describe('PinCode', () => {
+  it('将原生无障碍属性和 tabindex 传到每格，且只给首格设置 id', async () => {
+    const wrapper = mount(PinCode, {
+      props: { autoFocus: false, count: 2 },
+      attrs: {
+        id: 'code',
+        tabindex: -1,
+        'aria-label': '验证码',
+        'aria-describedby': 'code-hint',
+        validateStatus: 'warning',
+      },
+    });
+    expect(inputs(wrapper).map((input) => input.element.id)).toEqual(['code', '']);
+    expect(wrapper.attributes('id')).toBeUndefined();
+    for (const input of inputs(wrapper)) {
+      expect(input.attributes()).toMatchObject({
+        tabindex: '-1',
+        'aria-label': '验证码',
+        'aria-describedby': 'code-hint',
+      });
+      expect(input.element.closest('.semi-input-wrapper-warning')).not.toBeNull();
+    }
+    await wrapper.setProps({ ariaDescribedby: 'new-hint', ariaInvalid: false, tabIndex: 0 });
+    expect(inputs(wrapper).map((input) => input.attributes('aria-describedby'))).toEqual([
+      'new-hint',
+      'new-hint',
+    ]);
+    for (const input of inputs(wrapper)) {
+      expect(input.attributes()).toMatchObject({ tabindex: '0', 'aria-invalid': 'false' });
+      expect(input.attributes('aria-required')).toBeUndefined();
+    }
+  });
+
+  it('Form.PinCode 的每格关联 Form 标签、辅助文字和实际校验错误', async () => {
+    let api!: FormApi;
+    const wrapper = mount(Form, {
+      props: { getFormApi: (value) => (api = value) },
+      slots: {
+        default: () =>
+          h(Form.PinCode, {
+            field: 'pin',
+            label: '验证码',
+            extraText: '四位数字',
+            count: 4,
+            autoFocus: false,
+            rules: [{ required: true, message: '请输入验证码' }],
+          }),
+      },
+    });
+    const label = wrapper.get('label').element;
+    expect(label.htmlFor).toBe(inputs(wrapper)[0]!.element.id);
+    expect(inputs(wrapper).filter((input) => input.element.id === label.htmlFor)).toHaveLength(1);
+    const validation = api.validate();
+    await expect(validation).rejects.toBeDefined();
+    await flushPromises();
+    for (const input of inputs(wrapper)) {
+      expect(input.attributes()).toMatchObject({
+        'aria-labelledby': label.id,
+        'aria-required': 'true',
+        'aria-invalid': 'true',
+      });
+      expect(wrapper.get('#' + input.attributes('aria-describedby')).text()).toBe('四位数字');
+      expect(wrapper.get('#' + input.attributes('aria-errormessage')).text()).toContain(
+        '请输入验证码',
+      );
+      expect(input.element.closest('.semi-input-wrapper-error')).not.toBeNull();
+    }
+  });
+
   it('公开入口保持 default 与 named 导出一致', () => {
     expect(PinCode).toBe(PinCodeNamed);
   });
