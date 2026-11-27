@@ -13,7 +13,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('InputNumber 参考场景来自本地 v2.102.0 并保留 spinbutton/步进器 DOM', async ({ page }) => {
+test('InputNumber 参考场景来自本地 v2.105.2 并保留 spinbutton/步进器 DOM', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));
@@ -40,8 +40,7 @@ test('InputNumber 参考场景来自本地 v2.102.0 并保留 spinbutton/步进�
   await expect(scenario.getByRole('spinbutton')).toHaveCount(8);
   await expect(scenario.locator('.semi-input-number-suffix-btns')).toHaveCount(6);
   await expect(scenario.locator('.input-number-target-disabled input')).toBeDisabled();
-  expect(runtimeErrors).toHaveLength(1);
-  expect(runtimeErrors[0]).toContain('scientificNotation');
+  expect(runtimeErrors).toEqual([]);
 });
 
 test('InputNumber React/Vue 样式、几何、步进、键盘、货币与 ARIA 一致', async ({ context }) => {
@@ -93,8 +92,7 @@ test('InputNumber React/Vue 样式、几何、步进、键盘、货币与 ARIA �
       '1.23456789012345e+14',
     ),
   ]);
-  expect(pair.react.runtimeErrors).toHaveLength(1);
-  expect(pair.react.runtimeErrors[0]).toContain('scientificNotation');
+  expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);
 });
 

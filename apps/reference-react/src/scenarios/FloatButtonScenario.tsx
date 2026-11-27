@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import FloatButton from '@semi-v2.102.0/float-button';
-import FloatButtonGroup from '@semi-v2.102.0/float-button-group';
-import { IconBell, IconCustomerSupport, IconHelpCircle, IconPlus } from '@semi-v2.102.0/icons';
+import FloatButton from '@semi-v2.105.2/float-button';
+import FloatButtonGroup from '@semi-v2.105.2/float-button-group';
+import { IconBell, IconCustomerSupport, IconHelpCircle, IconPlus } from '@semi-v2.105.2/icons';
 
 const inlineStyle: React.CSSProperties = {
   position: 'relative',

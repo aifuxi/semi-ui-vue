@@ -32,7 +32,7 @@ function toggleBasic(): void {
         <div class="collapsible-scenario__content collapsible-scenario__content--hero">
           <strong>从设计到交付</strong>
           <p>统一结构、行为与视觉证据，让每次展开都保持确定。</p>
-          <span>v2.102.0 fixed source</span>
+          <span>v2.105.2 fixed source</span>
         </div>
       </Collapsible>
     </section>

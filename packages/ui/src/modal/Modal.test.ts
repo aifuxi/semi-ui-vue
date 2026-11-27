@@ -109,7 +109,9 @@ describe('Modal', () => {
     expect(outer.style.cursor).toBe('');
     expect(content.style.cursor).toBe('move');
     expect(content.style.position).toBe('relative');
-    const cancel = content.querySelector<HTMLButtonElement>('[aria-label="cancel"]')!;
+    const cancel = content.querySelector<HTMLButtonElement>(
+      '[x-semi-children-alias="cancelText"]',
+    )!;
     expect(cancel).not.toBeNull();
     cancel.click();
     await nextTick();
@@ -253,14 +255,14 @@ describe('Modal', () => {
 
     await wrapper.setProps({ visible: true });
     await nextTick();
-    (document.querySelector('[aria-label="confirm"]') as HTMLButtonElement).click();
+    (document.querySelector('[x-semi-children-alias="okText"]') as HTMLButtonElement).click();
     await nextTick();
-    expect(document.querySelector('[aria-label="confirm"]')?.classList).toContain(
+    expect(document.querySelector('[x-semi-children-alias="okText"]')?.classList).toContain(
       'semi-button-loading',
     );
     resolveOk();
     await flushPromises();
-    expect(document.querySelector('[aria-label="confirm"]')?.classList).not.toContain(
+    expect(document.querySelector('[x-semi-children-alias="okText"]')?.classList).not.toContain(
       'semi-button-loading',
     );
 
@@ -318,7 +320,7 @@ describe('Modal', () => {
       'onUpdate:visible': (visible: boolean) => void wrapper.setProps({ visible }),
     });
     await nextTick();
-    expect((document.activeElement as HTMLElement)?.getAttribute('aria-label')).toBe('cancel');
+    expect(document.activeElement?.textContent).toBe('取消');
 
     const buttons = [...document.querySelectorAll<HTMLButtonElement>('.semi-modal-content button')];
     const first = buttons[0]!;
@@ -389,10 +391,10 @@ describe('Modal', () => {
       onOk: () => Promise.reject(new Error('expected')),
     });
     await nextTick();
-    (document.querySelector('[aria-label="confirm"]') as HTMLButtonElement).click();
+    (document.querySelector('[x-semi-children-alias="okText"]') as HTMLButtonElement).click();
     await flushPromises();
     expect(document.querySelector('.semi-modal-confirm')).not.toBeNull();
-    expect(document.querySelector('[aria-label="confirm"]')?.classList).not.toContain(
+    expect(document.querySelector('[x-semi-children-alias="okText"]')?.classList).not.toContain(
       'semi-button-loading',
     );
   });
@@ -412,9 +414,13 @@ describe('Modal', () => {
     });
     await nextTick();
     await nextTick();
-    expect(document.querySelector('[aria-label="cancel"]')?.textContent).toContain('No');
-    expect(document.querySelector('[aria-label="confirm"]')?.textContent).toContain('Yes');
-    (document.querySelector('[aria-label="cancel"]') as HTMLButtonElement).click();
+    expect(document.querySelector('[x-semi-children-alias="cancelText"]')?.textContent).toContain(
+      'No',
+    );
+    expect(document.querySelector('[x-semi-children-alias="okText"]')?.textContent).toContain(
+      'Yes',
+    );
+    (document.querySelector('[x-semi-children-alias="cancelText"]') as HTMLButtonElement).click();
     await nextTick();
     expect(document.querySelector('.semi-modal-confirm')).toBeNull();
     wrapper.unmount();

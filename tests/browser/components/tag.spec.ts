@@ -13,7 +13,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Tag 参考场景来自本地 v2.102.0 并保留关闭、Group 与 Split 契约', async ({ page }) => {
+test('Tag 参考场景来自本地 v2.105.2 并保留关闭、Group 与 Split 契约', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

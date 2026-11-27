@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import HotKeys from '@semi-v2.102.0/hot-keys';
+import HotKeys from '@semi-v2.105.2/hot-keys';
 
 export function HotKeysScenario(): React.ReactElement {
   const localTarget = useRef<HTMLDivElement>(null);

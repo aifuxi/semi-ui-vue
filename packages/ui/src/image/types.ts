@@ -180,7 +180,7 @@ export interface ImagePreviewState {
 export interface ImagePreviewInnerState {
   currentIndex: number;
   direction: string;
-  imgLoadStatus: Record<string, boolean>;
+  imgLoadStatus: Map<string, boolean>;
   imgSrc: string[];
   preloadAfterVisibleChange: boolean;
   ratio: ImageRatioType;

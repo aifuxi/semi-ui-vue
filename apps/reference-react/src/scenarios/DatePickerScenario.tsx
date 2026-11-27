@@ -1,5 +1,5 @@
 import React from 'react';
-import DatePicker from '@semi-v2.102.0/date-picker';
+import DatePicker from '@semi-v2.105.2/date-picker';
 import {
   readDatePickerReviewProps,
   readInputReviewProps,

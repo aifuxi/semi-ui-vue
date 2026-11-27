@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Notification from '@semi-v2.102.0/notification';
+import Notification from '@semi-v2.105.2/notification';
 
 export interface NotificationScenarioProps {
   direction?: 'ltr' | 'rtl';

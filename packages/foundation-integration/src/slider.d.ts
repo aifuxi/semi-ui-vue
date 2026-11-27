@@ -28,6 +28,7 @@ export interface SliderAdapter<Props, State> extends DefaultAdapter<Props, State
   getOverallVars(): { dragging: boolean[] };
   updateDisabled(disabled: boolean): void;
   transNewPropsToState(nextState: Partial<State>, callback?: () => void): void;
+  notifyBlur(event: FocusEvent): void;
   notifyChange(value: number | number[]): void;
   setDragging(value: boolean[]): void;
   updateCurrentValue(value: number | number[]): void;

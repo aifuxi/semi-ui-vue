@@ -13,7 +13,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Illustrations 参考场景来自本地 v2.102.0 并保留完整公开导出', async ({ page }) => {
+test('Illustrations 参考场景来自本地 v2.105.2 并保留完整公开导出', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

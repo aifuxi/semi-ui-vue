@@ -1,6 +1,6 @@
 # @aifuxi/semi-illustrations-vue
 
-从固定 Semi Design `v2.102.0` 资源生成的 Vue 3 light/dark 插画组件。
+从固定 Semi Design `v2.105.2` 资源生成的 Vue 3 light/dark 插画组件。
 
 > 本包是独立 Vue 复刻项目的一部分，不是 Semi Design 官方 Vue 版本。
 

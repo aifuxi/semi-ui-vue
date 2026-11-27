@@ -181,8 +181,8 @@ for (const customContainer of [false, true]) {
       element.style.setProperty('--semi-line-height-regular', '35px');
     });
     await expectTypography(content, '23px', '35px');
-    // 固定 Semi 的取消按钮保留 aria-label=cancel，中文是可见文案。
-    await dialog.getByRole('button', { name: 'cancel', exact: true }).click();
+    // 通过本地化的可见名称定位取消按钮。
+    await dialog.getByRole('button', { name: '取消', exact: true }).click();
     await expect(dialog).toHaveCount(0);
     // 正常关闭后再次打开，观察订阅和容器绑定仍须正常工作。
     await open.click();

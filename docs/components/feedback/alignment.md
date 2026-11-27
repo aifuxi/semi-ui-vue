@@ -1,6 +1,6 @@
 # Feedback 对齐矩阵
 
-状态：`ready`。唯一基线为 Semi Design `v2.102.0` / `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`。
+状态：`ready`。唯一基线为 Semi Design `v2.105.2` / `7db305200a2b0fd2b20f0559819f2fa55631e2ba`。
 
 ## 路线与依赖
 
@@ -19,20 +19,20 @@
 
 ## API 与 Vue 映射
 
-| React v2.102.0           | 默认值               | Vue 契约                                       | 门禁                                                     |
-| ------------------------ | -------------------- | ---------------------------------------------- | -------------------------------------------------------- |
-| `mode`                   | `popup`              | `mode="popup                                   | modal"`                                                  | 两种 Portal 容器和默认参数 |
-| `type`                   | `emoji`              | `type="text                                    | emoji                                                    | radio                      | checkbox | custom"` | 五种内容、class 与提交禁用 |
-| `visible`                | 容器默认 `false`     | `visible` + `v-model:visible`                  | 受控可见性只由父级回写                                   |
-| `onValueChange`          | noop                 | `@value-change` / `onValueChange`              | 子控件回调先于总值回调                                   |
-| `textAreaProps`          | `{}`                 | `textAreaProps`                                | 用户 placeholder/onChange 覆盖默认值                     |
-| `radioGroupProps`        | `{}`                 | `radioGroupProps`                              | 强制 vertical；用户 `direction` 可按上游 spread 顺序覆盖 |
-| `checkboxGroupProps`     | `{}`                 | `checkboxGroupProps`                           | 同上；空数组禁用提交                                     |
-| `renderContent(content)` | -                    | `renderContent`；推荐 `#content="{ content }"` | 可包裹五类默认内容                                       |
-| React `children`         | -                    | `#default`，仅 `type=custom` 作为原始内容      | 不克隆/修改调用方 VNode                                  |
-| `footer`                 | falsy 时默认 footer  | `footer` prop / `#footer`                      | popup 自定义 footer；默认按钮顺序取消→提交               |
-| `onOk/onCancel`          | noop，可返回 Promise | `onOk/onCancel` 回调 prop                      | pending loading、resolve 清值、reject 保值               |
-| Modal/SideSheet props    | 各容器默认值         | 同名透传                                       | 用户显式值按固定 spread 顺序覆盖 Feedback 默认值         |
+| React v2.102.0           | 默认值               | Vue 契约                                       | 门禁                                                          |
+| ------------------------ | -------------------- | ---------------------------------------------- | ------------------------------------------------------------- |
+| `mode`                   | `popup`              | `mode="popup                                   | modal"`                                                       | 两种 Portal 容器和默认参数 |
+| `type`                   | `emoji`              | `type="text                                    | emoji                                                         | radio                      | checkbox | custom"` | 五种内容、class 与提交禁用 |
+| `visible`                | 容器默认 `false`     | `visible` + `v-model:visible`                  | 受控可见性只由父级回写                                        |
+| `onValueChange`          | noop                 | `@value-change` / `onValueChange`              | 子控件回调先于总值回调                                        |
+| `textAreaProps`          | `{}`                 | `textAreaProps`                                | 用户 placeholder/onChange 覆盖默认值，占位符缺省时使用 Locale |
+| `radioGroupProps`        | `{}`                 | `radioGroupProps`                              | 强制 vertical；用户 `direction` 可按上游 spread 顺序覆盖      |
+| `checkboxGroupProps`     | `{}`                 | `checkboxGroupProps`                           | 同上；空数组禁用提交                                          |
+| `renderContent(content)` | -                    | `renderContent`；推荐 `#content="{ content }"` | 可包裹五类默认内容                                            |
+| React `children`         | -                    | `#default`，仅 `type=custom` 作为原始内容      | 不克隆/修改调用方 VNode                                       |
+| `footer`                 | falsy 时默认 footer  | `footer` prop / `#footer`                      | popup 自定义 footer；默认按钮顺序取消→提交                    |
+| `onOk/onCancel`          | noop，可返回 Promise | `onOk/onCancel` 回调 prop                      | pending loading、resolve 清值、reject 保值                    |
+| Modal/SideSheet props    | 各容器默认值         | 同名透传                                       | 用户显式值按固定 spread 顺序覆盖 Feedback 默认值              |
 
 ## 状态、事件与异步顺序
 
@@ -55,7 +55,7 @@
 
 - Modal/SideSheet 的 Escape、mask、焦点恢复、body scroll、Teleport 和 ARIA 沿用已 ready 容器；Feedback 不新增全局监听器。
 - 自定义 `getPopupContainer` 必须在首次可见时就是 Portal 父节点，并在卸载后无残留；同时覆盖 body 默认容器。
-- emoji 在固定 Adapter 中是可点击 `span`，没有 role/tabIndex/键盘处理；Vue 不擅自创造不同于基线的键盘状态机。Modal/SideSheet 内的原生按钮、Radio、Checkbox 和 TextArea 保留已有键盘/ARIA 行为。
+- emoji 使用可聚焦的 `role="button"` 和 `aria-pressed`。Enter 和 Space 复用同一选择路径，文本或坏评原因分别读取 `Feedback.placeholder` 和 `Feedback.optionalPlaceholder`。
 - popup 默认 `mask=false`、`disableScroll=false`、`canVerticalSetWidth=true`、`placement=bottom`、`height=auto`；调用方显式覆盖仍生效。
 
 ## 国际化、SSR 与发布

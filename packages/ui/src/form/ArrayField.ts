@@ -3,6 +3,7 @@ import {
   defineComponent,
   inject,
   onBeforeUnmount,
+  onMounted,
   provide,
   reactive,
   ref,
@@ -36,18 +37,29 @@ export default defineComponent({
       : Array.isArray(formValue)
         ? cloneDeep(formValue)
         : [];
-    const keys = ref(initial.map(nextKey));
-    let cachedUpdateKey = existingArrayField?.updateKey;
+    // Form 的插槽在子组件 setup 前已取得 values。先发布默认值，再渲染依赖它的行。
+    const deferInitialRows = formValue === undefined && initial.length > 0;
+    const keys = ref(deferInitialRows ? [] : initial.map(nextKey));
     const arrayContext = reactive({
       inArrayField: true,
       shouldUseInitValue: !existingArrayField,
     });
 
     context.updater.registerArrayField(props.field, cloneDeep(initial));
-    context.updater.updateStateValue(props.field, cloneDeep(initial), {
-      notNotify: true,
-      notUpdate: true,
-    });
+    let cachedUpdateKey = context.updater.getArrayField(props.field)?.updateKey;
+    const applyInitialValue = (notUpdate: boolean): void => {
+      context.updater.updateStateValue(props.field, cloneDeep(initial), {
+        notNotify: true,
+        notUpdate,
+      });
+    };
+    if (deferInitialRows) {
+      onMounted(() => {
+        if (context.updater.getValue(props.field) === undefined) applyInitialValue(false);
+      });
+    } else {
+      applyInitialValue(true);
+    }
     provide(arrayFieldContextKey, arrayContext);
 
     watch(

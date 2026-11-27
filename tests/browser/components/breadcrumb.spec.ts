@@ -15,7 +15,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Breadcrumb 参考场景来自本地 v2.102.0 并保留图标、链接、折叠与 active DOM', async ({
+test('Breadcrumb 参考场景来自本地 v2.105.2 并保留图标、链接、折叠与 active DOM', async ({
   page,
 }) => {
   const requestedUrls: string[] = [];

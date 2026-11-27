@@ -115,6 +115,18 @@ function handleHeaderClick(event: MouseEvent): void {
     context.onClick(props.itemKey, event);
   }
 }
+function handleHeaderKeyDown(event: KeyboardEvent): void {
+  if (
+    props.disabled ||
+    event.target !== event.currentTarget ||
+    (event.key !== 'Enter' && event.key !== ' ')
+  )
+    return;
+
+  event.preventDefault();
+  const trigger = context.clickHeaderToExpand.value ? event.currentTarget : headerIcon.value;
+  if (trigger instanceof HTMLElement) trigger.click();
+}
 </script>
 
 <template>
@@ -127,6 +139,7 @@ function handleHeaderClick(event: MouseEvent): void {
       :aria-expanded="active"
       :aria-owns="ariaOwner"
       @click="handleHeaderClick"
+      @keydown="handleHeaderKeyDown"
     >
       <template v-if="stringHeader">
         <span

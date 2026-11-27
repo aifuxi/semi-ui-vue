@@ -130,6 +130,7 @@ onBeforeUnmount(() => foundation.handleRemoveLink());
       role="link"
       tabindex="0"
       :aria-disabled="props.disabled"
+      :aria-current="active ? 'location' : undefined"
       :aria-details="active ? 'active' : undefined"
       :title="
         !context.showTooltip.value && typeof props.title === 'string' ? props.title : undefined
@@ -137,7 +138,7 @@ onBeforeUnmount(() => foundation.handleRemoveLink());
       :style="titleStyle"
       :class="titleClasses"
       @click="handleClick"
-      @keypress="handleClick"
+      @keydown.enter="handleClick"
     >
       <Text
         v-if="context.showTooltip.value"

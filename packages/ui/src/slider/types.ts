@@ -40,6 +40,7 @@ export interface SliderProps {
 
 export interface SliderEmits {
   afterChange: [value: SliderValue];
+  blur: [event: FocusEvent];
   change: [value: SliderValue];
   mouseUp: [event: MouseEvent];
   'update:modelValue': [value: SliderValue];

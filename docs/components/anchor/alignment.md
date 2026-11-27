@@ -47,7 +47,7 @@
 - Link 挂载时通过 LinkFoundation 注册 href，href 更新时先移除旧值再注册新值，卸载时移除；重复 href 按上游数组语义保留。
 - Anchor 维护注册顺序与父 href，派生每个祖先的后代集合；不读取或克隆子 VNode，从而避免 Vue slot 函数和 React children 结构的错误等同。
 - 点击可用链接时，先更新 activeLink；DOM 更新后的微任务中设置滑块 top 并滚动目标；随后依次发出 `change`、`click`。点击同一链接不重复发出 `change`，仍发出 `click`。
-- 禁用链接保留 focusable `role=link`，但点击和 keypress 均不改变状态或发事件。
+- 禁用链接保留可聚焦的 `role="link"`，点击和按 Enter 均不改变状态或发事件。
 - 滚动期间 clickLink 为 true 时不重算；防抖结束后恢复。普通滚动按链接内容节点相对容器顶部减 `offsetTop` 的最后一个负值确定 activeLink。
 - `defaultAnchor` 走同一激活与滚动路径，但 `shouldNotify=false`，不污染用户事件序列。
 
@@ -56,13 +56,13 @@
 - 根：`div.semi-anchor[role=navigation]`，缺省 `aria-label="Side navigation"`，尺寸增加 `.semi-anchor-size-{size}`。
 - 滑轨：`div.semi-anchor-slide.semi-anchor-slide-{railTheme}[aria-hidden=true] > span.semi-anchor-slide-bar-*`；存在 activeLink 时增加 `-active`。
 - 链接容器：`.semi-anchor-link-wrapper[role=list]`；每项 `.semi-anchor-link[role=listitem]`，可交互标题 `.semi-anchor-link-title[role=link][tabindex=0]`。
-- active/disabled/Tooltip 分别保留 `-active`、`-disabled`、`.semi-anchor-link-tooltip*` class；active 标题保留 `aria-details="active"`。
+- active/disabled/Tooltip 分别保留 `-active`、`-disabled`、`.semi-anchor-link-tooltip*` class；当前链接提供 `aria-current="location"`，并保留既有 `aria-details="active"`。
 - LTR 使用每层 `padding-left: 8px`，RTL 使用 `padding-right: 8px`；滑轨由固定 `.semi-rtl` SCSS 移到右侧。
 - 逐组件 CSS 编译 theme/global、Anchor、Typography、Tooltip、Popover 与 Portal 依赖，保留 `.semi-*` 和 `--semi-*`。
 
 ## 键盘、焦点、ARIA、滚动与清理
 
-- 固定上游使用 `onKeyPress`：可用链接在 Enter keypress 时与鼠标点击相同；不额外实现上游没有的方向键 roving tabindex。
+- 对齐 `v2.105.2` 的键盘触发条件。可用链接通过 Enter `keydown` 激活，其他键保留原有浏览器行为。
 - 标题保留 focus-visible outline；禁用标题 `aria-disabled=true`，普通字符串 title 且未开 Tooltip 时保留原生 `title` 属性。
 - 容器支持 Window 与 Element。点击滚动选择包含目标的最内层可滚动祖先，应用 `targetOffset`；滚动激活使用容器自身 bounding top。
 - Anchor 挂载时注册两个 scroll 监听（节流状态更新、防抖 clickLink 复位）和可用时的 ResizeObserver；容器变更或卸载时取消 listener、timer 和 observer。

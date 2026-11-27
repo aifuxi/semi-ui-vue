@@ -12,6 +12,7 @@ export type ModalActionHandler = (event: MouseEvent | KeyboardEvent) => void | P
 export type ModalButtonProps = ButtonProps & Record<string, unknown>;
 
 export interface ModalLocale {
+  close?: string;
   cancel: string;
   confirm: string;
 }

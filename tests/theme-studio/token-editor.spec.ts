@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { expect, test, type Page } from '@playwright/test';
 
-/** 固定默认颜色取自 Semi 2.102.0 编译产物，不调用颜色生成器计算默认值。 */
+/** 固定默认颜色取自 Semi 2.105.2 编译产物，不调用颜色生成器计算默认值。 */
 const baselinePrimary = { light: 'rgb(0, 100, 250)', dark: 'rgb(84, 169, 255)' };
 /** 文件断言只访问本用例通过下载获得的主题结构。 */
 interface ExportedTheme {
@@ -288,7 +288,7 @@ test('无效 JSON、未知变量和无效颜色导入均不污染当前主题', 
 test('引用颜色实时联动，循环与错误类型保留上次合法设计', async ({ page }) => {
   await selectToken(page, '色盘', '--semi-color-primary');
   await applyValue(page, 'var(--semi-color-danger)');
-  /** 固定 Semi 2.102.0 的危险色来自原始 red-5，而不是主色本身。 */
+  /** 固定 Semi 2.105.2 的危险色来自原始 red-5，而不是主色本身。 */
   const danger = 'rgb(249, 57, 32)';
   await expect(page.getByTestId('global-primary')).toHaveCSS('background-color', danger);
   await selectToken(page, '色盘', '--semi-color-danger');

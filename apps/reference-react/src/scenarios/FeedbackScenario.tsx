@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
-import Feedback from '@semi-v2.102.0/feedback';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
+import Feedback from '@semi-v2.105.2/feedback';
 
 export interface FeedbackScenarioProps {
   direction: 'ltr' | 'rtl';

@@ -1,5 +1,5 @@
 import React from 'react';
-import Space from '@semi-v2.102.0/space';
+import Space from '@semi-v2.105.2/space';
 
 const ALIGNMENTS = ['start', 'center', 'end', 'baseline'] as const;
 

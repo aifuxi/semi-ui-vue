@@ -14,7 +14,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('OverflowList 参考场景来自本地 v2.102.0 公开源码', async ({ page }) => {
+test('OverflowList 参考场景来自本地 v2.105.2 公开源码', async ({ page }) => {
   test.setTimeout(120_000);
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];

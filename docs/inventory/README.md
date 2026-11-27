@@ -1,11 +1,11 @@
-# Semi Design v2.102.0 上游 Inventory
+# Semi Design v2.105.2 上游 Inventory
 
 本目录由 `pnpm inventory:generate` 从只读 `vendor/semi-design` 生成。JSON 是后续组件对齐矩阵、里程碑规划和缺口检查的机器可读输入；不要手工修改生成文件。
 
 ## 固定来源
 
-- Tag：`v2.102.0`
-- Commit：`cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`
+- Tag：`v2.105.2`
+- Commit：`7db305200a2b0fd2b20f0559819f2fa55631e2ba`
 - 根入口：`vendor/semi-design/packages/semi-ui/index.ts`
 
 ## 汇总
@@ -20,7 +20,7 @@
 | 中文 / 英文文档                |     102 / 102 |
 | Foundation 顶层目录            |            85 |
 | Locale                         |            57 |
-| 稳定图标 / Lab 图标 / 插画导出 | 526 / 84 / 16 |
+| 稳定图标 / Lab 图标 / 插画导出 | 530 / 84 / 16 |
 | 默认主题 CSS Token             |           375 |
 
 ## Inventory 覆盖面
@@ -51,25 +51,10 @@
 ### 没有上游单元测试文件的根模块
 
 - `_base`
-- `_utils`
-- `aiChatDialogue`
-- `audioPlayer`
-- `chat`
-- `codeHighlight`
 - `configProvider`
-- `cropper`
-- `feedback`
-- `floatButton`
-- `highlight`
 - `iconButton`
 - `icons`
-- `jsonViewer`
 - `locale`
-- `lottie`
-- `resizable`
-- `sideBar`
-- `userGuide`
-- `videoPlayer`
 
 ### 没有上游 Story 文件的根模块
 

@@ -46,7 +46,7 @@ export class ResizableFoundation<Props, State> {
   destroy(): void;
   readonly sizeStyle: { width: string; height: string };
   onResizeStart(
-    event: MouseEvent,
+    event: MouseEvent | TouchEvent,
     direction: FoundationResizeDirection,
     type: FoundationResizeEventType,
   ): void;
@@ -64,7 +64,7 @@ export class ResizeGroupFoundation<Props, State> {
   ensureConstraint(): void;
   onResizeStart(
     handlerIndex: number,
-    event: MouseEvent | Touch,
+    event: MouseEvent | TouchEvent,
     type: FoundationResizeEventType,
   ): void;
   onMouseMove(event: MouseEvent): void;

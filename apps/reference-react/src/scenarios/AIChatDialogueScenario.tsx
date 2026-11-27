@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import AIChatDialogue, { type Message } from '@semi-v2.102.0/ai-chat-dialogue';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
-import Button from '@semi-v2.102.0/button';
-import Input from '@semi-v2.102.0/input';
+import AIChatDialogue, { type Message } from '@semi-v2.105.2/ai-chat-dialogue';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
+import Button from '@semi-v2.105.2/button';
+import Input from '@semi-v2.105.2/input';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 export function AIChatDialogueScenario({

@@ -145,18 +145,46 @@ describe('UserGuide', () => {
     wrapper.unmount();
   });
 
-  it('keeps the documented step mask field aligned with the pinned runtime deviation', async () => {
+  it('applies the step mask, class and zero padding in the shared popup container', async () => {
     const element = target();
+    const container = document.createElement('div');
+    document.body.append(container);
     const wrapper = mount(UserGuide, {
       attachTo: document.body,
       props: {
         visible: true,
         mask: true,
-        steps: [{ target: element, title: 'Masked', mask: false }],
+        getPopupContainer: () => container,
+        zIndex: 3000,
+        steps: [
+          {
+            target: element,
+            title: 'Unmasked',
+            mask: false,
+            className: 'first',
+            spotlightPadding: 0,
+          },
+          { target: element, title: 'Masked', className: 'second' },
+        ],
       },
     });
-    await nextTick();
-    expect(document.querySelectorAll('.semi-userGuide-spotlight-transparent-rect')).toHaveLength(4);
+    await flushPromises();
+    const spotlight = container.querySelector<SVGSVGElement>('.semi-userGuide-spotlight');
+    expect(spotlight?.style.zIndex).toBe('2999');
+    expect(spotlight?.querySelector('.semi-userGuide-spotlight-rect')?.getAttribute('width')).toBe(
+      '80',
+    );
+    expect(container.querySelector('.first.semi-userGuide-popover')).not.toBeNull();
+    expect(spotlight?.querySelectorAll('.semi-userGuide-spotlight-transparent-rect')).toHaveLength(
+      0,
+    );
+
+    buttonWithText('下一步')?.click();
+    await flushPromises();
+    expect(container.querySelector('.second.semi-userGuide-popover')).not.toBeNull();
+    expect(spotlight?.querySelectorAll('.semi-userGuide-spotlight-transparent-rect')).toHaveLength(
+      4,
+    );
     wrapper.unmount();
   });
 

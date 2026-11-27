@@ -17,7 +17,7 @@ import {
   waitForStableRendering,
 } from '../parity-harness';
 
-test('Popover 参考场景来自本地 v2.102.0 并保留 Portal、卡片、箭头与角色', async ({ page }) => {
+test('Popover 参考场景来自本地 v2.105.2 并保留 Portal、卡片、箭头与角色', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

@@ -81,6 +81,8 @@ export interface FeedbackSlots {
 }
 
 export interface FeedbackLocale {
+  optionalPlaceholder?: string;
+  placeholder?: string;
   cancel: string;
   submit: string;
 }

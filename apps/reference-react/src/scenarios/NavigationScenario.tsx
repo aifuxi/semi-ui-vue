@@ -1,5 +1,5 @@
 import React from 'react';
-import Navigation from '@semi-v2.102.0/navigation';
+import Navigation from '@semi-v2.105.2/navigation';
 
 const items = [
   { itemKey: 'home', text: '首页' },

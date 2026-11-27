@@ -1,7 +1,7 @@
 {
   "name": "@aifuxi/semi-ui-vue",
   "version": "2.2.13",
-  "description": "An independent Vue 3 implementation aligned with Semi Design v2.102.0.",
+  "description": "An independent Vue 3 implementation aligned with Semi Design v2.105.2.",
   "license": "MIT",
   "author": "aifuxi",
   "keywords": [

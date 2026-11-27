@@ -33,7 +33,7 @@ const status = shallowRef('等待操作');
           <Button theme="borderless" @click="status = '查看详情'">查看详情</Button>
           <Button theme="solid" @click="status = '开始使用'">开始使用</Button>
         </template>
-        <template #footer><Text type="tertiary">固定 v2.102.0 基线</Text></template>
+        <template #footer><Text type="tertiary">固定 v2.105.2 基线</Text></template>
       </Card>
     </section>
 

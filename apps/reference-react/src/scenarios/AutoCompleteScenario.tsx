@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import AutoComplete from '@semi-v2.102.0/auto-complete';
-import { IconSearch } from '@semi-v2.102.0/icons';
+import AutoComplete from '@semi-v2.105.2/auto-complete';
+import { IconSearch } from '@semi-v2.105.2/icons';
 import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 const domains = ['gmail.com', '163.com', 'qq.com'];

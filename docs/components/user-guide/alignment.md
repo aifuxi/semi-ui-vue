@@ -1,6 +1,6 @@
 # UserGuide 对齐矩阵
 
-状态：`ready`。唯一基线为 Semi Design `v2.102.0` / `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`。
+状态：`ready`。唯一基线为 Semi Design `v2.105.2` / `7db305200a2b0fd2b20f0559819f2fa55631e2ba`。
 
 ## 路线与依赖
 
@@ -20,24 +20,24 @@
 
 ## API 与 Vue 映射
 
-| React v2.102.0                        | 默认值        | Vue 契约                                      | 门禁                                                           |
-| ------------------------------------- | ------------- | --------------------------------------------- | -------------------------------------------------------------- |
-| `current`                             | `0`           | `current`；`v-model:current` / `@change`      | 缺省为非受控；显式 `0` 仍是受控；prev/next 事件顺序            |
-| `visible`                             | `false`       | `visible`                                     | 打开重置非受控 current；关闭恢复 body；不擅自自动关闭          |
-| `mask`                                | `true`        | `mask`                                        | 缺省、显式 false/true；popup SVG 与 modal mask                 |
-| `mode`                                | `popup`       | `mode="popup                                  | modal"`                                                        | 两种模式，隐藏/空 steps 不渲染                           |
-| `steps`                               | `[]`          | `UserGuideStepItem[]`                         | target Element/函数，step 覆盖，VNodeChild 内容                |
-| `finishText`                          | locale.finish | `finishText`                                  | 最后一步覆盖；否则跟随 Locale                                  |
-| `nextButtonProps` / `prevButtonProps` | `{}`          | Vue Button props + attrs + `content`          | 用户 props 按上游 spread 顺序覆盖默认；内容单独映射            |
-| `showPrevButton` / `showSkipButton`   | `true`        | 同名 Boolean props                            | 缺省、显式 false/true；首步/末步条件                           |
-| `spotlightPadding`                    | `5`           | 同名 number                                   | 固定 Adapter 使用 truthy fallback；step/global 的 0 均回退为 5 |
-| `theme`                               | `default`     | `default                                      | primary`                                                       | 全局或 step 任一为 primary 即启用 primary 颜色与按钮主题 |
-| `position`                            | `bottom`      | Popover position                              | step position 优先；showArrow=false                            |
-| `className` / `style`                 | -             | `class`/`className`、`style`                  | 仅作用于 popup Popover，与上游一致                             |
-| `getPopupContainer`                   | -             | 同名函数                                      | 固定 Adapter 仅用它决定是否锁 body，不把其误宣称为 Portal 容器 |
-| `zIndex`                              | `1030`        | 同名 number                                   | 固定 Adapter 只施加于 spotlight SVG                            |
-| callbacks                             | noop          | `@change/@next/@prev/@skip/@finish`           | 参数与顺序一致；`update:current` 与 change 同步发出            |
-| ReactNode 字段                        | -             | step VNodeChild；`#cover/#title/#description` | scoped slot 优先于当前 step 字段，模板调用无需 JSX             |
+| React v2.102.0                        | 默认值        | Vue 契约                                      | 门禁                                                  |
+| ------------------------------------- | ------------- | --------------------------------------------- | ----------------------------------------------------- |
+| `current`                             | `0`           | `current`；`v-model:current` / `@change`      | 缺省为非受控；显式 `0` 仍是受控；prev/next 事件顺序   |
+| `visible`                             | `false`       | `visible`                                     | 打开重置非受控 current；关闭恢复 body；不擅自自动关闭 |
+| `mask`                                | `true`        | `mask`                                        | 缺省、显式 false/true；popup SVG 与 modal mask        |
+| `mode`                                | `popup`       | `mode="popup                                  | modal"`                                               | 两种模式，隐藏/空 steps 不渲染                           |
+| `steps`                               | `[]`          | `UserGuideStepItem[]`                         | target Element/函数，step 覆盖，VNodeChild 内容       |
+| `finishText`                          | locale.finish | `finishText`                                  | 最后一步覆盖；否则跟随 Locale                         |
+| `nextButtonProps` / `prevButtonProps` | `{}`          | Vue Button props + attrs + `content`          | 用户 props 按上游 spread 顺序覆盖默认；内容单独映射   |
+| `showPrevButton` / `showSkipButton`   | `true`        | 同名 Boolean props                            | 缺省、显式 false/true；首步/末步条件                  |
+| `spotlightPadding`                    | `5`           | 同名 number                                   | 步骤值优先，显式 `0` 表示无外扩                       |
+| `theme`                               | `default`     | `default                                      | primary`                                              | 全局或 step 任一为 primary 即启用 primary 颜色与按钮主题 |
+| `position`                            | `bottom`      | Popover position                              | step position 优先；showArrow=false                   |
+| `className` / `style`                 | -             | `class`/`className`、`style`                  | 仅作用于 popup Popover，与上游一致                    |
+| `getPopupContainer`                   | -             | 同名函数                                      | 指定遮罩和卡片的挂载容器，缺省时继承 ConfigProvider   |
+| `zIndex`                              | `1030`        | 同名 number                                   | 气泡和弹窗使用该层级，spotlight 使用 `zIndex - 1`     |
+| callbacks                             | noop          | `@change/@next/@prev/@skip/@finish`           | 参数与顺序一致；`update:current` 与 change 同步发出   |
+| ReactNode 字段                        | -             | step VNodeChild；`#cover/#title/#description` | scoped slot 优先于当前 step 字段，模板调用无需 JSX    |
 
 ## 状态与事件顺序
 
@@ -46,7 +46,7 @@
 - 非受控 prev：固定 Foundation 在 React 批处理语义下表现为写入请求、再发 change、最后 prev；Vue Adapter 必须保留该外部事件顺序，不能因同步赋值吞掉 change。
 - 受控 next/prev 不直接写 current，只发 change/update 与 next/prev，等待父级回写。
 - visible 从 false 变 true 时，非受控 current 回到 0、锁 body 并测量；变 false 或卸载时恢复 body。已有 hidden body 不得被错误恢复。
-- `step.mask` 在 v2.102.0 类型和文档中存在，但固定 Adapter 的 popup spotlight 实际只读取全局 `mask`；这是源码事实，见 Deviation。
+- `step.mask` 覆盖全局 `mask`，`step.className` 合并到当前气泡或弹窗。
 
 ## DOM、class、视觉与动效
 
@@ -61,7 +61,7 @@
 - popup 打开和 current 变化时解析 target；目标不在 viewport 时调用 `scrollIntoView({ behavior: 'auto', block: 'center' })`，随后测量并在 RAF 写 spotlight rect。
 - 目标函数返回空值时不创建 popup/spotlight，也不抛错；这是对固定 changelog 所述空目标修复意图的安全适配，浏览器与单测均覆盖。
 - 固定 UserGuide 不注册 resize/capture-scroll listener；Popover 自身按既有契约重定位。不得新增无源码依据的 Observer/轮询。
-- `getPopupContainer` 在固定 UserGuide 仅影响 body scroll 锁；Popover/Modal 没有接收该 prop。Vue 保留这一事实并在迁移文档明确，不伪造自定义 Portal 承诺。
+- 气泡与 spotlight 在自定义宿主中共享层叠上下文。宿主平移时校正 spotlight 的定位原点，保持高亮孔与目标对齐。
 - 默认 body 容器场景锁定 overflow/width；自定义 getter 场景不锁；隐藏和卸载必须无残留 RAF、mask 或 body 样式。
 
 ## 键盘、焦点、ARIA、国际化与 SSR
@@ -81,8 +81,7 @@
 
 ## Deviation
 
-- `StepItem.mask`：固定 v2.102.0 类型和文档声明“覆盖全局”，但 `renderSpotlight()` 只读取 `this.props.mask`，从未读取 `step.mask`。Vue 为保持运行时对齐也只使用全局 mask；用户影响是 step 级 mask 无效。验收结论：记录为 accepted source deviation，不把文档声明伪装成已实现行为。
-- `getPopupContainer`：固定 Adapter 只用它跳过 body scroll 锁，并未传给内部 Popover/Modal。Vue 保留该运行时行为；用户影响是该 prop 不改变 Portal 父节点。验收结论：记录为 accepted source deviation，并在迁移文档建议使用 ConfigProvider 的 `getPopupContainer` 控制既有浮层容器。
+- v2.105.2 已修复步骤遮罩和自定义容器的历史运行时缺口。
 
 ## 验收证据
 

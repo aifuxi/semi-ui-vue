@@ -10,10 +10,10 @@ import { upstreamLiveDemos } from './upstream-markdown.mjs';
 const workspaceRoot = fileURLToPath(new URL('..', import.meta.url));
 const vendorRoot = path.join(workspaceRoot, 'vendor/semi-design');
 const outputDirectory = path.join(workspaceRoot, 'docs/inventory');
-const jsonOutputPath = path.join(outputDirectory, 'semi-v2.102.0.json');
+const jsonOutputPath = path.join(outputDirectory, 'semi-v2.105.2.json');
 const markdownOutputPath = path.join(outputDirectory, 'README.md');
-const expectedCommit = 'cdfba6e520fc83ad871b30f51f36d8af3aaa5a21';
-const expectedTag = 'v2.102.0';
+const expectedCommit = '7db305200a2b0fd2b20f0559819f2fa55631e2ba';
+const expectedTag = 'v2.105.2';
 const sourceExtensions = new Set(['.js', '.jsx', '.ts', '.tsx']);
 const checkOnly = process.argv.includes('--check');
 
@@ -602,7 +602,7 @@ function renderMarkdown(inventory) {
     .map((module) => module.key);
   const summary = inventory.summary;
 
-  return `# Semi Design v2.102.0 上游 Inventory
+  return `# Semi Design v2.105.2 上游 Inventory
 
 本目录由 \`pnpm inventory:generate\` 从只读 \`vendor/semi-design\` 生成。JSON 是后续组件对齐矩阵、里程碑规划和缺口检查的机器可读输入；不要手工修改生成文件。
 
@@ -691,7 +691,7 @@ if (checkOnly) {
   await assertCurrent(jsonOutputPath, jsonOutput);
   await assertCurrent(markdownOutputPath, markdownOutput);
   process.stdout.write(
-    `Semi v2.102.0 inventory 已同步：${inventory.summary.rootExportCount} 个根导出、${inventory.summary.rootModuleCount} 个模块组\n`,
+    `Semi v2.105.2 inventory 已同步：${inventory.summary.rootExportCount} 个根导出、${inventory.summary.rootModuleCount} 个模块组\n`,
   );
 } else {
   await mkdir(outputDirectory, { recursive: true });

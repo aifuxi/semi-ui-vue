@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from '@semi-v2.102.0/icon';
+import Icon from '@semi-v2.105.2/icon';
 import {
   IconAIFilledLevel2,
   IconAIWandLevel3,
@@ -7,8 +7,8 @@ import {
   IconHome,
   IconLikeHeart,
   IconSpin,
-} from '@semi-v2.102.0/icons';
-import { IconAvatar } from '@semi-v2.102.0/icons-lab';
+} from '@semi-v2.105.2/icons';
+import { IconAvatar } from '@semi-v2.105.2/icons-lab';
 
 const sizes = ['extra-small', 'small', 'default', 'large', 'extra-large'] as const;
 

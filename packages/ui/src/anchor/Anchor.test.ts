@@ -128,11 +128,16 @@ describe('Anchor', () => {
     expect(order).toEqual(['change:->#enabled', 'click:#enabled']);
     expect(links[0]!.classes()).toContain('semi-anchor-link-title-active');
     expect(links[0]!.attributes('aria-details')).toBe('active');
+    expect(links[0]!.attributes('aria-current')).toBe('location');
+    expect(links[1]!.attributes('aria-current')).toBeUndefined();
     expect(wrapper.get('.semi-anchor-slide-bar').classes()).toContain(
       'semi-anchor-slide-bar-active',
     );
 
-    await links[0]!.trigger('keypress', { key: 'Enter' });
+    await links[0]!.trigger('keypress', { key: 'a' });
+    await links[0]!.trigger('keydown', { key: 'a' });
+    expect(order).toEqual(['change:->#enabled', 'click:#enabled']);
+    await links[0]!.trigger('keydown', { key: 'Enter' });
     expect(order).toEqual(['change:->#enabled', 'click:#enabled', 'click:#enabled']);
 
     await links[1]!.trigger('click');

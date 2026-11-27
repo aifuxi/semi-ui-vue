@@ -152,7 +152,7 @@ async function generateIconSource(source, filePath, config) {
       : '';
 
   return formatTypeScript(
-    `// Generated from the pinned Semi Design v2.102.0 source. Do not edit directly.\nimport { h, type VNode } from 'vue';\nimport { convertIcon, type IconSvgProps } from ${JSON.stringify(config.componentImport)};\n${utilsImport}\nfunction renderSvg(props: IconSvgProps): VNode {\n  ${leadingStatements}${leadingStatements ? '\n  ' : ''}return ${jsxNode(jsx)};\n}\n\nexport default convertIcon(renderSvg, ${JSON.stringify(findIconType(sourceFile))});\n`,
+    `// Generated from the pinned Semi Design v2.105.2 source. Do not edit directly.\nimport { h, type VNode } from 'vue';\nimport { convertIcon, type IconSvgProps } from ${JSON.stringify(config.componentImport)};\n${utilsImport}\nfunction renderSvg(props: IconSvgProps): VNode {\n  ${leadingStatements}${leadingStatements ? '\n  ' : ''}return ${jsxNode(jsx)};\n}\n\nexport default convertIcon(renderSvg, ${JSON.stringify(findIconType(sourceFile))});\n`,
   );
 }
 

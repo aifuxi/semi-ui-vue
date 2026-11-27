@@ -97,6 +97,8 @@
 
 ## Deviation
 
+- `v2.105.2` 对齐待补。Vue 已处理 Enter/Space 切页，页码按钮的 `role` 仍覆盖列表项语义。应保留列表项，用内部原生按钮操作。
+
 - Accepted：Vue 用 `modelValue`/`update:modelValue` 提供原生 `v-model`，同时保留 `currentPage`/`update:currentPage`；这是 React 受控 prop 的 Vue 原生映射，不改变页码与事件语义。
 - Accepted：React 用 `react-window` 渲染省略页列表；Vue 使用等价固定行高窗口化组件，保持 78px 宽、32px 行高、5 行 viewport、滚动可达范围和公开 DOM class，不引入 React 运行时依赖。
 - Accepted（BUG-000399）：固定上游的 `handleKeyDown` 是空实现且数字页码及前后按钮未纳入 Tab 顺序。Vue 为这些翻页控件提供键盘焦点和激活能力，沿用固定 Foundation 的翻页状态和事件规则。

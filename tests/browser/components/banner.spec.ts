@@ -13,7 +13,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Banner 参考场景来自本地 v2.102.0 并保留类型、容器与关闭契约', async ({ page }) => {
+test('Banner 参考场景来自本地 v2.105.2 并保留类型、容器与关闭契约', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));
@@ -64,7 +64,7 @@ test('Banner React/Vue computed style、几何、ARIA 与键盘关闭一致', as
     const info = page.locator('[data-parity-target="banner-info"]');
     await expect(info).toHaveAttribute('role', 'alert');
     await expect(info.locator('.semi-banner-icon [aria-label="info"]')).toBeVisible();
-    const close = info.getByRole('button', { name: 'Close' });
+    const close = info.getByRole('button', { name: '关闭', exact: true });
     await close.focus();
     await expect(close).toBeFocused();
     await close.press('Space');

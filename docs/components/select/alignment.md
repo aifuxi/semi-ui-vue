@@ -90,7 +90,9 @@ Select 是 Tooltip PoC 后的第二道复杂度门槛，用来验证搜索、多
 
 ## Modal 内的 Escape 路由（BUG-000394）
 
-固定 Tooltip Foundation 的 `_handleTriggerKeydown` 在检查 `closeOnEsc` 前无条件拦截 Escape。Select 用受控 `custom` Tooltip 包裹触发器，导致已收起时事件也无法到达 Modal。Vue 适配层对已收起的 `custom` 浮层放行触发器上的 Escape，以受控 `visible` 为准，不等待退场动效；展开时仍由固定 Foundation 处理。真实 tarball 的 Chromium 回归覆盖连续两次 Escape 以及鼠标、键盘选中后按 Escape。
+v2.102.0 的 Tooltip Foundation 在检查 `closeOnEsc` 前无条件拦截 Escape。Select 用受控 `custom` Tooltip 包裹触发器，导致已收起时事件也无法到达 Modal。Vue 适配层对已收起的 `custom` 浮层放行触发器上的 Escape，以受控 `visible` 为准，不等待退场动效；展开时仍由固定 Foundation 处理。真实 tarball 的 Chromium 回归覆盖连续两次 Escape 以及鼠标、键盘选中后按 Escape。
+
+v2.105.2 仅在可见且启用 `closeOnEsc` 时消费 Escape。Select 显式启用该选项。真实 tarball 对照覆盖动效开启和关闭，第一次 Escape 收起下拉，第二次关闭 Modal。
 
 ## Locale/Pagination 菜单回归（2026-09-06）
 

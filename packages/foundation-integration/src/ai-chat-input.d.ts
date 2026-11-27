@@ -41,9 +41,11 @@ export interface AIChatInputFoundationState {
   templateVisible?: boolean;
 }
 
+type FoundationSuggestion = string | string[] | { content: string };
+
 export interface AIChatInputAdapter<Props, State> extends DefaultAdapter<Props, State> {
   reposPopover(): void;
-  setContent(content: unknown): void;
+  setContent(content: FoundationSuggestion): void;
   focusEditor(pos?: unknown): void;
   getTriggerWidth(): number;
   getEditor(): unknown;
@@ -54,6 +56,7 @@ export interface AIChatInputAdapter<Props, State> extends DefaultAdapter<Props, 
   notifyMessageSend(props: unknown): void;
   notifyStopGenerate(): void;
   notifySkillChange(skill: unknown): void;
+  notifySuggestClick(suggestion: FoundationSuggestion): void;
   clearContent(): void;
   clearAttachments(): void;
   getRichTextDiv(): HTMLDivElement | null;
@@ -78,7 +81,7 @@ export class AIChatInputFoundation<
   handleSkillSelect(skill: unknown): void;
   changeTemplateVisible(value: boolean): void;
   handlePaste(files: File[]): void;
-  handleSuggestionSelect(suggestion: unknown): void;
+  handleSuggestionSelect(suggestion: FoundationSuggestion): void;
   handleUploadFileDelete(attachment: unknown): void;
   handleReferenceDelete(reference: unknown): void;
   handleReferenceClick(reference: unknown): void;

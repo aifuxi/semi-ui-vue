@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from '@semi-v2.102.0/grid';
+import { Col, Row } from '@semi-v2.105.2/grid';
 
 const tallCellStyle: React.CSSProperties = { minHeight: '52px' };
 const shortCellStyle: React.CSSProperties = { minHeight: '32px' };

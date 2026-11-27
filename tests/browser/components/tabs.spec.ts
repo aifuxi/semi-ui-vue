@@ -14,7 +14,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Tabs 参考场景来自本地 v2.102.0 并保留类型、竖向、More 与折叠 DOM', async ({ page }) => {
+test('Tabs 参考场景来自本地 v2.105.2 并保留类型、竖向、More 与折叠 DOM', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

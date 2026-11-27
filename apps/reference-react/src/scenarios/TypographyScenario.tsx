@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Typography from '@semi-v2.102.0/typography';
+import Typography from '@semi-v2.105.2/typography';
 
 const { Numeral, Paragraph, Text, Title } = Typography;
 
@@ -61,7 +61,7 @@ export function TypographyScenario(): React.ReactElement {
           style={{ margin: '0px' }}
           data-parity-target="typography-subtitle"
         >
-          Semi Design v2.102.0
+          Semi Design v2.105.2
         </Title>
       </section>
 

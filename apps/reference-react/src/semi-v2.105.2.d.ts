@@ -1,4 +1,4 @@
-declare module '@semi-v2.102.0/locale-provider' {
+declare module '@semi-v2.105.2/locale-provider' {
   import type { ComponentType, ReactNode } from 'react';
 
   export interface ReferenceLocale {
@@ -12,7 +12,7 @@ declare module '@semi-v2.102.0/locale-provider' {
   export default LocaleProvider;
 }
 
-declare module '@semi-v2.102.0/locale-consumer' {
+declare module '@semi-v2.105.2/locale-consumer' {
   import type { ReactElement, ReactNode } from 'react';
 
   const LocaleConsumer: <ComponentLocale>(props: {
@@ -27,19 +27,19 @@ declare module '@semi-v2.102.0/locale-consumer' {
   export default LocaleConsumer;
 }
 
-declare module '@semi-v2.102.0/locale-en-gb' {
-  import type { ReferenceLocale } from '@semi-v2.102.0/locale-provider';
+declare module '@semi-v2.105.2/locale-en-gb' {
+  import type { ReferenceLocale } from '@semi-v2.105.2/locale-provider';
   const locale: ReferenceLocale;
   export default locale;
 }
 
-declare module '@semi-v2.102.0/locale-ja-jp' {
-  import type { ReferenceLocale } from '@semi-v2.102.0/locale-provider';
+declare module '@semi-v2.105.2/locale-ja-jp' {
+  import type { ReferenceLocale } from '@semi-v2.105.2/locale-provider';
   const locale: ReferenceLocale;
   export default locale;
 }
 
-declare module '@semi-v2.102.0/anchor' {
+declare module '@semi-v2.105.2/anchor' {
   import type { ComponentType, CSSProperties, KeyboardEvent, MouseEvent, ReactNode } from 'react';
 
   export interface AnchorLinkProps {
@@ -80,7 +80,7 @@ declare module '@semi-v2.102.0/anchor' {
   export default Anchor;
 }
 
-declare module '@semi-v2.102.0/overflow-list' {
+declare module '@semi-v2.105.2/overflow-list' {
   import type { CSSProperties, ReactElement, ReactNode } from 'react';
 
   export interface OverflowItem {
@@ -126,7 +126,7 @@ declare module '@semi-v2.102.0/overflow-list' {
   export default OverflowList;
 }
 
-declare module '@semi-v2.102.0/popover' {
+declare module '@semi-v2.105.2/popover' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface PopoverProps {
@@ -147,7 +147,7 @@ declare module '@semi-v2.102.0/popover' {
   export default Popover;
 }
 
-declare module '@semi-v2.102.0/scroll-list' {
+declare module '@semi-v2.105.2/scroll-list' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface ScrollItemData {
@@ -189,15 +189,15 @@ declare module '@semi-v2.102.0/scroll-list' {
   export default ScrollList;
 }
 
-declare module '@semi-v2.102.0/scroll-item' {
+declare module '@semi-v2.105.2/scroll-item' {
   import type { ComponentType } from 'react';
-  import type { ScrollItemProps } from '@semi-v2.102.0/scroll-list';
+  import type { ScrollItemProps } from '@semi-v2.105.2/scroll-list';
 
   const ScrollItem: ComponentType<ScrollItemProps>;
   export default ScrollItem;
 }
 
-declare module '@semi-v2.102.0/side-sheet' {
+declare module '@semi-v2.105.2/side-sheet' {
   import type { ComponentType, CSSProperties, KeyboardEvent, MouseEvent, ReactNode } from 'react';
 
   export interface SideSheetProps {
@@ -234,7 +234,7 @@ declare module '@semi-v2.102.0/side-sheet' {
   export default SideSheet;
 }
 
-declare module '@semi-v2.102.0/progress' {
+declare module '@semi-v2.105.2/progress' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface ProgressProps {
@@ -264,7 +264,7 @@ declare module '@semi-v2.102.0/progress' {
   export default Progress;
 }
 
-declare module '@semi-v2.102.0/skeleton' {
+declare module '@semi-v2.105.2/skeleton' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface SkeletonProps {
@@ -312,7 +312,7 @@ declare module '@semi-v2.102.0/skeleton' {
   export default Skeleton;
 }
 
-declare module '@semi-v2.102.0/spin' {
+declare module '@semi-v2.105.2/spin' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export type SpinSize = 'small' | 'middle' | 'large';
@@ -335,7 +335,7 @@ declare module '@semi-v2.102.0/spin' {
   export default Spin;
 }
 
-declare module '@semi-v2.102.0/transfer' {
+declare module '@semi-v2.105.2/transfer' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface TransferDataItem {
@@ -358,7 +358,7 @@ declare module '@semi-v2.102.0/transfer' {
   export default Transfer;
 }
 
-declare module '@semi-v2.102.0/upload' {
+declare module '@semi-v2.105.2/upload' {
   import type { ComponentType, HTMLAttributes, ReactNode } from 'react';
   interface FileItem {
     uid: string;
@@ -380,7 +380,7 @@ declare module '@semi-v2.102.0/upload' {
   export default Upload;
 }
 
-declare module '@semi-v2.102.0/toast' {
+declare module '@semi-v2.105.2/toast' {
   import type React from 'react';
 
   export interface ToastOptions {
@@ -412,7 +412,7 @@ declare module '@semi-v2.102.0/toast' {
   export default Toast;
 }
 
-declare module '@semi-v2.102.0/back-top' {
+declare module '@semi-v2.105.2/back-top' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 
   export interface BackTopProps {
@@ -430,7 +430,7 @@ declare module '@semi-v2.102.0/back-top' {
   export default BackTop;
 }
 
-declare module '@semi-v2.102.0/avatar' {
+declare module '@semi-v2.105.2/avatar' {
   import type {
     ComponentType,
     CSSProperties,
@@ -478,7 +478,7 @@ declare module '@semi-v2.102.0/avatar' {
   export default Avatar;
 }
 
-declare module '@semi-v2.102.0/avatar-group' {
+declare module '@semi-v2.105.2/avatar-group' {
   import type { ComponentType, ReactNode } from 'react';
 
   export interface AvatarGroupProps {
@@ -494,7 +494,7 @@ declare module '@semi-v2.102.0/avatar-group' {
   export default AvatarGroup;
 }
 
-declare module '@semi-v2.102.0/badge' {
+declare module '@semi-v2.105.2/badge' {
   import type { ComponentType, CSSProperties, HTMLAttributes, MouseEvent, ReactNode } from 'react';
 
   export type BadgeType = 'primary' | 'secondary' | 'tertiary' | 'danger' | 'warning' | 'success';
@@ -521,7 +521,7 @@ declare module '@semi-v2.102.0/badge' {
   export default Badge;
 }
 
-declare module '@semi-v2.102.0/banner' {
+declare module '@semi-v2.105.2/banner' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 
   export type BannerType = 'info' | 'success' | 'danger' | 'warning';
@@ -545,7 +545,7 @@ declare module '@semi-v2.102.0/banner' {
   export default Banner;
 }
 
-declare module '@semi-v2.102.0/feedback' {
+declare module '@semi-v2.105.2/feedback' {
   import type { ComponentType, MouseEvent, ReactNode } from 'react';
 
   export type FeedbackMode = 'modal' | 'popup';
@@ -577,7 +577,7 @@ declare module '@semi-v2.102.0/feedback' {
   export default Feedback;
 }
 
-declare module '@semi-v2.102.0/notification' {
+declare module '@semi-v2.105.2/notification' {
   import type { CSSProperties, ReactNode } from 'react';
 
   export type NotificationId = string;
@@ -624,7 +624,7 @@ declare module '@semi-v2.102.0/notification' {
   export default Notification;
 }
 
-declare module '@semi-v2.102.0/breadcrumb' {
+declare module '@semi-v2.105.2/breadcrumb' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 
   export interface RouteProps {
@@ -676,7 +676,7 @@ declare module '@semi-v2.102.0/breadcrumb' {
   export default Breadcrumb;
 }
 
-declare module '@semi-v2.102.0/pagination' {
+declare module '@semi-v2.105.2/pagination' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface PaginationProps {
@@ -710,7 +710,7 @@ declare module '@semi-v2.102.0/pagination' {
   export default Pagination;
 }
 
-declare module '@semi-v2.102.0/button' {
+declare module '@semi-v2.105.2/button' {
   import type { ButtonHTMLAttributes, ComponentType, ReactNode } from 'react';
 
   export type ButtonSize = 'default' | 'small' | 'large';
@@ -736,9 +736,9 @@ declare module '@semi-v2.102.0/button' {
   export default Button;
 }
 
-declare module '@semi-v2.102.0/icon-button' {
+declare module '@semi-v2.105.2/icon-button' {
   import type { ComponentType } from 'react';
-  import type { ButtonProps } from '@semi-v2.102.0/button';
+  import type { ButtonProps } from '@semi-v2.105.2/button';
 
   export type HorizontalPaddingType = 'left' | 'right';
   export type IconButtonProps = ButtonProps;
@@ -747,7 +747,7 @@ declare module '@semi-v2.102.0/icon-button' {
   export default IconButton;
 }
 
-declare module '@semi-v2.102.0/code-highlight' {
+declare module '@semi-v2.105.2/code-highlight' {
   import type { ComponentType, CSSProperties } from 'react';
 
   export interface CodeHighlightProps {
@@ -764,7 +764,7 @@ declare module '@semi-v2.102.0/code-highlight' {
   export default CodeHighlight;
 }
 
-declare module '@semi-v2.102.0/input' {
+declare module '@semi-v2.105.2/input' {
   import type { ComponentType, CSSProperties, InputHTMLAttributes, ReactNode } from 'react';
 
   export interface InputProps extends Omit<
@@ -795,7 +795,7 @@ declare module '@semi-v2.102.0/input' {
   export default Input;
 }
 
-declare module '@semi-v2.102.0/input-number' {
+declare module '@semi-v2.105.2/input-number' {
   import type { ComponentType, CSSProperties, InputHTMLAttributes, ReactNode } from 'react';
 
   export interface InputNumberProps extends Omit<
@@ -825,7 +825,7 @@ declare module '@semi-v2.102.0/input-number' {
   export default InputNumber;
 }
 
-declare module '@semi-v2.102.0/pin-code' {
+declare module '@semi-v2.105.2/pin-code' {
   import type { ComponentType, CSSProperties } from 'react';
 
   export interface PinCodeProps {
@@ -845,7 +845,7 @@ declare module '@semi-v2.102.0/pin-code' {
   export default PinCode;
 }
 
-declare module '@semi-v2.102.0/radio' {
+declare module '@semi-v2.105.2/radio' {
   import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
 
   export type RadioValue = string | number | boolean;
@@ -897,7 +897,7 @@ declare module '@semi-v2.102.0/radio' {
   export default Radio;
 }
 
-declare module '@semi-v2.102.0/rating' {
+declare module '@semi-v2.105.2/rating' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface RatingProps {
@@ -923,7 +923,7 @@ declare module '@semi-v2.102.0/rating' {
   export default Rating;
 }
 
-declare module '@semi-v2.102.0/slider' {
+declare module '@semi-v2.105.2/slider' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export type SliderValue = number | number[];
@@ -954,7 +954,7 @@ declare module '@semi-v2.102.0/slider' {
   export default Slider;
 }
 
-declare module '@semi-v2.102.0/input-group' {
+declare module '@semi-v2.105.2/input-group' {
   import type { ComponentType, CSSProperties, FocusEvent, ReactNode } from 'react';
 
   export interface InputGroupProps {
@@ -977,7 +977,7 @@ declare module '@semi-v2.102.0/input-group' {
   export default InputGroup;
 }
 
-declare module '@semi-v2.102.0/textarea' {
+declare module '@semi-v2.105.2/textarea' {
   import type { ComponentType, CSSProperties, TextareaHTMLAttributes } from 'react';
 
   export interface TextAreaProps extends Omit<
@@ -1003,7 +1003,7 @@ declare module '@semi-v2.102.0/textarea' {
   export default TextArea;
 }
 
-declare module '@semi-v2.102.0/checkbox' {
+declare module '@semi-v2.105.2/checkbox' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export type CheckboxType = 'default' | 'card' | 'pureCard';
@@ -1054,7 +1054,7 @@ declare module '@semi-v2.102.0/checkbox' {
   export default Checkbox;
 }
 
-declare module '@semi-v2.102.0/config-provider' {
+declare module '@semi-v2.105.2/config-provider' {
   import type { ComponentType, ReactNode } from 'react';
 
   export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
@@ -1087,9 +1087,9 @@ declare module '@semi-v2.102.0/config-provider' {
   export default ConfigProvider;
 }
 
-declare module '@semi-v2.102.0/button-group' {
+declare module '@semi-v2.105.2/button-group' {
   import type { ComponentType, HTMLAttributes } from 'react';
-  import type { ButtonSize, ButtonTheme, ButtonType } from '@semi-v2.102.0/button';
+  import type { ButtonSize, ButtonTheme, ButtonType } from '@semi-v2.105.2/button';
 
   export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
     colorful?: boolean;
@@ -1103,14 +1103,14 @@ declare module '@semi-v2.102.0/button-group' {
   export default ButtonGroup;
 }
 
-declare module '@semi-v2.102.0/split-button-group' {
+declare module '@semi-v2.105.2/split-button-group' {
   import type { ComponentType, HTMLAttributes } from 'react';
 
   const SplitButtonGroup: ComponentType<HTMLAttributes<HTMLDivElement>>;
   export default SplitButtonGroup;
 }
 
-declare module '@semi-v2.102.0/divider' {
+declare module '@semi-v2.105.2/divider' {
   import type { ComponentType, HTMLAttributes } from 'react';
 
   export interface DividerProps extends HTMLAttributes<HTMLDivElement> {
@@ -1124,7 +1124,7 @@ declare module '@semi-v2.102.0/divider' {
   export default Divider;
 }
 
-declare module '@semi-v2.102.0/space' {
+declare module '@semi-v2.105.2/space' {
   import type { CSSProperties, ReactNode } from 'react';
 
   export type SpaceAlign = 'start' | 'center' | 'end' | 'baseline';
@@ -1144,7 +1144,7 @@ declare module '@semi-v2.102.0/space' {
   export default Space;
 }
 
-declare module '@semi-v2.102.0/switch' {
+declare module '@semi-v2.105.2/switch' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export type SwitchSize = 'large' | 'default' | 'small';
@@ -1174,7 +1174,7 @@ declare module '@semi-v2.102.0/switch' {
   export default Switch;
 }
 
-declare module '@semi-v2.102.0/tooltip' {
+declare module '@semi-v2.105.2/tooltip' {
   import type { ComponentType, CSSProperties, ReactElement, ReactNode } from 'react';
 
   export type TooltipPosition =
@@ -1219,7 +1219,7 @@ declare module '@semi-v2.102.0/tooltip' {
   export default Tooltip;
 }
 
-declare module '@semi-v2.102.0/auto-complete' {
+declare module '@semi-v2.105.2/auto-complete' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface AutoCompleteItem {
@@ -1254,7 +1254,7 @@ declare module '@semi-v2.102.0/auto-complete' {
   export default AutoComplete;
 }
 
-declare module '@semi-v2.102.0/select' {
+declare module '@semi-v2.105.2/select' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface OptionProps {
@@ -1293,7 +1293,7 @@ declare module '@semi-v2.102.0/select' {
   export default Select;
 }
 
-declare module '@semi-v2.102.0/typography' {
+declare module '@semi-v2.105.2/typography' {
   import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
 
   interface CommonProps extends HTMLAttributes<HTMLElement> {
@@ -1346,7 +1346,7 @@ declare module '@semi-v2.102.0/typography' {
   export default Typography;
 }
 
-declare module '@semi-v2.102.0/layout' {
+declare module '@semi-v2.105.2/layout' {
   import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
 
   export type LayoutBreakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
@@ -1371,7 +1371,7 @@ declare module '@semi-v2.102.0/layout' {
   export default Layout;
 }
 
-declare module '@semi-v2.102.0/grid' {
+declare module '@semi-v2.105.2/grid' {
   import type { CSSProperties, HTMLAttributes, ReactNode } from 'react';
 
   export type GridBreakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
@@ -1407,7 +1407,7 @@ declare module '@semi-v2.102.0/grid' {
   export const Col: React.ComponentType<ColProps>;
 }
 
-declare module '@semi-v2.102.0/resizable' {
+declare module '@semi-v2.105.2/resizable' {
   import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
 
   export type ResizeDirection =
@@ -1449,7 +1449,7 @@ declare module '@semi-v2.102.0/resizable' {
   export const ResizeHandler: ComponentType<ResizeHandlerProps>;
 }
 
-declare module '@semi-v2.102.0/float-button' {
+declare module '@semi-v2.105.2/float-button' {
   import type { CSSProperties, ComponentType, MouseEvent, ReactNode } from 'react';
 
   export type FloatButtonShape = 'square' | 'round';
@@ -1485,9 +1485,9 @@ declare module '@semi-v2.102.0/float-button' {
   export default FloatButton;
 }
 
-declare module '@semi-v2.102.0/float-button-group' {
+declare module '@semi-v2.105.2/float-button-group' {
   import type { CSSProperties, ComponentType, MouseEvent, ReactNode } from 'react';
-  import type { FloatButtonProps } from '@semi-v2.102.0/float-button';
+  import type { FloatButtonProps } from '@semi-v2.105.2/float-button';
 
   export interface FloatButtonGroupItem extends FloatButtonProps {
     value?: string;
@@ -1507,7 +1507,7 @@ declare module '@semi-v2.102.0/float-button-group' {
   export default FloatButtonGroup;
 }
 
-declare module '@semi-v2.102.0/icon' {
+declare module '@semi-v2.105.2/icon' {
   import type { ComponentType, HTMLAttributes, ReactNode } from 'react';
 
   export type IconSize = 'inherit' | 'extra-small' | 'small' | 'default' | 'large' | 'extra-large';
@@ -1524,7 +1524,7 @@ declare module '@semi-v2.102.0/icon' {
   export default Icon;
 }
 
-declare module '@semi-v2.102.0/tag-input' {
+declare module '@semi-v2.105.2/tag-input' {
   import type { ComponentType, CSSProperties, FocusEvent, KeyboardEvent, ReactNode } from 'react';
 
   export interface TagInputProps {
@@ -1571,7 +1571,7 @@ declare module '@semi-v2.102.0/tag-input' {
   export default TagInput;
 }
 
-declare module '@semi-v2.102.0/time-picker' {
+declare module '@semi-v2.105.2/time-picker' {
   import type { ComponentType, CSSProperties, FocusEvent, MouseEvent } from 'react';
 
   export type TimePickerBaseValue = string | number | Date | undefined;
@@ -1604,9 +1604,9 @@ declare module '@semi-v2.102.0/time-picker' {
   export default TimePicker;
 }
 
-declare module '@semi-v2.102.0/icons' {
+declare module '@semi-v2.105.2/icons' {
   import type { ComponentType } from 'react';
-  import type { IconProps } from '@semi-v2.102.0/icon';
+  import type { IconProps } from '@semi-v2.105.2/icon';
   type BuiltinIcon = ComponentType<Omit<IconProps, 'svg' | 'type'>>;
   export const IconAIFilledLevel2: BuiltinIcon;
   export const IconAIWandLevel3: BuiltinIcon;
@@ -1622,13 +1622,13 @@ declare module '@semi-v2.102.0/icons' {
   export const IconSpin: BuiltinIcon;
 }
 
-declare module '@semi-v2.102.0/icons-lab' {
+declare module '@semi-v2.105.2/icons-lab' {
   import type { ComponentType } from 'react';
-  import type { IconProps } from '@semi-v2.102.0/icon';
+  import type { IconProps } from '@semi-v2.105.2/icon';
   export const IconAvatar: ComponentType<Omit<IconProps, 'fill' | 'svg' | 'type'>>;
 }
 
-declare module '@semi-v2.102.0/steps' {
+declare module '@semi-v2.105.2/steps' {
   import type { ComponentType, CSSProperties, KeyboardEvent, MouseEvent, ReactNode } from 'react';
 
   export type StepsType = 'fill' | 'basic' | 'nav';
@@ -1671,7 +1671,7 @@ declare module '@semi-v2.102.0/steps' {
   export default Steps;
 }
 
-declare module '@semi-v2.102.0/tabs' {
+declare module '@semi-v2.105.2/tabs' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 
   export type TabType = 'line' | 'card' | 'button' | 'slash';
@@ -1735,7 +1735,7 @@ declare module '@semi-v2.102.0/tabs' {
   export default Tabs;
 }
 
-declare module '@semi-v2.102.0/tree' {
+declare module '@semi-v2.105.2/tree' {
   import type { ComponentType, ReactNode } from 'react';
 
   export interface TreeNodeData {
@@ -1772,7 +1772,7 @@ declare module '@semi-v2.102.0/tree' {
 
 declare module 'virtual:semi-reference-styles.css';
 
-declare module '@semi-v2.102.0/carousel' {
+declare module '@semi-v2.105.2/carousel' {
   import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
 
   export interface ArrowButton {
@@ -1806,7 +1806,7 @@ declare module '@semi-v2.102.0/carousel' {
   export default Carousel;
 }
 
-declare module '@semi-v2.102.0/collapsible' {
+declare module '@semi-v2.105.2/collapsible' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface CollapsibleProps {
@@ -1831,7 +1831,7 @@ declare module '@semi-v2.102.0/collapsible' {
   export default Collapsible;
 }
 
-declare module '@semi-v2.102.0/collapse' {
+declare module '@semi-v2.105.2/collapse' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 
   export type CollapseActiveKey = string | string[];
@@ -1874,7 +1874,7 @@ declare module '@semi-v2.102.0/collapse' {
   export default Collapse;
 }
 
-declare module '@semi-v2.102.0/descriptions' {
+declare module '@semi-v2.105.2/descriptions' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface DescriptionsDataItem {
@@ -1915,7 +1915,7 @@ declare module '@semi-v2.102.0/descriptions' {
   export default Descriptions;
 }
 
-declare module '@semi-v2.102.0/dropdown' {
+declare module '@semi-v2.105.2/dropdown' {
   import type { ComponentType, CSSProperties, MouseEventHandler, ReactNode } from 'react';
 
   export interface DropdownItemProps {
@@ -1949,7 +1949,7 @@ declare module '@semi-v2.102.0/dropdown' {
   };
   export default Dropdown;
 }
-declare module '@semi-v2.102.0/empty' {
+declare module '@semi-v2.105.2/empty' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface EmptySvgNode {
@@ -1975,7 +1975,7 @@ declare module '@semi-v2.102.0/empty' {
   export default Empty;
 }
 
-declare module '@semi-v2.102.0/highlight' {
+declare module '@semi-v2.105.2/highlight' {
   import type { ComponentType, CSSProperties } from 'react';
 
   export interface HighlightSearchWord {
@@ -1998,7 +1998,7 @@ declare module '@semi-v2.102.0/highlight' {
   export default Highlight;
 }
 
-declare module '@semi-v2.102.0/image' {
+declare module '@semi-v2.105.2/image' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface ImagePreviewOptions {
@@ -2037,7 +2037,7 @@ declare module '@semi-v2.102.0/image' {
   export default Image;
 }
 
-declare module '@semi-v2.102.0/illustrations' {
+declare module '@semi-v2.105.2/illustrations' {
   import type { ComponentType, SVGProps } from 'react';
 
   type IllustrationComponent = ComponentType<SVGProps<SVGSVGElement>>;
@@ -2060,7 +2060,7 @@ declare module '@semi-v2.102.0/illustrations' {
   export const IllustrationSuccessDark: IllustrationComponent;
 }
 
-declare module '@semi-v2.102.0/calendar' {
+declare module '@semi-v2.105.2/calendar' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 
   export type CalendarMode = 'day' | 'week' | 'month' | 'range';
@@ -2095,7 +2095,7 @@ declare module '@semi-v2.102.0/calendar' {
   export default Calendar;
 }
 
-declare module '@semi-v2.102.0/card' {
+declare module '@semi-v2.105.2/card' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface CardMetaProps {
@@ -2132,7 +2132,7 @@ declare module '@semi-v2.102.0/card' {
   export default Card;
 }
 
-declare module '@semi-v2.102.0/card-group' {
+declare module '@semi-v2.105.2/card-group' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface CardGroupProps {
@@ -2147,7 +2147,7 @@ declare module '@semi-v2.102.0/card-group' {
   const CardGroup: ComponentType<CardGroupProps>;
   export default CardGroup;
 }
-declare module '@semi-v2.102.0/cropper' {
+declare module '@semi-v2.105.2/cropper' {
   import type { ComponentType, CSSProperties, ImgHTMLAttributes, RefAttributes } from 'react';
 
   export interface CropperMethods {
@@ -2181,7 +2181,7 @@ declare module '@semi-v2.102.0/cropper' {
   export default Cropper;
 }
 
-declare module '@semi-v2.102.0/list' {
+declare module '@semi-v2.105.2/list' {
   import type {
     ComponentType,
     CSSProperties,
@@ -2246,7 +2246,7 @@ declare module '@semi-v2.102.0/list' {
   export default List;
 }
 
-declare module '@semi-v2.102.0/modal' {
+declare module '@semi-v2.105.2/modal' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 
   export interface ModalProps {
@@ -2283,7 +2283,7 @@ declare module '@semi-v2.102.0/modal' {
   export default Modal;
 }
 
-declare module '@semi-v2.102.0/table' {
+declare module '@semi-v2.105.2/table' {
   import type { ComponentType, ReactNode } from 'react';
 
   export interface TableColumnProps<RecordType = Record<string, unknown>> {
@@ -2336,7 +2336,7 @@ declare module '@semi-v2.102.0/table' {
   export default Table;
 }
 
-declare module '@semi-v2.102.0/tag' {
+declare module '@semi-v2.105.2/tag' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
   export interface TagProps {
     children?: ReactNode;
@@ -2372,7 +2372,7 @@ declare module '@semi-v2.102.0/tag' {
   export default Tag;
 }
 
-declare module '@semi-v2.102.0/timeline' {
+declare module '@semi-v2.105.2/timeline' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 
   export interface TimelineItemProps {
@@ -2411,9 +2411,9 @@ declare module '@semi-v2.102.0/timeline' {
   export default Timeline;
 }
 
-declare module '@semi-v2.102.0/tag-group' {
+declare module '@semi-v2.105.2/tag-group' {
   import type { ComponentType } from 'react';
-  import type { TagProps } from '@semi-v2.102.0/tag';
+  import type { TagProps } from '@semi-v2.105.2/tag';
   interface TagGroupProps {
     maxTagCount?: number;
     restCount?: number;
@@ -2426,7 +2426,7 @@ declare module '@semi-v2.102.0/tag-group' {
   export default TagGroup;
 }
 
-declare module '@semi-v2.102.0/split-tag-group' {
+declare module '@semi-v2.105.2/split-tag-group' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
   interface SplitTagGroupProps {
     'aria-label'?: string;
@@ -2439,7 +2439,7 @@ declare module '@semi-v2.102.0/split-tag-group' {
   export default SplitTagGroup;
 }
 
-declare module '@semi-v2.102.0/popconfirm' {
+declare module '@semi-v2.105.2/popconfirm' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 
   interface PopconfirmProps {
@@ -2480,7 +2480,7 @@ declare module '@semi-v2.102.0/popconfirm' {
   const Popconfirm: ComponentType<PopconfirmProps>;
   export default Popconfirm;
 }
-declare module '@semi-v2.102.0/tree-select' {
+declare module '@semi-v2.105.2/tree-select' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface TreeSelectNodeData {
@@ -2510,7 +2510,7 @@ declare module '@semi-v2.102.0/tree-select' {
   export default TreeSelect;
 }
 
-declare module '@semi-v2.102.0/color-picker' {
+declare module '@semi-v2.105.2/color-picker' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface ColorValue {
@@ -2543,7 +2543,7 @@ declare module '@semi-v2.102.0/color-picker' {
   export default ColorPicker;
 }
 
-declare module '@semi-v2.102.0/date-picker' {
+declare module '@semi-v2.105.2/date-picker' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface DatePickerProps {
@@ -2566,7 +2566,7 @@ declare module '@semi-v2.102.0/date-picker' {
   export default DatePicker;
 }
 
-declare module '@semi-v2.102.0/form' {
+declare module '@semi-v2.105.2/form' {
   import type { ComponentType, ReactNode } from 'react';
 
   interface RuleItem {
@@ -2600,7 +2600,7 @@ declare module '@semi-v2.102.0/form' {
   };
 }
 
-declare module '@semi-v2.102.0/cascader' {
+declare module '@semi-v2.105.2/cascader' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface CascaderData {
@@ -2629,7 +2629,7 @@ declare module '@semi-v2.102.0/cascader' {
   export default Cascader;
 }
 
-declare module '@semi-v2.102.0/navigation' {
+declare module '@semi-v2.105.2/navigation' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   interface NavigationItem {
@@ -2656,7 +2656,7 @@ declare module '@semi-v2.102.0/navigation' {
   export default Navigation;
 }
 
-declare module '@semi-v2.102.0/drag-move' {
+declare module '@semi-v2.105.2/drag-move' {
   import type { ComponentType, ReactElement } from 'react';
 
   export interface DragMoveProps {
@@ -2680,7 +2680,7 @@ declare module '@semi-v2.102.0/drag-move' {
   export default DragMove;
 }
 
-declare module '@semi-v2.102.0/hot-keys' {
+declare module '@semi-v2.105.2/hot-keys' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface HotKeysProps {
@@ -2712,7 +2712,7 @@ declare module '@semi-v2.102.0/hot-keys' {
   export default HotKeys;
 }
 
-declare module '@semi-v2.102.0/lottie' {
+declare module '@semi-v2.105.2/lottie' {
   import type { AnimationItem, LottiePlayer } from 'lottie-web';
   import type { ComponentType, CSSProperties } from 'react';
 
@@ -2733,7 +2733,7 @@ declare module '@semi-v2.102.0/lottie' {
   export default Lottie;
 }
 
-declare module '@semi-v2.102.0/audio-player' {
+declare module '@semi-v2.105.2/audio-player' {
   import type { ComponentType, HTMLAttributes } from 'react';
 
   export interface AudioInfo {
@@ -2754,7 +2754,7 @@ declare module '@semi-v2.102.0/audio-player' {
   export default AudioPlayer;
 }
 
-declare module '@semi-v2.102.0/video-player' {
+declare module '@semi-v2.105.2/video-player' {
   import type { ComponentType, CSSProperties, HTMLAttributes } from 'react';
 
   export interface VideoPlayerMarker {
@@ -2800,7 +2800,7 @@ declare module '@semi-v2.102.0/video-player' {
   export default VideoPlayer;
 }
 
-declare module '@semi-v2.102.0/json-viewer' {
+declare module '@semi-v2.105.2/json-viewer' {
   import type { ComponentType, CSSProperties, HTMLAttributes, ReactNode } from 'react';
 
   export interface JsonViewerSearchControls {
@@ -2830,7 +2830,7 @@ declare module '@semi-v2.102.0/json-viewer' {
   export default JsonViewer;
 }
 
-declare module '@semi-v2.102.0/ai-chat-input' {
+declare module '@semi-v2.105.2/ai-chat-input' {
   import type { ComponentType, ReactNode } from 'react';
 
   export interface AIChatInputReference {
@@ -2860,7 +2860,7 @@ declare module '@semi-v2.102.0/ai-chat-input' {
   export default AIChatInput;
 }
 
-declare module '@semi-v2.102.0/chat' {
+declare module '@semi-v2.105.2/chat' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface ChatMessage {
@@ -2894,7 +2894,7 @@ declare module '@semi-v2.102.0/chat' {
   export default Chat;
 }
 
-declare module '@semi-v2.102.0/sidebar' {
+declare module '@semi-v2.105.2/sidebar' {
   import type { ComponentType, CSSProperties, MouseEvent, ReactNode } from 'react';
 
   export interface SidebarOption {
@@ -2944,7 +2944,7 @@ declare module '@semi-v2.102.0/sidebar' {
   export default Sidebar;
 }
 
-declare module '@semi-v2.102.0/markdown-render' {
+declare module '@semi-v2.105.2/markdown-render' {
   import type { ComponentType, CSSProperties } from 'react';
 
   export interface MarkdownRenderProps {
@@ -2965,7 +2965,7 @@ declare module '@semi-v2.102.0/markdown-render' {
   export default MarkdownRender;
 }
 
-declare module '@semi-v2.102.0/ai-chat-dialogue' {
+declare module '@semi-v2.105.2/ai-chat-dialogue' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface Message {
@@ -2998,7 +2998,7 @@ declare module '@semi-v2.102.0/ai-chat-dialogue' {
   export default AIChatDialogue;
 }
 
-declare module '@semi-v2.102.0/user-guide' {
+declare module '@semi-v2.105.2/user-guide' {
   import type { ComponentType, CSSProperties, ReactNode } from 'react';
 
   export interface UserGuideButtonProps {

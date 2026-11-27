@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Button from '@semi-v2.102.0/button';
-import AIChatInput from '@semi-v2.102.0/ai-chat-input';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
+import Button from '@semi-v2.105.2/button';
+import AIChatInput from '@semi-v2.105.2/ai-chat-input';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const localeMap = {

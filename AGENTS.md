@@ -4,7 +4,7 @@
 
 ## 项目契约
 
-- 唯一基线是只读 `vendor/semi-design`：`v2.102.0` / `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`。仅基线缺少信息或用户要求时查在线上游，并标明版本差异。
+- 唯一基线是只读 `vendor/semi-design`：`v2.105.2` / `7db305200a2b0fd2b20f0559819f2fa55631e2ba`。仅基线缺少信息或用户要求时查在线上游，并标明版本差异。
 - 保留公开行为、可访问性、主题和 `.semi-*` / `--semi-*` 兼容；公开 API 使用 Vue props/emits/slots/v-model，源码使用 TypeScript、Composition API 和 `<script setup lang="ts">`。
 - Foundation 经私有集成边界编译，vendor 不修改、不复制后独立维护，也不进入自有代码扫描。公开包提供 ESM、类型、明确 exports 与编译 CSS，支持无 DOM 导入，消费者无需 submodule。
 - 保持 pnpm workspace 与统一 lockfile。使用独立品牌，保留 MIT、第三方归属与 SBOM。

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
-import UserGuide, { type UserGuideStepItem } from '@semi-v2.102.0/user-guide';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
+import UserGuide, { type UserGuideStepItem } from '@semi-v2.105.2/user-guide';
 
 export interface UserGuideScenarioProps {
   direction: 'ltr' | 'rtl';

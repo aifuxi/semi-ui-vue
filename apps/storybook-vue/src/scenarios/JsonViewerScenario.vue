@@ -9,7 +9,7 @@ const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>(
 const reviewError = new URLSearchParams(window.location.search).get('reviewError') === '1';
 const value = `{
   "project": "Semi UI Vue",
-  "version": "2.102.0",
+  "version": "2.105.2",
   "ready": true,
   "tags": ["Vue", "Worker", "Parity"],
   "metrics": { "components": 78, "target": 85 }

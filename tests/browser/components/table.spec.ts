@@ -151,7 +151,7 @@ for (const theme of ['light', 'dark'] as const) {
   });
 }
 
-test('Table 参考场景来自本地 v2.102.0 并保留表格、选择与滚动契约', async ({ page }) => {
+test('Table 参考场景来自本地 v2.105.2 并保留表格、选择与滚动契约', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

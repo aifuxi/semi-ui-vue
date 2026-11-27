@@ -13,7 +13,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Feedback 参考场景来自本地 v2.102.0 并保留 popup、Portal 与默认提交门禁', async ({ page }) => {
+test('Feedback 参考场景来自本地 v2.105.2 并保留 popup、Portal 与默认提交门禁', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));
@@ -54,10 +54,13 @@ test('Feedback React/Vue 表情、文本原因、提交关闭与 modal 单选行
 
   for (const page of [pair.react.page, pair.vue.page]) {
     const stage = page.locator('.feedback-scenario__stage');
-    await stage.locator('.semi-feedback-emoji-item').first().click();
+    await stage.getByRole('button', { name: '😐', exact: true }).click();
+    const negative = stage.getByRole('button', { name: '😞', exact: true });
+    await negative.press('Enter');
+    await expect(negative).toHaveAttribute('aria-pressed', 'true');
     await expect(stage.locator('textarea')).toHaveAttribute(
       'placeholder',
-      'Provider additional feedback(optional)',
+      '请提供更多反馈（选填）',
     );
     await expect(stage.getByRole('button', { name: '提交' })).toBeEnabled();
     await stage.locator('textarea').fill('入口不够明显');
@@ -67,10 +70,10 @@ test('Feedback React/Vue 表情、文本原因、提交关闭与 modal 单选行
 
     await page.locator('[data-action="open-feedback-modal"]').click();
     await expect(stage.getByRole('dialog')).toBeVisible();
-    await expect(stage.locator('[aria-label="confirm"]')).toBeDisabled();
+    await expect(stage.getByRole('button', { name: '提交', exact: true })).toBeDisabled();
     await stage.getByText('响应速度较慢', { exact: true }).click();
-    await expect(stage.locator('[aria-label="confirm"]')).toBeEnabled();
-    await stage.locator('.semi-modal-close').click();
+    await expect(stage.getByRole('button', { name: '提交', exact: true })).toBeEnabled();
+    await stage.getByRole('button', { name: '关闭', exact: true }).click();
     await expect(stage.getByRole('dialog')).toHaveCount(0);
   }
   expect(pair.react.runtimeErrors).toEqual([]);

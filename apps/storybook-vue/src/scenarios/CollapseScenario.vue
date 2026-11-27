@@ -28,7 +28,7 @@ function handleBasicChange(keys: CollapseActiveKey): void {
         data-parity-target="collapse-basic"
         @change="handleBasicChange"
       >
-        <CollapsePanel item-key="overview" header="版本基线" extra="v2.102.0">
+        <CollapsePanel item-key="overview" header="版本基线" extra="v2.105.2">
           <p>固定源码、组件行为与视觉证据同步交付。</p>
         </CollapsePanel>
         <CollapsePanel item-key="quality" header="质量门禁">

@@ -89,7 +89,7 @@ function dayClasses(day: CalendarDateObject): Array<string | false> {
 
 function eventStyle(event: ParsedCalendarEvent): CSSProperties {
   return {
-    left: `${roundCalendarPosition(Math.min(event.leftPos ?? 0, 1) * 100)}%`,
+    insetInlineStart: `${roundCalendarPosition(Math.min(event.leftPos ?? 0, 1) * 100)}%`,
     width: `${roundCalendarPosition(Math.min(event.width ?? 0, 1) * 100)}%`,
     top: `${event.topInd ?? 0}em`,
   };

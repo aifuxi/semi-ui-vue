@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import AudioPlayer from '@semi-v2.102.0/audio-player';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
+import AudioPlayer from '@semi-v2.105.2/audio-player';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
 import {
   AUDIO_PLAYER_COVER_DATA_URI,
   createSilentAudioDataUri,

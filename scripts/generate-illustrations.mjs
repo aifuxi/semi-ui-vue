@@ -112,7 +112,7 @@ async function generateIllustrationSource(source, filePath, componentName) {
   }
 
   return formatTypeScript(
-    `// Generated from the pinned Semi Design v2.102.0 source. Do not edit directly.\nimport { h, type VNode } from 'vue';\nimport { convertIllustration, type IllustrationSvgProps } from '../components/Illustration';\n\nfunction renderSvg(props: IllustrationSvgProps): VNode {\n  return ${jsxNode(jsx)};\n}\n\nexport default convertIllustration(renderSvg, ${JSON.stringify(componentName)});\n`,
+    `// Generated from the pinned Semi Design v2.105.2 source. Do not edit directly.\nimport { h, type VNode } from 'vue';\nimport { convertIllustration, type IllustrationSvgProps } from '../components/Illustration';\n\nfunction renderSvg(props: IllustrationSvgProps): VNode {\n  return ${jsxNode(jsx)};\n}\n\nexport default convertIllustration(renderSvg, ${JSON.stringify(componentName)});\n`,
   );
 }
 

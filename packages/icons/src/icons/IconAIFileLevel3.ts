@@ -1,4 +1,4 @@
-// Generated from the pinned Semi Design v2.102.0 source. Do not edit directly.
+// Generated from the pinned Semi Design v2.105.2 source. Do not edit directly.
 import { h, type VNode } from 'vue';
 import { convertIcon, type IconSvgProps } from '../components/Icon';
 import { getFillColor, getUuidShort } from '../utils';

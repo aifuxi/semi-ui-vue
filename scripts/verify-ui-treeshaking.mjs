@@ -17,10 +17,17 @@ async function viteBuild(consumerRoot, entry) {
     },
   });
   const output = Array.isArray(result) ? result.flatMap((item) => item.output) : result.output;
+  const chunks = output.filter((file) => file.type === 'chunk');
+  const modules = Object.fromEntries(
+    chunks.flatMap((chunk) =>
+      Object.entries(chunk.modules)
+        .filter(([, module]) => module.renderedLength > 0)
+        .map(([id, module]) => [id, [...module.renderedExports].sort()]),
+    ),
+  );
   return {
-    bytes: output
-      .filter((file) => file.type === 'chunk')
-      .reduce((sum, file) => sum + Buffer.byteLength(file.code), 0),
+    bytes: chunks.reduce((sum, file) => sum + Buffer.byteLength(file.code), 0),
+    modules,
     css: output
       .filter((file) => file.type === 'asset' && file.fileName.endsWith('.css'))
       .map((file) => String(file.source))
@@ -117,13 +124,23 @@ export async function verifyUiTreeshaking(consumerRoot) {
           assertBuild(component, subpath, bundler, result, budget, selectors);
           builds.push(result);
         }
-        assert(
-          Math.abs(builds[0].bytes - builds[1].bytes) < 1000,
-          `${bundler} ${component}: 根入口保留了无关模块`,
-        );
+        const [root, subpath] = builds;
+        if (bundler === 'Vite') {
+          // 同一组模块可以因局部标识符分配产生不同字节数，直接比较实际输出的模块和导出。
+          assert.deepEqual(
+            root.modules,
+            subpath.modules,
+            `Vite ${component}: 两种入口保留的模块或导出不一致`,
+          );
+        } else {
+          assert(
+            Math.abs(root.bytes - subpath.bytes) < 1000,
+            `${bundler} ${component}: 根入口保留了无关模块`,
+          );
+        }
         // 逐组件 CSS 现在有独立的基础样式和共享依赖入口；不同入口经打包器
         // 展开后的 CSS 顺序可以不同。上面的断言分别验证两种入口都含组件规则、
-        // 不含无关 Table 规则，JS 体积预算则检查根入口没有保留无关组件。
+        // 不含无关 Table 规则。
         console.log(
           `${bundler} ${component}: root ${builds[0].bytes} / subpath ${builds[1].bytes} bytes`,
         );

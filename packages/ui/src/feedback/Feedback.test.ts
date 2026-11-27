@@ -71,7 +71,7 @@ describe('Feedback', () => {
     expect(values).toEqual([{ emoji: '😞' }]);
     expect(bad?.classList).toContain('semi-feedback-emoji-item-selected');
     const textarea = document.querySelector<HTMLTextAreaElement>('.semi-feedback textarea');
-    expect(textarea?.placeholder).toBe('Provider additional feedback(optional)');
+    expect(textarea?.placeholder).toBe('请提供更多反馈（选填）');
     if (textarea) {
       textarea.value = '需要改进';
       textarea.dispatchEvent(new Event('input', { bubbles: true }));
@@ -204,16 +204,16 @@ describe('Feedback', () => {
       );
     const wrapper = mount(Host, { attachTo: document.body });
     await settle();
-    document.querySelector<HTMLButtonElement>('[aria-label="confirm"]')!.click();
+    document.querySelector<HTMLButtonElement>('[x-semi-children-alias="okText"]')!.click();
     await settle();
     expect(document.querySelector('.semi-modal-body')?.textContent).toContain('感谢反馈');
     expect(document.querySelector('.semi-modal-footer')).toBeNull();
     completed.value = false;
     await settle();
     expect(document.querySelector('.semi-modal-body')?.textContent).toContain('反馈内容');
-    expect(document.querySelector<HTMLButtonElement>('[aria-label="confirm"]')?.disabled).toBe(
-      false,
-    );
+    expect(
+      document.querySelector<HTMLButtonElement>('[x-semi-children-alias="okText"]')?.disabled,
+    ).toBe(false);
     wrapper.unmount();
   });
 
@@ -302,7 +302,7 @@ describe('Feedback', () => {
     });
     const wrapper = mount(Host, { attachTo: document.body });
     await settle();
-    const confirm = document.querySelector<HTMLButtonElement>('[aria-label="confirm"]')!;
+    const confirm = document.querySelector<HTMLButtonElement>('[x-semi-children-alias="okText"]')!;
     expect(confirm.disabled).toBe(false);
     confirm.click();
     await settle();

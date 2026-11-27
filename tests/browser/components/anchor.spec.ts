@@ -14,7 +14,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Anchor 参考场景来自本地 v2.102.0 并保留导航、嵌套与禁用 DOM', async ({ page }) => {
+test('Anchor 参考场景来自本地 v2.105.2 并保留导航、嵌套与禁用 DOM', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

@@ -15,7 +15,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Modal 参考场景来自本地 v2.102.0 公开源码', async ({ page }) => {
+test('Modal 参考场景来自本地 v2.105.2 公开源码', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));
@@ -231,10 +231,10 @@ for (const containerMode of ['provider', 'explicit'] as const) {
       });
       // 正常 click 会检查可见、命中与视口可达，不使用 force 或脚本触发事件。
       for (const application of [pair.react, pair.vue]) {
-        await application.page.getByRole('button', { name: 'cancel', exact: true }).click();
+        await application.page.getByRole('button', { name: '稍后处理', exact: true }).click();
         await expect(application.page.getByRole('dialog')).toHaveCount(0);
         await application.page.locator('[data-action="open-modal"]').click();
-        await application.page.getByRole('button', { name: 'confirm', exact: true }).click();
+        await application.page.getByRole('button', { name: '确认发布', exact: true }).click();
         await expect(application.page.getByRole('dialog')).toHaveCount(0);
         expect(application.runtimeErrors).toEqual([]);
       }
@@ -268,9 +268,9 @@ test('Modal Provider 零高容器在 390px 窄屏下保留视口定位与页尾�
   expect(box!.x + box!.width).toBeLessThanOrEqual(390);
   expect(box!.y).toBe(80);
   expect(box!.y + box!.height).toBeLessThanOrEqual(900);
-  await page.getByRole('button', { name: 'cancel', exact: true }).click();
+  await page.getByRole('button', { name: '稍后处理', exact: true }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await page.locator('[data-action="open-modal"]').click();
-  await page.getByRole('button', { name: 'confirm', exact: true }).click();
+  await page.getByRole('button', { name: '确认发布', exact: true }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
 });

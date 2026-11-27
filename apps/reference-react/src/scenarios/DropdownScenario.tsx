@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Dropdown from '@semi-v2.102.0/dropdown';
+import Dropdown from '@semi-v2.105.2/dropdown';
 
 export function DropdownScenario(): React.ReactElement {
   const [ready, setReady] = useState(false);

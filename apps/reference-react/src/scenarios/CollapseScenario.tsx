@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Collapse, { type CollapseActiveKey } from '@semi-v2.102.0/collapse';
+import Collapse, { type CollapseActiveKey } from '@semi-v2.105.2/collapse';
 
 function keyList(value: CollapseActiveKey): string[] {
   return Array.isArray(value) ? value : [value];
@@ -26,7 +26,7 @@ export function CollapseScenario(): React.ReactElement {
           data-parity-target="collapse-basic"
           onChange={(keys) => setStatus(`基础面板：${keyList(keys).join(',') || 'none'}`)}
         >
-          <Collapse.Panel itemKey="overview" header="版本基线" extra="v2.102.0">
+          <Collapse.Panel itemKey="overview" header="版本基线" extra="v2.105.2">
             <p>固定源码、组件行为与视觉证据同步交付。</p>
           </Collapse.Panel>
           <Collapse.Panel itemKey="quality" header="质量门禁">

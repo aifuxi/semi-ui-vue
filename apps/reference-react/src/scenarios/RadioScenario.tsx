@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Radio from '@semi-v2.102.0/radio';
+import Radio from '@semi-v2.105.2/radio';
 import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 export function RadioScenario(): React.ReactElement {

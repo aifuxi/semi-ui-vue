@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import Select from '@semi-v2.102.0/select';
+import Select from '@semi-v2.105.2/select';
 import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 const { Option, OptGroup } = Select;

@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import DragMove from '@semi-v2.102.0/drag-move';
+import DragMove from '@semi-v2.105.2/drag-move';
 
 export function DragMoveScenario(): React.ReactElement {
   const basicContainer = useRef<HTMLDivElement>(null);

@@ -1,4 +1,4 @@
-# Modal v2.102.0 对齐矩阵
+# Modal v2.105.2 对齐矩阵
 
 ## 路线与固定证据
 
@@ -151,3 +151,7 @@
 - 验证：Modal/ConfigProvider/Feedback 的 14 个文件、80 项 Unit/SSR/hydration 通过，新增单测在旧实现先失败。正式 Chromium 的 8 项通过，包含默认 light/dark、RTL、1280×900 的 Provider/显式容器 computed style、几何及像素对照，以及 Vue 390px 的视口边界和取消/确认正常点击。窄屏沿用既有 maxWidth 修正，不与固定 React 的 448px 默认宽度作相等断言。
 - 产物：`pnpm check:artifacts` 通过主题、全部公开入口无 DOM 导入、真实 tarball 安装、exports、类型、样式与 tree-shaking 检查；真实 tarball 的 Modal 焦点/ARIA、窄屏/长内容及 Dropdown 打开 Modal 共 20 项 Chromium 回归通过。UI、React/Storybook 场景与根工具类型检查及本次文件 lint 通过。截图、运行日志与平台操作回执仅保留在本地忽略目录。
 - 边界：组件库修复不代表迭鹿 J3 恢复流程已联调验收；消费项目安装新版本并复测前保持业务验收待完成。
+
+## v2.105.2 对照更新
+
+关闭图标按钮沿用当前 `Modal.close` 语言字段。页脚按钮从可见文案获得名称，支持 Locale、`okText`、`cancelText`，并保留按钮 props 显式传入的 ARIA 名称。

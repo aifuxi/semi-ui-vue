@@ -46,7 +46,7 @@ describe('Banner', () => {
     expect(wrapper.get('.semi-banner-description').text()).toBe('新版本已经可用');
     expect(wrapper.get('.semi-banner-extra button').text()).toBe('立即查看');
     const close = wrapper.get('button.semi-banner-close');
-    expect(close.attributes()).toMatchObject({ 'aria-label': 'Close', type: 'button' });
+    expect(close.attributes()).toMatchObject({ 'aria-label': '关闭', type: 'button' });
     expect(close.classes()).toEqual(
       expect.arrayContaining([
         'semi-button-size-small',

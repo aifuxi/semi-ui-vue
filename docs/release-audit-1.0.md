@@ -16,6 +16,33 @@
 
 Nuxt 文档站及旧逐示例验收已[退役](documentation/README.md)；现行 VitePress 站点作为文档入口维护，但不属于公开包发布门禁。
 
+## Semi v2.105.2 基线升级（2026-11-28）
+
+`vendor/semi-design`、React 对照应用、Inventory 和包内归属信息使用同一官方 tag。基线范围与修复条目见 [上游差异](https://github.com/DouyinFE/semi-design/compare/v2.102.0...v2.105.2) 和 [上游更新日志](https://github.com/DouyinFE/semi-design/blob/v2.105.2/content/ecosystem/changelog/index.md)。旧矩阵、静态文档素材与历史测试保留原始来源版本。
+
+- 新 Foundation 已包含 TimePicker 特殊格式分隔符、Input 自定义长度为零、Transfer 树数据、Typography 小数精度和 Form `setValues` 空值处理等修复。接入时补齐 Form 和 Typography 的 Lodash 导入、AIChatInput 建议事件、Sidebar 搜索和 Slider 失焦事件，并协调 Resizable 触摸事件与 Modal 的 Vue 层级管理。
+- Vue 回归已覆盖 Anchor 的 Enter 操作、当前链接无障碍状态，以及 Form 默认数组行首次渲染时读取表单值。Form 自动滚动随 Vue 的错误 DOM 提交执行。TextArea 清空自动高度和 Modal 的视觉顶层 Escape 在升级前已有 Vue 回归覆盖。
+- **RadioGroup、DatePicker 和 PinCode** 的实现及回归见各自组件契约。[RadioGroup](components/radio/alignment.md)、[DatePicker](components/date-picker/alignment.md)、[PinCode](components/pin-code/alignment.md)。
+- **Pagination** 已支持键盘，分页按钮的 `role` 仍覆盖 `li`，需使用内部原生按钮保留列表语义。对应 [#4005](https://github.com/DouyinFE/semi-design/pull/4005)。
+- **关闭按钮 Locale** 已接入 Banner 和 Modal。SideSheet 等其他组件的关闭按钮仍需按各自契约核对。对应 [#4098](https://github.com/DouyinFE/semi-design/pull/4098)。
+- **Progress** 的 `indeterminate` 是新功能。Vue 需要补齐 line/circle 的视觉状态、公开类型，并在该模式隐藏百分比文本和 `aria-valuenow`。对应 [#3343](https://github.com/DouyinFE/semi-design/pull/3343)。
+
+首次生产态 Chromium React/Vue 对照共 510 项，486 项通过，24 项失败。Slider 的失焦异常和 InputNumber 的旧 React 控制台断言修复后，两个规格的 10 项专项复测通过。其余失败按实际根因修复。
+
+| 受影响的规格            | 修复                                                                                                                               |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Banner、Feedback、Modal | 关闭名称及 Feedback 占位符使用 Locale，Feedback 图标支持键盘选择，Modal 页脚采用实际可见文案并保留显式 ARIA 覆盖。                 |
+| Calendar                | 事件改用逻辑定位。月卡等待浮层从视口外测量点移入视口，再等待动画结束。RTL 沿用现有视觉阈值，新增带版本号的双端截图，保留旧版原图。 |
+| Sidebar                 | React 参考场景显式加载 TypeScript 高亮语法。                                                                                       |
+| UserGuide               | 高亮层位于气泡下方一层，步骤遮罩、类名和零外扩生效。自定义容器由高亮层和气泡共享。                                                 |
+| Collapse                | Enter 和 Space 走同一点击路径，覆盖已经打开的手风琴项关闭后再打开。                                                                |
+| Select                  | 显式启用新版 Tooltip 的 Escape 关闭，避免 Select 和外层 Modal 在同一次按键中关闭。                                                 |
+| Image、TimePicker       | Image 预览向 Foundation 提供按 URL 索引的加载状态 `Map`。TimePicker 等待浮层定位和动效完成后再裁剪，继续使用原内缩 2px 快照。      |
+
+初次诊断确认，真实 tarball 的 Vite Form/FormInput 根入口与子路径同样保留 723 个模块和匹配的导出。局部标识符分配造成两端相差 1,001 字节。Vite 改为直接比较实际发出的模块与保留导出。既有绝对体积预算、Rspack 入口体积差门槛和样式断言继续执行。
+
+本轮 `pnpm check` 的源码门禁和 1,627 项单测通过。正式生产态 Chromium React/Vue 对照 510 项、隔离 tarball Chromium 消费 116 项、主题工作台 Chromium 81 项全部通过，均使用 3 个 worker、零重试。隔离 tarball 的安装、公开入口、类型、主题、SSR 和 tree-shaking 检查通过。
+
 ## 主题与组件 UI 视觉复核（2026-11-07）
 
 - 对照固定 Semi 基线实际查看全部 85 个功能场景、公开离散尺寸及可见状态的 light/dark 页面；具体覆盖、实际观察、修复和范围边界见[复核记录](../ai-work/2026-11-07-theme-style-review.md)。自动化结果与人工看图分别记录。

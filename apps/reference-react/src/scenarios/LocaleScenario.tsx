@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import LocaleConsumer from '@semi-v2.102.0/locale-consumer';
-import LocaleProvider from '@semi-v2.102.0/locale-provider';
-import enGB from '@semi-v2.102.0/locale-en-gb';
-import jaJP from '@semi-v2.102.0/locale-ja-jp';
+import LocaleConsumer from '@semi-v2.105.2/locale-consumer';
+import LocaleProvider from '@semi-v2.105.2/locale-provider';
+import enGB from '@semi-v2.105.2/locale-en-gb';
+import jaJP from '@semi-v2.105.2/locale-ja-jp';
 
 interface TimePickerLocale {
   begin: string;

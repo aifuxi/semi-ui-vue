@@ -245,14 +245,16 @@ describe('AIChatInput', () => {
 
   it('supports suggestion and skill keyboard/click flows', async () => {
     const skills: Skill[] = [{ value: 'search', label: 'Search', hasTemplate: true }];
-    const wrapper = await mountInput({ suggestions: ['Summarize'], skills, skillHotKey: '/' });
+    const suggestionData = { content: 'Summarize', id: 'summary' };
+    const wrapper = await mountInput({ suggestions: [suggestionData], skills, skillHotKey: '/' });
     await wrapper.find('.semi-aiChatInput-editor-content').trigger('click');
     await flushPromises();
     const suggestion = document.querySelector<HTMLElement>('.semi-aiChatInput-suggestion-item');
     expect(suggestion?.textContent).toContain('Summarize');
     suggestion?.click();
     await flushPromises();
-    expect(wrapper.emitted('suggestClick')?.[0]).toEqual(['Summarize']);
+    expect(wrapper.emitted('suggestClick')).toEqual([[suggestionData]]);
+    expect((wrapper.vm as unknown as AIChatInputExposed).getEditor()?.getText()).toBe('Summarize');
 
     (wrapper.vm as unknown as AIChatInputExposed).setContent('');
     await wrapper.find('.ProseMirror').trigger('keydown', { key: '/' });

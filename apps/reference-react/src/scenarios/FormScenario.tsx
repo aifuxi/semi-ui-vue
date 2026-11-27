@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form } from '@semi-v2.102.0/form';
+import { Form } from '@semi-v2.105.2/form';
 import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 /** 独立覆盖公开 ErrorMessage 的空值、布尔错误及错误清除，避免字段包装层掩盖值转换。 */

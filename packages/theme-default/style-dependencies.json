@@ -1,5 +1,5 @@
 {
-  "version": "2.102.0",
+  "version": "2.105.2",
   "components": {
     "ai-chat-dialogue": {
       "main": "semi-foundation/aiChatDialogue/aiChatDialogue.scss",

@@ -36,10 +36,10 @@ for (const mode of ['light', 'dark']) {
           (element) => element.scrollWidth - element.clientWidth,
         ),
       ).toBe(0);
-      for (const name of ['close', 'cancel', 'confirm']) {
+      for (const name of ['关闭', '取消', '确定']) {
         await expectHorizontalBounds(dialog.getByRole('button', { name, exact: true }), width);
       }
-      await dialog.getByRole('button', { name: 'close', exact: true }).click();
+      await dialog.getByRole('button', { name: '关闭', exact: true }).click();
       await expect(dialog).toHaveCount(0);
       await expect(opener).toBeFocused();
       await opener.click();
@@ -94,9 +94,9 @@ for (const mode of ['light', 'dark']) {
     /** 长标题保持关闭入口在可见宽度内。 */
     const dialog = page.getByRole('dialog');
     await expect(dialog).toHaveCSS('animation-name', 'none');
-    await expectHorizontalBounds(dialog.getByRole('button', { name: 'close', exact: true }), 320);
+    await expectHorizontalBounds(dialog.getByRole('button', { name: '关闭', exact: true }), 320);
     /** Playwright 的真实点击会先将页尾按钮滚入可视区。 */
-    const confirm = dialog.getByRole('button', { name: 'confirm', exact: true });
+    const confirm = dialog.getByRole('button', { name: '确定', exact: true });
     await confirm.scrollIntoViewIfNeeded();
     await expectHorizontalBounds(confirm, 320);
     await confirm.click();

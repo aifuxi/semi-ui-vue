@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Rating from '@semi-v2.102.0/rating';
+import Rating from '@semi-v2.105.2/rating';
 
 const TOOLTIPS = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
 

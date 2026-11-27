@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
-import Sidebar from '@semi-v2.102.0/sidebar';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
+import Sidebar from '@semi-v2.105.2/sidebar';
+// Sidebar 场景独立懒加载，显式注册示例使用的语法。
+import 'prismjs/components/prism-typescript.js';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const localeMap = {

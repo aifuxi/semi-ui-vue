@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Card from '@semi-v2.102.0/card';
-import CardGroup from '@semi-v2.102.0/card-group';
-import Avatar from '@semi-v2.102.0/avatar';
-import Button from '@semi-v2.102.0/button';
-import Typography from '@semi-v2.102.0/typography';
+import Card from '@semi-v2.105.2/card';
+import CardGroup from '@semi-v2.105.2/card-group';
+import Avatar from '@semi-v2.105.2/avatar';
+import Button from '@semi-v2.105.2/button';
+import Typography from '@semi-v2.105.2/typography';
 
 const { Meta } = Card;
 const { Text } = Typography;
@@ -32,7 +32,7 @@ export function CardScenario(): React.ReactElement {
             />
           }
           cover={<div className="card-scenario__cover">Vue parity</div>}
-          footer={<Text type="tertiary">固定 v2.102.0 基线</Text>}
+          footer={<Text type="tertiary">固定 v2.105.2 基线</Text>}
           footerLine
           shadows="always"
           data-parity-target="card-complete"

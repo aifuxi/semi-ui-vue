@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import SideSheet from '@semi-v2.102.0/side-sheet';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
+import SideSheet from '@semi-v2.105.2/side-sheet';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
 import { sheetReview } from '../../../../packages/test-infra/src/root-theme-review';
 
 export interface SideSheetScenarioProps {

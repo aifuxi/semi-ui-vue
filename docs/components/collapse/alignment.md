@@ -1,4 +1,4 @@
-# Collapse v2.102.0 对齐矩阵
+# Collapse v2.105.2 对齐矩阵
 
 ## 路线、固定源码与组件边界
 
@@ -43,7 +43,7 @@
 ## DOM、交互、ARIA 与动效
 
 - 根固定为 `div.semi-collapse`，只转发 `data-*`；Panel 根为 `.semi-collapse-item`，展开时增加 `-active`，并保留 Panel 的 class/style/rest attrs。
-- header 固定 `role="button"`、`tabindex="0"`、`.semi-collapse-header`；disabled 增加 `-disabled` 并阻止切换。固定上游没有 Enter/Space handler，因此键盘聚焦可用但按键不切换，此行为如实记录而不私自扩展。
+- header 固定 `role="button"`、`tabindex="0"`、`.semi-collapse-header`；disabled 增加 `-disabled` 并阻止切换。Enter 与 Space 复用鼠标触发路径和变更事件类型，沿用 `clickHeaderToExpand` 的图标热区设置。header 中的子控件保留自身按键行为。
 - `aria-disabled`、`aria-expanded` 与状态同步；`aria-owns` 与内容 `id` 沿用固定 Adapter 的 mounted 后短 id 时序，内容同步 `aria-hidden`。固定 Adapter 在 `componentDidMount` 赋值 id 且不触发渲染，首屏所有面板保持 `aria-owns=""`；React 在展开集变化时重渲染全部 context 消费者，所有面板从那次渲染起输出 id，Vue 以同一传播时机（读取共享 `activeSet`）对齐，避免只有自身重渲染过的面板拿到 id。
 - string header 的 DOM 为可选左图标 + 文本 span + `.semi-collapse-header-right`（extra + 可选右图标）；VNode/slot header 直接占据中间区域，extra 不自动插入。
 - 无内容或 disabled 时图标增加 `.semi-collapse-header-iconDisabled`；`showArrow=false` 不创建图标。`clickHeaderToExpand=false` 时正文点击无效但 icon span 点击有效。

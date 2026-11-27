@@ -14,7 +14,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Steps 参考场景来自本地 v2.102.0 并保留 fill/basic/vertical/nav DOM', async ({ page }) => {
+test('Steps 参考场景来自本地 v2.105.2 并保留 fill/basic/vertical/nav DOM', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

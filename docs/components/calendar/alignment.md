@@ -1,9 +1,9 @@
-# Calendar v2.102.0 对齐矩阵
+# Calendar v2.105.2 对齐矩阵
 
 ## 路线与权威来源
 
 - 当前路线：最近完成 Badge；Calendar 是固定 `vendor/semi-design/content/order.js` 中紧邻其后的公开组件。
-- 固定基线：Semi Design `v2.102.0`，提交 `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`。
+- 固定基线：Semi Design `v2.105.2`，提交 `7db305200a2b0fd2b20f0559819f2fa55631e2ba`。
 - Adapter 与公开类型：`packages/semi-ui/calendar/index.tsx`、`interface.ts`、`dayCalendar.tsx`、`dayCol.tsx`、`timeCol.tsx`、`weekCalendar.tsx`、`rangeCalendar.tsx`、`monthCalendar.tsx`。
 - Foundation 与事件算法：`packages/semi-foundation/calendar/foundation.ts`、`eventUtil.ts`、`constants.ts`。
 - 默认样式与 RTL：`packages/semi-foundation/calendar/calendar.scss`、`variables.scss`、`rtl.scss`，以及默认主题 global/token。
@@ -111,3 +111,7 @@
 - 折叠单元格（“还有 N 项”）的 Popover 触发器 `<li>` 不再附加 `role="gridcell"`、`aria-label` 与 `aria-current`。固定 `renderCollapsed` 的触发节点只带单元格 class 与点击，Vue 之前把普通单元格的语义重复到了触发器上。
 
 历史验证：Calendar 单元/SSR 9 项、组件 Chromium 5/5、双语文档矩阵 9 例 72 项通过。旧文档报告已[退役](../../documentation/README.md)，细节与限定等价项可从 Git 历史查看，不作为当前输入的验收结论。
+
+## v2.105.2 对照更新
+
+日、周、范围和月视图的事件用 `inset-inline-start` 声明列位置。月视图事件卡片在浮层移入视口、入场动画结束后再验收几何与像素。

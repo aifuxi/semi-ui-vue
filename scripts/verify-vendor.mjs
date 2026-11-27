@@ -3,8 +3,8 @@ import { fileURLToPath } from 'node:url';
 
 const workspaceRoot = fileURLToPath(new URL('..', import.meta.url));
 const vendorPath = 'vendor/semi-design';
-const expectedCommit = 'cdfba6e520fc83ad871b30f51f36d8af3aaa5a21';
-const expectedTag = 'v2.102.0';
+const expectedCommit = '7db305200a2b0fd2b20f0559819f2fa55631e2ba';
+const expectedTag = 'v2.105.2';
 
 function git(args) {
   return execFileSync('git', args, {

@@ -548,6 +548,7 @@ defineExpose<SelectExposed>({
     role="presentation"
     trigger="custom"
     :visible="state.isOpen"
+    close-on-esc
     :position="runtimeProps.position ?? (config.direction === 'rtl' ? 'bottomRight' : 'bottomLeft')"
     :show-arrow="false"
     :spacing="runtimeProps.spacing ?? 4"

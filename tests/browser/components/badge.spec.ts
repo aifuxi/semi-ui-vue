@@ -14,7 +14,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Badge 参考场景来自本地 v2.102.0 并保留计数、圆点、溢出和自定义 DOM', async ({ page }) => {
+test('Badge 参考场景来自本地 v2.105.2 并保留计数、圆点、溢出和自定义 DOM', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

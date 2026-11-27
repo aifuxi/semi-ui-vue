@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Collapsible from '@semi-v2.102.0/collapsible';
+import Collapsible from '@semi-v2.105.2/collapsible';
 
 export function CollapsibleScenario(): React.ReactElement {
   const [basicOpen, setBasicOpen] = useState(true);
@@ -36,7 +36,7 @@ export function CollapsibleScenario(): React.ReactElement {
           <div className="collapsible-scenario__content collapsible-scenario__content--hero">
             <strong>从设计到交付</strong>
             <p>统一结构、行为与视觉证据，让每次展开都保持确定。</p>
-            <span>v2.102.0 fixed source</span>
+            <span>v2.105.2 fixed source</span>
           </div>
         </Collapsible>
       </section>

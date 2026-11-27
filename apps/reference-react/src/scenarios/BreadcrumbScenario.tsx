@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Breadcrumb, { type BreadcrumbItemInfo, type RouteProps } from '@semi-v2.102.0/breadcrumb';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
-import { IconChevronRight, IconHome } from '@semi-v2.102.0/icons';
+import Breadcrumb, { type BreadcrumbItemInfo, type RouteProps } from '@semi-v2.105.2/breadcrumb';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
+import { IconChevronRight, IconHome } from '@semi-v2.105.2/icons';
 import type { ParityDirection } from '@workspace/test-infra';
 
 function itemName(item: BreadcrumbItemInfo | RouteProps): string {

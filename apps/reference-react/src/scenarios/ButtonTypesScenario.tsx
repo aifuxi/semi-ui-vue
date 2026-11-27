@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Button from '@semi-v2.102.0/button';
+import Button from '@semi-v2.105.2/button';
 import { buttonReview } from '../../../../packages/test-infra/src/root-theme-review';
 
 const BUTTON_TYPES = [

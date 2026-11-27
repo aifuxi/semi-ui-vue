@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "source": {
     "package": "@douyinfe/semi-ui",
-    "version": "2.102.0",
-    "tag": "v2.102.0",
-    "commit": "cdfba6e520fc83ad871b30f51f36d8af3aaa5a21",
+    "version": "2.105.2",
+    "tag": "v2.105.2",
+    "commit": "7db305200a2b0fd2b20f0559819f2fa55631e2ba",
     "rootEntry": "vendor/semi-design/packages/semi-ui/index.ts"
   },
   "summary": {
@@ -17,7 +17,7 @@
     "enUSDocumentationCount": 102,
     "foundationDirectoryCount": 85,
     "localeCount": 57,
-    "iconExportCount": 526,
+    "iconExportCount": 530,
     "iconLabExportCount": 84,
     "illustrationExportCount": 16,
     "themeTokenCount": 375
@@ -3847,7 +3847,15 @@
         }
       },
       "documentation": [],
-      "evidence": { "unitTestFiles": [], "storyFiles": [], "cypressFiles": [] }
+      "evidence": {
+        "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/_utils/__test__/overrideDefaultProps.test.js",
+          "vendor/semi-design/packages/semi-ui/_utils/__test__/static-root-disposal.test.js",
+          "vendor/semi-design/packages/semi-ui/_utils/__test__/usePrevFocus.test.tsx"
+        ],
+        "storyFiles": [],
+        "cypressFiles": []
+      }
     },
     {
       "key": "aiChatDialogue",
@@ -4026,7 +4034,13 @@
       },
       "documentation": ["vendor/semi-design/content/ai/aiChatDialogue"],
       "evidence": {
-        "unitTestFiles": [],
+        "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/aiChatDialogue/__test__/avatar-color.test.js",
+          "vendor/semi-design/packages/semi-ui/aiChatDialogue/__test__/fullRenderer.test.jsx",
+          "vendor/semi-design/packages/semi-ui/aiChatDialogue/__test__/optionalAnnotationClick.test.jsx",
+          "vendor/semi-design/packages/semi-ui/aiChatDialogue/__test__/reference-keyboard.test.js",
+          "vendor/semi-design/packages/semi-ui/aiChatDialogue/__test__/renderProps.test.jsx"
+        ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/aiChatDialogue/_story/aiChatDialogue.stories.jsx",
           "vendor/semi-design/packages/semi-ui/aiChatDialogue/_story/aiChatDialogue.stories.tsx",
@@ -4235,7 +4249,14 @@
       "documentation": ["vendor/semi-design/content/ai/aiChatInput"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/aiChatInput/__test__/aiChatInputFoundation.test.js"
+          "vendor/semi-design/packages/semi-ui/aiChatInput/__test__/aiChatInputFoundation.test.js",
+          "vendor/semi-design/packages/semi-ui/aiChatInput/__test__/configure-field.test.js",
+          "vendor/semi-design/packages/semi-ui/aiChatInput/__test__/configure.test.js",
+          "vendor/semi-design/packages/semi-ui/aiChatInput/__test__/editorInitialization.test.jsx",
+          "vendor/semi-design/packages/semi-ui/aiChatInput/__test__/hotkeyCommand.test.ts",
+          "vendor/semi-design/packages/semi-ui/aiChatInput/__test__/inputSlotWhitespace.test.jsx",
+          "vendor/semi-design/packages/semi-ui/aiChatInput/__test__/notifications.test.js",
+          "vendor/semi-design/packages/semi-ui/aiChatInput/__test__/reference-delete.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/aiChatInput/_story/aiChatInput.stories.jsx",
@@ -4321,7 +4342,14 @@
       "documentation": ["vendor/semi-design/content/navigation/anchor"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/anchor/__test__/anchor.test.js"
+          "vendor/semi-design/packages/semi-ui/anchor/__test__/anchor.test.js",
+          "vendor/semi-design/packages/semi-ui/anchor/__test__/current-location.test.js",
+          "vendor/semi-design/packages/semi-ui/anchor/__test__/descendantMap.test.jsx",
+          "vendor/semi-design/packages/semi-ui/anchor/__test__/fragmentLevels.test.jsx",
+          "vendor/semi-design/packages/semi-ui/anchor/__test__/keyboardActivation.test.jsx",
+          "vendor/semi-design/packages/semi-ui/anchor/__test__/scrollContainer.test.jsx",
+          "vendor/semi-design/packages/semi-ui/anchor/__test__/scrollTaskCleanup.test.jsx",
+          "vendor/semi-design/packages/semi-ui/anchor/__test__/sharedTooltip.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/anchor/_story/anchor.stories.jsx",
@@ -4398,7 +4426,10 @@
       },
       "documentation": ["vendor/semi-design/content/plus/audioPlayer"],
       "evidence": {
-        "unitTestFiles": [],
+        "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/audioPlayer/__test__/error-locale.test.tsx",
+          "vendor/semi-design/packages/semi-ui/audioPlayer/__test__/theme.test.js"
+        ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/audioPlayer/_story/audioPlayer.stories.jsx",
           "vendor/semi-design/packages/semi-ui/audioPlayer/_story/audioPlayer.stories.tsx"
@@ -4481,7 +4512,8 @@
       "documentation": ["vendor/semi-design/content/input/autocomplete"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/autoComplete/__test__/autoComplete.test.js"
+          "vendor/semi-design/packages/semi-ui/autoComplete/__test__/autoComplete.test.js",
+          "vendor/semi-design/packages/semi-ui/autoComplete/__test__/reopenFocus.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/autoComplete/_story/autoComplete.stories.jsx",
@@ -4578,7 +4610,7 @@
       ],
       "adapter": {
         "directory": "vendor/semi-design/packages/semi-ui/avatar",
-        "sourceFileCount": 4,
+        "sourceFileCount": 5,
         "imports": {
           "externalPackages": [
             "@douyinfe/semi-foundation",
@@ -4612,7 +4644,9 @@
       "evidence": {
         "unitTestFiles": [
           "vendor/semi-design/packages/semi-ui/avatar/__test__/avatar.test.js",
-          "vendor/semi-design/packages/semi-ui/avatar/__test__/avatarGroup.test.js"
+          "vendor/semi-design/packages/semi-ui/avatar/__test__/avatarGroup.test.js",
+          "vendor/semi-design/packages/semi-ui/avatar/__test__/role.test.jsx",
+          "vendor/semi-design/packages/semi-ui/avatar/__test__/tooltipFocus.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/avatar/_story/avatar.stories.jsx",
@@ -4686,7 +4720,9 @@
       "documentation": ["vendor/semi-design/content/navigation/backtop"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/backtop/__test__/backtop.test.js"
+          "vendor/semi-design/packages/semi-ui/backtop/__test__/backtop.test.js",
+          "vendor/semi-design/packages/semi-ui/backtop/__test__/pendingClick.test.jsx",
+          "vendor/semi-design/packages/semi-ui/backtop/__test__/propUpdates.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/backtop/_story/backtop.stories.jsx",
@@ -4848,7 +4884,9 @@
       "documentation": ["vendor/semi-design/content/feedback/banner"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/banner/__test__/banner.test.js"
+          "vendor/semi-design/packages/semi-ui/banner/__test__/banner.test.js",
+          "vendor/semi-design/packages/semi-ui/banner/__test__/closeLabel.test.jsx",
+          "vendor/semi-design/packages/semi-ui/banner/__test__/numericContent.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/banner/_story/banner.stories.jsx",
@@ -4949,7 +4987,8 @@
       "documentation": ["vendor/semi-design/content/navigation/breadcrumb"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/breadcrumb/__test__/breadcrumb.test.js"
+          "vendor/semi-design/packages/semi-ui/breadcrumb/__test__/breadcrumb.test.js",
+          "vendor/semi-design/packages/semi-ui/breadcrumb/__test__/itemStyles.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/breadcrumb/_story/breadcrumb.stories.jsx",
@@ -5220,7 +5259,14 @@
       "documentation": ["vendor/semi-design/content/show/calendar"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/calendar/__test__/calendar.test.js"
+          "vendor/semi-design/packages/semi-ui/calendar/__test__/calendar.test.js",
+          "vendor/semi-design/packages/semi-ui/calendar/__test__/closeEvent.test.jsx",
+          "vendor/semi-design/packages/semi-ui/calendar/__test__/current-time-updates.test.tsx",
+          "vendor/semi-design/packages/semi-ui/calendar/__test__/currentDefaultDate.test.jsx",
+          "vendor/semi-design/packages/semi-ui/calendar/__test__/event-position-updates.test.tsx",
+          "vendor/semi-design/packages/semi-ui/calendar/__test__/eventInput.test.jsx",
+          "vendor/semi-design/packages/semi-ui/calendar/__test__/heightIdentity.test.jsx",
+          "vendor/semi-design/packages/semi-ui/calendar/__test__/outsideCleanup.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/calendar/_story/calendar.stories.jsx",
@@ -5397,7 +5443,11 @@
       "documentation": ["vendor/semi-design/content/show/carousel"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/carousel/__test__/carousel.test.js"
+          "vendor/semi-design/packages/semi-ui/carousel/__test__/autoPlayUpdates.test.jsx",
+          "vendor/semi-design/packages/semi-ui/carousel/__test__/carousel.test.js",
+          "vendor/semi-design/packages/semi-ui/carousel/__test__/controlledAnimation.test.jsx",
+          "vendor/semi-design/packages/semi-ui/carousel/__test__/forcedHover.test.jsx",
+          "vendor/semi-design/packages/semi-ui/carousel/__test__/hoverCleanup.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/carousel/_story/carousel.stories.jsx"
@@ -5547,7 +5597,10 @@
       "documentation": ["vendor/semi-design/content/input/cascader"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/cascader/__test__/cascader.test.js"
+          "vendor/semi-design/packages/semi-ui/cascader/__test__/cascader.test.js",
+          "vendor/semi-design/packages/semi-ui/cascader/__test__/disabledDefaultOpen.test.jsx",
+          "vendor/semi-design/packages/semi-ui/cascader/__test__/disabledTag.test.js",
+          "vendor/semi-design/packages/semi-ui/cascader/__test__/preventScroll.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/cascader/_story/cascader.stories.jsx",
@@ -5614,7 +5667,16 @@
       },
       "documentation": ["vendor/semi-design/content/plus/chat"],
       "evidence": {
-        "unitTestFiles": [],
+        "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/chat/__test__/clearContext.test.jsx",
+          "vendor/semi-design/packages/semi-ui/chat/__test__/consecutiveAvatar.test.js",
+          "vendor/semi-design/packages/semi-ui/chat/__test__/empty-reset.test.js",
+          "vendor/semi-design/packages/semi-ui/chat/__test__/hint-keyboard.test.js",
+          "vendor/semi-design/packages/semi-ui/chat/__test__/input-callback.test.js",
+          "vendor/semi-design/packages/semi-ui/chat/__test__/markdownUpdates.test.jsx",
+          "vendor/semi-design/packages/semi-ui/chat/__test__/optionalValues.test.jsx",
+          "vendor/semi-design/packages/semi-ui/chat/__test__/tsxGrammar.test.jsx"
+        ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/chat/_story/chat.stories.jsx",
           "vendor/semi-design/packages/semi-ui/chat/_story/chat.stories.tsx",
@@ -5762,8 +5824,13 @@
       "documentation": ["vendor/semi-design/content/input/checkbox"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/checkbox/__test__/autoFocus.test.jsx",
+          "vendor/semi-design/packages/semi-ui/checkbox/__test__/blur.test.js",
           "vendor/semi-design/packages/semi-ui/checkbox/__test__/checkbox.test.js",
-          "vendor/semi-design/packages/semi-ui/checkbox/__test__/checkboxGroup.test.js"
+          "vendor/semi-design/packages/semi-ui/checkbox/__test__/checkboxGroup.test.js",
+          "vendor/semi-design/packages/semi-ui/checkbox/__test__/childIdentity.test.jsx",
+          "vendor/semi-design/packages/semi-ui/checkbox/__test__/descriptionIds.test.jsx",
+          "vendor/semi-design/packages/semi-ui/checkbox/__test__/standaloneBlur.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/checkbox/_story/checkbox.stories.jsx",
@@ -5827,7 +5894,9 @@
       },
       "documentation": ["vendor/semi-design/content/plus/codehighlight"],
       "evidence": {
-        "unitTestFiles": [],
+        "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/codeHighlight/__test__/language.test.js"
+        ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/codeHighlight/_story/codeHighlight.stories.jsx",
           "vendor/semi-design/packages/semi-ui/codeHighlight/_story/codeHighlight.stories.tsx"
@@ -5907,7 +5976,10 @@
       "documentation": ["vendor/semi-design/content/show/collapse"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/collapse/__test__/collapse.test.js"
+          "vendor/semi-design/packages/semi-ui/collapse/__test__/collapse.test.js",
+          "vendor/semi-design/packages/semi-ui/collapse/__test__/keyboard.test.js",
+          "vendor/semi-design/packages/semi-ui/collapse/__test__/mountedAria.test.jsx",
+          "vendor/semi-design/packages/semi-ui/collapse/__test__/relationLifecycle.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/collapse/_story/accordion.stories.jsx",
@@ -5973,7 +6045,10 @@
       "documentation": ["vendor/semi-design/content/show/collapsible"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/collapsible/__test__/collapsible.test.js"
+          "vendor/semi-design/packages/semi-ui/collapsible/__test__/adaptive-ssr.test.tsx",
+          "vendor/semi-design/packages/semi-ui/collapsible/__test__/collapsible.test.js",
+          "vendor/semi-design/packages/semi-ui/collapsible/__test__/initialOpenHeight.test.jsx",
+          "vendor/semi-design/packages/semi-ui/collapsible/__test__/motion-completion.test.tsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/collapsible/_story/__snapshots__/collapsible.stories.tsx.snap",
@@ -6029,7 +6104,7 @@
       ],
       "adapter": {
         "directory": "vendor/semi-design/packages/semi-ui/colorPicker",
-        "sourceFileCount": 5,
+        "sourceFileCount": 6,
         "imports": {
           "externalPackages": [
             "@douyinfe/semi-foundation",
@@ -6067,7 +6142,11 @@
       "documentation": ["vendor/semi-design/content/input/colorpicker"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/colorPicker/__test__/colorPicker.test.js"
+          "vendor/semi-design/packages/semi-ui/colorPicker/__test__/colorAreaUnmount.test.jsx",
+          "vendor/semi-design/packages/semi-ui/colorPicker/__test__/colorPicker.test.js",
+          "vendor/semi-design/packages/semi-ui/colorPicker/__test__/colorPickerSlider.test.js",
+          "vendor/semi-design/packages/semi-ui/colorPicker/__test__/style.test.js",
+          "vendor/semi-design/packages/semi-ui/colorPicker/__test__/touchDrag.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/colorPicker/_story/colorPicker.stories.jsx",
@@ -6245,6 +6324,12 @@
           "resolvedPath": "vendor/semi-design/packages/semi-ui/cropper/index.tsx",
           "entryExports": [
             {
+              "name": "CropperProps",
+              "importedName": "CropperProps",
+              "source": null,
+              "typeOnly": true
+            },
+            {
               "name": "default",
               "importedName": "default",
               "source": null,
@@ -6284,7 +6369,14 @@
       },
       "documentation": ["vendor/semi-design/content/show/cropper"],
       "evidence": {
-        "unitTestFiles": [],
+        "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/cropper/__test__/controlledZoom.test.js",
+          "vendor/semi-design/packages/semi-ui/cropper/__test__/dragLifecycle.test.js",
+          "vendor/semi-design/packages/semi-ui/cropper/__test__/imageProps.test.js",
+          "vendor/semi-design/packages/semi-ui/cropper/__test__/previewSource.test.js",
+          "vendor/semi-design/packages/semi-ui/cropper/__test__/sourceTransform.test.js",
+          "vendor/semi-design/packages/semi-ui/cropper/__test__/wheelZoom.test.js"
+        ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/cropper/_story/cropper.stories.jsx",
           "vendor/semi-design/packages/semi-ui/cropper/_story/cropper.stories.tsx"
@@ -6478,7 +6570,13 @@
       "documentation": ["vendor/semi-design/content/input/datepicker"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/datePicker/__test__/datePicker.test.js"
+          "vendor/semi-design/packages/semi-ui/datePicker/__test__/datePicker.test.js",
+          "vendor/semi-design/packages/semi-ui/datePicker/__test__/disabledPanel.test.js",
+          "vendor/semi-design/packages/semi-ui/datePicker/__test__/monthSwitch.test.jsx",
+          "vendor/semi-design/packages/semi-ui/datePicker/__test__/multipleInput.test.js",
+          "vendor/semi-design/packages/semi-ui/datePicker/__test__/rangeTimeAlignment.test.js",
+          "vendor/semi-design/packages/semi-ui/datePicker/__test__/weekStartUpdates.test.jsx",
+          "vendor/semi-design/packages/semi-ui/datePicker/__test__/yearSelectionCallbacks.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/datePicker/_story/AllTypes/index.jsx",
@@ -6622,7 +6720,8 @@
       "documentation": ["vendor/semi-design/content/show/descriptions"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/descriptions/__test__/descriptions.test.js"
+          "vendor/semi-design/packages/semi-ui/descriptions/__test__/descriptions.test.js",
+          "vendor/semi-design/packages/semi-ui/descriptions/__test__/horizontalData.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/descriptions/_story/Demo.tsx",
@@ -6747,7 +6846,11 @@
       "documentation": ["vendor/semi-design/content/plus/dragMove"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/dragMove/__test__/dragMove.test.js"
+          "vendor/semi-design/packages/semi-ui/dragMove/__test__/bindings.test.jsx",
+          "vendor/semi-design/packages/semi-ui/dragMove/__test__/classParent.test.jsx",
+          "vendor/semi-design/packages/semi-ui/dragMove/__test__/dragMove.test.js",
+          "vendor/semi-design/packages/semi-ui/dragMove/__test__/endFrame.test.jsx",
+          "vendor/semi-design/packages/semi-ui/dragMove/__test__/refCleanup.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/dragMove/_story/dragMove.stories.jsx",
@@ -6938,7 +7041,9 @@
       "documentation": ["vendor/semi-design/content/show/dropdown"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/dropdown/__test__/dropdown.test.js"
+          "vendor/semi-design/packages/semi-ui/dropdown/__test__/dropdown.test.js",
+          "vendor/semi-design/packages/semi-ui/dropdown/__test__/dynamicKeyboard.test.jsx",
+          "vendor/semi-design/packages/semi-ui/dropdown/__test__/initialExpanded.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/dropdown/_story/AutoClose/index.jsx",
@@ -7008,7 +7113,9 @@
       "documentation": ["vendor/semi-design/content/show/empty"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/empty/__test__/empty.test.js"
+          "vendor/semi-design/packages/semi-ui/empty/__test__/dynamicDarkImage.test.jsx",
+          "vendor/semi-design/packages/semi-ui/empty/__test__/empty.test.js",
+          "vendor/semi-design/packages/semi-ui/empty/__test__/reactNodeImage.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/empty/_story/Demo.tsx",
@@ -7090,7 +7197,14 @@
       },
       "documentation": ["vendor/semi-design/content/feedback/feedback"],
       "evidence": {
-        "unitTestFiles": [],
+        "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/feedback/__test__/afterClose.test.jsx",
+          "vendor/semi-design/packages/semi-ui/feedback/__test__/className.test.jsx",
+          "vendor/semi-design/packages/semi-ui/feedback/__test__/emojiKeyboard.test.jsx",
+          "vendor/semi-design/packages/semi-ui/feedback/__test__/modal-button-props.test.tsx",
+          "vendor/semi-design/packages/semi-ui/feedback/__test__/placeholder.test.jsx",
+          "vendor/semi-design/packages/semi-ui/feedback/__test__/textareaChange.test.jsx"
+        ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/feedback/_story/feedback.stories.jsx",
           "vendor/semi-design/packages/semi-ui/feedback/_story/feedback.stories.tsx"
@@ -7169,7 +7283,10 @@
       },
       "documentation": ["vendor/semi-design/content/basic/floatbutton"],
       "evidence": {
-        "unitTestFiles": [],
+        "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/floatButton/__test__/groupClicks.test.jsx",
+          "vendor/semi-design/packages/semi-ui/floatButton/__test__/itemProps.test.jsx"
+        ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/floatButton/_story/floatButton.stories.jsx",
           "vendor/semi-design/packages/semi-ui/floatButton/_story/floatButton.stories.tsx"
@@ -9141,16 +9258,24 @@
         "unitTestFiles": [
           "vendor/semi-design/packages/semi-ui/form/__test__/arrayField.test.js",
           "vendor/semi-design/packages/semi-ui/form/__test__/arrayfieldinsert.test.js",
+          "vendor/semi-design/packages/semi-ui/form/__test__/arrayFieldRegistration.test.jsx",
+          "vendor/semi-design/packages/semi-ui/form/__test__/arrayFieldUpdateKey.test.js",
           "vendor/semi-design/packages/semi-ui/form/__test__/baseForm/baseForm.test.js",
           "vendor/semi-design/packages/semi-ui/form/__test__/baseForm/onChange.test.js",
           "vendor/semi-design/packages/semi-ui/form/__test__/errorMessage.test.js",
           "vendor/semi-design/packages/semi-ui/form/__test__/field.test.js",
+          "vendor/semi-design/packages/semi-ui/form/__test__/fieldGrid.test.js",
           "vendor/semi-design/packages/semi-ui/form/__test__/formApi.test.js",
           "vendor/semi-design/packages/semi-ui/form/__test__/group.test.js",
           "vendor/semi-design/packages/semi-ui/form/__test__/hoc.test.js",
           "vendor/semi-design/packages/semi-ui/form/__test__/label.test.js",
+          "vendor/semi-design/packages/semi-ui/form/__test__/labelStyle.test.js",
           "vendor/semi-design/packages/semi-ui/form/__test__/section.test.js",
-          "vendor/semi-design/packages/semi-ui/form/__test__/slot.test.js"
+          "vendor/semi-design/packages/semi-ui/form/__test__/slot.test.js",
+          "vendor/semi-design/packages/semi-ui/form/__test__/snapshotValidation.test.js",
+          "vendor/semi-design/packages/semi-ui/form/__test__/stateSnapshots.test.js",
+          "vendor/semi-design/packages/semi-ui/form/__test__/validateScrollCommit.test.js",
+          "vendor/semi-design/packages/semi-ui/form/__test__/validationResult.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/form/_story/ArrayField/4-manualSetUsage.jsx",
@@ -9330,7 +9455,9 @@
       "documentation": ["vendor/semi-design/content/basic/grid"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/grid/__test__/calculateGutter.test.js"
+          "vendor/semi-design/packages/semi-ui/grid/__test__/calculateGutter.test.js",
+          "vendor/semi-design/packages/semi-ui/grid/__test__/responsiveUpdate.test.js",
+          "vendor/semi-design/packages/semi-ui/grid/__test__/responsiveZero.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/grid/_story/demo.scss",
@@ -9394,7 +9521,9 @@
       },
       "documentation": ["vendor/semi-design/content/show/highlight"],
       "evidence": {
-        "unitTestFiles": [],
+        "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/highlight/__test__/highlight.test.js"
+        ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/highlight/_story/highlight.stories.jsx",
           "vendor/semi-design/packages/semi-ui/highlight/_story/highlight.stories.tsx"
@@ -9464,7 +9593,9 @@
       "documentation": ["vendor/semi-design/content/plus/hotkeys"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/hotKeys/__test__/hotkeys.test.js"
+          "vendor/semi-design/packages/semi-ui/hotKeys/__test__/hotkeys.test.js",
+          "vendor/semi-design/packages/semi-ui/hotKeys/__test__/optionalHotKeys.test.jsx",
+          "vendor/semi-design/packages/semi-ui/hotKeys/__test__/target.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/hotKeys/_story/hotKeys.stories.jsx",
@@ -9742,8 +9873,16 @@
       "documentation": ["vendor/semi-design/content/show/image"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/image/__test__/default-image-preview.test.js",
           "vendor/semi-design/packages/semi-ui/image/__test__/image.test.js",
-          "vendor/semi-design/packages/semi-ui/image/__test__/imagePreview.test.js"
+          "vendor/semi-design/packages/semi-ui/image/__test__/imagePreview.test.js",
+          "vendor/semi-design/packages/semi-ui/image/__test__/imagePreviewChange.test.js",
+          "vendor/semi-design/packages/semi-ui/image/__test__/imagePreviewTitle.test.js",
+          "vendor/semi-design/packages/semi-ui/image/__test__/lazy-updates.test.js",
+          "vendor/semi-design/packages/semi-ui/image/__test__/preload-index.test.js",
+          "vendor/semi-design/packages/semi-ui/image/__test__/preload.test.js",
+          "vendor/semi-design/packages/semi-ui/image/__test__/previewDefaults.test.js",
+          "vendor/semi-design/packages/semi-ui/image/__test__/previewFooterLifecycle.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/image/_story/image.stories.jsx",
@@ -9918,7 +10057,12 @@
       "evidence": {
         "unitTestFiles": [
           "vendor/semi-design/packages/semi-ui/input/__test__/input.test.js",
-          "vendor/semi-design/packages/semi-ui/input/__test__/textArea.test.js"
+          "vendor/semi-design/packages/semi-ui/input/__test__/native-readonly.test.js",
+          "vendor/semi-design/packages/semi-ui/input/__test__/textarea-blur-event.test.js",
+          "vendor/semi-design/packages/semi-ui/input/__test__/textarea-invalid.test.js",
+          "vendor/semi-design/packages/semi-ui/input/__test__/textArea.test.js",
+          "vendor/semi-design/packages/semi-ui/input/__test__/textAreaClearAutosize.test.jsx",
+          "vendor/semi-design/packages/semi-ui/input/__test__/zeroMaxLength.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/input/_story/Demo.tsx",
@@ -10012,7 +10156,9 @@
       "documentation": ["vendor/semi-design/content/input/inputnumber"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/inputNumber/__test__/inputNumber.test.js"
+          "vendor/semi-design/packages/semi-ui/inputNumber/__test__/inputNumber.test.js",
+          "vendor/semi-design/packages/semi-ui/inputNumber/__test__/scientificNotation.test.jsx",
+          "vendor/semi-design/packages/semi-ui/inputNumber/__test__/zeroAria.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/inputNumber/_story/input.stories.tsx",
@@ -10097,7 +10243,12 @@
       },
       "documentation": ["vendor/semi-design/content/plus/jsonviewer"],
       "evidence": {
-        "unitTestFiles": [],
+        "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/jsonViewer/__test__/customRenderCleanup.test.jsx",
+          "vendor/semi-design/packages/semi-ui/jsonViewer/__test__/foldingRange.test.ts",
+          "vendor/semi-design/packages/semi-ui/jsonViewer/__test__/hoverRenderer.test.jsx",
+          "vendor/semi-design/packages/semi-ui/jsonViewer/__test__/workerErrors.test.ts"
+        ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/jsonViewer/_story/jsonViewer.stories.jsx",
           "vendor/semi-design/packages/semi-ui/jsonViewer/_story/jsonViewer.stories.tsx",
@@ -10192,7 +10343,9 @@
       "documentation": ["vendor/semi-design/content/basic/layout"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/layout/__test__/layout.test.js"
+          "vendor/semi-design/packages/semi-ui/layout/__test__/layout.test.js",
+          "vendor/semi-design/packages/semi-ui/layout/__test__/sider-breakpoints.test.tsx",
+          "vendor/semi-design/packages/semi-ui/layout/__test__/sider-role.test.tsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/layout/_story/layout.stories.jsx",
@@ -10263,7 +10416,10 @@
       "documentation": ["vendor/semi-design/content/show/list"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/list/__test__/list.test.js"
+          "vendor/semi-design/packages/semi-ui/list/__test__/gridSemantics.test.jsx",
+          "vendor/semi-design/packages/semi-ui/list/__test__/list.test.js",
+          "vendor/semi-design/packages/semi-ui/list/__test__/renderNode.test.jsx",
+          "vendor/semi-design/packages/semi-ui/list/__test__/standaloneItem.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/list/_story/DndKitDrag/index.tsx",
@@ -10396,7 +10552,10 @@
       },
       "documentation": ["vendor/semi-design/content/plus/lottie"],
       "evidence": {
-        "unitTestFiles": [],
+        "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/lottie/__test__/animationInstance.test.js",
+          "vendor/semi-design/packages/semi-ui/lottie/__test__/container.test.js"
+        ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/lottie/_story/lottie.stories.jsx",
           "vendor/semi-design/packages/semi-ui/lottie/_story/lottie.stories.tsx"
@@ -10468,6 +10627,9 @@
       "documentation": ["vendor/semi-design/content/plus/markdownrender"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/markdownRender/__test__/asyncResult.test.js",
+          "vendor/semi-design/packages/semi-ui/markdownRender/__test__/compileError.test.jsx",
+          "vendor/semi-design/packages/semi-ui/markdownRender/__test__/compileOptions.test.jsx",
           "vendor/semi-design/packages/semi-ui/markdownRender/__test__/markdown.test.js"
         ],
         "storyFiles": [
@@ -10555,8 +10717,12 @@
       "documentation": ["vendor/semi-design/content/show/modal"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/modal/__test__/closeLabel.test.jsx",
           "vendor/semi-design/packages/semi-ui/modal/__test__/confirm.test.js",
-          "vendor/semi-design/packages/semi-ui/modal/__test__/modal.test.js"
+          "vendor/semi-design/packages/semi-ui/modal/__test__/footer-names.test.tsx",
+          "vendor/semi-design/packages/semi-ui/modal/__test__/modal.test.js",
+          "vendor/semi-design/packages/semi-ui/modal/__test__/promiseReject.test.jsx",
+          "vendor/semi-design/packages/semi-ui/modal/__test__/strictModeLifecycle.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/modal/_story/__snapshots__/modal.stories.tsx.snap",
@@ -10764,7 +10930,11 @@
       "documentation": ["vendor/semi-design/content/navigation/navigation"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/navigation/__test__/navigation.test.js"
+          "vendor/semi-design/packages/semi-ui/navigation/__test__/inline-aria.test.tsx",
+          "vendor/semi-design/packages/semi-ui/navigation/__test__/navigation.test.js",
+          "vendor/semi-design/packages/semi-ui/navigation/__test__/numeric-selection.test.js",
+          "vendor/semi-design/packages/semi-ui/navigation/__test__/render-props.test.js",
+          "vendor/semi-design/packages/semi-ui/navigation/__test__/submenu-class.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/navigation/_story/AutoOpen/index.jsx",
@@ -10876,7 +11046,12 @@
       "documentation": ["vendor/semi-design/content/feedback/notification"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/notification/__test__/notification.test.js"
+          "vendor/semi-design/packages/semi-ui/notification/__test__/closeLifecycle.test.js",
+          "vendor/semi-design/packages/semi-ui/notification/__test__/leaveAnimations.test.jsx",
+          "vendor/semi-design/packages/semi-ui/notification/__test__/notification-update-timers.test.tsx",
+          "vendor/semi-design/packages/semi-ui/notification/__test__/notification.test.js",
+          "vendor/semi-design/packages/semi-ui/notification/__test__/titleReference.test.jsx",
+          "vendor/semi-design/packages/semi-ui/notification/__test__/useNotification.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/notification/_story/Demo.tsx",
@@ -10963,7 +11138,13 @@
       "documentation": ["vendor/semi-design/content/show/overflowlist"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/overflowList/__test__/overflowList.test.js"
+          "vendor/semi-design/packages/semi-ui/overflowList/__test__/default-items.test.js",
+          "vendor/semi-design/packages/semi-ui/overflowList/__test__/nullRenderer.test.jsx",
+          "vendor/semi-design/packages/semi-ui/overflowList/__test__/overflowList.test.js",
+          "vendor/semi-design/packages/semi-ui/overflowList/__test__/refCleanup.test.jsx",
+          "vendor/semi-design/packages/semi-ui/overflowList/__test__/rendererRef.test.jsx",
+          "vendor/semi-design/packages/semi-ui/overflowList/__test__/renderMode.test.jsx",
+          "vendor/semi-design/packages/semi-ui/overflowList/__test__/thresholdUpdates.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/overflowList/_story/Demo.tsx",
@@ -11058,7 +11239,12 @@
       "documentation": ["vendor/semi-design/content/navigation/pagination"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/pagination/__test__/pagination.test.js"
+          "vendor/semi-design/packages/semi-ui/pagination/__test__/nativeControls.test.js",
+          "vendor/semi-design/packages/semi-ui/pagination/__test__/pagination.test.js",
+          "vendor/semi-design/packages/semi-ui/pagination/__test__/pickerUpdates.test.jsx",
+          "vendor/semi-design/packages/semi-ui/pagination/__test__/popoverPosition.test.js",
+          "vendor/semi-design/packages/semi-ui/pagination/__test__/serverPages.test.js",
+          "vendor/semi-design/packages/semi-ui/pagination/__test__/sizeOptions.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/pagination/_story/pagination.stories.jsx",
@@ -11128,6 +11314,9 @@
       "documentation": ["vendor/semi-design/content/input/pincode"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/pincode/__test__/blur.test.js",
+          "vendor/semi-design/packages/semi-ui/pincode/__test__/emptyInputDelete.test.jsx",
+          "vendor/semi-design/packages/semi-ui/pincode/__test__/formAttributes.test.js",
           "vendor/semi-design/packages/semi-ui/pincode/__test__/pincode.test.js"
         ],
         "storyFiles": [
@@ -11201,7 +11390,8 @@
       "documentation": ["vendor/semi-design/content/feedback/popconfirm"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/popconfirm/__test__/popconfirm.test.js"
+          "vendor/semi-design/packages/semi-ui/popconfirm/__test__/popconfirm.test.js",
+          "vendor/semi-design/packages/semi-ui/popconfirm/__test__/visibleNotifications.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/popconfirm/_story/DynamicDisable/index.jsx",
@@ -11363,6 +11553,7 @@
       "documentation": ["vendor/semi-design/content/feedback/progress"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/progress/__test__/motionUpdate.test.jsx",
           "vendor/semi-design/packages/semi-ui/progress/__test__/progress.test.js"
         ],
         "storyFiles": [
@@ -11524,8 +11715,16 @@
       "documentation": ["vendor/semi-design/content/input/radio"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/radio/__test__/blur.test.jsx",
+          "vendor/semi-design/packages/semi-ui/radio/__test__/childIdentity.test.jsx",
+          "vendor/semi-design/packages/semi-ui/radio/__test__/descriptionIds.test.jsx",
+          "vendor/semi-design/packages/semi-ui/radio/__test__/groupNames.test.jsx",
+          "vendor/semi-design/packages/semi-ui/radio/__test__/groupRole.test.jsx",
+          "vendor/semi-design/packages/semi-ui/radio/__test__/initialSelection.test.jsx",
           "vendor/semi-design/packages/semi-ui/radio/__test__/radio.test.jsx",
-          "vendor/semi-design/packages/semi-ui/radio/__test__/radioGroup.test.jsx"
+          "vendor/semi-design/packages/semi-ui/radio/__test__/radioGroup.test.jsx",
+          "vendor/semi-design/packages/semi-ui/radio/__test__/standaloneBlur.test.jsx",
+          "vendor/semi-design/packages/semi-ui/radio/__test__/validationAria.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/radio/_story/Demo.tsx",
@@ -11607,7 +11806,9 @@
       "documentation": ["vendor/semi-design/content/input/rating"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/rating/__test__/rating.test.js"
+          "vendor/semi-design/packages/semi-ui/rating/__test__/rating.test.js",
+          "vendor/semi-design/packages/semi-ui/rating/__test__/tooltipFocus.test.js",
+          "vendor/semi-design/packages/semi-ui/rating/__test__/validationAria.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/rating/_story/rating.stories.jsx",
@@ -11784,7 +11985,16 @@
       },
       "documentation": ["vendor/semi-design/content/basic/resizable"],
       "evidence": {
-        "unitTestFiles": [],
+        "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/resizable/__test__/controlledDrag.test.jsx",
+          "vendor/semi-design/packages/semi-ui/resizable/__test__/controlledFlexDrag.test.jsx",
+          "vendor/semi-design/packages/semi-ui/resizable/__test__/handlerDisabled.test.jsx",
+          "vendor/semi-design/packages/semi-ui/resizable/__test__/maskClassName.test.jsx",
+          "vendor/semi-design/packages/semi-ui/resizable/__test__/registrationLifecycle.test.jsx",
+          "vendor/semi-design/packages/semi-ui/resizable/__test__/resizeGroupFoundation.test.js",
+          "vendor/semi-design/packages/semi-ui/resizable/__test__/singleDragSize.test.jsx",
+          "vendor/semi-design/packages/semi-ui/resizable/__test__/touchEvents.test.jsx"
+        ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/resizable/_story/resizable.stories.jsx",
           "vendor/semi-design/packages/semi-ui/resizable/_story/resizable.stories.tsx"
@@ -11882,7 +12092,10 @@
       "documentation": ["vendor/semi-design/content/show/scrolllist"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/scrollList/__test__/scrollList.test.js"
+          "vendor/semi-design/packages/semi-ui/scrollList/__test__/rootClass.test.jsx",
+          "vendor/semi-design/packages/semi-ui/scrollList/__test__/scrollList.test.js",
+          "vendor/semi-design/packages/semi-ui/scrollList/__test__/selectedAria.test.jsx",
+          "vendor/semi-design/packages/semi-ui/scrollList/__test__/unmountTasks.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/scrollList/_story/scrolllist.stories.jsx",
@@ -12050,7 +12263,11 @@
       "documentation": ["vendor/semi-design/content/input/select"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/select/__test__/select.test.js"
+          "vendor/semi-design/packages/semi-ui/select/__test__/collapsedTagCount.test.js",
+          "vendor/semi-design/packages/semi-ui/select/__test__/groupScroll.test.jsx",
+          "vendor/semi-design/packages/semi-ui/select/__test__/initialOpen.test.js",
+          "vendor/semi-design/packages/semi-ui/select/__test__/select.test.js",
+          "vendor/semi-design/packages/semi-ui/select/__test__/selectListbox.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/select/_story/CustomTrigger/index.jsx",
@@ -12150,7 +12367,16 @@
       },
       "documentation": ["vendor/semi-design/content/ai/sidebar"],
       "evidence": {
-        "unitTestFiles": [],
+        "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/sideBar/__test__/closeLabel.test.jsx",
+          "vendor/semi-design/packages/semi-ui/sideBar/__test__/container-cleanup.test.js",
+          "vendor/semi-design/packages/semi-ui/sideBar/__test__/custom-detail.test.js",
+          "vendor/semi-design/packages/semi-ui/sideBar/__test__/fileEditable.test.jsx",
+          "vendor/semi-design/packages/semi-ui/sideBar/__test__/mcp-search.test.js",
+          "vendor/semi-design/packages/semi-ui/sideBar/__test__/mcpConfigure.test.js",
+          "vendor/semi-design/packages/semi-ui/sideBar/__test__/mcpDisabledTooltip.test.jsx",
+          "vendor/semi-design/packages/semi-ui/sideBar/__test__/searchUnmount.test.js"
+        ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/sideBar/_story/constant.jsx",
           "vendor/semi-design/packages/semi-ui/sideBar/_story/sidebar.stories.jsx",
@@ -12230,6 +12456,8 @@
       "documentation": ["vendor/semi-design/content/show/sidesheet"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/sideSheet/__test__/accessible-name.test.tsx",
+          "vendor/semi-design/packages/semi-ui/sideSheet/__test__/scroll-ownership.test.tsx",
           "vendor/semi-design/packages/semi-ui/sideSheet/__test__/sideSheet.test.js"
         ],
         "storyFiles": [
@@ -12384,7 +12612,15 @@
       "documentation": ["vendor/semi-design/content/input/slider"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/slider/__test__/slider.test.js"
+          "vendor/semi-design/packages/semi-ui/slider/__test__/blur.test.jsx",
+          "vendor/semi-design/packages/semi-ui/slider/__test__/controlled-zero.test.tsx",
+          "vendor/semi-design/packages/semi-ui/slider/__test__/controlledKeyboard.test.jsx",
+          "vendor/semi-design/packages/semi-ui/slider/__test__/disabledKeyboard.test.js",
+          "vendor/semi-design/packages/semi-ui/slider/__test__/form-reset.test.tsx",
+          "vendor/semi-design/packages/semi-ui/slider/__test__/keyboardAfterChange.test.js",
+          "vendor/semi-design/packages/semi-ui/slider/__test__/range-arrow.test.tsx",
+          "vendor/semi-design/packages/semi-ui/slider/__test__/slider.test.js",
+          "vendor/semi-design/packages/semi-ui/slider/__test__/zero-size.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/slider/_story/Demo.scss",
@@ -12536,6 +12772,7 @@
       "documentation": ["vendor/semi-design/content/feedback/spin"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/spin/__test__/delayLifecycle.test.js",
           "vendor/semi-design/packages/semi-ui/spin/__test__/spin.test.js"
         ],
         "storyFiles": [
@@ -12707,6 +12944,9 @@
       "documentation": ["vendor/semi-design/content/navigation/steps"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/steps/__test__/current-step.test.js",
+          "vendor/semi-design/packages/semi-ui/steps/__test__/errorClass.test.jsx",
+          "vendor/semi-design/packages/semi-ui/steps/__test__/navCurrent.test.js",
           "vendor/semi-design/packages/semi-ui/steps/__test__/steps.test.js"
         ],
         "storyFiles": [
@@ -12778,6 +13018,7 @@
       "documentation": ["vendor/semi-design/content/input/switch"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/switch/__test__/blur.test.js",
           "vendor/semi-design/packages/semi-ui/switch/__test__/switch.test.js"
         ],
         "storyFiles": [
@@ -13343,7 +13584,12 @@
       "documentation": ["vendor/semi-design/content/show/table"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/table/__test__/table.test.js"
+          "vendor/semi-design/packages/semi-ui/table/__test__/customFilter.test.jsx",
+          "vendor/semi-design/packages/semi-ui/table/__test__/mergedHeaderWidths.test.js",
+          "vendor/semi-design/packages/semi-ui/table/__test__/pageSizeProps.test.jsx",
+          "vendor/semi-design/packages/semi-ui/table/__test__/sorterKeyboard.test.jsx",
+          "vendor/semi-design/packages/semi-ui/table/__test__/table.test.js",
+          "vendor/semi-design/packages/semi-ui/table/__test__/treeDisabledSelection.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/table/_story/BetterScrollbar.tsx",
@@ -13647,6 +13893,8 @@
       "documentation": ["vendor/semi-design/content/navigation/tabs"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/tabs/__test__/closeLabel.test.jsx",
+          "vendor/semi-design/packages/semi-ui/tabs/__test__/disabled-fallback.test.tsx",
           "vendor/semi-design/packages/semi-ui/tabs/__test__/tabs.test.js"
         ],
         "storyFiles": [
@@ -13796,6 +14044,7 @@
       "documentation": ["vendor/semi-design/content/show/tag"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/tag/__test__/groupKeys.test.jsx",
           "vendor/semi-design/packages/semi-ui/tag/__test__/splitTagGroup.test.js"
         ],
         "storyFiles": [
@@ -13888,6 +14137,8 @@
       "documentation": ["vendor/semi-design/content/input/taginput"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/tagInput/__test__/accessibleName.test.js",
+          "vendor/semi-design/packages/semi-ui/tagInput/__test__/outsideListener.test.jsx",
           "vendor/semi-design/packages/semi-ui/tagInput/__test__/tagInput.test.js"
         ],
         "storyFiles": [
@@ -13964,8 +14215,9 @@
             "prop-types",
             "react"
           ],
-          "foundationModules": ["popover", "timePicker", "utils"],
+          "foundationModules": ["base", "popover", "timePicker", "utils"],
           "upstreamSpecifiers": [
+            "@douyinfe/semi-foundation/base/constants",
             "@douyinfe/semi-foundation/popover/constants",
             "@douyinfe/semi-foundation/timePicker/ComboxFoundation",
             "@douyinfe/semi-foundation/timePicker/constants",
@@ -13990,6 +14242,9 @@
       "documentation": ["vendor/semi-design/content/input/timepicker"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/timePicker/__test__/rangeRestore.test.jsx",
+          "vendor/semi-design/packages/semi-ui/timePicker/__test__/refMethods.test.jsx",
+          "vendor/semi-design/packages/semi-ui/timePicker/__test__/ssrInitialValue.test.jsx",
           "vendor/semi-design/packages/semi-ui/timePicker/__test__/timePicker.test.js"
         ],
         "storyFiles": [
@@ -14071,7 +14326,8 @@
       "documentation": ["vendor/semi-design/content/show/timeline"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/timeline/__test__/timeline.test.js"
+          "vendor/semi-design/packages/semi-ui/timeline/__test__/timeline.test.js",
+          "vendor/semi-design/packages/semi-ui/timeline/__test__/zeroMetadata.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/timeline/_story/timeline.stories.jsx",
@@ -14219,7 +14475,14 @@
       "documentation": ["vendor/semi-design/content/feedback/toast"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/toast/__test__/batchedUpdates.test.js",
+          "vendor/semi-design/packages/semi-ui/toast/__test__/initialMount.test.jsx",
+          "vendor/semi-design/packages/semi-ui/toast/__test__/nullable-container.test.tsx",
+          "vendor/semi-design/packages/semi-ui/toast/__test__/replacementTimer.test.js",
+          "vendor/semi-design/packages/semi-ui/toast/__test__/stack-height.test.js",
           "vendor/semi-design/packages/semi-ui/toast/__test__/toast-command-call.test.js",
+          "vendor/semi-design/packages/semi-ui/toast/__test__/toast-container-ids.test.tsx",
+          "vendor/semi-design/packages/semi-ui/toast/__test__/toast-update-timers.test.tsx",
           "vendor/semi-design/packages/semi-ui/toast/__test__/toast.test.js"
         ],
         "storyFiles": [
@@ -14322,6 +14585,9 @@
       "documentation": ["vendor/semi-design/content/show/tooltip"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/tooltip/__test__/escapePropagation.test.js",
+          "vendor/semi-design/packages/semi-ui/tooltip/__test__/refCleanup.test.jsx",
+          "vendor/semi-design/packages/semi-ui/tooltip/__test__/reopenAnimation.test.jsx",
           "vendor/semi-design/packages/semi-ui/tooltip/__test__/tooltip.test.js"
         ],
         "storyFiles": [
@@ -14511,7 +14777,10 @@
       "documentation": ["vendor/semi-design/content/input/transfer"],
       "evidence": {
         "unitTestFiles": [
-          "vendor/semi-design/packages/semi-ui/transfer/__test__/transfer.test.js"
+          "vendor/semi-design/packages/semi-ui/transfer/__test__/transfer.test.js",
+          "vendor/semi-design/packages/semi-ui/transfer/__test__/treeDataOverride.test.jsx",
+          "vendor/semi-design/packages/semi-ui/transfer/__test__/treeSearchUpdate.test.jsx",
+          "vendor/semi-design/packages/semi-ui/transfer/__test__/virtualizedSelection.test.jsx"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/transfer/_story/transfer.scss",
@@ -14709,6 +14978,10 @@
       "evidence": {
         "unitTestFiles": [
           "vendor/semi-design/packages/semi-ui/tree/__test__/autosizer.test.js",
+          "vendor/semi-design/packages/semi-ui/tree/__test__/controlledSearchClear.test.jsx",
+          "vendor/semi-design/packages/semi-ui/tree/__test__/dragEnterUnmount.test.jsx",
+          "vendor/semi-design/packages/semi-ui/tree/__test__/dragImage.test.js",
+          "vendor/semi-design/packages/semi-ui/tree/__test__/expandActionLabel.test.js",
           "vendor/semi-design/packages/semi-ui/tree/__test__/tree.test.js",
           "vendor/semi-design/packages/semi-ui/tree/__test__/treeMultiple.test.js",
           "vendor/semi-design/packages/semi-ui/tree/__test__/treeNodeProps.test.js"
@@ -14841,8 +15114,11 @@
       "documentation": ["vendor/semi-design/content/input/treeselect"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/treeSelect/__test__/blurAfterClose.test.js",
+          "vendor/semi-design/packages/semi-ui/treeSelect/__test__/removeDisabledTag.test.js",
           "vendor/semi-design/packages/semi-ui/treeSelect/__test__/treeMultiple.test.js",
-          "vendor/semi-design/packages/semi-ui/treeSelect/__test__/treeSelect.test.js"
+          "vendor/semi-design/packages/semi-ui/treeSelect/__test__/treeSelect.test.js",
+          "vendor/semi-design/packages/semi-ui/treeSelect/__test__/triggerSearchSpacing.test.js"
         ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/treeSelect/_story/CustomTrigger/index.jsx",
@@ -14953,6 +15229,12 @@
               "typeOnly": true
             },
             {
+              "name": "TypographyProps",
+              "importedName": "TypographyProps",
+              "source": "./typography",
+              "typeOnly": true
+            },
+            {
               "name": "TypographyType",
               "importedName": "TypographyType",
               "source": null,
@@ -14981,7 +15263,6 @@
             "@douyinfe/semi-foundation/typography/formatNumeral",
             "@douyinfe/semi-foundation/typography/typography.scss",
             "@douyinfe/semi-foundation/utils/function",
-            "@douyinfe/semi-foundation/utils/isEnterPress",
             "@douyinfe/semi-foundation/utils/type",
             "@douyinfe/semi-foundation/utils/warning",
             "@douyinfe/semi-icons"
@@ -14993,7 +15274,7 @@
         "sourceFileCount": 2,
         "scssFileCount": 3,
         "imports": {
-          "externalPackages": [],
+          "externalPackages": ["lodash"],
           "foundationModules": [],
           "upstreamSpecifiers": []
         }
@@ -15001,6 +15282,15 @@
       "documentation": ["vendor/semi-design/content/basic/typography"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/typography/__test__/array-children.test.js",
+          "vendor/semi-design/packages/semi-ui/typography/__test__/copy-keyboard.test.js",
+          "vendor/semi-design/packages/semi-ui/typography/__test__/copyTimer.test.js",
+          "vendor/semi-design/packages/semi-ui/typography/__test__/dynamic-ellipsis.test.js",
+          "vendor/semi-design/packages/semi-ui/typography/__test__/expand-control.test.js",
+          "vendor/semi-design/packages/semi-ui/typography/__test__/expand-keyboard.test.js",
+          "vendor/semi-design/packages/semi-ui/typography/__test__/numeralPrecision.test.jsx",
+          "vendor/semi-design/packages/semi-ui/typography/__test__/numeralReactNode.test.jsx",
+          "vendor/semi-design/packages/semi-ui/typography/__test__/optional-ellipsis.test.js",
           "vendor/semi-design/packages/semi-ui/typography/__test__/typography.test.js"
         ],
         "storyFiles": [
@@ -15161,8 +15451,14 @@
       "documentation": ["vendor/semi-design/content/input/upload"],
       "evidence": {
         "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/upload/__test__/abortOnUnmount.test.js",
+          "vendor/semi-design/packages/semi-ui/upload/__test__/disabledFileClose.test.jsx",
           "vendor/semi-design/packages/semi-ui/upload/__test__/dragUpload.test.js",
+          "vendor/semi-design/packages/semi-ui/upload/__test__/fileCardClassName.test.jsx",
+          "vendor/semi-design/packages/semi-ui/upload/__test__/pastingLifecycle.test.js",
+          "vendor/semi-design/packages/semi-ui/upload/__test__/requestTimeout.test.jsx",
           "vendor/semi-design/packages/semi-ui/upload/__test__/upload.test.js",
+          "vendor/semi-design/packages/semi-ui/upload/__test__/uploadBatchAutoRemove.test.js",
           "vendor/semi-design/packages/semi-ui/upload/__test__/uploadCrop.test.js"
         ],
         "storyFiles": [
@@ -15241,7 +15537,14 @@
       },
       "documentation": ["vendor/semi-design/content/show/userGuide"],
       "evidence": {
-        "unitTestFiles": [],
+        "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/userGuide/__test__/empty-steps.test.tsx",
+          "vendor/semi-design/packages/semi-ui/userGuide/__test__/scroll-ownership.test.tsx",
+          "vendor/semi-design/packages/semi-ui/userGuide/__test__/target-layout.test.tsx",
+          "vendor/semi-design/packages/semi-ui/userGuide/__test__/userguide-overlay-options.test.tsx",
+          "vendor/semi-design/packages/semi-ui/userGuide/__test__/userguide-step-options.test.tsx",
+          "vendor/semi-design/packages/semi-ui/userGuide/__test__/zero-padding.test.tsx"
+        ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/userGuide/_story/userGuide.stories.jsx",
           "vendor/semi-design/packages/semi-ui/userGuide/_story/userGuide.stories.tsx"
@@ -15319,7 +15622,15 @@
       },
       "documentation": ["vendor/semi-design/content/plus/videoPlayer"],
       "evidence": {
-        "unitTestFiles": [],
+        "unitTestFiles": [
+          "vendor/semi-design/packages/semi-ui/videoPlayer/__test__/click-to-play.test.tsx",
+          "vendor/semi-design/packages/semi-ui/videoPlayer/__test__/foundation.test.js",
+          "vendor/semi-design/packages/semi-ui/videoPlayer/__test__/fullscreen-icon.test.tsx",
+          "vendor/semi-design/packages/semi-ui/videoPlayer/__test__/marker-updates.test.tsx",
+          "vendor/semi-design/packages/semi-ui/videoPlayer/__test__/muted-volume.test.tsx",
+          "vendor/semi-design/packages/semi-ui/videoPlayer/__test__/rate-list-updates.test.tsx",
+          "vendor/semi-design/packages/semi-ui/videoPlayer/__test__/volume-callback.test.tsx"
+        ],
         "storyFiles": [
           "vendor/semi-design/packages/semi-ui/videoPlayer/_story/videoPlayer.stories.jsx"
         ],
@@ -15525,7 +15836,7 @@
           }
         ],
         "liveDemoCount": 8,
-        "markdownTableRowCount": 108
+        "markdownTableRowCount": 109
       },
       "enUS": {
         "path": "vendor/semi-design/content/ai/sidebar/index-en-US.md",
@@ -15549,7 +15860,7 @@
           }
         ],
         "liveDemoCount": 8,
-        "markdownTableRowCount": 109
+        "markdownTableRowCount": 110
       }
     },
     {
@@ -15673,7 +15984,7 @@
       "zhCN": {
         "path": "vendor/semi-design/content/basic/icon/index.md",
         "apiSections": [
-          { "title": "API参考", "line": 803, "headings": ["Icon"] }
+          { "title": "API参考", "line": 807, "headings": ["Icon"] }
         ],
         "liveDemoCount": 8,
         "markdownTableRowCount": 15
@@ -15681,7 +15992,7 @@
       "enUS": {
         "path": "vendor/semi-design/content/basic/icon/index-en-US.md",
         "apiSections": [
-          { "title": "API reference", "line": 776, "headings": ["Icon"] }
+          { "title": "API reference", "line": 780, "headings": ["Icon"] }
         ],
         "liveDemoCount": 8,
         "markdownTableRowCount": 15
@@ -16075,17 +16386,17 @@
       "directory": "vendor/semi-design/content/feedback/progress",
       "zhCN": {
         "path": "vendor/semi-design/content/feedback/progress/index.md",
-        "apiSections": [{ "title": "API 参考", "line": 409, "headings": [] }],
-        "liveDemoCount": 12,
-        "markdownTableRowCount": 20
+        "apiSections": [{ "title": "API 参考", "line": 430, "headings": [] }],
+        "liveDemoCount": 13,
+        "markdownTableRowCount": 21
       },
       "enUS": {
         "path": "vendor/semi-design/content/feedback/progress/index-en-US.md",
         "apiSections": [
-          { "title": "API Reference", "line": 388, "headings": [] }
+          { "title": "API Reference", "line": 409, "headings": [] }
         ],
-        "liveDemoCount": 12,
-        "markdownTableRowCount": 20
+        "liveDemoCount": 13,
+        "markdownTableRowCount": 21
       }
     },
     {
@@ -16344,7 +16655,7 @@
         "path": "vendor/semi-design/content/input/pincode/index.md",
         "apiSections": [{ "title": "API 参考", "line": 187, "headings": [] }],
         "liveDemoCount": 5,
-        "markdownTableRowCount": 17
+        "markdownTableRowCount": 21
       },
       "enUS": {
         "path": "vendor/semi-design/content/input/pincode/index-en-US.md",
@@ -16352,7 +16663,7 @@
           { "title": "API Reference", "line": 196, "headings": [] }
         ],
         "liveDemoCount": 5,
-        "markdownTableRowCount": 17
+        "markdownTableRowCount": 21
       }
     },
     {
@@ -16392,7 +16703,7 @@
         "path": "vendor/semi-design/content/input/rating/index.md",
         "apiSections": [{ "title": "API参考", "line": 136, "headings": [] }],
         "liveDemoCount": 6,
-        "markdownTableRowCount": 20
+        "markdownTableRowCount": 21
       },
       "enUS": {
         "path": "vendor/semi-design/content/input/rating/index-en-US.md",
@@ -16400,7 +16711,7 @@
           { "title": "API Reference", "line": 152, "headings": [] }
         ],
         "liveDemoCount": 6,
-        "markdownTableRowCount": 20
+        "markdownTableRowCount": 21
       }
     },
     {
@@ -16459,7 +16770,7 @@
         "path": "vendor/semi-design/content/input/switch/index.md",
         "apiSections": [{ "title": "API 参考", "line": 169, "headings": [] }],
         "liveDemoCount": 7,
-        "markdownTableRowCount": 16
+        "markdownTableRowCount": 17
       },
       "enUS": {
         "path": "vendor/semi-design/content/input/switch/index-en-US.md",
@@ -16467,7 +16778,7 @@
           { "title": "API reference", "line": 174, "headings": [] }
         ],
         "liveDemoCount": 7,
-        "markdownTableRowCount": 16
+        "markdownTableRowCount": 17
       }
     },
     {
@@ -16560,7 +16871,7 @@
         "apiSections": [
           {
             "title": "API参考",
-            "line": 1486,
+            "line": 1491,
             "headings": ["TreeSelect", "TreeNodeData", "Methods"]
           }
         ],
@@ -16572,7 +16883,7 @@
         "apiSections": [
           {
             "title": "API Reference",
-            "line": 1544,
+            "line": 1549,
             "headings": ["TreeSelect", "TreeNodeData"]
           }
         ],
@@ -16588,7 +16899,7 @@
         "path": "vendor/semi-design/content/input/upload/index.md",
         "apiSections": [{ "title": "API 参考", "line": 1708, "headings": [] }],
         "liveDemoCount": 42,
-        "markdownTableRowCount": 78
+        "markdownTableRowCount": 79
       },
       "enUS": {
         "path": "vendor/semi-design/content/input/upload/index-en-US.md",
@@ -16596,7 +16907,7 @@
           { "title": "API Reference", "line": 1691, "headings": [] }
         ],
         "liveDemoCount": 42,
-        "markdownTableRowCount": 76
+        "markdownTableRowCount": 77
       }
     },
     {
@@ -17037,13 +17348,13 @@
         "path": "vendor/semi-design/content/plus/lottie/index.md",
         "apiSections": [{ "title": "API", "line": 156, "headings": [] }],
         "liveDemoCount": 4,
-        "markdownTableRowCount": 7
+        "markdownTableRowCount": 9
       },
       "enUS": {
         "path": "vendor/semi-design/content/plus/lottie/index-en-US.md",
         "apiSections": [{ "title": "API", "line": 157, "headings": [] }],
         "liveDemoCount": 4,
-        "markdownTableRowCount": 7
+        "markdownTableRowCount": 9
       }
     },
     {
@@ -17657,14 +17968,14 @@
       "directory": "vendor/semi-design/content/show/tooltip",
       "zhCN": {
         "path": "vendor/semi-design/content/show/tooltip/index.md",
-        "apiSections": [{ "title": "API 参考", "line": 393, "headings": [] }],
+        "apiSections": [{ "title": "API 参考", "line": 394, "headings": [] }],
         "liveDemoCount": 9,
         "markdownTableRowCount": 31
       },
       "enUS": {
         "path": "vendor/semi-design/content/show/tooltip/index-en-US.md",
         "apiSections": [
-          { "title": "API Reference", "line": 356, "headings": [] }
+          { "title": "API Reference", "line": 357, "headings": [] }
         ],
         "liveDemoCount": 8,
         "markdownTableRowCount": 31
@@ -17763,18 +18074,18 @@
   "upstreamPackages": {
     "semiUi": {
       "name": "@douyinfe/semi-ui",
-      "version": "2.102.0",
+      "version": "2.105.2",
       "manifest": "vendor/semi-design/packages/semi-ui/package.json",
       "dependencies": {
         "@dnd-kit/core": "^6.0.8",
         "@dnd-kit/sortable": "^7.0.2",
         "@dnd-kit/utilities": "^3.2.1",
-        "@douyinfe/semi-animation": "2.102.0",
-        "@douyinfe/semi-animation-react": "2.102.0",
-        "@douyinfe/semi-foundation": "2.102.0",
-        "@douyinfe/semi-icons": "2.102.0",
-        "@douyinfe/semi-illustrations": "2.102.0",
-        "@douyinfe/semi-theme-default": "2.102.0",
+        "@douyinfe/semi-animation": "2.105.2",
+        "@douyinfe/semi-animation-react": "2.105.2",
+        "@douyinfe/semi-foundation": "2.105.2",
+        "@douyinfe/semi-icons": "2.105.2",
+        "@douyinfe/semi-illustrations": "2.105.2",
+        "@douyinfe/semi-theme-default": "2.105.2",
         "@tiptap/core": "^3.10.7",
         "@tiptap/extension-document": "^3.10.7",
         "@tiptap/extension-hard-break": "^3.10.7",
@@ -17808,11 +18119,11 @@
     },
     "semiFoundation": {
       "name": "@douyinfe/semi-foundation",
-      "version": "2.102.0",
+      "version": "2.105.2",
       "manifest": "vendor/semi-design/packages/semi-foundation/package.json",
       "dependencies": {
-        "@douyinfe/semi-animation": "2.102.0",
-        "@douyinfe/semi-json-viewer-core": "2.102.0",
+        "@douyinfe/semi-animation": "2.105.2",
+        "@douyinfe/semi-json-viewer-core": "2.105.2",
         "@mdx-js/mdx": "^3.0.1",
         "async-validator": "^3.5.0",
         "classnames": "^2.2.6",
@@ -17831,7 +18142,7 @@
     },
     "semiThemeDefault": {
       "name": "@douyinfe/semi-theme-default",
-      "version": "2.102.0",
+      "version": "2.105.2",
       "manifest": "vendor/semi-design/packages/semi-theme-default/package.json",
       "dependencies": {},
       "optionalDependencies": {},
@@ -17839,7 +18150,7 @@
     },
     "icons": {
       "name": "@douyinfe/semi-icons",
-      "version": "2.102.0",
+      "version": "2.105.2",
       "entry": "vendor/semi-design/packages/semi-icons/src/index.ts",
       "exports": [
         {
@@ -19967,6 +20278,30 @@
           "typeOnly": false
         },
         {
+          "name": "IconPin",
+          "importedName": "default",
+          "source": "./IconPin",
+          "typeOnly": false
+        },
+        {
+          "name": "IconPinOff",
+          "importedName": "default",
+          "source": "./IconPinOff",
+          "typeOnly": false
+        },
+        {
+          "name": "IconPinOffStroked",
+          "importedName": "default",
+          "source": "./IconPinOffStroked",
+          "typeOnly": false
+        },
+        {
+          "name": "IconPinStroked",
+          "importedName": "default",
+          "source": "./IconPinStroked",
+          "typeOnly": false
+        },
+        {
           "name": "IconPipixiaLogo",
           "importedName": "default",
           "source": "./IconPipixiaLogo",
@@ -21010,7 +21345,7 @@
     },
     "iconsLab": {
       "name": "@douyinfe/semi-icons-lab",
-      "version": "2.102.0",
+      "version": "2.105.2",
       "entry": "vendor/semi-design/packages/semi-icons-lab/src/index.ts",
       "exports": [
         {
@@ -21529,7 +21864,7 @@
     },
     "illustrations": {
       "name": "@douyinfe/semi-illustrations",
-      "version": "2.102.0",
+      "version": "2.105.2",
       "entry": "vendor/semi-design/packages/semi-illustrations/src/index.ts",
       "exports": [
         {

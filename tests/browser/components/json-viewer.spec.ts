@@ -22,7 +22,7 @@ async function expectJsonViewerReady(page: Page): Promise<void> {
   await waitForStableRendering(page);
 }
 
-test('JsonViewer 参考场景来自本地 v2.102.0，Worker 内联且无运行时错误', async ({ page }) => {
+test('JsonViewer 参考场景来自本地 v2.105.2，Worker 内联且无运行时错误', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

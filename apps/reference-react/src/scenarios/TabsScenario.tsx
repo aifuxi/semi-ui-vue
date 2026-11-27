@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Tabs from '@semi-v2.102.0/tabs';
+import Tabs from '@semi-v2.105.2/tabs';
 
 const TabPane = Tabs.TabPane;
 

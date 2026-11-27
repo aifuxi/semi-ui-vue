@@ -1,4 +1,4 @@
-# Sidebar v2.102.0 对齐矩阵
+# Sidebar v2.105.2 对齐矩阵
 
 ## 固定源码证据
 
@@ -6,7 +6,7 @@
 - Foundation：`vendor/semi-design/packages/semi-foundation/sidebar/`，覆盖 Container 显隐/Escape、MCP 搜索与状态切换、常量和 SCSS。
 - 主题：`vendor/semi-design/packages/semi-theme-default/scss/` 与 Sidebar Foundation 的 `variables.scss`、`animation.scss`、`sidebar.scss`。
 - 文档：`vendor/semi-design/content/ai/sidebar/index.md` 与 `index-en-US.md`。
-- 固定版本：Semi Design `v2.102.0`，提交 `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`。
+- 固定版本：Semi Design `v2.105.2`，提交 `7db305200a2b0fd2b20f0559819f2fa55631e2ba`。
 
 ## 组件边界
 
@@ -101,3 +101,7 @@
 - 单元/SSR：Sidebar/Annotation 单测与 SSR 用例在 `pnpm check` 内通过（该轮 226 个测试文件、1295 条用例）。
 - Chromium：`tests/browser/components/sidebar.spec.ts` 5/5 通过，覆盖固定源码来源、基础 DOM/样式/几何与受控选项，以及 desktop light/dark、en-US RTL 成对截图。
 - 发布：`pnpm check:artifacts` 通过，覆盖构建、主题入口、SSR dist 枚举与真实 tarball 的 default/named 导出、`Sidebar.*`/`Annotation` 复合静态成员、类型、`sidebar.css`、tree-shaking、许可与 SBOM。
+
+## v2.105.2 对照更新
+
+React 对照场景独立加载代码示例所需的 Prism TypeScript 语法，覆盖亮暗主题、RTL、文件编辑和边缘调整。代码高亮是场景依赖，公开 Sidebar 的代码内容、语言接口与样式照常用于对照。

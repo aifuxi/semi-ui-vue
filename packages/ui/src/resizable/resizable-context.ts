@@ -31,7 +31,7 @@ export interface ResizeGroupContext {
   unregisterItem: (id: symbol) => void;
   registerHandler: (handler: ResizeHandlerRegistration) => void;
   unregisterHandler: (id: symbol) => void;
-  startResize: (id: symbol, event: ResizeStartPointer, type: ResizeInputType) => void;
+  startResize: (id: symbol, event: ResizeMoveEvent, type: ResizeInputType) => void;
 }
 
 export const resizeGroupContextKey: InjectionKey<ResizeGroupContext> = Symbol('resize-group');

@@ -1,5 +1,5 @@
 import React from 'react';
-import Spin from '@semi-v2.102.0/spin';
+import Spin from '@semi-v2.105.2/spin';
 
 function CustomIndicator(): React.ReactElement {
   return <span className="spin-scenario__custom-indicator">↻</span>;

@@ -1,6 +1,6 @@
 # @aifuxi/semi-ui-vue
 
-面向 Vue 3.5+、以 Semi Design `v2.102.0` 为固定参考基线的独立组件库实现。
+面向 Vue 3.5+、以 Semi Design `v2.105.2` 为固定参考基线的独立组件库实现。
 
 > 当前通过 `next` 渠道提供预览版，组件范围以仓库 README 为准，API 和发布结构在稳定版验收前仍可能调整。本项目不是 Semi Design 官方 Vue 版本，也不代表 DouyinFE 的授权、合作或品牌身份。
 
@@ -20,4 +20,4 @@ import { Button } from '@aifuxi/semi-ui-vue/button';
 
 ## 许可与归属
 
-本实现使用 MIT License。发布包同时携带 Semi Design v2.102.0 及实际运行时依赖的许可证、第三方声明和 SPDX 2.3 SBOM，详见 `dist/THIRD_PARTY_NOTICES.md` 与 `dist/THIRD_PARTY_LICENSES/`。
+本实现使用 MIT License。发布包同时携带 Semi Design v2.105.2 及实际运行时依赖的许可证、第三方声明和 SPDX 2.3 SBOM，详见 `dist/THIRD_PARTY_NOTICES.md` 与 `dist/THIRD_PARTY_LICENSES/`。

@@ -1,11 +1,11 @@
 import React from 'react';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
-import JsonViewer from '@semi-v2.102.0/json-viewer';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
+import JsonViewer from '@semi-v2.105.2/json-viewer';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const value = `{
   "project": "Semi UI Vue",
-  "version": "2.102.0",
+  "version": "2.105.2",
   "ready": true,
   "tags": ["Vue", "Worker", "Parity"],
   "metrics": { "components": 78, "target": 85 }

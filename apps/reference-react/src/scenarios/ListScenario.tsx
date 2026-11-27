@@ -1,7 +1,7 @@
 import React from 'react';
-import List from '@semi-v2.102.0/list';
-import Avatar from '@semi-v2.102.0/avatar';
-import Button from '@semi-v2.102.0/button';
+import List from '@semi-v2.105.2/list';
+import Avatar from '@semi-v2.105.2/avatar';
+import Button from '@semi-v2.105.2/button';
 
 const people = [
   { name: 'Alice', role: 'Designer', initials: 'AL', color: 'blue' as const },

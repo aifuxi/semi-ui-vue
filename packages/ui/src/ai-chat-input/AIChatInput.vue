@@ -254,7 +254,15 @@ const adapter: AIChatInputAdapter<ReturnType<typeof foundationProps>, RuntimeSta
   reposPopover: () => {
     if (state.templateVisible) state.popupKey += 1;
   },
-  setContent: (content) => editorRef.value?.setContent(content as TiptapContent),
+  setContent: (content) => {
+    const text =
+      typeof content === 'string'
+        ? content
+        : Array.isArray(content)
+          ? content.join('')
+          : content.content;
+    editorRef.value?.setContent(text);
+  },
   clearContent: () => editorRef.value?.setContent(''),
   clearAttachments: () => {
     state.attachments = [];
@@ -264,6 +272,7 @@ const adapter: AIChatInputAdapter<ReturnType<typeof foundationProps>, RuntimeSta
   getEditor: () => editor.value,
   getPopupID: () => popupId,
   notifySkillChange: (skill) => emit('skillChange', skill as Skill | undefined),
+  notifySuggestClick: (suggestion) => emit('suggestClick', suggestion),
   notifyContentChange: (result) => {
     transformedContent.value = result as AIChatInputContent[];
     emit('contentChange', transformedContent.value);
@@ -327,14 +336,7 @@ function changeTemplateVisible(visible: boolean): void {
 }
 
 function selectSuggestion(suggestion: Suggestion): void {
-  const content =
-    typeof suggestion === 'string'
-      ? suggestion
-      : Array.isArray(suggestion)
-        ? suggestion.join('')
-        : suggestion.content;
-  foundation.handleSuggestionSelect(content);
-  emit('suggestClick', suggestion);
+  foundation.handleSuggestionSelect(suggestion);
   foundation.hideSuggestionPanel();
 }
 

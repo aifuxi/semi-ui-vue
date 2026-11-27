@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import Layout from '@semi-v2.102.0/layout';
+import Layout from '@semi-v2.105.2/layout';
 
 const { Header, Footer, Content, Sider } = Layout;
 

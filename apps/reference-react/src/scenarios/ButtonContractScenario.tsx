@@ -1,7 +1,7 @@
 import React from 'react';
-import Button from '@semi-v2.102.0/button';
-import ButtonGroup from '@semi-v2.102.0/button-group';
-import SplitButtonGroup from '@semi-v2.102.0/split-button-group';
+import Button from '@semi-v2.105.2/button';
+import ButtonGroup from '@semi-v2.105.2/button-group';
+import SplitButtonGroup from '@semi-v2.105.2/split-button-group';
 
 function ScenarioIcon(): React.ReactElement {
   return (

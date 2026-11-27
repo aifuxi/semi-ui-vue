@@ -1,6 +1,6 @@
 # @aifuxi/semi-icons-vue
 
-从固定 Semi Design `v2.102.0` 资源生成的稳定版 Vue 3 图标组件。
+从固定 Semi Design `v2.105.2` 资源生成的稳定版 Vue 3 图标组件。
 
 > 本包是独立 Vue 复刻项目的一部分，不是 Semi Design 官方 Vue 版本，也不是 `@douyinfe/semi-icons` 的官方适配包。
 

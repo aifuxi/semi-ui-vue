@@ -13,7 +13,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Rating 参考场景来自本地 v2.102.0 并保留整星、半星、空值项、ARIA 与尺寸 DOM', async ({
+test('Rating 参考场景来自本地 v2.105.2 并保留整星、半星、空值项、ARIA 与尺寸 DOM', async ({
   page,
 }) => {
   const requestedUrls: string[] = [];

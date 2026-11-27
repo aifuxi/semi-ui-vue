@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Resizable, ResizeGroup, ResizeHandler, ResizeItem } from '@semi-v2.102.0/resizable';
+import { Resizable, ResizeGroup, ResizeHandler, ResizeItem } from '@semi-v2.105.2/resizable';
 
 const panelStyle: React.CSSProperties = {
   border: '1px solid var(--harness-border)',

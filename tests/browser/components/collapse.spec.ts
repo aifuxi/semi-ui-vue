@@ -13,7 +13,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Collapse 参考场景来自本地 v2.102.0 并保留复合组件与 ARIA 基线', async ({ page }) => {
+test('Collapse 参考场景来自本地 v2.105.2 并保留复合组件与 ARIA 基线', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));
@@ -78,6 +78,8 @@ test('Collapse React/Vue 多开、手风琴、受控、图标热区、懒渲染�
     await expect(accordionHeaders.nth(2)).toHaveAttribute('aria-expanded', 'false');
     await accordionHeaders.nth(1).focus();
     await parityPage.keyboard.press('Enter');
+    await expect(accordionHeaders.nth(1)).toHaveAttribute('aria-expanded', 'false');
+    await parityPage.keyboard.press('Space');
     await expect(accordionHeaders.nth(1)).toHaveAttribute('aria-expanded', 'true');
 
     const leftHeader = parityPage

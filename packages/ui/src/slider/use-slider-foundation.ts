@@ -176,6 +176,7 @@ export function useSliderFoundation(
       Object.assign(state, nextState);
       callback?.();
     },
+    notifyBlur: (event: FocusEvent) => emit('blur', event),
     notifyChange: (value: SliderValue) => {
       const output = cloneSorted(value);
       emit('change', output);

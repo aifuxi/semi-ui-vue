@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import ConfigProvider, { ConfigConsumer } from '@semi-v2.102.0/config-provider';
-import Typography from '@semi-v2.102.0/typography';
+import ConfigProvider, { ConfigConsumer } from '@semi-v2.105.2/config-provider';
+import Typography from '@semi-v2.105.2/typography';
 
-import type { ConfigContextValue } from '@semi-v2.102.0/config-provider';
+import type { ConfigContextValue } from '@semi-v2.105.2/config-provider';
 
 const ENGLISH_LOCALE = {
   code: 'en-US',

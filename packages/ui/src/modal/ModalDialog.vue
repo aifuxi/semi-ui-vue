@@ -36,6 +36,7 @@ interface Props {
   closable: boolean;
   closeButtonSize: ButtonSize;
   closeIcon: VNodeChild;
+  closeLabel?: string | undefined;
   closeOnEsc: boolean;
   contentClass: HTMLAttributes['class'];
   customContainer: boolean;
@@ -116,7 +117,7 @@ const adapter: ModalContentAdapter<typeof foundationProps.value, typeof state> =
       state.dialogMouseDown = false;
     }, 0);
   },
-  // 由共享监听选择顶层，继续复用固定 Foundation 的关闭与 closeOnEsc 判断。
+  // Vue 按实际 zIndex 和 DOM 顺序选择顶层，Foundation 的挂载顺序无法表达这两项。
   addKeyDownEventListener: () => {
     /** 注册实际内容节点，DOM 顺序用于相同 zIndex 的绘制顺序。 */
     const element = inner.value?.element;
@@ -127,7 +128,9 @@ const adapter: ModalContentAdapter<typeof foundationProps.value, typeof state> =
       zIndex: () => props.zIndex,
       // 退场动效期间仍占据顶层，但不重复发出取消或穿透到底层。
       onKeyDown: (event) => {
-        if (props.visible) foundation.handleKeyDown(event);
+        if (!props.visible || !props.closeOnEsc || event.key !== 'Escape') return;
+        event.stopPropagation();
+        foundation.close(event);
       },
     });
   },
@@ -199,6 +202,7 @@ const innerVNode = computed(() =>
     closable: props.closable,
     closeButtonSize: props.closeButtonSize,
     closeIcon: props.closeIcon,
+    closeLabel: props.closeLabel,
     contentClass: props.contentClass,
     dialogId,
     footer: props.footer,
@@ -229,7 +233,7 @@ async function activate(previousFocus?: HTMLElement | null): Promise<void> {
     previousFocus === undefined ? ModalFocusTrapHandle.getActiveElement() : previousFocus;
   await nextTick();
   if (!active) return;
-  foundation.handleKeyDownEventListenerMount();
+  adapter.addKeyDownEventListener();
   foundation.modalDialogFocus();
   // 初始多实例同时挂载时，只有视觉顶层可以移动焦点。
   if (getTopModalLayer(document)?.element !== inner.value?.element) return;

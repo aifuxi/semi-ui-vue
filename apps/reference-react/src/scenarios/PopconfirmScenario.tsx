@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
-import Button from '@semi-v2.102.0/button';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
-import Popconfirm from '@semi-v2.102.0/popconfirm';
+import Button from '@semi-v2.105.2/button';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
+import Popconfirm from '@semi-v2.105.2/popconfirm';
 
 import type { ParityDirection } from '@workspace/test-infra';
 

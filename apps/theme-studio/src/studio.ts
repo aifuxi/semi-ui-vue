@@ -17,7 +17,7 @@ const tokenByName = new Map(
     (token) => [token.name, token],
   ),
 );
-/** 固定 Semi v2.102.0 的公开字体栈，不从颜色生成器推导默认主题。 */
+/** 固定 Semi v2.105.2 的公开字体栈，不从颜色生成器推导默认主题。 */
 export const baselineFont =
   '"Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif';
 /** 可编辑排版统一使用 px；字重使用 CSS 数值。 */
@@ -38,7 +38,7 @@ export interface ThemeSettings {
   typography: TypographySettings;
 }
 /** 新建一份独立的固定排版，避免全局和局部共享可变对象。
- * 14/20、400/600、四级标题 20/28 均来自主题包公开的 Semi v2.102.0 默认值。
+ * 14/20、400/600、四级标题 20/28 均来自主题包公开的 Semi v2.105.2 默认值。
  */
 function defaultTypography(): TypographySettings {
   return {

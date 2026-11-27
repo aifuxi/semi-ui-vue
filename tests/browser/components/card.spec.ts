@@ -14,7 +14,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Card 参考场景来自本地 v2.102.0 并保留 Meta、actions、loading 与 Group DOM', async ({
+test('Card 参考场景来自本地 v2.105.2 并保留 Meta、actions、loading 与 Group DOM', async ({
   page,
 }) => {
   const requestedUrls: string[] = [];

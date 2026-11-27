@@ -127,7 +127,7 @@ const foundation = markRaw(new FeedbackFoundation<FeedbackProps, FeedbackState>(
 const locale = computed<FeedbackLocale>(() => {
   const candidate = injectedConfig?.value.locale ?? providedLocale.value;
   const configured = (candidate.code ? candidate : zhCN).Feedback as FeedbackLocale | undefined;
-  return configured ?? { cancel: '取消', submit: '提交' };
+  return { ...(zhCN.Feedback as FeedbackLocale), ...configured };
 });
 const rootClasses = computed(() => [
   'semi-feedback',
@@ -171,6 +171,7 @@ function contentNode(): VNodeChild {
   return h(
     FeedbackContent as Component,
     {
+      locale: locale.value,
       type: props.type,
       value: state.value,
       ...(props.checkboxGroupProps ? { checkboxGroupProps: props.checkboxGroupProps } : {}),
