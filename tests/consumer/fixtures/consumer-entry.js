@@ -109,6 +109,29 @@ const PackedTextAreaAutosize = {
   },
 };
 
+const PackedTextAreaControlledAutosize = {
+  setup() {
+    const value = ref('短文本');
+    const autosize = { minRows: 1, maxRows: 4 };
+
+    return () =>
+      h('main', { style: { width: '320px' } }, [
+        h(
+          'button',
+          { type: 'button', onClick: () => (value.value = '第一行\n第二行\n第三行') },
+          '回填多行备注',
+        ),
+        h('button', { type: 'button', onClick: () => (value.value = '') }, '清空备注'),
+        h(TextArea, {
+          modelValue: value.value,
+          'onUpdate:modelValue': (next) => (value.value = next),
+          ariaLabel: '受控备注',
+          autosize,
+        }),
+      ]);
+  },
+};
+
 /** 只用 Modal 与 Select 的公开接口复现两层浮层的 Esc 行为。 */
 function renderPackedSelectEscape() {
   return h(
@@ -1527,6 +1550,9 @@ const overlayContainerRender = dropdownQuery.has('overlay-container')
 const interactionRender =
   (dropdownQuery.has('modal-autofocus') ? renderPackedModalAutofocus : undefined) ??
   (dropdownQuery.has('textarea-autosize') ? () => h(PackedTextAreaAutosize) : undefined) ??
+  (dropdownQuery.has('textarea-controlled-autosize')
+    ? () => h(PackedTextAreaControlledAutosize)
+    : undefined) ??
   (dropdownQuery.has('select-model') ? renderPackedSelectModel : undefined) ??
   (dropdownQuery.has('select-escape') ? renderPackedSelectEscape : undefined) ??
   (dropdownQuery.has('dropdown-activation') ? renderPackedDropdownActivation : undefined) ??

@@ -311,4 +311,53 @@ describe('TextArea', () => {
     expect(value.value).toBe('new');
     expect(wrapper.get('textarea').element.value).toBe('new');
   });
+
+  it.each([
+    ['v-model 回填多行', 'modelValue', 'short', 'one\ntwo\nthree', 20, 60],
+    ['v-model 清空多行', 'modelValue', 'one\ntwo\nthree', '', 60, 20],
+    ['value 回填多行', 'value', 'short', 'one\ntwo\nthree', 20, 60],
+  ] as const)('父级 %s后重新测量高度', async (_name, prop, initial, next, before, after) => {
+    vi.useFakeTimers();
+    const scrollHeight = vi
+      .spyOn(HTMLElement.prototype, 'scrollHeight', 'get')
+      .mockImplementation(function (this: HTMLElement) {
+        return this instanceof HTMLTextAreaElement ? this.value.split('\n').length * 20 : 0;
+      });
+    const value = shallowRef<string>(initial);
+    // 配置引用保持稳定，父级赋值是首次测量后的唯一触发条件。
+    const autosize = { minRows: 1, maxRows: 4 };
+    const textareaStyle = {
+      boxSizing: 'border-box',
+      borderTopWidth: '0px',
+      borderBottomWidth: '0px',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+    } as const;
+    const Host = defineComponent({
+      setup: () => () =>
+        h(TextArea, {
+          [prop]: value.value,
+          'onUpdate:modelValue': (nextValue: string) => (value.value = nextValue),
+          autosize,
+          textareaStyle,
+        }),
+    });
+    const wrapper = mount(Host, { attachTo: document.body });
+    try {
+      await vi.advanceTimersByTimeAsync(10);
+      const textarea = wrapper.get('textarea').element;
+      expect(textarea.style.height).toBe(`${before}px`);
+
+      value.value = next;
+      await nextTick();
+      expect(textarea.value).toBe(next);
+      await vi.advanceTimersByTimeAsync(10);
+      expect(textarea.style.height).toBe(`${after}px`);
+      expect(wrapper.getComponent(TextArea).emitted('resize')?.at(-1)).toEqual([{ height: after }]);
+    } finally {
+      wrapper.unmount();
+      scrollHeight.mockRestore();
+      vi.useRealTimers();
+    }
+  });
 });

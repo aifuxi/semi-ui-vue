@@ -59,6 +59,8 @@ InputGroup 必须装饰直接子 VNode，模板无法准确表达 `React.Childre
 | `composition/getValueLength/maxLength/minLength` | 同名 prop                                         | 与固定 TextAreaFoundation 一致                          |
 | React forwardRef                                 | Vue ref                                           | 暴露 `focus()`、`blur()`、`select()` 和只读 `textarea`  |
 
+- TextArea 开启 `autosize` 时，父级通过 `value` 或 `v-model` 回填、清空后，在原生 textarea 的值更新后重新测量高度。
+
 ### InputGroup
 
 | React v2.102.0        | Vue API                                     | 默认值/结论                                                    |
