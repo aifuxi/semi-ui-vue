@@ -55,7 +55,8 @@
 - 保留 `role="dialog"`、`aria-modal="true"`；`aria-labelledby` 与 `aria-describedby` 分别引用实例内的标准标题和正文 ID。标题、正文 ID 由 SSR 稳定的 dialog ID 派生，不使用全局固定值。自定义 header 仍通过隐藏的实例标题引用公开 title；缺省 title 时不制造名称或空 header。
 - Esc 仅路由到最高 zIndex 的活动 Modal，同 zIndex 取 DOM 中后绘制者；顶层 closeOnEsc=false 或正在退场时不穿透，keepDOM 隐藏及卸载后释放所有权。close、mask、ESC 都走 cancel 顺序：发出 `update:visible(false)`，再调用 `onCancel(event)`；OK 发出 `onOk(event)`，不替受控调用方自动关闭。
 - 点击从 dialog 内 mousedown、在 mask mouseup/click 的序列不得误关；只有 wrap 自身 target 且未记录 dialog mousedown 才关闭。
-- 打开时记录先前 activeElement，锁定 body（仅 body portal），创建固定 FocusTrapHandle，并优先聚焦用户 autofocus/默认 cancel；Tab/Shift+Tab 循环。关闭终态或卸载时释放共享 keydown 注册、销毁 trap 并恢复 body 样式；仅顶层关闭恢复入口焦点，入口失效时聚焦剩余顶层 dialog。
+- 打开时记录先前 activeElement，创建固定 FocusTrapHandle，并优先聚焦用户 autofocus 或默认 cancel。Tab/Shift+Tab 在弹窗内循环。关闭终态或卸载时释放共享 keydown 注册并销毁 trap。仅顶层关闭时恢复入口焦点，入口失效时聚焦剩余顶层 dialog。
+- 实际挂到 `body` 的 Modal 与 SideSheet 共享滚动锁，每个实例最多持有一次。Modal 在关闭终态或卸载时释放，退场中重开沿用已有持有状态。最后一个实例释放后恢复原有内联 `overflow` 和 `width`。Portal 更换容器时同步持有状态。
 - `closeOnEsc=false`、`maskClosable=false`、`closable=false` 分别不创建对应关闭路径；缺省/显式值门禁均覆盖。
 
 ## Portal、动效、主题、RTL、国际化与 SSR

@@ -109,6 +109,29 @@ const PackedTextAreaAutosize = {
   },
 };
 
+const PackedTextAreaControlledAutosize = {
+  setup() {
+    const value = ref('短文本');
+    const autosize = { minRows: 1, maxRows: 4 };
+
+    return () =>
+      h('main', { style: { width: '320px' } }, [
+        h(
+          'button',
+          { type: 'button', onClick: () => (value.value = '第一行\n第二行\n第三行') },
+          '回填多行备注',
+        ),
+        h('button', { type: 'button', onClick: () => (value.value = '') }, '清空备注'),
+        h(TextArea, {
+          modelValue: value.value,
+          'onUpdate:modelValue': (next) => (value.value = next),
+          ariaLabel: '受控备注',
+          autosize,
+        }),
+      ]);
+  },
+};
+
 /** 只用 Modal 与 Select 的公开接口复现两层浮层的 Esc 行为。 */
 function renderPackedSelectEscape() {
   return h(
@@ -160,6 +183,51 @@ const modalOpenerVisible = ref(true);
 const sideSheetVisible = ref(true);
 /** 名称由公开 aria-label 和 title 插槽共享，模拟切换工作项。 */
 const sideSheetName = ref('工作项详情');
+
+const PackedOverlayScrollLock = {
+  setup() {
+    const modalVisible = ref(false);
+    const sideSheetVisible = ref(false);
+    // Chromium 写入 overflow 简写时会覆盖独立滚动轴及其优先级。
+    document.body.style.setProperty('overflow-y', 'scroll', 'important');
+    document.body.style.width = '80%';
+
+    return () =>
+      h('main', [
+        h('button', { type: 'button', onClick: () => (modalVisible.value = true) }, '打开页面弹窗'),
+        h(
+          Modal,
+          { title: '页面弹窗', visible: modalVisible.value, footer: null },
+          {
+            default: () =>
+              h(
+                'button',
+                { type: 'button', onClick: () => (sideSheetVisible.value = true) },
+                '打开侧栏',
+              ),
+          },
+        ),
+        h(
+          SideSheet,
+          {
+            title: '页面侧栏',
+            'aria-label': '页面侧栏',
+            visible: sideSheetVisible.value,
+            zIndex: 1100,
+            'onUpdate:visible': (visible) => (sideSheetVisible.value = visible),
+          },
+          {
+            default: () =>
+              h(
+                'button',
+                { type: 'button', onClick: () => (modalVisible.value = false) },
+                '关闭下层弹窗',
+              ),
+          },
+        ),
+      ]);
+  },
+};
 
 /** 只在受控用例中作为 visible 输入，其他用例由组件持有状态。 */
 const popoverVisible = ref(false);
@@ -1482,9 +1550,13 @@ const overlayContainerRender = dropdownQuery.has('overlay-container')
 const interactionRender =
   (dropdownQuery.has('modal-autofocus') ? renderPackedModalAutofocus : undefined) ??
   (dropdownQuery.has('textarea-autosize') ? () => h(PackedTextAreaAutosize) : undefined) ??
+  (dropdownQuery.has('textarea-controlled-autosize')
+    ? () => h(PackedTextAreaControlledAutosize)
+    : undefined) ??
   (dropdownQuery.has('select-model') ? renderPackedSelectModel : undefined) ??
   (dropdownQuery.has('select-escape') ? renderPackedSelectEscape : undefined) ??
   (dropdownQuery.has('dropdown-activation') ? renderPackedDropdownActivation : undefined) ??
+  (dropdownQuery.has('overlay-scroll-lock') ? () => h(PackedOverlayScrollLock) : undefined) ??
   overlayContainerRender ??
   (dropdownQuery.has('overlay-close-size')
     ? renderPackedCloseSize

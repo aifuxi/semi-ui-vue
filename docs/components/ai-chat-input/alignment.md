@@ -88,6 +88,10 @@ Vue render prop 使用 scoped slots；同时保留函数 prop 作为迁移兼容
 
 ## Deviation
 
+### 附件滚动按钮的表单行为
+
+固定 React 的 `horizontalScroller.tsx` 省略了两侧滚动按钮的类型。Vue 为两侧按钮显式声明 `type="button"`，让点击只触发附件列表的平滑滚动，外层表单仍由自己的提交按钮提交。
+
 ### `immediatelyRender` 在 Vue 中为兼容占位
 
 - 源码证据：固定 React `richTextInput.tsx` 将该值交给 `@tiptap/react` 的 `useEditor`，用于避免 React SSR 立即创建 Editor；`@tiptap/vue-3@3.31.3` 的 `useEditor` 在 `onMounted` 创建实例，并不接受该选项。

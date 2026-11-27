@@ -254,7 +254,7 @@ function select(): void {
 }
 
 function scheduleAutosize(): void {
-  // prop watcher 排入的 nextTick 可能在组件卸载后才执行。
+  // 排队的测量可能遇到已卸载的 textarea。
   if (!props.autosize || !textarea.value || typeof window === 'undefined') return;
   if (resizeTimer !== undefined) clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
@@ -368,10 +368,9 @@ watch(controlledValue, (nextValue) => {
     state.cachedValue = nextValue;
   }
 });
-watch(
-  () => [props.value, props.placeholder, props.autosize] as const,
-  () => void nextTick(scheduleAutosize),
-);
+watch([controlledValue, () => props.placeholder, () => props.autosize], scheduleAutosize, {
+  flush: 'post',
+});
 watch(
   () => [props.showLineNumber, props.autosize, props.resize] as const,
   () => void nextTick(resetObserver),

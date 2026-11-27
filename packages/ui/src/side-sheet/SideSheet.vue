@@ -25,6 +25,7 @@ import {
 import { configContextKey, semiGlobal } from '../config-provider';
 import SideSheetContent from './SideSheetContent.vue';
 import type { SideSheetEmits, SideSheetProps, SideSheetSlots } from './types';
+import { createBodyScrollLock } from '../_utils/body-scroll-lock';
 import { usePortalThemeScope } from '../_utils/theme-scope';
 
 defineOptions({ name: 'SideSheet', inheritAttrs: false });
@@ -48,9 +49,8 @@ const contentAnimating = shallowRef(false);
 const maskAnimating = shallowRef(false);
 const cache = new Map<unknown, unknown>();
 const rawPropsRevision = shallowRef(0);
+const bodyScrollLock = createBodyScrollLock();
 let activeCycle = false;
-let originalBodyOverflow: string | null = null;
-let originalBodyWidth = '';
 
 function hasRawProp(key: keyof SideSheetProps): boolean {
   void rawPropsRevision.value;
@@ -105,23 +105,10 @@ const state = shallowReactive<FoundationSideSheetState>({
   displayNone: !runtimeVisible.value,
 });
 
-function disableBodyScroll(): void {
-  if (typeof document === 'undefined' || teleportTarget.value !== document.body) return;
-  originalBodyOverflow = document.body.style.overflow || '';
-  originalBodyWidth = document.body.style.width;
-  if (originalBodyOverflow === 'hidden') return;
-  const scrollbarWidth = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-  document.body.style.overflow = 'hidden';
-  document.body.style.width = `calc(${originalBodyWidth || '100%'} - ${scrollbarWidth}px)`;
-}
-
-function enableBodyScroll(): void {
-  if (typeof document === 'undefined' || originalBodyOverflow === null) return;
-  if (originalBodyOverflow !== 'hidden') {
-    document.body.style.overflow = originalBodyOverflow;
-    document.body.style.width = originalBodyWidth;
-  }
-  originalBodyOverflow = null;
+function syncBodyScrollLock(): void {
+  bodyScrollLock.setTarget(
+    runtimeVisible.value && runtimeProps.value.disableScroll ? teleportTarget.value : null,
+  );
 }
 
 const adapter: SideSheetAdapter<typeof runtimeProps.value, FoundationSideSheetState> = {
@@ -140,8 +127,9 @@ const adapter: SideSheetAdapter<typeof runtimeProps.value, FoundationSideSheetSt
   setCache: (key, value) => cache.set(key, value),
   stopPropagation: (event) => event?.stopPropagation?.(),
   persistEvent: () => undefined,
-  disabledBodyScroll: disableBodyScroll,
-  enabledBodyScroll: enableBodyScroll,
+  // 滚动锁按实例持有状态释放，避免 Foundation 用最新 prop 跳过清理。
+  disabledBodyScroll: () => undefined,
+  enabledBodyScroll: () => undefined,
   notifyCancel: (event) => {
     emit('update:visible', false);
     emit('cancel', event);
@@ -245,6 +233,7 @@ function beginShow(): void {
   contentAnimating.value = runtimeProps.value.motion;
   maskAnimating.value = runtimeProps.value.motion;
   activeCycle = true;
+  syncBodyScrollLock();
   foundation.beforeShow();
   if (wasHidden) foundation.onVisibleChange(true);
 }
@@ -260,6 +249,7 @@ function beginHide(): void {
   if (!activeCycle) return;
   contentAnimating.value = runtimeProps.value.motion;
   maskAnimating.value = runtimeProps.value.motion;
+  bodyScrollLock.setTarget(null);
   foundation.afterHide();
   if (!runtimeProps.value.motion) {
     finishHide();
@@ -306,9 +296,10 @@ watch(
 watch(popupGetter, () => {
   if (mounted.value) resolveContainer();
 });
+watch([() => runtimeProps.value.disableScroll, teleportTarget], syncBodyScrollLock);
 onBeforeUnmount(() => {
+  bodyScrollLock.setTarget(null);
   if (activeCycle) foundation.destroy();
-  else enableBodyScroll();
 });
 </script>
 

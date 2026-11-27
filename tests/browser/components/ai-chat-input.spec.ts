@@ -6,6 +6,7 @@ import {
   REFERENCE_SOURCE_PATHS,
 } from '../../../packages/test-infra/src';
 import {
+  createVueScenarioUrl,
   expectComparableTarget,
   expectScreenshotPixelsToMatch,
   openParityPages,
@@ -23,6 +24,45 @@ async function expectAIChatInputReady(page: Page): Promise<void> {
   await expect(page.locator('.ai-chat-input-scenario .semi-aiChatInput-attachment')).toHaveCount(1);
   await waitForStableRendering(page);
 }
+
+test('AIChatInput 在表单内左右滚动附件时不提交表单', async ({ page }) => {
+  const url = new URL(
+    createVueScenarioUrl({
+      scenarioId: 'ai-chat-input',
+      theme: 'light',
+      direction: 'ltr',
+      locale: 'zh-CN',
+    }),
+  );
+  url.searchParams.set('aiInputAttachmentForm', 'true');
+  await page.goto(url.toString());
+
+  const form = page.getByRole('form', { name: '附件表单', exact: true });
+  const container = form.locator('.semi-aiChatInput-scroll-container');
+  const submitCount = form.getByRole('status', { name: '表单提交次数', exact: true });
+  const right = form.getByRole('button', { name: 'Scroll right', exact: true });
+  const left = form.getByRole('button', { name: 'Scroll left', exact: true });
+  const scrollLeft = () => container.evaluate((element) => element.scrollLeft);
+  await expect(container.locator('.semi-aiChatInput-attachment')).toHaveCount(8);
+  await expect(right).toBeVisible();
+  await expect
+    .poll(() => container.evaluate((element) => element.scrollWidth - element.clientWidth))
+    .toBeGreaterThanOrEqual(300);
+  expect(await scrollLeft()).toBe(0);
+  await expect(submitCount).toHaveText('0');
+
+  await right.click();
+  await expect.poll(async () => Math.abs((await scrollLeft()) - 300)).toBeLessThanOrEqual(1);
+  await expect(left).toBeVisible();
+  await expect(submitCount).toHaveText('0');
+
+  await left.click();
+  await expect.poll(async () => Math.abs(await scrollLeft())).toBeLessThanOrEqual(1);
+  await expect(submitCount).toHaveText('0');
+
+  await form.getByRole('button', { name: '提交表单', exact: true }).click();
+  await expect(submitCount).toHaveText('1');
+});
 
 test('AIChatInput 参考场景来自本地 v2.102.0 且无运行时错误', async ({ page }) => {
   const requestedUrls: string[] = [];
