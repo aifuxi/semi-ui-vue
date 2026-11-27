@@ -1,5 +1,20 @@
 # @aifuxi/semi-ui-vue
 
+## 2.2.12
+
+### Patch Changes
+
+- [#76](https://github.com/aifuxi/semi-ui-vue/pull/76) [`922915b`](https://github.com/aifuxi/semi-ui-vue/commit/922915b97582f3db048936713a9b8c9b29beab32) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 TextArea 在父组件通过 v-model 回填多行或清空后未更新自动高度的问题。
+
+- [#76](https://github.com/aifuxi/semi-ui-vue/pull/76) [`546ff89`](https://github.com/aifuxi/semi-ui-vue/commit/546ff89cd13ba6ed0c77fb9faac023788b89c024) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 Modal 与 SideSheet 叠加关闭时的页面滚动锁，正确处理 Modal 退场重开和 SideSheet 动态修改 disableScroll。
+
+- [#76](https://github.com/aifuxi/semi-ui-vue/pull/76) [`5cce9e0`](https://github.com/aifuxi/semi-ui-vue/commit/5cce9e0c14a73420528d7e680f99f6c648625ffc) Thanks [@aifuxi](https://github.com/aifuxi)! - 修复 AIChatInput 在表单内点击附件滚动按钮时误提交的问题。
+- Updated dependencies []:
+  - @aifuxi/semi-icons-vue@2.2.12
+  - @aifuxi/semi-icons-lab-vue@2.2.12
+  - @aifuxi/semi-illustrations-vue@2.2.12
+  - @aifuxi/semi-theme-default@2.2.12
+
 ## 2.2.11
 
 ### Patch Changes
