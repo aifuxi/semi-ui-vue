@@ -19,6 +19,33 @@ async function settle(): Promise<void> {
 }
 
 describe('DatePicker', () => {
+  it.each([true, false])('禁用时收起已打开的面板（受控=%s）', async (controlled) => {
+    const wrapper = mount(DatePicker, {
+      attachTo: document.body,
+      props: { ...(controlled ? { open: true } : { defaultOpen: true }), motion: false },
+    });
+    const panel = () => document.querySelector('.semi-datepicker-month-grid');
+    try {
+      await settle();
+      expect(panel()).not.toBeNull();
+      await wrapper.setProps({ disabled: true });
+      await settle();
+      expect(panel()).toBeNull();
+      expect(wrapper.get('input').element.disabled).toBe(true);
+      await wrapper.setProps({ disabled: false });
+      await settle();
+      expect(Boolean(panel())).toBe(controlled);
+      expect(wrapper.emitted('openChange')).toBeUndefined();
+      if (!controlled) {
+        await wrapper.get('[role="combobox"]').trigger('click');
+        await settle();
+        expect(panel()).not.toBeNull();
+      }
+    } finally {
+      wrapper.unmount();
+    }
+  });
+
   it('年月范围使用四个真实滚动列并禁止右端选择更早月份', async () => {
     const wrapper = mount(DatePicker, {
       attachTo: document.body,

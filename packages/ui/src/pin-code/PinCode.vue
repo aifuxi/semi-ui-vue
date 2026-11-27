@@ -60,11 +60,26 @@ const state = shallowReactive<PinCodeState>({
 
 const rootClasses = computed(() => [attrs.class, props.className, 'semi-pincode-wrapper']);
 const rootStyle = computed(() => [props.style, attrs.style]);
-const rootAttrs = computed(() =>
-  Object.fromEntries(
-    Object.entries(attrs).filter(([name]) => name !== 'class' && name !== 'style'),
-  ),
-);
+function rootAttrs(): Record<string, unknown> {
+  return Object.fromEntries(
+    Object.entries(attrs).filter(([name]) => !['class', 'style', 'tabindex'].includes(name)),
+  );
+}
+
+function inputAttrs(first: boolean): Record<string, unknown> {
+  const bindings = {
+    id: first ? props.id : undefined,
+    tabindex: props.tabIndex ?? attrs.tabindex,
+    validateStatus: props.validateStatus,
+    ariaLabel: props.ariaLabel,
+    ariaLabelledby: props.ariaLabelledby,
+    ariaDescribedby: props.ariaDescribedby,
+    ariaErrormessage: props.ariaErrormessage,
+    ariaInvalid: hasRawProp('ariaInvalid') ? props.ariaInvalid : undefined,
+    ariaRequired: hasRawProp('ariaRequired') ? props.ariaRequired : undefined,
+  };
+  return Object.fromEntries(Object.entries(bindings).filter(([, value]) => value !== undefined));
+}
 
 function getFoundationProps(): FoundationProps {
   const output = {
@@ -158,11 +173,12 @@ defineExpose<PinCodeExposed>({ focus, blur });
 </script>
 
 <template>
-  <div v-bind="rootAttrs" :class="rootClasses" :style="rootStyle">
+  <div v-bind="rootAttrs()" :class="rootClasses" :style="rootStyle">
     <Input
       v-for="inputIndex in props.count"
       :key="`input-${inputIndex - 1}`"
       :ref="(value) => setInputRef(inputIndex - 1, value)"
+      v-bind="inputAttrs(inputIndex === 1)"
       :auto-focus="props.autoFocus && inputIndex === 1"
       :inputmode="props.format === 'number' ? 'numeric' : 'text'"
       :value="state.valueList[inputIndex - 1]"

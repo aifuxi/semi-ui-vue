@@ -49,7 +49,7 @@ Vue 额外发出 `update:value` 与 `update:modelValue`，顺序为 `change → 
 | 受控/非受控 | 普通输入在受控模式只通知，等待父级回写；非受控先通知再提交 valueList。固定 Foundation 的 Backspace/Delete 无条件更新本地 valueList，此行为原样保留 |
 | 粘贴        | 入口立即 `preventDefault`；从当前格逐字符校验与完成，遇到首个非法字符停止，超过 count 截断                                                         |
 | 键盘/焦点   | Backspace 清当前格并前移；Delete 清当前格并后移；ArrowLeft/Right 仅移动；边界按固定 valueList 长度计算；其它键不拦截                               |
-| ARIA        | PinCode 本身没有额外 role/label 语义；每格保留原生 textbox、disabled 和调用方可传给根的 aria/data attrs，不伪造上游不存在的组合控件语义            |
+| ARIA        | 每格保留原生 textbox 语义，接收名称、说明、错误和必填属性。Form 标签关联首格，外层继续接收 `data-*`。                                              |
 | 动效        | PinCode 不增加 Vue Transition；复用 Input 固定的 0ms/Token 状态样式                                                                                |
 | 暗色/RTL    | 默认主题 Token 原样编译；PinCode 固定源码没有专用 RTL 文件，输入框 DOM 顺序与 margin-right 规则不镜像                                              |
 | 国际化      | 无内置文案；number 使用 `inputmode=numeric`，其它格式使用 `text`，中英文场景行为一致                                                               |
@@ -77,7 +77,9 @@ Vue 额外发出 `update:value` 与 `update:modelValue`，顺序为 `change → 
 
 ## Deviation
 
-没有 accepted deviation。Vue Adapter 显式把格式映射为原生 `inputmode`，避免 Vue 组件 fallthrough 把 camelCase prop 序列化为非标准 `input-mode`；最终 DOM、输入行为与固定 React 源码一致。
+- 首个输入框使用公开 `id`，以便 `Form` 的标签定位。每格都接收 `tabIndex`、校验状态及名称、说明、错误和必填相关 ARIA 属性。
+
+`v2.102.0` 验收时，Vue Adapter 将格式映射为原生 `inputmode`，其 DOM 和输入行为与当时的 React 基线一致。
 
 ## 验收结论
 

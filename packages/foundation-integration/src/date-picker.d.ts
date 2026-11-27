@@ -174,6 +174,8 @@ export class DatePickerFoundation<
   constructor(adapter: DatePickerAdapter<Props, State>);
   init(): void;
   destroy(): void;
+  initPanelOpenStatus(defaultOpen?: boolean): void;
+  clearRangeInputFocus(): void;
   initFromProps(options: {
     value?: DatePickerFoundationValue;
     timeZone?: string | number;

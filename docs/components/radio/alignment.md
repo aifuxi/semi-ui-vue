@@ -53,7 +53,7 @@ Radio 是固定 `content/order.js` 中 PinCode 之后的下一项。Cascader、C
 | `type`               | `'default'`      | 四种固定类型                                     | button 忽略方向 class；card/pureCard 保留对应状态          |
 | `buttonSize`         | `'middle'`       | `'small' \| 'middle' \| 'large'`                 | 传播到子项 class                                           |
 | `mode`               | `''`             | `'' \| 'advanced'`                               | 已选项可取消并发出 `undefined`                             |
-| `name`               | `'default'` 回退 | 同名                                             | 传播到 input；子 Radio 显式 name 优先                      |
+| `name`               | 各组自动生成名称 | 同名                                             | 传播到 input；子 Radio 显式 name 优先                      |
 | `disabled`           | `false`          | 同名                                             | 与 option/child disabled 合并                              |
 | group ARIA/id/data-* | -                | camelCase ARIA props与原生 aria/data attrs       | 根 div 保留固定属性集合                                    |
 | `onChange`           | noop             | `@change`、`update:value`、`update:modelValue`   | 未改变的普通模式值不重复通知；advanced 每次通知            |
@@ -81,7 +81,7 @@ Radio 是固定 `content/order.js` 中 PinCode 之后的下一项。Cascader、C
 
 - 原生 radio 的同 name 箭头键与 Space 行为由 Chromium 提供；advanced 因固定源码使用 checkbox，不伪造 radio roving tabindex。
 - `focus()` / `blur()` 暴露真实 input；`preventScroll` 传给 focus；`:focus-visible` 只在键盘焦点时增加固定 focus class。
-- input 输出 `aria-label`，有 addon/extra 时分别输出 `aria-labelledby` / `aria-describedby`；Group 输出固定五项 ARIA 与 id。
+- input 输出 `aria-label`，有 addon/extra 时分别输出 `aria-labelledby` / `aria-describedby`。Group 输出 `role="radiogroup"`、ARIA 属性和 id。
 - Radio 没有 Portal、Observer 或浮层；无额外动效时序，样式 transition 使用固定零时长 token。
 - RTL 由固定 `.semi-rtl` / `.semi-portal-rtl` SCSS 控制 input 左右位置和 Group direction；不改变逻辑值顺序。
 - 组件没有 Locale 文案；以 zh-CN/en-US 场景文案证明任意 VNode 内容可渲染，不新增 locale 依赖。
@@ -99,5 +99,7 @@ Radio 是固定 `content/order.js` 中 PinCode 之后的下一项。Cascader、C
 
 ## Deviation
 
+- 分组提供 `role="radiogroup"`。未显式传入 `name` 时，每组通过 Vue `useId()` 取得 SSR 与 hydration 一致的原生名称，隔离同一表单内各组的选中态。
+
 - 固定 `radio/index.tsx` 用 `class RadioWithGroup extends Radio { static Group = Group }` 承载 `Group` 静态成员并作为默认导出，同时具名导出 `Radio`/`RadioWithGroup`；该子类没有独立行为。Vue 入口把 `Group` 直接挂在 `Radio` 复合对象上（默认导出即复合组件）并具名导出 `RadioGroup`，不重复发布 `RadioWithGroup` 名字。用户影响：`Radio.Group` 用法不变，额外类名不可用；DOM、class、ARIA 与事件不变。
-- Radio 已通过同环境 React/Vue 行为、computed style、几何、截图、SSR 与真实发布包验证，状态为 `ready`；除上述 React 类包装映射外无其它 accepted deviation。
+- `v2.102.0` 验收通过同环境 React/Vue 行为、computed style、几何、截图、SSR 与真实发布包验证。React 类包装映射为当时的 accepted deviation。

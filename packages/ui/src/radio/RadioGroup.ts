@@ -13,6 +13,7 @@ import {
   provide,
   shallowRef,
   Text,
+  useId,
   watch,
   type Component,
   type PropType,
@@ -179,7 +180,8 @@ export default defineComponent({
     const contextValue = computed(() => state.value.value);
     const contextDisabled = computed(() => props.disabled);
     const contextMode = computed(() => props.mode);
-    const contextName = computed(() => props.name || 'default');
+    const generatedName = `semi-radio-group-${useId()}`;
+    const contextName = computed(() => props.name || generatedName);
     const contextButtonSize = computed(() => props.buttonSize);
     const contextPrefixCls = computed(() => props.prefixCls);
     provide(radioGroupContextKey, {
@@ -270,6 +272,7 @@ export default defineComponent({
         {
           ...dataAttrs,
           id: props.id,
+          role: 'radiogroup',
           'aria-label': props.ariaLabel,
           'aria-invalid': props.ariaInvalid,
           'aria-errormessage': props.ariaErrormessage,
