@@ -27,6 +27,7 @@ import { configContextKey, DEFAULT_CONFIG_LOCALE, semiGlobal } from '../config-p
 import ModalDefaultFooter from './ModalDefaultFooter.vue';
 import ModalDialog, { type ModalDialogExposed } from './ModalDialog.vue';
 import type { ModalActionHandler, ModalEmits, ModalLocale, ModalProps, ModalSlots } from './types';
+import { createBodyScrollLock } from '../_utils/body-scroll-lock';
 import { usePortalThemeScope } from '../_utils/theme-scope';
 
 defineOptions({ name: 'Modal', inheritAttrs: false });
@@ -52,10 +53,9 @@ const haveRendered = shallowRef(false);
 const contentAnimating = shallowRef(true);
 const maskAnimating = shallowRef(true);
 const cache = new Map<unknown, unknown>();
+const bodyScrollLock = createBodyScrollLock();
 let activeCycle = false;
 let hideTimer: ReturnType<typeof setTimeout> | undefined;
-let originalBodyOverflow: string | null = null;
-let originalBodyWidth = '';
 
 /** 按当前父渲染判断参数是否显式传入，保留驼峰和 kebab-case 两种调用方式。 */
 function hasRawProp(key: keyof ModalProps): boolean {
@@ -118,25 +118,6 @@ function invokeHandler(handler: ModalActionHandler | undefined, event: MouseEven
   return handler?.(event);
 }
 
-function disableBodyScroll(): void {
-  if (typeof document === 'undefined' || teleportTarget.value !== document.body) return;
-  originalBodyOverflow = document.body.style.overflow || '';
-  originalBodyWidth = document.body.style.width;
-  if (originalBodyOverflow === 'hidden') return;
-  const scrollbarWidth = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-  document.body.style.overflow = 'hidden';
-  document.body.style.width = `calc(${originalBodyWidth || '100%'} - ${scrollbarWidth}px)`;
-}
-
-function enableBodyScroll(): void {
-  if (typeof document === 'undefined' || originalBodyOverflow === null) return;
-  if (originalBodyOverflow !== 'hidden') {
-    document.body.style.overflow = originalBodyOverflow;
-    document.body.style.width = originalBodyWidth;
-  }
-  originalBodyOverflow = null;
-}
-
 const adapter: ModalAdapter<typeof runtimeProps.value, FoundationModalState> = {
   getContext: () => undefined,
   getContexts: () => ({}),
@@ -153,8 +134,8 @@ const adapter: ModalAdapter<typeof runtimeProps.value, FoundationModalState> = {
   setCache: (key, value) => cache.set(key, value),
   stopPropagation: (event) => event?.stopPropagation?.(),
   persistEvent: () => undefined,
-  disabledBodyScroll: disableBodyScroll,
-  enabledBodyScroll: enableBodyScroll,
+  disabledBodyScroll: () => bodyScrollLock.setTarget(teleportTarget.value),
+  enabledBodyScroll: () => bodyScrollLock.setTarget(null),
   notifyCancel: (event) => {
     emit('update:visible', false);
     return invokeHandler(props.onCancel, event);
@@ -339,7 +320,9 @@ watch(runtimeVisible, (visible, previous) => {
   else beginHide();
 });
 watch(popupGetter, () => {
-  if (mounted.value) resolveContainer();
+  if (!mounted.value) return;
+  resolveContainer();
+  if (activeCycle) bodyScrollLock.setTarget(teleportTarget.value);
 });
 watch(
   () => runtimeProps.value.fullScreen,

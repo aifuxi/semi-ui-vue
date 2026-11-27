@@ -161,6 +161,51 @@ const sideSheetVisible = ref(true);
 /** 名称由公开 aria-label 和 title 插槽共享，模拟切换工作项。 */
 const sideSheetName = ref('工作项详情');
 
+const PackedOverlayScrollLock = {
+  setup() {
+    const modalVisible = ref(false);
+    const sideSheetVisible = ref(false);
+    // Chromium 写入 overflow 简写时会覆盖独立滚动轴及其优先级。
+    document.body.style.setProperty('overflow-y', 'scroll', 'important');
+    document.body.style.width = '80%';
+
+    return () =>
+      h('main', [
+        h('button', { type: 'button', onClick: () => (modalVisible.value = true) }, '打开页面弹窗'),
+        h(
+          Modal,
+          { title: '页面弹窗', visible: modalVisible.value, footer: null },
+          {
+            default: () =>
+              h(
+                'button',
+                { type: 'button', onClick: () => (sideSheetVisible.value = true) },
+                '打开侧栏',
+              ),
+          },
+        ),
+        h(
+          SideSheet,
+          {
+            title: '页面侧栏',
+            'aria-label': '页面侧栏',
+            visible: sideSheetVisible.value,
+            zIndex: 1100,
+            'onUpdate:visible': (visible) => (sideSheetVisible.value = visible),
+          },
+          {
+            default: () =>
+              h(
+                'button',
+                { type: 'button', onClick: () => (modalVisible.value = false) },
+                '关闭下层弹窗',
+              ),
+          },
+        ),
+      ]);
+  },
+};
+
 /** 只在受控用例中作为 visible 输入，其他用例由组件持有状态。 */
 const popoverVisible = ref(false);
 /** 公开事件轨迹用于识别关闭后又重新发出 true 的回归。 */
@@ -1485,6 +1530,7 @@ const interactionRender =
   (dropdownQuery.has('select-model') ? renderPackedSelectModel : undefined) ??
   (dropdownQuery.has('select-escape') ? renderPackedSelectEscape : undefined) ??
   (dropdownQuery.has('dropdown-activation') ? renderPackedDropdownActivation : undefined) ??
+  (dropdownQuery.has('overlay-scroll-lock') ? () => h(PackedOverlayScrollLock) : undefined) ??
   overlayContainerRender ??
   (dropdownQuery.has('overlay-close-size')
     ? renderPackedCloseSize

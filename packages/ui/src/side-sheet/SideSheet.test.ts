@@ -4,6 +4,7 @@ import { defineComponent, h, nextTick, ref } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ConfigProvider, semiGlobal } from '../config-provider';
+import { Modal } from '../modal';
 import DefaultSideSheet, { SIDE_SHEET_PLACEMENTS, SIDE_SHEET_SIZES, SideSheet } from './index';
 import SideSheetDynamicSlot from './SideSheetDynamicSlot.fixture.vue';
 
@@ -524,5 +525,66 @@ describe('SideSheet', () => {
     expect(changes).toEqual([true, false]);
     wrapper.unmount();
     expect(document.body.style.overflow).toBe('');
+  });
+
+  it('可见时动态切换 disableScroll，立即释放或重新锁定 body', async () => {
+    document.body.style.overflow = 'auto';
+    document.body.style.width = '80%';
+    const wrapper = await mountVisible({ disableScroll: true });
+    const lockedWidth = document.body.style.width;
+    expect(document.body.style.overflow).toBe('hidden');
+
+    await wrapper.setProps({ disableScroll: false });
+    expect(document.body.textContent).toContain('资源详情');
+    expect(document.body.style.overflow).toBe('auto');
+    expect(document.body.style.width).toBe('80%');
+    await wrapper.setProps({ disableScroll: true });
+    expect(document.body.style.overflow).toBe('hidden');
+    expect(document.body.style.width).toBe(lockedWidth);
+
+    wrapper.unmount();
+    expect(document.body.style.overflow).toBe('auto');
+    expect(document.body.style.width).toBe('80%');
+  });
+
+  it('同时关闭和禁用 disableScroll 时，退场开始就恢复 body', async () => {
+    document.body.style.overflow = 'auto';
+    document.body.style.width = '80%';
+    const wrapper = await mountVisible({ disableScroll: true, motion: true });
+    expect(document.body.style.overflow).toBe('hidden');
+
+    await wrapper.setProps({ disableScroll: false, visible: false });
+    const content = document.querySelector('.semi-sidesheet-inner');
+    expect(content?.className).toContain('semi-sidesheet-animation-content_hide_right');
+    expect(document.body.style.overflow).toBe('auto');
+    expect(document.body.style.width).toBe('80%');
+
+    content?.dispatchEvent(new Event('animationend', { bubbles: true }));
+    await settle();
+    expect(document.querySelector('.semi-sidesheet-inner')).toBeNull();
+    expect(document.body.style.overflow).toBe('auto');
+    expect(document.body.style.width).toBe('80%');
+  });
+
+  it('两个组件同时可见时切换 disableScroll 只释放 SideSheet 的锁', async () => {
+    document.body.style.overflow = 'auto';
+    document.body.style.width = '80%';
+    const sideSheet = await mountVisible({ disableScroll: true });
+    const modal = mount(Modal, {
+      attachTo: document.body,
+      props: { visible: true, motion: false, title: '页面弹窗' },
+    });
+    await settle();
+    const lockedWidth = document.body.style.width;
+    expect(document.body.style.overflow).toBe('hidden');
+
+    await sideSheet.setProps({ disableScroll: false });
+    expect(document.body.textContent).toContain('页面弹窗');
+    expect(document.body.style.overflow).toBe('hidden');
+    expect(document.body.style.width).toBe(lockedWidth);
+    await modal.setProps({ visible: false });
+    expect(document.body.textContent).toContain('资源详情');
+    expect(document.body.style.overflow).toBe('auto');
+    expect(document.body.style.width).toBe('80%');
   });
 });

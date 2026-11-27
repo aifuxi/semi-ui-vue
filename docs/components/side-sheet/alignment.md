@@ -26,7 +26,7 @@
 | `maskClosable`                          | `true`               | 仅点击 mask 自身关闭，子内容冒泡不关闭                                                                        |
 | `closable`                              | `true`               | 标题栏 IconButton；`closeIcon` prop 或 `#closeIcon`，显式 null 保留上游默认 IconClose 语义                    |
 | `closeOnEsc`                            | `false`              | Window keydown；仅显式/全局开启时拦截 Escape 并取消                                                           |
-| `disableScroll`                         | `true`               | 仅默认 body Portal 锁定 body；自定义容器不锁；关闭/卸载完整恢复 overflow 与 width                             |
+| `disableScroll`                         | `true`               | 实际挂到 `body` 时可锁定背景滚动，动态切换即时生效                                                            |
 | `motion`                                | `true`               | 保留 mask/content 180ms class；`false` 立即卸载；离场结束后触发隐藏回调                                       |
 | `keepDOM`                               | `false`              | 关闭后保留并添加 `.semi-sidesheet-hidden`                                                                     |
 | `getPopupContainer`                     | body                 | 显式 prop > ConfigProvider；稳定容器首次可见即为 Portal 父节点；仅组件自身 getter 启用 static Portal 与 popup |
@@ -46,7 +46,8 @@
 - 初始 `visible=false` 不渲染；初始 `visible=true` 挂载后执行 `beforeShow`，但不伪造一次 React 未产生的 prop-transition 回调。
 - `false -> true`：先解除 `displayNone`、解析稳定容器并执行 Foundation `beforeShow`，随后触发 `afterVisibleChange(true)`。
 - close/mask/Escape：Foundation `notifyCancel` -> `update:visible(false)` -> `cancel(event)`；受控父级决定实际关闭。
-- `true -> false`：立即执行 Foundation `afterHide`（恢复 body 与移除 keydown）；`motion=false` 立即隐藏，`motion=true` 在 mask/content animationend 后隐藏；只触发一次 `afterVisibleChange(false)`。
+- 实际挂到 `body` 且 `disableScroll=true` 的可见 SideSheet 与 Modal 共享滚动锁。可见期间修改 `disableScroll` 或 Portal 容器时同步持有状态。最后一个持有者退出后恢复原有内联 `overflow` 和 `width`。
+- `true -> false`：在退场开始时释放滚动锁并执行 Foundation `afterHide` 移除 keydown，卸载时也释放。`motion=false` 立即隐藏，`motion=true` 在 mask/content animationend 后隐藏，只触发一次 `afterVisibleChange(false)`。
 - `keepDOM=true` 时关闭后 DOM 保留但 `.semi-sidesheet-hidden { display:none }`；再次打开复用内容。
 
 ## DOM、样式、主题、RTL 与动效
