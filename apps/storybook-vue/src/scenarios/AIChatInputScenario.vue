@@ -9,6 +9,8 @@ const props = defineProps<{ direction: ParityDirection; locale: ParityLocale }>(
 // 与 React 使用一致的公开布尔状态，覆盖发送禁用、生成中和非圆角外观。
 const query = new URLSearchParams(window.location.search);
 const reviewPanels = query.get('aiInputPanels') === 'true';
+const attachmentForm = query.get('aiInputAttachmentForm') === 'true';
+const submitCount = ref(0);
 const suggestions = ref(
   props.locale === 'zh-CN' ? ['总结规范', '生成行动项'] : ['Summarize spec', 'Create action items'],
 );
@@ -36,11 +38,27 @@ const localeMap: Record<ParityLocale, SemiLocale> = {
 const attachments: Attachment[] = [
   { uid: 'file-1', name: 'roadmap.pdf', size: '24 KB', status: 'success' },
 ];
+const formAttachments = Array.from({ length: 8 }, (_, index): Attachment => ({
+  uid: `form-file-${index + 1}`,
+  name: `附件 ${index + 1}.pdf`,
+  size: '24 KB',
+  status: 'success',
+}));
 </script>
 
 <template>
   <ConfigProvider :direction="props.direction" :locale="localeMap[props.locale]">
-    <div class="ai-chat-input-scenario" data-testid="ai-chat-input-vue">
+    <form
+      v-if="attachmentForm"
+      aria-label="附件表单"
+      style="width: 360px"
+      @submit.prevent="submitCount += 1"
+    >
+      <AIChatInput :upload-props="{ action: '', defaultFileList: formAttachments }" />
+      <button type="submit">提交表单</button>
+      <output aria-label="表单提交次数">{{ submitCount }}</output>
+    </form>
+    <div v-else class="ai-chat-input-scenario" data-testid="ai-chat-input-vue">
       <Button
         v-if="reviewPanels"
         data-action="show-suggestions"

@@ -125,6 +125,55 @@ describe('AIChatInput', () => {
     expect(wrapper.find('.semi-aiChatInput-footer-round').exists()).toBe(true);
   });
 
+  it.each([
+    ['Scroll right', 0, 300],
+    ['Scroll left', 300, -300],
+  ] as const)('%s 滚动时不提交外层表单', async (name, initialScrollLeft, distance) => {
+    const onSubmit = vi.fn((event: Event) => event.preventDefault());
+    const attachment: Attachment = {
+      uid: 'a-1',
+      name: 'notes.pdf',
+      size: '2 KB',
+      status: 'success',
+    };
+    const wrapper = mount(
+      {
+        render: () =>
+          h('form', { onSubmit }, [
+            h(AIChatInput, { uploadProps: { action: '', defaultFileList: [attachment] } }),
+            h('button', { type: 'submit', 'data-testid': 'form-submit' }, '提交表单'),
+          ]),
+      },
+      { attachTo: document.body },
+    );
+
+    try {
+      await flushPromises();
+      const container = wrapper.get<HTMLDivElement>('.semi-aiChatInput-scroll-container').element;
+      const scrollBy = vi.fn();
+      Object.defineProperties(container, {
+        clientWidth: { value: 320 },
+        scrollWidth: { value: 960 },
+        scrollBy: { value: scrollBy },
+      });
+      container.scrollLeft = initialScrollLeft;
+      container.dispatchEvent(new Event('scroll'));
+      await nextTick();
+
+      const arrow = wrapper.get<HTMLButtonElement>(`button[aria-label="${name}"]`).element;
+      expect(arrow.form).toBe(wrapper.get('form').element);
+      arrow.click();
+
+      expect(scrollBy).toHaveBeenCalledExactlyOnceWith({ left: distance, behavior: 'smooth' });
+      expect(onSubmit).not.toHaveBeenCalled();
+
+      wrapper.get<HTMLButtonElement>('[data-testid="form-submit"]').element.click();
+      expect(onSubmit).toHaveBeenCalledTimes(1);
+    } finally {
+      wrapper.unmount();
+    }
+  });
+
   it('honors explicit false for every default-true rendering prop', async () => {
     const wrapper = await mountInput({
       references: [{ id: 'r-1', type: 'text', content: 'Reference' }],

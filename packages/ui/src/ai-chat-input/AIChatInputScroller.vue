@@ -42,6 +42,7 @@ watch(
   <div class="semi-aiChatInput-scroll-wrapper">
     <button
       v-if="canScrollLeft"
+      type="button"
       class="semi-aiChatInput-scroll-button semi-aiChatInput-scroll-button-left"
       aria-label="Scroll left"
       @click="scroll(-300)"
@@ -51,6 +52,7 @@ watch(
     <div ref="container" class="semi-aiChatInput-scroll-container"><slot /></div>
     <button
       v-if="canScrollRight"
+      type="button"
       class="semi-aiChatInput-scroll-button semi-aiChatInput-scroll-button-right"
       aria-label="Scroll right"
       @click="scroll(300)"
