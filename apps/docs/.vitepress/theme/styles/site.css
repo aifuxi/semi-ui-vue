@@ -61,16 +61,17 @@ body[theme-mode='dark'] .site-header {
 .site-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
   margin-left: 8px;
-  font-size: 20px;
-  font-weight: 600;
   color: var(--semi-color-text-0);
-  white-space: nowrap;
 }
 
 .site-brand-mark {
   flex: none;
+  width: 97px;
+  height: 36px;
+  background-color: currentColor;
+  mask: url('/doc-icons/semi_logo.svg') center / contain no-repeat;
+  forced-color-adjust: none;
 }
 
 .header-links {
@@ -475,15 +476,6 @@ body[theme-mode='dark'] .site-header {
   background: var(--semi-color-bg-1);
 }
 
-.docs-home-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  margin-bottom: 20px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--semi-color-primary);
-}
-
 .docs-home-hero h1 {
   margin: 0 0 16px;
   max-width: 760px;
@@ -491,10 +483,6 @@ body[theme-mode='dark'] .site-header {
   line-height: 1.08;
   font-weight: 600;
   color: var(--semi-color-text-0);
-}
-
-.docs-home-hero h1 > span {
-  color: var(--semi-color-primary);
 }
 
 .docs-home-hero p {
@@ -624,10 +612,6 @@ body[theme-mode='dark'] .site-header {
   .site-header {
     gap: 16px;
     padding: 0 16px;
-  }
-
-  .site-brand {
-    font-size: 16px;
   }
 
   .header-links,
