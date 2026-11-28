@@ -36,6 +36,15 @@ describe('Slider', () => {
     expect(DefaultSlider).toBe(Slider);
   });
 
+  it('拖柄失焦时转发原生事件', () => {
+    const wrapper = mount(Slider);
+    const handle = wrapper.get('[role="slider"]').element;
+    const event = new FocusEvent('blur');
+    handle.dispatchEvent(event);
+    expect(wrapper.emitted('blur')).toEqual([[event]]);
+    wrapper.unmount();
+  });
+
   it('保留默认/范围/纵向 DOM、样式位置与完整 ARIA', () => {
     const basic = mount(Slider, { props: { defaultValue: 30, ariaLabel: '音量' } });
     expect(basic.get('.semi-slider')).toBeTruthy();

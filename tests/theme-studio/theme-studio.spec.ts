@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { generateColorScale } from '../../packages/theme-default/colors/palette.mjs';
 
-/** 固定 Semi v2.102.0 默认主色；绝不以生成器重算默认色盘。 */
+/** 固定 Semi v2.105.2 默认主色；绝不以生成器重算默认色盘。 */
 const baselinePrimary = { light: 'rgb(0, 100, 250)', dark: 'rgb(84, 169, 255)' };
 /** 每个页面独立记录异常，测试结束后检查整个交互周期。 */
 const pageErrors = new WeakMap<Page, string[]>();

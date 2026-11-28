@@ -14,7 +14,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Toast 参考场景来自本地 v2.102.0 并保留类型、light、关闭与 alert', async ({ page }) => {
+test('Toast 参考场景来自本地 v2.105.2 并保留类型、light、关闭与 alert', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

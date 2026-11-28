@@ -1,5 +1,5 @@
 import React from 'react';
-import Highlight from '@semi-v2.102.0/highlight';
+import Highlight from '@semi-v2.105.2/highlight';
 
 export function HighlightScenario(): React.ReactElement {
   return (

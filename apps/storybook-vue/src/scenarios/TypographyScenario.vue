@@ -53,7 +53,7 @@ const tipOptions = tipMode
         style="margin: 0px"
         data-parity-target="typography-subtitle"
       >
-        Semi Design v2.102.0
+        Semi Design v2.105.2
       </Title>
     </section>
 

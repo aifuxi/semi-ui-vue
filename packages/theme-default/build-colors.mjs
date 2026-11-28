@@ -62,6 +62,6 @@ export async function buildColors(destination = path.join(themeRoot, 'dist/color
   const baseline = readColorBaseline();
   await writeFile(
     path.join(destination, 'baseline.mjs'),
-    `// 构建时从固定 Semi v2.102.0 读取；不由颜色生成器重建。\nexport default ${JSON.stringify(baseline, null, 2)};\n`,
+    `// 构建时从固定 Semi v2.105.2 读取；不由颜色生成器重建。\nexport default ${JSON.stringify(baseline, null, 2)};\n`,
   );
 }

@@ -1,8 +1,8 @@
-# TimePicker v2.102.0 对齐矩阵
+# TimePicker v2.105.2 对齐矩阵
 
 ## 基线与选择理由
 
-- 唯一基线：`vendor/semi-design` tag `v2.102.0`，提交 `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`。
+- 唯一基线：`vendor/semi-design` tag `v2.105.2`，提交 `7db305200a2b0fd2b20f0559819f2fa55631e2ba`。
 - 组件顺序：最近完成 TagInput；`content/order.js` 中其后的首个未完成公开组件是 TimePicker。
 - 依赖：Input、Icon、ConfigProvider 与 Portal/定位基础已完成。上游复用的 Popover、Trigger、ScrollList 仅作为 TimePicker 内部 DOM/行为实现，不把这些尚未完成的公开组件标记为 ready；DatePicker 与 Form 不进入本切片。
 
@@ -113,3 +113,7 @@
 - 固定 React/Vue 明暗主题实际对照确认：原版内层固定阴影应保留，Vue 额外通用 Popover 阴影及左面板 1px 横向滚动属于移植问题，均已修复。
 - TimePicker 单元与 SSR 共 11 项、Chromium 专项 7 项通过；新增完整外沿对照覆盖默认、小、大尺寸与范围面板，两端 8 组截图内容一致。既有内容区及关闭状态快照保持不变。
 - 定向 ESLint、工具与公开 UI 类型检查、`pnpm check:artifacts` 通过，包含主题、SSR import 和真实 tarball Node 消费验证。未执行整库组件浏览器矩阵或 consumer 浏览器套件。
+
+## v2.105.2 对照更新
+
+打开面板时先在视口外测量，再定位和执行动效。交互测试等面板进入视口且动效结束后读取裁剪坐标，沿用历史内缩 2px 快照和独立的完整阴影对照。

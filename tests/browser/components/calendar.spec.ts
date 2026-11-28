@@ -19,7 +19,7 @@ import {
   waitForTargetStable,
 } from '../parity-harness';
 
-test('Calendar 参考场景来自本地 v2.102.0 并保留周视图与事件 DOM', async ({ page }) => {
+test('Calendar 参考场景来自本地 v2.105.2 并保留周视图与事件 DOM', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));
@@ -128,6 +128,8 @@ test('Calendar React/Vue 四种模式、事件、Locale、样式与几何一致'
   const vueCard = pair.vue.page.locator(
     '.semi-popover-wrapper:has(.semi-calendar-month-event-card)',
   );
+  // React 初次渲染时将浮层放到视口外测量，定位后才开始入场动效。
+  await Promise.all([expect(reactCard).toBeInViewport(), expect(vueCard).toBeInViewport()]);
   await Promise.all([waitForTargetStable(reactCard), waitForTargetStable(vueCard)]);
   await Promise.all([
     waitForStableRendering(pair.react.page),
@@ -234,17 +236,14 @@ test('Calendar React/Vue RTL 与英文 Locale 截图一致', async ({ context })
   }
   const reactTarget = pair.react.page.getByTestId('calendar-reference');
   const vueTarget = pair.vue.page.getByTestId('calendar-vue');
-  await expect(reactTarget).toHaveScreenshot('calendar-reference-light-rtl-en-US.png', {
-    animations: 'disabled',
-  });
-  await expect(vueTarget).toHaveScreenshot('calendar-vue-light-rtl-en-US.png', {
-    animations: 'disabled',
-  });
   const [reactScreenshot, vueScreenshot] = await Promise.all([
     reactTarget.screenshot({ animations: 'disabled' }),
     vueTarget.screenshot({ animations: 'disabled' }),
   ]);
   await expectScreenshotPixelsToMatch(pair.react.page, vueScreenshot, reactScreenshot);
+  // v2.105.2 改用逻辑定位，旧版 RTL 参考图保留原文件名。
+  await expect(reactTarget).toHaveScreenshot('calendar-reference-light-rtl-en-US-v2.105.2.png');
+  await expect(vueTarget).toHaveScreenshot('calendar-vue-light-rtl-en-US-v2.105.2.png');
   expect(pair.react.runtimeErrors).toEqual([]);
   expect(pair.vue.runtimeErrors).toEqual([]);
 });

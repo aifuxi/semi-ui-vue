@@ -1,7 +1,7 @@
 import React from 'react';
-import Tag from '@semi-v2.102.0/tag';
-import TagGroup from '@semi-v2.102.0/tag-group';
-import SplitTagGroup from '@semi-v2.102.0/split-tag-group';
+import Tag from '@semi-v2.105.2/tag';
+import TagGroup from '@semi-v2.105.2/tag-group';
+import SplitTagGroup from '@semi-v2.105.2/split-tag-group';
 
 const tagList = [
   { tagKey: 'one', children: 'One', color: 'blue' as const },

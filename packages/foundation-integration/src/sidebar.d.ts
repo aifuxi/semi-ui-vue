@@ -77,6 +77,7 @@ export interface SidebarMCPConfigureAdapter extends DefaultAdapter<
   SidebarMCPFoundationProps,
   SidebarMCPFoundationState
 > {
+  notifySearch(value: string, custom: boolean): void;
   notifyConfigureClick(event: MouseEvent, option: SidebarMCPOption): void;
   notifyEditClick(event: MouseEvent, option: SidebarMCPOption): void;
   notifyStatusChange(options: SidebarMCPOption[], custom: boolean): void;
@@ -85,6 +86,7 @@ export interface SidebarMCPConfigureAdapter extends DefaultAdapter<
 
 export class SidebarMCPConfigureFoundation {
   constructor(adapter: SidebarMCPConfigureAdapter);
+  destroy(): void;
   handleSearch(value: string): void;
   updateShowOptions(value: string, mode?: SidebarMCPMode): void;
   handleModeChange(event: { target: { value: SidebarMCPMode } }): void;

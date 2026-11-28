@@ -12,7 +12,7 @@ const reviewProps =
 
 const profileData: DescriptionsDataItem[] = [
   { key: h('strong', '项目名称'), value: 'Semi UI Vue' },
-  { key: '当前版本', value: () => 'v2.102.0' },
+  { key: '当前版本', value: () => 'v2.105.2' },
   { key: '维护状态', value: '持续对齐' },
 ];
 

@@ -67,8 +67,8 @@ describe('Calendar hydration', () => {
     const app = createSSRApp(Host);
     app.mount(container);
 
-    expect(html).toContain('left:57.1%');
-    expect(html).toContain('left:0%');
+    expect(html).toContain('inset-inline-start:57.1%');
+    expect(html).toContain('inset-inline-start:0%');
     expect(html).not.toContain('57.099999');
     expect(html).not.toContain('NaN');
     expect(error).not.toHaveBeenCalled();

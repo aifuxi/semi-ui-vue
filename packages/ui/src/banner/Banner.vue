@@ -27,6 +27,7 @@ import {
 
 import Button from '../button/Button.vue';
 import { Paragraph, Title } from '../typography';
+import LocaleConsumer from '../locale/LocaleConsumer.vue';
 
 import { useRenderComputed } from '../_utils';
 import BannerNodeRenderer from './BannerNodeRenderer';
@@ -227,20 +228,21 @@ onBeforeUnmount(() => foundation.destroy());
           </Paragraph>
         </div>
       </div>
-      <Button
-        v-if="hasCloseButton"
-        aria-label="Close"
-        class="semi-banner-close"
-        size="small"
-        theme="borderless"
-        type="tertiary"
-        @click="remove"
-      >
-        <template #icon>
-          <IconClose v-if="usesDefaultCloseIcon" aria-hidden="true" x-semi-prop="closeIcon" />
-          <BannerNodeRenderer v-else :content="customCloseIcon" />
-        </template>
-      </Button>
+      <LocaleConsumer v-if="hasCloseButton" v-slot="{ localeData }" component-name="Banner">
+        <Button
+          :aria-label="(localeData as { close?: string } | undefined)?.close"
+          class="semi-banner-close"
+          size="small"
+          theme="borderless"
+          type="tertiary"
+          @click="remove"
+        >
+          <template #icon>
+            <IconClose v-if="usesDefaultCloseIcon" aria-hidden="true" x-semi-prop="closeIcon" />
+            <BannerNodeRenderer v-else :content="customCloseIcon" />
+          </template>
+        </Button>
+      </LocaleConsumer>
     </div>
     <div v-if="hasExtra" class="semi-banner-extra" x-semi-prop="children">
       <BannerNodeRenderer :content="extraContent" />

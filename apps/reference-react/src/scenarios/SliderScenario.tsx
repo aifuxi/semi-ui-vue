@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
-import Slider from '@semi-v2.102.0/slider';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
+import Slider from '@semi-v2.105.2/slider';
 
 const MARKS = { 0: '0', 20: '20°C', 50: '50°C', 80: '80°C', 100: '100' };
 

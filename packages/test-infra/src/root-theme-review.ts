@@ -7,7 +7,7 @@ export function buttonReview(search: string): {
 } {
   /** 同一份查询同时提供给真实 React 与 Vue 组件。 */
   const query = new URLSearchParams(search);
-  /** Button 三档 size 与四种 theme 来自固定 v2.102.0 公开 API。 */
+  /** Button 三档 size 与四种 theme 来自固定 v2.105.2 公开 API。 */
   const size = query.get('reviewButtonSize');
   /** theme 不负责深浅模式；模式仍由对照框架的 theme query 设置。 */
   const theme = query.get('reviewButtonTheme');

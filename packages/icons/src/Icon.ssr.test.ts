@@ -6,9 +6,9 @@ import { IconSpin } from './icons';
 import * as iconPackage from './index';
 
 describe('Icon', () => {
-  it('完整导出并可服务端渲染 523 个固定稳定图标', async () => {
+  it('完整导出并可服务端渲染 527 个固定稳定图标', async () => {
     const components = Object.entries(iconPackage).filter(([name]) => /^Icon[A-Z]/.test(name));
-    expect(components).toHaveLength(523);
+    expect(components).toHaveLength(527);
     expect(IconSpin.elementType).toBe('Icon');
 
     const rendered = await Promise.all(

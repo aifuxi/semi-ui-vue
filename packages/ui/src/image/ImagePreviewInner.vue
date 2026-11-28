@@ -104,7 +104,7 @@ const locale = computed<ImageLocale>(() => {
 const state = shallowReactive<ImagePreviewInnerState>({
   currentIndex: props.currentIndex ?? 0,
   direction: '',
-  imgLoadStatus: {},
+  imgLoadStatus: new Map(),
   imgSrc: [],
   preloadAfterVisibleChange: true,
   ratio: 'adaptation',

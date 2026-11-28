@@ -1,6 +1,6 @@
 import React from 'react';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
-import Table, { type TableProps } from '@semi-v2.102.0/table';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
+import Table, { type TableProps } from '@semi-v2.105.2/table';
 
 export interface TableScenarioProps {
   direction: 'ltr' | 'rtl';

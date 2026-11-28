@@ -5,7 +5,7 @@ export function parityPrismOrder() {
     setup(api) {
       api.transform(
         {
-          test: /[\\/]prismjs[\\/](?:components[\\/]prism-(jsx|tsx)\.js|plugins[\\/]line-numbers[\\/]prism-line-numbers\.min\.js)$/,
+          test: /[\\/]prismjs[\\/](?:components[\\/]prism-(jsx|tsx|typescript)\.js|plugins[\\/]line-numbers[\\/]prism-line-numbers\.min\.js)$/,
         },
         ({ code, resourcePath }) => ({
           code: `import Prism from '${resourcePath.includes('line-numbers') ? '../../prism.js' : '../prism.js'}';\n${resourcePath.endsWith('prism-tsx.js') ? "import './prism-jsx.js';\n" : ''}${code}`,

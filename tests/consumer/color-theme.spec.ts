@@ -215,7 +215,7 @@ for (const custom of [false, true]) {
       'background-color',
       'rgb(17, 37, 57)',
     );
-    await dialog.getByRole('button', { name: 'cancel', exact: true }).click();
+    await dialog.getByRole('button', { name: '取消', exact: true }).click();
     await expect(dialog).toHaveCount(0);
     await open.click();
     await expect(dialog).toBeVisible();

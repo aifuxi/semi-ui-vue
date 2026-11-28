@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Avatar from '@semi-v2.102.0/avatar';
-import AvatarGroup from '@semi-v2.102.0/avatar-group';
+import Avatar from '@semi-v2.105.2/avatar';
+import AvatarGroup from '@semi-v2.105.2/avatar-group';
 
 const avatarImage =
   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"%3E%3Crect width="96" height="96" rx="48" fill="%236B5CE7"/%3E%3Ccircle cx="48" cy="37" r="17" fill="white"/%3E%3Cpath d="M18 88c3-20 14-30 30-30s27 10 30 30" fill="white"/%3E%3C/svg%3E';

@@ -1,5 +1,5 @@
 import React from 'react';
-import OverflowList from '@semi-v2.102.0/overflow-list';
+import OverflowList from '@semi-v2.105.2/overflow-list';
 
 const items = [
   { key: 'alarm', label: 'Alarm' },

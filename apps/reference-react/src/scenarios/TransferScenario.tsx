@@ -1,5 +1,5 @@
 import React from 'react';
-import Transfer from '@semi-v2.102.0/transfer';
+import Transfer from '@semi-v2.105.2/transfer';
 import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 const data = [

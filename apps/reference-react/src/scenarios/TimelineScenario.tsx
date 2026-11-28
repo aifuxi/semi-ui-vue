@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Timeline from '@semi-v2.102.0/timeline';
+import Timeline from '@semi-v2.105.2/timeline';
 
 const centerData = [
   { content: '需求确认', time: '09:00', type: 'success' as const },

@@ -1,8 +1,8 @@
 export const REFERENCE_BASELINE = Object.freeze({
   name: 'Semi Design',
-  tag: 'v2.102.0',
-  version: '2.102.0',
-  commit: 'cdfba6e520fc83ad871b30f51f36d8af3aaa5a21',
+  tag: 'v2.105.2',
+  version: '2.105.2',
+  commit: '7db305200a2b0fd2b20f0559819f2fa55631e2ba',
 });
 
 function createLottieFixture(color: [number, number, number, number]) {
@@ -3391,7 +3391,7 @@ export const PARITY_SCENARIOS = [
     id: 'illustrations',
     title: 'Illustrations 插画',
     description:
-      '验证固定 v2.102.0 的全部 16 个 light/dark 插画、200×200 SVG、attrs、桌面/移动与主题 Token。',
+      '验证固定 v2.105.2 的全部 16 个 light/dark 插画、200×200 SVG、attrs、桌面/移动与主题 Token。',
     referenceStatus: 'ready',
     vueStatus: 'ready',
     referenceSource: REFERENCE_SOURCE_PATHS.illustrationsPublicEntry,

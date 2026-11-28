@@ -17,7 +17,7 @@ import {
   waitForStableRendering,
 } from '../parity-harness';
 
-test('Pagination 参考场景来自本地 v2.102.0 并保留截断、容量、快速跳页与 small DOM', async ({
+test('Pagination 参考场景来自本地 v2.105.2 并保留截断、容量、快速跳页与 small DOM', async ({
   page,
 }) => {
   const requestedUrls: string[] = [];

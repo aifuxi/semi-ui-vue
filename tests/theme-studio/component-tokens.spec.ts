@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { expect, test, type Page } from '@playwright/test';
 
-/** 默认颜色取自固定 Semi 2.102.0 编译 CSS，供模式恢复与独立导出验收。 */
+/** 默认颜色取自固定 Semi 2.105.2 编译 CSS，供模式恢复与独立导出验收。 */
 const defaultPrimary = 'rgb(0, 100, 250)';
 /** 每页独立记录错误，跨组件和默认 Portal 的整个周期都参与验收。 */
 const errorsByPage = new WeakMap<Page, string[]>();

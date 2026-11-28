@@ -1,5 +1,5 @@
 import React from 'react';
-import Skeleton from '@semi-v2.102.0/skeleton';
+import Skeleton from '@semi-v2.105.2/skeleton';
 
 /** Review query 补齐骨架头像尺寸，其余加载/已加载内容继续沿用原场景。 */
 export function SkeletonScenario(): React.ReactElement {

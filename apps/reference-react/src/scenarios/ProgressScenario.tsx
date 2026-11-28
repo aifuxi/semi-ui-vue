@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Progress from '@semi-v2.102.0/progress';
+import Progress from '@semi-v2.105.2/progress';
 
 const gradientStroke = [
   { percent: 50, color: '#fff' },

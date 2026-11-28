@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import VideoPlayer from '@semi-v2.102.0/video-player';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
+import VideoPlayer from '@semi-v2.105.2/video-player';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
 import {
   VIDEO_PLAYER_POSTER_DATA_URI,
   createSilentAudioDataUri,

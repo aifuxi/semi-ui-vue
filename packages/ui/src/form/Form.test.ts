@@ -166,6 +166,28 @@ describe('Form alignment gates', () => {
     expect(wrapper.findAll('input').map((input) => input.element.value)).toEqual(['C', 'D']);
   });
 
+  it('进入初始 ArrayField 行时，Form 插槽已能读取默认值', async () => {
+    const wrapper = mount(Form, {
+      slots: {
+        default: ({ values }) =>
+          h(
+            ArrayField,
+            { field: 'people', initValue: [{ name: 'Semi' }] },
+            {
+              default: ({ arrayFields }: ArrayFieldSlotProps) =>
+                arrayFields.map(({ key }, index) =>
+                  h('span', { key }, (values.people as { name: string }[])[index]!.name),
+                ),
+            },
+          ),
+      },
+    });
+
+    await settle();
+    expect(wrapper.text()).toBe('Semi');
+    wrapper.unmount();
+  });
+
   it('renders labels, errors and ARIA against the real control', async () => {
     let api!: FormApi;
     const wrapper = mount(Form, {

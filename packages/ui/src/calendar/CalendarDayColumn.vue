@@ -55,7 +55,7 @@ function eventStyle(event: ParsedCalendarEvent): CSSProperties {
   return {
     top: `${top}px`,
     height: `${height}px`,
-    left: Number.isFinite(left) && typeof event.left === 'string' ? event.left : '0%',
+    insetInlineStart: Number.isFinite(left) && typeof event.left === 'string' ? event.left : '0%',
   };
 }
 

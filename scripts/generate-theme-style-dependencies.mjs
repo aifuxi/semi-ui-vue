@@ -81,7 +81,7 @@ if (JSON.stringify(exportedComponents) !== JSON.stringify(sourceComponents)) {
 
 await writeFile(
   manifestPath,
-  await prettier.format(JSON.stringify({ version: '2.102.0', components }), {
+  await prettier.format(JSON.stringify({ version: '2.105.2', components }), {
     ...(await prettier.resolveConfig(manifestPath)),
     parser: 'json',
   }),

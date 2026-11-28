@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import TagInput from '@semi-v2.102.0/tag-input';
+import TagInput from '@semi-v2.105.2/tag-input';
 import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 export function TagInputScenario(): React.ReactElement {

@@ -31,7 +31,7 @@ describe('Banner SSR', () => {
     expect(html).toContain('新版本已经可用');
     expect(html).toContain('semi-banner-extra');
     expect(html).toContain('<button>立即查看</button>');
-    expect(html).toContain('aria-label="Close"');
+    expect(html).toContain('aria-label="关闭"');
   });
 
   it('容器模式、边框和 null 图标在 SSR 中保持固定分支', async () => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Steps from '@semi-v2.102.0/steps';
+import Steps from '@semi-v2.105.2/steps';
 
 const Step = Steps.Step;
 

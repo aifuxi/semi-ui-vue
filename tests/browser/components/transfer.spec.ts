@@ -13,7 +13,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Transfer 参考场景来自本地 v2.102.0 并保留双面板、搜索与禁用项', async ({ page }) => {
+test('Transfer 参考场景来自本地 v2.105.2 并保留双面板、搜索与禁用项', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

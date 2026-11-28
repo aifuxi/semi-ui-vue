@@ -25,7 +25,7 @@ for (const motion of [true, false]) {
       else await item.press(activation);
       await expect(dialog).toBeVisible();
       await expect(state).toHaveText('actions=1;cancels=0;visible=true');
-      await expect(dialog.getByRole('button', { name: 'cancel', exact: true })).toBeFocused();
+      await expect(dialog.getByRole('button', { name: '取消', exact: true })).toBeFocused();
       await expect(page.getByRole('menu')).toHaveCount(0);
       // 弹窗仍可编辑，证明 Enter 完整按下/松开后没有意外关闭。
       await dialog.getByRole('textbox', { name: '名称', exact: true }).fill('新名称');
@@ -38,7 +38,7 @@ for (const motion of [true, false]) {
       await item.click();
       await expect(dialog).toBeVisible();
       await expect(state).toHaveText('actions=2;cancels=1;visible=true');
-      await dialog.getByRole('button', { name: 'cancel', exact: true }).click();
+      await dialog.getByRole('button', { name: '取消', exact: true }).click();
       await expect(dialog).toHaveCount(0);
       await expect(state).toHaveText('actions=2;cancels=2;visible=false');
     });

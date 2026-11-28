@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Carousel from '@semi-v2.102.0/carousel';
+import Carousel from '@semi-v2.105.2/carousel';
 
 const slideLabels = ['设计', '开发', '交付'];
 

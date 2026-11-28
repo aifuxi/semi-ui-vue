@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 
-/** 固定 Semi v2.102.0 的浅色/深色表面与正文颜色，不从被测节点反推预期。 */
+/** 固定 Semi v2.105.2 的浅色/深色表面与正文颜色，不从被测节点反推预期。 */
 const colors = {
   light: { popup: 'rgb(255, 255, 255)', modal: 'rgb(255, 255, 255)', text: 'rgb(28, 31, 35)' },
   dark: { popup: 'rgb(67, 68, 74)', modal: 'rgb(53, 54, 60)', text: 'rgb(249, 249, 249)' },
@@ -117,14 +117,20 @@ for (const entry of modalCases) {
     await follows(page, surface, surface.locator(entry.text).first(), true);
     await expect(surface.locator('.semi-modal-title')).toHaveCSS('color', colors.light.text);
     if (entry.name === 'global打开弹窗') {
-      await page.getByRole('combobox', { name: '弹窗品牌预设', exact: true }).click();
+      const trigger = surface.getByRole('combobox', { name: '弹窗品牌预设', exact: true });
+      await trigger.click();
       /** Modal 中的 Select 仍通过默认 body Portal，而非直接继承对话框 DOM。 */
       const popup = page.locator('.semi-popover-wrapper').filter({ has: page.getByRole('option') });
       await follows(page, popup, popup.locator('.semi-select-option').first());
+      // 主题切换后把键盘操作发给实际展开的 Select。
+      await trigger.focus();
+      await expect(trigger).toBeFocused();
       await page.keyboard.press('Escape');
+      await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+      await expect(surface).toBeVisible();
     }
     // 嵌套 Select 会消费 Escape，明确使用对话框自身关闭按钮。
-    await surface.getByRole('button', { name: 'close', exact: true }).click();
+    await surface.getByRole('button', { name: '关闭', exact: true }).click();
     await expect(surface).toHaveCount(0);
   });
 }

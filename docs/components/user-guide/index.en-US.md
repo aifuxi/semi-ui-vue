@@ -1,6 +1,6 @@
 # UserGuide
 
-UserGuide introduces page features step by step with a popup card or a centered modal. The Vue implementation aligns with Semi Design v2.102.0 for DOM structure, state transitions, themes, masks, buttons, and locale text.
+UserGuide introduces page features step by step with a popup card or a centered modal. The Vue implementation aligns with Semi Design v2.105.2 for DOM structure, state transitions, themes, masks, buttons, and locale text.
 
 ## Basic usage
 
@@ -83,25 +83,25 @@ Modal mode reuses Modal focus, Escape, Portal, and accessibility behavior. Popup
 
 ### UserGuideProps
 
-| Property              | Description                                                     | Type                           | Default         |
-| --------------------- | --------------------------------------------------------------- | ------------------------------ | --------------- |
-| `current`             | Active step; controlled when explicitly present                 | `number`                       | `0`             |
-| `visible`             | Whether the guide is visible                                    | `boolean`                      | `false`         |
-| `steps`               | Step definitions                                                | `readonly UserGuideStepItem[]` | `[]`            |
-| `mode`                | Popup or modal guide                                            | `'popup' \| 'modal'`           | `'popup'`       |
-| `mask`                | Whether to render the mask                                      | `boolean`                      | `true`          |
-| `position`            | Default popup position                                          | `PopoverPosition`              | `'bottom'`      |
-| `theme`               | Default theme                                                   | `'default' \| 'primary'`       | `'default'`     |
-| `spotlightPadding`    | Spotlight expansion in pixels                                   | `number`                       | `5`             |
-| `showPrevButton`      | Show the previous button                                        | `boolean`                      | `true`          |
-| `showSkipButton`      | Show the skip button                                            | `boolean`                      | `true`          |
-| `finishText`          | Finish button text                                              | `string`                       | locale `finish` |
-| `nextButtonProps`     | Next/finish Button props; `content` maps React children         | `UserGuideButtonProps`         | `{}`            |
-| `prevButtonProps`     | Previous Button props; `content` maps React children            | `UserGuideButtonProps`         | `{}`            |
-| `class` / `className` | Popup Popover class                                             | `HTMLAttributes['class']`      | -               |
-| `style`               | Popup Popover style                                             | `StyleValue`                   | -               |
-| `getPopupContainer`   | In v2.102.0, only controls body locking; see compatibility note | `() => HTMLElement`            | -               |
-| `zIndex`              | Spotlight SVG z-index                                           | `number`                       | `1030`          |
+| Property              | Description                                             | Type                           | Default         |
+| --------------------- | ------------------------------------------------------- | ------------------------------ | --------------- |
+| `current`             | Active step; controlled when explicitly present         | `number`                       | `0`             |
+| `visible`             | Whether the guide is visible                            | `boolean`                      | `false`         |
+| `steps`               | Step definitions                                        | `readonly UserGuideStepItem[]` | `[]`            |
+| `mode`                | Popup or modal guide                                    | `'popup' \| 'modal'`           | `'popup'`       |
+| `mask`                | Whether to render the mask                              | `boolean`                      | `true`          |
+| `position`            | Default popup position                                  | `PopoverPosition`              | `'bottom'`      |
+| `theme`               | Default theme                                           | `'default' \| 'primary'`       | `'default'`     |
+| `spotlightPadding`    | Spotlight expansion in pixels                           | `number`                       | `5`             |
+| `showPrevButton`      | Show the previous button                                | `boolean`                      | `true`          |
+| `showSkipButton`      | Show the skip button                                    | `boolean`                      | `true`          |
+| `finishText`          | Finish button text                                      | `string`                       | locale `finish` |
+| `nextButtonProps`     | Next/finish Button props; `content` maps React children | `UserGuideButtonProps`         | `{}`            |
+| `prevButtonProps`     | Previous Button props; `content` maps React children    | `UserGuideButtonProps`         | `{}`            |
+| `class` / `className` | Popup Popover class                                     | `HTMLAttributes['class']`      | -               |
+| `style`               | Popup Popover style                                     | `StyleValue`                   | -               |
+| `getPopupContainer`   | Host for the popup, spotlight, or modal                 | `() => HTMLElement`            | -               |
+| `zIndex`              | Spotlight SVG z-index                                   | `number`                       | `1030`          |
 
 ### UserGuideStepItem
 
@@ -127,7 +127,7 @@ Modal mode reuses Modal focus, Escape, Portal, and accessibility behavior. Popup
 
 ## Pinned-baseline compatibility
 
-The v2.102.0 types and docs declare per-step `mask` and `className`, but the pinned React Adapter never reads them. They remain ineffective in Vue for runtime parity. Likewise, `getPopupContainer` only affects UserGuide's own body-scroll lock and is not forwarded to the nested Popover or Modal. Configure `getPopupContainer` on `ConfigProvider` to change the actual overlay container.
+Per-step `mask` and `spotlightPadding` override global values. The step’s `className` is added to the current card. If omitted, `getPopupContainer` inherits the ConfigProvider container.
 
 ## SSR
 

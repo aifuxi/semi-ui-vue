@@ -1,6 +1,6 @@
 import React from 'react';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
-import TreeSelect from '@semi-v2.102.0/tree-select';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
+import TreeSelect from '@semi-v2.105.2/tree-select';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 

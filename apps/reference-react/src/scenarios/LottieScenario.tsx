@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { LOTTIE_ANIMATION_DATA_BLUE, LOTTIE_ANIMATION_DATA_ORANGE } from '@workspace/test-infra';
-import Lottie, { type LottieAnimationItem } from '@semi-v2.102.0/lottie';
+import Lottie, { type LottieAnimationItem } from '@semi-v2.105.2/lottie';
 
 function stopAtFirstFrame(animation: LottieAnimationItem | null): void {
   animation?.goToAndStop(0, true);

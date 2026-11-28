@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Input from '@semi-v2.102.0/input';
-import InputGroup from '@semi-v2.102.0/input-group';
-import TextArea from '@semi-v2.102.0/textarea';
+import Input from '@semi-v2.105.2/input';
+import InputGroup from '@semi-v2.105.2/input-group';
+import TextArea from '@semi-v2.105.2/textarea';
 import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 export function InputScenario(): React.ReactElement {

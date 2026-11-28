@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import Button from '@semi-v2.102.0/button';
-import Tooltip, { type TooltipPosition } from '@semi-v2.102.0/tooltip';
+import Button from '@semi-v2.105.2/button';
+import Tooltip, { type TooltipPosition } from '@semi-v2.105.2/tooltip';
 
 const placements: Array<{ position: TooltipPosition; label: string }> = [
   { position: 'top', label: 'Top' },

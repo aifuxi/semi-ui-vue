@@ -34,7 +34,7 @@ async function waitForImageScenario(page: import('@playwright/test').Page): Prom
   await expect(page.locator('.image-scenario .semi-image-overlay')).toHaveCount(0);
 }
 
-test('Image 参考场景来自本地 v2.102.0 公开源码', async ({ page }) => {
+test('Image 参考场景来自本地 v2.105.2 公开源码', async ({ page }) => {
   const requestedUrls: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));
   await page.goto(

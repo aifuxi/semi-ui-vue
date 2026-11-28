@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, useAttrs } from 'vue';
 
-import type { ResizeDirection, ResizeInputType, ResizeStartPointer } from './types';
+import type { ResizeDirection, ResizeInputType, ResizeMoveEvent } from './types';
 
 defineOptions({ name: 'SingleResizeHandle', inheritAttrs: false });
 
 const props = defineProps<{ direction: ResizeDirection }>();
 const emit = defineEmits<{
-  start: [event: ResizeStartPointer, direction: ResizeDirection, type: ResizeInputType];
+  start: [event: ResizeMoveEvent, direction: ResizeDirection, type: ResizeInputType];
 }>();
 const attrs = useAttrs();
 const classes = computed(() => [
@@ -21,8 +21,7 @@ function handleMouseDown(event: MouseEvent): void {
 }
 
 function handleTouchStart(event: TouchEvent): void {
-  const touch = event.targetTouches[0];
-  if (touch) emit('start', touch, props.direction, 'touch');
+  if (event.targetTouches.length) emit('start', event, props.direction, 'touch');
 }
 </script>
 

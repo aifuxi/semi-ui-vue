@@ -115,7 +115,7 @@ function pick(value: ColorValue): void {
     <p v-if="error" :id="`${label}-error`" class="field-error" role="alert">{{ error }}</p>
     <p v-else class="field-help">
       {{
-        theme.fixed ? '使用固定 Semi v2.102.0 默认色盘。' : 'primary、link 与 focus 随品牌更新。'
+        theme.fixed ? '使用固定 Semi v2.105.2 默认色盘。' : 'primary、link 与 focus 随品牌更新。'
       }}
     </p>
   </div>

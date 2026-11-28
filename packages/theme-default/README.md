@@ -1,6 +1,6 @@
 # @aifuxi/semi-theme-default
 
-为 `@aifuxi/semi-ui-vue` 提供的 Semi Design `v2.102.0` 默认主题编译 CSS。
+为 `@aifuxi/semi-ui-vue` 提供的 Semi Design `v2.105.2` 默认主题编译 CSS。
 
 > 本包是独立 Vue 复刻项目的一部分，不是 Semi Design 官方主题包。
 
@@ -31,7 +31,7 @@ import '@aifuxi/semi-theme-default/icon.css';
 
 ## CSS 排版主题
 
-R-000072 为字体、字号、字重和行高提供公开 CSS 自定义属性。业务在默认主题之后导入普通 CSS 即可，无需编写 SCSS、安装 Sass 或配置专用 Vite/Webpack 插件。默认值继续使用固定 Semi `v2.102.0`，颜色生成器不属于本能力。
+R-000072 为字体、字号、字重和行高提供公开 CSS 自定义属性。业务在默认主题之后导入普通 CSS 即可，无需编写 SCSS、安装 Sass 或配置专用 Vite/Webpack 插件。默认值继续使用固定 Semi `v2.105.2`，颜色生成器不属于本能力。
 
 ```css
 /* 主题可以用于整个 body，也可以用于局部容器。 */
@@ -140,7 +140,7 @@ await writeFile('brand.css', css);
 ### 语义与固定默认值
 
 - primary、link、focus-border 引用独立 `brand`；info 继续引用 `blue`，secondary 引用 `light-blue`，success/danger/warning 分别引用 green/red/orange，灰阶语义引用 grey。
-- 状态级别、透明度及深浅模式差异取自固定 Semi `v2.102.0`。浅色 primary 默认/hover/active 引用品牌 `5/6/7`；深色浅版背景引用品牌第 5 级与基线透明度。
+- 状态级别、透明度及深浅模式差异取自固定 Semi `v2.105.2`。浅色 primary 默认/hover/active 引用品牌 `5/6/7`；深色浅版背景引用品牌第 5 级与基线透明度。
 - AI 渐变、数据可视化专用色、背景及浮层阴影沿用固定基线的规则和值。颜色主题不输出排版、圆角或布局覆盖。
 - 算法参考固定 DSM 发布脚本，独立实现 HSV、取整及色轮排序；它不等同于仓库保存的默认色盘。例如算法 `#0077fa` 的浅色第 5 级是 `0,119,250`，固定默认 `--semi-blue-5` 是 `0,100,250`。导入工具或创建主题均不会改写默认 CSS；只有业务加载生成结果才启用品牌主题。
 

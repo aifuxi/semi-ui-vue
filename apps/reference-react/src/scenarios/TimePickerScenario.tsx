@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import TimePicker from '@semi-v2.102.0/time-picker';
+import TimePicker from '@semi-v2.105.2/time-picker';
 import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 const stableScroll = { mode: 'normal' as const, cycled: false, motion: false };

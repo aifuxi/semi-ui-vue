@@ -14,7 +14,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Button 参考场景来自本地 v2.102.0 公开源码并保留公开行为', async ({ page }) => {
+test('Button 参考场景来自本地 v2.105.2 公开源码并保留公开行为', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

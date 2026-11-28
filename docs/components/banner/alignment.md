@@ -1,4 +1,4 @@
-# Banner v2.102.0 对齐矩阵
+# Banner v2.105.2 对齐矩阵
 
 ## 固定源码证据
 
@@ -53,24 +53,24 @@
 
 ## DOM、样式、键盘与可访问性
 
-| 层级/状态 | 固定契约                                                                                                                     |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| 根节点    | `div.semi-banner.semi-banner-{type}[role=alert]`；full 为 `semi-banner-full`，容器模式为 `semi-banner-in-container`          |
-| 边框      | 仅 `!fullMode && bordered` 添加 `semi-banner-bordered`                                                                       |
-| 主体      | `semi-banner-content-wrapper > semi-banner-content > icon + content-body`                                                    |
-| 标题      | `div.semi-typography.semi-typography-primary.semi-banner-title`，Typography heading 5 语义但 component 为 div                |
-| 描述      | `div.semi-typography.semi-typography-primary.semi-banner-description`，Paragraph component 为 div                            |
-| 默认图标  | info/warning/danger/success 分别为 InfoCircle/AlertTriangle/AlertCircle/TickCircle，size large，公开 aria-label 与 type 对应 |
-| 关闭按钮  | `button.semi-button.semi-banner-close`，borderless/small/tertiary，`aria-label=Close`，Tab 可聚焦，Enter/Space 触发 click    |
-| 额外内容  | truthy children 位于 `div.semi-banner-extra[x-semi-prop=children]`                                                           |
-| RTL       | `.semi-rtl` 或 `.semi-portal-rtl` 下 direction=rtl，close/icon 的左右 margin 对换                                            |
+| 层级/状态 | 固定契约                                                                                                                       |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| 根节点    | `div.semi-banner.semi-banner-{type}[role=alert]`；full 为 `semi-banner-full`，容器模式为 `semi-banner-in-container`            |
+| 边框      | 仅 `!fullMode && bordered` 添加 `semi-banner-bordered`                                                                         |
+| 主体      | `semi-banner-content-wrapper > semi-banner-content > icon + content-body`                                                      |
+| 标题      | `div.semi-typography.semi-typography-primary.semi-banner-title`，Typography heading 5 语义但 component 为 div                  |
+| 描述      | `div.semi-typography.semi-typography-primary.semi-banner-description`，Paragraph component 为 div                              |
+| 默认图标  | info/warning/danger/success 分别为 InfoCircle/AlertTriangle/AlertCircle/TickCircle，size large，公开 aria-label 与 type 对应   |
+| 关闭按钮  | `button.semi-button.semi-banner-close`，borderless/small/tertiary，名称来自 `Banner.close`，Tab 可聚焦，Enter/Space 触发 click |
+| 额外内容  | truthy children 位于 `div.semi-banner-extra[x-semi-prop=children]`                                                             |
+| RTL       | `.semi-rtl` 或 `.semi-portal-rtl` 下 direction=rtl，close/icon 的左右 margin 对换                                              |
 
 四种类型背景、文本和可选边框使用固定 `--semi-color-*-light-default`、`--semi-color-*` Token；全屏内容居中，非全屏内容 body 占满剩余宽度，标题与描述相距 2px。
 
 ## 暗色、国际化、Portal、动效与 SSR
 
 - light/dark 均由固定默认主题 Token 驱动；组件不读取主题状态。
-- Banner 没有 locale 文案；默认关闭按钮沿用固定英文 `Close` aria-label，57 Locale 数据不受影响。
+- 关闭按钮读取当前 Locale 的 `Banner.close`，默认简中为“关闭”，英文为“Close”。旧自定义 Locale 可以省略整个 `Banner` 字段。
 - 没有 Portal、定位或动效；移动端使用同一 DOM/CSS 响应容器宽度。
 - SSR import 不访问 DOM；SSR 输出完整 visible alert、默认图标、内容与关闭按钮。Foundation 构造过程不访问 DOM，`init()` 只在客户端 mount 后调用。
 

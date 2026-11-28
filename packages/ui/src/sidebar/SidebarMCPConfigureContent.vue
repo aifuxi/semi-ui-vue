@@ -9,7 +9,15 @@ import {
   type SidebarMCPOption as FoundationMCPOption,
 } from '@workspace/foundation-integration';
 import { IllustrationNoContent, IllustrationNoContentDark } from '@aifuxi/semi-illustrations-vue';
-import { computed, markRaw, shallowReactive, useSlots, watch, type VNodeChild } from 'vue';
+import {
+  computed,
+  markRaw,
+  onBeforeUnmount,
+  shallowReactive,
+  useSlots,
+  watch,
+  type VNodeChild,
+} from 'vue';
 import type { RadioChangeEvent } from '../radio';
 
 import { Button } from '../button';
@@ -67,6 +75,7 @@ const adapter: SidebarMCPConfigureAdapter = {
   setCache: (key, value) => cache.set(key, value),
   stopPropagation: (event) => event.stopPropagation?.(),
   persistEvent: () => undefined,
+  notifySearch: (value, custom) => emit('search', value, custom),
   notifyConfigureClick: (event, option) => {
     const typedOption = option as SidebarMCPOption;
     emit('configure-click', event, typedOption);
@@ -94,12 +103,8 @@ const activeCount = computed(
       .length,
 );
 
-function handleSearch(value: string): void {
-  foundation.handleSearch(value);
-  emit('search', value, isCustom.value);
-}
 function handleInput(event: Event): void {
-  handleSearch((event.target as HTMLInputElement).value);
+  foundation.handleSearch((event.target as HTMLInputElement).value);
 }
 function handleModeChange(event: RadioChangeEvent): void {
   const mode = event.target.value as SidebarMCPMode;
@@ -124,6 +129,7 @@ watch(
     if (state.mode === 'custom') foundation.updateShowOptions(state.inputValue, 'custom');
   },
 );
+onBeforeUnmount(() => foundation.destroy());
 </script>
 
 <template>

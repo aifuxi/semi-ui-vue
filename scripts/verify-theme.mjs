@@ -66,7 +66,7 @@ if (JSON.stringify(actualImports) !== JSON.stringify(expectedImports)) {
   const missing = expectedImports.filter((entry) => !actualImports.includes(entry));
   const extra = actualImports.filter((entry) => !expectedImports.includes(entry));
   throw new Error(
-    `默认主题入口未与 v2.102.0 编译顺序对齐。缺失：${missing.join(', ') || '无'}；多余：${extra.join(', ') || '无'}`,
+    `默认主题入口未与 v2.105.2 编译顺序对齐。缺失：${missing.join(', ') || '无'}；多余：${extra.join(', ') || '无'}`,
   );
 }
 

@@ -1,6 +1,6 @@
 # @aifuxi/semi-icons-lab-vue
 
-从固定 Semi Design `v2.102.0` 资源生成的实验版 Vue 3 图标组件。
+从固定 Semi Design `v2.105.2` 资源生成的实验版 Vue 3 图标组件。
 
 > Lab 图标本身属于实验能力，可能比稳定图标更频繁地调整。本包不是 Semi Design 官方 Vue 版本。
 

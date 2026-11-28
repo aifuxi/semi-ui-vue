@@ -375,7 +375,12 @@ try {
 	const stableIcons = await import('@aifuxi/semi-icons-vue');
 	const labIcons = await import('@aifuxi/semi-icons-lab-vue');
 	const illustrations = await import('@aifuxi/semi-illustrations-vue');
-	if (Object.keys(stableIcons).length !== 525) throw new Error('稳定版 Icon 根导出数量不完整');
+	if (Object.keys(stableIcons).length !== 529) throw new Error('稳定版 Icon 根导出数量不完整');
+	for (const name of ['IconPin', 'IconPinOff', 'IconPinStroked', 'IconPinOffStroked']) {
+		if (stableIcons[name] !== (await import('@aifuxi/semi-icons-vue/icons/' + name)).default) {
+			throw new Error(name + ' 的根入口与子路径导出不一致');
+		}
+	}
 	if (Object.keys(labIcons).length !== 85) throw new Error('Lab Icon 根导出数量不完整');
 	if (Object.keys(illustrations).length !== 17) throw new Error('Illustrations 根导出数量不完整');
 	const rootTheme = import.meta.resolve('@aifuxi/semi-theme-default');

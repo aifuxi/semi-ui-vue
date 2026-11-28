@@ -63,7 +63,7 @@ for (const mode of ['light', 'dark']) {
       await opener.click();
       await expect(inner).toBeVisible();
       await expect(inner).toHaveAccessibleDescription('内层正文');
-      await expect(inner.getByRole('button', { name: 'cancel', exact: true })).toBeFocused();
+      await expect(inner.getByRole('button', { name: '取消', exact: true })).toBeFocused();
       await expectOwnReferences(page);
       // 标准内层保持遮罩关闭保护，不能因点击背景而消失。
       await page
@@ -78,7 +78,7 @@ for (const mode of ['light', 'dark']) {
       await opener.click();
       await expect(inner).toBeVisible();
       await expectOwnReferences(page);
-      await inner.getByRole('button', { name: 'cancel', exact: true }).click();
+      await inner.getByRole('button', { name: '取消', exact: true }).click();
       await expect(inner).toHaveCount(0);
       await expect(opener).toBeFocused();
       await expect(outer).toBeVisible();
@@ -126,7 +126,7 @@ test('真实 tarball 自定义 header、入口移除与顶层 Esc 保护', async
   await page.keyboard.press('Escape');
   await expect(inner).toBeVisible();
   await expect(outer).toBeVisible();
-  await inner.getByRole('button', { name: 'cancel', exact: true }).click();
+  await inner.getByRole('button', { name: '取消', exact: true }).click();
   await expect(inner).toBeHidden();
   // 原入口消失后焦点进入外层仍存在的控件，并继续遵循外层 Tab 陷阱。
   await expect(outer.getByRole('button', { name: '打开命令式弹窗', exact: true })).toBeFocused();

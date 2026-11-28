@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Banner from '@semi-v2.102.0/banner';
+import Banner from '@semi-v2.105.2/banner';
 
 const notices = [
   { type: 'info' as const, description: '新版本已经可用。' },

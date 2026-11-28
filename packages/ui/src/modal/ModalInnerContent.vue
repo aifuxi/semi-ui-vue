@@ -26,6 +26,7 @@ interface Props {
   closable: boolean;
   closeButtonSize: ButtonSize;
   closeIcon: VNodeChild;
+  closeLabel?: string | undefined;
   contentClass: HTMLAttributes['class'];
   dialogId: string;
   footer: VNodeChild;
@@ -135,7 +136,7 @@ defineExpose({ element: dialogElement });
           </Title>
           <Button
             v-if="props.closable"
-            aria-label="close"
+            :aria-label="props.closeLabel"
             class="semi-modal-close"
             type="tertiary"
             theme="borderless"
@@ -174,7 +175,7 @@ defineExpose({ element: dialogElement });
           </div>
           <Button
             v-if="props.closable"
-            aria-label="close"
+            :aria-label="props.closeLabel"
             class="semi-modal-close"
             type="tertiary"
             theme="borderless"

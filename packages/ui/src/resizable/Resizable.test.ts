@@ -216,9 +216,11 @@ describe('Resizable', () => {
       props: { defaultSize: { width: 100, height: 80 } },
     });
     const handle = wrapper.get('.semi-resizable-resizableHandler-bottom');
+    const touch = { clientX: 0, clientY: 0, target: handle.element };
     await handle.trigger('touchstart', {
-      targetTouches: [{ clientX: 0, clientY: 0, target: handle.element }],
+      targetTouches: [touch],
     });
+    expect(wrapper.emitted('resizeStart')?.[0]).toEqual([touch, 'bottom']);
 
     const move = new Event('touchmove', { cancelable: true });
     Object.defineProperty(move, 'targetTouches', {
@@ -227,6 +229,8 @@ describe('Resizable', () => {
     window.dispatchEvent(move);
     await nextTick();
     expect(wrapper.emitted('change')?.[0]?.[0]).toEqual({ height: 110, width: 100 });
+    expect(wrapper.emitted('change')?.[0]?.[1]).toBe(move);
+    expect(move.defaultPrevented).toBe(true);
 
     window.dispatchEvent(new Event('touchend'));
     await nextTick();

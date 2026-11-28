@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PinCode from '@semi-v2.102.0/pin-code';
+import PinCode from '@semi-v2.105.2/pin-code';
 import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 /** 用两端一致的真实 props 补齐尺寸及禁用状态的视觉审查。 */

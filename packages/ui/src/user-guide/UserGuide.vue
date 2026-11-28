@@ -16,6 +16,8 @@ import {
   shallowReactive,
   useId,
   useSlots,
+  useTemplateRef,
+  watchPostEffect,
   watch,
   type VNodeChild,
 } from 'vue';
@@ -52,6 +54,7 @@ interface UserGuideState {
   spotlightRect: DOMRect | null;
 }
 
+const spotlight = useTemplateRef<SVGSVGElement>('spotlight');
 const state = shallowReactive<UserGuideState>({
   current: props.current || userGuideNumbers.DEFAULT_CURRENT,
   spotlightRect: null,
@@ -94,7 +97,9 @@ const runtimePosition = computed(() => resolveProp('position', 'bottom'));
 const runtimeTheme = computed(() => resolveProp('theme', 'default'));
 const showPrevButton = computed(() => resolveProp('showPrevButton', true));
 const showSkipButton = computed(() => resolveProp('showSkipButton', true));
-const spotlightPadding = computed(() => resolveProp('spotlightPadding', 0));
+const spotlightPadding = computed(() =>
+  resolveProp('spotlightPadding', userGuideNumbers.DEFAULT_SPOTLIGHT_PADDING),
+);
 const zIndex = computed(() => resolveProp('zIndex', userGuideNumbers.DEFAULT_Z_INDEX));
 const isControlled = computed(() => hasExplicitProp('current'));
 const current = computed(() =>
@@ -103,17 +108,22 @@ const current = computed(() =>
     : state.current,
 );
 const activeStep = computed<UserGuideStepItem | undefined>(() => runtimeSteps.value[current.value]);
+const getPopupContainer = computed(
+  () => props.getPopupContainer ?? injectedConfig?.value.getPopupContainer,
+);
+const popupContainer = computed(() =>
+  state.spotlightRect ? getPopupContainer.value?.() : undefined,
+);
+const popupContainerBindings = computed(() =>
+  props.getPopupContainer ? { getPopupContainer: props.getPopupContainer } : {},
+);
+const stepMask = computed(() => activeStep.value?.mask ?? runtimeMask.value);
 const isFirst = computed(() => current.value === 0);
 const isLast = computed(() => current.value === runtimeSteps.value.length - 1);
 const isPrimary = computed(
   () => runtimeTheme.value === 'primary' || activeStep.value?.theme === 'primary',
 );
-const finalPadding = computed(
-  () =>
-    activeStep.value?.spotlightPadding ||
-    spotlightPadding.value ||
-    userGuideNumbers.DEFAULT_SPOTLIGHT_PADDING,
-);
+const finalPadding = computed(() => activeStep.value?.spotlightPadding ?? spotlightPadding.value);
 const locale = computed<UserGuideLocale>(() => {
   const configured = injectedConfig?.value.locale.UserGuide as UserGuideLocale | undefined;
   const fallback = DEFAULT_CONFIG_LOCALE.UserGuide as UserGuideLocale | undefined;
@@ -141,11 +151,8 @@ const nextText = computed<VNodeChild>(() =>
     : props.nextButtonProps?.content || locale.value.next,
 );
 const prevText = computed<VNodeChild>(() => props.prevButtonProps?.content || locale.value.prev);
-const popupClass = computed(() => [
-  `${userGuideCssClasses.PREFIX}-popover`,
-  props.class,
-  props.className,
-]);
+const stepClass = computed(() => [props.class, props.className, activeStep.value?.className]);
+const popupClass = computed(() => [`${userGuideCssClasses.PREFIX}-popover`, stepClass.value]);
 const popupStyle = computed(() => [
   { padding: 0 },
   isPrimary.value ? { backgroundColor: 'var(--semi-color-primary)' } : undefined,
@@ -372,6 +379,20 @@ watch(
   },
   { flush: 'post' },
 );
+watchPostEffect(() => {
+  const element = spotlight.value;
+  if (!element || !state.spotlightRect) return;
+  if (!popupContainer.value) {
+    element.style.left = '';
+    element.style.top = '';
+    return;
+  }
+
+  // 自定义容器的平移会改变 fixed 的原点，高亮孔仍使用视口坐标。
+  const { x, y } = element.getBoundingClientRect();
+  element.style.left = `${(Number.parseFloat(element.style.left) || 0) - x}px`;
+  element.style.top = `${(Number.parseFloat(element.style.top) || 0) - y}px`;
+});
 onBeforeUnmount(() => {
   destroyed = true;
   cancelMeasure();
@@ -385,7 +406,9 @@ onBeforeUnmount(() => {
       <Popover
         :class="popupClass"
         :position="activeStep.position || runtimePosition"
-        :re-pos-key="current"
+        :re-pos-key="JSON.stringify([current, state.spotlightRect])"
+        v-bind="popupContainerBindings"
+        :z-index="zIndex"
         :show-arrow="activeStep.showArrow !== false"
         :style="popupStyle"
         trigger="custom"
@@ -414,72 +437,77 @@ onBeforeUnmount(() => {
         <div :style="triggerStyle" />
       </Popover>
 
-      <svg class="semi-userGuide-spotlight" :style="{ zIndex }">
-        <defs>
-          <mask :id="spotlightMaskId">
-            <rect width="100%" height="100%" fill="white" />
+      <Teleport :to="popupContainer ?? 'body'" :disabled="!popupContainer">
+        <svg ref="spotlight" class="semi-userGuide-spotlight" :style="{ zIndex: zIndex - 1 }">
+          <defs>
+            <mask :id="spotlightMaskId">
+              <rect width="100%" height="100%" fill="white" />
+              <rect
+                class="semi-userGuide-spotlight-rect"
+                :x="state.spotlightRect.x"
+                :y="state.spotlightRect.y"
+                :width="state.spotlightRect.width"
+                :height="state.spotlightRect.height"
+                rx="4"
+                fill="black"
+              />
+            </mask>
+          </defs>
+          <template v-if="stepMask">
             <rect
-              class="semi-userGuide-spotlight-rect"
-              :x="state.spotlightRect.x"
-              :y="state.spotlightRect.y"
-              :width="state.spotlightRect.width"
-              :height="state.spotlightRect.height"
-              rx="4"
-              fill="black"
+              width="100%"
+              height="100%"
+              fill="var(--semi-color-overlay-bg)"
+              :mask="`url(#${spotlightMaskId})`"
             />
-          </mask>
-        </defs>
-        <template v-if="runtimeMask">
-          <rect
-            width="100%"
-            height="100%"
-            fill="var(--semi-color-overlay-bg)"
-            :mask="`url(#${spotlightMaskId})`"
-          />
-          <rect
-            x="0"
-            y="0"
-            width="100%"
-            :height="state.spotlightRect.y"
-            fill="transparent"
-            class="semi-userGuide-spotlight-transparent-rect"
-          />
-          <rect
-            x="0"
-            :y="state.spotlightRect.y"
-            :width="state.spotlightRect.x"
-            :height="state.spotlightRect.height"
-            fill="transparent"
-            class="semi-userGuide-spotlight-transparent-rect"
-          />
-          <rect
-            :x="state.spotlightRect.x + state.spotlightRect.width"
-            :y="state.spotlightRect.y"
-            :width="`calc(100% - ${state.spotlightRect.x + state.spotlightRect.width}px)`"
-            :height="state.spotlightRect.height"
-            fill="transparent"
-            class="semi-userGuide-spotlight-transparent-rect"
-          />
-          <rect
-            x="0"
-            :y="state.spotlightRect.y + state.spotlightRect.height"
-            width="100%"
-            :height="`calc(100% - ${state.spotlightRect.y + state.spotlightRect.height}px)`"
-            fill="transparent"
-            class="semi-userGuide-spotlight-transparent-rect"
-          />
-        </template>
-      </svg>
+            <rect
+              x="0"
+              y="0"
+              width="100%"
+              :height="state.spotlightRect.y"
+              fill="transparent"
+              class="semi-userGuide-spotlight-transparent-rect"
+            />
+            <rect
+              x="0"
+              :y="state.spotlightRect.y"
+              :width="state.spotlightRect.x"
+              :height="state.spotlightRect.height"
+              fill="transparent"
+              class="semi-userGuide-spotlight-transparent-rect"
+            />
+            <rect
+              :x="state.spotlightRect.x + state.spotlightRect.width"
+              :y="state.spotlightRect.y"
+              :width="`calc(100% - ${state.spotlightRect.x + state.spotlightRect.width}px)`"
+              :height="state.spotlightRect.height"
+              fill="transparent"
+              class="semi-userGuide-spotlight-transparent-rect"
+            />
+            <rect
+              x="0"
+              :y="state.spotlightRect.y + state.spotlightRect.height"
+              width="100%"
+              :height="`calc(100% - ${state.spotlightRect.y + state.spotlightRect.height}px)`"
+              fill="transparent"
+              class="semi-userGuide-spotlight-transparent-rect"
+            />
+          </template>
+        </svg>
+      </Teleport>
     </template>
 
     <Modal
       v-else-if="runtimeMode === 'modal'"
       :body-style="{ padding: 0 }"
       centered
-      class="semi-userGuide-modal"
+      :class="['semi-userGuide-modal', stepClass]"
+      :style="props.style"
+      v-bind="popupContainerBindings"
+      :z-index="zIndex"
       :footer="null"
       :header="null"
-      :mask="runtimeMask"
+      :mask="stepMask"
       :mask-closable="false"
       :visible="true"
     >

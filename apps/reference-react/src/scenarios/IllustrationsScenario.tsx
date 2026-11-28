@@ -16,7 +16,7 @@ import {
   IllustrationNotFoundDark,
   IllustrationSuccess,
   IllustrationSuccessDark,
-} from '@semi-v2.102.0/illustrations';
+} from '@semi-v2.105.2/illustrations';
 
 const illustrationPairs = [
   ['Construction', IllustrationConstruction, IllustrationConstructionDark],

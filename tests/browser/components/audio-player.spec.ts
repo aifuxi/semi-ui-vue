@@ -32,7 +32,7 @@ async function expectAudioPlayerReady(page: Page): Promise<void> {
     });
 }
 
-test('AudioPlayer 参考场景来自本地 v2.102.0 公开源码', async ({ page }) => {
+test('AudioPlayer 参考场景来自本地 v2.105.2 公开源码', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

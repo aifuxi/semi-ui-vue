@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Anchor from '@semi-v2.102.0/anchor';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
+import Anchor from '@semi-v2.105.2/anchor';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
 import type { ParityDirection } from '@workspace/test-infra';
 
 export function AnchorScenario({ direction }: { direction: ParityDirection }): React.ReactElement {

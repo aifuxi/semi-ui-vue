@@ -53,6 +53,6 @@ Vue 场景由 Storybook Vue 3/Vite 承载，React 参考继续使用 Rsbuild、R
 
 ### 可选颜色生成入口
 
-`@aifuxi/semi-theme-default/colors` 提供独立、零依赖的纯 ESM 颜色生成器和类型。HSV 算法以固定 DSM 参考结果验收，默认 CSS 仍来自固定 Semi v2.102.0；品牌生成算法不参与默认主题构建。构建时只读编译 vendor 的全局颜色语义，生成包内静态数据，消费者不依赖 Sass、vendor 或构建插件。
+`@aifuxi/semi-theme-default/colors` 提供独立、零依赖的纯 ESM 颜色生成器和类型。HSV 算法以固定 DSM 参考结果验收，默认 CSS 仍来自固定 Semi v2.105.2；品牌生成算法不参与默认主题构建。构建时只读编译 vendor 的全局颜色语义，生成包内静态数据，消费者不依赖 Sass、vendor 或构建插件。
 
 公开入口包含单色阶、完整色盘、双模式主题及 CSS 序列化。完整主题同时声明基础色和语义引用，私有双模式载体支持嵌套 always-light/dark；默认 Portal 桥接颜色、排版与模式，显式容器优先。输入、输出及使用方式见[颜色主题契约](../../packages/theme-default/README.md#品牌颜色生成器)。

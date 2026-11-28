@@ -259,10 +259,10 @@ describe('Collapse', () => {
     expect(headers[0]!.get('[data-icon="expand"]').text()).toBe('+');
   });
 
-  it('Panel class/style/rest attrs、ARIA 关系、focus 与固定无键盘切换语义正确', async () => {
+  it('Panel class/style/rest attrs、ARIA 关系、focus 与键盘切换语义正确', async () => {
     const wrapper = mount(Collapse, {
       attachTo: document.body,
-      props: { motion: false },
+      props: { keepDOM: true, motion: false },
       slots: {
         default: () =>
           h(
@@ -291,11 +291,13 @@ describe('Collapse', () => {
     (header.element as HTMLElement).focus();
     expect(document.activeElement).toBe(header.element);
     await header.trigger('keydown', { key: 'Enter' });
-    expect(header.attributes('aria-expanded')).toBe('false');
-    await header.trigger('click');
+    expect(header.attributes('aria-expanded')).toBe('true');
     const content = wrapper.get('.semi-collapse-content');
     expect(header.attributes('aria-owns')).toBe(content.attributes('id'));
     expect(content.attributes('aria-hidden')).toBe('false');
+    await header.trigger('keydown', { key: ' ' });
+    expect(header.attributes('aria-expanded')).toBe('false');
+    expect(content.attributes('aria-hidden')).toBe('true');
     wrapper.unmount();
   });
 

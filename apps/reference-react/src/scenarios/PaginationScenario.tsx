@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Pagination from '@semi-v2.102.0/pagination';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
+import Pagination from '@semi-v2.105.2/pagination';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const localeMap = {

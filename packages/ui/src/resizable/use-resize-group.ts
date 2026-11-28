@@ -1,8 +1,4 @@
-import {
-  ResizeGroupFoundation,
-  type FoundationResizeEventType,
-  type ResizeGroupAdapter,
-} from '@workspace/foundation-integration';
+import { ResizeGroupFoundation, type ResizeGroupAdapter } from '@workspace/foundation-integration';
 import {
   markRaw,
   nextTick,
@@ -20,7 +16,12 @@ import type {
   ResizeHandlerRegistration,
   ResizeItemRegistration,
 } from './resizable-context';
-import type { ResizeGroupDirection, ResizeInputType, ResizeStartPointer } from './types';
+import type {
+  ResizeDirection,
+  ResizeGroupDirection,
+  ResizeInputType,
+  ResizeMoveEvent,
+} from './types';
 
 interface FoundationGroupState {
   isResizing: boolean;
@@ -93,7 +94,10 @@ export function useResizeGroup(
     getHandlerCount: () => handlers.length,
     getItemMin: (index) => items[index]?.min as string,
     getItemMax: (index) => items[index]?.max as string,
-    getItemStart: (index) => items[index]!.onResizeStart as (...args: never[]) => void,
+    getItemStart: (index) => (event: ResizeMoveEvent, direction: ResizeDirection) => {
+      const pointer = 'targetTouches' in event ? event.targetTouches[0]! : event;
+      items[index]!.onResizeStart(pointer, direction);
+    },
     getItemChange: (index) => items[index]!.onChange as (...args: never[]) => void,
     getItemEnd: (index) => items[index]!.onResizeEnd as (...args: never[]) => void,
     getItemDefaultSize: (index) => items[index]?.defaultSize as string | number,
@@ -156,10 +160,10 @@ export function useResizeGroup(
     refreshSpace();
   }
 
-  function startResize(id: symbol, event: ResizeStartPointer, type: ResizeInputType): void {
+  function startResize(id: symbol, event: ResizeMoveEvent, type: ResizeInputType): void {
     const index = handlers.findIndex((handler) => handler.id === id);
     if (index < 0 || !items[index] || !items[index + 1]) return;
-    foundation.onResizeStart(index, event as MouseEvent, type as FoundationResizeEventType);
+    foundation.onResizeStart(index, event, type);
   }
 
   watch(direction, async (nextDirection) => {

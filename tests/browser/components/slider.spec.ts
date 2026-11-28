@@ -13,7 +13,7 @@ import {
   referenceSourceWasRequested,
 } from '../parity-harness';
 
-test('Slider 参考场景来自本地 v2.102.0 并保留单值、范围、marks、disabled、纵向与 ARIA DOM', async ({
+test('Slider 参考场景来自本地 v2.105.2 并保留单值、范围、marks、disabled、纵向与 ARIA DOM', async ({
   page,
 }) => {
   const requestedUrls: string[] = [];

@@ -78,5 +78,6 @@ Progress 没有受控/非受控状态、emits 或 `v-model`。`percent` 是单�
 
 ## Deviation
 
-- 当前没有 accepted deviation。`#format` 是对 React render prop 的 Vue 原生补充，函数 prop 仍保留，不构成行为差异。
-- 没有未解释的 API、DOM、ARIA、动画、颜色、几何或像素差异。
+- `v2.103.0` 新增的 `indeterminate` 待适配。需覆盖 line/circle 动画，并在未知进度时隐藏百分比文字和 `aria-valuenow`。
+
+- `v2.102.0` 行为与视觉验收通过。`#format` 是对 React render prop 的 Vue 原生补充，仍支持函数 prop。

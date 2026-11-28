@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import BackTop from '@semi-v2.102.0/back-top';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
+import BackTop from '@semi-v2.105.2/back-top';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
 import type { ParityDirection } from '@workspace/test-infra';
 
 export function BackTopScenario({ direction }: { direction: ParityDirection }): React.ReactElement {

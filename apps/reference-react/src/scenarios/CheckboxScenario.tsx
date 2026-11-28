@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Checkbox from '@semi-v2.102.0/checkbox';
+import Checkbox from '@semi-v2.105.2/checkbox';
 
 const horizontalOptions = ['Semi UI', 'Semi DSM', 'Semi D2C'];
 

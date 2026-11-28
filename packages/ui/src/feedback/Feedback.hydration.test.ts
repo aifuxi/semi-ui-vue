@@ -47,7 +47,9 @@ describe('Feedback hydration', () => {
     portal.querySelector<HTMLElement>('.semi-feedback-emoji-item:last-child')!.click();
     await nextTick();
     const submitSelector =
-      mode === 'popup' ? '.semi-feedback-footer button:last-child' : '[aria-label="confirm"]';
+      mode === 'popup'
+        ? '.semi-feedback-footer button:last-child'
+        : '[x-semi-children-alias="okText"]';
     portal.querySelector<HTMLButtonElement>(submitSelector)!.click();
     await nextTick();
     await nextTick();

@@ -24,6 +24,7 @@ import {
 } from '@workspace/foundation-integration';
 
 import { configContextKey, DEFAULT_CONFIG_LOCALE, semiGlobal } from '../config-provider';
+import { localeContextKey } from '../locale/locale-context';
 import ModalDefaultFooter from './ModalDefaultFooter.vue';
 import ModalDialog, { type ModalDialogExposed } from './ModalDialog.vue';
 import type { ModalActionHandler, ModalEmits, ModalLocale, ModalProps, ModalSlots } from './types';
@@ -44,6 +45,7 @@ onBeforeUpdate(() => {
   rawPropsRevision.value += 1;
 });
 const injectedConfig = inject(configContextKey, undefined);
+const providedLocale = inject(localeContextKey, undefined);
 const dialog = useTemplateRef<ModalDialogExposed>('dialog');
 const teleportTarget = shallowRef<HTMLElement | null>(null);
 /** 仅用于默认 body Portal 的排版主题镜像，不改变公开 Modal DOM。 */
@@ -179,9 +181,8 @@ const customContainer = computed(
 );
 const direction = computed(() => resolveOptional('direction') ?? config.value?.direction ?? 'ltr');
 const locale = computed<ModalLocale>(() => {
-  const configured = config.value?.locale.Modal as ModalLocale | undefined;
-  const fallback = DEFAULT_CONFIG_LOCALE.Modal as ModalLocale | undefined;
-  return configured ?? fallback ?? { confirm: '确定', cancel: '取消' };
+  const configured = (config.value?.locale ?? providedLocale?.value)?.Modal;
+  return { confirm: '确定', cancel: '取消', ...DEFAULT_CONFIG_LOCALE.Modal, ...configured };
 });
 // Slot VNodes carry mounted DOM state; evaluate them in each render, not across Portal lifetimes.
 const bodyContent = (): VNodeChild =>
@@ -353,6 +354,7 @@ onBeforeUnmount(() => {
         :closable="runtimeProps.closable"
         :close-button-size="resolveProp('closeButtonSize', 'small')"
         :close-icon="closeIconContent()"
+        :close-label="locale.close"
         :close-on-esc="runtimeProps.closeOnEsc"
         :content-class="contentClass"
         :custom-container="customContainer"

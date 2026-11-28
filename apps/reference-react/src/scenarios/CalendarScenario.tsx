@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Calendar from '@semi-v2.102.0/calendar';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
+import Calendar from '@semi-v2.105.2/calendar';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
 import { enUS, zhCN } from 'date-fns/locale';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 

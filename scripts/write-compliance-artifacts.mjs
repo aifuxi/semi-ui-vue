@@ -15,7 +15,7 @@ const manifestSource = await readFile(path.join(packageRoot, 'package.json'), 'u
 const manifest = JSON.parse(manifestSource);
 const distRoot = path.join(packageRoot, 'dist');
 const licenseRoot = path.join(distRoot, 'THIRD_PARTY_LICENSES');
-const semiCommit = 'cdfba6e520fc83ad871b30f51f36d8af3aaa5a21';
+const semiCommit = '7db305200a2b0fd2b20f0559819f2fa55631e2ba';
 
 function resolveCreationTime() {
   const sourceDateEpoch = process.env.SOURCE_DATE_EPOCH;
@@ -203,7 +203,7 @@ await writeFile(
   path.join(distRoot, 'THIRD_PARTY_NOTICES.md'),
   `# Third-Party Notices
 
-This package is part of an independent Vue implementation derived from or interoperating with Semi Design v2.102.0. It is not an official Semi Design Vue package and does not imply authorization, partnership, or endorsement by DouyinFE.
+This package is part of an independent Vue implementation derived from or interoperating with Semi Design v2.105.2. It is not an official Semi Design Vue package and does not imply authorization, partnership, or endorsement by DouyinFE.
 
 - Project: Semi Design
 - Copyright: Copyright (c) 2021 DouyinFE
@@ -246,7 +246,7 @@ const sbom = {
     {
       SPDXID: 'SPDXRef-Package-Semi-Design',
       name: '@douyinfe/semi-design',
-      versionInfo: '2.102.0',
+      versionInfo: '2.105.2',
       supplier: 'Organization: DouyinFE',
       downloadLocation: 'https://github.com/DouyinFE/semi-design',
       filesAnalyzed: false,

@@ -9,6 +9,7 @@ import cloneDeep from 'lodash/cloneDeep.js';
 import {
   computed,
   markRaw,
+  nextTick,
   onBeforeUnmount,
   onMounted,
   provide,
@@ -97,7 +98,7 @@ const adapter: FormFoundationAdapter<Record<string, unknown>> = {
     localState.value = cloneState(foundation.getFormState());
     const controller = props.form as ExternalFormController | undefined;
     controller?.__updateState?.(cloneDeep(localState.value));
-    callback?.();
+    if (callback) void nextTick(callback);
   },
   initFormId: () => {
     formId.value = props.id ?? generatedId;

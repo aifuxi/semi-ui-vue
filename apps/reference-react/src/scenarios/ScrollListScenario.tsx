@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import ScrollList from '@semi-v2.102.0/scroll-list';
-import ScrollItem from '@semi-v2.102.0/scroll-item';
-import type { ScrollItemData, ScrollItemSelectData } from '@semi-v2.102.0/scroll-list';
+import ScrollList from '@semi-v2.105.2/scroll-list';
+import ScrollItem from '@semi-v2.105.2/scroll-item';
+import type { ScrollItemData, ScrollItemSelectData } from '@semi-v2.105.2/scroll-list';
 
 const periods: ScrollItemData[] = [
   { value: 'AM', transform: () => 'Morning' },

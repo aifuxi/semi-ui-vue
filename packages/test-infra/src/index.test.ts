@@ -550,9 +550,9 @@ describe('parity infrastructure contract', () => {
   it('pins the only accepted upstream baseline', () => {
     expect(REFERENCE_BASELINE).toEqual({
       name: 'Semi Design',
-      tag: 'v2.102.0',
-      version: '2.102.0',
-      commit: 'cdfba6e520fc83ad871b30f51f36d8af3aaa5a21',
+      tag: 'v2.105.2',
+      version: '2.105.2',
+      commit: '7db305200a2b0fd2b20f0559819f2fa55631e2ba',
     });
   });
 

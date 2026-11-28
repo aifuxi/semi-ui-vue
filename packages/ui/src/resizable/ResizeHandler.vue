@@ -24,8 +24,7 @@ function handleMouseDown(event: MouseEvent): void {
 }
 
 function handleTouchStart(event: TouchEvent): void {
-  const touch = event.targetTouches[0];
-  if (touch) context.startResize(id, touch, 'touch');
+  if (event.targetTouches.length) context.startResize(id, event, 'touch');
 }
 
 onMounted(() => {

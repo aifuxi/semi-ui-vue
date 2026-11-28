@@ -14,7 +14,7 @@ import {
   requestedSourcePaths,
 } from '../parity-harness';
 
-test('Locale 参考场景来自本地 v2.102.0 Provider 与语言源', async ({ page }) => {
+test('Locale 参考场景来自本地 v2.105.2 Provider 与语言源', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

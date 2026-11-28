@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Switch from '@semi-v2.102.0/switch';
+import Switch from '@semi-v2.105.2/switch';
 import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 /** 使用公开 props 补齐开关各尺寸状态，不修改组件样式。 */

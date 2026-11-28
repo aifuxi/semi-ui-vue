@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import InputNumber from '@semi-v2.102.0/input-number';
+import InputNumber from '@semi-v2.105.2/input-number';
 import { readInputReviewProps } from '../../../../packages/test-infra/src/input-theme-review';
 
 export function InputNumberScenario(): React.ReactElement {

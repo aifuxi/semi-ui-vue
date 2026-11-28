@@ -1,9 +1,9 @@
-# Image v2.102.0 对齐矩阵
+# Image v2.105.2 对齐矩阵
 
 ## 路线与权威来源
 
 - 当前路线：最近完成 Highlight；Image 是固定 `vendor/semi-design/content/order.js` 中紧随其后的公开组件，之后才是 Cropper 与 List。
-- 固定基线：Semi Design `v2.102.0`，提交 `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`。
+- 固定基线：Semi Design `v2.105.2`，提交 `7db305200a2b0fd2b20f0559819f2fa55631e2ba`。
 - Adapter、公开类型与 DOM：`vendor/semi-design/packages/semi-ui/image/` 下的 `image.tsx`、`preview.tsx`、`previewInner.tsx`、`previewImage.tsx`、header/footer/context 与 `interface.tsx`。
 - Foundation 与算法：`vendor/semi-design/packages/semi-foundation/image/` 下的五个 Foundation、`constants.ts` 与 `utils.ts`。
 - 样式、动效与 RTL：同目录 `variables.scss`、`image.scss`、`animation.scss`、`rtl.scss`；默认 Token 来自 `semi-theme-default/scss/`。
@@ -133,3 +133,7 @@ diagnostic-16 的 Group 默认态只有 `.semi-image-preview-group` 缺少固定
 - 验证：新增 9 项公开 DOM 配置边界用例（含显式 body getter），其中三个继承 Provider 的路径在旧实现先失败。相关 Modal/SideSheet/Image/Feedback/ConfigProvider 的 20 个文件、123 项 Unit/SSR/hydration 通过；三组件 15 项固定 React/Vue Chromium 对照通过，未更新旧快照。
 - 安装包：8 项 Chromium 回归通过，包括 SideSheet 名称与重开，以及三组件在 light/dark、body/Provider/显式容器中的几何、DOM 归属和正常操作。图片可旋转、切换和重开；Feedback 可填写、提交、重开及取消；侧栏可保存、重开及关闭。Provider 对照仍挂在原宿主，实际矩形与 body 对照相等；显式容器继续保持局部定位。
 - 产物与边界：`pnpm check:artifacts` 通过主题、无 DOM 导入及真实 tarball 的 exports/类型/样式/tree-shaking 检查。诊断截图和日志留在本地忽略目录。本轮没有发布或升级迭鹿业务项目，业务联调验收仍需在消费升级后执行。
+
+## v2.105.2 对照更新
+
+预览图片加载成功时向 Foundation 提供按 URL 索引的 `Map`，供当前图和相邻预加载共享。分组预览继续覆盖打开整层、图片、页脚和切换。

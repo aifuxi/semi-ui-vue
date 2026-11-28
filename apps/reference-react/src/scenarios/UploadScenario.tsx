@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '@semi-v2.102.0/button';
-import Upload from '@semi-v2.102.0/upload';
+import Button from '@semi-v2.105.2/button';
+import Upload from '@semi-v2.105.2/upload';
 import {
   readInputReviewProps,
   readUploadReviewFiles,

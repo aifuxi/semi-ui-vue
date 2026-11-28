@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import Button from '@semi-v2.102.0/button';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
-import Popover from '@semi-v2.102.0/popover';
+import Button from '@semi-v2.105.2/button';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
+import Popover from '@semi-v2.105.2/popover';
 
 import type { ParityDirection } from '@workspace/test-infra';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import ColorPicker from '@semi-v2.102.0/color-picker';
+import ColorPicker from '@semi-v2.105.2/color-picker';
 
 const initialColor = ColorPicker.colorStringToValue('#7856ffcc');
 

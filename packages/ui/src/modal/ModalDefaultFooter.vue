@@ -24,7 +24,6 @@ const emit = defineEmits<{
 }>();
 
 const cancelBindings = computed(() => ({
-  'aria-label': 'cancel',
   type: 'tertiary' as const,
   block: props.footerFill,
   autofocus: true,
@@ -32,7 +31,6 @@ const cancelBindings = computed(() => ({
   style: [props.footerFill ? { marginLeft: 'unset' } : undefined, props.cancelButtonProps?.style],
 }));
 const okBindings = computed(() => ({
-  'aria-label': 'confirm',
   type: props.okType,
   theme: 'solid' as const,
   block: props.footerFill,

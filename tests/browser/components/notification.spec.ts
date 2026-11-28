@@ -22,7 +22,7 @@ async function waitForNotificationAnimations(page: import('@playwright/test').Pa
   });
 }
 
-test('Notification 参考场景来自本地 v2.102.0 并保留 wrapper、类型与主题契约', async ({ page }) => {
+test('Notification 参考场景来自本地 v2.105.2 并保留 wrapper、类型与主题契约', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

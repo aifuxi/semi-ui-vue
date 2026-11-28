@@ -1,5 +1,5 @@
 import React from 'react';
-import CodeHighlight from '@semi-v2.102.0/code-highlight';
+import CodeHighlight from '@semi-v2.105.2/code-highlight';
 
 const javascriptCode = [
   'const message = "Hello, Semi";',

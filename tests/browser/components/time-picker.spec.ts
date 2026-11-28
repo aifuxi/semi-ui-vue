@@ -13,6 +13,7 @@ import {
   openParityPages,
   PARITY_APPLICATIONS,
   referenceSourceWasRequested,
+  waitForTargetStable,
 } from '../parity-harness';
 
 // 外扩 24px 覆盖上游 14px 模糊与 4px 偏移的阴影外沿，同时保留圆角和边框。
@@ -104,7 +105,7 @@ for (const theme of ['light', 'dark'] as const) {
   });
 }
 
-test('TimePicker 参考场景来自本地 v2.102.0 并保留输入、范围与状态 DOM', async ({ page }) => {
+test('TimePicker 参考场景来自本地 v2.105.2 并保留输入、范围与状态 DOM', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));
@@ -167,6 +168,9 @@ test('TimePicker React/Vue 输入、面板选择、焦点、Portal、样式与�
     captureComputedStyle(vuePanel, ['backgroundColor', 'borderRadius', 'height', 'width']),
   ]);
   expect(vuePanelStyle).toEqual(reactPanelStyle);
+  // 浮层先在视口外测量，再定位并播放入场动效。
+  await Promise.all([expect(reactPanel).toBeInViewport(), expect(vuePanel).toBeInViewport()]);
+  await Promise.all([waitForTargetStable(reactPanel), waitForTargetStable(vuePanel)]);
   const [reactPanelBox, vuePanelBox] = await Promise.all([
     reactPanel.boundingBox(),
     vuePanel.boundingBox(),

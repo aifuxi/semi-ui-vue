@@ -1,8 +1,8 @@
-# Form v2.102.0 对齐矩阵
+# Form v2.105.2 对齐矩阵
 
 ## 基线与选择理由
 
-- 唯一基线：`vendor/semi-design` tag `v2.102.0`，提交 `cdfba6e520fc83ad871b30f51f36d8af3aaa5a21`。
+- 唯一基线：`vendor/semi-design` tag `v2.105.2`，提交 `7db305200a2b0fd2b20f0559819f2fa55631e2ba`。
 - 公开入口：`packages/semi-ui/form/index.tsx`、`baseForm.tsx`、`field.tsx`、`arrayField.tsx`、`hoc/` 与 `hooks/`；状态机来自 `packages/semi-foundation/form/`，样式来自固定 `form.scss`、`rtl.scss` 和默认主题 Token。
 - 文档与测试：`content/input/form/` 以及 `packages/semi-ui/form/__test__/`。
 - 当前 README 路线在 DatePicker 后进入 Form；Input、Select、Checkbox、Radio、DatePicker、TimePicker、TreeSelect、Cascader、Upload 等公开字段依赖均已 ready，因此 Form 已可独立形成第 66 个根模块切片。
@@ -69,6 +69,7 @@
 ## ArrayField、RTL、国际化与 SSR
 
 - ArrayField 支持 `add(index?)`、`addWithInitValue(value,index?)`、`remove()`，外部 setValue/setValues/reset 会刷新行 key 和嵌套字段路径。
+- 自 `v2.105.2` 起，缺少表单初值且仅由 `ArrayField.initValue` 提供的行，在默认值可由 `Form` 插槽读取后才渲染。这些行在客户端挂载后出现。校验失败时的自动滚动在 Vue 提交错误 DOM 后执行。
 - RTL 由 ConfigProvider/父文档方向与固定 `rtl.scss` 驱动；水平布局的 label、间距、错误图标方向对齐 React。
 - zh-CN/en-US 覆盖 Label optional 文案；57 Locale 的数据完整性继续由 ConfigProvider 既有门禁覆盖。
 - import 阶段不访问 DOM；Field 注册在 setup/SSR 中可构造，DOM 查询与 `scrollToField/scrollToError` 仅在客户端执行；SSR 输出稳定 form/label/control/ARIA DOM。
@@ -78,7 +79,7 @@
 - 单元：初值优先级、受控字段、事件顺序、嵌套路径、allowEmpty、同步/异步/rules 校验、trigger、silent、submit/fail/reset、keepState、ArrayField、hooks、HOC 映射、Label/Error/ARIA、裸 Boolean template/render host。
 - SSR：根/子路径安全 import、默认/水平/必填/错误结构，无浏览器全局访问。
 - Chromium：同一 BrowserContext 下 React/Vue 的请求来源、错误、computed style、bounding rect 与局部截图；desktop `1440x900`、mobile `390x844`、light/dark、RTL，并覆盖输入、错误和 submit 行为。
-- 发布：根导出、`@aifuxi/semi-ui-vue/form`、default/named 导出与 `Form.useForm`/`Form.Input` 等 compound 静态成员（单元用例从 `./index` 固定）、`@aifuxi/semi-theme-default/form.css` 的完整字段样式、声明、tree-shaking、SSR import、真实 tarball consumer、async-validator License/SBOM。
+- 发布：根导出、`@aifuxi/semi-ui-vue/form`、default/named 导出与 `Form.useForm`/`Form.Input` 等 compound 静态成员（单元用例从 `./index` 固定）、`@aifuxi/semi-theme-default/form.css` 的完整字段样式、声明、tree-shaking、SSR import、真实 tarball consumer、async-validator License/SBOM。Vite 直接比较 Form/FormInput 根入口与子路径的实际输出模块及保留导出。
 
 ## Deviation
 

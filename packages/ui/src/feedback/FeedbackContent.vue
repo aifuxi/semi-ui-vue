@@ -8,6 +8,7 @@ import { RadioGroup, type RadioChangeEvent } from '../radio';
 import type {
   FeedbackCheckboxGroupProps,
   FeedbackEmojiResult,
+  FeedbackLocale,
   FeedbackRadioGroupProps,
   FeedbackTextAreaProps,
   FeedbackType,
@@ -17,6 +18,7 @@ import type {
 defineOptions({ name: 'FeedbackContent', inheritAttrs: false });
 const props = defineProps<{
   checkboxGroupProps?: FeedbackCheckboxGroupProps;
+  locale: FeedbackLocale;
   radioGroupProps?: FeedbackRadioGroupProps;
   textAreaProps?: FeedbackTextAreaProps;
   type: FeedbackType;
@@ -33,14 +35,14 @@ defineSlots<{ default?: () => VNodeChild }>();
 
 const emoji = computed(() => (props.value as FeedbackEmojiResult | null)?.emoji);
 const textAreaBindings = computed<Record<string, unknown>>(() => ({
-  placeholder: 'Provider additional feedback',
+  placeholder: props.locale.placeholder,
   ...props.textAreaProps,
   onChange:
     props.textAreaProps?.onChange ??
     ((value: string, event: Event) => emit('textChange', value, event)),
 }));
 const emojiReasonBindings = computed<Record<string, unknown>>(() => ({
-  placeholder: 'Provider additional feedback(optional)',
+  placeholder: props.locale.optionalPlaceholder,
   ...props.textAreaProps,
   onChange:
     props.textAreaProps?.onChange ??
@@ -56,6 +58,11 @@ const checkboxBindings = computed<Record<string, unknown>>(() => {
   delete bindings.onChange;
   return bindings;
 });
+function activateEmoji(event: KeyboardEvent): void {
+  if (event.key !== 'Enter' && event.key !== ' ') return;
+  event.preventDefault();
+  (event.currentTarget as HTMLElement).click();
+}
 </script>
 
 <template>
@@ -68,7 +75,11 @@ const checkboxBindings = computed<Record<string, unknown>>(() => {
         :key="item"
         class="semi-feedback-emoji-item"
         :class="{ 'semi-feedback-emoji-item-selected': item === emoji }"
+        role="button"
+        tabindex="0"
+        :aria-pressed="item === emoji"
         :data-value="item"
+        @keydown="activateEmoji"
         @click="emit('emojiClick', $event)"
         >{{ item }}</span
       >

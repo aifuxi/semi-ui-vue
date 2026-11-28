@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
-import Chat, { type ChatMessage } from '@semi-v2.102.0/chat';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
+import Chat, { type ChatMessage } from '@semi-v2.105.2/chat';
 import type { ParityDirection, ParityLocale } from '@workspace/test-infra';
 
 const localeMap = {

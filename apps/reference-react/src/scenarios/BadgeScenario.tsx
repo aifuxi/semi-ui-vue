@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Badge from '@semi-v2.102.0/badge';
-import Avatar from '@semi-v2.102.0/avatar';
-import ConfigProvider from '@semi-v2.102.0/config-provider';
+import Badge from '@semi-v2.105.2/badge';
+import Avatar from '@semi-v2.105.2/avatar';
+import ConfigProvider from '@semi-v2.105.2/config-provider';
 
 export interface BadgeScenarioProps {
   direction: 'ltr' | 'rtl';

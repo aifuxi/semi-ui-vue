@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import IconButton from '@semi-v2.102.0/icon-button';
+import IconButton from '@semi-v2.105.2/icon-button';
 
 interface ScenarioIconProps {
   fill?: string | string[];

@@ -1,5 +1,5 @@
 import React from 'react';
-import Divider from '@semi-v2.102.0/divider';
+import Divider from '@semi-v2.105.2/divider';
 
 export function DividerScenario(): React.ReactElement {
   return (

@@ -15,7 +15,6 @@ import type {
   ResizeDirection,
   ResizeInputType,
   ResizeMoveEvent,
-  ResizeStartPointer,
   ResizeSize,
 } from './types';
 
@@ -30,7 +29,7 @@ interface FoundationSingleState {
 }
 
 type FoundationSingleProps = ResizableProps & {
-  onResizeStart: (event: ResizeStartPointer, direction: ResizeDirection) => boolean | void;
+  onResizeStart: (event: ResizeMoveEvent, direction: ResizeDirection) => boolean | void;
   onChange: (size: ResizeSize, event: ResizeMoveEvent, direction: ResizeDirection) => void;
   onResizeEnd: (size: ResizeSize, event: ResizeMoveEvent, direction: ResizeDirection) => void;
 };
@@ -39,11 +38,7 @@ export interface SingleResizeBinding {
   state: FoundationSingleState;
   sizeStyle: Readonly<{ value: CSSProperties }>;
   constraintStyle: Readonly<{ value: CSSProperties }>;
-  startResize: (
-    event: ResizeStartPointer,
-    direction: ResizeDirection,
-    type: ResizeInputType,
-  ) => void;
+  startResize: (event: ResizeMoveEvent, direction: ResizeDirection, type: ResizeInputType) => void;
 }
 
 export function useSingleResize(
@@ -77,8 +72,9 @@ export function useSingleResize(
               ...(props.snap.y === undefined ? {} : { y: [...props.snap.y] }),
             },
       onResizeStart: (event, direction) => {
-        if (props.beforeResizeStart?.(event, direction) === false) return false;
-        emit('resizeStart', event, direction);
+        const pointer = 'targetTouches' in event ? event.targetTouches[0]! : event;
+        if (props.beforeResizeStart?.(pointer, direction) === false) return false;
+        emit('resizeStart', pointer, direction);
       },
       onChange: (size, event, direction) => {
         emit('change', size, event, direction);
@@ -154,11 +150,11 @@ export function useSingleResize(
   }));
 
   function startResize(
-    event: ResizeStartPointer,
+    event: ResizeMoveEvent,
     direction: ResizeDirection,
     type: ResizeInputType,
   ): void {
-    foundation.onResizeStart(event as MouseEvent, direction, type);
+    foundation.onResizeStart(event, direction, type);
   }
 
   onMounted(() => foundation.init());

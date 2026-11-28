@@ -149,6 +149,7 @@ function renderPackedSelectEscape() {
         h('span', { id: 'permission-label' }, '分享权限'),
         h(Select, {
           ariaLabelledby: 'permission-label',
+          motion: !dropdownQuery.has('no-motion'),
           modelValue: selectRole.value,
           'onUpdate:modelValue': (value) => {
             selectRole.value = value;

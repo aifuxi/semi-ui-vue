@@ -64,7 +64,7 @@ test('AIChatInput 在表单内左右滚动附件时不提交表单', async ({ pa
   await expect(submitCount).toHaveText('1');
 });
 
-test('AIChatInput 参考场景来自本地 v2.102.0 且无运行时错误', async ({ page }) => {
+test('AIChatInput 参考场景来自本地 v2.105.2 且无运行时错误', async ({ page }) => {
   const requestedUrls: string[] = [];
   const runtimeErrors: string[] = [];
   page.on('request', (request) => requestedUrls.push(request.url()));

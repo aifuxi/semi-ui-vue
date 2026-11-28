@@ -1,6 +1,6 @@
 # UserGuide 用户引导
 
-UserGuide 通过气泡卡片或居中弹窗分步介绍页面能力。Vue 版本对齐 Semi Design v2.102.0 的 DOM、状态机、主题、遮罩、按钮和国际化行为。
+UserGuide 通过气泡卡片或居中弹窗分步介绍页面能力。Vue 版本对齐 Semi Design v2.105.2 的 DOM、状态机、主题、遮罩、按钮和国际化行为。
 
 ## 基本用法
 
@@ -100,7 +100,7 @@ modal 模式复用 Modal 的焦点、Escape、Portal 与可访问性能力；pop
 | `prevButtonProps`     | 上一步 Button 属性；`content` 映射 React children      | `UserGuideButtonProps`         | `{}`            |
 | `class` / `className` | popup Popover 自定义类                                 | `HTMLAttributes['class']`      | -               |
 | `style`               | popup Popover 自定义样式                               | `StyleValue`                   | -               |
-| `getPopupContainer`   | 固定 v2.102.0 仅用于决定是否锁 body；见兼容说明        | `() => HTMLElement`            | -               |
+| `getPopupContainer`   | 气泡、高亮遮罩或弹窗的挂载容器                         | `() => HTMLElement`            | -               |
 | `zIndex`              | spotlight SVG 层级                                     | `number`                       | `1030`          |
 
 ### UserGuideStepItem
@@ -127,7 +127,7 @@ modal 模式复用 Modal 的焦点、Escape、Portal 与可访问性能力；pop
 
 ## 固定基线兼容说明
 
-v2.102.0 的类型和文档声明了 step 级 `mask` 与 `className`，但固定 React Adapter 没有读取它们；Vue 为运行时对齐也不使其生效。`getPopupContainer` 同样只影响 UserGuide 自己的 body scroll 锁，不会直接传给内部 Popover/Modal。要改变浮层容器，请在 `ConfigProvider` 上配置 `getPopupContainer`。
+步骤的 `mask` 和 `spotlightPadding` 覆盖全局值，`className` 合并到当前卡片。未传入 `getPopupContainer` 时继承 ConfigProvider 的容器。
 
 ## SSR
 

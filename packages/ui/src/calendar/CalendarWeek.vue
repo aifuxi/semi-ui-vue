@@ -65,7 +65,7 @@ function allDayEventStyle(event: ParsedCalendarEvent): CSSProperties {
   const left = event.leftPos ?? 0;
   const width = event.width ?? 0;
   return {
-    left: `${roundCalendarPosition(Math.min(left, 1) * 100)}%`,
+    insetInlineStart: `${roundCalendarPosition(Math.min(left, 1) * 100)}%`,
     width: `${roundCalendarPosition(Math.min(width, 1) * 100)}%`,
     top: `${event.topInd ?? 0}em`,
   };

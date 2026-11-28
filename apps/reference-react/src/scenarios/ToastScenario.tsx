@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Toast from '@semi-v2.102.0/toast';
+import Toast from '@semi-v2.105.2/toast';
 
 export interface ToastScenarioProps {
   direction?: 'ltr' | 'rtl';
