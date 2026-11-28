@@ -1,10 +1,11 @@
-docs.example.com {
-	root * /srv/semi-ui-vue-docs/current
+semi.fuxiaochen.com {
+	root * /data/fc-apps/semi-ui-vue-docs/current
+	header /_release.txt Cache-Control "no-store"
 	try_files {path} {path}.html {path}/index.html =404
 	file_server
 
 	handle_errors 404 {
-		rewrite /404.html
+		rewrite * /404.html
 		file_server
 	}
 }

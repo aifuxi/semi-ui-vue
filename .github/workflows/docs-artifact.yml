@@ -2,6 +2,11 @@ name: Build docs artifact
 
 on:
   workflow_dispatch:
+  workflow_call:
+    outputs:
+      artifact-id:
+        description: ID of the verified static site archive
+        value: ${{ jobs.build.outputs.artifact-id }}
 
 permissions:
   contents: read
@@ -9,6 +14,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -28,10 +35,12 @@ jobs:
           mise exec -- pnpm docs:build
       - name: Package static site
         run: bash apps/docs/deploy/package.sh "$RUNNER_TEMP/docs-artifact"
-      - uses: actions/upload-artifact@v4
+      - id: upload
+        uses: actions/upload-artifact@v4
         with:
-          name: semi-ui-vue-docs-${{ github.sha }}
+          name: semi-ui-vue-docs-${{ github.sha }}-${{ github.run_attempt }}
           path: |
             ${{ runner.temp }}/docs-artifact/site.tar.gz
             ${{ runner.temp }}/docs-artifact/site.tar.gz.sha256
+          compression-level: 0
           if-no-files-found: error
