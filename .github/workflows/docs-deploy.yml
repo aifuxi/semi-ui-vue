@@ -1,0 +1,45 @@
+name: Deploy docs to production
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-production
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/master'
+    uses: ./.github/workflows/docs-artifact.yml
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: production
+      url: https://semi.fuxiaochen.com
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ needs.build.outputs.artifact-id }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/docs-artifact
+      - name: Publish over SSH and verify the live site
+        run: bash apps/docs/deploy/deploy-site.sh "$RUNNER_TEMP/docs-artifact"
+        env:
+          DEPLOY_SITE_URL: https://semi.fuxiaochen.com
+          DEPLOY_ROOT: /data/fc-apps/semi-ui-vue-docs
+          DEPLOY_RELEASE_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+          DEPLOY_COMMIT_SHA: ${{ github.sha }}
+          DEPLOY_SSH_HOST: ${{ vars.DEPLOY_SSH_HOST }}
+          DEPLOY_SSH_PORT: ${{ vars.DEPLOY_SSH_PORT || '22' }}
+          DEPLOY_SSH_USER: ${{ vars.DEPLOY_SSH_USER }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_SSH_KNOWN_HOSTS: ${{ secrets.DEPLOY_SSH_KNOWN_HOSTS }}

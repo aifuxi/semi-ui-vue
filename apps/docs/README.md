@@ -24,87 +24,80 @@
 
 `content/public/search-index.json`、`content/public/example-files/`、`.vitepress/theme/generated/`、`cache/` 和 `dist/` 是可再生的忽略产物。`pnpm --filter @workspace/docs clean` 可清理这些产物。示例的安装依赖、可下载辅助文件和 `/demos/` 资源引用由索引脚本从源码提取。
 
-## 发布到自有服务器
+## 生产构建与发布
 
-文档站按独立子域名的根路径 `/` 构建。静态服务器从 `/srv/semi-ui-vue-docs/current` 读取当前版本，服务账号需要有权读取该路径指向的目录。
+| GitHub Actions                                                       | 用途                                                                                                                |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| [Build docs artifact](../../.github/workflows/docs-artifact.yml)     | 手动选择分支预构建。上传 `semi-ui-vue-docs-<提交 SHA>-<运行尝试次数>`，内含 `site.tar.gz` 和 `site.tar.gz.sha256`。 |
+| [Deploy docs to production](../../.github/workflows/docs-deploy.yml) | 手动选择 `master` 发布。调用同一构建流程，按 artifact ID 下载本次构建产物，经 SSH 发布到生产服务器。                |
 
-### 配置静态服务器
+文档站的生产地址是 <https://semi.fuxiaochen.com>，沿用 `fuxiaochen-next` 的 Caddy 服务。Caddy 从 `/data/fc-apps/semi-ui-vue-docs/current` 读取静态文件。产物校验通过后，发布脚本将其放入 `releases/<运行编号>-<尝试次数>`，再原子切换 `current`。工作流随后验证线上版本标记、首页、无后缀文档直链、搜索索引、样式和自定义 404。线上验收失败时，工作流尝试切回上一版。
 
-使用 Nginx 时，参考 [Nginx 配置](deploy/nginx.conf)，将 `server_name` 改为实际子域名，并沿用服务器现有的 HTTPS 入口。确认 `http` 配置加载了 `mime.types`。配置生效前执行 `nginx -t`。
+### 首次准备服务器
 
-使用 Caddy 时，将 [Caddyfile](deploy/Caddyfile) 中的站点区块加入服务器的 `/etc/caddy/Caddyfile`，将 `docs.example.com` 替换为实际子域名。Caddy 作为公网入口时，将子域名解析到服务器并开放 TCP 80 和 443，以便 Caddy 自动签发和续期 HTTPS 证书。配置会将无后缀路由映射到对应的 `.html` 或目录的 `index.html`，缺失路径返回站点的 404 页面。
+服务器需要 Caddy、OpenSSH、Bash、GNU tar、GNU coreutils 和 `flock`。为文档站配置发布公钥，并确认发布账号能写入站点目录，Caddy 服务账号能读取 `current` 指向的版本。以下以 `site-deploy` 为例。
 
-在 Linux 上使用 systemd 管理 Caddy 时，校验配置后重载已运行的服务。
-
-```bash
-sudo caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
-sudo systemctl reload caddy
-```
-
-Caddy 部署沿用下方的打包、发布和回滚流程。每次发布只需切换 `current`，Caddy 无需为切换版本重载配置。
-
-### 获取构建产物
-
-`Build docs artifact` 工作流进入默认分支后，可在 GitHub Actions 手动选择待构建的分支。构建结果是名为 `semi-ui-vue-docs-<提交 SHA>` 的 artifact，其中包含 `site.tar.gz` 和对应的 SHA-256 校验文件。下载并解开外层 artifact 后，将这两个文件一起传到服务器。
-
-也可在仓库根目录本地构建并打包，使用该检出对应的提交 SHA 标记版本。
+若 `current` 已指向 `releases/` 下的有效版本，保留该版本和链接。全新目录需要先放入一份可回滚的初始版本。在 GitHub 手动运行预构建，解开外层 artifact，把两份文件传到服务器上发布账号可读取的 `/tmp/semi-docs-upload`。同样可以在仓库根目录 `pnpm docs:prepare`、`pnpm docs:build` 后用 `bash apps/docs/deploy/package.sh <产物目录>` 生成这两份文件。
 
 ```bash
-git submodule update --init --recursive
-mise run deps:install
-mise exec -- pnpm docs:prepare
-mise exec -- pnpm docs:build
-artifact_dir=$(mktemp -d)
-bash apps/docs/deploy/package.sh "$artifact_dir"
-printf '%s\n' "$artifact_dir"
+sudo install -d -m 0755 -o site-deploy \
+  /data/fc-apps/semi-ui-vue-docs \
+  /data/fc-apps/semi-ui-vue-docs/releases
+sudo -u site-deploy mkdir -m 0755 /data/fc-apps/semi-ui-vue-docs/releases/initial
+sudo -u site-deploy bash -s <<'BASH'
+set -euo pipefail
+umask 022
+root=/data/fc-apps/semi-ui-vue-docs
+cd /tmp/semi-docs-upload
+sha256sum --check site.tar.gz.sha256
+tar --no-same-owner --no-same-permissions -xzf site.tar.gz -C "$root/releases/initial"
+chmod 755 "$root/releases/initial"
+test -s "$root/releases/initial/index.html"
+ln -sT -- releases/initial "$root/current"
+BASH
 ```
 
-### 在服务器上发布
+将 `semi.fuxiaochen.com` 的 DNS 指向同一台服务器，把随库的 [Caddy 站点配置](deploy/Caddyfile) 加入现有 `/etc/caddy/Caddyfile`。Caddy 需要能从公网接收 TCP 80 和 443 来管理 HTTPS 证书。新增配置时校验并重载 Caddy，日常发布只切换 `current`。
 
-以下命令使用 Bash、GNU coreutils 和 GNU tar。替换上传目录与提交 SHA 后，以有权写入站点目录的账号执行。校验文件通过后，先解包到临时目录，再用符号链接一次切换整个站点。
+```bash
+sudo caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile &&
+  sudo systemctl reload caddy
+curl -fSI https://semi.fuxiaochen.com/
+```
+
+### 配置 GitHub 并发布
+
+在本仓库的 **Settings → Environments → production** 创建环境，将可部署分支限制为 `master`，并配置以下值。SSH 主机、端口和主机公钥对应现有服务器，私钥对应文档站的发布公钥。非默认端口使用 `[主机]:端口` 形式的 `known_hosts` 主机字段。
+
+| 类型     | 名称                     | 值                                |
+| -------- | ------------------------ | --------------------------------- |
+| Variable | `DEPLOY_SSH_HOST`        | GitHub runner 可访问的 SSH 地址   |
+| Variable | `DEPLOY_SSH_PORT`        | SSH 端口，省略时使用 `22`         |
+| Variable | `DEPLOY_SSH_USER`        | 有权写入文档站发布目录的账号      |
+| Secret   | `DEPLOY_SSH_KEY`         | 文档站发布账号的 SSH 私钥         |
+| Secret   | `DEPLOY_SSH_KNOWN_HOSTS` | 从可信来源核验的 SSH 主机公钥记录 |
+
+工作流进入 `master` 后，从 GitHub Actions 手动运行 **Deploy docs to production**，也可使用 `gh workflow run docs-deploy.yml --ref master`。成功后，线上版本标记 `curl -fsS https://semi.fuxiaochen.com/_release.txt` 应与运行日志中的发布编号和提交 SHA 一致。
+
+### 手动回滚
+
+自动回滚未完成时，先确认没有正在执行的发布，再以服务器发布账号运行以下命令。它从当前版本的发布记录定位上一版。保留当前版本及可用的回滚版本。
 
 ```bash
 (
   set -euo pipefail
-  umask 022
-  site_root=/srv/semi-ui-vue-docs
-  artifact_dir=/tmp/semi-docs-upload
-  release_sha=填入完整的提交SHA
-  [[ "$release_sha" =~ ^[0-9a-f]{40}$ ]]
-  release_dir="$site_root/releases/$release_sha"
-  (cd "$artifact_dir" && sha256sum -c site.tar.gz.sha256)
-  mkdir -p "$site_root/releases"
-  if [[ -e "$release_dir" || -L "$release_dir" ]]; then
-    printf '版本目录已存在：%s\n' "$release_dir" >&2
-    exit 1
-  fi
-  staging=$(mktemp -d "$site_root/.stage.XXXXXX")
+  cd /data/fc-apps/semi-ui-vue-docs
+  exec 9>.deploy/lock
+  flock -w 30 -x 9
+  current=$(readlink current)
+  [[ $current =~ ^releases/[0-9]+-[0-9]+$ ]]
+  read -r previous _ < ".deploy/${current##*/}.previous"
+  [[ $previous =~ ^releases/[a-zA-Z0-9][a-zA-Z0-9._-]*$ ]]
+  test -s "$previous/index.html"
+  staging=$(mktemp -d .deploy/.current.XXXXXXXX)
   trap 'rm -rf -- "$staging"' EXIT
-  mkdir "$staging/site"
-  tar --no-same-owner -xzf "$artifact_dir/site.tar.gz" -C "$staging/site"
-  test -s "$staging/site/index.html"
-  mv -T "$staging/site" "$release_dir"
-  ln -s "$release_dir" "$staging/current"
-  mv -Tf "$staging/current" "$site_root/current"
-)
-```
-
-切换后，从真实域名直接访问 `/zh-CN/start/getting-started` 和 `/zh-CN/components`，确认无后缀 URL 返回 200。检查搜索索引、示例文件下载和字体许可，访问不存在的路径确认返回 404。
-
-回滚时，把 `current` 切回上一个已保留的版本目录。站点根路径配置保持固定。
-
-```bash
-(
-  set -euo pipefail
-  site_root=/srv/semi-ui-vue-docs
-  previous_sha=填入上一版本的完整提交SHA
-  [[ "$previous_sha" =~ ^[0-9a-f]{40}$ ]]
-  previous_dir="$site_root/releases/$previous_sha"
-  test -s "$previous_dir/index.html"
-  staging=$(mktemp -d "$site_root/.stage.XXXXXX")
-  trap 'rm -rf -- "$staging"' EXIT
-  ln -s "$previous_dir" "$staging/current"
-  mv -Tf "$staging/current" "$site_root/current"
+  ln -s -- "$previous" "$staging/current"
+  mv -Tf -- "$staging/current" current
 )
 ```
 
@@ -112,7 +105,7 @@ printf '%s\n' "$artifact_dir"
 
 品牌与排版编辑由独立的 [`apps/theme-studio`](../theme-studio/README.md) 提供，文档站只保留 API、使用说明、代码示例和外部入口，不导入工作台布局或状态。入口位于 `content/zh-CN/advanced/customize-theme.md`。
 
-本地运行 `pnpm theme-studio:dev` 后可直接访问 <http://localhost:4322/#/tokens>。部署时通过 `VITE_THEME_STUDIO_URL` 指定工作台的公开 HTTPS 根地址，例如 `https://themes.example.com/`。文档站仅在配置了可用的 HTTPS 地址时显示入口。该变量在开发服务启动或生产构建时读取，修改后需重新启动或构建。工作台独立部署，不随 `docs:build` 构建。
+本地运行 `pnpm theme-studio:dev` 后可直接访问 <http://localhost:4322/#/tokens>。在 GitHub 仓库级 Variables 中通过 `VITE_THEME_STUDIO_URL` 指定工作台的公开 HTTPS 根地址，例如 `https://themes.example.com/`。文档站仅在配置了可用的 HTTPS 地址时显示入口。该变量在开发服务启动或生产构建时读取，修改后需重新启动或构建。工作台独立部署，不随 `docs:build` 构建。
 
 ## 验收
 
