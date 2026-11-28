@@ -1,5 +1,28 @@
 import { expect, test } from '@playwright/test';
 
+test('文档站使用基线的页眉字标、站点标题和浏览器图标', async ({ page, request }) => {
+  await Promise.all([
+    page.waitForResponse(
+      (response) =>
+        new URL(response.url()).pathname === '/doc-icons/semi_logo.svg' && response.ok(),
+    ),
+    page.goto('/zh-CN/start/introduction'),
+  ]);
+  await expect(page).toHaveTitle('Introduction 介绍 - Semi Design');
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', '/favicon.ico');
+  const favicon = await request.get('/favicon.ico');
+  expect(favicon.ok()).toBe(true);
+  expect([...(await favicon.body()).subarray(0, 4)]).toEqual([0, 0, 1, 0]);
+
+  const homeLink = page.getByRole('banner').getByRole('link', { name: 'Semi Design 首页' });
+  await expect(homeLink).toBeVisible();
+  await homeLink.click();
+  await expect(page).toHaveTitle('Semi Design');
+  await expect(
+    page.getByRole('heading', { level: 1, name: '连接设计师与开发者', exact: true }),
+  ).toBeVisible();
+});
+
 /** 首页侧栏按用户操作挂载，关闭和路由变化都必须撤回移动端遮罩。 */
 test('移动端首页导航支持打开、关闭、重开与文档跳转', async ({ page }) => {
   /** 覆盖首页打开导航到完成客户端路由跳转的整个周期。 */

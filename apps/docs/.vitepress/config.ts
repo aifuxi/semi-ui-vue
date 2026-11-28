@@ -6,7 +6,8 @@ const themeBootScript = `(function(){try{if(localStorage.getItem('semi-docs-them
 const hydrationDiagnostics = process.env.DOCS_HYDRATION_DIAGNOSTICS === '1';
 
 export default defineConfig({
-  title: 'Semi UI Vue',
+  title: 'Semi Design',
+  titleTemplate: ':title - Semi Design',
   description: 'Semi UI Vue 组件库文档，提供 Vue 3 组件用法、示例与公开 API。',
   lang: 'zh-CN',
   base: '/',
@@ -21,7 +22,7 @@ export default defineConfig({
     },
   },
   head: [
-    ['link', { rel: 'icon', type: 'image/svg+xml', sizes: 'any', href: '/favicon.svg' }],
+    ['link', { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     ['link', { rel: 'stylesheet', href: '/site/site.css' }],
     ['script', {}, themeBootScript],
   ],
