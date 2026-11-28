@@ -21,6 +21,7 @@
 
 - 会话中确认一次项目和可用运行配置，复用 [.run](.run/)；临时参数用 IDE 终端。权限拒绝不绕过。环境设置见[工具链](docs/architecture/toolchain.md)。
 - 本地浏览器探索与调试使用项目 [Playwright CLI skill](.agents/skills/playwright-cli/SKILL.md) 和 `pnpm playwright:cli`；默认完整 Chromium 的新 headless 模式。正式回归仍运行 Playwright Test，3 个并行 worker，CLI 操作记录不计作验收通过。
+- 开始新的实现任务或交付已有改动时，使用项目 [PR 交付 skill](.agents/skills/semi-vue-pr-delivery/SKILL.md)，按用户授权完成对应的 Git 交付。
 - 本地实现、依赖准备、可丢弃测试、修复和提交已获授权，无需逐步确认。保护已有修改；共享服务和产物由一个执行者管理。超时先确认进程和日志，避免重复启动。
 - 验证以本次目标和影响为准，复用仍有效的证据；纯文案不跑整库构建或浏览器矩阵。不要用重试、固定延时、放宽断言或改旧指纹制造通过。
 - 不默认创建工作报告、审批表或固定数量的子 agent。重要取舍和剩余问题写入现有契约、提交或交付说明即可。
